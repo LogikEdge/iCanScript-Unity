@@ -449,7 +449,7 @@ public partial class iCS_Graphics {
         if(node.IsState || node.IsStateChart) {
             return iCS_PreferencesEditor.StateNodeColor;
         }
-        if(node.IsClassModule) {
+        if(node.IsObjectInstance) {
             return iCS_PreferencesEditor.InstanceNodeColor;
         }
         if(node.IsModule) {

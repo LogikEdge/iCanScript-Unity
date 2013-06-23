@@ -136,8 +136,8 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 		if(y.IsInputPort && !x.IsInputPort) return 1;
 		if(x.IsOutputPort && !y.IsOutputPort) return -1;
 		if(y.IsOutputPort && !x.IsOutputPort) return 1;
-		if(x.IsClassModule && !y.IsClassModule) return -1;
-		if(y.IsClassModule && !x.IsClassModule) return 1;
+		if(x.IsObjectInstance && !y.IsObjectInstance) return -1;
+		if(y.IsObjectInstance && !x.IsObjectInstance) return 1;
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
@@ -292,7 +292,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
         } else if(current.IsState || current.IsStateChart) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.StateHierarchyIcon);                        
-        } else if(current.IsClassModule) {
+        } else if(current.IsObjectInstance) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ClassHierarchyIcon);                            
         } else if(current.IsNode) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);            

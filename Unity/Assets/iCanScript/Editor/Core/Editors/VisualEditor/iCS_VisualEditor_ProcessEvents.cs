@@ -183,7 +183,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void ShowInstanceEditor() {
-        if(SelectedObject != null && (SelectedObject.IsClassModule || SelectedObject.IsBehaviour)) {
+        if(SelectedObject != null && (SelectedObject.IsObjectInstance || SelectedObject.IsBehaviour)) {
             bool hadKeyboardFocus= HasKeyboardFocus;
             iCS_EditorMgr.ShowInstanceEditor();
             // Keep keyboard focus.

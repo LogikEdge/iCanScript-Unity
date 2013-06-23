@@ -3,6 +3,10 @@ using System.Collections;
 
 [System.Serializable]
 public enum iCS_ObjectTypeEnum {
+    // --------------------------------------------------------------
+    // Start of Node object types
+    NodeStart= 0,
+    
     // Structural nodes
     Behaviour= 0, Module, StateChart, State,
 
@@ -17,6 +21,16 @@ public enum iCS_ObjectTypeEnum {
     // Transition nodes
     TransitionModule=200, TransitionGuard, TransitionAction,
 
+    // Programatic
+    Type= 250,
+    
+    // End of Node object types
+    NodeEnd= 299,
+    
+    // --------------------------------------------------------------
+    // Start of Port object type
+    PortStart= 300,
+
     // Data ports
     InFunctionPort= 300, OutFunctionPort,
     InDynamicModulePort, OutDynamicModulePort,
@@ -27,14 +41,15 @@ public enum iCS_ObjectTypeEnum {
     InStatePort= 400,    OutStatePort,
     InTransitionPort,    OutTransitionPort,
 
-	// Active ports.
+	// Mux ports.
 	ChildMuxPort= 500,   ParentMuxPort,
 	
-    // Programatic
-    Type= 900,
+    // End of Port object type
+    PortEnd= 999,
     
+    // --------------------------------------------------------------
     // Undefined
-    Unknown=1000
+    Unknown=10000
 }
 
 public static class iCS_ObjectType {

@@ -21,7 +21,7 @@ public partial class iCS_EditorObject {
     public bool IsOutTransitionPort         { get { return EngineObject.IsOutTransitionPort; }}
     public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
     public bool IsOutputPort                { get { return EngineObject.IsOutputPort; }}
-    public bool IsClassModule               { get { return EngineObject.IsClassModule; }}
+    public bool IsObjectInstance            { get { return EngineObject.IsObjectInstance; }}
     public bool IsTransitionModule          { get { return EngineObject.IsTransitionModule; }}
     public bool IsTransitionGuard           { get { return EngineObject.IsTransitionGuard; }}
     public bool IsTransitionAction          { get { return EngineObject.IsTransitionAction; }}

@@ -162,7 +162,7 @@ public class iCS_EngineObject {
     
     // ----------------------------------------------------------------------
     // Object Type Acessor
-    public bool IsNode                  { get { return iCS_ObjectType.IsNode(this); }}
+    public bool IsNode                  { get { return ObjectType >= iCS_ObjectTypeEnum.NodeStart && ObjectType <= iCS_ObjectTypeEnum.NodeEnd; }}
 	public bool IsStateChartNode	    { get { return iCS_ObjectType.IsStateChartNode(this); }}
     public bool IsBehaviour             { get { return iCS_ObjectType.IsBehaviour(this); }}
     public bool IsStateChart            { get { return iCS_ObjectType.IsStateChart(this); }}
@@ -179,7 +179,7 @@ public class iCS_EngineObject {
     public bool IsInstanceField         { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast              { get { return iCS_ObjectType.IsTypeCast(this); }}
     public bool IsMessage               { get { return iCS_ObjectType.IsMessage(this); }}
-    public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
+    public bool IsPort                  { get { return ObjectType >= iCS_ObjectTypeEnum.PortStart && ObjectType <= iCS_ObjectTypeEnum.PortEnd; }}
     public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
     public bool IsFunctionPort          { get { return iCS_ObjectType.IsFunctionPort(this); }}
     public bool IsModulePort            { get { return iCS_ObjectType.IsModulePort(this); }}
@@ -204,7 +204,7 @@ public class iCS_EngineObject {
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
-    public bool IsClassModule           { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
+    public bool IsObjectInstance        { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
 	public bool	IsMuxPort				{ get { return iCS_ObjectType.IsMuxPort(this); }}
 	public bool IsChildMuxPort			{ get { return iCS_ObjectType.IsChildMuxPort(this); }}
 	public bool IsParentMuxPort			{ get { return iCS_ObjectType.IsParentMuxPort(this); }}
