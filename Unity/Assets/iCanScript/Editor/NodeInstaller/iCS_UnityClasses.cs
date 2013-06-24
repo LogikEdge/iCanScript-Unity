@@ -55,6 +55,18 @@ public static class iCS_UnityClasses {
         if(description == null) description= "Event: "+messageName+" on "+classType.Name;
         iCS_LibraryDatabase.AddMessage(classType, messageName, storageClass, parameters, functionReturn, description, iconPath);
     }
+    // ----------------------------------------------------------------------
+    // Use this function to register a Unity message on the
+    // MonoBehaviour class.
+    //
+    // This function can be called by the iCanScript user to add to the
+    // existing Unity library.
+    // 
+    public static void InstallMonoBehaviourMessage(string messageName, iCS_Parameter[] parameters, 
+                                           string iconPath= null, string description= null) {
+        var voidReturn= new iCS_FunctionReturn("", typeof(void));                                       
+        InstallUnityMessage(typeof(MonoBehaviour), messageName, iCS_StorageClass.Instance, parameters, voidReturn, description, iconPath);
+    }
     
         
     // ======================================================================
@@ -241,20 +253,95 @@ public static class iCS_UnityClasses {
             DecodeUnityClassInfo(typeof(Vector3));    
             DecodeUnityClassInfo(typeof(Vector4));
             
-            // Install MonoBehaviour messages.
+            // Install MonoBehaviour messages with no parameters.
             var noParameters= new iCS_Parameter[0];
-            var voidReturn= new iCS_FunctionReturn("", typeof(void));
-            InstallUnityMessage(typeof(MonoBehaviour), "Start"       , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
-            InstallUnityMessage(typeof(MonoBehaviour), "Update"      , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
-            InstallUnityMessage(typeof(MonoBehaviour), "LateUpdate"  , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
-            InstallUnityMessage(typeof(MonoBehaviour), "FixedUpdate" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnGUI"       , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnDrawGizmos", iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);         
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseEnter", iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseOver" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseExit" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseDown" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseUp"   , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallMonoBehaviourMessage("Update"              , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("LateUpdate"          , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("FixedUpdate"         , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("Start"               , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("Reset"               , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnMouseEnter"        , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnMouseOver"         , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnMouseExit"         , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnMouseDown"         , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnMouseUp"           , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnMouseUpAsButton"   , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnMouseDrag"         , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnBecameVisible"     , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnBecameInvisible"   , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnEnable"            , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnDisable"           , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnDestroy"           , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnPreCull"           , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnPreRender"         , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnPostRender"        , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnRenderObject"      , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnWillRenderObject"  , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnGUI"               , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnRenderImage"       , noParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnDrawGizmosSelected", noParameters, kInMailIcon);         
+            InstallMonoBehaviourMessage("OnDrawGizmos"        , noParameters, kInMailIcon);         
+            InstallMonoBehaviourMessage("OnServerInitialized" , noParameters, kInMailIcon);         
+            InstallMonoBehaviourMessage("OnConnectedToServer" , noParameters, kInMailIcon);         
+            InstallMonoBehaviourMessage("OnAudioFilterRead"   , noParameters, kInMailIcon);         
+            InstallMonoBehaviourMessage("OnAnimatorMove"      , noParameters, kInMailIcon);         
+            InstallMonoBehaviourMessage("OnApplicationQuit"   , noParameters, kInMailIcon);         
+
+            // Trigger messages
+            var triggerParameters= new iCS_Parameter[1]{new iCS_Parameter("other", typeof(Collider))};
+            InstallMonoBehaviourMessage("OnTriggerEnter", triggerParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnTriggerExit" , triggerParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnTriggerStay" , triggerParameters, kInMailIcon);
+
+            // Collision messages
+            var collisionParameters= new iCS_Parameter[1]{new iCS_Parameter("collisionInfo", typeof(Collision))};
+            InstallMonoBehaviourMessage("OnCollisionEnter", collisionParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnCollisionExit" , collisionParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnCollisionStay" , collisionParameters, kInMailIcon);
+
+            var controllerColliderParams= new iCS_Parameter[1]{new iCS_Parameter("hit", typeof(ControllerColliderHit))};
+            InstallMonoBehaviourMessage("OnControllerColliderHit", controllerColliderParams, kInMailIcon);
+
+            var jointBreakParameters= new iCS_Parameter[1]{new iCS_Parameter("breakForce", typeof(float))};
+            InstallMonoBehaviourMessage("OnJointBreak", jointBreakParameters, kInMailIcon);
+
+            var gameObjectParameters= new iCS_Parameter[1]{new iCS_Parameter("gameObject", typeof(GameObject))};
+            InstallMonoBehaviourMessage("ParticleCollision", gameObjectParameters, kInMailIcon);
+
+            var levelLoadedParameters= new iCS_Parameter[1]{new iCS_Parameter("level", typeof(int), 0)};
+            InstallMonoBehaviourMessage("OnLevelWasLoaded", levelLoadedParameters, kInMailIcon);
+
+            var pauseParameters= new iCS_Parameter[1]{new iCS_Parameter("pause", typeof(bool), false)};
+            InstallMonoBehaviourMessage("OnApplicationPause", pauseParameters, kInMailIcon);         
+
+            var focusParameters= new iCS_Parameter[1]{new iCS_Parameter("focus", typeof(bool), false)};
+            InstallMonoBehaviourMessage("OnApplicationFocus", focusParameters, kInMailIcon);         
+
+            var playerParameters= new iCS_Parameter[1]{new iCS_Parameter("player", typeof(NetworkPlayer))};
+            InstallMonoBehaviourMessage("OnPlayerConnected"   , playerParameters, kInMailIcon);         
+            InstallMonoBehaviourMessage("OnPlayerDisconnected", playerParameters, kInMailIcon);         
+
+            var disconnectParameters= new iCS_Parameter[1]{new iCS_Parameter("mode", typeof(NetworkDisconnection))};
+            InstallMonoBehaviourMessage("OnDisconnectedFromServer", disconnectParameters, kInMailIcon);             
+
+            var networkErrorParameters= new iCS_Parameter[1]{new iCS_Parameter("error", typeof(NetworkConnectionError))};
+            InstallMonoBehaviourMessage("OnFailedToConnect"              , networkErrorParameters, kInMailIcon);
+            InstallMonoBehaviourMessage("OnFailedToConnectToMasterServer", networkErrorParameters, kInMailIcon);
+
+            var msEventParameters= new iCS_Parameter[1]{new iCS_Parameter("msEvent", typeof(MasterServerEvent))};
+            InstallMonoBehaviourMessage("OnMasterServerEvent", msEventParameters, kInMailIcon);
+
+            var networkInfoParameters= new iCS_Parameter[1]{new iCS_Parameter("info", typeof(NetworkMessageInfo))};
+            InstallMonoBehaviourMessage("OnNetworkInstantiate", networkInfoParameters, kInMailIcon);         
+
+            var serializeViewParameters= new iCS_Parameter[2]{
+                new iCS_Parameter("stream", typeof(BitStream)),
+                new iCS_Parameter("info", typeof(NetworkMessageInfo))
+            };
+            InstallMonoBehaviourMessage("OnSerializeNetworkView", serializeViewParameters, kInMailIcon);         
+
+            var animatorIKParameters= new iCS_Parameter[1]{new iCS_Parameter("layerIndex", typeof(int), 0)};
+            InstallMonoBehaviourMessage("OnAnimatorIK", animatorIKParameters, kInMailIcon);         
     }
 
 }

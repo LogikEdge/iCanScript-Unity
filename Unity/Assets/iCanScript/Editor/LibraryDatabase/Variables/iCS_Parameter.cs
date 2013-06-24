@@ -12,7 +12,7 @@ public class iCS_Parameter : iCS_Variable {
     // Constructor/Destructor
     // ----------------------------------------------------------------------
     public iCS_Parameter() {}
-    public iCS_Parameter(string _name, Type _type, System.Object _initialValue, iCS_ParamDirection _direction)
+    public iCS_Parameter(string _name, Type _type, System.Object _initialValue= null, iCS_ParamDirection _direction= iCS_ParamDirection.In)
     : base(_name, _type, _initialValue) {
         direction= _direction;
     }
