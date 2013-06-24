@@ -601,10 +601,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(validParent == null) {
 			var node= IStorage.GetNodeAt(point);
 			if(node == null && IStorage.IsEmptyBehaviour) {
-				int option= EditorUtility.DisplayDialogComplex("Behaviour event required !", "Unity behaviour requires that nodes be added to a predefined event.  Use the buttons below to create the desired event type for your node.","Create Update", "More events...","Create OnGUI");
+				int option= EditorUtility.DisplayDialogComplex("Behaviour message required !", "Unity behaviour requires that nodes be added to a predefined message.  Use the buttons below to create the desired message type for your node.","Create Update", "More events...","Create OnGUI");
 				switch(option) {
 					case 0:
-						validParent= AutoCreateBehaviourEvent(iCS_Strings.Update, point);
+						validParent= AutoCreateBehaviourMessage(iCS_Strings.Update, point);
 						break;
 					case 1:
 						ShowNotification(new GUIContent("Please use right mouse click on canvas to create behaviour event type before adding new object."));
@@ -612,7 +612,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						myDynamicMenu.Update(SelectedObject, IStorage, point);
 						return;
 					case 2:
-						validParent= AutoCreateBehaviourEvent(iCS_Strings.OnGUI, point);
+						validParent= AutoCreateBehaviourMessage(iCS_Strings.OnGUI, point);
 						break;
 				}
 			} else {
@@ -629,8 +629,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         pasted.LayoutNode();
         pasted.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
     }
-    iCS_EditorObject AutoCreateBehaviourEvent(string eventName, Vector2 point) {
-		var validParent= IStorage.CreateModule(0, point, iCS_Strings.Update);
+    iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 point) {
+		var validParent= IStorage.CreateModule(0, point, messageName);
 		validParent.Tooltip= iCS_AllowedChildren.TooltipForBehaviourChild(iCS_Strings.Update);
         IStorage.Unfold(validParent);
         return validParent;

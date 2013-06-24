@@ -10,6 +10,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Respond to Unity drag & drop protocol.
 	// ----------------------------------------------------------------------
+	// TODO: Need to revise valid drop node.
     void DragAndDropUpdated() {
 	    iCS_EditorObject eObj= GetObjectAtMousePosition();
 		if(eObj != null) {

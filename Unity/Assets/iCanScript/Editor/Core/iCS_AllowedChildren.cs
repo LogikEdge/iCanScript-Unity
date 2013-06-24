@@ -46,16 +46,22 @@ public static class iCS_AllowedChildren {
                 switch(objType) {
                     case iCS_ObjectTypeEnum.Module:
                     case iCS_ObjectTypeEnum.StateChart: {
-                        if(NameExistsIn(childName, BehaviourChildNames) && !IsChildNodePresent(childName, parent, storage)) {
-                            isAllowed= true;
-                        }
-                        break;
+						var behaviourInfo= iCS_LibraryDatabase.GetTypeInfo(typeof(MonoBehaviour));
+						if(behaviourInfo == null) {
+							Debug.LogWarning("iCanScript: Unable to find MonoBehaviour type information");
+							return false;
+						}
+						foreach(var m in behaviourInfo.members) {
+							if(m.displayName == childName) {
+								return true;
+							}
+						}
+						return false;
                     }
                     default: {
-                        break;
+						return false;
                     }
                 }
-                break;
             }
             case iCS_ObjectTypeEnum.StateChart: {
                 switch(objType) {
