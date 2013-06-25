@@ -38,115 +38,60 @@ public static class iCS_AllowedChildren {
     }
     
     // ----------------------------------------------------------------------
-    public static bool CanAddChildNode(string childName, iCS_ObjectTypeEnum objType, iCS_EditorObject parent, iCS_IStorage storage) {
+    public static bool CanAddChildNode(string childName, iCS_ObjectTypeEnum childType, iCS_EditorObject parent, iCS_IStorage storage) {
         if(parent == null) return false;
-        if(parent.IsBehaviour) {
-			var behaviourInfo= iCS_LibraryDatabase.GetTypeInfo(typeof(MonoBehaviour));
-			if(behaviourInfo == null) {
-				Debug.LogWarning("iCanScript: Unable to find MonoBehaviour type information");
+        // Only allow valid child for object instances.
+        if(parent.IsObjectInstance) {
+            // Don't allow more then one copy of a node in an instance node
+            if(IsChildNodePresent(childName, parent, storage)) {
+                return false;
+            }
+			var typeInfo= iCS_LibraryDatabase.GetTypeInfo(parent.RuntimeType);
+			if(typeInfo == null) {
+				Debug.LogWarning("iCanScript: Unable to find type information for: "+parent.Name);
 				return false;
 			}
-			foreach(var m in behaviourInfo.members) {
+			foreach(var m in typeInfo.members) {
 				if(m.displayName == childName) {
+                    // Special case for Behaviour.  Only messages are allowed.
+                    if(parent.IsBehaviour) {
+                        return m.isMessage || m.isField || m.isProperty;
+                    }
 					return true;
 				}
 			}
-			return false;            
+			return false;                        
         }
-        bool isAllowed= false;
-        switch(parent.ObjectType) {
-            case iCS_ObjectTypeEnum.Behaviour: {
-                switch(objType) {
-                    case iCS_ObjectTypeEnum.Module:
-                    case iCS_ObjectTypeEnum.StateChart: {
-						var behaviourInfo= iCS_LibraryDatabase.GetTypeInfo(typeof(MonoBehaviour));
-						if(behaviourInfo == null) {
-							Debug.LogWarning("iCanScript: Unable to find MonoBehaviour type information");
-							return false;
-						}
-						foreach(var m in behaviourInfo.members) {
-							if(m.displayName == childName) {
-								return true;
-							}
-						}
-						return false;
-                    }
-                    default: {
-						return false;
-                    }
-                }
-            }
-            case iCS_ObjectTypeEnum.StateChart: {
-                switch(objType) {
-                    case iCS_ObjectTypeEnum.State: {
-                        isAllowed= true;
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-                break;                
-            }
-            case iCS_ObjectTypeEnum.State: {
-                switch(objType) {
-                    case iCS_ObjectTypeEnum.State:
-                    case iCS_ObjectTypeEnum.TransitionModule: {
-                        isAllowed= true;
-                        break;
-                    }
-                    case iCS_ObjectTypeEnum.Module: {
-                        if(NameExistsIn(childName, StateChildNames) && !IsChildNodePresent(childName, parent, storage)) {
-                            isAllowed= true;
-                        }
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-                break;
-            }
-            case iCS_ObjectTypeEnum.TransitionModule: {
-                switch(objType) {
-                    case iCS_ObjectTypeEnum.TransitionGuard:
-                    case iCS_ObjectTypeEnum.TransitionAction: {
-                        isAllowed= true;
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-                break;
-            }
-            case iCS_ObjectTypeEnum.TransitionGuard:
-            case iCS_ObjectTypeEnum.TransitionAction:
-            case iCS_ObjectTypeEnum.Module: {
-                switch(objType) {
-                    case iCS_ObjectTypeEnum.Behaviour:
-                    case iCS_ObjectTypeEnum.State: {
-                        break;
-                    }
-                    default: {
-                        isAllowed= true;
-                        break;
-                    }
-                }
-                break;
-            }
-            case iCS_ObjectTypeEnum.InstanceMethod:
-            case iCS_ObjectTypeEnum.ClassMethod:
-            case iCS_ObjectTypeEnum.InstanceField:
-            case iCS_ObjectTypeEnum.ClassField:
-            case iCS_ObjectTypeEnum.TypeCast: {
-                break;
-            }
-            default: {
-                break;
-            }            
+        // Messages are only allow on their object instance.
+        if(childType == iCS_ObjectTypeEnum.InstanceMessage || childType == iCS_ObjectTypeEnum.ClassMessage) {
+            return false;
         }
-        return isAllowed;
+        // Only allow State node in StateChart.
+        if(parent.ObjectType == iCS_ObjectTypeEnum.StateChart) {
+            return childType == iCS_ObjectTypeEnum.State;
+        }
+        // Only allow state, module transition & entry/do/exit modules in state.
+        if(parent.ObjectType == iCS_ObjectTypeEnum.State) {
+            if(childType == iCS_ObjectTypeEnum.State || childType == iCS_ObjectTypeEnum.TransitionModule) {
+                return true;
+            }
+            if(childType == iCS_ObjectTypeEnum.Module) {
+                return NameExistsIn(childName, StateChildNames) && !IsChildNodePresent(childName, parent, storage);
+            }
+        }
+        // Only allow TransitionGuard & TransitionAction in TransitionModule
+        if(parent.ObjectType == iCS_ObjectTypeEnum.TransitionModule) {
+            return childType == iCS_ObjectTypeEnum.TransitionGuard || childType == iCS_ObjectTypeEnum.TransitionAction;
+        }
+        // Allow all but Behaviour & State in module.
+        if(parent.IsModule) {
+            if(childType == iCS_ObjectTypeEnum.Behaviour || childType == iCS_ObjectTypeEnum.State) {
+                return false;
+            }
+            return true;
+        }
+        // Reject all other type of node nesting.
+        return false;
     }
     
     // ----------------------------------------------------------------------

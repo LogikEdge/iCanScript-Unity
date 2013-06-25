@@ -7,11 +7,11 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_IStorage    		myIStorage  	   = null;
-    int             		myId        	   = -1;
-    bool            		myIsFloating	   = false;
-    public List<int>		myChildren  	   = new List<int>();
-    bool                	myIsSticky  	   = false;
+    iCS_IStorage    myIStorage  = null;
+    int             myId        = -1;
+    bool            myIsFloating= false;
+    List<int>		myChildren  = new List<int>();
+    bool            myIsSticky  = false;
 
     // ======================================================================
     // Conversion Utilities

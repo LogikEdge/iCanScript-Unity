@@ -6,6 +6,20 @@ using System.Collections;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // Object Type Queries ---------------------------------------------------
+    public bool IsNode                      { get { return EngineObject.IsNode; }}
+    public bool IsModule                    { get { return EngineObject.IsModule; }}
+    public bool IsFunction                  { get { return EngineObject.IsFunction; }}
+    public bool IsMessage                   { get { return EngineObject.IsMessage; }}
+    public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
+    public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
+    public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
+    public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
+    public bool IsState                     { get { return EngineObject.IsState; }}
+    public bool IsObjectInstance            { get { return EngineObject.IsObjectInstance; }}
+    public bool IsTransitionModule          { get { return EngineObject.IsTransitionModule; }}
+    public bool IsTransitionGuard           { get { return EngineObject.IsTransitionGuard; }}
+    public bool IsTransitionAction          { get { return EngineObject.IsTransitionAction; }}
+
     public bool IsPort                      { get { return EngineObject.IsPort; }}
     public bool IsDataPort                  { get { return EngineObject.IsDataPort; }}
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
@@ -21,19 +35,6 @@ public partial class iCS_EditorObject {
     public bool IsOutTransitionPort         { get { return EngineObject.IsOutTransitionPort; }}
     public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
     public bool IsOutputPort                { get { return EngineObject.IsOutputPort; }}
-    public bool IsObjectInstance            { get { return EngineObject.IsObjectInstance; }}
-    public bool IsTransitionModule          { get { return EngineObject.IsTransitionModule; }}
-    public bool IsTransitionGuard           { get { return EngineObject.IsTransitionGuard; }}
-    public bool IsTransitionAction          { get { return EngineObject.IsTransitionAction; }}
-    public bool IsNode                      { get { return EngineObject.IsNode; }}
-    public bool IsModule                    { get { return EngineObject.IsModule; }}
-    public bool IsFunction                  { get { return EngineObject.IsFunction; }}
-    public bool IsMessage                   { get { return EngineObject.IsMessage; }}
-    public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
-    public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
-    public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
-    public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
-    public bool IsState                     { get { return EngineObject.IsState; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
     public bool IsMuxPort                   { get { return EngineObject.IsMuxPort; }}
     public bool IsChildMuxPort              { get { return EngineObject.IsChildMuxPort; }}
