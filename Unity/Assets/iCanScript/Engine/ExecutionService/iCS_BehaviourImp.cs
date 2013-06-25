@@ -315,6 +315,8 @@ public class iCS_BehaviourImp : iCS_Storage {
                             myRuntimeNodes[node.InstanceId]= module;
                             break;
                         }
+                        case iCS_ObjectTypeEnum.InstanceMessage:
+                        case iCS_ObjectTypeEnum.ClassMessage:
                         case iCS_ObjectTypeEnum.Module: {
                             iCS_Module module= new iCS_Module(node.Name, priority);                                
                             myRuntimeNodes[node.InstanceId]= module;

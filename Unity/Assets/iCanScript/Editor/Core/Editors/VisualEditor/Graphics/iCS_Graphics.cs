@@ -446,6 +446,9 @@ public partial class iCS_Graphics {
         if(node.IsBehaviour) {
             return Color.gray;
         }
+        if(node.IsMessage) {
+            return iCS_PreferencesEditor.MessageNodeColor;
+        }
         if(node.IsEntryState) {
             return iCS_PreferencesEditor.EntryStateNodeColor;
         }
@@ -455,17 +458,14 @@ public partial class iCS_Graphics {
         if(node.IsObjectInstance) {
             return iCS_PreferencesEditor.InstanceNodeColor;
         }
-        if(node.IsModule) {
-            return iCS_PreferencesEditor.PackageNodeColor;
-        }
         if(node.IsConstructor) {
             return iCS_PreferencesEditor.ConstructorNodeColor;
         }
         if(node.IsFunction) {
             return iCS_PreferencesEditor.FunctionNodeColor;
         }
-        if(node.IsMessage) {
-            return iCS_PreferencesEditor.MessageNodeColor;
+        if(node.IsModule) {
+            return iCS_PreferencesEditor.PackageNodeColor;
         }
         return Color.gray;
     }
