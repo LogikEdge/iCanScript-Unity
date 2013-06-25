@@ -73,6 +73,7 @@ public partial class iCS_IStorage {
             IsDirty= true;
             Storage= storage;
             UndoRedoId= Storage.UndoRedoId;          
+			PerformEngineDataUpgrade();
             GenerateEditorData();
             ForceRelayout= true;
         }

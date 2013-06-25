@@ -45,7 +45,7 @@ public class iCS_BehaviourImp : iCS_Storage {
     // This function should be used to find references to other objects.
     // Awake is invoked after all the objects are initialized.  Awake replaces
     // the constructor.
-    void Awake() {}
+    protected new void Awake() {}
 
     // ----------------------------------------------------------------------
     // This function should be used to pass information between objects.  It

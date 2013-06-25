@@ -33,11 +33,7 @@ public class iCS_Storage : MonoBehaviour {
 	}
 
     // ======================================================================
-    // Initialization
-    // ----------------------------------------------------------------------
-	void OnEnable()  { Debug.Log("Enabling storage"); }
-	void OnDisable() { Debug.Log("Disabling storage"); }
-	
+    // Methods
     // ----------------------------------------------------------------------
     public bool IsMuxPortChild(int id)  {
         if(!IsValidEngineObject(id)) return false;
@@ -46,7 +42,7 @@ public class iCS_Storage : MonoBehaviour {
     }
 	
     // ======================================================================
-    // UnityObject Utilities
+    // Unity Object Utilities
     // ----------------------------------------------------------------------
     public void ClearUnityObjects() {
         UnityObjects.Clear();
