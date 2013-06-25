@@ -443,6 +443,9 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
     static Color GetNodeColor(iCS_EditorObject node) {
+        if(node.IsBehaviour) {
+            return Color.gray;
+        }
         if(node.IsEntryState) {
             return iCS_PreferencesEditor.EntryStateNodeColor;
         }

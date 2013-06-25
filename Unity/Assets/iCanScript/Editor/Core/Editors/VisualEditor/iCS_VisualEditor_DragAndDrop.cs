@@ -12,25 +12,37 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	// TODO: Need to revise valid drop node.
     void DragAndDropUpdated() {
-	    iCS_EditorObject eObj= GetObjectAtMousePosition();
-		if(eObj != null) {
+	    iCS_EditorObject objectUnderMouse= GetObjectAtMousePosition();
+		if(objectUnderMouse != null) {
 	        UnityEngine.Object draggedObject= GetDraggedObject();
-	        if(eObj.IsInputPort) {
-	            Type portType= eObj.RuntimeType;
+	        if(objectUnderMouse.IsInputPort) {
+	            Type portType= objectUnderMouse.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
 			    	DragAndDrop.visualMode = DragAndDropVisualMode.Link;
 					return;
 				}
 			}
-			if(eObj.IsNode) {
-    			if(draggedObject is Texture && eObj.IsIconizedOnDisplay) {
+			if(objectUnderMouse.IsNode) {
+    			if(draggedObject is Texture && objectUnderMouse.IsIconizedOnDisplay) {
 		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 				    return;				
                 }
-                if(draggedObject is GameObject && eObj.IsModule) {
-		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-				    return;				                    
+                if(draggedObject is GameObject) {
+                     if(objectUnderMouse.IsModule) {
+                         var storage= GetDraggedLibrary(draggedObject);
+                         if(storage ==  null) {
+         		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;                        
+                            return;
+                         }
+                         if(storage.EngineObjects.Count > 0) {
+                             var engineObject= storage.EngineObjects[0];
+                             if(iCS_AllowedChildren.CanAddChildNode(engineObject.Name, engineObject.ObjectType, objectUnderMouse, IStorage)) {
+                                 DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                                 return;
+                             }
+                         }
+                    }   
                 }
 			}
 		}

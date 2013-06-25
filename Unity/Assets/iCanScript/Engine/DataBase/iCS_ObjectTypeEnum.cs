@@ -61,7 +61,8 @@ public static class iCS_ObjectType {
     public static bool IsStructuralNode       (iCS_EngineObject obj) { return IsBehaviour(obj) || IsModule(obj) ||
                                                                               IsState(obj) || IsStateChart(obj) || IsMessage(obj); }
     public static bool IsBehaviour            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Behaviour; }
-    public static bool IsModule               (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Module || IsTransitionNode(obj); }
+    public static bool IsModule               (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Module ||
+                                                                              IsTransitionNode(obj) || IsBehaviour(obj); }
     public static bool IsStateChart           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StateChart; }
     public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.State; }
 

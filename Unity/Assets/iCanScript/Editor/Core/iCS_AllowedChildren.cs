@@ -40,6 +40,19 @@ public static class iCS_AllowedChildren {
     // ----------------------------------------------------------------------
     public static bool CanAddChildNode(string childName, iCS_ObjectTypeEnum objType, iCS_EditorObject parent, iCS_IStorage storage) {
         if(parent == null) return false;
+        if(parent.IsBehaviour) {
+			var behaviourInfo= iCS_LibraryDatabase.GetTypeInfo(typeof(MonoBehaviour));
+			if(behaviourInfo == null) {
+				Debug.LogWarning("iCanScript: Unable to find MonoBehaviour type information");
+				return false;
+			}
+			foreach(var m in behaviourInfo.members) {
+				if(m.displayName == childName) {
+					return true;
+				}
+			}
+			return false;            
+        }
         bool isAllowed= false;
         switch(parent.ObjectType) {
             case iCS_ObjectTypeEnum.Behaviour: {

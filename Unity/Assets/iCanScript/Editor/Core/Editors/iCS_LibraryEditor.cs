@@ -180,7 +180,6 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 			if(node.Desc.iconPath != null) {
 				module.IconPath= node.Desc.iconPath;				
 			}
-			Debug.Log("iCanScript: Need to complete message node insert validation");
 			return;
 		}
 		

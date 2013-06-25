@@ -142,7 +142,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_EditorObject eObj) {
-        if(eObj == null || myStorage.IsIdValid(eObj.InstanceId)) return false;
+        if(eObj == null || !myStorage.IsIdValid(eObj.InstanceId)) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         if(eObj.Name.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
         return false;
