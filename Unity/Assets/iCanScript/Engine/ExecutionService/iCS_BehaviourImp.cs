@@ -15,12 +15,6 @@ public class iCS_BehaviourImp : iCS_Storage {
     iCS_RunContext  myUpdateContext          = null;
     iCS_RunContext  myLateUpdateContext      = null;
     iCS_RunContext  myFixedUpdateContext     = null;
-    iCS_RunContext  myOnTriggerEnterContext  = null;
-    iCS_RunContext  myOnTriggerStayContext   = null;
-    iCS_RunContext  myOnTriggerExitContext   = null;
-    iCS_RunContext  myOnCollisionEnterContext= null;
-    iCS_RunContext  myOnCollisionStayContext = null;
-    iCS_RunContext  myOnCollisionExitContext = null;
     object[]     myRuntimeNodes      = new object[0];
     
     // ======================================================================
@@ -51,12 +45,6 @@ public class iCS_BehaviourImp : iCS_Storage {
     }
     
     // ----------------------------------------------------------------------
-    // This function should be used to find references to other objects.
-    // Awake is invoked after all the objects are initialized.  Awake replaces
-    // the constructor.
-    protected void Awake() {}
-
-    // ----------------------------------------------------------------------
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
     void Start() {
@@ -72,19 +60,6 @@ public class iCS_BehaviourImp : iCS_Storage {
         }
     }
     
-    // ======================================================================
-    // Events
-    // ----------------------------------------------------------------------
-    void OnEnable()  {}
-    void OnDisable() {}
-    void OnDestroy() {}
-    void OnTriggerEnter(Collider other)            { myOnTriggerEnterContext.Run(); }
-    void OnTriggerStay(Collider other)             { myOnTriggerStayContext.Run(); }
-    void OnTraggerExit(Collider other)             { myOnTriggerExitContext.Run(); }
-    void OnCollisionEnter(Collision collisionInfo) { myOnCollisionEnterContext.Run(); }
-    void OnCollisionStay(Collision collisionInfo)  { myOnCollisionStayContext.Run(); }
-    void OnCollisionExit(Collision collisionInfo)  { myOnCollisionExitContext.Run(); }    
-        
     // ======================================================================
     // Graph Updates
     // ----------------------------------------------------------------------
