@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class iCS_Module : iCS_ParallelDispatcher {
+public class iCS_Message : iCS_Module {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Module(string name, int priority) : base(name, priority) {}
+    public iCS_Message(string name, int priority) : base(name, priority) {}
 }

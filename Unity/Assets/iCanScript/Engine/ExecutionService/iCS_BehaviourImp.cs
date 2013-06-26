@@ -10,18 +10,30 @@ public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    Dictionary<string,iCS_RunContext>   myContexts= new Dictionary<string,iCS_RunContext>();
-    iCS_RunContext  myStartContext           = null;
-    iCS_RunContext  myUpdateContext          = null;
-    iCS_RunContext  myLateUpdateContext      = null;
-    iCS_RunContext  myFixedUpdateContext     = null;
-    object[]     myRuntimeNodes      = new object[0];
+    object[]                            myRuntimeNodes= new object[0];
+    Dictionary<string,iCS_RunContext>   myContexts    = new Dictionary<string,iCS_RunContext>();
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public int UpdateFrameId        { get { return myUpdateContext != null      ? myUpdateContext.FrameId : 0; }}
-    public int FixedUpdateFrameId   { get { return myFixedUpdateContext != null ? myFixedUpdateContext.FrameId : 0; }}
+    public int UpdateFrameId {
+        get {
+            iCS_RunContext updateContext= null;
+            if(myContexts.TryGetValue("Update", out updateContext)) {
+                return updateContext.FrameId;
+            }
+            return 0;
+        }
+    }
+    public int FixedUpdateFrameId {
+        get {
+            iCS_RunContext fixedUpdateContext= null;
+            if(myContexts.TryGetValue("FixedUpdate", out fixedUpdateContext)) {
+                return fixedUpdateContext.FrameId;
+            }
+            return 0;
+        }
+    }
     
     // ----------------------------------------------------------------------
 	public void SayHello() {
@@ -38,10 +50,7 @@ public class iCS_BehaviourImp : iCS_Storage {
     
     // ----------------------------------------------------------------------
     void Reset() {
-        if(myStartContext != null)       myStartContext.Action      = null;
-        if(myUpdateContext != null)      myUpdateContext.Action     = null;
-        if(myLateUpdateContext != null)  myLateUpdateContext.Action = null;
-        if(myFixedUpdateContext != null) myFixedUpdateContext.Action= null;
+        myContexts= new Dictionary<string,iCS_RunContext>();
     }
     
     // ----------------------------------------------------------------------
@@ -49,93 +58,47 @@ public class iCS_BehaviourImp : iCS_Storage {
     // is invoked after Awake and before any Update call.
     void Start() {
         GenerateCode();
-        if(myStartContext != null && myStartContext.Action != null) {
+        iCS_RunContext startContext= null;
+        myContexts.TryGetValue("Start", out startContext);
+        if(startContext != null) {
             do {
-                myStartContext.Action.Execute(-2);
-                if(myStartContext.Action.IsStalled) {
+                startContext.Action.Execute(-2);
+                if(startContext.Action.IsStalled) {
                     Debug.LogError("The Start() of "+name+" is stalled. Please remove any dependent processing !!!");
                     return;
                 }
-            } while(!myStartContext.Action.IsCurrent(-2));
+            } while(!startContext.Action.IsCurrent(-2));
         }
     }
     
     // ======================================================================
     // Graph Updates
     // ----------------------------------------------------------------------
-    void Update()       { if(myUpdateContext != null)      myUpdateContext.Run(); }
-    void LateUpdate()   { if(myLateUpdateContext != null)  myLateUpdateContext.Run(); }
-    void FixedUpdate()  { if(myFixedUpdateContext != null) myFixedUpdateContext.Run(); }
+    void Update()       { RunMessage("Update"); }
+    void LateUpdate()   { RunMessage("LateUpdate"); }
+    void FixedUpdate()  { RunMessage("FixedUpdate"); }
     
     // ======================================================================
-    // Child Management
+    // Dynamic Message Receiver Management
     // ----------------------------------------------------------------------
     public void AddChild(object obj) {
-        iCS_Action action= obj as iCS_Action;
-        if(action == null) return;
-        switch(action.Name) {
-            case iCS_Strings.Start: {
-                if(myStartContext == null) {
-                    myStartContext= new iCS_RunContext(action);
-                } else {
-                    myStartContext.Action= action;                    
-                }
-                break;
-            }
-            case iCS_Strings.Update: {
-                if(myUpdateContext == null) {
-                    myUpdateContext= new iCS_RunContext(action);
-                } else {
-                    myUpdateContext.Action= action;                    
-                }
-                break;
-            }
-            case iCS_Strings.LateUpdate: {
-                if(myLateUpdateContext == null) {
-                    myLateUpdateContext= new iCS_RunContext(action);
-                } else {
-                    myLateUpdateContext.Action= action;                    
-                }
-                break;
-            }
-            case iCS_Strings.FixedUpdate: {
-                if(myFixedUpdateContext == null) {
-                    myFixedUpdateContext= new iCS_RunContext(action);
-                } else {
-                    myFixedUpdateContext.Action= action;                    
-                }
-                break;
-            }
-            default: {
-                break;
-            }
+        iCS_Message message= obj as iCS_Message;
+        if(message == null) return;
+        var messageName= message.Name;
+        if(myContexts.ContainsKey(messageName)) {
+            myContexts[messageName]= new iCS_RunContext(message);
+        } else {
+            myContexts.Add(messageName, new iCS_RunContext(message));
         }
     }
     // ----------------------------------------------------------------------
     public void RemoveChild(object obj) {
-        iCS_Action action= obj as iCS_Action;
-        if(action == null) return;
-        switch(action.Name) {
-            case iCS_Strings.Start: {
-                myStartContext= null;
-                break;
-            }
-            case iCS_Strings.Update: {
-                myUpdateContext= null;
-                break;
-            }
-            case iCS_Strings.LateUpdate: {
-                myLateUpdateContext= null;
-                break;
-            }
-            case iCS_Strings.FixedUpdate: {
-                myFixedUpdateContext= null;
-                break;
-            }
-            default: {
-                break;
-            }
-        }        
+        iCS_Message message= obj as iCS_Message;
+        if(message == null) return;
+        var messageName= message.Name;
+        if(myContexts.ContainsKey(messageName)) {
+            myContexts.Remove(messageName);
+        }
     }
 
 
@@ -301,6 +264,10 @@ public class iCS_BehaviourImp : iCS_Storage {
                         }
                         case iCS_ObjectTypeEnum.InstanceMessage:
                         case iCS_ObjectTypeEnum.ClassMessage:
+                            iCS_Message message= new iCS_Message(node.Name, priority);                                
+                            myRuntimeNodes[node.InstanceId]= message;
+                            InvokeAddChildIfExists(parent, message);                                
+                            break;
                         case iCS_ObjectTypeEnum.Module: {
                             iCS_Module module= new iCS_Module(node.Name, priority);                                
                             myRuntimeNodes[node.InstanceId]= module;
