@@ -10,6 +10,7 @@ public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+    Dictionary<string,iCS_RunContext>   myContexts= new Dictionary<string,iCS_RunContext>();
     iCS_RunContext  myStartContext           = null;
     iCS_RunContext  myUpdateContext          = null;
     iCS_RunContext  myLateUpdateContext      = null;
@@ -34,6 +35,14 @@ public class iCS_BehaviourImp : iCS_Storage {
 	}
 	
     // ----------------------------------------------------------------------
+    void RunMessage(string messageName) {
+        iCS_RunContext runContext;
+        if(myContexts.TryGetValue(messageName, out runContext)) {
+            runContext.Run();
+        }
+    }
+    
+    // ----------------------------------------------------------------------
     void Reset() {
         if(myStartContext != null)       myStartContext.Action      = null;
         if(myUpdateContext != null)      myUpdateContext.Action     = null;
@@ -45,7 +54,7 @@ public class iCS_BehaviourImp : iCS_Storage {
     // This function should be used to find references to other objects.
     // Awake is invoked after all the objects are initialized.  Awake replaces
     // the constructor.
-    protected new void Awake() {}
+    protected void Awake() {}
 
     // ----------------------------------------------------------------------
     // This function should be used to pass information between objects.  It
@@ -69,19 +78,19 @@ public class iCS_BehaviourImp : iCS_Storage {
     void OnEnable()  {}
     void OnDisable() {}
     void OnDestroy() {}
-    void OnTriggerEnter(Collider other)            { myOnTriggerEnterContext.RunEvent(); }
-    void OnTriggerStay(Collider other)             { myOnTriggerStayContext.RunEvent(); }
-    void OnTraggerExit(Collider other)             { myOnTriggerExitContext.RunEvent(); }
-    void OnCollisionEnter(Collision collisionInfo) { myOnCollisionEnterContext.RunEvent(); }
-    void OnCollisionStay(Collision collisionInfo)  { myOnCollisionStayContext.RunEvent(); }
-    void OnCollisionExit(Collision collisionInfo)  { myOnCollisionExitContext.RunEvent(); }    
+    void OnTriggerEnter(Collider other)            { myOnTriggerEnterContext.Run(); }
+    void OnTriggerStay(Collider other)             { myOnTriggerStayContext.Run(); }
+    void OnTraggerExit(Collider other)             { myOnTriggerExitContext.Run(); }
+    void OnCollisionEnter(Collision collisionInfo) { myOnCollisionEnterContext.Run(); }
+    void OnCollisionStay(Collision collisionInfo)  { myOnCollisionStayContext.Run(); }
+    void OnCollisionExit(Collision collisionInfo)  { myOnCollisionExitContext.Run(); }    
         
     // ======================================================================
     // Graph Updates
     // ----------------------------------------------------------------------
-    void Update()       { if(myUpdateContext != null)      myUpdateContext.RunEvent(); }
-    void LateUpdate()   { if(myLateUpdateContext != null)  myLateUpdateContext.RunEvent(); }
-    void FixedUpdate()  { if(myFixedUpdateContext != null) myFixedUpdateContext.RunEvent(); }
+    void Update()       { if(myUpdateContext != null)      myUpdateContext.Run(); }
+    void LateUpdate()   { if(myLateUpdateContext != null)  myLateUpdateContext.Run(); }
+    void FixedUpdate()  { if(myFixedUpdateContext != null) myFixedUpdateContext.Run(); }
     
     // ======================================================================
     // Child Management

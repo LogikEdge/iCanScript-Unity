@@ -26,7 +26,7 @@ public class iCS_RunContext {
 
     // ----------------------------------------------------------------------
     // Executes the run context (if it is valid)
-    public void RunEvent() {
+    public void Run() {
         if(myAction == null) return;
         ++myFrameId;
         do {
