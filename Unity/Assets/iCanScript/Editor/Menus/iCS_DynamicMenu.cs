@@ -84,22 +84,16 @@ public class iCS_DynamicMenu {
         // Don't show any menu if behaviour not visible.
         if(selectedObject.IsIconizedOnDisplay || selectedObject.IsFoldedOnDisplay) return;
 
-// Begin Test
-        var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
-        foreach(var m in messages) {
-            Debug.Log("Message: "+m.displayName);
-        }
-// End Test
-
-
-        int len= iCS_AllowedChildren.BehaviourChildNames.Length;
+		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
+        int len= messages.Length;
 		iCS_MenuContext[] menu= new iCS_MenuContext[len];
         for(int i= 0; i < len; ++i) {
-            string name= iCS_AllowedChildren.BehaviourChildNames[i];
-            if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
-                menu[i]= new iCS_MenuContext(String.Concat("+ ", name));
+			var message= messages[i];
+            string name= message.displayName;
+            if(iCS_AllowedChildren.CanAddChildNode(name, message.objectType, selectedObject, storage)) {
+                menu[i]= new iCS_MenuContext(String.Concat("+ ", name), message);
             } else {
-                menu[i]= new iCS_MenuContext(String.Concat("#+ ", name));
+                menu[i]= new iCS_MenuContext(String.Concat("#+ ", name), message);
             }
         }
         ShowMenu(menu, selectedObject, storage);
