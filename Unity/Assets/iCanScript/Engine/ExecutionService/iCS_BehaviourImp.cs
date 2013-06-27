@@ -42,7 +42,7 @@ public partial class iCS_BehaviourImp : iCS_Storage {
 	
     // ----------------------------------------------------------------------
     // Run messages without parameter.
-    void RunMessage(string messageName) {
+    public void RunMessage(string messageName) {
         iCS_RunContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             runContext.Run();
@@ -50,7 +50,7 @@ public partial class iCS_BehaviourImp : iCS_Storage {
     }
     // ----------------------------------------------------------------------
     // Run message with one parameter.
-    void RunMessage(string messageName, object p1) {
+    public void RunMessage(string messageName, object p1) {
         iCS_RunContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             runContext.Run();
@@ -58,7 +58,7 @@ public partial class iCS_BehaviourImp : iCS_Storage {
     }
     // ----------------------------------------------------------------------
     // Run message with two parameters.
-    void RunMessage(string messageName, object p1, object p2) {
+    public void RunMessage(string messageName, object p1, object p2) {
         iCS_RunContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             runContext.Run();

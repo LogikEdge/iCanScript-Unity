@@ -75,6 +75,7 @@ public partial class iCS_IStorage {
             UndoRedoId= Storage.UndoRedoId;          
 			PerformEngineDataUpgrade();
             GenerateEditorData();
+            GenerateBehaviourProxy();
             ForceRelayout= true;
         }
     }
@@ -97,7 +98,14 @@ public partial class iCS_IStorage {
         }
         CleanupUnityObjects();
     }
-    
+    // ----------------------------------------------------------------------
+    void GenerateBehaviourProxy() {
+        if(EditorObjects.Count == 0 || !EditorObjects[0].IsBehaviour) {
+            return;
+        }
+        var go= Storage.gameObject;
+        iCS_CEGenerator.GenerateBehaviour(EditorObjects[0], go, go.GetInstanceID().ToString());
+    }
     
     // ----------------------------------------------------------------------
     public bool IsBehaviour {
