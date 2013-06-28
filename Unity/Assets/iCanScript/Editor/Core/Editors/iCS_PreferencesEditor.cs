@@ -111,12 +111,20 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kInstanceAutocreateOutPropertiesKey     = "iCS_InstanceAutocreateOutProperties"; 
     const string kInstanceAutocreateInClassPropertiesKey = "iCS_InstanceAutocreateInClassProperties";
     const string kInstanceAutocreateOutClassPropertiesKey= "iCS_InstanceAutocreateOutClassProperties";
+    // ---------------------------------------------------------------------------------
+	// Code Engineering Config Constants
+	const string kCodeGenerationFolder           = "iCanScript_GeneratedCode";
+	const string kBehaviourGenerationSubFolder   = "Behaviours";
+    const string kCodeGenerationFilePrefix       = "";
+	const string kCodeGenerationFolderKey        = "iCS_CodeGenerationFolder";
+	const string kBehaviourGenerationSubFolderKey= "iCS_BehaviourGenerationSubFolder";
+	const string kCodeGenerationFilePrefixKey    = "iCS_CodeGenerationFilePrefix";
 	
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
 	int         selGridId= 0;
-	string[]    selGridStrings= new string[]{"Display Options", "Canvas", "Node Colors", "Type Colors", "Instance Wizard" };
+	string[]    selGridStrings= new string[]{"Display Options", "Canvas", "Node Colors", "Type Colors", "Instance Wizard", "Code Engineering" };
 	GUIStyle    titleStyle= null;
 	GUIStyle    selectionStyle= null;
 	Texture2D	selectionBackground= null;
@@ -345,6 +353,40 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassPropertiesKey, kInstanceAutocreateOutClassProperties); }
         set { EditorPrefs.SetBool(kInstanceAutocreateOutClassPropertiesKey, value); }        
     }
+    public static string CodeGenerationFolder {
+        get { return EditorPrefs.GetString(kCodeGenerationFolderKey, kCodeGenerationFolder); }
+        set {
+            // Rename folder
+            var current= CodeGenerationFolder;
+            if(current == value) return;
+            var path= "Assets/";
+            if(String.IsNullOrEmpty(AssetDatabase.RenameAsset(path+current, value))) {
+                EditorPrefs.SetString(kCodeGenerationFolderKey, value);                                
+            }
+        }
+    }
+    public static string BehaviourGenerationSubfolder {
+        get { return EditorPrefs.GetString(kBehaviourGenerationSubFolderKey, kBehaviourGenerationSubFolder); }
+        set {
+            // Rename folder
+            var current= BehaviourGenerationSubfolder;
+            if(current == value) return;
+            var path= "Assets/"+CodeGenerationFolder+"/";
+            if(String.IsNullOrEmpty(AssetDatabase.RenameAsset(path+current, value))) {
+                EditorPrefs.SetString(kBehaviourGenerationSubFolderKey, value);                
+            }
+        }
+    }
+    public static string CodeGenerationFilePrefix {
+        get { return EditorPrefs.GetString(kCodeGenerationFilePrefixKey, kCodeGenerationFilePrefix); }
+        set {
+            var current= CodeGenerationFilePrefix;
+            if(current == value) return;
+            var codeGenerationRoot= "Assets/"+iCS_PreferencesEditor.CodeGenerationFolder;
+            iCS_FileUtility.ChangeRecursivelyAssetsPrefixInDirectory(codeGenerationRoot, current, value);
+            EditorPrefs.SetString(kCodeGenerationFilePrefixKey, value);
+        }
+    }
     
 	// =================================================================================
     // Storage Utilities
@@ -473,6 +515,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             case 2: NodeColors(); break;
             case 3: TypeColors(); break;
             case 4: InstanceWizard(); break;
+            case 5: CodeEngineering(); break;
             default: break;
         }
 
@@ -492,9 +535,11 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUI.Label(pos, versionContent);
 
         // Show product icon
+        var logoWidth= 64f;
+        var logoHeight= 64f;
         Texture2D iCanScriptLogo= null;
         if(iCS_TextureCache.GetTexture(iCS_EditorStrings.LogoIcon, out iCanScriptLogo)) {
-            Rect r= new Rect(0.5f*(kColumn1Width-64f), position.height-74f-2f*versionSize.y, 64f, 64f);
+            Rect r= new Rect(0.5f*(kColumn1Width-logoWidth), position.height-logoHeight-10f-2f*versionSize.y, logoWidth, logoHeight);
             GUI.DrawTexture(r, iCanScriptLogo);
         }        		
 	}
@@ -742,6 +787,35 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             InstanceAutocreateOutClassProperties= kInstanceAutocreateOutClassProperties;
         }        
     }
+    // ---------------------------------------------------------------------------------
+	void CodeEngineering() {
+        // Column 2
+        Rect[] pos= new Rect[3];
+        pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
+        for(int i= 1; i < pos.Length; ++i) {
+            pos[i]= pos[i-1];
+            pos[i].y= pos[i-1].yMax;
+        }
+        GUI.Label(pos[0], "File Prefix");
+        GUI.Label(pos[1], "Root Folder");
+        GUI.Label(pos[2], "Behaviour Subfolder");
+
+        // Draw Column 3
+        for(int i= 0; i < pos.Length; ++i) {
+            pos[i].x+= kColumn2Width;
+            pos[i].width= kColumn3Width;
+        }
+        CodeGenerationFilePrefix    = EditorGUI.TextField(pos[0], CodeGenerationFilePrefix);
+        CodeGenerationFolder        = EditorGUI.TextField(pos[1], CodeGenerationFolder);
+        BehaviourGenerationSubfolder= EditorGUI.TextField(pos[2], BehaviourGenerationSubfolder);
+        
+        // Reset Button
+        if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
+            CodeGenerationFilePrefix    = kCodeGenerationFilePrefix;
+            CodeGenerationFolder        = kCodeGenerationFolder;
+            BehaviourGenerationSubfolder= kBehaviourGenerationSubFolder;
+        }        	    
+	}
 	
 	// =================================================================================
     // Helpers.

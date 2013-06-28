@@ -16,20 +16,11 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     const string ShowHierarchyStr= "Show in hierarchy";
     const string DeleteStr= "- Delete";
-    const string StartStr= "+ Start";
     const string ModuleStr= "+ Module";
     const string StateChartStr= "+ State Chart";
     const string StateStr= "+ State";
     const string EntryStateStr= "+ Entry State";
-    const string UpdateModuleStr= "+ Update/Module";
-    const string UpdateStateChartStr= "+ Update/StateChart";
-    const string LateUpdateModuleStr= "+ LateUpdate/Module";
-    const string LateUpdateStateChartStr= "+ LateUpdate/StateChart";
-    const string FixedUpdateModuleStr= "+ FixedUpdate/Module";
-    const string FixedUpdateStateChartStr= "+ FixedUpdate/StateChart";
     const string SetAsEntryStr="Set as Entry";
-    const string OnGUIStr= "+ OnGUI";
-    const string OnDrawGizmosStr= "+ OnDrawGizmos";
     const string OnEntryStr= "+ "+iCS_Strings.OnEntry;
     const string OnUpdateStr= "+ "+iCS_Strings.OnUpdate;
     const string OnExitStr= "+ "+iCS_Strings.OnExit;
@@ -107,17 +98,6 @@ public class iCS_DynamicMenu {
             menu[0]= new iCS_MenuContext(ModuleStr);
             menu[1]= new iCS_MenuContext(StateChartStr); 
         }
-//        // Function menu items
-//        if(!storage.IsIconized(selectedObject) && !storage.IsFolded(selectedObject)) {
-//            List<iCS_MemberInfo> functionMenu= iCS_DataBase.BuildExpertMenu();
-//            tmp= new MenuContext[menu.Length+functionMenu.Count+1];
-//            menu.CopyTo(tmp, 0);
-//            tmp[menu.Length]= new MenuContext(SeparatorStr);
-//            for(int i= 0; i < functionMenu.Count; ++i) {
-//                tmp[i+menu.Length+1]= new MenuContext("+ "+functionMenu[i].ToString(), functionMenu[i]);
-//            }
-//            menu= tmp;            
-//        }            
         // Show in hierarchy
         AddShowInHierarchyMenuItem(ref menu);
         // Delete menu item
@@ -306,19 +286,7 @@ public class iCS_DynamicMenu {
 		Vector2 pos= context.GraphPosition;
         iCS_IStorage storage= context.Storage;
         storage.RegisterUndo(context.Command);
-        // Process predefined modules for Behaviour & State.
-        if(selectedObject.IsBehaviour) {
-            for(int i= 0; i < iCS_AllowedChildren.BehaviourChildNames.Length; ++i) {
-                string childName= iCS_AllowedChildren.BehaviourChildNames[i];
-                string name= context.Command.Substring(2);
-                if(name[0] == ' ') name= name.Substring(1);
-                if(name == childName) {
-                    string toolTip= iCS_AllowedChildren.BehaviourChildTooltips[i];
-                    ProcessCreateModuleWithUnchangableName(childName, context, toolTip);
-                    return;
-                }
-            }
-        }
+        // Process predefined State children.
         if(selectedObject.IsState) {
             for(int i= 0; i < iCS_AllowedChildren.StateChildNames.Length; ++i) {
                 string childName= iCS_AllowedChildren.StateChildNames[i];
@@ -333,15 +301,6 @@ public class iCS_DynamicMenu {
         }
         // Process all other types of requests.
         switch(context.Command) {
-            case StartStr:                  ProcessCreateStart(context); break;
-            case UpdateModuleStr:           ProcessCreateUpdateModule(context); break;
-            case UpdateStateChartStr:       ProcessCreateUpdateStateChart(context); break;
-            case FixedUpdateModuleStr:      ProcessCreateFixedUpdateModule(context); break;
-            case FixedUpdateStateChartStr:  ProcessCreateFixedUpdateStateChart(context); break;
-            case LateUpdateModuleStr:       ProcessCreateLateUpdateModule(context); break;
-            case LateUpdateStateChartStr:   ProcessCreateLateUpdateStateChart(context); break;
-            case OnGUIStr:                  ProcessCreateOnGui(context); break;
-            case OnDrawGizmosStr:           ProcessCreateOnDrawGizmos(context); break;
             case ModuleStr:                 ProcessCreateModule(context); break;
             case StateChartStr:             ProcessCreateStateChart(context); break;
             case StateStr:                  ProcessCreateState(context);  break;
@@ -385,70 +344,11 @@ public class iCS_DynamicMenu {
         }
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateStart(iCS_MenuContext context) {
-        iCS_EditorObject module= CreateModule(context, iCS_Strings.Start, false);
-        module.IsNameEditable= false;
-        module.Tooltip= "Awake is called when the behaviour is being loaded.";
-        return module;
-    }
-	// ----------------------------------------------------------------------
     static iCS_EditorObject ProcessCreateModuleWithUnchangableName(string behName, iCS_MenuContext context, string toolTip="") {
         iCS_EditorObject module= CreateModule(context, behName, false);
         module.IsNameEditable= false;
         module.Tooltip= toolTip;
         return module;        
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateUpdateModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreateModule(context, iCS_Strings.Update, false);
-        module.IsNameEditable= false;
-        module.Tooltip= "Executes on every frame update.";
-        return module;
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateUpdateStateChart(iCS_MenuContext context) {
-        iCS_EditorObject stateChart= CreateStateChart(context, iCS_Strings.Update, false);
-        stateChart.IsNameEditable= false;
-        stateChart.Tooltip= "Executes on every frame update.";
-        return stateChart;
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateLateUpdateModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreateModule(context, iCS_Strings.LateUpdate, false);
-        module.IsNameEditable= false;
-        module.Tooltip= "Executes after every frame update.";
-        return module;
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateLateUpdateStateChart(iCS_MenuContext context) {
-        iCS_EditorObject stateChart= CreateStateChart(context, iCS_Strings.LateUpdate, false);
-        stateChart.IsNameEditable= false;
-        stateChart.Tooltip= "Executes after every frame update.";
-        return stateChart;
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateFixedUpdateModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreateModule(context, iCS_Strings.FixedUpdate, false);
-        module.IsNameEditable= false;
-        module.Tooltip= "Executes at a fix frame rate. Independent from the frame update.";
-        return module;
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateFixedUpdateStateChart(iCS_MenuContext context) {
-        iCS_EditorObject stateChart= CreateStateChart(context, iCS_Strings.FixedUpdate, false);
-        stateChart.IsNameEditable= false;
-        stateChart.Tooltip= "Executes at a fix frame rate. Independent from the frame update.";
-        return stateChart;
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnGui(iCS_MenuContext context) {
-        iCS_GuiUtilities.UnsupportedFeature();
-        return null;
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnDrawGizmos(iCS_MenuContext context) {
-        iCS_GuiUtilities.UnsupportedFeature();
-        return null;
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject ProcessCreateModule(iCS_MenuContext context) {

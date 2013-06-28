@@ -47,7 +47,7 @@ public static class iCS_EditorConfig {
 			return "Version "+VersionId;
 		}
 	}
-    public const string VersionLabel= "(Beta #8)";
+    public const string VersionLabel= "(Beta #9)";
 	
 	
     // ======================================================================

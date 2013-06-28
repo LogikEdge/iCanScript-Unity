@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public static class iCS_CEGenerator {
-    public static void GenerateBehaviour(iCS_EditorObject behaviour, GameObject go, string objectId) {
+	// ----------------------------------------------------------------------
+    public static void GenerateBehaviour(iCS_EditorObject behaviour, GameObject go, string objectId, iCS_Storage storage) {
         var behaviourMessages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
         var messages= new List<iCS_MessageInfo>();
         behaviour.ForEachChildNode(
@@ -19,30 +21,40 @@ public static class iCS_CEGenerator {
             }
         );
         
-        var behaviourClassName= go.name+"Behaviour_"+objectId;
+        var behaviourClassName= iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"Behaviour_"+objectId;
         var code= BehaviourMessageProxy(behaviourClassName, messages.ToArray());
-        var fileName= iCS_Config.BehaviourGenerationFolder+"/"+behaviourClassName+".cs";
-        iCS_CETextFile.WriteFile(fileName, code);
-		iCS_CETextFile.EditFile(fileName);            
+        var fileName= behaviourClassName+".cs";
+        var filePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
+//        iCS_CETextFile.WriteFile(filePath+"/"+fileName, code);
+        if(storage.FileName != fileName) {
+            if(!string.IsNullOrEmpty(storage.FileName)) {
+                AssetDatabase.DeleteAsset("Assets/"+iCS_PreferencesEditor.CodeGenerationFolder+"/"+filePath+"/"+storage.FileName);
+            }
+            storage.FileName= fileName;
+            EditorUtility.SetDirty(storage);
+        }
+//		iCS_CETextFile.EditFile(fileName);            
+//        var newPath= AssetDatabase.GenerateUniqueAssetPath("Assets/"+fileName);
+//        Debug.Log("Please enable behaviour code generation... Path= "+newPath);
     }
     
-
-
 
     // ======================================================================
     // Messsage Receiver code generation
 	// ----------------------------------------------------------------------
     public static string BehaviourMessageProxy(string className, iCS_MessageInfo[] messages) {
         var fileHeader= iCS_CETemplate.FileHeader(className+".cs", className);
+        var imports= "\nusing UnityEngine;\n";
+        var inspector= "\n[CustomEditor (typeof ("+className+"))]\n"+
+                       "public sealed class "+className+"Inspector : iCS_Inspector {}\n\n";
         var classHeader= "\npublic sealed class "+className+" : iCS_BehaviourImp {\n";
         var classTrailer= "\n}\n";
-        var imports= "\nusing UnityEngine;\n";
         var messageImpls= "";
         foreach(var msg in messages) {
             messageImpls+= MessageReceiverImp(msg)+"\n";
         }
 //        return "#if FRED\n"+fileHeader+imports+classHeader+messageImpls+classTrailer+"\n#endif";
-        return fileHeader+imports+classHeader+messageImpls+classTrailer;
+        return fileHeader+imports/*+inspector*/+classHeader+messageImpls+classTrailer;
     }
 
     // ======================================================================

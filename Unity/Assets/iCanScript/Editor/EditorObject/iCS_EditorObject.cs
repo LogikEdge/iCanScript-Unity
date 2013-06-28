@@ -16,6 +16,9 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Conversion Utilities
     // ----------------------------------------------------------------------
+    public iCS_IStorage IStorage {
+        get { return myIStorage; }
+    }
 	public iCS_Storage Storage {
 		get { return myIStorage.Storage; }
 	}
@@ -180,6 +183,7 @@ public partial class iCS_EditorObject {
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
 		editorObject.IsDirty= true;
+        RunOnCreated(editorObject);
 		return editorObject;
 	}
     // ----------------------------------------------------------------------
@@ -196,12 +200,15 @@ public partial class iCS_EditorObject {
 		AddEditorObject(id, editorObject);
         editorObject.LayoutSize= toClone.LayoutSize;
 		editorObject.IsDirty= true;
+        RunOnCreated(editorObject);
 		return editorObject;
     }
 
     // ----------------------------------------------------------------------
     // Reinitialize the editor object to its default values.
     public void DestroyInstance() {
+        // Invoke event
+        RunOnWillDestroy(this);
         // Destroy any children.
         ForEachChild(child=> child.DestroyInstance());        
         // Disconnect any port sourcing from this object.

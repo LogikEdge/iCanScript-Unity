@@ -104,7 +104,7 @@ public partial class iCS_IStorage {
             return;
         }
         var go= Storage.gameObject;
-        iCS_CEGenerator.GenerateBehaviour(EditorObjects[0], go, go.GetInstanceID().ToString());
+        iCS_CEGenerator.GenerateBehaviour(EditorObjects[0], go, go.GetInstanceID().ToString(), Storage);
     }
     
     // ----------------------------------------------------------------------

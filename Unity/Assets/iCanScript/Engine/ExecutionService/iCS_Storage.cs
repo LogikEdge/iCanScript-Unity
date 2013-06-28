@@ -21,6 +21,7 @@ public class iCS_Storage : MonoBehaviour {
 	[HideInInspector] public int    		SelectedObject= -1;	
     [HideInInspector] public List<Object>   UnityObjects  = new List<Object>();
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects = new List<iCS_EngineObject>();
+                      public string         FileName      = null;
 
     // ======================================================================
     // Properties

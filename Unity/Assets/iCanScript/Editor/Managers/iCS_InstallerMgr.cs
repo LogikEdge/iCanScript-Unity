@@ -38,14 +38,16 @@ public static class iCS_InstallerMgr {
     // ---------------------------------------------------------------------------------
     static public void CreateCodeGenerationFolder() {
         string assetsPath= Application.dataPath;
-        string codeGenerationFolderPath= assetsPath+"/"+iCS_Config.CodeGenerationFolder;
+        var codeGenerationFolder= iCS_PreferencesEditor.CodeGenerationFolder;
+        string codeGenerationFolderPath= assetsPath+"/"+codeGenerationFolder;
         if(!Directory.Exists(codeGenerationFolderPath)) {
             Debug.Log(iCS_Config.ProductName+": Creating Code Generation folder");
-            AssetDatabase.CreateFolder("Assets", iCS_Config.CodeGenerationFolder);
+            AssetDatabase.CreateFolder("Assets", codeGenerationFolder);
         }
-        var behavioursPath= codeGenerationFolderPath+"/"+iCS_Config.BehaviourGenerationFolder;
+        var behavioursSubfolder= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
+        var behavioursPath= codeGenerationFolderPath+"/"+behavioursSubfolder;
         if(!Directory.Exists(behavioursPath)) {
-            AssetDatabase.CreateFolder(iCS_Config.CodeGenerationPath, iCS_Config.BehaviourGenerationFolder);            
+            AssetDatabase.CreateFolder("Assets/"+codeGenerationFolder, behavioursSubfolder);            
         }
     }
     
