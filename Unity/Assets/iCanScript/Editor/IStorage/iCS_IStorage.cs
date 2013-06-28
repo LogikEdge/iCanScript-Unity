@@ -75,7 +75,6 @@ public partial class iCS_IStorage {
             UndoRedoId= Storage.UndoRedoId;          
 			PerformEngineDataUpgrade();
             GenerateEditorData();
-            GenerateBehaviourProxy();
             ForceRelayout= true;
         }
     }
@@ -97,14 +96,6 @@ public partial class iCS_IStorage {
             });            
         }
         CleanupUnityObjects();
-    }
-    // ----------------------------------------------------------------------
-    void GenerateBehaviourProxy() {
-        if(EditorObjects.Count == 0 || !EditorObjects[0].IsBehaviour) {
-            return;
-        }
-        var go= Storage.gameObject;
-        iCS_CEGenerator.GenerateBehaviour(EditorObjects[0], go, go.GetInstanceID().ToString(), Storage);
     }
     
     // ----------------------------------------------------------------------
@@ -232,7 +223,7 @@ public partial class iCS_IStorage {
 						if(nbOfChildren == 1) {
 							iCS_EditorObject child= GetChildInputDataPorts(obj)[0];
 							obj.SourceId= child.SourceId;
-							obj.ObjectType= iCS_ObjectTypeEnum.OutDynamicModulePort;
+							obj.ObjectType= iCS_ObjectTypeEnum.OutDynamicPort;
 							DestroyInstanceInternal(child);
 						} else {
 							shouldRemove= nbOfChildren == 0 && IsPortDisconnected(obj);							
@@ -433,7 +424,7 @@ public partial class iCS_IStorage {
         for(; portIdx < desc.parameters.Length; ++portIdx) {
             var p= desc.parameters[portIdx];
             if(p.type != typeof(void)) {
-                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
+                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixPort : iCS_ObjectTypeEnum.InFixPort;
                 port= CreatePort(p.name, id, p.type, portType);
                 port.PortIndex= portIdx;
 				object initialPortValue= p.initialValue;
@@ -445,7 +436,7 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.returnType != null && desc.returnType != typeof(void)) {
-            port= CreatePort(desc.returnName, id, desc.returnType, iCS_ObjectTypeEnum.OutFunctionPort);
+            port= CreatePort(desc.returnName, id, desc.returnType, iCS_ObjectTypeEnum.OutFixPort);
             port.PortIndex= portIdx;			
 		}
         // Perform initial node layout.
@@ -471,7 +462,7 @@ public partial class iCS_IStorage {
         for(; portIdx < desc.parameters.Length; ++portIdx) {
             var p= desc.parameters[portIdx];
             if(p.type != typeof(void)) {
-                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
+                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixPort : iCS_ObjectTypeEnum.InFixPort;
                 port= CreatePort(p.name, id, p.type, portType);
                 port.PortIndex= portIdx;                
 				object initialPortValue= p.initialValue;
@@ -483,15 +474,15 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.returnType != null && desc.returnType != typeof(void)) {
-            port= CreatePort(desc.returnName, id, desc.returnType, iCS_ObjectTypeEnum.OutFunctionPort);
+            port= CreatePort(desc.returnName, id, desc.returnType, iCS_ObjectTypeEnum.OutFixPort);
             port.PortIndex= portIdx++;			
 		} else {
 		    ++portIdx;
 		}
 		// Create 'this' ports.
-        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.classType, iCS_ObjectTypeEnum.InFunctionPort);
+        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.classType, iCS_ObjectTypeEnum.InFixPort);
         port.PortIndex= portIdx++;			
-        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.classType, iCS_ObjectTypeEnum.OutFunctionPort);
+        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.classType, iCS_ObjectTypeEnum.OutFixPort);
         port.PortIndex= portIdx;			
         // Perform initial node layout.
         instance.Unhide();

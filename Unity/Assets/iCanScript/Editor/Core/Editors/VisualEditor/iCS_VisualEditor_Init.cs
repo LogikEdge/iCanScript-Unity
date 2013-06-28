@@ -73,7 +73,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(iCS_Graphics.IsInitialized == false) {
             iCS_Graphics.Init(IStorage);
 		}
-        iCS_InstallerMgr.InstallAllComponents();
+        iCS_EditorStartup.Start();
         return true;
 	}
 

@@ -190,12 +190,12 @@ public class iCS_EngineObject {
     public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}
     public bool IsOutputPort            { get { return iCS_ObjectType.IsOutputPort(this); }}
     public bool IsInputPort             { get { return iCS_ObjectType.IsInputPort(this); }}
-    public bool IsInFunctionPort        { get { return iCS_ObjectType.IsInFunctionPort(this); }}
-    public bool IsOutFunctionPort       { get { return iCS_ObjectType.IsOutFunctionPort(this); }}
+    public bool IsInFixPort        { get { return iCS_ObjectType.IsInFixPort(this); }}
+    public bool IsOutFixPort       { get { return iCS_ObjectType.IsOutFixPort(this); }}
     public bool IsInModulePort          { get { return iCS_ObjectType.IsInModulePort(this); }}
     public bool IsOutModulePort         { get { return iCS_ObjectType.IsOutModulePort(this); }}
-    public bool IsInDynamicModulePort   { get { return iCS_ObjectType.IsInDynamicModulePort(this); }}
-    public bool IsOutDynamicModulePort  { get { return iCS_ObjectType.IsOutDynamicModulePort(this); }}
+    public bool IsInDynamicPort   { get { return iCS_ObjectType.IsInDynamicPort(this); }}
+    public bool IsOutDynamicPort  { get { return iCS_ObjectType.IsOutDynamicPort(this); }}
     public bool IsInStaticModulePort    { get { return iCS_ObjectType.IsInStaticModulePort(this); }}
     public bool IsOutStaticModulePort   { get { return iCS_ObjectType.IsOutStaticModulePort(this); }}
     public bool IsInStatePort           { get { return iCS_ObjectType.IsInStatePort(this); }}

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public static class iCS_CEGenerator {
 	// ----------------------------------------------------------------------
-    public static void GenerateBehaviour(iCS_EditorObject behaviour, GameObject go, string objectId, iCS_Storage storage) {
+    public static void GenerateBehaviourCode(iCS_EditorObject behaviour, GameObject go, string objectId, iCS_Storage storage) {
         var behaviourMessages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
         var messages= new List<iCS_MessageInfo>();
         behaviour.ForEachChildNode(
@@ -25,7 +25,7 @@ public static class iCS_CEGenerator {
         var code= BehaviourMessageProxy(behaviourClassName, messages.ToArray());
         var fileName= behaviourClassName+".cs";
         var filePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
-//        iCS_CETextFile.WriteFile(filePath+"/"+fileName, code);
+        iCS_CETextFile.WriteFile(filePath+"/"+fileName, code);
         if(storage.FileName != fileName) {
             if(!string.IsNullOrEmpty(storage.FileName)) {
                 AssetDatabase.DeleteAsset("Assets/"+iCS_PreferencesEditor.CodeGenerationFolder+"/"+filePath+"/"+storage.FileName);
@@ -33,9 +33,6 @@ public static class iCS_CEGenerator {
             storage.FileName= fileName;
             EditorUtility.SetDirty(storage);
         }
-//		iCS_CETextFile.EditFile(fileName);            
-//        var newPath= AssetDatabase.GenerateUniqueAssetPath("Assets/"+fileName);
-//        Debug.Log("Please enable behaviour code generation... Path= "+newPath);
     }
     
 

@@ -26,7 +26,7 @@ public partial class iCS_IStorage {
 			var source= aChild.Source;
 			DestroyInstance(aChild);
 			if(source != null) {
-				muxPort.ObjectType= iCS_ObjectTypeEnum.OutDynamicModulePort;
+				muxPort.ObjectType= iCS_ObjectTypeEnum.OutDynamicPort;
 				SetSource(muxPort, source);				
 			} else {
 				DestroyInstance(muxPort);

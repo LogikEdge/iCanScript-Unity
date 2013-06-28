@@ -273,9 +273,9 @@ public partial class iCS_IStorage {
                             Debug.LogWarning("iCanScript: Unable to find 'this' input port in class module: "+module.Name);
                         }
                     } else {
-                        iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicModulePort);
+                        iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicPort);
                         if(classPort == null) {
-                            classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+                            classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicPort);
                             SetSource(port, classPort);
                         } else {
                             SetSource(port, classPort);
@@ -285,9 +285,9 @@ public partial class iCS_IStorage {
                     // Special case for "this".
                     if(port.Name == iCS_Strings.InstanceObjectName) {
                     } else {
-                        iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                        iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicPort);
                         if(classPort == null) {
-                            classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                            classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicPort);
                             SetSource(classPort, port);
                         } else {
                             SetSource(classPort, port);

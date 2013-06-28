@@ -240,8 +240,8 @@ public partial class iCS_BehaviourImp : iCS_Storage {
                     // Ports without code generation.
                     case iCS_ObjectTypeEnum.InTransitionPort:
                     case iCS_ObjectTypeEnum.OutTransitionPort:
-                    case iCS_ObjectTypeEnum.InDynamicModulePort:
-                    case iCS_ObjectTypeEnum.OutDynamicModulePort:
+                    case iCS_ObjectTypeEnum.InDynamicPort:
+                    case iCS_ObjectTypeEnum.OutDynamicPort:
                     case iCS_ObjectTypeEnum.InStaticModulePort:
                     case iCS_ObjectTypeEnum.OutStaticModulePort:
                     case iCS_ObjectTypeEnum.OutStatePort: {
@@ -277,7 +277,7 @@ public partial class iCS_BehaviourImp : iCS_Storage {
                     }
                     
                     // Data ports.
-                    case iCS_ObjectTypeEnum.OutFunctionPort: {
+                    case iCS_ObjectTypeEnum.OutFixPort: {
                         object parentObj= myRuntimeNodes[port.ParentId];
                         Prelude.choice<iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
                             method          => method[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
@@ -289,7 +289,7 @@ public partial class iCS_BehaviourImp : iCS_Storage {
                         );
                         break;
                     }
-                    case iCS_ObjectTypeEnum.InFunctionPort:
+                    case iCS_ObjectTypeEnum.InFixPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
                         // Build connection.
                         iCS_EngineObject sourcePort= GetDataConnectionSource(port);

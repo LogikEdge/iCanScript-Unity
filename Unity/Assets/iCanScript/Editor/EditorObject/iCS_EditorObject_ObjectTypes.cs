@@ -19,6 +19,7 @@ public partial class iCS_EditorObject {
     public bool IsTransitionModule          { get { return EngineObject.IsTransitionModule; }}
     public bool IsTransitionGuard           { get { return EngineObject.IsTransitionGuard; }}
     public bool IsTransitionAction          { get { return EngineObject.IsTransitionAction; }}
+	public bool IsBehaviourMessage			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour;}}
 
     public bool IsPort                      { get { return EngineObject.IsPort; }}
     public bool IsDataPort                  { get { return EngineObject.IsDataPort; }}

@@ -32,8 +32,8 @@ public enum iCS_ObjectTypeEnum {
     PortStart= 300,
 
     // Data ports
-    InFunctionPort= 300, OutFunctionPort,
-    InDynamicModulePort, OutDynamicModulePort,
+    InFixPort= 300,      OutFixPort,
+    InDynamicPort,       OutDynamicPort,
     InStaticModulePort,  OutStaticModulePort,
     EnablePort,			 TriggerPort,
 
@@ -91,25 +91,25 @@ public static class iCS_ObjectType {
 																			  obj.ObjectType <= iCS_ObjectTypeEnum.PortEnd; }
 
     public static bool IsEnablePort           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.EnablePort; }
-    public static bool IsInFunctionPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFunctionPort; }
-    public static bool IsOutFunctionPort      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFunctionPort; }
-    public static bool IsInDynamicModulePort  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InDynamicModulePort; }
+    public static bool IsInFixPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFixPort; }
+    public static bool IsOutFixPort      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFixPort; }
+    public static bool IsInDynamicPort  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InDynamicPort; }
     public static bool IsInStaticModulePort   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InStaticModulePort; }
-    public static bool IsOutDynamicModulePort (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutDynamicModulePort; }
+    public static bool IsOutDynamicPort (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutDynamicPort; }
     public static bool IsOutStaticModulePort  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutStaticModulePort; }
     public static bool IsInStatePort          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InStatePort; }
     public static bool IsOutStatePort         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutStatePort; }
     public static bool IsInTransitionPort     (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InTransitionPort; }
     public static bool IsOutTransitionPort    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutTransitionPort; }
-    public static bool IsInDataPort           (iCS_EngineObject obj) { return IsInFunctionPort(obj) || IsInModulePort(obj) || IsEnablePort(obj); }
-    public static bool IsOutDataPort          (iCS_EngineObject obj) { return IsOutFunctionPort(obj) || IsOutModulePort(obj) || IsMuxPort(obj); }
-    public static bool IsInModulePort         (iCS_EngineObject obj) { return IsInDynamicModulePort(obj) || IsInStaticModulePort(obj); }
-    public static bool IsOutModulePort        (iCS_EngineObject obj) { return IsOutDynamicModulePort(obj) || IsOutStaticModulePort(obj) || IsMuxPort(obj); }
+    public static bool IsInDataPort           (iCS_EngineObject obj) { return IsInFixPort(obj) || IsInModulePort(obj) || IsEnablePort(obj); }
+    public static bool IsOutDataPort          (iCS_EngineObject obj) { return IsOutFixPort(obj) || IsOutModulePort(obj) || IsMuxPort(obj); }
+    public static bool IsInModulePort         (iCS_EngineObject obj) { return IsInDynamicPort(obj) || IsInStaticModulePort(obj); }
+    public static bool IsOutModulePort        (iCS_EngineObject obj) { return IsOutDynamicPort(obj) || IsOutStaticModulePort(obj) || IsMuxPort(obj); }
 	public static bool IsStateChartNode		  (iCS_EngineObject obj) { return IsStateChart(obj) || IsState(obj); }
     public static bool IsDataPort             (iCS_EngineObject obj) { return IsInDataPort(obj) || IsOutDataPort(obj); }
-    public static bool IsDynamicModulePort    (iCS_EngineObject obj) { return IsInDynamicModulePort(obj) || IsOutDynamicModulePort(obj); }
+    public static bool IsDynamicModulePort    (iCS_EngineObject obj) { return IsInDynamicPort(obj) || IsOutDynamicPort(obj); }
     public static bool IsStaticModulePort     (iCS_EngineObject obj) { return IsInStaticModulePort(obj) || IsOutStaticModulePort(obj); }
-    public static bool IsFunctionPort         (iCS_EngineObject obj) { return IsInFunctionPort(obj) || IsOutFunctionPort(obj); }
+    public static bool IsFunctionPort         (iCS_EngineObject obj) { return IsInFixPort(obj) || IsOutFixPort(obj); }
     public static bool IsModulePort           (iCS_EngineObject obj) { return IsInModulePort(obj) || IsOutModulePort(obj); }
     public static bool IsStatePort            (iCS_EngineObject obj) { return IsInStatePort(obj) || IsOutStatePort(obj); }
     public static bool IsTransitionPort       (iCS_EngineObject obj) { return IsInTransitionPort(obj) || IsOutTransitionPort(obj); }

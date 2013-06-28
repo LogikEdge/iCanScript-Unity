@@ -10,10 +10,11 @@ public static class iCS_InstallerMgr {
     // =================================================================================
     // Installs all needed components
     // ---------------------------------------------------------------------------------
-    public static void InstallAllComponents() {
+	static iCS_InstallerMgr() {
         InstallGizmo();
-        CreateCodeGenerationFolder();
-    }
+        CreateCodeGenerationFolder();		
+	}
+    public static void Start() {}
     
     // =================================================================================
     // Installs the iCanScript Gizmo (if not already done).

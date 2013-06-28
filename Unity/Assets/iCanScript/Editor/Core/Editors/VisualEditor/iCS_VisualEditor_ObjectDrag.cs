@@ -339,7 +339,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                     if(DragFixPort.IsInputPort) {
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
                                             if(IStorage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicPort);
                                                 newPort.SetAnchorAndLayoutPosition(dragPortPos);
                                                 newPort.PortValue= DragFixPort.PortValue;
                                                 SetNewDataConnection(DragFixPort, newPort);
@@ -348,7 +348,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         }
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
                                             if(!IStorage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicPort);
                                                 newPort.SetAnchorAndLayoutPosition(dragPortPos);
                                                 newPort.PortValue= DragFixPort.PortValue;
                                                 SetNewDataConnection(DragFixPort, newPort);
@@ -359,7 +359,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                     if(DragFixPort.IsOutputPort) {
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
                                             if(IStorage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicPort);
                                                 newPort.SetAnchorAndLayoutPosition(dragPortPos);
                                                 SetNewDataConnection(newPort, DragFixPort);
                                                 break;                                                                                                    
@@ -367,7 +367,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         }
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
                                             if(!IStorage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicPort);
                                                 newPort.SetAnchorAndLayoutPosition(dragPortPos);
                                                 SetNewDataConnection(newPort, DragFixPort);
                                                 break;
@@ -385,7 +385,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 								// Allow output data connection on state modules.
                                 if(DragFixPort.IsOutputPort && newPortParent != null && (newPortParent.IsState || newPortParent.IsStateChart)) {
 									if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
-	                                    iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+	                                    iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicPort);
 	                                    SetNewDataConnection(newPort, DragFixPort);
 										break;
 									}
@@ -461,7 +461,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		            var newPort= IStorage.CreatePort(sourcePort.Name,
 													 sourceParent.InstanceId,
 													 sourcePort.RuntimeType,
-													 iCS_ObjectTypeEnum.InDynamicModulePort);
+													 iCS_ObjectTypeEnum.InDynamicPort);
 					DragFixPort= sourcePort;
 					DragObject= newPort;
 					IStorage.SetSource(DragObject, DragFixPort);
@@ -471,7 +471,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
 													 parent.InstanceId,
 													 DragOriginalPort.RuntimeType,
-													 iCS_ObjectTypeEnum.OutDynamicModulePort);
+													 iCS_ObjectTypeEnum.OutDynamicPort);
 					DragObject= newPort;
 					DragFixPort= DragOriginalPort;
 					IStorage.SetSource(DragOriginalPort, DragObject);
@@ -481,7 +481,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
 												 parent.InstanceId,
 												 DragOriginalPort.RuntimeType,
-												 iCS_ObjectTypeEnum.InDynamicModulePort);
+												 iCS_ObjectTypeEnum.InDynamicPort);
 				DragObject= newPort;
 				DragFixPort= DragOriginalPort;
 				IStorage.SetSource(DragObject, DragFixPort);
@@ -502,7 +502,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
 													 parent.InstanceId,
 													 DragOriginalPort.RuntimeType,
-													 iCS_ObjectTypeEnum.InDynamicModulePort);
+													 iCS_ObjectTypeEnum.InDynamicPort);
 					DragObject= newPort;
 					IStorage.SetSource(DragObject, DragOriginalPort);
 					DragFixPort= DragOriginalPort;
@@ -521,7 +521,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			            var newPort= IStorage.CreatePort(sourcePort.Name,
 														 sourceParent.InstanceId,
 														 sourcePort.RuntimeType,
-														 iCS_ObjectTypeEnum.InDynamicModulePort);
+														 iCS_ObjectTypeEnum.InDynamicPort);
 						DragFixPort= sourcePort;
 						DragObject= newPort;
 						IStorage.SetSource(DragObject, DragFixPort);
@@ -531,7 +531,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
 														 parent.InstanceId,
 														 DragOriginalPort.RuntimeType,
-														 iCS_ObjectTypeEnum.OutDynamicModulePort);
+														 iCS_ObjectTypeEnum.OutDynamicPort);
 						DragObject= newPort;
 						IStorage.SetSource(DragOriginalPort, DragObject);
 						DragFixPort= DragOriginalPort;
@@ -553,7 +553,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			            var newPort= IStorage.CreatePort(sourcePort.Name,
 														 sourceParent.InstanceId,
 														 sourcePort.RuntimeType,
-														 iCS_ObjectTypeEnum.InDynamicModulePort);
+														 iCS_ObjectTypeEnum.InDynamicPort);
 						DragFixPort= sourcePort;
 						DragObject= newPort;
 						IStorage.SetSource(DragObject, DragFixPort);
@@ -563,7 +563,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
 														 parent.InstanceId,
 														 DragOriginalPort.RuntimeType,
-														 iCS_ObjectTypeEnum.OutDynamicModulePort);
+														 iCS_ObjectTypeEnum.OutDynamicPort);
 						DragObject= newPort;
 						IStorage.SetSource(DragOriginalPort, DragObject);
 						DragFixPort= DragOriginalPort;
@@ -580,7 +580,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
 													 parent.InstanceId,
 													 DragOriginalPort.RuntimeType,
-													 iCS_ObjectTypeEnum.InDynamicModulePort);
+													 iCS_ObjectTypeEnum.InDynamicPort);
 					DragObject= newPort;
 					IStorage.SetSource(DragObject, DragOriginalPort);
 					DragFixPort= DragOriginalPort;
