@@ -74,7 +74,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 		// Extract fields & properties from class descriptor.
         List<VariablePair> variables= new List<VariablePair>();
         foreach(var component in iCS_LibraryDatabase.GetPropertiesAndFields(myClassType)) {
-            bool isActive= (myTarget != null && myStorage != null) ? myStorage.ClassModuleFindFunction(myTarget, component) != null : false;
+            bool isActive= (myTarget != null && myStorage != null) ? myStorage.InstanceWizardFindFunction(myTarget, component) != null : false;
             string name= GetVariableName(component);
             var variablePair= GetVariablePair(name, variables);
             if(component.isSetField || component.isSetProperty) {
@@ -193,10 +193,10 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 if(prevActive != inputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(inputControlPair.IsActive) {
 						myStorage.RegisterUndo("Create "+inputControlPair.Component.displayName);
-                        myStorage.ClassModuleCreate(myTarget, inputControlPair.Component);
+                        myStorage.InstanceWizardCreate(myTarget, inputControlPair.Component);
                     } else {
 						myStorage.RegisterUndo("Delete "+inputControlPair.Component.displayName);
-                        myStorage.ClassModuleDestroy(myTarget, inputControlPair.Component);
+                        myStorage.InstanceWizardDestroy(myTarget, inputControlPair.Component);
                     }                
                 }                					
 			}
@@ -208,10 +208,10 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 if(prevActive != outputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(outputControlPair.IsActive) {
 						myStorage.RegisterUndo("Create "+outputControlPair.Component.displayName);
-                        myStorage.ClassModuleCreate(myTarget, outputControlPair.Component);
+                        myStorage.InstanceWizardCreate(myTarget, outputControlPair.Component);
                     } else {
 						myStorage.RegisterUndo("Delete "+outputControlPair.Component.displayName);
-                        myStorage.ClassModuleDestroy(myTarget, outputControlPair.Component);
+                        myStorage.InstanceWizardDestroy(myTarget, outputControlPair.Component);
                     }                
 				}
             }                

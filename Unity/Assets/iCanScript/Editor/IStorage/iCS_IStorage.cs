@@ -361,7 +361,7 @@ public partial class iCS_IStorage {
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         instance.SetAnchorAndLayoutPosition(globalPos);
 	    instance.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
-        if(instance.IsObjectInstance) ClassModuleCompleteCreation(instance);
+        if(instance.IsObjectInstance) InstanceWizardCompleteCreation(instance);
         // Perform initial node layout.
         instance.Unhide();
         return instance;

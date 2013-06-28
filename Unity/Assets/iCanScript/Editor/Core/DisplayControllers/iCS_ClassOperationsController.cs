@@ -51,7 +51,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
     	myIsMethodPresent= new bool[myMethods.Length];
         if(myTarget != null && myStorage != null) {
             for(int i= 0; i < myMethods.Length; ++i) {
-                myIsMethodPresent[i]= myStorage.ClassModuleFindFunction(myTarget, myMethods[i]) != null;
+                myIsMethodPresent[i]= myStorage.InstanceWizardFindFunction(myTarget, myMethods[i]) != null;
             }            
         }
 
@@ -96,10 +96,10 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
             myIsMethodPresent[row]^= true;
             if(myIsMethodPresent[row]) {
 				myStorage.RegisterUndo("Create "+myMethods[row].displayName);
-                myStorage.ClassModuleCreate(myTarget, myMethods[row]);
+                myStorage.InstanceWizardCreate(myTarget, myMethods[row]);
             } else {
 				myStorage.RegisterUndo("Delete "+myMethods[row].displayName);
-                myStorage.ClassModuleDestroy(myTarget, myMethods[row]);
+                myStorage.InstanceWizardDestroy(myTarget, myMethods[row]);
             }
         }
         style.normal.textColor= textColor;

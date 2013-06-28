@@ -74,7 +74,7 @@ public class iCS_InstanceController {
         // Determine which constrcutor is currently used for this instance.
         myConstructorIdx= -1;
         for(int i= 0; i < myConstructors.Length; ++i) {
-            iCS_EditorObject existing= myStorage.ClassModuleGetConstructor(myTarget);
+            iCS_EditorObject existing= myStorage.InstanceWizardGetConstructor(myTarget);
             if(existing != null && myConstructors[i].method == existing.GetMethodBase(myStorage.EditorObjects)) {
                 myConstructorIdx= i;
             }
@@ -127,11 +127,11 @@ public class iCS_InstanceController {
         if(GUI.changed) {
             myConstructorIdx= -1;
             if(instanceIdx != 0) {
-                myStorage.ClassModuleDestroyConstructor(myTarget);
+                myStorage.InstanceWizardDestroyConstructor(myTarget);
             }
             if(newIdx != 0) {
                 myConstructorIdx= newIdx-1;
-                myStorage.ClassModuleCreateConstructor(myTarget, myConstructors[newIdx-1]);
+                myStorage.InstanceWizardCreateConstructor(myTarget, myConstructors[newIdx-1]);
             }
         }
     }

@@ -8,21 +8,21 @@ using P=Prelude;
 
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
-    void ClassModuleCompleteCreation(iCS_EditorObject module) {
+    void InstanceWizardCompleteCreation(iCS_EditorObject module) {
         Fold(module);
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
-            iCS_EditorObject inThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.InstanceObjectName, classType, iCS_ObjectTypeEnum.InStaticModulePort);
+            iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, iCS_Strings.InstanceObjectName, classType, iCS_ObjectTypeEnum.InStaticModulePort);
             inThisPort.IsNameEditable= false;
         }
-        if(iCS_PreferencesEditor.InstanceAutocreateOutFields)           ClassModuleCreateOutputInstanceFields(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateInFields)            ClassModuleCreateInputInstanceFields(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateOutProperties)       ClassModuleCreateOutputInstanceProperties(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateInProperties)        ClassModuleCreateInputInstanceProperties(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateOutClassFields)     ClassModuleCreateOutputStaticFields(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateInClassFields)      ClassModuleCreateInputStaticFields(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateOutClassProperties) ClassModuleCreateOutputStaticProperties(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateInClassProperties)  ClassModuleCreateInputStaticProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutFields)           InstanceWizardCreateOutputInstanceFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInFields)            InstanceWizardCreateInputInstanceFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutProperties)       InstanceWizardCreateOutputInstanceProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInProperties)        InstanceWizardCreateInputInstanceProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutClassFields)     InstanceWizardCreateOutputStaticFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInClassFields)      InstanceWizardCreateInputStaticFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutClassProperties) InstanceWizardCreateOutputStaticProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInClassProperties)  InstanceWizardCreateInputStaticProperties(module);
         
         // Use the class Icon if it exists.
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(module.RuntimeType);
@@ -35,165 +35,165 @@ public partial class iCS_IStorage {
         Fold(module);
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleCreateOutputInstanceFields(iCS_EditorObject module) {
+    public void InstanceWizardCreateOutputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetInstanceField) {
-                ClassModuleCreate(module, component.toFieldInfo);
+                InstanceWizardCreate(module, component.toFieldInfo);
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleDestroyOutputInstanceFields(iCS_EditorObject module) {
+    public void InstanceWizardDestroyOutputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetInstanceField) {
-                ClassModuleDestroy(module, component.toFieldInfo);
+                InstanceWizardDestroy(module, component.toFieldInfo);
             }
         }        
     }
 
     // ----------------------------------------------------------------------
-    public void ClassModuleCreateInputInstanceFields(iCS_EditorObject module) {
+    public void InstanceWizardCreateInputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetInstanceField) {
-                ClassModuleCreate(module, component.toFieldInfo);
+                InstanceWizardCreate(module, component.toFieldInfo);
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleDestroyInputInstanceFields(iCS_EditorObject module) {
+    public void InstanceWizardDestroyInputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetInstanceField) {
-                ClassModuleDestroy(module, component.toFieldInfo);                
+                InstanceWizardDestroy(module, component.toFieldInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleCreateOutputStaticFields(iCS_EditorObject module) {
+    public void InstanceWizardCreateOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetClassField) {
-                ClassModuleCreate(module, component.toFieldInfo);                
+                InstanceWizardCreate(module, component.toFieldInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleDestroyOutputStaticFields(iCS_EditorObject module) {
+    public void InstanceWizardDestroyOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetClassField) {
-                ClassModuleDestroy(module, component.toFieldInfo);                
+                InstanceWizardDestroy(module, component.toFieldInfo);                
             }
         }        
     }
 
     // ----------------------------------------------------------------------
-    public void ClassModuleCreateInputStaticFields(iCS_EditorObject module) {
+    public void InstanceWizardCreateInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetClassField) {
-                ClassModuleCreate(module, component.toFieldInfo);                
+                InstanceWizardCreate(module, component.toFieldInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleDestroyInputStaticFields(iCS_EditorObject module) {
+    public void InstanceWizardDestroyInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetClassField) {
-                ClassModuleDestroy(module, component.toFieldInfo);                
+                InstanceWizardDestroy(module, component.toFieldInfo);                
             }
         }        
     }
 
     // ----------------------------------------------------------------------
-    public void ClassModuleCreateOutputInstanceProperties(iCS_EditorObject module) {
+    public void InstanceWizardCreateOutputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetInstanceProperty) {
-                ClassModuleCreate(module, component.toPropertyInfo);                
+                InstanceWizardCreate(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleDestroyOutputInstanceProperties(iCS_EditorObject module) {
+    public void InstanceWizardDestroyOutputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetInstanceProperty) {
-                ClassModuleDestroy(module, component.toPropertyInfo);                
+                InstanceWizardDestroy(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleCreateInputInstanceProperties(iCS_EditorObject module) {
+    public void InstanceWizardCreateInputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetInstanceProperty) {
-                ClassModuleCreate(module, component.toPropertyInfo);                
+                InstanceWizardCreate(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleDestroyInputInstanceProperties(iCS_EditorObject module) {
+    public void InstanceWizardDestroyInputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetInstanceProperty) {
-                ClassModuleDestroy(module, component.toPropertyInfo);                
+                InstanceWizardDestroy(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleCreateOutputStaticProperties(iCS_EditorObject module) {
+    public void InstanceWizardCreateOutputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetClassProperty) {
-                ClassModuleCreate(module, component.toPropertyInfo);                
+                InstanceWizardCreate(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleDestroyOutputStaticProperties(iCS_EditorObject module) {
+    public void InstanceWizardDestroyOutputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetClassProperty) {
-                ClassModuleDestroy(module, component.toPropertyInfo);                
+                InstanceWizardDestroy(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleCreateInputStaticProperties(iCS_EditorObject module) {
+    public void InstanceWizardCreateInputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetClassProperty) {
-                ClassModuleCreate(module, component.toPropertyInfo);                
+                InstanceWizardCreate(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    public void ClassModuleDestroyInputStaticProperties(iCS_EditorObject module) {
+    public void InstanceWizardDestroyInputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetClassProperty) {
-                ClassModuleDestroy(module, component.toPropertyInfo);                
+                InstanceWizardDestroy(module, component.toPropertyInfo);                
             }
         }        
     }
@@ -201,7 +201,7 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Utilities.
     // ----------------------------------------------------------------------
-    iCS_EditorObject ClassModuleGetPort(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
+    iCS_EditorObject InstanceWizardGetPort(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
         iCS_EditorObject result= null;
         UntilMatchingChildPort(module,
             port=> {
@@ -215,32 +215,32 @@ public partial class iCS_IStorage {
         return result;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject ClassModuleGetInputThisPort(iCS_EditorObject module) {
-        iCS_EditorObject thisPort= ClassModuleGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
+    public iCS_EditorObject InstanceWizardGetInputThisPort(iCS_EditorObject module) {
+        iCS_EditorObject thisPort= InstanceWizardGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
         if(thisPort == null) {
-            iCS_EditorObject constructor= ClassModuleGetConstructor(module);
+            iCS_EditorObject constructor= InstanceWizardGetConstructor(module);
             if(constructor == null) return null;
             thisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.InstanceObjectName);
         }
         return thisPort;
     }
     // ----------------------------------------------------------------------
-    void ClassModuleDestroyPortIfNotConnected(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
-        iCS_EditorObject port= ClassModuleGetPort(module, portName, objType);
+    void InstanceWizardDestroyPortIfNotConnected(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
+        iCS_EditorObject port= InstanceWizardGetPort(module, portName, objType);
         if(port != null && port.Source == null && FindAConnectedPort(port) == null) {
             DestroyInstance(port.InstanceId);
         }
     }
     // ----------------------------------------------------------------------
-    iCS_EditorObject ClassModuleCreatePortIfNonExisting(iCS_EditorObject module, string portName, Type portType, iCS_ObjectTypeEnum objType) {
-        iCS_EditorObject port= ClassModuleGetPort(module, portName, objType);
+    iCS_EditorObject InstanceWizardCreatePortIfNonExisting(iCS_EditorObject module, string portName, Type portType, iCS_ObjectTypeEnum objType) {
+        iCS_EditorObject port= InstanceWizardGetPort(module, portName, objType);
         if(port == null) {
             port= CreatePort(portName, module.InstanceId, portType, objType);                
         }
         return port;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject ClassModuleFindFunction(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject InstanceWizardFindFunction(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
         iCS_EditorObject[] children= BuildListOfChildren(
             child=> {
                 if(child.ObjectType != desc.objectType || child.NbOfParams != desc.parameters.Length) {
@@ -253,8 +253,8 @@ public partial class iCS_IStorage {
     }
 
     // ======================================================================
-    public iCS_EditorObject ClassModuleCreate(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
-        if(ClassModuleFindFunction(module, desc) != null) return null;
+    public iCS_EditorObject InstanceWizardCreate(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
+        if(InstanceWizardFindFunction(module, desc) != null) return null;
         Rect moduleRect= module.LayoutRect;
         iCS_EditorObject func= CreateMethod(module.InstanceId, new Vector2(0.5f*(moduleRect.x+moduleRect.xMax), moduleRect.yMax), desc);
         ForEachChildDataPort(func,
@@ -266,14 +266,14 @@ public partial class iCS_IStorage {
                 if(port.IsInputPort) {
                     // Special case for "this".
                     if(port.Name == iCS_Strings.InstanceObjectName) {
-                        iCS_EditorObject classPort= ClassModuleGetInputThisPort(module);
+                        iCS_EditorObject classPort= InstanceWizardGetInputThisPort(module);
                         if(classPort != null) {
                             SetSource(port, classPort);
                         } else {
                             Debug.LogWarning("iCanScript: Unable to find 'this' input port in class module: "+module.Name);
                         }
                     } else {
-                        iCS_EditorObject classPort= ClassModuleGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicModulePort);
+                        iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicModulePort);
                         if(classPort == null) {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                             SetSource(port, classPort);
@@ -285,7 +285,7 @@ public partial class iCS_IStorage {
                     // Special case for "this".
                     if(port.Name == iCS_Strings.InstanceObjectName) {
                     } else {
-                        iCS_EditorObject classPort= ClassModuleGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                        iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicModulePort);
                         if(classPort == null) {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                             SetSource(classPort, port);
@@ -299,14 +299,14 @@ public partial class iCS_IStorage {
         Iconize(func);
         return func;
     }
-    public void ClassModuleDestroy(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
-        iCS_EditorObject func= ClassModuleFindFunction(module, desc);
+    public void InstanceWizardDestroy(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
+        iCS_EditorObject func= InstanceWizardFindFunction(module, desc);
         if(func != null) DestroyInstance(func);
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject ClassModuleCreateConstructor(iCS_EditorObject module, iCS_ConstructorInfo desc) {
-        ClassModuleDestroyConstructor(module);
-        iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
+    public iCS_EditorObject InstanceWizardCreateConstructor(iCS_EditorObject module, iCS_ConstructorInfo desc) {
+        InstanceWizardDestroyConstructor(module);
+        iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
         if(moduleThisPort == null) return null;
         Rect thisPos= moduleThisPort.LayoutRect; 
         iCS_EditorObject constructor= CreateMethod(module.ParentId, new Vector2(thisPos.x-50f, thisPos.y-20), desc);
@@ -315,13 +315,13 @@ public partial class iCS_IStorage {
         Iconize(constructor);
         return constructor;
     }
-    public void ClassModuleDestroyConstructor(iCS_EditorObject module) {
-        iCS_EditorObject constructor= ClassModuleGetConstructor(module);
+    public void InstanceWizardDestroyConstructor(iCS_EditorObject module) {
+        iCS_EditorObject constructor= InstanceWizardGetConstructor(module);
         if(constructor == null) return;
         DestroyInstance(constructor);
     }
-    public iCS_EditorObject ClassModuleGetConstructor(iCS_EditorObject module) {
-        iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
+    public iCS_EditorObject InstanceWizardGetConstructor(iCS_EditorObject module) {
+        iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
         iCS_EditorObject constructorThisPort= moduleThisPort.Source;
         if(constructorThisPort == null) return null;
         iCS_EditorObject constructor= constructorThisPort.Parent;
