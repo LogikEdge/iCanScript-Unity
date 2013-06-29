@@ -58,7 +58,6 @@ public class iCS_GetInstanceField : iCS_GetStaticField {
             myThis= myThisConnection.Value;
         }
         // Execute function
-		Debug.Log(myFieldInfo.Name);
         myReturn= myFieldInfo.GetValue(myThis);
         MarkAsCurrent(frameId);
     }

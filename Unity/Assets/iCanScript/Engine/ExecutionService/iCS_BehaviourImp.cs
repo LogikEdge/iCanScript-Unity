@@ -36,11 +36,6 @@ public partial class iCS_BehaviourImp : iCS_Storage {
     }
     
     // ----------------------------------------------------------------------
-	public void SayHello() {
-		Debug.Log("Hello !!!");
-	}
-	
-    // ----------------------------------------------------------------------
     // Run messages without parameter.
     public void RunMessage(string messageName) {
         iCS_RunContext runContext;
