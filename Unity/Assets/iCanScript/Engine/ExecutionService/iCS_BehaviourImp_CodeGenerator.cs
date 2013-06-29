@@ -240,10 +240,6 @@ public partial class iCS_BehaviourImp : iCS_Storage {
                     // Ports without code generation.
                     case iCS_ObjectTypeEnum.InTransitionPort:
                     case iCS_ObjectTypeEnum.OutTransitionPort:
-                    case iCS_ObjectTypeEnum.InDynamicPort:
-                    case iCS_ObjectTypeEnum.OutDynamicPort:
-                    case iCS_ObjectTypeEnum.InStaticModulePort:
-                    case iCS_ObjectTypeEnum.OutStaticModulePort:
                     case iCS_ObjectTypeEnum.OutStatePort: {
                         break;
                     }
@@ -263,7 +259,7 @@ public partial class iCS_BehaviourImp : iCS_Storage {
                         iCS_EngineObject outStatePort= null;
                         iCS_EngineObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
                         triggerPort= GetDataConnectionSource(triggerPort);
-                        iCS_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
+                        iCS_FunctionBase triggerFunc= IsOutModulePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
                         int triggerIdx= triggerPort.PortIndex;
                         iCS_Transition transition= new iCS_Transition(transitionModule.Name,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,
@@ -277,7 +273,9 @@ public partial class iCS_BehaviourImp : iCS_Storage {
                     }
                     
                     // Data ports.
+                    case iCS_ObjectTypeEnum.OutDynamicPort:
                     case iCS_ObjectTypeEnum.OutFixPort: {
+						if(GetParentNode(port).IsKindOfModule) break;
                         object parentObj= myRuntimeNodes[port.ParentId];
                         Prelude.choice<iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
                             method          => method[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
@@ -290,7 +288,9 @@ public partial class iCS_BehaviourImp : iCS_Storage {
                         break;
                     }
                     case iCS_ObjectTypeEnum.InFixPort:
+                    case iCS_ObjectTypeEnum.InDynamicPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
+						if(GetParentNode(port).IsKindOfModule) break;
                         // Build connection.
                         iCS_EngineObject sourcePort= GetDataConnectionSource(port);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
@@ -353,7 +353,7 @@ public partial class iCS_BehaviourImp : iCS_Storage {
                     guardModule= edObj;
                 }
             }
-            if(edObj.IsOutStaticModulePort && edObj.RuntimeType == typeof(bool) && edObj.Name == "trigger") {
+            if(edObj.IsOutFixPort && edObj.RuntimeType == typeof(bool) && edObj.Name == "trigger") {
                 iCS_EngineObject gModule= GetParent(edObj);
                 if(gModule.IsTransitionGuard && GetParent(gModule) == transitionModule) {
                     triggerPort= edObj;

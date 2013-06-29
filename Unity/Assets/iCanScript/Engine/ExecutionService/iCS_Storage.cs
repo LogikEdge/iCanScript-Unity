@@ -20,8 +20,8 @@ public class iCS_Storage : MonoBehaviour {
 	[HideInInspector] public float  		GuiScale      = 1f;	
 	[HideInInspector] public int    		SelectedObject= -1;	
     [HideInInspector] public List<Object>   UnityObjects  = new List<Object>();
+    [HideInInspector] public string         FileName      = null;
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects = new List<iCS_EngineObject>();
-                      public string         FileName      = null;
 
     // ======================================================================
     // Properties
@@ -33,15 +33,6 @@ public class iCS_Storage : MonoBehaviour {
 		return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null;
 	}
 
-    // ======================================================================
-    // Methods
-    // ----------------------------------------------------------------------
-    public bool IsMuxPortChild(int id)  {
-        if(!IsValidEngineObject(id)) return false;
-        iCS_EngineObject eObj= EngineObjects[id];
-        return eObj.IsInModulePort && GetParent(eObj).IsOutModulePort;
-    }
-	
     // ======================================================================
     // Unity Object Utilities
     // ----------------------------------------------------------------------
@@ -82,10 +73,30 @@ public class iCS_Storage : MonoBehaviour {
         return EngineObjects[child.ParentId]; 
     }
     // ----------------------------------------------------------------------
+	public iCS_EngineObject GetParentNode(iCS_EngineObject child) {
+		var parentNode= GetParent(child);
+		while(parentNode != null && !parentNode.IsNode) {
+			parentNode= GetParent(parentNode);
+		}
+		return parentNode;
+	}
+    // ----------------------------------------------------------------------
     public iCS_EngineObject GetSource(iCS_EngineObject port) {
         if(port == null || port.SourceId == -1) return null;
         return EngineObjects[port.SourceId];
     }
+    // ----------------------------------------------------------------------
+	public bool IsInModulePort(iCS_EngineObject obj) {
+		if(!obj.IsInDataPort) return false;
+		var parent= GetParentNode(obj);
+		return parent != null && parent.IsKindOfModule;
+	}
+    // ----------------------------------------------------------------------
+	public bool IsOutModulePort(iCS_EngineObject obj) {
+		if(!obj.IsOutDataPort) return false;
+		var parent= GetParentNode(obj);
+		return parent != null && parent.IsKindOfModule;
+	}
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
     public iCS_EngineObject GetDataConnectionSource(iCS_EngineObject port) {

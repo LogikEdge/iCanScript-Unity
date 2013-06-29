@@ -160,7 +160,7 @@ public class iCS_DynamicMenu {
     void MethodMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
 		iCS_MenuContext[] menu= new iCS_MenuContext[1];
 		menu[0]= new iCS_MenuContext(ShowHierarchyStr);
-        if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
+        if(storage.EditorObjects[selectedObject.ParentId].IsKindOfModule) {
             AddDeleteMenuItem(ref menu);
         }
         ShowMenu(menu, selectedObject, storage);            
@@ -174,7 +174,7 @@ public class iCS_DynamicMenu {
         // Allow to publish port if the grand-parent is a module.
         iCS_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
         iCS_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
-        if(grandParent != null && grandParent.IsModule) {
+        if(grandParent != null && grandParent.IsKindOfModule) {
             if(!(selectedObject.IsInputPort && selectedObject.IsSourceValid)) {
                 menu= new iCS_MenuContext[1];
 				menu[0]= new iCS_MenuContext(PublishPortStr);                
@@ -454,7 +454,7 @@ public class iCS_DynamicMenu {
             iCS_EditorObject port= parent;
             parent= port.Parent;
             iCS_EditorObject grandParent= parent.Parent;
-            if(!grandParent.IsModule) return null;
+            if(!grandParent.IsKindOfModule) return null;
 			switch(port.Edge) {
 				case iCS_EdgeEnum.Top: {
 					graphPosition.y-= 100;

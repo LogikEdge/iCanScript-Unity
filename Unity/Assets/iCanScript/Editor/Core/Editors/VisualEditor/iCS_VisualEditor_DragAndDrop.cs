@@ -29,7 +29,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				    return;				
                 }
                 if(draggedObject is GameObject) {
-                     if(objectUnderMouse.IsModule) {
+                     if(objectUnderMouse.IsKindOfModule) {
                          var storage= GetDraggedLibrary(draggedObject);
                          if(storage ==  null) {
          		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;                        
@@ -94,7 +94,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     				return;				
                 }
                 // Allow dropping Unity object in modules.
-                if(eObj.IsModule && draggedObject is GameObject) {
+                if(eObj.IsKindOfModule && draggedObject is GameObject) {
         	        IStorage.RegisterUndo("DragAndDrop");			
                     GameObject gameObject= draggedObject as GameObject;
                     CreateGameObject(eObj.InstanceId, gameObject, GraphMousePosition);

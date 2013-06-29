@@ -163,11 +163,11 @@ public class iCS_EngineObject {
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode                  { get { return iCS_ObjectType.IsNode(this); }}
-	public bool IsStateChartNode	    { get { return iCS_ObjectType.IsStateChartNode(this); }}
+	public bool IsKindOfState   	    { get { return iCS_ObjectType.IsKindOfState(this); }}
     public bool IsBehaviour             { get { return iCS_ObjectType.IsBehaviour(this); }}
     public bool IsStateChart            { get { return iCS_ObjectType.IsStateChart(this); }}
     public bool IsState                 { get { return iCS_ObjectType.IsState(this); }}
-    public bool IsModule                { get { return iCS_ObjectType.IsModule(this); }}
+    public bool IsKindOfModule          { get { return iCS_ObjectType.IsKindOfModule(this); }}
     public bool IsTransitionModule      { get { return iCS_ObjectType.IsTransitionModule(this); }}
     public bool IsTransitionGuard       { get { return iCS_ObjectType.IsTransitionGuard(this); }}
     public bool IsTransitionAction      { get { return iCS_ObjectType.IsTransitionAction(this); }}
@@ -181,30 +181,24 @@ public class iCS_EngineObject {
     public bool IsMessage               { get { return iCS_ObjectType.IsMessage(this); }}
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
     public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
-    public bool IsFunctionPort          { get { return iCS_ObjectType.IsFunctionPort(this); }}
-    public bool IsModulePort            { get { return iCS_ObjectType.IsModulePort(this); }}
-    public bool IsDynamicModulePort     { get { return iCS_ObjectType.IsDynamicModulePort(this); }}
-    public bool IsStaticModulePort      { get { return iCS_ObjectType.IsStaticModulePort(this); }}
+    public bool IsFixPort          		{ get { return iCS_ObjectType.IsFixPort(this); }}
+    public bool IsDynamicPort           { get { return iCS_ObjectType.IsDynamicPort(this); }}
     public bool IsStatePort             { get { return iCS_ObjectType.IsStatePort(this); }}
     public bool IsTransitionPort        { get { return iCS_ObjectType.IsTransitionPort(this); }}
     public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}
     public bool IsOutputPort            { get { return iCS_ObjectType.IsOutputPort(this); }}
     public bool IsInputPort             { get { return iCS_ObjectType.IsInputPort(this); }}
-    public bool IsInFixPort        { get { return iCS_ObjectType.IsInFixPort(this); }}
-    public bool IsOutFixPort       { get { return iCS_ObjectType.IsOutFixPort(this); }}
-    public bool IsInModulePort          { get { return iCS_ObjectType.IsInModulePort(this); }}
-    public bool IsOutModulePort         { get { return iCS_ObjectType.IsOutModulePort(this); }}
-    public bool IsInDynamicPort   { get { return iCS_ObjectType.IsInDynamicPort(this); }}
-    public bool IsOutDynamicPort  { get { return iCS_ObjectType.IsOutDynamicPort(this); }}
-    public bool IsInStaticModulePort    { get { return iCS_ObjectType.IsInStaticModulePort(this); }}
-    public bool IsOutStaticModulePort   { get { return iCS_ObjectType.IsOutStaticModulePort(this); }}
+    public bool IsInFixPort             { get { return iCS_ObjectType.IsInFixPort(this); }}
+    public bool IsOutFixPort            { get { return iCS_ObjectType.IsOutFixPort(this); }}
+    public bool IsInDynamicPort         { get { return iCS_ObjectType.IsInDynamicPort(this); }}
+    public bool IsOutDynamicPort        { get { return iCS_ObjectType.IsOutDynamicPort(this); }}
     public bool IsInStatePort           { get { return iCS_ObjectType.IsInStatePort(this); }}
     public bool IsOutStatePort          { get { return iCS_ObjectType.IsOutStatePort(this); }}
     public bool IsInDataPort            { get { return iCS_ObjectType.IsInDataPort(this); }}
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
-    public bool IsObjectInstance        { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
+    public bool IsObjectInstance        { get { return IsKindOfModule && RuntimeType != typeof(iCS_Module); }}
 	public bool	IsMuxPort				{ get { return iCS_ObjectType.IsMuxPort(this); }}
 	public bool IsChildMuxPort			{ get { return iCS_ObjectType.IsChildMuxPort(this); }}
 	public bool IsParentMuxPort			{ get { return iCS_ObjectType.IsParentMuxPort(this); }}
@@ -212,8 +206,8 @@ public class iCS_EngineObject {
     // ======================================================================
     // Feature support
     // ----------------------------------------------------------------------
-    public bool SupportsAdditionOfPorts { get { return IsModule; }}
-    public bool SupportsNestedNodes     { get { return IsModule; }}
+    public bool SupportsAdditionOfPorts { get { return IsKindOfModule; }}
+    public bool SupportsNestedNodes     { get { return IsKindOfModule; }}
     
     // ----------------------------------------------------------------------
 	public FieldInfo GetFieldInfo() {

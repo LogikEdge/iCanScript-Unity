@@ -7,7 +7,7 @@ using System.Collections;
 public partial class iCS_EditorObject {
     // Object Type Queries ---------------------------------------------------
     public bool IsNode                      { get { return EngineObject.IsNode; }}
-    public bool IsModule                    { get { return EngineObject.IsModule; }}
+    public bool IsKindOfModule              { get { return EngineObject.IsKindOfModule; }}
     public bool IsFunction                  { get { return EngineObject.IsFunction; }}
     public bool IsMessage                   { get { return EngineObject.IsMessage; }}
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
@@ -25,9 +25,10 @@ public partial class iCS_EditorObject {
     public bool IsDataPort                  { get { return EngineObject.IsDataPort; }}
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
-    public bool IsModulePort                { get { return EngineObject.IsModulePort; }}
-    public bool IsOutModulePort             { get { return EngineObject.IsOutModulePort; }}
-    public bool IsDynamicModulePort         { get { return EngineObject.IsDynamicModulePort; }}
+    public bool IsModulePort                { get { return IsDataPort && ParentNode.IsKindOfModule; }}
+    public bool IsOutModulePort             { get { return IsOutDataPort && ParentNode.IsKindOfModule; }}
+    public bool IsDynamicPort               { get { return EngineObject.IsDynamicPort; }}
+    public bool IsDynamicModulePort         { get { return EngineObject.IsDynamicPort && ParentNode.IsKindOfModule; }}
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}
     public bool IsOutStatePort              { get { return EngineObject.IsOutStatePort; }}

@@ -334,7 +334,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(!isNearParent) {
                                 // Let's determine if we want to create a module port.
                                 iCS_EditorObject newPortParent= GetNodeWithEdgeAtMousePosition();
-                                if(newPortParent != null && newPortParent.IsModule) {
+                                if(newPortParent != null && newPortParent.IsKindOfModule) {
                                     iCS_EditorObject portParent= DragFixPort.Parent;
                                     if(DragFixPort.IsInputPort) {
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
@@ -377,7 +377,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 }
                                 // Autocreate instance node if inside a composite module.
                                 newPortParent= GetNodeAtMousePosition();
-                                if(newPortParent != null && newPortParent.IsModule) {
+                                if(newPortParent != null && newPortParent.IsKindOfModule) {
                                     // Determine if we need to create an instance node.
                                     AutocreateInstanceNode(dragPortPos, newPortParent);
                                     break;                                  

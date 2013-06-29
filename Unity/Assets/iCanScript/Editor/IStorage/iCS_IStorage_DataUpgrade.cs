@@ -26,11 +26,19 @@ public partial class iCS_IStorage {
 	void v0_9_3_Upgrade() {
 		foreach(var n in EngineObjects) {
 			if(n.IsValid && n.IsParentValid) {
+				// Convert behaviour modules to messages.
 				var parent= EngineObjects[n.ParentId];
 				if(parent.IsBehaviour) {
-					if(n.IsModule) {
+					if(n.IsKindOfModule) {
 						n.ObjectType= iCS_ObjectTypeEnum.InstanceMessage;						
 					}
+				}
+				// Convert StaticModulePort to FixPort.
+				if(n.ObjectType == iCS_ObjectTypeEnum.InStaticModulePort_obsolete) {
+					n.ObjectType= iCS_ObjectTypeEnum.InFixPort;
+				}
+				if(n.ObjectType == iCS_ObjectTypeEnum.OutStaticModulePort_obsolete) {
+					n.ObjectType= iCS_ObjectTypeEnum.OutFixPort;
 				}
 			}
 		}
