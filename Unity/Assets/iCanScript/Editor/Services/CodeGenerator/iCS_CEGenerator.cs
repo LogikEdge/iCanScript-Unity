@@ -6,7 +6,11 @@ using System.Collections.Generic;
 
 public static class iCS_CEGenerator {
 	// ----------------------------------------------------------------------
-    public static void GenerateBehaviourCode(iCS_EditorObject behaviour, GameObject go, string objectId, iCS_Storage storage) {
+    public static void GenerateBehaviourCode(iCS_EditorObject behaviour) {
+        var storage= behaviour.Storage;
+        var go= storage.gameObject;
+        var objectId= go.GetInstanceID().ToString();
+        
         var behaviourMessages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
         var messages= new List<iCS_MessageInfo>();
         behaviour.ForEachChildNode(

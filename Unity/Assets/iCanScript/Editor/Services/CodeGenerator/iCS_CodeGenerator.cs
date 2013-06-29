@@ -35,8 +35,6 @@ public class iCS_CodeGenerator {
 
     // ----------------------------------------------------------------------
 	static void GenerateBehaviourCode(iCS_EditorObject behaviour) {
-		var storage= behaviour.Storage;
-        var go= storage.gameObject;
-        iCS_CEGenerator.GenerateBehaviourCode(behaviour, go, go.GetInstanceID().ToString(), storage);
+        iCS_CEGenerator.GenerateBehaviourCode(behaviour);
 	}
 }
