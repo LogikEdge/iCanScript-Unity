@@ -21,21 +21,54 @@ public static class iCS_CEGenerator {
             }
         );
         
-        var behaviourClassName= iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"Behaviour_"+objectId;
+        // Generate behaviour source code.
+        var behaviourClassName= iCS_TextFile.ToClassName(iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"Behaviour_"+objectId);
         var code= BehaviourMessageProxy(behaviourClassName, messages.ToArray());
-        var fileName= behaviourClassName+".cs";
+        var fileName= ClassNameToFileName(behaviourClassName);
         var filePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
         iCS_CETextFile.WriteFile(filePath+"/"+fileName, code);
+
+        // Generate corresponding inspector code.
+        var inspectorClassName= InspectorClassNameFrom(behaviourClassName);
+        var inspectorCode= "\nusing UnityEngine;\n"+
+                           "using UnityEditor;\n\n"+
+                           "[CustomEditor (typeof ("+behaviourClassName+"))]\n"+
+                           "public sealed class "+inspectorClassName+" : iCS_Inspector {}\n\n";
+        var inspectorFileName= ClassNameToFileName(inspectorClassName);
+        var inspectorFilePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder+"/Editor";
+        iCS_CETextFile.WriteFile(inspectorFilePath+"/"+inspectorFileName, inspectorCode);
+
+        // Remove previous file if fileName has changed.
         if(storage.FileName != fileName) {
-            if(!string.IsNullOrEmpty(storage.FileName)) {
-                AssetDatabase.DeleteAsset("Assets/"+iCS_PreferencesEditor.CodeGenerationFolder+"/"+filePath+"/"+storage.FileName);
-            }
-            storage.FileName= fileName;
+            RemoveBehaviourCode(behaviour);
+            storage.FileName= fileName; 
             EditorUtility.SetDirty(storage);
         }
     }
+	// ----------------------------------------------------------------------
+    public static void RemoveBehaviourCode(iCS_EditorObject behaviour) {
+        var storage= behaviour.Storage;
+        var fileName= storage.FileName;
+        if(string.IsNullOrEmpty(fileName)) return;
+        var path= "Assets/"+iCS_PreferencesEditor.CodeGenerationFolder+"/"+iCS_PreferencesEditor.BehaviourGenerationSubfolder+"/";
+        AssetDatabase.DeleteAsset(path+fileName);
+        var inspectorClassName= InspectorClassNameFrom(FileNameToClassName(fileName));
+        var inspectorFileName= ClassNameToFileName(inspectorClassName);
+        AssetDatabase.DeleteAsset(path+"/Editor/"+inspectorFileName);
+    }
+	// ----------------------------------------------------------------------
+    public static string InspectorClassNameFrom(string className) {
+        return className+"_Inspector";
+    }
+	// ----------------------------------------------------------------------
+    public static string ClassNameToFileName(string className) {
+        return className+".cs";
+    }
+	// ----------------------------------------------------------------------
+    public static string FileNameToClassName(string fileName) {
+        return fileName.Substring(0, fileName.Length-3);
+    }
     
-
     // ======================================================================
     // Messsage Receiver code generation
 	// ----------------------------------------------------------------------

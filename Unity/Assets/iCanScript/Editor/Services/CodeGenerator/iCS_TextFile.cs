@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -75,6 +76,16 @@ public static class iCS_TextFile {
 
     // =================================================================================
 	// File path utilities.
+    // ---------------------------------------------------------------------------------
+    public static string ToClassName(string proposedName) {
+        string fileName= "";
+        foreach(var c in proposedName) {
+            if(!Char.IsWhiteSpace(c)) {
+                fileName+= (c == '_' || Char.IsLetterOrDigit(c)) ? c : '_';                
+            }
+        }
+        return fileName;
+    }
     // ---------------------------------------------------------------------------------
 	public static string ToUnityAssetPath(string path) {
 		// Nothing to change if already in the correct format

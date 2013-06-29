@@ -22,6 +22,12 @@ public class iCS_CodeGenerator {
     // ----------------------------------------------------------------------
     // Generate code according to node destruction.
     static void OnWillDestroyNode(iCS_EditorObject node) {
+        // Remove behaviour code.
+        if(node.IsBehaviour) {
+            iCS_CEGenerator.RemoveBehaviourCode(node);
+        }
+        // Regenerate behaviour code if message is removed.
+        // TODO: should avoid multiple regeneration on behaviour delete.
 		if(node.IsBehaviourMessage) {
 			GenerateBehaviourCode(node.Parent);
 		}
@@ -32,6 +38,5 @@ public class iCS_CodeGenerator {
 		var storage= behaviour.Storage;
         var go= storage.gameObject;
         iCS_CEGenerator.GenerateBehaviourCode(behaviour, go, go.GetInstanceID().ToString(), storage);
-		Debug.Log("Generating behaviour code");
 	}
 }
