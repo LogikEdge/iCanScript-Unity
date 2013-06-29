@@ -42,15 +42,14 @@ public static class iCS_CEGenerator {
     public static string BehaviourMessageProxy(string className, iCS_MessageInfo[] messages) {
         var fileHeader= iCS_CETemplate.FileHeader(className+".cs", className);
         var imports= "\nusing UnityEngine;\n";
-        var inspector= "\n[CustomEditor (typeof ("+className+"))]\n"+
-                       "public sealed class "+className+"Inspector : iCS_Inspector {}\n\n";
+//        var inspector= "\n[CustomEditor (typeof ("+className+"))]\n"+
+//                       "public sealed class "+className+"Inspector : iCS_Inspector {}\n\n";
         var classHeader= "\npublic sealed class "+className+" : iCS_BehaviourImp {\n";
         var classTrailer= "\n}\n";
         var messageImpls= "";
         foreach(var msg in messages) {
             messageImpls+= MessageReceiverImp(msg)+"\n";
         }
-//        return "#if FRED\n"+fileHeader+imports+classHeader+messageImpls+classTrailer+"\n#endif";
         return fileHeader+imports/*+inspector*/+classHeader+messageImpls+classTrailer;
     }
 
