@@ -167,6 +167,7 @@ public class iCS_EngineObject {
     public bool IsBehaviour             { get { return iCS_ObjectType.IsBehaviour(this); }}
     public bool IsStateChart            { get { return iCS_ObjectType.IsStateChart(this); }}
     public bool IsState                 { get { return iCS_ObjectType.IsState(this); }}
+    public bool IsModule                { get { return iCS_ObjectType.IsModule(this); }}
     public bool IsKindOfModule          { get { return iCS_ObjectType.IsKindOfModule(this); }}
     public bool IsTransitionModule      { get { return iCS_ObjectType.IsTransitionModule(this); }}
     public bool IsTransitionGuard       { get { return iCS_ObjectType.IsTransitionGuard(this); }}
@@ -198,7 +199,7 @@ public class iCS_EngineObject {
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
-    public bool IsObjectInstance        { get { return IsKindOfModule && RuntimeType != typeof(iCS_Module); }}
+    public bool IsObjectInstance        { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
 	public bool	IsMuxPort				{ get { return iCS_ObjectType.IsMuxPort(this); }}
 	public bool IsChildMuxPort			{ get { return iCS_ObjectType.IsChildMuxPort(this); }}
 	public bool IsParentMuxPort			{ get { return iCS_ObjectType.IsParentMuxPort(this); }}

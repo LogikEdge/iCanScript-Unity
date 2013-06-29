@@ -61,8 +61,9 @@ public static class iCS_ObjectType {
     public static bool IsBehaviour            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Behaviour; }
     public static bool IsStateChart           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StateChart; }
     public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.State; }
-    public static bool IsKindOfModule		  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Module ||
-																			  IsTransitionNode(obj) || IsBehaviour(obj) || IsMessage(obj); }
+    public static bool IsModule               (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Module; }
+    public static bool IsKindOfModule		  (iCS_EngineObject obj) { return IsModule(obj) || IsTransitionNode(obj) ||
+                                                                              IsBehaviour(obj) || IsMessage(obj); }
 	public static bool IsKindOfState		  (iCS_EngineObject obj) { return IsStateChart(obj) || IsState(obj); }
 
     // Function nodes.

@@ -59,7 +59,7 @@ public partial class iCS_Graphics {
         if((port.IsInputPort || port.IsModulePort) && port.SourceId != -1) {
             var sourcePort= port.Source;
             if(sourcePort.Name != port.Name) return true;
-            if(!sourcePort.IsVisibleOnDisplay) return true;
+            if(!sourcePort.ParentNode.IsUnfoldedOnDisplay) return true;
             var sourceCenter= sourcePort.AnimatedPosition;
             var portCenter= port.AnimatedPosition;
             var distance= Vector2.Distance(portCenter, sourceCenter);

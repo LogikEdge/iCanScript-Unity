@@ -58,7 +58,10 @@ public partial class iCS_EditorObject {
             var parent= Parent;
             if(parent == null) return true;    
             if(parent.DisplayOption == iCS_DisplayOptionEnum.Iconized) return false;
-            if(IsNode && parent.DisplayOption == iCS_DisplayOptionEnum.Folded) return false;
+            if(IsNode) {
+                if(parent.DisplayOption == iCS_DisplayOptionEnum.Folded) return false;
+                if(parent.IsObjectInstance && !IsObjectInstance) return false;                
+            }
             return parent.IsVisibleInLayout;            
         }
     }
@@ -66,7 +69,20 @@ public partial class iCS_EditorObject {
     public bool IsVisibleOnDisplay {
         get {
             if(IsPort) {
-                return ParentNode.IsVisibleOnDisplay;
+                var parentNode= ParentNode;
+                if(!parentNode.IsVisibleOnDisplay) return false;
+                
+                
+                
+                // Don't display function "this" port if under object instance node.
+                var instanceName= iCS_Strings.InstanceObjectName;
+                if(Name == instanceName && parentNode.IsFunction) {
+                    var grandParentNode= parentNode.ParentNode;
+                    if(grandParentNode.IsObjectInstance && IsSourceValid && Source.ParentNode == grandParentNode && Source.Name == instanceName) {
+                        return false;
+                    }
+                }
+                return true;
             }
             if(!IsAnimated) return IsVisibleInLayout;
             var area= Math3D.Area(AnimatedSize);

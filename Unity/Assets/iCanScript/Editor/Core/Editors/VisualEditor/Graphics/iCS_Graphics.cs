@@ -755,14 +755,14 @@ public partial class iCS_Graphics {
         if(!port.IsSourceValid) return;
         iCS_EditorObject portParent= port.Parent;
 
-        // No connection to draw if the parent is not visible.
-        if(!portParent.IsVisibleOnDisplay) return;
+        // No connection to draw if the port is not visible.
+        if(!port.IsVisibleOnDisplay) return;
 
-        // No connection to draw if source parent is not visible.
+        // No connection to draw if source port is not visible.
         iCS_EditorObject source= port.Source;
         iCS_EditorObject sourceParent= source.Parent;
-        if(!(sourceParent.IsVisibleOnDisplay && !port.IsOutStatePort)) return;
-        
+        if(!(source.IsVisibleOnDisplay && !port.IsOutStatePort)) return;
+
         // No connection to draw if outside clipping area.
         var portPos= port.AnimatedPosition;
         var sourcePos= source.AnimatedPosition;
