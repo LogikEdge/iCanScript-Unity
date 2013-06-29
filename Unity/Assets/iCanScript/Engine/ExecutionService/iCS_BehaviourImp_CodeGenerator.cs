@@ -287,8 +287,8 @@ public partial class iCS_BehaviourImp : iCS_Storage {
                         );
                         break;
                     }
-                    case iCS_ObjectTypeEnum.InFixPort:
                     case iCS_ObjectTypeEnum.InDynamicPort:
+                    case iCS_ObjectTypeEnum.InFixPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
 						if(GetParentNode(port).IsKindOfModule) break;
                         // Build connection.
