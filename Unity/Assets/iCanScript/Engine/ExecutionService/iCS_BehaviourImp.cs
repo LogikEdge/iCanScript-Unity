@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-[iCS_Class(BaseVisibility= true)]
 [AddComponentMenu("")]
 public partial class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================

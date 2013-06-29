@@ -41,12 +41,12 @@ public static class iCS_AllowedChildren {
     public static bool CanAddChildNode(string childName, iCS_ObjectTypeEnum childType, iCS_EditorObject parent, iCS_IStorage storage) {
         if(parent == null) return false;
         // Only allow valid child for object instances.
-        if(parent.IsObjectInstance) {
+        if(parent.IsObjectInstance || parent.IsBehaviour) {
             // Don't allow more then one copy of a node in an instance node
             if(IsChildNodePresent(childName, parent, storage)) {
                 return false;
             }
-			var typeInfo= iCS_LibraryDatabase.GetTypeInfo(parent.RuntimeType);
+			var typeInfo= iCS_LibraryDatabase.GetTypeInfo(parent.IsBehaviour ? typeof(MonoBehaviour) : parent.RuntimeType);
 			if(typeInfo == null) {
 				Debug.LogWarning("iCanScript: Unable to find type information for: "+parent.Name);
 				return false;

@@ -83,23 +83,35 @@ public class iCS_Reflection {
                     installerType= classType;
                     continue;
                 }
+                bool extractClass= false;
+                iCS_ClassAttribute classAttribute= null;
                 foreach(var classCustomAttribute in classType.GetCustomAttributes(true)) {
+                    // Don't include classes that have been marked with iCS_Exclude.
+                    if(classCustomAttribute is iCS_ExcludeAttribute) {
+                        extractClass= false;
+                        break;
+                    }
                     // Only register classes that have been tagged for uCode.
                     if(classCustomAttribute is iCS_ClassAttribute) {
+                        extractClass= true;
                         // Validate that the class is public.
                         if(classType.IsPublic == false) {
                             Debug.LogWarning("iCanScript: Class "+classType+" is not public and tagged for "+iCS_Config.ProductName+".  Ignoring class !!!");
                             continue;
                         }
-                        // Extract class information.
-                        iCS_ClassAttribute classAttribute= classCustomAttribute as iCS_ClassAttribute;
-                        string  classCompany       = classAttribute.Company;
-                        string  classPackage       = classAttribute.Package;
-                        string  classDescription   = classAttribute.Tooltip;
-                        string  classIcon          = classAttribute.Icon;
-                        bool    classBaseVisibility= classAttribute.BaseVisibility;
-                        DecodeClassInfo(classType, classCompany, classPackage, classDescription, classIcon, false, classBaseVisibility);
+                        // Keep copy of class information.
+                        classAttribute= classCustomAttribute as iCS_ClassAttribute;
                     }
+                }
+                // Only register classes that have been tagged for uCode.
+                if(extractClass) {
+                    // Extract class information.
+                    string  classCompany       = classAttribute.Company;
+                    string  classPackage       = classAttribute.Package;
+                    string  classDescription   = classAttribute.Tooltip;
+                    string  classIcon          = classAttribute.Icon;
+                    bool    classBaseVisibility= classAttribute.BaseVisibility;
+                    DecodeClassInfo(classType, classCompany, classPackage, classDescription, classIcon, false, classBaseVisibility);
                 }
             }
         }
