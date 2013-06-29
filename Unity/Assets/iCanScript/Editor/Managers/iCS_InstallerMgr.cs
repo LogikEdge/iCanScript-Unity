@@ -45,10 +45,15 @@ public static class iCS_InstallerMgr {
             Debug.Log(iCS_Config.ProductName+": Creating Code Generation folder");
             AssetDatabase.CreateFolder("Assets", codeGenerationFolder);
         }
+        // Generated behaviour folder.
         var behavioursSubfolder= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
         var behavioursPath= codeGenerationFolderPath+"/"+behavioursSubfolder;
         if(!Directory.Exists(behavioursPath)) {
             AssetDatabase.CreateFolder("Assets/"+codeGenerationFolder, behavioursSubfolder);            
+        }
+        var behavioursEditorPath= behavioursPath+"/Editor";
+        if(!Directory.Exists(behavioursEditorPath)) {
+            AssetDatabase.CreateFolder("Assets/"+codeGenerationFolder+"/"+behavioursSubfolder, "Editor");
         }
     }
     
