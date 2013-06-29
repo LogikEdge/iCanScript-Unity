@@ -23,6 +23,7 @@ public class iCS_Inspector : Editor {
 	private bool    mySelectedObjectFold= true;
     private bool    myShowInputs        = false;
     private bool    myShowOutputs       = false;
+    private bool    myEngineObjectFold  = false;
     
 	// ----------------------------------------------------------------------
     // Repaint abort processing variables.
@@ -95,7 +96,7 @@ public class iCS_Inspector : Editor {
         
         // Draw inspector window
         EditorGUI.indentLevel= 0;
-		DrawDefaultInspector();
+        GUI.enabled= true;
 		EditorGUIUtility.LookLikeControls();
 
         // Frame count.
@@ -175,10 +176,25 @@ public class iCS_Inspector : Editor {
                 if(SelectedObject.IsNode)      InspectNode(SelectedObject);
                 else if(SelectedObject.IsPort) InspectPort(SelectedObject);
             }            
+
+            // Show default inspector
+            EditorGUI.indentLevel= 0;
+            myEngineObjectFold= EditorGUILayout.Foldout(myEngineObjectFold, "Selected Engine Object");
+            if(myEngineObjectFold) {
+                // Update engine selected object.
+                var storage= myStorage.Storage;
+                var selectedId= storage.SelectedObject;
+                storage.EngineObject= selectedId != -1 ? storage.EngineObjects[selectedId] : null;
+
+                GUI.enabled= false;
+                EditorGUI.indentLevel= 1;
+        		DrawDefaultInspector();            
+            }
         }
 
+
         // Allow repaint for modifications done by the user.
-        myPreviousModificationId= myStorage.ModificationId;
+        myPreviousModificationId= myStorage.ModificationId;		
 	}
 
 	// ----------------------------------------------------------------------
