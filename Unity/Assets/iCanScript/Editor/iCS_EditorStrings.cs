@@ -23,7 +23,8 @@ public class iCS_EditorStrings {
 	public const string TransitionTriggerIcon= "iCS_TransitionTriggerIcon.png";
 	public const string RandomIcon           = "iCS_RandomIcon_32x32.png";
 	public const string MuxIcon				 = "iCS_JoinIcon_32x32.psd";
-	public const string CancelIcon           = "iCS_CancelIcon.psd";
+	public const string CancelIcon           = "iCS_CancelIcon_16x16x32.png";
+	public const string SearchIcon           = "iCS_SearchIcon_16x16x32.png";
 	
     // Textures
     public const string AALineTexture        = "iCS_LineTexture.psd";

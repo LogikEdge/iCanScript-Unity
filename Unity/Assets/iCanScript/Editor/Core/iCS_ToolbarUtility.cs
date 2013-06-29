@@ -120,9 +120,15 @@ public static class iCS_ToolbarUtility {
         if(r.width < iconSize+1f) return value;
         r.y+= 2f;
         r.width-= iconSize;
+        Texture2D searchIcon= null;
+        if(iCS_TextureCache.GetTexture(iCS_EditorStrings.SearchIcon, out searchIcon)) {
+            GUI.DrawTexture(new Rect(r.xMin-searchIcon.width, r.y-1f, searchIcon.width, searchIcon.height), searchIcon);
+        } else {
+            Debug.LogWarning("iCanScript: Cannot find search Icon in resource folder !!!");
+        }
         Texture2D cancelIcon= null;
         if(iCS_TextureCache.GetTexture(iCS_EditorStrings.CancelIcon, out cancelIcon)) {
-            GUI.DrawTexture(new Rect(r.xMax, r.y, iconSize, iconSize), cancelIcon);
+            GUI.DrawTexture(new Rect(r.xMax, r.y-1f, cancelIcon.width, cancelIcon.height), cancelIcon);
         } else {
             Debug.LogWarning("iCanScript: Cannot find cancel Icon in resource folder !!!");
         }
