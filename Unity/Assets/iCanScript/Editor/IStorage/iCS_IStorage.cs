@@ -524,7 +524,7 @@ public partial class iCS_IStorage {
 		}
 		// Special case for behaviour messages.
 		if(instance.Parent.IsBehaviour) {
-            portIdx= UpdateBehaviourInputPorts(instance, portIdx);
+            portIdx= UpdateBehaviourMessagePorts(instance, portIdx);
 		}
         // Perform initial node layout.
         instance.Unhide();
