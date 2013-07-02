@@ -25,26 +25,31 @@ public partial class iCS_IStorage {
     // Returns the next available port index.
     public int UpdateBehaviourMessagePorts(iCS_EditorObject node, int portIdx) {
         var neededPorts= BuildListOfPortInfoForBehaviourMessage(node.Parent);
-        CleanupExistingFixPorts(node, neededPorts);
-        BuildMissingPorts(node, neededPorts, portIdx);
+        var changed= CleanupExistingFixPorts(node, neededPorts);
+        changed |= BuildMissingPorts(node, neededPorts, portIdx);
+        if(changed) node.LayoutNode();
         return portIdx;
     }
 
     // ----------------------------------------------------------------------
     // Creates the missing fix ports
-    public void BuildMissingPorts(iCS_EditorObject node, PortInfo[] neededPorts, int portIdx) {
+    public bool BuildMissingPorts(iCS_EditorObject node, PortInfo[] neededPorts, int portIdx) {
+        bool changed= false;
         foreach(var pi in neededPorts) {
             if(!DoesPortExist(node, pi.Name, pi.ValueType, pi.PortType)) {
         	    var port= CreatePort(pi.Name, node.InstanceId, pi.ValueType, pi.PortType);
                 port.PortIndex= portIdx++;
                 port.InitialPortValue= pi.InitialValue;            
-                
+                changed= true;
             }
         }
+        myIsDirty|= changed;
+        return changed;
     }
     // ----------------------------------------------------------------------
     // Removes the non needed fix ports.
-    public void CleanupExistingFixPorts(iCS_EditorObject node, PortInfo[] neededPorts) {
+    public bool CleanupExistingFixPorts(iCS_EditorObject node, PortInfo[] neededPorts) {
+        bool changed= false;
         var currentFixPorts= GetCurrentFixPorts(node);
         foreach(var cp in currentFixPorts) {
             bool found= false;
@@ -55,8 +60,11 @@ public partial class iCS_IStorage {
             }
             if(!found) {
                 DestroyInstance(cp);
+                changed= true;
             }
         }
+        myIsDirty|= changed;
+        return changed;
     }
     
     // ----------------------------------------------------------------------

@@ -152,6 +152,9 @@ public partial class iCS_IStorage {
         // Processing any changed caused by Undo/Redo
         DetectUndoRedo();
         
+        // Verify for any change on the game object.
+        UpdateBehaviourMessages();
+        
         // Force a relayout if it is requested
         if(myForceRelayout) {
             myForceRelayout= false;
@@ -178,6 +181,14 @@ public partial class iCS_IStorage {
         }
     }
 
+    // ----------------------------------------------------------------------
+    public void UpdateBehaviourMessages() {
+        if(EditorObjects == null || EditorObjects.Count == 0) return;
+        var behaviour= EditorObjects[0];
+        if(!behaviour.IsBehaviour) return;
+        behaviour.ForEachChildNode(c=> { if(c.IsMessage) UpdateBehaviourMessagePorts(c, 100); });
+    }
+    
     // ----------------------------------------------------------------------
 	public void UpdateAnimations() {
         IsAnimationPlaying= false;
