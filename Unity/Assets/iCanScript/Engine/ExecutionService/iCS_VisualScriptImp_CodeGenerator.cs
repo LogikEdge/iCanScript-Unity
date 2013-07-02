@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public partial class iCS_BehaviourImp : iCS_Storage {
+public partial class iCS_VisualScriptImp : iCS_Storage {
     // ======================================================================
     // Sanity Check
     // ----------------------------------------------------------------------

@@ -141,7 +141,7 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
     public object GetRuntimeObject(iCS_EditorObject obj) {
-        iCS_BehaviourImp bh= Storage as iCS_BehaviourImp;
+        iCS_VisualScriptImp bh= Storage as iCS_VisualScriptImp;
         return obj == null || bh == null ? null : bh.GetRuntimeObject(obj.InstanceId);
     }
     
@@ -349,7 +349,7 @@ public partial class iCS_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(0, "Behaviour", typeof(iCS_BehaviourImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
+        iCS_EditorObject.CreateInstance(0, "Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
         this[0].SetAnchorAndLayoutPosition(VisualEditorCenter());
 		this[0].IsNameEditable= false;
         return this[0];

@@ -71,10 +71,10 @@ public static class iCS_CEGenerator {
         var fileHeader= iCS_CETemplate.FileHeader(className+".cs", className);
         var imports= "\nusing UnityEngine;\n";
         var classHeader= "\npublic sealed class "+className+" : MonoBehaviour {\n"+
-                         "\tiCS_Behaviour   myBehaviour= null;\n\n"+
+                         "\tiCS_VisualScript   myVisualScript= null;\n\n"+
                          "\tvoid Start()\n"+
                          "\t{\n"+
-                         "\t\tmyBehaviour= GetComponent(typeof(iCS_Behaviour)) as iCS_Behaviour;\n"+
+                         "\t\tmyVisualScript= GetComponent(typeof(iCS_VisualScript)) as iCS_VisualScript;\n"+
                          "\t}\n";
         var classTrailer= "\n}\n";
         var messageImpls= "";
@@ -108,8 +108,8 @@ public static class iCS_CEGenerator {
         var paramStr= "\""+message.DisplayName+"\""+(msgParamStr.Length != 0 ? ", ":"")+msgParamStr;
         // Special case for the Start() message that generates the code.
         return "\n\t{\n"+
-               "\t\tif(myBehaviour != null) {\n"+
-               "\t\t\tmyBehaviour.RunMessage("+paramStr+");\n"+
+               "\t\tif(myVisualScript != null) {\n"+
+               "\t\t\tmyVisualScript.RunMessage("+paramStr+");\n"+
                "\t\t}\n"+
                "\t}\n";            
     }

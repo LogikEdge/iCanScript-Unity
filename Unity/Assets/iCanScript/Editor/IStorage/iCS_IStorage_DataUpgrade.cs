@@ -24,6 +24,10 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	// Convert module under behaviour to message.
 	void v0_9_3_Upgrade() {
+        // Convert behaviour type
+        if(EngineObjects.Count != 0) {
+            EngineObjects[0].QualifiedType= typeof(iCS_VisualScriptImp).AssemblyQualifiedName;
+        }
 		foreach(var n in EngineObjects) {
 			if(n.IsValid && n.IsParentValid) {
 				// Convert behaviour modules to messages.

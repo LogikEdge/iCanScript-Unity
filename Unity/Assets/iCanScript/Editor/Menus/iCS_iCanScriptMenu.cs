@@ -5,13 +5,21 @@ using P=Prelude;
 public static class iCS_iCanScriptMenu {
     // ======================================================================
 	// Create a behavior to selected game object.
-	[MenuItem("iCanScript/Create Behaviour #&b", false, 1)]
-	public static void CreateBehaviour() {
-        iCS_Menu.CreateBehaviour();
+	[MenuItem("iCanScript/Create Visual Script", false, 1)]
+	public static void CreateVisualScript() {
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
+		if(storage == null) {
+			storage= Selection.activeGameObject.AddComponent("iCS_VisualScript") as iCS_VisualScriptImp;
+            iCS_IStorage iStorage= new iCS_IStorage(storage);
+            iStorage.CreateBehaviour();
+            iStorage= null;
+		}
 	}
-	[MenuItem("iCanScript/Create Behaviour #&b", true, 1)]
-	public static bool ValidateCreateBehaviour() {
-        return iCS_Menu.ValidateCreateBehaviour();
+	[MenuItem("iCanScript/Create Visual Script", true, 1)]
+	public static bool ValidateCreateVisualScript() {
+		if(Selection.activeTransform == null) return false;
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
+		return storage == null;
 	}
 
     // ======================================================================

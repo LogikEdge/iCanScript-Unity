@@ -41,7 +41,7 @@ public static class iCS_StorageMgr {
         // Create a root object if one does not exist.
         myActiveGameObject= go;
         if(storage.EngineObjects.Count == 0) {
-            if(storage is iCS_BehaviourImp) {
+            if(storage is iCS_VisualScriptImp) {
                 CreateRootBehaviourNode(storage);
             }
         }
@@ -60,7 +60,7 @@ public static class iCS_StorageMgr {
 	}
     // ---------------------------------------------------------------------------------
     public static void CreateRootBehaviourNode(iCS_Storage storage) {
-        var behaviour= new iCS_EngineObject(0, "Behaviour", typeof(iCS_BehaviourImp), -1, iCS_ObjectTypeEnum.Behaviour);
+        var behaviour= new iCS_EngineObject(0, "Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour);
         storage.EngineObjects.Add(behaviour);        
     }
 

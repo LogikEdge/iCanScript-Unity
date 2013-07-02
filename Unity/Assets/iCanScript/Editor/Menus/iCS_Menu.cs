@@ -8,18 +8,18 @@ public class iCS_Menu {
     // ======================================================================
 	// Create a behavior to selected game object.
 	//[MenuItem("iCanScript/Create Behaviour #&b", false, 1)]
-	public static void CreateBehaviour() {
+	public static void CreateVisualScript() {
 		// Create State Chart component.
-		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_BehaviourImp>();
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_VisualScriptImp>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent("iCS_Behaviour") as iCS_BehaviourImp;
+			storage= Selection.activeGameObject.AddComponent("iCS_Behaviour") as iCS_VisualScriptImp;
             iCS_IStorage iStorage= new iCS_IStorage(storage);
             iStorage.CreateBehaviour();
             iStorage= null;
 		}
 	}
 	//[MenuItem("iCanScript/Create Behaviour #&b", true, 1)]
-	public static bool ValidateCreateBehaviour() {
+	public static bool ValidateCreateVisualScript() {
         // Validate add behaviour
 		if(Selection.activeTransform == null) return false;
 		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
