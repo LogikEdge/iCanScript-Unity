@@ -77,7 +77,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
             bool isActive= (myTarget != null && myStorage != null) ? myStorage.InstanceWizardFindFunction(myTarget, component) != null : false;
             string name= GetVariableName(component);
             var variablePair= GetVariablePair(name, variables);
-            if(component.isSetField || component.isSetProperty) {
+            if(component.IsSetField || component.IsSetProperty) {
                 if(variablePair != null) {
                     variablePair.InputControlPair.Component= component;
                     variablePair.InputControlPair.IsActive= isActive;
@@ -113,13 +113,13 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     // Helpers
     // ---------------------------------------------------------------------------------
     string GetVariableName(iCS_MemberInfo variableInfo) {
-        return variableInfo.isField ? variableInfo.toFieldInfo.fieldName : variableInfo.toPropertyInfo.propertyName;
+        return variableInfo.IsField ? variableInfo.ToFieldInfo.FieldName : variableInfo.ToPropertyInfo.PropertyName;
     }
 	string GetVariableName(VariablePair pair) {
 		return GetVariableName(GetAComponent(pair));
 	}
     Type GetVariableType(iCS_MemberInfo variableInfo) {
-        return variableInfo.isField ? variableInfo.toFieldInfo.type : variableInfo.toPropertyInfo.type;
+        return variableInfo.IsField ? variableInfo.ToFieldInfo.type : variableInfo.ToPropertyInfo.type;
     }
 	Type GetVariableType(VariablePair pair) {
 		return GetVariableType(GetAComponent(pair));
@@ -131,18 +131,18 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
         foreach(var pair in lst) {
             iCS_MemberInfo inputComponent= pair.InputControlPair.Component;
             if(inputComponent != null) {
-                if(inputComponent.isField) {
-                    if(inputComponent.toFieldInfo.fieldName == name) return pair;
+                if(inputComponent.IsField) {
+                    if(inputComponent.ToFieldInfo.FieldName == name) return pair;
                 } else {
-                    if(inputComponent.toPropertyInfo.propertyName == name) return pair;
+                    if(inputComponent.ToPropertyInfo.PropertyName == name) return pair;
                 }
             }
             iCS_MemberInfo outputComponent= pair.OutputControlPair.Component;
             if(outputComponent != null) {
-                if(outputComponent.isField) {
-                    if(outputComponent.toFieldInfo.fieldName == name) return pair;
+                if(outputComponent.IsField) {
+                    if(outputComponent.ToFieldInfo.FieldName == name) return pair;
                 } else {
-                    if(outputComponent.toPropertyInfo.propertyName == name) return pair;
+                    if(outputComponent.ToPropertyInfo.PropertyName == name) return pair;
                 }                
             }
         }
@@ -192,10 +192,10 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
                 if(prevActive != inputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(inputControlPair.IsActive) {
-						myStorage.RegisterUndo("Create "+inputControlPair.Component.displayName);
+						myStorage.RegisterUndo("Create "+inputControlPair.Component.DisplayName);
                         myStorage.InstanceWizardCreate(myTarget, inputControlPair.Component);
                     } else {
-						myStorage.RegisterUndo("Delete "+inputControlPair.Component.displayName);
+						myStorage.RegisterUndo("Delete "+inputControlPair.Component.DisplayName);
                         myStorage.InstanceWizardDestroy(myTarget, inputControlPair.Component);
                     }                
                 }                					
@@ -207,10 +207,10 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
                 if(prevActive != outputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(outputControlPair.IsActive) {
-						myStorage.RegisterUndo("Create "+outputControlPair.Component.displayName);
+						myStorage.RegisterUndo("Create "+outputControlPair.Component.DisplayName);
                         myStorage.InstanceWizardCreate(myTarget, outputControlPair.Component);
                     } else {
-						myStorage.RegisterUndo("Delete "+outputControlPair.Component.displayName);
+						myStorage.RegisterUndo("Delete "+outputControlPair.Component.DisplayName);
                         myStorage.InstanceWizardDestroy(myTarget, outputControlPair.Component);
                     }                
 				}

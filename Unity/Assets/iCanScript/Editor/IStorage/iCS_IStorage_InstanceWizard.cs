@@ -27,7 +27,7 @@ public partial class iCS_IStorage {
         // Use the class Icon if it exists.
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(module.RuntimeType);
         if(components.Length != 0) {
-            var iconGUID= iCS_TextureCache.IconPathToGUID(components[0].iconPath);
+            var iconGUID= iCS_TextureCache.IconPathToGUID(components[0].IconPath);
             if(iconGUID != null) {
                 module.IconGUID= iconGUID;
             }            
@@ -39,8 +39,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetInstanceField) {
-                InstanceWizardCreate(module, component.toFieldInfo);
+            if(component.IsGetInstanceField) {
+                InstanceWizardCreate(module, component.ToFieldInfo);
             }
         }        
     }
@@ -49,8 +49,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetInstanceField) {
-                InstanceWizardDestroy(module, component.toFieldInfo);
+            if(component.IsGetInstanceField) {
+                InstanceWizardDestroy(module, component.ToFieldInfo);
             }
         }        
     }
@@ -60,8 +60,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetInstanceField) {
-                InstanceWizardCreate(module, component.toFieldInfo);
+            if(component.IsSetInstanceField) {
+                InstanceWizardCreate(module, component.ToFieldInfo);
             }
         }        
     }
@@ -70,8 +70,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetInstanceField) {
-                InstanceWizardDestroy(module, component.toFieldInfo);                
+            if(component.IsSetInstanceField) {
+                InstanceWizardDestroy(module, component.ToFieldInfo);                
             }
         }        
     }
@@ -80,8 +80,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetClassField) {
-                InstanceWizardCreate(module, component.toFieldInfo);                
+            if(component.IsGetClassField) {
+                InstanceWizardCreate(module, component.ToFieldInfo);                
             }
         }        
     }
@@ -90,8 +90,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetClassField) {
-                InstanceWizardDestroy(module, component.toFieldInfo);                
+            if(component.IsGetClassField) {
+                InstanceWizardDestroy(module, component.ToFieldInfo);                
             }
         }        
     }
@@ -101,8 +101,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetClassField) {
-                InstanceWizardCreate(module, component.toFieldInfo);                
+            if(component.IsSetClassField) {
+                InstanceWizardCreate(module, component.ToFieldInfo);                
             }
         }        
     }
@@ -111,8 +111,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetClassField) {
-                InstanceWizardDestroy(module, component.toFieldInfo);                
+            if(component.IsSetClassField) {
+                InstanceWizardDestroy(module, component.ToFieldInfo);                
             }
         }        
     }
@@ -122,8 +122,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetInstanceProperty) {
-                InstanceWizardCreate(module, component.toPropertyInfo);                
+            if(component.IsGetInstanceProperty) {
+                InstanceWizardCreate(module, component.ToPropertyInfo);                
             }
         }        
     }
@@ -132,8 +132,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetInstanceProperty) {
-                InstanceWizardDestroy(module, component.toPropertyInfo);                
+            if(component.IsGetInstanceProperty) {
+                InstanceWizardDestroy(module, component.ToPropertyInfo);                
             }
         }        
     }
@@ -142,8 +142,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetInstanceProperty) {
-                InstanceWizardCreate(module, component.toPropertyInfo);                
+            if(component.IsSetInstanceProperty) {
+                InstanceWizardCreate(module, component.ToPropertyInfo);                
             }
         }        
     }
@@ -152,8 +152,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetInstanceProperty) {
-                InstanceWizardDestroy(module, component.toPropertyInfo);                
+            if(component.IsSetInstanceProperty) {
+                InstanceWizardDestroy(module, component.ToPropertyInfo);                
             }
         }        
     }
@@ -162,8 +162,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetClassProperty) {
-                InstanceWizardCreate(module, component.toPropertyInfo);                
+            if(component.IsGetClassProperty) {
+                InstanceWizardCreate(module, component.ToPropertyInfo);                
             }
         }        
     }
@@ -172,8 +172,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetClassProperty) {
-                InstanceWizardDestroy(module, component.toPropertyInfo);                
+            if(component.IsGetClassProperty) {
+                InstanceWizardDestroy(module, component.ToPropertyInfo);                
             }
         }        
     }
@@ -182,8 +182,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetClassProperty) {
-                InstanceWizardCreate(module, component.toPropertyInfo);                
+            if(component.IsSetClassProperty) {
+                InstanceWizardCreate(module, component.ToPropertyInfo);                
             }
         }        
     }
@@ -192,8 +192,8 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetClassProperty) {
-                InstanceWizardDestroy(module, component.toPropertyInfo);                
+            if(component.IsSetClassProperty) {
+                InstanceWizardDestroy(module, component.ToPropertyInfo);                
             }
         }        
     }
@@ -243,10 +243,10 @@ public partial class iCS_IStorage {
     public iCS_EditorObject InstanceWizardFindFunction(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
         iCS_EditorObject[] children= BuildListOfChildren(
             child=> {
-                if(child.ObjectType != desc.objectType || child.NbOfParams != desc.parameters.Length) {
+                if(child.ObjectType != desc.ObjectType || child.NbOfParams != desc.Parameters.Length) {
                     return false;
                 }
-                return desc.isMethod ? desc.toMethodInfo.method == child.GetMethodBase(EditorObjects) : desc.toFieldInfo.field == child.GetFieldInfo();
+                return desc.IsMethod ? desc.ToMethodInfo.Method == child.GetMethodBase(EditorObjects) : desc.ToFieldInfo.Field == child.GetFieldInfo();
             },
             module);
         return children.Length != 0 ? children[0] : null;
@@ -260,8 +260,8 @@ public partial class iCS_IStorage {
         ForEachChildDataPort(func,
             port=> {
                 string modulePortName= port.Name;
-                if(port.Name != iCS_Strings.InstanceObjectName && !desc.isField && !desc.isProperty) {
-                    modulePortName+= "."+desc.displayName;
+                if(port.Name != iCS_Strings.InstanceObjectName && !desc.IsField && !desc.IsProperty) {
+                    modulePortName+= "."+desc.DisplayName;
                 }
                 if(port.IsInputPort) {
                     // Special case for "this".

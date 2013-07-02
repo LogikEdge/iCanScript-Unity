@@ -149,9 +149,9 @@ public class iCS_Reflection {
 	// Decode Constructors
     // ----------------------------------------------------------------------
     static void DecodeConstructors(iCS_TypeInfo _classTypeInfo, bool acceptAllPublic= false) {
-        foreach(var constructor in _classTypeInfo.compilerType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+        foreach(var constructor in _classTypeInfo.CompilerType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
             bool registerMethod= false;
-            string displayName= iCS_Types.TypeName(_classTypeInfo.compilerType);
+            string displayName= iCS_Types.TypeName(_classTypeInfo.CompilerType);
             string description= "";
             string iconPath= "";
             foreach(var constructorAttribute in constructor.GetCustomAttributes(true)) {
@@ -164,7 +164,7 @@ public class iCS_Reflection {
                         if(funcAttr.Tooltip != null) description= funcAttr.Tooltip;
                         if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
-                        Debug.LogWarning("iCanScript: Constrcutor of class "+_classTypeInfo.displayName+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");                        
+                        Debug.LogWarning("iCanScript: Constrcutor of class "+_classTypeInfo.DisplayName+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");                        
                     }
                     break;                                        
                 }
@@ -174,7 +174,7 @@ public class iCS_Reflection {
             }
             if(registerMethod) {
                 if(constructor.IsGenericMethod) {
-                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+_classTypeInfo.displayName);
+                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+_classTypeInfo.DisplayName);
                     continue;
                 }
                 DecodeConstructor(_classTypeInfo, displayName, description, iconPath, constructor);
@@ -195,7 +195,7 @@ public class iCS_Reflection {
                                   bool acceptAllPublic= false,
                                   bool baseVisibility= false) {
         // Gather field information.
-        var classType= _classTypeInfo.compilerType;
+        var classType= _classTypeInfo.CompilerType;
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerField= false;
             iCS_ParamDirection direction= iCS_ParamDirection.InOut;
@@ -252,7 +252,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeStaticField(iCS_TypeInfo _classTypeInfo, FieldInfo field, iCS_ParamDirection dir) {
         string description= "";
-        string iconPath= _classTypeInfo.iconPath;
+        string iconPath= _classTypeInfo.IconPath;
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
             var parameters            = new iCS_Parameter[1];
             parameters[0]             = new iCS_Parameter();
@@ -274,7 +274,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeInstanceField(iCS_TypeInfo _classTypeInfo, FieldInfo field, iCS_ParamDirection dir) {
         string description= "";
-        string iconPath= _classTypeInfo.iconPath;
+        string iconPath= _classTypeInfo.IconPath;
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
             var parameters        = new iCS_Parameter[1];
             parameters[0]         = new iCS_Parameter();
@@ -297,13 +297,13 @@ public class iCS_Reflection {
     static void DecodeFunctionsAndMethods(iCS_TypeInfo _classTypeInfo,
                                           bool acceptAllPublic= false,
                                           bool baseVisibility= false) {
-        var classType= _classTypeInfo.compilerType;
+        var classType= _classTypeInfo.CompilerType;
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerMethod= false;
             string displayName= method.Name;
             string returnName= null;
-            string classDescription= _classTypeInfo.description;
-            string classIconPath= _classTypeInfo.iconPath;
+            string classDescription= _classTypeInfo.Description;
+            string classIconPath= _classTypeInfo.IconPath;
             string description= classDescription;
             string iconPath= classIconPath;
             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
@@ -368,7 +368,7 @@ public class iCS_Reflection {
     }
     // ----------------------------------------------------------------------
     static void DecodeTypeCast(iCS_TypeInfo _classTypeInfo, string iconPath, MethodInfo method) {
-        var classType= _classTypeInfo.compilerType;
+        var classType= _classTypeInfo.CompilerType;
         Type toType= method.ReturnType;
         ParameterInfo[] parameters= method.GetParameters();
         if(parameters.Length != 1 || toType == null) {

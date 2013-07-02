@@ -14,9 +14,9 @@ public abstract class iCS_MemberInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public  iCS_ObjectTypeEnum   objectType      = iCS_ObjectTypeEnum.Unknown;
-    public  iCS_TypeInfo         parentTypeInfo  = null;
-    public  string               displayName     = null;
+    public  iCS_ObjectTypeEnum   ObjectType      = iCS_ObjectTypeEnum.Unknown;
+    public  iCS_TypeInfo         ParentTypeInfo  = null;
+    public  string               DisplayName     = null;
     private string               myDescription   = null;
     private string               myIconPath      = null;
 
@@ -25,14 +25,14 @@ public abstract class iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public iCS_MemberInfo(iCS_ObjectTypeEnum _objType, iCS_TypeInfo _parentTypeInfo,
                           string _name, string _description, string _iconPath) {
-		objectType    = _objType;
-		parentTypeInfo= _parentTypeInfo;
-		displayName   = _name;
-        description   = _description;
-        iconPath      = _iconPath;
+		ObjectType    = _objType;
+		ParentTypeInfo= _parentTypeInfo;
+		DisplayName   = _name;
+        Description   = _description;
+        IconPath      = _iconPath;
 		// Register ourself in parent type.
 		if(_parentTypeInfo != null) {
-			_parentTypeInfo.members.Add(this);			
+			_parentTypeInfo.Members.Add(this);			
 		}
 
     }
@@ -40,68 +40,68 @@ public abstract class iCS_MemberInfo {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public iCS_TypeInfo         toTypeInfo          { get { return this as iCS_TypeInfo; }}
-    public iCS_ConstructorInfo  toConstructorInfo   { get { return this as iCS_ConstructorInfo; }}
-    public iCS_MethodBaseInfo   toMethodBaseInfo    { get { return this as iCS_MethodBaseInfo; }}
-    public iCS_MethodInfo       toMethodInfo        { get { return this as iCS_MethodInfo; }}
-    public iCS_FieldInfo        toFieldInfo         { get { return this as iCS_FieldInfo; }}
-    public iCS_PropertyInfo     toPropertyInfo      { get { return this as iCS_PropertyInfo; }}
-    public iCS_MessageInfo      toMessageInfo       { get { return this as iCS_MessageInfo; }}
-	public iCS_TypeCastInfo		toTypeCastInfo		{ get { return this as iCS_TypeCastInfo; }}
+    public iCS_TypeInfo         ToTypeInfo          { get { return this as iCS_TypeInfo; }}
+    public iCS_ConstructorInfo  ToConstructorInfo   { get { return this as iCS_ConstructorInfo; }}
+    public iCS_MethodBaseInfo   ToMethodBaseInfo    { get { return this as iCS_MethodBaseInfo; }}
+    public iCS_MethodInfo       ToMethodInfo        { get { return this as iCS_MethodInfo; }}
+    public iCS_FieldInfo        ToFieldInfo         { get { return this as iCS_FieldInfo; }}
+    public iCS_PropertyInfo     ToPropertyInfo      { get { return this as iCS_PropertyInfo; }}
+    public iCS_MessageInfo      ToMessageInfo       { get { return this as iCS_MessageInfo; }}
+	public iCS_TypeCastInfo		ToTypeCastInfo		{ get { return this as iCS_TypeCastInfo; }}
     // ----------------------------------------------------------------------
-    public bool isGlobalScope         { get { return parentTypeInfo == null; }}
+    public bool isGlobalScope         { get { return ParentTypeInfo == null; }}
     // ----------------------------------------------------------------------
-    public bool isTypeInfo            { get { return toTypeInfo != null; }}
-    public bool isConstructor         { get { return toConstructorInfo != null; }}
-    public bool isMethodBase          { get { return toMethodBaseInfo != null; }}
-    public bool isMethod              { get { return toMethodInfo != null; }}
-    public bool isField               { get { return toFieldInfo != null; }}
-    public bool isMessage             { get { return toMessageInfo != null; }}
-    public bool isProperty            { get { return toPropertyInfo != null; }}
-	public bool isTypeCast			  { get { return toTypeCastInfo != null; }}
-    public bool isInstanceMethodBase  { get { return isMethodBase && toMethodBaseInfo.isInstanceMember; }}
-    public bool isClassMethodBase     { get { return isMethodBase && toMethodBaseInfo.isClassMember; }}
-    public bool isInstanceMethod      { get { return isMethod && toMethodInfo.isInstanceMember; }}
-    public bool isClassMethod         { get { return isMethod && toMethodInfo.isClassMember; }}
-    public bool isInstanceMessage     { get { return isMessage && toMessageInfo.isInstanceMember; }}
-    public bool isClassMessage        { get { return isMessage && toMessageInfo.isClassMember; }}
-    public bool isInstanceField       { get { return isField && toFieldInfo.isInstanceMember; }}
-    public bool isClassField          { get { return isField && toFieldInfo.isClassMember; }}
-    public bool isGetField            { get { return isField && toFieldInfo.isGet; }}
-    public bool isSetField            { get { return isField && toFieldInfo.isSet; }}     
-    public bool isGetInstanceField    { get { return isInstanceField && isGetField; }}
-    public bool isSetInstanceField    { get { return isInstanceField && isSetField; }}
-    public bool isGetClassField       { get { return isClassField && isGetField; }}
-    public bool isSetClassField       { get { return isClassField && isSetField; }}
-    public bool isGetProperty         { get { return isProperty && toPropertyInfo.isGet; }}
-    public bool isSetProperty         { get { return isProperty && toPropertyInfo.isSet; }}
-    public bool isGetInstanceProperty { get { return isGetProperty && toPropertyInfo.isInstanceMember; }}
-    public bool isSetInstanceProperty { get { return isSetProperty && toPropertyInfo.isInstanceMember; }}
-    public bool isGetClassProperty    { get { return isGetProperty && toPropertyInfo.isClassMember; }}
-    public bool isSetClassProperty    { get { return isSetProperty && toPropertyInfo.isClassMember; }}
+    public bool IsTypeInfo            { get { return ToTypeInfo != null; }}
+    public bool IsConstructor         { get { return ToConstructorInfo != null; }}
+    public bool IsMethodBase          { get { return ToMethodBaseInfo != null; }}
+    public bool IsMethod              { get { return ToMethodInfo != null; }}
+    public bool IsField               { get { return ToFieldInfo != null; }}
+    public bool IsMessage             { get { return ToMessageInfo != null; }}
+    public bool IsProperty            { get { return ToPropertyInfo != null; }}
+	public bool IsTypeCast			  { get { return ToTypeCastInfo != null; }}
+    public bool IsInstanceMethodBase  { get { return IsMethodBase && ToMethodBaseInfo.IsInstanceMember; }}
+    public bool IsClassMethodBase     { get { return IsMethodBase && ToMethodBaseInfo.IsClassMember; }}
+    public bool IsInstanceMethod      { get { return IsMethod && ToMethodInfo.IsInstanceMember; }}
+    public bool IsClassMethod         { get { return IsMethod && ToMethodInfo.IsClassMember; }}
+    public bool IsInstanceMessage     { get { return IsMessage && ToMessageInfo.IsInstanceMember; }}
+    public bool IsClassMessage        { get { return IsMessage && ToMessageInfo.IsClassMember; }}
+    public bool IsInstanceField       { get { return IsField && ToFieldInfo.IsInstanceMember; }}
+    public bool IsClassField          { get { return IsField && ToFieldInfo.IsClassMember; }}
+    public bool IsGetField            { get { return IsField && ToFieldInfo.IsGet; }}
+    public bool IsSetField            { get { return IsField && ToFieldInfo.IsSet; }}     
+    public bool IsGetInstanceField    { get { return IsInstanceField && IsGetField; }}
+    public bool IsSetInstanceField    { get { return IsInstanceField && IsSetField; }}
+    public bool IsGetClassField       { get { return IsClassField && IsGetField; }}
+    public bool IsSetClassField       { get { return IsClassField && IsSetField; }}
+    public bool IsGetProperty         { get { return IsProperty && ToPropertyInfo.IsGet; }}
+    public bool IsSetProperty         { get { return IsProperty && ToPropertyInfo.IsSet; }}
+    public bool IsGetInstanceProperty { get { return IsGetProperty && ToPropertyInfo.IsInstanceMember; }}
+    public bool IsSetInstanceProperty { get { return IsSetProperty && ToPropertyInfo.IsInstanceMember; }}
+    public bool IsGetClassProperty    { get { return IsGetProperty && ToPropertyInfo.IsClassMember; }}
+    public bool IsSetClassProperty    { get { return IsSetProperty && ToPropertyInfo.IsClassMember; }}
 
     // ======================================================================
     // Dynamic Properties
     // ----------------------------------------------------------------------
-    public virtual string company {
+    public virtual string Company {
         get {
-            return parentTypeInfo.company;            
+            return ParentTypeInfo.Company;            
         }
     }
-    public virtual string package {
+    public virtual string Package {
         get {
-            return parentTypeInfo.package;            
+            return ParentTypeInfo.Package;            
         }
     }
-    public virtual Type classType {
+    public virtual Type ClassType {
         get {
-            return parentTypeInfo.compilerType;
+            return ParentTypeInfo.CompilerType;
         }
     }
-    public string description {
+    public string Description {
         get {
             if(String.IsNullOrEmpty(myDescription)) {
-                return parentTypeInfo == null ? "" : parentTypeInfo.description;
+                return ParentTypeInfo == null ? "" : ParentTypeInfo.Description;
             }
             return myDescription;            
         }
@@ -109,10 +109,10 @@ public abstract class iCS_MemberInfo {
             myDescription= value;
         }
     }
-    public string iconPath {
+    public string IconPath {
         get {
             if(String.IsNullOrEmpty(myIconPath)) {
-                return parentTypeInfo == null ? "" : parentTypeInfo.iconPath;
+                return ParentTypeInfo == null ? "" : ParentTypeInfo.IconPath;
             }
             return myIconPath;            
         }

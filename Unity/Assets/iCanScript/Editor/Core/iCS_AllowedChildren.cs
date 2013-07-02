@@ -51,11 +51,11 @@ public static class iCS_AllowedChildren {
 				Debug.LogWarning("iCanScript: Unable to find type information for: "+parent.Name);
 				return false;
 			}
-			foreach(var m in typeInfo.members) {
-				if(m.displayName == childName) {
+			foreach(var m in typeInfo.Members) {
+				if(m.DisplayName == childName) {
                     // Special case for Behaviour.  Only messages are allowed.
                     if(parent.IsBehaviour) {
-                        return m.isMessage || m.isField || m.isProperty;
+                        return m.IsMessage || m.IsField || m.IsProperty;
                     }
 					return true;
 				}

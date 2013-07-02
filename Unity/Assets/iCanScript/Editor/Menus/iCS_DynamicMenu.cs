@@ -80,8 +80,8 @@ public class iCS_DynamicMenu {
 		iCS_MenuContext[] menu= new iCS_MenuContext[len];
         for(int i= 0; i < len; ++i) {
 			var message= messages[i];
-            string name= message.displayName;
-            if(iCS_AllowedChildren.CanAddChildNode(name, message.objectType, selectedObject, storage)) {
+            string name= message.DisplayName;
+            if(iCS_AllowedChildren.CanAddChildNode(name, message.ObjectType, selectedObject, storage)) {
                 menu[i]= new iCS_MenuContext(String.Concat("+ ", name), message);
             } else {
                 menu[i]= new iCS_MenuContext(String.Concat("#+ ", name), message);
@@ -338,7 +338,11 @@ public class iCS_DynamicMenu {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
 				}
-                CreateMethod(selectedObject, storage, pos, desc);                                           
+                if(desc.IsMessage) {
+                    storage.CreateMessage(selectedObject.InstanceId, pos, desc);
+                } else {
+                    CreateMethod(selectedObject, storage, pos, desc);                                                               
+                }
                 break;                
             }
         }

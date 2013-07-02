@@ -7,17 +7,17 @@ public class iCS_PropertyInfo : iCS_MethodInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public iCS_AccessorType     accessorType= iCS_AccessorType.None;
+    public iCS_AccessorType     AccessorType= iCS_AccessorType.None;
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool isGet { get { return accessorType == iCS_AccessorType.Get || accessorType == iCS_AccessorType.GetAndSet; }}
-    public bool isSet { get { return accessorType == iCS_AccessorType.Set || accessorType == iCS_AccessorType.GetAndSet; }}
-    public string propertyName { get { return displayName.Substring(4); }}
+    public bool IsGet { get { return AccessorType == iCS_AccessorType.Get || AccessorType == iCS_AccessorType.GetAndSet; }}
+    public bool IsSet { get { return AccessorType == iCS_AccessorType.Set || AccessorType == iCS_AccessorType.GetAndSet; }}
+    public string PropertyName { get { return DisplayName.Substring(4); }}
     public Type type {
         get {
-            return isGet ? functionReturn.type : parameters[parameters.Length-1].type;
+            return IsGet ? FunctionReturn.type : Parameters[Parameters.Length-1].type;
         }
     }
     
@@ -31,7 +31,7 @@ public class iCS_PropertyInfo : iCS_MethodInfo {
 							MethodBase _methodBase)
     : base(_objType, _parentTypeInfo, _name, _description, _iconPath, _parameters, _functionReturn, _storageClass, _methodBase)
 	{
-	    accessorType= _accessorType;
+	    AccessorType= _accessorType;
 	}
 
 }

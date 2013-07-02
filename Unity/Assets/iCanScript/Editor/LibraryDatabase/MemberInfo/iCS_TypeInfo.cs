@@ -9,33 +9,33 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     private string                  myCompany    = null;
     private string                  myPackage    = null;   // Defaults to declaring namespace
-    public Type                     compilerType = null;
-    public Type                     baseType     = null;
-    public Type                     declaringType= null;
-    public List<iCS_MemberInfo>     members      = new List<iCS_MemberInfo>();
+    public Type                     CompilerType = null;
+    public Type                     BaseType     = null;
+    public Type                     DeclaringType= null;
+    public List<iCS_MemberInfo>     Members      = new List<iCS_MemberInfo>();
 
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public override string company {
+    public override string Company {
         get {
-            if(String.IsNullOrEmpty(myCompany) && parentTypeInfo != null) {
-                return parentTypeInfo.company;
+            if(String.IsNullOrEmpty(myCompany) && ParentTypeInfo != null) {
+                return ParentTypeInfo.Company;
             }
             return myCompany ?? "";
         }
     }
-    public override string package {
+    public override string Package {
         get {
-            if(String.IsNullOrEmpty(myPackage) && parentTypeInfo != null) {
-                return parentTypeInfo.package;
+            if(String.IsNullOrEmpty(myPackage) && ParentTypeInfo != null) {
+                return ParentTypeInfo.Package;
             }
             return myPackage ?? "";            
         }
     }
-    public override Type classType {
+    public override Type ClassType {
         get {
-            return compilerType;
+            return CompilerType;
         }
     }
     
@@ -48,26 +48,18 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     {
         myCompany    = _company;
         myPackage    = _package;
-        compilerType = _compilerType;
-        baseType     = _baseType;
-        declaringType= _declaringType;
+        CompilerType = _compilerType;
+        BaseType     = _baseType;
+        DeclaringType= _declaringType;
     }
 
     // ======================================================================
     // Common method override
     // ----------------------------------------------------------------------
     // Returns the type name in the form of "company/package/type".
-    // ----------------------------------------------------------------------
-    public string toString {
-        get {
-    		string str= !String.IsNullOrEmpty(company) ? company+memberSeparator : "";
-    		if(!String.IsNullOrEmpty(package)) str+= package+memberSeparator;
-    		str+= iCS_Types.TypeName(compilerType);
-    		return str;            
-        }
-    }
-    // ----------------------------------------------------------------------
     public override string ToString() {
-        return toString;
-    }
+		string str= !String.IsNullOrEmpty(Company) ? Company+memberSeparator : "";
+		if(!String.IsNullOrEmpty(Package)) str+= Package+memberSeparator;
+		str+= iCS_Types.TypeName(CompilerType);
+		return str;    }
 }

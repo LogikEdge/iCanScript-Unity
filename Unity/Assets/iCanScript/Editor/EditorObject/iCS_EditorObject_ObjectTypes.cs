@@ -22,6 +22,7 @@ public partial class iCS_EditorObject {
 	public bool IsBehaviourMessage			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour;}}
 
     public bool IsPort                      { get { return EngineObject.IsPort; }}
+    public bool IsFixPort                   { get { return EngineObject.IsFixPort; }}
     public bool IsDataPort                  { get { return EngineObject.IsDataPort; }}
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}

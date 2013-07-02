@@ -7,21 +7,21 @@ public class iCS_FieldInfo : iCS_MethodBaseInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public iCS_AccessorType     accessorType= iCS_AccessorType.None;
-    public FieldInfo            field         = null;
+    public iCS_AccessorType     AccessorType= iCS_AccessorType.None;
+    public FieldInfo            Field         = null;
 	public Type					type          = null;
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool isGet {
-        get { return accessorType == iCS_AccessorType.Get || accessorType == iCS_AccessorType.GetAndSet; }
+    public bool IsGet {
+        get { return AccessorType == iCS_AccessorType.Get || AccessorType == iCS_AccessorType.GetAndSet; }
     }
-    public bool isSet {
-        get { return accessorType == iCS_AccessorType.Set || accessorType == iCS_AccessorType.GetAndSet; }
+    public bool IsSet {
+        get { return AccessorType == iCS_AccessorType.Set || AccessorType == iCS_AccessorType.GetAndSet; }
     }
-    public override string methodName {
-        get { return field.Name; }
+    public override string MethodName {
+        get { return Field.Name; }
     }
     
 
@@ -35,16 +35,16 @@ public class iCS_FieldInfo : iCS_MethodBaseInfo {
 						 FieldInfo _fieldInfo)
     : base(objType, _parentType, _name, _description, _iconPath, _parameters, _functionReturn, _storageClass)
     {
-        field= _fieldInfo;
-        accessorType= _accessorType;
-		type = functionReturn != null && functionReturn.type != typeof(void) ?
-		            functionReturn.type :
+        Field= _fieldInfo;
+        AccessorType= _accessorType;
+		type = FunctionReturn != null && FunctionReturn.type != typeof(void) ?
+		            FunctionReturn.type :
 		            _parameters[_parameters.Length-1].type;
     }
 
     // ======================================================================
     // Instance specific methods
     // ----------------------------------------------------------------------
-    public string fieldName    { get { return displayName.Substring(4); }}
+    public string FieldName    { get { return DisplayName.Substring(4); }}
 
 }

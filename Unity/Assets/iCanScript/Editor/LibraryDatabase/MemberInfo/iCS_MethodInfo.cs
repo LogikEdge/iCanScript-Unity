@@ -9,13 +9,13 @@ public class iCS_MethodInfo : iCS_MethodBaseInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public MethodBase           method= null;
+    public MethodBase   Method= null;
 
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public override string methodName {
-        get { return method.Name; }
+    public override string MethodName {
+        get { return Method.Name; }
     }
     
     // ======================================================================
@@ -26,7 +26,7 @@ public class iCS_MethodInfo : iCS_MethodBaseInfo {
                           iCS_Parameter[] _parameters, iCS_FunctionReturn _functionReturn,
 						  iCS_StorageClass _storageClass, MethodBase _methodBase)
     : base(objType, _classInfo, _name, _description, _iconPath, _parameters, _functionReturn, _storageClass) {
-        method        = _methodBase;
+        Method        = _methodBase;
     }
 
 }

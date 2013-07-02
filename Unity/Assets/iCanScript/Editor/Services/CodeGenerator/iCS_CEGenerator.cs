@@ -17,7 +17,7 @@ public static class iCS_CEGenerator {
             n => {
                 if(n.IsMessage) {
                     for(int i= 0; i < behaviourMessages.Length; ++i) {
-                        if(behaviourMessages[i].displayName == n.Name) {
+                        if(behaviourMessages[i].DisplayName == n.Name) {
                             messages.Add(behaviourMessages[i]);
                         }
                     }
@@ -100,7 +100,7 @@ public static class iCS_CEGenerator {
         return MethodSignature(message);
     }
     public static string MessageBody(iCS_MessageInfo message) {
-        var parameters= message.parameters;
+        var parameters= message.Parameters;
         var len= parameters.Length;
         var msgParamStr= "";
         for(int i= 0; i < len; ++i) {
@@ -109,7 +109,7 @@ public static class iCS_CEGenerator {
                 msgParamStr+= ", ";
             }
         }
-        var paramStr= "\""+message.displayName+"\""+(msgParamStr.Length != 0 ? ", ":"")+msgParamStr;
+        var paramStr= "\""+message.DisplayName+"\""+(msgParamStr.Length != 0 ? ", ":"")+msgParamStr;
         return "\n\t{\n\t\tRunMessage("+paramStr+");\n\t}";
     }
 
@@ -118,15 +118,15 @@ public static class iCS_CEGenerator {
 	// ----------------------------------------------------------------------
     public static string MethodSignature(iCS_MethodBaseInfo method) {
         var storageClass= "";
-        if(method.isClassMember) storageClass= "static ";
+        if(method.IsClassMember) storageClass= "static ";
         var returnType= "void";
-        if(method.functionReturn != null) {
-            returnType= TypeName(method.functionReturn.type);
+        if(method.FunctionReturn != null) {
+            returnType= TypeName(method.FunctionReturn.type);
         }
-        var name= method.displayName;
+        var name= method.DisplayName;
         var parameters="";
-        if(method.parameters != null) {
-            foreach(var p in method.parameters) {
+        if(method.Parameters != null) {
+            foreach(var p in method.Parameters) {
 				parameters+= TypeName(p.type)+" "+p.name+", ";
             }            
         }
@@ -135,11 +135,11 @@ public static class iCS_CEGenerator {
     }
 	// ----------------------------------------------------------------------
     public static string MethodStorageClass(iCS_MethodBaseInfo method) {
-        return method.isClassMember ? "static" : "";
+        return method.IsClassMember ? "static" : "";
     }
 	// ----------------------------------------------------------------------
     public static string[] MethodParameters(iCS_MethodBaseInfo method) {
-        var methodParameters= method.parameters;
+        var methodParameters= method.Parameters;
         if(methodParameters == null) {
             return new string[0];
         }
@@ -156,10 +156,10 @@ public static class iCS_CEGenerator {
     // Member code generation
 	// ----------------------------------------------------------------------
     public static string Name(iCS_MemberInfo member) {
-        return member.displayName;
+        return member.DisplayName;
     }
     public static string Description(iCS_MemberInfo member) {
-        return member.description;
+        return member.Description;
     }
 
     // ======================================================================

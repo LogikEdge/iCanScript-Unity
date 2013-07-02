@@ -156,7 +156,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Class) {
-            CreateClassModule(node.Desc.classType, iStorage);        
+            CreateClassModule(node.Desc.ClassType, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {
@@ -177,8 +177,8 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         }
 		if(node.Type == iCS_LibraryController.NodeTypeEnum.Message) {
             var module= CreateMessage(node.Desc, iStorage);        
-			if(node.Desc.iconPath != null) {
-				module.IconPath= node.Desc.iconPath;				
+			if(node.Desc.IconPath != null) {
+				module.IconPath= node.Desc.IconPath;				
 			}
 			return;
 		}
@@ -197,10 +197,10 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {
-        return iStorage.CreateMethod(-1, Vector2.zero, desc.toMethodBaseInfo);            
+        return iStorage.CreateMethod(-1, Vector2.zero, desc.ToMethodBaseInfo);            
     }    
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {
-        return iStorage.CreateModule(-1, Vector2.zero, desc.displayName, desc.objectType, typeof(iCS_Module));            
+        return iStorage.CreateModule(-1, Vector2.zero, desc.DisplayName, desc.ObjectType, typeof(iCS_Module));            
     }    
 }

@@ -55,20 +55,20 @@ public class iCS_LibraryDatabase {
     // Returns 0 if equal, negative if first is smaller and
     // positive if first is greather.
     public static int CompareFunctionNames(iCS_MemberInfo d1, iCS_MemberInfo d2) {
-        if(d1.company == null && d2.company != null) return -1;
-        if(d1.company != null && d2.company == null) return 1;
+        if(d1.Company == null && d2.Company != null) return -1;
+        if(d1.Company != null && d2.Company == null) return 1;
         int result;
-        if(d1.company != null) {
-            result= d1.company.CompareTo(d2.company);
+        if(d1.Company != null) {
+            result= d1.Company.CompareTo(d2.Company);
             if(result != 0) return result;
         }
-        if(d1.package == null && d2.package != null) return -1;
-        if(d1.package != null && d2.package == null) return 1;
-        if(d1.package != null) {
-            result= d1.package.CompareTo(d2.package);
+        if(d1.Package == null && d2.Package != null) return -1;
+        if(d1.Package != null && d2.Package == null) return 1;
+        if(d1.Package != null) {
+            result= d1.Package.CompareTo(d2.Package);
             if(result != 0) return result;            
         }
-        return d1.displayName.CompareTo(d2.displayName);
+        return d1.DisplayName.CompareTo(d2.DisplayName);
     }
     // ----------------------------------------------------------------------
     public static List<iCS_MethodBaseInfo> BuildExpertMenu() {
@@ -84,13 +84,13 @@ public class iCS_LibraryDatabase {
         QSort();
         var menu= new List<iCS_MethodBaseInfo>();
         foreach(var desc in Functions) {
-            Type classType= desc.classType;
+            Type classType= desc.ClassType;
             if(iCS_Types.IsStaticClass(classType)) {
                 menu.Add(desc);
             } else {
                 bool found= false;
                 foreach(var existing in menu) {
-                    if(classType == existing.classType) {
+                    if(classType == existing.ClassType) {
                         found= true;
                         break;
                     }
@@ -105,7 +105,7 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     public static iCS_TypeInfo GetTypeInfo(Type compilerType) {
         foreach(var t in types) {
-            if(t.compilerType == compilerType) {
+            if(t.CompilerType == compilerType) {
                 return t;
             }
         }
@@ -118,14 +118,14 @@ public class iCS_LibraryDatabase {
 		if(typeInfo == null) {
 			return new iCS_MemberInfo[0];
 		}
-		return typeInfo.members.ToArray();
+		return typeInfo.Members.ToArray();
     }
     // ----------------------------------------------------------------------
 	public static iCS_ConstructorInfo[] GetConstructors(Type compilerType) {
 	    var constructors= new List<iCS_ConstructorInfo>();
         foreach(var c in GetMembers(compilerType)) {
-            if(c.isConstructor) {
-                constructors.Add(c.toConstructorInfo);
+            if(c.IsConstructor) {
+                constructors.Add(c.ToConstructorInfo);
             }
         }
         return constructors.ToArray();
@@ -134,8 +134,8 @@ public class iCS_LibraryDatabase {
 	public static iCS_FieldInfo[] GetFields(Type compilerType) {
 	    var fields= new List<iCS_FieldInfo>();
 	    foreach(var f in GetMembers(compilerType)) {
-	        if(f.isField) {
-	            fields.Add(f.toFieldInfo);
+	        if(f.IsField) {
+	            fields.Add(f.ToFieldInfo);
 	        }
 	    }
         return fields.ToArray();
@@ -144,8 +144,8 @@ public class iCS_LibraryDatabase {
 	public static iCS_PropertyInfo[] GetProperties(Type compilerType) {
 	    var properties= new List<iCS_PropertyInfo>();
 	    foreach(var p in GetMembers(compilerType)) {
-            if(p.isProperty) {
-                properties.Add(p.toPropertyInfo);
+            if(p.IsProperty) {
+                properties.Add(p.ToPropertyInfo);
             }
         }
 	    return properties.ToArray();
@@ -154,8 +154,8 @@ public class iCS_LibraryDatabase {
 	public static iCS_MethodBaseInfo[] GetPropertiesAndFields(Type compilerType) {
 	    var variables= new List<iCS_MethodBaseInfo>();
 	    foreach(var v in GetMembers(compilerType)) {
-	        if(v.isField || v.isProperty) {
-	            variables.Add(v.toMethodBaseInfo);
+	        if(v.IsField || v.IsProperty) {
+	            variables.Add(v.ToMethodBaseInfo);
 	        }
 	    }
 	    return variables.ToArray();
@@ -164,8 +164,8 @@ public class iCS_LibraryDatabase {
 	public static iCS_MethodInfo[] GetMethods(Type compilerType) {
         var methods= new List<iCS_MethodInfo>();
         foreach(var m in GetMembers(compilerType)) {
-            if(m.isMethod && !m.isConstructor && !m.isProperty) {
-                methods.Add(m.toMethodInfo);
+            if(m.IsMethod && !m.IsConstructor && !m.IsProperty) {
+                methods.Add(m.ToMethodInfo);
             }
         }
         return methods.ToArray();
@@ -174,8 +174,8 @@ public class iCS_LibraryDatabase {
     public static iCS_MessageInfo[] GetMessages(Type compilerType) {
         var messages= new List<iCS_MessageInfo>();
         foreach(var m in GetMembers(compilerType)) {
-            if(m.isMessage) {
-                messages.Add(m.toMessageInfo);
+            if(m.IsMessage) {
+                messages.Add(m.ToMessageInfo);
             }
         }
         return messages.ToArray();
@@ -189,8 +189,8 @@ public class iCS_LibraryDatabase {
             bool shouldInclude= false;
             var func= Functions[i];
             if(inputType != null) {
-                if(func.classType == inputType) {
-                    switch(func.objectType) {
+                if(func.ClassType == inputType) {
+                    switch(func.ObjectType) {
                         case iCS_ObjectTypeEnum.InstanceMethod:
                         case iCS_ObjectTypeEnum.InstanceField: {
                             shouldInclude= true;
@@ -198,8 +198,8 @@ public class iCS_LibraryDatabase {
                         }
                     }
                 }
-                for(int j= 0; !shouldInclude && j < func.parameters.Length; ++j) {
-                    var param= func.parameters[j];
+                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+                    var param= func.Parameters[j];
                     if(param.direction != iCS_ParamDirection.Out) {
 						if(param.type == inputType) {
 //                        if(iCS_Types.IsA(func.ParamTypes[j], inputType)) {
@@ -209,8 +209,8 @@ public class iCS_LibraryDatabase {
                 }
             }
             if(!shouldInclude && outputType != null) {
-                if(func.classType == outputType) {
-                    switch(func.objectType) {
+                if(func.ClassType == outputType) {
+                    switch(func.ObjectType) {
                         case iCS_ObjectTypeEnum.Constructor:
                         case iCS_ObjectTypeEnum.InstanceMethod:
                         case iCS_ObjectTypeEnum.InstanceField: {
@@ -219,9 +219,9 @@ public class iCS_LibraryDatabase {
                         }
                     }
                 }
-                if(func.returnType == outputType) shouldInclude= true;
-                for(int j= 0; !shouldInclude && j < func.parameters.Length; ++j) {
-                    var param= func.parameters[j];
+                if(func.ReturnType == outputType) shouldInclude= true;
+                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+                    var param= func.Parameters[j];
                     if(param.direction != iCS_ParamDirection.In) {
                         if(outputType == param.type) {
 //                        if(iCS_Types.IsA(outputType, func.ParamTypes[j])) {
@@ -248,7 +248,7 @@ public class iCS_LibraryDatabase {
     // Returns the class type associated with the given company/package.
     public static Type GetClassType(string classPath) {
         foreach(var desc in Functions) {
-            if(desc.functionPath == classPath) return desc.classType;
+            if(desc.FunctionPath == classPath) return desc.ClassType;
         }
         return null;
     }
@@ -264,16 +264,16 @@ public class iCS_LibraryDatabase {
         return null;
     }
     public static iCS_TypeCastInfo FindTypeCast(iCS_TypeInfo typeInfo, Type fromType, Type toType) {
-		foreach(var m in typeInfo.members) {
-	        if(m.isTypeCast) {
-	            var typeCast= m.toTypeCastInfo;
-	            if(iCS_Types.CanBeConnectedWithoutConversion(fromType, typeCast.parameters[0].type) &&
-	               iCS_Types.CanBeConnectedWithoutConversion(typeCast.returnType, toType)) {
+		foreach(var m in typeInfo.Members) {
+	        if(m.IsTypeCast) {
+	            var typeCast= m.ToTypeCastInfo;
+	            if(iCS_Types.CanBeConnectedWithoutConversion(fromType, typeCast.Parameters[0].type) &&
+	               iCS_Types.CanBeConnectedWithoutConversion(typeCast.ReturnType, toType)) {
 					return typeCast;
 				}
 	        }
-			if(m.isTypeInfo) {
-				var cast= FindTypeCast(m.toTypeInfo, fromType, toType);
+			if(m.IsTypeInfo) {
+				var cast= FindTypeCast(m.ToTypeInfo, fromType, toType);
 				if(cast != null) {
 					return cast;
 				}
@@ -303,11 +303,11 @@ public class iCS_LibraryDatabase {
         if(baseType != null && baseType != typeof(void)) {
             var baseTypeInfo= GetTypeInfo(baseType);
             if(baseTypeInfo != null) {
-                foreach(var m in baseTypeInfo.members) {
-                    if(m.isMessage) {
-                        var msgInfo= m.toMessageInfo;
-                        var record= new iCS_MessageInfo(typeInfo, msgInfo.displayName, msgInfo.description, msgInfo.iconPath,
-                                                        msgInfo.parameters, msgInfo.functionReturn, msgInfo.storageClass);
+                foreach(var m in baseTypeInfo.Members) {
+                    if(m.IsMessage) {
+                        var msgInfo= m.ToMessageInfo;
+                        var record= new iCS_MessageInfo(typeInfo, msgInfo.DisplayName, msgInfo.Description, msgInfo.IconPath,
+                                                        msgInfo.Parameters, msgInfo.FunctionReturn, msgInfo.StorageClass);
                         AddDataBaseRecord(record);
                     }
                 }                
@@ -368,10 +368,10 @@ public class iCS_LibraryDatabase {
         // Don't accept automatic conversion if it already exist.
         Type toType= methodInfo.ReturnType;
         foreach(var desc in Functions) {
-            if(desc.isTypeCast) {
-                var typeCast= desc.toTypeCastInfo;
-                if(typeCast.parameters[0].type == fromType && typeCast.returnType == toType) {
-                    Debug.LogWarning("Duplicate type cast from "+fromType+" to "+toType+" exists in classes "+typeCast.method.DeclaringType+" and "+methodInfo.DeclaringType);
+            if(desc.IsTypeCast) {
+                var typeCast= desc.ToTypeCastInfo;
+                if(typeCast.Parameters[0].type == fromType && typeCast.ReturnType == toType) {
+                    Debug.LogWarning("Duplicate type cast from "+fromType+" to "+toType+" exists in classes "+typeCast.Method.DeclaringType+" and "+methodInfo.DeclaringType);
                     return;
                 }                
             }
@@ -403,16 +403,16 @@ public class iCS_LibraryDatabase {
         AddDataBaseRecord(record);
         // Also add message to all deriving classes.
         foreach(var t in types) {
-            if(t.baseType == classType) {
-                AddMessage(t.compilerType, messageName, storageClass, parameters, functionReturn, description, iconPath);
+            if(t.BaseType == classType) {
+                AddMessage(t.CompilerType, messageName, storageClass, parameters, functionReturn, description, iconPath);
             }
         }
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.
     public static void AddDataBaseRecord(iCS_MemberInfo record) {
-        if(record.isMethodBase) {
-            Functions.Add(record.toMethodBaseInfo);
+        if(record.IsMethodBase) {
+            Functions.Add(record.ToMethodBaseInfo);
             IsSorted= false;	            
         }
 	}
