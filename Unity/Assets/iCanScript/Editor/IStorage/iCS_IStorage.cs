@@ -186,7 +186,7 @@ public partial class iCS_IStorage {
         if(EditorObjects == null || EditorObjects.Count == 0) return;
         var behaviour= EditorObjects[0];
         if(!behaviour.IsBehaviour) return;
-        behaviour.ForEachChildNode(c=> { if(c.IsMessage) UpdateBehaviourMessagePorts(c, 100); });
+        behaviour.ForEachChildNode(c=> { if(c.IsMessage) UpdateBehaviourMessagePorts(c); });
     }
     
     // ----------------------------------------------------------------------
@@ -535,7 +535,7 @@ public partial class iCS_IStorage {
 		}
 		// Special case for behaviour messages.
 		if(instance.Parent.IsBehaviour) {
-            portIdx= UpdateBehaviourMessagePorts(instance, portIdx);
+            UpdateBehaviourMessagePorts(instance);
 		}
         // Perform initial node layout.
         instance.Unhide();

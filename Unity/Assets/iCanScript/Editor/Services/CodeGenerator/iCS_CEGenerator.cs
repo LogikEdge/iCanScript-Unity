@@ -1,3 +1,4 @@
+//#define USE_INSPECTOR
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -26,27 +27,24 @@ public static class iCS_CEGenerator {
         );
         
         // Generate behaviour source code.
-        var behaviourClassName= iCS_TextFile.ToClassName(iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"Behaviour_"+objectId);
+        var behaviourClassName= iCS_TextFile.ToClassName(iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"BehaviourProxy_"+objectId);
         var code= BehaviourMessageProxy(behaviourClassName, messages.ToArray());
         var fileName= ClassNameToFileName(behaviourClassName);
         var filePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
         iCS_CETextFile.WriteFile(filePath+"/"+fileName, code);
-
-        // Generate corresponding inspector code.
-        var inspectorClassName= InspectorClassNameFrom(behaviourClassName);
-        var inspectorCode= "\nusing UnityEngine;\n"+
-                           "using UnityEditor;\n\n"+
-                           "[CustomEditor (typeof ("+behaviourClassName+"))]\n"+
-                           "public sealed class "+inspectorClassName+" : iCS_Inspector {}\n\n";
-        var inspectorFileName= ClassNameToFileName(inspectorClassName);
-        var inspectorFilePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder+"/Editor";
-        iCS_CETextFile.WriteFile(inspectorFilePath+"/"+inspectorFileName, inspectorCode);
 
         // Remove previous file if fileName has changed.
         if(storage.FileName != fileName) {
             RemoveBehaviourCode(behaviour);
             storage.FileName= fileName; 
             EditorUtility.SetDirty(storage);
+        }
+        
+        // Install on game object if not already present.
+        var gameObject= behaviour.Storage.gameObject;
+        var proxy= gameObject.GetComponent(behaviourClassName);
+        if(proxy == null) {
+            gameObject.AddComponent(behaviourClassName);
         }
     }
 	// ----------------------------------------------------------------------
@@ -56,13 +54,6 @@ public static class iCS_CEGenerator {
         if(string.IsNullOrEmpty(fileName)) return;
         var path= "Assets/"+iCS_PreferencesEditor.CodeGenerationFolder+"/"+iCS_PreferencesEditor.BehaviourGenerationSubfolder+"/";
         AssetDatabase.DeleteAsset(path+fileName);
-        var inspectorClassName= InspectorClassNameFrom(FileNameToClassName(fileName));
-        var inspectorFileName= ClassNameToFileName(inspectorClassName);
-        AssetDatabase.DeleteAsset(path+"/Editor/"+inspectorFileName);
-    }
-	// ----------------------------------------------------------------------
-    public static string InspectorClassNameFrom(string className) {
-        return className+"_Inspector";
     }
 	// ----------------------------------------------------------------------
     public static string ClassNameToFileName(string className) {
@@ -79,9 +70,12 @@ public static class iCS_CEGenerator {
     public static string BehaviourMessageProxy(string className, iCS_MessageInfo[] messages) {
         var fileHeader= iCS_CETemplate.FileHeader(className+".cs", className);
         var imports= "\nusing UnityEngine;\n";
-//        var inspector= "\n[CustomEditor (typeof ("+className+"))]\n"+
-//                       "public sealed class "+className+"Inspector : iCS_Inspector {}\n\n";
-        var classHeader= "\npublic sealed class "+className+" : iCS_BehaviourImp {\n";
+        var classHeader= "\npublic sealed class "+className+" : MonoBehaviour {\n"+
+                         "\tiCS_Behaviour   myBehaviour= null;\n\n"+
+                         "\tvoid Start()\n"+
+                         "\t{\n"+
+                         "\t\tmyBehaviour= GetComponent(typeof(iCS_Behaviour)) as iCS_Behaviour;\n"+
+                         "\t}\n";
         var classTrailer= "\n}\n";
         var messageImpls= "";
         foreach(var msg in messages) {
@@ -110,7 +104,11 @@ public static class iCS_CEGenerator {
             }
         }
         var paramStr= "\""+message.DisplayName+"\""+(msgParamStr.Length != 0 ? ", ":"")+msgParamStr;
-        return "\n\t{\n\t\tRunMessage("+paramStr+");\n\t}";
+        return "\n\t{\n"+
+               "\t\tif(myBehaviour != null) {\n"+
+               "\t\t\tmyBehaviour.RunMessage("+paramStr+");\n"+
+               "\t\t}\n"+
+               "\t}\n";
     }
 
     // ======================================================================

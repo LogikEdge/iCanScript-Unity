@@ -23,9 +23,10 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Scans through the behaviour
     // Returns the next available port index.
-    public int UpdateBehaviourMessagePorts(iCS_EditorObject node, int portIdx) {
+    public int UpdateBehaviourMessagePorts(iCS_EditorObject node) {
         var neededPorts= BuildListOfPortInfoForBehaviourMessage(node.Parent);
         var changed= CleanupExistingFixPorts(node, neededPorts);
+        int portIdx= GetSortedChildDataPorts(node).Length;
         changed |= BuildMissingPorts(node, neededPorts, portIdx);
         if(changed) node.LayoutNode();
         return portIdx;

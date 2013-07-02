@@ -51,10 +51,6 @@ public static class iCS_InstallerMgr {
         if(!Directory.Exists(behavioursPath)) {
             AssetDatabase.CreateFolder("Assets/"+codeGenerationFolder, behavioursSubfolder);            
         }
-        var behavioursEditorPath= behavioursPath+"/Editor";
-        if(!Directory.Exists(behavioursEditorPath)) {
-            AssetDatabase.CreateFolder("Assets/"+codeGenerationFolder+"/"+behavioursSubfolder, "Editor");
-        }
     }
     
     // =================================================================================
