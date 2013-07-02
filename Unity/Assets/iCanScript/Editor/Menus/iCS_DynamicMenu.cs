@@ -57,6 +57,8 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.StateChart:       StateChartMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.State:            StateMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.Module:           ModuleMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceMessage:  ModuleMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassMessage:     ModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionGuard:  ModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionAction: ModuleMenu(selectedObject, storage); break;
 			case iCS_ObjectTypeEnum.TransitionModule: TransitionModuleMenu(selectedObject, storage); break;
