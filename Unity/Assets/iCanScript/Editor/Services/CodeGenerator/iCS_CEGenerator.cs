@@ -44,6 +44,7 @@ public static class iCS_CEGenerator {
         var gameObject= behaviour.Storage.gameObject;
         var proxy= gameObject.GetComponent(behaviourClassName);
         if(proxy == null) {
+//            while(EditorApplication.isCompiling) {}
             gameObject.AddComponent(behaviourClassName);
         }
     }
