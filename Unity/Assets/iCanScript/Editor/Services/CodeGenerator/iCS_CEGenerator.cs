@@ -88,6 +88,8 @@ public static class iCS_CEGenerator {
     // Messsage Receiver code generation
 	// ----------------------------------------------------------------------
     public static string MessageReceiverImp(iCS_MessageInfo message) {
+        // Start message is already handle...
+        if("Start" == message.DisplayName) return "";
         return "\n\t"+MessageSignature(message)+MessageBody(message);
     }
     public static string MessageSignature(iCS_MessageInfo message) {
@@ -104,11 +106,12 @@ public static class iCS_CEGenerator {
             }
         }
         var paramStr= "\""+message.DisplayName+"\""+(msgParamStr.Length != 0 ? ", ":"")+msgParamStr;
+        // Special case for the Start() message that generates the code.
         return "\n\t{\n"+
                "\t\tif(myBehaviour != null) {\n"+
                "\t\t\tmyBehaviour.RunMessage("+paramStr+");\n"+
                "\t\t}\n"+
-               "\t}\n";
+               "\t}\n";            
     }
 
     // ======================================================================

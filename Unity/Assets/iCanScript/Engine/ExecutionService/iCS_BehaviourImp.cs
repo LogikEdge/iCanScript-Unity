@@ -81,14 +81,7 @@ public partial class iCS_BehaviourImp : iCS_Storage {
             } while(!startContext.Action.IsCurrent(-2));
         }
     }
-    
-    // ======================================================================
-    // Graph Updates
-    // ----------------------------------------------------------------------
-    void Update()       { RunMessage("Update"); }
-    void LateUpdate()   { RunMessage("LateUpdate"); }
-    void FixedUpdate()  { RunMessage("FixedUpdate"); }
-    
+        
     // ======================================================================
     // Dynamic Message Receiver Management
     // ----------------------------------------------------------------------
