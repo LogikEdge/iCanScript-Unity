@@ -238,6 +238,11 @@
         </Note>
     </Notes>
     <BackgroundShapes>
+        <Shape ID="48" Sticky="No" Position="729.0,16.0" Width="493.0" Height="523.0">
+            <Appearance>
+                <Border Weight="1"></Border>
+            </Appearance>
+        </Shape>
         <Shape ID="19" Sticky="Yes" Position="24.0,15.0" Width="610.0" Height="522.0">
             <Appearance>
                 <Border Weight="1"></Border>
@@ -309,5 +314,5 @@
         <DefaultFont>Helvetica</DefaultFont>
         <DefaultTextColor>0.0 0.0 0.0</DefaultTextColor>
     </UISettings>
-    <PrintSettings PaperSize="611.999977,792.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="na-letter" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
+    <PrintSettings PaperSize="611.999985,792.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="na-letter" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
 </ScappleDocument>
