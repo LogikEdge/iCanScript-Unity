@@ -523,8 +523,8 @@
 	<integer>3</integer>
 	<key>inspectorSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {937, 962}}</string>
-		<string>{{938, 0}, {413, 962}}</string>
+		<string>{{0, 0}, {1730, 1252}}</string>
+		<string>{{1731, 0}, {500, 1252}}</string>
 	</array>
 	<key>inspectorSynopsisIsCollapsed</key>
 	<false/>
@@ -1705,7 +1705,7 @@
 		<integer>55</integer>
 	</array>
 	<key>supportingDocumentEditor.scrollRect</key>
-	<string>{{0, 0}, {1211.3334, 783.33331}}</string>
+	<string>{{0, 0}, {1153.3334, 783.33331}}</string>
 	<key>supportingDocumentEditor.selectedRanges</key>
 	<string>{112, 0}</string>
 	<key>supportingDocumentEditor.textEditorState</key>

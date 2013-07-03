@@ -6,6 +6,7 @@ using P=Prelude;
 
 public static class JSON {
     // -----------------------------------------------------------------------------
+    // Returns the value of an attribute from the JSON formatted string.
     public static JValue GetValueFor(string jsonStr, string accessorStr) {
         int i= 0;
         var root= JSON.ParseNameValuePair(jsonStr, ref i);
