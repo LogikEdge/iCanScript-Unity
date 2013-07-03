@@ -34,9 +34,9 @@ public static class iCS_CEGenerator {
         iCS_CETextFile.WriteFile(filePath+"/"+fileName, code);
 
         // Remove previous file if fileName has changed.
-        if(storage.FileName != fileName) {
+        if(storage.BehaviourClassName != behaviourClassName) {
             RemoveBehaviourCode(behaviour);
-            storage.FileName= fileName; 
+            storage.BehaviourClassName= behaviourClassName; 
             EditorUtility.SetDirty(storage);
         }
         
@@ -44,17 +44,16 @@ public static class iCS_CEGenerator {
         var gameObject= behaviour.Storage.gameObject;
         var proxy= gameObject.GetComponent(behaviourClassName);
         if(proxy == null) {
-//            while(EditorApplication.isCompiling) {}
             gameObject.AddComponent(behaviourClassName);
         }
     }
 	// ----------------------------------------------------------------------
     public static void RemoveBehaviourCode(iCS_EditorObject behaviour) {
         var storage= behaviour.Storage;
-        var fileName= storage.FileName;
-        if(string.IsNullOrEmpty(fileName)) return;
+        var behaviourClassName= storage.BehaviourClassName;
+        if(string.IsNullOrEmpty(behaviourClassName)) return;
         var path= "Assets/"+iCS_PreferencesEditor.CodeGenerationFolder+"/"+iCS_PreferencesEditor.BehaviourGenerationSubfolder+"/";
-        AssetDatabase.DeleteAsset(path+fileName);
+        AssetDatabase.DeleteAsset(path+ClassNameToFileName(behaviourClassName));
     }
 	// ----------------------------------------------------------------------
     public static string ClassNameToFileName(string className) {

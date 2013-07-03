@@ -9,6 +9,7 @@ public static class iCS_SystemEvents {
     // ----------------------------------------------------------------------
     public static Action    OnEditorStarted   = null;
     public static Action    OnSceneChanged    = null;
+    public static Action    OnHierarchyChanged= null;
     public static Action    OnProjectChanged  = null;
     public static Action    OnCompileStarted  = null;
     public static Action    OnCompileCompleted= null;
@@ -61,7 +62,7 @@ public static class iCS_SystemEvents {
         foreach(var vs in visualScripts) {
             Debug.Log("GameObject with Visual Script: "+(vs as iCS_VisualScript).gameObject.name);
         }
-        Invoke(OnSceneChanged);
+        Invoke(OnHierarchyChanged);
     }
     // ----------------------------------------------------------------------
     // This method attempts to determine what has changed in the project.
