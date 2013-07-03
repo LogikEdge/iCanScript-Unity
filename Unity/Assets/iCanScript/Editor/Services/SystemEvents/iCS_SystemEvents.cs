@@ -7,13 +7,14 @@ public static class iCS_SystemEvents {
     // ======================================================================
     // Callbacks
     // ----------------------------------------------------------------------
-    public static Action                OnEditorStarted   = null;
-    public static Action<string,string> OnSceneChanged    = null;
-    public static Action                OnCompileStarted  = null;
-    public static Action                OnCompileCompleted= null;
-    public static Action                OnEngineStarted   = null;
-    public static Action                OnEngineStopped   = null;
-    public static Action                OnEnginePaused    = null;
+    public static Action    OnEditorStarted   = null;
+    public static Action    OnSceneChanged    = null;
+    public static Action    OnProjectChanged  = null;
+    public static Action    OnCompileStarted  = null;
+    public static Action    OnCompileCompleted= null;
+    public static Action    OnEngineStarted   = null;
+    public static Action    OnEngineStopped   = null;
+    public static Action    OnEnginePaused    = null;
     
     // ======================================================================
     // State fields
@@ -60,11 +61,13 @@ public static class iCS_SystemEvents {
         foreach(var vs in visualScripts) {
             Debug.Log("GameObject with Visual Script: "+(vs as iCS_VisualScript).gameObject.name);
         }
+        Invoke(OnSceneChanged);
     }
     // ----------------------------------------------------------------------
     // This method attempts to determine what has changed in the project.
     static void ProjectChanged() {
         Debug.Log("iCanScript: project has changed");
+        Invoke(OnProjectChanged);
     }
     // ----------------------------------------------------------------------
     // This method attempts to determine what has changed in the playmode.
@@ -83,14 +86,7 @@ public static class iCS_SystemEvents {
         // Detect if it's the first time update.
         if(!myIsUpdateSeen) {
             Debug.Log("iCanScript: Editor started");
-            if(OnEditorStarted != null) {
-                foreach(Action handler in OnEditorStarted.GetInvocationList()) {
-                    try {
-                        handler();
-                    }
-                    catch(Exception) {}
-                }                       
-            }
+            Invoke(OnEditorStarted);
             myIsUpdateSeen= true;
         }
         // Detect if scene has changed.
@@ -107,24 +103,10 @@ public static class iCS_SystemEvents {
         if(compiling != myIsCompiling) {
             if(compiling) {
                 Debug.Log("iCanScript: compilation started.");
-                if(OnCompileStarted != null) {
-                    foreach(Action handler in OnCompileStarted.GetInvocationList()) {
-                        try {
-                            handler();
-                        }
-                        catch(Exception) {}
-                    }                       
-                }
+                Invoke(OnCompileStarted);
             } else {
                 Debug.Log("iCanScript: compilation ended.");
-                if(OnCompileCompleted != null) {
-                    foreach(Action handler in OnCompileCompleted.GetInvocationList()) {
-                        try {
-                            handler();
-                        }
-                        catch(Exception) {}
-                    }                       
-                }                
+                Invoke(OnCompileCompleted);
             }
             myIsCompiling= compiling;
             PersistantIsCompiling= myIsCompiling;
@@ -135,14 +117,7 @@ public static class iCS_SystemEvents {
         var currentScene= EditorApplication.currentScene;
         if(currentScene != myCurrentScene) {
             Debug.Log("iCanScript: scene has changed.");
-            if(OnSceneChanged != null) {
-                foreach(Action<string,string> handler in OnSceneChanged.GetInvocationList()) {
-                    try {
-                        handler(myCurrentScene, currentScene);
-                    }
-                    catch(Exception) {}
-                }                       
-            }
+            Invoke(OnSceneChanged);
             myCurrentScene= currentScene;
         }        
     }
@@ -152,24 +127,10 @@ public static class iCS_SystemEvents {
         if(isPlaying != myIsPlaying) {
             if(isPlaying) {
                 Debug.Log("iCanScript: engine started.");
-                if(OnEngineStarted != null) {
-                    foreach(Action handler in OnEngineStarted.GetInvocationList()) {
-                        try {
-                            handler();
-                        }
-                        catch(Exception) {}
-                    }                       
-                }                
+                Invoke(OnEngineStarted);
             } else {
                 Debug.Log("iCanScript: engine stopped.");
-                if(OnEngineStopped != null) {
-                    foreach(Action handler in OnEngineStopped.GetInvocationList()) {
-                        try {
-                            handler();
-                        }
-                        catch(Exception) {}
-                    }                       
-                }                
+                Invoke(OnEngineStopped);
             }
             myIsPlaying= isPlaying;
         }        
@@ -180,26 +141,26 @@ public static class iCS_SystemEvents {
         if(isPaused != myIsPaused) {
             if(isPaused) {
                 Debug.Log("iCanScript: engine paused.");
-                if(OnEnginePaused != null) {
-                    foreach(Action handler in OnEnginePaused.GetInvocationList()) {
-                        try {
-                            handler();
-                        }
-                        catch(Exception) {}
-                    }                       
-                }                
+                Invoke(OnEnginePaused);
             } else {
                 Debug.Log("iCanScript: engine started.");
-                if(OnEngineStarted != null) {
-                    foreach(Action handler in OnEngineStarted.GetInvocationList()) {
-                        try {
-                            handler();
-                        }
-                        catch(Exception) {}
-                    }                       
-                }                                
+                Invoke(OnEngineStarted);
             }
             myIsPaused= isPaused;
         }        
+    }
+
+    // ======================================================================
+    // Utilities
+    // ----------------------------------------------------------------------
+    static void Invoke(Action action) {
+        if(action != null) {
+            foreach(Action handler in action.GetInvocationList()) {
+                try {
+                    handler();
+                }
+                catch(Exception) {}
+            }                       
+        }                        
     }
 }
