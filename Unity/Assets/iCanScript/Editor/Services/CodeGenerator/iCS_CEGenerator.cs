@@ -27,7 +27,7 @@ public static class iCS_CEGenerator {
         );
         
         // Generate behaviour source code.
-        var behaviourClassName= iCS_TextFile.ToClassName(iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"BehaviourProxy_"+objectId);
+        var behaviourClassName= iCS_TextFile.ToClassName(iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"Behaviour_"+objectId);
         var code= BehaviourMessageProxy(behaviourClassName, messages.ToArray());
         var fileName= ClassNameToFileName(behaviourClassName);
         var filePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
@@ -58,10 +58,6 @@ public static class iCS_CEGenerator {
 	// ----------------------------------------------------------------------
     public static string ClassNameToFileName(string className) {
         return className+".cs";
-    }
-	// ----------------------------------------------------------------------
-    public static string FileNameToClassName(string fileName) {
-        return fileName.Substring(0, fileName.Length-3);
     }
     
     // ======================================================================
