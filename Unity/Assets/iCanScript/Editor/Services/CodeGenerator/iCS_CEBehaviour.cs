@@ -26,6 +26,31 @@ public class iCS_CEBehaviour {
         var objectId= go.GetInstanceID().ToString();
         
         var behaviourMessages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
+        var jMessageObjects= new JObject[behaviourMessages.Length];
+        for(var x= 0; x < behaviourMessages.Length; ++x) {
+            var msg= behaviourMessages[x];
+            var parameters= msg.Parameters;
+            var plen= parameters.Length;
+            var jps= new JObject[plen];
+            for(int i= 0; i < plen; ++i) {
+                var p= parameters[i];
+                var pname= new JNameValuePair("Name", new JString(p.name));
+                var ptype= new JNameValuePair("Type", new JString(p.type.Name));
+                jps[i]= new JObject(new JNameValuePair[2]{pname, ptype});                
+            }
+            var jparams= new JNameValuePair("Parameters", new JArray(jps));
+            jMessageObjects[x]= new JObject(new JNameValuePair[2]{new JNameValuePair("name", new JString(msg.DisplayName)),jparams});
+        }
+        var jMessages= new JNameValuePair("Messages", new JArray(jMessageObjects));
+        var jVersion= new JNameValuePair("Version", new JString(iCS_EditorConfig.VersionId));
+        var jProductType= new JNameValuePair("ProductType", new JString("Standard"));
+        var manifestInJSON= new JObject(new JNameValuePair[]{jProductType, jVersion, jMessages});
+        var s= manifestInJSON.Encode();
+        var pretty= JSONPrettyPrint.Beautify(s);
+        iCS_CETextFile.WriteFile("JSON_Test.txt", pretty);
+        Debug.Log(s);
+        return;
+        
         var messages= new List<iCS_MessageInfo>();
         behaviour.ForEachChildNode(
             n => {

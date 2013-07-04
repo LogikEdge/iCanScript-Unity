@@ -150,6 +150,35 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
         </Document>
         <Document ID="67">
             <Title>Tips and Tricks and Trouble</Title>
+            <Text>“Good judgement is the result of experience … Experience is the result of bad judgement.”
+!---
+- Fred Brooks
+
+
+
+“Walking on water and developing software from a specification are easy if both are frozen.”
+!---
+- Edward V Berard
+
+“It always takes longer than you expect, even when you take into account Hofstadter’s Law.”
+!---
+- Hofstadter’s Law
+
+“When all you have is a hammer, everything starts to look like a nail.”
+!---
+- Unknown
+
+“Better train people and risk they leave – than do nothing and risk they stay.”
+!---
+- Unknown
+
+“I have not failed. I’ve just found 10,000 ways that won’t work.”
+!---
+- Thomas A. Edison
+
+“Now I’m a pretty lazy person and am prepared to work quite hard in order to avoid work.”
+!---
+- Martin Fowler</Text>
         </Document>
         <Document ID="82">
             <Title>Creating Nodes</Title>
@@ -416,7 +445,11 @@ Manual Rochon - helped in user interface design as well as the overall operation
 In 1997, the core concepts of the engine sub-system were first designed and implemented for a large telecommunication corporation.  The resulting software engine was embedded in several large scale products in the years to follow.
 Having joined the gaming industry in 2003, I have realized that the software engine needed to be complemented by a visual editor to boost the productivity in designing software.  The rationale for the visual editor is to ease the understanding of software implementations to a broader audience.  Consequently, the visual editor enables novice and experience programmers to be more productive.
 The visual editor focuses and is efficient for mid-to-high-level software design aspects.  Though the visual editor can be used for the design of low-level software, it is not its main forte and can, in many occasions, be superseded by source code editors for such work.  The iCanScript product focus establishes the fundamental requirement that its visual editor must embed into the existing software development pipeline in which the standard source code editor remains a key element.
-In 2010, I have decided to dedicate myself to the design and implementation of the iCanScript product, helping experienced and less experienced software designers realize their ideas with greater ease without forcing them to depart from their existing workflow.</Text>
+In 2010, I have decided to dedicate myself to the design and implementation of the iCanScript product, helping experienced and less experienced software designers realize their ideas with greater ease without forcing them to depart from their existing workflow.
+#
+
+Michel Launier,
+Lead Engineer &amp; Founder of Disruptive Software</Text>
         </Document>
         <Document ID="53">
             <Title>Hierarchy</Title>

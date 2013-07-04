@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>keywords</key>
+	<string></string>
+	<key>txt</key>
+	<string>Behaviour One Behaviour/Scene	
+
+
+
+
+
+
+
+
+
+Behaviour Code
+
+
+
+
+
+
+
+
+
+Can we live with only one Behaviour / project ?
+* Scene can be maintained by its GUID -&gt; Allows relocation without loosing track using GUIDToAssetPath function.
+
+* Must create hidden GameObject for each scene with a Visual Script.
+
+* Monitor scene existence to remove Behaviour file.
+
+* Supports all messages for all Visual Scripts in the scene.
+
+* Dynamically finds Visual Script on Start() message.
+
+* Dynamically determine which Visual Script needs which message by scanning the Behaviour node children.
+
+* TBD  </string>
+</dict>
+</plist>

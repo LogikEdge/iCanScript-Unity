@@ -56,18 +56,13 @@ public static class iCS_SystemEvents {
     // ----------------------------------------------------------------------
     // This method attempts to determine what has changed in the hierarchy.
     static void HierarchyChanged() {
-        Debug.Log("iCanScript: hierarchy has changed");
-        var visualScripts= Resources.FindObjectsOfTypeAll(typeof(iCS_VisualScript));
-        Debug.Log("iCanScript: # of Visual Scripts: "+visualScripts.Length);
-        foreach(var vs in visualScripts) {
-            Debug.Log("GameObject with Visual Script: "+(vs as iCS_VisualScript).gameObject.name);
-        }
+//        Debug.Log("iCanScript: hierarchy has changed");
         Invoke(OnHierarchyChanged);
     }
     // ----------------------------------------------------------------------
     // This method attempts to determine what has changed in the project.
     static void ProjectChanged() {
-        Debug.Log("iCanScript: project has changed");
+//        Debug.Log("iCanScript: project has changed");
         Invoke(OnProjectChanged);
     }
     // ----------------------------------------------------------------------
@@ -79,14 +74,14 @@ public static class iCS_SystemEvents {
     // ----------------------------------------------------------------------
     // This method attempts to determine what has changed in the search.
     static void SearchChanged() {
-        Debug.Log("iCanScript: search has changed");        
+//        Debug.Log("iCanScript: search has changed");        
     }
     // ----------------------------------------------------------------------
     // This method attempts to determine what has changed.
     static void Update() {
         // Detect if it's the first time update.
         if(!myIsUpdateSeen) {
-            Debug.Log("iCanScript: Editor started");
+//            Debug.Log("iCanScript: Editor started");
             Invoke(OnEditorStarted);
             myIsUpdateSeen= true;
         }
@@ -103,10 +98,10 @@ public static class iCS_SystemEvents {
         var compiling= EditorApplication.isCompiling;
         if(compiling != myIsCompiling) {
             if(compiling) {
-                Debug.Log("iCanScript: compilation started.");
+//                Debug.Log("iCanScript: compilation started.");
                 Invoke(OnCompileStarted);
             } else {
-                Debug.Log("iCanScript: compilation ended.");
+//                Debug.Log("iCanScript: compilation ended.");
                 Invoke(OnCompileCompleted);
             }
             myIsCompiling= compiling;
@@ -117,7 +112,7 @@ public static class iCS_SystemEvents {
     static void CheckCurrentSceneChange() {
         var currentScene= EditorApplication.currentScene;
         if(currentScene != myCurrentScene) {
-            Debug.Log("iCanScript: scene has changed.");
+//            Debug.Log("iCanScript: scene has changed. New path is: "+currentScene+"; New GUID is: "+AssetDatabase.AssetPathToGUID(currentScene));
             Invoke(OnSceneChanged);
             myCurrentScene= currentScene;
         }        
@@ -127,10 +122,10 @@ public static class iCS_SystemEvents {
         var isPlaying= EditorApplication.isPlaying;
         if(isPlaying != myIsPlaying) {
             if(isPlaying) {
-                Debug.Log("iCanScript: engine started.");
+//                Debug.Log("iCanScript: engine started.");
                 Invoke(OnEngineStarted);
             } else {
-                Debug.Log("iCanScript: engine stopped.");
+//                Debug.Log("iCanScript: engine stopped.");
                 Invoke(OnEngineStopped);
             }
             myIsPlaying= isPlaying;
@@ -141,10 +136,10 @@ public static class iCS_SystemEvents {
         var isPaused = EditorApplication.isPaused;
         if(isPaused != myIsPaused) {
             if(isPaused) {
-                Debug.Log("iCanScript: engine paused.");
+//                Debug.Log("iCanScript: engine paused.");
                 Invoke(OnEnginePaused);
             } else {
-                Debug.Log("iCanScript: engine started.");
+//                Debug.Log("iCanScript: engine started.");
                 Invoke(OnEngineStarted);
             }
             myIsPaused= isPaused;
