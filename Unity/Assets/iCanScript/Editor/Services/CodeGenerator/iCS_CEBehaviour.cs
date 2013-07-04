@@ -1,11 +1,69 @@
-//#define USE_INSPECTOR
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
-public static class iCS_CEGenerator {
+public class iCS_CEBehaviour {
+	// ----------------------------------------------------------------------
+	public static string GetBehaviourClassName(iCS_VisualScript visualScript) {
+		var className= visualScript.BehaviourClassName;
+		if(!string.IsNullOrEmpty(className)) {
+			return className;
+		}
+		var path= "Assets/"+iCS_PreferencesEditor.CodeGenerationFolder+"/"+iCS_PreferencesEditor.BehaviourGenerationSubfolder;
+		var fileName= iCS_PreferencesEditor.CodeGenerationFilePrefix+visualScript.gameObject.name+"Behaviour.cs";
+		var filePathAndName= path+"/"+fileName;
+		var uniqueFilePathAndName= AssetDatabase.GenerateUniqueAssetPath(filePathAndName);
+		className= Path.GetFileNameWithoutExtension(uniqueFilePathAndName);
+		return className;
+	}
+	// ----------------------------------------------------------------------
+    public static void GenerateBehaviourCode(iCS_EditorObject behaviour) {
+        var storage= behaviour.Storage;
+        var go= storage.gameObject;
+        var objectId= go.GetInstanceID().ToString();
+        
+        var behaviourMessages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
+        var messages= new List<iCS_MessageInfo>();
+        behaviour.ForEachChildNode(
+            n => {
+                if(n.IsMessage) {
+                    for(int i= 0; i < behaviourMessages.Length; ++i) {
+                        if(behaviourMessages[i].DisplayName == n.Name) {
+                            messages.Add(behaviourMessages[i]);
+                        }
+                    }
+                }
+            }
+        );
+        
+        // Generate behaviour source code.
+		var fred= GetBehaviourClassName(storage as iCS_VisualScript);
+		Debug.Log("Proposed class name: "+fred);
+		
+		
+        var behaviourClassName= iCS_TextFile.ToClassName(iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"Behaviour_"+objectId);
+        var code= BehaviourMessageProxy(behaviourClassName, messages.ToArray());
+        var fileName= ClassNameToFileName(behaviourClassName);
+        var filePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
+        iCS_CETextFile.WriteFile(filePath+"/"+fileName, code);
+
+        // Remove previous file if fileName has changed.
+        if(storage.BehaviourClassName != behaviourClassName) {
+            RemoveBehaviourCode(behaviour);
+            storage.BehaviourClassName= behaviourClassName; 
+            EditorUtility.SetDirty(storage);
+        }
+        
+        // Install on game object if not already present.
+        var gameObject= behaviour.Storage.gameObject;
+        var proxy= gameObject.GetComponent(behaviourClassName);
+        if(proxy == null) {
+            gameObject.AddComponent(behaviourClassName);
+        }
+    }
 	// ----------------------------------------------------------------------
     public static void RemoveBehaviourCode(iCS_EditorObject behaviour) {
         var storage= behaviour.Storage;
@@ -137,5 +195,4 @@ public static class iCS_CEGenerator {
         if(type == typeof(int))   return "int";
         return type.Name;
     }	
-
 }

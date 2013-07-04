@@ -48,6 +48,14 @@ public static class iCS_Assets {
     static void PerformSanityCheckOnAssets() {
         // Verify that all Visual Script have their Behaviour.
         foreach(var vs in allVisualScripts) {
+			var go= vs.gameObject;
+			if(go == null) continue;
+			var prefabType= PrefabUtility.GetPrefabType(go);
+			if(prefabType == PrefabType.Prefab) {
+				Debug.Log(vs.name+" is in the project");
+			} else {
+				Debug.Log(vs.name+" is in the hierarchy");
+			}
         }
     }
 }
