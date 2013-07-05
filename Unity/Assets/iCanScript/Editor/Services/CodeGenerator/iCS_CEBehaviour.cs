@@ -51,7 +51,7 @@ public class iCS_CEBehaviour {
         var manifestInJSON= new JObject(jProductType, jVersion, jMessages);
         var s= manifestInJSON.Encode();
         var pretty= JSONPrettyPrint.Beautify(s);
-        iCS_CETextFile.WriteFile("JSON_Test.txt", pretty);
+        iCS_TextFileUtility.WriteFile(iCS_CodeGeneratorUtility.ToGeneratedCodePath("JSON_Test.txt"), pretty);
         Debug.Log(s);
         Debug.Log("MD5: "+iCS_TextUtility.CalculateMD5Hash(s));
         return;
@@ -74,11 +74,12 @@ public class iCS_CEBehaviour {
 		Debug.Log("Proposed class name: "+fred);
 		
 		
-        var behaviourClassName= iCS_TextUtility.ToClassName(iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"Behaviour_"+objectId);
+        var behaviourClassName= iCS_TextUtility.ToClassName(go.name+"Behaviour_"+objectId);
         var code= BehaviourMessageProxy(behaviourClassName, messages.ToArray());
         var fileName= ClassNameToFileName(behaviourClassName);
         var filePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
-        iCS_CETextFile.WriteFile(filePath+"/"+fileName, code);
+        var filePathAndName= iCS_CodeGeneratorUtility.ToGeneratedCodePath(Path.Combine(filePath, fileName));
+        iCS_TextFileUtility.WriteFile(filePathAndName, code);
 
         // Remove previous file if fileName has changed.
         if(storage.BehaviourClassName != behaviourClassName) {
