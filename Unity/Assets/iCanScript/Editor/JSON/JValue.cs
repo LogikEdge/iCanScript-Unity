@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace iCanScript {
 // =============================================================================
 // JSON value
 // -----------------------------------------------------------------------------
@@ -142,3 +143,4 @@ public class JNameValuePair : JSON {
         return new JNameValuePair(name, value);        
     }
 }
+} // namespace iCanScript

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
+namespace iCanScript {
+
 public static class JSONPrettyPrint {
     // ======================================================================
     // Constants
@@ -41,3 +43,5 @@ public static class JSONPrettyPrint {
         return result;
     }
 }
+
+} // namespace iCanScript

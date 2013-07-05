@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
+namespace iCanScript {
+    
 public abstract class JSON {
     // =============================================================================
     // Public functionality
@@ -218,3 +220,4 @@ public abstract class JSON {
     }
 }
 
+}   // namespace iCanScript
