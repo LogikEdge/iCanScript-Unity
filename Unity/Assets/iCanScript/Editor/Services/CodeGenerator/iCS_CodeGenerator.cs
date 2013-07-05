@@ -24,7 +24,7 @@ public class iCS_CodeGenerator {
 
     // ----------------------------------------------------------------------
     static void OnEditorStarted() {
-        iCS_CSBehaviourTemplates.GenerateBehaviourCode(/*behaviour*/);        
+        iCS_CSGenerateBehaviour.UpdateBehaviourCode();        
     }
     
     // ----------------------------------------------------------------------

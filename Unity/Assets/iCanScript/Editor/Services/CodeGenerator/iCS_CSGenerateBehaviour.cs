@@ -9,11 +9,11 @@ using System.Security;
 using System.Security.Cryptography;
 using iCanScript;
 
-public class iCS_CSBehaviourTemplates {
+public class iCS_CSGenerateBehaviour {
 	// ----------------------------------------------------------------------
-    public static void GenerateBehaviourCode(/*iCS_EditorObject behaviour*/) {
+    public static void UpdateBehaviourCode() {
         // Retrieve all messages needed by behaviour.
-        var messages= GetMessagesForBehaviour(/*behaviour*/);
+        var messages= GetMessagesForBehaviour();
         
         // Build class name and file path.
         var fileName= iCS_EditorStrings.DefaultBehaviourFilePath;
@@ -151,24 +151,15 @@ public class iCS_CSBehaviourTemplates {
 	// ----------------------------------------------------------------------
     // Returns the messages associated with the behaviour node.  For now
     // all possible messages installed in the library are returned.
-    public static iCS_MessageInfo[] GetMessagesForBehaviour(/*iCS_EditorObject behaviour*/) {
+    public static iCS_MessageInfo[] GetMessagesForBehaviour() {
         return iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
     }
 
     // ======================================================================
     // Behaviour JSON manifest creation
 	// ----------------------------------------------------------------------
-    public static JObject GenerateBehaviourManifestInJSON(/*iCS_EditorObject behaviour*/) {
-        var jMessageArray= BehaviourMessagesInJSON(/*behaviour*/);
-        var jMessages= new JNameValuePair("Messages", jMessageArray);
-        var jVersion= new JNameValuePair("Version", iCS_EditorConfig.VersionId);
-        var jProductType= new JNameValuePair("ProductType", "Standard");
-        var manifestInJSON= new JObject(jProductType, jVersion, jMessages);
-        return manifestInJSON;       
-    }
-	// ----------------------------------------------------------------------
-    public static JArray BehaviourMessagesInJSON(/*iCS_EditorObject behaviour*/) {
-        var behaviourMessages= GetMessagesForBehaviour(/*behaviour*/);
+    public static JArray BehaviourMessagesInJSON() {
+        var behaviourMessages= GetMessagesForBehaviour();
         var jMessageObjects= new JObject[behaviourMessages.Length];
         for(var x= 0; x < behaviourMessages.Length; ++x) {
             jMessageObjects[x]= MethodBaseInJSON(behaviourMessages[x]);
@@ -192,17 +183,6 @@ public class iCS_CSBehaviourTemplates {
             jParamObjects[i]= new JObject(pName, pType);                
         }        
         return new JArray(jParamObjects);
-    }
-
-
-    // ======================================================================
-    // Member code generation
-	// ----------------------------------------------------------------------
-    public static string Name(iCS_MemberInfo member) {
-        return member.DisplayName;
-    }
-    public static string Description(iCS_MemberInfo member) {
-        return member.Description;
     }
 
     // ======================================================================
