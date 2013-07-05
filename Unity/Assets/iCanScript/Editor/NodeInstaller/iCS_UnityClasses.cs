@@ -284,6 +284,7 @@ public static class iCS_UnityClasses {
             InstallMonoBehaviourMessage("OnConnectedToServer" , noParameters, kInMailIcon);         
             InstallMonoBehaviourMessage("OnAnimatorMove"      , noParameters, kInMailIcon);         
             InstallMonoBehaviourMessage("OnApplicationQuit"   , noParameters, kInMailIcon);         
+            InstallMonoBehaviourMessage("OnPetter"   , noParameters, kInMailIcon);         
 
             // Trigger messages
             var triggerParameters= new iCS_Parameter[1]{new iCS_Parameter("other", typeof(Collider))};

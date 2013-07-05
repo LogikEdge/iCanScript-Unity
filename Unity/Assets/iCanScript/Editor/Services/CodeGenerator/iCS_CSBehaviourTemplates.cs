@@ -21,8 +21,24 @@ public class iCS_CSBehaviourTemplates {
         
         // Build behaviour code.
         var code= BehaviourMessageProxy(className, messages);
-        Debug.Log("iCanScript: Rebuilding Behaviour code ...");
-        iCS_TextFileUtility.WriteFile(fileName, code);
+        string codeManifestHash= iCS_TextUtility.CalculateMD5Hash(code);
+
+        // Extract file manifest hash value
+        JObject jsonHeader= iCS_CSFileTemplates.ExtractJSON(iCS_TextFileUtility.ReadFile(fileName));
+        string fileManifestHash= null;
+        if(jsonHeader != null) {
+            JString jsonContentHashValue= jsonHeader.GetValueFor("ContentHash") as JString;
+            if(jsonContentHashValue != null) {
+                fileManifestHash= jsonContentHashValue.value;
+            }
+        }
+
+        // Update file if manifest has changed
+        if(string.Compare(codeManifestHash, fileManifestHash) != 0) {
+            Debug.Log("iCanScript: Rebuilding Behaviour code ...");
+            var jsonManifestHash= new JObject(new JNameValuePair("ContentHash", codeManifestHash));
+            iCS_TextFileUtility.WriteFile(fileName, iCS_CSFileTemplates.PrependJSON(jsonManifestHash, code));            
+        }
         
         // Install behaviour on GameObject.
         var gameObject= behaviour.Storage.gameObject;

@@ -148,7 +148,7 @@ public abstract class JSON {
         return new JArray(values.ToArray());        
     }
     // -----------------------------------------------------------------------------
-    static JValue ParseObject(string s, ref int i) {
+    public static JObject ParseObject(string s, ref int i) {
         MustBeChar(s, ref i, '{');
         RemoveWhiteSpaces(s, ref i);
         if(eof(s,i)) {
