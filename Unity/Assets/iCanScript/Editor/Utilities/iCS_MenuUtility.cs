@@ -35,7 +35,19 @@ public static class iCS_MenuUtility {
             // Add behaviour if not already present.
             if(gameObject.GetComponent(behaviourClassName) == null) {
                 gameObject.AddComponent(behaviourClassName);
-            }            
+            }
+			// Remove duplicate Behaviours.
+			MonoBehaviour iCSBehaviour= null;
+            var monoBehaviours= gameObject.GetComponents<MonoBehaviour>();
+			foreach(var mb in monoBehaviours) {
+				if(mb.GetType().Name == behaviourClassName) {
+					if(iCSBehaviour == null) {
+						iCSBehaviour= mb;
+					} else {
+		                Object.DestroyImmediate(mb);						
+					}
+				}
+			}
         } else {
             // Remove behaviour.
             var behaviourComponent= gameObject.GetComponent(behaviourClassName);
