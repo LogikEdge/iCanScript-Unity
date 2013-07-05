@@ -52,7 +52,8 @@ public class iCS_CSGenerateBehaviour {
     }
 	// ----------------------------------------------------------------------
     static string GenerateBehaviourClassHeader(string className) {
-        return "\npublic sealed class "+className+" : MonoBehaviour {\n"+
+        return "\n[AddComponentMenu(\"\")]\n"+
+			   "public sealed class "+className+" : MonoBehaviour {\n"+
                "\tiCS_VisualScript[]   allVisualScripts= null;\n\n"+
                "\tvoid Start()\n"+
                "\t{\n"+
