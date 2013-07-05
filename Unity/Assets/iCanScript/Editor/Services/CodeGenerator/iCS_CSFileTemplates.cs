@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public static class iCS_CETemplate {
+public static class iCS_CSFileTemplates {
     // ----------------------------------------------------------------------
     public static string FileHeader(string fileName, string className, string author= null) {
         var bar= "/////////////////////////////////////////////////////////////////\n";

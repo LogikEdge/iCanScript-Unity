@@ -35,6 +35,6 @@ public class iCS_CodeGenerator {
 
     // ----------------------------------------------------------------------
 	static void GenerateBehaviourCode(iCS_EditorObject behaviour) {
-        iCS_CEBehaviour.GenerateBehaviourCode(behaviour);
+        iCS_CSBehaviourTemplates.GenerateBehaviourCode(behaviour);
 	}
 }

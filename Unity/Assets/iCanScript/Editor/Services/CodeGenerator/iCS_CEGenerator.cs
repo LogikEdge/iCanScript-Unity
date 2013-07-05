@@ -23,7 +23,7 @@ public static class iCS_CEGenerator {
     // Messsage Receiver code generation
 	// ----------------------------------------------------------------------
     public static string BehaviourMessageProxy(string className, iCS_MessageInfo[] messages) {
-        var fileHeader= iCS_CETemplate.FileHeader(className+".cs", className);
+        var fileHeader= iCS_CSFileTemplates.FileHeader(className+".cs", className);
         var imports= "\nusing UnityEngine;\n";
         var classHeader= "\npublic sealed class "+className+" : MonoBehaviour {\n"+
                          "\tiCS_VisualScript   myVisualScript= null;\n\n"+

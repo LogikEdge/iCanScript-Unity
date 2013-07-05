@@ -9,7 +9,7 @@ using System.Security;
 using System.Security.Cryptography;
 using iCanScript;
 
-public class iCS_CEBehaviour {
+public class iCS_CSBehaviourTemplates {
 	// ----------------------------------------------------------------------
 	public static string GetBehaviourClassName(iCS_VisualScript visualScript) {
 		var className= visualScript.BehaviourClassName;
@@ -112,7 +112,7 @@ public class iCS_CEBehaviour {
     // Messsage Receiver code generation
 	// ----------------------------------------------------------------------
     public static string BehaviourMessageProxy(string className, iCS_MessageInfo[] messages) {
-        var fileHeader= iCS_CETemplate.FileHeader(className+".cs", className);
+        var fileHeader= iCS_CSFileTemplates.FileHeader(className+".cs", className);
         var imports= "\nusing UnityEngine;\n";
         var classHeader= "\npublic sealed class "+className+" : MonoBehaviour {\n"+
                          "\tiCS_VisualScript   myVisualScript= null;\n\n"+
