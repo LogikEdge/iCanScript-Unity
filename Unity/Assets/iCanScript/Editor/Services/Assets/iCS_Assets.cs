@@ -97,7 +97,7 @@ public static class iCS_Assets {
 //                Debug.Log("iCanScript: Creating hidden Behaviour game object");
                 var behaviourObject= new GameObject("iCS_HiddenBehaviour");
                 behaviourObject.AddComponent("iCS_Behaviour");
-                behaviourObject.hideFlags= HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
+//                behaviourObject.hideFlags= HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
             }
             for(int i= 1; i < behaviourComponents.Length; ++i) {
                 var component= behaviourComponents[i];

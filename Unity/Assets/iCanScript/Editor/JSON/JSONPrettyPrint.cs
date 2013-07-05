@@ -10,7 +10,7 @@ public static class JSONPrettyPrint {
     const string kTab= "  ";
     
     // ----------------------------------------------------------------------
-    public static string Beautify(string encoded) {
+    public static string Print(string encoded, int lineWidth= 132) {
         int indent= 0;
         string result= "";
         foreach(var c in encoded) {

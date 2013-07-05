@@ -11,135 +11,64 @@ using iCanScript;
 
 public class iCS_CSBehaviourTemplates {
 	// ----------------------------------------------------------------------
-	public static string GetBehaviourClassName(iCS_VisualScript visualScript) {
-		var className= visualScript.BehaviourClassName;
-		if(!string.IsNullOrEmpty(className)) {
-			return className;
-		}
-		var path= "Assets/"+iCS_PreferencesEditor.CodeGenerationFolder+"/"+iCS_PreferencesEditor.BehaviourGenerationSubfolder;
-		var fileName= iCS_PreferencesEditor.CodeGenerationFilePrefix+visualScript.gameObject.name+"Behaviour.cs";
-		var filePathAndName= path+"/"+fileName;
-		var uniqueFilePathAndName= AssetDatabase.GenerateUniqueAssetPath(filePathAndName);
-		className= Path.GetFileNameWithoutExtension(uniqueFilePathAndName);
-		return className;
-	}
-	// ----------------------------------------------------------------------
     public static void GenerateBehaviourCode(iCS_EditorObject behaviour) {
-        var storage= behaviour.Storage;
-        var go= storage.gameObject;
-        var objectId= go.GetInstanceID().ToString();
+        // Retrieve all messages needed by behaviour.
+        var messages= GetMessagesForBehaviour(behaviour);
         
-        var behaviourMessages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
-        var jMessageObjects= new JObject[behaviourMessages.Length];
-        for(var x= 0; x < behaviourMessages.Length; ++x) {
-            var msg= behaviourMessages[x];
-            var parameters= msg.Parameters;
-            var plen= parameters.Length;
-            var jps= new JObject[plen];
-            for(int i= 0; i < plen; ++i) {
-                var p= parameters[i];
-                var pname= new JNameValuePair("Name", p.name);
-                var ptype= new JNameValuePair("Type", p.type.Name);
-                jps[i]= new JObject(new JNameValuePair[2]{pname, ptype});                
-            }
-            var jParams= new JNameValuePair("Parameters", jps);
-            jMessageObjects[x]= new JObject(new JNameValuePair("name", msg.DisplayName), jParams);
-        }
-        var jMessages= new JNameValuePair("Messages", jMessageObjects);
-        var jVersion= new JNameValuePair("Version", iCS_EditorConfig.VersionId);
-        var jProductType= new JNameValuePair("ProductType", "Standard");
-        var manifestInJSON= new JObject(jProductType, jVersion, jMessages);
-        var s= manifestInJSON.Encode();
-        var pretty= JSONPrettyPrint.Beautify(s);
-        iCS_TextFileUtility.WriteFile(iCS_CodeGeneratorUtility.ToGeneratedCodePath("JSON_Test.txt"), pretty);
-        Debug.Log(s);
-        Debug.Log("MD5: "+iCS_TextUtility.CalculateMD5Hash(s));
-        return;
+        // Build class name anf file path.
+        var fileName= iCS_EditorStrings.DefaultBehaviourFilePath;
+        var className= Path.GetFileNameWithoutExtension(fileName);
         
-        var messages= new List<iCS_MessageInfo>();
-        behaviour.ForEachChildNode(
-            n => {
-                if(n.IsMessage) {
-                    for(int i= 0; i < behaviourMessages.Length; ++i) {
-                        if(behaviourMessages[i].DisplayName == n.Name) {
-                            messages.Add(behaviourMessages[i]);
-                        }
-                    }
-                }
-            }
-        );
-        
-        // Generate behaviour source code.
-		var fred= GetBehaviourClassName(storage as iCS_VisualScript);
-		Debug.Log("Proposed class name: "+fred);
-		
-		
-        var behaviourClassName= iCS_TextUtility.ToClassName(go.name+"Behaviour_"+objectId);
-        var code= BehaviourMessageProxy(behaviourClassName, messages.ToArray());
-        var fileName= ClassNameToFileName(behaviourClassName);
-        var filePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
-        var filePathAndName= iCS_CodeGeneratorUtility.ToGeneratedCodePath(Path.Combine(filePath, fileName));
-        iCS_TextFileUtility.WriteFile(filePathAndName, code);
-
-        // Remove previous file if fileName has changed.
-        if(storage.BehaviourClassName != behaviourClassName) {
-            RemoveBehaviourCode(behaviour);
-            storage.BehaviourClassName= behaviourClassName; 
-            EditorUtility.SetDirty(storage);
-        }
-        
-        // Install on game object if not already present.
-        var gameObject= behaviour.Storage.gameObject;
-        var proxy= gameObject.GetComponent(behaviourClassName);
-        if(proxy == null) {
-            gameObject.AddComponent(behaviourClassName);
-        }
-    }
-	// ----------------------------------------------------------------------
-    public static void RemoveBehaviourCode(iCS_EditorObject behaviour) {
-        var storage= behaviour.Storage;
-        var behaviourClassName= storage.BehaviourClassName;
-        if(string.IsNullOrEmpty(behaviourClassName)) return;
-        var path= "Assets/"+iCS_PreferencesEditor.CodeGenerationFolder+"/"+iCS_PreferencesEditor.BehaviourGenerationSubfolder+"/";
-        AssetDatabase.DeleteAsset(path+ClassNameToFileName(behaviourClassName));
-    }
-	// ----------------------------------------------------------------------
-    public static string ClassNameToFileName(string className) {
-        return className+".cs";
+        // Build behaviour code.
+        var code= BehaviourMessageProxy(className, messages);
+        iCS_TextFileUtility.WriteFile(fileName, code);
     }
     
     // ======================================================================
     // Messsage Receiver code generation
 	// ----------------------------------------------------------------------
+    static string GenerateBehaviourClassImports(string className) {
+        return "\nusing UnityEngine;\n";
+    }
+	// ----------------------------------------------------------------------
+    static string GenerateBehaviourClassHeader(string className) {
+        return "\npublic sealed class "+className+" : MonoBehaviour {\n"+
+               "\tiCS_VisualScript[]   allVisualScripts= new iCS_VisualScript[0];\n\n"+
+               "\tvoid Start()\n"+
+               "\t{\n"+
+               "\t\tallVisualScripts= FindObjectsOfType(typeof(iCS_VisualScript)) as iCS_VisualScript[];\n"+
+               "\t}\n";
+    }
+    static string GenerateBehaviourClassTrailer(string className) {
+        return "\n}\n";
+    }
+	// ----------------------------------------------------------------------
     public static string BehaviourMessageProxy(string className, iCS_MessageInfo[] messages) {
         var fileHeader= iCS_CSFileTemplates.FileHeader(className+".cs", className);
-        var imports= "\nusing UnityEngine;\n";
-        var classHeader= "\npublic sealed class "+className+" : MonoBehaviour {\n"+
-                         "\tiCS_VisualScript   myVisualScript= null;\n\n"+
-                         "\tvoid Start()\n"+
-                         "\t{\n"+
-                         "\t\tmyVisualScript= GetComponent(typeof(iCS_VisualScript)) as iCS_VisualScript;\n"+
-                         "\t}\n";
-        var classTrailer= "\n}\n";
+        var imports= GenerateBehaviourClassImports(className);
+        var classHeader= GenerateBehaviourClassHeader(className);
+        var classTrailer= GenerateBehaviourClassTrailer(className);
         var messageImpls= "";
         foreach(var msg in messages) {
-            messageImpls+= MessageReceiverImp(msg)+"\n";
+            messageImpls+= GenerateMessageReceiver(msg)+"\n";
         }
-        return fileHeader+imports/*+inspector*/+classHeader+messageImpls+classTrailer;
+        return fileHeader+imports+classHeader+messageImpls+classTrailer;
     }
 
     // ======================================================================
     // Messsage Receiver code generation
 	// ----------------------------------------------------------------------
-    public static string MessageReceiverImp(iCS_MessageInfo message) {
+    public static string GenerateMessageReceiver(iCS_MessageInfo message) {
         // Start message is already handle...
         if("Start" == message.DisplayName) return "";
-        return "\n\t"+MessageSignature(message)+MessageBody(message);
+        return "\n\t"+GenerateMessageSignature(message)+GenerateMessageBody(message);
     }
-    public static string MessageSignature(iCS_MessageInfo message) {
+	// ----------------------------------------------------------------------
+    public static string GenerateMessageSignature(iCS_MessageInfo message) {
         return MethodSignature(message);
     }
-    public static string MessageBody(iCS_MessageInfo message) {
+	// ----------------------------------------------------------------------
+    public static string GenerateMessageBody(iCS_MessageInfo message) {
         var parameters= message.Parameters;
         var len= parameters.Length;
         var msgParamStr= "";
@@ -152,8 +81,9 @@ public class iCS_CSBehaviourTemplates {
         var paramStr= "\""+message.DisplayName+"\""+(msgParamStr.Length != 0 ? ", ":"")+msgParamStr;
         // Special case for the Start() message that generates the code.
         return "\n\t{\n"+
-               "\t\tif(myVisualScript != null) {\n"+
-               "\t\t\tmyVisualScript.RunMessage("+paramStr+");\n"+
+               (message.DisplayName.StartsWith("OnMouse") ? "\t\tDebug.Log(\""+message.DisplayName+"\");\n" : "")+
+               "\t\tforeach(var vs in allVisualScripts) {\n"+
+               "\t\t\tvs.RunMessage("+paramStr+");\n"+
                "\t\t}\n"+
                "\t}\n";            
     }
@@ -196,6 +126,58 @@ public class iCS_CSBehaviourTemplates {
         }
         return parameters;           
     }
+
+	// ----------------------------------------------------------------------
+    // Returns the messages associated with the behaviour node.  For now
+    // all possible messages installed in the library are returned.
+    public static iCS_MessageInfo[] GetMessagesForBehaviour(iCS_EditorObject behaviour) {
+        return iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
+    }
+
+    // ======================================================================
+    // Behaviour JSON manifest creation
+	// ----------------------------------------------------------------------
+    public static JObject GenerateBehaviourManifestInJSON(iCS_EditorObject behaviour) {
+        var jMessageArray= BehaviourMessagesInJSON(behaviour);
+        var jMessages= new JNameValuePair("Messages", jMessageArray);
+        var jVersion= new JNameValuePair("Version", iCS_EditorConfig.VersionId);
+        var jProductType= new JNameValuePair("ProductType", "Standard");
+        var manifestInJSON= new JObject(jProductType, jVersion, jMessages);
+        var s= manifestInJSON.Encode();
+        var pretty= JSONPrettyPrint.Print(s);
+        iCS_TextFileUtility.WriteFile(iCS_CodeGeneratorUtility.ToGeneratedCodePath("JSON_Test.txt"), pretty);
+        Debug.Log(s);
+        Debug.Log("MD5: "+iCS_TextUtility.CalculateMD5Hash(s));
+        return manifestInJSON;       
+    }
+	// ----------------------------------------------------------------------
+    public static JArray BehaviourMessagesInJSON(iCS_EditorObject behaviour) {
+        var behaviourMessages= GetMessagesForBehaviour(behaviour);
+        var jMessageObjects= new JObject[behaviourMessages.Length];
+        for(var x= 0; x < behaviourMessages.Length; ++x) {
+            jMessageObjects[x]= MethodBaseInJSON(behaviourMessages[x]);
+        }
+        return new JArray(jMessageObjects);       
+    }
+	// ----------------------------------------------------------------------
+    public static JObject MethodBaseInJSON(iCS_MethodBaseInfo method) {
+        var jParamObjects= ParametersInJSON(method.Parameters);
+        var jParams= new JNameValuePair("Parameters", jParamObjects);
+        return new JObject(new JNameValuePair("Name", method.DisplayName), jParams);        
+    }
+	// ----------------------------------------------------------------------
+    public static JArray ParametersInJSON(iCS_Parameter[] parameters) {
+        var pLen= parameters.Length;
+        var jParamObjects= new JObject[pLen];
+        for(int i= 0; i < pLen; ++i) {
+            var p= parameters[i];
+            var pName= new JNameValuePair("Name", p.name);
+            var pType= new JNameValuePair("Type", p.type.Name);
+            jParamObjects[i]= new JObject(pName, pType);                
+        }        
+        return new JArray(jParamObjects);
+    }
+
 
     // ======================================================================
     // Member code generation
