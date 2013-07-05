@@ -73,5 +73,4 @@ public static class iCS_FileUtility {
 		// Assume we need to add the asset path
 		return systemAssetPath+"/"+path;
 	}
-    
 }
