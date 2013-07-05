@@ -26,10 +26,7 @@ public class iCS_CSBehaviourTemplates {
         
         // Install behaviour on GameObject.
         var gameObject= behaviour.Storage.gameObject;
-        if(gameObject.GetComponent(className) == null) {
-            Debug.Log("iCanScript: Adding Behaviour to: "+gameObject.name);
-            gameObject.AddComponent(className);
-        }
+        iCS_MenuUtility.UpdateBehaviourComponent(gameObject);
     }
     
     // ======================================================================
