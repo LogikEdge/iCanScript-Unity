@@ -111,6 +111,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kInstanceAutocreateOutPropertiesKey     = "iCS_InstanceAutocreateOutProperties"; 
     const string kInstanceAutocreateInClassPropertiesKey = "iCS_InstanceAutocreateInClassProperties";
     const string kInstanceAutocreateOutClassPropertiesKey= "iCS_InstanceAutocreateOutClassProperties";
+#if CODE_GENERATION_CONFIG
     // ---------------------------------------------------------------------------------
 	// Code Engineering Config Constants
 	const string kCodeGenerationFolder           = "iCanScript_GeneratedCode";
@@ -119,15 +120,25 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 	const string kCodeGenerationFolderKey        = "iCS_CodeGenerationFolder";
 	const string kBehaviourGenerationSubFolderKey= "iCS_BehaviourGenerationSubFolder";
 	const string kCodeGenerationFilePrefixKey    = "iCS_CodeGenerationFilePrefix";
+#endif
 	
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	int         selGridId= 0;
-	string[]    selGridStrings= new string[]{"Display Options", "Canvas", "Node Colors", "Type Colors", "Instance Wizard", "Code Engineering" };
 	GUIStyle    titleStyle= null;
 	GUIStyle    selectionStyle= null;
 	Texture2D	selectionBackground= null;
+	int         selGridId= 0;
+	string[]    selGridStrings= new string[]{
+	    "Display Options",
+	    "Canvas",
+	    "Node Colors",
+	    "Type Colors",
+	    "Instance Wizard",
+#if CODE_GENERATION_CONFIG
+	    "Code Engineering"
+#endif
+	};
 	
     // =================================================================================
     // Properties
@@ -353,6 +364,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassPropertiesKey, kInstanceAutocreateOutClassProperties); }
         set { EditorPrefs.SetBool(kInstanceAutocreateOutClassPropertiesKey, value); }        
     }
+#if CODE_GENERATION_CONFIG
     public static string CodeGenerationFolder {
         get { return EditorPrefs.GetString(kCodeGenerationFolderKey, kCodeGenerationFolder); }
         set {
@@ -387,6 +399,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             EditorPrefs.SetString(kCodeGenerationFilePrefixKey, value);
         }
     }
+#endif
     
 	// =================================================================================
     // Storage Utilities
@@ -515,7 +528,9 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             case 2: NodeColors(); break;
             case 3: TypeColors(); break;
             case 4: InstanceWizard(); break;
+#if CODE_GENERATION_CONFIG
             case 5: CodeEngineering(); break;
+#endif
             default: break;
         }
 
@@ -787,6 +802,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             InstanceAutocreateOutClassProperties= kInstanceAutocreateOutClassProperties;
         }        
     }
+#if CODE_GENERATION_CONFIG
     // ---------------------------------------------------------------------------------
 	void CodeEngineering() {
         // Column 2
@@ -816,6 +832,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             BehaviourGenerationSubfolder= kBehaviourGenerationSubFolder;
         }        	    
 	}
+#endif
 	
 	// =================================================================================
     // Helpers.

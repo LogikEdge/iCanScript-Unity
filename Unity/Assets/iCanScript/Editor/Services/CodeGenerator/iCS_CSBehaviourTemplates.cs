@@ -11,11 +11,11 @@ using iCanScript;
 
 public class iCS_CSBehaviourTemplates {
 	// ----------------------------------------------------------------------
-    public static void GenerateBehaviourCode(iCS_EditorObject behaviour) {
+    public static void GenerateBehaviourCode(/*iCS_EditorObject behaviour*/) {
         // Retrieve all messages needed by behaviour.
-        var messages= GetMessagesForBehaviour(behaviour);
+        var messages= GetMessagesForBehaviour(/*behaviour*/);
         
-        // Build class name anf file path.
+        // Build class name and file path.
         var fileName= iCS_EditorStrings.DefaultBehaviourFilePath;
         var className= Path.GetFileNameWithoutExtension(fileName);
         
@@ -24,7 +24,8 @@ public class iCS_CSBehaviourTemplates {
         string codeManifestHash= iCS_TextUtility.CalculateMD5Hash(code);
 
         // Extract file manifest hash value
-        JObject jsonHeader= iCS_CSFileTemplates.ExtractJSON(iCS_TextFileUtility.ReadFile(fileName));
+        JObject jsonHeader= null;
+        jsonHeader= iCS_CSFileTemplates.ExtractJSON(iCS_TextFileUtility.ReadFile(fileName));
         string fileManifestHash= null;
         if(jsonHeader != null) {
             JString jsonContentHashValue= jsonHeader.GetValueFor("ContentHash") as JString;
@@ -34,15 +35,13 @@ public class iCS_CSBehaviourTemplates {
         }
 
         // Update file if manifest has changed
+//        Debug.Log("iCanScript: Behaviour file manifest hash: "+fileManifestHash);
+//        Debug.Log("iCanScript: Behaviour code manifest hash: "+codeManifestHash);
         if(string.Compare(codeManifestHash, fileManifestHash) != 0) {
             Debug.Log("iCanScript: Rebuilding Behaviour code ...");
             var jsonManifestHash= new JObject(new JNameValuePair("ContentHash", codeManifestHash));
             iCS_TextFileUtility.WriteFile(fileName, iCS_CSFileTemplates.PrependJSON(jsonManifestHash, code));            
         }
-        
-        // Install behaviour on GameObject.
-        var gameObject= behaviour.Storage.gameObject;
-        iCS_MenuUtility.UpdateBehaviourComponent(gameObject);
     }
     
     // ======================================================================
@@ -152,29 +151,24 @@ public class iCS_CSBehaviourTemplates {
 	// ----------------------------------------------------------------------
     // Returns the messages associated with the behaviour node.  For now
     // all possible messages installed in the library are returned.
-    public static iCS_MessageInfo[] GetMessagesForBehaviour(iCS_EditorObject behaviour) {
+    public static iCS_MessageInfo[] GetMessagesForBehaviour(/*iCS_EditorObject behaviour*/) {
         return iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
     }
 
     // ======================================================================
     // Behaviour JSON manifest creation
 	// ----------------------------------------------------------------------
-    public static JObject GenerateBehaviourManifestInJSON(iCS_EditorObject behaviour) {
-        var jMessageArray= BehaviourMessagesInJSON(behaviour);
+    public static JObject GenerateBehaviourManifestInJSON(/*iCS_EditorObject behaviour*/) {
+        var jMessageArray= BehaviourMessagesInJSON(/*behaviour*/);
         var jMessages= new JNameValuePair("Messages", jMessageArray);
         var jVersion= new JNameValuePair("Version", iCS_EditorConfig.VersionId);
         var jProductType= new JNameValuePair("ProductType", "Standard");
         var manifestInJSON= new JObject(jProductType, jVersion, jMessages);
-        var s= manifestInJSON.Encode();
-        var pretty= JSONPrettyPrint.Print(s);
-        iCS_TextFileUtility.WriteFile(iCS_CodeGeneratorUtility.ToGeneratedCodePath("JSON_Test.txt"), pretty);
-        Debug.Log(s);
-        Debug.Log("MD5: "+iCS_TextUtility.CalculateMD5Hash(s));
         return manifestInJSON;       
     }
 	// ----------------------------------------------------------------------
-    public static JArray BehaviourMessagesInJSON(iCS_EditorObject behaviour) {
-        var behaviourMessages= GetMessagesForBehaviour(behaviour);
+    public static JArray BehaviourMessagesInJSON(/*iCS_EditorObject behaviour*/) {
+        var behaviourMessages= GetMessagesForBehaviour(/*behaviour*/);
         var jMessageObjects= new JObject[behaviourMessages.Length];
         for(var x= 0; x < behaviourMessages.Length; ++x) {
             jMessageObjects[x]= MethodBaseInJSON(behaviourMessages[x]);

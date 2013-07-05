@@ -7,7 +7,6 @@ public static class iCS_EditorStartup {
     // ----------------------------------------------------------------------
 	static iCS_EditorStartup() {
 		iCS_SystemEvents.Start();
-		iCS_Assets.Start();
 		iCS_InstallerMgr.Start();
 		iCS_CodeGenerator.Start();		
 	}

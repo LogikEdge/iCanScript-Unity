@@ -27,6 +27,7 @@ public static class iCS_CSFileTemplates {
     // Returns the JObject previously inserted in the header.
     public static JObject ExtractJSON(string fileHeader) {
         // Return null if we can't find the JSON marker.
+        if(fileHeader == null) return null;
         if(!fileHeader.StartsWith("//{")) return null;
 
         // Attempt to extract the json object.
