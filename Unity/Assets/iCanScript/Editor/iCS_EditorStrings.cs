@@ -35,4 +35,7 @@ public class iCS_EditorStrings {
     public const string FunctionHierarchyIcon   = "iCS_FunctionTag.png";
     public const string StateHierarchyIcon      = "iCS_StateTag.png";
     public const string ConstructorHierarchyIcon= "iCS_ConstructorTag.png";
+
+    // File references
+    public const string DefaultBehaviourFilePath= "Assets/iCanScript/Engine/Components/iCS_Behaviour.cs";
 }
