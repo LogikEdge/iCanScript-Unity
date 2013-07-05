@@ -74,7 +74,7 @@ public class iCS_CEBehaviour {
 		Debug.Log("Proposed class name: "+fred);
 		
 		
-        var behaviourClassName= iCS_TextFile.ToClassName(iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"Behaviour_"+objectId);
+        var behaviourClassName= iCS_TextUtility.ToClassName(iCS_PreferencesEditor.CodeGenerationFilePrefix+go.name+"Behaviour_"+objectId);
         var code= BehaviourMessageProxy(behaviourClassName, messages.ToArray());
         var fileName= ClassNameToFileName(behaviourClassName);
         var filePath= iCS_PreferencesEditor.BehaviourGenerationSubfolder;
