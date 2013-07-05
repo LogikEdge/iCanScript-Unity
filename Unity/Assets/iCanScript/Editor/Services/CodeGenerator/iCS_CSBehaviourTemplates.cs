@@ -21,7 +21,15 @@ public class iCS_CSBehaviourTemplates {
         
         // Build behaviour code.
         var code= BehaviourMessageProxy(className, messages);
+        Debug.Log("iCanScript: Rebuilding Behaviour code ...");
         iCS_TextFileUtility.WriteFile(fileName, code);
+        
+        // Install behaviour on GameObject.
+        var gameObject= behaviour.Storage.gameObject;
+        if(gameObject.GetComponent(className) == null) {
+            Debug.Log("iCanScript: Adding Behaviour to: "+gameObject.name);
+            gameObject.AddComponent(className);
+        }
     }
     
     // ======================================================================
@@ -33,10 +41,10 @@ public class iCS_CSBehaviourTemplates {
 	// ----------------------------------------------------------------------
     static string GenerateBehaviourClassHeader(string className) {
         return "\npublic sealed class "+className+" : MonoBehaviour {\n"+
-               "\tiCS_VisualScript[]   allVisualScripts= new iCS_VisualScript[0];\n\n"+
+               "\tiCS_VisualScript[]   allVisualScripts= null;\n\n"+
                "\tvoid Start()\n"+
                "\t{\n"+
-               "\t\tallVisualScripts= FindObjectsOfType(typeof(iCS_VisualScript)) as iCS_VisualScript[];\n"+
+               "\t\tallVisualScripts= gameObject.GetComponents<iCS_VisualScript>();\n"+
                "\t}\n";
     }
     static string GenerateBehaviourClassTrailer(string className) {
@@ -81,9 +89,10 @@ public class iCS_CSBehaviourTemplates {
         var paramStr= "\""+message.DisplayName+"\""+(msgParamStr.Length != 0 ? ", ":"")+msgParamStr;
         // Special case for the Start() message that generates the code.
         return "\n\t{\n"+
-               (message.DisplayName.StartsWith("OnMouse") ? "\t\tDebug.Log(\""+message.DisplayName+"\");\n" : "")+
-               "\t\tforeach(var vs in allVisualScripts) {\n"+
-               "\t\t\tvs.RunMessage("+paramStr+");\n"+
+               "\t\tif(allVisualScripts != null) {\n"+
+               "\t\t\tforeach(var vs in allVisualScripts) {\n"+
+               "\t\t\t\tvs.RunMessage("+paramStr+");\n"+
+               "\t\t\t}\n"+
                "\t\t}\n"+
                "\t}\n";            
     }

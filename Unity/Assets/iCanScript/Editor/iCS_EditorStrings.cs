@@ -37,5 +37,6 @@ public class iCS_EditorStrings {
     public const string ConstructorHierarchyIcon= "iCS_ConstructorTag.png";
 
     // File references
-    public const string DefaultBehaviourFilePath= "Assets/iCanScript/Engine/Components/iCS_Behaviour.cs";
+    public const string DefaultBehaviourClassName= "iCS_Behaviour";
+    public const string DefaultBehaviourFilePath = "Assets/iCanScript/Engine/Components/"+DefaultBehaviourClassName+".cs";
 }

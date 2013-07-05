@@ -82,31 +82,5 @@ public static class iCS_Assets {
     // Member code generation
 	// ----------------------------------------------------------------------
     static void PerformSanityCheckOnAssets() {
-        // Update Behaviour game object...
-        var behaviourComponents= GameObject.FindObjectsOfType(typeof(iCS_Behaviour)) as Component[];
-        if(allVisualScriptsInScene.Length == 0) {
-            foreach(var component in behaviourComponents) {
-                var go= component.gameObject;
-                if(go != null) {
-//                    Debug.Log("iCanScript: Removing hidden Behaviour game object");
-                    GameObject.DestroyImmediate(go);                    
-                }
-            }
-        } else {
-            if(behaviourComponents.Length == 0) {
-//                Debug.Log("iCanScript: Creating hidden Behaviour game object");
-                var behaviourObject= new GameObject("iCS_HiddenBehaviour");
-                behaviourObject.AddComponent("iCS_Behaviour");
-//                behaviourObject.hideFlags= HideFlags.HideInHierarchy | HideFlags.HideInInspector | HideFlags.NotEditable;
-            }
-            for(int i= 1; i < behaviourComponents.Length; ++i) {
-                var component= behaviourComponents[i];
-                var go= component.gameObject;
-                if(go != null) {
-//                    Debug.Log("iCanScript: Removing hidden Behaviour game object");
-                    GameObject.DestroyImmediate(go);                    
-                }
-            }
-        }
     }
 }

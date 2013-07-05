@@ -9,10 +9,7 @@ public static class iCS_iCanScriptMenu {
 	public static void CreateVisualScript() {
 		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent("iCS_VisualScript") as iCS_VisualScriptImp;
-            iCS_IStorage iStorage= new iCS_IStorage(storage);
-            iStorage.CreateBehaviour();
-            iStorage= null;
+		    iCS_MenuUtility.InstallVisualScriptOn(Selection.activeGameObject);
 		}
 	}
 	[MenuItem("iCanScript/Create Visual Script", true, 1)]
@@ -27,11 +24,13 @@ public static class iCS_iCanScriptMenu {
     [MenuItem("iCanScript/",false,20)]
     [MenuItem("iCanScript/Center Visual Script #f",false,21)]
     public static void FocusOnVisualScript() {
-        iCS_Menu.FocusOnVisualScript();
+        iCS_VisualEditor visualEditor= iCS_EditorMgr.FindVisualEditor();
+        if(visualEditor != null) visualEditor.CenterAndScaleOnRoot();
     }
     [MenuItem("iCanScript/Focus On Selected _f",false,22)]
     public static void FocusOnSelected() {
-        iCS_Menu.FocusOnSelected();
+        iCS_VisualEditor graphEditor= iCS_EditorMgr.FindVisualEditor();
+        if(graphEditor != null) graphEditor.CenterAndScaleOnSelected();
     }
     // ======================================================================
     // Documentation Access
@@ -69,4 +68,24 @@ public static class iCS_iCanScriptMenu {
 										 "Ok");
 		}
     }
+    
+    
+//    // ======================================================================
+//	// iCanScript License.
+//    [MenuItem("iCanScript/Get FingerPrint")]
+//    public static void GetFingerPrint() {
+//        Debug.Log(iCS_LicenseUtil.ToString(iCS_FingerPrint.FingerPrint));
+//    }
+//    [MenuItem("iCanScript/Get Standard License")]
+//    public static void GetStandardLicense() {
+//        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Standard));
+//    }
+//    [MenuItem("iCanScript/Get Pro License")]
+//    public static void GetProLicense() {
+//        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Pro));
+//    }
+//    [MenuItem("iCanScript/License Manager")]
+//    public static void EnterLicense() {
+//    }
+    
 }
