@@ -76,7 +76,11 @@ public class JArray  : JValue {
 }
 public class JObject : JValue {
     public JNameValuePair[] value= new JNameValuePair[0];
-    public JObject(JNameValuePair[] v) { value= v; }
+    public JObject(JNameValuePair[] v)     { value= v; }
+    public JObject(List<JNameValuePair> v) : this(v.ToArray())             {}
+    public JObject(JNameValuePair v)       : this(new JNameValuePair[]{v}) {}
+    public JObject(JNameValuePair v1, JNameValuePair v2) : this(new JNameValuePair[]{v1,v2}) {}
+    public JObject(JNameValuePair v1, JNameValuePair v2, JNameValuePair v3) : this(new JNameValuePair[]{v1,v2,v3}) {}
     public JNameValuePair FindPairFor(string name) {
         foreach(var nv in value) {
             if(name == nv.name) return nv;
@@ -117,7 +121,14 @@ public class JObject : JValue {
 public class JNameValuePair : JSON {
     public string name= null;
     public JValue value= null;
-    public JNameValuePair(string _name, JValue _value) { name= _name; value= _value; }
+    public JNameValuePair(string _name, JValue       _value) { name= _name; value= _value; }
+    public JNameValuePair(string _name, string       _value) : this(_name, new JString(_value)) {}
+    public JNameValuePair(string _name, float        _value) : this(_name, new JNumber(_value)) {}
+    public JNameValuePair(string _name, bool         _value) : this(_name, new JBool(_value))   {}
+    public JNameValuePair(string _name, JValue[]     _value) : this(_name, new JArray(_value))  {}
+    public JNameValuePair(string _name, List<JValue> _value) : this(_name, _value.ToArray())    {}
+    public JNameValuePair(string _name, JNameValuePair[] _value)     : this(_name, new JObject(_value)) {}
+    public JNameValuePair(string _name, List<JNameValuePair> _value) : this(_name, _value.ToArray())    {}
     public override string Encode() {
         return Encode(name)+" : "+value.Encode();
     }

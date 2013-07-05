@@ -4,6 +4,9 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using System.Security;
+using System.Security.Cryptography;
 
 public class iCS_CEBehaviour {
 	// ----------------------------------------------------------------------
@@ -34,21 +37,22 @@ public class iCS_CEBehaviour {
             var jps= new JObject[plen];
             for(int i= 0; i < plen; ++i) {
                 var p= parameters[i];
-                var pname= new JNameValuePair("Name", new JString(p.name));
-                var ptype= new JNameValuePair("Type", new JString(p.type.Name));
+                var pname= new JNameValuePair("Name", p.name);
+                var ptype= new JNameValuePair("Type", p.type.Name);
                 jps[i]= new JObject(new JNameValuePair[2]{pname, ptype});                
             }
-            var jparams= new JNameValuePair("Parameters", new JArray(jps));
-            jMessageObjects[x]= new JObject(new JNameValuePair[2]{new JNameValuePair("name", new JString(msg.DisplayName)),jparams});
+            var jParams= new JNameValuePair("Parameters", jps);
+            jMessageObjects[x]= new JObject(new JNameValuePair("name", msg.DisplayName), jParams);
         }
-        var jMessages= new JNameValuePair("Messages", new JArray(jMessageObjects));
-        var jVersion= new JNameValuePair("Version", new JString(iCS_EditorConfig.VersionId));
-        var jProductType= new JNameValuePair("ProductType", new JString("Standard"));
-        var manifestInJSON= new JObject(new JNameValuePair[]{jProductType, jVersion, jMessages});
+        var jMessages= new JNameValuePair("Messages", jMessageObjects);
+        var jVersion= new JNameValuePair("Version", iCS_EditorConfig.VersionId);
+        var jProductType= new JNameValuePair("ProductType", "Standard");
+        var manifestInJSON= new JObject(jProductType, jVersion, jMessages);
         var s= manifestInJSON.Encode();
         var pretty= JSONPrettyPrint.Beautify(s);
         iCS_CETextFile.WriteFile("JSON_Test.txt", pretty);
         Debug.Log(s);
+        Debug.Log("MD5: "+CalculateMD5Hash(s));
         return;
         
         var messages= new List<iCS_MessageInfo>();
@@ -219,5 +223,22 @@ public class iCS_CEBehaviour {
         if(type == typeof(void))  return "void";
         if(type == typeof(int))   return "int";
         return type.Name;
-    }	
+    }
+    
+    // ----------------------------------------------------------------------
+    public static string CalculateMD5Hash(string input)
+    {
+        // step 1, calculate MD5 hash from input
+        MD5 md5 = System.Security.Cryptography.MD5.Create();
+        byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+        byte[] hash = md5.ComputeHash(inputBytes);
+
+        // step 2, convert byte array to hex string
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < hash.Length; i++)
+        {
+            sb.Append(hash[i].ToString("X2"));
+        }
+        return sb.ToString();
+    }
 }
