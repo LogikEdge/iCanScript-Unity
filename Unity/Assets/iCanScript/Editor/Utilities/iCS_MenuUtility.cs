@@ -32,10 +32,6 @@ public static class iCS_MenuUtility {
         var behaviourClassName= iCS_EditorStrings.DefaultBehaviourClassName;
         bool hasVisualScript= gameObject.GetComponent("iCS_VisualScript") != null;
         if(hasVisualScript) {
-            // Add behaviour if not already present.
-            if(gameObject.GetComponent(behaviourClassName) == null) {
-                gameObject.AddComponent(behaviourClassName);
-            }
 			// Remove duplicate Behaviours.
 			MonoBehaviour iCSBehaviour= null;
             var monoBehaviours= gameObject.GetComponents<MonoBehaviour>();
@@ -48,6 +44,10 @@ public static class iCS_MenuUtility {
 					}
 				}
 			}
+            // Add behaviour if not already present.
+            if(iCSBehaviour == null) {
+                gameObject.AddComponent(behaviourClassName);
+            }
         } else {
             // Remove behaviour.
             var behaviourComponent= gameObject.GetComponent(behaviourClassName);
