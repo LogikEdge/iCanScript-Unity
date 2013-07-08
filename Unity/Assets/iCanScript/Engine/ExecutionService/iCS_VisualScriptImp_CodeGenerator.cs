@@ -161,7 +161,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         }
                         case iCS_ObjectTypeEnum.TransitionGuard:
                         case iCS_ObjectTypeEnum.TransitionAction: {
-                            iCS_Module module= new iCS_Module(node.Name, priority);                                
+                            var module= new iCS_Aggregate(node.Name, priority);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             break;
                         }
@@ -172,7 +172,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             InvokeAddChildIfExists(parent, message);                                
                             break;
                         case iCS_ObjectTypeEnum.Aggregate: {
-                            iCS_Module module= new iCS_Module(node.Name, priority);                                
+                            var module= new iCS_Aggregate(node.Name, priority);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             InvokeAddChildIfExists(parent, module);                                
                             break;
@@ -263,9 +263,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         int triggerIdx= triggerPort.PortIndex;
                         iCS_Transition transition= new iCS_Transition(transitionModule.Name,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,
-                                                                    myRuntimeNodes[guardModule.InstanceId] as iCS_Module,
+                                                                    myRuntimeNodes[guardModule.InstanceId] as iCS_Aggregate,
                                                                     triggerFunc, triggerIdx,
-                                                                    actionModule != null ? myRuntimeNodes[actionModule.InstanceId] as iCS_Module : null,
+                                                                    actionModule != null ? myRuntimeNodes[actionModule.InstanceId] as iCS_Aggregate : null,
                                                                     transitionModule.ExecutionPriority);
                         iCS_State state= myRuntimeNodes[outStatePort.ParentId] as iCS_State;
                         state.AddChild(transition);

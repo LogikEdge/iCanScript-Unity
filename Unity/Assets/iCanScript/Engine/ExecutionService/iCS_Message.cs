@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class iCS_Message : iCS_Module {
+public class iCS_Message : iCS_Aggregate {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
