@@ -11,17 +11,17 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-                      public iCS_EngineObject   EngineObject       = null;
-                      public string             BehaviourClassName = null;
-    [HideInInspector] public int			    MajorVersion       = iCS_Config.MajorVersion;
-    [HideInInspector] public int    		    MinorVersion       = iCS_Config.MinorVersion;
-    [HideInInspector] public int    		    BugFixVersion      = iCS_Config.BugFixVersion;
-    [HideInInspector] public int                UndoRedoId         = 0;
-	[HideInInspector] public Vector2		    ScrollPosition     = Vector2.zero;
-	[HideInInspector] public float  		    GuiScale           = 1f;	
-	[HideInInspector] public int    		    SelectedObject     = -1;	
-    [HideInInspector] public List<Object>       UnityObjects       = new List<Object>();
-    [HideInInspector] public List<iCS_EngineObject>   EngineObjects= new List<iCS_EngineObject>();
+                      public iCS_EngineObject         EngineObject       = null;
+                      public string                   BehaviourClassName = null;
+    [HideInInspector] public int			          MajorVersion       = iCS_Config.MajorVersion;
+    [HideInInspector] public int    		          MinorVersion       = iCS_Config.MinorVersion;
+    [HideInInspector] public int    		          BugFixVersion      = iCS_Config.BugFixVersion;
+    [HideInInspector] public int                      UndoRedoId         = 0;
+	[HideInInspector] public Vector2		          ScrollPosition     = Vector2.zero;
+	[HideInInspector] public float  		          GuiScale           = 1f;	
+	[HideInInspector] public int    		          SelectedObject     = -1;	
+    [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
+    [HideInInspector] public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
 
     // ======================================================================
     // Properties
@@ -81,10 +81,30 @@ public class iCS_Storage : MonoBehaviour {
 		return parentNode;
 	}
     // ----------------------------------------------------------------------
+    // Returns the immediate source of the port.
     public iCS_EngineObject GetSource(iCS_EngineObject port) {
         if(port == null || port.SourceId == -1) return null;
         return EngineObjects[port.SourceId];
     }
+    // ----------------------------------------------------------------------
+    // Returns the endport source of the connection in which the given
+    // port belongs to.
+    public iCS_EngineObject GetSourceEndPort(iCS_EngineObject port) {
+        if(port == null) return null;
+        for(iCS_EngineObject sourcePort= GetSource(port); sourcePort != null; sourcePort= GetSource(port)) {
+            port= sourcePort;
+        }
+        return port;
+    }
+//    // ----------------------------------------------------------------------
+//    // Returns the last data port in the connection or NULL if none exist.
+//    public iCS_EngineObject GetDataConnectionSource(iCS_EngineObject port) {
+//        if(port == null || !port.IsDataPort) return null;
+//        for(iCS_EngineObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
+//            port= sourcePort;
+//        }
+//        return port;
+//    }
     // ----------------------------------------------------------------------
 	public bool IsInModulePort(iCS_EngineObject obj) {
 		if(!obj.IsInDataPort) return false;
@@ -97,14 +117,5 @@ public class iCS_Storage : MonoBehaviour {
 		var parent= GetParentNode(obj);
 		return parent != null && parent.IsKindOfModule;
 	}
-    // ----------------------------------------------------------------------
-    // Returns the last data port in the connection or NULL if none exist.
-    public iCS_EngineObject GetDataConnectionSource(iCS_EngineObject port) {
-        if(port == null || !port.IsDataPort) return null;
-        for(iCS_EngineObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
-            port= sourcePort;
-        }
-        return port;
-    }
     
 }

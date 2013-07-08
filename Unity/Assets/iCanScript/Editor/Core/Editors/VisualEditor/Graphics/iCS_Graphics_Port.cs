@@ -177,7 +177,7 @@ public partial class iCS_Graphics {
 		if(runtimeType != null) tooltip+= "Type: "+iCS_Types.TypeName(runtimeType)+"\n";
 		// Source information.
 		if(port.IsDataPort) {
-			iCS_EditorObject sourcePort= iStorage.GetDataConnectionSource(port);
+			iCS_EditorObject sourcePort= iStorage.GetSourceEndPort(port);
 			if(sourcePort != null && sourcePort != port) {
 				tooltip+= "Source: "+GetPortFullPathName(sourcePort, iStorage)+"\n";
 			}

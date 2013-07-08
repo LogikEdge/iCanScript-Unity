@@ -553,7 +553,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject RemoveConnection(iCS_EditorObject inPort) {
-        iCS_EditorObject sourcePort= IStorage.GetDataConnectionSource(inPort);
+        iCS_EditorObject sourcePort= IStorage.GetSourceEndPort(inPort);
         // Tear down previous connection.
         iCS_EditorObject tmpPort= inPort.Source;
         List<iCS_EditorObject> toDestroy= new List<iCS_EditorObject>();

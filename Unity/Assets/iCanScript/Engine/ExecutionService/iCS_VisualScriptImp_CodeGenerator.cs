@@ -246,7 +246,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 					case iCS_ObjectTypeEnum.ChildMuxPort: {
 						iCS_IParams rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_IParams;
 						if(rtMuxPort == null) break;
-                        iCS_EngineObject sourcePort= GetDataConnectionSource(port);
+                        iCS_EngineObject sourcePort= GetSourceEndPort(port);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
 						rtMuxPort.SetParameterConnection(port.PortIndex, connection);
 						break;
@@ -258,7 +258,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         iCS_EngineObject triggerPort= null;
                         iCS_EngineObject outStatePort= null;
                         iCS_EngineObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
-                        triggerPort= GetDataConnectionSource(triggerPort);
+                        triggerPort= GetSourceEndPort(triggerPort);
                         iCS_FunctionBase triggerFunc= IsOutModulePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
                         int triggerIdx= triggerPort.PortIndex;
                         iCS_Transition transition= new iCS_Transition(transitionModule.Name,
@@ -292,7 +292,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     case iCS_ObjectTypeEnum.EnablePort: {
 						if(GetParentNode(port).IsKindOfModule) break;
                         // Build connection.
-                        iCS_EngineObject sourcePort= GetDataConnectionSource(port);
+                        iCS_EngineObject sourcePort= GetSourceEndPort(port);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
                         // Build initial value.
 						object initValue= GetInitialValue(sourcePort);
