@@ -23,26 +23,33 @@ public partial class iCS_EditorObject {
 
     public bool IsPort                      { get { return EngineObject.IsPort; }}
     public bool IsFixPort                   { get { return EngineObject.IsFixPort; }}
+    public bool IsDynamicPort               { get { return EngineObject.IsDynamicPort; }}
+    
     public bool IsDataPort                  { get { return EngineObject.IsDataPort; }}
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
+
     public bool IsModulePort                { get { return IsDataPort && ParentNode.IsKindOfModule; }}
-    public bool IsOutModulePort             { get { return IsOutDataPort && ParentNode.IsKindOfModule; }}
-    public bool IsDynamicPort               { get { return EngineObject.IsDynamicPort; }}
     public bool IsDynamicModulePort         { get { return EngineObject.IsDynamicPort && ParentNode.IsKindOfModule; }}
+
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}
     public bool IsOutStatePort              { get { return EngineObject.IsOutStatePort; }}
+
     public bool IsTransitionPort            { get { return EngineObject.IsTransitionPort; }}
     public bool IsInTransitionPort          { get { return EngineObject.IsInTransitionPort; }}
     public bool IsOutTransitionPort         { get { return EngineObject.IsOutTransitionPort; }}
+
     public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
     public bool IsOutputPort                { get { return EngineObject.IsOutputPort; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
+
     public bool IsMuxPort                   { get { return EngineObject.IsMuxPort; }}
     public bool IsChildMuxPort              { get { return EngineObject.IsChildMuxPort; }}
     public bool IsParentMuxPort             { get { return EngineObject.IsParentMuxPort; }}
+
     public bool IsNestedPort                { get { var parent= Parent; return parent != null && parent.IsPort; }}
+
 	public bool IsRelayPort				    { get { return IsDataPort && !IsEndPort; }}
 	public bool IsEndPort					{ get { return IsDataPort && (Parent.IsFunction ||
 	                                                                      (IsInputPort && Source == null) ||

@@ -5,6 +5,12 @@
             <Title>Extending iCanScript</Title>
             <Synopsis>- iCanScript for senior programmers</Synopsis>
         </Document>
+        <Document ID="106">
+            <Title>iCanScript_Title_large_512x512x32</Title>
+        </Document>
+        <Document ID="113">
+            <Title>iCanScript_Title_large_shadow_838x178x32</Title>
+        </Document>
         <Document ID="120">
             <Title>Table of Content</Title>
             <Text>&lt;$img:Shadow_Line_1;w=500;h=2>
@@ -15,7 +21,6 @@ Many Thanks	&lt;$p>
 Preface	&lt;$p>
 Acknowledgements	&lt;$p>
 Introduction	&lt;$p>
-What is iCanScript	&lt;$p>
 Philosophy	&lt;$p>
 About This Manual	&lt;$p>
 Terms and Conventions	&lt;$p>
@@ -76,11 +81,14 @@ Their is nothing more exciting for software designers like us than growing our c
 — The Software Development Team at Disruptive Software.</Synopsis>
             <Text>We, at Disruptive Software, would like to start by saying: 
 
-— Thank You for your interest in iCanScript !!!                 
+“Thank You for your interest in iCanScript !!!”
 
 Their is nothing more exciting for software designers like us than growing our customer base and we will make every effort to help you become one of our users.
 
 — The Software Development Team at Disruptive Software.</Text>
+        </Document>
+        <Document ID="107">
+            <Title>iCanScript_Title_large_1024x1024x32</Title>
         </Document>
         <Document ID="56">
             <Title>What is iCanScript</Title>
@@ -91,15 +99,18 @@ iCanScript is a visual programming editor that can be used standalone or to comp
 iCanScript was developed because no other …
 </Text>
         </Document>
-        <Document ID="49">
-            <Title>Visual Editor</Title>
-        </Document>
         <Document ID="71">
             <Title>Quick Tour</Title>
             <Text>This is a quick tour guide to using iCanScript for the first time.</Text>
         </Document>
         <Document ID="64">
             <Title>Preferences</Title>
+        </Document>
+        <Document ID="49">
+            <Title>Visual Editor</Title>
+        </Document>
+        <Document ID="114">
+            <Title>iCanScript_Title</Title>
         </Document>
         <Document ID="122">
             <Title>Upgrades</Title>
@@ -112,8 +123,14 @@ iCanScript was developed because no other …
             <Text>iCanScript autonomously generates the visual script code when you request to run your game.  No special user intervention is required.
 </Text>
         </Document>
+        <Document ID="108">
+            <Title>iCanScript_Title_large_shadow_412x87x32</Title>
+        </Document>
         <Document ID="58">
             <Title>Menus and Keyboard Shortcuts</Title>
+        </Document>
+        <Document ID="115">
+            <Title>iCanScript_Title</Title>
         </Document>
         <Document ID="80">
             <Title>Staying Informed</Title>
@@ -130,9 +147,11 @@ This implies that if the visual script is a component of a game object in a scen
 iCanScript in a Prefab:
 Visual script components that are included in  prefabs are automatically saved as part of the parent prefab.</Text>
         </Document>
-        <Document ID="59">
-            <Title>Programming Keywords</Title>
-            <Text>?appendix</Text>
+        <Document ID="116">
+            <Title>iCanScript_Title</Title>
+        </Document>
+        <Document ID="109">
+            <Title>iCanScript_Title_large_shadow_206x43x32</Title>
         </Document>
         <Document ID="81">
             <Title>Interface Overview</Title>
@@ -180,6 +199,10 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
 !---
 - Martin Fowler</Text>
         </Document>
+        <Document ID="59">
+            <Title>Programming Keywords</Title>
+            <Text>?appendix</Text>
+        </Document>
         <Document ID="82">
             <Title>Creating Nodes</Title>
             <Text>This section discusses how to create your own nodes from source code.   Please refer to section XXX if you want to install an existing library.</Text>
@@ -187,18 +210,27 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
         <Document ID="75">
             <Title>Registering</Title>
         </Document>
+        <Document ID="117">
+            <Title>iCanScript_Title</Title>
+        </Document>
         <Document ID="68">
             <Title>Preferences</Title>
         </Document>
         <Document ID="69">
             <Title>About This Manual</Title>
-            <Text>The manual itself has been split into five primary sections and an appendix. The first section introduces iCanScript’s terminology and interface and gives a quick tour for those who want to start writing as soon as possible. It is highly recommended that you also go through the Quick Tour (chapter 6) to get the most out of iCanScript and eliminate confusion over some of its unique features.</Text>
+            <Text>This manual is available in PDF format and can be access from the iCanScript menu, under User Manual.  It is also available from the Disruptive Software web site at www.icanscript.com/documentation/user_guide.
+Annotating the PDF: If you wish to make notes and annotate the PDF using software such as Reader or Skim, it is recommended you download a separate copy, or locate the PDF in the iCanScript installation and drag a copy out for your own personal use. When iCanScript updates, it will very likely overwrite the existing PDF in the installation, which will destroy any of your notes.
+The manual itself has been split into three primary sections and an appendix. The first section introduces iCanScript’s terminology and interface and gives a quick tour for those who want to start programming as soon as possible. It is highly recommended that you also go through the Quick Tour (chapter ?chapterID) to get the most out of iCanScript and eliminate confusion over some of its unique features.
+iCanScript has a wide variety of features to accommodate many different purposes, including </Text>
         </Document>
         <Document ID="83">
             <Title>Installing Libraries</Title>
         </Document>
         <Document ID="76">
             <Title>Trial Version</Title>
+        </Document>
+        <Document ID="90">
+            <Title>Untitled</Title>
         </Document>
         <Document ID="84">
             <Title>Table Of Content</Title>
@@ -245,15 +277,21 @@ Acknowledgements	&lt;$p>
 
 </Text>
         </Document>
+        <Document ID="77">
+            <Title>Purchasing iCanScript</Title>
+        </Document>
         <Document ID="118">
             <Title>ToC</Title>
         </Document>
-        <Document ID="77">
-            <Title>Purchasing iCanScript</Title>
+        <Document ID="91">
+            <Title>Untitled</Title>
         </Document>
         <Document ID="78">
             <Title>Updates</Title>
             <Text>Please note that Disruptive Software will make every effort possible to support upward compatibility starting from version 0.9.0.  Previous beta versions of iCanScript are not upward or backward compatible with version 0.9.0 and above.</Text>
+        </Document>
+        <Document ID="92">
+            <Title>Untitled</Title>
         </Document>
         <Document ID="85">
             <Title>Signature</Title>
@@ -327,6 +365,9 @@ See the “Sample MS” PDF file in the Research folder for an example of a docu
 Final Note
 Scrivener project templates are flexible and are not intended to restrict you to a particular workflow. You can change, delete or move the files and folders contained in the template, and you can create your own templates by setting up a skeletal project with the files, folders and settings you would like to use for new projects and using File > Save As Template.</Text>
         </Document>
+        <Document ID="93">
+            <Title>Untitled</Title>
+        </Document>
         <Document ID="119">
             <Title>Toc</Title>
             <Text>
@@ -351,8 +392,17 @@ This is a test sentence to verify tables of content bwqkjfbwkjfh lkhfjk j;whf;wh
             <Title>Level 5</Title>
             <Text>This is a level 5 text.</Text>
         </Document>
+        <Document ID="95">
+            <Title>Untitled</Title>
+        </Document>
         <Document ID="89">
             <Title>Appendix folder</Title>
+        </Document>
+        <Document ID="96">
+            <Title>Untitled</Title>
+        </Document>
+        <Document ID="100">
+            <Title>UnityLogo_512x512</Title>
         </Document>
         <Document ID="97">
             <Title>Front Covers</Title>
@@ -366,11 +416,14 @@ iCanScript v0.9.0 for Unity 3D
 
 #
 ￼
-
 Disruptive Software
 &lt;$fullModifiedDate>
-Revision: 0.9.0-01
-© 2010-2013, Disruptive Software.  All rights reserved.</Text>
+Revision: 0.9.0-AP&lt;$revision>
+© 2010-2013, Disruptive Software.  All rights reserved.
+</Text>
+        </Document>
+        <Document ID="101">
+            <Title>iCanScriptLogo_1024x1024x32</Title>
         </Document>
         <Document ID="99">
             <Title>Cover</Title>
@@ -379,15 +432,25 @@ Revision: 0.9.0-01
         <Document ID="40">
             <Title>Philosophy</Title>
             <Synopsis>- Discuss what drives the development of iCanScript.</Synopsis>
-            <Text>iCanScript was created to help and improve the design process for creating software.  It is meant to extend the standard text editor for writing Unity scripts.  It offers a visual workflow to build, review, and publish programming logic without removing the ability to write low-level logic using standard toolsets.
-iCanScript roots its philosophy in that at one point, the software to be created uses concepts that are better expressed in terms of high-level building blocks including multi-level state charts.
-Number crushing is best expressed using low-level software and textual source code editors, high-level concepts are better expressed using visual design elements.  Often, corporations include a formal or informal development process to discuss and publish the high-level concepts pertaining the software product to be developed.   In all cases, these high-level concepts are expressed using diagrams as it is the simplest and most direct way of building and iterating on those fundamental aspects of the product.
+            <Text>“Think twice before you start programming or you will program twice before you start thinking.”
+!---
+- Unknown
 
+More then 50 years after ENIAC, most programmers still rely solely on textual editors to express their creative thoughts into programs that can be compiled or interpreted by computers.  As the programs increase in complexity, many corporations encourage the interdisciplinary discussion of the high-level concepts overseeing the software product to be created.  In all cases, these high-level concepts are expressed in diagrams for it is the simplest and most direct way of building and iterating on those fundamental aspects of the product.  It is this trend to graphically convey software concepts with diagrams that conducted to the creation of iCanScript.
+iCanScript is part of a new breed of visual editors which focuses on expressing programmatic behaviour using nodal diagrams.  It integrates with the existing toolsets extending the text editor for writing Unity3d scripts.  It offers a visual workflow to build, review, and publish programming logic preserving the ability to write low-level logic using your favourite coding software.
 The main concepts of iCanScript can be summarized as follows:</Text>
+            <Comments>ENIAC (Electronic Numerical Integrator And Computer) was the first electronic general-purpose computer. It was Turing-complete, digital, and capable of being reprogrammed to solve a full range of computing problems.
+The term interdisciplinary is used to express a team composed of various expertise or talent not limited to software engineering.</Comments>
             <Notes>This is a note from Index Card.</Notes>
+        </Document>
+        <Document ID="102">
+            <Title>iCanScriptLogo_128x128x32</Title>
         </Document>
         <Document ID="27">
             <Title>Ideas</Title>
+        </Document>
+        <Document ID="103">
+            <Title>iCanScriptLogo_64x64x32</Title>
         </Document>
         <Document ID="42">
             <Title>Terms and Conventions</Title>
@@ -405,6 +468,9 @@ combination with other modifier keys.
 When a keyboard shortcut requires a combination of modifier keys, they will be printed together. Example:    – V, which matches Edit ⌘ Paste and Match Style, means you should hold down all three of these modifier keys and then tap the V key on your keyboard. The hyphen is used to separate the modifier keys from the target key and is not meant to be included in the shortcut itself.
 Interface elements will be capitalised as proper nouns to help differentiate them from standard nouns when appropriate. A Collection is an interface element, while the word “collection” can be used to indicate a casual grouping of items, and not necessarily a formal Collection.</Text>
         </Document>
+        <Document ID="110">
+            <Title>iCanScript_Title_large_shadow_1024x1024x32</Title>
+        </Document>
         <Document ID="50">
             <Title>Inspector</Title>
         </Document>
@@ -413,15 +479,14 @@ Interface elements will be capitalised as proper nouns to help differentiate the
             <Synopsis>- Discuss major difference with previous version of the manual.</Synopsis>
             <Text>iCanScript Release Candidate #1 (RC#1) is the first officially supported release of iCanScript.  It includes the following features:</Text>
         </Document>
+        <Document ID="104">
+            <Title>iCanScriptLogo_96x96x32</Title>
+        </Document>
+        <Document ID="111">
+            <Title>iCanScript_Title_large_shadow_512x512x32</Title>
+        </Document>
         <Document ID="51">
             <Title>Library</Title>
-        </Document>
-        <Document ID="44">
-            <Title>Installation and Upgrading</Title>
-            <Text>iCanScript is delivered in three Unity packages:
-- iCanScript: the core editor &amp; engine (mandatory);
-- iCanScript_Nodes: base library nodes (optional);
-- iCanScript_Examples: example projects (optional).</Text>
         </Document>
         <Document ID="37">
             <Title>Acknowledgements</Title>
@@ -431,6 +496,13 @@ Manual Rochon - helped in user interface design as well as the overall operation
 
 </Text>
         </Document>
+        <Document ID="44">
+            <Title>Installation and Upgrading</Title>
+            <Text>iCanScript is delivered in three Unity packages:
+- iCanScript: the core editor &amp; engine (mandatory);
+- iCanScript_Nodes: base library nodes (optional);
+- iCanScript_Examples: example projects (optional).</Text>
+        </Document>
         <Document ID="52">
             <Title>Instance Wizard</Title>
         </Document>
@@ -438,6 +510,12 @@ Manual Rochon - helped in user interface design as well as the overall operation
             <Title>Introduction</Title>
             <Synopsis>- Discuss the purpose of this manual.</Synopsis>
             <Text>Welcome to the User Manual of iCanScript.  The following sections will get you acquainted with the user interface and the </Text>
+        </Document>
+        <Document ID="112">
+            <Title>iCanScriptLogo_512x512x32</Title>
+        </Document>
+        <Document ID="105">
+            <Title>iCanScript_Title_large_256x256x32</Title>
         </Document>
         <Document ID="60">
             <Title>Preface</Title>
