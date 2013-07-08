@@ -242,8 +242,8 @@ public partial class iCS_IStorage {
 					} else if(obj.IsChildMuxPort) {
 						shouldRemove= obj.Source == null;
 					} else {
-						shouldRemove= ((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) ||
-						              (obj.IsDynamicModulePort && obj.Source == null && (parent.IsStateChart || parent.IsState));
+						shouldRemove= ((obj.IsStatePort || obj.IsDynamicPort) && IsPortDisconnected(obj)) ||
+						              (obj.IsDynamicPort && obj.Source == null && (parent.IsStateChart || parent.IsState));
 						
 					}
 					if(shouldRemove) {
