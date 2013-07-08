@@ -1,3 +1,5 @@
+// -------------------------------------------------------------------------
+// Parameter Protocol
 public interface iCS_IParams {
 	string GetParameterName(int idx);
     object GetParameter(int idx);

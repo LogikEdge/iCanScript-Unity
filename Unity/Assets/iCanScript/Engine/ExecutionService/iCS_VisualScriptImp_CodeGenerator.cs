@@ -166,13 +166,16 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             break;
                         }
                         case iCS_ObjectTypeEnum.InstanceMessage:
-                        case iCS_ObjectTypeEnum.ClassMessage:
-                            iCS_Message message= new iCS_Message(node.Name, priority);                                
+                        case iCS_ObjectTypeEnum.ClassMessage: {
+                            var nbParams= GetInputEndPortsLastIndex(node)+1;
+                            iCS_Message message= new iCS_Message(node.Name, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= message;
                             InvokeAddChildIfExists(parent, message);                                
                             break;
+                        }
                         case iCS_ObjectTypeEnum.Aggregate: {
-                            var module= new iCS_Aggregate(node.Name, priority);                                
+                            var nbParams= GetInputEndPortsLastIndex(node)+1;
+                            var module= new iCS_Aggregate(node.Name, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             InvokeAddChildIfExists(parent, module);                                
                             break;
@@ -290,7 +293,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     case iCS_ObjectTypeEnum.InDynamicPort:
                     case iCS_ObjectTypeEnum.InFixPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
-						if(GetParentNode(port).IsKindOfAggregate) break;
+						if(GetParentNode(port).IsKindOfAggregate && !(port.IsInputPort && IsEndPort(port))) {
+						    break;
+					    }
                         // Build connection.
                         iCS_EngineObject sourcePort= GetSourceEndPort(port);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
@@ -298,7 +303,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 						object initValue= GetInitialValue(sourcePort);
                         // Set data port.
                         object parentObj= myRuntimeNodes[port.ParentId];
-                        Prelude.choice<iCS_Constructor, iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
+                        Prelude.choice<iCS_Constructor, iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function, iCS_Aggregate, iCS_Message>(parentObj,
                             constructor=> {
                                 constructor[port.PortIndex]= initValue;
                                 constructor.SetParameterConnection(port.PortIndex, connection);
@@ -326,6 +331,12 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             function=> {
                                 function[port.PortIndex]= initValue;
                                 function.SetParameterConnection(port.PortIndex, connection);
+                            },
+                            aggregate=> {
+                                aggregate[port.PortIndex]= initValue;                                
+                            },
+                            message=> {
+                                message[port.PortIndex]= initValue;
                             }
                         );
                         break;
@@ -385,6 +396,17 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 			isOuts[i]= ports[i].IsOutputPort;
 		}
 		return isOuts;
+	}
+	int GetInputEndPortsLastIndex(iCS_EngineObject node) {
+        int lastIndex= -1;
+		iCS_EngineObject[] ports= GetChildPorts(node);
+	    for(int i= 0; i < ports.Length; ++i) {
+	        var p= ports[i];
+	        if(p.IsInputPort && IsEndPort(p) && p.PortIndex > lastIndex) {
+	            lastIndex= p.PortIndex;
+	        }
+	    }
+	    return lastIndex;
 	}
 	Type[] GetParamTypes(iCS_EngineObject node) {
 	    return node.GetParamTypes(EngineObjects);
