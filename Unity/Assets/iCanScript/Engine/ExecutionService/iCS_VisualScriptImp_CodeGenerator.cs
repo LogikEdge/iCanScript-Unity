@@ -171,7 +171,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             myRuntimeNodes[node.InstanceId]= message;
                             InvokeAddChildIfExists(parent, message);                                
                             break;
-                        case iCS_ObjectTypeEnum.Module: {
+                        case iCS_ObjectTypeEnum.Aggregate: {
                             iCS_Module module= new iCS_Module(node.Name, priority);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             InvokeAddChildIfExists(parent, module);                                

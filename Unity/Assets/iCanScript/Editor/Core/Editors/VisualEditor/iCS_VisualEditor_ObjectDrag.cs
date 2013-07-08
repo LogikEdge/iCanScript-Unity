@@ -775,7 +775,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Type instanceType= sourcePort.RuntimeType;
         if(iCS_Types.IsStaticClass(instanceType)) return;
         if(DragOriginalPort != DragFixPort) return;
-        var instance= IStorage.CreateModule(newParent.InstanceId, globalPosition, "", iCS_ObjectTypeEnum.Module, instanceType);
+        var instance= IStorage.CreateModule(newParent.InstanceId, globalPosition, "", iCS_ObjectTypeEnum.Aggregate, instanceType);
         var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
         SetNewDataConnection(thisPort, sourcePort);
     }

@@ -56,7 +56,7 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.Behaviour:        BehaviourMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.StateChart:       StateChartMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.State:            StateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.Module:           ModuleMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Aggregate:        ModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceMessage:  ModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassMessage:     ModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionGuard:  ModuleMenu(selectedObject, storage); break;
@@ -138,7 +138,7 @@ public class iCS_DynamicMenu {
             menu[1]= new iCS_MenuContext(SeparatorStr);
             for(int i= 0; i < len; ++i) {
                 string name= iCS_AllowedChildren.StateChildNames[i];
-                if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
+                if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Aggregate, selectedObject, storage)) {
                     menu[i+2]= new iCS_MenuContext(String.Concat("+ ", name));
                 } else {
                     menu[i+2]= new iCS_MenuContext(String.Concat("#+ ", name));
@@ -435,7 +435,7 @@ public class iCS_DynamicMenu {
 		var parent       = context.SelectedObject;
 		var storage      = context.Storage;
 		var graphPosition= context.GraphPosition;
-        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, graphPosition, null, iCS_ObjectTypeEnum.Module, classType);
+        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, graphPosition, null, iCS_ObjectTypeEnum.Aggregate, classType);
         return module;
     }
 	// ----------------------------------------------------------------------

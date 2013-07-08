@@ -510,7 +510,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case iCS_ObjectTypeEnum.TransitionModule:
             case iCS_ObjectTypeEnum.TransitionGuard:
             case iCS_ObjectTypeEnum.TransitionAction:
-            case iCS_ObjectTypeEnum.Module: {
+            case iCS_ObjectTypeEnum.Aggregate: {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 IStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }

@@ -132,7 +132,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateGameObject(int parentId, GameObject gameObject, Vector2 position) {
-        var module= IStorage.CreateModule(parentId, GraphMousePosition, gameObject.name, iCS_ObjectTypeEnum.Module, gameObject.GetType());
+        var module= IStorage.CreateModule(parentId, GraphMousePosition, gameObject.name, iCS_ObjectTypeEnum.Aggregate, gameObject.GetType());
         var thisPort= IStorage.FindThisInputPort(module);
         if(thisPort != null) {
             thisPort.PortValue= gameObject;

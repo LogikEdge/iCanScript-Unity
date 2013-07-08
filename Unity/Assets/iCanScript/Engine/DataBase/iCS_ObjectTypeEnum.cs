@@ -8,7 +8,7 @@ public enum iCS_ObjectTypeEnum {
     NodeStart= 0,
     
     // Structural nodes
-    Behaviour= 0, Module, StateChart, State,
+    Behaviour= 0, Aggregate, StateChart, State,
 
     // Function nodes
     Constructor=100,
@@ -53,16 +53,19 @@ public enum iCS_ObjectTypeEnum {
 }
 
 public static class iCS_ObjectType {
-    // All nodes.
+    // Type Groups
     public static bool IsNode                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.NodeStart &&
 																			  obj.ObjectType <= iCS_ObjectTypeEnum.NodeEnd; }
+    public static bool IsPort                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.PortStart &&
+                                                                              obj.ObjectType <= iCS_ObjectTypeEnum.PortEnd; }
 
     // Structural nodes.
     public static bool IsBehaviour            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Behaviour; }
     public static bool IsStateChart           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StateChart; }
     public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.State; }
-    public static bool IsModule               (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Module; }
-    public static bool IsKindOfModule		  (iCS_EngineObject obj) { return IsModule(obj) || IsTransitionNode(obj) ||
+    public static bool IsAggregate            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Aggregate; }
+
+    public static bool IsKindOfModule		  (iCS_EngineObject obj) { return IsAggregate(obj) || IsTransitionNode(obj) ||
                                                                               IsBehaviour(obj) || IsMessage(obj); }
 	public static bool IsKindOfState		  (iCS_EngineObject obj) { return IsStateChart(obj) || IsState(obj); }
 
@@ -72,6 +75,7 @@ public static class iCS_ObjectType {
     public static bool IsMethod               (iCS_EngineObject obj) { return IsClassMethod(obj) || IsInstanceMethod(obj); }
     public static bool IsField                (iCS_EngineObject obj) { return IsClassField(obj) || IsInstanceField(obj); }
     public static bool IsMessage              (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsClassMessage(obj); }
+
     public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
     public static bool IsClassMethod          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassMethod; }
     public static bool IsInstanceMethod       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMethod; }
@@ -89,8 +93,6 @@ public static class iCS_ObjectType {
     public static bool IsTransitionAction     (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TransitionAction; }
 
     // Ports.
-    public static bool IsPort                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.PortStart &&
-																			  obj.ObjectType <= iCS_ObjectTypeEnum.PortEnd; }
 
     public static bool IsEnablePort           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.EnablePort; }
     public static bool IsInFixPort            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFixPort; }
