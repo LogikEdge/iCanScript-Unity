@@ -24,6 +24,8 @@ public partial class iCS_EditorObject {
     public bool IsPort                      { get { return EngineObject.IsPort; }}
     public bool IsFixPort                   { get { return EngineObject.IsFixPort; }}
     public bool IsDynamicPort               { get { return EngineObject.IsDynamicPort; }}
+    public bool IsEndPort                   { get { return Storage.IsEndPort(EngineObject); }}
+    public bool IsRelayPort                 { get { return Storage.IsRelayPort(EngineObject); }}
     
     public bool IsDataPort                  { get { return EngineObject.IsDataPort; }}
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
@@ -48,9 +50,4 @@ public partial class iCS_EditorObject {
     public bool IsParentMuxPort             { get { return EngineObject.IsParentMuxPort; }}
 
     public bool IsNestedPort                { get { var parent= Parent; return parent != null && parent.IsPort; }}
-
-	public bool IsDataRelayPort				    { get { return IsDataPort && !IsDataEndPort; }}
-	public bool IsDataEndPort					{ get { return IsDataPort && (Parent.IsFunction ||
-	                                                                      (IsInputPort && Source == null) ||
-	                                                                      (IsOutputPort && !myIStorage.IsPortSourced(this))); }}
 }
