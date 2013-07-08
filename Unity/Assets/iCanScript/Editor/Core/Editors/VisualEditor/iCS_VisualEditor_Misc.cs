@@ -272,7 +272,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetParentModule(iCS_EditorObject edObj) {
         iCS_EditorObject parentModule= edObj.Parent;
-        for(; parentModule != null && !parentModule.IsKindOfModule; parentModule= parentModule.Parent);
+        for(; parentModule != null && !parentModule.IsKindOfAggregate; parentModule= parentModule.Parent);
         return parentModule;
     }
 	// ----------------------------------------------------------------------

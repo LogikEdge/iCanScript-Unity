@@ -259,7 +259,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         iCS_EngineObject outStatePort= null;
                         iCS_EngineObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
                         triggerPort= GetSourceEndPort(triggerPort);
-                        iCS_FunctionBase triggerFunc= IsOutModulePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
+                        iCS_FunctionBase triggerFunc= IsOutAggregatePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
                         int triggerIdx= triggerPort.PortIndex;
                         iCS_Transition transition= new iCS_Transition(transitionModule.Name,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,
@@ -275,7 +275,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     // Data ports.
                     case iCS_ObjectTypeEnum.OutDynamicPort:
                     case iCS_ObjectTypeEnum.OutFixPort: {
-						if(GetParentNode(port).IsKindOfModule) break;
+						if(GetParentNode(port).IsKindOfAggregate) break;
                         object parentObj= myRuntimeNodes[port.ParentId];
                         Prelude.choice<iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
                             method          => method[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
@@ -290,7 +290,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     case iCS_ObjectTypeEnum.InDynamicPort:
                     case iCS_ObjectTypeEnum.InFixPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
-						if(GetParentNode(port).IsKindOfModule) break;
+						if(GetParentNode(port).IsKindOfAggregate) break;
                         // Build connection.
                         iCS_EngineObject sourcePort= GetSourceEndPort(port);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;

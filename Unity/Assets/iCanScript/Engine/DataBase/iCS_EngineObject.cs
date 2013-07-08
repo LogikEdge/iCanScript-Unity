@@ -168,7 +168,7 @@ public class iCS_EngineObject {
     public bool IsStateChart            { get { return iCS_ObjectType.IsStateChart(this); }}
     public bool IsState                 { get { return iCS_ObjectType.IsState(this); }}
     public bool IsAggregate             { get { return iCS_ObjectType.IsAggregate(this); }}
-    public bool IsKindOfModule          { get { return iCS_ObjectType.IsKindOfModule(this); }}
+    public bool IsKindOfAggregate       { get { return iCS_ObjectType.IsKindOfAggregate(this); }}
     public bool IsTransitionModule      { get { return iCS_ObjectType.IsTransitionModule(this); }}
     public bool IsTransitionGuard       { get { return iCS_ObjectType.IsTransitionGuard(this); }}
     public bool IsTransitionAction      { get { return iCS_ObjectType.IsTransitionAction(this); }}
@@ -207,8 +207,8 @@ public class iCS_EngineObject {
     // ======================================================================
     // Feature support
     // ----------------------------------------------------------------------
-    public bool SupportsAdditionOfPorts { get { return IsKindOfModule; }}
-    public bool SupportsNestedNodes     { get { return IsKindOfModule; }}
+    public bool SupportsAdditionOfPorts { get { return IsKindOfAggregate; }}
+    public bool SupportsNestedNodes     { get { return IsKindOfAggregate; }}
     
     // ----------------------------------------------------------------------
 	public FieldInfo GetFieldInfo() {

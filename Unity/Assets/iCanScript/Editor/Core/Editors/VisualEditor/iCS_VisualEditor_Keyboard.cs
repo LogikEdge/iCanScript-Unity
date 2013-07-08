@@ -208,7 +208,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     break;
                 }
                 // Auto-insert on module.
-                if(SelectedObject.IsKindOfModule) {
+                if(SelectedObject.IsKindOfAggregate) {
                     iCS_EditorObject newObj= null;
                     if(!ev.shift) {
                         IStorage.RegisterUndo("Create Module");

@@ -65,7 +65,7 @@ public static class iCS_ObjectType {
     public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.State; }
     public static bool IsAggregate            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Aggregate; }
 
-    public static bool IsKindOfModule		  (iCS_EngineObject obj) { return IsAggregate(obj) || IsTransitionNode(obj) ||
+    public static bool IsKindOfAggregate	  (iCS_EngineObject obj) { return IsAggregate(obj) || IsTransitionNode(obj) ||
                                                                               IsBehaviour(obj) || IsMessage(obj); }
 	public static bool IsKindOfState		  (iCS_EngineObject obj) { return IsStateChart(obj) || IsState(obj); }
 
