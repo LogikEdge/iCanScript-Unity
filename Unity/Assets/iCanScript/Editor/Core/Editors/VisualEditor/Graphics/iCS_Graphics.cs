@@ -648,13 +648,13 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     void DrawDataPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
 		if(port.IsInputPort) {
-			if(port.IsEndPort) {
+			if(port.IsDataEndPort) {
 				DrawInEndPort(_center, _fillColor, isSelected);
 			} else {
 				DrawInRelayPort(_center, _fillColor, isSelected);
 			}
 		} else {
-			if(port.IsEndPort) {
+			if(port.IsDataEndPort) {
 				DrawOutEndPort(_center, _fillColor, isSelected);
 			} else {
 				DrawOutRelayPort(_center, _fillColor, isSelected);
