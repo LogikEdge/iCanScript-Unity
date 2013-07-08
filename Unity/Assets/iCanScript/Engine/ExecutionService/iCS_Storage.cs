@@ -66,7 +66,7 @@ public class iCS_Storage : MonoBehaviour {
     }
 
     // ======================================================================
-    // EnginObject Utilities
+    // Tree Navigation Queries
     // ----------------------------------------------------------------------
     public iCS_EngineObject GetParent(iCS_EngineObject child) {
         if(child == null || child.ParentId == -1) return null;
@@ -80,31 +80,56 @@ public class iCS_Storage : MonoBehaviour {
 		}
 		return parentNode;
 	}
+
+    // ======================================================================
+    // Connection Queries
     // ----------------------------------------------------------------------
     // Returns the immediate source of the port.
-    public iCS_EngineObject GetSource(iCS_EngineObject port) {
+    public iCS_EngineObject GetSourcePort(iCS_EngineObject port) {
         if(port == null || port.SourceId == -1) return null;
         return EngineObjects[port.SourceId];
     }
     // ----------------------------------------------------------------------
-    // Returns the endport source of the connection in which the given
-    // port belongs to.
+    // Returns the endport source of a connection.
     public iCS_EngineObject GetSourceEndPort(iCS_EngineObject port) {
         if(port == null) return null;
-        for(iCS_EngineObject sourcePort= GetSource(port); sourcePort != null; sourcePort= GetSource(port)) {
+        for(iCS_EngineObject sourcePort= GetSourcePort(port); sourcePort != null; sourcePort= GetSourcePort(port)) {
             port= sourcePort;
         }
         return port;
     }
-//    // ----------------------------------------------------------------------
-//    // Returns the last data port in the connection or NULL if none exist.
-//    public iCS_EngineObject GetDataConnectionSource(iCS_EngineObject port) {
-//        if(port == null || !port.IsDataPort) return null;
-//        for(iCS_EngineObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
-//            port= sourcePort;
-//        }
-//        return port;
-//    }
+    // ----------------------------------------------------------------------
+    // Returns the list of destination ports.
+    public iCS_EngineObject[] GetDestinationPorts(iCS_EngineObject port) {
+        if(port == null) return new iCS_EngineObject[0];
+        var destinationPorts= new List<iCS_EngineObject>();
+        foreach(var obj in EngineObjects) {
+            if(obj.IsPort && GetSourcePort(obj) == port) {
+                destinationPorts.Add(obj);
+            }
+        }
+        return destinationPorts.ToArray();
+    }
+    // ----------------------------------------------------------------------
+    public bool IsEndPort(iCS_EngineObject port) {
+        if(port == null) return false;
+        if(port.IsInputPort) {
+            return GetSourcePort(port) == null;
+        }
+        return GetDestinationPorts(port).Length == 0;
+    }
+    // ----------------------------------------------------------------------
+    public bool IsRelayPort(iCS_EngineObject port) {
+        if(port == null) return false;
+        if(port.IsOutputPort) {
+            return GetSourcePort(port) != null;
+        }
+        return GetDestinationPorts(port).Length != 0;
+    }
+    
+    // ======================================================================
+    // EnginObject Utilities
+    // ----------------------------------------------------------------------
     // ----------------------------------------------------------------------
 	public bool IsInModulePort(iCS_EngineObject obj) {
 		if(!obj.IsInDataPort) return false;

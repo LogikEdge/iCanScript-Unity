@@ -253,7 +253,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 					}
                     case iCS_ObjectTypeEnum.InStatePort: {
                         iCS_EngineObject endState= GetParent(port);
-                        iCS_EngineObject transitionModule= GetParent(GetSource(port));
+                        iCS_EngineObject transitionModule= GetParentNode(GetSourcePort(port));
                         iCS_EngineObject actionModule= null;
                         iCS_EngineObject triggerPort= null;
                         iCS_EngineObject outStatePort= null;
@@ -361,7 +361,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
             }
             if(edObj.IsInTransitionPort) {
                 if(GetParent(edObj) == transitionModule) {
-                    outStatePort= GetSource(edObj);
+                    outStatePort= GetSourcePort(edObj);
                 }
             }
         }
