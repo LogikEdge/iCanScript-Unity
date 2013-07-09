@@ -5,17 +5,46 @@ public class iCS_SignatureDataSource {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    private   int              myIndex= 0;
+    private   int              myIndex        = 0;
     private   int              myCachedFrameId= -2;
     protected object[]         myParameters;
-    protected object           myReturnValue;
+    protected object           myReturnValue  = null;
     protected iCS_Connection[] myConnections;
+#if UNITY_EDITOR
+    protected string[]         myNames= null;
+#endif
     
+    // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
+    public iCS_SignatureDataSource(int nbOfParameters) {
+        myParameters = new object[nbOfParameters];
+        myConnections= new iCS_Connection[nbOfParameters];
+        for(int i= 0; i < nbOfParameters; ++i) {
+            myParameters[i] = null;
+            myConnections[i]= null;
+        }
+    }
+
     // ======================================================================
     // Functions to configure and access the signature parameters and 
     // return values.
     // ----------------------------------------------------------------------
-//	public string GetParameterName(int idx) { return Name+"["+idx+"]"; }
+#if UNITY_EDITOR
+	public string GetParameterName(int idx) {
+        if(myNames == null || idx >= myNames.Length || myNames[idx] == null) {
+            return "["+idx+"]";
+        }
+	    return myNames[idx];
+	}
+	public void SetParameterName(int idx, string value) {
+        if(myNames == null) {
+            myNames= new string[myParameters.Length+1];
+        }
+        if(idx >= myNames.Length) return;
+        myNames[idx]= value;
+	}
+#endif
 	public object GetParameter(int idx) {
         var len= myParameters.Length;
         if(idx < len) return myParameters[idx];
