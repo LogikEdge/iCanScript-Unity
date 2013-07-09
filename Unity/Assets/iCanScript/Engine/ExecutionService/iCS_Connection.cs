@@ -8,11 +8,6 @@ public class iCS_Connection {
     Prelude.Tuple<iCS_IParams,int>    myConnection= null;
 
     // ======================================================================
-    // Constants
-    // ----------------------------------------------------------------------
-    public static iCS_Connection  NoConnection= new iCS_Connection(null, -1);
-    
-    // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
     public iCS_IParams Function  { get { return myConnection != null ? myConnection.Item1 : null; }}
@@ -22,18 +17,25 @@ public class iCS_Connection {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_Connection() {
-        myConnection= NoConnection.myConnection;
+        myConnection= null;
     }
     public iCS_Connection(iCS_IParams function, int parameterIndex) {
-        myConnection= new Prelude.Tuple<iCS_IParams,int>(function, parameterIndex);
+        if(function == null) {
+            myConnection= null;
+        } else {
+            myConnection= new Prelude.Tuple<iCS_IParams,int>(function, parameterIndex);            
+        }
     }
 
-    public bool IsConnected             { get{ return myConnection.Item1 != null; }}
+    public bool IsConnected             { get{ return myConnection != null; }}
     public object Value                 {
         get { return myConnection.Item1.GetParameter(myConnection.Item2); }
         set { myConnection.Item1.SetParameter(myConnection.Item2, value); }
     }
-    public bool IsReady(int frameId)    { return myConnection.Item1.IsParameterReady(myConnection.Item2, frameId); }
+    public bool IsReady(int frameId)    {
+        if(!IsConnected) return true;
+        return myConnection.Item1.IsParameterReady(myConnection.Item2, frameId);
+    }
     
     // ----------------------------------------------------------------------
     public override string ToString() {

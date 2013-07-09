@@ -33,7 +33,7 @@ public class iCS_Method : iCS_Function {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_Method(string name, MethodBase methodInfo, bool[] paramIsOuts, int priority) : base(name, methodInfo, paramIsOuts, priority) {
-        myThisConnection= iCS_Connection.NoConnection;
+        myThisConnection= null;
     }
     public new void SetParameterConnection(int id, iCS_Connection connection) {
         if(id == myParameters.Length+1) myThisConnection= connection;

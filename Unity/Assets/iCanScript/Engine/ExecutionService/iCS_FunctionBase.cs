@@ -70,7 +70,7 @@ public class iCS_FunctionBase : iCS_Action, iCS_IParams {
         // Allocate parameters & connections
         myParameters= new object[paramIsOuts.Length];
         myConnections= new iCS_Connection[paramIsOuts.Length];
-        for(int i= 0; i < myConnections.Length; ++i) myConnections[i]= iCS_Connection.NoConnection;
+        for(int i= 0; i < myConnections.Length; ++i) myConnections[i]= null;
     }
     
     // ======================================================================

@@ -14,7 +14,7 @@ public class iCS_GetInstanceField : iCS_GetStaticField {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_GetInstanceField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, int priority) : base(name, fieldInfo, paramIsOuts, priority) {
-        myThisConnection= iCS_Connection.NoConnection;
+        myThisConnection= null;
     }
     public new void SetParameterConnection(int id, iCS_Connection connection) {
         if(id == 1) myThisConnection= connection;

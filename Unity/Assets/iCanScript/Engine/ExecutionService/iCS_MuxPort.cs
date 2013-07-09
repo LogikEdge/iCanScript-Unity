@@ -31,7 +31,7 @@ public class iCS_MuxPort : iCS_Action, iCS_IParams {
 				newConnections[i]= myConnections[i];
 			}
 			for(; i < newConnections.Length; ++i) {
-				newConnections[i]= iCS_Connection.NoConnection;
+				newConnections[i]= null;
 			}
 			myConnections= newConnections;
 		}
@@ -43,7 +43,7 @@ public class iCS_MuxPort : iCS_Action, iCS_IParams {
     // ----------------------------------------------------------------------
     public iCS_MuxPort(string name, int priority) : base(name, priority) {
 		myConnections= new iCS_Connection[1];
-		myConnections[0]= iCS_Connection.NoConnection;
+		myConnections[0]= null;
 	}
 
     // ======================================================================

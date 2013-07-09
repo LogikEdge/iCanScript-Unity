@@ -250,7 +250,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 						iCS_IParams rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_IParams;
 						if(rtMuxPort == null) break;
                         iCS_EngineObject sourcePort= GetSourceEndPort(port);
-						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
+						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
 						rtMuxPort.SetParameterConnection(port.PortIndex, connection);
 						break;
 					}
@@ -298,7 +298,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 					    }
                         // Build connection.
                         iCS_EngineObject sourcePort= GetSourceEndPort(port);
-						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
+						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
                         // Build initial value.
 						object initValue= GetInitialValue(sourcePort);
                         // Set data port.
@@ -435,7 +435,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	}
     // ----------------------------------------------------------------------
 	iCS_Connection BuildConnection(iCS_EngineObject port) {
-		iCS_Connection connection= iCS_Connection.NoConnection;
+		iCS_Connection connection= null;
 		if(myRuntimeNodes[port.InstanceId] != null) {
 			connection= new iCS_Connection(myRuntimeNodes[port.InstanceId] as iCS_IParams, 0);							
 		} else {

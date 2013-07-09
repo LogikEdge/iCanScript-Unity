@@ -8,7 +8,7 @@ public class iCS_Selector : iCS_FunctionBase {
     protected object			myReturn      		= null;		// +1
 	protected object			mySelector    		= null;		// +2
 	protected object			myDefaultValue		= null;		// +3
-	protected iCS_Connection	mySelectorConnection= iCS_Connection.NoConnection;
+	protected iCS_Connection	mySelectorConnection= null;
 	
     // ======================================================================
     // Accessors
