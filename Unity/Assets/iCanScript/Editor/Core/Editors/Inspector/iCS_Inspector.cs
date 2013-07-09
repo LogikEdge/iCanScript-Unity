@@ -237,7 +237,7 @@ public class iCS_Inspector : Editor {
         );
 
         // Show inputs.
-        iCS_IParams runtimeObject= myStorage.GetRuntimeObject(node) as iCS_IParams;
+        iCS_IParameters runtimeObject= myStorage.GetRuntimeObject(node) as iCS_IParameters;
         if(inPorts.Count > 0) {
             int indentLevel= 1;
             if(runtimeObject != null) {

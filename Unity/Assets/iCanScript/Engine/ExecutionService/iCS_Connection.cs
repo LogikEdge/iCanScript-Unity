@@ -5,12 +5,12 @@ public class iCS_Connection {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    Prelude.Tuple<iCS_IParams,int>    myConnection= null;
+    Prelude.Tuple<iCS_IParameters,int>    myConnection= null;
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public iCS_IParams Function  { get { return myConnection != null ? myConnection.Item1 : null; }}
+    public iCS_IParameters Function  { get { return myConnection != null ? myConnection.Item1 : null; }}
     public int         PortIndex { get { return myConnection != null ? myConnection.Item2 : -1; }}
     
     // ======================================================================
@@ -19,11 +19,11 @@ public class iCS_Connection {
     public iCS_Connection() {
         myConnection= null;
     }
-    public iCS_Connection(iCS_IParams function, int parameterIndex) {
+    public iCS_Connection(iCS_IParameters function, int parameterIndex) {
         if(function == null) {
             myConnection= null;
         } else {
-            myConnection= new Prelude.Tuple<iCS_IParams,int>(function, parameterIndex);            
+            myConnection= new Prelude.Tuple<iCS_IParameters,int>(function, parameterIndex);            
         }
     }
 

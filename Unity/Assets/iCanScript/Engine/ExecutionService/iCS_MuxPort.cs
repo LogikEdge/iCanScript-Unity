@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_MuxPort : iCS_Action, iCS_IParams {
+public class iCS_MuxPort : iCS_Action, iCS_IParameters {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------

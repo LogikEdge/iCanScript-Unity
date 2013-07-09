@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_FunctionBase : iCS_Action, iCS_IParams {
+public class iCS_FunctionBase : iCS_Action, iCS_IParameters {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------

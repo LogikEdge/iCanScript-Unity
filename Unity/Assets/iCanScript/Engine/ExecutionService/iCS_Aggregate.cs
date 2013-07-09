@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class iCS_Aggregate : iCS_ParallelDispatcher, iCS_IParams {
+public class iCS_Aggregate : iCS_ParallelDispatcher, iCS_IParameters {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------

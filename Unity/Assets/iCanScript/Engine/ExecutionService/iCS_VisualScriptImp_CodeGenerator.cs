@@ -247,7 +247,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         break;
                     }
 					case iCS_ObjectTypeEnum.ChildMuxPort: {
-						iCS_IParams rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_IParams;
+						iCS_IParameters rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_IParameters;
 						if(rtMuxPort == null) break;
                         iCS_EngineObject sourcePort= GetSourceEndPort(port);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
@@ -437,9 +437,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	iCS_Connection BuildConnection(iCS_EngineObject port) {
 		iCS_Connection connection= null;
 		if(myRuntimeNodes[port.InstanceId] != null) {
-			connection= new iCS_Connection(myRuntimeNodes[port.InstanceId] as iCS_IParams, 0);							
+			connection= new iCS_Connection(myRuntimeNodes[port.InstanceId] as iCS_IParameters, 0);							
 		} else {
-			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_IParams, port.PortIndex);
+			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_IParameters, port.PortIndex);
 		}
 		return connection;
 	}

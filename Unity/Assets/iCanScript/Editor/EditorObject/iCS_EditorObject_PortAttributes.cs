@@ -131,11 +131,11 @@ public partial class iCS_EditorObject {
                     return null;
                 }
 		    }
-			iCS_IParams funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParams;
+			iCS_IParameters funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParameters;
 			if(funcBase != null) {
 			    return funcBase.GetParameter(0);
 			}
-			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_IParams;
+			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_IParameters;
 			return funcBase == null ? port.InitialPortValue : funcBase.GetParameter(port.PortIndex);			
 		}
 		set {
@@ -150,17 +150,17 @@ public partial class iCS_EditorObject {
 			if(!IsDataPort) return null;
 			var port= this;
 			while(port.Source != null) port= port.Source;
-			iCS_IParams funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParams;
+			iCS_IParameters funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParameters;
 			if(funcBase != null) {
 			    return funcBase.GetParameter(0);
 			}
-			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_IParams;
+			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_IParameters;
 			return funcBase == null ? port.InitialPortValue : null;			
 		}
 		set {
 	        if(!IsInDataPort) return;
 	        // Just set the port if it has its own runtime.
-			iCS_IParams funcBase= myIStorage.GetRuntimeObject(this) as iCS_IParams;
+			iCS_IParameters funcBase= myIStorage.GetRuntimeObject(this) as iCS_IParameters;
 	        if(funcBase != null) {
 	            funcBase.SetParameter(0, value);
 	            return;
@@ -177,7 +177,7 @@ public partial class iCS_EditorObject {
 	        iCS_EditorObject parent= Parent;
 	        if(parent == null) return;
 	        // Get runtime object if it exists.
-	        iCS_IParams runtimeObject= myIStorage.GetRuntimeObject(parent) as iCS_IParams;
+	        iCS_IParameters runtimeObject= myIStorage.GetRuntimeObject(parent) as iCS_IParameters;
 	        if(runtimeObject == null) return;
 	        runtimeObject.SetParameter(PortIndex, value);			
 		}
