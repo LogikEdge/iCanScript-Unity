@@ -547,7 +547,7 @@ public partial class iCS_IStorage {
         var parent= EditorObjects[parentId];
         var globalPos= parent.LayoutPosition;
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
-        if(port.IsKindOfAggregatePort || port.IsChildMuxPort) 	{ AddDynamicPort(port); }
+        if(port.IsDynamicPort || port.IsChildMuxPort) 	{ AddDynamicPort(port); }
 		port.UpdatePortEdge();
 		port.LayoutPosition= globalPos;
         return EditorObjects[id];        
