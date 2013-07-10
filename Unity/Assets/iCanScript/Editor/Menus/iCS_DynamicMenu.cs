@@ -296,14 +296,14 @@ public class iCS_DynamicMenu {
                 if(name[0] == ' ') name= name.Substring(1);
                 if(name == childName) {
                     string toolTip= iCS_AllowedChildren.StateChildTooltips[i];
-                    ProcessCreateModuleWithUnchangableName(childName, context, toolTip);
+                    ProcessCreateAggregateWithUnchangableName(childName, context, toolTip);
                     return;
                 }
             }            
         }
         // Process all other types of requests.
         switch(context.Command) {
-            case ModuleStr:                 ProcessCreateModule(context); break;
+            case ModuleStr:                 ProcessCreateAggregate(context); break;
             case StateChartStr:             ProcessCreateStateChart(context); break;
             case StateStr:                  ProcessCreateState(context);  break;
             case SetAsEntryStr:             ProcessSetStateEntry(context); break;
@@ -350,15 +350,15 @@ public class iCS_DynamicMenu {
         }
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateModuleWithUnchangableName(string behName, iCS_MenuContext context, string toolTip="") {
-        iCS_EditorObject module= CreateModule(context, behName, false);
+    static iCS_EditorObject ProcessCreateAggregateWithUnchangableName(string behName, iCS_MenuContext context, string toolTip="") {
+        iCS_EditorObject module= CreateAggregate(context, behName, false);
         module.IsNameEditable= false;
         module.Tooltip= toolTip;
         return module;        
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreateModule(context);
+    static iCS_EditorObject ProcessCreateAggregate(iCS_MenuContext context) {
+        iCS_EditorObject module= CreateAggregate(context);
         return module;
     }
 	// ----------------------------------------------------------------------
@@ -389,21 +389,21 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject ProcessCreateOnEntryModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreateModule(context, iCS_Strings.OnEntry, false);
+        iCS_EditorObject module= CreateAggregate(context, iCS_Strings.OnEntry, false);
         module.IsNameEditable= false;
         module.Tooltip= "Executes on entry into this state.";
         return module;
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject ProcessCreateOnUpdateModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreateModule(context, iCS_Strings.OnUpdate, false);
+        iCS_EditorObject module= CreateAggregate(context, iCS_Strings.OnUpdate, false);
         module.IsNameEditable= false;
         module.Tooltip= "Executes on every frame this state is active.";
         return module;
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject ProcessCreateOnExitModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreateModule(context, iCS_Strings.OnExit, false);
+        iCS_EditorObject module= CreateAggregate(context, iCS_Strings.OnExit, false);
         module.IsNameEditable= false;
         module.Tooltip= "Executes on exit from this state.";
         return module;
@@ -422,11 +422,11 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateModule(iCS_MenuContext context, string name= "", bool nameEditable= true) {
+    static iCS_EditorObject CreateAggregate(iCS_MenuContext context, string name= "", bool nameEditable= true) {
 		var parent       = context.SelectedObject;
 		var storage      = context.Storage;
 		var graphPosition= context.GraphPosition;
-        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, graphPosition, name);
+        iCS_EditorObject module= storage.CreateAggregate(parent.InstanceId, graphPosition, name);
         module.IsNameEditable= nameEditable;
         return module;
     }
@@ -435,7 +435,7 @@ public class iCS_DynamicMenu {
 		var parent       = context.SelectedObject;
 		var storage      = context.Storage;
 		var graphPosition= context.GraphPosition;
-        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, graphPosition, null, iCS_ObjectTypeEnum.Aggregate, classType);
+        iCS_EditorObject module= storage.CreateAggregate(parent.InstanceId, graphPosition, null, iCS_ObjectTypeEnum.Aggregate, classType);
         return module;
     }
 	// ----------------------------------------------------------------------
