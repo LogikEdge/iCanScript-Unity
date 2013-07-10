@@ -407,17 +407,17 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateMethod(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateFunction(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         iCS_EditorObject instance= desc.IsInstanceMember ?
                     				CreateInstanceFunction(parentId, globalPos, desc) : 
-                    				CreateStaticMethod(parentId, globalPos, desc);
+                    				CreateClassFunction(parentId, globalPos, desc);
 
 		instance.MethodName= desc.MethodName;
 		instance.NbOfParams= desc.Parameters != null ? desc.Parameters.Length : 0;
 		return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateStaticMethod(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateClassFunction(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Determine icon.
@@ -579,7 +579,7 @@ public partial class iCS_IStorage {
         var outPos= outPort.LayoutPosition;
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= inPort.ParentNode.ParentId;
-        iCS_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);
+        iCS_EditorObject conv= CreateFunction(grandParentId, convPos, convDesc);
         ForEachChild(conv,
             (child) => {
                 if(child.IsInputPort) {

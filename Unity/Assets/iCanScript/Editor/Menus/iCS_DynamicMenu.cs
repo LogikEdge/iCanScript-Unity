@@ -482,7 +482,7 @@ public class iCS_DynamicMenu {
 					break;
 				}
 			}
-            iCS_EditorObject method= storage.CreateMethod(grandParent.InstanceId, graphPosition, desc);
+            iCS_EditorObject method= storage.CreateFunction(grandParent.InstanceId, graphPosition, desc);
             if(port.IsInputPort) {
 				iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), storage.GetChildOutputDataPorts(method)); 
 				if(outputPorts.Length >= 1) {
@@ -496,7 +496,7 @@ public class iCS_DynamicMenu {
             }
             return method;
         }
-        return storage.CreateMethod(parent.InstanceId, graphPosition, desc);            
+        return storage.CreateFunction(parent.InstanceId, graphPosition, desc);            
     }
 	// ----------------------------------------------------------------------
     static void DestroyObject(iCS_MenuContext context) {
