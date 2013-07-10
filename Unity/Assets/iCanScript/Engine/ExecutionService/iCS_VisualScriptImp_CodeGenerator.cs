@@ -293,11 +293,13 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     case iCS_ObjectTypeEnum.InDynamicPort:
                     case iCS_ObjectTypeEnum.InFixPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
-						if(GetParentNode(port).IsKindOfAggregate && !(port.IsInputPort && IsEndPort(port))) {
+						if(!(port.IsInputPort && IsEndPort(port))) {
+                            Debug.Log("Aborting connection of: "+GetParentNode(port).Name+"."+port.Name+" IsInput= "+port.IsInputPort+" IsEndPoint= "+IsEndPort(port));
 						    break;
 					    }
                         // Build connection.
                         iCS_EngineObject sourcePort= GetSourceEndPort(port);
+					    Debug.Log("Trying to connect: "+GetParentNode(port).Name+"."+port.Name+" to "+GetParentNode(sourcePort).Name+"."+sourcePort.Name);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
                         // Build initial value.
 						object initValue= GetInitialValue(sourcePort);

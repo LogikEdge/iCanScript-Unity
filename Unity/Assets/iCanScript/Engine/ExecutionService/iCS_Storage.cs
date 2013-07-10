@@ -117,17 +117,21 @@ public class iCS_Storage : MonoBehaviour {
     // ----------------------------------------------------------------------
     public bool IsEndPort(iCS_EngineObject port) {
         if(port == null) return false;
-        if(port.IsInputPort) {
-            return GetSourcePort(port) == null;
-        }
-        return GetDestinationPorts(port).Length == 0;
+        if(!HasASource(port)) return true;
+        return !HasADestination(port);
     }
     // ----------------------------------------------------------------------
     public bool IsRelayPort(iCS_EngineObject port) {
         if(port == null) return false;
-        if(port.IsOutputPort) {
-            return GetSourcePort(port) != null;
-        }
+        return HasASource(port) && HasADestination(port);
+    }
+    // ----------------------------------------------------------------------
+    public bool HasASource(iCS_EngineObject port) {
+        var source= GetSourcePort(port);
+        return source != null && source != port; 
+    }
+    // ----------------------------------------------------------------------
+    public bool HasADestination(iCS_EngineObject port) {
         return GetDestinationPorts(port).Length != 0;
     }
     
