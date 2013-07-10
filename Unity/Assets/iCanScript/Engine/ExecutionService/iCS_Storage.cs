@@ -12,7 +12,6 @@ public class iCS_Storage : MonoBehaviour {
     // Fields
     // ----------------------------------------------------------------------
                       public iCS_EngineObject         EngineObject       = null;
-                      public string                   BehaviourClassName = null;
     [HideInInspector] public int			          MajorVersion       = iCS_Config.MajorVersion;
     [HideInInspector] public int    		          MinorVersion       = iCS_Config.MinorVersion;
     [HideInInspector] public int    		          BugFixVersion      = iCS_Config.BugFixVersion;
