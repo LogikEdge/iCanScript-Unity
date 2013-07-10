@@ -267,7 +267,7 @@ public class iCS_Inspector : Editor {
     // Inspect state node.
     void InspectStateNode(iCS_EditorObject node) {
         // Collect transitions.
-        iCS_EditorObject[] dataPorts= myStorage.GetSortedChildDataPorts(node);
+        iCS_EditorObject[] dataPorts= myStorage.RecalculatePortIndexes(node);
         List<iCS_EditorObject> inPorts= new List<iCS_EditorObject>();
         List<iCS_EditorObject> outPorts= new List<iCS_EditorObject>();
         foreach(var child in dataPorts) {

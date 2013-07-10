@@ -165,27 +165,4 @@ public partial class iCS_IStorage {
 		ForEachChildDataPort(node, child=> ExecuteIf(child, port=> port.IsInputPort, result.Add));
 		return result.ToArray();
 	}
-
-	// ======================================================================
-	// High-order functions
-    // ----------------------------------------------------------------------
-	public iCS_EditorObject[] GetSortedChildDataPorts(iCS_EditorObject node) {
-		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-		// Get all child data ports.
-		ForEachChildDataPort(node, child=> ports.Add(child));
-		// Sort child ports according to index.
-		iCS_EditorObject[] result= ports.ToArray();
-		Array.Sort(result, (x,y)=> x.PortIndex - y.PortIndex);
-        for(int i= 0; i < result.Length; ++i) result[i].PortIndex= i;
-		return result;
-	}
-    public iCS_EditorObject FindThisInputPort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsInDataPort && c.Name == "this");
-    }
-	public iCS_EditorObject FindParentNode(iCS_EditorObject child) {
-		if(!IsValid(child)) return null;
-		var parent= child.Parent;
-		for(; parent != null && !parent.IsNode; parent= parent.Parent);
-		return parent;
-	}
 }

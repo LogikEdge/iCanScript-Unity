@@ -26,7 +26,7 @@ public partial class iCS_IStorage {
     public int UpdateBehaviourMessagePorts(iCS_EditorObject node) {
         var neededPorts= BuildListOfPortInfoForBehaviourMessage(node.Parent);
         var changed= CleanupExistingFixPorts(node, neededPorts);
-        int portIdx= GetSortedChildDataPorts(node).Length;
+        int portIdx= RecalculatePortIndexes(node).Length;
         changed |= BuildMissingPorts(node, neededPorts, portIdx);
         if(changed) node.LayoutNode();
         return portIdx;
@@ -154,7 +154,6 @@ public partial class iCS_IStorage {
         if(tag != null) {
             portInfos.Add(new PortInfo("tag", tag.GetType(), iCS_ObjectTypeEnum.InFixPort, tag));            
         }
-
 
         return portInfos.ToArray();
     }

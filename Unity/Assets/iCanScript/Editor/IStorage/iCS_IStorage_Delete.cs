@@ -78,7 +78,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject parent= toDestroy.Parent;
 		bool isChildMuxPort= toDestroy.IsChildMuxPort;
 		if(toDestroy.IsKindOfAggregatePort) {
-			RemoveDynamicPort(toDestroy);
+			MoveDynamicPortToLastIndex(toDestroy);
 		}
         // Remember entry state.
         bool isEntryState= toDestroy.IsEntryState;
