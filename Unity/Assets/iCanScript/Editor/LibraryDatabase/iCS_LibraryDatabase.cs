@@ -191,7 +191,7 @@ public class iCS_LibraryDatabase {
             if(inputType != null) {
                 if(func.ClassType == inputType) {
                     switch(func.ObjectType) {
-                        case iCS_ObjectTypeEnum.InstanceMethod:
+                        case iCS_ObjectTypeEnum.InstanceFunction:
                         case iCS_ObjectTypeEnum.InstanceField: {
                             shouldInclude= true;
                             break;
@@ -212,7 +212,7 @@ public class iCS_LibraryDatabase {
                 if(func.ClassType == outputType) {
                     switch(func.ObjectType) {
                         case iCS_ObjectTypeEnum.Constructor:
-                        case iCS_ObjectTypeEnum.InstanceMethod:
+                        case iCS_ObjectTypeEnum.InstanceFunction:
                         case iCS_ObjectTypeEnum.InstanceField: {
                             shouldInclude= true;
                             break;
@@ -340,8 +340,8 @@ public class iCS_LibraryDatabase {
                                  iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
                                  iCS_StorageClass storageClass, MethodInfo methodInfo) {
         var objectType= storageClass == iCS_StorageClass.Instance ?
-                            iCS_ObjectTypeEnum.InstanceMethod :
-                            iCS_ObjectTypeEnum.ClassMethod;
+                            iCS_ObjectTypeEnum.InstanceFunction :
+                            iCS_ObjectTypeEnum.ClassFunction;
         var record= new iCS_MethodInfo(objectType, classInfo,
                                        displayName, description, iconPath,
             						   parameters, functionReturn,
@@ -354,8 +354,8 @@ public class iCS_LibraryDatabase {
                                    iCS_StorageClass storageClass, iCS_AccessorType accessorType,
                                    MethodInfo methodInfo) {
         var objectType= storageClass == iCS_StorageClass.Instance ?
-                            iCS_ObjectTypeEnum.InstanceMethod :
-                            iCS_ObjectTypeEnum.ClassMethod;
+                            iCS_ObjectTypeEnum.InstanceFunction :
+                            iCS_ObjectTypeEnum.ClassFunction;
         var record= new iCS_PropertyInfo(objectType, classInfo,
                                          displayName, description, iconPath,
             						     parameters, functionReturn, storageClass, accessorType,

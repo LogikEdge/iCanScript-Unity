@@ -337,7 +337,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		node.ForEachChildPort(
 			p=> {
 			    if(p.IsDataPort) {
-    				var srcEndPoint= p.SourceEndPoint;
+    				var srcEndPoint= p.SourceEndPort;
     				foreach(var dep in p.DestinationEndPoints) {
     					RebuildDataConnection(srcEndPoint, dep);
     				}			        
@@ -456,7 +456,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		iCS_EditorObject result= null;
 		node.UntilMatchingChild(
 			p=> {
-				if(p.IsPort && p.SourceEndPoint == srcEP) {
+				if(p.IsPort && p.SourceEndPort == srcEP) {
 					result= p;
 					return true;
 				}
@@ -514,10 +514,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 IStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
-                goto case iCS_ObjectTypeEnum.InstanceMethod;
+                goto case iCS_ObjectTypeEnum.InstanceFunction;
             }
-            case iCS_ObjectTypeEnum.InstanceMethod:
-            case iCS_ObjectTypeEnum.ClassMethod:
+            case iCS_ObjectTypeEnum.InstanceFunction:
+            case iCS_ObjectTypeEnum.ClassFunction:
             case iCS_ObjectTypeEnum.InstanceField:
             case iCS_ObjectTypeEnum.ClassField:
             case iCS_ObjectTypeEnum.TypeCast: {
@@ -584,7 +584,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_EditorObject[] connectedPorts= outPort.Destinations;
         foreach(var port in connectedPorts) {
             if(port.IsDataPort) {
-                if(port.IsModulePort) {
+                if(port.IsKindOfAggregatePort) {
                     FillConnectedInDataPorts(port, result);
                 } else {
                     if(port.IsInputPort) {

@@ -172,10 +172,10 @@ public class iCS_EngineObject {
     public bool IsTransitionModule      { get { return iCS_ObjectType.IsTransitionModule(this); }}
     public bool IsTransitionGuard       { get { return iCS_ObjectType.IsTransitionGuard(this); }}
     public bool IsTransitionAction      { get { return iCS_ObjectType.IsTransitionAction(this); }}
-    public bool IsFunction              { get { return iCS_ObjectType.IsFunction(this); }}
+    public bool IsKindOfFunction        { get { return iCS_ObjectType.IsKindOfFunction(this); }}
     public bool IsConstructor           { get { return iCS_ObjectType.IsConstructor(this); }}
-    public bool IsClassMethod           { get { return iCS_ObjectType.IsClassMethod(this); }}
-    public bool IsInstanceMethod        { get { return iCS_ObjectType.IsInstanceMethod(this); }}
+    public bool IsClassFunction         { get { return iCS_ObjectType.IsClassFunction(this); }}
+    public bool IsInstanceFunction      { get { return iCS_ObjectType.IsInstanceFunction(this); }}
     public bool IsClassField            { get { return iCS_ObjectType.IsClassField(this); }}
     public bool IsInstanceField         { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast              { get { return iCS_ObjectType.IsTypeCast(this); }}

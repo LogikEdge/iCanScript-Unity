@@ -5,13 +5,13 @@ public class iCS_Connection {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    Prelude.Tuple<iCS_IParameters,int>    myConnection= null;
+    Prelude.Tuple<iCS_ISignature,int>    myConnection= null;
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public iCS_IParameters Function  { get { return myConnection != null ? myConnection.Item1 : null; }}
-    public int         PortIndex { get { return myConnection != null ? myConnection.Item2 : -1; }}
+    public iCS_SignatureDataSource  Signature { get { return myConnection != null ? myConnection.Item1.GetSignatureDataSource() : null; }}
+    public int                      PortIndex { get { return myConnection != null ? myConnection.Item2 : -1; }}
     
     // ======================================================================
     // Creation/Destruction
@@ -19,26 +19,26 @@ public class iCS_Connection {
     public iCS_Connection() {
         myConnection= null;
     }
-    public iCS_Connection(iCS_IParameters function, int parameterIndex) {
-        if(function == null) {
+    public iCS_Connection(iCS_ISignature signature, int parameterIndex) {
+        if(signature == null) {
             myConnection= null;
         } else {
-            myConnection= new Prelude.Tuple<iCS_IParameters,int>(function, parameterIndex);            
+            myConnection= new Prelude.Tuple<iCS_ISignature,int>(signature, parameterIndex);            
         }
     }
 
     public bool IsConnected             { get{ return myConnection != null; }}
     public object Value                 {
-        get { return myConnection.Item1.GetParameter(myConnection.Item2); }
-        set { myConnection.Item1.SetParameter(myConnection.Item2, value); }
+        get { return Signature.GetParameter(PortIndex); }
+        set { Signature.SetParameter(PortIndex, value); }
     }
     public bool IsReady(int frameId)    {
         if(!IsConnected) return true;
-        return myConnection.Item1.IsParameterReady(myConnection.Item2, frameId);
+        return Signature.IsConnectionReady(PortIndex, frameId);
     }
     
     // ----------------------------------------------------------------------
     public override string ToString() {
-        return IsConnected ? myConnection.Item1.GetParameterName(myConnection.Item2) : "Not Connected";
+        return IsConnected ? Signature.GetName(PortIndex) : "Not Connected";
     }
 }

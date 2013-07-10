@@ -461,7 +461,7 @@ public partial class iCS_Graphics {
         if(node.IsConstructor) {
             return iCS_PreferencesEditor.ConstructorNodeColor;
         }
-        if(node.IsFunction) {
+        if(node.IsKindOfFunction) {
             return iCS_PreferencesEditor.FunctionNodeColor;
         }
         if(node.IsKindOfAggregate) {
@@ -484,7 +484,7 @@ public partial class iCS_Graphics {
         if(node.IsConstructor) {
             return BuildMaximizeIcon(node, ref ConstructionMaximizeIcon);
         }
-        if(node.IsFunction) {
+        if(node.IsKindOfFunction) {
             return BuildMaximizeIcon(node, ref FunctionMaximizeIcon);
         }
         return BuildMaximizeIcon(node, ref DefaultMaximizeIcon);

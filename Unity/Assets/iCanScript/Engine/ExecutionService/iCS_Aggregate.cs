@@ -1,41 +1,32 @@
 using UnityEngine;
 
-public class iCS_Aggregate : iCS_ParallelDispatcher, iCS_IParameters {
+public class iCS_Aggregate : iCS_ParallelDispatcher, iCS_ISignature {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    protected object[]  myParameters;
+    iCS_SignatureDataSource    mySignature;
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_Aggregate(string name, int priority, int nbOfParameters= 0)
     : base(name, priority) {
-        myParameters= new object[nbOfParameters];
+        mySignature= new iCS_SignatureDataSource(nbOfParameters, false, true);
     }
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
     public object this[int idx] {
-        get { return GetParameter(idx); }
-        set { SetParameter(idx, value); }
+        get { return mySignature.GetParameter(idx); }
+        set { mySignature.SetParameter(idx, value); }
     }
     // ======================================================================
     // IParams implementation
     // An aggregate only support value input parameters.  All other types of
     // parameters are ignored.
     // ----------------------------------------------------------------------
-	public string GetParameterName(int idx) { return Name+"["+idx+"]"; }
-	public object GetParameter(int idx) {
-        return idx < myParameters.Length ? myParameters[idx] : null;		
-	}
-	public void SetParameter(int idx, object value) {
-        if(idx < myParameters.Length)  { myParameters[idx]= value; return; }
-	}
-    public bool IsParameterReady(int idx, int frameId) {
-        return true;
+    public iCS_SignatureDataSource GetSignatureDataSource() {
+        return mySignature;
     }
-	public void SetParameterConnection(int idx, iCS_Connection connection) {
-	}
 }

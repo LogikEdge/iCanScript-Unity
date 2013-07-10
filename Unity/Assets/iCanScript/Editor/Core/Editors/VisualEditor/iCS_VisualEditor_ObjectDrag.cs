@@ -175,7 +175,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }                    
                 }
                 // Continously refresh drag port if module port.
-                if(DragOriginalPort.IsModulePort) {
+                if(DragOriginalPort.IsKindOfAggregatePort) {
                     CreateDragPort();
                 }
                 break;
@@ -449,7 +449,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Data port. Create a drag port as appropriate.
         iCS_EditorObject parent= DragOriginalPort.ParentNode;
 		// The simple case is for non-module data ports.
-		if(!DragOriginalPort.IsModulePort) {
+		if(!DragOriginalPort.IsKindOfAggregatePort) {
 			// Determine if we are already properly connected.
 			if(DragObject != DragOriginalPort) return;
 			if(DragOriginalPort.IsInputPort) {

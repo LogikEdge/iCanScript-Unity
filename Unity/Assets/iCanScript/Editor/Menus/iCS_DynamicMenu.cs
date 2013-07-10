@@ -56,18 +56,18 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.Behaviour:        BehaviourMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.StateChart:       StateChartMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.State:            StateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.Aggregate:        ModuleMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.InstanceMessage:  ModuleMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.ClassMessage:     ModuleMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.TransitionGuard:  ModuleMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.TransitionAction: ModuleMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Aggregate:        AggregateMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceMessage:  AggregateMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassMessage:     AggregateMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.TransitionGuard:  AggregateMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.TransitionAction: AggregateMenu(selectedObject, storage); break;
 			case iCS_ObjectTypeEnum.TransitionModule: TransitionModuleMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.Constructor:      MethodMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.InstanceMethod:   MethodMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.ClassMethod:      MethodMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.TypeCast:         MethodMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.InstanceField:    MethodMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.ClassField:       MethodMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Constructor:      FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceFunction: FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassFunction:    FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.TypeCast:         FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceField:    FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassField:       FunctionMenu(selectedObject, storage); break;
             default: if(selectedObject.IsPort)        PortMenu(selectedObject, storage); break;
         }
     }
@@ -92,7 +92,7 @@ public class iCS_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
-    void ModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+    void AggregateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items
@@ -159,7 +159,7 @@ public class iCS_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    void MethodMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+    void FunctionMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
 		iCS_MenuContext[] menu= new iCS_MenuContext[1];
 		menu[0]= new iCS_MenuContext(ShowHierarchyStr);
         if(storage.EditorObjects[selectedObject.ParentId].IsKindOfAggregate) {

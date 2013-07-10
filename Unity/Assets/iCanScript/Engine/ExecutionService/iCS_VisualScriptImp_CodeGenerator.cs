@@ -103,7 +103,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                 int priority= node.ExecutionPriority;
 				// Special case for active ports.
 				if(node.IsParentMuxPort) {
-					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, priority);
+					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, priority, GetNbOfChildMuxPorts(node));
 					continue;
 				}
                 if(node.IsNode) {
@@ -180,24 +180,24 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             InvokeAddChildIfExists(parent, module);                                
                             break;
                         }
-                        case iCS_ObjectTypeEnum.InstanceMethod: {
+                        case iCS_ObjectTypeEnum.InstanceFunction: {
                             // Create method.
-                            iCS_Method method= new iCS_Method(node.Name, GetMethodBase(node), GetPortIsOuts(node), priority);                                
+                            var method= new iCS_InstanceFunction(GetMethodBase(node), node.Name, priority, node.NbOfParams);                                
                             myRuntimeNodes[node.InstanceId]= method;
                             InvokeAddChildIfExists(parent, method);
                             break;                            
                         }
                         case iCS_ObjectTypeEnum.Constructor: {
                             // Create function.
-                            iCS_Constructor func= new iCS_Constructor(node.Name, GetMethodBase(node), GetPortIsOuts(node), priority);                                
+                            iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), node.Name, priority, node.NbOfParams);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
                         }
                         case iCS_ObjectTypeEnum.TypeCast:
-                        case iCS_ObjectTypeEnum.ClassMethod: {
+                        case iCS_ObjectTypeEnum.ClassFunction: {
                             // Create function.
-                            iCS_Function func= new iCS_Function(node.Name, GetMethodBase(node), GetPortIsOuts(node), priority);                                
+                            var func= new iCS_ClassFunction(GetMethodBase(node), node.Name, priority, node.NbOfParams);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
@@ -206,9 +206,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             // Create function.
                             FieldInfo fieldInfo= GetFieldInfo(node);
 							bool[] portIsOuts= GetPortIsOuts(node);
-                            iCS_FunctionBase rtField= portIsOuts.Length == 0 ?
-                                new iCS_GetInstanceField(node.Name, fieldInfo, portIsOuts, priority) as iCS_FunctionBase:
-                                new iCS_SetInstanceField(node.Name, fieldInfo, portIsOuts, priority) as iCS_FunctionBase;                                
+                            iCS_ActionWithSignature rtField= portIsOuts.Length == 0 ?
+                                new iCS_GetInstanceField(fieldInfo, node.Name, priority) as iCS_ActionWithSignature:
+                                new iCS_SetInstanceField(fieldInfo, node.Name, priority) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;
@@ -217,9 +217,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             // Create function.
 							FieldInfo fieldInfo= GetFieldInfo(node);
 							bool[] portIsOuts= GetPortIsOuts(node);
-                            iCS_FunctionBase rtField= portIsOuts.Length == 0 ?
-                                new iCS_GetStaticField(node.Name, fieldInfo, portIsOuts, priority) as iCS_FunctionBase:
-                                new iCS_SetStaticField(node.Name, fieldInfo, portIsOuts, priority) as iCS_FunctionBase;                                
+                            iCS_ActionWithSignature rtField= portIsOuts.Length == 0 ?
+                                new iCS_GetClassField(fieldInfo, node.Name, priority) as iCS_ActionWithSignature:
+                                new iCS_SetClassField(fieldInfo, node.Name, priority) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;                            
@@ -247,11 +247,11 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         break;
                     }
 					case iCS_ObjectTypeEnum.ChildMuxPort: {
-						iCS_IParameters rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_IParameters;
+						var rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_ISignature;
 						if(rtMuxPort == null) break;
                         iCS_EngineObject sourcePort= GetSourceEndPort(port);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
-						rtMuxPort.SetParameterConnection(port.PortIndex, connection);
+						rtMuxPort.GetSignatureDataSource().SetConnection(port.PortIndex, connection);
 						break;
 					}
                     case iCS_ObjectTypeEnum.InStatePort: {
@@ -262,7 +262,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         iCS_EngineObject outStatePort= null;
                         iCS_EngineObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
                         triggerPort= GetSourceEndPort(triggerPort);
-                        iCS_FunctionBase triggerFunc= IsOutAggregatePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
+                        iCS_ActionWithSignature triggerFunc= IsOutAggregatePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_ActionWithSignature;
                         int triggerIdx= triggerPort.PortIndex;
                         iCS_Transition transition= new iCS_Transition(transitionModule.Name,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,
@@ -280,13 +280,13 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     case iCS_ObjectTypeEnum.OutFixPort: {
 						if(GetParentNode(port).IsKindOfAggregate) break;
                         object parentObj= myRuntimeNodes[port.ParentId];
-                        Prelude.choice<iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
-                            method          => method[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                        Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction>(parentObj,
+                            instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                             getInstanceField=> getInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                            getStaticField  => getStaticField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                            getClassField   => getClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                             setInstanceField=> setInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                            setStaticField  => setStaticField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                            function        => function[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType)
+                            setClassField   => setClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                            classFunction   => classFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType)
                         );
                         break;
                     }
@@ -303,34 +303,34 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 						object initValue= GetInitialValue(sourcePort);
                         // Set data port.
                         object parentObj= myRuntimeNodes[port.ParentId];
-                        Prelude.choice<iCS_Constructor, iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function, iCS_Aggregate, iCS_Message>(parentObj,
+                        Prelude.choice<iCS_Constructor, iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Aggregate, iCS_Message>(parentObj,
                             constructor=> {
                                 constructor[port.PortIndex]= initValue;
-                                constructor.SetParameterConnection(port.PortIndex, connection);
+                                constructor.SetConnection(port.PortIndex, connection);
                             },
-                            method=> {
-                                method[port.PortIndex]= initValue;
-                                method.SetParameterConnection(port.PortIndex, connection);
+                            instanceFunction=> {
+                                instanceFunction[port.PortIndex]= initValue;
+                                instanceFunction.SetConnection(port.PortIndex, connection);
                             },
                             getInstanceField=> {
                                 getInstanceField[port.PortIndex]= initValue;
-                                getInstanceField.SetParameterConnection(port.PortIndex, connection);
+                                getInstanceField.SetConnection(port.PortIndex, connection);
                             },
-                            getStaticField=> {
-                                getStaticField[port.PortIndex]= initValue;
-                                getStaticField.SetParameterConnection(port.PortIndex, connection);
+                            getClassField=> {
+                                getClassField[port.PortIndex]= initValue;
+                                getClassField.SetConnection(port.PortIndex, connection);
                             },
                             setInstanceField=> {
                                 setInstanceField[port.PortIndex]= initValue;
-                                setInstanceField.SetParameterConnection(port.PortIndex, connection);
+                                setInstanceField.SetConnection(port.PortIndex, connection);
                             },
-                            setStaticField=> {
-                                setStaticField[port.PortIndex]= initValue;
-                                setStaticField.SetParameterConnection(port.PortIndex, connection);
+                            setClassField=> {
+                                setClassField[port.PortIndex]= initValue;
+                                setClassField.SetConnection(port.PortIndex, connection);
                             },
-                            function=> {
-                                function[port.PortIndex]= initValue;
-                                function.SetParameterConnection(port.PortIndex, connection);
+                            classFunction=> {
+                                classFunction[port.PortIndex]= initValue;
+                                classFunction.SetConnection(port.PortIndex, connection);
                             },
                             aggregate=> {
                                 aggregate[port.PortIndex]= initValue;                                
@@ -397,6 +397,15 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 		}
 		return isOuts;
 	}
+	int GetNbOfChildMuxPorts(iCS_EngineObject parentMuxPort) {
+        int nbOfChildMuxPorts= 0;
+		foreach(var port in EngineObjects) {
+            if(port != null && port.IsChildMuxPort && port.ParentId == parentMuxPort.InstanceId) {
+                ++nbOfChildMuxPorts;
+            }
+	    }
+	    return nbOfChildMuxPorts;
+	}
 	int GetInputEndPortsLastIndex(iCS_EngineObject node) {
         int lastIndex= -1;
 		iCS_EngineObject[] ports= GetChildPorts(node);
@@ -436,10 +445,11 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     // ----------------------------------------------------------------------
 	iCS_Connection BuildConnection(iCS_EngineObject port) {
 		iCS_Connection connection= null;
-		if(myRuntimeNodes[port.InstanceId] != null) {
-			connection= new iCS_Connection(myRuntimeNodes[port.InstanceId] as iCS_IParameters, 0);							
+        var rtPortGroup= myRuntimeNodes[port.InstanceId] as iCS_ISignature;
+		if(rtPortGroup != null) {
+			connection= new iCS_Connection(rtPortGroup, rtPortGroup.GetSignatureDataSource().ReturnIndex);							
 		} else {
-			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_IParameters, port.PortIndex);
+			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_ISignature, port.PortIndex);
 		}
 		return connection;
 	}

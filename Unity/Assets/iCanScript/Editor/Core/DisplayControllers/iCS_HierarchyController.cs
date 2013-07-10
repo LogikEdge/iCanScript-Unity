@@ -288,7 +288,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 //        EditorGUIUtility.SetIconSize(new Vector2(16.0f,12.0f));
         Texture2D icon= null;
 		var current= IterValue;
-        if(current.IsFunction) {
+        if(current.IsKindOfFunction) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
         } else if(current.IsState || current.IsStateChart) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.StateHierarchyIcon);                        

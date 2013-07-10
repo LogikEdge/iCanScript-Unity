@@ -409,7 +409,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateMethod(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         iCS_EditorObject instance= desc.IsInstanceMember ?
-                    				CreateInstanceMethod(parentId, globalPos, desc) : 
+                    				CreateInstanceFunction(parentId, globalPos, desc) : 
                     				CreateStaticMethod(parentId, globalPos, desc);
 
 		instance.MethodName= desc.MethodName;
@@ -422,7 +422,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Determine icon.
         var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.ClassMethod) {
+        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.ClassFunction) {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
@@ -455,12 +455,12 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateInstanceMethod(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateInstanceFunction(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Determine minimized icon.
         var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
+        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.InstanceFunction) {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
@@ -505,7 +505,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Determine icon.
         var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.ClassMethod) {
+        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.ClassFunction) {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
@@ -547,7 +547,7 @@ public partial class iCS_IStorage {
         var parent= EditorObjects[parentId];
         var globalPos= parent.LayoutPosition;
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
-        if(port.IsModulePort || port.IsChildMuxPort) 	{ AddDynamicPort(port); }
+        if(port.IsKindOfAggregatePort || port.IsChildMuxPort) 	{ AddDynamicPort(port); }
 		port.UpdatePortEdge();
 		port.LayoutPosition= globalPos;
         return EditorObjects[id];        

@@ -40,13 +40,10 @@ public partial class iCS_EditorObject {
 		set { SourceId= (value != null ? value.InstanceId : -1); }
 	}
 	// ----------------------------------------------------------------------
-	public iCS_EditorObject SourceEndPoint {
+	public iCS_EditorObject SourceEndPort {
 		get {
-			var iter= this;
-			for(var tmp= iter.Source; tmp != null; tmp= tmp.Source) {
-				iter= tmp;
-			}
-			return iter;
+		    var engineObject= Storage.GetSourceEndPort(EngineObject);
+		    return engineObject != null ? EditorObjects[engineObject.InstanceId] : this;
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -77,7 +74,7 @@ public partial class iCS_EditorObject {
 	public P.Tuple<iCS_EditorObject,iCS_EditorObject>[] Connections {
 		get {
 			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
-			var source= SourceEndPoint;
+			var source= SourceEndPort;
 			foreach(var destination in source.DestinationEndPoints) {
 				result.Add(new P.Tuple<iCS_EditorObject,iCS_EditorObject>(source, destination));
 			}			        
@@ -122,21 +119,15 @@ public partial class iCS_EditorObject {
 	public object PortValue {
 		get {
 			if(!IsDataPort) return null;
-			var port= this;
-            int retry= 0;
-			while(port.Source != null) {
-			    port= port.Source;
-                if(++retry > 100) {
-                    Debug.LogWarning("iCanScript: Circular port connection detected on: "+port.ParentNode.Name+"."+port.Name);
-                    return null;
-                }
-		    }
-			iCS_IParameters funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParameters;
+			var port= SourceEndPort;
+			// Get value from port group (ex: ParentMuxPort).
+			var funcBase= myIStorage.GetRuntimeObject(port) as iCS_ISignature;
 			if(funcBase != null) {
-			    return funcBase.GetParameter(0);
+			    return funcBase.GetSignatureDataSource().ReturnValue;
 			}
-			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_IParameters;
-			return funcBase == null ? port.InitialPortValue : funcBase.GetParameter(port.PortIndex);			
+            // Get value from parent node.
+			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_ISignature;
+			return funcBase == null ? port.InitialPortValue : funcBase.GetSignatureDataSource().Parameters[port.PortIndex];			
 		}
 		set {
 			InitialPortValue= value;
@@ -147,26 +138,18 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
 	public object RuntimePortValue {
 		get {
-			if(!IsDataPort) return null;
-			var port= this;
-			while(port.Source != null) port= port.Source;
-			iCS_IParameters funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParameters;
-			if(funcBase != null) {
-			    return funcBase.GetParameter(0);
-			}
-			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_IParameters;
-			return funcBase == null ? port.InitialPortValue : null;			
+            return PortValue;
 		}
 		set {
 	        if(!IsInDataPort) return;
-	        // Just set the port if it has its own runtime.
-			iCS_IParameters funcBase= myIStorage.GetRuntimeObject(this) as iCS_IParameters;
+	        // Set the return value for a port group (ex: MuxPort).
+			var funcBase= myIStorage.GetRuntimeObject(this) as iCS_ISignature;
 	        if(funcBase != null) {
-	            funcBase.SetParameter(0, value);
+	            funcBase.GetSignatureDataSource().ReturnValue= value;
 	            return;
 	        }
 	        // Propagate value for module port.
-	        if(IsModulePort) {
+	        if(IsKindOfAggregatePort) {
 	            iCS_EditorObject[] connectedPorts= Destinations;
 	            foreach(var cp in connectedPorts) {
 	                cp.RuntimePortValue= value;
@@ -177,9 +160,9 @@ public partial class iCS_EditorObject {
 	        iCS_EditorObject parent= Parent;
 	        if(parent == null) return;
 	        // Get runtime object if it exists.
-	        iCS_IParameters runtimeObject= myIStorage.GetRuntimeObject(parent) as iCS_IParameters;
+	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as iCS_ISignature;
 	        if(runtimeObject == null) return;
-	        runtimeObject.SetParameter(PortIndex, value);			
+	        runtimeObject.GetSignatureDataSource().Parameters[PortIndex]= value;			
 		}
 	}
 }

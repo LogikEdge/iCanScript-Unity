@@ -1,50 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_MuxPort : iCS_Action, iCS_IParameters {
-    // ======================================================================
-    // Properties
-    // ----------------------------------------------------------------------
-	object 			 myReturn;
-    iCS_Connection[] myConnections;
-	
-    // ======================================================================
-    // IParams implementation
-    // ----------------------------------------------------------------------
-	public string GetParameterName(int idx) 			{ return Name+"["+idx+"]"; }
-    public object GetParameter(int idx) 				{ return idx == 0 ? myReturn : null; }
-    public void   SetParameter(int idx, object value)	{ if(idx == 0) myReturn= value; }
-    public bool   IsParameterReady(int idx, int frameId) {
-		if(idx != 0) return false;
-		if(IsCurrent(frameId)) return true;
-		return ReadAnyInput(frameId);	
-	}
-	public void   SetParameterConnection(int idx, iCS_Connection connection) {
-		if(idx < 0) {
-			Debug.LogWarning("iCanScript: SetConnection index invalid: "+idx);
-			return;
-		}
-		if(idx >= myConnections.Length) {
-			var newConnections= new iCS_Connection[idx+1];
-			int i= 0;
-			for(; i < myConnections.Length; ++i) {
-				newConnections[i]= myConnections[i];
-			}
-			for(; i < newConnections.Length; ++i) {
-				newConnections[i]= null;
-			}
-			myConnections= newConnections;
-		}
-		myConnections[idx]= connection;
-	}
-
+public class iCS_MuxPort : iCS_ActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_MuxPort(string name, int priority) : base(name, priority) {
-		myConnections= new iCS_Connection[1];
-		myConnections[0]= null;
-	}
+    public iCS_MuxPort(string name, int priority, int nbOfParameters)
+    : base(name, priority, nbOfParameters, true, false) {}
 
     // ======================================================================
     // Execution (not used)
@@ -61,9 +23,12 @@ public class iCS_MuxPort : iCS_Action, iCS_IParameters {
     }
     // ----------------------------------------------------------------------
 	bool ReadAnyInput(int frameId) {
-		for(int i= 1; i < myConnections.Length; ++i) {
-            if(myConnections[i].IsConnected && myConnections[i].IsReady(frameId)) {
-                myReturn= myConnections[i].Value;
+        var connections= Connections;
+        int nbOfConnections= connections.Length;
+		for(int i= 0; i < nbOfConnections; ++i) {
+            var c= connections[i];
+            if(c.IsReady(frameId)) {
+                ReturnValue= c.Value;
                 MarkAsCurrent(frameId);
                 return true;
             }			

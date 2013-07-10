@@ -2,17 +2,17 @@ using UnityEngine;
 using System.Reflection;
 using System.Collections;
 
-public class iCS_FunctionBase : iCS_ActionWithSignature {
+public class iCS_FieldBase : iCS_ActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected MethodBase    myMethodBase  = null;
+    protected FieldInfo myFieldInfo;
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_FunctionBase(MethodBase methodBase, string name, int priority, int nbOfParameters, bool hasReturn, bool hasThis)
+    public iCS_FieldBase(FieldInfo fieldInfo, string name, int priority, int nbOfParameters, bool hasReturn, bool hasThis)
     : base(name, priority, nbOfParameters, hasReturn, hasThis) {
-        myMethodBase= methodBase;
+        myFieldInfo= fieldInfo;
     }
 }

@@ -3,25 +3,19 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class iCS_SetStaticField : iCS_FunctionBase {
-    // ======================================================================
-    // Properties
-    // ----------------------------------------------------------------------
-    protected FieldInfo myFieldInfo;
-
+public class iCS_GetClassField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetStaticField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, int priority) : base(name, paramIsOuts, priority) {
-        myFieldInfo= fieldInfo;
-    }
+    public iCS_GetClassField(FieldInfo fieldInfo, string name, int priority)
+    : base(fieldInfo, name, priority, 0, true, false) {}
     
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        myFieldInfo.SetValue(null, myParameters[0]);
+        ReturnValue= myFieldInfo.GetValue(null);
         MarkAsCurrent(frameId);
     }
 }

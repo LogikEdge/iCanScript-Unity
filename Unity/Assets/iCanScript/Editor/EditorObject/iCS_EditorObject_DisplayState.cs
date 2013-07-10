@@ -76,7 +76,7 @@ public partial class iCS_EditorObject {
                 
                 // Don't display function "this" port if under object instance node.
                 var instanceName= iCS_Strings.InstanceObjectName;
-                if(Name == instanceName && parentNode.IsFunction) {
+                if(Name == instanceName && parentNode.IsKindOfFunction) {
                     var grandParentNode= parentNode.ParentNode;
                     if(grandParentNode.IsObjectInstance && IsSourceValid && Source.ParentNode == grandParentNode && Source.Name == instanceName) {
                         return false;
@@ -161,7 +161,7 @@ public partial class iCS_EditorObject {
             return;
         }
         // Unhide folded node
-        if(IsFunction || DisplayOption == iCS_DisplayOptionEnum.Folded) {
+        if(IsKindOfFunction || DisplayOption == iCS_DisplayOptionEnum.Folded) {
 			Animate(start, LayoutRect);
             return;
         }

@@ -200,7 +200,7 @@ public class iCS_Inspector : Editor {
 	// ----------------------------------------------------------------------
     void InspectNode(iCS_EditorObject node) {
         // Show runtime frame id.
-        iCS_Function runtimeObject= myStorage.GetRuntimeObject(node) as iCS_Function;
+        var runtimeObject= myStorage.GetRuntimeObject(node) as iCS_Action;
         if(runtimeObject != null) {
             EditorGUILayout.LabelField("FrameId", runtimeObject.FrameId.ToString());
         }
@@ -237,7 +237,7 @@ public class iCS_Inspector : Editor {
         );
 
         // Show inputs.
-        iCS_IParameters runtimeObject= myStorage.GetRuntimeObject(node) as iCS_IParameters;
+        var runtimeObject= myStorage.GetRuntimeObject(node) as iCS_ISignature;
         if(inPorts.Count > 0) {
             int indentLevel= 1;
             if(runtimeObject != null) {

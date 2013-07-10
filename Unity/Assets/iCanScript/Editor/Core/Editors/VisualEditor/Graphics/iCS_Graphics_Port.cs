@@ -56,7 +56,7 @@ public partial class iCS_Graphics {
         if(!ShouldShowLabel()) return false;
         if(!port.IsVisibleOnDisplay) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
-        if((port.IsInputPort || port.IsModulePort) && port.SourceId != -1) {
+        if((port.IsInputPort || port.IsKindOfAggregatePort) && port.SourceId != -1) {
             var sourcePort= port.Source;
             if(sourcePort.Name != port.Name) return true;
             if(!sourcePort.ParentNode.IsUnfoldedOnDisplay) return true;
@@ -121,7 +121,7 @@ public partial class iCS_Graphics {
         if(!port.IsDataPort || port.IsChildMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
-        if((port.IsInputPort || port.IsModulePort) && port.SourceId != -1) {
+        if((port.IsInputPort || port.IsKindOfAggregatePort) && port.SourceId != -1) {
             var sourcePort= port.Source;
             var sourceCenter= sourcePort.AnimatedPosition;
             var portCenter= port.AnimatedPosition;

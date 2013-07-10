@@ -49,36 +49,36 @@ public abstract class iCS_MemberInfo {
     public iCS_MessageInfo      ToMessageInfo       { get { return this as iCS_MessageInfo; }}
 	public iCS_TypeCastInfo		ToTypeCastInfo		{ get { return this as iCS_TypeCastInfo; }}
     // ----------------------------------------------------------------------
-    public bool isGlobalScope         { get { return ParentTypeInfo == null; }}
+    public bool isGlobalScope          { get { return ParentTypeInfo == null; }}
     // ----------------------------------------------------------------------
-    public bool IsTypeInfo            { get { return ToTypeInfo != null; }}
-    public bool IsConstructor         { get { return ToConstructorInfo != null; }}
-    public bool IsMethodBase          { get { return ToMethodBaseInfo != null; }}
-    public bool IsMethod              { get { return ToMethodInfo != null; }}
-    public bool IsField               { get { return ToFieldInfo != null; }}
-    public bool IsMessage             { get { return ToMessageInfo != null; }}
-    public bool IsProperty            { get { return ToPropertyInfo != null; }}
-	public bool IsTypeCast			  { get { return ToTypeCastInfo != null; }}
-    public bool IsInstanceMethodBase  { get { return IsMethodBase && ToMethodBaseInfo.IsInstanceMember; }}
-    public bool IsClassMethodBase     { get { return IsMethodBase && ToMethodBaseInfo.IsClassMember; }}
-    public bool IsInstanceMethod      { get { return IsMethod && ToMethodInfo.IsInstanceMember; }}
-    public bool IsClassMethod         { get { return IsMethod && ToMethodInfo.IsClassMember; }}
-    public bool IsInstanceMessage     { get { return IsMessage && ToMessageInfo.IsInstanceMember; }}
-    public bool IsClassMessage        { get { return IsMessage && ToMessageInfo.IsClassMember; }}
-    public bool IsInstanceField       { get { return IsField && ToFieldInfo.IsInstanceMember; }}
-    public bool IsClassField          { get { return IsField && ToFieldInfo.IsClassMember; }}
-    public bool IsGetField            { get { return IsField && ToFieldInfo.IsGet; }}
-    public bool IsSetField            { get { return IsField && ToFieldInfo.IsSet; }}     
-    public bool IsGetInstanceField    { get { return IsInstanceField && IsGetField; }}
-    public bool IsSetInstanceField    { get { return IsInstanceField && IsSetField; }}
-    public bool IsGetClassField       { get { return IsClassField && IsGetField; }}
-    public bool IsSetClassField       { get { return IsClassField && IsSetField; }}
-    public bool IsGetProperty         { get { return IsProperty && ToPropertyInfo.IsGet; }}
-    public bool IsSetProperty         { get { return IsProperty && ToPropertyInfo.IsSet; }}
-    public bool IsGetInstanceProperty { get { return IsGetProperty && ToPropertyInfo.IsInstanceMember; }}
-    public bool IsSetInstanceProperty { get { return IsSetProperty && ToPropertyInfo.IsInstanceMember; }}
-    public bool IsGetClassProperty    { get { return IsGetProperty && ToPropertyInfo.IsClassMember; }}
-    public bool IsSetClassProperty    { get { return IsSetProperty && ToPropertyInfo.IsClassMember; }}
+    public bool IsTypeInfo             { get { return ToTypeInfo != null; }}
+    public bool IsConstructor          { get { return ToConstructorInfo != null; }}
+    public bool IsMethodBase           { get { return ToMethodBaseInfo != null; }}
+    public bool IsMethod               { get { return ToMethodInfo != null; }}
+    public bool IsField                { get { return ToFieldInfo != null; }}
+    public bool IsMessage              { get { return ToMessageInfo != null; }}
+    public bool IsProperty             { get { return ToPropertyInfo != null; }}
+	public bool IsTypeCast			   { get { return ToTypeCastInfo != null; }}
+    public bool IsInstanceFunctionBase { get { return IsMethodBase && ToMethodBaseInfo.IsInstanceMember; }}
+    public bool IsClassFunctionBase    { get { return IsMethodBase && ToMethodBaseInfo.IsClassMember; }}
+    public bool IsInstanceFunction     { get { return IsMethod && ToMethodInfo.IsInstanceMember; }}
+    public bool IsClassFunction        { get { return IsMethod && ToMethodInfo.IsClassMember; }}
+    public bool IsInstanceMessage      { get { return IsMessage && ToMessageInfo.IsInstanceMember; }}
+    public bool IsClassMessage         { get { return IsMessage && ToMessageInfo.IsClassMember; }}
+    public bool IsInstanceField        { get { return IsField && ToFieldInfo.IsInstanceMember; }}
+    public bool IsClassField           { get { return IsField && ToFieldInfo.IsClassMember; }}
+    public bool IsGetField             { get { return IsField && ToFieldInfo.IsGet; }}
+    public bool IsSetField             { get { return IsField && ToFieldInfo.IsSet; }}     
+    public bool IsGetInstanceField     { get { return IsInstanceField && IsGetField; }}
+    public bool IsSetInstanceField     { get { return IsInstanceField && IsSetField; }}
+    public bool IsGetClassField        { get { return IsClassField && IsGetField; }}
+    public bool IsSetClassField        { get { return IsClassField && IsSetField; }}
+    public bool IsGetProperty          { get { return IsProperty && ToPropertyInfo.IsGet; }}
+    public bool IsSetProperty          { get { return IsProperty && ToPropertyInfo.IsSet; }}
+    public bool IsGetInstanceProperty  { get { return IsGetProperty && ToPropertyInfo.IsInstanceMember; }}
+    public bool IsSetInstanceProperty  { get { return IsSetProperty && ToPropertyInfo.IsInstanceMember; }}
+    public bool IsGetClassProperty     { get { return IsGetProperty && ToPropertyInfo.IsClassMember; }}
+    public bool IsSetClassProperty     { get { return IsSetProperty && ToPropertyInfo.IsClassMember; }}
 
     // ======================================================================
     // Dynamic Properties

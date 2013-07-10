@@ -5,12 +5,12 @@ public class iCS_Transition : iCS_Action {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_Action       myGuard;
-    iCS_Action       myAction;
-    iCS_State        myEndState;
-    iCS_FunctionBase myTriggerFunction;
-    int             myTriggerPortIdx;
-    bool            myIsTriggered= false;
+    iCS_Action              myGuard;
+    iCS_Action              myAction;
+    iCS_State               myEndState;
+    iCS_ActionWithSignature myTriggerFunction;
+    int                     myTriggerPortIdx;
+    bool                    myIsTriggered= false;
 
     // ======================================================================
     // Properties
@@ -22,7 +22,7 @@ public class iCS_Transition : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Transition(string name, iCS_State endState, iCS_Action guard, iCS_FunctionBase triggerFunc, int portIdx, iCS_Action action, int priority) : base(name, priority) {
+    public iCS_Transition(string name, iCS_State endState, iCS_Action guard, iCS_ActionWithSignature triggerFunc, int portIdx, iCS_Action action, int priority) : base(name, priority) {
         myGuard          = guard;
         myAction         = action;
         myEndState       = endState;

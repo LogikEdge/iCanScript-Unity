@@ -37,7 +37,7 @@ public partial class iCS_EditorObject {
             return;
         }
         // Resolve any existing collisions on children for unfolded modules.
-        if(IsUnfoldedInLayout && !IsFunction) {
+        if(IsUnfoldedInLayout && !IsKindOfFunction) {
             ResolveCollisionOnChildrenNodes(animCtrl);
             WrapAroundChildrenNodes();                                
     		return;            

@@ -8,7 +8,7 @@ public partial class iCS_EditorObject {
     // Object Type Queries ---------------------------------------------------
     public bool IsNode                      { get { return EngineObject.IsNode; }}
     public bool IsKindOfAggregate           { get { return EngineObject.IsKindOfAggregate; }}
-    public bool IsFunction                  { get { return EngineObject.IsFunction; }}
+    public bool IsKindOfFunction                  { get { return EngineObject.IsKindOfFunction; }}
     public bool IsMessage                   { get { return EngineObject.IsMessage; }}
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
@@ -31,7 +31,7 @@ public partial class iCS_EditorObject {
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
 
-    public bool IsModulePort                { get { return IsDataPort && ParentNode.IsKindOfAggregate; }}
+    public bool IsKindOfAggregatePort       { get { return IsDataPort && ParentNode.IsKindOfAggregate; }}
 
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}

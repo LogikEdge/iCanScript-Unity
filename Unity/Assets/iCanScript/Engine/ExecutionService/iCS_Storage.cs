@@ -93,8 +93,13 @@ public class iCS_Storage : MonoBehaviour {
     // Returns the endport source of a connection.
     public iCS_EngineObject GetSourceEndPort(iCS_EngineObject port) {
         if(port == null) return null;
+        int linkLength= 0;
         for(iCS_EngineObject sourcePort= GetSourcePort(port); sourcePort != null; sourcePort= GetSourcePort(port)) {
             port= sourcePort;
+            if(++linkLength > 1000) {
+                Debug.LogWarning("iCanScript: Circular port connection detected on: "+GetParentNode(port).Name+"."+port.Name);
+                return null;                
+            }
         }
         return port;
     }

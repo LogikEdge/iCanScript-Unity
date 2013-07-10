@@ -361,7 +361,7 @@ public class iCS_Reflection {
                 if(method.IsStatic) {
                     DecodeStaticMethod(_classTypeInfo, displayName, description, iconPath, returnName, method);
                 } else {
-                    DecodeInstanceMethod(_classTypeInfo, displayName, description, iconPath, returnName, method);
+                    DecodeInstanceFunction(_classTypeInfo, displayName, description, iconPath, returnName, method);
                 }
             }
         }                               
@@ -389,7 +389,7 @@ public class iCS_Reflection {
         iCS_LibraryDatabase.AddTypeCast(_classTypeInfo, iconPath, fromType, method);                                        
     }
     // ----------------------------------------------------------------------
-    static void DecodeInstanceMethod(iCS_TypeInfo _classTypeInfo,
+    static void DecodeInstanceFunction(iCS_TypeInfo _classTypeInfo,
                                      string displayName, string description, string iconPath,
                                      string retName, MethodInfo method) {
         // Parse parameters.

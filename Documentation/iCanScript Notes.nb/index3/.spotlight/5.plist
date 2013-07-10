@@ -5,6 +5,39 @@
 	<key>keywords</key>
 	<string></string>
 	<key>txt</key>
-	<string>Documents  </string>
+	<string>Execution Signature Action
+Parameters
+return
+this FunctionBase
+0-n
+-
+- Class Function
+0-n
+n+1
+- Instance Function
+0-n
+n+1
+n+2 Constructor
+0-n
+n+1
+- Set Class Field
+0
+1
+- Set Instance Field
+0
+1
+2 Get Class Field
+-
+0
+- Get Instance Field
+-
+0
+1 MuxPort
+0-n
+n+1
+- Selector
+0-n
+n+1
+n+2(sel)  </string>
 </dict>
 </plist>

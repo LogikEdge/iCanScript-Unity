@@ -3,21 +3,19 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class iCS_SetInstanceField : iCS_FieldBase {
+public class iCS_SetClassField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetInstanceField(FieldInfo fieldInfo, string name, int priority)
-    : base(fieldInfo, name, priority, 1, true, true) {
-    }
-
+    public iCS_SetClassField(FieldInfo fieldInfo, string name, int priority)
+    : base(fieldInfo, name, priority, 1, false, false) {}
+    
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        myFieldInfo.SetValue(This, Parameters[0]);
-        ReturnValue= This;
+        myFieldInfo.SetValue(null, Parameters[0]);
         MarkAsCurrent(frameId);
     }
 }
