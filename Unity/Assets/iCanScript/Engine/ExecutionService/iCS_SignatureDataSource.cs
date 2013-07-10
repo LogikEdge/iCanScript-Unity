@@ -117,7 +117,7 @@ public class iCS_SignatureDataSource {
     // Functions to fetch the runtime inputs needed to execute the
     // associated action.
     // ----------------------------------------------------------------------
-	public void ForcedFetchParameters() {
+	public void ForcedFetchConnections() {
         var cLen= myConnections.Length;
         var pLen= myParameters.Length;
 	    for(int i= 0; i < cLen; ++i) {

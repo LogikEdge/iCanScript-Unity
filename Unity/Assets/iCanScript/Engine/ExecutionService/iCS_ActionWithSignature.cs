@@ -64,7 +64,7 @@ public class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         // Fetch all the inputs.
-        mySignature.ForcedFetchParameters();
+        mySignature.ForcedFetchConnections();
         // Execute function
         DoExecute(frameId);
     }
