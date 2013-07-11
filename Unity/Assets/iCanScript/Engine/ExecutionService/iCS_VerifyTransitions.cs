@@ -7,7 +7,7 @@ public class iCS_VerifyTransitions : iCS_Action {
     // Fields
     // ----------------------------------------------------------------------
     List<iCS_Transition>  myTransitions        = new List<iCS_Transition>();
-    int                  myQueueIdx           = 0;
+    int                   myQueueIdx           = 0;
     iCS_Transition        myTriggeredTransition= null;
     
     // ======================================================================
@@ -18,7 +18,8 @@ public class iCS_VerifyTransitions : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_VerifyTransitions(string name, int priority) : base(name, priority) {}
+    public iCS_VerifyTransitions(iCS_Storage storage, int instanceId, int priority)
+    : base(storage, instanceId, priority) {}
 
     // ======================================================================
     // Execution

@@ -39,7 +39,7 @@ public class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ActionWithSignature(string name, int priority, int nbOfParameters, bool hasReturn, bool hasThis) : base(name, priority) {
+    public iCS_ActionWithSignature(iCS_Storage storage, int instanceId, int priority, int nbOfParameters, bool hasReturn, bool hasThis) : base(storage, instanceId, priority) {
         mySignature= new iCS_SignatureDataSource(nbOfParameters, hasReturn, hasThis);
     }
     

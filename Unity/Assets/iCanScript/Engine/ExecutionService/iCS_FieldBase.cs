@@ -11,8 +11,9 @@ public class iCS_FieldBase : iCS_ActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_FieldBase(FieldInfo fieldInfo, string name, int priority, int nbOfParameters, bool hasReturn, bool hasThis)
-    : base(name, priority, nbOfParameters, hasReturn, hasThis) {
+    public iCS_FieldBase(FieldInfo fieldInfo, iCS_Storage storage, int instanceId, int priority,
+                         int nbOfParameters, bool hasReturn, bool hasThis)
+    : base(storage, instanceId, priority, nbOfParameters, hasReturn, hasThis) {
         myFieldInfo= fieldInfo;
     }
 }

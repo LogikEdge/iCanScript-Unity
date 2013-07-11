@@ -6,7 +6,8 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_NoWaitSequencialDispatcher(string name, int priority) : base(name, priority) {}
+    public iCS_NoWaitSequencialDispatcher(iCS_Storage storage, int instanceId, int priority)
+    : base(storage, instanceId, priority) {}
     
     // ======================================================================
     // Execution

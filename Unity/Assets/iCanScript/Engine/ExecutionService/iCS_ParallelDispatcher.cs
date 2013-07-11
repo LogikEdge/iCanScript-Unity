@@ -6,7 +6,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ParallelDispatcher(string name, int priority) : base(name, priority) {}
+    public iCS_ParallelDispatcher(iCS_Storage storage, int instanceId, int priority) : base(storage, instanceId, priority) {}
     
     // ======================================================================
     // Execution

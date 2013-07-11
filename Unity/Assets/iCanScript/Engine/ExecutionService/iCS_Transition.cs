@@ -16,13 +16,13 @@ public class iCS_Transition : iCS_Action {
     // Properties
     // ----------------------------------------------------------------------
     public iCS_State     EndState    { get { return myEndState; }}
-    public bool         DidTrigger  { get { return myIsTriggered; }}
+    public bool          DidTrigger  { get { return myIsTriggered; }}
     public iCS_Action    Action      { get { return myAction; }}
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Transition(string name, iCS_State endState, iCS_Action guard, iCS_ActionWithSignature triggerFunc, int portIdx, iCS_Action action, int priority) : base(name, priority) {
+    public iCS_Transition(iCS_Storage storage, int instanceId, iCS_State endState, iCS_Action guard, iCS_ActionWithSignature triggerFunc, int portIdx, iCS_Action action, int priority) : base(storage, instanceId, priority) {
         myGuard          = guard;
         myAction         = action;
         myEndState       = endState;

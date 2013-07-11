@@ -7,8 +7,8 @@ public class iCS_SetInstanceField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetInstanceField(FieldInfo fieldInfo, string name, int priority)
-    : base(fieldInfo, name, priority, 1, true, true) {
+    public iCS_SetInstanceField(FieldInfo fieldInfo, iCS_Storage storage, int instanceId, int priority)
+    : base(fieldInfo, storage, instanceId, priority, 1, true, true) {
     }
 
     // ======================================================================

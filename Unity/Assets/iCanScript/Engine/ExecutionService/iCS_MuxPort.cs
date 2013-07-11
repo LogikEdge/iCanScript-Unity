@@ -5,8 +5,8 @@ public class iCS_MuxPort : iCS_ActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_MuxPort(string name, int priority, int nbOfParameters)
-    : base(name, priority, nbOfParameters, true, false) {}
+    public iCS_MuxPort(iCS_Storage storage, int instanceId, int priority, int nbOfParameters)
+    : base(storage, instanceId, priority, nbOfParameters, true, false) {}
 
     // ======================================================================
     // Execution (not used)

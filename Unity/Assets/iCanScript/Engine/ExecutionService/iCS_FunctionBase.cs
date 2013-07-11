@@ -11,8 +11,9 @@ public class iCS_FunctionBase : iCS_ActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_FunctionBase(MethodBase methodBase, string name, int priority, int nbOfParameters, bool hasReturn, bool hasThis)
-    : base(name, priority, nbOfParameters, hasReturn, hasThis) {
+    public iCS_FunctionBase(MethodBase methodBase, iCS_Storage storage, int instanceId, int priority,
+                            int nbOfParameters, bool hasReturn, bool hasThis)
+    : base(storage, instanceId, priority, nbOfParameters, hasReturn, hasThis) {
         myMethodBase= methodBase;
     }
 }

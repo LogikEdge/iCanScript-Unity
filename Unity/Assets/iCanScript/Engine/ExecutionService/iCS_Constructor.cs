@@ -7,8 +7,8 @@ public class iCS_Constructor : iCS_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Constructor(MethodBase methodBase, string name, int priority, int nbOfParameters)
-    : base(methodBase, name, priority, nbOfParameters, true, false) {}
+    public iCS_Constructor(MethodBase methodBase, iCS_Storage storage, int instanceId, int priority, int nbOfParameters)
+    : base(methodBase, storage, instanceId, priority, nbOfParameters, true, false) {}
     
     // ======================================================================
     // Execution

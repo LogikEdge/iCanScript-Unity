@@ -9,8 +9,8 @@ public class iCS_Aggregate : iCS_ParallelDispatcher, iCS_ISignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Aggregate(string name, int priority, int nbOfParameters= 0)
-    : base(name, priority) {
+    public iCS_Aggregate(iCS_Storage storage, int instanceId, int priority, int nbOfParameters= 0)
+    : base(storage, instanceId, priority) {
         mySignature= new iCS_SignatureDataSource(nbOfParameters, false, true);
     }
 

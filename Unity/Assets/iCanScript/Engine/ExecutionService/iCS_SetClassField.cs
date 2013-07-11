@@ -7,8 +7,8 @@ public class iCS_SetClassField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetClassField(FieldInfo fieldInfo, string name, int priority)
-    : base(fieldInfo, name, priority, 1, false, false) {}
+    public iCS_SetClassField(FieldInfo fieldInfo, iCS_Storage storage, int instanceId, int priority)
+    : base(fieldInfo, storage, instanceId, priority, 1, false, false) {}
     
     // ======================================================================
     // Execution

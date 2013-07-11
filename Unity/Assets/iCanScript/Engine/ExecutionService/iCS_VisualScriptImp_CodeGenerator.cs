@@ -103,7 +103,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                 int priority= node.ExecutionPriority;
 				// Special case for active ports.
 				if(node.IsParentMuxPort) {
-					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, priority, GetNbOfChildMuxPorts(node));
+					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(this, node.InstanceId, priority, GetNbOfChildMuxPorts(node));
 					continue;
 				}
                 if(node.IsNode) {
@@ -136,13 +136,13 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             break;
                         }
                         case iCS_ObjectTypeEnum.StateChart: {
-                            iCS_StateChart stateChart= new iCS_StateChart(node.Name, priority);
+                            iCS_StateChart stateChart= new iCS_StateChart(this, node.InstanceId, priority);
                             myRuntimeNodes[node.InstanceId]= stateChart;
                             InvokeAddChildIfExists(parent, stateChart);
                             break;
                         }
                         case iCS_ObjectTypeEnum.State: {
-                            iCS_State state= new iCS_State(node.Name, priority);
+                            iCS_State state= new iCS_State(this, node.InstanceId, priority);
                             myRuntimeNodes[node.InstanceId]= state;
                             InvokeAddChildIfExists(parent, state);
                             if(node.IsEntryState) {
@@ -161,35 +161,35 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         }
                         case iCS_ObjectTypeEnum.TransitionGuard:
                         case iCS_ObjectTypeEnum.TransitionAction: {
-                            var module= new iCS_Aggregate(node.Name, priority);                                
+                            var module= new iCS_Aggregate(this, node.InstanceId, priority);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             break;
                         }
                         case iCS_ObjectTypeEnum.InstanceMessage:
                         case iCS_ObjectTypeEnum.ClassMessage: {
                             var nbParams= GetInputEndPortsLastIndex(node)+1;
-                            iCS_Message message= new iCS_Message(node.Name, priority, nbParams);                                
+                            iCS_Message message= new iCS_Message(this, node.InstanceId, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= message;
                             InvokeAddChildIfExists(parent, message);                                
                             break;
                         }
                         case iCS_ObjectTypeEnum.Aggregate: {
                             var nbParams= GetInputEndPortsLastIndex(node)+1;
-                            var module= new iCS_Aggregate(node.Name, priority, nbParams);                                
+                            var module= new iCS_Aggregate(this, node.InstanceId, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             InvokeAddChildIfExists(parent, module);                                
                             break;
                         }
                         case iCS_ObjectTypeEnum.InstanceFunction: {
                             // Create method.
-                            var method= new iCS_InstanceFunction(GetMethodBase(node), node.Name, priority, node.NbOfParams);                                
+                            var method= new iCS_InstanceFunction(GetMethodBase(node), this, node.InstanceId, priority, node.NbOfParams);                                
                             myRuntimeNodes[node.InstanceId]= method;
                             InvokeAddChildIfExists(parent, method);
                             break;                            
                         }
                         case iCS_ObjectTypeEnum.Constructor: {
                             // Create function.
-                            iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), node.Name, priority, node.NbOfParams);                                
+                            iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), this, node.InstanceId, priority, node.NbOfParams);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
@@ -197,7 +197,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         case iCS_ObjectTypeEnum.TypeCast:
                         case iCS_ObjectTypeEnum.ClassFunction: {
                             // Create function.
-                            var func= new iCS_ClassFunction(GetMethodBase(node), node.Name, priority, node.NbOfParams);                                
+                            var func= new iCS_ClassFunction(GetMethodBase(node), this, node.InstanceId, priority, node.NbOfParams);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
@@ -207,8 +207,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             FieldInfo fieldInfo= GetFieldInfo(node);
 							bool[] portIsOuts= GetPortIsOuts(node);
                             iCS_ActionWithSignature rtField= portIsOuts.Length == 0 ?
-                                new iCS_GetInstanceField(fieldInfo, node.Name, priority) as iCS_ActionWithSignature:
-                                new iCS_SetInstanceField(fieldInfo, node.Name, priority) as iCS_ActionWithSignature;                                
+                                new iCS_GetInstanceField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature:
+                                new iCS_SetInstanceField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;
@@ -218,8 +218,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 							FieldInfo fieldInfo= GetFieldInfo(node);
 							bool[] portIsOuts= GetPortIsOuts(node);
                             iCS_ActionWithSignature rtField= portIsOuts.Length == 0 ?
-                                new iCS_GetClassField(fieldInfo, node.Name, priority) as iCS_ActionWithSignature:
-                                new iCS_SetClassField(fieldInfo, node.Name, priority) as iCS_ActionWithSignature;                                
+                                new iCS_GetClassField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature:
+                                new iCS_SetClassField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;                            
@@ -264,7 +264,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         triggerPort= GetSourceEndPort(triggerPort);
                         iCS_ActionWithSignature triggerFunc= IsOutAggregatePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_ActionWithSignature;
                         int triggerIdx= triggerPort.PortIndex;
-                        iCS_Transition transition= new iCS_Transition(transitionModule.Name,
+                        iCS_Transition transition= new iCS_Transition(this, transitionModule.InstanceId,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,
                                                                     myRuntimeNodes[guardModule.InstanceId] as iCS_Aggregate,
                                                                     triggerFunc, triggerIdx,
