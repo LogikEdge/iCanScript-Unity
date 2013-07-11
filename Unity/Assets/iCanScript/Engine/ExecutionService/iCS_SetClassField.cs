@@ -15,7 +15,16 @@ public class iCS_SetClassField : iCS_FieldBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        myFieldInfo.SetValue(null, Parameters[0]);
-        MarkAsCurrent(frameId);
+#if UNITY_EDITOR
+        try {
+#endif
+            myFieldInfo.SetValue(null, Parameters[0]);
+            MarkAsCurrent(frameId);
+#if UNITY_EDITOR
+        }
+        catch(Exception e) {
+            Debug.LogWarning("iCanScript: Exception throw in  "+this+" => "+e.Message);
+        }
+#endif        
     }
 }

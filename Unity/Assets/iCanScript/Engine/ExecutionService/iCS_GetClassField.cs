@@ -15,7 +15,16 @@ public class iCS_GetClassField : iCS_FieldBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        ReturnValue= myFieldInfo.GetValue(null);
-        MarkAsCurrent(frameId);
+#if UNITY_EDITOR
+        try {
+#endif
+            ReturnValue= myFieldInfo.GetValue(null);
+            MarkAsCurrent(frameId);
+#if UNITY_EDITOR
+        }
+        catch(Exception e) {
+            Debug.LogWarning("iCanScript: Exception throw in  "+this+" => "+e.Message);
+        }
+#endif
     }
 }

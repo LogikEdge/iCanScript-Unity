@@ -16,4 +16,8 @@ public class iCS_Object {
         Name= name;
         Priority= priority;
     }
+
+    public override string ToString() {
+        return Name;
+    }
 }

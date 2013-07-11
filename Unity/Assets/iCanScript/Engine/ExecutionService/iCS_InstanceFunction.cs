@@ -16,11 +16,16 @@ public class iCS_InstanceFunction : iCS_FunctionBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        if(This != null) {
-			ReturnValue= myMethodBase.Invoke(This, Parameters);
-		} else {
-			Debug.LogWarning ("Trying to execute "+myMethodBase.Name+" without a connected instance...");
-		}
-        MarkAsCurrent(frameId);        
+#if UNITY_EDITOR
+        try {
+#endif
+		    ReturnValue= myMethodBase.Invoke(This, Parameters);
+            MarkAsCurrent(frameId);   
+#if UNITY_EDITOR
+        }
+        catch(Exception e) {
+            Debug.LogWarning("iCanScript: Exception throw in  "+this+" => "+e.Message);
+        }
+#endif             
     }
 }

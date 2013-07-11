@@ -15,7 +15,16 @@ public class iCS_ClassFunction : iCS_FunctionBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        ReturnValue= myMethodBase.Invoke(null, Parameters);            
-        MarkAsCurrent(frameId);
+#if UNITY_EDITOR
+        try {
+#endif
+            ReturnValue= myMethodBase.Invoke(null, Parameters);            
+            MarkAsCurrent(frameId);
+#if UNITY_EDITOR
+        }
+        catch(Exception e) {
+            Debug.LogWarning("iCanScript: Exception throw in  "+this+" => "+e.Message);
+        }
+#endif        
     }
 }
