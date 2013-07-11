@@ -9,8 +9,6 @@ public class iCS_SignatureDataSource {
     object[]         myParameters   = null;
     object           myReturnValue  = null;
     iCS_Connection[] myConnections  = null;
-    bool             myHasReturn    = false;
-    bool             myHasThis      = false;
 #if UNITY_EDITOR
     string[]         myNames        = null;
 #endif
@@ -42,8 +40,6 @@ public class iCS_SignatureDataSource {
     // Initialization
     // ----------------------------------------------------------------------
     public iCS_SignatureDataSource(int nbOfParameters, bool hasReturn, bool hasThis) {
-        myHasReturn= hasReturn;
-        myHasThis  = hasThis;
         myParameters = new object[nbOfParameters];
         myConnections= new iCS_Connection[nbOfParameters+(hasThis ? 2 : 0)];
         for(int i= 0; i < nbOfParameters; ++i) {
