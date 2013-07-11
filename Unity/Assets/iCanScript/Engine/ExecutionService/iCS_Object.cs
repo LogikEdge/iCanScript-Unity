@@ -23,7 +23,7 @@ public class iCS_Object {
             for(var parentObject= ParentObject; parentObject != null; parentObject= Storage.GetParent(parentObject)) {
                 fullName= parentObject.Name+"."+fullName;
             }
-            return fullName;
+            return Storage.gameObject.name+"."+fullName;
         }
     }
 #endif                                  

@@ -29,4 +29,8 @@ public class iCS_Aggregate : iCS_ParallelDispatcher, iCS_ISignature {
     public iCS_SignatureDataSource GetSignatureDataSource() {
         return mySignature;
     }
+    public iCS_Action GetAction() {
+        return this;
+    }
+    
 }

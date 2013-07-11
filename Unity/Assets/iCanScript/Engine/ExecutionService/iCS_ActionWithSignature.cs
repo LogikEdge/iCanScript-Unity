@@ -46,9 +46,8 @@ public class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ======================================================================
     // Implement ISignature delegate.
     // ----------------------------------------------------------------------
-    public iCS_SignatureDataSource GetSignatureDataSource() {
-        return mySignature;
-    }
+    public iCS_SignatureDataSource GetSignatureDataSource() { return mySignature; }
+    public iCS_Action GetAction() { return this; }
     
     // ======================================================================
     // Execution

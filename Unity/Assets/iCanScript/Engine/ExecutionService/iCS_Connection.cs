@@ -10,8 +10,15 @@ public class iCS_Connection {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public iCS_SignatureDataSource  Signature { get { return myConnection != null ? myConnection.Item1.GetSignatureDataSource() : null; }}
-    public int                      PortIndex { get { return myConnection != null ? myConnection.Item2 : -1; }}
+    public iCS_Action Action {
+        get { return myConnection != null ? myConnection.Item1.GetAction() : null; }
+    }
+    public iCS_SignatureDataSource Signature {
+        get { return myConnection != null ? myConnection.Item1.GetSignatureDataSource() : null; }
+    }
+    public int PortIndex {
+        get { return myConnection != null ? myConnection.Item2 : -1; }
+    }
     
     // ======================================================================
     // Creation/Destruction
@@ -34,7 +41,7 @@ public class iCS_Connection {
     }
     public bool IsReady(int frameId)    {
         if(!IsConnected) return true;
-        return Signature.IsConnectionReady(PortIndex, frameId);
+        return Action.IsCurrent(frameId);
     }
     
     // ----------------------------------------------------------------------
