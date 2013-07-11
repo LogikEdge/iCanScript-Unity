@@ -163,7 +163,7 @@ public partial class iCS_EditorObject {
 	        // Get runtime object if it exists.
 	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as iCS_ISignature;
 	        if(runtimeObject == null) return;
-	        runtimeObject.GetSignatureDataSource().Parameters[PortIndex]= value;			
+	        runtimeObject.GetSignatureDataSource().SetValue(PortIndex, value);			
 		}
 	}
 }
