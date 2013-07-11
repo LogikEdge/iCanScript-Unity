@@ -331,6 +331,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             classFunction=> {
                                 classFunction[port.PortIndex]= initValue;
                                 classFunction.SetConnection(port.PortIndex, connection);
+                                if(initValue != null) Debug.Log("Setting initial value of "+initValue.ToString()+" on "+port.Name+" with idx of "+port.PortIndex);
                             },
                             aggregate=> {
                                 aggregate[port.PortIndex]= initValue;                                
