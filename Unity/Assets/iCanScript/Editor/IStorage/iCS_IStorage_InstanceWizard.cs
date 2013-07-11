@@ -15,10 +15,10 @@ public partial class iCS_IStorage {
             iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, iCS_Strings.InstanceObjectName, classType, iCS_ObjectTypeEnum.InFixPort);
             inThisPort.IsNameEditable= false;
         }
-        if(iCS_PreferencesEditor.InstanceAutocreateOutFields)           InstanceWizardCreateOutputInstanceFields(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateInFields)            InstanceWizardCreateInputInstanceFields(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateOutProperties)       InstanceWizardCreateOutputInstanceProperties(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateInProperties)        InstanceWizardCreateInputInstanceProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutFields)          InstanceWizardCreateOutputInstanceFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInFields)           InstanceWizardCreateInputInstanceFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutProperties)      InstanceWizardCreateOutputInstanceProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInProperties)       InstanceWizardCreateInputInstanceProperties(module);
         if(iCS_PreferencesEditor.InstanceAutocreateOutClassFields)     InstanceWizardCreateOutputStaticFields(module);
         if(iCS_PreferencesEditor.InstanceAutocreateInClassFields)      InstanceWizardCreateInputStaticFields(module);
         if(iCS_PreferencesEditor.InstanceAutocreateOutClassProperties) InstanceWizardCreateOutputStaticProperties(module);
@@ -260,8 +260,14 @@ public partial class iCS_IStorage {
         ForEachChildDataPort(func,
             port=> {
                 string modulePortName= port.Name;
-                if(port.Name != iCS_Strings.InstanceObjectName && !desc.IsField && !desc.IsProperty) {
-                    modulePortName+= "."+desc.DisplayName;
+                if(port.Name != iCS_Strings.InstanceObjectName) {
+                    if(desc.IsField) {
+                        modulePortName= (desc as iCS_FieldInfo).FieldName;
+                    } else if(desc.IsProperty) {
+                        modulePortName= (desc as iCS_PropertyInfo).PropertyName;
+                    } else {
+                        modulePortName+= "."+desc.DisplayName;                    
+                    }
                 }
                 if(port.IsInputPort) {
                     // Special case for "this".
