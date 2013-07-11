@@ -25,7 +25,7 @@ public class iCS_Constructor : iCS_FunctionBase {
 #if UNITY_EDITOR
         }
         catch(Exception e) {
-            Debug.LogWarning("iCanScript: Exception throw in  "+this+" => "+e.Message);
+            Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
         }
 #endif        
     }
