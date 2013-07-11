@@ -36,8 +36,8 @@ public class iCS_Connection {
 
     public bool IsConnected             { get{ return myConnection != null; }}
     public object Value                 {
-        get { return Signature.GetParameter(PortIndex); }
-        set { Signature.SetParameter(PortIndex, value); }
+        get { return Signature.GetValue(PortIndex); }
+        set { Signature.SetValue(PortIndex, value); }
     }
     public bool IsReady(int frameId)    {
         if(!IsConnected) return true;

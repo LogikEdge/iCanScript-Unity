@@ -71,14 +71,14 @@ public class iCS_SignatureDataSource {
         myNames[idx]= value;
 	}
 #endif
-	public object GetParameter(int idx) {
+	public object GetValue(int idx) {
         var len= myParameters.Length;
         if(idx < len) return myParameters[idx];
         if(idx == len) return myReturnValue;
         if(idx == len+1) return myThis;
         return null;		
 	}
-	public void SetParameter(int idx, object value) {
+	public void SetValue(int idx, object value) {
         var len= myParameters.Length;
         if(idx < len)  {
             myParameters[idx]= value;
@@ -152,7 +152,7 @@ public class iCS_SignatureDataSource {
     // Accessors
     // ----------------------------------------------------------------------
     public object this[int idx] {
-        get { return GetParameter(idx); }
-        set { SetParameter(idx, value); }
+        get { return GetValue(idx); }
+        set { SetValue(idx, value); }
     }
 }

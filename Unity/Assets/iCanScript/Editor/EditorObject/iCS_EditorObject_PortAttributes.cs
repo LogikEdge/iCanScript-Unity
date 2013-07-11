@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
@@ -127,7 +128,7 @@ public partial class iCS_EditorObject {
 			}
             // Get value from parent node.
 			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_ISignature;
-			return funcBase == null ? port.InitialPortValue : funcBase.GetSignatureDataSource().Parameters[port.PortIndex];			
+			return funcBase == null ? port.InitialPortValue : funcBase.GetSignatureDataSource().GetValue(port.PortIndex);			
 		}
 		set {
 			InitialPortValue= value;

@@ -18,8 +18,8 @@ public class iCS_Aggregate : iCS_ParallelDispatcher, iCS_ISignature {
     // Accessors
     // ----------------------------------------------------------------------
     public object this[int idx] {
-        get { return mySignature.GetParameter(idx); }
-        set { mySignature.SetParameter(idx, value); }
+        get { return mySignature.GetValue(idx); }
+        set { mySignature.SetValue(idx, value); }
     }
     // ======================================================================
     // IParams implementation
