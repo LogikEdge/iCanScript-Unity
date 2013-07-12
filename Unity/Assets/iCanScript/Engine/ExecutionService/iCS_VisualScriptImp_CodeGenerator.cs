@@ -331,7 +331,6 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             classFunction=> {
                                 classFunction[port.PortIndex]= initValue;
                                 classFunction.SetConnection(port.PortIndex, connection);
-                                if(initValue != null) Debug.Log("Setting initial value of "+initValue.ToString()+" on "+port.Name+" with idx of "+port.PortIndex);
                             },
                             aggregate=> {
                                 aggregate[port.PortIndex]= initValue;                                
@@ -433,9 +432,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 			ports.Add(port);
 		}
 		// Sort child ports according to index.
-		iCS_EngineObject[] result= ports.ToArray();
-		Array.Sort(result, (x,y)=> x.PortIndex - y.PortIndex);
-		return result;
+		return iCS_EngineObject.SortPortsOnIndex(ports.ToArray());
 	}
     // ----------------------------------------------------------------------
 	object GetInitialValue(iCS_EngineObject port) {

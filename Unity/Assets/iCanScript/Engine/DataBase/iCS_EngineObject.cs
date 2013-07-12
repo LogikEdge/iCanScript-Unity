@@ -276,9 +276,14 @@ public class iCS_EngineObject {
 			ports.Add(port);
 		}
 		// Sort child ports according to index.
-		iCS_EngineObject[] result= ports.ToArray();
-		Array.Sort(result, (x,y)=> x.PortIndex - y.PortIndex);
-		return result;            
+		return SortPortsOnIndex(ports.ToArray());            
 	}
 
+    // =======================================================================
+    // Utilities
+    // -----------------------------------------------------------------------
+    public static iCS_EngineObject[] SortPortsOnIndex(iCS_EngineObject[] lst) {
+		Array.Sort(lst, (x,y)=> x.PortIndex - y.PortIndex);
+        return lst;
+    }
 }
