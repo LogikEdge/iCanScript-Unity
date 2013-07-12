@@ -244,10 +244,8 @@ public partial class iCS_IStorage {
 					} else {
 						shouldRemove= ((obj.IsStatePort || obj.IsDynamicPort) && IsPortDisconnected(obj)) ||
 						              (obj.IsDynamicPort && obj.Source == null && (parent.IsStateChart || parent.IsState));
-						
 					}
 					if(shouldRemove) {
-					    Debug.Log("Destroying: "+obj.Name);
                         DestroyInstanceInternal(obj);                            
                         modified= true;						
 					}

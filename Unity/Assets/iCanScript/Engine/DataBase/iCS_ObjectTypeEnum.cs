@@ -112,9 +112,9 @@ public static class iCS_ObjectType {
 	public static bool IsDynamicPort		  (iCS_EngineObject obj) { return IsInDynamicPort(obj) || IsOutDynamicPort(obj); }
 	public static bool IsProposedPort         (iCS_EngineObject obj) { return IsInProposedPort(obj) || IsOutProposedPort(obj); }
     public static bool IsInDataPort			  (iCS_EngineObject obj) { return IsInFixPort(obj) || IsInDynamicPort(obj) ||
-																			  IsInProposedPort || IsEnablePort(obj); }
+																			  IsInProposedPort(obj) || IsEnablePort(obj); }
     public static bool IsOutDataPort		  (iCS_EngineObject obj) { return IsOutFixPort(obj) || IsOutDynamicPort(obj) ||
-																			  IsOutProposedPort(port) || IsMuxPort(obj); }
+																			  IsOutProposedPort(obj) || IsMuxPort(obj); }
     public static bool IsOutputPort			  (iCS_EngineObject obj) { return IsOutDataPort(obj) || IsOutStatePort(obj) ||
 	 																		  IsOutTransitionPort(obj); }
     public static bool IsInputPort			  (iCS_EngineObject obj) { return IsInDataPort(obj)|| IsInStatePort(obj)||

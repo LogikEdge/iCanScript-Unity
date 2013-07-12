@@ -83,7 +83,7 @@ public partial class iCS_IStorage {
     public PortInfo[] BuildListOfPortInfoForBehaviourMessage(iCS_EditorObject behaviour) {
         var go= behaviour.Storage.gameObject;
         var portInfos= new List<PortInfo>();        
-        portInfos.Add(new PortInfo("gameObject", typeof(GameObject), iCS_ObjectTypeEnum.InDynamicPort, go));
+        portInfos.Add(new PortInfo("gameObject", typeof(GameObject), iCS_ObjectTypeEnum.InProposedPort, go));
         return BuildListOfPortInfoForGameObject(go, portInfos);
     }
     // ----------------------------------------------------------------------
@@ -93,63 +93,63 @@ public partial class iCS_IStorage {
         }
         var rigidbody= gameObject.rigidbody;
         if(rigidbody != null) {
-            portInfos.Add(new PortInfo("rigidbody", rigidbody.GetType(), iCS_ObjectTypeEnum.InDynamicPort, rigidbody));
+            portInfos.Add(new PortInfo("rigidbody", rigidbody.GetType(), iCS_ObjectTypeEnum.InProposedPort, rigidbody));
         }
         var camera= gameObject.camera;
         if(camera != null) {
-            portInfos.Add(new PortInfo("camera", camera.GetType(), iCS_ObjectTypeEnum.InDynamicPort, camera));
+            portInfos.Add(new PortInfo("camera", camera.GetType(), iCS_ObjectTypeEnum.InProposedPort, camera));
         }
         var light= gameObject.light;
         if(light != null) {
-            portInfos.Add(new PortInfo("light", light.GetType(), iCS_ObjectTypeEnum.InDynamicPort, light));            
+            portInfos.Add(new PortInfo("light", light.GetType(), iCS_ObjectTypeEnum.InProposedPort, light));            
         }
         var animation= gameObject.animation;
         if(animation != null) {
-            portInfos.Add(new PortInfo("animation", animation.GetType(), iCS_ObjectTypeEnum.InDynamicPort, animation));            
+            portInfos.Add(new PortInfo("animation", animation.GetType(), iCS_ObjectTypeEnum.InProposedPort, animation));            
         }
         var constantForce= gameObject.constantForce;
         if(constantForce != null) {
-            portInfos.Add(new PortInfo("constantForce", constantForce.GetType(), iCS_ObjectTypeEnum.InDynamicPort, constantForce));            
+            portInfos.Add(new PortInfo("constantForce", constantForce.GetType(), iCS_ObjectTypeEnum.InProposedPort, constantForce));            
         }
         var renderer= gameObject.renderer;
         if(renderer != null) {
-            portInfos.Add(new PortInfo("renderer", renderer.GetType(), iCS_ObjectTypeEnum.InDynamicPort, renderer));            
+            portInfos.Add(new PortInfo("renderer", renderer.GetType(), iCS_ObjectTypeEnum.InProposedPort, renderer));            
         }
         var audio= gameObject.audio;
         if(audio != null) {
-            portInfos.Add(new PortInfo("audio", audio.GetType(), iCS_ObjectTypeEnum.InDynamicPort, audio));            
+            portInfos.Add(new PortInfo("audio", audio.GetType(), iCS_ObjectTypeEnum.InProposedPort, audio));            
         }
         var guiText= gameObject.guiText;
         if(guiText != null) {
-            portInfos.Add(new PortInfo("guiText", guiText.GetType(), iCS_ObjectTypeEnum.InDynamicPort, guiText));            
+            portInfos.Add(new PortInfo("guiText", guiText.GetType(), iCS_ObjectTypeEnum.InProposedPort, guiText));            
         }
         var networkView= gameObject.networkView;
         if(networkView != null) {
-            portInfos.Add(new PortInfo("networkView", networkView.GetType(), iCS_ObjectTypeEnum.InDynamicPort, networkView));            
+            portInfos.Add(new PortInfo("networkView", networkView.GetType(), iCS_ObjectTypeEnum.InProposedPort, networkView));            
         }
         var guiTexture= gameObject.guiTexture;
         if(guiTexture != null) {
-            portInfos.Add(new PortInfo("guiTexture", guiTexture.GetType(), iCS_ObjectTypeEnum.InDynamicPort, guiTexture));            
+            portInfos.Add(new PortInfo("guiTexture", guiTexture.GetType(), iCS_ObjectTypeEnum.InProposedPort, guiTexture));            
         }
         var collider= gameObject.collider;
         if(collider != null) {
-            portInfos.Add(new PortInfo("collider", collider.GetType(), iCS_ObjectTypeEnum.InDynamicPort, collider));            
+            portInfos.Add(new PortInfo("collider", collider.GetType(), iCS_ObjectTypeEnum.InProposedPort, collider));            
         }
         var hingeJoint= gameObject.hingeJoint;
         if(hingeJoint != null) {
-            portInfos.Add(new PortInfo("hingeJoint", hingeJoint.GetType(), iCS_ObjectTypeEnum.InDynamicPort, hingeJoint));            
+            portInfos.Add(new PortInfo("hingeJoint", hingeJoint.GetType(), iCS_ObjectTypeEnum.InProposedPort, hingeJoint));            
         }
         var particleEmitter= gameObject.particleEmitter;
         if(particleEmitter != null) {
-            portInfos.Add(new PortInfo("particleEmitter", particleEmitter.GetType(), iCS_ObjectTypeEnum.InDynamicPort, particleEmitter));            
+            portInfos.Add(new PortInfo("particleEmitter", particleEmitter.GetType(), iCS_ObjectTypeEnum.InProposedPort, particleEmitter));            
         }
         var particleSystem= gameObject.particleSystem;
         if(particleSystem != null) {
-            portInfos.Add(new PortInfo("particleSystem", particleSystem.GetType(), iCS_ObjectTypeEnum.InDynamicPort, particleSystem));            
+            portInfos.Add(new PortInfo("particleSystem", particleSystem.GetType(), iCS_ObjectTypeEnum.InProposedPort, particleSystem));            
         }
         var tag= gameObject.tag;
         if(tag != null) {
-            portInfos.Add(new PortInfo("tag", tag.GetType(), iCS_ObjectTypeEnum.InDynamicPort, tag));            
+            portInfos.Add(new PortInfo("tag", tag.GetType(), iCS_ObjectTypeEnum.InProposedPort, tag));            
         }
 
         return portInfos.ToArray();
