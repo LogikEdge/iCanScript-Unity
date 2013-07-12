@@ -23,23 +23,20 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Scans through the behaviour
     // Returns the next available port index.
-    public int UpdateBehaviourMessagePorts(iCS_EditorObject node) {
-//        var neededPorts= BuildListOfPortInfoForBehaviourMessage(node.Parent);
-//        var changed= CleanupExistingFixPorts(node, neededPorts);
-        int portIdx= RecalculatePortIndexes(node).Length;
-//        changed |= BuildMissingPorts(node, neededPorts, portIdx);
-//        if(changed) node.LayoutNode();
-        return portIdx;
+    public void UpdateBehaviourMessagePorts(iCS_EditorObject node) {
+        var neededPorts= BuildListOfPortInfoForBehaviourMessage(node.Parent);
+        var changed= CleanupExistingProposedPorts(node, neededPorts);
+        changed |= BuildMissingPorts(node, neededPorts);
+        if(changed) node.LayoutNode();
     }
 
     // ----------------------------------------------------------------------
     // Creates the missing fix ports
-    public bool BuildMissingPorts(iCS_EditorObject node, PortInfo[] neededPorts, int portIdx) {
+    public bool BuildMissingPorts(iCS_EditorObject node, PortInfo[] neededPorts) {
         bool changed= false;
         foreach(var pi in neededPorts) {
             if(!DoesPortExist(node, pi.Name, pi.ValueType, pi.PortType)) {
         	    var port= CreatePort(pi.Name, node.InstanceId, pi.ValueType, pi.PortType);
-                port.PortIndex= portIdx++;
                 port.InitialPortValue= pi.InitialValue;            
                 changed= true;
             }
@@ -49,10 +46,10 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     // Removes the non needed fix ports.
-    public bool CleanupExistingFixPorts(iCS_EditorObject node, PortInfo[] neededPorts) {
+    public bool CleanupExistingProposedPorts(iCS_EditorObject node, PortInfo[] neededPorts) {
         bool changed= false;
-        var currentFixPorts= GetCurrentFixPorts(node);
-        foreach(var cp in currentFixPorts) {
+        var currentProposedPorts= GetCurrentProposedPorts(node);
+        foreach(var cp in currentProposedPorts) {
             bool found= false;
             foreach(var np in neededPorts) {
                 if(np.Name == cp.Name && np.PortType == cp.ObjectType && np.ValueType == cp.RuntimeType) {
@@ -77,16 +74,16 @@ public partial class iCS_IStorage {
         return ++startingPortId;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject[] GetCurrentFixPorts(iCS_EditorObject node) {
-        var fixPorts= new List<iCS_EditorObject>();
-        node.ForEachChildPort(p => { if(p.IsFixPort) fixPorts.Add(p); });
-        return fixPorts.ToArray();
+    public iCS_EditorObject[] GetCurrentProposedPorts(iCS_EditorObject node) {
+        var proposedPorts= new List<iCS_EditorObject>();
+        node.ForEachChildPort(p => { if(p.IsProposedPort) proposedPorts.Add(p); });
+        return proposedPorts.ToArray();
     }
     // ----------------------------------------------------------------------
     public PortInfo[] BuildListOfPortInfoForBehaviourMessage(iCS_EditorObject behaviour) {
         var go= behaviour.Storage.gameObject;
         var portInfos= new List<PortInfo>();        
-        portInfos.Add(new PortInfo("gameObject", typeof(GameObject), iCS_ObjectTypeEnum.InFixPort, go));
+        portInfos.Add(new PortInfo("gameObject", typeof(GameObject), iCS_ObjectTypeEnum.InDynamicPort, go));
         return BuildListOfPortInfoForGameObject(go, portInfos);
     }
     // ----------------------------------------------------------------------
@@ -96,63 +93,63 @@ public partial class iCS_IStorage {
         }
         var rigidbody= gameObject.rigidbody;
         if(rigidbody != null) {
-            portInfos.Add(new PortInfo("rigidbody", rigidbody.GetType(), iCS_ObjectTypeEnum.InFixPort, rigidbody));
+            portInfos.Add(new PortInfo("rigidbody", rigidbody.GetType(), iCS_ObjectTypeEnum.InDynamicPort, rigidbody));
         }
         var camera= gameObject.camera;
         if(camera != null) {
-            portInfos.Add(new PortInfo("camera", camera.GetType(), iCS_ObjectTypeEnum.InFixPort, camera));
+            portInfos.Add(new PortInfo("camera", camera.GetType(), iCS_ObjectTypeEnum.InDynamicPort, camera));
         }
         var light= gameObject.light;
         if(light != null) {
-            portInfos.Add(new PortInfo("light", light.GetType(), iCS_ObjectTypeEnum.InFixPort, light));            
+            portInfos.Add(new PortInfo("light", light.GetType(), iCS_ObjectTypeEnum.InDynamicPort, light));            
         }
         var animation= gameObject.animation;
         if(animation != null) {
-            portInfos.Add(new PortInfo("animation", animation.GetType(), iCS_ObjectTypeEnum.InFixPort, animation));            
+            portInfos.Add(new PortInfo("animation", animation.GetType(), iCS_ObjectTypeEnum.InDynamicPort, animation));            
         }
         var constantForce= gameObject.constantForce;
         if(constantForce != null) {
-            portInfos.Add(new PortInfo("constantForce", constantForce.GetType(), iCS_ObjectTypeEnum.InFixPort, constantForce));            
+            portInfos.Add(new PortInfo("constantForce", constantForce.GetType(), iCS_ObjectTypeEnum.InDynamicPort, constantForce));            
         }
         var renderer= gameObject.renderer;
         if(renderer != null) {
-            portInfos.Add(new PortInfo("renderer", renderer.GetType(), iCS_ObjectTypeEnum.InFixPort, renderer));            
+            portInfos.Add(new PortInfo("renderer", renderer.GetType(), iCS_ObjectTypeEnum.InDynamicPort, renderer));            
         }
         var audio= gameObject.audio;
         if(audio != null) {
-            portInfos.Add(new PortInfo("audio", audio.GetType(), iCS_ObjectTypeEnum.InFixPort, audio));            
+            portInfos.Add(new PortInfo("audio", audio.GetType(), iCS_ObjectTypeEnum.InDynamicPort, audio));            
         }
         var guiText= gameObject.guiText;
         if(guiText != null) {
-            portInfos.Add(new PortInfo("guiText", guiText.GetType(), iCS_ObjectTypeEnum.InFixPort, guiText));            
+            portInfos.Add(new PortInfo("guiText", guiText.GetType(), iCS_ObjectTypeEnum.InDynamicPort, guiText));            
         }
         var networkView= gameObject.networkView;
         if(networkView != null) {
-            portInfos.Add(new PortInfo("networkView", networkView.GetType(), iCS_ObjectTypeEnum.InFixPort, networkView));            
+            portInfos.Add(new PortInfo("networkView", networkView.GetType(), iCS_ObjectTypeEnum.InDynamicPort, networkView));            
         }
         var guiTexture= gameObject.guiTexture;
         if(guiTexture != null) {
-            portInfos.Add(new PortInfo("guiTexture", guiTexture.GetType(), iCS_ObjectTypeEnum.InFixPort, guiTexture));            
+            portInfos.Add(new PortInfo("guiTexture", guiTexture.GetType(), iCS_ObjectTypeEnum.InDynamicPort, guiTexture));            
         }
         var collider= gameObject.collider;
         if(collider != null) {
-            portInfos.Add(new PortInfo("collider", collider.GetType(), iCS_ObjectTypeEnum.InFixPort, collider));            
+            portInfos.Add(new PortInfo("collider", collider.GetType(), iCS_ObjectTypeEnum.InDynamicPort, collider));            
         }
         var hingeJoint= gameObject.hingeJoint;
         if(hingeJoint != null) {
-            portInfos.Add(new PortInfo("hingeJoint", hingeJoint.GetType(), iCS_ObjectTypeEnum.InFixPort, hingeJoint));            
+            portInfos.Add(new PortInfo("hingeJoint", hingeJoint.GetType(), iCS_ObjectTypeEnum.InDynamicPort, hingeJoint));            
         }
         var particleEmitter= gameObject.particleEmitter;
         if(particleEmitter != null) {
-            portInfos.Add(new PortInfo("particleEmitter", particleEmitter.GetType(), iCS_ObjectTypeEnum.InFixPort, particleEmitter));            
+            portInfos.Add(new PortInfo("particleEmitter", particleEmitter.GetType(), iCS_ObjectTypeEnum.InDynamicPort, particleEmitter));            
         }
         var particleSystem= gameObject.particleSystem;
         if(particleSystem != null) {
-            portInfos.Add(new PortInfo("particleSystem", particleSystem.GetType(), iCS_ObjectTypeEnum.InFixPort, particleSystem));            
+            portInfos.Add(new PortInfo("particleSystem", particleSystem.GetType(), iCS_ObjectTypeEnum.InDynamicPort, particleSystem));            
         }
         var tag= gameObject.tag;
         if(tag != null) {
-            portInfos.Add(new PortInfo("tag", tag.GetType(), iCS_ObjectTypeEnum.InFixPort, tag));            
+            portInfos.Add(new PortInfo("tag", tag.GetType(), iCS_ObjectTypeEnum.InDynamicPort, tag));            
         }
 
         return portInfos.ToArray();

@@ -247,6 +247,7 @@ public partial class iCS_IStorage {
 						
 					}
 					if(shouldRemove) {
+					    Debug.Log("Destroying: "+obj.Name);
                         DestroyInstanceInternal(obj);                            
                         modified= true;						
 					}

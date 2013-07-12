@@ -184,6 +184,7 @@ public class iCS_EngineObject {
     public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
     public bool IsFixPort          		{ get { return iCS_ObjectType.IsFixPort(this); }}
     public bool IsDynamicPort           { get { return iCS_ObjectType.IsDynamicPort(this); }}
+    public bool IsProposedPort          { get { return iCS_ObjectType.IsProposedPort(this); }}
     public bool IsStatePort             { get { return iCS_ObjectType.IsStatePort(this); }}
     public bool IsTransitionPort        { get { return iCS_ObjectType.IsTransitionPort(this); }}
     public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}
@@ -193,6 +194,8 @@ public class iCS_EngineObject {
     public bool IsOutFixPort            { get { return iCS_ObjectType.IsOutFixPort(this); }}
     public bool IsInDynamicPort         { get { return iCS_ObjectType.IsInDynamicPort(this); }}
     public bool IsOutDynamicPort        { get { return iCS_ObjectType.IsOutDynamicPort(this); }}
+    public bool IsInProposedPort        { get { return iCS_ObjectType.IsInProposedPort(this); }}
+    public bool IsOutProposedPort       { get { return iCS_ObjectType.IsOutProposedPort(this); }}
     public bool IsInStatePort           { get { return iCS_ObjectType.IsInStatePort(this); }}
     public bool IsOutStatePort          { get { return iCS_ObjectType.IsOutStatePort(this); }}
     public bool IsInDataPort            { get { return iCS_ObjectType.IsInDataPort(this); }}

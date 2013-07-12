@@ -24,6 +24,7 @@ public partial class iCS_EditorObject {
     public bool IsPort                      { get { return EngineObject.IsPort; }}
     public bool IsFixPort                   { get { return EngineObject.IsFixPort; }}
     public bool IsDynamicPort               { get { return EngineObject.IsDynamicPort; }}
+    public bool IsProposedPort              { get { return EngineObject.IsProposedPort; }}
     public bool IsEndPort                   { get { return Storage.IsEndPort(EngineObject); }}
     public bool IsRelayPort                 { get { return Storage.IsRelayPort(EngineObject); }}
     
