@@ -85,15 +85,15 @@ public partial class iCS_Graphics {
         }
         return new Vector2(maximizeIcon.width, maximizeIcon.height);        
     }
-    // ----------------------------------------------------------------------
-    public Texture2D GetMaximizeIcon(iCS_EditorObject node) {
-        Texture2D icon= null;
-        if(node != null && node.IconGUID != null) {
-            icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
-            if(icon != null) return icon;
-        }
-        return GetNodeDefaultMaximizeIcon(node);
-    }
+//    // ----------------------------------------------------------------------
+//    public Texture2D GetMaximizeIcon(iCS_EditorObject node) {
+//        Texture2D icon= null;
+//        if(node != null && node.IconGUID != null) {
+//            icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
+//            if(icon != null) return icon;
+//        }
+//        return GetNodeDefaultMaximizeIcon(node);
+//    }
     // ----------------------------------------------------------------------
     public bool IsMaximizeIconPicked(iCS_EditorObject obj, Vector2 mousePos) {
         if(!ShouldDisplayMaximizeIcon(obj)) return false;

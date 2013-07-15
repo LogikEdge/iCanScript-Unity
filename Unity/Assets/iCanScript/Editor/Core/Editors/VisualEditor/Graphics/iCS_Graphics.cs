@@ -401,7 +401,7 @@ public partial class iCS_Graphics {
 
 		Color alphaWhite= new Color(1f, 1f, 1f, node.DisplayAlpha);
         GUI.color= alphaWhite;
-        Texture icon= GetMaximizeIcon(node);
+        Texture icon= iCS_Icons.GetIconFor(node);
 		var position= Math3D.Middle(displayRect);
         Rect textureRect= new Rect(position.x-0.5f*icon.width, position.y-0.5f*icon.height, icon.width, icon.height);                
         if(node.IsTransitionModule) {

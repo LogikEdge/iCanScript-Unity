@@ -361,7 +361,6 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         instance.SetAnchorAndLayoutPosition(globalPos);
-	    instance.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
         if(instance.IsObjectInstance) InstanceWizardCompleteCreation(instance);
         // Perform initial node layout.
         instance.Unhide();
@@ -419,15 +418,11 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateClassFunction(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
-        // Determine icon.
-        var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.ClassFunction) {
-            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.FunctionIcon);
-        }        
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.SetAnchorAndLayoutPosition(globalPos);
-        instance.IconGUID= iconGUID;
+        // Determine icon.
+        instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -455,15 +450,10 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateInstanceFunction(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
-        // Determine minimized icon.
-        var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.InstanceFunction) {
-            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.FunctionIcon);
-        }        
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.SetAnchorAndLayoutPosition(globalPos);
-        instance.IconGUID= iconGUID;
+        instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -496,15 +486,10 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateMessage(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
-        // Determine icon.
-        var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.ClassFunction) {
-            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.FunctionIcon);
-        }        
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.SetAnchorAndLayoutPosition(globalPos);
-        instance.IconGUID= iconGUID;
+        instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;

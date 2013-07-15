@@ -17,7 +17,7 @@ public class iCS_EditorStrings {
 	public const string DownArrowHeadIcon    = "iCS_DownArrowHeadIcon.psd";
 	public const string LeftArrowHeadIcon    = "iCS_LeftArrowHeadIcon.psd";
 	public const string RightArrowHeadIcon   = "iCS_RightArrowHeadIcon.psd";
-	public const string ModuleIcon           = "iCS_ModuleIcon_32x32.png";
+	public const string ModuleIcon           = "iCS_PackageIcon_32x32.png";
 	public const string FunctionIcon         = "iCS_FunctionIcon_32x32.png";
     public const string TransitionModuleIcon = "iCS_TransitionModuleIcon.png";
 	public const string TransitionTriggerIcon= "iCS_TransitionTriggerIcon.png";

@@ -2,11 +2,20 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
+public enum iCS_DefaultIcons {
+    Company, Library, Behaviour,
+    Package, Message, ObjectInstance,
+    Function, Variable,
+    StateChart, State, EntryState };
+
 public static class iCS_Icons {
     // =========================================================================
     // Icon file names.
 	// -------------------------------------------------------------------------
-    public const string kFunctionIcon         = "iCS_FunctionIcon_32x32.png";
+    const string kFunctionIcon= "iCS_FunctionIcon_32x32.png";
+    const string kPackageIcon = "iCS_PackageIcon_32x32.png";
+    const string kMessageIcon = "iCS_MessageIcon_32x32.png";
+	
 
     // -------------------------------------------------------------------------
     public static Texture2D GetIconFor(iCS_EditorObject obj) {
@@ -31,16 +40,43 @@ public static class iCS_Icons {
         if(obj.IsBehaviour) {
             
         } else if(obj.IsMessage) {
-            return iCS_TextureCache.GetIcon(iCS_EditorStrings.MessageHierarchyIcon);            
+            return GetDefaultNodeIconFor(iCS_DefaultIcons.Message);            
         } else if(obj.IsKindOfFunction) {
-            return iCS_TextureCache.GetIcon(kFunctionIcon);
+            return GetDefaultNodeIconFor(iCS_DefaultIcons.Function);
         } else if(obj.IsStateChart) {
-            
+            return GetDefaultNodeIconFor(iCS_DefaultIcons.StateChart);            
         } else if(obj.IsEntryState) {
-
+            return GetDefaultNodeIconFor(iCS_DefaultIcons.EntryState);            
         } else if(obj.IsState) {
-            
+            return GetDefaultNodeIconFor(iCS_DefaultIcons.State);
         }
-        return iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionIcon);
+        return GetDefaultNodeIconFor(iCS_DefaultIcons.Package);
     }
+
+    // -------------------------------------------------------------------------
+    public static Texture2D GetDefaultNodeIconFor(iCS_DefaultIcons iconType) {
+        switch(iconType) {
+            case iCS_DefaultIcons.Company:
+            case iCS_DefaultIcons.Library:
+            case iCS_DefaultIcons.Behaviour:
+                break;
+            case iCS_DefaultIcons.Package:
+                return iCS_TextureCache.GetIcon(kPackageIcon);
+            case iCS_DefaultIcons.Message:
+                return iCS_TextureCache.GetIcon(kMessageIcon);
+            case iCS_DefaultIcons.ObjectInstance:
+                break;
+            case iCS_DefaultIcons.Function:
+                return iCS_TextureCache.GetIcon(kFunctionIcon);
+            case iCS_DefaultIcons.Variable:
+            case iCS_DefaultIcons.StateChart:
+            case iCS_DefaultIcons.State:
+            case iCS_DefaultIcons.EntryState:
+                break;
+        }
+        return iCS_TextureCache.GetIcon(kPackageIcon);
+    }
+
 }
+
+    

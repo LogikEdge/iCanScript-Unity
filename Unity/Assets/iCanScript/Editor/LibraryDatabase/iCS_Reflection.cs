@@ -153,7 +153,7 @@ public class iCS_Reflection {
             bool registerMethod= false;
             string displayName= iCS_Types.TypeName(_classTypeInfo.CompilerType);
             string description= "";
-            string iconPath= "";
+            string iconPath= _classTypeInfo.IconPath;
             foreach(var constructorAttribute in constructor.GetCustomAttributes(true)) {
                 if(constructorAttribute is iCS_FunctionAttribute) {                                    
                     if(constructor.IsPublic) {
@@ -252,7 +252,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeStaticField(iCS_TypeInfo _classTypeInfo, FieldInfo field, iCS_ParamDirection dir) {
         string description= "";
-        string iconPath= _classTypeInfo.IconPath;
+        string iconPath= "";
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
             var parameters            = new iCS_Parameter[1];
             parameters[0]             = new iCS_Parameter();
@@ -274,7 +274,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeInstanceField(iCS_TypeInfo _classTypeInfo, FieldInfo field, iCS_ParamDirection dir) {
         string description= "";
-        string iconPath= _classTypeInfo.IconPath;
+        string iconPath= "";
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
             var parameters        = new iCS_Parameter[1];
             parameters[0]         = new iCS_Parameter();
@@ -305,7 +305,7 @@ public class iCS_Reflection {
             string classDescription= _classTypeInfo.Description;
             string classIconPath= _classTypeInfo.IconPath;
             string description= classDescription;
-            string iconPath= classIconPath;
+            string iconPath= "";
             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
                 if(methodAttribute is iCS_TypeCastAttribute) {
                     if(method.IsPublic) {

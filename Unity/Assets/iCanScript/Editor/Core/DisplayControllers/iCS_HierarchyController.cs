@@ -282,22 +282,10 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     GUIContent GetContent() {
-        /*
-            FIXME: Must assure that the display width & height suffises for the icon.
-        */
-//        EditorGUIUtility.SetIconSize(new Vector2(16.0f,12.0f));
         Texture2D icon= null;
 		var current= IterValue;
-        if(current.IsKindOfFunction) {
+		if(current.IsNode) {
             icon= iCS_Icons.GetIconFor(current);            
-        } else if(current.IsState || current.IsStateChart) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.StateHierarchyIcon);                        
-        } else if(current.IsObjectInstance) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ClassHierarchyIcon);                            
-        } else if(current.IsMessage) {
-            icon= iCS_Icons.GetIconFor(current);            
-        } else if(current.IsNode) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);            
         } else if(current.IsDataPort) {
             if(current.IsInputPort) {
                 if(current.IsEndPort) {
