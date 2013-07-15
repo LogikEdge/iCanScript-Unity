@@ -71,7 +71,6 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
 	}
 	// ----------------------------------------------------------------------
     public void ShowElement(iCS_EditorObject eObj) {
-Debug.Log("Show element");
         if(!IsInitialized()) return;
         myController.ShowElement(eObj);
         Repaint();            

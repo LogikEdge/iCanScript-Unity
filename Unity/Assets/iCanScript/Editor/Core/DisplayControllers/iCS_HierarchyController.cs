@@ -289,11 +289,13 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
         Texture2D icon= null;
 		var current= IterValue;
         if(current.IsKindOfFunction) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
+            icon= iCS_Icons.GetIconFor(current);            
         } else if(current.IsState || current.IsStateChart) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.StateHierarchyIcon);                        
         } else if(current.IsObjectInstance) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ClassHierarchyIcon);                            
+        } else if(current.IsMessage) {
+            icon= iCS_Icons.GetIconFor(current);            
         } else if(current.IsNode) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);            
         } else if(current.IsDataPort) {

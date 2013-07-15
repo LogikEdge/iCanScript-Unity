@@ -18,7 +18,7 @@ public class iCS_EditorStrings {
 	public const string LeftArrowHeadIcon    = "iCS_LeftArrowHeadIcon.psd";
 	public const string RightArrowHeadIcon   = "iCS_RightArrowHeadIcon.psd";
 	public const string ModuleIcon           = "iCS_ModuleIcon_32x32.png";
-	public const string MethodIcon           = "iCS_FunctionIcon_32x32.png";
+	public const string FunctionIcon         = "iCS_FunctionIcon_32x32.png";
     public const string TransitionModuleIcon = "iCS_TransitionModuleIcon.png";
 	public const string TransitionTriggerIcon= "iCS_TransitionTriggerIcon.png";
 	public const string RandomIcon           = "iCS_RandomIcon_32x32.png";
@@ -35,6 +35,7 @@ public class iCS_EditorStrings {
     public const string FunctionHierarchyIcon   = "iCS_FunctionTag.png";
     public const string StateHierarchyIcon      = "iCS_StateTag.png";
     public const string ConstructorHierarchyIcon= "iCS_ConstructorTag.png";
+    public const string MessageHierarchyIcon    = "iCS_InMail_32x32.png";
 
     // File references
     public const string DefaultBehaviourClassName= "iCS_Behaviour";

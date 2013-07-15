@@ -188,13 +188,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Auto-insert on behaviour.
                 if(SelectedObject.IsBehaviour) {
                     iCS_EditorObject newObj= null;
-                    if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.Update, iCS_ObjectTypeEnum.Aggregate, SelectedObject, IStorage)) {
+                    if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.Update, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                         IStorage.RegisterUndo("Create Update");
                         newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.Update);  
-                    } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.LateUpdate, iCS_ObjectTypeEnum.Aggregate, SelectedObject, IStorage)) {
+                    } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.LateUpdate, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                         IStorage.RegisterUndo("Create LateUpdate");
                         newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.LateUpdate);                                  
-                    } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.FixedUpdate, iCS_ObjectTypeEnum.Aggregate, SelectedObject, IStorage)) {
+                    } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.FixedUpdate, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                         IStorage.RegisterUndo("Create FixedUpdate");
                         newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.FixedUpdate);                                  
                     }
@@ -237,13 +237,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(SelectedObject.IsState) {
                     iCS_EditorObject newObj= null;
                     if(!ev.shift) {
-                        if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.Aggregate, SelectedObject, IStorage)) {
+                        if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                             IStorage.RegisterUndo("Create OnUpdate");
                             newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.OnUpdate);  
-                        } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnEntry, iCS_ObjectTypeEnum.Aggregate, SelectedObject, IStorage)) {
+                        } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnEntry, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                             IStorage.RegisterUndo("Create OnEntry");
                             newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.OnEntry);                                  
-                        } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnExit, iCS_ObjectTypeEnum.Aggregate, SelectedObject, IStorage)) {
+                        } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnExit, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                             IStorage.RegisterUndo("Create OnExit");
                             newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.OnExit);                                  
                         }                                

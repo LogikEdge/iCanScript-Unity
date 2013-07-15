@@ -173,7 +173,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             InvokeAddChildIfExists(parent, message);                                
                             break;
                         }
-                        case iCS_ObjectTypeEnum.Aggregate: {
+                        case iCS_ObjectTypeEnum.Package: {
                             var nbParams= GetInputEndPortsLastIndex(node)+1;
                             var module= new iCS_Aggregate(this, node.InstanceId, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= module;

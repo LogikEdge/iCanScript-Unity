@@ -47,11 +47,11 @@ public partial class iCS_IStorage {
         Iconize(guard);
         // Create action module
         iCS_EditorObject action= CreateAggregate(transitionModule.InstanceId, transitionModulePos, "NoAction", iCS_ObjectTypeEnum.TransitionAction);
-        var actionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
+        var actionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.FunctionIcon);
         if(actionIconGUID != null) {
             action.IconGUID= actionIconGUID;            
         } else {
-            Debug.LogWarning("Missing transition action module icon: "+iCS_EditorStrings.MethodIcon);
+            Debug.LogWarning("Missing transition action module icon: "+iCS_EditorStrings.FunctionIcon);
         }
         action.Tooltip= "Action to be execute when the transition is taken.";
         iCS_EditorObject enablePort= CreateEnablePort(action.InstanceId);

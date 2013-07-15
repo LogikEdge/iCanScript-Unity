@@ -75,7 +75,7 @@ public static class iCS_AllowedChildren {
             if(childType == iCS_ObjectTypeEnum.State || childType == iCS_ObjectTypeEnum.TransitionModule) {
                 return true;
             }
-            if(childType == iCS_ObjectTypeEnum.Aggregate) {
+            if(childType == iCS_ObjectTypeEnum.Package) {
                 return NameExistsIn(childName, StateChildNames) && !IsChildNodePresent(childName, parent, storage);
             }
         }

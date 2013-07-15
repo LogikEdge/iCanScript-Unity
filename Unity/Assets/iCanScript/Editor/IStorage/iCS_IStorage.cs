@@ -354,7 +354,7 @@ public partial class iCS_IStorage {
         return this[0];
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateAggregate(int parentId, Vector2 globalPos, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Aggregate, Type runtimeType= null) {
+    public iCS_EditorObject CreateAggregate(int parentId, Vector2 globalPos, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
 		if(runtimeType == null) runtimeType= typeof(iCS_Aggregate);
         // Create the function node.
         int id= GetNextAvailableId();
@@ -422,7 +422,7 @@ public partial class iCS_IStorage {
         // Determine icon.
         var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.ClassFunction) {
-            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
+            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.FunctionIcon);
         }        
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
@@ -458,7 +458,7 @@ public partial class iCS_IStorage {
         // Determine minimized icon.
         var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.InstanceFunction) {
-            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
+            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.FunctionIcon);
         }        
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
@@ -499,7 +499,7 @@ public partial class iCS_IStorage {
         // Determine icon.
         var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.ClassFunction) {
-            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
+            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.FunctionIcon);
         }        
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);

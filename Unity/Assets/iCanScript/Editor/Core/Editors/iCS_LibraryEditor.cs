@@ -193,7 +193,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateClassModule(Type classType, iCS_IStorage iStorage) {
-        return iStorage.CreateAggregate(-1, Vector2.zero, null, iCS_ObjectTypeEnum.Aggregate, classType);
+        return iStorage.CreateAggregate(-1, Vector2.zero, null, iCS_ObjectTypeEnum.Package, classType);
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {

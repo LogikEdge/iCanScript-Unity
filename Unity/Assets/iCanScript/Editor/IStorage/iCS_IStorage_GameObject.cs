@@ -91,6 +91,8 @@ public partial class iCS_IStorage {
         if(portInfos == null) {
             portInfos= new List<PortInfo>();
         }
+        var transform= gameObject.transform;
+        portInfos.Add(new PortInfo("transform", transform.GetType(), iCS_ObjectTypeEnum.InProposedPort, transform));
         var rigidbody= gameObject.rigidbody;
         if(rigidbody != null) {
             portInfos.Add(new PortInfo("rigidbody", rigidbody.GetType(), iCS_ObjectTypeEnum.InProposedPort, rigidbody));

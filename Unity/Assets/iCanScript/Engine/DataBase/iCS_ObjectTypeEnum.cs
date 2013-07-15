@@ -8,7 +8,7 @@ public enum iCS_ObjectTypeEnum {
     NodeStart= 0,
     
     // Structural nodes
-    Behaviour= 0, Aggregate, StateChart, State,
+    Behaviour= 0, Package, StateChart, State,
 
     // Function nodes
     Constructor=100,
@@ -64,7 +64,7 @@ public static class iCS_ObjectType {
     public static bool IsBehaviour            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Behaviour; }
     public static bool IsStateChart           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StateChart; }
     public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.State; }
-    public static bool IsAggregate            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Aggregate; }
+    public static bool IsAggregate            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Package; }
 
     public static bool IsKindOfAggregate	  (iCS_EngineObject obj) { return IsAggregate(obj) || IsTransitionNode(obj) ||
                                                                               IsBehaviour(obj) || IsMessage(obj); }
