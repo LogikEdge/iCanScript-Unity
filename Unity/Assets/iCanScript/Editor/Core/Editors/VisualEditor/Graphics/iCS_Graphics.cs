@@ -464,7 +464,7 @@ public partial class iCS_Graphics {
         if(node.IsKindOfFunction) {
             return iCS_PreferencesEditor.FunctionNodeColor;
         }
-        if(node.IsKindOfAggregate) {
+        if(node.IsKindOfPackage) {
             return iCS_PreferencesEditor.PackageNodeColor;
         }
         return Color.gray;
@@ -478,7 +478,7 @@ public partial class iCS_Graphics {
         if(node.IsState || node.IsStateChart) {
             return BuildMaximizeIcon(node, ref StateMaximizeIcon);
         }
-        if(node.IsKindOfAggregate) {
+        if(node.IsKindOfPackage) {
             return BuildMaximizeIcon(node, ref ModuleMaximizeIcon);
         }
         if(node.IsConstructor) {

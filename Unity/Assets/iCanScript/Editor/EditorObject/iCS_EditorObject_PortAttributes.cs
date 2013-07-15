@@ -150,7 +150,7 @@ public partial class iCS_EditorObject {
 	            return;
 	        }
 	        // Propagate value for module port.
-	        if(IsKindOfAggregatePort) {
+	        if(IsKindOfPackagePort) {
 	            iCS_EditorObject[] connectedPorts= Destinations;
 	            foreach(var cp in connectedPorts) {
 	                cp.RuntimePortValue= value;

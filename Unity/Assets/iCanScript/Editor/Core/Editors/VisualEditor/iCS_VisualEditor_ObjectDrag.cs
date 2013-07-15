@@ -175,7 +175,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }                    
                 }
                 // Continously refresh drag port if module port.
-                if(DragOriginalPort.IsKindOfAggregatePort) {
+                if(DragOriginalPort.IsKindOfPackagePort) {
                     CreateDragPort();
                 }
                 break;
@@ -334,7 +334,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(!isNearParent) {
                                 // Let's determine if we want to create a module port.
                                 iCS_EditorObject newPortParent= GetNodeWithEdgeAtMousePosition();
-                                if(newPortParent != null && newPortParent.IsKindOfAggregate) {
+                                if(newPortParent != null && newPortParent.IsKindOfPackage) {
                                     iCS_EditorObject portParent= DragFixPort.Parent;
                                     if(DragFixPort.IsInputPort) {
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
@@ -377,7 +377,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 }
                                 // Autocreate instance node if inside a composite module.
                                 newPortParent= GetNodeAtMousePosition();
-                                if(newPortParent != null && newPortParent.IsKindOfAggregate) {
+                                if(newPortParent != null && newPortParent.IsKindOfPackage) {
                                     // Determine if we need to create an instance node.
                                     AutocreateInstanceNode(dragPortPos, newPortParent);
                                     break;                                  
@@ -449,7 +449,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Data port. Create a drag port as appropriate.
         iCS_EditorObject parent= DragOriginalPort.ParentNode;
 		// The simple case is for non-module data ports.
-		if(!DragOriginalPort.IsKindOfAggregatePort) {
+		if(!DragOriginalPort.IsKindOfPackagePort) {
 			// Determine if we are already properly connected.
 			if(DragObject != DragOriginalPort) return;
 			if(DragOriginalPort.IsInputPort) {

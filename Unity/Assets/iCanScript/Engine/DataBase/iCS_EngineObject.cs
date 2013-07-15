@@ -167,8 +167,8 @@ public class iCS_EngineObject {
     public bool IsBehaviour             { get { return iCS_ObjectType.IsBehaviour(this); }}
     public bool IsStateChart            { get { return iCS_ObjectType.IsStateChart(this); }}
     public bool IsState                 { get { return iCS_ObjectType.IsState(this); }}
-    public bool IsAggregate             { get { return iCS_ObjectType.IsPackage(this); }}
-    public bool IsKindOfAggregate       { get { return iCS_ObjectType.IsKindOfPackage(this); }}
+    public bool IsPackage               { get { return iCS_ObjectType.IsPackage(this); }}
+    public bool IsKindOfPackage         { get { return iCS_ObjectType.IsKindOfPackage(this); }}
     public bool IsTransitionModule      { get { return iCS_ObjectType.IsTransitionModule(this); }}
     public bool IsTransitionGuard       { get { return iCS_ObjectType.IsTransitionGuard(this); }}
     public bool IsTransitionAction      { get { return iCS_ObjectType.IsTransitionAction(this); }}
@@ -202,7 +202,7 @@ public class iCS_EngineObject {
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
-    public bool IsObjectInstance        { get { return IsAggregate && RuntimeType != typeof(iCS_Aggregate); }}
+    public bool IsObjectInstance        { get { return IsPackage && RuntimeType != typeof(iCS_Aggregate); }}
 	public bool	IsMuxPort				{ get { return iCS_ObjectType.IsMuxPort(this); }}
 	public bool IsChildMuxPort			{ get { return iCS_ObjectType.IsChildMuxPort(this); }}
 	public bool IsParentMuxPort			{ get { return iCS_ObjectType.IsParentMuxPort(this); }}
@@ -210,8 +210,8 @@ public class iCS_EngineObject {
     // ======================================================================
     // Feature support
     // ----------------------------------------------------------------------
-    public bool SupportsAdditionOfPorts { get { return IsKindOfAggregate; }}
-    public bool SupportsNestedNodes     { get { return IsKindOfAggregate; }}
+    public bool SupportsAdditionOfPorts { get { return IsKindOfPackage; }}
+    public bool SupportsNestedNodes     { get { return IsKindOfPackage; }}
     
     // ----------------------------------------------------------------------
 	public FieldInfo GetFieldInfo() {

@@ -278,7 +278,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     // Data ports.
                     case iCS_ObjectTypeEnum.OutDynamicPort:
                     case iCS_ObjectTypeEnum.OutFixPort: {
-						if(GetParentNode(port).IsKindOfAggregate) break;
+						if(GetParentNode(port).IsKindOfPackage) break;
                         object parentObj= myRuntimeNodes[port.ParentId];
                         Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction>(parentObj,
                             instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),

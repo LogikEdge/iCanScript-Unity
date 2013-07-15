@@ -84,7 +84,7 @@ public static class iCS_AllowedChildren {
             return childType == iCS_ObjectTypeEnum.TransitionGuard || childType == iCS_ObjectTypeEnum.TransitionAction;
         }
         // Allow all but Behaviour & State in module.
-        if(parent.IsKindOfAggregate) {
+        if(parent.IsKindOfPackage) {
             if(childType == iCS_ObjectTypeEnum.Behaviour || childType == iCS_ObjectTypeEnum.State) {
                 return false;
             }

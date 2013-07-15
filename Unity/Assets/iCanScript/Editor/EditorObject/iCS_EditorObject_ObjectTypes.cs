@@ -7,7 +7,7 @@ using System.Collections;
 public partial class iCS_EditorObject {
     // Object Type Queries ---------------------------------------------------
     public bool IsNode                      { get { return EngineObject.IsNode; }}
-    public bool IsKindOfAggregate           { get { return EngineObject.IsKindOfAggregate; }}
+    public bool IsKindOfPackage           { get { return EngineObject.IsKindOfPackage; }}
     public bool IsKindOfFunction                  { get { return EngineObject.IsKindOfFunction; }}
     public bool IsMessage                   { get { return EngineObject.IsMessage; }}
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
@@ -32,7 +32,7 @@ public partial class iCS_EditorObject {
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
 
-    public bool IsKindOfAggregatePort       { get { return IsDataPort && ParentNode.IsKindOfAggregate; }}
+    public bool IsKindOfPackagePort       { get { return IsDataPort && ParentNode.IsKindOfPackage; }}
 
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}

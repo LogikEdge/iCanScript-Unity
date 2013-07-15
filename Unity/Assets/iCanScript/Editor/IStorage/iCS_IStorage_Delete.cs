@@ -77,7 +77,7 @@ public partial class iCS_IStorage {
         // Update modules runtime data when removing a module port.
         iCS_EditorObject parent= toDestroy.Parent;
 		bool isChildMuxPort= toDestroy.IsChildMuxPort;
-		if(toDestroy.IsKindOfAggregatePort) {
+		if(toDestroy.IsKindOfPackagePort) {
 			MoveDynamicPortToLastIndex(toDestroy);
 		}
         // Remember entry state.

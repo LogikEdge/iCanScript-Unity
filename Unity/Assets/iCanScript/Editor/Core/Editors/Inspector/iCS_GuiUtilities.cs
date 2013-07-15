@@ -36,7 +36,7 @@ public static class iCS_GuiUtilities {
         // Get runtime object if it exists.
         var runtimeObject= storage.GetRuntimeObject(parent) as iCS_ISignature;
         // Determine if we are allowed to modify port value.
-        bool isReadOnly= !(!hasSource && (port.IsInputPort || port.IsKindOfAggregatePort));
+        bool isReadOnly= !(!hasSource && (port.IsInputPort || port.IsKindOfPackagePort));
         // Nothing to display if we don't have a runtime object and we are in readonly.
         if(isReadOnly && runtimeObject == null) return;
         // Update port value from runtime object in priority or the descriptor string if no runtime.

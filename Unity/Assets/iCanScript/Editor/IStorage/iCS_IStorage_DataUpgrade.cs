@@ -33,7 +33,7 @@ public partial class iCS_IStorage {
 				// Convert behaviour modules to messages.
 				var parent= EngineObjects[n.ParentId];
 				if(parent.IsBehaviour) {
-					if(n.IsKindOfAggregate) {
+					if(n.IsKindOfPackage) {
 						n.ObjectType= iCS_ObjectTypeEnum.InstanceMessage;						
 					}
 				}

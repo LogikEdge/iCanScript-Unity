@@ -272,7 +272,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetParentModule(iCS_EditorObject edObj) {
         iCS_EditorObject parentModule= edObj.Parent;
-        for(; parentModule != null && !parentModule.IsKindOfAggregate; parentModule= parentModule.Parent);
+        for(; parentModule != null && !parentModule.IsKindOfPackage; parentModule= parentModule.Parent);
         return parentModule;
     }
 	// ----------------------------------------------------------------------
@@ -584,7 +584,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_EditorObject[] connectedPorts= outPort.Destinations;
         foreach(var port in connectedPorts) {
             if(port.IsDataPort) {
-                if(port.IsKindOfAggregatePort) {
+                if(port.IsKindOfPackagePort) {
                     FillConnectedInDataPorts(port, result);
                 } else {
                     if(port.IsInputPort) {
