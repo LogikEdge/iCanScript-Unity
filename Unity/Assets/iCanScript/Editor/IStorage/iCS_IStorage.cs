@@ -354,7 +354,7 @@ public partial class iCS_IStorage {
         return this[0];
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateAggregate(int parentId, Vector2 globalPos, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
+    public iCS_EditorObject CreatePackage(int parentId, Vector2 globalPos, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
 		if(runtimeType == null) runtimeType= typeof(iCS_Package);
         // Create the function node.
         int id= GetNextAvailableId();

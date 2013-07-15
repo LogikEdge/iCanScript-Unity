@@ -132,7 +132,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateGameObject(int parentId, GameObject gameObject, Vector2 position) {
-        var module= IStorage.CreateAggregate(parentId, GraphMousePosition, gameObject.name, iCS_ObjectTypeEnum.Package, gameObject.GetType());
+        var module= IStorage.CreatePackage(parentId, GraphMousePosition, gameObject.name, iCS_ObjectTypeEnum.Package, gameObject.GetType());
         var thisPort= IStorage.FindThisInputPort(module);
         if(thisPort != null) {
             thisPort.PortValue= gameObject;
@@ -142,7 +142,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         */
 //        Component[] components= gameObject.GetComponents(typeof(Component));
 //        foreach(var component in components) {
-//            IStorage.CreateAggregate(parentId, GraphMousePosition+new Vector2(100,0), component.name, iCS_ObjectTypeEnum.Module, component.GetType());
+//            IStorage.CreatePackage(parentId, GraphMousePosition+new Vector2(100,0), component.name, iCS_ObjectTypeEnum.Module, component.GetType());
 //        }
         return module;
     }

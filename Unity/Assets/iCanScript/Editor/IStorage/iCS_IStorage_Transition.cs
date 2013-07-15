@@ -18,7 +18,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
         // Create transition module
         var transitionModulePos= 0.5f*(fromStatePortPos+toStatePortPos);
-        iCS_EditorObject transitionModule= CreateAggregate(transitionParent.InstanceId, transitionModulePos, "[false]", iCS_ObjectTypeEnum.TransitionModule);
+        iCS_EditorObject transitionModule= CreatePackage(transitionParent.InstanceId, transitionModulePos, "[false]", iCS_ObjectTypeEnum.TransitionModule);
         var transitionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionModuleIcon);
         if(transitionIconGUID != null) {
             transitionModule.IconGUID= transitionIconGUID;            
@@ -33,7 +33,7 @@ public partial class iCS_IStorage {
         SetSource(toStatePort, outModulePort);
         Iconize(transitionModule);
         // Create guard module
-        iCS_EditorObject guard= CreateAggregate(transitionModule.InstanceId, transitionModulePos, "false", iCS_ObjectTypeEnum.TransitionGuard);
+        iCS_EditorObject guard= CreatePackage(transitionModule.InstanceId, transitionModulePos, "false", iCS_ObjectTypeEnum.TransitionGuard);
         var guardIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionTriggerIcon);
         if(guardIconGUID != null) {
             guard.IconGUID= guardIconGUID;            
@@ -46,7 +46,7 @@ public partial class iCS_IStorage {
         SetSource(fromStatePort, guardPort);
         Iconize(guard);
         // Create action module
-        iCS_EditorObject action= CreateAggregate(transitionModule.InstanceId, transitionModulePos, "NoAction", iCS_ObjectTypeEnum.TransitionAction);
+        iCS_EditorObject action= CreatePackage(transitionModule.InstanceId, transitionModulePos, "NoAction", iCS_ObjectTypeEnum.TransitionAction);
         var actionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.FunctionIcon);
         if(actionIconGUID != null) {
             action.IconGUID= actionIconGUID;            

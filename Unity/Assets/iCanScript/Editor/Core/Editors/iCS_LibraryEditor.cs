@@ -148,15 +148,15 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     void CreateInstance(iCS_LibraryController.Node node, iCS_IStorage iStorage) {
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Company) {
-            CreateAggregate(node.Name, iStorage);        
+            CreatePackage(node.Name, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Package) {
-            CreateAggregate(node.Name, iStorage);        
+            CreatePackage(node.Name, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Class) {
-            CreateClassModule(node.Desc.ClassType, iStorage);        
+            CreateObjectInstance(node.Desc.ClassType, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {
@@ -188,12 +188,12 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // Creation Utilities
     // ---------------------------------------------------------------------------------
     // FIXME: Should pass along the object type to the module instead of multiple creation.
-    iCS_EditorObject CreateAggregate(string name, iCS_IStorage iStorage) {
-        return iStorage.CreateAggregate(-1, Vector2.zero, name);
+    iCS_EditorObject CreatePackage(string name, iCS_IStorage iStorage) {
+        return iStorage.CreatePackage(-1, Vector2.zero, name);
     }
     // ---------------------------------------------------------------------------------
-    iCS_EditorObject CreateClassModule(Type classType, iCS_IStorage iStorage) {
-        return iStorage.CreateAggregate(-1, Vector2.zero, null, iCS_ObjectTypeEnum.Package, classType);
+    iCS_EditorObject CreateObjectInstance(Type classType, iCS_IStorage iStorage) {
+        return iStorage.CreatePackage(-1, Vector2.zero, null, iCS_ObjectTypeEnum.Package, classType);
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {
@@ -201,6 +201,6 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }    
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {
-        return iStorage.CreateAggregate(-1, Vector2.zero, desc.DisplayName, desc.ObjectType, typeof(iCS_Package));            
+        return iStorage.CreatePackage(-1, Vector2.zero, desc.DisplayName, desc.ObjectType, typeof(iCS_Package));            
     }    
 }

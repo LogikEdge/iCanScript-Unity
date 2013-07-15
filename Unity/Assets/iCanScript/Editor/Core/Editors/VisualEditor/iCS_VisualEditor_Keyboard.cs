@@ -190,13 +190,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     iCS_EditorObject newObj= null;
                     if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.Update, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                         IStorage.RegisterUndo("Create Update");
-                        newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.Update);  
+                        newObj= IStorage.CreatePackage(SelectedObject.InstanceId, graphPos, iCS_Strings.Update);  
                     } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.LateUpdate, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                         IStorage.RegisterUndo("Create LateUpdate");
-                        newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.LateUpdate);                                  
+                        newObj= IStorage.CreatePackage(SelectedObject.InstanceId, graphPos, iCS_Strings.LateUpdate);                                  
                     } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.FixedUpdate, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                         IStorage.RegisterUndo("Create FixedUpdate");
-                        newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.FixedUpdate);                                  
+                        newObj= IStorage.CreatePackage(SelectedObject.InstanceId, graphPos, iCS_Strings.FixedUpdate);                                  
                     }
                     if(newObj != null) {
                         CenterAt(graphPos);
@@ -212,7 +212,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     iCS_EditorObject newObj= null;
                     if(!ev.shift) {
                         IStorage.RegisterUndo("Create Module");
-                        newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, null);                                
+                        newObj= IStorage.CreatePackage(SelectedObject.InstanceId, graphPos, null);                                
                     } else {
                         IStorage.RegisterUndo("Create State Chart");
                         newObj= IStorage.CreateStateChart(SelectedObject.InstanceId, graphPos, null);
@@ -239,13 +239,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(!ev.shift) {
                         if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                             IStorage.RegisterUndo("Create OnUpdate");
-                            newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.OnUpdate);  
+                            newObj= IStorage.CreatePackage(SelectedObject.InstanceId, graphPos, iCS_Strings.OnUpdate);  
                         } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnEntry, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                             IStorage.RegisterUndo("Create OnEntry");
-                            newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.OnEntry);                                  
+                            newObj= IStorage.CreatePackage(SelectedObject.InstanceId, graphPos, iCS_Strings.OnEntry);                                  
                         } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnExit, iCS_ObjectTypeEnum.Package, SelectedObject, IStorage)) {
                             IStorage.RegisterUndo("Create OnExit");
-                            newObj= IStorage.CreateAggregate(SelectedObject.InstanceId, graphPos, iCS_Strings.OnExit);                                  
+                            newObj= IStorage.CreatePackage(SelectedObject.InstanceId, graphPos, iCS_Strings.OnExit);                                  
                         }                                
                     } else {
                         IStorage.RegisterUndo("Create State");
