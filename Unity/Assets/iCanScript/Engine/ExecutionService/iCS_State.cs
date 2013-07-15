@@ -55,7 +55,7 @@ public sealed class iCS_State : iCS_Object {
     // Child Management
     // ----------------------------------------------------------------------
     public void AddChild(iCS_Object _object) {
-        Prelude.choice<iCS_State, iCS_Transition, iCS_Aggregate>(_object,
+        Prelude.choice<iCS_State, iCS_Transition, iCS_Package>(_object,
             (state)=> {
                 state.myParentState= this;
                 myChildren.Add(state);
@@ -83,7 +83,7 @@ public sealed class iCS_State : iCS_Object {
         );
     }
     public void RemoveChild(iCS_Object _object) {
-        Prelude.choice<iCS_State, iCS_Transition, iCS_Aggregate>(_object,
+        Prelude.choice<iCS_State, iCS_Transition, iCS_Package>(_object,
             (state)=> {
                 if(state == myEntryState) myEntryState= null;
                 myChildren.Remove(state);

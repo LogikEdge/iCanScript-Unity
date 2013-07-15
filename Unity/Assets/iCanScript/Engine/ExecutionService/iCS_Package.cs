@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class iCS_Aggregate : iCS_ParallelDispatcher, iCS_ISignature {
+public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -9,7 +9,7 @@ public class iCS_Aggregate : iCS_ParallelDispatcher, iCS_ISignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Aggregate(iCS_Storage storage, int instanceId, int priority, int nbOfParameters= 0)
+    public iCS_Package(iCS_Storage storage, int instanceId, int priority, int nbOfParameters= 0)
     : base(storage, instanceId, priority) {
         mySignature= new iCS_SignatureDataSource(nbOfParameters, false, true);
     }

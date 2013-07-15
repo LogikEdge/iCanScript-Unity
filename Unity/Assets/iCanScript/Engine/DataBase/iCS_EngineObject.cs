@@ -202,7 +202,7 @@ public class iCS_EngineObject {
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
-    public bool IsObjectInstance        { get { return IsPackage && RuntimeType != typeof(iCS_Aggregate); }}
+    public bool IsObjectInstance        { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
 	public bool	IsMuxPort				{ get { return iCS_ObjectType.IsMuxPort(this); }}
 	public bool IsChildMuxPort			{ get { return iCS_ObjectType.IsChildMuxPort(this); }}
 	public bool IsParentMuxPort			{ get { return iCS_ObjectType.IsParentMuxPort(this); }}

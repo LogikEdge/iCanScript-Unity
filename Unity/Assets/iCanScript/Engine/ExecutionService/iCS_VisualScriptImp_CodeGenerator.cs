@@ -161,7 +161,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         }
                         case iCS_ObjectTypeEnum.TransitionGuard:
                         case iCS_ObjectTypeEnum.TransitionAction: {
-                            var module= new iCS_Aggregate(this, node.InstanceId, priority);                                
+                            var module= new iCS_Package(this, node.InstanceId, priority);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             break;
                         }
@@ -175,7 +175,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         }
                         case iCS_ObjectTypeEnum.Package: {
                             var nbParams= GetInputEndPortsLastIndex(node)+1;
-                            var module= new iCS_Aggregate(this, node.InstanceId, priority, nbParams);                                
+                            var module= new iCS_Package(this, node.InstanceId, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             InvokeAddChildIfExists(parent, module);                                
                             break;
@@ -266,9 +266,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         int triggerIdx= triggerPort.PortIndex;
                         iCS_Transition transition= new iCS_Transition(this, transitionModule.InstanceId,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,
-                                                                    myRuntimeNodes[guardModule.InstanceId] as iCS_Aggregate,
+                                                                    myRuntimeNodes[guardModule.InstanceId] as iCS_Package,
                                                                     triggerFunc, triggerIdx,
-                                                                    actionModule != null ? myRuntimeNodes[actionModule.InstanceId] as iCS_Aggregate : null,
+                                                                    actionModule != null ? myRuntimeNodes[actionModule.InstanceId] as iCS_Package : null,
                                                                     transitionModule.ExecutionPriority);
                         iCS_State state= myRuntimeNodes[outStatePort.ParentId] as iCS_State;
                         state.AddChild(transition);
@@ -303,7 +303,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 						object initValue= GetInitialValue(sourcePort);
                         // Set data port.
                         object parentObj= myRuntimeNodes[port.ParentId];
-                        Prelude.choice<iCS_Constructor, iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Aggregate, iCS_Message>(parentObj,
+                        Prelude.choice<iCS_Constructor, iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Package, iCS_Message>(parentObj,
                             constructor=> {
                                 constructor[port.PortIndex]= initValue;
                                 constructor.SetConnection(port.PortIndex, connection);

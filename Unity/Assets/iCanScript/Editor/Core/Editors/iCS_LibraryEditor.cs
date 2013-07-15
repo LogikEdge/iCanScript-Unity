@@ -201,6 +201,6 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }    
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {
-        return iStorage.CreateAggregate(-1, Vector2.zero, desc.DisplayName, desc.ObjectType, typeof(iCS_Aggregate));            
+        return iStorage.CreateAggregate(-1, Vector2.zero, desc.DisplayName, desc.ObjectType, typeof(iCS_Package));            
     }    
 }
