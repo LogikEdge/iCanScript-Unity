@@ -167,8 +167,8 @@ public class iCS_EngineObject {
     public bool IsBehaviour             { get { return iCS_ObjectType.IsBehaviour(this); }}
     public bool IsStateChart            { get { return iCS_ObjectType.IsStateChart(this); }}
     public bool IsState                 { get { return iCS_ObjectType.IsState(this); }}
-    public bool IsAggregate             { get { return iCS_ObjectType.IsAggregate(this); }}
-    public bool IsKindOfAggregate       { get { return iCS_ObjectType.IsKindOfAggregate(this); }}
+    public bool IsAggregate             { get { return iCS_ObjectType.IsPackage(this); }}
+    public bool IsKindOfAggregate       { get { return iCS_ObjectType.IsKindOfPackage(this); }}
     public bool IsTransitionModule      { get { return iCS_ObjectType.IsTransitionModule(this); }}
     public bool IsTransitionGuard       { get { return iCS_ObjectType.IsTransitionGuard(this); }}
     public bool IsTransitionAction      { get { return iCS_ObjectType.IsTransitionAction(this); }}
