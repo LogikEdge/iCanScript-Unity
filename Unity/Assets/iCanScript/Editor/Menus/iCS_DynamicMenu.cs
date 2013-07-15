@@ -56,11 +56,11 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.Behaviour:        BehaviourMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.StateChart:       StateChartMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.State:            StateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.Package:          AggregateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.InstanceMessage:  AggregateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.ClassMessage:     AggregateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.TransitionGuard:  AggregateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.TransitionAction: AggregateMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Package:          PackageMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceMessage:  PackageMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassMessage:     PackageMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.TransitionGuard:  PackageMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.TransitionAction: PackageMenu(selectedObject, storage); break;
 			case iCS_ObjectTypeEnum.TransitionModule: TransitionModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.Constructor:      FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceFunction: FunctionMenu(selectedObject, storage); break;
@@ -92,7 +92,7 @@ public class iCS_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
-    void AggregateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+    void PackageMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items

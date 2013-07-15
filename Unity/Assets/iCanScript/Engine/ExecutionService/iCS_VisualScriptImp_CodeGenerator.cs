@@ -262,7 +262,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         iCS_EngineObject outStatePort= null;
                         iCS_EngineObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
                         triggerPort= GetSourceEndPort(triggerPort);
-                        iCS_ActionWithSignature triggerFunc= IsOutAggregatePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_ActionWithSignature;
+                        iCS_ActionWithSignature triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_ActionWithSignature;
                         int triggerIdx= triggerPort.PortIndex;
                         iCS_Transition transition= new iCS_Transition(this, transitionModule.InstanceId,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,
