@@ -10,12 +10,20 @@ public enum iCS_DefaultIcons {
 
 public static class iCS_Icons {
     // =========================================================================
-    // Icon file names.
+    // Default Icon file names.
 	// -------------------------------------------------------------------------
-    const string kFunctionIcon= "iCS_FunctionIcon_32x32.png";
-    const string kPackageIcon = "iCS_PackageIcon_32x32.png";
-    const string kMessageIcon = "iCS_MessageIcon_32x32.png";
-	
+    const string kCompanyIcon       = "iCS_CompanyIcon_32x32.png";
+    const string kLibraryIcon       = "iCS_LibraryIcon_32x32.png";
+    const string kBehaviourIcon     = "iCS_BehaviourIcon_32x32.png";
+    const string kPackageIcon       = "iCS_PackageIcon_32x32.png";
+    const string kMessageIcon       = "iCS_MessageIcon_32x32.png";
+    const string kObjectInstanceIcon= "iCS_ObjectInstanceIcon_32x32.png";
+    const string kFunctionIcon      = "iCS_FunctionIcon_32x32.png";
+    const string kVariableIcon      = "iCS_VariableIcon_32x32.png";
+    const string kStateChartIcon    = "iCS_StateChartIcon_32x32.png";
+    const string kStateIcon         = "iCS_StateIcon_32x32.png";
+    const string kEntryStateIcon    = "iCS_EntryStateIcon_32x32.png";
+    
 
     // -------------------------------------------------------------------------
     public static Texture2D GetIconFor(iCS_EditorObject obj) {
@@ -55,26 +63,32 @@ public static class iCS_Icons {
 
     // -------------------------------------------------------------------------
     public static Texture2D GetDefaultNodeIconFor(iCS_DefaultIcons iconType) {
+        Texture2D icon= null;
         switch(iconType) {
             case iCS_DefaultIcons.Company:
+                icon= iCS_TextureCache.GetIcon(kCompanyIcon); break;
             case iCS_DefaultIcons.Library:
+                icon= iCS_TextureCache.GetIcon(kLibraryIcon); break;
             case iCS_DefaultIcons.Behaviour:
-                break;
+                icon= iCS_TextureCache.GetIcon(kBehaviourIcon); break;
             case iCS_DefaultIcons.Package:
-                return iCS_TextureCache.GetIcon(kPackageIcon);
+                icon= iCS_TextureCache.GetIcon(kPackageIcon); break;
             case iCS_DefaultIcons.Message:
-                return iCS_TextureCache.GetIcon(kMessageIcon);
+                icon= iCS_TextureCache.GetIcon(kMessageIcon); break;
             case iCS_DefaultIcons.ObjectInstance:
-                break;
+                icon= iCS_TextureCache.GetIcon(kObjectInstanceIcon); break;
             case iCS_DefaultIcons.Function:
-                return iCS_TextureCache.GetIcon(kFunctionIcon);
+                icon= iCS_TextureCache.GetIcon(kFunctionIcon); break;
             case iCS_DefaultIcons.Variable:
+                icon= iCS_TextureCache.GetIcon(kVariableIcon); break;
             case iCS_DefaultIcons.StateChart:
+                icon= iCS_TextureCache.GetIcon(kStateChartIcon); break;
             case iCS_DefaultIcons.State:
+                icon= iCS_TextureCache.GetIcon(kStateIcon); break;
             case iCS_DefaultIcons.EntryState:
-                break;
+                icon= iCS_TextureCache.GetIcon(kEntryStateIcon); break;
         }
-        return iCS_TextureCache.GetIcon(kPackageIcon);
+        return icon == null ? iCS_TextureCache.GetIcon(kPackageIcon) : icon;
     }
 
 }
