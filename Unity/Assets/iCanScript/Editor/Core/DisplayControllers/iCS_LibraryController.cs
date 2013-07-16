@@ -373,11 +373,19 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		var nodeType= current.Type;
 		string name= current.Name;
         if(nodeType == NodeTypeEnum.Company) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);            
+            if(name == "iCanScript") {
+                icon= iCS_PreferencesEditor.iCanScriptIcon;
+            } else if(name == "Unity") {
+                icon= iCS_PreferencesEditor.UnityIcon;
+            } else if(name == "NET") {
+                icon= iCS_PreferencesEditor.DotNetIcon;
+            } else {
+                icon= iCS_PreferencesEditor.CompanyIcon;
+            }
         } else if(nodeType == NodeTypeEnum.Package) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);                            
+            icon= iCS_PreferencesEditor.PackageIcon;                            
         } else if(nodeType == NodeTypeEnum.Class) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ClassHierarchyIcon);            
+            icon= iCS_PreferencesEditor.ObjectInstanceIcon;            
         } else if(nodeType == NodeTypeEnum.Field) {
             if(current.Desc.IsGetField) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
@@ -391,11 +399,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 icon= iCS_BuiltinTextures.InEndPortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Constructor) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ConstructorHierarchyIcon);            
+            icon= iCS_PreferencesEditor.ConstructorIcon;            
         } else if(nodeType == NodeTypeEnum.Method) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
+            icon= iCS_PreferencesEditor.FunctionIcon;            
         } else if(nodeType == NodeTypeEnum.Message) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
+            icon= iCS_PreferencesEditor.MessageIcon;            
         } else if(nodeType == NodeTypeEnum.InParameter) {
             icon= iCS_BuiltinTextures.InEndPortIcon;
         } else if(nodeType == NodeTypeEnum.OutParameter) {
