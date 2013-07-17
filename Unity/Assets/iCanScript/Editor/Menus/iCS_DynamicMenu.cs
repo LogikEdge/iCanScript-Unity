@@ -317,6 +317,7 @@ public class iCS_DynamicMenu {
             case EnablePortStr: {
                 iCS_EditorObject port= storage.CreatePort(iCS_Strings.EnablePort, selectedObject.InstanceId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
+                port.InitialPortValue= true;
                 break;
             }
             case PublishPortStr: {

@@ -33,6 +33,10 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
     public iCS_Action GetAction() {
         return this;
     }
+    public void SetConnection(int idx, iCS_Connection connection) {
+        mySignature.SetConnection(idx, connection);
+    }
+    
 
     // =========================================================================
     // Process enable and control output ports
@@ -43,17 +47,31 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
             // Wait for enable source to run
             if(!mySignature.IsReady(myEnablePort, frameId)) return;
             // The enable port is ready.  Cancel execution if 'false'.
-            if(!(bool)(mySignature.FetchValue(myEnablePort))) {
+            var enabled= mySignature.FetchValue(myEnablePort);
+            if(enabled != null && !(bool)(enabled)) {
+                MarkAsCurrent(frameId);
                 return;
             }
         }
         base.Execute(frameId);
     }
+    // -------------------------------------------------------------------------
+    public override void ForceExecute(int frameId) {
+        // Don't execute if enable port is configured and false.
+        if(myEnablePort >= 0) {
+            // The enable port is ready.  Cancel execution if 'false'.
+            var enabled= mySignature.FetchValue(myEnablePort);
+            if(enabled != null && !(bool)(enabled)) {
+                MarkAsCurrent(frameId);
+                return;
+            }
+        }
+        base.ForceExecute(frameId);
+    }
     
     // =========================================================================
     // -------------------------------------------------------------------------
     public void ActivateEnablePort(int portIdx) {
-        Debug.Log("Setting enable port");
         myEnablePort= portIdx;
     }
     public void ActivateControlOutputPort(int portIdx) {

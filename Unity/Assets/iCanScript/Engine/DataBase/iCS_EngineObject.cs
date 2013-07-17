@@ -260,14 +260,14 @@ public class iCS_EngineObject {
         return method;		            
 	}
 	public Type[] GetParamTypes(List<iCS_EngineObject> engineObjects) {
-		iCS_EngineObject[] ports= GetChildPorts(engineObjects);
+		iCS_EngineObject[] ports= GetChildPortsExcludingControlPorts(engineObjects);
 		Type[] result= new Type[NbOfParams];
 		for(int i= 0; i < result.Length; ++i) {
 			result[i]= ports[i].RuntimeType;
 		}
 		return result;	        
 	}
-	iCS_EngineObject[] GetChildPorts(List<iCS_EngineObject> engineObjects) {
+	iCS_EngineObject[] GetChildPortsExcludingControlPorts(List<iCS_EngineObject> engineObjects) {
 		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
 		// Get all child data ports.
 		int nodeId= InstanceId;
