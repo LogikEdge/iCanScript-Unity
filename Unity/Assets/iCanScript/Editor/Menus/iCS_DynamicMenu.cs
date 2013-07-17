@@ -16,7 +16,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     const string ShowHierarchyStr= "Show in hierarchy";
     const string DeleteStr= "- Delete";
-    const string ModuleStr= "+ Module";
+    const string PackageStr= "+ Package";
     const string StateChartStr= "+ State Chart";
     const string StateStr= "+ State";
     const string EntryStateStr= "+ Entry State";
@@ -97,7 +97,7 @@ public class iCS_DynamicMenu {
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items
             menu= new iCS_MenuContext[2];
-            menu[0]= new iCS_MenuContext(ModuleStr);
+            menu[0]= new iCS_MenuContext(PackageStr);
             menu[1]= new iCS_MenuContext(StateChartStr); 
         }
         // Show in hierarchy
@@ -303,7 +303,7 @@ public class iCS_DynamicMenu {
         }
         // Process all other types of requests.
         switch(context.Command) {
-            case ModuleStr:                 ProcessCreatePackage(context); break;
+            case PackageStr:                ProcessCreatePackage(context); break;
             case StateChartStr:             ProcessCreateStateChart(context); break;
             case StateStr:                  ProcessCreateState(context);  break;
             case SetAsEntryStr:             ProcessSetStateEntry(context); break;
