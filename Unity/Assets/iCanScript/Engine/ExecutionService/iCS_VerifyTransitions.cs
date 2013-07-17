@@ -88,7 +88,7 @@ public class iCS_VerifyTransitions : iCS_Action {
     // ----------------------------------------------------------------------
     void ResetIterator(int frameId) {
         myQueueIdx= 0;
-        MarkAsCurrent(frameId);
+        MarkAsExecuted(frameId);
     }
     
     // ======================================================================

@@ -21,7 +21,7 @@ public class iCS_Constructor : iCS_FunctionBase {
             if(ReturnValue == null) {
                 ReturnValue= myMethodBase.Invoke(null, Parameters);            
             }
-            MarkAsCurrent(frameId);
+            MarkAsExecuted(frameId);
 #if UNITY_EDITOR
         }
         catch(Exception e) {

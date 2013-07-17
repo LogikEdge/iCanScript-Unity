@@ -20,7 +20,7 @@ public class iCS_GetInstanceField : iCS_FieldBase {
         try {
 #endif
             ReturnValue= myFieldInfo.GetValue(This);
-            MarkAsCurrent(frameId);
+            MarkAsExecuted(frameId);
 #if UNITY_EDITOR
         }
         catch(Exception e) {

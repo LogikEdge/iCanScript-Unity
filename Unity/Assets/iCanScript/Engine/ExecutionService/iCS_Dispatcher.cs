@@ -38,7 +38,7 @@ public abstract class iCS_Dispatcher : iCS_Action {
     // ----------------------------------------------------------------------
     protected void ResetIterator(int frameId) {
         myQueueIdx= 0;
-        MarkAsCurrent(frameId);        
+        MarkAsExecuted(frameId);        
     }
 
     // ======================================================================

@@ -19,7 +19,7 @@ public class iCS_MuxPort : iCS_ActionWithSignature {
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
 		// Use previous output value.
-        MarkAsCurrent(frameId);
+        MarkAsExecuted(frameId);
     }
     // ----------------------------------------------------------------------
 	bool ReadAnyInput(int frameId) {
@@ -29,7 +29,7 @@ public class iCS_MuxPort : iCS_ActionWithSignature {
             var c= connections[i];
             if(c.IsReady(frameId)) {
                 ReturnValue= c.Value;
-                MarkAsCurrent(frameId);
+                MarkAsExecuted(frameId);
                 return true;
             }			
 		}

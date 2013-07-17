@@ -20,7 +20,7 @@ public class iCS_InstanceFunction : iCS_FunctionBase {
         try {
 #endif
 		    ReturnValue= myMethodBase.Invoke(This, Parameters);
-            MarkAsCurrent(frameId);   
+            MarkAsExecuted(frameId);   
 #if UNITY_EDITOR
         }
         catch(Exception e) {

@@ -202,7 +202,7 @@ public sealed class iCS_StateChart : iCS_Action {
         myQueueIdx= 0;
         myExecutionState= ExecutionState.VerifyingTransition;
         myFiredTransition= null;            
-        MarkAsCurrent(frameId);
+        MarkAsExecuted(frameId);
     }
     // ----------------------------------------------------------------------
     void ForceExecuteUpdates(int frameId) {
@@ -225,7 +225,7 @@ public sealed class iCS_StateChart : iCS_Action {
             myQueueIdx= 0;
             myExecutionState= ExecutionState.VerifyingTransition;            
             myFiredTransition= null;            
-            MarkAsCurrent(frameId);            
+            MarkAsExecuted(frameId);            
         }
     }
     // ----------------------------------------------------------------------

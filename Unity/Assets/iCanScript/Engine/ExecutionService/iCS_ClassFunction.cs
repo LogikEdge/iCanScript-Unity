@@ -19,7 +19,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
         try {
 #endif
             ReturnValue= myMethodBase.Invoke(null, Parameters);            
-            MarkAsCurrent(frameId);
+            MarkAsExecuted(frameId);
 #if UNITY_EDITOR
         }
         catch(Exception e) {

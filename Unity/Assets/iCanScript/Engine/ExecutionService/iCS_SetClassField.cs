@@ -19,7 +19,7 @@ public class iCS_SetClassField : iCS_FieldBase {
         try {
 #endif
             myFieldInfo.SetValue(null, Parameters[0]);
-            MarkAsCurrent(frameId);
+            MarkAsExecuted(frameId);
 #if UNITY_EDITOR
         }
         catch(Exception e) {

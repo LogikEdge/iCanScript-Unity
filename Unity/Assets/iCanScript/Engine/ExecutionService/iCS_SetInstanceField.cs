@@ -21,7 +21,7 @@ public class iCS_SetInstanceField : iCS_FieldBase {
 #endif
             myFieldInfo.SetValue(This, Parameters[0]);
             ReturnValue= This;
-            MarkAsCurrent(frameId);
+            MarkAsExecuted(frameId);
 #if UNITY_EDITOR
         }
         catch(Exception e) {

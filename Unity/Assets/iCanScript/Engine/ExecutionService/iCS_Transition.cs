@@ -43,7 +43,7 @@ public class iCS_Transition : iCS_Action {
             }
             myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
         }
-        MarkAsCurrent(frameId);
+        MarkAsExecuted(frameId);
     }
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
@@ -56,6 +56,6 @@ public class iCS_Transition : iCS_Action {
             }
             myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
         }
-        MarkAsCurrent(frameId);
+        MarkAsExecuted(frameId);
     }
 }
