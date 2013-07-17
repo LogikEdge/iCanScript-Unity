@@ -1,11 +1,12 @@
 using UnityEngine;
+using System;
 
 public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     iCS_SignatureDataSource mySignature;
-    int                     myEnablePort= -1;
+    int[]                   myInTriggerPorts= null;
 
     // ======================================================================
     // Creation/Destruction
@@ -43,14 +44,16 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
     // -------------------------------------------------------------------------
     public override void Execute(int frameId) {
         // Don't execute if enable port is configured and false.
-        if(myEnablePort >= 0) {
-            // Wait for enable source to run
-            if(!mySignature.IsReady(myEnablePort, frameId)) return;
-            // The enable port is ready.  Cancel execution if 'false'.
-            var enabled= mySignature.FetchValue(myEnablePort);
-            if(enabled != null && !(bool)(enabled)) {
-                MarkAsCurrent(frameId);
-                return;
+        if(myInTriggerPorts != null) {
+            foreach(var trigger in myInTriggerPorts) {
+                // Wait for enable source to run
+                if(!mySignature.IsReady(trigger, frameId)) return;
+                // The enable port is ready.  Cancel execution if 'false'.
+                var enabled= mySignature.FetchValue(trigger);
+                if(enabled != null && !(bool)(enabled)) {
+                    MarkAsCurrent(frameId);
+                    return;
+                }                
             }
         }
         base.Execute(frameId);
@@ -58,12 +61,14 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
     // -------------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         // Don't execute if enable port is configured and false.
-        if(myEnablePort >= 0) {
-            // The enable port is ready.  Cancel execution if 'false'.
-            var enabled= mySignature.FetchValue(myEnablePort);
-            if(enabled != null && !(bool)(enabled)) {
-                MarkAsCurrent(frameId);
-                return;
+        if(myInTriggerPorts != null) {
+            foreach(var trigger in myInTriggerPorts) {
+                // The enable port is ready.  Cancel execution if 'false'.
+                var enabled= mySignature.FetchValue(trigger);
+                if(enabled != null && !(bool)(enabled)) {
+                    MarkAsCurrent(frameId);
+                    return;
+                }                
             }
         }
         base.ForceExecute(frameId);
@@ -72,7 +77,12 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
     // =========================================================================
     // -------------------------------------------------------------------------
     public void ActivateEnablePort(int portIdx) {
-        myEnablePort= portIdx;
+        if(myInTriggerPorts == null) {
+            myInTriggerPorts= new int[0];
+        }
+        int idx= myInTriggerPorts.Length;
+        Array.Resize(ref myInTriggerPorts, idx+1);
+        myInTriggerPorts[idx]= portIdx;
     }
     public void ActivateControlOutputPort(int portIdx) {
         Debug.Log("Setting control output port");
