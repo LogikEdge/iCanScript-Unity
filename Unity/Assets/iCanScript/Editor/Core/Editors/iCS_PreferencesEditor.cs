@@ -73,44 +73,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string   kMessageNodeColorKey           = "iCS_MessageNodeColor";
     const string   kSelectedNodeBackgroundColorKey= "iCS_SelectedNodeBackgroundColor";         
     // ---------------------------------------------------------------------------------
-    // Node Icons Constants
-    const string kiCanScriptIconPath    = "iCS_Logo_32x32.png";
-    const string kUnityIconPath         = "iCS_UnityLogo_32x32.png";
-    const string kDotNetIconPath        = "iCS_DotNetLogo_32x32.png";
-    const string kCompanyIconPath       = "iCS_CompanyIcon_32x32.png";
-    const string kPackageIconPath       = "iCS_PackageIcon_32x32.png";
-    const string kMessageIconPath       = "iCS_MessageIcon_32x32.png";
-    const string kObjectInstanceIconPath= "iCS_ObjectInstanceIcon_32x32.png";
-    const string kFunctionIconPath      = "iCS_FunctionIcon_32x32.png";
-    const string kConstructorIconPath   = "iCS_ConstructorIcon_32x32.png";
-    const string kStateChartIconPath    = "iCS_StateChartIcon_32x32.png";
-    const string kEntryStateIconPath    = "iCS_EntryStateIcon_32x32.png";
-    const string kStateIconPath         = "iCS_StateIcon_32x32.png";
-    const string kiCanScriptIconKey    = "iCS_iCanScriptIcon";
-    const string kUnityIconKey         = "iCS_UnityIcon";
-    const string kDotNetIconKey        = "iCS_DotNetIcon";
-    const string kCompanyIconKey       = "iCS_CompanyIcon";
-    const string kPackageIconKey       = "iCS_PackageIcon";
-    const string kMessageIconKey       = "iCS_MessageIcon";
-    const string kObjectInstanceIconKey= "iCS_ObjectInstance";
-    const string kFunctionIconKey      = "iCS_FunctionIcon";
-    const string kConstructorIconKey   = "iCS_ConstructorIcon";
-    const string kStateChartIconKey    = "iCS_StateChartIcon";
-    const string kEntryStateIconKey    = "iCS_EntryStateIcon";
-    const string kStateIconKey         = "iCS_StateIcon";
-    static Texture2D iCanScriptIconTexture    = null;
-    static Texture2D UnityIconTexture         = null;
-    static Texture2D DotNetIconTexture        = null;
-    static Texture2D CompanyIconTexture       = null;
-    static Texture2D PackageIconTexture       = null;
-    static Texture2D MessageIconTexture       = null;
-    static Texture2D ObjectInstanceIconTexture= null;
-    static Texture2D FunctionIconTexture      = null;
-    static Texture2D ConstructorIconTexture   = null;
-    static Texture2D StateChartIconTexture    = null;
-    static Texture2D EntryStateIconTexture    = null;
-    static Texture2D StateIconTexture         = null;
-    // ---------------------------------------------------------------------------------
     // Type Color Constants
     static Color kBoolTypeColor;
     static Color kIntTypeColor;
@@ -172,7 +134,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 	    "Display Options",
 	    "Canvas",
 	    "Node Colors",
-	    "Node Icons",
 	    "Type Colors",
 	    "Instance Wizard",
 #if CODE_GENERATION_CONFIG
@@ -332,199 +293,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     public static Color SelectedNodeBackgroundColor {
         get { return LoadColor(kSelectedNodeBackgroundColorKey, kSelectedNodeBackgroundColor); }
         set { SaveColor(kSelectedNodeBackgroundColorKey, value); }
-    }
-    // -------------------------------------------------------------------------
-    public static Texture2D iCanScriptIcon {
-        get {
-            if(iCanScriptIconTexture == null) {
-                iCanScriptIconTexture= GetIconTexture(kiCanScriptIconKey, kiCanScriptIconPath);
-            }
-            return iCanScriptIconTexture;
-        }
-        set {
-            string iconGUID= GetGUIDFromTexture(value, kiCanScriptIconPath);
-            EditorPrefs.SetString(kiCanScriptIconKey, iconGUID);
-            iCanScriptIconTexture= value;
-        }
-    }
-    public static Texture2D iCanScriptSmallIcon {
-        get { return GetSmallIconTexture(kiCanScriptIconKey, kiCanScriptIconPath); }
-    }
-    public static Texture2D UnityIcon {
-        get {
-            if(UnityIconTexture == null) {
-                UnityIconTexture= GetIconTexture(kUnityIconKey, kUnityIconPath);
-            }
-            return UnityIconTexture;
-        }
-        set {
-            string iconGUID= GetGUIDFromTexture(value, kUnityIconPath);
-            EditorPrefs.SetString(kUnityIconKey, iconGUID);
-            UnityIconTexture= value;
-        }
-    }
-    public static Texture2D UnitySmallIcon {
-        get { return GetSmallIconTexture(kUnityIconKey, kUnityIconPath); }
-    }
-    public static Texture2D DotNetIcon {
-        get {
-            if(DotNetIconTexture == null) {
-                DotNetIconTexture= GetIconTexture(kDotNetIconKey, kDotNetIconPath);
-            }
-            return DotNetIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kDotNetIconPath);
-            EditorPrefs.SetString(kDotNetIconKey, iconGUID);
-            DotNetIconTexture= value;
-        }
-    }
-    public static Texture2D DotNetSmallIcon {
-        get { return GetSmallIconTexture(kDotNetIconKey, kDotNetIconPath); }
-    }
-    public static Texture2D CompanyIcon {
-        get {
-            if(CompanyIconTexture == null) {
-                CompanyIconTexture= GetIconTexture(kCompanyIconKey, kCompanyIconPath);
-            }
-            return CompanyIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kCompanyIconPath);
-            EditorPrefs.SetString(kCompanyIconKey, iconGUID);
-            CompanyIconTexture= value;
-        }
-    }
-    public static Texture2D CompanySmallIcon {
-        get { return GetSmallIconTexture(kCompanyIconKey, kCompanyIconPath); }
-    }
-    public static Texture2D PackageIcon {
-        get {
-            if(PackageIconTexture == null) {
-                PackageIconTexture= GetIconTexture(kPackageIconKey, kPackageIconPath);
-            }
-            return PackageIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kPackageIconPath);
-            EditorPrefs.SetString(kPackageIconKey, iconGUID);
-            PackageIconTexture= value;
-        }
-    }
-    public static Texture2D PackageSmallIcon {
-        get { return GetSmallIconTexture(kPackageIconKey, kPackageIconPath); }
-    }
-    public static Texture2D MessageIcon {
-        get {
-            if(MessageIconTexture == null) {
-                MessageIconTexture= GetIconTexture(kMessageIconKey, kMessageIconPath);
-            }
-            return MessageIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kMessageIconPath);
-            EditorPrefs.SetString(kMessageIconKey, iconGUID);
-            MessageIconTexture= value;
-        }
-    }
-    public static Texture2D MessageSmallIcon {
-        get { return GetSmallIconTexture(kMessageIconKey, kMessageIconPath); }
-    }
-    public static Texture2D ObjectInstanceIcon {
-        get {
-            if(ObjectInstanceIconTexture == null) {
-                ObjectInstanceIconTexture= GetIconTexture(kObjectInstanceIconKey, kObjectInstanceIconPath);
-            }
-            return ObjectInstanceIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kObjectInstanceIconPath);
-            EditorPrefs.SetString(kObjectInstanceIconKey, iconGUID);
-            ObjectInstanceIconTexture= value;
-        }
-    }
-    public static Texture2D ObjectInstanceSmallIcon {
-        get { return GetSmallIconTexture(kObjectInstanceIconKey, kObjectInstanceIconPath); }
-    }
-    public static Texture2D FunctionIcon {
-        get {
-            if(FunctionIconTexture == null) {
-                FunctionIconTexture= GetIconTexture(kFunctionIconKey, kFunctionIconPath);
-            }
-            return FunctionIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kFunctionIconPath);
-            EditorPrefs.SetString(kFunctionIconKey, iconGUID);
-            FunctionIconTexture= value;
-        }
-    }
-    public static Texture2D FunctionSmallIcon {
-        get { return GetSmallIconTexture(kFunctionIconKey, kFunctionIconPath); }
-    }
-    public static Texture2D ConstructorIcon {
-        get {
-            if(ConstructorIconTexture == null) {
-                ConstructorIconTexture= GetIconTexture(kConstructorIconKey, kConstructorIconPath);
-            }
-            return ConstructorIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kConstructorIconPath);
-            EditorPrefs.SetString(kConstructorIconKey, iconGUID);
-            ConstructorIconTexture= value;
-        }
-    }
-    public static Texture2D ConstructorSmallIcon {
-        get { return GetSmallIconTexture(kConstructorIconKey, kConstructorIconPath); }
-    }
-    public static Texture2D StateChartIcon {
-        get {
-            if(StateChartIconTexture == null) {
-                StateChartIconTexture= GetIconTexture(kStateChartIconKey, kStateChartIconPath);
-            }
-            return StateChartIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kStateChartIconPath);
-            EditorPrefs.SetString(kStateChartIconKey, iconGUID);
-            StateChartIconTexture= value;
-        }
-    }
-    public static Texture2D StateChartSmallIcon {
-        get { return GetSmallIconTexture(kStateChartIconKey, kStateChartIconPath); }
-    }
-    public static Texture2D EntryStateIcon {
-        get {
-            if(EntryStateIconTexture == null) {
-                EntryStateIconTexture= GetIconTexture(kEntryStateIconKey, kEntryStateIconPath);
-            }
-            return EntryStateIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kEntryStateIconPath);
-            EditorPrefs.SetString(kEntryStateIconKey, iconGUID);
-            EntryStateIconTexture= value;
-        }
-    }
-    public static Texture2D EntryStateSmallIcon {
-        get { return GetSmallIconTexture(kEntryStateIconKey, kEntryStateIconPath); }
-    }
-    public static Texture2D StateIcon {
-        get {
-            if(StateIconTexture == null) {
-                StateIconTexture= GetIconTexture(kStateIconKey, kStateIconPath);
-            }
-            return StateIconTexture;
-        }
-        set {
-            var iconGUID= GetGUIDFromTexture(value, kStateIconPath);
-            EditorPrefs.SetString(kStateIconKey, iconGUID);
-            StateIconTexture= value;
-        }
-    }
-    public static Texture2D StateSmallIcon {
-        get { return GetSmallIconTexture(kStateIconKey, kStateIconPath); }
     }
     // -------------------------------------------------------------------------
     public static Color BoolTypeColor {
@@ -761,11 +529,10 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             case 0: DisplayOptions(); break;
             case 1: Canvas(); break;
             case 2: NodeColors(); break;
-            case 3: NodeIcons(); break;
-            case 4: TypeColors(); break;
-            case 5: InstanceWizard(); break;
+            case 3: TypeColors(); break;
+            case 4: InstanceWizard(); break;
 #if CODE_GENERATION_CONFIG
-            case 6: CodeEngineering(); break;
+            case 5: CodeEngineering(); break;
 #endif
             default: break;
         }
@@ -936,105 +703,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             MessageNodeColor= kMessageNodeColor;
             SelectedNodeBackgroundColor= kSelectedNodeBackgroundColor;
         }        
-    }
-    // ---------------------------------------------------------------------------------
-    void NodeIcons() {
-        // Column 2 & 3
-        const int   kNbOfColumns= 4;
-        const float kIconSize= 64;
-        float width= kColumn2Width+kColumn3Width;
-        float margin= (width-(kIconSize*kNbOfColumns))/(2*kNbOfColumns);
-        Func<int,float> centerOf= (n)=> margin+0.5f*kIconSize+n*(2f*margin+kIconSize);
-        Func<float,float,float> centerAlign= (w,c)=> kColumn2X+c-0.5f*w;
-        Func<int,float,float,float,Rect> buildRect= (n,y,w,h)=> new Rect(centerAlign(w,centerOf(n)),y,w,h);
-        Func<int,float,string,Texture2D,Texture2D> editTexture= (n,y,s,t)=> {
-            var p= buildRect(n, y, kIconSize, kIconSize);
-            var newTexture= EditorGUI.ObjectField(p, t, typeof(Texture2D), false) as Texture2D;
-            var content= new GUIContent(s);
-            var size= EditorStyles.label.CalcSize(content);
-            p= buildRect(n, p.y+kIconSize, size.x, size.y);
-            GUI.Label(p, content);
-            return newTexture;            
-        };
-         
-        float yMin= kMargin+kTitleHeight;
-        float yStep= kIconSize+32f;
-        float row= 0;
-        iCanScriptIcon= editTexture(0, yMin+row*yStep, "iCanScript", iCanScriptIcon);
-        UnityIcon     = editTexture(1, yMin+row*yStep, "Unity 3D", UnityIcon);
-        DotNetIcon    = editTexture(2, yMin+row*yStep, ".NET", DotNetIcon);
-        CompanyIcon   = editTexture(3, yMin+row*yStep, "Generic Company", CompanyIcon);
-
-        yMin+= 24f;
-        row= 1;
-        PackageIcon       = editTexture(0, yMin+row*yStep, "Package", PackageIcon);
-        MessageIcon       = editTexture(1, yMin+row*yStep, "Message", MessageIcon);
-        ObjectInstanceIcon= editTexture(2, yMin+row*yStep, "Object Instance", ObjectInstanceIcon);
-        FunctionIcon      = editTexture(3, yMin+row*yStep, "Function", FunctionIcon);
-        
-        row= 2;
-        StateChartIcon = editTexture(0, yMin+row*yStep, "State Chart", StateChartIcon);
-        EntryStateIcon = editTexture(1, yMin+row*yStep, "Entry State", EntryStateIcon);
-        StateIcon      = editTexture(2, yMin+row*yStep, "State", StateIcon);
-        ConstructorIcon= editTexture(3, yMin+row*yStep, "Constructor", ConstructorIcon);
-        
-        
-        // Reset Button
-        var resetRect= new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f);
-        if(GUI.Button(resetRect,"Use Defaults")) {
-            iCanScriptIcon    = null;
-            UnityIcon         = null;
-            DotNetIcon        = null;
-            CompanyIcon       = null;
-            PackageIcon       = null;
-            MessageIcon       = null;
-            ObjectInstanceIcon= null;
-            FunctionIcon      = null;
-            ConstructorIcon   = null;
-            StateChartIcon    = null;
-            EntryStateIcon    = null;
-            StateIcon         = null;
-        }
-        resetRect.x= resetRect.xMax+kMargin;
-        resetRect.width= kColumn3Width+0.25f*kColumn2Width;
-        GUI.Label(resetRect, "(Please use 32x32 textures for icons.)");        
-    }
-    static Texture2D GetIconTexture(string key, string defaultPath) {
-        var iconGUID= iCS_TextureCache.IconPathToGUID(defaultPath);
-        var prefIconGUID= iconGUID= EditorPrefs.GetString(key, iconGUID);
-        if(!string.IsNullOrEmpty(prefIconGUID)) iconGUID= prefIconGUID;
-        var texture= iCS_TextureCache.GetIconFromGUID(iconGUID);
-        return texture;
-    }
-    static Texture2D GetSmallIconTexture(string key, string defaultPath) {
-        // Get GUID of normal Icon
-        var iconGUID= iCS_TextureCache.IconPathToGUID(defaultPath);
-        var prefIconGUID= iconGUID= EditorPrefs.GetString(key, iconGUID);
-        if(!string.IsNullOrEmpty(prefIconGUID)) iconGUID= prefIconGUID;
-        // Attempt to convert to small icon path
-        var iconPath= AssetDatabase.GUIDToAssetPath(iconGUID);
-        var fileName= Path.GetFileNameWithoutExtension(iconPath);
-        if(fileName.EndsWith("_32x32")) {
-            var smallIconFileName= fileName.Substring(0, fileName.Length-6)+"_16x16";
-            var smallIconPath= Path.Combine(Path.GetDirectoryName(iconPath),smallIconFileName)+Path.GetExtension(iconPath);
-            var smallTexture= iCS_TextureCache.GetIcon(smallIconPath);
-            if(smallTexture != null) {
-                return smallTexture;                    
-            }
-        }
-        // Return the normal texture since we could not find a small icon.
-        var texture= iCS_TextureCache.GetIconFromGUID(iconGUID);
-        return texture;
-    }
-    static string GetGUIDFromTexture(Texture2D texture, string defaultPath) {
-        string iconGUID;
-        if(texture != null) {
-            var iconPath= AssetDatabase.GetAssetPath(texture);
-            iconGUID= AssetDatabase.AssetPathToGUID(iconPath);
-        } else {
-            iconGUID= iCS_TextureCache.IconPathToGUID(defaultPath);                
-        }
-        return iconGUID;
     }
     // ---------------------------------------------------------------------------------
     void TypeColors() {

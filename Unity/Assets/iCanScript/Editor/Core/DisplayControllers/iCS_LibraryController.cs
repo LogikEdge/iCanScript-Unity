@@ -81,7 +81,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // Constants
     // ---------------------------------------------------------------------------------
     const int   kIconWidth  = 16;
-    const int   kIconHeight = 12;
+    const int   kIconHeight = 16;
     const float kLabelSpacer= 4f;
     
     // =================================================================================
@@ -337,7 +337,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     		myFoldOffset= emptySize.x;
 		}
         var nameSize= EditorStyles.label.CalcSize(new GUIContent(IterValue.Name));
-        return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, nameSize.y);
+        return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, kIconHeight);
 	}
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
@@ -374,18 +374,18 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		string name= current.Name;
         if(nodeType == NodeTypeEnum.Company) {
             if(name == "iCanScript") {
-                icon= iCS_PreferencesEditor.iCanScriptIcon;
+                icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.iCanScript);
             } else if(name == "Unity") {
-                icon= iCS_PreferencesEditor.UnityIcon;
+                icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Unity);
             } else if(name == "NET") {
-                icon= iCS_PreferencesEditor.DotNetIcon;
+                icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.DotNet);
             } else {
-                icon= iCS_PreferencesEditor.CompanyIcon;
+                icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Company);
             }
         } else if(nodeType == NodeTypeEnum.Package) {
-            icon= iCS_PreferencesEditor.PackageIcon;                            
+            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Package);                            
         } else if(nodeType == NodeTypeEnum.Class) {
-            icon= iCS_PreferencesEditor.ObjectInstanceIcon;            
+            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);            
         } else if(nodeType == NodeTypeEnum.Field) {
             if(current.Desc.IsGetField) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
@@ -399,11 +399,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 icon= iCS_BuiltinTextures.InEndPortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Constructor) {
-            icon= iCS_PreferencesEditor.ConstructorIcon;            
+            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Builder);            
         } else if(nodeType == NodeTypeEnum.Method) {
-            icon= iCS_PreferencesEditor.FunctionIcon;            
+            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Function);            
         } else if(nodeType == NodeTypeEnum.Message) {
-            icon= iCS_PreferencesEditor.MessageIcon;            
+            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Message);            
         } else if(nodeType == NodeTypeEnum.InParameter) {
             icon= iCS_BuiltinTextures.InEndPortIcon;
         } else if(nodeType == NodeTypeEnum.OutParameter) {

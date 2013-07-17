@@ -63,6 +63,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // Constants
     // ---------------------------------------------------------------------------------
     const float kIconWidth= 16.0f;
+    const float kIconHeight= 16.0f;
     const float kLabelSpacer= 4.0f;
     
     // =================================================================================
@@ -224,8 +225,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     		myFoldOffset= emptySize.x;
 		}
         var nameSize= EditorStyles.label.CalcSize(new GUIContent(IterValue.Name));
-        return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, nameSize.y);
-//        return EditorStyles.foldout.CalcSize(new GUIContent(GetContent()));
+        return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, kIconHeight);
 	}
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
