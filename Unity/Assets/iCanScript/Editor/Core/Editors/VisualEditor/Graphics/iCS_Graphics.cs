@@ -626,7 +626,7 @@ public partial class iCS_Graphics {
 			if(port.IsParentMuxPort) {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
 			} else if(port.IsEnablePort) {
-	    	    DrawTriggerPort(portCenter, portColor, isSelected);							        			    
+	    	    DrawTriggerPort(port, portCenter, portColor, isSelected);							        			    
 			} else {
 	    	    DrawDataPort(port, portCenter, portColor, isSelected);							        
 			}
@@ -665,10 +665,16 @@ public partial class iCS_Graphics {
 		}
     }
 	// ----------------------------------------------------------------------
-    void DrawTriggerPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawTriggerPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedTriggerPortIcon(_fillColor) :
-		                                 iCS_PortIcons.GetTriggerPortIcon(_fillColor);
+		Texture2D portIcon= null;
+		if(port.IsInputPort) {
+			portIcon= isSelected ? iCS_PortIcons.GetSelectedInTriggerPortIcon(_fillColor) :
+			                       iCS_PortIcons.GetInTriggerPortIcon(_fillColor);
+		} else {
+			portIcon= isSelected ? iCS_PortIcons.GetSelectedOutTriggerPortIcon(_fillColor) :
+			                       iCS_PortIcons.GetOutTriggerPortIcon(_fillColor);			
+		}
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
 						   portIcon.width,

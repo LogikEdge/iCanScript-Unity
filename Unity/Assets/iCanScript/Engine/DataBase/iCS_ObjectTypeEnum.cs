@@ -35,7 +35,7 @@ public enum iCS_ObjectTypeEnum {
     InFixPort= 300,      OutFixPort,
     InDynamicPort,       OutDynamicPort,
     InStaticModulePort_obsolete,  OutStaticModulePort_obsolete,
-    EnablePort,			 TriggerPort,
+    EnablePort,			 OutTriggerPort,
     InProposedPort,      OutProposedPort,
 
 	// State ports
@@ -95,6 +95,7 @@ public static class iCS_ObjectType {
 
     // Ports.
     public static bool IsEnablePort           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.EnablePort; }
+	public static bool IsOutTriggerPort		  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutTriggerPort; }
     public static bool IsInFixPort            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFixPort; }
     public static bool IsOutFixPort           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFixPort; }
     public static bool IsInDynamicPort        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InDynamicPort; }

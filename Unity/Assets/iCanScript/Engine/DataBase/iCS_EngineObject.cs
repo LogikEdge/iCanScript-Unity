@@ -188,6 +188,7 @@ public class iCS_EngineObject {
     public bool IsStatePort             { get { return iCS_ObjectType.IsStatePort(this); }}
     public bool IsTransitionPort        { get { return iCS_ObjectType.IsTransitionPort(this); }}
     public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}
+    public bool IsOutTriggerPort        { get { return iCS_ObjectType.IsOutTriggerPort(this); }}
     public bool IsOutputPort            { get { return iCS_ObjectType.IsOutputPort(this); }}
     public bool IsInputPort             { get { return iCS_ObjectType.IsInputPort(this); }}
     public bool IsInFixPort             { get { return iCS_ObjectType.IsInFixPort(this); }}

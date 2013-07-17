@@ -8,33 +8,37 @@ public static class iCS_PortIcons {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-	static float		myScale					       = 0f;
-	static Texture2D	myInEndPortTemplate            = null;
-	static Texture2D	myOutEndPortTemplate           = null;
-	static Texture2D	myInRelayPortTemplate  	       = null;
-	static Texture2D	myOutRelayPortTemplate  	   = null;
-	static Texture2D    myMuxPortTemplate              = null;
-    static Texture2D    myTriggerPortTemplate          = null;
-	static Texture2D	mySelectedInEndPortTemplate    = null;
-	static Texture2D	mySelectedOutEndPortTemplate   = null;
-	static Texture2D	mySelectedInRelayPortTemplate  = null;
-	static Texture2D	mySelectedOutRelayPortTemplate = null;
-	static Texture2D    mySelectedMuxPortTemplate      = null;
-	static Texture2D    mySelectedTriggerPortTemplate  = null;
+	static float		myScale					        = 0f;
+	static Texture2D	myInEndPortTemplate             = null;
+	static Texture2D	myOutEndPortTemplate            = null;
+	static Texture2D	myInRelayPortTemplate  	        = null;
+	static Texture2D	myOutRelayPortTemplate  	    = null;
+	static Texture2D    myMuxPortTemplate               = null;
+    static Texture2D    myInTriggerPortTemplate         = null;
+    static Texture2D    myOutTriggerPortTemplate        = null;
+	static Texture2D	mySelectedInEndPortTemplate     = null;
+	static Texture2D	mySelectedOutEndPortTemplate    = null;
+	static Texture2D	mySelectedInRelayPortTemplate   = null;
+	static Texture2D	mySelectedOutRelayPortTemplate  = null;
+	static Texture2D    mySelectedMuxPortTemplate       = null;
+	static Texture2D    mySelectedInTriggerPortTemplate = null;
+	static Texture2D    mySelectedOutTriggerPortTemplate= null;
 	
     // ----------------------------------------------------------------------
-	static Dictionary<Color,Texture2D>	myInEndPortIcons           = null;
-	static Dictionary<Color,Texture2D>	myOutEndPortIcons          = null;
-	static Dictionary<Color,Texture2D>	myInRelayPortIcons         = null;
-	static Dictionary<Color,Texture2D>	myOutRelayPortIcons        = null;
-    static Dictionary<Color,Texture2D>  myMuxPortIcons             = null;
-    static Dictionary<Color,Texture2D>  myTriggerPortIcons         = null;
-	static Dictionary<Color,Texture2D>	mySelectedInEndPortIcons   = null;
-	static Dictionary<Color,Texture2D>	mySelectedOutEndPortIcons  = null;
-	static Dictionary<Color,Texture2D>	mySelectedInRelayPortIcons = null;
-	static Dictionary<Color,Texture2D>	mySelectedOutRelayPortIcons= null;
-	static Dictionary<Color,Texture2D>	mySelectedMuxPortIcons     = null;
-	static Dictionary<Color,Texture2D>	mySelectedTriggerPortIcons = null;
+	static Dictionary<Color,Texture2D>	myInEndPortIcons             = null;
+	static Dictionary<Color,Texture2D>	myOutEndPortIcons            = null;
+	static Dictionary<Color,Texture2D>	myInRelayPortIcons           = null;
+	static Dictionary<Color,Texture2D>	myOutRelayPortIcons          = null;
+    static Dictionary<Color,Texture2D>  myMuxPortIcons               = null;
+    static Dictionary<Color,Texture2D>  myInTriggerPortIcons         = null;
+    static Dictionary<Color,Texture2D>  myOutTriggerPortIcons        = null;
+	static Dictionary<Color,Texture2D>	mySelectedInEndPortIcons     = null;
+	static Dictionary<Color,Texture2D>	mySelectedOutEndPortIcons    = null;
+	static Dictionary<Color,Texture2D>	mySelectedInRelayPortIcons   = null;
+	static Dictionary<Color,Texture2D>	mySelectedOutRelayPortIcons  = null;
+	static Dictionary<Color,Texture2D>	mySelectedMuxPortIcons       = null;
+	static Dictionary<Color,Texture2D>	mySelectedInTriggerPortIcons = null;
+	static Dictionary<Color,Texture2D>	mySelectedOutTriggerPortIcons= null;
 
     // ======================================================================
     // PORT POLYGONS
@@ -84,8 +88,10 @@ public static class iCS_PortIcons {
 	static void BuildTriggerPortTemplates(float scale) {
         float len= scale*iCS_EditorConfig.PortDiameter*1.4f;
         float selectedLen= len*iCS_EditorConfig.SelectedPortFactor;
-		BuildTriggerPortTemplate(len, ref myTriggerPortTemplate);
-		BuildTriggerPortTemplate(selectedLen, ref mySelectedTriggerPortTemplate);
+		BuildInTriggerPortTemplate(len, ref myInTriggerPortTemplate);
+		BuildInTriggerPortTemplate(selectedLen, ref mySelectedInTriggerPortTemplate);
+		BuildOutTriggerPortTemplate(len, ref myOutTriggerPortTemplate);
+		BuildOutTriggerPortTemplate(selectedLen, ref mySelectedOutTriggerPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	static void BuildMuxPortTemplates(float scale) {
@@ -213,7 +219,7 @@ public static class iCS_PortIcons {
 		texture.Apply();
 	}
     // ----------------------------------------------------------------------
-	public static void BuildTriggerPortTemplate(float len, ref Texture2D texture) {
+	public static void BuildInTriggerPortTemplate(float len, ref Texture2D texture) {
 	    var borderSize= 2.8f*myScale;
 	    if(borderSize < 1f) borderSize= 1f;
 	    int textureSize= (int)(len+3f);
@@ -227,6 +233,25 @@ public static class iCS_PortIcons {
         // Draw inner color polygon.
         var innerPolygon= Math3D.ScaleAndTranslatePolygon(myTriggerPortPolygon, new Vector2(0.6f*len, 0.6f*len), textureCenter);
         iCS_TextureUtil.DrawPolygonOutline(ref texture, innerPolygon, Color.red, 1.4f);
+        // Finalize texture.
+        texture.hideFlags= HideFlags.DontSave;
+ 		texture.Apply();
+	}
+    // ----------------------------------------------------------------------
+	public static void BuildOutTriggerPortTemplate(float len, ref Texture2D texture) {
+	    var borderSize= 2.8f*myScale;
+	    if(borderSize < 1f) borderSize= 1f;
+	    int textureSize= (int)(len+3f);
+	    if(texture != null) Texture2D.DestroyImmediate(texture);
+		texture= new Texture2D(textureSize, textureSize);
+		iCS_TextureUtil.Clear(ref texture);
+        // Draw black background polygon
+        var textureCenter= new Vector2(0.5f*textureSize,0.5f*textureSize);
+        var outterPolygon= Math3D.ScaleAndTranslatePolygon(myTriggerPortPolygon, new Vector2(len, len), textureCenter);
+        iCS_TextureUtil.DrawFilledPolygon(ref texture, outterPolygon, Color.black);
+        // Draw inner color polygon.
+        var innerPolygon= Math3D.ScaleAndTranslatePolygon(myTriggerPortPolygon, new Vector2(0.6f*len, 0.6f*len), textureCenter);
+        iCS_TextureUtil.DrawFilledPolygon(ref texture, innerPolygon, Color.red);
         // Finalize texture.
         texture.hideFlags= HideFlags.DontSave;
  		texture.Apply();
@@ -261,8 +286,13 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested mux port icon.
-	public static Texture2D GetTriggerPortIcon(Color typeColor) {
-		return GetPortIcon(typeColor, ref myTriggerPortIcons, ref myTriggerPortTemplate);
+	public static Texture2D GetInTriggerPortIcon(Color typeColor) {
+		return GetPortIcon(typeColor, ref myInTriggerPortIcons, ref myInTriggerPortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested port icon.
+	public static Texture2D GetOutTriggerPortIcon(Color typeColor) {
+		return GetPortIcon(typeColor, ref myOutTriggerPortIcons, ref myOutTriggerPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested end port icon.
@@ -294,9 +324,15 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	// Returns a selected trigger port icon.
-	public static Texture2D GetSelectedTriggerPortIcon(Color typeColor) {
+	public static Texture2D GetSelectedInTriggerPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor,
-			               ref mySelectedTriggerPortIcons, ref mySelectedTriggerPortTemplate);
+			               ref mySelectedInTriggerPortIcons, ref mySelectedInTriggerPortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a selected trigger port icon.
+	public static Texture2D GetSelectedOutTriggerPortIcon(Color typeColor) {
+		return GetPortIcon(typeColor,
+			               ref mySelectedOutTriggerPortIcons, ref mySelectedOutTriggerPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
@@ -350,13 +386,15 @@ public static class iCS_PortIcons {
 		FlushCachedIcons(ref myInRelayPortIcons);
 		FlushCachedIcons(ref myOutRelayPortIcons);
 		FlushCachedIcons(ref myMuxPortIcons);
-		FlushCachedIcons(ref myTriggerPortIcons);
+		FlushCachedIcons(ref myInTriggerPortIcons);
+		FlushCachedIcons(ref myOutTriggerPortIcons);
 		FlushCachedIcons(ref mySelectedInEndPortIcons);
 		FlushCachedIcons(ref mySelectedOutEndPortIcons);
 		FlushCachedIcons(ref mySelectedInRelayPortIcons);
 		FlushCachedIcons(ref mySelectedOutRelayPortIcons);
 		FlushCachedIcons(ref mySelectedMuxPortIcons);
-		FlushCachedIcons(ref mySelectedTriggerPortIcons);
+		FlushCachedIcons(ref mySelectedInTriggerPortIcons);
+		FlushCachedIcons(ref mySelectedOutTriggerPortIcons);
 	}
 	// ----------------------------------------------------------------------
 	static void FlushCachedIcons(ref Dictionary<Color,Texture2D> iconSet) {
