@@ -120,7 +120,7 @@ public static class iCS_BuiltinTextures {
         iCS_TextureUtil.Clear(ref myInEndPortIcon);
         iCS_TextureUtil.Clear(ref myOutEndPortIcon);
         int xOffset= (kPortIconWidth-kPortIconHeight)>>1;
-        iCS_AlphaBlend.NormalBlend(0, 0, portInIcon , xOffset, 0, ref myInEndPortIcon,  portOutIcon.width, portOutIcon.height);
+        iCS_AlphaBlend.NormalBlend(0, 0, portInIcon , xOffset, 0, ref myInEndPortIcon,  portInIcon.width, portInIcon.height);
         iCS_AlphaBlend.NormalBlend(0, 0, portOutIcon, xOffset, 0, ref myOutEndPortIcon, portOutIcon.width, portOutIcon.height);
 
         // Finalize icons.
