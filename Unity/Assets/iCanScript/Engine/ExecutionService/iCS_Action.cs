@@ -9,19 +9,23 @@ public abstract class iCS_Action : iCS_Object {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    int  myFrameId  = 0;
+    int  myCurrentFrameId  = 0;
+    int  myExecutedFrameId= 0;
     bool myIsStalled= false;
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public int  FrameId   { get { return myFrameId; }}
-    public bool IsStalled { get { return myIsStalled; } set { myIsStalled= value; }}
+    public int  FrameId             { get { return CurrentFrameId; }}
+    public int  CurrentFrameId      { get { return myCurrentFrameId; }}
+    public int  ExecutionFrameId    { get { return myExecutedFrameId; }}
+    public bool IsStalled           { get { return myIsStalled; } set { myIsStalled= value; }}
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Action(iCS_Storage storage, int instanceId, int priority) : base(storage, instanceId, priority) {}
+    public iCS_Action(iCS_Storage storage, int instanceId, int priority)
+    : base(storage, instanceId, priority) {}
      
     // ======================================================================
     // Execution
@@ -30,6 +34,8 @@ public abstract class iCS_Action : iCS_Object {
     public abstract void ForceExecute(int frameId);
     
     // ----------------------------------------------------------------------
-    public bool IsCurrent(int frameId)     { return myFrameId == frameId; }
-    public void MarkAsCurrent(int frameId) { myFrameId= frameId; myIsStalled= false; }
+    public bool IsCurrent(int frameId)      { return myCurrentFrameId == frameId; }
+    public bool DidExecute(int frameId)     { return myExecutedFrameId == frameId; }
+    public void MarkAsCurrent(int frameId)  { myCurrentFrameId= frameId; myIsStalled= false; }
+    public void MarkAsExecuted(int frameId) { myCurrentFrameId= myExecutedFrameId= frameId; myIsStalled= false; }
 }

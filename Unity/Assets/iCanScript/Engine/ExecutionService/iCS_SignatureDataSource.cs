@@ -141,12 +141,25 @@ public class iCS_SignatureDataSource {
 	}
     // ----------------------------------------------------------------------
     // Returns true if the given parameter is ready for the given frameId.
+    public bool IsReady(int idx, int frameId) {
+        return IsConnectionReady(idx, frameId);
+    }
+    // ----------------------------------------------------------------------
+    // Returns true if the given parameter is ready for the given frameId.
     public bool IsConnectionReady(int idx, int frameId) {
         var len= myConnections.Length;
         if(idx >= len) return true;
         if(myConnections[idx] == null) return true;
         return myConnections[idx].IsReady(frameId);
     }
+    // ----------------------------------------------------------------------
+    // Returns the final value of a connection or port if no connection.
+	public object FetchValue(int idx) {
+        if(idx < 0 || idx >= myConnections.Length) return null;
+	    var c= myConnections[idx];
+        if(c == null) return GetValue(idx);
+        return myConnections[idx].Value;
+	}
 	
     // ======================================================================
     // Accessors

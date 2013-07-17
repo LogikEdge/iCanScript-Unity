@@ -96,9 +96,11 @@ public class iCS_DynamicMenu {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items
-            menu= new iCS_MenuContext[2];
+            menu= new iCS_MenuContext[4];
             menu[0]= new iCS_MenuContext(PackageStr);
             menu[1]= new iCS_MenuContext(StateChartStr); 
+            menu[2]= new iCS_MenuContext(SeparatorStr);
+            menu[3]= new iCS_MenuContext(EnablePortStr);
         }
         // Show in hierarchy
         AddShowInHierarchyMenuItem(ref menu);

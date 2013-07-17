@@ -23,9 +23,7 @@ public class iCS_Connection {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Connection() {
-        myConnection= null;
-    }
+    public iCS_Connection() { myConnection= null; }
     public iCS_Connection(iCS_ISignature signature, int parameterIndex) {
         if(signature == null) {
             myConnection= null;
@@ -41,7 +39,7 @@ public class iCS_Connection {
     }
     public bool IsReady(int frameId)    {
         if(!IsConnected) return true;
-        return Action.IsCurrent(frameId);
+        return Action.DidExecute(frameId);
     }
     
     // ----------------------------------------------------------------------

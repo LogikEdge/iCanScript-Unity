@@ -8,11 +8,13 @@ public class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_SignatureDataSource mySignature= null;
+    bool                    myIsDisabled= false;
+    iCS_SignatureDataSource mySignature = null;
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
+    public bool IsDisabled { get { return myIsDisabled; } set { myIsDisabled= value; }}
     public object[] Parameters {
         get { return mySignature.Parameters; }
         set { mySignature.Parameters= value; }

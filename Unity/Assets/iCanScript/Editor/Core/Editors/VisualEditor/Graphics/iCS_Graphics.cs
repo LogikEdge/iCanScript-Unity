@@ -581,7 +581,7 @@ public partial class iCS_Graphics {
 
         // Display port value (if applicable).
         if(ShouldDisplayPortValue(port)) {    
-            if(!port.IsFloating) {
+            if(!port.IsFloating && !port.IsEnablePort) {
     			EditorGUIUtility.LookLikeControls();
                 Rect portValuePos= GetPortValueGUIPosition(port);
         		if(Math3D.IsNotZero(portValuePos.width)) {
@@ -596,7 +596,7 @@ public partial class iCS_Graphics {
                 object portValue= port.PortValue;
     			if(isStaticPort && portValue != null && Scale > 0.75f) {
     				EditorGUIUtility.LookLikeControls();
-    				if(portValueType == typeof(bool)) {
+    				if(portValueType == typeof(bool) && !port.IsEnablePort) {
     					Vector2 togglePos= TranslateAndScale(portCenter);
                         var savedBackgroundColor= GUI.backgroundColor;
     					GUI.backgroundColor= portColor;
@@ -616,7 +616,8 @@ public partial class iCS_Graphics {
     }
 
 	// ----------------------------------------------------------------------
-    public void DrawPortIcon(iCS_EditorObject port, Vector2 portCenter, bool isSelected, Color portColor, Color nodeColor, float portRadius, iCS_IStorage iStorage) {
+    public void DrawPortIcon(iCS_EditorObject port, Vector2 portCenter, bool isSelected,
+                             Color portColor, Color nodeColor, float portRadius, iCS_IStorage iStorage) {
         // Draw port icon.
         if(port.IsDataPort) {
             // Don't display mux input ports.
@@ -624,6 +625,8 @@ public partial class iCS_Graphics {
             // Data ports.
 			if(port.IsParentMuxPort) {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
+			} else if(port.IsEnablePort) {
+	    	    DrawTriggerPort(portCenter, portColor, isSelected);							        			    
 			} else {
 	    	    DrawDataPort(port, portCenter, portColor, isSelected);							        
 			}
@@ -660,6 +663,17 @@ public partial class iCS_Graphics {
 				DrawOutRelayPort(_center, _fillColor, isSelected);
 			}
 		}
+    }
+	// ----------------------------------------------------------------------
+    void DrawTriggerPort(Vector3 _center, Color _fillColor, bool isSelected) {
+		Vector3 center= TranslateAndScale(_center);
+		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedTriggerPortIcon(_fillColor) :
+		                                 iCS_PortIcons.GetTriggerPortIcon(_fillColor);
+		Rect pos= new Rect(center.x-0.5f*portIcon.width,
+						   center.y-0.5f*portIcon.height,
+						   portIcon.width,
+						   portIcon.height);
+		GUI.DrawTexture(pos, portIcon);
     }
 	// ----------------------------------------------------------------------
     void DrawInEndPort(Vector3 _center, Color _fillColor, bool isSelected) {

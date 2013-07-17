@@ -332,8 +332,11 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                                 classFunction[port.PortIndex]= initValue;
                                 classFunction.SetConnection(port.PortIndex, connection);
                             },
-                            aggregate=> {
-                                aggregate[port.PortIndex]= initValue;                                
+                            package=> {
+                                package[port.PortIndex]= initValue;
+                                if(port.IsEnablePort) {
+                                    package.ActivateEnablePort(port.PortIndex);
+                                }                                
                             },
                             message=> {
                                 message[port.PortIndex]= initValue;
