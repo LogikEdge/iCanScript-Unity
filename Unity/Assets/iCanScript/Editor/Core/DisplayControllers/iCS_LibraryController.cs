@@ -383,7 +383,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Company);
             }
         } else if(nodeType == NodeTypeEnum.Package) {
-            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Package);                            
+            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Library);                            
         } else if(nodeType == NodeTypeEnum.Class) {
             icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);            
         } else if(nodeType == NodeTypeEnum.Field) {

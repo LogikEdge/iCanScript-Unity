@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 
 public enum iCS_DefaultNodeIcons {
-    iCanScript, Unity, DotNet, Company,
+    iCanScript, Unity, DotNet, Company, Library,
     Behaviour, Package, Message, ObjectInstance,
     Function, Variable, Builder,
     StateChart, State, EntryState };
@@ -17,7 +17,7 @@ public static class iCS_Icons {
     const string kDotNetIcon        = "iCS_DotNetLogo_32x32.png";
     const string kCompanyIcon       = "iCS_CompanyIcon_32x32.png";
     const string kBehaviourIcon     = "iCS_BehaviourIcon_32x32.png";
-    const string kPackageIcon       = "iCS_ModuleIcon_32x32.png";
+    const string kPackageIcon       = "iCS_PackageIcon_32x32.png";
     const string kMessageIcon       = "iCS_MessageIcon_32x32.png";
     const string kObjectInstanceIcon= "iCS_ObjectInstanceIcon_32x32.png";
     const string kFunctionIcon      = "iCS_FunctionIcon_32x32.png";
@@ -26,11 +26,13 @@ public static class iCS_Icons {
     const string kStateChartIcon    = "iCS_StateChartIcon_32x32.png";
     const string kStateIcon         = "iCS_StateIcon_32x32.png";
     const string kEntryStateIcon    = "iCS_EntryStateIcon_32x32.png";
+    const string kDefaultIcon       = "iCS_DefaultIcon_32x32.png";
 	// -------------------------------------------------------------------------
     const string kiCanScriptLibraryIcon    = "iCS_Logo_32x32.png";
     const string kUnityLibraryIcon         = "iCS_UnityLogo_32x32.png";
     const string kDotNetLibraryIcon        = "iCS_DotNetLogo_32x32.png";
     const string kCompanyLibraryIcon       = "iCS_CompanyIcon_32x32.png";
+    const string kLibraryIcon              = "iCS_LibraryIcon_32x32.png";
     const string kBehaviourLibraryIcon     = "iCS_BehaviourIcon_32x32.png";
     const string kPackageLibraryIcon       = "iCS_PackageIcon_32x32.png";
     const string kMessageLibraryIcon       = "iCS_MessageIcon_32x32.png";
@@ -68,6 +70,8 @@ public static class iCS_Icons {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Message);            
         } else if(obj.IsObjectInstance) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);
+        } else if(obj.IsKindOfPackage) {
+            return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Package);
         } else if(obj.IsConstructor) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Builder);
         } else if(obj.IsKindOfFunction) {
@@ -79,7 +83,7 @@ public static class iCS_Icons {
         } else if(obj.IsState) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.State);
         }
-        return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Package);
+        return iCS_TextureCache.GetIcon(kDefaultIcon);
     }
 
     // -------------------------------------------------------------------------
@@ -115,7 +119,7 @@ public static class iCS_Icons {
             case iCS_DefaultNodeIcons.EntryState:
                 icon= iCS_TextureCache.GetIcon(kEntryStateIcon); break;
         }
-        return icon == null ? iCS_TextureCache.GetIcon(kPackageIcon) : icon;
+        return icon == null ? iCS_TextureCache.GetIcon(kDefaultIcon) : icon;
     }
 
     // -------------------------------------------------------------------------
@@ -130,6 +134,8 @@ public static class iCS_Icons {
                 icon= iCS_TextureCache.GetIcon(kDotNetLibraryIcon); break;
             case iCS_DefaultNodeIcons.Company:
                 icon= iCS_TextureCache.GetIcon(kCompanyLibraryIcon); break;
+            case iCS_DefaultNodeIcons.Library:
+                icon= iCS_TextureCache.GetIcon(kLibraryIcon); break;            
             case iCS_DefaultNodeIcons.Behaviour:
                 icon= iCS_TextureCache.GetIcon(kBehaviourLibraryIcon); break;
             case iCS_DefaultNodeIcons.Package:
