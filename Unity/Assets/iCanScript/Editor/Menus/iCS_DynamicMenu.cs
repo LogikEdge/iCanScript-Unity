@@ -218,7 +218,7 @@ public class iCS_DynamicMenu {
             AddShowInHierarchyMenuItem(ref menu);            
         }
         // Allow to delete a port if its parent is a module.
-        if(selectedObject.IsStatePort || selectedObject.IsDynamicPort || selectedObject.IsEnablePort) {
+        if(selectedObject.IsStatePort || selectedObject.IsDynamicDataPort || selectedObject.IsEnablePort) {
             AddDeleteMenuItem(ref menu);
         }
         ShowMenu(menu, selectedObject, storage);            

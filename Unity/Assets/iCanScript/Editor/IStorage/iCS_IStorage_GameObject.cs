@@ -76,7 +76,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject[] GetCurrentProposedPorts(iCS_EditorObject node) {
         var proposedPorts= new List<iCS_EditorObject>();
-        node.ForEachChildPort(p => { if(p.IsProposedPort) proposedPorts.Add(p); });
+        node.ForEachChildPort(p => { if(p.IsProposedDataPort) proposedPorts.Add(p); });
         return proposedPorts.ToArray();
     }
     // ----------------------------------------------------------------------

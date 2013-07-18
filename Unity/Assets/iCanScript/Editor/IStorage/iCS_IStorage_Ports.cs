@@ -25,7 +25,7 @@ public partial class iCS_IStorage {
 		// Sort child ports according to index.
 		iCS_EditorObject[] result= SortPortsOnIndex(ports.ToArray());
         for(int i= 0, idx= 0; i < result.Length; ++i, ++idx) {
-            if(result[i].IsFixPort) {
+            if(result[i].IsFixDataPort) {
                 idx= result[i].PortIndex;
             } else {
                 result[i].PortIndex= idx;                

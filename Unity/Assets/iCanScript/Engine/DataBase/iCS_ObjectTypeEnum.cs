@@ -112,17 +112,17 @@ public static class iCS_ObjectType {
     public static bool IsOutTransitionPort    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutTransitionPort; }
 
     // Fix Data Flow Ports
-    public static bool IsFixPort			  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsOutFixDataPort(obj); }
+    public static bool IsFixDataPort		  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsOutFixDataPort(obj); }
     public static bool IsInFixDataPort        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFixDataPort; }
     public static bool IsOutFixDataPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFixDataPort; }
 
     // Dynamic Data Flow Ports 
-	public static bool IsDynamicPort		  (iCS_EngineObject obj) { return IsInDynamicDataPort(obj) || IsOutDynamicDataPort(obj); }
+	public static bool IsDynamicDataPort	  (iCS_EngineObject obj) { return IsInDynamicDataPort(obj) || IsOutDynamicDataPort(obj); }
     public static bool IsInDynamicDataPort    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InDynamicDataPort; }
     public static bool IsOutDynamicDataPort   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutDynamicDataPort; }
 
     // Proposed Data Flow Ports
-	public static bool IsProposedPort         (iCS_EngineObject obj) { return IsInProposedDataPort(obj) || IsOutProposedDataPort(obj); }
+	public static bool IsProposedDataPort     (iCS_EngineObject obj) { return IsInProposedDataPort(obj) || IsOutProposedDataPort(obj); }
     public static bool IsInProposedDataPort   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InProposedDataPort; }
     public static bool IsOutProposedDataPort  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutProposedDataPort; }
 

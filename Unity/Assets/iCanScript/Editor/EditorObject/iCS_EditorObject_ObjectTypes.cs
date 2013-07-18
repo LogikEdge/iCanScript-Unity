@@ -22,9 +22,9 @@ public partial class iCS_EditorObject {
 	public bool IsBehaviourMessage			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour;}}
 
     public bool IsPort                      { get { return EngineObject.IsPort; }}
-    public bool IsFixPort                   { get { return EngineObject.IsFixPort; }}
-    public bool IsDynamicPort               { get { return EngineObject.IsDynamicPort; }}
-    public bool IsProposedPort              { get { return EngineObject.IsProposedPort; }}
+    public bool IsFixDataPort               { get { return EngineObject.IsFixDataPort; }}
+    public bool IsDynamicDataPort           { get { return EngineObject.IsDynamicDataPort; }}
+    public bool IsProposedDataPort          { get { return EngineObject.IsProposedDataPort; }}
     public bool IsEndPort                   { get { return Storage.IsEndPort(EngineObject); }}
     public bool IsRelayPort                 { get { return Storage.IsRelayPort(EngineObject); }}
     

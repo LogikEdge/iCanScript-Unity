@@ -367,7 +367,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				var prevSource= dstPort.Source;
 				if(prevSource != existingPort) {
 					dstPort.Source= existingPort;
-					if(prevSource.IsDynamicPort && !dstPort.IsPartOfConnection(prevSource)) {
+					if(prevSource.IsDynamicDataPort && !dstPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
 				}
@@ -393,7 +393,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				var prevSource= dstPort.Source;
 				if(prevSource != existingPort) {
 					dstPort.Source= existingPort;
-					if(prevSource.IsDynamicPort && !dstPort.IsPartOfConnection(prevSource)) {
+					if(prevSource.IsDynamicDataPort && !dstPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
 				}
@@ -413,7 +413,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				var prevSource= dstPort.Source;
 				if(prevSource != existingPort) {
 					dstPort.Source= existingPort;
-					if(prevSource.IsDynamicPort && !dstPort.IsPartOfConnection(prevSource)) {
+					if(prevSource.IsDynamicDataPort && !dstPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
 				}
