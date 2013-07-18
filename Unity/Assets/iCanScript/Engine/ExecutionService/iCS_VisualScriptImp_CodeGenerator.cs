@@ -205,8 +205,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         case iCS_ObjectTypeEnum.InstanceField: {
                             // Create function.
                             FieldInfo fieldInfo= GetFieldInfo(node);
-							bool[] portIsOuts= GetPortIsOuts(node);
-                            iCS_ActionWithSignature rtField= portIsOuts.Length == 0 ?
+							var inDataPorts= GetChildInDataPorts(node);
+                            iCS_ActionWithSignature rtField= inDataPorts.Length == 1 ?
                                 new iCS_GetInstanceField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature:
                                 new iCS_SetInstanceField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
@@ -216,8 +216,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         case iCS_ObjectTypeEnum.ClassField: {
                             // Create function.
 							FieldInfo fieldInfo= GetFieldInfo(node);
-							bool[] portIsOuts= GetPortIsOuts(node);
-                            iCS_ActionWithSignature rtField= portIsOuts.Length == 0 ?
+							var inDataPorts= GetChildInDataPorts(node);
+                            iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
                                 new iCS_GetClassField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature:
                                 new iCS_SetClassField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
@@ -401,16 +401,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	FieldInfo GetFieldInfo(iCS_EngineObject node) {
         return node.GetFieldInfo();
 	}
-    // TODO: Should obsolete GetPortsIsOuts
-	bool[] GetPortIsOuts(iCS_EngineObject node) {
-		iCS_EngineObject[] ports= GetChildDataOrControlPorts(node);
-		bool[] isOuts= new bool[node.NbOfParams];
-		for(int i= 0; i < isOuts.Length; ++i) {
-			isOuts[i]= ports[i].IsOutputPort;
-		}
-		return isOuts;
-	}
-	int GetNbOfChildMuxPorts(iCS_EngineObject parentMuxPort) {
+	// -------------------------------------------------------------------------
+    int GetNbOfChildMuxPorts(iCS_EngineObject parentMuxPort) {
         int nbOfChildMuxPorts= 0;
 		foreach(var port in EngineObjects) {
             if(port != null && port.IsChildMuxPort && port.ParentId == parentMuxPort.InstanceId) {
@@ -431,10 +423,12 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	    }
 	    return lastIndex;
 	}
-	Type[] GetParamTypes(iCS_EngineObject node) {
+	// -------------------------------------------------------------------------
+    Type[] GetParamTypes(iCS_EngineObject node) {
 	    return node.GetParamTypes(EngineObjects);
 	}
-	iCS_EngineObject[] GetChildDataOrControlPorts(iCS_EngineObject node) {
+	// -------------------------------------------------------------------------
+    iCS_EngineObject[] GetChildDataOrControlPorts(iCS_EngineObject node) {
 		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
 		// Get all child data ports.
 		int nodeId= node.InstanceId;
@@ -447,6 +441,34 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 		// Sort child ports according to index.
 		return iCS_EngineObject.SortPortsOnIndex(ports.ToArray());
 	}
+    // -------------------------------------------------------------------------
+    iCS_EngineObject[] GetChildDataPorts(iCS_EngineObject node) {
+		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
+		// Get all child data ports.
+		int nodeId= node.InstanceId;
+		foreach(var port in EngineObjects) {
+			if(port == null) continue;
+			if(port.ParentId != nodeId) continue;
+			if(!port.IsDataPort) continue;
+			ports.Add(port);
+		}
+		// Sort child ports according to index.
+		return iCS_EngineObject.SortPortsOnIndex(ports.ToArray());        
+    }
+    // -------------------------------------------------------------------------
+    iCS_EngineObject[] GetChildInDataPorts(iCS_EngineObject node) {
+		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
+		// Get all child data ports.
+		int nodeId= node.InstanceId;
+		foreach(var port in EngineObjects) {
+			if(port == null) continue;
+			if(port.ParentId != nodeId) continue;
+			if(!port.IsInDataPort) continue;
+			ports.Add(port);
+		}
+		// Sort child ports according to index.
+		return iCS_EngineObject.SortPortsOnIndex(ports.ToArray());                
+    }
     // ----------------------------------------------------------------------
 	object GetInitialValue(iCS_EngineObject port) {
 	    if(port.InitialValueArchive == null || port.InitialValueArchive == "") return null;
