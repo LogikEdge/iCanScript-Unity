@@ -167,14 +167,14 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         }
                         case iCS_ObjectTypeEnum.InstanceMessage:
                         case iCS_ObjectTypeEnum.ClassMessage: {
-                            var nbParams= GetInputEndPortsLastIndex(node)+1;
+                            var nbParams= GetNbOfChildDataAndControlPorts(node);
                             iCS_Message message= new iCS_Message(this, node.InstanceId, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= message;
                             InvokeAddChildIfExists(parent, message);                                
                             break;
                         }
                         case iCS_ObjectTypeEnum.Package: {
-                            var nbParams= GetInputEndPortsLastIndex(node)+1;
+                            var nbParams= GetNbOfChildDataAndControlPorts(node);
                             var module= new iCS_Package(this, node.InstanceId, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             InvokeAddChildIfExists(parent, module);                                
@@ -411,23 +411,27 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	    }
 	    return nbOfChildMuxPorts;
 	}
-	// -------------------------------------------------------------------------
-    int GetInputEndPortsLastIndex(iCS_EngineObject node) {
-        int lastIndex= -1;
-		iCS_EngineObject[] ports= GetChildDataOrControlPorts(node);
-	    for(int i= 0; i < ports.Length; ++i) {
-	        var p= ports[i];
-	        if(IsEndPort(p) && p.PortIndex > lastIndex) {
-	            lastIndex= p.PortIndex;
-	        }
-	    }
-	    return lastIndex;
-	}
+//	// -------------------------------------------------------------------------
+//    int GetInputEndPortsLastIndex(iCS_EngineObject node) {
+//        int lastIndex= -1;
+//		iCS_EngineObject[] ports= GetChildDataOrControlPorts(node);
+//	    for(int i= 0; i < ports.Length; ++i) {
+//	        var p= ports[i];
+//	        if(IsEndPort(p) && p.PortIndex > lastIndex) {
+//	            lastIndex= p.PortIndex;
+//	        }
+//	    }
+//	    return lastIndex;
+//	}
 	// -------------------------------------------------------------------------
     Type[] GetParamTypes(iCS_EngineObject node) {
 	    return node.GetParamTypes(EngineObjects);
 	}
 	// -------------------------------------------------------------------------
+    int GetNbOfChildDataAndControlPorts(iCS_EngineObject node) {
+        return GetChildDataOrControlPorts(node).Length;
+    }
+    // -------------------------------------------------------------------------
     iCS_EngineObject[] GetChildDataOrControlPorts(iCS_EngineObject node) {
 		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
 		// Get all child data ports.
@@ -482,7 +486,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 		if(rtPortGroup != null) {
 			connection= new iCS_Connection(rtPortGroup, rtPortGroup.GetSignatureDataSource().ReturnIndex);							
 		} else {
-			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_ISignature, port.PortIndex);
+            bool isAlwaysReady= port.IsInputPort;
+			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_ISignature, port.PortIndex, isAlwaysReady);
 		}
 		return connection;
 	}

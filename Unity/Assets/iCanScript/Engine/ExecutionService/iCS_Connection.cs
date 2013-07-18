@@ -5,41 +5,41 @@ public class iCS_Connection {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    Prelude.Tuple<iCS_ISignature,int>    myConnection= null;
+    iCS_ISignature  mySignature    = null;
+    int             myPortIndex    = -1;
+    bool            myIsAlwaysReady= false;
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
     public iCS_Action Action {
-        get { return myConnection != null ? myConnection.Item1.GetAction() : null; }
+        get { return mySignature != null ? mySignature.GetAction() : null; }
     }
     public iCS_SignatureDataSource Signature {
-        get { return myConnection != null ? myConnection.Item1.GetSignatureDataSource() : null; }
+        get { return mySignature != null ? mySignature.GetSignatureDataSource() : null; }
     }
     public int PortIndex {
-        get { return myConnection != null ? myConnection.Item2 : -1; }
+        get { return myPortIndex; }
     }
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Connection() { myConnection= null; }
-    public iCS_Connection(iCS_ISignature signature, int parameterIndex) {
-        if(signature == null) {
-            myConnection= null;
-        } else {
-            myConnection= new Prelude.Tuple<iCS_ISignature,int>(signature, parameterIndex);            
-        }
+    public iCS_Connection() { }
+    public iCS_Connection(iCS_ISignature signature, int portIndex, bool isAlwaysReady= false) {
+        mySignature    = signature;
+        myPortIndex    = portIndex;
+        myIsAlwaysReady= isAlwaysReady;
     }
 
-    public bool IsConnected             { get{ return myConnection != null; }}
+    public bool IsConnected             { get{ return mySignature != null; }}
     public object Value                 {
         get { return Signature.GetValue(PortIndex); }
         set { Signature.SetValue(PortIndex, value); }
     }
     public bool IsReady(int frameId)    {
-        if(!IsConnected) return true;
-        return Action.DidExecute(frameId);
+        if(myIsAlwaysReady || !IsConnected) return true;
+        return Action.IsCurrent(frameId);
     }
     
     // ----------------------------------------------------------------------
