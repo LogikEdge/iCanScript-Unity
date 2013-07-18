@@ -21,37 +21,48 @@ public partial class iCS_EditorObject {
     public bool IsTransitionAction          { get { return EngineObject.IsTransitionAction; }}
 	public bool IsBehaviourMessage			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour;}}
 
+    // General Ports
     public bool IsPort                      { get { return EngineObject.IsPort; }}
-    public bool IsFixDataPort               { get { return EngineObject.IsFixDataPort; }}
-    public bool IsDynamicDataPort           { get { return EngineObject.IsDynamicDataPort; }}
-    public bool IsProposedDataPort          { get { return EngineObject.IsProposedDataPort; }}
+    public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
+    public bool IsOutputPort                { get { return EngineObject.IsOutputPort; }}
     public bool IsEndPort                   { get { return Storage.IsEndPort(EngineObject); }}
     public bool IsRelayPort                 { get { return Storage.IsRelayPort(EngineObject); }}
-    
-    public bool IsDataOrControlPort                  { get { return EngineObject.IsDataOrControlPort; }}
-    public bool IsInDataOrControlPort                { get { return EngineObject.IsInDataOrControlPort; }}
-    public bool IsOutDataOrControlPort               { get { return EngineObject.IsOutDataOrControlPort; }}
-
     public bool IsKindOfPackagePort         { get { return IsDataOrControlPort && ParentNode.IsKindOfPackage; }}
-
+    // State Ports
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}
     public bool IsOutStatePort              { get { return EngineObject.IsOutStatePort; }}
-
+    // Transition Ports
     public bool IsTransitionPort            { get { return EngineObject.IsTransitionPort; }}
     public bool IsInTransitionPort          { get { return EngineObject.IsInTransitionPort; }}
     public bool IsOutTransitionPort         { get { return EngineObject.IsOutTransitionPort; }}
-
-    public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
-    public bool IsOutputPort                { get { return EngineObject.IsOutputPort; }}
-    
+    // Fix Data Flow Ports
+    public bool IsFixDataPort               { get { return EngineObject.IsFixDataPort; }}
+    public bool IsInFixDataPort             { get { return EngineObject.IsInFixDataPort; }}
+    public bool IsOutFixDataPort            { get { return EngineObject.IsOutFixDataPort; }}
+    // Dynamic Data Flow Ports
+    public bool IsDynamicDataPort           { get { return EngineObject.IsDynamicDataPort; }}
+    public bool IsInDynamicDataPort         { get { return EngineObject.IsInDynamicDataPort; }}
+    public bool IsOutDynamicDataPort        { get { return EngineObject.IsOutDynamicDataPort; }}
+    // Proposed Data Flow Ports
+    public bool IsProposedDataPort          { get { return EngineObject.IsProposedDataPort; }}
+    public bool IsInProposedDataPort        { get { return EngineObject.IsInProposedDataPort; }}
+    public bool IsOutProposedDataPort       { get { return EngineObject.IsOutProposedDataPort; }}
+    // Data Flow Ports
+    public bool IsDataPort                  { get { return EngineObject.IsDataPort; }}
+    public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
+    public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
+    // Control Ports
     public bool IsControlPort               { get { return EngineObject.IsControlPort; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
     public bool IsOutTriggerPort            { get { return EngineObject.IsOutTriggerPort; }}
-    
+    // Data Flow or Control Ports
+    public bool IsDataOrControlPort         { get { return EngineObject.IsDataOrControlPort; }}
+    public bool IsInDataOrControlPort       { get { return EngineObject.IsInDataOrControlPort; }}
+    public bool IsOutDataOrControlPort      { get { return EngineObject.IsOutDataOrControlPort; }}
+    // Mux Ports
     public bool IsMuxPort                   { get { return EngineObject.IsMuxPort; }}
     public bool IsChildMuxPort              { get { return EngineObject.IsChildMuxPort; }}
     public bool IsParentMuxPort             { get { return EngineObject.IsParentMuxPort; }}
-
     public bool IsNestedPort                { get { var parent= Parent; return parent != null && parent.IsPort; }}
 }

@@ -180,34 +180,47 @@ public class iCS_EngineObject {
     public bool IsInstanceField         { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast              { get { return iCS_ObjectType.IsTypeCast(this); }}
     public bool IsMessage               { get { return iCS_ObjectType.IsMessage(this); }}
+    public bool IsObjectInstance        { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
+    // General Ports
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
-    public bool IsDataOrControlPort              { get { return iCS_ObjectType.IsDataOrControlPort(this); }}
-    public bool IsControlPort           { get { return iCS_ObjectType.IsControlPort(this); }}
-    public bool IsFixDataPort          	{ get { return iCS_ObjectType.IsFixDataPort(this); }}
-    public bool IsDynamicDataPort       { get { return iCS_ObjectType.IsDynamicDataPort(this); }}
-    public bool IsProposedDataPort      { get { return iCS_ObjectType.IsProposedDataPort(this); }}
-    public bool IsStatePort             { get { return iCS_ObjectType.IsStatePort(this); }}
-    public bool IsTransitionPort        { get { return iCS_ObjectType.IsTransitionPort(this); }}
-    public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}
-    public bool IsOutTriggerPort        { get { return iCS_ObjectType.IsOutTriggerPort(this); }}
     public bool IsOutputPort            { get { return iCS_ObjectType.IsOutputPort(this); }}
     public bool IsInputPort             { get { return iCS_ObjectType.IsInputPort(this); }}
-    public bool IsInFixDataPort             { get { return iCS_ObjectType.IsInFixDataPort(this); }}
-    public bool IsOutFixDataPort            { get { return iCS_ObjectType.IsOutFixDataPort(this); }}
-    public bool IsInDynamicDataPort         { get { return iCS_ObjectType.IsInDynamicDataPort(this); }}
-    public bool IsOutDynamicDataPort        { get { return iCS_ObjectType.IsOutDynamicDataPort(this); }}
-    public bool IsInProposedDataPort        { get { return iCS_ObjectType.IsInProposedDataPort(this); }}
-    public bool IsOutProposedDataPort       { get { return iCS_ObjectType.IsOutProposedDataPort(this); }}
+    // State Ports
+    public bool IsStatePort             { get { return iCS_ObjectType.IsStatePort(this); }}
     public bool IsInStatePort           { get { return iCS_ObjectType.IsInStatePort(this); }}
     public bool IsOutStatePort          { get { return iCS_ObjectType.IsOutStatePort(this); }}
-    public bool IsInDataOrControlPort            { get { return iCS_ObjectType.IsInDataOrControlPort(this); }}
-    public bool IsOutDataOrControlPort           { get { return iCS_ObjectType.IsOutDataOrControlPort(this); }}
+    // Transition Ports
+    public bool IsTransitionPort        { get { return iCS_ObjectType.IsTransitionPort(this); }}
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
-    public bool IsObjectInstance        { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
+    // Fix Data Flow Ports
+    public bool IsFixDataPort          	{ get { return iCS_ObjectType.IsFixDataPort(this); }}
+    public bool IsInFixDataPort         { get { return iCS_ObjectType.IsInFixDataPort(this); }}
+    public bool IsOutFixDataPort        { get { return iCS_ObjectType.IsOutFixDataPort(this); }}
+    // Dynamic Data Flow Ports
+    public bool IsDynamicDataPort       { get { return iCS_ObjectType.IsDynamicDataPort(this); }}
+    public bool IsInDynamicDataPort     { get { return iCS_ObjectType.IsInDynamicDataPort(this); }}
+    public bool IsOutDynamicDataPort    { get { return iCS_ObjectType.IsOutDynamicDataPort(this); }}
+    // Proposed Data Flow Ports
+    public bool IsProposedDataPort      { get { return iCS_ObjectType.IsProposedDataPort(this); }}
+    public bool IsInProposedDataPort    { get { return iCS_ObjectType.IsInProposedDataPort(this); }}
+    public bool IsOutProposedDataPort   { get { return iCS_ObjectType.IsOutProposedDataPort(this); }}
+    // Data Flow Ports
+    public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
+    public bool IsInDataPort            { get { return iCS_ObjectType.IsInDataPort(this); }}
+    public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
+    // Control Ports
+    public bool IsControlPort           { get { return iCS_ObjectType.IsControlPort(this); }}
+    public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}
+    public bool IsOutTriggerPort        { get { return iCS_ObjectType.IsOutTriggerPort(this); }}
+    // Data Flow or Control Ports
+    public bool IsDataOrControlPort     { get { return iCS_ObjectType.IsDataOrControlPort(this); }}
+    public bool IsInDataOrControlPort   { get { return iCS_ObjectType.IsInDataOrControlPort(this); }}
+    public bool IsOutDataOrControlPort  { get { return iCS_ObjectType.IsOutDataOrControlPort(this); }}
+    // Mux Ports
 	public bool	IsMuxPort				{ get { return iCS_ObjectType.IsMuxPort(this); }}
-	public bool IsChildMuxPort			{ get { return iCS_ObjectType.IsChildMuxPort(this); }}
 	public bool IsParentMuxPort			{ get { return iCS_ObjectType.IsParentMuxPort(this); }}
+	public bool IsChildMuxPort			{ get { return iCS_ObjectType.IsChildMuxPort(this); }}
     
     // ======================================================================
     // Feature support
