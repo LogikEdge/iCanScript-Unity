@@ -248,11 +248,10 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
         } else {            
             var savedColor= GUI.color;
             if(!IterValue.IsNameEditable) {
-                labelStyle= EditorStyles.boldLabel;
-                pos.width= pos.width*1.2f;
-                GUI.color= new Color(1f, 0.8f, 0.4f);
+                GUI.enabled= false;
             }
     	    GUI.Label(pos, content.text, labelStyle);            
+            GUI.enabled= true;
             GUI.color= savedColor;
         }
         ProcessChangeSelection();
