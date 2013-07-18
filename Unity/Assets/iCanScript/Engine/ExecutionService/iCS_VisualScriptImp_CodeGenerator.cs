@@ -403,7 +403,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	}
     // TODO: Should obsolete GetPortsIsOuts
 	bool[] GetPortIsOuts(iCS_EngineObject node) {
-		iCS_EngineObject[] ports= GetChildDataPorts(node);
+		iCS_EngineObject[] ports= GetChildDataOrControlPorts(node);
 		bool[] isOuts= new bool[node.NbOfParams];
 		for(int i= 0; i < isOuts.Length; ++i) {
 			isOuts[i]= ports[i].IsOutputPort;
@@ -422,10 +422,10 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	// -------------------------------------------------------------------------
     int GetInputEndPortsLastIndex(iCS_EngineObject node) {
         int lastIndex= -1;
-		iCS_EngineObject[] ports= GetChildDataPorts(node);
+		iCS_EngineObject[] ports= GetChildDataOrControlPorts(node);
 	    for(int i= 0; i < ports.Length; ++i) {
 	        var p= ports[i];
-	        if(p.IsInputPort && IsEndPort(p) && p.PortIndex > lastIndex) {
+	        if(IsEndPort(p) && p.PortIndex > lastIndex) {
 	            lastIndex= p.PortIndex;
 	        }
 	    }
@@ -434,7 +434,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	Type[] GetParamTypes(iCS_EngineObject node) {
 	    return node.GetParamTypes(EngineObjects);
 	}
-	iCS_EngineObject[] GetChildDataPorts(iCS_EngineObject node) {
+	iCS_EngineObject[] GetChildDataOrControlPorts(iCS_EngineObject node) {
 		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
 		// Get all child data ports.
 		int nodeId= node.InstanceId;

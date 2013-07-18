@@ -46,6 +46,7 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
     public override void Execute(int frameId) {
         // Don't execute if enable port is configured and false.
         if(myInTriggerPorts != null) {
+            ResetOutTriggerPort();
             foreach(var trigger in myInTriggerPorts) {
                 // Wait for enable source to run
                 if(!mySignature.IsReady(trigger, frameId)) return;
@@ -57,12 +58,14 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
                 }                
             }
         }
+        SetOutTriggerPort();
         base.Execute(frameId);
     }
     // -------------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         // Don't execute if enable port is configured and false.
         if(myInTriggerPorts != null) {
+            ResetOutTriggerPort();
             foreach(var trigger in myInTriggerPorts) {
                 // The enable port is ready.  Cancel execution if 'false'.
                 var enabled= mySignature.FetchValue(trigger);
@@ -72,10 +75,12 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
                 }                
             }
         }
+        SetOutTriggerPort();
         base.ForceExecute(frameId);
     }
     
     // =========================================================================
+    // Control Ports Management
     // -------------------------------------------------------------------------
     public void ActivateEnablePort(int portIdx) {
         if(myInTriggerPorts == null) {
@@ -85,8 +90,18 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
         Array.Resize(ref myInTriggerPorts, idx+1);
         myInTriggerPorts[idx]= portIdx;
     }
+    // -------------------------------------------------------------------------
     public void ActivateOutTriggerPort(int portIdx) {
         myOutTriggerPort= portIdx;
-        Debug.Log("Setting out trigger port");
+    }
+    // -------------------------------------------------------------------------
+    void ResetOutTriggerPort() {
+        if(myOutTriggerPort == -1) return;
+        mySignature.SetValue(myOutTriggerPort, false);
+    }
+    // -------------------------------------------------------------------------
+    void SetOutTriggerPort() {
+        if(myOutTriggerPort == -1) return;
+        mySignature.SetValue(myOutTriggerPort, true);
     }
 }
