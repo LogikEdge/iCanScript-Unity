@@ -7,6 +7,7 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
     // ----------------------------------------------------------------------
     iCS_SignatureDataSource mySignature;
     int[]                   myInTriggerPorts= null;
+    int                     myOutTriggerPort= -1;
 
     // ======================================================================
     // Creation/Destruction
@@ -84,7 +85,8 @@ public class iCS_Package : iCS_ParallelDispatcher, iCS_ISignature {
         Array.Resize(ref myInTriggerPorts, idx+1);
         myInTriggerPorts[idx]= portIdx;
     }
-    public void ActivateControlOutputPort(int portIdx) {
-        Debug.Log("Setting control output port");
+    public void ActivateOutTriggerPort(int portIdx) {
+        myOutTriggerPort= portIdx;
+        Debug.Log("Setting out trigger port");
     }
 }

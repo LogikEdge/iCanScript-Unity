@@ -275,6 +275,14 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         break;
                     }
                     
+                    // Control flow ports.
+                    case iCS_ObjectTypeEnum.OutTriggerPort: {
+                        var package= myRuntimeNodes[port.ParentId] as iCS_Package;
+                        var portIdx= port.PortIndex;
+                        package.ActivateOutTriggerPort(portIdx);
+                        package[portIdx]= true;
+                        break;
+                    }
                     // Data ports.
                     case iCS_ObjectTypeEnum.OutDynamicDataPort:
                     case iCS_ObjectTypeEnum.OutFixDataPort: {

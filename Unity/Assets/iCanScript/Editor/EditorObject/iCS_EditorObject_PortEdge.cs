@@ -35,14 +35,9 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
     // Updates the port edge information from the port type.
     public void UpdatePortEdge(Vector2 localPosition) {
-        // Enable ports are always on top of the node.
-        if(IsEnablePort) {
-            Edge= iCS_EdgeEnum.Top;
-            return;
-        }
         // Data ports are always on the left or right depending on
         // input/output direction.
-        if(IsDataOrControlPort) {
+        if(IsDataPort) {
             Edge= IsInputPort ? iCS_EdgeEnum.Left : iCS_EdgeEnum.Right;
             return;
         }

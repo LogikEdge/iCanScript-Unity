@@ -28,8 +28,9 @@ public static class iCS_Strings {
     public const string TransitionExitModule = "TransitionExit";
 
     // -----------------------------------------------------------------------
-    // Special port names.
+    // Control port names.
     public const string EnablePort= "enable";
+    public const string OutTriggerPort= "trigger";
     
     // -----------------------------------------------------------------------
     // Reflection methods

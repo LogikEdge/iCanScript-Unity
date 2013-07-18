@@ -625,8 +625,8 @@ public partial class iCS_Graphics {
             // Data ports.
 			if(port.IsParentMuxPort) {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
-			} else if(port.IsEnablePort) {
-	    	    DrawTriggerPort(port, portCenter, portColor, isSelected);							        			    
+			} else if(port.IsControlPort) {
+	    	    DrawControlPort(port, portCenter, portColor, isSelected);							        			    
 			} else {
 	    	    DrawDataPort(port, portCenter, portColor, isSelected);							        
 			}
@@ -665,7 +665,7 @@ public partial class iCS_Graphics {
 		}
     }
 	// ----------------------------------------------------------------------
-    void DrawTriggerPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawControlPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= null;
 		if(port.IsInputPort) {

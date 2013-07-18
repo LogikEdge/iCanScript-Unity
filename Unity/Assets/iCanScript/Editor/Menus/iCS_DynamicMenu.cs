@@ -102,7 +102,11 @@ public class iCS_DynamicMenu {
             menu[1]= new iCS_MenuContext(StateChartStr); 
             menu[2]= new iCS_MenuContext(SeparatorStr);
             menu[3]= new iCS_MenuContext(EnablePortStr);
-            menu[4]= new iCS_MenuContext(OutTriggerPortStr);
+            if(storage.HasOutTriggerPort(selectedObject)) {
+                menu[4]= new iCS_MenuContext("#"+OutTriggerPortStr);
+            } else {
+                menu[4]= new iCS_MenuContext(OutTriggerPortStr);                
+            }
         }
         // Show in hierarchy
         AddShowInHierarchyMenuItem(ref menu);

@@ -98,7 +98,7 @@ public static class iCS_ObjectType {
                                                                               obj.ObjectType <= iCS_ObjectTypeEnum.PortEnd; }
     public static bool IsOutputPort			  (iCS_EngineObject obj) { return IsOutDataOrControlPort(obj) || IsOutStatePort(obj) ||
 	 																		  IsOutTransitionPort(obj); }
-    public static bool IsInputPort			  (iCS_EngineObject obj) { return IsInDataOrControlPort(obj)|| IsInStatePort(obj)||
+    public static bool IsInputPort			  (iCS_EngineObject obj) { return IsInDataOrControlPort(obj) || IsInStatePort(obj)||
 																			  IsInTransitionPort(obj); }
     
     // State Ports.
