@@ -9,6 +9,8 @@ public static class iCS_BuiltinTextures {
     public static Texture2D OutEndPortIcon          { get { return myOutEndPortIcon; }}
     public static Texture2D InRelayPortIcon         { get { return myInRelayPortIcon; }}
     public static Texture2D OutRelayPortIcon        { get { return myOutRelayPortIcon; }}
+    public static Texture2D InTriggerIcon           { get { return myInTriggerPortIcon; }}
+    public static Texture2D OutTriggerIcon          { get { return myOutTriggerPortIcon; }}
     public static Texture2D InTransitionPortIcon    { get { return myInTransitionPortIcon; }}
     public static Texture2D OutTransitionPortIcon   { get { return myOutTransitionPortIcon; }}
 
@@ -48,7 +50,7 @@ public static class iCS_BuiltinTextures {
     // Constants
     // ---------------------------------------------------------------------------------
     public const int   kPortIconWidth   = 16;
-    public const int   kPortIconHeight  = 12;
+    public const int   kPortIconHeight  = 16;
     public const int   kMinimizeIconSize= 16;
     public const int   kMaximizeIconSize= 32;
     public const int   kFoldIconSize    = 16;
@@ -62,6 +64,8 @@ public static class iCS_BuiltinTextures {
 	static Texture2D    myOutEndPortIcon;
 	static Texture2D    myInRelayPortIcon;
 	static Texture2D    myOutRelayPortIcon;
+	static Texture2D    myInTriggerPortIcon;
+	static Texture2D    myOutTriggerPortIcon;
 	static Texture2D    myInTransitionPortIcon;
 	static Texture2D    myOutTransitionPortIcon;
 	static Texture2D    myMinimizeIcon;
@@ -97,6 +101,7 @@ public static class iCS_BuiltinTextures {
         BuildEndPortIcons(Color.red);
         BuildRelayPortIcons(Color.red);
         BuildTransitionPortIcons();
+        BuildControlPortIcons();
     }
     // ---------------------------------------------------------------------------------
     static void BuildScaleDependantTextures() {
@@ -164,7 +169,34 @@ public static class iCS_BuiltinTextures {
         Texture2D.DestroyImmediate(outPortIcon);
         Texture2D.DestroyImmediate(outPortTemplate);	    
 	}
+    // ---------------------------------------------------------------------------------
+    static void BuildControlPortIcons() {
+		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
+		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
+        float scale= 0.8f*kPortIconHeight/(iCS_EditorConfig.PortDiameter*1.4f);
+        iCS_PortIcons.BuildInTriggerPortTemplate(scale, ref inPortTemplate);
+        iCS_PortIcons.BuildOutTriggerPortTemplate(scale, ref outPortTemplate);
+        Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(iCS_PreferencesEditor.BoolTypeColor, inPortTemplate);
+        Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(iCS_PreferencesEditor.BoolTypeColor, outPortTemplate);
 
+        myInTriggerPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
+        myOutTriggerPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
+        iCS_TextureUtil.Clear(ref myInTriggerPortIcon);
+        iCS_TextureUtil.Clear(ref myOutTriggerPortIcon);
+        iCS_AlphaBlend.NormalBlend(0, 0, portInIcon , 0, 0, ref myInTriggerPortIcon,  portInIcon.width, portInIcon.height);
+        iCS_AlphaBlend.NormalBlend(0, 0, portOutIcon, 0, 0, ref myOutTriggerPortIcon, portOutIcon.width, portOutIcon.height);
+
+        // Finalize icons.
+        myInTriggerPortIcon.Apply();
+        myOutTriggerPortIcon.Apply();
+        myInTriggerPortIcon.hideFlags= HideFlags.DontSave;
+        myOutTriggerPortIcon.hideFlags= HideFlags.DontSave;
+	
+        Texture2D.DestroyImmediate(portInIcon);
+        Texture2D.DestroyImmediate(portOutIcon);
+        Texture2D.DestroyImmediate(inPortTemplate);	    
+        Texture2D.DestroyImmediate(outPortTemplate);	            
+    }
     // ---------------------------------------------------------------------------------
     static void BuildTransitionPortIcons() {
         // Create textures.

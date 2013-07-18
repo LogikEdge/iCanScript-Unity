@@ -86,12 +86,11 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	static void BuildTriggerPortTemplates(float scale) {
-        float len= scale*iCS_EditorConfig.PortDiameter*1.4f;
-        float selectedLen= len*iCS_EditorConfig.SelectedPortFactor;
-		BuildInTriggerPortTemplate(len, ref myInTriggerPortTemplate);
-		BuildInTriggerPortTemplate(selectedLen, ref mySelectedInTriggerPortTemplate);
-		BuildOutTriggerPortTemplate(len, ref myOutTriggerPortTemplate);
-		BuildOutTriggerPortTemplate(selectedLen, ref mySelectedOutTriggerPortTemplate);
+        float selectedScale= scale*iCS_EditorConfig.SelectedPortFactor;
+		BuildInTriggerPortTemplate(scale, ref myInTriggerPortTemplate);
+		BuildInTriggerPortTemplate(selectedScale, ref mySelectedInTriggerPortTemplate);
+		BuildOutTriggerPortTemplate(scale, ref myOutTriggerPortTemplate);
+		BuildOutTriggerPortTemplate(selectedScale, ref mySelectedOutTriggerPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	static void BuildMuxPortTemplates(float scale) {
@@ -219,8 +218,9 @@ public static class iCS_PortIcons {
 		texture.Apply();
 	}
     // ----------------------------------------------------------------------
-	public static void BuildInTriggerPortTemplate(float len, ref Texture2D texture) {
-	    var borderSize= 2.8f*myScale;
+	public static void BuildInTriggerPortTemplate(float scale, ref Texture2D texture) {
+        float len= scale*iCS_EditorConfig.PortDiameter*1.4f;
+	    var borderSize= 2.8f*scale;
 	    if(borderSize < 1f) borderSize= 1f;
 	    int textureSize= (int)(len+3f);
 	    if(texture != null) Texture2D.DestroyImmediate(texture);
@@ -238,8 +238,9 @@ public static class iCS_PortIcons {
  		texture.Apply();
 	}
     // ----------------------------------------------------------------------
-	public static void BuildOutTriggerPortTemplate(float len, ref Texture2D texture) {
-	    var borderSize= 2.8f*myScale;
+	public static void BuildOutTriggerPortTemplate(float scale, ref Texture2D texture) {
+        float len= scale*iCS_EditorConfig.PortDiameter*1.4f;
+	    var borderSize= 2.8f*scale;
 	    if(borderSize < 1f) borderSize= 1f;
 	    int textureSize= (int)(len+3f);
 	    if(texture != null) Texture2D.DestroyImmediate(texture);

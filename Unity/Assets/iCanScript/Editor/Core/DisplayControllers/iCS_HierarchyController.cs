@@ -286,7 +286,13 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 		var current= IterValue;
 		if(current.IsNode) {
             icon= iCS_Icons.GetIconFor(current);            
-        } else if(current.IsDataOrControlPort) {
+        } else if(current.IsControlPort) {
+            if(current.IsEnablePort) {
+                icon= iCS_BuiltinTextures.InTriggerIcon;
+            } else {
+                icon= iCS_BuiltinTextures.OutTriggerIcon;
+            }
+        } else if(current.IsDataPort) {
             if(current.IsInputPort) {
                 if(current.IsEndPort) {
                     icon= iCS_BuiltinTextures.InEndPortIcon;                    
