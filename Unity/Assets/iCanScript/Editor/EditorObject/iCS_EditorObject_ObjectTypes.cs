@@ -32,7 +32,7 @@ public partial class iCS_EditorObject {
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
 
-    public bool IsKindOfPackagePort       { get { return IsDataPort && ParentNode.IsKindOfPackage; }}
+    public bool IsKindOfPackagePort         { get { return IsDataPort && ParentNode.IsKindOfPackage; }}
 
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}
@@ -44,8 +44,11 @@ public partial class iCS_EditorObject {
 
     public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
     public bool IsOutputPort                { get { return EngineObject.IsOutputPort; }}
+    
+    public bool IsControlPort               { get { return EngineObject.IsControlPort; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
-
+    public bool IsOutTriggerPort            { get { return EngineObject.IsOutTriggerPort; }}
+    
     public bool IsMuxPort                   { get { return EngineObject.IsMuxPort; }}
     public bool IsChildMuxPort              { get { return EngineObject.IsChildMuxPort; }}
     public bool IsParentMuxPort             { get { return EngineObject.IsParentMuxPort; }}

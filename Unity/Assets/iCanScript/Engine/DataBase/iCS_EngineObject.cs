@@ -182,6 +182,7 @@ public class iCS_EngineObject {
     public bool IsMessage               { get { return iCS_ObjectType.IsMessage(this); }}
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
     public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
+    public bool IsControlPort           { get { return iCS_ObjectType.IsControlPort(this); }}
     public bool IsFixPort          		{ get { return iCS_ObjectType.IsFixPort(this); }}
     public bool IsDynamicPort           { get { return iCS_ObjectType.IsDynamicPort(this); }}
     public bool IsProposedPort          { get { return iCS_ObjectType.IsProposedPort(this); }}

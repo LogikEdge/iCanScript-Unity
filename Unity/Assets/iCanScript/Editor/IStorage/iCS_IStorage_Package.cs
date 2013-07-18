@@ -25,7 +25,13 @@ public partial class iCS_IStorage {
     // Out Trigger Port
     // -------------------------------------------------------------------------
     public iCS_EditorObject CreateOutTriggerPort(int parentId) {
-        Debug.Log("Need to create out trigger port");
-        return null;
+        iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), iCS_ObjectTypeEnum.OutTriggerPort);
+        port.IsNameEditable= false;
+        port.InitialPortValue= true;
+        return port;
+    }
+    // -------------------------------------------------------------------------
+    public iCS_EditorObject[] GetOutTriggerPort(iCS_EditorObject package) {
+        return BuildFilteredListOfChildren(c=> c.IsOutTriggerPort, package);
     }
 }
