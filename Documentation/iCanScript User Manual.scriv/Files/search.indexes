@@ -228,9 +228,20 @@ iCanScript has a wide variety of features to accommodate many different purposes
         </Document>
         <Document ID="76">
             <Title>Trial Version</Title>
+            <Text>The iCanScript beta and release candidate packages are available as nonrestrictive trial versions.
+In the future, the professional version of iCanScript will be available for a 30 days nonrestrictive trial period.</Text>
         </Document>
         <Document ID="90">
             <Title>Untitled</Title>
+        </Document>
+        <Document ID="77">
+            <Title>Purchasing iCanScript</Title>
+        </Document>
+        <Document ID="91">
+            <Title>Untitled</Title>
+        </Document>
+        <Document ID="118">
+            <Title>ToC</Title>
         </Document>
         <Document ID="84">
             <Title>Table Of Content</Title>
@@ -276,15 +287,6 @@ Acknowledgements	&lt;$p>
 ?aID	Tips and Tricks and Trouble	&lt;$p>
 
 </Text>
-        </Document>
-        <Document ID="77">
-            <Title>Purchasing iCanScript</Title>
-        </Document>
-        <Document ID="118">
-            <Title>ToC</Title>
-        </Document>
-        <Document ID="91">
-            <Title>Untitled</Title>
         </Document>
         <Document ID="78">
             <Title>Updates</Title>

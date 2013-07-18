@@ -26,6 +26,7 @@ public class iCS_DynamicMenu {
     const string OnExitStr= "+ "+iCS_Strings.OnExit;
     const string PublishPortStr= "Publish on Module";
     const string EnablePortStr= "+ Enable Port";
+    const string OutTriggerPortStr= "+ Out Trigger Port";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -96,11 +97,12 @@ public class iCS_DynamicMenu {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items
-            menu= new iCS_MenuContext[4];
+            menu= new iCS_MenuContext[5];
             menu[0]= new iCS_MenuContext(PackageStr);
             menu[1]= new iCS_MenuContext(StateChartStr); 
             menu[2]= new iCS_MenuContext(SeparatorStr);
             menu[3]= new iCS_MenuContext(EnablePortStr);
+            menu[4]= new iCS_MenuContext(OutTriggerPortStr);
         }
         // Show in hierarchy
         AddShowInHierarchyMenuItem(ref menu);
@@ -314,12 +316,8 @@ public class iCS_DynamicMenu {
             case OnExitStr:                 ProcessCreateOnExitModule(context); break;
             case ShowHierarchyStr:          ProcessShowInHierarchy(context); break;
             case DeleteStr:                 ProcessDestroyObject(context); break;
-            case EnablePortStr: {
-                iCS_EditorObject port= storage.CreatePort(iCS_Strings.EnablePort, selectedObject.InstanceId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
-                port.IsNameEditable= false;
-                port.InitialPortValue= true;
-                break;
-            }
+            case EnablePortStr:             ProcessCreateEnablePort(context); break;
+            case OutTriggerPortStr:         ProcessCreateOutTriggerPort(context); break;
             case PublishPortStr: {
                 iCS_EditorObject parent= selectedObject.Parent;
                 iCS_EditorObject grandParent= parent.Parent;
@@ -421,7 +419,19 @@ public class iCS_DynamicMenu {
     static void ProcessDestroyObject(iCS_MenuContext context) {
         DestroyObject(context);    
     }
-
+    // -------------------------------------------------------------------------
+    static void ProcessCreateEnablePort(iCS_MenuContext context) {
+		var parent = context.SelectedObject;
+		var storage= context.Storage;
+		storage.CreateEnablePort(parent.InstanceId);        
+    }
+    // -------------------------------------------------------------------------
+    static void ProcessCreateOutTriggerPort(iCS_MenuContext context) {
+		var parent = context.SelectedObject;
+		var storage= context.Storage;
+		storage.CreateOutTriggerPort(parent.InstanceId);        
+    }
+    
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------

@@ -241,7 +241,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardFindFunction(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
-        iCS_EditorObject[] children= BuildListOfChildren(
+        iCS_EditorObject[] children= BuildFilteredListOfChildren(
             child=> {
                 if(child.ObjectType != desc.ObjectType || child.NbOfParams != desc.Parameters.Length) {
                     return false;

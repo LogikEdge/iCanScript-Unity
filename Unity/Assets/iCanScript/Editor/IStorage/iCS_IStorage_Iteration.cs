@@ -148,7 +148,7 @@ public partial class iCS_IStorage {
 	// ======================================================================
     // List builders
     // ----------------------------------------------------------------------
-    public iCS_EditorObject[] BuildListOfChildren(Func<iCS_EditorObject,bool> filter, iCS_EditorObject parent) {
+    public iCS_EditorObject[] BuildFilteredListOfChildren(Func<iCS_EditorObject,bool> filter, iCS_EditorObject parent) {
         List<iCS_EditorObject> result= new List<iCS_EditorObject>();
         ForEachChild(parent, child=> { if(filter(child)) result.Add(child); });
         return result.ToArray();
