@@ -118,7 +118,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortValue(iCS_EditorObject port) {
-        if(!port.IsDataPort || port.IsChildMuxPort) return false;
+        if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if((port.IsInputPort || port.IsKindOfPackagePort) && port.SourceId != -1) {
@@ -176,7 +176,7 @@ public partial class iCS_Graphics {
 		Type runtimeType= port.RuntimeType;
 		if(runtimeType != null) tooltip+= "Type: "+iCS_Types.TypeName(runtimeType)+"\n";
 		// Source information.
-		if(port.IsDataPort) {
+		if(port.IsDataOrControlPort) {
 			iCS_EditorObject sourcePort= iStorage.GetSourceEndPort(port);
 			if(sourcePort != null && sourcePort != port) {
 				tooltip+= "Source: "+GetPortFullPathName(sourcePort, iStorage)+"\n";

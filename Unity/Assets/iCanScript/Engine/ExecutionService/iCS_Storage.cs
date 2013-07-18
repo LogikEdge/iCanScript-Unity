@@ -140,13 +140,13 @@ public class iCS_Storage : MonoBehaviour {
     // ----------------------------------------------------------------------
     // ----------------------------------------------------------------------
 	public bool IsInPackagePort(iCS_EngineObject obj) {
-		if(!obj.IsInDataPort) return false;
+		if(!obj.IsInDataOrControlPort) return false;
 		var parent= GetParentNode(obj);
 		return parent != null && parent.IsKindOfPackage;
 	}
     // ----------------------------------------------------------------------
 	public bool IsOutPackagePort(iCS_EngineObject obj) {
-		if(!obj.IsOutDataPort) return false;
+		if(!obj.IsOutDataOrControlPort) return false;
 		var parent= GetParentNode(obj);
 		return parent != null && parent.IsKindOfPackage;
 	}

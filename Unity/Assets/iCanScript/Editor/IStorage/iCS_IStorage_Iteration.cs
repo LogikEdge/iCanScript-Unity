@@ -119,7 +119,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
 	public void ForEachChildDataPort(iCS_EditorObject node, Action<iCS_EditorObject> action) {
-		ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsDataPort, action));
+		ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsDataOrControlPort, action));
 	}
     // ----------------------------------------------------------------------
     // Returns the first object that matches the given condition.

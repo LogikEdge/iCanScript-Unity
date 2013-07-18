@@ -104,12 +104,12 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
 	public object InitialPortValue {
 		get {
-			if(!IsInDataPort) return null;
+			if(!IsInDataOrControlPort) return null;
 			if(SourceId != -1) return null;
 			return InitialValue;			
 		}
 		set {
-			if(!IsInDataPort) return;
+			if(!IsInDataOrControlPort) return;
 			if(SourceId != -1) return;
 			InitialValue= value;
 	        myIStorage.StoreInitialPortValueInArchive(this);			
@@ -119,7 +119,7 @@ public partial class iCS_EditorObject {
     // Fetches the runtime value if it exists, otherwise returns the initial value
 	public object PortValue {
 		get {
-			if(!IsDataPort) return null;
+			if(!IsDataOrControlPort) return null;
 			var port= SourceEndPort;
 			// Get value from port group (ex: ParentMuxPort).
 			var funcBase= myIStorage.GetRuntimeObject(port) as iCS_ISignature;
@@ -142,7 +142,7 @@ public partial class iCS_EditorObject {
             return PortValue;
 		}
 		set {
-	        if(!IsInDataPort) return;
+	        if(!IsInDataOrControlPort) return;
 	        // Set the return value for a port group (ex: MuxPort).
 			var funcBase= myIStorage.GetRuntimeObject(this) as iCS_ISignature;
 	        if(funcBase != null) {

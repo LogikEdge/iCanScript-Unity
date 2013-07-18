@@ -167,7 +167,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
                 // Snap to nearby ports
                 Vector2 mousePosInGraph= GraphMousePosition;
-                iCS_EditorObject closestPort= IStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
+                iCS_EditorObject closestPort= IStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataOrControlPort);
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
                     Vector2 closestPortPos= closestPort.LayoutPosition;
                     if(Vector2.Distance(closestPortPos, mousePosInGraph) < iCS_EditorConfig.PortDiameter) {
@@ -263,7 +263,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.PortRelocation:
                     DragObject.IsSticky= false;
                     DragObject.IsFloating= false;
-                    if(DragObject.IsDataPort) {
+                    if(DragObject.IsDataOrControlPort) {
 						DragObject.ParentNode.LayoutPorts();
                         break;
                     }                    
@@ -323,7 +323,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     // Verify for a new connection.
                     if(!VerifyNewDragConnection()) {
                         bool isNearParent= DragObject.IsPortOnParentEdge;
-                        if(DragFixPort.IsDataPort) {
+                        if(DragFixPort.IsDataOrControlPort) {
                             // We don't need the drag port anymore.
                             var dragPortPos= DragObject.LayoutPosition;
                             DragObject.IsSticky= false;
@@ -600,7 +600,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var parent= DragObject.ParentNode;
 		var parentRect= parent.LayoutRect;
         // Determine if we should convert to data port connection drag.
-		if(DragObject.IsDataPort && !iCS_EditorObject.IsPositionOnRectEdge(newPosition, parentRect, DragObject.Edge)) {
+		if(DragObject.IsDataOrControlPort && !iCS_EditorObject.IsPositionOnRectEdge(newPosition, parentRect, DragObject.Edge)) {
             parent.LayoutPorts();
             CreateDragPort();
             return;

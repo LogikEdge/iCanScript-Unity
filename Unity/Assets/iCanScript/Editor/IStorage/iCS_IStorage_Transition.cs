@@ -134,7 +134,7 @@ public partial class iCS_IStorage {
             iCS_EditorObject outStatePort= null;
             UntilMatchingChildPort(transitionObject,
                 port=> {
-                    if(port.IsOutDataPort && port.RuntimeType == typeof(bool)) {
+                    if(port.IsOutDataOrControlPort && port.RuntimeType == typeof(bool)) {
                         iCS_EditorObject[] connectedPorts= port.Destinations;
                         foreach(var p in connectedPorts) {
                             if(p.IsOutStatePort) {

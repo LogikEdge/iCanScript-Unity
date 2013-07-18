@@ -528,7 +528,7 @@ public partial class iCS_Graphics {
         if(!IsVisible(displayArea)) return;
         
         // Determine if port is selected.
-        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == selectedObject.Parent);
+        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataOrControlPort && port == selectedObject.Parent);
 
 		// Compute port radius (radius is increased if port is selected).
 		if(isSelectedPort) {
@@ -571,7 +571,7 @@ public partial class iCS_Graphics {
         if(port.IsStatePort || port.IsTransitionPort) return;         
 
         // Determine if port is a static port (a port that feeds information into the graph).
-        bool isStaticPort= port.IsInDataPort && port.Source == null;
+        bool isStaticPort= port.IsInDataOrControlPort && port.Source == null;
 
         // Display port name.
         if(!ShouldDisplayPortName(port)) return;
@@ -619,7 +619,7 @@ public partial class iCS_Graphics {
     public void DrawPortIcon(iCS_EditorObject port, Vector2 portCenter, bool isSelected,
                              Color portColor, Color nodeColor, float portRadius, iCS_IStorage iStorage) {
         // Draw port icon.
-        if(port.IsDataPort) {
+        if(port.IsDataOrControlPort) {
             // Don't display mux input ports.
             if(port.IsChildMuxPort) return;
             // Data ports.

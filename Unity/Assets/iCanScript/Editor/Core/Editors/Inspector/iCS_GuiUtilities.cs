@@ -27,7 +27,7 @@ public static class iCS_GuiUtilities {
     // -----------------------------------------------------------------------
     public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,object> foldoutDB) {
         // Only accept data ports.
-        if(!port.IsDataPort) return;
+        if(!port.IsDataOrControlPort) return;
         // Extract port information
 		Type portType= port.RuntimeType;
         iCS_EditorObject parent= port.Parent;

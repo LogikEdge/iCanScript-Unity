@@ -42,7 +42,7 @@ public partial class iCS_EditorObject {
         }
         // Data ports are always on the left or right depending on
         // input/output direction.
-        if(IsDataPort) {
+        if(IsDataOrControlPort) {
             Edge= IsInputPort ? iCS_EdgeEnum.Left : iCS_EdgeEnum.Right;
             return;
         }

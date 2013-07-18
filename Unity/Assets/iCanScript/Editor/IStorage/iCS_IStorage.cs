@@ -90,7 +90,7 @@ public partial class iCS_IStorage {
         if(EditorObjects.Count > 0 && IsValid(EditorObjects[0])) {
             ForEach(obj=> {
 				// Initialize initial port values.
-				if(obj.IsInDataPort) {
+				if(obj.IsInDataOrControlPort) {
 					LoadInitialPortValueFromArchive(obj);
 				}
             });            
@@ -230,7 +230,7 @@ public partial class iCS_IStorage {
                 if(CleanupDeadPorts) {
 					bool shouldRemove= false;
 					if(obj.IsParentMuxPort) {
-						int nbOfChildren= NbOfChildren(obj, c=> c.IsInDataPort);
+						int nbOfChildren= NbOfChildren(obj, c=> c.IsInDataOrControlPort);
 						if(nbOfChildren == 1) {
 							iCS_EditorObject child= GetChildInputDataPorts(obj)[0];
 							obj.SourceId= child.SourceId;
@@ -251,9 +251,9 @@ public partial class iCS_IStorage {
 					}
                     // Cleanup disconnected typecasts.
     				if(obj.IsTypeCast) {
-						var inDataPort= FindInChildren(obj, c=> c.IsInDataPort);
+						var inDataPort= FindInChildren(obj, c=> c.IsInDataOrControlPort);
                         if(inDataPort.Source == null &&
-                           FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataPort)) == null) {
+                           FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataOrControlPort)) == null) {
                            DestroyInstanceInternal(obj);
                            modified= true;
                         }
@@ -268,7 +268,7 @@ public partial class iCS_IStorage {
         Storage.ClearUnityObjects();
         ForEach(
             obj=> {
-                if(obj.IsInDataPort && obj.SourceId == -1 && obj.InitialValue != null) {
+                if(obj.IsInDataOrControlPort && obj.SourceId == -1 && obj.InitialValue != null) {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
@@ -311,7 +311,7 @@ public partial class iCS_IStorage {
         srcObj.ForEachChild(
             child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalAnchorPosition, xlat)
         );
-		if(newObj.IsInDataPort) {
+		if(newObj.IsInDataOrControlPort) {
 			LoadInitialPortValueFromArchive(this[id]);
 		}
         return newObj;

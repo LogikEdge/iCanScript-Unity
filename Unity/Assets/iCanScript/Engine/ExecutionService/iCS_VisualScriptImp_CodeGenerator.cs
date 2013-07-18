@@ -433,7 +433,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 		foreach(var port in EngineObjects) {
 			if(port == null) continue;
 			if(port.ParentId != nodeId) continue;
-			if(!port.IsDataPort) continue;
+			if(!port.IsDataOrControlPort) continue;
 			ports.Add(port);
 		}
 		// Sort child ports according to index.

@@ -34,7 +34,7 @@ public partial class iCS_IStorage {
 		return result;
 	}
     public iCS_EditorObject FindThisInputPort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsInDataPort && c.Name == iCS_Strings.InstanceObjectName);
+        return FindInChildren(node, c=> c.IsInDataOrControlPort && c.Name == iCS_Strings.InstanceObjectName);
     }
     // ----------------------------------------------------------------------
     public static iCS_EditorObject[] SortPortsOnIndex(iCS_EditorObject[] lst) {

@@ -146,7 +146,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.C: {  // Connect bookmark and selected port.
-                if(myBookmark != null && myBookmark.IsDataPort && SelectedObject != null && SelectedObject.IsDataPort) {
+                if(myBookmark != null && myBookmark.IsDataOrControlPort && SelectedObject != null && SelectedObject.IsDataOrControlPort) {
                     VerifyNewConnection(myBookmark, SelectedObject);
                 }
                 Event.current.Use();

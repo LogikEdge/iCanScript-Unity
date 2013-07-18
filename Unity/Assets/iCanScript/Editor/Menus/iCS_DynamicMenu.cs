@@ -187,7 +187,7 @@ public class iCS_DynamicMenu {
             }
         }
         // Get compatible functions.
-        if(selectedObject.IsDataPort) {
+        if(selectedObject.IsDataOrControlPort) {
             List<iCS_MethodBaseInfo> functionMenu= null;
             if(selectedObject.IsInputPort) {
                 functionMenu= iCS_LibraryDatabase.BuildMenu(null, selectedObject.RuntimeType);

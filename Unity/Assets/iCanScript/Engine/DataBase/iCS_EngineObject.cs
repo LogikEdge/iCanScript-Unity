@@ -97,7 +97,7 @@ public class iCS_EngineObject {
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
         LocalAnchorPosition= Vector2.zero;
-        if(IsDataPort) {
+        if(IsDataOrControlPort) {
             Edge= IsInputPort ? (IsEnablePort ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left) : iCS_EdgeEnum.Right;
         }
     }
@@ -128,7 +128,7 @@ public class iCS_EngineObject {
 		// Port
         instance.Edge= toClone.Edge;
         instance.PortIndex= toClone.PortIndex;
-        if(instance.IsInDataPort && toClone.SourceId == -1 && !iCS_Types.IsA<UnityEngine.Object>(toClone.RuntimeType)) {
+        if(instance.IsInDataOrControlPort && toClone.SourceId == -1 && !iCS_Types.IsA<UnityEngine.Object>(toClone.RuntimeType)) {
             instance.InitialValueArchive= toClone.InitialValueArchive;
         }
         return instance;
@@ -181,7 +181,7 @@ public class iCS_EngineObject {
     public bool IsTypeCast              { get { return iCS_ObjectType.IsTypeCast(this); }}
     public bool IsMessage               { get { return iCS_ObjectType.IsMessage(this); }}
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
-    public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
+    public bool IsDataOrControlPort              { get { return iCS_ObjectType.IsDataOrControlPort(this); }}
     public bool IsControlPort           { get { return iCS_ObjectType.IsControlPort(this); }}
     public bool IsFixDataPort          	{ get { return iCS_ObjectType.IsFixDataPort(this); }}
     public bool IsDynamicDataPort       { get { return iCS_ObjectType.IsDynamicDataPort(this); }}
@@ -200,8 +200,8 @@ public class iCS_EngineObject {
     public bool IsOutProposedDataPort       { get { return iCS_ObjectType.IsOutProposedDataPort(this); }}
     public bool IsInStatePort           { get { return iCS_ObjectType.IsInStatePort(this); }}
     public bool IsOutStatePort          { get { return iCS_ObjectType.IsOutStatePort(this); }}
-    public bool IsInDataPort            { get { return iCS_ObjectType.IsInDataPort(this); }}
-    public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
+    public bool IsInDataOrControlPort            { get { return iCS_ObjectType.IsInDataOrControlPort(this); }}
+    public bool IsOutDataOrControlPort           { get { return iCS_ObjectType.IsOutDataOrControlPort(this); }}
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
     public bool IsObjectInstance        { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
@@ -276,7 +276,7 @@ public class iCS_EngineObject {
 		foreach(var port in engineObjects) {
 			if(port == null) continue;
 			if(port.ParentId != nodeId) continue;
-			if(!port.IsDataPort) continue;
+			if(!port.IsDataOrControlPort) continue;
 			if(port.IsEnablePort) continue;
 			ports.Add(port);
 		}

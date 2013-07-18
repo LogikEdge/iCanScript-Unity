@@ -28,11 +28,11 @@ public partial class iCS_EditorObject {
     public bool IsEndPort                   { get { return Storage.IsEndPort(EngineObject); }}
     public bool IsRelayPort                 { get { return Storage.IsRelayPort(EngineObject); }}
     
-    public bool IsDataPort                  { get { return EngineObject.IsDataPort; }}
-    public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
-    public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
+    public bool IsDataOrControlPort                  { get { return EngineObject.IsDataOrControlPort; }}
+    public bool IsInDataOrControlPort                { get { return EngineObject.IsInDataOrControlPort; }}
+    public bool IsOutDataOrControlPort               { get { return EngineObject.IsOutDataOrControlPort; }}
 
-    public bool IsKindOfPackagePort         { get { return IsDataPort && ParentNode.IsKindOfPackage; }}
+    public bool IsKindOfPackagePort         { get { return IsDataOrControlPort && ParentNode.IsKindOfPackage; }}
 
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}

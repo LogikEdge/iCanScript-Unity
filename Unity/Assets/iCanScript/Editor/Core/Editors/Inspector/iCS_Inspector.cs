@@ -122,7 +122,7 @@ public class iCS_Inspector : Editor {
                     myAbortRepaint= true;
                     myPreviousSelectedObject= mySelectedObject;
                 }
-                if(mySelectedObject != null && mySelectedObject.IsDataPort) {
+                if(mySelectedObject != null && mySelectedObject.IsDataOrControlPort) {
                     if(myPreviousPortSourceId != mySelectedObject.SourceId) {
                         myAbortRepaint= true;
                         myPreviousPortSourceId= mySelectedObject.SourceId;
@@ -231,8 +231,8 @@ public class iCS_Inspector : Editor {
         List<iCS_EditorObject> outPorts= new List<iCS_EditorObject>();
         myStorage.ForEachChild(node,
             child=> {
-                if(child.IsInDataPort)  inPorts.Add(child);
-                if(child.IsOutDataPort) outPorts.Add(child);
+                if(child.IsInDataOrControlPort)  inPorts.Add(child);
+                if(child.IsOutDataOrControlPort) outPorts.Add(child);
             }
         );
 

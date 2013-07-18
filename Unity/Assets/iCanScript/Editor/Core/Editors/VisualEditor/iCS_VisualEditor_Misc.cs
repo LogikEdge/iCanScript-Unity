@@ -32,11 +32,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     void RotateSelectedMuxPort() {
-		if(SelectedObject == null || !SelectedObject.IsDataPort) return;
+		if(SelectedObject == null || !SelectedObject.IsDataOrControlPort) return;
 		if(SelectedObject.IsParentMuxPort) {
 			IStorage.UntilMatchingChild(SelectedObject, 
 				c=> {
-					if(c.IsDataPort) {
+					if(c.IsDataOrControlPort) {
 						SelectedObject= c;
 						return true;
 					}
@@ -46,7 +46,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			return;
 		}
 		iCS_EditorObject parentMuxPort= SelectedObject.Parent;
-		if(!parentMuxPort.IsDataPort) return;
+		if(!parentMuxPort.IsDataOrControlPort) return;
 		bool takeNext= false;
 		bool found= IStorage.UntilMatchingChild(parentMuxPort,
 			c=> {
@@ -68,7 +68,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(overlappingPort == null) return false;
 
         // Only data ports can be connected together.
-        if(!DragFixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
+        if(!DragFixPort.IsDataOrControlPort || !overlappingPort.IsDataOrControlPort) return false;
         // Destroy drag port since it is not needed anymore.
         IStorage.DestroyInstance(DragObject);
         DragObject= null;
@@ -77,7 +77,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject overlappingPort) {
         // Only data ports can be connected together.
-        if(!fixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
+        if(!fixPort.IsDataOrControlPort || !overlappingPort.IsDataOrControlPort) return false;
         iCS_EditorObject portParent= fixPort.Parent;
         iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
         if(overlappingPort.IsOutputPort && (overlappingPortParent.IsState || overlappingPortParent.IsStateChart)) {
@@ -155,7 +155,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!VerifyConnectionTypes(stateMuxPort, fixPort, out conversion)) return;
 		var source= stateMuxPort.Source;
 		// Simply connect a disconnected mux state port.
-		if(source == null && IStorage.NbOfChildren(stateMuxPort, c=> c.IsDataPort) == 0) {
+		if(source == null && IStorage.NbOfChildren(stateMuxPort, c=> c.IsDataOrControlPort) == 0) {
 			SetNewDataConnection(stateMuxPort, fixPort, conversion);
 			return;
 		}
@@ -336,7 +336,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	void RebuildConnectionsFor(iCS_EditorObject node) {
 		node.ForEachChildPort(
 			p=> {
-			    if(p.IsDataPort) {
+			    if(p.IsDataOrControlPort) {
     				var srcEndPoint= p.SourceEndPort;
     				foreach(var dep in p.DestinationEndPoints) {
     					RebuildDataConnection(srcEndPoint, dep);
@@ -523,14 +523,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case iCS_ObjectTypeEnum.TypeCast: {
                 IStorage.ForEachChildPort(node,
                     port=> {
-                        if(port.IsInDataPort) {
+                        if(port.IsInDataOrControlPort) {
                             iCS_EditorObject sourcePort= RemoveConnection(port);
                             // Rebuild new connection.
                             if(sourcePort != port) {
                                 SetNewDataConnection(port, sourcePort);
                             }
                         }
-                        if(port.IsOutDataPort) {
+                        if(port.IsOutDataOrControlPort) {
 							// FIXME: Removing & recreating ports looses user position.
                             iCS_EditorObject[] allInPorts= FindAllConnectedInDataPorts(port);
                             foreach(var inPort in allInPorts) {
@@ -583,7 +583,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(outPort == null) return;
         iCS_EditorObject[] connectedPorts= outPort.Destinations;
         foreach(var port in connectedPorts) {
-            if(port.IsDataPort) {
+            if(port.IsDataOrControlPort) {
                 if(port.IsKindOfPackagePort) {
                     FillConnectedInDataPorts(port, result);
                 } else {
