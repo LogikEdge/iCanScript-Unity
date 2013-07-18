@@ -276,8 +276,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     }
                     
                     // Data ports.
-                    case iCS_ObjectTypeEnum.OutDynamicPort:
-                    case iCS_ObjectTypeEnum.OutFixPort: {
+                    case iCS_ObjectTypeEnum.OutDynamicDataPort:
+                    case iCS_ObjectTypeEnum.OutFixDataPort: {
 						if(GetParentNode(port).IsKindOfPackage) break;
                         object parentObj= myRuntimeNodes[port.ParentId];
                         Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction>(parentObj,
@@ -290,8 +290,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         );
                         break;
                     }
-                    case iCS_ObjectTypeEnum.InDynamicPort:
-                    case iCS_ObjectTypeEnum.InFixPort:
+                    case iCS_ObjectTypeEnum.InDynamicDataPort:
+                    case iCS_ObjectTypeEnum.InFixDataPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
 						if(!(port.IsInputPort && IsEndPort(port))) {
 						    break;
@@ -368,7 +368,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     guardModule= edObj;
                 }
             }
-            if(edObj.IsOutFixPort && edObj.RuntimeType == typeof(bool) && edObj.Name == "trigger") {
+            if(edObj.IsOutFixDataPort && edObj.RuntimeType == typeof(bool) && edObj.Name == "trigger") {
                 iCS_EngineObject gModule= GetParent(edObj);
                 if(gModule.IsTransitionGuard && GetParent(gModule) == transitionModule) {
                     triggerPort= edObj;

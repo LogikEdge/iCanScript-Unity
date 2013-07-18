@@ -192,12 +192,12 @@ public class iCS_EngineObject {
     public bool IsOutTriggerPort        { get { return iCS_ObjectType.IsOutTriggerPort(this); }}
     public bool IsOutputPort            { get { return iCS_ObjectType.IsOutputPort(this); }}
     public bool IsInputPort             { get { return iCS_ObjectType.IsInputPort(this); }}
-    public bool IsInFixPort             { get { return iCS_ObjectType.IsInFixPort(this); }}
-    public bool IsOutFixPort            { get { return iCS_ObjectType.IsOutFixPort(this); }}
-    public bool IsInDynamicPort         { get { return iCS_ObjectType.IsInDynamicPort(this); }}
-    public bool IsOutDynamicPort        { get { return iCS_ObjectType.IsOutDynamicPort(this); }}
-    public bool IsInProposedPort        { get { return iCS_ObjectType.IsInProposedPort(this); }}
-    public bool IsOutProposedPort       { get { return iCS_ObjectType.IsOutProposedPort(this); }}
+    public bool IsInFixDataPort             { get { return iCS_ObjectType.IsInFixDataPort(this); }}
+    public bool IsOutFixDataPort            { get { return iCS_ObjectType.IsOutFixDataPort(this); }}
+    public bool IsInDynamicDataPort         { get { return iCS_ObjectType.IsInDynamicDataPort(this); }}
+    public bool IsOutDynamicDataPort        { get { return iCS_ObjectType.IsOutDynamicDataPort(this); }}
+    public bool IsInProposedDataPort        { get { return iCS_ObjectType.IsInProposedDataPort(this); }}
+    public bool IsOutProposedDataPort       { get { return iCS_ObjectType.IsOutProposedDataPort(this); }}
     public bool IsInStatePort           { get { return iCS_ObjectType.IsInStatePort(this); }}
     public bool IsOutStatePort          { get { return iCS_ObjectType.IsOutStatePort(this); }}
     public bool IsInDataPort            { get { return iCS_ObjectType.IsInDataPort(this); }}

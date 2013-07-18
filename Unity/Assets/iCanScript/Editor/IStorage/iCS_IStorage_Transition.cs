@@ -41,7 +41,7 @@ public partial class iCS_IStorage {
             Debug.LogWarning("Missing transition guard module icon: "+iCS_EditorStrings.TransitionTriggerIcon);
         }
         guard.Tooltip= "The guard function must evaluate to 'true' for the transition to fire.";
-        iCS_EditorObject guardPort= CreatePort("trigger", guard.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutFixPort);
+        iCS_EditorObject guardPort= CreatePort("trigger", guard.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutFixDataPort);
         guardPort.IsNameEditable= false;
         SetSource(fromStatePort, guardPort);
         Iconize(guard);

@@ -31,12 +31,14 @@ public enum iCS_ObjectTypeEnum {
     // Start of Port object type
     PortStart= 300,
 
-    // Data ports
-    InFixPort= 300,      OutFixPort,
-    InDynamicPort,       OutDynamicPort,
+    // Data Flow ports
+    InFixDataPort= 300,  OutFixDataPort,
+    InDynamicDataPort,   OutDynamicDataPort,
     InStaticModulePort_obsolete,  OutStaticModulePort_obsolete,
+    InProposedDataPort,  OutProposedDataPort,
+
+    // Control ports
     EnablePort,			 OutTriggerPort,
-    InProposedPort,      OutProposedPort,
 
 	// State ports
     InStatePort= 400,    OutStatePort,
@@ -110,26 +112,26 @@ public static class iCS_ObjectType {
     public static bool IsOutTransitionPort    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutTransitionPort; }
 
     // Fix Data Flow Ports
-    public static bool IsFixPort			  (iCS_EngineObject obj) { return IsInFixPort(obj) || IsOutFixPort(obj); }
-    public static bool IsInFixPort            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFixPort; }
-    public static bool IsOutFixPort           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFixPort; }
+    public static bool IsFixPort			  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsOutFixDataPort(obj); }
+    public static bool IsInFixDataPort        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFixDataPort; }
+    public static bool IsOutFixDataPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFixDataPort; }
 
     // Dynamic Data Flow Ports 
-	public static bool IsDynamicPort		  (iCS_EngineObject obj) { return IsInDynamicPort(obj) || IsOutDynamicPort(obj); }
-    public static bool IsInDynamicPort        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InDynamicPort; }
-    public static bool IsOutDynamicPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutDynamicPort; }
+	public static bool IsDynamicPort		  (iCS_EngineObject obj) { return IsInDynamicDataPort(obj) || IsOutDynamicDataPort(obj); }
+    public static bool IsInDynamicDataPort    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InDynamicDataPort; }
+    public static bool IsOutDynamicDataPort   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutDynamicDataPort; }
 
     // Proposed Data Flow Ports
-	public static bool IsProposedPort         (iCS_EngineObject obj) { return IsInProposedPort(obj) || IsOutProposedPort(obj); }
-    public static bool IsInProposedPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InProposedPort; }
-    public static bool IsOutProposedPort      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutProposedPort; }
+	public static bool IsProposedPort         (iCS_EngineObject obj) { return IsInProposedDataPort(obj) || IsOutProposedDataPort(obj); }
+    public static bool IsInProposedDataPort   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InProposedDataPort; }
+    public static bool IsOutProposedDataPort  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutProposedDataPort; }
 
     // Data Flow Ports                                                                          
     public static bool IsDataPort             (iCS_EngineObject obj) { return IsInDataPort(obj) || IsOutDataPort(obj); }
-    public static bool IsInDataPort			  (iCS_EngineObject obj) { return IsInFixPort(obj) || IsInDynamicPort(obj) ||
-																			  IsInProposedPort(obj); }
-    public static bool IsOutDataPort		  (iCS_EngineObject obj) { return IsOutFixPort(obj) || IsOutDynamicPort(obj) ||
-		                                                                      IsOutProposedPort(obj) || IsMuxPort(obj); }
+    public static bool IsInDataPort			  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsInDynamicDataPort(obj) ||
+																			  IsInProposedDataPort(obj); }
+    public static bool IsOutDataPort		  (iCS_EngineObject obj) { return IsOutFixDataPort(obj) || IsOutDynamicDataPort(obj) ||
+		                                                                      IsOutProposedDataPort(obj) || IsMuxPort(obj); }
 
     // Control Ports
     public static bool IsControlPort          (iCS_EngineObject obj) { return IsEnablePort(obj) || IsOutTriggerPort(obj); }

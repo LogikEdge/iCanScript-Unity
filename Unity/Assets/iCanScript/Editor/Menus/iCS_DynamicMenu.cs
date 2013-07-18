@@ -325,11 +325,11 @@ public class iCS_DynamicMenu {
 				var grandParentRect= grandParent.LayoutRect;
 				var portPosition= selectedObject.LayoutPosition;
                 if(selectedObject.IsInputPort) {
-                    iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.InDynamicPort);
+                    iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
                     storage.SetSource(selectedObject, port);
                     port.SetAnchorAndLayoutPosition(new Vector2(grandParentRect.x, portPosition.y));
                 } else {
-                    iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.OutDynamicPort);
+                    iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
                     storage.SetSource(port, selectedObject);
                     port.SetAnchorAndLayoutPosition(new Vector2(grandParentRect.xMax, portPosition.y));
                 }

@@ -39,10 +39,10 @@ public partial class iCS_IStorage {
 				}
 				// Convert StaticModulePort to FixPort.
 				if(n.ObjectType == iCS_ObjectTypeEnum.InStaticModulePort_obsolete) {
-					n.ObjectType= iCS_ObjectTypeEnum.InFixPort;
+					n.ObjectType= iCS_ObjectTypeEnum.InFixDataPort;
 				}
 				if(n.ObjectType == iCS_ObjectTypeEnum.OutStaticModulePort_obsolete) {
-					n.ObjectType= iCS_ObjectTypeEnum.OutFixPort;
+					n.ObjectType= iCS_ObjectTypeEnum.OutFixDataPort;
 				}
 			}
 		}

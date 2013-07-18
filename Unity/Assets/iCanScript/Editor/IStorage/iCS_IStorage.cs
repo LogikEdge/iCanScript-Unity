@@ -234,7 +234,7 @@ public partial class iCS_IStorage {
 						if(nbOfChildren == 1) {
 							iCS_EditorObject child= GetChildInputDataPorts(obj)[0];
 							obj.SourceId= child.SourceId;
-							obj.ObjectType= iCS_ObjectTypeEnum.OutDynamicPort;
+							obj.ObjectType= iCS_ObjectTypeEnum.OutDynamicDataPort;
 							DestroyInstanceInternal(child);
 						} else {
 							shouldRemove= nbOfChildren == 0 && IsPortDisconnected(obj);							
@@ -429,7 +429,7 @@ public partial class iCS_IStorage {
         for(; portIdx < desc.Parameters.Length; ++portIdx) {
             var p= desc.Parameters[portIdx];
             if(p.type != typeof(void)) {
-                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixPort : iCS_ObjectTypeEnum.InFixPort;
+                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
                 port= CreatePort(p.name, id, p.type, portType, portIdx);
 				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
@@ -440,7 +440,7 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixPort, portIdx);
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, portIdx);
 		}
         // Perform initial node layout.
         instance.Unhide();
@@ -460,7 +460,7 @@ public partial class iCS_IStorage {
         for(; portIdx < desc.Parameters.Length; ++portIdx) {
             var p= desc.Parameters[portIdx];
             if(p.type != typeof(void)) {
-                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixPort : iCS_ObjectTypeEnum.InFixPort;
+                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
                 port= CreatePort(p.name, id, p.type, portType, portIdx);
 				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
@@ -471,13 +471,13 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixPort, portIdx++);
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, portIdx++);
 		} else {
 		    ++portIdx;
 		}
 		// Create 'this' ports.
-        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixPort, portIdx++);
-        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.ClassType, iCS_ObjectTypeEnum.OutFixPort, portIdx);
+        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, portIdx++);
+        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.ClassType, iCS_ObjectTypeEnum.OutFixDataPort, portIdx);
         // Perform initial node layout.
         instance.Unhide();
         return instance;
@@ -496,7 +496,7 @@ public partial class iCS_IStorage {
         for(; portIdx < desc.Parameters.Length; ++portIdx) {
             var p= desc.Parameters[portIdx];
             if(p.type != typeof(void)) {
-                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixPort : iCS_ObjectTypeEnum.InFixPort;
+                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
                 port= CreatePort(p.name, id, p.type, portType, portIdx);
 				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
@@ -507,7 +507,7 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixPort, portIdx++);
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, portIdx++);
 		}
 		// Special case for behaviour messages.
 		if(instance.Parent.IsBehaviour) {
