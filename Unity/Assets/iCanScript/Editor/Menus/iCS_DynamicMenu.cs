@@ -27,6 +27,8 @@ public class iCS_DynamicMenu {
     const string PublishPortStr= "Publish on Module";
     const string EnablePortStr= "+ Enable Port";
     const string OutTriggerPortStr= "+ Out Trigger Port";
+	const string ConvertToDataPortStr= "Convert To Data Port";
+	const string ConvertToMuxPortStr= "Convert To Mux Port";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -177,17 +179,21 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void PortMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-		/*
-			TODO : Add use as library filter option.
-		*/
-        iCS_MenuContext[] menu= new iCS_MenuContext[0];
+        iCS_MenuContext[] menu= new iCS_MenuContext[2];
+		if(selectedObject.IsMuxPort) {
+			menu[0]= new iCS_MenuContext(ConvertToDataPortStr);
+		} else {
+			menu[0]= new iCS_MenuContext(ConvertToMuxPortStr);
+		}
+		menu[1]= new iCS_MenuContext(SeparatorStr);
         // Allow to publish port if the grand-parent is a module.
         iCS_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
         iCS_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
         if(grandParent != null && grandParent.IsKindOfPackage) {
             if(!(selectedObject.IsInputPort && selectedObject.IsSourceValid)) {
-                menu= new iCS_MenuContext[1];
-				menu[0]= new iCS_MenuContext(PublishPortStr);                
+				int len= menu.Length;
+                Array.Resize(ref menu, len+1);
+				menu[len]= new iCS_MenuContext(PublishPortStr);                
             }
         }
         // Get compatible functions.
@@ -322,6 +328,8 @@ public class iCS_DynamicMenu {
             case DeleteStr:                 ProcessDestroyObject(context); break;
             case EnablePortStr:             ProcessCreateEnablePort(context); break;
             case OutTriggerPortStr:         ProcessCreateOutTriggerPort(context); break;
+			case ConvertToDataPortStr:		ProcessConvertToDataPort(context); break;
+			case ConvertToMuxPortStr:		ProcessConvertToMuxPort(context); break;
             case PublishPortStr: {
                 iCS_EditorObject parent= selectedObject.Parent;
                 iCS_EditorObject grandParent= parent.Parent;
@@ -435,6 +443,14 @@ public class iCS_DynamicMenu {
 		var storage= context.Storage;
 		storage.CreateOutTriggerPort(parent.InstanceId);        
     }
+    // -------------------------------------------------------------------------
+	static void ProcessConvertToDataPort(iCS_MenuContext context) {
+		Debug.Log("iCanScript: Need to implement convert to data port");
+	}
+    // -------------------------------------------------------------------------
+	static void ProcessConvertToMuxPort(iCS_MenuContext context) {
+		Debug.Log("iCanScript: Need to implement convert to mux port");
+	}
     
     // ======================================================================
     // Creation Utilities
