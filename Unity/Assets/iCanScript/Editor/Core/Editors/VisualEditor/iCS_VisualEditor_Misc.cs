@@ -20,7 +20,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
-		if(SelectedObject != null && newSelected != null && newSelected.IsParentMuxPort && IStorage.GetParentMuxPort(SelectedObject) == newSelected) {
+		if(SelectedObject != null && newSelected != null && newSelected.IsOutParentMuxPort && IStorage.GetParentMuxPort(SelectedObject) == newSelected) {
 			ShouldRotateMuxPort= true;
 			return SelectedObject;
 		}
@@ -33,7 +33,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void RotateSelectedMuxPort() {
 		if(SelectedObject == null || !SelectedObject.IsDataOrControlPort) return;
-		if(SelectedObject.IsParentMuxPort) {
+		if(SelectedObject.IsOutParentMuxPort) {
 			IStorage.UntilMatchingChild(SelectedObject, 
 				c=> {
 					if(c.IsDataOrControlPort) {
@@ -161,13 +161,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		// Convert source port to child port.
 		if(source != null) {
-			var firstMuxInput= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.ChildMuxPort);
+			var firstMuxInput= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutChildMuxPort);
 			IStorage.SetSource(firstMuxInput, source);
 			IStorage.SetSource(stateMuxPort, null);
-			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.ParentMuxPort;
+			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.OutParentMuxPort;
 		}
 		// Create new mux input port.
-		var inMuxPort= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.ChildMuxPort);
+		var inMuxPort= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutChildMuxPort);
 		SetNewDataConnection(inMuxPort, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------

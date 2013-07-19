@@ -51,7 +51,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortName(iCS_EditorObject port) {
 //        if(!port.IsVisibleInLayout) return false;
-        if(port.IsChildMuxPort) return false;
+        if(port.IsOutChildMuxPort) return false;
         if(port.IsStatePort || port.IsTransitionPort) return false;
         if(!ShouldShowLabel()) return false;
         if(!port.IsVisibleOnDisplay) return false;
@@ -118,7 +118,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortValue(iCS_EditorObject port) {
-        if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
+        if(!port.IsDataOrControlPort || port.IsOutChildMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if((port.IsInputPort || port.IsKindOfPackagePort) && port.SourceId != -1) {

@@ -391,7 +391,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 									}
                                 }
 								// Cleanup child Mux port if it is disconnected.
-								if(DragOriginalPort.IsChildMuxPort && DragOriginalPort.Source == null) {
+								if(DragOriginalPort.IsOutChildMuxPort && DragOriginalPort.Source == null) {
 									IStorage.DestroyInstance(DragOriginalPort);
 								}
                             }

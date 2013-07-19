@@ -38,7 +38,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 						continue;				
 					}
 					// A port cannot be a parent.
-					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsParentMuxPort) {
+					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsOutParentMuxPort) {
 						sanityNeeded= true;
 						EngineObjects[i].Reset();
 						Debug.Log("iCanScript Sanity: Port: "+parentId+" is the parent of: "+i);
@@ -102,8 +102,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                 if(myRuntimeNodes[node.InstanceId] != null) continue;
                 int priority= node.ExecutionPriority;
 				// Special case for active ports.
-				if(node.IsParentMuxPort) {
-					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(this, node.InstanceId, priority, GetNbOfChildMuxPorts(node));
+				if(node.IsOutParentMuxPort) {
+					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(this, node.InstanceId, priority, GetNbOfOutChildMuxPorts(node));
 					continue;
 				}
                 if(node.IsNode) {
@@ -246,7 +246,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     case iCS_ObjectTypeEnum.OutStatePort: {
                         break;
                     }
-					case iCS_ObjectTypeEnum.ChildMuxPort: {
+					case iCS_ObjectTypeEnum.OutChildMuxPort: {
 						var rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_ISignature;
 						if(rtMuxPort == null) break;
                         iCS_EngineObject sourcePort= GetSourceEndPort(port);
@@ -402,10 +402,10 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         return node.GetFieldInfo();
 	}
 	// -------------------------------------------------------------------------
-    int GetNbOfChildMuxPorts(iCS_EngineObject parentMuxPort) {
+    int GetNbOfOutChildMuxPorts(iCS_EngineObject parentMuxPort) {
         int nbOfChildMuxPorts= 0;
 		foreach(var port in EngineObjects) {
-            if(port != null && port.IsChildMuxPort && port.ParentId == parentMuxPort.InstanceId) {
+            if(port != null && port.IsOutChildMuxPort && port.ParentId == parentMuxPort.InstanceId) {
                 ++nbOfChildMuxPorts;
             }
 	    }

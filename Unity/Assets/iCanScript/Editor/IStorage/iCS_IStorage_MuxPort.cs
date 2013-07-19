@@ -4,8 +4,8 @@ using System.Collections;
 public partial class iCS_IStorage {
 	void CleanupMuxPort(iCS_EditorObject muxPort) {
 		// Make certain we have the parent mux port.
-		while(muxPort != null && muxPort.IsPort && !muxPort.IsParentMuxPort) muxPort= muxPort.Parent;
-		if(!muxPort.IsParentMuxPort) return;
+		while(muxPort != null && muxPort.IsPort && !muxPort.IsOutParentMuxPort) muxPort= muxPort.Parent;
+		if(!muxPort.IsOutParentMuxPort) return;
 		// Determine # of child mux ports.
 		int nbChildPorts= 0;
 		iCS_EditorObject aChild= null;
