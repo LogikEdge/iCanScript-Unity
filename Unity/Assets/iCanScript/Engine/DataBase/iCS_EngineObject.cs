@@ -227,7 +227,11 @@ public class iCS_EngineObject {
 	public bool	IsOutMuxPort			{ get { return iCS_ObjectType.IsOutMuxPort(this); }}
 	public bool IsOutParentMuxPort		{ get { return iCS_ObjectType.IsOutParentMuxPort(this); }}
 	public bool IsOutChildMuxPort		{ get { return iCS_ObjectType.IsOutChildMuxPort(this); }}
-    
+    // Instance Ports
+	public bool IsInstancePort			{ get { return iCS_ObjectType.IsInstancePort(this); }}
+	public bool IsInInstancePort		{ get { return iCS_ObjectType.IsInInstancePort(this); }}
+	public bool IsOutInstancePort		{ get { return iCS_ObjectType.IsOutInstancePort(this); }}
+	
     // ======================================================================
     // Feature support
     // ----------------------------------------------------------------------

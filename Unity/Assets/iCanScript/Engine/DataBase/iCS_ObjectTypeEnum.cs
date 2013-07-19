@@ -48,6 +48,9 @@ public enum iCS_ObjectTypeEnum {
 	OutChildMuxPort= 500,   OutParentMuxPort,
 	InChildMuxPort,         InParentMuxPort,
 	
+	// Special ports.
+	InInstancePort= 550,	OutInstancePort,
+	
     // End of Port object type
     PortEnd= 999,
     
@@ -130,9 +133,11 @@ public static class iCS_ObjectType {
     // Data Flow Ports                                                                          
     public static bool IsDataPort             (iCS_EngineObject obj) { return IsInDataPort(obj) || IsOutDataPort(obj); }
     public static bool IsInDataPort			  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsInDynamicDataPort(obj) ||
-																			  IsInProposedDataPort(obj); }
+																			  IsInProposedDataPort(obj) || IsInMuxPort(obj) ||
+																			  IsInInstancePort(obj); }
     public static bool IsOutDataPort		  (iCS_EngineObject obj) { return IsOutFixDataPort(obj) || IsOutDynamicDataPort(obj) ||
-		                                                                      IsOutProposedDataPort(obj) || IsOutMuxPort(obj); }
+		                                                                      IsOutProposedDataPort(obj) || IsOutMuxPort(obj) ||
+																			  IsOutInstancePort(obj); }
 
     // Control Ports
     public static bool IsControlPort          (iCS_EngineObject obj) { return IsEnablePort(obj) || IsOutTriggerPort(obj); }
@@ -154,4 +159,9 @@ public static class iCS_ObjectType {
 	public static bool IsOutMuxPort			  (iCS_EngineObject obj) { return IsOutChildMuxPort(obj) || IsOutParentMuxPort(obj); }
 	public static bool IsOutParentMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort; }
 	public static bool IsOutChildMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutChildMuxPort; }
+
+	// Instance Ports
+	public static bool IsInstancePort		  (iCS_EngineObject obj) { return IsInInstancePort(obj) || IsOutInstancePort(obj); }
+	public static bool IsInInstancePort		  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InInstancePort; }
+	public static bool IsOutInstancePort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutInstancePort; }
 }

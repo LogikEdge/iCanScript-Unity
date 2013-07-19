@@ -71,4 +71,8 @@ public partial class iCS_EditorObject {
     public bool IsOutChildMuxPort           { get { return EngineObject.IsOutChildMuxPort; }}
     public bool IsOutParentMuxPort          { get { return EngineObject.IsOutParentMuxPort; }}
     public bool IsNestedPort                { get { var parent= Parent; return parent != null && parent.IsPort; }}
+	// Instance Ports
+	public bool IsInstancePort				{ get { return EngineObject.IsInstancePort; }}
+	public bool IsInInstancePort			{ get { return EngineObject.IsInInstancePort; }}
+	public bool IsOutInstancePort			{ get { return EngineObject.IsOutInstancePort; }}
 }
