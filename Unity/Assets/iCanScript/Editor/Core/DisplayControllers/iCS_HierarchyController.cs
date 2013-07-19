@@ -144,11 +144,23 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_EditorObject eObj) {
         if(eObj == null || !myStorage.IsIdValid(eObj.InstanceId)) return false;
+        // Don't display object instance internals.
+        var topObjectInstance= GetTopObjectInstanceNode(eObj);
+        if(topObjectInstance != null) {
+            if(topObjectInstance != eObj.Parent) return false;
+            if(eObj.IsNode) return false;
+        }
+        // Filter according to string.
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         if(eObj.Name.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
         return false;
     }
-    
+    // ---------------------------------------------------------------------------------
+    iCS_EditorObject GetTopObjectInstanceNode(iCS_EditorObject eObj) {
+        iCS_EditorObject objInstance= null;
+        eObj.ForEachParentNode(p=> { if(p.IsObjectInstance) objInstance= p; });
+        return objInstance;
+    }
 
 	// =================================================================================
     // TreeViewDataSource

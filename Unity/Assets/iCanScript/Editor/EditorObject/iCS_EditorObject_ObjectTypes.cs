@@ -7,8 +7,8 @@ using System.Collections;
 public partial class iCS_EditorObject {
     // Object Type Queries ---------------------------------------------------
     public bool IsNode                      { get { return EngineObject.IsNode; }}
-    public bool IsKindOfPackage           { get { return EngineObject.IsKindOfPackage; }}
-    public bool IsKindOfFunction                  { get { return EngineObject.IsKindOfFunction; }}
+    public bool IsKindOfPackage             { get { return EngineObject.IsKindOfPackage; }}
+    public bool IsKindOfFunction            { get { return EngineObject.IsKindOfFunction; }}
     public bool IsMessage                   { get { return EngineObject.IsMessage; }}
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
