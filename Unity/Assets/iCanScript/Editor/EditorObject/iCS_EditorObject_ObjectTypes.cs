@@ -61,6 +61,12 @@ public partial class iCS_EditorObject {
     public bool IsInDataOrControlPort       { get { return EngineObject.IsInDataOrControlPort; }}
     public bool IsOutDataOrControlPort      { get { return EngineObject.IsOutDataOrControlPort; }}
     // Mux Ports
+    public bool IsMuxPort                   { get { return EngineObject.IsMuxPort; }}
+    public bool IsChildMuxPort              { get { return EngineObject.IsChildMuxPort; }}
+    public bool IsParentMuxPort             { get { return EngineObject.IsParentMuxPort; }}
+    public bool IsInMuxPort                 { get { return EngineObject.IsInMuxPort; }}
+    public bool IsInChildMuxPort            { get { return EngineObject.IsInChildMuxPort; }}
+    public bool IsInParentMuxPort           { get { return EngineObject.IsInParentMuxPort; }}
     public bool IsOutMuxPort                { get { return EngineObject.IsOutMuxPort; }}
     public bool IsOutChildMuxPort           { get { return EngineObject.IsOutChildMuxPort; }}
     public bool IsOutParentMuxPort          { get { return EngineObject.IsOutParentMuxPort; }}

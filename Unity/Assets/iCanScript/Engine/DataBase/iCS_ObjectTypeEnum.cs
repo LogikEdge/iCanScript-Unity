@@ -145,6 +145,12 @@ public static class iCS_ObjectType {
     public static bool IsOutDataOrControlPort (iCS_EngineObject obj) { return IsOutDataPort(obj) || IsOutTriggerPort(obj); }
     
     // Mux Ports
+	public static bool IsMuxPort			  (iCS_EngineObject obj) { return IsChildMuxPort(obj) || IsParentMuxPort(obj); }
+	public static bool IsParentMuxPort	      (iCS_EngineObject obj) { return IsInParentMuxPort(obj) || IsOutParentMuxPort(obj); }
+	public static bool IsChildMuxPort	      (iCS_EngineObject obj) { return IsInChildMuxPort(obj) || IsOutChildMuxPort(obj); }
+	public static bool IsInMuxPort			  (iCS_EngineObject obj) { return IsInChildMuxPort(obj) || IsInParentMuxPort(obj); }
+	public static bool IsInParentMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InParentMuxPort; }
+	public static bool IsInChildMuxPort	      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InChildMuxPort; }
 	public static bool IsOutMuxPort			  (iCS_EngineObject obj) { return IsOutChildMuxPort(obj) || IsOutParentMuxPort(obj); }
 	public static bool IsOutParentMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort; }
 	public static bool IsOutChildMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutChildMuxPort; }

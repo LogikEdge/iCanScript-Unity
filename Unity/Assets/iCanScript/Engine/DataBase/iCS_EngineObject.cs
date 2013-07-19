@@ -218,6 +218,12 @@ public class iCS_EngineObject {
     public bool IsInDataOrControlPort   { get { return iCS_ObjectType.IsInDataOrControlPort(this); }}
     public bool IsOutDataOrControlPort  { get { return iCS_ObjectType.IsOutDataOrControlPort(this); }}
     // Mux Ports
+	public bool	IsMuxPort			    { get { return iCS_ObjectType.IsMuxPort(this); }}
+	public bool IsParentMuxPort		    { get { return iCS_ObjectType.IsParentMuxPort(this); }}
+	public bool IsChildMuxPort		    { get { return iCS_ObjectType.IsChildMuxPort(this); }}
+	public bool	IsInMuxPort			    { get { return iCS_ObjectType.IsInMuxPort(this); }}
+	public bool IsInParentMuxPort		{ get { return iCS_ObjectType.IsInParentMuxPort(this); }}
+	public bool IsInChildMuxPort		{ get { return iCS_ObjectType.IsInChildMuxPort(this); }}
 	public bool	IsOutMuxPort			{ get { return iCS_ObjectType.IsOutMuxPort(this); }}
 	public bool IsOutParentMuxPort		{ get { return iCS_ObjectType.IsOutParentMuxPort(this); }}
 	public bool IsOutChildMuxPort		{ get { return iCS_ObjectType.IsOutChildMuxPort(this); }}
