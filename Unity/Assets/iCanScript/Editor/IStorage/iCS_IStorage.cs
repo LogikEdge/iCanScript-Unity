@@ -306,7 +306,9 @@ public partial class iCS_IStorage {
         int id= destStorage.GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
-        newObj.SetAnchorAndLayoutPosition(globalPos);
+        if(newObj.IsNode) {
+            newObj.SetAnchorAndLayoutPosition(globalPos);            
+        }
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
             child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalAnchorPosition, xlat)

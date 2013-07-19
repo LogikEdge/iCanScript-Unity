@@ -571,7 +571,7 @@ public partial class iCS_Graphics {
         if(port.IsStatePort || port.IsTransitionPort) return;         
 
         // Determine if port is a static port (a port that feeds information into the graph).
-        bool isStaticPort= port.IsInDataOrControlPort && port.Source == null;
+//        bool isStaticPort= port.IsInDataOrControlPort && port.Source == null;
 
         // Display port name.
         if(!ShouldDisplayPortName(port)) return;
@@ -589,26 +589,26 @@ public partial class iCS_Graphics {
         			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
         		}            				
     
-                /*
-                    CHANGED: ==> Experimental <==
-                */
-    			// Bring up port editor for selected static ports.
-                object portValue= port.PortValue;
-    			if(isStaticPort && portValue != null && Scale > 0.75f) {
-    				EditorGUIUtility.LookLikeControls();
-    				if(portValueType == typeof(bool) && !port.IsEnablePort) {
-    					Vector2 togglePos= TranslateAndScale(portCenter);
-                        var savedBackgroundColor= GUI.backgroundColor;
-    					GUI.backgroundColor= portColor;
-    					GUI.changed= false;
-                        bool currentValue= (bool)portValue;
-    					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), currentValue, "");					
-                        GUI.backgroundColor= savedBackgroundColor;
-    					if(GUI.changed) {
-    						port.PortValue= newValue;
-    					}
-    				}
-    			}
+//                /*
+//                    CHANGED: ==> Experimental <==
+//                */
+//    			// Bring up port editor for selected static ports.
+//                object portValue= port.PortValue;
+//    			if(isStaticPort && portValue != null && Scale > 0.75f) {
+//    				EditorGUIUtility.LookLikeControls();
+//    				if(portValueType == typeof(bool) && !port.IsEnablePort) {
+//    					Vector2 togglePos= TranslateAndScale(portCenter);
+//                        var savedBackgroundColor= GUI.backgroundColor;
+//    					GUI.backgroundColor= portColor;
+//    					GUI.changed= false;
+//                        bool currentValue= (bool)portValue;
+//    					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), currentValue, "");					
+//                        GUI.backgroundColor= savedBackgroundColor;
+//    					if(GUI.changed) {
+//    						port.PortValue= newValue;
+//    					}
+//    				}
+//    			}
            }
        }
        // Reset GUI alpha.

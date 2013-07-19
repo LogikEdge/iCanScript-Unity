@@ -13,14 +13,14 @@ public static class iCS_PortIcons {
 	static Texture2D	myOutEndPortTemplate            = null;
 	static Texture2D	myInRelayPortTemplate  	        = null;
 	static Texture2D	myOutRelayPortTemplate  	    = null;
-	static Texture2D    myMuxPortTemplate               = null;
+	static Texture2D    myOutMuxPortTemplate            = null;
     static Texture2D    myInTriggerPortTemplate         = null;
     static Texture2D    myOutTriggerPortTemplate        = null;
 	static Texture2D	mySelectedInEndPortTemplate     = null;
 	static Texture2D	mySelectedOutEndPortTemplate    = null;
 	static Texture2D	mySelectedInRelayPortTemplate   = null;
 	static Texture2D	mySelectedOutRelayPortTemplate  = null;
-	static Texture2D    mySelectedMuxPortTemplate       = null;
+	static Texture2D    mySelectedOutMuxPortTemplate    = null;
 	static Texture2D    mySelectedInTriggerPortTemplate = null;
 	static Texture2D    mySelectedOutTriggerPortTemplate= null;
 	
@@ -29,14 +29,14 @@ public static class iCS_PortIcons {
 	static Dictionary<Color,Texture2D>	myOutEndPortIcons            = null;
 	static Dictionary<Color,Texture2D>	myInRelayPortIcons           = null;
 	static Dictionary<Color,Texture2D>	myOutRelayPortIcons          = null;
-    static Dictionary<Color,Texture2D>  myMuxPortIcons               = null;
+    static Dictionary<Color,Texture2D>  myOutMuxPortIcons            = null;
     static Dictionary<Color,Texture2D>  myInTriggerPortIcons         = null;
     static Dictionary<Color,Texture2D>  myOutTriggerPortIcons        = null;
 	static Dictionary<Color,Texture2D>	mySelectedInEndPortIcons     = null;
 	static Dictionary<Color,Texture2D>	mySelectedOutEndPortIcons    = null;
 	static Dictionary<Color,Texture2D>	mySelectedInRelayPortIcons   = null;
 	static Dictionary<Color,Texture2D>	mySelectedOutRelayPortIcons  = null;
-	static Dictionary<Color,Texture2D>	mySelectedMuxPortIcons       = null;
+	static Dictionary<Color,Texture2D>	mySelectedOutMuxPortIcons    = null;
 	static Dictionary<Color,Texture2D>	mySelectedInTriggerPortIcons = null;
 	static Dictionary<Color,Texture2D>	mySelectedOutTriggerPortIcons= null;
 
@@ -98,8 +98,8 @@ public static class iCS_PortIcons {
         float height= width*2f;
         float selectedWidth= width*iCS_EditorConfig.SelectedPortFactor;
         float selectedHeight= height*iCS_EditorConfig.SelectedPortFactor;
-		BuildMuxPortTemplate(width, height, ref myMuxPortTemplate);
-		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedMuxPortTemplate);
+		BuildMuxPortTemplate(width, height, ref myOutMuxPortTemplate);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedOutMuxPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildInRelayPortTemplate(float len, ref Texture2D template) {
@@ -282,8 +282,8 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested mux port icon.
-	public static Texture2D GetMuxPortIcon(Color typeColor) {
-		return GetPortIcon(typeColor, ref myMuxPortIcons, ref myMuxPortTemplate);
+	public static Texture2D GetOutMuxPortIcon(Color typeColor) {
+		return GetPortIcon(typeColor, ref myOutMuxPortIcons, ref myOutMuxPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested mux port icon.
@@ -319,9 +319,9 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested mux port icon.
-	public static Texture2D GetSelectedMuxPortIcon(Color typeColor) {
+	public static Texture2D GetSelectedOutMuxPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor,
-			               ref mySelectedMuxPortIcons, ref mySelectedMuxPortTemplate);
+			               ref mySelectedOutMuxPortIcons, ref mySelectedOutMuxPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a selected trigger port icon.
@@ -386,14 +386,14 @@ public static class iCS_PortIcons {
 		FlushCachedIcons(ref myOutEndPortIcons);
 		FlushCachedIcons(ref myInRelayPortIcons);
 		FlushCachedIcons(ref myOutRelayPortIcons);
-		FlushCachedIcons(ref myMuxPortIcons);
+		FlushCachedIcons(ref myOutMuxPortIcons);
 		FlushCachedIcons(ref myInTriggerPortIcons);
 		FlushCachedIcons(ref myOutTriggerPortIcons);
 		FlushCachedIcons(ref mySelectedInEndPortIcons);
 		FlushCachedIcons(ref mySelectedOutEndPortIcons);
 		FlushCachedIcons(ref mySelectedInRelayPortIcons);
 		FlushCachedIcons(ref mySelectedOutRelayPortIcons);
-		FlushCachedIcons(ref mySelectedMuxPortIcons);
+		FlushCachedIcons(ref mySelectedOutMuxPortIcons);
 		FlushCachedIcons(ref mySelectedInTriggerPortIcons);
 		FlushCachedIcons(ref mySelectedOutTriggerPortIcons);
 	}
