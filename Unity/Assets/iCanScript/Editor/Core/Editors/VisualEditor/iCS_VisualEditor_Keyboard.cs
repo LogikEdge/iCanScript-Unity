@@ -156,7 +156,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case KeyCode.Delete:
             case KeyCode.Backspace: {
                 if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
-                  !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
+                  !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard && !SelectedObject.IsFixDataPort) {
 	                iCS_EditorObject parent= SelectedObject.Parent;
 					bool changeSelected= true;
 					if(IsControlKeyDown) {

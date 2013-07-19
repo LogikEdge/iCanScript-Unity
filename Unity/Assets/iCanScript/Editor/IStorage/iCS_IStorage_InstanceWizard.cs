@@ -215,6 +215,24 @@ public partial class iCS_IStorage {
         return result;
     }
     // ----------------------------------------------------------------------
+    public iCS_EditorObject InstanceWizardGetObjectAssociatedWithPort(iCS_EditorObject port) {
+        if(port.IsInstancePort || port.IsControlPort) return port;
+        iCS_EditorObject result= port;
+        var objectInstance= port.Parent;
+        objectInstance.ForEachChildRecursiveDepthFirst(
+            c=> {
+                if(c.IsPort) {
+                    if(port.IsInputPort) {
+                        if(c.Source == port) result= c.Parent;
+                    } else {
+                        if(port.Source == c) result= c.Parent;
+                    }                    
+                }
+            }
+        );
+        return result;
+    }
+    // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardGetInputThisPort(iCS_EditorObject module) {
         iCS_EditorObject thisPort= InstanceWizardGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InFixDataPort);
         if(thisPort == null) {
@@ -305,10 +323,17 @@ public partial class iCS_IStorage {
         Iconize(func);
         return func;
     }
+    // -------------------------------------------------------------------------
     public void InstanceWizardDestroy(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
         iCS_EditorObject func= InstanceWizardFindFunction(module, desc);
         if(func != null) DestroyInstance(func);
     }
+    // -------------------------------------------------------------------------
+    public void InstanceWizardDestroy(iCS_EditorObject eObj) {
+        var toDelete= InstanceWizardGetObjectAssociatedWithPort(eObj);
+        DestroyInstance(toDelete);        
+    }
+    
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardCreateConstructor(iCS_EditorObject module, iCS_ConstructorInfo desc) {
         InstanceWizardDestroyConstructor(module);

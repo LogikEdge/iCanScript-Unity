@@ -8,7 +8,7 @@ using P=Prelude;
 //  ITERATION
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
-	// Child Queries ========================================================
+	// Queries ==============================================================
 	public bool HasChildNode() {
         foreach(var childId in Children) {
             if(IsIdValid(childId) && EditorObjects[childId].IsNode) return true;
@@ -22,6 +22,12 @@ public partial class iCS_EditorObject {
         }
 		return false;
 	}
+    // ---------------------------------------------------------------------------------
+    public iCS_EditorObject TopObjectInstanceNode() {
+        iCS_EditorObject objInstance= null;
+        ForEachParentNode(p=> { if(p.IsObjectInstance) objInstance= p; });
+        return objInstance;
+    }
 
     // Children Iterations =================================================
     public void ForEachParentNode(Action<iCS_EditorObject> fnc) {
