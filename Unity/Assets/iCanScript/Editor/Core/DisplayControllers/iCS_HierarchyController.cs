@@ -293,13 +293,13 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             }
         } else if(current.IsDataPort) {
             if(current.IsInputPort) {
-                if(current.IsEndPort) {
+                if(current.IsVisualEndPort) {
                     icon= iCS_BuiltinTextures.InEndPortIcon;                    
                 } else {
                     icon= iCS_BuiltinTextures.InRelayPortIcon;
                 }
             } else {
-                if(current.IsEndPort) {
+                if(current.IsVisualEndPort) {
                     icon= iCS_BuiltinTextures.OutEndPortIcon;                    
                 } else {
                     icon= iCS_BuiltinTextures.OutRelayPortIcon;                    
