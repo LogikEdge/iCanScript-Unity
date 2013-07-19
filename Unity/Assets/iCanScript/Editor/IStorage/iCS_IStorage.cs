@@ -527,8 +527,20 @@ public partial class iCS_IStorage {
         }
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         port.PortIndex= index;
-		port.UpdatePortEdge();
 		port.LayoutPosition= globalPos;
+		// Set initial port edge.
+		if(port.IsEnablePort) {
+			port.Edge= iCS_EdgeEnum.Top;
+		} else if(port.IsOutTriggerPort) {
+			port.Edge= iCS_EdgeEnum.Bottom;
+		} else if(port.IsInputPort) {
+			port.Edge= iCS_EdgeEnum.Left;
+		} else if(port.IsDataPort) {
+			port.Edge= iCS_EdgeEnum.Right;
+		} else {
+			port.UpdatePortEdge();			
+		}
+		port.CleanupPortEdgePosition();
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
