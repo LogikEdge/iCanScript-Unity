@@ -80,8 +80,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!fixPort.IsDataOrControlPort || !overlappingPort.IsDataOrControlPort) return false;
         iCS_EditorObject portParent= fixPort.Parent;
         iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
-        if(overlappingPort.IsOutputPort && (overlappingPortParent.IsState || overlappingPortParent.IsStateChart)) {
-			CreateStateMux(fixPort, overlappingPort);
+        if(overlappingPort.IsOutputPort && (overlappingPortParent.IsKindOfState ||
+                                            overlappingPortParent.IsPackage ||
+                                            overlappingPortParent.IsMessage)) {
+			CreateOutMuxPort(fixPort, overlappingPort);
 			return true;
 		}
         
@@ -150,24 +152,24 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return true;
     }
 	// ----------------------------------------------------------------------
-	void CreateStateMux(iCS_EditorObject fixPort, iCS_EditorObject stateMuxPort) {
+	void CreateOutMuxPort(iCS_EditorObject fixPort, iCS_EditorObject outMuxPort) {
         iCS_TypeCastInfo conversion= null;
-        if(!VerifyConnectionTypes(stateMuxPort, fixPort, out conversion)) return;
-		var source= stateMuxPort.Source;
+        if(!VerifyConnectionTypes(outMuxPort, fixPort, out conversion)) return;
+		var source= outMuxPort.Source;
 		// Simply connect a disconnected mux state port.
-		if(source == null && IStorage.NbOfChildren(stateMuxPort, c=> c.IsDataOrControlPort) == 0) {
-			SetNewDataConnection(stateMuxPort, fixPort, conversion);
+		if(source == null && IStorage.NbOfChildren(outMuxPort, c=> c.IsDataOrControlPort) == 0) {
+			SetNewDataConnection(outMuxPort, fixPort, conversion);
 			return;
 		}
 		// Convert source port to child port.
 		if(source != null) {
-			var firstMuxInput= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutChildMuxPort);
+			var firstMuxInput= IStorage.CreatePort(fixPort.Name, outMuxPort.InstanceId, outMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutChildMuxPort);
 			IStorage.SetSource(firstMuxInput, source);
-			IStorage.SetSource(stateMuxPort, null);
-			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.OutParentMuxPort;
+			IStorage.SetSource(outMuxPort, null);
+			outMuxPort.ObjectType= iCS_ObjectTypeEnum.OutParentMuxPort;
 		}
 		// Create new mux input port.
-		var inMuxPort= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutChildMuxPort);
+		var inMuxPort= IStorage.CreatePort(fixPort.Name, outMuxPort.InstanceId, outMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutChildMuxPort);
 		SetNewDataConnection(inMuxPort, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------

@@ -624,7 +624,7 @@ public partial class iCS_Graphics {
             if(port.IsOutChildMuxPort) return;
             // Data ports.
 			if(port.IsOutParentMuxPort) {
-				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
+                DrawOutMuxPort(portCenter, portColor, isSelected, port.Edge);
 			} else if(port.IsControlPort) {
 	    	    DrawControlPort(port, portCenter, portColor, isSelected);							        			    
 			} else {
@@ -727,28 +727,34 @@ public partial class iCS_Graphics {
     }
 
 	// ----------------------------------------------------------------------
-    void DrawMuxPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Color backgroundColor= Color.black;
-        radius*= Scale;
-        Vector3 center= TranslateAndScale(_center);
-        Vector3[] vectors= new Vector3[4];
-        float delta= radius*0.8f;
-
-        vectors[0]= new Vector3(center.x-delta, center.y-2f*delta, 0);
-        vectors[1]= new Vector3(center.x-delta, center.y+2f*delta, 0);
-        vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
-        vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
-        Handles.color= Color.white;
-		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, _borderColor);
-
-        delta*= 0.60f;
-        vectors[0]= new Vector3(center.x-delta, center.y-2f*delta, 0);
-        vectors[1]= new Vector3(center.x-delta, center.y+2f*delta, 0);
-        vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
-        vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
-        Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vectors, _fillColor, _fillColor);
-    }
+    void DrawOutMuxPort(Vector3 _center, Color _fillColor, bool isSelected, iCS_EdgeEnum edge) {
+		Vector3 center= TranslateAndScale(_center);
+		Texture2D portIcon= null; 
+        switch(edge) {
+            case iCS_EdgeEnum.Top:
+    		    portIcon= isSelected ? iCS_PortIcons.GetSelectedOutMuxPortTopIcon(_fillColor) :
+    		                           iCS_PortIcons.GetOutMuxPortTopIcon(_fillColor);
+    		    break;
+            case iCS_EdgeEnum.Bottom:
+    		    portIcon= isSelected ? iCS_PortIcons.GetSelectedOutMuxPortBottomIcon(_fillColor) :
+    		                           iCS_PortIcons.GetOutMuxPortBottomIcon(_fillColor);
+    		    break;
+            case iCS_EdgeEnum.Left:
+    		    portIcon= isSelected ? iCS_PortIcons.GetSelectedOutMuxPortLeftIcon(_fillColor) :
+    		                           iCS_PortIcons.GetOutMuxPortLeftIcon(_fillColor);
+    		    break;
+            case iCS_EdgeEnum.Right:
+            default:
+    		    portIcon= isSelected ? iCS_PortIcons.GetSelectedOutMuxPortRightIcon(_fillColor) :
+    		                           iCS_PortIcons.GetOutMuxPortRightIcon(_fillColor);
+    		    break;
+        }
+		Rect pos= new Rect(center.x-0.5f*portIcon.width,
+						   center.y-0.5f*portIcon.height,
+						   portIcon.width,
+						   portIcon.height);
+		GUI.DrawTexture(pos, portIcon);
+    }   
     
 	// ----------------------------------------------------------------------
     static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };

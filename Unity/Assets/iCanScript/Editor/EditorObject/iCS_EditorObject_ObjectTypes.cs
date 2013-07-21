@@ -9,8 +9,10 @@ public partial class iCS_EditorObject {
     public bool IsNode                      { get { return EngineObject.IsNode; }}
     public bool IsKindOfPackage             { get { return EngineObject.IsKindOfPackage; }}
     public bool IsKindOfFunction            { get { return EngineObject.IsKindOfFunction; }}
-    public bool IsMessage                   { get { return EngineObject.IsMessage; }}
+    public bool IsKindOfState               { get { return EngineObject.IsKindOfState; }}
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
+    public bool IsPackage                   { get { return EngineObject.IsPackage; }}
+    public bool IsMessage                   { get { return EngineObject.IsMessage; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
     public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
     public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
