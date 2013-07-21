@@ -727,6 +727,35 @@ public partial class iCS_Graphics {
     }
 
 	// ----------------------------------------------------------------------
+    void DrawInMuxPort(Vector3 _center, Color _fillColor, bool isSelected, iCS_EdgeEnum edge) {
+		Vector3 center= TranslateAndScale(_center);
+		Texture2D portIcon= null; 
+        switch(edge) {
+            case iCS_EdgeEnum.Top:
+    		    portIcon= isSelected ? iCS_PortIcons.GetSelectedInMuxPortTopIcon(_fillColor) :
+    		                           iCS_PortIcons.GetInMuxPortTopIcon(_fillColor);
+    		    break;
+            case iCS_EdgeEnum.Bottom:
+    		    portIcon= isSelected ? iCS_PortIcons.GetSelectedInMuxPortBottomIcon(_fillColor) :
+    		                           iCS_PortIcons.GetInMuxPortBottomIcon(_fillColor);
+    		    break;
+            case iCS_EdgeEnum.Left:
+    		    portIcon= isSelected ? iCS_PortIcons.GetSelectedInMuxPortLeftIcon(_fillColor) :
+    		                           iCS_PortIcons.GetInMuxPortLeftIcon(_fillColor);
+    		    break;
+            case iCS_EdgeEnum.Right:
+            default:
+    		    portIcon= isSelected ? iCS_PortIcons.GetSelectedInMuxPortRightIcon(_fillColor) :
+    		                           iCS_PortIcons.GetInMuxPortRightIcon(_fillColor);
+    		    break;
+        }
+		Rect pos= new Rect(center.x-0.5f*portIcon.width,
+						   center.y-0.5f*portIcon.height,
+						   portIcon.width,
+						   portIcon.height);
+		GUI.DrawTexture(pos, portIcon);
+    }   
+	// ----------------------------------------------------------------------
     void DrawOutMuxPort(Vector3 _center, Color _fillColor, bool isSelected, iCS_EdgeEnum edge) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= null; 

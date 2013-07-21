@@ -13,6 +13,10 @@ public static class iCS_PortIcons {
 	static Texture2D	myOutEndPortTemplate              = null;
 	static Texture2D	myInRelayPortTemplate  	          = null;
 	static Texture2D	myOutRelayPortTemplate  	      = null;
+	static Texture2D    myInMuxPortTopTemplate            = null;
+	static Texture2D    myInMuxPortBottomTemplate         = null;
+	static Texture2D    myInMuxPortLeftTemplate           = null;
+	static Texture2D    myInMuxPortRightTemplate          = null;
 	static Texture2D    myOutMuxPortTopTemplate           = null;
 	static Texture2D    myOutMuxPortBottomTemplate        = null;
 	static Texture2D    myOutMuxPortLeftTemplate          = null;
@@ -23,6 +27,10 @@ public static class iCS_PortIcons {
 	static Texture2D	mySelectedOutEndPortTemplate      = null;
 	static Texture2D	mySelectedInRelayPortTemplate     = null;
 	static Texture2D	mySelectedOutRelayPortTemplate    = null;
+	static Texture2D    mySelectedInMuxPortTopTemplate    = null;
+	static Texture2D    mySelectedInMuxPortBottomTemplate = null;
+	static Texture2D    mySelectedInMuxPortLeftTemplate   = null;
+	static Texture2D    mySelectedInMuxPortRightTemplate  = null;
 	static Texture2D    mySelectedOutMuxPortTopTemplate   = null;
 	static Texture2D    mySelectedOutMuxPortBottomTemplate= null;
 	static Texture2D    mySelectedOutMuxPortLeftTemplate  = null;
@@ -35,6 +43,10 @@ public static class iCS_PortIcons {
 	static Dictionary<Color,Texture2D>	myOutEndPortIcons              = null;
 	static Dictionary<Color,Texture2D>	myInRelayPortIcons             = null;
 	static Dictionary<Color,Texture2D>	myOutRelayPortIcons            = null;
+    static Dictionary<Color,Texture2D>  myInMuxPortTopIcons            = null;
+    static Dictionary<Color,Texture2D>  myInMuxPortBottomIcons         = null;
+    static Dictionary<Color,Texture2D>  myInMuxPortLeftIcons           = null;
+    static Dictionary<Color,Texture2D>  myInMuxPortRightIcons          = null;
     static Dictionary<Color,Texture2D>  myOutMuxPortTopIcons           = null;
     static Dictionary<Color,Texture2D>  myOutMuxPortBottomIcons        = null;
     static Dictionary<Color,Texture2D>  myOutMuxPortLeftIcons          = null;
@@ -45,6 +57,10 @@ public static class iCS_PortIcons {
 	static Dictionary<Color,Texture2D>	mySelectedOutEndPortIcons      = null;
 	static Dictionary<Color,Texture2D>	mySelectedInRelayPortIcons     = null;
 	static Dictionary<Color,Texture2D>	mySelectedOutRelayPortIcons    = null;
+	static Dictionary<Color,Texture2D>	mySelectedInMuxPortTopIcons    = null;
+	static Dictionary<Color,Texture2D>	mySelectedInMuxPortBottomIcons = null;
+	static Dictionary<Color,Texture2D>	mySelectedInMuxPortLeftIcons   = null;
+	static Dictionary<Color,Texture2D>	mySelectedInMuxPortRightIcons  = null;
 	static Dictionary<Color,Texture2D>	mySelectedOutMuxPortTopIcons   = null;
 	static Dictionary<Color,Texture2D>	mySelectedOutMuxPortBottomIcons= null;
 	static Dictionary<Color,Texture2D>	mySelectedOutMuxPortLeftIcons  = null;
@@ -110,14 +126,22 @@ public static class iCS_PortIcons {
         float height= width*2f;
         float selectedWidth= width*iCS_EditorConfig.SelectedPortFactor;
         float selectedHeight= height*iCS_EditorConfig.SelectedPortFactor;
-		BuildOutMuxPortTemplate(width, height, ref myOutMuxPortTopTemplate, 270f);
-		BuildOutMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedOutMuxPortTopTemplate, 270f);
-		BuildOutMuxPortTemplate(width, height, ref myOutMuxPortBottomTemplate, 90f);
-		BuildOutMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedOutMuxPortBottomTemplate, 90f);
-		BuildOutMuxPortTemplate(width, height, ref myOutMuxPortLeftTemplate, 180f);
-		BuildOutMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedOutMuxPortLeftTemplate, 180f);
-		BuildOutMuxPortTemplate(width, height, ref myOutMuxPortRightTemplate, 0f);
-		BuildOutMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedOutMuxPortRightTemplate, 0f);
+		BuildMuxPortTemplate(width, height, ref myInMuxPortTopTemplate, true, 270f);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedInMuxPortTopTemplate, true, 270f);
+		BuildMuxPortTemplate(width, height, ref myInMuxPortBottomTemplate, true, 90f);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedInMuxPortBottomTemplate, true, 90f);
+		BuildMuxPortTemplate(width, height, ref myInMuxPortLeftTemplate, true, 180f);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedInMuxPortLeftTemplate, true, 180f);
+		BuildMuxPortTemplate(width, height, ref myInMuxPortRightTemplate, true, 0f);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedInMuxPortRightTemplate, true, 0f);
+		BuildMuxPortTemplate(width, height, ref myOutMuxPortTopTemplate, false, 270f);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedOutMuxPortTopTemplate, false, 270f);
+		BuildMuxPortTemplate(width, height, ref myOutMuxPortBottomTemplate, false, 90f);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedOutMuxPortBottomTemplate, false, 90f);
+		BuildMuxPortTemplate(width, height, ref myOutMuxPortLeftTemplate, false, 180f);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedOutMuxPortLeftTemplate, false, 180f);
+		BuildMuxPortTemplate(width, height, ref myOutMuxPortRightTemplate, false, 0f);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedOutMuxPortRightTemplate, false, 0f);
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildInRelayPortTemplate(float len, ref Texture2D template) {
@@ -216,22 +240,39 @@ public static class iCS_PortIcons {
         iCS_TextureUtil.DrawFilledCircle(ref texture, innerRadius, center, Color.red);
 	}
 	// ----------------------------------------------------------------------
-	public static void BuildOutMuxPortTemplate(float width, float height, ref Texture2D texture, float rotation= 0f) {
+	public static void BuildMuxPortTemplate(float width, float height, ref Texture2D texture, bool isInPort, float rotation= 0f) {
         // Compute texture size
         Vector2[] muxPolygon= null;
         int textureWidth= (int)(width+3f);
         int textureHeight= (int)(height+3f);
         if(Math3D.IsEqual(rotation, 0f)) {
-            muxPolygon= myMuxPortPolygon;
+            if(isInPort) {
+                muxPolygon= Math3D.FlipPolygonVertically(myMuxPortPolygon, 0f);
+            } else {
+                muxPolygon= myMuxPortPolygon;                
+            }
         } else if(Math3D.IsEqual(rotation, 90f)) {
-            muxPolygon= Math3D.Rotate90DegreesPolygon(myMuxPortPolygon);
+            if(isInPort) {
+                muxPolygon= Math3D.Rotate90DegreesPolygon(myMuxPortPolygon);
+                muxPolygon= Math3D.FlipPolygonHorizontally(muxPolygon, 0f);
+            } else {
+                muxPolygon= Math3D.Rotate90DegreesPolygon(myMuxPortPolygon);                
+            }
             textureWidth= (int)(height+3f);
             textureHeight= (int)(width+3f);
         } else if(Math3D.IsEqual(rotation, 180f)) {
-            muxPolygon= Math3D.FlipPolygonVertically(myMuxPortPolygon, 0f);
+            if(isInPort) {
+                muxPolygon= myMuxPortPolygon;                                
+            } else {
+                muxPolygon= Math3D.FlipPolygonVertically(myMuxPortPolygon, 0f);                
+            }
         } else {
-            muxPolygon= Math3D.Rotate90DegreesPolygon(myMuxPortPolygon);
-            muxPolygon= Math3D.FlipPolygonHorizontally(muxPolygon, 0f);
+            if(isInPort) {
+                muxPolygon= Math3D.Rotate90DegreesPolygon(myMuxPortPolygon);                                
+            } else {
+                muxPolygon= Math3D.Rotate90DegreesPolygon(myMuxPortPolygon);
+                muxPolygon= Math3D.FlipPolygonHorizontally(muxPolygon, 0f);                
+            }
             textureWidth= (int)(height+3f);
             textureHeight= (int)(width+3f);
         }
@@ -245,7 +286,11 @@ public static class iCS_PortIcons {
         iCS_TextureUtil.DrawFilledPolygon(ref texture, outterPolygon, Color.black);
         // Draw inner color polygon.
         var innerPolygon= Math3D.ScaleAndTranslatePolygon(muxPolygon, new Vector2(0.6f*height, 0.6f*height), textureCenter);
-        iCS_TextureUtil.DrawFilledPolygon(ref texture, innerPolygon, Color.red);
+        if(isInPort) {
+            iCS_TextureUtil.DrawPolygonOutline(ref texture, innerPolygon, Color.red);
+        } else {
+            iCS_TextureUtil.DrawFilledPolygon(ref texture, innerPolygon, Color.red);            
+        }
         // Finalize texture.
 		texture.hideFlags= HideFlags.DontSave;
 		texture.Apply();
@@ -315,6 +360,26 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested mux port icon.
+	public static Texture2D GetInMuxPortTopIcon(Color typeColor) {
+		return GetPortIcon(typeColor, ref myInMuxPortTopIcons, ref myInMuxPortTopTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested mux port icon.
+	public static Texture2D GetInMuxPortBottomIcon(Color typeColor) {
+		return GetPortIcon(typeColor, ref myInMuxPortBottomIcons, ref myInMuxPortBottomTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested mux port icon.
+	public static Texture2D GetInMuxPortLeftIcon(Color typeColor) {
+		return GetPortIcon(typeColor, ref myInMuxPortLeftIcons, ref myInMuxPortLeftTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested mux port icon.
+	public static Texture2D GetInMuxPortRightIcon(Color typeColor) {
+		return GetPortIcon(typeColor, ref myInMuxPortRightIcons, ref myInMuxPortRightTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested mux port icon.
 	public static Texture2D GetOutMuxPortTopIcon(Color typeColor) {
 		return GetPortIcon(typeColor, ref myOutMuxPortTopIcons, ref myOutMuxPortTopTemplate);
 	}
@@ -364,6 +429,30 @@ public static class iCS_PortIcons {
 	public static Texture2D GetSelectedOutRelayPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor,
 			               ref mySelectedOutRelayPortIcons, ref mySelectedOutRelayPortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested mux port icon.
+	public static Texture2D GetSelectedInMuxPortTopIcon(Color typeColor) {
+		return GetPortIcon(typeColor,
+			               ref mySelectedInMuxPortTopIcons, ref mySelectedInMuxPortTopTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested mux port icon.
+	public static Texture2D GetSelectedInMuxPortBottomIcon(Color typeColor) {
+		return GetPortIcon(typeColor,
+			               ref mySelectedInMuxPortBottomIcons, ref mySelectedInMuxPortBottomTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested mux port icon.
+	public static Texture2D GetSelectedInMuxPortLeftIcon(Color typeColor) {
+		return GetPortIcon(typeColor,
+			               ref mySelectedInMuxPortLeftIcons, ref mySelectedInMuxPortLeftTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested mux port icon.
+	public static Texture2D GetSelectedInMuxPortRightIcon(Color typeColor) {
+		return GetPortIcon(typeColor,
+			               ref mySelectedInMuxPortRightIcons, ref mySelectedInMuxPortRightTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested mux port icon.
