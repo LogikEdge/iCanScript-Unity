@@ -218,18 +218,33 @@ public static class iCS_PortIcons {
 	// ----------------------------------------------------------------------
 	public static void BuildOutMuxPortTemplate(float width, float height, ref Texture2D texture, float rotation= 0f) {
         // Compute texture size
+        Vector2[] muxPolygon= null;
         int textureWidth= (int)(width+3f);
         int textureHeight= (int)(height+3f);
+        if(Math3D.IsEqual(rotation, 0f)) {
+            muxPolygon= myMuxPortPolygon;
+        } else if(Math3D.IsEqual(rotation, 90f)) {
+            muxPolygon= Math3D.Rotate90DegreesPolygon(myMuxPortPolygon);
+            textureWidth= (int)(height+3f);
+            textureHeight= (int)(width+3f);
+        } else if(Math3D.IsEqual(rotation, 180f)) {
+            muxPolygon= Math3D.FlipPolygonVertically(myMuxPortPolygon, 0f);
+        } else {
+            muxPolygon= Math3D.Rotate90DegreesPolygon(myMuxPortPolygon);
+            muxPolygon= Math3D.FlipPolygonHorizontally(muxPolygon, 0f);
+            textureWidth= (int)(height+3f);
+            textureHeight= (int)(width+3f);
+        }
         // Allocate texture
         if(texture != null) Texture2D.DestroyImmediate(texture);
         texture= new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
         iCS_TextureUtil.Clear(ref texture);
         // Draw black background polygon.
         var textureCenter= new Vector2(0.5f*textureWidth,0.5f*textureHeight);
-        var outterPolygon= Math3D.ScaleAndTranslatePolygon(myMuxPortPolygon, new Vector2(height,height), textureCenter);
+        var outterPolygon= Math3D.ScaleAndTranslatePolygon(muxPolygon, new Vector2(height,height), textureCenter);
         iCS_TextureUtil.DrawFilledPolygon(ref texture, outterPolygon, Color.black);
         // Draw inner color polygon.
-        var innerPolygon= Math3D.ScaleAndTranslatePolygon(myMuxPortPolygon, new Vector2(0.6f*height, 0.6f*height), textureCenter);
+        var innerPolygon= Math3D.ScaleAndTranslatePolygon(muxPolygon, new Vector2(0.6f*height, 0.6f*height), textureCenter);
         iCS_TextureUtil.DrawFilledPolygon(ref texture, innerPolygon, Color.red);
         // Finalize texture.
 		texture.hideFlags= HideFlags.DontSave;

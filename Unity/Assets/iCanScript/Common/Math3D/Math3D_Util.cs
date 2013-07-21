@@ -377,7 +377,16 @@ public static partial class Math3D {
             newPolygon[i]= new Vector2(polygon[i].x, -(polygon[i].y-flipPoint));
         }
         return newPolygon;
-    }	// ----------------------------------------------------------------------
+    }
+    // ----------------------------------------------------------------------
+    public static Vector2[] Rotate90DegreesPolygon(Vector2[] polygon) {
+        var newPolygon= new Vector2[polygon.Length];
+        for(int i= 0; i < polygon.Length; ++i) {
+            newPolygon[i]= new Vector2(polygon[i].y, -polygon[i].x);
+        }
+        return newPolygon;        
+    }
+    // ----------------------------------------------------------------------
     public static Vector2 ClosestPointOnPolygonToPoint(Vector2[] polygon, Vector2 point) {
         Vector2 closestPoint= Vector2.zero;
         if(polygon.Length < 3) return closestPoint;
