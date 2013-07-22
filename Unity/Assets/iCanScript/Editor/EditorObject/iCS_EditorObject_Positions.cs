@@ -105,9 +105,6 @@ public partial class iCS_EditorObject {
             // Update parent port for nested ports.
             if(IsPort) {
                 if(IsNestedPort) {
-                    if(Math3D.IsNotEqual(Parent.LocalOffset, value)) {
-                        Parent.LocalOffset= value;
-                    }
                     return;
                 }
                 myLocalOffset= value;

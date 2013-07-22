@@ -523,13 +523,17 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType, int index= -1) {
         int id= GetNextAvailableId();
         var parent= EditorObjects[parentId];
-        var globalPos= parent.LayoutPosition;
         if(index == -1) {
     		index= RecalculatePortIndexes(parent).Length;            
         }
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         port.PortIndex= index;
-		port.LayoutPosition= globalPos;
+        if(parent.IsPort) {
+            port.LocalOffset= parent.LocalOffset;
+        } else {
+            var globalPos= parent.LayoutPosition;
+    		port.LayoutPosition= globalPos;            
+        }
 		// Set initial port edge.
 		if(port.IsEnablePort) {
 			port.Edge= iCS_EdgeEnum.Top;
