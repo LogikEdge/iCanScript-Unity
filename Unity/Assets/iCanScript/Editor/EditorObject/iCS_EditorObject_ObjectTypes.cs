@@ -17,7 +17,7 @@ public partial class iCS_EditorObject {
     public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
     public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
     public bool IsState                     { get { return EngineObject.IsState; }}
-    public bool IsObjectInstance            { get { return EngineObject.IsObjectInstance; }}
+    public bool IsInstanceNode            { get { return EngineObject.IsInstanceNode; }}
     public bool IsTransitionModule          { get { return EngineObject.IsTransitionModule; }}
     public bool IsTransitionGuard           { get { return EngineObject.IsTransitionGuard; }}
     public bool IsTransitionAction          { get { return EngineObject.IsTransitionAction; }}
@@ -30,9 +30,9 @@ public partial class iCS_EditorObject {
     public bool IsEndPort                   { get { return Storage.IsEndPort(EngineObject); }}
     public bool IsRelayPort                 { get { return Storage.IsRelayPort(EngineObject); }}
     public bool IsKindOfPackagePort         { get { return IsDataOrControlPort && ParentNode.IsKindOfPackage; }}
-    public bool IsVisualEndPort             { get { return IsEndPort || Parent.IsObjectInstance; }}
-    public bool IsVisualRelayPort           { get { return IsRelayPort && !Parent.IsObjectInstance; }}
-    public bool IsObjectInstancePort        { get { return IsPort && Parent.IsObjectInstance; }}
+    public bool IsVisualEndPort             { get { return IsEndPort || Parent.IsInstanceNode; }}
+    public bool IsVisualRelayPort           { get { return IsRelayPort && !Parent.IsInstanceNode; }}
+    public bool IsInstanceNodePort        { get { return IsPort && Parent.IsInstanceNode; }}
     // State Ports
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}

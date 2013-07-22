@@ -68,7 +68,7 @@ public static class iCS_Icons {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Behaviour);
         } else if(obj.IsMessage) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Message);            
-        } else if(obj.IsObjectInstance) {
+        } else if(obj.IsInstanceNode) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);
         } else if(obj.IsKindOfPackage) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Package);

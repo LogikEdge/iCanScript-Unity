@@ -180,7 +180,7 @@ public class iCS_EngineObject {
     public bool IsInstanceField         { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast              { get { return iCS_ObjectType.IsTypeCast(this); }}
     public bool IsMessage               { get { return iCS_ObjectType.IsMessage(this); }}
-    public bool IsObjectInstance        { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
+    public bool IsInstanceNode          { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
     // General Ports
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
     public bool IsOutputPort            { get { return iCS_ObjectType.IsOutputPort(this); }}

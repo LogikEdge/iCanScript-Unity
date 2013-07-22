@@ -25,7 +25,7 @@ public class iCS_InstanceEditor : iCS_EditorBase {
         myController= null;
     }
     bool IsInitialized() {
-		if(IStorage == null || SelectedObject == null || !(SelectedObject.IsObjectInstance || SelectedObject.IsBehaviour)) {
+		if(IStorage == null || SelectedObject == null || !(SelectedObject.IsInstanceNode || SelectedObject.IsBehaviour)) {
 			myMainView= null;
 			myController= null;
 			return false;

@@ -363,7 +363,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         instance.SetAnchorAndLayoutPosition(globalPos);
-        if(instance.IsObjectInstance) InstanceWizardCompleteCreation(instance);
+        if(instance.IsInstanceNode) InstanceWizardCompleteCreation(instance);
         // Perform initial node layout.
         instance.Unhide();
         return instance;

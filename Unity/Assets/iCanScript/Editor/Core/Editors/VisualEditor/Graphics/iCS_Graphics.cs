@@ -455,7 +455,7 @@ public partial class iCS_Graphics {
         if(node.IsState || node.IsStateChart) {
             return iCS_PreferencesEditor.StateNodeColor;
         }
-        if(node.IsObjectInstance) {
+        if(node.IsInstanceNode) {
             return iCS_PreferencesEditor.InstanceNodeColor;
         }
         if(node.IsConstructor) {

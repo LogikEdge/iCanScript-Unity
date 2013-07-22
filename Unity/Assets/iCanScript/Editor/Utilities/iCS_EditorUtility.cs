@@ -66,7 +66,7 @@ public static class iCS_EditorUtility {
     // otherwise.
     public static bool SafeDestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
 		// Ask user to confirm delete if CRTL not pressed.
-        if(selectedObject.IsObjectInstancePort) {
+        if(selectedObject.IsInstanceNodePort) {
             var functionToDelete= iStorage.InstanceWizardGetObjectAssociatedWithPort(selectedObject);
             var functionName= functionToDelete.Name;
             var instanceName= selectedObject.ParentNode.Name;
@@ -87,7 +87,7 @@ public static class iCS_EditorUtility {
     public static void ForceDestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
         iStorage.RegisterUndo("Removing: "+selectedObject.Name);
         var parent= selectedObject.ParentNode;
-        if(selectedObject.IsObjectInstancePort) {
+        if(selectedObject.IsInstanceNodePort) {
     		parent.AnimateGraph(
     			_=> iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(selectedObject)                        
     		);

@@ -41,7 +41,7 @@ public static class iCS_AllowedChildren {
     public static bool CanAddChildNode(string childName, iCS_ObjectTypeEnum childType, iCS_EditorObject parent, iCS_IStorage storage) {
         if(parent == null) return false;
         // Only allow valid child for object instances.
-        if(parent.IsObjectInstance || parent.IsBehaviour) {
+        if(parent.IsInstanceNode || parent.IsBehaviour) {
             // Don't allow more then one copy of a node in an instance node
             if(IsChildNodePresent(childName, parent, storage)) {
                 return false;

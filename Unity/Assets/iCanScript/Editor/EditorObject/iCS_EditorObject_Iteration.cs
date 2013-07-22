@@ -25,7 +25,7 @@ public partial class iCS_EditorObject {
     // ---------------------------------------------------------------------------------
     public iCS_EditorObject TopObjectInstanceNode() {
         iCS_EditorObject objInstance= null;
-        ForEachParentNode(p=> { if(p.IsObjectInstance) objInstance= p; });
+        ForEachParentNode(p=> { if(p.IsInstanceNode) objInstance= p; });
         return objInstance;
     }
 

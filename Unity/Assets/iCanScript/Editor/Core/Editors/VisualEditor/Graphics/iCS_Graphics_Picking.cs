@@ -49,7 +49,7 @@ public partial class iCS_Graphics {
     bool ShouldDisplayFoldIcon(iCS_EditorObject obj) {
         if(Scale < 0.4f) return false;
         if(obj.IsIconizedOnDisplay) return false;
-        if(obj.IsKindOfFunction || obj.IsObjectInstance) return false;
+        if(obj.IsKindOfFunction || obj.IsInstanceNode) return false;
         return (obj.IsKindOfPackage || obj.IsStateChart || obj.IsState);
     }
     Rect GetFoldIconPosition(iCS_EditorObject obj) {

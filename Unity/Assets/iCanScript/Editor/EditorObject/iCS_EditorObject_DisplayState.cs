@@ -60,7 +60,7 @@ public partial class iCS_EditorObject {
             if(parent.DisplayOption == iCS_DisplayOptionEnum.Iconized) return false;
             if(IsNode) {
                 if(parent.DisplayOption == iCS_DisplayOptionEnum.Folded) return false;
-                if(parent.IsObjectInstance && !IsObjectInstance) return false;                
+                if(parent.IsInstanceNode && !IsInstanceNode) return false;                
             }
             return parent.IsVisibleInLayout;            
         }
@@ -76,7 +76,7 @@ public partial class iCS_EditorObject {
                 var instanceName= iCS_Strings.InstanceObjectName;
                 if(Name == instanceName && parentNode.IsKindOfFunction) {
                     var grandParentNode= parentNode.ParentNode;
-                    if(grandParentNode.IsObjectInstance && IsSourceValid && Source.ParentNode == grandParentNode && Source.Name == instanceName) {
+                    if(grandParentNode.IsInstanceNode && IsSourceValid && Source.ParentNode == grandParentNode && Source.Name == instanceName) {
                         return false;
                     }
                 }

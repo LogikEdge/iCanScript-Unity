@@ -134,7 +134,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void ProcessNodeDisplayOptionEvent() {
         if(SelectedObject == null || !SelectedObject.IsNode) return;
-        if(SelectedObject.IsKindOfFunction || SelectedObject.IsObjectInstance) {
+        if(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode) {
             if(SelectedObject.IsIconizedOnDisplay && !IsShiftKeyDown) {
                 IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
                 IStorage.Unfold(SelectedObject);                                                                            
@@ -183,7 +183,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void ShowInstanceEditor() {
-        if(SelectedObject != null && (SelectedObject.IsObjectInstance || SelectedObject.IsBehaviour)) {
+        if(SelectedObject != null && (SelectedObject.IsInstanceNode || SelectedObject.IsBehaviour)) {
             bool hadKeyboardFocus= HasKeyboardFocus;
             iCS_EditorMgr.ShowInstanceEditor();
             // Keep keyboard focus.

@@ -137,8 +137,8 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 		if(y.IsInputPort && !x.IsInputPort) return 1;
 		if(x.IsOutputPort && !y.IsOutputPort) return -1;
 		if(y.IsOutputPort && !x.IsOutputPort) return 1;
-		if(x.IsObjectInstance && !y.IsObjectInstance) return -1;
-		if(y.IsObjectInstance && !x.IsObjectInstance) return 1;
+		if(x.IsInstanceNode && !y.IsInstanceNode) return -1;
+		if(y.IsInstanceNode && !x.IsInstanceNode) return 1;
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
