@@ -134,7 +134,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void ProcessNodeDisplayOptionEvent() {
         if(SelectedObject == null || !SelectedObject.IsNode) return;
-        if(SelectedObject.IsKindOfFunction) {
+        if(SelectedObject.IsKindOfFunction || SelectedObject.IsObjectInstance) {
             if(SelectedObject.IsIconizedOnDisplay && !IsShiftKeyDown) {
                 IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
                 IStorage.Unfold(SelectedObject);                                                                            

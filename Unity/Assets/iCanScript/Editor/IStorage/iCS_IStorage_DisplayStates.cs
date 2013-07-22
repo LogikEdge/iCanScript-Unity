@@ -7,7 +7,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void Fold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
-        if(eObj.IsKindOfFunction) {
+        if(eObj.IsKindOfFunction || eObj.IsObjectInstance) {
             Unfold(eObj);
             return;
         }
