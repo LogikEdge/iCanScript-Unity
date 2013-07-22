@@ -12,7 +12,7 @@ public partial class iCS_IStorage {
         Fold(module);
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
-            iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, iCS_Strings.InstanceObjectName, classType, iCS_ObjectTypeEnum.InFixDataPort);
+            iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, iCS_Strings.InstanceObjectName, classType, iCS_ObjectTypeEnum.InInstancePort);
             inThisPort.IsNameEditable= false;
         }
         if(iCS_PreferencesEditor.InstanceAutocreateOutFields)          InstanceWizardCreateOutputInstanceFields(module);
@@ -234,7 +234,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardGetInputThisPort(iCS_EditorObject module) {
-        iCS_EditorObject thisPort= InstanceWizardGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InFixDataPort);
+        iCS_EditorObject thisPort= InstanceWizardGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InInstancePort);
         if(thisPort == null) {
             iCS_EditorObject constructor= InstanceWizardGetConstructor(module);
             if(constructor == null) return null;
@@ -329,9 +329,39 @@ public partial class iCS_IStorage {
         if(func != null) DestroyInstance(func);
     }
     // -------------------------------------------------------------------------
-    public void InstanceWizardDestroy(iCS_EditorObject eObj) {
-        var toDelete= InstanceWizardGetObjectAssociatedWithPort(eObj);
+    public void InstanceWizardDestroyAllObjectsAssociatedWithPort(iCS_EditorObject port) {
+        var objectInstance= port.ParentNode;
+        // Destroy instance ports used as input to field/property/function to delete.
+        var toDelete= InstanceWizardGetObjectAssociatedWithPort(port);
+        if(toDelete == null) return;
+        var portsToDestroy= new List<iCS_EditorObject>();
+        toDelete.ForEachChildPort(
+            p=> {
+                if(p.IsInDataPort && !p.IsInInstancePort) {
+                    var source= p.Source;
+                    if(source != null && source.ParentNode == objectInstance) {
+                        portsToDestroy.Add(source);
+                    }
+                }
+            }
+        );
+        // Destroy instance ports relaying output of field/property/function to delete.
+        objectInstance.ForEachChildPort(
+            p=> {
+                if(p.IsOutDataPort) {
+                    var source= p.Source;
+                    if(source != null && source.ParentNode == toDelete) {
+                        portsToDestroy.Add(p);
+                    }
+                }
+            }
+        );
+        // Destroy field/property/function.
         DestroyInstance(toDelete);        
+        // Destroy instance object associated ports.
+        foreach(var p in portsToDestroy) {
+            DestroyInstance(p);
+        }
     }
     
     // ----------------------------------------------------------------------
@@ -352,7 +382,7 @@ public partial class iCS_IStorage {
         DestroyInstance(constructor);
     }
     public iCS_EditorObject InstanceWizardGetConstructor(iCS_EditorObject module) {
-        iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InFixDataPort);
+        iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InInstancePort);
         iCS_EditorObject constructorThisPort= moduleThisPort.Source;
         if(constructorThisPort == null) return null;
         iCS_EditorObject constructor= constructorThisPort.Parent;

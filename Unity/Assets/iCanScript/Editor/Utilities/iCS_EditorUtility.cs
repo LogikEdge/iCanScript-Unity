@@ -75,11 +75,14 @@ public static class iCS_EditorUtility {
 	// ----------------------------------------------------------------------
     public static void ForceDestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
         iStorage.RegisterUndo("Removing: "+selectedObject.Name);
+        var parent= selectedObject.ParentNode;
         if(selectedObject.IsObjectInstancePort) {
-            iStorage.InstanceWizardDestroy(selectedObject);
+    		parent.AnimateGraph(
+    			_=> iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(selectedObject)                        
+    		);
+            return;
         }
         // TODO: Should animate parent node on node delete.
-        var parent= selectedObject.ParentNode;
 		parent.AnimateGraph(
 			_=> iStorage.DestroyInstance(selectedObject.InstanceId)                        
 		);
