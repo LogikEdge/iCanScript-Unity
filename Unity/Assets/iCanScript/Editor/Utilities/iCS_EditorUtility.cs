@@ -66,9 +66,20 @@ public static class iCS_EditorUtility {
     // otherwise.
     public static bool SafeDestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
 		// Ask user to confirm delete if CRTL not pressed.
-        if(!EditorUtility.DisplayDialog("Deleting "+selectedObject.Name, "Are you sure you want to remove the selected object.", "Delete", "Cancel")) {
-			return false;
-        }			
+        if(selectedObject.IsObjectInstancePort) {
+            var functionToDelete= iStorage.InstanceWizardGetObjectAssociatedWithPort(selectedObject);
+            var functionName= functionToDelete.Name;
+            var instanceName= selectedObject.ParentNode.Name;
+            if(!EditorUtility.DisplayDialog("Deleting "+functionName+" functionality",
+                                            "Are you sure you want to remove "+functionName+" from the instance node: "+instanceName,
+                                            "Delete", "Cancel")) {
+    			return false;
+            }			                        
+        } else {
+            if(!EditorUtility.DisplayDialog("Deleting "+selectedObject.Name, "Are you sure you want to remove the selected object.", "Delete", "Cancel")) {
+    			return false;
+            }			            
+        }
 		ForceDestroyObject(selectedObject, iStorage);
 		return true;
 	}
