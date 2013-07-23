@@ -23,6 +23,14 @@ public partial class iCS_EditorObject {
 		return false;
 	}
     // ---------------------------------------------------------------------------------
+    public int NbOfChildPorts() {
+        int count= 0;
+        foreach(var childId in Children) {
+            if(IsIdValid(childId) && EditorObjects[childId].IsPort) ++count;
+        }
+		return count;        
+    }
+    // ---------------------------------------------------------------------------------
     public iCS_EditorObject TopObjectInstanceNode() {
         iCS_EditorObject objInstance= null;
         ForEachParentNode(p=> { if(p.IsInstanceNode) objInstance= p; });

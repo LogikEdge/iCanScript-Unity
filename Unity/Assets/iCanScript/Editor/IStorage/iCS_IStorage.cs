@@ -241,6 +241,20 @@ public partial class iCS_IStorage {
                         DestroyInstanceInternal(obj);                            
                         modified= true;						
 					}
+					// Convert input mux to dynamic port if no children.
+					if(obj.IsInParentMuxPort) {
+                        switch(obj.NbOfChildPorts()) {
+                            case 0:
+    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
+                                break;
+                            case 1:
+                                var childPorts= obj.BuildListOfChildPorts(_=> true);
+                                obj.Source= childPorts[0].Source;
+    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
+                                DestroyInstanceInternal(childPorts[0]);
+                                break;
+                        }
+					}
                     // Cleanup disconnected typecasts.
     				if(obj.IsTypeCast) {
 						var inDataPort= FindInChildren(obj, c=> c.IsInDataOrControlPort);
