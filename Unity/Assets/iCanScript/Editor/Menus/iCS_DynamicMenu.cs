@@ -17,6 +17,8 @@ public class iCS_DynamicMenu {
     const string ShowHierarchyStr= "Show in hierarchy";
     const string DeleteStr= "- Delete";
     const string PackageStr= "+ Package";
+    const string MultiplexerStr="+ Data Multiplexer";
+    const string SelectorStr="+ Data Selector";
     const string StateChartStr= "+ State Chart";
     const string StateStr= "+ State";
     const string EntryStateStr= "+ Entry State";
@@ -99,15 +101,17 @@ public class iCS_DynamicMenu {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items
-            menu= new iCS_MenuContext[5];
+            menu= new iCS_MenuContext[7];
             menu[0]= new iCS_MenuContext(PackageStr);
-            menu[1]= new iCS_MenuContext(StateChartStr); 
-            menu[2]= new iCS_MenuContext(SeparatorStr);
-            menu[3]= new iCS_MenuContext(EnablePortStr);
+            menu[1]= new iCS_MenuContext(StateChartStr);
+            menu[2]= new iCS_MenuContext(MultiplexerStr);
+            menu[3]= new iCS_MenuContext(SelectorStr); 
+            menu[4]= new iCS_MenuContext(SeparatorStr);
+            menu[5]= new iCS_MenuContext(EnablePortStr);
             if(storage.HasOutTriggerPort(selectedObject)) {
-                menu[4]= new iCS_MenuContext("#"+OutTriggerPortStr);
+                menu[6]= new iCS_MenuContext("#"+OutTriggerPortStr);
             } else {
-                menu[4]= new iCS_MenuContext(OutTriggerPortStr);                
+                menu[6]= new iCS_MenuContext(OutTriggerPortStr);                
             }
         }
         // Show in hierarchy
@@ -318,6 +322,8 @@ public class iCS_DynamicMenu {
         // Process all other types of requests.
         switch(context.Command) {
             case PackageStr:                ProcessCreatePackage(context); break;
+            case MultiplexerStr:            ProcessCreateMultiplexer(context); break;
+            case SelectorStr:               ProcessCreateSelector(context); break;
             case StateChartStr:             ProcessCreateStateChart(context); break;
             case StateStr:                  ProcessCreateState(context);  break;
             case SetAsEntryStr:             ProcessSetStateEntry(context); break;
@@ -450,6 +456,14 @@ public class iCS_DynamicMenu {
     // -------------------------------------------------------------------------
 	static void ProcessConvertToMuxPort(iCS_MenuContext context) {
 		Debug.Log("iCanScript: Need to implement convert to mux port");
+	}
+    // -------------------------------------------------------------------------
+	static void ProcessCreateMultiplexer(iCS_MenuContext convert) {
+	    Debug.Log("iCanScript: Create multiplexer node not implemented yet");
+	}
+    // -------------------------------------------------------------------------
+	static void ProcessCreateSelector(iCS_MenuContext convert) {
+	    Debug.Log("iCanScript: Create selector node not implemented yet");
 	}
     
     // ======================================================================
