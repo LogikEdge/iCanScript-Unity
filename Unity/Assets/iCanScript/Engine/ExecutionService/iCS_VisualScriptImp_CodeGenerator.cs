@@ -107,7 +107,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     if(parent == null) {
                         needAdditionalPass= true;
                     } else {
-    					var mux= new iCS_MuxPort(this, node.InstanceId, priority, GetNbOfChildMuxPorts(node));
+    					var mux= new iCS_Mux(this, node.InstanceId, priority, GetNbOfChildMuxPorts(node));
     					myRuntimeNodes[node.InstanceId]= mux;
                         InvokeAddChildIfExists(parent, mux);                        
                     }

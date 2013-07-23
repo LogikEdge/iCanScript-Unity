@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_MuxPort : iCS_ActionWithSignature {
+public class iCS_Mux : iCS_ActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_MuxPort(iCS_Storage storage, int instanceId, int priority, int nbOfParameters)
+    public iCS_Mux(iCS_Storage storage, int instanceId, int priority, int nbOfParameters)
     : base(storage, instanceId, priority, nbOfParameters, true, false) {}
 
     // ======================================================================

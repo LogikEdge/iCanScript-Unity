@@ -8,6 +8,29 @@ using P=Prelude;
 //  ITERATION
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
+	// Hierarchy Queries ====================================================
+    public bool IsAboveOrEqualInHierarchyTo(iCS_EditorObject node) {
+        if(node == this) return true;
+        return IsAboveInHierarchyTo(node);
+    }
+    public bool IsAboveInHierarchyTo(iCS_EditorObject node) {
+        return !IsBelowOrEqualInHierarchyTo(node);
+    }
+    public bool IsBelowOrEqualInHierarchyTo(iCS_EditorObject node) {
+        if(node == this) return true;
+        return IsBelowInHierarchyTo(node);
+    }
+    public bool IsBelowInHierarchyTo(iCS_EditorObject node) {
+        bool result= false;
+        node.ForEachChildRecursiveDepthLast(
+            c=> {
+                if(c == this) {
+                    result= true;
+                }
+            }
+        );
+        return result;
+    }
 	// Queries ==============================================================
 	public bool HasChildNode() {
         foreach(var childId in Children) {

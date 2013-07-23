@@ -13,11 +13,13 @@ public partial class iCS_EditorObject {
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
     public bool IsPackage                   { get { return EngineObject.IsPackage; }}
     public bool IsMessage                   { get { return EngineObject.IsMessage; }}
+    public bool IsMux                       { get { return EngineObject.IsMux; }}
+    public bool IsSelector                  { get { return EngineObject.IsSelector; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
     public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
     public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
     public bool IsState                     { get { return EngineObject.IsState; }}
-    public bool IsInstanceNode            { get { return EngineObject.IsInstanceNode; }}
+    public bool IsInstanceNode              { get { return EngineObject.IsInstanceNode; }}
     public bool IsTransitionModule          { get { return EngineObject.IsTransitionModule; }}
     public bool IsTransitionGuard           { get { return EngineObject.IsTransitionGuard; }}
     public bool IsTransitionAction          { get { return EngineObject.IsTransitionAction; }}

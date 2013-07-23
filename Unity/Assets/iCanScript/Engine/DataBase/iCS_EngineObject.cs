@@ -25,7 +25,7 @@ public class iCS_EngineObject {
     public string                IconGUID         = null;
     public string                Tooltip          = null;
     public int                   ExecutionPriority= 0;
-	public int					 LayoutPriority   = 0;
+    public int                   LayoutPriority   = 0;
 
     // Port specific attributes ---------------------------------------------
     public int                   SourceId           = -1;
@@ -142,7 +142,7 @@ public class iCS_EngineObject {
         QualifiedType= "";
 		RawName= "";
         LocalAnchorPosition= Vector2.zero;
-		LayoutPriority= 0;
+        LayoutPriority= 0;
 		Scale= 1.0f;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;
@@ -168,6 +168,8 @@ public class iCS_EngineObject {
     public bool IsStateChart            { get { return iCS_ObjectType.IsStateChart(this); }}
     public bool IsState                 { get { return iCS_ObjectType.IsState(this); }}
     public bool IsPackage               { get { return iCS_ObjectType.IsPackage(this); }}
+    public bool IsMux                   { get { return iCS_ObjectType.IsMux(this); }}
+    public bool IsSelector              { get { return iCS_ObjectType.IsSelector(this); }}
     public bool IsKindOfPackage         { get { return iCS_ObjectType.IsKindOfPackage(this); }}
     public bool IsTransitionModule      { get { return iCS_ObjectType.IsTransitionModule(this); }}
     public bool IsTransitionGuard       { get { return iCS_ObjectType.IsTransitionGuard(this); }}
