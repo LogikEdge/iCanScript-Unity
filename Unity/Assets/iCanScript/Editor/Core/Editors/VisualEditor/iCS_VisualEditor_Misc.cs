@@ -20,7 +20,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
-		if(SelectedObject != null && newSelected != null && newSelected.IsOutParentMuxPort && IStorage.GetParentMuxPort(SelectedObject) == newSelected) {
+		if(SelectedObject != null && newSelected != null && newSelected.IsParentMuxPort && IStorage.GetParentMuxPort(SelectedObject) == newSelected) {
 			ShouldRotateMuxPort= true;
 			return SelectedObject;
 		}
