@@ -451,19 +451,19 @@ public class iCS_DynamicMenu {
     }
     // -------------------------------------------------------------------------
 	static void ProcessConvertToDataPort(iCS_MenuContext context) {
-		Debug.Log("iCanScript: Need to implement convert to data port");
+		Debug.Log("iCanScript: Convert to Data port not implemented yet!!!");
 	}
     // -------------------------------------------------------------------------
 	static void ProcessConvertToMuxPort(iCS_MenuContext context) {
-		Debug.Log("iCanScript: Need to implement convert to mux port");
+		Debug.Log("iCanScript: Convert to Multiplexer port not implemented yet!!!");
 	}
     // -------------------------------------------------------------------------
 	static void ProcessCreateMultiplexer(iCS_MenuContext convert) {
-	    Debug.Log("iCanScript: Create multiplexer node not implemented yet");
+	    Debug.Log("iCanScript: Create multiplexer node not implemented yet!!!");
 	}
     // -------------------------------------------------------------------------
 	static void ProcessCreateSelector(iCS_MenuContext convert) {
-	    Debug.Log("iCanScript: Create selector node not implemented yet");
+	    Debug.Log("iCanScript: Create selector node not implemented yet!!!");
 	}
     
     // ======================================================================
