@@ -8,6 +8,7 @@ public class iCS_Connection {
     iCS_ISignature  mySignature    = null;
     int             myPortIndex    = -1;
     bool            myIsAlwaysReady= false;
+    bool            myIsControlFlow= false;
 
     // ======================================================================
     // Accessors
@@ -26,10 +27,11 @@ public class iCS_Connection {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_Connection() { }
-    public iCS_Connection(iCS_ISignature signature, int portIndex, bool isAlwaysReady= false) {
+    public iCS_Connection(iCS_ISignature signature, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
         mySignature    = signature;
         myPortIndex    = portIndex;
         myIsAlwaysReady= isAlwaysReady;
+        myIsControlFlow= isControlFlow;
     }
 
     public bool IsConnected             { get{ return mySignature != null; }}
@@ -39,7 +41,7 @@ public class iCS_Connection {
     }
     public bool IsReady(int frameId)    {
         if(myIsAlwaysReady || !IsConnected) return true;
-        return Action.IsCurrent(frameId);
+        return myIsControlFlow ? Action.IsCurrent(frameId) : Action.DidExecute(frameId);
     }
     
     // ----------------------------------------------------------------------

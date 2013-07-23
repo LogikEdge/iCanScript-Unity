@@ -16,8 +16,8 @@ public class iCS_SignatureDataSource {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public int ReturnIndex     { get { return myParameters.Length+1; }}
-    public int ThisIndex       { get { return myParameters.Length+2; }}
+    public int ReturnIndex     { get { return myParameters.Length; }}
+    public int ThisIndex       { get { return myParameters.Length+1; }}
     public int NbOfParameters  { get { return myParameters.Length; }}
     public int NbOfConnections { get { return myConnections.Length; }}
     public object This {

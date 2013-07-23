@@ -38,7 +38,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 						continue;				
 					}
 					// A port cannot be a parent.
-					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsOutParentMuxPort) {
+					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsParentMuxPort) {
 						sanityNeeded= true;
 						EngineObjects[i].Reset();
 						Debug.Log("iCanScript Sanity: Port: "+parentId+" is the parent of: "+i);
@@ -102,8 +102,15 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                 if(myRuntimeNodes[node.InstanceId] != null) continue;
                 int priority= node.ExecutionPriority;
 				// Special case for active ports.
-				if(node.IsOutParentMuxPort) {
-					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(this, node.InstanceId, priority, GetNbOfOutChildMuxPorts(node));
+				if(node.IsParentMuxPort) {
+				    var parent= myRuntimeNodes[node.ParentId];
+                    if(parent == null) {
+                        needAdditionalPass= true;
+                    } else {
+    					var mux= new iCS_MuxPort(this, node.InstanceId, priority, GetNbOfChildMuxPorts(node));
+    					myRuntimeNodes[node.InstanceId]= mux;
+                        InvokeAddChildIfExists(parent, mux);                        
+                    }
 					continue;
 				}
                 if(node.IsNode) {
@@ -246,6 +253,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     case iCS_ObjectTypeEnum.OutStatePort: {
                         break;
                     }
+                    case iCS_ObjectTypeEnum.InChildMuxPort:
 					case iCS_ObjectTypeEnum.OutChildMuxPort: {
 						var rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_ISignature;
 						if(rtMuxPort == null) break;
@@ -403,27 +411,15 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         return node.GetFieldInfo();
 	}
 	// -------------------------------------------------------------------------
-    int GetNbOfOutChildMuxPorts(iCS_EngineObject parentMuxPort) {
+    int GetNbOfChildMuxPorts(iCS_EngineObject parentMuxPort) {
         int nbOfChildMuxPorts= 0;
 		foreach(var port in EngineObjects) {
-            if(port != null && port.IsOutChildMuxPort && port.ParentId == parentMuxPort.InstanceId) {
+            if(port != null && port.IsChildMuxPort && port.ParentId == parentMuxPort.InstanceId) {
                 ++nbOfChildMuxPorts;
             }
 	    }
 	    return nbOfChildMuxPorts;
 	}
-//	// -------------------------------------------------------------------------
-//    int GetInputEndPortsLastIndex(iCS_EngineObject node) {
-//        int lastIndex= -1;
-//		iCS_EngineObject[] ports= GetChildDataOrControlPorts(node);
-//	    for(int i= 0; i < ports.Length; ++i) {
-//	        var p= ports[i];
-//	        if(IsEndPort(p) && p.PortIndex > lastIndex) {
-//	            lastIndex= p.PortIndex;
-//	        }
-//	    }
-//	    return lastIndex;
-//	}
 	// -------------------------------------------------------------------------
     Type[] GetParamTypes(iCS_EngineObject node) {
 	    return node.GetParamTypes(EngineObjects);
@@ -485,10 +481,12 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 		iCS_Connection connection= null;
         var rtPortGroup= myRuntimeNodes[port.InstanceId] as iCS_ISignature;
 		if(rtPortGroup != null) {
-			connection= new iCS_Connection(rtPortGroup, rtPortGroup.GetSignatureDataSource().ReturnIndex);							
+            int outIdx= rtPortGroup.GetSignatureDataSource().ReturnIndex;
+			connection= new iCS_Connection(rtPortGroup, outIdx);	
 		} else {
             bool isAlwaysReady= port.IsInputPort;
-			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_ISignature, port.PortIndex, isAlwaysReady);
+            bool isControlPort= port.IsControlPort;
+			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_ISignature, port.PortIndex, isAlwaysReady, isControlPort);
 		}
 		return connection;
 	}
