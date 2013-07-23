@@ -621,10 +621,12 @@ public partial class iCS_Graphics {
         // Draw port icon.
         if(port.IsDataOrControlPort) {
             // Don't display mux input ports.
-            if(port.IsOutChildMuxPort) return;
+            if(port.IsChildMuxPort) return;
             // Data ports.
 			if(port.IsOutParentMuxPort) {
                 DrawOutMuxPort(portCenter, portColor, isSelected, port.Edge);
+			} else if(port.IsInParentMuxPort) {
+                DrawInMuxPort(portCenter, portColor, isSelected, port.Edge);
 			} else if(port.IsControlPort) {
 	    	    DrawControlPort(port, portCenter, portColor, isSelected);							        			    
 			} else {

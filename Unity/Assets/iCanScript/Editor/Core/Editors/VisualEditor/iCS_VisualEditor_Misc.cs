@@ -33,7 +33,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void RotateSelectedMuxPort() {
 		if(SelectedObject == null || !SelectedObject.IsDataOrControlPort) return;
-		if(SelectedObject.IsOutParentMuxPort) {
+		if(SelectedObject.IsParentMuxPort) {
 			IStorage.UntilMatchingChild(SelectedObject, 
 				c=> {
 					if(c.IsDataOrControlPort) {
@@ -78,16 +78,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject overlappingPort) {
         // Only data ports can be connected together.
         if(!fixPort.IsDataOrControlPort || !overlappingPort.IsDataOrControlPort) return false;
-        iCS_EditorObject portParent= fixPort.Parent;
-        iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
-        if(overlappingPort.IsOutputPort && (overlappingPortParent.IsKindOfState ||
-                                            overlappingPortParent.IsPackage ||
-                                            overlappingPortParent.IsMessage)) {
-			CreateOutMuxPort(fixPort, overlappingPort);
-			return true;
-		}
+        if(overlappingPort.IsRelayPort) {
+            CreateOutMuxPort(fixPort, overlappingPort);
+            return true;
+        }
         
         // Connect function & modules ports together.
+        iCS_EditorObject portParent= fixPort.Parent;
+        iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
         iCS_EditorObject inPort = null;
         iCS_EditorObject outPort= null;
 
@@ -152,25 +150,26 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return true;
     }
 	// ----------------------------------------------------------------------
-	void CreateOutMuxPort(iCS_EditorObject fixPort, iCS_EditorObject outMuxPort) {
+	void CreateOutMuxPort(iCS_EditorObject fixPort, iCS_EditorObject parentMuxPort) {
         iCS_TypeCastInfo conversion= null;
-        if(!VerifyConnectionTypes(outMuxPort, fixPort, out conversion)) return;
-		var source= outMuxPort.Source;
-		// Simply connect a disconnected mux state port.
-		if(source == null && IStorage.NbOfChildren(outMuxPort, c=> c.IsDataOrControlPort) == 0) {
-			SetNewDataConnection(outMuxPort, fixPort, conversion);
-			return;
-		}
+        if(!VerifyConnectionTypes(parentMuxPort, fixPort, out conversion)) return;
+        var childPortType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InChildMuxPort : iCS_ObjectTypeEnum.OutChildMuxPort;
+		var source= parentMuxPort.Source;
+//		// Simply connect a disconnected mux state port.
+//		if(source == null && IStorage.NbOfChildren(parentMuxPort, c=> c.IsDataOrControlPort) == 0) {
+//			SetNewDataConnection(parentMuxPort, fixPort, conversion);
+//			return;
+//		}
 		// Convert source port to child port.
 		if(source != null) {
-			var firstMuxInput= IStorage.CreatePort(fixPort.Name, outMuxPort.InstanceId, outMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutChildMuxPort);
-			IStorage.SetSource(firstMuxInput, source);
-			IStorage.SetSource(outMuxPort, null);
-			outMuxPort.ObjectType= iCS_ObjectTypeEnum.OutParentMuxPort;
+			var firstChildMux= IStorage.CreatePort(fixPort.Name, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
+			IStorage.SetSource(firstChildMux, source);
+			IStorage.SetSource(parentMuxPort, null);
+			parentMuxPort.ObjectType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InParentMuxPort : iCS_ObjectTypeEnum.OutParentMuxPort;
 		}
 		// Create new mux input port.
-		var inMuxPort= IStorage.CreatePort(fixPort.Name, outMuxPort.InstanceId, outMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutChildMuxPort);
-		SetNewDataConnection(inMuxPort, fixPort, conversion);
+		var childMuxPort= IStorage.CreatePort(fixPort.Name, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
+		SetNewDataConnection(childMuxPort, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_TypeCastInfo conversion= null) {
