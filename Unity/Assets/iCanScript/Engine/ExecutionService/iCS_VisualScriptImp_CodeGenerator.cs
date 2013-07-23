@@ -300,6 +300,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     }
                     case iCS_ObjectTypeEnum.InDynamicDataPort:
                     case iCS_ObjectTypeEnum.InFixDataPort:
+                    case iCS_ObjectTypeEnum.InInstancePort:
                     case iCS_ObjectTypeEnum.EnablePort: {
 						if(!(port.IsInputPort && IsEndPort(port))) {
 						    break;

@@ -203,6 +203,10 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
             <Title>Programming Keywords</Title>
             <Text>?appendix</Text>
         </Document>
+        <Document ID="123">
+            <Title>Inbox</Title>
+            <Text>ENIAC (Electronic Numerical Integrator And Computer) was the first electronic general-purpose computer. It was Turing-complete, digital, and capable of being reprogrammed to solve a full range of computing problems.</Text>
+        </Document>
         <Document ID="82">
             <Title>Creating Nodes</Title>
             <Text>This section discusses how to create your own nodes from source code.   Please refer to section XXX if you want to install an existing library.</Text>
@@ -215,6 +219,16 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
         </Document>
         <Document ID="68">
             <Title>Preferences</Title>
+        </Document>
+        <Document ID="124">
+            <Title>Understanding iCanScript Muxes</Title>
+            <Text>iCanScript supports two flavours of muxes.  It supports a new old mugs as well as port boxes. What must his or created on packages state charts and state nodes. Boxes are use to combine the output of several other notes into a single output the way this works is that the monks will select anyone that is a salable in the current frame any out and eating one of its input that is available in the current frame. Therefore it is your responsibility to ensure that only one of the inputs is valid at any frame it is very good to select an output that comes from multiple nodes that run conditionally depending on this tape duplication state of Frame. If you wish to select an output from multiple family of inputs in a given frame it is best to use the select note instead of the muck snowed.
+
+Port muxes are created by either dragging an output port to a relay Port or by clicking on an output port or an input port and selecting convert to mux port option from the drop-down menu.  Mux ports can come as input port or output port.
+
+Muxes nodes are created from the drop-down menu.
+
+</Text>
         </Document>
         <Document ID="69">
             <Title>About This Manual</Title>
@@ -234,14 +248,8 @@ In the future, the professional version of iCanScript will be available for a 30
         <Document ID="90">
             <Title>Untitled</Title>
         </Document>
-        <Document ID="77">
-            <Title>Purchasing iCanScript</Title>
-        </Document>
         <Document ID="91">
             <Title>Untitled</Title>
-        </Document>
-        <Document ID="118">
-            <Title>ToC</Title>
         </Document>
         <Document ID="84">
             <Title>Table Of Content</Title>
@@ -287,6 +295,12 @@ Acknowledgements	&lt;$p>
 ?aID	Tips and Tricks and Trouble	&lt;$p>
 
 </Text>
+        </Document>
+        <Document ID="118">
+            <Title>ToC</Title>
+        </Document>
+        <Document ID="77">
+            <Title>Purchasing iCanScript</Title>
         </Document>
         <Document ID="78">
             <Title>Updates</Title>

@@ -383,6 +383,7 @@ public partial class iCS_IStorage {
     }
     public iCS_EditorObject InstanceWizardGetConstructor(iCS_EditorObject module) {
         iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InInstancePort);
+        if(moduleThisPort == null) return null;
         iCS_EditorObject constructorThisPort= moduleThisPort.Source;
         if(constructorThisPort == null) return null;
         iCS_EditorObject constructor= constructorThisPort.Parent;

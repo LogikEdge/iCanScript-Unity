@@ -225,26 +225,18 @@ public partial class iCS_IStorage {
         bool modified= false;
         ForEach(
             obj=> {
-                // Cleanup disconnected dynamic state or module ports.
-				var parent= obj.Parent;
+                // Cleanup disconnected ports.
                 if(CleanupDeadPorts) {
 					bool shouldRemove= false;
-					if(obj.IsOutParentMuxPort) {
-						int nbOfChildren= NbOfChildren(obj, c=> c.IsInDataOrControlPort);
-						if(nbOfChildren == 1) {
-							iCS_EditorObject child= GetChildInputDataPorts(obj)[0];
-							obj.SourceId= child.SourceId;
-							obj.ObjectType= iCS_ObjectTypeEnum.OutDynamicDataPort;
-							DestroyInstanceInternal(child);
-						} else {
-							shouldRemove= nbOfChildren == 0 && IsPortDisconnected(obj);							
-						}
-					} else if(obj.IsOutChildMuxPort) {
-						shouldRemove= obj.Source == null;
-					} else {
-						shouldRemove= ((obj.IsStatePort || obj.IsDynamicDataPort) && IsPortDisconnected(obj)) ||
-						              (obj.IsDynamicDataPort && obj.Source == null && (parent.IsStateChart || parent.IsState));
-					}
+                    if(obj.IsDynamicDataPort && IsPortDisconnected(obj)) {
+                        shouldRemove= true;
+                    } else if(obj.IsParentMuxPort && IsPortDisconnected(obj) && obj.HasChildPort() == false) {
+                        shouldRemove= true;
+                    } else if(obj.IsChildMuxPort && obj.Source == null) {
+                        shouldRemove= true;
+                    } else if(obj.IsStatePort && IsPortDisconnected(obj)) {
+                        shouldRemove= true;
+                    }
 					if(shouldRemove) {
                         DestroyInstanceInternal(obj);                            
                         modified= true;						
