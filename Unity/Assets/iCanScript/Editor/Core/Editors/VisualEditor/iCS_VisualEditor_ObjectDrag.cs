@@ -378,6 +378,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 // Autocreate instance node if inside a composite module.
                                 newPortParent= GetNodeAtMousePosition();
                                 if(newPortParent != null && newPortParent.IsKindOfPackage) {
+                                    // Don't autocreate within the same parent for output ports.
+                                    if(DragFixPort.IsOutputPort && newPortParent.IsBelowOrEqualInHierarchyTo(DragFixPort.Parent)) {
+                                        break;
+                                    }
+                                    // Don't autocreate outside the parent for input ports.
+                                    if(DragFixPort.IsInputPort && newPortParent.IsAboveInHierarchyTo(DragFixPort.Parent)) {
+                                        break;
+                                    }
                                     // Determine if we need to create an instance node.
                                     AutocreateInstanceNode(dragPortPos, newPortParent);
                                     break;                                  
