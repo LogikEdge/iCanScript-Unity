@@ -78,14 +78,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject overlappingPort) {
         // Only data ports can be connected together.
         if(!fixPort.IsDataOrControlPort || !overlappingPort.IsDataOrControlPort) return false;
+        // Verify for Mux port creation
         if(overlappingPort.IsRelayPort) {
-            CreateOutMuxPort(fixPort, overlappingPort);
+            CreateMuxPort(fixPort, overlappingPort);
+            return true;
+        }
+        iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
+        if(overlappingPort.IsOutputPort && (overlappingPortParent.IsKindOfPackage || overlappingPortParent.IsKindOfState)) {
+            CreateMuxPort(fixPort, overlappingPort);
             return true;
         }
         
         // Connect function & modules ports together.
         iCS_EditorObject portParent= fixPort.Parent;
-        iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
         iCS_EditorObject inPort = null;
         iCS_EditorObject outPort= null;
 
@@ -150,7 +155,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return true;
     }
 	// ----------------------------------------------------------------------
-	void CreateOutMuxPort(iCS_EditorObject fixPort, iCS_EditorObject parentMuxPort) {
+	void CreateMuxPort(iCS_EditorObject fixPort, iCS_EditorObject parentMuxPort) {
         iCS_TypeCastInfo conversion= null;
         if(!VerifyConnectionTypes(parentMuxPort, fixPort, out conversion)) return;
         var childPortType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InChildMuxPort : iCS_ObjectTypeEnum.OutChildMuxPort;
