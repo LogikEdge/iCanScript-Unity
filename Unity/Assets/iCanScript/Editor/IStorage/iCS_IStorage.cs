@@ -137,7 +137,7 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetParentMuxPort(iCS_EditorObject eObj) {
-		return eObj.IsOutParentMuxPort ? eObj : (eObj.IsOutChildMuxPort ? eObj.Parent : null);
+		return eObj.IsParentMuxPort ? eObj : (eObj.IsChildMuxPort ? eObj.Parent : null);
 	}
     // ----------------------------------------------------------------------
     public object GetRuntimeObject(iCS_EditorObject obj) {
