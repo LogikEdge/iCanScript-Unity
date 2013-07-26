@@ -101,6 +101,11 @@ public class iCS_SignatureDataSource {
         if(idx < myParameters.Length) return myParameters[idx];
         if(idx == (int)iCS_PortIndex.Return) return myReturnValue;
         if(idx == (int)iCS_PortIndex.This) return myThis;
+		if(idx == (int)iCS_PortIndex.OutThis) return myOutThis;
+		if(idx == (int)iCS_PortIndex.Trigger) return myTrigger;
+		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
+			return GetEnable(idx);
+		}
 #if UNITY_EDITOR
         Debug.LogWarning("iCanScript: Trying to get a signature value with wrong index: "+idx);
 #endif
@@ -120,6 +125,18 @@ public class iCS_SignatureDataSource {
             myThis= value;
             return;
         }
+		if(idx == (int)iCS_PortIndex.OutThis) {
+			myOutThis= value;
+			return;
+		}
+		if(idx == (int)iCS_PortIndex.Trigger) {
+			myTrigger= value;
+			return;
+		}
+		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
+			SetEnable(idx, value);
+			return;
+		}
 #if UNITY_EDITOR
         Debug.LogWarning("iCanScript: Trying to set a signature value with wrong index: "+idx);
 #endif
@@ -143,9 +160,29 @@ public class iCS_SignatureDataSource {
 #endif        
     }
 	// -------------------------------------------------------------------------
+	public bool GetEnable(int idx) {
+		if(myEnables == null) return true;
+		var i= idx-(int)iCS_PortIndex.EnablesStart;
+		if(i >= myEnables.Length) return true;
+		return myEnables[i];
+	}
+	// -------------------------------------------------------------------------
+	public void SetEnable(int idx, bool value) {
+		if(myEnables == null) return;
+		var i= idx-(int)iCS_PortIndex.EnablesStart;
+		if(i >= myEnables.Length) return;
+		myEnables[i]= value;
+	}
+	// -------------------------------------------------------------------------
     public iCS_Connection GetConnection(int idx) {
         if(idx < myParameterConnections.Length) return myParameterConnections[idx];
         if(idx == (int)iCS_PortIndex.This) return myThisConnection;
+		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
+			var i= idx-(int)iCS_PortIndex.EnablesStart;
+			if(myEnableConnections != null && i < myEnableConnections.Length) {
+				return myEnableConnections[i];
+			}
+		}
 #if UNITY_EDITOR
         Debug.LogWarning("iCanScript: Trying to get a signature connection with wrong index: "+idx);
 #endif
@@ -161,6 +198,13 @@ public class iCS_SignatureDataSource {
             myThisConnection= connection;
             return;
         }
+		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
+			var i= idx-(int)iCS_PortIndex.EnablesStart;
+			if(myEnableConnections != null && i < myEnableConnections.Length) {
+				myEnableConnections[i]= connection;
+			}
+			return;
+		}
 #if UNITY_EDITOR
         Debug.LogWarning("iCanScript: Trying to set a signature connection with wrong index: "+idx);
 #endif
@@ -175,7 +219,10 @@ public class iCS_SignatureDataSource {
                 return false;
             }
         }
-        return ForEachParameterConnection(test);
+        if(ForEachParameterConnection(test) == false) {
+			return false;
+		}
+		return ForEachEnableConnection(test);
     }
     // ----------------------------------------------------------------------
     public bool ForEachParameterConnection(Func<int,iCS_Connection,bool> test) {
@@ -190,7 +237,21 @@ public class iCS_SignatureDataSource {
 	    }
 	    return true;        
     }
-    
+    // ----------------------------------------------------------------------
+    public bool ForEachEnableConnection(Func<int,iCS_Connection,bool> test) {
+		if(myEnableConnections == null) return true;
+        var cLen= myEnableConnections.Length;
+	    for(int i= 0; i < cLen; ++i) {
+	        var connection= myEnableConnections[i];
+	        if(connection != null) {
+        	    if(test(i, connection) == false) {
+        	        return false;	                    
+    	        }
+	        }
+	    }
+	    return true;        
+	}
+	
     // ======================================================================
     // Functions to fetch the runtime inputs needed to execute the
     // associated action.
@@ -206,6 +267,14 @@ public class iCS_SignatureDataSource {
 	        var c= myParameterConnections[i];
 	        if(c != null) {
         	    myParameters[i]= c.Value;	                    
+	        }
+	    }
+        // Force all enables.
+        var cLen= myEnableConnections.Length;
+	    for(int i= 0; i < cLen; ++i) {
+	        var c= myEnableConnections[i];
+	        if(c != null) {
+        	    myEnables[i]= c.Value;	                    
 	        }
 	    }
 	}
