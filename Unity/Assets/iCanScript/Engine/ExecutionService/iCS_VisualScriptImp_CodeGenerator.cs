@@ -284,10 +284,10 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     }
                     
                     // Control flow ports.
-                    case iCS_ObjectTypeEnum.OutTriggerPort: {
+                    case iCS_ObjectTypeEnum.TriggerPort: {
                         var package= myRuntimeNodes[port.ParentId] as iCS_Package;
                         var portIdx= port.PortIndex;
-                        package.ActivateOutTriggerPort(portIdx);
+                        package.ActivateTriggerPort(portIdx);
                         package[portIdx]= true;
                         break;
                     }
@@ -308,7 +308,6 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     }
                     case iCS_ObjectTypeEnum.InDynamicDataPort:
                     case iCS_ObjectTypeEnum.InFixDataPort:
-                    case iCS_ObjectTypeEnum.InInstancePort:
                     case iCS_ObjectTypeEnum.EnablePort: {
 						if(!(port.IsInputPort && IsEndPort(port))) {
 						    break;
@@ -481,8 +480,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 		iCS_Connection connection= null;
         var rtPortGroup= myRuntimeNodes[port.InstanceId] as iCS_ISignature;
 		if(rtPortGroup != null) {
-            int outIdx= rtPortGroup.GetSignatureDataSource().ReturnIndex;
-			connection= new iCS_Connection(rtPortGroup, outIdx);	
+			connection= new iCS_Connection(rtPortGroup, (int)iCS_PortIndex.Return);	
 		} else {
             bool isAlwaysReady= port.IsInputPort;
             bool isControlPort= port.IsControlPort;

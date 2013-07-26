@@ -6,7 +6,7 @@ public class iCS_Mux : iCS_ActionWithSignature {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_Mux(iCS_Storage storage, int instanceId, int priority, int nbOfParameters)
-    : base(storage, instanceId, priority, nbOfParameters, true, false) {}
+    : base(storage, instanceId, priority, nbOfParameters) {}
 
     // ======================================================================
     // Execution (not used)
@@ -23,16 +23,15 @@ public class iCS_Mux : iCS_ActionWithSignature {
     }
     // ----------------------------------------------------------------------
 	bool ReadAnyInput(int frameId) {
-        var connections= Connections;
-        int nbOfConnections= connections.Length;
-		for(int i= 0; i < nbOfConnections; ++i) {
-            var c= connections[i];
-            if(c.IsReady(frameId)) {
-                ReturnValue= c.Value;
-                MarkAsExecuted(frameId);
+        return !ForEachParameterConnection(
+            (_, connection)=> {
+                if(connection.IsReady(frameId)) {
+                    ReturnValue= connection.Value;
+                    MarkAsExecuted(frameId);
+                    return false;
+                }
                 return true;
-            }			
-		}
-		return false;		
+            }
+        );
 	}
 }

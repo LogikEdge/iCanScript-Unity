@@ -13,7 +13,7 @@ public class iCS_ConstructorInfo : iCS_MethodInfo {
     : base(iCS_ObjectTypeEnum.Constructor, _classInfo,
            _displayName, _description, _iconPath,
            _parameters,
-           new iCS_FunctionReturn(iCS_Strings.InstanceObjectName, _classInfo.CompilerType),
+           new iCS_FunctionReturn(iCS_Strings.DefaultInstanceName, _classInfo.CompilerType),
            iCS_StorageClass.Class, _methodBase)
     {
     }

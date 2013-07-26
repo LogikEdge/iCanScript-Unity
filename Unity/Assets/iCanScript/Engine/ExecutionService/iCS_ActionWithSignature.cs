@@ -17,10 +17,9 @@ public class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     public bool IsDisabled { get { return myIsDisabled; } set { myIsDisabled= value; }}
     public object[] Parameters {
         get { return mySignature.Parameters; }
-        set { mySignature.Parameters= value; }
     }
-    public iCS_Connection[] Connections {
-        get { return mySignature.Connections; }
+    public iCS_Connection[] ParameterConnections {
+        get { return mySignature.ParameterConnections; }
     }
     public object ReturnValue {
         get { return mySignature.ReturnValue; }
@@ -34,15 +33,30 @@ public class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
         get { return mySignature[idx]; }
         set { mySignature[idx]= value; }
     }
+    public object GetValue(int idx) {
+        return mySignature.GetValue(idx);
+    }
+    public void SetValue(int idx, object value) {
+        mySignature.SetValue(idx, value);
+    }
+    public iCS_Connection GetConnection(int idx) {
+        return mySignature.GetConnection(idx);
+    }
     public void SetConnection(int idx, iCS_Connection connection) {
         mySignature.SetConnection(idx, connection);
+    }
+    public bool ForEachParameterConnection(Func<int,iCS_Connection,bool> test) {
+        return mySignature.ForEachParameterConnection(test);
+    }
+    public bool ForEachConnection(Func<int,iCS_Connection,bool> test) {
+        return mySignature.ForEachConnection(test);
     }
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ActionWithSignature(iCS_Storage storage, int instanceId, int priority, int nbOfParameters, bool hasReturn, bool hasThis) : base(storage, instanceId, priority) {
-        mySignature= new iCS_SignatureDataSource(nbOfParameters, hasReturn, hasThis);
+    public iCS_ActionWithSignature(iCS_Storage storage, int instanceId, int priority, int nbOfParameters) : base(storage, instanceId, priority) {
+        mySignature= new iCS_SignatureDataSource(nbOfParameters);
     }
     
     // ======================================================================

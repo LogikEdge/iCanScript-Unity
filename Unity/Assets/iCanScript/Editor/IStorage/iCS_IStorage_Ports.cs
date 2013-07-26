@@ -19,6 +19,7 @@ public partial class iCS_IStorage {
 	// High-order functions
     // ----------------------------------------------------------------------
 	public iCS_EditorObject[] RecalculatePortIndexes(iCS_EditorObject node) {
+        ... Need to fix this !!!
 		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
 		// Get all child data ports.
 		ForEachChildDataPort(node, child=> ports.Add(child));
@@ -33,8 +34,13 @@ public partial class iCS_IStorage {
         }
 		return result;
 	}
-    public iCS_EditorObject FindThisInputPort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsInDataOrControlPort && c.Name == iCS_Strings.InstanceObjectName);
+    // -------------------------------------------------------------------------
+    public iCS_EditorObject FindInputInstancePort(iCS_EditorObject node) {
+        return FindInChildren(node, c=> c.IsInInstancePort);
+    }
+    // -------------------------------------------------------------------------
+    public iCS_EditorObject FindOutputInstancePort(iCS_EditorObject node) {
+        return FindInChildren(node, c=> c.IsOutInstancePort);
     }
     // ----------------------------------------------------------------------
     public static iCS_EditorObject[] SortPortsOnIndex(iCS_EditorObject[] lst) {

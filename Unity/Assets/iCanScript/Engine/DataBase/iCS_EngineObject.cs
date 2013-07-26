@@ -214,7 +214,7 @@ public class iCS_EngineObject {
     // Control Ports
     public bool IsControlPort           { get { return iCS_ObjectType.IsControlPort(this); }}
     public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}
-    public bool IsOutTriggerPort        { get { return iCS_ObjectType.IsOutTriggerPort(this); }}
+    public bool IsTriggerPort           { get { return iCS_ObjectType.IsTriggerPort(this); }}
     // Data Flow or Control Ports
     public bool IsDataOrControlPort     { get { return iCS_ObjectType.IsDataOrControlPort(this); }}
     public bool IsInDataOrControlPort   { get { return iCS_ObjectType.IsInDataOrControlPort(this); }}

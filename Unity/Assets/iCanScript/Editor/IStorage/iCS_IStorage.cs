@@ -432,13 +432,13 @@ public partial class iCS_IStorage {
         // Determine icon.
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
-		int portIdx= 0;
 		iCS_EditorObject port= null;
-        for(; portIdx < desc.Parameters.Length; ++portIdx) {
-            var p= desc.Parameters[portIdx];
+		int parameterIdx= 0;
+        for(; parameterIdx < desc.Parameters.Length; ++parameterIdx) {
+            var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.name, id, p.type, portType, portIdx);
+                port= CreatePort(p.name, id, p.type, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
 				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
 					initialPortValue= iCS_Types.DefaultValue(p.type);
@@ -448,7 +448,7 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, portIdx);
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
         // Perform initial node layout.
         instance.Unhide();
@@ -463,13 +463,12 @@ public partial class iCS_IStorage {
         instance.SetAnchorAndLayoutPosition(globalPos);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
-		int portIdx= 0;
 		iCS_EditorObject port= null;
-        for(; portIdx < desc.Parameters.Length; ++portIdx) {
-            var p= desc.Parameters[portIdx];
+        for(int parameterIdx= 0; parameterIdx < desc.Parameters.Length; ++parameterIdx) {
+            var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.name, id, p.type, portType, portIdx);
+                port= CreatePort(p.name, id, p.type, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
 				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
 					initialPortValue= iCS_Types.DefaultValue(p.type);
@@ -479,13 +478,11 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, portIdx++);
-		} else {
-		    ++portIdx;
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
 		// Create 'this' ports.
-        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.ClassType, iCS_ObjectTypeEnum.InInstancePort, portIdx++);
-        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.ClassType, iCS_ObjectTypeEnum.OutInstancePort, portIdx);
+        port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);
+        port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.OutProposedDataPort,(int)iCS_PortIndex.OutThis);
         // Perform initial node layout.
         instance.Unhide();
         return instance;
@@ -499,13 +496,12 @@ public partial class iCS_IStorage {
         instance.SetAnchorAndLayoutPosition(globalPos);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
-		int portIdx= 0;
 		iCS_EditorObject port= null;
-        for(; portIdx < desc.Parameters.Length; ++portIdx) {
-            var p= desc.Parameters[portIdx];
+        for(int parameterIdx= 0; parameterIdx < desc.Parameters.Length; ++parameterIdx) {
+            var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.name, id, p.type, portType, portIdx);
+                port= CreatePort(p.name, id, p.type, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
 				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
 					initialPortValue= iCS_Types.DefaultValue(p.type);
@@ -515,7 +511,7 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, portIdx++);
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
 		// Special case for behaviour messages.
 		if(instance.Parent.IsBehaviour) {
@@ -559,7 +555,6 @@ public partial class iCS_IStorage {
     Vector2 VisualEditorCenter() {
         iCS_VisualEditor editor= iCS_EditorMgr.FindVisualEditor();
         var center= editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
-//		Debug.Log("Visual Editor center: "+center);
 		return center;
     }
     

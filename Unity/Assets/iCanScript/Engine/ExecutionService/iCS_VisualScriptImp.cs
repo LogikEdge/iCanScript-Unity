@@ -49,7 +49,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             var rtMessage= runContext.Action as iCS_Message;
             if(rtMessage != null) {
-                rtMessage.GetSignatureDataSource().Parameters[0]= p1;
+                rtMessage.GetSignatureDataSource().SetParameter(0, p1);
                 runContext.Run();
             }
         }
@@ -61,8 +61,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             var rtMessage= runContext.Action as iCS_Message;
             if(rtMessage != null) {
-                rtMessage.GetSignatureDataSource().Parameters[0]= p1;
-                rtMessage.GetSignatureDataSource().Parameters[1]= p2;
+                rtMessage.GetSignatureDataSource().SetParameter(0, p1);
+                rtMessage.GetSignatureDataSource().SetParameter(1, p2);
                 runContext.Run();
             }
         }

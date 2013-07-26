@@ -54,7 +54,7 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
 			// Build input string
 			string inputStr= "";
             if(IsInstanceFunctionBase) {
-                inputStr+= iCS_Strings.InstanceObjectName+":"+iCS_Types.TypeName(ClassType)+", ";
+                inputStr+= iCS_Strings.DefaultInstanceName+":"+iCS_Types.TypeName(ClassType)+", ";
             }
             foreach(var param in Parameters) {
 				if(!param.type.IsByRef) {

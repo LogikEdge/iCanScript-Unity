@@ -1,25 +1,31 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 public class iCS_SignatureDataSource {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    object           myThis         = null;  
-    object[]         myParameters   = null;
-    object           myReturnValue  = null;
-    iCS_Connection[] myConnections  = null;
+    // .NET Signature
+    object              myThis                  = null;  
+    object[]            myParameters            = null;
+    object              myReturnValue           = null;
+    iCS_Connection[]    myParameterConnections  = null;
+    iCS_Connection      myThisConnection        = null;
+    // Extended Signature
+    object              myOutThis               = null;
+    // Controls
+    bool                myTrigger               = false;
+    bool[]              myEnables               = null;
+    iCS_Connection[]    myEnableConnections     = null;
+    
 #if UNITY_EDITOR
-    string[]         myNames        = null;
+    string[]         myParameterNames= null;
 #endif
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public int ReturnIndex     { get { return myParameters.Length; }}
-    public int ThisIndex       { get { return myParameters.Length+1; }}
-    public int NbOfParameters  { get { return myParameters.Length; }}
-    public int NbOfConnections { get { return myConnections.Length; }}
     public object This {
         get { return myThis; }
         set { myThis= value; }
@@ -30,21 +36,34 @@ public class iCS_SignatureDataSource {
     }
     public object[] Parameters {
         get { return myParameters; }
-        set { myParameters= value; }
     }
-    public iCS_Connection[] Connections {
-        get { return myConnections; }
+    public iCS_Connection[] ParameterConnections {
+        get { return myParameterConnections; }
+    }
+    public object OutThis {
+        get { return myOutThis; }
+        set { myOutThis= value; }
+    }
+    public bool Trigger {
+        get { return myTrigger; }
+        set { myTrigger= value; }
+    }
+    public bool[] Enables {
+        get { return myEnables; }
+    }
+    public iCS_Connection[] EnableConnections {
+        get { return myEnableConnections; }
     }
     
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_SignatureDataSource(int nbOfParameters, bool hasReturn, bool hasThis) {
+    public iCS_SignatureDataSource(int nbOfParameters) {
         myParameters = new object[nbOfParameters];
-        myConnections= new iCS_Connection[nbOfParameters+(hasThis ? 2 : 0)];
+        myParameterConnections= new iCS_Connection[nbOfParameters];
         for(int i= 0; i < nbOfParameters; ++i) {
-            myParameters[i] = null;
-            myConnections[i]= null;
+            myParameters[i]= null;
+            myParameterConnections[i]= null;
         }
     }
 
@@ -54,90 +73,146 @@ public class iCS_SignatureDataSource {
     // ----------------------------------------------------------------------
 #if UNITY_EDITOR
 	public string GetName(int idx) {
-        if(myNames == null || idx >= myNames.Length || myNames[idx] == null) {
+        if(myParameterNames == null || idx >= myParameterNames.Length || myParameterNames[idx] == null) {
             return "["+idx+"]";
         }
-	    return myNames[idx];
+	    return myParameterNames[idx];
 	}
-	public void SetParameterName(int idx, string value) {
-        if(myNames == null) {
-            var len= myConnections.Length;
-            myNames= new string[len];
+	// -------------------------------------------------------------------------
+    public void SetParameterName(int idx, string value) {
+        // Dynamically allocate parameter name array.
+        if(myParameterNames == null) {
+            var len= myParameters.Length;
+            myParameterNames= new string[len];
             for(int i= 0; i < len; ++i) {
-                myNames[i]= null;
+                myParameterNames[i]= null;
             }
         }
-        if(idx >= myNames.Length) return;
-        myNames[idx]= value;
+        if(idx < myParameterNames.Length) {
+            myParameterNames[idx]= value;
+        }
+        if(idx != (int)iCS_PortIndex.This) {
+            Debug.LogWarning("iCanScript: Trying to set signature name with wrong index: "+idx+" name= "+value);
+        }
 	}
 #endif
-	public object GetValue(int idx) {
-        var len= myParameters.Length;
-        if(idx < len) return myParameters[idx];
-        if(idx == len) return myReturnValue;
-        if(idx == len+1) return myThis;
+	// -------------------------------------------------------------------------
+    public object GetValue(int idx) {
+        if(idx < myParameters.Length) return myParameters[idx];
+        if(idx == (int)iCS_PortIndex.Return) return myReturnValue;
+        if(idx == (int)iCS_PortIndex.This) return myThis;
+#if UNITY_EDITOR
+        Debug.LogWarning("iCanScript: Trying to get a signature value with wrong index: "+idx);
+#endif
         return null;		
 	}
-	public void SetValue(int idx, object value) {
-        var len= myParameters.Length;
-        if(idx < len)  {
+	// -------------------------------------------------------------------------
+    public void SetValue(int idx, object value) {
+        if(idx < myParameters.Length)  {
             myParameters[idx]= value;
             return;
         }
-        if(idx == len) {
+        if(idx == (int)iCS_PortIndex.Return) {
             myReturnValue= value;
             return;
         }
-        if(idx == len+1) {
+        if(idx == (int)iCS_PortIndex.This) {
             myThis= value;
+            return;
         }
+#if UNITY_EDITOR
+        Debug.LogWarning("iCanScript: Trying to set a signature value with wrong index: "+idx);
+#endif
 	}
-	public void SetConnection(int idx, iCS_Connection connection) {
-        if(idx >= myConnections.Length) return;
-		myConnections[idx]= connection;
+	// -------------------------------------------------------------------------
+    public object GetParameter(int idx) {
+        if(idx < myParameters.Length) return myParameters[idx];
+#if UNITY_EDITOR
+        Debug.LogWarning("iCanScript: Trying to get a signature value with wrong index: "+idx);
+#endif
+        return null;		        
+    }
+	// -------------------------------------------------------------------------
+    public void SetParameter(int idx, object value) {
+        if(idx < myParameters.Length)  {
+            myParameters[idx]= value;
+            return;
+        }
+#if UNITY_EDITOR
+        Debug.LogWarning("iCanScript: Trying to set a signature value with wrong index: "+idx);
+#endif        
+    }
+	// -------------------------------------------------------------------------
+    public iCS_Connection GetConnection(int idx) {
+        if(idx < myParameterConnections.Length) return myParameterConnections[idx];
+        if(idx == (int)iCS_PortIndex.This) return myThisConnection;
+#if UNITY_EDITOR
+        Debug.LogWarning("iCanScript: Trying to get a signature connection with wrong index: "+idx);
+#endif
+        return null;
+    }
+    // -------------------------------------------------------------------------
+    public void SetConnection(int idx, iCS_Connection connection) {
+        if(idx < myParameterConnections.Length) {
+    		myParameterConnections[idx]= connection;            
+            return;
+        }
+        if(idx == (int)iCS_PortIndex.This) {
+            myThisConnection= connection;
+            return;
+        }
+#if UNITY_EDITOR
+        Debug.LogWarning("iCanScript: Trying to set a signature connection with wrong index: "+idx);
+#endif
 	}
-	public object GetThis() {
-	    return myThis;
-	}
-    public void SetThis(object value) {
-        myThis= value;
-    }
-    public object GetReturnValue() {
-        return myReturnValue;
-    }
-    public void SetReturnValue(object value) {
-        myReturnValue= value;
-    }
 
+    // ======================================================================
+    // Iteration
+    // ----------------------------------------------------------------------
+    public bool ForEachConnection(Func<int,iCS_Connection,bool> test) {
+        if(myThisConnection != null) {
+            if(test((int)iCS_PortIndex.This, myThisConnection) == false) {
+                return false;
+            }
+        }
+        return ForEachParameterConnection(test);
+    }
+    // ----------------------------------------------------------------------
+    public bool ForEachParameterConnection(Func<int,iCS_Connection,bool> test) {
+        var cLen= myParameterConnections.Length;
+	    for(int i= 0; i < cLen; ++i) {
+	        var connection= myParameterConnections[i];
+	        if(connection != null) {
+        	    if(test(i, connection) == false) {
+        	        return false;	                    
+    	        }
+	        }
+	    }
+	    return true;        
+    }
+    
     // ======================================================================
     // Functions to fetch the runtime inputs needed to execute the
     // associated action.
     // ----------------------------------------------------------------------
 	public void ForcedFetchConnections() {
-        var cLen= myConnections.Length;
-        var pLen= myParameters.Length;
+        // Force fetch "this".
+        if(myThisConnection != null) {
+            myThis= myThisConnection.Value;
+        }
+        // Force all parameters.
+        var cLen= myParameterConnections.Length;
 	    for(int i= 0; i < cLen; ++i) {
-	        var c= myConnections[i];
+	        var c= myParameterConnections[i];
 	        if(c != null) {
-	           if(i < pLen) {
-        	       myParameters[i]= c.Value;	                    
-	           } else if(i == pLen+1) {
-	               myThis= c.Value;
-	           }
+        	    myParameters[i]= c.Value;	                    
 	        }
 	    }
 	}
     // ----------------------------------------------------------------------
     // Returns true if all connections are ready
 	public bool AreAllConnectionsReady(int frameId) {
-        var cLen= myConnections.Length;
-	    for(int i= 0; i < cLen; ++i) {
-	        var c= myConnections[i];
-	        if(c != null && !c.IsReady(frameId)) {
-	                return false;
-	        }
-	    }
-	    return true;
+        return ForEachConnection((idx, connection)=> connection.IsReady(frameId));
 	}
     // ----------------------------------------------------------------------
     // Returns true if the given parameter is ready for the given frameId.
@@ -147,18 +222,16 @@ public class iCS_SignatureDataSource {
     // ----------------------------------------------------------------------
     // Returns true if the given parameter is ready for the given frameId.
     public bool IsConnectionReady(int idx, int frameId) {
-        var len= myConnections.Length;
-        if(idx >= len) return true;
-        if(myConnections[idx] == null) return true;
-        return myConnections[idx].IsReady(frameId);
+        var connection= GetConnection(idx);
+        if(connection == null) return true;
+        return connection.IsReady(frameId);
     }
     // ----------------------------------------------------------------------
     // Returns the final value of a connection or port if no connection.
 	public object FetchValue(int idx) {
-        if(idx < 0 || idx >= myConnections.Length) return null;
-	    var c= myConnections[idx];
-        if(c == null) return GetValue(idx);
-        return myConnections[idx].Value;
+	    var connection= GetConnection(idx);
+        if(connection == null) return GetValue(idx);
+        return connection.Value;
 	}
 	
     // ======================================================================

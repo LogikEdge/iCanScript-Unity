@@ -8,7 +8,7 @@ public class iCS_GetClassField : iCS_FieldBase {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_GetClassField(FieldInfo fieldInfo, iCS_Storage storage, int instanceId, int priority)
-    : base(fieldInfo, storage, instanceId, priority, 0, true, false) {}
+    : base(fieldInfo, storage, instanceId, priority, 0) {}
     
     // ======================================================================
     // Execution
