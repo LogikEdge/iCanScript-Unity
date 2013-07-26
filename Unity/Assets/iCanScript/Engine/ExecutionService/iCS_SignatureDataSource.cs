@@ -177,9 +177,9 @@ public class iCS_SignatureDataSource {
     public iCS_Connection GetConnection(int idx) {
         if(idx < myParameterConnections.Length) return myParameterConnections[idx];
         if(idx == (int)iCS_PortIndex.This) return myThisConnection;
-		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
+		if(myEnableConnections != null && idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
 			var i= idx-(int)iCS_PortIndex.EnablesStart;
-			if(myEnableConnections != null && i < myEnableConnections.Length) {
+			if(i < myEnableConnections.Length) {
 				return myEnableConnections[i];
 			}
 		}
@@ -198,9 +198,9 @@ public class iCS_SignatureDataSource {
             myThisConnection= connection;
             return;
         }
-		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
+		if(myEnableConnections != null && idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
 			var i= idx-(int)iCS_PortIndex.EnablesStart;
-			if(myEnableConnections != null && i < myEnableConnections.Length) {
+			if(i < myEnableConnections.Length) {
 				myEnableConnections[i]= connection;
 			}
 			return;
@@ -270,13 +270,15 @@ public class iCS_SignatureDataSource {
 	        }
 	    }
         // Force all enables.
-        var cLen= myEnableConnections.Length;
-	    for(int i= 0; i < cLen; ++i) {
-	        var c= myEnableConnections[i];
-	        if(c != null) {
-        	    myEnables[i]= c.Value;	                    
-	        }
-	    }
+		if(myEnableConnections != null) {
+	        var cLen= myEnableConnections.Length;
+		    for(int i= 0; i < cLen; ++i) {
+		        var c= myEnableConnections[i];
+		        if(c != null) {
+	        	    myEnables[i]= c.Value;	                    
+		        }
+		    }			
+		}
 	}
     // ----------------------------------------------------------------------
     // Returns true if all connections are ready
