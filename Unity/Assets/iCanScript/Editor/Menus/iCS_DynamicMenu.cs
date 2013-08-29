@@ -17,8 +17,6 @@ public class iCS_DynamicMenu {
     const string ShowHierarchyStr= "Show in hierarchy";
     const string DeleteStr= "- Delete";
     const string PackageStr= "+ Package";
-    const string MultiplexerStr="+ Data Multiplexer";
-    const string SelectorStr="+ Data Selector";
     const string StateChartStr= "+ State Chart";
     const string StateStr= "+ State";
     const string EntryStateStr= "+ Entry State";
@@ -28,6 +26,7 @@ public class iCS_DynamicMenu {
     const string OnExitStr= "+ "+iCS_Strings.OnExit;
     const string EnablePortStr= "+ Enable Port";
     const string TriggerPortStr= "+ Trigger Port";
+    const string OutputThisPortStr= "+ This Port (output)";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -103,17 +102,15 @@ public class iCS_DynamicMenu {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items
-            menu= new iCS_MenuContext[7];
+            menu= new iCS_MenuContext[5];
             menu[0]= new iCS_MenuContext(PackageStr);
             menu[1]= new iCS_MenuContext(StateChartStr);
-            menu[2]= new iCS_MenuContext(MultiplexerStr);
-            menu[3]= new iCS_MenuContext(SelectorStr); 
-            menu[4]= new iCS_MenuContext(SeparatorStr);
-            menu[5]= new iCS_MenuContext(EnablePortStr);
+            menu[2]= new iCS_MenuContext(SeparatorStr);
+            menu[3]= new iCS_MenuContext(EnablePortStr);
             if(storage.HasTriggerPort(selectedObject)) {
-                menu[6]= new iCS_MenuContext("#"+TriggerPortStr);
+                menu[4]= new iCS_MenuContext("#"+TriggerPortStr);
             } else {
-                menu[6]= new iCS_MenuContext(TriggerPortStr);                
+                menu[4]= new iCS_MenuContext(TriggerPortStr);                
             }
         }
         // Show in hierarchy
@@ -128,13 +125,23 @@ public class iCS_DynamicMenu {
     void InstanceMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
+            // Determine if we should support output 'this' port.
+            Type classType= selectedObject.RuntimeType;
+            bool shouldSupportThis= !iCS_Types.IsStaticClass(classType);
             // Base menu items
-            menu= new iCS_MenuContext[2];
+            menu= new iCS_MenuContext[shouldSupportThis ? 3 : 2];
             menu[0]= new iCS_MenuContext(EnablePortStr);
             if(storage.HasTriggerPort(selectedObject)) {
                 menu[1]= new iCS_MenuContext("#"+TriggerPortStr);
             } else {
                 menu[1]= new iCS_MenuContext(TriggerPortStr);                
+            }
+            if(shouldSupportThis) {
+                if(storage.HasOutInstancePort(selectedObject)) {
+                    menu[2]= new iCS_MenuContext("#"+OutputThisPortStr);
+                } else {
+                    menu[2]= new iCS_MenuContext(OutputThisPortStr);                
+                }                
             }
         }
         // Show in hierarchy
@@ -328,8 +335,6 @@ public class iCS_DynamicMenu {
         // Process all other types of requests.
         switch(context.Command) {
             case PackageStr:        ProcessCreatePackage(context); break;
-            case MultiplexerStr:    ProcessCreateMultiplexer(context); break;
-            case SelectorStr:       ProcessCreateSelector(context); break;
             case StateChartStr:     ProcessCreateStateChart(context); break;
             case StateStr:          ProcessCreateState(context);  break;
             case SetAsEntryStr:     ProcessSetStateEntry(context); break;
@@ -340,6 +345,7 @@ public class iCS_DynamicMenu {
             case DeleteStr:         ProcessDestroyObject(context); break;
             case EnablePortStr:     ProcessCreateEnablePort(context); break;
             case TriggerPortStr:    ProcessCreateTriggerPort(context); break;
+            case OutputThisPortStr: ProcessCreateOutInstancePort(context); break;
             default: {
 				iCS_MethodBaseInfo desc= context.Descriptor;
 				if(desc == null) {
@@ -437,13 +443,11 @@ public class iCS_DynamicMenu {
 		storage.CreateTriggerPort(parent.InstanceId);        
     }
     // -------------------------------------------------------------------------
-	static void ProcessCreateMultiplexer(iCS_MenuContext convert) {
-	    Debug.Log("iCanScript: Create multiplexer node not implemented yet!!!");
-	}
-    // -------------------------------------------------------------------------
-	static void ProcessCreateSelector(iCS_MenuContext convert) {
-	    Debug.Log("iCanScript: Create selector node not implemented yet!!!");
-	}
+    static void ProcessCreateOutInstancePort(iCS_MenuContext context) {
+		var parent = context.SelectedObject;
+		var storage= context.Storage;
+		storage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
+    }
     
     // ======================================================================
     // Creation Utilities

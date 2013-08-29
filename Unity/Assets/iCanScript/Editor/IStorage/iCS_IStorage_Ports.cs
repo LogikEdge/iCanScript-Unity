@@ -42,6 +42,35 @@ public partial class iCS_IStorage {
         return BuildFilteredListOfChildren(c=> c.IsEnablePort, package);
     }
 
+    // =========================================================================
+    // Input This Port
+    // -------------------------------------------------------------------------
+    public bool HasInInstancePort(iCS_EditorObject node)  {
+        return GetInInstancePort(node) != null;
+    }
+    // -------------------------------------------------------------------------
+    public iCS_EditorObject GetInInstancePort(iCS_EditorObject node) {
+        return FindInChildren(node, c=> c.IsInInstancePort);
+    }
+
+    // =========================================================================
+    // Input This Port
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject CreateOutInstancePort(int parentId, Type runtimeType) {
+        iCS_EditorObject port= CreatePort(iCS_Strings.DefaultInstanceName, parentId, runtimeType,
+                                          iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.OutThis);
+        port.IsNameEditable= false;
+        return port;
+    }
+    // -------------------------------------------------------------------------
+    public bool HasOutInstancePort(iCS_EditorObject node)  {
+        return GetOutInstancePort(node) != null;
+    }
+    // -------------------------------------------------------------------------
+    public iCS_EditorObject GetOutInstancePort(iCS_EditorObject node) {
+        return FindInChildren(node, c=> c.IsOutInstancePort);
+    }
+    
     // ======================================================================
     // Creation
     // ----------------------------------------------------------------------
