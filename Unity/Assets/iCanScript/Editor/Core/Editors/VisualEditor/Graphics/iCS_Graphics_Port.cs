@@ -85,11 +85,11 @@ public partial class iCS_Graphics {
 		Vector2 labelPos= GetPortCenter(port);
         switch(port.Edge) {
             case iCS_EdgeEnum.Left:
-                labelPos.x+= 1 + iCS_EditorConfig.PortDiameter;
+                labelPos.x+= iCS_EditorConfig.PortDiameter;
                 labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
                 break;
             case iCS_EdgeEnum.Right:
-                labelPos.x-= 1 + labelSize.x/Scale + iCS_EditorConfig.PortDiameter;
+                labelPos.x-= labelSize.x/Scale + iCS_EditorConfig.PortDiameter;
                 labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
                 break;
             case iCS_EdgeEnum.Top:            
@@ -153,11 +153,11 @@ public partial class iCS_Graphics {
 		Vector2 valuePos= GetPortCenter(port);
         switch(port.Edge) {
             case iCS_EdgeEnum.Left:
-				valuePos.x-= 1 + valueSize.x/Scale + iCS_EditorConfig.PortDiameter;
+				valuePos.x-= valueSize.x/Scale + iCS_EditorConfig.PortDiameter;
 				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
             case iCS_EdgeEnum.Right:
-				valuePos.x+= 1 + iCS_EditorConfig.PortDiameter;
+				valuePos.x+= iCS_EditorConfig.PortDiameter;
 				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
             case iCS_EdgeEnum.Top:            
