@@ -58,7 +58,6 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.Behaviour:        BehaviourMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.StateChart:       StateChartMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.State:            StateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.Package:          PackageMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceMessage:  PackageMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassMessage:     PackageMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionGuard:  PackageMenu(selectedObject, storage); break;
@@ -70,6 +69,12 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.TypeCast:         FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceField:    FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassField:       FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Package:          if(selectedObject.IsInstanceNode) {
+                                                            InstanceMenu(selectedObject, storage);
+                                                      } else {
+                                                            PackageMenu(selectedObject, storage);
+                                                      }
+                                                      break;
             default: if(selectedObject.IsPort)        PortMenu(selectedObject, storage); break;
         }
     }
@@ -117,6 +122,25 @@ public class iCS_DynamicMenu {
         if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionAction) {
             AddDeleteMenuItem(ref menu);
         }
+        ShowMenu(menu, selectedObject, storage);
+    }
+	// ----------------------------------------------------------------------
+    void InstanceMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+        iCS_MenuContext[] menu= new iCS_MenuContext[0];
+        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
+            // Base menu items
+            menu= new iCS_MenuContext[2];
+            menu[0]= new iCS_MenuContext(EnablePortStr);
+            if(storage.HasTriggerPort(selectedObject)) {
+                menu[1]= new iCS_MenuContext("#"+TriggerPortStr);
+            } else {
+                menu[1]= new iCS_MenuContext(TriggerPortStr);                
+            }
+        }
+        // Show in hierarchy
+        AddShowInHierarchyMenuItem(ref menu);
+        // Delete menu item
+        AddDeleteMenuItem(ref menu);
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
