@@ -202,7 +202,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case EventType.Repaint: {
                 // Draw Graph.
                 DrawGraph();
-//                Event.current.Use();  // Unity will repeat this event if it is used ???                        
                 break;                
             }
             case EventType.Layout: {
@@ -210,7 +209,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     myShowDynamicMenu= false;
                     ShowDynamicMenu();
                 }
-                Event.current.Use();                        
                 break;
             }
             case EventType.MouseMove: {

@@ -15,8 +15,8 @@ public enum iCS_PortIndex  {
     // Control Ports
     ControlStart= 1000,
     Trigger= 1000,
-    EnableStart= 1001,
-    EnableEnd= 1100,
+    EnablesStart= 1001,
+    EnablesEnd= 1100,
     ControlEnd= 1100
 }
 

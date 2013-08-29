@@ -27,7 +27,7 @@ public class iCS_DynamicMenu {
     const string OnUpdateStr= "+ "+iCS_Strings.OnUpdate;
     const string OnExitStr= "+ "+iCS_Strings.OnExit;
     const string EnablePortStr= "+ Enable Port";
-    const string OutTriggerPortStr= "+ Out Trigger Port";
+    const string TriggerPortStr= "+ Trigger Port";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -105,10 +105,10 @@ public class iCS_DynamicMenu {
             menu[3]= new iCS_MenuContext(SelectorStr); 
             menu[4]= new iCS_MenuContext(SeparatorStr);
             menu[5]= new iCS_MenuContext(EnablePortStr);
-            if(storage.HasOutTriggerPort(selectedObject)) {
-                menu[6]= new iCS_MenuContext("#"+OutTriggerPortStr);
+            if(storage.HasTriggerPort(selectedObject)) {
+                menu[6]= new iCS_MenuContext("#"+TriggerPortStr);
             } else {
-                menu[6]= new iCS_MenuContext(OutTriggerPortStr);                
+                menu[6]= new iCS_MenuContext(TriggerPortStr);                
             }
         }
         // Show in hierarchy
@@ -303,19 +303,19 @@ public class iCS_DynamicMenu {
         }
         // Process all other types of requests.
         switch(context.Command) {
-            case PackageStr:                ProcessCreatePackage(context); break;
-            case MultiplexerStr:            ProcessCreateMultiplexer(context); break;
-            case SelectorStr:               ProcessCreateSelector(context); break;
-            case StateChartStr:             ProcessCreateStateChart(context); break;
-            case StateStr:                  ProcessCreateState(context);  break;
-            case SetAsEntryStr:             ProcessSetStateEntry(context); break;
-            case OnEntryStr:                ProcessCreateOnEntryModule(context); break;
-            case OnUpdateStr:               ProcessCreateOnUpdateModule(context); break;
-            case OnExitStr:                 ProcessCreateOnExitModule(context); break;
-            case ShowHierarchyStr:          ProcessShowInHierarchy(context); break;
-            case DeleteStr:                 ProcessDestroyObject(context); break;
-            case EnablePortStr:             ProcessCreateEnablePort(context); break;
-            case OutTriggerPortStr:         ProcessCreateOutTriggerPort(context); break;
+            case PackageStr:        ProcessCreatePackage(context); break;
+            case MultiplexerStr:    ProcessCreateMultiplexer(context); break;
+            case SelectorStr:       ProcessCreateSelector(context); break;
+            case StateChartStr:     ProcessCreateStateChart(context); break;
+            case StateStr:          ProcessCreateState(context);  break;
+            case SetAsEntryStr:     ProcessSetStateEntry(context); break;
+            case OnEntryStr:        ProcessCreateOnEntryModule(context); break;
+            case OnUpdateStr:       ProcessCreateOnUpdateModule(context); break;
+            case OnExitStr:         ProcessCreateOnExitModule(context); break;
+            case ShowHierarchyStr:  ProcessShowInHierarchy(context); break;
+            case DeleteStr:         ProcessDestroyObject(context); break;
+            case EnablePortStr:     ProcessCreateEnablePort(context); break;
+            case TriggerPortStr:    ProcessCreateTriggerPort(context); break;
             default: {
 				iCS_MethodBaseInfo desc= context.Descriptor;
 				if(desc == null) {
@@ -407,10 +407,10 @@ public class iCS_DynamicMenu {
 		storage.CreateEnablePort(parent.InstanceId);        
     }
     // -------------------------------------------------------------------------
-    static void ProcessCreateOutTriggerPort(iCS_MenuContext context) {
+    static void ProcessCreateTriggerPort(iCS_MenuContext context) {
 		var parent = context.SelectedObject;
 		var storage= context.Storage;
-		storage.CreateOutTriggerPort(parent.InstanceId);        
+		storage.CreateTriggerPort(parent.InstanceId);        
     }
     // -------------------------------------------------------------------------
 	static void ProcessCreateMultiplexer(iCS_MenuContext convert) {
