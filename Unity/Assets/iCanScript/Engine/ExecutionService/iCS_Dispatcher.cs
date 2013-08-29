@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class iCS_Dispatcher : iCS_Action {
+public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -12,12 +12,13 @@ public abstract class iCS_Dispatcher : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Dispatcher(iCS_Storage storage, int instanceId, int priority) : base(storage, instanceId, priority) {}
+    public iCS_Dispatcher(iCS_Storage storage, int instanceId, int priority, int nbOfParameters, int nbOfEnables)
+    : base(storage, instanceId, priority, nbOfParameters, nbOfEnables) {}
 
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void ForceExecute(int frameId) {
+    protected override void DoForceExecute(int frameId) {
         if(myQueueIdx < myExecuteQueue.Count) {
             iCS_Action action= myExecuteQueue[myQueueIdx];
             action.ForceExecute(frameId);            

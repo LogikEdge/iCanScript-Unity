@@ -6,13 +6,13 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_WaitingSequencialDispatcher(iCS_Storage storage, int instanceId, int priority)
-    : base(storage, instanceId, priority) {}
+    public iCS_WaitingSequencialDispatcher(iCS_Storage storage, int instanceId, int priority, int nbOfParameters, int nbOfEnables)
+    : base(storage, instanceId, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void Execute(int frameId) {
+    protected override void DoExecute(int frameId) {
         bool stalled= true;
         while(myQueueIdx < myExecuteQueue.Count) {
             iCS_Action action= myExecuteQueue[myQueueIdx];

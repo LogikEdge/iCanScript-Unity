@@ -30,7 +30,7 @@ public static class iCS_Strings {
     // -----------------------------------------------------------------------
     // Control port names.
     public const string EnablePort= "enable";
-    public const string OutTriggerPort= "trigger";
+    public const string TriggerPort= "trigger";
     
     // -----------------------------------------------------------------------
     // Reflection methods

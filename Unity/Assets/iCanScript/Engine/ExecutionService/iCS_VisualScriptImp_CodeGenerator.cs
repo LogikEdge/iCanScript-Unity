@@ -174,14 +174,18 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         }
                         case iCS_ObjectTypeEnum.InstanceMessage:
                         case iCS_ObjectTypeEnum.ClassMessage: {
-                            var nbParams= GetNbOfChildDataAndControlPorts(node);
+                            int nbParams;
+                            int nbEnables;
+                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
                             iCS_Message message= new iCS_Message(this, node.InstanceId, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= message;
                             InvokeAddChildIfExists(parent, message);                                
                             break;
                         }
                         case iCS_ObjectTypeEnum.Package: {
-                            var nbParams= GetNbOfChildDataAndControlPorts(node);
+                            int nbParams;
+                            int nbEnables;
+                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
                             var module= new iCS_Package(this, node.InstanceId, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             InvokeAddChildIfExists(parent, module);                                
@@ -189,14 +193,20 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         }
                         case iCS_ObjectTypeEnum.InstanceFunction: {
                             // Create method.
-                            var method= new iCS_InstanceFunction(GetMethodBase(node), this, node.InstanceId, priority, node.NbOfParams);                                
+                            int nbParams;
+                            int nbEnables;
+                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                            var method= new iCS_InstanceFunction(GetMethodBase(node), this, node.InstanceId, priority, nbParams, nbEnables);                                
                             myRuntimeNodes[node.InstanceId]= method;
                             InvokeAddChildIfExists(parent, method);
                             break;                            
                         }
                         case iCS_ObjectTypeEnum.Constructor: {
                             // Create function.
-                            iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), this, node.InstanceId, priority, node.NbOfParams);                                
+                            int nbParams;
+                            int nbEnables;
+                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                            iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), this, node.InstanceId, priority, nbParams, nbEnables);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
@@ -204,7 +214,10 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         case iCS_ObjectTypeEnum.TypeCast:
                         case iCS_ObjectTypeEnum.ClassFunction: {
                             // Create function.
-                            var func= new iCS_ClassFunction(GetMethodBase(node), this, node.InstanceId, priority, node.NbOfParams);                                
+                            int nbParams;
+                            int nbEnables;
+                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                            var func= new iCS_ClassFunction(GetMethodBase(node), this, node.InstanceId, priority, nbParams, nbEnables);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
@@ -212,21 +225,27 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         case iCS_ObjectTypeEnum.InstanceField: {
                             // Create function.
                             FieldInfo fieldInfo= GetFieldInfo(node);
-							var inDataPorts= GetChildInDataPorts(node);
-                            iCS_ActionWithSignature rtField= inDataPorts.Length == 1 ?
-                                new iCS_GetInstanceField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature:
-                                new iCS_SetInstanceField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature;                                
+                            int nbParams;
+                            int nbEnables;
+                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+							var inDataPorts= GetChildInParameters(node);
+                            iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
+                                new iCS_GetInstanceField(fieldInfo, this, node.InstanceId, priority, nbEnables) as iCS_ActionWithSignature:
+                                new iCS_SetInstanceField(fieldInfo, this, node.InstanceId, priority, nbEnables) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;
                         }
                         case iCS_ObjectTypeEnum.ClassField: {
                             // Create function.
+                            int nbParams;
+                            int nbEnables;
+                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
 							FieldInfo fieldInfo= GetFieldInfo(node);
-							var inDataPorts= GetChildInDataPorts(node);
+							var inDataPorts= GetChildInParameters(node);
                             iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
-                                new iCS_GetClassField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature:
-                                new iCS_SetClassField(fieldInfo, this, node.InstanceId, priority) as iCS_ActionWithSignature;                                
+                                new iCS_GetClassField(fieldInfo, this, node.InstanceId, priority, nbEnables) as iCS_ActionWithSignature:
+                                new iCS_SetClassField(fieldInfo, this, node.InstanceId, priority, nbEnables) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;                            
@@ -286,9 +305,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     // Control flow ports.
                     case iCS_ObjectTypeEnum.TriggerPort: {
                         var package= myRuntimeNodes[port.ParentId] as iCS_Package;
-                        var portIdx= port.PortIndex;
-                        package.ActivateTriggerPort(portIdx);
-                        package[portIdx]= true;
+                        package.Trigger= false;
                         break;
                     }
                     // Data ports.
@@ -307,6 +324,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         break;
                     }
                     case iCS_ObjectTypeEnum.InDynamicDataPort:
+                    case iCS_ObjectTypeEnum.InProposedDataPort:
                     case iCS_ObjectTypeEnum.InFixDataPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
 						if(!(port.IsInputPort && IsEndPort(port))) {
@@ -351,9 +369,6 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             package=> {
                                 package[port.PortIndex]= initValue;
                                 package.SetConnection(port.PortIndex, connection);
-                                if(port.IsEnablePort) {
-                                    package.ActivateEnablePort(port.PortIndex);
-                                }                                
                             },
                             message=> {
                                 message[port.PortIndex]= initValue;
@@ -367,8 +382,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     }
     // ----------------------------------------------------------------------
     iCS_EngineObject GetTransitionModuleParts(iCS_EngineObject transitionModule, out iCS_EngineObject actionModule,
-                                                                               out iCS_EngineObject triggerPort,
-                                                                               out iCS_EngineObject outStatePort) {
+                                                                                 out iCS_EngineObject triggerPort,
+                                                                                 out iCS_EngineObject outStatePort) {
         iCS_EngineObject guardModule= null;
         actionModule= null;
         triggerPort= null;
@@ -409,6 +424,23 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	FieldInfo GetFieldInfo(iCS_EngineObject node) {
         return node.GetFieldInfo();
 	}
+
+    // ======================================================================
+    // Port information
+	// -------------------------------------------------------------------------
+    void GetNbOfParameterAndEnablePorts(iCS_EngineObject node, out int nbParams, out int nbEnables) {
+        nbParams= 0;
+        nbEnables= 0;
+        foreach(var p in EngineObjects) {
+            if(p.ParentId == node.InstanceId) {
+                if(p.IsParameterPort) {
+                    ++nbParams;
+                } else if(p.IsEnablePort) {
+                    ++nbEnables;
+                }
+            }
+        }
+    }
 	// -------------------------------------------------------------------------
     int GetNbOfChildMuxPorts(iCS_EngineObject parentMuxPort) {
         int nbOfChildMuxPorts= 0;
@@ -423,51 +455,20 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     Type[] GetParamTypes(iCS_EngineObject node) {
 	    return node.GetParamTypes(EngineObjects);
 	}
-	// -------------------------------------------------------------------------
-    int GetNbOfChildDataAndControlPorts(iCS_EngineObject node) {
-        return GetChildDataOrControlPorts(node).Length;
-    }
     // -------------------------------------------------------------------------
-    iCS_EngineObject[] GetChildDataOrControlPorts(iCS_EngineObject node) {
+    iCS_EngineObject[] GetChildInParameters(iCS_EngineObject node) {
 		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
 		// Get all child data ports.
 		int nodeId= node.InstanceId;
 		foreach(var port in EngineObjects) {
 			if(port == null) continue;
 			if(port.ParentId != nodeId) continue;
-			if(!port.IsDataOrControlPort) continue;
+			if(!port.IsParameterPort) continue;
+            if(!port.IsInputPort) continue;
 			ports.Add(port);
 		}
 		// Sort child ports according to index.
-		return iCS_EngineObject.SortPortsOnIndex(ports.ToArray());
-	}
-    // -------------------------------------------------------------------------
-    iCS_EngineObject[] GetChildDataPorts(iCS_EngineObject node) {
-		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
-		// Get all child data ports.
-		int nodeId= node.InstanceId;
-		foreach(var port in EngineObjects) {
-			if(port == null) continue;
-			if(port.ParentId != nodeId) continue;
-			if(!port.IsDataPort) continue;
-			ports.Add(port);
-		}
-		// Sort child ports according to index.
-		return iCS_EngineObject.SortPortsOnIndex(ports.ToArray());        
-    }
-    // -------------------------------------------------------------------------
-    iCS_EngineObject[] GetChildInDataPorts(iCS_EngineObject node) {
-		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
-		// Get all child data ports.
-		int nodeId= node.InstanceId;
-		foreach(var port in EngineObjects) {
-			if(port == null) continue;
-			if(port.ParentId != nodeId) continue;
-			if(!port.IsInDataPort) continue;
-			ports.Add(port);
-		}
-		// Sort child ports according to index.
-		return iCS_EngineObject.SortPortsOnIndex(ports.ToArray());                
+		return ports.ToArray();                
     }
     // ----------------------------------------------------------------------
 	object GetInitialValue(iCS_EngineObject port) {

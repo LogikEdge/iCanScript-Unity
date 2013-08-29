@@ -34,7 +34,7 @@ public partial class iCS_EditorObject {
     public bool IsKindOfPackagePort         { get { return IsDataOrControlPort && ParentNode.IsKindOfPackage; }}
     public bool IsVisualEndPort             { get { return IsEndPort || Parent.IsInstanceNode; }}
     public bool IsVisualRelayPort           { get { return IsRelayPort && !Parent.IsInstanceNode; }}
-    public bool IsInstanceNodePort        { get { return IsPort && Parent.IsInstanceNode; }}
+    public bool IsInstanceNodePort          { get { return IsPort && Parent.IsInstanceNode; }}
     // State Ports
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}
@@ -62,7 +62,7 @@ public partial class iCS_EditorObject {
     // Control Ports
     public bool IsControlPort               { get { return EngineObject.IsControlPort; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
-    public bool IsOutTriggerPort            { get { return EngineObject.IsOutTriggerPort; }}
+    public bool IsTriggerPort               { get { return EngineObject.IsTriggerPort; }}
     // Data Flow or Control Ports
     public bool IsDataOrControlPort         { get { return EngineObject.IsDataOrControlPort; }}
     public bool IsInDataOrControlPort       { get { return EngineObject.IsInDataOrControlPort; }}

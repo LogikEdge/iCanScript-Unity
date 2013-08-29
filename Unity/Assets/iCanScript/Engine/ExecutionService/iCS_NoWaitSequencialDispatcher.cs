@@ -6,13 +6,13 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_NoWaitSequencialDispatcher(iCS_Storage storage, int instanceId, int priority)
-    : base(storage, instanceId, priority) {}
+    public iCS_NoWaitSequencialDispatcher(iCS_Storage storage, int instanceId, int priority, int nbOfParameters, int nbOfEnables)
+    : base(storage, instanceId, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void Execute(int frameId) {
+    protected override void DoExecute(int frameId) {
         // Attempt to execute child functions.
         bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {

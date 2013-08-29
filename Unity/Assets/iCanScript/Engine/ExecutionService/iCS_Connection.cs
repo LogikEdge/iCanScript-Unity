@@ -46,6 +46,6 @@ public class iCS_Connection {
     
     // ----------------------------------------------------------------------
     public override string ToString() {
-        return IsConnected ? Signature.GetName(PortIndex) : "Not Connected";
+        return IsConnected ? Signature.GetParameterName(PortIndex) : "Not Connected";
     }
 }

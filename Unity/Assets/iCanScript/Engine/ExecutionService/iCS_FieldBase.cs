@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Reflection;
 using System.Collections;
 
-public class iCS_FieldBase : iCS_ActionWithSignature {
+public abstract class iCS_FieldBase : iCS_ActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -12,8 +12,8 @@ public class iCS_FieldBase : iCS_ActionWithSignature {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_FieldBase(FieldInfo fieldInfo, iCS_Storage storage, int instanceId, int priority,
-                         int nbOfParameters)
-    : base(storage, instanceId, priority, nbOfParameters) {
+                         int nbOfParameters, int nbOfEnables)
+    : base(storage, instanceId, priority, nbOfParameters, nbOfEnables) {
         myFieldInfo= fieldInfo;
     }
 }

@@ -137,8 +137,9 @@ public static class iCS_ObjectType {
     public static bool IsOutDataPort		  (iCS_EngineObject obj) { return IsOutFixDataPort(obj) || IsOutDynamicDataPort(obj) ||
 		                                                                      IsOutProposedDataPort(obj) || IsOutMuxPort(obj) ||
 																			  IsOutInstancePort(obj); }
-	public static bool IsParameterPort        (iCS_EngineObject obj) { return IsFixDataPort(obj) || IsDynamicDataPort(obj) ||
-	                                                                          IsProposedDataPort(obj) || IsMuxPort(obj); }
+	public static bool IsParameterPort        (iCS_EngineObject obj) { return IsPort(obj) &&
+	                                                                          obj.PortIndex >= (int)iCS_PortIndex.ParametersStart &&
+	                                                                          obj.PortIndex <= (int)iCS_PortIndex.ParametersEnd; }
 
     // Control Ports
     public static bool IsControlPort          (iCS_EngineObject obj) { return IsEnablePort(obj) || IsTriggerPort(obj); }

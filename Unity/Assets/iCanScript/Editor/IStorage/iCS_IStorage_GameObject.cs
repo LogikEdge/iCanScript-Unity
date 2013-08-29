@@ -37,7 +37,7 @@ public partial class iCS_IStorage {
         foreach(var pi in neededPorts) {
             if(!DoesPortExist(node, pi.Name, pi.ValueType, pi.PortType)) {
         	    var port= CreatePort(pi.Name, node.InstanceId, pi.ValueType, pi.PortType);
-                port.InitialPortValue= pi.InitialValue;            
+                port.PortValue= pi.InitialValue;            
                 changed= true;
             }
         }

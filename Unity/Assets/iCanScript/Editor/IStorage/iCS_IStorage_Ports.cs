@@ -4,6 +4,44 @@ using System.Collections;
 using System.Collections.Generic;
 
 public partial class iCS_IStorage {    
+    // =========================================================================
+    // Trigger Port
+    // -------------------------------------------------------------------------
+    public iCS_EditorObject CreateTriggerPort(int parentId) {
+        var existingTriggerPort= GetTriggerPort(EditorObjects[parentId]);
+        if(existingTriggerPort != null) return existingTriggerPort;
+        iCS_EditorObject port= CreatePort(iCS_Strings.TriggerPort, parentId, typeof(bool), iCS_ObjectTypeEnum.TriggerPort);
+        port.IsNameEditable= false;
+        port.InitialPortValue= true;
+        return port;
+    }
+    // -------------------------------------------------------------------------
+    public bool HasTriggerPort(iCS_EditorObject node)  {
+        return GetTriggerPort(node) != null;
+    }
+    // -------------------------------------------------------------------------
+    public iCS_EditorObject GetTriggerPort(iCS_EditorObject node) {
+        return FindInChildren(node, c=> c.IsTriggerPort);
+    }
+
+    // ======================================================================
+    // Enable Ports
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject CreateEnablePort(int parentId) {
+        iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
+        port.IsNameEditable= false;
+        port.InitialPortValue= true;
+        return port;
+    }
+    // -------------------------------------------------------------------------
+    public bool HasEnablePort(iCS_EditorObject package) {
+        return GetEnablePorts(package).Length != 0;
+    }
+    // -------------------------------------------------------------------------
+    public iCS_EditorObject[] GetEnablePorts(iCS_EditorObject package) {
+        return BuildFilteredListOfChildren(c=> c.IsEnablePort, package);
+    }
+
     // ======================================================================
     // Creation
     // ----------------------------------------------------------------------
@@ -19,21 +57,38 @@ public partial class iCS_IStorage {
 	// High-order functions
     // ----------------------------------------------------------------------
 	public iCS_EditorObject[] RecalculatePortIndexes(iCS_EditorObject node) {
-        ... Need to fix this !!!
 		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
 		// Get all child data ports.
 		ForEachChildDataPort(node, child=> ports.Add(child));
 		// Sort child ports according to index.
 		iCS_EditorObject[] result= SortPortsOnIndex(ports.ToArray());
-        for(int i= 0, idx= 0; i < result.Length; ++i, ++idx) {
-            if(result[i].IsFixDataPort) {
-                idx= result[i].PortIndex;
-            } else {
-                result[i].PortIndex= idx;                
+		// Find first dynamic or proposed port
+		int firstDynamicIdx= 0;
+		for(int i= 0; i < result.Length; ++i) {
+		    if(result[i].IsFixDataPort) {
+		        firstDynamicIdx= result[i].PortIndex+1;
+		    }
+		}
+		// Re-index dynamic and proposed ports
+        for(int i= 0; i < result.Length; ++i) {
+            if(result[i].IsDynamicDataPort || result[i].IsProposedDataPort) {
+                result[i].PortIndex= firstDynamicIdx++;                
             }
         }
 		return result;
 	}
+    // -------------------------------------------------------------------------
+    public int GetNextDynamicOrProposedPortIndex(iCS_EditorObject node) {
+        var ports= RecalculatePortIndexes(node);
+        int lastIdx= 0;
+        for(int i= 0; i < ports.Length; ++i) {
+            var p= ports[i];
+            if(p.IsDynamicDataPort || p.IsProposedDataPort) {
+                lastIdx= p.PortIndex+1;
+            }
+        }
+        return lastIdx;
+    }
     // -------------------------------------------------------------------------
     public iCS_EditorObject FindInputInstancePort(iCS_EditorObject node) {
         return FindInChildren(node, c=> c.IsInInstancePort);

@@ -526,7 +526,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         var parent= EditorObjects[parentId];
         if(index == -1) {
-    		index= RecalculatePortIndexes(parent).Length;            
+    		index= GetNextDynamicOrProposedPortIndex(parent);            
         }
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         port.PortIndex= index;
@@ -539,7 +539,7 @@ public partial class iCS_IStorage {
 		// Set initial port edge.
 		if(port.IsEnablePort) {
 			port.Edge= iCS_EdgeEnum.Top;
-		} else if(port.IsOutTriggerPort) {
+		} else if(port.IsTriggerPort) {
 			port.Edge= iCS_EdgeEnum.Bottom;
 		} else if(port.IsInputPort) {
 			port.Edge= iCS_EdgeEnum.Left;

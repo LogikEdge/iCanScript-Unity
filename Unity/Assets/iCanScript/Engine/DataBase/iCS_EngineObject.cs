@@ -211,6 +211,7 @@ public class iCS_EngineObject {
     public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
     public bool IsInDataPort            { get { return iCS_ObjectType.IsInDataPort(this); }}
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
+    public bool IsParameterPort         { get { return iCS_ObjectType.IsParameterPort(this); }}
     // Control Ports
     public bool IsControlPort           { get { return iCS_ObjectType.IsControlPort(this); }}
     public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}

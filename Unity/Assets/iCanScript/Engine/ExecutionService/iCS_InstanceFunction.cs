@@ -3,29 +3,20 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class iCS_InstanceFunction : iCS_FunctionBase {
+public class iCS_InstanceFunction : iCS_ClassFunction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_InstanceFunction(MethodBase methodBase, iCS_Storage storage, int instanceId, int priority, int nbOfParameters)
-    : base(methodBase, storage, instanceId, priority, nbOfParameters) {
+    public iCS_InstanceFunction(MethodBase methodBase, iCS_Storage storage, int instanceId, int priority, int nbOfParameters, int nbOfEnables)
+    : base(methodBase, storage, instanceId, priority, nbOfParameters, nbOfEnables) {
     }
     
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
-        // Execute function
-#if UNITY_EDITOR
-        try {
-#endif
-		    ReturnValue= myMethodBase.Invoke(This, Parameters);
-            MarkAsExecuted(frameId);   
-#if UNITY_EDITOR
+        if(IsThisReady(frameId)) {
+            base.DoExecute(frameId);
         }
-        catch(Exception e) {
-            Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
-        }
-#endif             
     }
 }

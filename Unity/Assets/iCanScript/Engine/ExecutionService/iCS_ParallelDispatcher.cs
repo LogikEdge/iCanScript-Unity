@@ -6,12 +6,13 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ParallelDispatcher(iCS_Storage storage, int instanceId, int priority) : base(storage, instanceId, priority) {}
+    public iCS_ParallelDispatcher(iCS_Storage storage, int instanceId, int priority, int nbOfParameters, int nbOfEnables)
+    : base(storage, instanceId, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void Execute(int frameId) {
+    protected override void DoExecute(int frameId) {
         int entryQueueIdx= myQueueIdx;
         bool stalled= true;
         int tries= 0;
@@ -42,7 +43,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
         ResetIterator(frameId);
     }
     // ----------------------------------------------------------------------
-    public override void ForceExecute(int frameId) {
+    protected override void DoForceExecute(int frameId) {
         // Sort stalled action according to layout rule.
         int best= myQueueIdx;
         int queueSize= myExecuteQueue.Count;

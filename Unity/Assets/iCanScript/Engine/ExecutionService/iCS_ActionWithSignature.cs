@@ -4,34 +4,26 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
+public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    bool                    myIsDisabled= false;
     iCS_SignatureDataSource mySignature = null;
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool IsDisabled { get { return myIsDisabled; } set { myIsDisabled= value; }}
-    public object[] Parameters {
-        get { return mySignature.Parameters; }
-    }
-    public iCS_Connection[] ParameterConnections {
-        get { return mySignature.ParameterConnections; }
-    }
-    public object ReturnValue {
-        get { return mySignature.ReturnValue; }
-        set { mySignature.ReturnValue= value; }
-    }
     public object This {
         get { return mySignature.This; }
         set { mySignature.This= value; }
     }
-    public object this[int idx] {
-        get { return mySignature[idx]; }
-        set { mySignature[idx]= value; }
+    public object OutThis {
+        get { return mySignature.OutThis; }
+        set { mySignature.OutThis= value; }
+    }
+    public bool Trigger {
+        get { return mySignature.Trigger; }
+        set { mySignature.Trigger= value; }
     }
     public object GetValue(int idx) {
         return mySignature.GetValue(idx);
@@ -39,24 +31,41 @@ public class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     public void SetValue(int idx, object value) {
         mySignature.SetValue(idx, value);
     }
-    public iCS_Connection GetConnection(int idx) {
-        return mySignature.GetConnection(idx);
+    public object ReturnValue {
+        get { return mySignature.ReturnValue; }
+        set { mySignature.ReturnValue= value; }
     }
     public void SetConnection(int idx, iCS_Connection connection) {
         mySignature.SetConnection(idx, connection);
     }
-    public bool ForEachParameterConnection(Func<int,iCS_Connection,bool> test) {
-        return mySignature.ForEachParameterConnection(test);
+    public object this[int idx] {
+        get { return mySignature[idx]; }
+        set { mySignature[idx]= value; }
     }
-    public bool ForEachConnection(Func<int,iCS_Connection,bool> test) {
-        return mySignature.ForEachConnection(test);
+    public object[] Parameters {
+        get { return mySignature.Parameters; }
+    }
+    public iCS_Connection[] ParameterConnections {
+        get { return mySignature.ParameterConnections; }
+    }
+    public int ParametersStart  { get { return mySignature.ParametersStart; }}
+    public int ParametersEnd    { get { return mySignature.ParametersEnd; }}
+    public bool IsParameterReady(int idx, int frameId) {
+        return mySignature.IsParameterReady(idx, frameId);
+    }
+    public void UpdateParameter(int idx) {
+        mySignature.UpdateParameter(idx);
+    }
+    public bool IsThisReady(int frameId) {
+        return mySignature.IsThisReady(frameId);
     }
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ActionWithSignature(iCS_Storage storage, int instanceId, int priority, int nbOfParameters) : base(storage, instanceId, priority) {
-        mySignature= new iCS_SignatureDataSource(nbOfParameters);
+    public iCS_ActionWithSignature(iCS_Storage storage, int instanceId, int priority, int nbOfParameters, int nbOfEnables)
+    : base(storage, instanceId, priority) {
+        mySignature= new iCS_SignatureDataSource(nbOfParameters, nbOfEnables);
     }
     
     // ======================================================================
@@ -69,20 +78,39 @@ public class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
-        // Verify that we are ready to run.
-        if(!mySignature.AreAllConnectionsReady(frameId)) {
-            IsStalled= true;
-            return;            
+        // Clear thge output trigger flag.
+        mySignature.Trigger= false;
+        // Verify that the action is enabled.
+        bool isEnabled;
+        if(mySignature.GetIsEnabledIfReady(frameId, out isEnabled)) {
+            if(isEnabled == false) {
+                MarkAsCurrent(frameId);
+                return;
+            }
         }
-        ForceExecute(frameId);
-    }
-    // ----------------------------------------------------------------------
-    public override void ForceExecute(int frameId) {
-        // Fetch all the inputs.
-        mySignature.ForcedFetchConnections();
-        // Execute function
+        // Invoke derived class to execute normally.
         DoExecute(frameId);
     }
     // ----------------------------------------------------------------------
-    protected virtual void DoExecute(int frameId) {}
+    public override void ForceExecute(int frameId) {
+        // Force verify enables.
+        if(mySignature.GetIsEnabled() == false) {
+            MarkAsCurrent(frameId);
+            return;
+        }
+        // Invoke derived class to force execute.
+        DoForceExecute(frameId);
+    }
+    // ----------------------------------------------------------------------
+    // Override the execute marker to set the output trigger.
+    public new void MarkAsExecuted(int frameId) {
+        mySignature.OutThis= mySignature.This;
+        mySignature.Trigger= true;
+        base.MarkAsExecuted(frameId);
+    }
+    // =========================================================================
+    // Functions to override to provide specific behaviours.
+    // ----------------------------------------------------------------------
+    protected abstract void DoExecute(int frameId);
+    protected abstract void DoForceExecute(int frameId);
 }
