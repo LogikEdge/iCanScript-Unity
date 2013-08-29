@@ -202,12 +202,32 @@ public class iCS_DynamicMenu {
     
 	// ----------------------------------------------------------------------
     void FunctionMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-		iCS_MenuContext[] menu= new iCS_MenuContext[1];
-		menu[0]= new iCS_MenuContext(ShowHierarchyStr);
-        if(storage.EditorObjects[selectedObject.ParentId].IsKindOfPackage) {
-            AddDeleteMenuItem(ref menu);
+        iCS_MenuContext[] menu;
+        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
+            // Determine if we should support output 'this' port.
+            Type classType= selectedObject.RuntimeType;
+            bool shouldSupportThis= !iCS_Types.IsStaticClass(classType);
+            // Base menu items
+            menu= new iCS_MenuContext[shouldSupportThis ? 3 : 2];
+            menu[0]= new iCS_MenuContext(EnablePortStr);
+            if(storage.HasTriggerPort(selectedObject)) {
+                menu[1]= new iCS_MenuContext("#"+TriggerPortStr);
+            } else {
+                menu[1]= new iCS_MenuContext(TriggerPortStr);                
+            }
+            if(shouldSupportThis) {
+                if(storage.HasOutInstancePort(selectedObject)) {
+                    menu[2]= new iCS_MenuContext("#"+OutputThisPortStr);
+                } else {
+                    menu[2]= new iCS_MenuContext(OutputThisPortStr);                
+                }                
+            }
+        } else {
+            menu= new iCS_MenuContext[0];
         }
-        ShowMenu(menu, selectedObject, storage);            
+        AddShowInHierarchyMenuItem(ref menu);
+        AddDeleteMenuItem(ref menu);
+        ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void PortMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {

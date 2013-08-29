@@ -482,7 +482,6 @@ public partial class iCS_IStorage {
 		}
 		// Create 'this' ports.
         port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);
-        port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.OutProposedDataPort,(int)iCS_PortIndex.OutThis);
         // Perform initial node layout.
         instance.Unhide();
         return instance;
