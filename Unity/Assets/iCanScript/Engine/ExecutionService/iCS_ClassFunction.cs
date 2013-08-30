@@ -42,6 +42,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
+            MarkAsCurrent(frameId);
         }
 #endif        
     }
