@@ -43,9 +43,4 @@ public class iCS_Connection {
         if(myIsAlwaysReady || !IsConnected) return true;
         return myIsControlFlow ? Action.IsCurrent(frameId) : Action.DidExecute(frameId);
     }
-    
-    // ----------------------------------------------------------------------
-    public override string ToString() {
-        return IsConnected ? Signature.GetParameterName(PortIndex) : "Not Connected";
-    }
 }

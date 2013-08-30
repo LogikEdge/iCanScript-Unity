@@ -107,7 +107,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     if(parent == null) {
                         needAdditionalPass= true;
                     } else {
-    					var mux= new iCS_Mux(this, node.InstanceId, priority, GetNbOfChildMuxPorts(node));
+    					var mux= new iCS_Mux(this, priority, GetNbOfChildMuxPorts(node));
     					myRuntimeNodes[node.InstanceId]= mux;
                         InvokeAddChildIfExists(parent, mux);                        
                     }
@@ -143,13 +143,13 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             break;
                         }
                         case iCS_ObjectTypeEnum.StateChart: {
-                            iCS_StateChart stateChart= new iCS_StateChart(this, node.InstanceId, priority);
+                            iCS_StateChart stateChart= new iCS_StateChart(this, priority);
                             myRuntimeNodes[node.InstanceId]= stateChart;
                             InvokeAddChildIfExists(parent, stateChart);
                             break;
                         }
                         case iCS_ObjectTypeEnum.State: {
-                            iCS_State state= new iCS_State(this, node.InstanceId, priority);
+                            iCS_State state= new iCS_State(this, priority);
                             myRuntimeNodes[node.InstanceId]= state;
                             InvokeAddChildIfExists(parent, state);
                             if(node.IsEntryState) {
@@ -177,7 +177,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             int nbParams;
                             int nbEnables;
                             GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                            iCS_Message message= new iCS_Message(this, node.InstanceId, priority, nbParams);                                
+                            iCS_Message message= new iCS_Message(this, priority, nbParams);                                
                             myRuntimeNodes[node.InstanceId]= message;
                             InvokeAddChildIfExists(parent, message);                                
                             break;
@@ -196,7 +196,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             int nbParams;
                             int nbEnables;
                             GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                            var method= new iCS_InstanceFunction(GetMethodBase(node), this, node.InstanceId, priority, nbParams, nbEnables);                                
+                            var method= new iCS_InstanceFunction(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
                             myRuntimeNodes[node.InstanceId]= method;
                             InvokeAddChildIfExists(parent, method);
                             break;                            
@@ -206,7 +206,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             int nbParams;
                             int nbEnables;
                             GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                            iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), this, node.InstanceId, priority, nbParams, nbEnables);                                
+                            iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
@@ -217,7 +217,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             int nbParams;
                             int nbEnables;
                             GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                            var func= new iCS_ClassFunction(GetMethodBase(node), this, node.InstanceId, priority, nbParams, nbEnables);                                
+                            var func= new iCS_ClassFunction(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
@@ -230,8 +230,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
 							var inDataPorts= GetChildInParameters(node);
                             iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
-                                new iCS_GetInstanceField(fieldInfo, this, node.InstanceId, priority, nbEnables) as iCS_ActionWithSignature:
-                                new iCS_SetInstanceField(fieldInfo, this, node.InstanceId, priority, nbEnables) as iCS_ActionWithSignature;                                
+                                new iCS_GetInstanceField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature:
+                                new iCS_SetInstanceField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;
@@ -244,8 +244,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 							FieldInfo fieldInfo= GetFieldInfo(node);
 							var inDataPorts= GetChildInParameters(node);
                             iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
-                                new iCS_GetClassField(fieldInfo, this, node.InstanceId, priority, nbEnables) as iCS_ActionWithSignature:
-                                new iCS_SetClassField(fieldInfo, this, node.InstanceId, priority, nbEnables) as iCS_ActionWithSignature;                                
+                                new iCS_GetClassField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature:
+                                new iCS_SetClassField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;                            
@@ -291,7 +291,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         triggerPort= GetSourceEndPort(triggerPort);
                         iCS_ActionWithSignature triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_ActionWithSignature;
                         int triggerIdx= triggerPort.PortIndex;
-                        iCS_Transition transition= new iCS_Transition(this, transitionModule.InstanceId,
+                        iCS_Transition transition= new iCS_Transition(this,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,
                                                                     myRuntimeNodes[guardModule.InstanceId] as iCS_Package,
                                                                     triggerFunc, triggerIdx,

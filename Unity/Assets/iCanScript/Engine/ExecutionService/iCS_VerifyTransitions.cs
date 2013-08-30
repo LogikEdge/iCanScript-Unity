@@ -18,8 +18,8 @@ public class iCS_VerifyTransitions : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_VerifyTransitions(iCS_Storage storage, int instanceId, int priority)
-    : base(storage, instanceId, priority) {}
+    public iCS_VerifyTransitions(iCS_VisualScriptImp visualScript, int priority)
+    : base(visualScript, priority) {}
 
     // ======================================================================
     // Execution

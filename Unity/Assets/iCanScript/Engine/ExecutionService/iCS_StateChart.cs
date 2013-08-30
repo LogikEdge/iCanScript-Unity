@@ -38,8 +38,8 @@ public sealed class iCS_StateChart : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_StateChart(iCS_Storage storage, int instanceId, int priority)
-    : base(storage, instanceId, priority) {}
+    public iCS_StateChart(iCS_VisualScriptImp visualScript, int priority)
+    : base(visualScript, priority) {}
 
     // ======================================================================
     // Execution

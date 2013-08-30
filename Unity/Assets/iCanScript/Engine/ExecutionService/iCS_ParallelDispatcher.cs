@@ -6,8 +6,8 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ParallelDispatcher(iCS_Storage storage, int instanceId, int priority, int nbOfParameters, int nbOfEnables)
-    : base(storage, instanceId, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_ParallelDispatcher(iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
+    : base(visualScript, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution

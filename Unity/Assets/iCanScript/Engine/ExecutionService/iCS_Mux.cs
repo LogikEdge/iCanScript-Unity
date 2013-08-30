@@ -5,8 +5,8 @@ public class iCS_Mux : iCS_ActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Mux(iCS_Storage storage, int instanceId, int priority, int nbOfParameters)
-    : base(storage, instanceId, priority, nbOfParameters, 0) {}
+    public iCS_Mux(iCS_VisualScriptImp visualScript, int priority, int nbOfParameters)
+    : base(visualScript, priority, nbOfParameters, 0) {}
 
     // ======================================================================
     // Execution (not used)

@@ -7,8 +7,8 @@ public class iCS_SetInstanceField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetInstanceField(FieldInfo fieldInfo, iCS_Storage storage, int instanceId, int priority, int nbOfEnables)
-    : base(fieldInfo, storage, instanceId, priority, 1, nbOfEnables) {
+    public iCS_SetInstanceField(FieldInfo fieldInfo, iCS_VisualScriptImp visualScript, int priority, int nbOfEnables)
+    : base(fieldInfo, visualScript, priority, 1, nbOfEnables) {
     }
 
     // ======================================================================
@@ -35,6 +35,7 @@ public class iCS_SetInstanceField : iCS_FieldBase {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
+            MarkAsCurrent(frameId);
         }
 #endif
     }

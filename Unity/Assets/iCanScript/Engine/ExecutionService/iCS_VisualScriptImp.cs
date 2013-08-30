@@ -15,6 +15,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
+    public object[] RuntimeNodes { get { return myRuntimeNodes; }}
     public int UpdateFrameId {
         get {
             iCS_RunContext updateContext= null;

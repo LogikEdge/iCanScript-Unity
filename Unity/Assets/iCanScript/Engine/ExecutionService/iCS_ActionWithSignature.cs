@@ -63,8 +63,8 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ActionWithSignature(iCS_Storage storage, int instanceId, int priority, int nbOfParameters, int nbOfEnables)
-    : base(storage, instanceId, priority) {
+    public iCS_ActionWithSignature(iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
+    : base(visualScript, priority) {
         mySignature= new iCS_SignatureDataSource(nbOfParameters, nbOfEnables);
     }
     

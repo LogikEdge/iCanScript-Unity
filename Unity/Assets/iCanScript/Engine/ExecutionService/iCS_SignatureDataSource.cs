@@ -19,10 +19,6 @@ public class iCS_SignatureDataSource {
     bool[]              myEnables               = null;
     iCS_Connection[]    myEnableConnections     = null;
     
-#if UNITY_EDITOR
-    string[]            myParameterNames= null;
-#endif
-    
     // ======================================================================
     static bool[]           ourEmptyEnables    = new bool[0];
     static iCS_Connection[] ourEmptyConnections= new iCS_Connection[0];
@@ -85,32 +81,6 @@ public class iCS_SignatureDataSource {
     // ======================================================================
     // Functions to configure and access the signature parameters and 
     // return values.
-    // ----------------------------------------------------------------------
-#if UNITY_EDITOR
-	public string GetParameterName(int idx) {
-        if(myParameterNames == null || idx >= myParameterNames.Length || myParameterNames[idx] == null) {
-            return "["+idx+"]";
-        }
-	    return myParameterNames[idx];
-	}
-	// -------------------------------------------------------------------------
-    public void SetParameterName(int idx, string value) {
-        // Dynamically allocate parameter name array.
-        if(myParameterNames == null) {
-            var len= myParameters.Length;
-            myParameterNames= new string[len];
-            for(int i= 0; i < len; ++i) {
-                myParameterNames[i]= null;
-            }
-        }
-        if(idx < myParameterNames.Length) {
-            myParameterNames[idx]= value;
-        }
-        if(idx != (int)iCS_PortIndex.This) {
-            Debug.LogWarning("iCanScript: Trying to set signature name with wrong index: "+idx+" name= "+value);
-        }
-	}
-#endif
 	// -------------------------------------------------------------------------
     // Returns one of the signature outputs.
     public object GetValue(int idx) {

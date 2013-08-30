@@ -3,42 +3,73 @@ using System.Collections;
 
 public class iCS_Object {
     // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    public iCS_VisualScriptImp  VisualScript    { get; set; }
+
+    // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-#if UNITY_EDITOR
-    public iCS_Storage      Storage         { get; set; }
-    public int              InstanceId      { get; set; }
-    public iCS_EngineObject EngineObject    { get { return Storage.EngineObjects[InstanceId]; }}
-    public string           Name            { get { return EngineObject.Name; } }
+    public int InstanceId {
+        get {
+            if(VisualScript != null) {
+                var runtimeNodes= VisualScript.RuntimeNodes;
+                for(int i= 0; i < runtimeNodes.Length; ++i) {
+                    if(runtimeNodes[i] == this) {
+                        return i;
+                    }
+                }                
+            }
+            return -1;
+        }
+    }
+    public iCS_EngineObject EngineObject {
+        get {
+            int id= InstanceId;
+            return id != -1 ? VisualScript.EngineObjects[InstanceId] : null;
+        }
+    }
+    public string Name {
+        get {
+            var eObj= EngineObject;
+            return eObj != null ? eObj.Name : "unnamed";
+        }
+    }
+    public int ParentId {
+        get {
+            var eObj= EngineObject;
+            return eObj != null ? EngineObject.ParentId : -1;
+        }
+    }
     public iCS_EngineObject ParentObject {
         get {
-            var parentId= EngineObject.ParentId;
-            return parentId != -1 ? Storage.EngineObjects[parentId] : null;
+            var parentId= ParentId;
+            return parentId != -1 ? VisualScript.EngineObjects[parentId] : null;
         }
     }
-    public string           ParentName      { get { return ParentObject != null ? ParentObject.Name : null; }}
-    public string           FullName    {
+    public string ParentName {
+        get {
+            return ParentObject != null ? ParentObject.Name : "unnamed";
+        }
+    }
+    public string FullName {
         get {
             string fullName= Name;
-            for(var parentObject= ParentObject; parentObject != null; parentObject= Storage.GetParent(parentObject)) {
+            for(var parentObject= ParentObject; parentObject != null; parentObject= VisualScript.GetParent(parentObject)) {
                 fullName= parentObject.Name+"."+fullName;
             }
-            return Storage.gameObject.name+"."+fullName;
+            return VisualScript.gameObject.name+"."+fullName;
         }
     }
-#endif                                  
     public string           TypeName        { get { return GetType().Name; }}
     public int              Priority        { get; set; }
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Object(iCS_Storage storage, int instanceId, int priority) {
+    public iCS_Object(iCS_VisualScriptImp visualScript, int priority) {
         Priority= priority;
-#if UNITY_EDITOR
-        Storage   = storage;
-        InstanceId= instanceId;
-#endif
+        VisualScript= visualScript;
     }
 
     public override string ToString() {

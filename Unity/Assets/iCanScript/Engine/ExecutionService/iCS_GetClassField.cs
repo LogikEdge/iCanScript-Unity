@@ -7,8 +7,8 @@ public class iCS_GetClassField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_GetClassField(FieldInfo fieldInfo, iCS_Storage storage, int instanceId, int priority, int nbOfEnables)
-    : base(fieldInfo, storage, instanceId, priority, 0, nbOfEnables) {}
+    public iCS_GetClassField(FieldInfo fieldInfo, iCS_VisualScriptImp visualScript, int priority, int nbOfEnables)
+    : base(fieldInfo, visualScript, priority, 0, nbOfEnables) {}
     
     // ======================================================================
     // Execution
@@ -28,6 +28,7 @@ public class iCS_GetClassField : iCS_FieldBase {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
+            MarkAsCurrent(frameId);
         }
 #endif        
     }
