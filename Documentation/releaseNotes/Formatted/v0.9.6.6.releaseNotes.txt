@@ -1,7 +1,0 @@
-Generating Release Notes from v0.9.6.6.
-
-* Unity objects are now removed from the save data if they are no longer in use.
-* Unity game objects can now be used in arrays and complex structures.
-* Addition of user preferences to show/hide port value in the editor & when playing.  Port values are shown by default.
-* Display port values for primitive types (float, int, Vectors, UnityObject) in the graph.
-* Fix jumping issue when dragging.  It seems that Unity delta mouse move is in error causing the mouse to jump around when dragging.  For now, iCanScript uses the mouse position before the delta.  This causes a lag in dragging but avoids the mouse from jumping around.
