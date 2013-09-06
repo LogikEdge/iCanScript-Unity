@@ -41,17 +41,17 @@ public static class iCS_iCanScriptMenu {
     }
     [MenuItem("iCanScript/Documentation/User's Manual",false,32)]
     public static void UserManual() {
-        Application.OpenURL("http://www.icanscript.com/documentation/user_guide");
+        Application.OpenURL("http://www.icanscript.com/documentation/user-guide");
     }
     [MenuItem("iCanScript/Documentation/Release Notes",false,34)]
     public static void ReleaseNotes() {
-        Application.OpenURL("http://www.icanscript.com/support/release_notes");
+        Application.OpenURL("http://www.icanscript.com/documentation/release-notes");
     }
     // ======================================================================
     // Support Access
     [MenuItem("iCanScript/Customer Request",false,60)]
     public static void ReportBug() {
-        Application.OpenURL("http://www.disruptive-sw.com/support/customer_request");
+        Application.OpenURL("http://www.disruptive-sw.com/support/customer-request");
     }
     [MenuItem("iCanScript/Check for Updates...",false,61)]
     public static void CheckForUpdate() {
