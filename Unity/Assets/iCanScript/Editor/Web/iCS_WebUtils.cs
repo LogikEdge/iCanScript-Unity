@@ -37,7 +37,12 @@ public static class iCS_WebUtils {
         if(!String.IsNullOrEmpty(download.error)) {
             return null;
         }
-        var jVersion= JSON.GetValueFor(download.text, "versions.iCanScript") as JString;
+//        Debug.Log(download.text);
+        JString jVersion= null;
+        try {
+            jVersion= JSON.GetValueFor(download.text, "versions.iCanScript") as JString;            
+        }
+        catch(System.Exception) {}
         return jVersion == null ? null : jVersion.value;
     }
 

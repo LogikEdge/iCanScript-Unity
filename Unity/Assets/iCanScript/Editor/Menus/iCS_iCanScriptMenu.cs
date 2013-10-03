@@ -39,13 +39,13 @@ public static class iCS_iCanScriptMenu {
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com");
     }
-    [MenuItem("iCanScript/Documentation/User's Manual",false,32)]
+    [MenuItem("iCanScript/Documentation/User Guide",false,32)]
     public static void UserManual() {
-        Application.OpenURL("http://www.icanscript.com/documentation/user-guide");
+        Application.OpenURL("http://www.user-guide.icanscript.com/all-in-one");
     }
     [MenuItem("iCanScript/Documentation/Release Notes",false,34)]
     public static void ReleaseNotes() {
-        Application.OpenURL("http://www.icanscript.com/documentation/release-notes");
+        Application.OpenURL("http://www.icanscript.com/support/release-notes");
     }
     // ======================================================================
     // Support Access
