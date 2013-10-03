@@ -34,7 +34,7 @@ public static class iCS_CustomInstaller {
     // Constants
     // ==> (CHANGE THE CONSTANTS TO MEET YOUR NEEDS) <==
     // ----------------------------------------------------------------------
-    const string kCompanyName       = "YourCompany";   // First level in library tree
+    const string kDefaultCompanyName= "YourCompany";   // First level in library tree
     const string kDefaultPackageName= "YourPackage";   // Second level in library tree
     const string kDefaultIcon       = iCS_Config.ResourcePath+"/iCS_Logo_32x32.png";
 
@@ -53,17 +53,22 @@ public static class iCS_CustomInstaller {
 
 
     // ------------------------------------------------------------------------
-    //  Helper function to fill-in "company" and "package" information.
-    //  The company name is taking from 'kCompanyName' and the default
-    //  values for package and icon are taken from 'kDefaultPackage' &
-    //  'kDefaultIcon'.
+    //  Helper function to fill-in "company", "package" and "icon" information.
+    //  The default values for company, package and icon are taken from
+    // 'kDefaultCompanyName', 'kDefaultPackageName' & 'kDefaultIcon'.
     //
-    static void PopulateWithType(Type type, string iconPath= null, string description= null, string package= null) {
+    static void PopulateWithType(Type type, string iconPath= null, string description= null,
+                                            string package= null,  string company= null) {
+                                     
+        // Fill-in default values if not provided.
         bool                    decodeAllPublicMembers= true;
+        if(company == null)     company               = kDefaultCompanyName;
         if(package == null)     package               = kDefaultPackageName;
         if(iconPath == null)    iconPath              = kDefaultIcon;
-        if(description == null) description           = kCompanyName+"::"+package+"::"+type.Name;
-        iCS_Reflection.DecodeClassInfo(type, kCompanyName, package, description, iconPath, decodeAllPublicMembers);        
+        if(description == null) description           = company+"::"+package+"::"+type.Name;
+
+        // Invoke the iCanScript library installer.
+        iCS_Reflection.DecodeClassInfo(type, company, package, description, iconPath, decodeAllPublicMembers);        
     }
 }
 #endif
