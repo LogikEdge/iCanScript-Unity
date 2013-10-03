@@ -667,7 +667,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUI.Label(pos[7],  "Object Instance");
         GUI.Label(pos[8],  "State");
         GUI.Label(pos[9],  "Entry State");
-        GUI.Label(pos[10], "Message Received");
+        GUI.Label(pos[10], "Message Handler");
         GUI.Label(pos[11], "Selected Background");
 
         // Draw Column 3
