@@ -26,10 +26,7 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
                 ++myQueueIdx;
                 IsStalled= false;
             } else {
-                // Verify if the child is a staled dispatcher.     
-                if(!action.IsStalled) {
-                    IsStalled= false;
-                }
+                IsStalled &= action.IsStalled;
             }
         }
         if(myQueueIdx >= myExecuteQueue.Count) {
@@ -37,11 +34,17 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
         }
     }
     // ----------------------------------------------------------------------
+    protected void Swap(int idx1, int idx2) {
+        var tmp= myExecuteQueue[idx1];
+        myExecuteQueue[idx1]= myExecuteQueue[idx2];
+        myExecuteQueue[idx2]= tmp;
+    }
+    // ----------------------------------------------------------------------
     protected void ResetIterator(int frameId) {
         myQueueIdx= 0;
         MarkAsExecuted(frameId);        
     }
-
+    
     // ======================================================================
     // Queue Management
     // ----------------------------------------------------------------------

@@ -78,7 +78,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
-        // Clear thge output trigger flag.
+        // Clear the output trigger flag.
         mySignature.Trigger= false;
         // Verify that the action is enabled.
         bool isEnabled;
@@ -89,6 +89,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
             }
         }
         // Invoke derived class to execute normally.
+        IsStalled= true;
         DoExecute(frameId);
     }
     // ----------------------------------------------------------------------
@@ -99,6 +100,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
             return;
         }
         // Invoke derived class to force execute.
+        IsStalled= true;
         DoForceExecute(frameId);
     }
     // ----------------------------------------------------------------------

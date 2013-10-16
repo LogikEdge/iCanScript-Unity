@@ -20,7 +20,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
-		if(SelectedObject != null && newSelected != null && newSelected.IsParentMuxPort && IStorage.GetParentMuxPort(SelectedObject) == newSelected) {
+		if(SelectedObject != null && newSelected != null &&
+		   newSelected.IsMuxPort && SelectedObject.IsMuxPort &&
+		   IStorage.GetParentMuxPort(newSelected) == IStorage.GetParentMuxPort(SelectedObject)) {
 			ShouldRotateMuxPort= true;
 			return SelectedObject;
 		}
@@ -32,11 +34,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     void RotateSelectedMuxPort() {
-		if(SelectedObject == null || !SelectedObject.IsDataOrControlPort) return;
+		if(SelectedObject == null || !SelectedObject.IsMuxPort) return;
 		if(SelectedObject.IsParentMuxPort) {
 			IStorage.UntilMatchingChild(SelectedObject, 
 				c=> {
-					if(c.IsDataOrControlPort) {
+					if(c.IsChildMuxPort) {
 						SelectedObject= c;
 						return true;
 					}
@@ -46,7 +48,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			return;
 		}
 		iCS_EditorObject parentMuxPort= SelectedObject.Parent;
-		if(!parentMuxPort.IsDataOrControlPort) return;
+		if(!parentMuxPort.IsParentMuxPort) return;
 		bool takeNext= false;
 		bool found= IStorage.UntilMatchingChild(parentMuxPort,
 			c=> {
@@ -160,11 +162,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!VerifyConnectionTypes(parentMuxPort, fixPort, out conversion)) return;
         var childPortType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InChildMuxPort : iCS_ObjectTypeEnum.OutChildMuxPort;
 		var source= parentMuxPort.Source;
-//		// Simply connect a disconnected mux state port.
-//		if(source == null && IStorage.NbOfChildren(parentMuxPort, c=> c.IsDataOrControlPort) == 0) {
-//			SetNewDataConnection(parentMuxPort, fixPort, conversion);
-//			return;
-//		}
 		// Convert source port to child port.
 		if(source != null) {
 			var firstChildMux= IStorage.CreatePort(fixPort.Name, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
@@ -175,6 +172,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Create new mux input port.
 		var childMuxPort= IStorage.CreatePort(fixPort.Name, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
 		SetNewDataConnection(childMuxPort, fixPort, conversion);
+		IStorage.CleanupMuxPort(parentMuxPort);
 	}
 	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_TypeCastInfo conversion= null) {

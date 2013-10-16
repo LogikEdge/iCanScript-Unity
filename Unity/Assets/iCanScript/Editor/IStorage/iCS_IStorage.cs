@@ -528,7 +528,11 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         var parent= EditorObjects[parentId];
         if(index == -1) {
-    		index= GetNextDynamicOrProposedPortIndex(parent);            
+            if(portType == iCS_ObjectTypeEnum.TriggerPort) {
+                index= (int)iCS_PortIndex.Trigger;
+            } else {
+        		index= GetNextDynamicOrProposedPortIndex(parent);                
+            }
         }
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         port.PortIndex= index;

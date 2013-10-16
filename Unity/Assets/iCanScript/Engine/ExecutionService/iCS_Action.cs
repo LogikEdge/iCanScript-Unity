@@ -37,5 +37,5 @@ public abstract class iCS_Action : iCS_Object {
     public bool IsCurrent(int frameId)      { return myCurrentFrameId == frameId; }
     public bool DidExecute(int frameId)     { return myExecutedFrameId == frameId; }
     public void MarkAsCurrent(int frameId)  { myCurrentFrameId= frameId; myIsStalled= false; }
-    public void MarkAsExecuted(int frameId) { myCurrentFrameId= myExecutedFrameId= frameId; myIsStalled= false; }
+    public void MarkAsExecuted(int frameId) { myExecutedFrameId= frameId; MarkAsCurrent(frameId); }
 }

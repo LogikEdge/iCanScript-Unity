@@ -13,8 +13,6 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // Execution
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
-        int entryQueueIdx= myQueueIdx;
-        bool stalled= true;
         int tries= 0;
         int maxTries= myExecuteQueue.Count-myQueueIdx;
         int queueSize= myExecuteQueue.Count;
@@ -23,21 +21,18 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
             iCS_Action action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
-                // Verify if the child is a stalled dispatcher.
-                if(!action.IsStalled) {
-                    stalled= false;
-                }
+                // Update the stalled flag
+                IsStalled &= action.IsStalled;
                 // Return if we have seen too many stalled children.
                 if(++tries > maxTries) {
-                    IsStalled= stalled && myQueueIdx == entryQueueIdx;
                     return;
                 }
                 // The function is not ready to execute so lets delay the execution.
-                myExecuteQueue.RemoveAt(myQueueIdx);
-                myExecuteQueue.Add(action);
+                Swap(myQueueIdx, queueSize-tries);
                 continue;
             }
             ++myQueueIdx;
+            IsStalled= false;
         }
         // Reset iterators for next frame.
         ResetIterator(frameId);
@@ -53,11 +48,9 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
             }
         }
         if(best != myQueueIdx) {
-            iCS_Action tmp= myExecuteQueue[myQueueIdx];
-            myExecuteQueue[myQueueIdx]= myExecuteQueue[best];
-            myExecuteQueue[best]= tmp;
+            Swap(myQueueIdx, best);
         }
         // Force execute the selected action.
-        base.ForceExecute(frameId);
+        base.DoForceExecute(frameId);
     }
 }

@@ -2,14 +2,18 @@ using UnityEngine;
 using System.Collections;
 
 public partial class iCS_IStorage {
-	void CleanupMuxPort(iCS_EditorObject muxPort) {
+    // -------------------------------------------------------------------------------
+	public void CleanupMuxPort(iCS_EditorObject port) {
 		// Make certain we have the parent mux port.
-		while(muxPort != null && muxPort.IsPort && !muxPort.IsOutParentMuxPort) muxPort= muxPort.Parent;
-		if(!muxPort.IsOutParentMuxPort) return;
+        while(port.IsChildMuxPort) port= port.Parent;
+        if(!port.IsParentMuxPort) {
+            Debug.LogWarning("iCanScript: Invalid object given in CleanupMuxPort");
+            return;
+        }
 		// Determine # of child mux ports.
 		int nbChildPorts= 0;
 		iCS_EditorObject aChild= null;
-		muxPort.ForEachChildPort(
+		port.ForEachChildPort(
 			c=> {
 				++nbChildPorts;
 				aChild= c;
@@ -17,7 +21,7 @@ public partial class iCS_IStorage {
 		);
 		// Remove mux port if no children exist.
 		if(nbChildPorts == 0) {
-			DestroyInstance(muxPort);
+			DestroyInstance(port);
 			IsDirty= true;
 			return;
 		}
@@ -26,13 +30,20 @@ public partial class iCS_IStorage {
 			var source= aChild.Source;
 			DestroyInstance(aChild);
 			if(source != null) {
-				muxPort.ObjectType= iCS_ObjectTypeEnum.OutDynamicDataPort;
-				SetSource(muxPort, source);				
+				port.ObjectType= port.IsOutMuxPort ? iCS_ObjectTypeEnum.OutDynamicDataPort : iCS_ObjectTypeEnum.InDynamicDataPort;
+				SetSource(port, source);				
 			} else {
-				DestroyInstance(muxPort);
+				DestroyInstance(port);
 			}
 			IsDirty= true;
 			return;
 		}
+		// Adjust the indexes of the child ports.
+        int idx= 0;
+        port.ForEachChildPort(
+            c=> {
+                c.PortIndex= idx++;
+            }
+        );
 	}
 }

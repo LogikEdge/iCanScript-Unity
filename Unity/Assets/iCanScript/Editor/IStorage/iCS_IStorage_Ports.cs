@@ -10,7 +10,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateTriggerPort(int parentId) {
         var existingTriggerPort= GetTriggerPort(EditorObjects[parentId]);
         if(existingTriggerPort != null) return existingTriggerPort;
-        iCS_EditorObject port= CreatePort(iCS_Strings.TriggerPort, parentId, typeof(bool), iCS_ObjectTypeEnum.TriggerPort);
+        iCS_EditorObject port= CreatePort(iCS_Strings.TriggerPort, parentId, typeof(bool), iCS_ObjectTypeEnum.TriggerPort, (int)iCS_PortIndex.Trigger);
         port.IsNameEditable= false;
         port.InitialPortValue= true;
         return port;
