@@ -119,6 +119,11 @@ public static class iCS_ObjectType {
     public static bool IsInFixDataPort        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFixDataPort; }
     public static bool IsOutFixDataPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFixDataPort; }
 
+    // Parameter Data Flow Ports
+    public static bool IsParameterDataPort    (iCS_EngineObject obj) { return IsInParameterDataPort(obj) || IsOutParameterDataPort(obj); }
+    public static bool IsInParameterDataPort  (iCS_EngineObject obj) { return IsInFixDataPort(obj) && !IsInInstancePort(obj); }
+    public static bool IsOutParameterDataPort (iCS_EngineObject obj) { return IsOutFixDataPort(obj) && !IsOutInstancePort(obj); }
+    
     // Dynamic Data Flow Ports 
 	public static bool IsDynamicDataPort	  (iCS_EngineObject obj) { return IsInDynamicDataPort(obj) || IsOutDynamicDataPort(obj); }
     public static bool IsInDynamicDataPort    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InDynamicDataPort; }

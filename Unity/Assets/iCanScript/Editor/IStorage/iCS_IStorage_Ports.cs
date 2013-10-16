@@ -94,7 +94,7 @@ public partial class iCS_IStorage {
 		// Find first dynamic or proposed port
 		int firstDynamicIdx= 0;
 		for(int i= 0; i < result.Length; ++i) {
-		    if(result[i].IsFixDataPort) {
+		    if(result[i].IsParameterDataPort) {
 		        firstDynamicIdx= result[i].PortIndex+1;
 		    }
 		}
@@ -128,14 +128,16 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public static iCS_EditorObject[] SortPortsOnIndex(iCS_EditorObject[] lst) {
-        // Find largest positiove index.
+        // Find largest dynamic or proposed port.
         int lastIndex= -1;
         foreach(var p in lst) {
-            if(p.PortIndex > lastIndex) {
-                lastIndex= p.PortIndex;
-            }
+			if(p.IsDynamicDataPort || p.IsProposedDataPort) {
+	            if(p.PortIndex > lastIndex) {
+	                lastIndex= p.PortIndex;
+	            }				
+			}
         }
-        // Assign all unassigned port indexes.
+        // Assign all unassigned port indexes (we assume that it is a dynmic port).
         if(lastIndex != -1) {
             foreach(var p in lst) {
                 if(p.PortIndex < 0) {

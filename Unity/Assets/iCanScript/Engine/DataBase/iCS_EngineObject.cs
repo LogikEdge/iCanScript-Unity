@@ -199,6 +199,10 @@ public class iCS_EngineObject {
     public bool IsFixDataPort          	{ get { return iCS_ObjectType.IsFixDataPort(this); }}
     public bool IsInFixDataPort         { get { return iCS_ObjectType.IsInFixDataPort(this); }}
     public bool IsOutFixDataPort        { get { return iCS_ObjectType.IsOutFixDataPort(this); }}
+    // Parameter Data Ports
+    public bool IsParameterDataPort     { get { return iCS_ObjectType.IsParameterDataPort(this); }}
+    public bool IsInParameterDataPort   { get { return iCS_ObjectType.IsInParameterDataPort(this); }}
+    public bool IsOutParameterDataPort  { get { return iCS_ObjectType.IsOutParameterDataPort(this); }}
     // Dynamic Data Flow Ports
     public bool IsDynamicDataPort       { get { return iCS_ObjectType.IsDynamicDataPort(this); }}
     public bool IsInDynamicDataPort     { get { return iCS_ObjectType.IsInDynamicDataPort(this); }}

@@ -373,7 +373,7 @@ public class iCS_DynamicMenu {
 					break;
 				}
                 if(desc.IsMessage) {
-                    storage.CreateMessage(selectedObject.InstanceId, pos, desc);
+                    storage.CreateMessageHandler(selectedObject.InstanceId, pos, desc);
                 } else {
                     CreateMethod(selectedObject, storage, pos, desc);                                                               
                 }

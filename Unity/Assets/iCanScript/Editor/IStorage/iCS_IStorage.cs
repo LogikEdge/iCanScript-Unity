@@ -152,8 +152,8 @@ public partial class iCS_IStorage {
         // Processing any changed caused by Undo/Redo
         DetectUndoRedo();
         
-        // Verify for any change on the game object.
-        UpdateBehaviourMessages();
+//        // Verify for any change on the game object.
+//        UpdateBehaviourMessages();
         
         // Force a relayout if it is requested
         if(myForceRelayout) {
@@ -487,7 +487,7 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateMessage(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateMessageHandler(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
@@ -512,10 +512,13 @@ public partial class iCS_IStorage {
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
-		// Special case for behaviour messages.
-		if(instance.Parent.IsBehaviour) {
-            UpdateBehaviourMessagePorts(instance);
-		}
+        // Create 'this' port.
+        if(desc.IsInstanceMember) {
+            port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);            
+            if(instance.Parent.IsBehaviour) {
+                port.InitialValue= instance.Parent.Storage as Component;
+            }
+        }
         // Perform initial node layout.
         instance.Unhide();
         return instance;

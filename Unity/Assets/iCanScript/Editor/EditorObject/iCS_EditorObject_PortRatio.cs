@@ -23,16 +23,17 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public float GetPortRatioFromLocalAnchorPosition(Vector2 pos) {
         var parent= Parent;
-        float ratio;
+		float offset;
+		float availableSize;
         if(IsOnVerticalEdge) {
-            var a= pos.y-parent.VerticalPortsTop;
-            ratio= a/parent.AvailableHeightForPorts;
+            offset= pos.y-parent.VerticalPortsTop;
+            availableSize= parent.AvailableHeightForPorts;
         } else {
-            var a= pos.x-parent.HorizontalPortsLeft;
-            ratio= a/parent.AvailableWidthForPorts;
+            offset= pos.x-parent.HorizontalPortsLeft;
+            availableSize= parent.AvailableWidthForPorts;
         }
-        if(ratio <= 0f) return 0f;
-        if(ratio >= 1f) return 1f;
-        return ratio;
+		if(Math3D.IsSmallerOrEqual(offset, 0f)) return 0f;
+		if(Math3D.IsGreaterOrEqual(offset, availableSize)) return 1f;
+        return offset/availableSize;
     }
 }

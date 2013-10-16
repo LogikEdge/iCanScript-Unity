@@ -84,7 +84,7 @@ public static class iCS_EditorConfig {
     public static float MinimumPortSeparation {
         get {
             if(_MinimumPortSeparation == 0f) {
-				_MinimumPortSeparation= GetPortLabelSize("A").x;
+				_MinimumPortSeparation= GetPortLabelSize("A").y;
 			}
             return _MinimumPortSeparation;
         }
