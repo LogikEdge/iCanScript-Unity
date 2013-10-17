@@ -530,7 +530,10 @@ public partial class iCS_IStorage {
         if(index == -1) {
             if(portType == iCS_ObjectTypeEnum.TriggerPort) {
                 index= (int)iCS_PortIndex.Trigger;
-            } else {
+            } if(portType == iCS_ObjectTypeEnum.EnablePort) {
+                index= GetNextAvailableEnablePortIndex(parent);
+            }
+            else {
         		index= GetNextDynamicOrProposedPortIndex(parent);                
             }
         }

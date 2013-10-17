@@ -28,7 +28,7 @@ public partial class iCS_IStorage {
     // Enable Ports
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateEnablePort(int parentId) {
-        iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
+        iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), iCS_ObjectTypeEnum.EnablePort, (int)GetNextAvailableEnablePortIndex(EditorObjects[parentId]));
         port.IsNameEditable= false;
         port.InitialPortValue= true;
         return port;
@@ -41,7 +41,22 @@ public partial class iCS_IStorage {
     public iCS_EditorObject[] GetEnablePorts(iCS_EditorObject package) {
         return BuildFilteredListOfChildren(c=> c.IsEnablePort, package);
     }
-
+    // -------------------------------------------------------------------------
+    public int GetNextAvailableEnablePortIndex(iCS_EditorObject node) {
+        var enables= CleanupEnablePorts(node);
+        if(enables == null) return (int)iCS_PortIndex.EnablesStart;
+        return (int)iCS_PortIndex.EnablesStart + enables.Length;
+    }
+    // -------------------------------------------------------------------------
+    public iCS_EditorObject[] CleanupEnablePorts(iCS_EditorObject node) {
+        var enables= GetEnablePorts(node);
+        if(enables == null || enables.Length == 0) return null;
+        for(int i= 0; i < enables.Length; ++i) {
+            enables[i].PortIndex= (int)iCS_PortIndex.EnablesStart+i;
+        }
+        return enables;
+    }
+    
     // =========================================================================
     // Input This Port
     // -------------------------------------------------------------------------

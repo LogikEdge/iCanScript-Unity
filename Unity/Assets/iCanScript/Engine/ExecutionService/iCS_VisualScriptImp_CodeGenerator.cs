@@ -472,7 +472,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     }
     // ----------------------------------------------------------------------
 	object GetInitialValue(iCS_EngineObject port) {
-	    if(port.InitialValueArchive == null || port.InitialValueArchive == "") return null;
+	    if(port.InitialValueArchive == null || port.InitialValueArchive == "") return iCS_Types.DefaultValue(port.RuntimeType);
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
 		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
 	}

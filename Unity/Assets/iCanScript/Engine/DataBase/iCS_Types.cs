@@ -76,12 +76,17 @@ public static class iCS_Types {
     // ----------------------------------------------------------------------
     // Returns the default value of the given type.
     public static object DefaultValue(Type type) {
+        // Can't create default value if we don't have a type...
         if(type == null || type == typeof(void)) return null;
+        // Take the first enum value for enumerations.
         if(type.IsEnum) {
             Array enumValues= Enum.GetValues(type);
             if(enumValues.Length <= 0) return null;
             return Enum.ToObject(type, enumValues.GetValue(0));
         }
+        // Remove reference & pointer modifiers.
+        if(type.IsByRef || type.IsPointer) type= GetElementType(type);
+        // Create default value type.
         return (type.IsValueType || type.IsEnum ? Activator.CreateInstance(type) : null);
     }
 
