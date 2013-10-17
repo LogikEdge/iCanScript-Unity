@@ -95,166 +95,171 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
             needAdditionalPass= false;
             // Generate all runtime nodes.
             foreach(var node in EngineObjects) {
-                // Uninitialized.
-				if(node == null) continue;
-				if(node.InstanceId == -1) continue;
-                // Was already generated in a previous pass.
-                if(myRuntimeNodes[node.InstanceId] != null) continue;
-                int priority= node.ExecutionPriority;
-				// Special case for active ports.
-				if(node.IsParentMuxPort) {
-				    var parent= myRuntimeNodes[node.ParentId];
-                    if(parent == null) {
-                        needAdditionalPass= true;
-                    } else {
-    					var mux= new iCS_Mux(this, priority, GetNbOfChildMuxPorts(node));
-    					myRuntimeNodes[node.InstanceId]= mux;
-                        InvokeAddChildIfExists(parent, mux);                        
-                    }
-					continue;
-				}
-                if(node.IsNode) {
-                    // Wait until parent is generated.
-                    object parent= null;
-					switch(node.ParentId) {
-                        case -1: {
-                            break;
+                try {
+                    // Uninitialized.
+    				if(node == null) continue;
+    				if(node.InstanceId == -1) continue;
+                    // Was already generated in a previous pass.
+                    if(myRuntimeNodes[node.InstanceId] != null) continue;
+                    int priority= node.ExecutionPriority;
+    				// Special case for active ports.
+    				if(node.IsParentMuxPort) {
+    				    var parent= myRuntimeNodes[node.ParentId];
+                        if(parent == null) {
+                            needAdditionalPass= true;
+                        } else {
+        					var mux= new iCS_Mux(this, priority, GetNbOfChildMuxPorts(node));
+        					myRuntimeNodes[node.InstanceId]= mux;
+                            InvokeAddChildIfExists(parent, mux);                        
                         }
-                        case 0: {
-                            parent= this;
-                            break;
-                        }
-                        default: {
-							iCS_EngineObject edParent= GetParent(node);
-                            if(edParent.ObjectType == iCS_ObjectTypeEnum.TransitionModule) {
-                                edParent= GetParent(edParent);
+    					continue;
+    				}
+                    if(node.IsNode) {
+                        // Wait until parent is generated.
+                        object parent= null;
+    					switch(node.ParentId) {
+                            case -1: {
+                                break;
                             }
-                            parent= myRuntimeNodes[edParent.InstanceId];
-                            if(parent == null) {
-                                needAdditionalPass= true;
-                                continue;
+                            case 0: {
+                                parent= this;
+                                break;
                             }
-                            break;
-                        }
-                    }
-                    // We are ready to generate new node.
-                    switch(node.ObjectType) {
-                        case iCS_ObjectTypeEnum.Behaviour: {
-                            break;
-                        }
-                        case iCS_ObjectTypeEnum.StateChart: {
-                            iCS_StateChart stateChart= new iCS_StateChart(this, priority);
-                            myRuntimeNodes[node.InstanceId]= stateChart;
-                            InvokeAddChildIfExists(parent, stateChart);
-                            break;
-                        }
-                        case iCS_ObjectTypeEnum.State: {
-                            iCS_State state= new iCS_State(this, priority);
-                            myRuntimeNodes[node.InstanceId]= state;
-                            InvokeAddChildIfExists(parent, state);
-                            if(node.IsEntryState) {
-                                if(parent is iCS_StateChart) {
-                                    iCS_StateChart parentStateChart= parent as iCS_StateChart;
-                                    parentStateChart.EntryState= state;
-                                } else {
-                                    iCS_State parentState= parent as iCS_State;
-                                    parentState.EntryState= state;
+                            default: {
+    							iCS_EngineObject edParent= GetParent(node);
+                                if(edParent.ObjectType == iCS_ObjectTypeEnum.TransitionModule) {
+                                    edParent= GetParent(edParent);
                                 }
+                                parent= myRuntimeNodes[edParent.InstanceId];
+                                if(parent == null) {
+                                    needAdditionalPass= true;
+                                    continue;
+                                }
+                                break;
                             }
-                            break;
                         }
-                        case iCS_ObjectTypeEnum.TransitionModule: {
-                            break;
-                        }
-                        case iCS_ObjectTypeEnum.TransitionGuard:
-                        case iCS_ObjectTypeEnum.TransitionAction: {
-                            var module= new iCS_Package(this, node.InstanceId, priority);                                
-                            myRuntimeNodes[node.InstanceId]= module;
-                            break;
-                        }
-                        case iCS_ObjectTypeEnum.InstanceMessage:
-                        case iCS_ObjectTypeEnum.ClassMessage: {
-                            int nbParams;
-                            int nbEnables;
-                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                            iCS_Message message= new iCS_Message(this, priority, nbParams);                                
-                            myRuntimeNodes[node.InstanceId]= message;
-                            InvokeAddChildIfExists(parent, message);                                
-                            break;
-                        }
-                        case iCS_ObjectTypeEnum.Package: {
-                            int nbParams;
-                            int nbEnables;
-                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                            var module= new iCS_Package(this, node.InstanceId, priority, nbParams);                                
-                            myRuntimeNodes[node.InstanceId]= module;
-                            InvokeAddChildIfExists(parent, module);                                
-                            break;
-                        }
-                        case iCS_ObjectTypeEnum.InstanceFunction: {
-                            // Create method.
-                            int nbParams;
-                            int nbEnables;
-                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                            var method= new iCS_InstanceFunction(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
-                            myRuntimeNodes[node.InstanceId]= method;
-                            InvokeAddChildIfExists(parent, method);
-                            break;                            
-                        }
-                        case iCS_ObjectTypeEnum.Constructor: {
-                            // Create function.
-                            int nbParams;
-                            int nbEnables;
-                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                            iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
-                            myRuntimeNodes[node.InstanceId]= func;
-                            InvokeAddChildIfExists(parent, func);
-                            break;
-                        }
-                        case iCS_ObjectTypeEnum.TypeCast:
-                        case iCS_ObjectTypeEnum.ClassFunction: {
-                            // Create function.
-                            int nbParams;
-                            int nbEnables;
-                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                            var func= new iCS_ClassFunction(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
-                            myRuntimeNodes[node.InstanceId]= func;
-                            InvokeAddChildIfExists(parent, func);
-                            break;
-                        }
-                        case iCS_ObjectTypeEnum.InstanceField: {
-                            // Create function.
-                            FieldInfo fieldInfo= GetFieldInfo(node);
-                            int nbParams;
-                            int nbEnables;
-                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-							var inDataPorts= GetChildInParameters(node);
-                            iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
-                                new iCS_GetInstanceField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature:
-                                new iCS_SetInstanceField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature;                                
-                            myRuntimeNodes[node.InstanceId]= rtField;
-                            InvokeAddChildIfExists(parent, rtField);
-                            break;
-                        }
-                        case iCS_ObjectTypeEnum.ClassField: {
-                            // Create function.
-                            int nbParams;
-                            int nbEnables;
-                            GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-							FieldInfo fieldInfo= GetFieldInfo(node);
-							var inDataPorts= GetChildInParameters(node);
-                            iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
-                                new iCS_GetClassField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature:
-                                new iCS_SetClassField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature;                                
-                            myRuntimeNodes[node.InstanceId]= rtField;
-                            InvokeAddChildIfExists(parent, rtField);
-                            break;                            
-                        }
-                        default: {
-                            Debug.LogWarning(iCS_Config.ProductName+": Code could not be generated for "+node.ObjectType+" object type.");
-                            break;
+                        // We are ready to generate new node.
+                        switch(node.ObjectType) {
+                            case iCS_ObjectTypeEnum.Behaviour: {
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.StateChart: {
+                                iCS_StateChart stateChart= new iCS_StateChart(this, priority);
+                                myRuntimeNodes[node.InstanceId]= stateChart;
+                                InvokeAddChildIfExists(parent, stateChart);
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.State: {
+                                iCS_State state= new iCS_State(this, priority);
+                                myRuntimeNodes[node.InstanceId]= state;
+                                InvokeAddChildIfExists(parent, state);
+                                if(node.IsEntryState) {
+                                    if(parent is iCS_StateChart) {
+                                        iCS_StateChart parentStateChart= parent as iCS_StateChart;
+                                        parentStateChart.EntryState= state;
+                                    } else {
+                                        iCS_State parentState= parent as iCS_State;
+                                        parentState.EntryState= state;
+                                    }
+                                }
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.TransitionModule: {
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.TransitionGuard:
+                            case iCS_ObjectTypeEnum.TransitionAction: {
+                                var module= new iCS_Package(this, node.InstanceId, priority);                                
+                                myRuntimeNodes[node.InstanceId]= module;
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.InstanceMessage:
+                            case iCS_ObjectTypeEnum.ClassMessage: {
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                                iCS_Message message= new iCS_Message(this, priority, nbParams);                                
+                                myRuntimeNodes[node.InstanceId]= message;
+                                InvokeAddChildIfExists(parent, message);                                
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.Package: {
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                                var module= new iCS_Package(this, node.InstanceId, priority, nbParams);                                
+                                myRuntimeNodes[node.InstanceId]= module;
+                                InvokeAddChildIfExists(parent, module);                                
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.InstanceFunction: {
+                                // Create method.
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                                var method= new iCS_InstanceFunction(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
+                                myRuntimeNodes[node.InstanceId]= method;
+                                InvokeAddChildIfExists(parent, method);
+                                break;                            
+                            }
+                            case iCS_ObjectTypeEnum.Constructor: {
+                                // Create function.
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                                iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
+                                myRuntimeNodes[node.InstanceId]= func;
+                                InvokeAddChildIfExists(parent, func);
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.TypeCast:
+                            case iCS_ObjectTypeEnum.ClassFunction: {
+                                // Create function.
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                                var func= new iCS_ClassFunction(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
+                                myRuntimeNodes[node.InstanceId]= func;
+                                InvokeAddChildIfExists(parent, func);
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.InstanceField: {
+                                // Create function.
+                                FieldInfo fieldInfo= GetFieldInfo(node);
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+    							var inDataPorts= GetChildInParameters(node);
+                                iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
+                                    new iCS_GetInstanceField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature:
+                                    new iCS_SetInstanceField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature;                                
+                                myRuntimeNodes[node.InstanceId]= rtField;
+                                InvokeAddChildIfExists(parent, rtField);
+                                break;
+                            }
+                            case iCS_ObjectTypeEnum.ClassField: {
+                                // Create function.
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+    							FieldInfo fieldInfo= GetFieldInfo(node);
+    							var inDataPorts= GetChildInParameters(node);
+                                iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
+                                    new iCS_GetClassField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature:
+                                    new iCS_SetClassField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature;                                
+                                myRuntimeNodes[node.InstanceId]= rtField;
+                                InvokeAddChildIfExists(parent, rtField);
+                                break;                            
+                            }
+                            default: {
+                                Debug.LogWarning(iCS_Config.ProductName+": Code could not be generated for "+node.ObjectType+" object type.");
+                                break;
+                            }
                         }
                     }
+                }
+                catch(System.Exception exception) {
+                    Debug.LogWarning("iCanScript: Exception in node code generation: "+exception.Message);                    
                 }
             }
         } while(needAdditionalPass);
@@ -265,117 +270,122 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 			if(port == null) continue;
 			if(port.InstanceId == -1) continue;
             if(port.IsPort) {
-                switch(port.ObjectType) {
-                    // Ports without code generation.
-                    case iCS_ObjectTypeEnum.InTransitionPort:
-                    case iCS_ObjectTypeEnum.OutTransitionPort:
-                    case iCS_ObjectTypeEnum.OutStatePort: {
-                        break;
+                try {
+                    switch(port.ObjectType) {
+                        // Ports without code generation.
+                        case iCS_ObjectTypeEnum.InTransitionPort:
+                        case iCS_ObjectTypeEnum.OutTransitionPort:
+                        case iCS_ObjectTypeEnum.OutStatePort: {
+                            break;
+                        }
+                        case iCS_ObjectTypeEnum.InChildMuxPort:
+    					case iCS_ObjectTypeEnum.OutChildMuxPort: {
+    						var rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_ISignature;
+    						if(rtMuxPort == null) break;
+                            iCS_EngineObject sourcePort= GetSourceEndPort(port);
+    						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
+    						rtMuxPort.GetSignatureDataSource().SetConnection(port.PortIndex, connection);
+    						break;
+    					}
+                        case iCS_ObjectTypeEnum.InStatePort: {
+                            iCS_EngineObject endState= GetParent(port);
+                            iCS_EngineObject transitionModule= GetParentNode(GetSourcePort(port));
+                            iCS_EngineObject actionModule= null;
+                            iCS_EngineObject triggerPort= null;
+                            iCS_EngineObject outStatePort= null;
+                            iCS_EngineObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
+                            triggerPort= GetSourceEndPort(triggerPort);
+                            iCS_ActionWithSignature triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_ActionWithSignature;
+                            int triggerIdx= triggerPort.PortIndex;
+                            iCS_Transition transition= new iCS_Transition(this,
+                                                                        myRuntimeNodes[endState.InstanceId] as iCS_State,
+                                                                        myRuntimeNodes[guardModule.InstanceId] as iCS_Package,
+                                                                        triggerFunc, triggerIdx,
+                                                                        actionModule != null ? myRuntimeNodes[actionModule.InstanceId] as iCS_Package : null,
+                                                                        transitionModule.ExecutionPriority);
+                            iCS_State state= myRuntimeNodes[outStatePort.ParentId] as iCS_State;
+                            state.AddChild(transition);
+                            break;
+                        }
+                        
+                        // Control flow ports.
+                        case iCS_ObjectTypeEnum.TriggerPort: {
+                            var package= myRuntimeNodes[port.ParentId] as iCS_Package;
+                            package.Trigger= false;
+                            break;
+                        }
+                        // Data ports.
+                        case iCS_ObjectTypeEnum.OutDynamicDataPort:
+                        case iCS_ObjectTypeEnum.OutFixDataPort: {
+    						if(GetParentNode(port).IsKindOfPackage) break;
+                            object parentObj= myRuntimeNodes[port.ParentId];
+                            Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction>(parentObj,
+                                instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                getInstanceField=> getInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                getClassField   => getClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                setInstanceField=> setInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                setClassField   => setClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                classFunction   => classFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType)
+                            );
+                            break;
+                        }
+                        case iCS_ObjectTypeEnum.InDynamicDataPort:
+                        case iCS_ObjectTypeEnum.InProposedDataPort:
+                        case iCS_ObjectTypeEnum.InFixDataPort:
+                        case iCS_ObjectTypeEnum.EnablePort: {
+    						if(!(port.IsInputPort && IsEndPort(port))) {
+    						    break;
+    					    }
+                            // Build connection.
+                            iCS_EngineObject sourcePort= GetSourceEndPort(port);
+    						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
+                            // Build initial value.
+    						object initValue= GetInitialValue(sourcePort);
+                            // Set data port.
+                            object parentObj= myRuntimeNodes[port.ParentId];
+                            Prelude.choice<iCS_Constructor, iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Package, iCS_Message>(parentObj,
+                                constructor=> {
+                                    constructor[port.PortIndex]= initValue;
+                                    constructor.SetConnection(port.PortIndex, connection);
+                                },
+                                instanceFunction=> {
+                                    instanceFunction[port.PortIndex]= initValue;
+                                    instanceFunction.SetConnection(port.PortIndex, connection);
+                                },
+                                getInstanceField=> {
+                                    getInstanceField[port.PortIndex]= initValue;
+                                    getInstanceField.SetConnection(port.PortIndex, connection);
+                                },
+                                getClassField=> {
+                                    getClassField[port.PortIndex]= initValue;
+                                    getClassField.SetConnection(port.PortIndex, connection);
+                                },
+                                setInstanceField=> {
+                                    setInstanceField[port.PortIndex]= initValue;
+                                    setInstanceField.SetConnection(port.PortIndex, connection);
+                                },
+                                setClassField=> {
+                                    setClassField[port.PortIndex]= initValue;
+                                    setClassField.SetConnection(port.PortIndex, connection);
+                                },
+                                classFunction=> {
+                                    classFunction[port.PortIndex]= initValue;
+                                    classFunction.SetConnection(port.PortIndex, connection);
+                                },
+                                package=> {
+                                    package[port.PortIndex]= initValue;
+                                    package.SetConnection(port.PortIndex, connection);
+                                },
+                                message=> {
+                                    message[port.PortIndex]= initValue;
+                                }
+                            );
+                            break;
+                        }
                     }
-                    case iCS_ObjectTypeEnum.InChildMuxPort:
-					case iCS_ObjectTypeEnum.OutChildMuxPort: {
-						var rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_ISignature;
-						if(rtMuxPort == null) break;
-                        iCS_EngineObject sourcePort= GetSourceEndPort(port);
-						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
-						rtMuxPort.GetSignatureDataSource().SetConnection(port.PortIndex, connection);
-						break;
-					}
-                    case iCS_ObjectTypeEnum.InStatePort: {
-                        iCS_EngineObject endState= GetParent(port);
-                        iCS_EngineObject transitionModule= GetParentNode(GetSourcePort(port));
-                        iCS_EngineObject actionModule= null;
-                        iCS_EngineObject triggerPort= null;
-                        iCS_EngineObject outStatePort= null;
-                        iCS_EngineObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
-                        triggerPort= GetSourceEndPort(triggerPort);
-                        iCS_ActionWithSignature triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_ActionWithSignature;
-                        int triggerIdx= triggerPort.PortIndex;
-                        iCS_Transition transition= new iCS_Transition(this,
-                                                                    myRuntimeNodes[endState.InstanceId] as iCS_State,
-                                                                    myRuntimeNodes[guardModule.InstanceId] as iCS_Package,
-                                                                    triggerFunc, triggerIdx,
-                                                                    actionModule != null ? myRuntimeNodes[actionModule.InstanceId] as iCS_Package : null,
-                                                                    transitionModule.ExecutionPriority);
-                        iCS_State state= myRuntimeNodes[outStatePort.ParentId] as iCS_State;
-                        state.AddChild(transition);
-                        break;
-                    }
-                    
-                    // Control flow ports.
-                    case iCS_ObjectTypeEnum.TriggerPort: {
-                        var package= myRuntimeNodes[port.ParentId] as iCS_Package;
-                        package.Trigger= false;
-                        break;
-                    }
-                    // Data ports.
-                    case iCS_ObjectTypeEnum.OutDynamicDataPort:
-                    case iCS_ObjectTypeEnum.OutFixDataPort: {
-						if(GetParentNode(port).IsKindOfPackage) break;
-                        object parentObj= myRuntimeNodes[port.ParentId];
-                        Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction>(parentObj,
-                            instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                            getInstanceField=> getInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                            getClassField   => getClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                            setInstanceField=> setInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                            setClassField   => setClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                            classFunction   => classFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType)
-                        );
-                        break;
-                    }
-                    case iCS_ObjectTypeEnum.InDynamicDataPort:
-                    case iCS_ObjectTypeEnum.InProposedDataPort:
-                    case iCS_ObjectTypeEnum.InFixDataPort:
-                    case iCS_ObjectTypeEnum.EnablePort: {
-						if(!(port.IsInputPort && IsEndPort(port))) {
-						    break;
-					    }
-                        // Build connection.
-                        iCS_EngineObject sourcePort= GetSourceEndPort(port);
-						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
-                        // Build initial value.
-						object initValue= GetInitialValue(sourcePort);
-                        // Set data port.
-                        object parentObj= myRuntimeNodes[port.ParentId];
-                        Prelude.choice<iCS_Constructor, iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Package, iCS_Message>(parentObj,
-                            constructor=> {
-                                constructor[port.PortIndex]= initValue;
-                                constructor.SetConnection(port.PortIndex, connection);
-                            },
-                            instanceFunction=> {
-                                instanceFunction[port.PortIndex]= initValue;
-                                instanceFunction.SetConnection(port.PortIndex, connection);
-                            },
-                            getInstanceField=> {
-                                getInstanceField[port.PortIndex]= initValue;
-                                getInstanceField.SetConnection(port.PortIndex, connection);
-                            },
-                            getClassField=> {
-                                getClassField[port.PortIndex]= initValue;
-                                getClassField.SetConnection(port.PortIndex, connection);
-                            },
-                            setInstanceField=> {
-                                setInstanceField[port.PortIndex]= initValue;
-                                setInstanceField.SetConnection(port.PortIndex, connection);
-                            },
-                            setClassField=> {
-                                setClassField[port.PortIndex]= initValue;
-                                setClassField.SetConnection(port.PortIndex, connection);
-                            },
-                            classFunction=> {
-                                classFunction[port.PortIndex]= initValue;
-                                classFunction.SetConnection(port.PortIndex, connection);
-                            },
-                            package=> {
-                                package[port.PortIndex]= initValue;
-                                package.SetConnection(port.PortIndex, connection);
-                            },
-                            message=> {
-                                message[port.PortIndex]= initValue;
-                            }
-                        );
-                        break;
-                    }
+                }
+                catch(System.Exception exception) {
+                    Debug.LogWarning("iCanScript: Exception in binding code generation: "+exception.Message);
                 }
             }
         }
