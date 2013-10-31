@@ -128,7 +128,15 @@ public static class iCS_ToolbarUtility {
         }
         Texture2D cancelIcon= null;
         if(iCS_TextureCache.GetTexture(iCS_EditorStrings.CancelIcon, out cancelIcon)) {
-            GUI.DrawTexture(new Rect(r.xMax, r.y-1f, cancelIcon.width, cancelIcon.height), cancelIcon);
+			Rect cancelRect= new Rect(r.xMax, r.y-1f, cancelIcon.width, cancelIcon.height);
+            GUI.DrawTexture(cancelRect, cancelIcon);
+			// Clear the search if the cancel icon is depressed.
+			var ev= Event.current;
+			if(ev != null && ev.isMouse) {
+				if(cancelRect.Contains(ev.mousePosition)) {
+					return "";
+				}
+			}
         } else {
             Debug.LogWarning("iCanScript: Cannot find cancel Icon in resource folder !!!");
         }
