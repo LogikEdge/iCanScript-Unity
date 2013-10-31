@@ -20,7 +20,6 @@ public class iCS_Mux : iCS_ActionWithSignature {
                 return;
             }
         }
-	    IsStalled= true;
     }
     // ----------------------------------------------------------------------
     protected override void DoForceExecute(int frameId) {
