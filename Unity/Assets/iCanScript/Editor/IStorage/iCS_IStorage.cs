@@ -140,9 +140,8 @@ public partial class iCS_IStorage {
 		return eObj.IsParentMuxPort ? eObj : (eObj.IsChildMuxPort ? eObj.Parent : null);
 	}
     // ----------------------------------------------------------------------
-    public object GetRuntimeObject(iCS_EditorObject obj) {
-        iCS_VisualScriptImp bh= Storage as iCS_VisualScriptImp;
-        return obj == null || bh == null ? null : bh.GetRuntimeObject(obj.InstanceId);
+    public iCS_Object GetRuntimeObject(iCS_EditorObject obj) {
+		return obj == null ? null : obj.GetRuntimeObject;
     }
     
     // ======================================================================

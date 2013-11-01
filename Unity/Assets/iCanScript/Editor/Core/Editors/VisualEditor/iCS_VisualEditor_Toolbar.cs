@@ -62,6 +62,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// CENTER TOOLBAR
         // Show game object name in middle of toolbar.
 		var name= IStorage.Storage.name;
+		if(Application.isPlaying) {
+			var visualScript= IStorage.Storage as iCS_VisualScriptImp;
+			if(visualScript != null) {
+				name+= " (id= "+visualScript.UpdateFrameId;
+				if(Math3D.IsNotZero(Time.smoothDeltaTime)) {
+					int frameRate= (int)(1f/Time.smoothDeltaTime);
+					name+="; fr= "+frameRate;
+				}
+				name+=")";				
+			}
+		}
 		iCS_ToolbarUtility.CenteredTitle(ref r, name);
 	}
 }

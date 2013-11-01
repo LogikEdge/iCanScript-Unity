@@ -99,13 +99,6 @@ public class iCS_Inspector : Editor {
         GUI.enabled= true;
 		EditorGUIUtility.LookLikeControls();
 
-        // Frame count.
-		if(myStorage.Storage is iCS_VisualScriptImp && Application.isPlaying) {
-		    iCS_VisualScriptImp behaviour= myStorage.Storage as iCS_VisualScriptImp;
-		    EditorGUILayout.LabelField("UpdateFrameId", behaviour.UpdateFrameId.ToString());
-		    EditorGUILayout.LabelField("FixedUpdateFrameId", behaviour.FixedUpdateFrameId.ToString());
-		}
-		
         // Stop any repaint if the selected object has changed between the layout and repaint events.
         switch(Event.current.type) {
             case EventType.Layout:

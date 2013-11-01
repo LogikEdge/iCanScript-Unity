@@ -15,13 +15,9 @@ public partial class iCS_Graphics {
         return true;
     }
     // ----------------------------------------------------------------------
-    public string GetNodeName(iCS_EditorObject node) {
-        return iCS_PreferencesEditor.RemoveProductPrefix(node.Name);    
-    }	
-    // ----------------------------------------------------------------------
     // Returns the scaled node name size.
     Vector2 GetNodeNameSize(iCS_EditorObject node) {
-        string portName= GetNodeName(node);
+        string portName= node.DisplayName;
         GUIContent content= new GUIContent(portName);
         return node.IsIconizedOnDisplay ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
     }

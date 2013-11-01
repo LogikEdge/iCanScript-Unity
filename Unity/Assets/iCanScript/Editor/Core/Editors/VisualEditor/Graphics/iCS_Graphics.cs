@@ -354,7 +354,7 @@ public partial class iCS_Graphics {
 
         // Draw node since all draw conditions are valid.
         GUI.color= new Color(1f, 1f, 1f, node.DisplayAlpha);
-        string title= GetNodeName(node);
+        string title= node.DisplayName;
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
@@ -421,7 +421,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
 	void ShowTitleOver(Rect pos, iCS_EditorObject node) {
         if(!ShouldShowTitle()) return;
-        string title= GetNodeName(node);
+        string title= node.DisplayName;
         Vector2 labelSize= GetNodeNameSize(node);
 		pos.y-=5f;	// Put title a bit higher.
         pos= TranslateAndScale(pos);

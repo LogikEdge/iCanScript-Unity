@@ -11,7 +11,10 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public float NodeTitleWidth {
 		get {
-			return iCS_EditorConfig.GetNodeTitleWidth(Name)+2f*iCS_BuiltinTextures.kMinimizeIconSize+iCS_EditorConfig.kTitleFontSize;
+			var titleWidth= iCS_EditorConfig.GetNodeTitleWidth(DisplayName);
+			var iconsWidth= 2f*iCS_BuiltinTextures.kMinimizeIconSize;
+			var spacer= iCS_EditorConfig.kTitleFontSize;
+			return titleWidth+iconsWidth+spacer;
 		}
 	}
     // ----------------------------------------------------------------------
