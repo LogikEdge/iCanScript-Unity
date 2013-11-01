@@ -23,6 +23,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 		// --------------
 		// LEFT TOOLBAR
+		// Show Runtime frame id.
+        bool showFrameId= iCS_PreferencesEditor.ShowRuntimeFrameId;
+        bool newShowFrameId= iCS_ToolbarUtility.Toggle(ref r, showFrameId, spacer, spacer);
+        if(newShowFrameId != showFrameId) {
+            iCS_PreferencesEditor.ShowRuntimeFrameId= newShowFrameId;
+        }
+        iCS_ToolbarUtility.MiniLabel(ref r, "Frame Id", 0,0);
+        iCS_ToolbarUtility.Separator(ref r);
+		
         // Show Runtime values.
         bool showRuntime= iCS_PreferencesEditor.ShowRuntimePortValue;
         bool newShowRuntime= iCS_ToolbarUtility.Toggle(ref r, showRuntime, spacer, spacer);

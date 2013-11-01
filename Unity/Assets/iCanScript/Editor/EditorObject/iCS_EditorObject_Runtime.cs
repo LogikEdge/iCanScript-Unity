@@ -12,7 +12,7 @@ public partial class iCS_EditorObject {
 	public string DisplayName {
 		get {
 			var name= iCS_PreferencesEditor.RemoveProductPrefix(Name);
-			if(IsNode && Application.isPlaying) {
+			if(iCS_PreferencesEditor.ShowRuntimeFrameId && IsNode && Application.isPlaying) {
 				var action= GetRuntimeObject as iCS_Action;
 				if(action != null) {
 					name+= " ("+action.ExecutionFrameId+")";

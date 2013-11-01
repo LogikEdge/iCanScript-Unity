@@ -36,8 +36,10 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kZoomSpeedKey               = "iCS_ZoomSpeed";
     const bool   kShowRuntimePortValue       = false;
     const float  kPortValueRefreshPeriod     = 0.1f;
+	const bool   kShowRuntimeFrameId         = false;
     const string kShowRuntimePortValueKey    = "iCS_ShowRuntimePortValue";
     const string kPortValueRefreshPeriodKey  = "iCS_PortValueRefresh";
+    const string kShowRuntimeFrameIdKey      = "iCS_ShowRuntimeFrameId";
     // ---------------------------------------------------------------------------------
     // Canvas Constants
     static  Color   kCanvasBackgroundColor;
@@ -221,6 +223,14 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             if(value < 0.1f) value= 0.1f;
             if(value > 2.0f) value= 2.0f;
             EditorPrefs.SetFloat(kPortValueRefreshPeriodKey, value);
+        }
+    }
+    public static bool ShowRuntimeFrameId {
+        get {
+            return EditorPrefs.GetBool(kShowRuntimeFrameIdKey, kShowRuntimeFrameId);
+        }
+        set {
+            EditorPrefs.SetBool(kShowRuntimeFrameIdKey, value);
         }
     }
     public static Color CanvasBackgroundColor {
@@ -566,14 +576,14 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Draw column 2
         Rect p= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
         GUI.Label(p, "Animation Controls", EditorStyles.boldLabel);
-        Rect[] pos= new Rect[9];
+        Rect[] pos= new Rect[10];
         pos[0]= new Rect(p.x, p.yMax, p.width, p.height);
         for(int i= 1; i < 8; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
         pos[7].y+= pos[6].height;
-        GUI.Label(pos[7], "Port Values", EditorStyles.boldLabel);
+        GUI.Label(pos[7], "Runtime Configuration", EditorStyles.boldLabel);
         pos[7].y+= pos[7].height;
         for(int i= 8; i < pos.Length; ++i) {
             pos[i]= pos[i-1];
@@ -588,6 +598,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUI.Label(pos[6], "Zoom Speed");
         GUI.Label(pos[7], "Show Runtime Values");
         GUI.Label(pos[8], "Refresh Period (seconds)");
+		GUI.Label(pos[9], "Show Frame Id");
         
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
@@ -605,6 +616,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         ZoomSpeed= EditorGUI.FloatField(pos[6], ZoomSpeed);
         ShowRuntimePortValue= EditorGUI.Toggle(pos[7], ShowRuntimePortValue);
         PortValueRefreshPeriod= EditorGUI.FloatField(pos[8], PortValueRefreshPeriod);
+		ShowRuntimeFrameId= EditorGUI.Toggle(pos[9], ShowRuntimeFrameId);
 
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
@@ -616,7 +628,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             InverseZoom             = kInverseZoom;
             ZoomSpeed               = kZoomSpeed;
             ShowRuntimePortValue    = kShowRuntimePortValue;
-            PortValueRefreshPeriod  = kPortValueRefreshPeriod;            
+            PortValueRefreshPeriod  = kPortValueRefreshPeriod;
+			ShowRuntimeFrameId      = kShowRuntimeFrameId;   
         }
     }
     // ---------------------------------------------------------------------------------
