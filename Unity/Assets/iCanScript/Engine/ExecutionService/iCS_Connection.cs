@@ -43,4 +43,10 @@ public class iCS_Connection {
         if(myIsAlwaysReady || !IsConnected) return true;
         return myIsControlFlow ? Action.IsCurrent(frameId) : Action.DidExecute(frameId);
     }
-}
+    public bool IsCurrent(int frameId) {
+    	return Action.IsCurrent(frameId);
+    }
+    public bool DidExecute(int frameId) {
+    	return Action.DidExecute(frameId);
+    }
+ }

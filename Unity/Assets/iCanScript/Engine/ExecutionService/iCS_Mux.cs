@@ -14,7 +14,7 @@ public class iCS_Mux : iCS_ActionWithSignature {
     protected override void DoExecute(int frameId) {
         // Take the first valid connection.
         foreach(var connection in ParameterConnections) {
-            if(connection.IsReady(frameId)) {
+            if(connection.DidExecute(frameId)) {
                 ReturnValue= connection.Value;
                 MarkAsExecuted(frameId);
                 return;
@@ -23,7 +23,23 @@ public class iCS_Mux : iCS_ActionWithSignature {
     }
     // ----------------------------------------------------------------------
     protected override void DoForceExecute(int frameId) {
-		// Use previous output value.
-        MarkAsExecuted(frameId);
+        // Take the last that has executed.
+		int smallestDistance= 1000;
+		iCS_Connection bestConnection= null;
+        foreach(var connection in ParameterConnections) {
+			if(connection == null) continue;
+			var action= connection.Action;
+			if(action == null) continue;
+			int frameIdDistance= frameId-action.ExecutionFrameId;
+			if(frameIdDistance < smallestDistance) {
+				smallestDistance= frameIdDistance;
+				bestConnection= connection;
+			}
+        }
+		// Take value from the last that executed.
+		if(bestConnection != null) {
+            ReturnValue= bestConnection.Value;			
+		}
+        MarkAsCurrent(frameId);
     }
 }

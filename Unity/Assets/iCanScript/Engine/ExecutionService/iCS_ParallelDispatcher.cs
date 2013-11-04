@@ -13,25 +13,26 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // Execution
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
-        int tries= 0;
-        int maxTries= myExecuteQueue.Count-myQueueIdx;
+		int swapCursor= myQueueIdx;
         int queueSize= myExecuteQueue.Count;
         while(myQueueIdx < queueSize) {
             // Attempt to execute child function.
             iCS_Action action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
+				
                 // Update the stalled flag
                 IsStalled &= action.IsStalled;
                 // Return if we have seen too many stalled children.
-                if(++tries > maxTries) {
+                if(++swapCursor >= queueSize) {
                     return;
                 }
                 // The function is not ready to execute so lets delay the execution.
-                Swap(myQueueIdx, queueSize-tries);
+                Swap(myQueueIdx, swapCursor);
                 continue;
             }
             ++myQueueIdx;
+			swapCursor= myQueueIdx;
             IsStalled= false;
         }
         // Reset iterators for next frame.

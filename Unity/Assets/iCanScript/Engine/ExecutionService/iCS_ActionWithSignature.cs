@@ -80,13 +80,16 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     public override void Execute(int frameId) {
         // Clear the output trigger flag.
         mySignature.Trigger= false;
-        // Verify that the action is enabled.
+        // Wait until the enables can be resolved.
         bool isEnabled;
-        if(mySignature.GetIsEnabledIfReady(frameId, out isEnabled)) {
-            if(isEnabled == false) {
-                MarkAsCurrent(frameId);
-                return;
-            }
+        if(!mySignature.GetIsEnabledIfReady(frameId, out isEnabled)) {
+			IsStalled= true;
+			return;
+		}
+		// Skip execution if this action is disabled.
+        if(isEnabled == false) {
+            MarkAsCurrent(frameId);
+            return;
         }
         // Invoke derived class to execute normally.
         IsStalled= true;
