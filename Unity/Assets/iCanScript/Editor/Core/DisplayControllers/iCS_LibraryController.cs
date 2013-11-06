@@ -166,15 +166,17 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             }
             tree= tree.Children[idx];            
         }
-        string className= iCS_Types.TypeName(desc.ParentTypeInfo.CompilerType);
-        if(!iCS_Strings.IsEmpty(className)) {
-            var idx= FindInTreeChildren(className, tree);
-            if(idx < 0) {
-                tree.AddChild(new Node(NodeTypeEnum.Class, className, desc));
-                idx= FindInTreeChildren(className, tree);
-            }
-            tree= tree.Children[idx];            
-        }
+		if(desc.ParentTypeInfo.HideFromLibrary == false) {
+	        string className= iCS_Types.TypeName(desc.ParentTypeInfo.CompilerType);
+	        if(!iCS_Strings.IsEmpty(className)) {
+	            var idx= FindInTreeChildren(className, tree);
+	            if(idx < 0) {
+	                tree.AddChild(new Node(NodeTypeEnum.Class, className, desc));
+	                idx= FindInTreeChildren(className, tree);
+	            }
+	            tree= tree.Children[idx];            
+	        }			
+		}
         return tree;
     }
     void Sort(Prelude.Tree<Node> tree) {
@@ -381,7 +383,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         } else if(nodeType == NodeTypeEnum.Package) {
             icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Library);                            
         } else if(nodeType == NodeTypeEnum.Class) {
-            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);            
+			if(iCS_Types.IsStaticClass(current.Desc.ClassType)) {
+				icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Package);            
+			} else {
+	            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);            
+			}
         } else if(nodeType == NodeTypeEnum.Field) {
             if(current.Desc.IsGetField) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;

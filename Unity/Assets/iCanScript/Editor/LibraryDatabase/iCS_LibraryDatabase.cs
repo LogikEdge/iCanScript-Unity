@@ -292,12 +292,13 @@ public class iCS_LibraryDatabase {
     }
     // ----------------------------------------------------------------------
     public static iCS_TypeInfo AddTypeInfo(string company, string package, Type compilerType, Type baseType, Type declaringType,
-                                           iCS_TypeInfo declaringTypeInfo, string displayName, string iconPath, string description) {
+                                           iCS_TypeInfo declaringTypeInfo, string displayName, string iconPath, string description,
+										   bool hideFromLibrary) {
         var typeInfo= GetTypeInfo(compilerType);
         if(typeInfo != null) {
             return typeInfo;
         }
-        typeInfo= new iCS_TypeInfo(company, package, compilerType, baseType, declaringType, declaringTypeInfo, displayName, iconPath, description);
+        typeInfo= new iCS_TypeInfo(company, package, compilerType, baseType, declaringType, declaringTypeInfo, displayName, iconPath, description, hideFromLibrary);
         types.Add(typeInfo);
         // Extract all messages configured on base class.
         if(baseType != null && baseType != typeof(void)) {

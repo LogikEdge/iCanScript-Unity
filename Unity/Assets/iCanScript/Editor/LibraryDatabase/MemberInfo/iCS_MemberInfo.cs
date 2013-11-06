@@ -16,6 +16,7 @@ public abstract class iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public  iCS_ObjectTypeEnum   ObjectType      = iCS_ObjectTypeEnum.Unknown;
     public  iCS_TypeInfo         ParentTypeInfo  = null;
+	public  bool				 HideFromLibrary = false;
     public  string               DisplayName     = null;
     private string               myDescription   = null;
     private string               myIconPath      = null;

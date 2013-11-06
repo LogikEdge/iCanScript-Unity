@@ -34,6 +34,12 @@ public class iCS_ClassAttribute : Attribute {
         set { myBaseVisibility= value; }
     }
     private bool myBaseVisibility= false;
+	
+	public bool HideClassFromLibrary {
+		get { return myHideClassFromLibrary; }
+		set { myHideClassFromLibrary= value; }
+	}
+	private bool myHideClassFromLibrary= false;
     
     // ======================================================================
     public override string ToString() { return "iCS_Class"; }

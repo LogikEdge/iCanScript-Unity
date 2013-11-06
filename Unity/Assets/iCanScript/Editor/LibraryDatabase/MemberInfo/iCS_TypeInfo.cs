@@ -43,14 +43,16 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_TypeInfo(string _company, string _package, Type _compilerType, Type _baseType, Type _declaringType,
-                        iCS_TypeInfo _declaringTypeInfo, string _displayName, string _description, string _iconPath)
+                        iCS_TypeInfo _declaringTypeInfo, string _displayName, string _description, string _iconPath,
+						bool _hideFromLibrary)
     : base(iCS_ObjectTypeEnum.Type, _declaringTypeInfo, _displayName, _description, _iconPath)
     {
-        myCompany    = _company;
-        myPackage    = _package;
-        CompilerType = _compilerType;
-        BaseType     = _baseType;
-        DeclaringType= _declaringType;
+        myCompany      = _company;
+        myPackage      = _package;
+        CompilerType   = _compilerType;
+        BaseType       = _baseType;
+        DeclaringType  = _declaringType;
+		HideFromLibrary= _hideFromLibrary;
     }
 
     // ======================================================================

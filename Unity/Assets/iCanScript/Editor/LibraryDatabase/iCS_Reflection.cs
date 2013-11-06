@@ -91,7 +91,7 @@ public class iCS_Reflection {
                         extractClass= false;
                         break;
                     }
-                    // Only register classes that have been tagged for uCode.
+                    // Only register classes that have been tagged for iCanScript.
                     if(classCustomAttribute is iCS_ClassAttribute) {
                         extractClass= true;
                         // Validate that the class is public.
@@ -103,15 +103,16 @@ public class iCS_Reflection {
                         classAttribute= classCustomAttribute as iCS_ClassAttribute;
                     }
                 }
-                // Only register classes that have been tagged for uCode.
+                // Only register classes that have been tagged for iCanScript.
                 if(extractClass) {
                     // Extract class information.
-                    string  classCompany       = classAttribute.Company;
-                    string  classPackage       = classAttribute.Package;
-                    string  classDescription   = classAttribute.Tooltip;
-                    string  classIcon          = classAttribute.Icon;
-                    bool    classBaseVisibility= classAttribute.BaseVisibility;
-                    DecodeClassInfo(classType, classCompany, classPackage, classDescription, classIcon, false, classBaseVisibility);
+                    string  company        = classAttribute.Company;
+                    string  package        = classAttribute.Package;
+                    string  description    = classAttribute.Tooltip;
+                    string  icon           = classAttribute.Icon;
+                    bool    baseVisibility = classAttribute.BaseVisibility;
+					bool	hideFromLibrary= classAttribute.HideClassFromLibrary;
+                    DecodeClassInfo(classType, company, package, description, icon, false, baseVisibility, hideFromLibrary);
                 }
             }
         }
@@ -127,9 +128,10 @@ public class iCS_Reflection {
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------
-    public static void DecodeClassInfo(Type classType, string company, string package, string classDescription, string classIconPath,
+    public static void DecodeClassInfo(Type classType, string company, string package, string description, string classIconPath,
                                        bool acceptAllPublic= false,
-                                       bool baseVisibility= false) {
+                                       bool baseVisibility= false,
+									   bool hideFromLibrary= false) {
         if(classType.IsGenericType) {
             Debug.LogWarning("iCanScript: Generic class not supported yet.  Skiping: "+classType.Name);
             return;
@@ -139,7 +141,7 @@ public class iCS_Reflection {
         var declaringType    = classType.DeclaringType;
         var declaringTypeInfo= iCS_LibraryDatabase.GetTypeInfo(declaringType);
         var _classTypeInfo   = iCS_LibraryDatabase.AddTypeInfo(company, package, classType, baseType, declaringType, declaringTypeInfo,
-                                                               classType.Name, classDescription, classIconPath);
+                                                               classType.Name, description, classIconPath, hideFromLibrary);
         // Decode class members
         DecodeConstructors(_classTypeInfo, acceptAllPublic);
         DecodeClassFields(_classTypeInfo, acceptAllPublic, baseVisibility);
