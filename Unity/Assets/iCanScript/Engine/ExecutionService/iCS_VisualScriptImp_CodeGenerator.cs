@@ -346,6 +346,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 								var parent= GetParentNode(port);
 								if(!parent.IsMessage) {
 									initValue= System.Activator.CreateInstance(port.RuntimeType);									
+									if(initValue == null) {
+										Debug.LogWarning("iCanScript: Unable to create instance for: "+GetFullPathName(parent));
+									}
 								}
 							}
                             // Set data port.

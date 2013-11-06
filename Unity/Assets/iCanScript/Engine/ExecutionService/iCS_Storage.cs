@@ -79,7 +79,16 @@ public class iCS_Storage : MonoBehaviour {
 		}
 		return parentNode;
 	}
-
+    // ----------------------------------------------------------------------
+	public string GetFullPathName(iCS_EngineObject obj) {
+		if(obj == null) return "";
+		string fullName= null;
+		for(fullName= obj.Name; obj != null; obj= GetParentNode(obj)) {
+			fullName+= "::"+obj.Name;
+		}
+		return fullName;
+	}
+	
     // ======================================================================
     // Connection Queries
     // ----------------------------------------------------------------------
