@@ -341,6 +341,13 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
                             // Build initial value.
     						object initValue= GetInitialValue(sourcePort);
+							// Automatically build instance object if not specified.
+							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.This) {
+								var parent= GetParentNode(port);
+								if(!parent.IsMessage) {
+									initValue= System.Activator.CreateInstance(port.RuntimeType);									
+								}
+							}
                             // Set data port.
                             object parentObj= myRuntimeNodes[port.ParentId];
                             Prelude.choice<iCS_Constructor, iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Package, iCS_Message>(parentObj,

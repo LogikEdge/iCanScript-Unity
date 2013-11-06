@@ -6,7 +6,7 @@ public class iCS_AccumulatorInt {
 	[iCS_OutPort] public int acc= 0;
 	
 	[iCS_Function(Return="acc")]
-	public int Accumulate(int toAdd, bool reset= false, int resetValue= 0) {
+	public int Accumulate(int toAdd= 1, bool reset= false, int resetValue= 0) {
 		if(reset) {
 			acc= resetValue;
 			return acc;
@@ -21,7 +21,7 @@ public class iCS_AccumulatorFloat {
 	[iCS_OutPort] public float acc= 0;
 	
 	[iCS_Function(Return="acc")]
-	public float Accumulate(float toAdd, bool reset= false, float resetValue= 0f) {
+	public float Accumulate(float toAdd= 1f, bool reset= false, float resetValue= 0f) {
 		if(reset) {
 			acc= resetValue;
 			return acc;
