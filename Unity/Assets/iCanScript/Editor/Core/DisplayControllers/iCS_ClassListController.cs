@@ -10,7 +10,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // ---------------------------------------------------------------------------------
     DSTableView             myTableView       = null;
     List<iCS_TypeInfo>      myClasses         = null;
-	List<string>			myPackages        = new List<string>();
+	List<string>			myLibraries       = new List<string>();
 	List<string>			myCompanies		  = new List<string>();
     List<iCS_TypeInfo>      myFilteredClasses = null;
     GUIStyle                myColumnDataStyle = null;
@@ -23,7 +23,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
     const int     kSpacer         = 8;
     const int     kMarginSize     = 10;
 	const string  kClassColumnId  = "Class";
-	const string  kPackageColumnId= "Package";
+	const string  kLibraryColumnId= "Library";
 	const string  kCompanyColumnId= "Company";
 
     // =================================================================================
@@ -48,7 +48,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
         // Get list all classes.
         myClasses= iCS_LibraryDatabase.types;
 		foreach(var desc in myClasses) {
-			if(!myPackages.Contains(desc.Package)) myPackages.Add(desc.Package);
+			if(!myLibraries.Contains(desc.Library)) myLibraries.Add(desc.Library);
 			if(!myCompanies.Contains(desc.Company)) myCompanies.Add(desc.Company);
 		}
         myFilteredClasses= myClasses;
@@ -56,10 +56,10 @@ public class iCS_ClassListController : DSTableViewDataSource {
         // Build table view.
         myTableView= new DSTableView(new RectOffset(kSpacer,kSpacer,0,kSpacer), true, new GUIContent("Classes"), DSView.AnchorEnum.Center, true, true);
         DSTableColumn classColumn= new DSTableColumn(kClassColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Class"), DSView.AnchorEnum.CenterLeft);
-        DSTableColumn packageColumn= new DSTableColumn(kPackageColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Package"), DSView.AnchorEnum.CenterLeft);    
+        DSTableColumn libraryColumn= new DSTableColumn(kLibraryColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Package"), DSView.AnchorEnum.CenterLeft);    
         DSTableColumn companyColumn= new DSTableColumn(kCompanyColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Company"), DSView.AnchorEnum.CenterLeft);
         myTableView.AddColumn(classColumn);
-        myTableView.AddColumn(packageColumn);
+        myTableView.AddColumn(libraryColumn);
         myTableView.AddColumn(companyColumn);  
         myTableView.DataSource= this;
 		myTableView.SetSelection(classColumn, 0);
@@ -74,7 +74,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
 				}
 				bool packageOk= true;
 				if(!IsEmptyString(packageSubstringFilter)) {
-					if(d.Package.ToUpper().IndexOf(packageSubstringFilter.ToUpper()) == -1) packageOk= false;
+					if(d.Library.ToUpper().IndexOf(packageSubstringFilter.ToUpper()) == -1) packageOk= false;
 				}
 				bool classOk= true;
 				if(!IsEmptyString(classSubstringFilter)) {
@@ -101,8 +101,8 @@ public class iCS_ClassListController : DSTableViewDataSource {
         if(string.Compare(columnId, kClassColumnId) == 0) {
             return myColumnDataStyle.CalcSize(new GUIContent(desc.DisplayName));
         }
-        if(string.Compare(columnId, kPackageColumnId) == 0) {
-            return myColumnDataStyle.CalcSize(new GUIContent(desc.Package));
+        if(string.Compare(columnId, kLibraryColumnId) == 0) {
+            return myColumnDataStyle.CalcSize(new GUIContent(desc.Library));
         }
         if(string.Compare(columnId, kCompanyColumnId) == 0) {
             return myColumnDataStyle.CalcSize(new GUIContent(desc.Company));
@@ -124,8 +124,8 @@ public class iCS_ClassListController : DSTableViewDataSource {
         if(string.Compare(columnId, kClassColumnId) == 0) {
             GUI.Label(position, desc.DisplayName, myColumnDataStyle);
         }
-        if(string.Compare(columnId, kPackageColumnId) == 0) {
-            GUI.Label(position, desc.Package, myColumnDataStyle);
+        if(string.Compare(columnId, kLibraryColumnId) == 0) {
+            GUI.Label(position, desc.Library, myColumnDataStyle);
         }
         if(string.Compare(columnId, kCompanyColumnId) == 0) {
             GUI.Label(position, desc.Company, myColumnDataStyle);

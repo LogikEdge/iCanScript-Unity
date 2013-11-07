@@ -151,7 +151,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             CreatePackage(node.Name, iStorage);        
             return;
         }
-        if(node.Type == iCS_LibraryController.NodeTypeEnum.Package) {
+        if(node.Type == iCS_LibraryController.NodeTypeEnum.Library) {
             CreatePackage(node.Name, iStorage);        
             return;
         }

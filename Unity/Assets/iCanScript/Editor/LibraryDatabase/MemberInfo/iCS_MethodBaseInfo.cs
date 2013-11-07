@@ -205,12 +205,12 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
         }
     }
     // ----------------------------------------------------------------------
-    // Returns the function name in the form of "company/package/class".
+    // Returns the function name in the form of "company/library/class".
     public string FunctionPath {
         get {
 			string path= "";
 			if(!String.IsNullOrEmpty(Company)) path= Company+"/";
-			if(!String.IsNullOrEmpty(Package)) path+= Package+"/";
+			if(!String.IsNullOrEmpty(Library)) path+= Library+"/";
 			path+= iCS_Types.TypeName(ClassType);
 			return path;
         }

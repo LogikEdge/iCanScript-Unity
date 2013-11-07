@@ -89,9 +89,9 @@ public abstract class iCS_MemberInfo {
             return ParentTypeInfo.Company;            
         }
     }
-    public virtual string Package {
+    public virtual string Library {
         get {
-            return ParentTypeInfo.Package;            
+            return ParentTypeInfo.Library;            
         }
     }
     public virtual Type ClassType {

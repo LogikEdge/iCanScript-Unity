@@ -8,7 +8,7 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // Fields
     // ----------------------------------------------------------------------
     private string                  myCompany    = null;
-    private string                  myPackage    = null;   // Defaults to declaring namespace
+    private string                  myLibrary    = null;
     public Type                     CompilerType = null;
     public Type                     BaseType     = null;
     public Type                     DeclaringType= null;
@@ -25,12 +25,12 @@ public class iCS_TypeInfo : iCS_MemberInfo {
             return myCompany ?? "";
         }
     }
-    public override string Package {
+    public override string Library {
         get {
-            if(String.IsNullOrEmpty(myPackage) && ParentTypeInfo != null) {
-                return ParentTypeInfo.Package;
+            if(String.IsNullOrEmpty(myLibrary) && ParentTypeInfo != null) {
+                return ParentTypeInfo.Library;
             }
-            return myPackage ?? "";            
+            return myLibrary ?? "";            
         }
     }
     public override Type ClassType {
@@ -42,13 +42,13 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_TypeInfo(string _company, string _package, Type _compilerType, Type _baseType, Type _declaringType,
+    public iCS_TypeInfo(string _company, string _library, Type _compilerType, Type _baseType, Type _declaringType,
                         iCS_TypeInfo _declaringTypeInfo, string _displayName, string _description, string _iconPath,
 						bool _hideFromLibrary)
     : base(iCS_ObjectTypeEnum.Type, _declaringTypeInfo, _displayName, _description, _iconPath)
     {
         myCompany      = _company;
-        myPackage      = _package;
+        myLibrary      = _library;
         CompilerType   = _compilerType;
         BaseType       = _baseType;
         DeclaringType  = _declaringType;
@@ -61,7 +61,7 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // Returns the type name in the form of "company/package/type".
     public override string ToString() {
 		string str= !String.IsNullOrEmpty(Company) ? Company+memberSeparator : "";
-		if(!String.IsNullOrEmpty(Package)) str+= Package+memberSeparator;
+		if(!String.IsNullOrEmpty(Library)) str+= Library+memberSeparator;
 		str+= iCS_Types.TypeName(CompilerType);
 		return str;    }
 }

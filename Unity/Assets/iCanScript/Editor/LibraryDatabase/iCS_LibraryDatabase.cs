@@ -62,10 +62,10 @@ public class iCS_LibraryDatabase {
             result= d1.Company.CompareTo(d2.Company);
             if(result != 0) return result;
         }
-        if(d1.Package == null && d2.Package != null) return -1;
-        if(d1.Package != null && d2.Package == null) return 1;
-        if(d1.Package != null) {
-            result= d1.Package.CompareTo(d2.Package);
+        if(d1.Library == null && d2.Library != null) return -1;
+        if(d1.Library != null && d2.Library == null) return 1;
+        if(d1.Library != null) {
+            result= d1.Library.CompareTo(d2.Library);
             if(result != 0) return result;            
         }
         return d1.DisplayName.CompareTo(d2.DisplayName);

@@ -11,11 +11,11 @@ public class iCS_ClassAttribute : Attribute {
     }
     private string myCompany= null;
 
-    public string Package {
-        get { return myPackage; }
-        set { myPackage= value; }
+    public string Library {
+        get { return myLibrary; }
+        set { myLibrary= value; }
     }
-    private string myPackage= null;
+    private string myLibrary= null;
     
     public string Tooltip {
         get { return myTooltip; }
@@ -23,6 +23,12 @@ public class iCS_ClassAttribute : Attribute {
     }
     private string myTooltip= null;
     
+    public string CompanyIcon {
+        get { return myCompanyIcon; }
+        set { myCompanyIcon= value; }
+    }
+    private string myCompanyIcon= null;
+
     public string Icon {
         get { return myIcon; }
         set { myIcon= value; }

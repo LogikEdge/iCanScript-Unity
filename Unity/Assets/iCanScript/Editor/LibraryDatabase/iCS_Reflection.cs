@@ -107,12 +107,12 @@ public class iCS_Reflection {
                 if(extractClass) {
                     // Extract class information.
                     string  company        = classAttribute.Company;
-                    string  package        = classAttribute.Package;
+                    string  library        = classAttribute.Library;
                     string  description    = classAttribute.Tooltip;
                     string  icon           = classAttribute.Icon;
                     bool    baseVisibility = classAttribute.BaseVisibility;
 					bool	hideFromLibrary= classAttribute.HideClassFromLibrary;
-                    DecodeClassInfo(classType, company, package, description, icon, false, baseVisibility, hideFromLibrary);
+                    DecodeClassInfo(classType, company, library, description, icon, false, baseVisibility, hideFromLibrary);
                 }
             }
         }
@@ -128,7 +128,7 @@ public class iCS_Reflection {
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------
-    public static void DecodeClassInfo(Type classType, string company, string package, string description, string classIconPath,
+    public static void DecodeClassInfo(Type classType, string company, string library, string description, string classIconPath,
                                        bool acceptAllPublic= false,
                                        bool baseVisibility= false,
 									   bool hideFromLibrary= false) {
@@ -140,7 +140,7 @@ public class iCS_Reflection {
         var baseType         = classType.BaseType;
         var declaringType    = classType.DeclaringType;
         var declaringTypeInfo= iCS_LibraryDatabase.GetTypeInfo(declaringType);
-        var _classTypeInfo   = iCS_LibraryDatabase.AddTypeInfo(company, package, classType, baseType, declaringType, declaringTypeInfo,
+        var _classTypeInfo   = iCS_LibraryDatabase.AddTypeInfo(company, library, classType, baseType, declaringType, declaringTypeInfo,
                                                                classType.Name, description, classIconPath, hideFromLibrary);
         // Decode class members
         DecodeConstructors(_classTypeInfo, acceptAllPublic);
