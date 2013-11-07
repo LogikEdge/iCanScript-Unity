@@ -132,7 +132,18 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // Drag events.
     // ---------------------------------------------------------------------------------
     void StartDragAndDrop(iCS_LibraryController.Node node) {
+		// Just return if nothing is selected.
         if(node == null) return;
+		// Don't allow to drag & drop company, library, and packages
+		switch(node.Type) {
+			case iCS_LibraryController.NodeTypeEnum.Root:
+			case iCS_LibraryController.NodeTypeEnum.Company:
+			case iCS_LibraryController.NodeTypeEnum.Library:
+//			case iCS_LibraryController.NodeTypeEnum.Package:
+				return;
+			default:
+				break;
+		}
         // Build drag object.
         GameObject go= new GameObject(node.Name);
         go.hideFlags = HideFlags.HideAndDontSave;
