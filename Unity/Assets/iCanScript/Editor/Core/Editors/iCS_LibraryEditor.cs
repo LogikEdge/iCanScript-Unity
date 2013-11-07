@@ -139,7 +139,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 			case iCS_LibraryController.NodeTypeEnum.Root:
 			case iCS_LibraryController.NodeTypeEnum.Company:
 			case iCS_LibraryController.NodeTypeEnum.Library:
-//			case iCS_LibraryController.NodeTypeEnum.Package:
+			case iCS_LibraryController.NodeTypeEnum.Package:
 				return;
 			default:
 				break;

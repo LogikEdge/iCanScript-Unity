@@ -8,7 +8,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Types
     // ---------------------------------------------------------------------------------
-    public enum NodeTypeEnum { Root, Company, Library, Class, Constructor, Field, Property, Method, Message, InParameter, OutParameter };
+    public enum NodeTypeEnum { Root, Company, Library, Package, Class, Constructor, Field, Property, Method, Message, InParameter, OutParameter };
     public class Node {
         public NodeTypeEnum        Type;
         public string              Name;
@@ -167,11 +167,13 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             tree= tree.Children[idx];            
         }
 		if(desc.ParentTypeInfo.HideFromLibrary == false) {
-	        string className= iCS_Types.TypeName(desc.ParentTypeInfo.CompilerType);
+			var compilerType= desc.ParentTypeInfo.CompilerType;
+	        string className= iCS_Types.TypeName(compilerType);
 	        if(!iCS_Strings.IsEmpty(className)) {
 	            var idx= FindInTreeChildren(className, tree);
 	            if(idx < 0) {
-	                tree.AddChild(new Node(NodeTypeEnum.Class, className, desc));
+					var nodeType= iCS_Types.IsStaticClass(compilerType) ? NodeTypeEnum.Package : NodeTypeEnum.Class;
+	                tree.AddChild(new Node(nodeType, className, desc));
 	                idx= FindInTreeChildren(className, tree);
 	            }
 	            tree= tree.Children[idx];            
@@ -202,10 +204,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(x.Type != NodeTypeEnum.Constructor && y.Type == NodeTypeEnum.Constructor) return 1;
         if(x.Type == NodeTypeEnum.Method && y.Type != NodeTypeEnum.Method) return -1;
         if(x.Type != NodeTypeEnum.Method && y.Type == NodeTypeEnum.Method) return 1;
-        if(x.Type == NodeTypeEnum.Class && y.Type != NodeTypeEnum.Class) return -1;
-        if(x.Type != NodeTypeEnum.Class && y.Type == NodeTypeEnum.Class) return 1;
         if(x.Type == NodeTypeEnum.Library && y.Type != NodeTypeEnum.Library) return -1;
         if(x.Type != NodeTypeEnum.Library && y.Type == NodeTypeEnum.Library) return 1;
+        if(x.Type == NodeTypeEnum.Package && y.Type != NodeTypeEnum.Package) return -1;
+        if(x.Type != NodeTypeEnum.Package && y.Type == NodeTypeEnum.Package) return 1;
+        if(x.Type == NodeTypeEnum.Class && y.Type != NodeTypeEnum.Class) return -1;
+        if(x.Type != NodeTypeEnum.Class && y.Type == NodeTypeEnum.Class) return 1;
         if(x.Type == NodeTypeEnum.Company && y.Type != NodeTypeEnum.Company) return -1;
         if(x.Type != NodeTypeEnum.Company && y.Type == NodeTypeEnum.Company) return 1;
         // The types are the same so lets sort according to input/output direction.
@@ -231,7 +235,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterInPackage(iCS_MemberInfo desc) {
+    bool FilterInLibrary(iCS_MemberInfo desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();
@@ -382,12 +386,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             }
         } else if(nodeType == NodeTypeEnum.Library) {
             icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Library);                            
+        } else if(nodeType == NodeTypeEnum.Package) {
+			icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Package);            
         } else if(nodeType == NodeTypeEnum.Class) {
-			if(iCS_Types.IsStaticClass(current.Desc.ClassType)) {
-				icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Package);            
-			} else {
-	            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);            
-			}
+			icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);            
         } else if(nodeType == NodeTypeEnum.Field) {
             if(current.Desc.IsGetField) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
@@ -415,7 +417,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     }
     // ---------------------------------------------------------------------------------
     bool ShouldUseFoldout() {
-        return IterValue.Type == NodeTypeEnum.Company || IterValue.Type == NodeTypeEnum.Library || IterValue.Type == NodeTypeEnum.Class;
+        return IterValue.Type == NodeTypeEnum.Company ||
+			   IterValue.Type == NodeTypeEnum.Library ||
+			   IterValue.Type == NodeTypeEnum.Class ||
+			   IterValue.Type == NodeTypeEnum.Package;
     }
     // ---------------------------------------------------------------------------------
     public void MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea) {
