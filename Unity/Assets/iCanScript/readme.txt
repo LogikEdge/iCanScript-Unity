@@ -1,7 +1,7 @@
 Installation:
 -------------
 
-You will find in attachment iCanScript v0.9.3 (RC #1.0a).  Use the following steps to install iCanScript:
+You will find in attachment iCanScript v0.9.6 (RC1.0d).  Use the following steps to install iCanScript:
 
 1) Save the attached files on your hard drive;
 2) Open the Unity game engine.
