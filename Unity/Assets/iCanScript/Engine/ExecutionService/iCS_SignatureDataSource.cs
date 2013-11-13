@@ -216,7 +216,9 @@ public class iCS_SignatureDataSource {
                     return false;
                 }
             } else {
-                if((bool)connecion.Value == false) {
+				var v= connecion.Value;
+				if(v == null) return false;
+                if((bool)v == false) {
                     return false;
                 }
             }
