@@ -210,14 +210,18 @@ public class iCS_SignatureDataSource {
     public bool GetIsEnabled() {
         int len= myEnables.Length;
         for(int i= 0; i < len; ++i) {
-            var connecion= myEnableConnections[i];
-            if(connecion == null) {
+            var connection= myEnableConnections[i];
+            if(connection == null) {
                 if(myEnables[i] == false) {
                     return false;
                 }
             } else {
-				var v= connecion.Value;
-                if((v != null && bool)v == false) {
+				var v= connection.Value;
+				if(v == null) {
+					Debug.LogWarning("iCanScript: Invalid connection for enabled sourced from: "+connection.Action.FullName);
+					continue;
+				}
+                if(/*v != null && */(bool)v == false) {
                     return false;
                 }
             }

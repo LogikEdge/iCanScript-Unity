@@ -316,16 +316,22 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         }
                         // Data ports.
                         case iCS_ObjectTypeEnum.OutDynamicDataPort:
-                        case iCS_ObjectTypeEnum.OutFixDataPort: {
-    						if(GetParentNode(port).IsKindOfPackage) break;
-                            object parentObj= myRuntimeNodes[port.ParentId];
-                            Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction>(parentObj,
+                        case iCS_ObjectTypeEnum.OutFixDataPort:
+						case iCS_ObjectTypeEnum.OutParentMuxPort: {
+//    						if(GetParentNode(port).IsKindOfPackage) break;
+							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
+                            object parentObj= myRuntimeNodes[isMux ? port.InstanceId : port.ParentId];
+							if(port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort) {
+								Debug.Log("Setting default value for: "+(parentObj as iCS_Object).FullName+" port idx= "+port.PortIndex);
+							}
+                            Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Mux>(parentObj,
                                 instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 getInstanceField=> getInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 getClassField   => getClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 setInstanceField=> setInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 setClassField   => setClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                                classFunction   => classFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType)
+                                classFunction   => classFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+								muxFunction		=> muxFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType)
                             );
                             break;
                         }
