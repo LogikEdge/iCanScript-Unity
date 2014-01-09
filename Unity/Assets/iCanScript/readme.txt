@@ -1,7 +1,7 @@
 Installation:
 -------------
 
-You will find in attachment iCanScript v0.9.6 (RC1.0d).  Use the following steps to install iCanScript:
+You will find in attachment iCanScript v0.9.7 (RC1.0e).  Use the following steps to install iCanScript:
 
 1) Save the attached files on your hard drive;
 2) Open the Unity game engine.
@@ -33,9 +33,9 @@ iCanScript comes with some predefined nodes that are extracted from Unity and .N
 
 Creating Nodes from Your Source Code:
 -------------------------------------
-iCanScript offers the ability to directly publish your code has node.  This is realize by tagging your classes, attribute, properties, and functions with iCanScript attributes.  You can find more information on the iCanScript attributes in the programming guide at:
+iCanScript offers the ability to directly publish your code has node.  This is realize by tagging your classes, attribute, properties, and functions with iCanScript attributes.  You can find more information on the iCanScript attributes in the user guide in section “Extending iCanScript”
 
-	http://www.icanscript.com/documentation/programmer_guide/creating_nodes
+	http://www.icanscript.com/user_guide
 
 
 Documentation:
