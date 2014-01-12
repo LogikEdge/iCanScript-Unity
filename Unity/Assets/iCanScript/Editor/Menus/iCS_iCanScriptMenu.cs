@@ -34,26 +34,25 @@ public static class iCS_iCanScriptMenu {
     }
     // ======================================================================
     // Documentation Access
-    [MenuItem("iCanScript/",false,30)]
-    [MenuItem("iCanScript/Documentation/Home Page",false,31)]
+    [MenuItem("Help/iCanScript/Home Page",false,31)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com");
     }
-    [MenuItem("iCanScript/Documentation/User Guide",false,32)]
+    [MenuItem("Help/iCanScript/User Guide",false,32)]
     public static void UserManual() {
         Application.OpenURL("http://www.user-guide.icanscript.com/all-in-one");
     }
-    [MenuItem("iCanScript/Documentation/Release Notes",false,34)]
+    [MenuItem("Help/iCanScript/Release Notes",false,34)]
     public static void ReleaseNotes() {
         Application.OpenURL("http://www.icanscript.com/support/release-notes");
     }
     // ======================================================================
     // Support Access
-    [MenuItem("iCanScript/Customer Request",false,60)]
+    [MenuItem("Help/iCanScript/Customer Request",false,60)]
     public static void ReportBug() {
         Application.OpenURL("http://www.disruptive-sw.com/support/customer-request");
     }
-    [MenuItem("iCanScript/Check for Updates...",false,61)]
+    [MenuItem("Help/iCanScript/Check for Updates...",false,61)]
     public static void CheckForUpdate() {
 		var isLatest= iCS_InstallerMgr.CheckForUpdates();
 		if(isLatest.isNothing) {
