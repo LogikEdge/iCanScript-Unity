@@ -47,7 +47,7 @@ public static class iCS_EditorConfig {
 			return "Version "+VersionId;
 		}
 	}
-    public const string VersionLabel= "build 0000";
+    public const string VersionLabel= "(RC #1.0e)";
 	
 	
     // ======================================================================

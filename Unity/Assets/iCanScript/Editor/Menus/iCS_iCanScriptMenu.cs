@@ -5,15 +5,14 @@ using P=Prelude;
 public static class iCS_iCanScriptMenu {
     // ======================================================================
 	// Create a behavior to selected game object.
-	[MenuItem("Edit/", false, 100)]
-	[MenuItem("Edit/iCanScript/Create Visual Script", false, 101)]
+	[MenuItem("iCanScript/Create Visual Script", false, 1)]
 	public static void CreateVisualScript() {
 		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
 		if(storage == null) {
 		    iCS_MenuUtility.InstallVisualScriptOn(Selection.activeGameObject);
 		}
 	}
-	[MenuItem("Edit/iCanScript/Create Visual Script", true, 101)]
+	[MenuItem("iCanScript/Create Visual Script", true, 1)]
 	public static bool ValidateCreateVisualScript() {
 		if(Selection.activeTransform == null) return false;
 		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
@@ -22,37 +21,39 @@ public static class iCS_iCanScriptMenu {
 
     // ======================================================================
     // Navigation
-    [MenuItem("Edit/iCanScript/Center Visual Script #f",false,121)]
+    [MenuItem("iCanScript/",false,20)]
+    [MenuItem("iCanScript/Center Visual Script #f",false,21)]
     public static void FocusOnVisualScript() {
         iCS_VisualEditor visualEditor= iCS_EditorMgr.FindVisualEditor();
         if(visualEditor != null) visualEditor.CenterAndScaleOnRoot();
     }
-    [MenuItem("Edit/iCanScript/Focus On Selected _f",false,122)]
+    [MenuItem("iCanScript/Focus On Selected _f",false,22)]
     public static void FocusOnSelected() {
         iCS_VisualEditor graphEditor= iCS_EditorMgr.FindVisualEditor();
         if(graphEditor != null) graphEditor.CenterAndScaleOnSelected();
     }
     // ======================================================================
     // Documentation Access
-    [MenuItem("Help/iCanScript/Home Page",false,31)]
+    [MenuItem("iCanScript/",false,30)]
+    [MenuItem("iCanScript/Documentation/Home Page",false,31)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com");
     }
-    [MenuItem("Help/iCanScript/User Guide",false,32)]
+    [MenuItem("iCanScript/Documentation/User Guide",false,32)]
     public static void UserManual() {
         Application.OpenURL("http://www.user-guide.icanscript.com/all-in-one");
     }
-    [MenuItem("Help/iCanScript/Release Notes",false,34)]
+    [MenuItem("iCanScript/Documentation/Release Notes",false,34)]
     public static void ReleaseNotes() {
         Application.OpenURL("http://www.icanscript.com/support/release-notes");
     }
     // ======================================================================
     // Support Access
-    [MenuItem("Help/iCanScript/Customer Request",false,60)]
+    [MenuItem("iCanScript/Customer Request",false,60)]
     public static void ReportBug() {
         Application.OpenURL("http://www.disruptive-sw.com/support/customer-request");
     }
-    [MenuItem("Help/iCanScript/Check for Updates...",false,61)]
+    [MenuItem("iCanScript/Check for Updates...",false,61)]
     public static void CheckForUpdate() {
 		var isLatest= iCS_InstallerMgr.CheckForUpdates();
 		if(isLatest.isNothing) {
