@@ -63,9 +63,20 @@ mkdir $PUBLISH_ENGINE_DIR
 mkdir $PUBLISH_EDITOR_DIR
 cp iCanScriptEngine.dll $PUBLISH_ENGINE_DIR
 cp iCanScriptEditor.dll $PUBLISH_EDITOR_DIR
+# Install documentation.
+if [ -e $PRODUCT_DIR/*.txt ]; then
+	cp $PRODUCT_DIR/*.txt $PUBLISH_PRODUCT_DIR
+fi
+if [ -e $PRODUCT_DIR/*.pdf ]; then
+	cp $PRODUCT_DIR/*.pdf $PUBLISH_PRODUCT_DIR
+fi
+if [ -e $PRODUCT_DIR/*.md ]; then
+	cp $PRODUCT_DIR/*.md $PUBLISH_PRODUCT_DIR
+fi
+if [ -e $PRODUCT_DIR/*.html ]; then
+	cp $PRODUCT_DIR/*.html $PUBLISH_PRODUCT_DIR
+fi
 # Install visible source files.
-cp $PRODUCT_DIR/readme.txt $PUBLISH_PRODUCT_DIR
-#cp -r $PRODUCT_DIR/AssetStore $DESTINATION_DIR
 cp -r $EDITOR_DIR/Resources $PUBLISH_EDITOR_DIR
 rsync -av $EDITOR_PUBLIC_NODE_INSTALLER_DIR $PUBLISH_EDITOR_DIR >/dev/null
 rsync -av $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR $PUBLISH_EDITOR_DIR >/dev/null
