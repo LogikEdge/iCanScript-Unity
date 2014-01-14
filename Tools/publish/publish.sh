@@ -11,11 +11,9 @@ GMCS=$MONO_BIN_DIR/gmcs
 ROOT_DIR=../..
 UNITY_DIR=$ROOT_DIR/Unity
 ASSETS_DIR=$UNITY_DIR/Assets
-ASSET_STORE_TOOLS=$ASSETS_DIR/AssetStoreTools
 PRODUCT_DIR=$ASSETS_DIR/iCanScript
 EDITOR_DIR=$PRODUCT_DIR/Editor
 ENGINE_DIR=$PRODUCT_DIR/Engine
-DEMO_DIR=$PRODUCT_DIR/Demo_Scenes
 EDITOR_PUBLIC_NODE_INSTALLER_DIR=$EDITOR_DIR/NodeInstaller
 EDITOR_PUBLIC_EDITOR_WINDOWS_DIR=$EDITOR_DIR/EditorWindows
 ENGINE_PUBLIC_COMPONENTS_DIR=$ENGINE_DIR/Components
@@ -31,7 +29,6 @@ find $EDITOR_PUBLIC_NODE_INSTALLER_DIR -name "*.cs" >editorFilesToExclude
 find $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR -name "*.cs" >>editorFilesToExclude
 find $ENGINE_PUBLIC_COMPONENTS_DIR -name "*.cs" >engineFilesToExclude
 find $ENGINE_PUBLIC_NODES_DIR -name "*.cs" >>engineFilesToExclude
-find $DEMO_DIR >>engineFilesToExclude
 find $EDITOR_DIR -name "*.cs" >_editorFiles
 find $PRODUCT_DIR -name "*.cs" | grep -v -f _editorFiles - >_engineFiles
 grep -v -f editorFilesToExclude _editorFiles >editorFiles
@@ -71,8 +68,6 @@ rsync -av $EDITOR_PUBLIC_NODE_INSTALLER_DIR $PUBLISH_EDITOR_DIR >/dev/null
 rsync -av $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR $PUBLISH_EDITOR_DIR >/dev/null
 rsync -av $ENGINE_PUBLIC_COMPONENTS_DIR $PUBLISH_ENGINE_DIR >/dev/null
 rsync -av $ENGINE_PUBLIC_NODES_DIR $PUBLISH_ENGINE_DIR >/dev/null
-rsync -av $DEMO_DIR $PUBLISH_PRODUCT_DIR >/dev/null
-rsync -av $ASSET_STORE_TOOLS $PUBLISH_ASSETS_DIR >/dev/null
 #rsync -av --exclude=*/*.meta $EDITOR_PUBLIC_NODE_INSTALLER_DIR $PUBLISH_EDITOR_DIR >/dev/null
 #rsync -av --exclude=*/*.meta $ENGINE_PUBLIC_NODES_DIR $PUBLISH_ENGINE_DIR >/dev/null
 

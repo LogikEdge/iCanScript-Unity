@@ -13,7 +13,7 @@ public partial class iCS_IStorage {
     // Undo/Redo support
     // ----------------------------------------------------------------------
     public void RegisterUndo(string message= "iCanScript") {
-        Undo.RegisterUndo(Storage, message);
+        Undo.RecordObject(Storage, message);
         Storage.UndoRedoId= ++UndoRedoId;        
     }
     // ----------------------------------------------------------------------

@@ -50,7 +50,7 @@ public class iCS_InstanceEditor : iCS_EditorBase {
         UpdateMgr();
         // Wait until window is configured.
         if(!IsInitialized()) return;
-        EditorGUIUtility.LookLikeInspector();
+//        EditorGUIUtility.LookLikeInspector();
         myMainView.Display(new Rect(0,0,position.width, position.height));
     }
 }
