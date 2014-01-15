@@ -32,6 +32,8 @@ public partial class iCS_IStorage {
         SetSource(inModulePort, fromStatePort);
         SetSource(toStatePort, outModulePort);
         Iconize(transitionModule);
+
+
         // Create guard module
         iCS_EditorObject guard= CreatePackage(transitionModule.InstanceId, transitionModulePos, "false", iCS_ObjectTypeEnum.TransitionGuard);
         var guardIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionTriggerIcon);
@@ -45,19 +47,7 @@ public partial class iCS_IStorage {
         guardPort.IsNameEditable= false;
         SetSource(fromStatePort, guardPort);
         Iconize(guard);
-        // Create action module
-        iCS_EditorObject action= CreatePackage(transitionModule.InstanceId, transitionModulePos, "NoAction", iCS_ObjectTypeEnum.TransitionAction);
-        var actionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.FunctionIcon);
-        if(actionIconGUID != null) {
-            action.IconGUID= actionIconGUID;            
-        } else {
-            Debug.LogWarning("Missing transition action module icon: "+iCS_EditorStrings.FunctionIcon);
-        }
-        action.Tooltip= "Action to be execute when the transition is taken.";
-        iCS_EditorObject enablePort= CreateEnablePort(action.InstanceId);
-        enablePort.IsNameEditable= false;
-        SetSource(enablePort, guardPort);
-        Iconize(action);
+
         // Update port names
         UpdatePortNames(fromStatePort, toStatePort);
         // Set initial transition module position.
@@ -223,33 +213,23 @@ public partial class iCS_IStorage {
         return parent.Parent;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetTransitionGuardAndAction(iCS_EditorObject statePort, out iCS_EditorObject actionModule) {
-        actionModule= null;
+    public iCS_EditorObject GetTransitionGuard(iCS_EditorObject statePort) {
         iCS_EditorObject transitionModule= GetTransitionModule(statePort);
         if(transitionModule == null) return null;
-        iCS_EditorObject action= null;
         iCS_EditorObject guard= null;
         ForEachChild(transitionModule,
             child=> {
                 if(child.IsTransitionGuard)  guard= child;
-                if(child.IsTransitionAction) action= child;
             }
         );
-        actionModule= action;
         return guard;
     }
     // ----------------------------------------------------------------------
-    public bool IsTransitionActionEmpty(iCS_EditorObject action) {
-        return !UntilMatchingChildNode(action, _=> true);
-    }
-    // ----------------------------------------------------------------------
     public string GetTransitionName(iCS_EditorObject statePort) {
-        iCS_EditorObject action= null;
-        iCS_EditorObject guard= GetTransitionGuardAndAction(statePort, out action);
+        iCS_EditorObject guard= GetTransitionGuard(statePort);
         string name= "";
         if(guard != null) {
             name= "["+guard.Name+"]";
-            if(action != null && !IsTransitionActionEmpty(action)) name+= "/"+action.Name;
         }
         // Update transition module name.
         iCS_EditorObject transitionModule= GetTransitionModule(statePort);

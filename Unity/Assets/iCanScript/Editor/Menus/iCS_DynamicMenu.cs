@@ -60,7 +60,6 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.InstanceMessage:  PackageMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassMessage:     PackageMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionGuard:  PackageMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.TransitionAction: PackageMenu(selectedObject, storage); break;
 			case iCS_ObjectTypeEnum.TransitionModule: TransitionModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.Constructor:      FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceFunction: FunctionMenu(selectedObject, storage); break;
@@ -116,7 +115,7 @@ public class iCS_DynamicMenu {
         // Show in hierarchy
         AddShowInHierarchyMenuItem(ref menu);
         // Delete menu item
-        if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionAction) {
+        if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard) {
             AddDeleteMenuItem(ref menu);
         }
         ShowMenu(menu, selectedObject, storage);
@@ -339,18 +338,21 @@ public class iCS_DynamicMenu {
 		Vector2 pos= context.GraphPosition;
         iCS_IStorage storage= context.Storage;
         storage.RegisterUndo(context.Command);
-        // Process predefined State children.
+        // Reject request if child node is not allowed.
+		string tooltip= null;
         if(selectedObject.IsState) {
+			bool isAllowed= false;
+            string name= context.Command.Substring(2);
+            if(name[0] == ' ') name= name.Substring(1);
             for(int i= 0; i < iCS_AllowedChildren.StateChildNames.Length; ++i) {
                 string childName= iCS_AllowedChildren.StateChildNames[i];
-                string name= context.Command.Substring(2);
-                if(name[0] == ' ') name= name.Substring(1);
                 if(name == childName) {
-                    string toolTip= iCS_AllowedChildren.StateChildTooltips[i];
-                    ProcessCreatePackageWithUnchangableName(childName, context, toolTip);
-                    return;
+                    tooltip= iCS_AllowedChildren.StateChildTooltips[i];
+					isAllowed= true;
+					break;
                 }
-            }            
+            }
+			if(isAllowed == false) return;            
         }
         // Process all other types of requests.
         switch(context.Command) {
@@ -358,9 +360,9 @@ public class iCS_DynamicMenu {
             case StateChartStr:     ProcessCreateStateChart(context); break;
             case StateStr:          ProcessCreateState(context);  break;
             case SetAsEntryStr:     ProcessSetStateEntry(context); break;
-            case OnEntryStr:        ProcessCreateOnEntryModule(context); break;
-            case OnUpdateStr:       ProcessCreateOnUpdateModule(context); break;
-            case OnExitStr:         ProcessCreateOnExitModule(context); break;
+            case OnEntryStr:        ProcessCreateOnEntryModule(context, tooltip); break;
+            case OnUpdateStr:       ProcessCreateOnUpdateModule(context, tooltip); break;
+            case OnExitStr:         ProcessCreateOnExitModule(context, tooltip); break;
             case ShowHierarchyStr:  ProcessShowInHierarchy(context); break;
             case DeleteStr:         ProcessDestroyObject(context); break;
             case EnablePortStr:     ProcessCreateEnablePort(context); break;
@@ -420,24 +422,34 @@ public class iCS_DynamicMenu {
         return state;
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnEntryModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreatePackage(context, iCS_Strings.OnEntry, false);
+    static iCS_EditorObject ProcessCreateOnEntryModule(iCS_MenuContext context, string tooltip) {
+		var parent       = context.SelectedObject;
+		var storage      = context.Storage;
+		var graphPosition= context.GraphPosition;
+        iCS_EditorObject module= storage.CreatePackage(parent.InstanceId, graphPosition, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
         module.IsNameEditable= false;
-        module.Tooltip= "Executes on entry into this state.";
+        module.Tooltip= tooltip;
         return module;
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnUpdateModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreatePackage(context, iCS_Strings.OnUpdate, false);
+    static iCS_EditorObject ProcessCreateOnUpdateModule(iCS_MenuContext context, string tooltip) {
+		var parent       = context.SelectedObject;
+		var storage      = context.Storage;
+		var graphPosition= context.GraphPosition;
+        iCS_EditorObject module= storage.CreatePackage(parent.InstanceId, graphPosition, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
         module.IsNameEditable= false;
-        module.Tooltip= "Executes on every frame this state is active.";
+        module.Tooltip= tooltip;
         return module;
+
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnExitModule(iCS_MenuContext context) {
-        iCS_EditorObject module= CreatePackage(context, iCS_Strings.OnExit, false);
+    static iCS_EditorObject ProcessCreateOnExitModule(iCS_MenuContext context, string tooltip) {
+		var parent       = context.SelectedObject;
+		var storage      = context.Storage;
+		var graphPosition= context.GraphPosition;
+        iCS_EditorObject module= storage.CreatePackage(parent.InstanceId, graphPosition, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
         module.IsNameEditable= false;
-        module.Tooltip= "Executes on exit from this state.";
+        module.Tooltip= tooltip;
         return module;
     }
 	// ----------------------------------------------------------------------

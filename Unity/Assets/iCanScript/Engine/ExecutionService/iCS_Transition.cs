@@ -6,7 +6,6 @@ public class iCS_Transition : iCS_Action {
     // Fields
     // ----------------------------------------------------------------------
     iCS_Action              myGuard;
-    iCS_Action              myAction;
     iCS_State               myEndState;
     iCS_ActionWithSignature myTriggerFunction;
     int                     myTriggerPortIdx;
@@ -17,14 +16,12 @@ public class iCS_Transition : iCS_Action {
     // ----------------------------------------------------------------------
     public iCS_State     EndState    { get { return myEndState; }}
     public bool          DidTrigger  { get { return myIsTriggered; }}
-    public iCS_Action    Action      { get { return myAction; }}
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Transition(iCS_VisualScriptImp visualScript, iCS_State endState, iCS_Action guard, iCS_ActionWithSignature triggerFunc, int portIdx, iCS_Action action, int priority) : base(visualScript, priority) {
+    public iCS_Transition(iCS_VisualScriptImp visualScript, iCS_State endState, iCS_Action guard, iCS_ActionWithSignature triggerFunc, int portIdx, int priority) : base(visualScript, priority) {
         myGuard          = guard;
-        myAction         = action;
         myEndState       = endState;
         myTriggerPortIdx = portIdx;
         myTriggerFunction= triggerFunc;

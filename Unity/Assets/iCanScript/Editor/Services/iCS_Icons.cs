@@ -6,7 +6,9 @@ public enum iCS_DefaultNodeIcons {
     iCanScript, Unity, DotNet, Company, Library,
     Behaviour, Package, Message, ObjectInstance,
     Function, Variable, Builder,
-    StateChart, State, EntryState };
+    StateChart, State, EntryState,
+	OnStateEntry, OnStateUpdate, OnStateExit
+};
 
 public static class iCS_Icons {
     // =========================================================================
@@ -27,6 +29,9 @@ public static class iCS_Icons {
     const string kStateIcon         = "iCS_StateIcon_32x32.png";
     const string kEntryStateIcon    = "iCS_EntryStateIcon_32x32.png";
     const string kDefaultIcon       = "iCS_DefaultIcon_32x32.png";
+	const string kOnStateEntryIcon	= "ics-on-state-entry-icon_32x32x32.png";
+	const string kOnStateUpdateIcon	= "ics-on-state-update-icon_32x32x32.png";
+	const string kOnStateExitIcon   = "ics-on-state-exit-icon_32x32x32.png";
 	// -------------------------------------------------------------------------
     const string kiCanScriptLibraryIcon    = "iCS_Logo_32x32.png";
     const string kUnityLibraryIcon         = "iCS_UnityLogo_32x32.png";
@@ -50,16 +55,25 @@ public static class iCS_Icons {
         if(obj == null) {
             return null;
         }
+		// Product icons cannot be changed.
+		Texture2D icon= null;
+		if(obj.IsOnStateEntryPackage) {
+            icon= iCS_TextureCache.GetIcon(kOnStateEntryIcon);
+			if(icon != null) return icon;
+		} else if(obj.IsOnStateUpdatePackage) {
+            icon= iCS_TextureCache.GetIcon(kOnStateUpdateIcon);			
+			if(icon != null) return icon;
+		} else if(obj.IsOnStateExitPackage) {
+            icon= iCS_TextureCache.GetIcon(kOnStateExitIcon);		
+			if(icon != null) return icon;
+		}
         // Use user defined icon if it exists ... otherwise use default for the
         // given type of node.
-//        if(obj.IsNode) {
-            if(obj.IconGUID != null) {
-                Texture2D icon= iCS_TextureCache.GetIconFromGUID(obj.IconGUID);
-                if(icon != null) return icon;
-            }
-            return GetDefaultNodeIconFor(obj);
-//        }
-        // Return default port icon.            
+        if(obj.IconGUID != null) {
+        	icon= iCS_TextureCache.GetIconFromGUID(obj.IconGUID);
+            if(icon != null) return icon;
+        }
+        return GetDefaultNodeIconFor(obj);
     }
 
     // -------------------------------------------------------------------------
@@ -82,7 +96,13 @@ public static class iCS_Icons {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.EntryState);            
         } else if(obj.IsState) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.State);
-        }
+		} else if(obj.IsOnStateEntryPackage) {
+			return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.OnStateEntry);
+		} else if(obj.IsOnStateUpdatePackage) {
+			return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.OnStateUpdate);
+		} else if(obj.IsOnStateExitPackage) {
+			return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.OnStateExit);
+		}
         return iCS_TextureCache.GetIcon(kDefaultIcon);
     }
 
@@ -118,6 +138,12 @@ public static class iCS_Icons {
                 icon= iCS_TextureCache.GetIcon(kStateIcon); break;
             case iCS_DefaultNodeIcons.EntryState:
                 icon= iCS_TextureCache.GetIcon(kEntryStateIcon); break;
+            case iCS_DefaultNodeIcons.OnStateEntry:
+                icon= iCS_TextureCache.GetIcon(kOnStateEntryIcon); break;
+            case iCS_DefaultNodeIcons.OnStateUpdate:
+                icon= iCS_TextureCache.GetIcon(kOnStateUpdateIcon); break;
+            case iCS_DefaultNodeIcons.OnStateExit:
+                icon= iCS_TextureCache.GetIcon(kOnStateExitIcon); break;
         }
         return icon == null ? iCS_TextureCache.GetIcon(kDefaultIcon) : icon;
     }

@@ -22,8 +22,11 @@ public partial class iCS_EditorObject {
     public bool IsInstanceNode              { get { return EngineObject.IsInstanceNode; }}
     public bool IsTransitionModule          { get { return EngineObject.IsTransitionModule; }}
     public bool IsTransitionGuard           { get { return EngineObject.IsTransitionGuard; }}
-    public bool IsTransitionAction          { get { return EngineObject.IsTransitionAction; }}
 	public bool IsBehaviourMessage			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour;}}
+	public bool IsOnStatePackage        	{ get { return EngineObject.IsOnStatePackage; }}
+    public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}
+    public bool IsOnStateUpdatePackage  	{ get { return EngineObject.IsOnStateUpdatePackage; }}
+    public bool IsOnStateExitPackage    	{ get { return EngineObject.IsOnStateExitPackage; }}
 
     // General Ports
     public bool IsPort                      { get { return EngineObject.IsPort; }}

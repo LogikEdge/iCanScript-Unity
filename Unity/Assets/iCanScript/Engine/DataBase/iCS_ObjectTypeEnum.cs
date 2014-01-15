@@ -19,7 +19,10 @@ public enum iCS_ObjectTypeEnum {
     InstanceProperty, ClassProperty,
 
     // Transition nodes
-    TransitionModule=200, TransitionGuard, TransitionAction,
+    TransitionModule=200, TransitionGuard,
+
+	// State specific nodes
+	OnStateEntry=210, OnStateUpdate, OnStateExit,
 
     // Programatic
     Type= 250,
@@ -65,7 +68,7 @@ public static class iCS_ObjectType {
     public static bool IsBehaviour            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Behaviour; }
     public static bool IsStateChart           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StateChart; }
     public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.State; }
-    public static bool IsPackage              (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Package; }
+    public static bool IsPackage              (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Package || IsOnStatePackage(obj); }
     public static bool IsMux                  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Mux; }
     public static bool IsSelector             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Selector; }
 
@@ -90,12 +93,16 @@ public static class iCS_ObjectType {
     public static bool IsClassMessage         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassMessage; }
 
     // Transition modules.
-    public static bool IsTransitionNode       (iCS_EngineObject obj) { return IsTransitionModule(obj) || IsTransitionGuard(obj) ||
-																			  IsTransitionAction(obj); }
+    public static bool IsTransitionNode       (iCS_EngineObject obj) { return IsTransitionModule(obj) || IsTransitionGuard(obj); }
     public static bool IsTransitionModule     (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TransitionModule; }
     public static bool IsTransitionGuard      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TransitionGuard; }
-    public static bool IsTransitionAction     (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TransitionAction; }
 
+	// State packages
+	public static bool IsOnStatePackage       (iCS_EngineObject obj) { return IsOnStateEntryPackage(obj) || IsOnStateUpdatePackage(obj) || IsOnStateExitPackage(obj); }
+    public static bool IsOnStateEntryPackage  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateEntry; }
+    public static bool IsOnStateUpdatePackage (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateUpdate; }
+    public static bool IsOnStateExitPackage   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateExit; }
+	
     // General Ports
     public static bool IsPort                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.PortStart &&
                                                                               obj.ObjectType <= iCS_ObjectTypeEnum.PortEnd; }

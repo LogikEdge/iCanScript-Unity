@@ -148,32 +148,12 @@ public sealed class iCS_StateChart : iCS_Action {
     }
     // ----------------------------------------------------------------------
     void ExecuteTransition(int frameId) {
-        if(myFiredTransition != null) {
-            iCS_Action action= myFiredTransition.Action;
-            if(action != null) {
-                action.Execute(frameId);
-                if(!action.IsCurrent(frameId)) {
-                    IsStalled= action.IsStalled;
-                    return;
-                }
-            }            
-        }
         // Prepare for running entry functions.
         // (myQueueIdx already setup in ExecuteExit).
         myExecutionState= ExecutionState.RunningEntry;
     }
     // ----------------------------------------------------------------------
     void ForceExecuteTransition(int frameId) {
-        if(myFiredTransition != null) {
-            iCS_Action action= myFiredTransition.Action;
-            if(action != null) {
-                action.ForceExecute(frameId);
-                if(!action.IsCurrent(frameId)) {
-                    IsStalled= action.IsStalled;
-                    return;
-                }
-            }                    
-        }
         // Prepare for running entry functions.
         // (myQueueIdx already setup in ExecuteExit).
         myExecutionState= ExecutionState.RunningEntry;
