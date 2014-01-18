@@ -46,6 +46,9 @@ public partial class iCS_IStorage {
 		myDestroyQueueInUse= false;
     }
     // ----------------------------------------------------------------------
+	// This function deletes the given object and any associated object
+	// to maintain a clean graph without dangling connections, ports, or
+	// nodes.
 	void ScheduleDestroyInstance(iCS_EditorObject toDestroy) {
 		if(toDestroy == null || toDestroy.InstanceId == -1) return;
 		// Don't process if the object has already been processed.
@@ -60,13 +63,13 @@ public partial class iCS_IStorage {
 			myCachedDestroyQueue.Add(toDestroy);
 		}
 		// Detroy the transition as a single block.
-		if(toDestroy.IsStatePort || toDestroy.IsTransitionModule) {
+		if(toDestroy.IsStatePort || toDestroy.IsTransitionPackage) {
 	        iCS_EditorObject outStatePort= GetFromStatePort(toDestroy);
 	        iCS_EditorObject inStatePort= GetInTransitionPort(toDestroy);
-	        iCS_EditorObject transitionModule= GetTransitionModule(toDestroy);
-			if(inStatePort != null)      ScheduleDestroyInstance(inStatePort);
-			if(transitionModule != null) ScheduleDestroyInstance(transitionModule);
-			if(outStatePort != null)     ScheduleDestroyInstance(outStatePort);
+	        iCS_EditorObject transitionPackage= GetTransitionPackage(toDestroy);
+			if(inStatePort != null)       ScheduleDestroyInstance(inStatePort);
+			if(transitionPackage != null) ScheduleDestroyInstance(transitionPackage);
+			if(outStatePort != null)      ScheduleDestroyInstance(outStatePort);
 		}
 	}
     // ----------------------------------------------------------------------

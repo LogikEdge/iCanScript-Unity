@@ -17,7 +17,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 				if(EngineObjects[i].InstanceId == -1) continue;
 				if(EngineObjects[i].InstanceId != i) {
 					sanityNeeded= true;
-					Debug.LogWarning("iCanScript Sanity: Object: "+i+" has an invalid instance id of: "+EngineObjects[i].InstanceId);
+					Debug.LogWarning("iCanScript: Sanity Check: Object: "+i+" has an invalid instance id of: "+EngineObjects[i].InstanceId);
 					EngineObjects[i].Reset();
 					continue;
 				}
@@ -26,7 +26,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 					if(parentId != -1) {
 						sanityNeeded= true;
 						EngineObjects[0].ParentId= -1;
-						Debug.LogWarning("iCanScript Sanity: Root object has a parent of: "+parentId);
+						Debug.LogWarning("iCanScript: Sanity: Root object has a parent of: "+parentId);
 						continue;
 					}
 				} else {
@@ -41,14 +41,14 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsParentMuxPort) {
 						sanityNeeded= true;
 						EngineObjects[i].Reset();
-						Debug.Log("iCanScript Sanity: Port: "+parentId+" is the parent of: "+i);
+						Debug.LogWarning("iCanScript Sanity: Port: "+parentId+" is the parent of: "+i);
 						continue;										
 					}				
 				}
 			}
 			if(sanityNeeded) {
 				storageCorruption= true;
-				Debug.Log("Sanity detected an error.");
+				Debug.LogWarning("iCanScript: Sanity detected an error.");
 			}
 		} while(sanityNeeded);
 		return storageCorruption;
@@ -60,7 +60,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     // Code Generation
     // ----------------------------------------------------------------------
     public void GenerateCode() {
-        //Debug.Log("iCanScript: Generating real-time code for "+gameObject.name+"...");            
+#if UNITY_EDITOR
+//        Debug.Log("iCanScript: Generating real-time code for "+gameObject.name+"...");            
+#endif
 		// Verify for storage sanity.
 		if(SanityCheck()) {
 			Debug.LogWarning("iCanScript: storage corruption has been detected.  Attempting recovery...");
@@ -70,7 +72,10 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         // Create all the runtime nodes.
         GenerateRuntimeNodes();
         // Connect the runtime nodes.
-        ConnectRuntimeNodes();        
+        ConnectRuntimeNodes();    
+#if UNITY_EDITOR
+//		Debug.Log("iCanScript: Completed code generation for "+gameObject.name);    
+#endif
     }
     // ----------------------------------------------------------------------
     public object GetRuntimeObject(int id) {
@@ -127,9 +132,6 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             }
                             default: {
     							iCS_EngineObject edParent= GetParent(node);
-                                if(edParent.ObjectType == iCS_ObjectTypeEnum.TransitionModule) {
-                                    edParent= GetParent(edParent);
-                                }
                                 parent= myRuntimeNodes[edParent.InstanceId];
                                 if(parent == null) {
                                     needAdditionalPass= true;
@@ -164,10 +166,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                                 }
                                 break;
                             }
-                            case iCS_ObjectTypeEnum.TransitionModule: {
-                                break;
-                            }
-                            case iCS_ObjectTypeEnum.TransitionGuard: {
+                            case iCS_ObjectTypeEnum.TransitionPackage: {
                                 var module= new iCS_Package(this, node.InstanceId, priority);                                
                                 myRuntimeNodes[node.InstanceId]= module;
                                 break;
@@ -182,6 +181,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                                 InvokeAddChildIfExists(parent, message);                                
                                 break;
                             }
+							case iCS_ObjectTypeEnum.OnStateEntry:
+							case iCS_ObjectTypeEnum.OnStateUpdate:
+							case iCS_ObjectTypeEnum.OnStateExit:
                             case iCS_ObjectTypeEnum.Package: {
                                 int nbParams;
                                 int nbEnables;
@@ -288,18 +290,18 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     					}
                         case iCS_ObjectTypeEnum.InStatePort: {
                             iCS_EngineObject endState= GetParent(port);
-                            iCS_EngineObject transitionModule= GetParentNode(GetSourcePort(port));
+                            iCS_EngineObject transitionPackage= GetParentNode(GetSourcePort(port));
                             iCS_EngineObject triggerPort= null;
                             iCS_EngineObject outStatePort= null;
-                            iCS_EngineObject guardModule= GetTransitionModuleParts(transitionModule, out triggerPort, out outStatePort);
-                            triggerPort= GetSourceEndPort(triggerPort);
+                            GetTransitionPackageParts(transitionPackage, out triggerPort, out outStatePort);
+							triggerPort= GetSourceEndPort(triggerPort);
                             iCS_ActionWithSignature triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_ActionWithSignature;
                             int triggerIdx= triggerPort.PortIndex;
                             iCS_Transition transition= new iCS_Transition(this,
                                                                         myRuntimeNodes[endState.InstanceId] as iCS_State,
-                                                                        myRuntimeNodes[guardModule.InstanceId] as iCS_Package,
+                                                                        myRuntimeNodes[transitionPackage.InstanceId] as iCS_Package,
                                                                         triggerFunc, triggerIdx,
-                                                                        transitionModule.ExecutionPriority);
+                                                                        transitionPackage.ExecutionPriority);
                             iCS_State state= myRuntimeNodes[outStatePort.ParentId] as iCS_State;
                             state.AddChild(transition);
                             break;
@@ -315,11 +317,10 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         case iCS_ObjectTypeEnum.OutDynamicDataPort:
                         case iCS_ObjectTypeEnum.OutFixDataPort:
 						case iCS_ObjectTypeEnum.OutParentMuxPort: {
-//    						if(GetParentNode(port).IsKindOfPackage) break;
 							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
                             object parentObj= myRuntimeNodes[isMux ? port.InstanceId : port.ParentId];
 							if(port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort) {
-								Debug.Log("Setting default value for: "+(parentObj as iCS_Object).FullName+" port idx= "+port.PortIndex);
+								Debug.Log("iCanScript: Setting default value for: "+(parentObj as iCS_Object).FullName+" port idx= "+port.PortIndex);
 							}
                             Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Mux>(parentObj,
                                 instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
@@ -398,38 +399,36 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     }
                 }
                 catch(System.Exception exception) {
-                    Debug.LogWarning("iCanScript: Exception in binding code generation: "+exception.Message);
+                    Debug.LogWarning("iCanScript: Exception in binding code generation for port #"+port.InstanceId+": "+exception.Message);
                 }
             }
         }
     }
     // ----------------------------------------------------------------------
-    iCS_EngineObject GetTransitionModuleParts(iCS_EngineObject transitionModule, out iCS_EngineObject triggerPort,
-                                                                                 out iCS_EngineObject outStatePort) {
-        iCS_EngineObject guardModule= null;
+    iCS_EngineObject GetTransitionPackageParts(iCS_EngineObject transitionPackage,
+											  out iCS_EngineObject triggerPort,
+                                              out iCS_EngineObject outStatePort) {
         triggerPort= null;
         outStatePort= null;
         foreach(var edObj in EngineObjects) {
-            if(edObj.IsTransitionGuard) {
-                if(GetParent(edObj) == transitionModule) {
-                    guardModule= edObj;
-                }
-            }
-            if(edObj.IsOutFixDataPort && edObj.RuntimeType == typeof(bool) && edObj.Name == "trigger") {
-                iCS_EngineObject gModule= GetParent(edObj);
-                if(gModule.IsTransitionGuard && GetParent(gModule) == transitionModule) {
+            if(IsTransitionTriggerPort(edObj)) {
+                iCS_EngineObject portParent= GetParent(edObj);
+                if(portParent == transitionPackage) {
                     triggerPort= edObj;
                 }
             }
             if(edObj.IsInTransitionPort) {
-                if(GetParent(edObj) == transitionModule) {
+                if(GetParent(edObj) == transitionPackage) {
                     outStatePort= GetSourcePort(edObj);
                 }
             }
         }
-        return guardModule;
+        return transitionPackage;
     }
-    
+    // ----------------------------------------------------------------------
+	bool IsTransitionTriggerPort(iCS_EngineObject port) {
+        return port.IsOutFixDataPort && port.RuntimeType == typeof(bool) && port.Name == "trigger";		
+	}
 
     // ======================================================================
     // Runtime information extraction

@@ -19,9 +19,8 @@ public partial class iCS_EditorObject {
     public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
     public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
     public bool IsState                     { get { return EngineObject.IsState; }}
-    public bool IsInstanceNode              { get { return EngineObject.IsInstanceNode; }}
-    public bool IsTransitionModule          { get { return EngineObject.IsTransitionModule; }}
-    public bool IsTransitionGuard           { get { return EngineObject.IsTransitionGuard; }}
+	public bool IsInstanceNode				{ get { return EngineObject.IsInstanceNode; }}
+    public bool IsTransitionPackage         { get { return EngineObject.IsTransitionPackage; }}
 	public bool IsBehaviourMessage			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour;}}
 	public bool IsOnStatePackage        	{ get { return EngineObject.IsOnStatePackage; }}
     public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}

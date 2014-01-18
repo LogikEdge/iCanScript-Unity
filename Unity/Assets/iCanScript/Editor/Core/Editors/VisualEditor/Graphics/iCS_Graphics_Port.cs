@@ -124,6 +124,9 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortValue(iCS_EditorObject port) {
+		if(port.IsParentMuxPort && Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
+			return true;
+		}
         if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.

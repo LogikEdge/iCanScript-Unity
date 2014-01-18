@@ -54,26 +54,25 @@ public class iCS_DynamicMenu {
         
         // Process the menu state.
         switch(selectedObject.ObjectType) {
-            case iCS_ObjectTypeEnum.Behaviour:        BehaviourMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.StateChart:       StateChartMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.State:            StateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.InstanceMessage:  PackageMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.ClassMessage:     PackageMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.TransitionGuard:  PackageMenu(selectedObject, storage); break;
-			case iCS_ObjectTypeEnum.TransitionModule: TransitionModuleMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.Constructor:      FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.InstanceFunction: FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.ClassFunction:    FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.TypeCast:         FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.InstanceField:    FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.ClassField:       FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.Package:          if(selectedObject.IsInstanceNode) {
-                                                            InstanceMenu(selectedObject, storage);
-                                                      } else {
-                                                            PackageMenu(selectedObject, storage);
-                                                      }
-                                                      break;
-            default: if(selectedObject.IsPort)        PortMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Behaviour:         BehaviourMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.StateChart:        StateChartMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.State:             StateMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceMessage:   PackageMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassMessage:      PackageMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.TransitionPackage: PackageMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Constructor:       FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceFunction:  FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassFunction:     FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.TypeCast:          FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceField:     FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassField:        FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Package:           if(selectedObject.IsInstanceNode) {
+                                                             InstanceMenu(selectedObject, storage);
+                                                       } else {
+                                                             PackageMenu(selectedObject, storage);
+                                                       }
+                                                       break;
+            default: if(selectedObject.IsPort)         PortMenu(selectedObject, storage); break;
         }
     }
 
@@ -115,10 +114,8 @@ public class iCS_DynamicMenu {
         // Show in hierarchy
         AddShowInHierarchyMenuItem(ref menu);
         // Delete menu item
-        if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard) {
-            AddDeleteMenuItem(ref menu);
-        }
-        ShowMenu(menu, selectedObject, storage);
+        AddDeleteMenuItem(ref menu);
+		ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void InstanceMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
@@ -146,13 +143,6 @@ public class iCS_DynamicMenu {
         // Show in hierarchy
         AddShowInHierarchyMenuItem(ref menu);
         // Delete menu item
-        AddDeleteMenuItem(ref menu);
-        ShowMenu(menu, selectedObject, storage);
-    }
-	// ----------------------------------------------------------------------
-    void TransitionModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        iCS_MenuContext[] menu= new iCS_MenuContext[1];
-        menu[0]= new iCS_MenuContext(ShowHierarchyStr);
         AddDeleteMenuItem(ref menu);
         ShowMenu(menu, selectedObject, storage);
     }

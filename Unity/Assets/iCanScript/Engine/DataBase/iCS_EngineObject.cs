@@ -162,30 +162,29 @@ public class iCS_EngineObject {
     
     // ----------------------------------------------------------------------
     // Object Type Acessor
-    public bool IsNode                  { get { return iCS_ObjectType.IsNode(this); }}
-	public bool IsKindOfState   	    { get { return iCS_ObjectType.IsKindOfState(this); }}
-    public bool IsBehaviour             { get { return iCS_ObjectType.IsBehaviour(this); }}
-    public bool IsStateChart            { get { return iCS_ObjectType.IsStateChart(this); }}
-    public bool IsState                 { get { return iCS_ObjectType.IsState(this); }}
-    public bool IsPackage               { get { return iCS_ObjectType.IsPackage(this); }}
-    public bool IsMux                   { get { return iCS_ObjectType.IsMux(this); }}
-    public bool IsSelector              { get { return iCS_ObjectType.IsSelector(this); }}
-    public bool IsKindOfPackage         { get { return iCS_ObjectType.IsKindOfPackage(this); }}
-    public bool IsTransitionModule      { get { return iCS_ObjectType.IsTransitionModule(this); }}
-    public bool IsTransitionGuard       { get { return iCS_ObjectType.IsTransitionGuard(this); }}
-    public bool IsKindOfFunction        { get { return iCS_ObjectType.IsKindOfFunction(this); }}
-    public bool IsConstructor           { get { return iCS_ObjectType.IsConstructor(this); }}
-    public bool IsClassFunction         { get { return iCS_ObjectType.IsClassFunction(this); }}
-    public bool IsInstanceFunction      { get { return iCS_ObjectType.IsInstanceFunction(this); }}
-    public bool IsClassField            { get { return iCS_ObjectType.IsClassField(this); }}
-    public bool IsInstanceField         { get { return iCS_ObjectType.IsInstanceField(this); }}
-    public bool IsTypeCast              { get { return iCS_ObjectType.IsTypeCast(this); }}
-    public bool IsMessage               { get { return iCS_ObjectType.IsMessage(this); }}
-    public bool IsInstanceNode          { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
-	public bool IsOnStatePackage        { get { return iCS_ObjectType.IsOnStatePackage(this); }}
-    public bool IsOnStateEntryPackage   { get { return iCS_ObjectType.IsOnStateEntryPackage(this); }}
-    public bool IsOnStateUpdatePackage  { get { return iCS_ObjectType.IsOnStateUpdatePackage(this); }}
-    public bool IsOnStateExitPackage    { get { return iCS_ObjectType.IsOnStateExitPackage(this); }}
+    public bool IsNode                     { get { return iCS_ObjectType.IsNode(this); }}
+	public bool IsKindOfState   	       { get { return iCS_ObjectType.IsKindOfState(this); }}
+    public bool IsBehaviour                { get { return iCS_ObjectType.IsBehaviour(this); }}
+    public bool IsStateChart               { get { return iCS_ObjectType.IsStateChart(this); }}
+    public bool IsState                    { get { return iCS_ObjectType.IsState(this); }}
+    public bool IsPackage                  { get { return iCS_ObjectType.IsPackage(this); }}
+    public bool IsMux                      { get { return iCS_ObjectType.IsMux(this); }}
+    public bool IsSelector                 { get { return iCS_ObjectType.IsSelector(this); }}
+    public bool IsKindOfPackage            { get { return iCS_ObjectType.IsKindOfPackage(this); }}
+    public bool IsTransitionPackage        { get { return iCS_ObjectType.IsTransitionPackage(this); }}
+    public bool IsKindOfFunction           { get { return iCS_ObjectType.IsKindOfFunction(this); }}
+    public bool IsConstructor              { get { return iCS_ObjectType.IsConstructor(this); }}
+    public bool IsClassFunction            { get { return iCS_ObjectType.IsClassFunction(this); }}
+    public bool IsInstanceFunction         { get { return iCS_ObjectType.IsInstanceFunction(this); }}
+    public bool IsClassField               { get { return iCS_ObjectType.IsClassField(this); }}
+    public bool IsInstanceField            { get { return iCS_ObjectType.IsInstanceField(this); }}
+    public bool IsTypeCast                 { get { return iCS_ObjectType.IsTypeCast(this); }}
+    public bool IsMessage                  { get { return iCS_ObjectType.IsMessage(this); }}
+    public bool IsInstanceNode             { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
+	public bool IsOnStatePackage           { get { return iCS_ObjectType.IsOnStatePackage(this); }}
+    public bool IsOnStateEntryPackage      { get { return iCS_ObjectType.IsOnStateEntryPackage(this); }}
+    public bool IsOnStateUpdatePackage     { get { return iCS_ObjectType.IsOnStateUpdatePackage(this); }}
+    public bool IsOnStateExitPackage       { get { return iCS_ObjectType.IsOnStateExitPackage(this); }}
 
     // General Ports
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}

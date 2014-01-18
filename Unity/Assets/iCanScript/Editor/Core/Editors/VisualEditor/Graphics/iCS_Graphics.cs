@@ -354,7 +354,7 @@ public partial class iCS_Graphics {
 
         // Draw node since all draw conditions are valid.
         GUI.color= new Color(1f, 1f, 1f, node.DisplayAlpha);
-        string title= node.DisplayName;
+        string title= GetNodeName(node);
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
@@ -404,8 +404,8 @@ public partial class iCS_Graphics {
         Texture icon= iCS_Icons.GetIconFor(node);
 		var position= Math3D.Middle(displayRect);
         Rect textureRect= new Rect(position.x-0.5f*icon.width, position.y-0.5f*icon.height, icon.width, icon.height);                
-        if(node.IsTransitionModule) {
-            DrawMinimizedTransitionModule(iStorage.GetTransitionModuleVector(node), position, alphaWhite);
+        if(node.IsTransitionPackage) {
+            DrawMinimizedTransitionModule(iStorage.GetTransitionPackageVector(node), position, alphaWhite);
         } else {
             GUI_DrawTexture(textureRect, icon);                                       
         }
@@ -421,7 +421,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
 	void ShowTitleOver(Rect pos, iCS_EditorObject node) {
         if(!ShouldShowTitle()) return;
-        string title= node.DisplayName;
+        string title= GetNodeName(node);
         Vector2 labelSize= GetNodeNameSize(node);
 		pos.y-=5f;	// Put title a bit higher.
         pos= TranslateAndScale(pos);
@@ -570,14 +570,12 @@ public partial class iCS_Graphics {
         // State transition name is handle by DrawConnection.
         if(port.IsStatePort || port.IsTransitionPort) return;         
 
-        // Determine if port is a static port (a port that feeds information into the graph).
-//        bool isStaticPort= port.IsInDataOrControlPort && port.Source == null;
-
         // Display port name.
-        if(!ShouldDisplayPortName(port)) return;
-        Rect portNamePos= GetPortNameGUIPosition(port, iStorage);
-        string name= GetPortName(port);
-        GUI.Label(portNamePos, name, LabelStyle);                                    
+        if(ShouldDisplayPortName(port)) {
+	        Rect portNamePos= GetPortNameGUIPosition(port, iStorage);
+	        string name= GetPortName(port);
+	        GUI.Label(portNamePos, name, LabelStyle);                                            	
+        }
 
         // Display port value (if applicable).
         if(ShouldDisplayPortValue(port)) {    

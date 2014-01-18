@@ -11,10 +11,6 @@ public partial class iCS_IStorage {
             	if(!obj.IsVisibleInLayout) {
             	    return;
         	    }
-                // Update transition module name
-                if(obj.IsTransitionModule) {
-                    GetTransitionName(obj);
-                }
                 // Layout all nodes (ports will also be updated).
 				if(obj.IsNode) {
 					obj.LayoutNode(iCS_AnimationControl.None);

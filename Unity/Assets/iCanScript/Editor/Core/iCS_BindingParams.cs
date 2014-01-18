@@ -54,10 +54,10 @@ public class iCS_BindingParams {
         }
 
         if(port.IsOutTransitionPort && portParent.IsIconizedOnDisplay) {
-            return storage.GetTransitionModuleVector(portParent);
+            return storage.GetTransitionPackageVector(portParent);
         }
         if(port.IsInTransitionPort && portParent.IsIconizedOnDisplay) {
-            return -storage.GetTransitionModuleVector(portParent);
+            return -storage.GetTransitionPackageVector(portParent);
         }
         Vector2 direction;
         if(port.IsOnLeftEdge) {

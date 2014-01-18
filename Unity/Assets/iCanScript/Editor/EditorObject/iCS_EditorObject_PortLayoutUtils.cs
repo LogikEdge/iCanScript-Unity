@@ -9,7 +9,7 @@ public partial class iCS_EditorObject {
     public float AvailableHeightForPorts {
         get {
             if(!IsVisibleOnDisplay) return 0f;
-			if(IsTransitionModule && IsIconizedOnDisplay) return 0f;
+			if(IsTransitionPackage && IsIconizedOnDisplay) return 0f;
             return VerticalPortsBottom-VerticalPortsTop;
         }
     }
@@ -18,7 +18,7 @@ public partial class iCS_EditorObject {
     public float AvailableWidthForPorts {
         get {
             if(!IsVisibleOnDisplay) return 0f;
-			if(IsTransitionModule && IsIconizedOnDisplay) return 0f;
+			if(IsTransitionPackage && IsIconizedOnDisplay) return 0f;
             return HorizontalPortsRight-HorizontalPortsLeft;
         }
     }
@@ -29,7 +29,7 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleOnDisplay) return 0f;
             if(IsIconizedOnDisplay) {
-				return IsTransitionModule ? 0f : -0.25f*AnimatedSize.y;
+				return IsTransitionPackage ? 0f : -0.25f*AnimatedSize.y;
 			}
             return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-AnimatedSize.y);
         }
@@ -40,7 +40,7 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleOnDisplay) return 0f;
             if(IsIconizedOnDisplay) {
-				return IsTransitionModule ? 0f : 0.25f*AnimatedSize.y;
+				return IsTransitionPackage ? 0f : 0.25f*AnimatedSize.y;
 			}
             return 0.5f*(AnimatedSize.y-iCS_EditorConfig.MinimumPortSeparation);
         }
@@ -51,7 +51,7 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleOnDisplay) return 0f;
             if(IsIconizedOnDisplay) {
-				return IsTransitionModule ? 0f : -0.25f*AnimatedSize.x;
+				return IsTransitionPackage ? 0f : -0.25f*AnimatedSize.x;
 			}
             return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-AnimatedSize.x);
         }
@@ -62,7 +62,7 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleOnDisplay) return 0f;
             if(IsIconizedOnDisplay) {
-				return IsTransitionModule ? 0f : 0.25f*AnimatedSize.x;
+				return IsTransitionPackage ? 0f : 0.25f*AnimatedSize.x;
 			}
             return 0.5f*(AnimatedSize.x-iCS_EditorConfig.MinimumPortSeparation);
         }

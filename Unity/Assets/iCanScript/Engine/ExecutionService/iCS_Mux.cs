@@ -24,7 +24,7 @@ public class iCS_Mux : iCS_ActionWithSignature {
     // ----------------------------------------------------------------------
     protected override void DoForceExecute(int frameId) {
         // Take the last that has executed.
-		int smallestDistance= 1000;
+		int smallestDistance= 100000;
 		iCS_Connection bestConnection= null;
         foreach(var connection in ParameterConnections) {
 			if(connection == null) continue;

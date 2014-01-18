@@ -93,7 +93,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             } else {
                 DragObject= node;
                 DragStartDisplayPosition= node.LayoutPosition;                                                                    
-                if(IsFloatingKeyDown && !node.IsTransitionModule) {
+                if(IsFloatingKeyDown && !node.IsTransitionPackage) {
                     IStorage.RegisterUndo("Node Relocation");
                     DragType= DragTypeEnum.NodeRelocation;                                        
                     DragStartAnchorPosition= node.AnchorPosition;
@@ -307,14 +307,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         DragObject.SetAnchorAndLayoutPosition(dragObjectPosition);
                         DragObject.UpdatePortEdge();
                         newState.LayoutPorts();
-                        iCS_EditorObject transitionModule= IStorage.GetTransitionModule(DragObject);
-                        iCS_EditorObject otherStatePort= DragObject.IsInputPort ? IStorage.GetFromStatePort(transitionModule) : IStorage.GetToStatePort(transitionModule);
+                        iCS_EditorObject transitionPackage= IStorage.GetTransitionPackage(DragObject);
+                        iCS_EditorObject otherStatePort= DragObject.IsInputPort ? IStorage.GetFromStatePort(transitionPackage) : IStorage.GetToStatePort(transitionPackage);
                         iCS_EditorObject otherState= otherStatePort.Parent;
-                        iCS_EditorObject moduleParent= transitionModule.Parent;
+                        iCS_EditorObject moduleParent= transitionPackage.Parent;
                         iCS_EditorObject newModuleParent= IStorage.GetTransitionParent(newState, otherState);
                         if(moduleParent != newModuleParent) {
-                            transitionModule.Parent= newModuleParent;
-                            IStorage.LayoutTransitionModule(transitionModule);
+                            transitionPackage.Parent= newModuleParent;
+                            IStorage.LayoutTransitionPackage(transitionPackage);
                         }
                         break;
                     }

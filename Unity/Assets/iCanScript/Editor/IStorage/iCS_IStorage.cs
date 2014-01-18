@@ -220,55 +220,6 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public bool Cleanup() {
-        bool modified= false;
-        ForEach(
-            obj=> {
-                // Cleanup disconnected ports.
-                if(CleanupDeadPorts) {
-					bool shouldRemove= false;
-                    if(obj.IsDynamicDataPort && IsPortDisconnected(obj)) {
-                        shouldRemove= true;
-                    } else if(obj.IsParentMuxPort && IsPortDisconnected(obj) && obj.HasChildPort() == false) {
-                        shouldRemove= true;
-                    } else if(obj.IsChildMuxPort && obj.Source == null) {
-                        shouldRemove= true;
-                    } else if(obj.IsStatePort && IsPortDisconnected(obj)) {
-                        shouldRemove= true;
-                    }
-					if(shouldRemove) {
-                        DestroyInstanceInternal(obj);                            
-                        modified= true;						
-					}
-					// Convert input mux to dynamic port if no children.
-					if(obj.IsInParentMuxPort) {
-                        switch(obj.NbOfChildPorts()) {
-                            case 0:
-    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
-                                break;
-                            case 1:
-                                var childPorts= obj.BuildListOfChildPorts(_=> true);
-                                obj.Source= childPorts[0].Source;
-    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
-                                DestroyInstanceInternal(childPorts[0]);
-                                break;
-                        }
-					}
-                    // Cleanup disconnected typecasts.
-    				if(obj.IsTypeCast) {
-						var inDataPort= FindInChildren(obj, c=> c.IsInDataOrControlPort);
-                        if(inDataPort.Source == null &&
-                           FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataOrControlPort)) == null) {
-                           DestroyInstanceInternal(obj);
-                           modified= true;
-                        }
-                    }                    
-				}
-            }
-        );        
-        return modified;
-    }
-    // ----------------------------------------------------------------------
     public void CleanupUnityObjects() {
         Storage.ClearUnityObjects();
         ForEach(
@@ -281,6 +232,88 @@ public partial class iCS_IStorage {
                 }
             }
         );
+    }
+    // ----------------------------------------------------------------------
+	// This function is invoked after a change in the visual script.  It
+	// is assumed that the visual script is in a stable state when this
+	// function is invoked.
+    public bool Cleanup() {
+        bool modified= false;
+        ForEach(
+            obj=> {
+                // Cleanup disconnected or dangling ports.
+                if(CleanupDeadPorts) {
+					if(obj.IsPort) {
+						bool shouldRemove= false;
+	                    if(obj.IsDynamicDataPort && IsPortDisconnected(obj)) {
+	                        shouldRemove= true;
+	                    } else if(obj.IsParentMuxPort && IsPortDisconnected(obj) && obj.HasChildPort() == false) {
+	                        shouldRemove= true;
+	                    } else if(obj.IsChildMuxPort && obj.Source == null) {
+	                        shouldRemove= true;
+	                    } else if(obj.Source == null) {
+							if(obj.IsChildMuxPort || obj.IsInStatePort || obj.IsInTransitionPort) {
+		                        shouldRemove= true;								
+							}
+	                    } else if(obj.IsStatePort && IsPortDisconnected(obj)) {
+	                        shouldRemove= true;
+						} else if(obj.Parent == null) {
+							shouldRemove= true;
+						} else if(obj.Parent.IsPort && !obj.Parent.IsParentMuxPort) {
+							shouldRemove= true;
+						} 
+						if(shouldRemove) {
+	                        DestroyInstanceInternal(obj);                            
+	                        modified= true;						
+						}
+						// Convert input mux to dynamic port if no children.
+						if(obj.IsInParentMuxPort) {
+	                        switch(obj.NbOfChildPorts()) {
+	                            case 0:
+	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
+	                                break;
+	                            case 1:
+	                                var childPorts= obj.BuildListOfChildPorts(_=> true);
+	                                obj.Source= childPorts[0].Source;
+	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
+	                                DestroyInstanceInternal(childPorts[0]);
+	                                break;
+	                        }
+						}						
+					}
+                    // Cleanup disconnected typecasts.
+    				if(obj.IsTypeCast) {
+						var inDataPort= FindInChildren(obj, c=> c.IsInDataOrControlPort);
+                        if(inDataPort.Source == null &&
+                           FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataOrControlPort)) == null) {
+                           DestroyInstanceInternal(obj);
+                           modified= true;
+                        }
+                    }
+					// Cleanup disconnected state transitions.
+					if(obj.IsTransitionPackage) {
+						bool hasInTransitionPort= false;
+						bool hasOutTransitionPort= false;
+						bool hasTriggerPort= false;
+						obj.ForEachChild(
+							c=> {
+								if(c.IsInTransitionPort) {
+									hasInTransitionPort= true;
+								} else if(c.IsOutTransitionPort) {
+									hasOutTransitionPort= true;
+								} else if(c.IsOutFixDataPort && c.Name == "trigger") {
+									hasTriggerPort= true;
+								}
+							}
+						);
+						if(!(hasInTransitionPort && hasOutTransitionPort && hasTriggerPort)) {
+							DestroyInstanceInternal(obj);
+						}
+					}                    
+				}
+            }
+        );        
+        return modified;
     }
     
     // ======================================================================

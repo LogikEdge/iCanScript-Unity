@@ -6,20 +6,21 @@ public sealed class iCS_StateChart : iCS_Action {
     // ======================================================================
     // Internal types
     // ----------------------------------------------------------------------
-    enum ExecutionState { VerifyingTransition, RunningEntry, RunningExit, RunningUpdate, RunningTransition };
+    enum ExecutionState { VerifyingTransition, RunningEntry, RunningExit, RunningUpdate };
     
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_State        myEntryState      = null;
-    List<iCS_State>  myActiveStack     = new List<iCS_State>();
-    List<iCS_State>  myChildren        = new List<iCS_State>();
-    int              myQueueIdx        = 0;
-    iCS_Transition   myFiredTransition = null;
-    iCS_State        myNextState       = null;
-    iCS_State        myTransitionParent= null;
-    int              myEntrySize       = -1;
-    ExecutionState   myExecutionState  = ExecutionState.VerifyingTransition;
+    iCS_State        		myEntryState      = null;
+    List<iCS_State>  		myActiveStack     = new List<iCS_State>();
+    List<iCS_State>  		myChildren        = new List<iCS_State>();
+	iCS_ParallelDispatcher	myDispatcher      = null;
+    int              		myQueueIdx        = 0;
+    iCS_Transition   		myFiredTransition = null;
+    iCS_State        		myNextState       = null;
+    iCS_State        		myTransitionParent= null;
+    int              		myEntrySize       = -1;
+    ExecutionState   		myExecutionState  = ExecutionState.VerifyingTransition;
     
     // ======================================================================
     // Accessors
@@ -39,7 +40,9 @@ public sealed class iCS_StateChart : iCS_Action {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_StateChart(iCS_VisualScriptImp visualScript, int priority)
-    : base(visualScript, priority) {}
+    : base(visualScript, priority) {
+    	myDispatcher= new iCS_ParallelDispatcher(visualScript, priority, 0, 0);
+    }
 
     // ======================================================================
     // Execution
@@ -55,10 +58,6 @@ public sealed class iCS_StateChart : iCS_Action {
         if(myExecutionState == ExecutionState.RunningExit) {
             ExecuteExits(frameId);
         }
-        // Execute state transition action.
-        if(myExecutionState == ExecutionState.RunningTransition) {
-            ExecuteTransition(frameId);
-        }
         // Execute state entry functions.
         if(myExecutionState == ExecutionState.RunningEntry) {
             ExecuteEntries(frameId);
@@ -67,6 +66,10 @@ public sealed class iCS_StateChart : iCS_Action {
         if(myExecutionState == ExecutionState.RunningUpdate) {
             ExecuteUpdates(frameId);
         }
+		// Attempt to execute all other functions (packge like)
+		if(!myDispatcher.IsCurrent(frameId)) {
+			myDispatcher.Execute(frameId);			
+		}
     }
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
@@ -78,10 +81,6 @@ public sealed class iCS_StateChart : iCS_Action {
         if(myExecutionState == ExecutionState.RunningExit) {
             ForceExecuteExits(frameId);
         }
-        // Execute state transition action.
-        if(myExecutionState == ExecutionState.RunningTransition) {
-            ForceExecuteTransition(frameId);
-        }
         // Execute state entry functions.
         if(myExecutionState == ExecutionState.RunningEntry) {
             ForceExecuteEntries(frameId);
@@ -90,6 +89,10 @@ public sealed class iCS_StateChart : iCS_Action {
         if(myExecutionState == ExecutionState.RunningUpdate) {
             ForceExecuteUpdates(frameId);
         }
+		// Execute all other functions (packge like)
+		if(!myDispatcher.IsCurrent(frameId)) {
+			myDispatcher.ForceExecute(frameId);			
+		}
     }
     
     // ----------------------------------------------------------------------
@@ -145,18 +148,6 @@ public sealed class iCS_StateChart : iCS_Action {
             myQueueIdx= 0;
             myExecutionState= ExecutionState.RunningUpdate;            
         }
-    }
-    // ----------------------------------------------------------------------
-    void ExecuteTransition(int frameId) {
-        // Prepare for running entry functions.
-        // (myQueueIdx already setup in ExecuteExit).
-        myExecutionState= ExecutionState.RunningEntry;
-    }
-    // ----------------------------------------------------------------------
-    void ForceExecuteTransition(int frameId) {
-        // Prepare for running entry functions.
-        // (myQueueIdx already setup in ExecuteExit).
-        myExecutionState= ExecutionState.RunningEntry;
     }
     // ----------------------------------------------------------------------
     void ExecuteUpdates(int frameId) {
@@ -342,7 +333,7 @@ public sealed class iCS_StateChart : iCS_Action {
             toAdd= toAdd.ParentState;            
         }
         // Prepare to execute entry
-        myExecutionState= ExecutionState.RunningTransition;
+        myExecutionState= ExecutionState.RunningEntry;
         myQueueIdx= stableSize;        
     }
     
@@ -350,17 +341,31 @@ public sealed class iCS_StateChart : iCS_Action {
     // Child Management
     // ----------------------------------------------------------------------
     public void AddChild(iCS_Object _object) {
-        iCS_State state= _object as iCS_State;
-        if(state != null) {
-            if(myChildren.Count == 0) myEntryState= state;
-            myChildren.Add(state);
-        }
+        Prelude.choice<iCS_State, iCS_Mux>(_object,
+        	(state)=> {
+	            if(myChildren.Count == 0) myEntryState= state;
+	            myChildren.Add(state);
+			},
+			(mux)=> {
+				myDispatcher.AddChild(mux);
+			},
+			(otherwise)=> {
+				Debug.LogWarning("iCanScript: Code Generation: Code from "+_object.Name+" added to State Chart "+this.Name+" is ignored.");			
+			}
+		);
     }
     public void RemoveChild(iCS_Object _object) {
-        iCS_State state= _object as iCS_State;
-        if(state != null) {
-            if(state == myEntryState) myEntryState= null;
-            myChildren.Remove(state);
-        }
+        Prelude.choice<iCS_State, iCS_Mux>(_object,
+        	(state)=> {
+	            if(state == myEntryState) myEntryState= null;
+	            myChildren.Remove(state);
+			},
+			(mux)=> {
+				myDispatcher.RemoveChild(mux);
+			},
+			(otherwise)=> {
+				Debug.LogWarning("iCanScript: Code Generation: Code from "+_object.Name+" added to State Chart "+this.Name+" is ignored.");			
+			}
+		);
     }
 }

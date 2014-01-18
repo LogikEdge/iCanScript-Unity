@@ -70,18 +70,14 @@ public static class iCS_AllowedChildren {
         if(parent.ObjectType == iCS_ObjectTypeEnum.StateChart) {
             return childType == iCS_ObjectTypeEnum.State;
         }
-        // Only allow state, module transition & entry/do/exit modules in state.
+        // Only allow state, transition trigger package & entry/update/exit modules in state.
         if(parent.ObjectType == iCS_ObjectTypeEnum.State) {
-            if(childType == iCS_ObjectTypeEnum.State || childType == iCS_ObjectTypeEnum.TransitionModule) {
+            if(childType == iCS_ObjectTypeEnum.State || childType == iCS_ObjectTypeEnum.TransitionPackage) {
                 return true;
             }
             if(childType == iCS_ObjectTypeEnum.Package) {
                 return NameExistsIn(childName, StateChildNames) && !IsChildNodePresent(childName, parent, storage);
             }
-        }
-        // Only allow TransitionGuard & TransitionAction in TransitionModule
-        if(parent.ObjectType == iCS_ObjectTypeEnum.TransitionModule) {
-            return childType == iCS_ObjectTypeEnum.TransitionGuard;
         }
         // Allow all but Behaviour & State in module.
         if(parent.IsKindOfPackage) {

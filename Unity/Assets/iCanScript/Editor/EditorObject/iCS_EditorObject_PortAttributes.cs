@@ -124,7 +124,7 @@ public partial class iCS_EditorObject {
 			// Get value from port group (ex: ParentMuxPort).
 			var funcBase= myIStorage.GetRuntimeObject(port) as iCS_ISignature;
 			if(funcBase != null) {
-			    return funcBase.GetSignatureDataSource().ReturnValue;
+			    object returnValue= funcBase.GetSignatureDataSource().ReturnValue;
 			}
             // Get value from parent node.
 			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_ISignature;

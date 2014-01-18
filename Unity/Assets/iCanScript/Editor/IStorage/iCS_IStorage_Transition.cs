@@ -7,54 +7,46 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
         Vector2 fromStatePortPos= fromStatePort.LayoutPosition;
+
         // Create toStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         toStatePort.SetAnchorAndLayoutPosition(toStatePortPos);
         SetSource(toStatePort, fromStatePort);
         toStatePort.UpdatePortEdge();        
+
         // Update fromStatePort position.
         fromStatePort.UpdatePortEdge();
+
         // Determine transition parent
         iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
+
         // Create transition module
-        var transitionModulePos= 0.5f*(fromStatePortPos+toStatePortPos);
-        iCS_EditorObject transitionModule= CreatePackage(transitionParent.InstanceId, transitionModulePos, "[false]", iCS_ObjectTypeEnum.TransitionModule);
-        var transitionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionModuleIcon);
+        var transitionPackagePos= 0.5f*(fromStatePortPos+toStatePortPos);
+        iCS_EditorObject transitionPackage= CreatePackage(transitionParent.InstanceId, transitionPackagePos, "false", iCS_ObjectTypeEnum.TransitionPackage);
+        var transitionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionPackageIcon);
         if(transitionIconGUID != null) {
-            transitionModule.IconGUID= transitionIconGUID;            
+            transitionPackage.IconGUID= transitionIconGUID;            
         } else {
-            Debug.LogWarning("Missing transition module icon: "+iCS_EditorStrings.TransitionModuleIcon);
+            Debug.LogWarning("Missing transition module icon: "+iCS_EditorStrings.TransitionPackageIcon);
         }
-        transitionModule.Tooltip= "Precondition for the transition to trigger.";
-        transitionModule.IsNameEditable= false;
-        iCS_EditorObject inModulePort=  CreatePort(" ", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
-        iCS_EditorObject outModulePort= CreatePort(" ", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
+        transitionPackage.Tooltip= "The transition package must evaluate to 'true' for the transition to fire.";
+        transitionPackage.IsNameEditable= false;
+        iCS_EditorObject inModulePort=  CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
+        iCS_EditorObject outModulePort= CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
         SetSource(inModulePort, fromStatePort);
         SetSource(toStatePort, outModulePort);
-        Iconize(transitionModule);
-
-
-        // Create guard module
-        iCS_EditorObject guard= CreatePackage(transitionModule.InstanceId, transitionModulePos, "false", iCS_ObjectTypeEnum.TransitionGuard);
-        var guardIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionTriggerIcon);
-        if(guardIconGUID != null) {
-            guard.IconGUID= guardIconGUID;            
-        } else {
-            Debug.LogWarning("Missing transition guard module icon: "+iCS_EditorStrings.TransitionTriggerIcon);
-        }
-        guard.Tooltip= "The guard function must evaluate to 'true' for the transition to fire.";
-        iCS_EditorObject guardPort= CreatePort("trigger", guard.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutFixDataPort);
-        guardPort.IsNameEditable= false;
+        iCS_EditorObject guardPort= CreatePort("trigger", transitionPackage.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutFixDataPort);
         SetSource(fromStatePort, guardPort);
-        Iconize(guard);
+        Iconize(transitionPackage);
 
         // Update port names
         UpdatePortNames(fromStatePort, toStatePort);
+
         // Set initial transition module position.
-        var transitionIcon= iCS_TextureCache.GetTextureFromGUID(transitionModule.IconGUID);
-        transitionModule.LayoutSize= new Vector2(transitionIcon.width, transitionIcon.height);
+        var transitionIcon= iCS_TextureCache.GetTextureFromGUID(transitionPackage.IconGUID);
+        transitionPackage.LayoutSize= new Vector2(transitionIcon.width, transitionIcon.height);
         outModulePort= inModulePort;
-        LayoutTransitionModule(transitionModule);
+        LayoutTransitionPackage(transitionPackage);
     }
     // ----------------------------------------------------------------------
     // Updates the port names of a transition.
@@ -68,11 +60,11 @@ public partial class iCS_IStorage {
         fromStatePort.IsNameEditable= false;
         toStatePort.IsNameEditable= false;
         // Transition module ports.
-        var transitionModule = GetTransitionModule(fromStatePort);
-        var inTransitionPort = GetInTransitionPort(transitionModule);
-        var outTransitionPort= GetOutTransitionPort(transitionModule);
-        inTransitionPort.Name= fromParent.Name+"->"+transitionModule.Name;
-        outTransitionPort.Name= transitionModule.Name+"->"+toParent.Name;
+        var transitionPackage = GetTransitionPackage(toStatePort);
+        var inTransitionPort = GetInTransitionPort(transitionPackage);
+        var outTransitionPort= GetOutTransitionPort(transitionPackage);
+        inTransitionPort.Name= fromParent.Name+"->"+transitionPackage.Name;
+        outTransitionPort.Name= transitionPackage.Name+"->"+toParent.Name;
         inTransitionPort.IsNameEditable= false;
         outTransitionPort.IsNameEditable= false;
     }
@@ -98,147 +90,155 @@ public partial class iCS_IStorage {
     // Transition helpers.
     // ----------------------------------------------------------------------
     public iCS_EditorObject GetFromStatePort(iCS_EditorObject transitionObject) {
-        if(transitionObject.IsOutStatePort) return transitionObject;
+		if(transitionObject == null) {
+			Debug.LogWarning("iCanScript: Trying to get transition source port with a NULL object");
+			return null;
+		}
         if(transitionObject.IsInStatePort) {
-            do {
-                iCS_EditorObject source= transitionObject.Source;
-				if(source == null) return null;
-                if(source.IsOutStatePort) return source;
-                iCS_EditorObject sourceParent= source.Parent;
-                transitionObject= GetInTransitionPort(sourceParent);                
-            } while(transitionObject != null);
-            return null;
+        	iCS_EditorObject source= transitionObject.Source;
+			if(source == null) {
+				Debug.LogWarning("iCanScript: State Transition destination port not connected on state: "+transitionObject.ParentNode.Name);
+				return null;
+			}
+            if(source.IsOutStatePort) return source;
+            transitionObject= source.Parent;
         }
-        if(transitionObject.IsTransitionModule) {
-            UntilMatchingChildNode(transitionObject,
+        if(transitionObject.IsTransitionPackage) {
+            if(!UntilMatchingChildPort(transitionObject,
                 child=> {
-                    if(child.IsTransitionGuard) {
+                    if(child.IsInTransitionPort) {
                         transitionObject= child;
                         return true;
                     }
                     return false;
                 }
-            );
+            )) {
+				Debug.LogWarning("iCanScript: Unable to find transition input port on Transition package");
+				return null;            	
+            }
         }
-        if(transitionObject.IsTransitionGuard) {
-            iCS_EditorObject outStatePort= null;
-            UntilMatchingChildPort(transitionObject,
-                port=> {
-                    if(port.IsOutDataOrControlPort && port.RuntimeType == typeof(bool)) {
-                        iCS_EditorObject[] connectedPorts= port.Destinations;
-                        foreach(var p in connectedPorts) {
-                            if(p.IsOutStatePort) {
-                                outStatePort= p;
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                }
-            );
-            return outStatePort;
+        if(transitionObject.IsInTransitionPort) {
+        	iCS_EditorObject source= transitionObject.Source;
+			if(source == null) {
+				Debug.LogWarning("iCanScript: Transition package input port not connected to a state");
+				return null;
+			}
+			transitionObject= source;
         }
+        if(transitionObject.IsOutStatePort) return transitionObject;
+		Debug.LogWarning("iCanScript: State Transition destination port not connected on state: "+transitionObject.ParentNode.Name);
         return null;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetToStatePort(iCS_EditorObject outStatePort) {
-        if(outStatePort.IsInStatePort) return outStatePort;
-        outStatePort= GetFromStatePort(outStatePort);
-        if(outStatePort == null) return null; 
-        // Find transition module.
-        iCS_EditorObject[] connectedPorts= outStatePort.Destinations;
-        iCS_EditorObject inStatePort= null;
-        foreach(var port in connectedPorts) {
-            if(port.IsInTransitionPort) inStatePort= port;
-        }
-        iCS_EditorObject transitionModule= inStatePort.Parent;
-        // Find transition module output port.
-        UntilMatchingChildPort(transitionModule,
-            p=> {
-                if(p.IsOutTransitionPort) {
-                    inStatePort= p;
-                    return true;
-                }
-                return false;
-            }
-        );
-        return FindAConnectedPort(inStatePort);
+    public iCS_EditorObject GetToStatePort(iCS_EditorObject transitionObject) {
+		if(transitionObject.IsOutStatePort) {
+			transitionObject= FindAConnectedPort(transitionObject);
+			if(transitionObject == null) return null;
+		}
+		if(transitionObject.IsInTransitionPort) {
+			transitionObject= transitionObject.ParentNode;
+			if(transitionObject == null) return null;
+		}
+		if(transitionObject.IsTransitionPackage) {
+	        UntilMatchingChildPort(transitionObject,
+	            p=> {
+	                if(p.IsOutTransitionPort) {
+	                    transitionObject= p;
+	                    return true;
+	                }
+	                return false;
+	            }
+	        );
+			if(!transitionObject.IsOutTransitionPort) return null;
+		}
+		if(transitionObject.IsOutTransitionPort) {
+			return FindAConnectedPort(transitionObject);
+		}
+		return null;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetInTransitionPort(iCS_EditorObject obj) {
-        if(obj.IsInTransitionPort) return obj;
-        iCS_EditorObject transitionModule= obj.IsTransitionModule ?
-                obj :
-                (obj.IsOutTransitionPort ? obj.Parent : GetTransitionModule(obj));
-        iCS_EditorObject inTransitionPort= null;
-        UntilMatchingChildPort(transitionModule,
-            p=> {
-                if(p.IsInTransitionPort) {
-                    inTransitionPort= p;
-                    return true;
-                }
-                return false;
-            }
-        );
-        return inTransitionPort;
+    public iCS_EditorObject GetInTransitionPort(iCS_EditorObject transitionObject) {
+		if(transitionObject.IsOutStatePort) {
+			transitionObject= FindAConnectedPort(transitionObject);
+			if(transitionObject == null) return null;
+		}
+        if(transitionObject.IsInTransitionPort) return transitionObject;
+		if(transitionObject.IsInStatePort) {
+			transitionObject= transitionObject.Source;
+			if(transitionObject == null) return null;
+		}
+		if(transitionObject.IsOutTransitionPort) {
+			transitionObject= transitionObject.ParentNode;
+			if(transitionObject == null) return null;
+		}
+		if(transitionObject.IsTransitionPackage) {
+	        UntilMatchingChildPort(transitionObject,
+	            p=> {
+	                if(p.IsInTransitionPort) {
+	                    transitionObject= p;
+	                    return true;
+	                }
+	                return false;
+	            }
+	        );
+			if(transitionObject.IsInTransitionPort) return transitionObject;
+		}
+		Debug.LogWarning("iCanScript: Input Transition port not found: "+transitionObject.Name);
+		return null;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetOutTransitionPort(iCS_EditorObject obj) {
-        if(obj.IsOutTransitionPort) return obj;
-        iCS_EditorObject transitionModule= obj.IsTransitionModule ? 
-                obj :
-                (obj.IsInTransitionPort ? obj.Parent : GetTransitionModule(obj));
-        iCS_EditorObject outTransitionPort= null;
-        UntilMatchingChildPort(transitionModule,
-            p=> {
-                if(p.IsOutTransitionPort) {
-                    outTransitionPort= p;
-                    return true;
-                }
-                return false;
-            }
-        );
-        return outTransitionPort;
+    public iCS_EditorObject GetOutTransitionPort(iCS_EditorObject transitionObject) {
+		if(transitionObject.IsInStatePort) {
+			transitionObject= transitionObject.Source;
+			if(transitionObject == null) return null;
+		}
+		if(transitionObject.IsOutTransitionPort) return transitionObject;
+		if(transitionObject.IsOutStatePort) {
+			transitionObject= FindAConnectedPort(transitionObject);
+			if(transitionObject == null) return null;
+		}
+		if(transitionObject.IsInTransitionPort) {
+			transitionObject= transitionObject.ParentNode;
+			if(transitionObject == null) return null;
+		}
+		if(transitionObject.IsTransitionPackage) {
+	        UntilMatchingChildPort(transitionObject,
+	            p=> {
+	                if(p.IsOutTransitionPort) {
+	                    transitionObject= p;
+	                    return true;
+	                }
+	                return false;
+	            }
+	        );
+			if(transitionObject.IsOutTransitionPort) return transitionObject;
+		}
+		return null;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetTransitionModule(iCS_EditorObject statePort) {
-		if(statePort == null) return null;
-        // Get the outStatePort
-        statePort= GetFromStatePort(statePort);
-		if(statePort == null) return null;
-        var source= statePort.Source;
-		if(source == null) return null;
-        var parent= source.Parent;
-        if(parent == null) return null;
-        return parent.Parent;
+    public iCS_EditorObject GetTransitionPackage(iCS_EditorObject transitionObject) {
+		if(transitionObject == null) return null;
+		if(transitionObject.IsTransitionPackage) return transitionObject;
+		if(transitionObject.IsInStatePort) {
+			transitionObject= transitionObject.Source;
+			if(transitionObject == null) return null;
+		}
+		if(transitionObject.IsOutStatePort) {
+			transitionObject= FindAConnectedPort(transitionObject);
+			if(transitionObject == null) return null;
+		}
+		transitionObject= transitionObject.ParentNode;
+		if(transitionObject.IsTransitionPackage) return transitionObject;
+		return null;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetTransitionGuard(iCS_EditorObject statePort) {
-        iCS_EditorObject transitionModule= GetTransitionModule(statePort);
-        if(transitionModule == null) return null;
-        iCS_EditorObject guard= null;
-        ForEachChild(transitionModule,
-            child=> {
-                if(child.IsTransitionGuard)  guard= child;
-            }
-        );
-        return guard;
+    public string GetTransitionName(iCS_EditorObject transitionObject) {
+        iCS_EditorObject transitionPackage= GetTransitionPackage(transitionObject);
+		if(transitionPackage == null) return "";
+		return transitionPackage.Name;
     }
     // ----------------------------------------------------------------------
-    public string GetTransitionName(iCS_EditorObject statePort) {
-        iCS_EditorObject guard= GetTransitionGuard(statePort);
-        string name= "";
-        if(guard != null) {
-            name= "["+guard.Name+"]";
-        }
-        // Update transition module name.
-        iCS_EditorObject transitionModule= GetTransitionModule(statePort);
-        if(transitionModule == null) return "";
-        transitionModule.Name= name;
-        return name;
-    }
-    // ----------------------------------------------------------------------
-    public Vector2 ProposeTransitionModulePosition(iCS_EditorObject module) {
+    public Vector2 ProposeTransitionPackagePosition(iCS_EditorObject module) {
         iCS_EditorObject fromStatePort= GetFromStatePort(module);
         iCS_EditorObject toStatePort= GetToStatePort(module);
 		if(toStatePort == null || fromStatePort ==null) return module.LayoutPosition;
@@ -263,16 +263,21 @@ public partial class iCS_IStorage {
 		return 0.5f*(minPos+maxPos);
     }
     // ----------------------------------------------------------------------
-    public void LayoutTransitionModule(iCS_EditorObject module) {
-        GetTransitionName(module);
-        module.SetAnchorAndLayoutPosition(ProposeTransitionModulePosition(module));
+    public void LayoutTransitionPackage(iCS_EditorObject package) {
+        GetTransitionName(package);
+        package.SetAnchorAndLayoutPosition(ProposeTransitionPackagePosition(package));
     }
     // ----------------------------------------------------------------------
-    public Vector2 GetTransitionModuleVector(iCS_EditorObject module) {
-        iCS_EditorObject inStatePort      = GetToStatePort(module);
-        iCS_EditorObject outStatePort     = GetFromStatePort(module);
-        iCS_EditorObject inTransitionPort = GetInTransitionPort(module);
-        iCS_EditorObject outTransitionPort= GetOutTransitionPort(module);
+    public Vector2 GetTransitionPackageVector(iCS_EditorObject package) {
+		// Preconditions.
+		if(package == null) {
+			Debug.LogWarning("iCanScript: Attempting to get Transition Package Vector with a NULL package");
+			return Vector2.zero;
+		}
+        iCS_EditorObject inStatePort      = GetToStatePort(package);
+        iCS_EditorObject outStatePort     = GetFromStatePort(package);
+        iCS_EditorObject inTransitionPort = GetInTransitionPort(package);
+        iCS_EditorObject outTransitionPort= GetOutTransitionPort(package);
         var inStatePos= inStatePort.LayoutPosition;
         var outStatePos= outStatePort.LayoutPosition;
         var inTransitionPos= inTransitionPort.LayoutPosition;

@@ -86,7 +86,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             return true;
         }
         iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
-        if(overlappingPort.IsOutputPort && (overlappingPortParent.IsKindOfPackage || overlappingPortParent.IsKindOfState)) {
+        if(overlappingPort.IsOutputPort && 
+		   overlappingPort.Source != null &&
+		   (overlappingPortParent.IsKindOfPackage || overlappingPortParent.IsKindOfState)) {
             CreateMuxPort(fixPort, overlappingPort);
             return true;
         }
@@ -448,11 +450,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			Debug.LogWarning("iCanScript: Unable to find common parent after relocating state !!!");
 			return;
 		}
-		var transitionModule= IStorage.GetTransitionModule(toStatePort);
-		if(transitionModule == null) return;
-		if(transitionModule.ParentNode == commonParent) return;
-		ChangeParent(transitionModule, commonParent);
-		IStorage.LayoutTransitionModule(transitionModule);
+		var transitionPackage= IStorage.GetTransitionPackage(toStatePort);
+		if(transitionPackage == null) return;
+		if(transitionPackage.ParentNode == commonParent) return;
+		ChangeParent(transitionPackage, commonParent);
+		IStorage.LayoutTransitionPackage(transitionPackage);
 	}
 #endif
     // ----------------------------------------------------------------------
@@ -483,24 +485,24 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 IStorage.ForEachChildPort(node,
                     p=> {
                         if(p.IsStatePort) {
-                            iCS_EditorObject transitionModule= null;
+                            iCS_EditorObject transitionPackage= null;
                             if(p.IsInStatePort) {
-                                transitionModule= p.Source.Parent;
+                                transitionPackage= p.Source.Parent;
                             } else {
                                 iCS_EditorObject[] connectedPorts= p.Destinations;
                                 foreach(var cp in connectedPorts) {
                                     if(cp.IsInTransitionPort) {
-                                        transitionModule= cp.Parent;
+                                        transitionPackage= cp.Parent;
                                         break;
                                     }
                                 }
                             }
-                            iCS_EditorObject outState= IStorage.GetFromStatePort(transitionModule).Parent;
-                            iCS_EditorObject inState= IStorage.GetToStatePort(transitionModule).Parent;
+                            iCS_EditorObject outState= IStorage.GetFromStatePort(transitionPackage).Parent;
+                            iCS_EditorObject inState= IStorage.GetToStatePort(transitionPackage).Parent;
                             iCS_EditorObject newParent= IStorage.GetTransitionParent(inState, outState);
-                            if(newParent != null && newParent != transitionModule.Parent) {
-                                ChangeParent(transitionModule, newParent);
-                                IStorage.LayoutTransitionModule(transitionModule);
+                            if(newParent != null && newParent != transitionPackage.Parent) {
+                                ChangeParent(transitionPackage, newParent);
+                                IStorage.LayoutTransitionPackage(transitionPackage);
                             }
                         }
                     }
@@ -511,8 +513,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;
             }
-            case iCS_ObjectTypeEnum.TransitionModule:
-            case iCS_ObjectTypeEnum.TransitionGuard:
+            case iCS_ObjectTypeEnum.TransitionPackage:
             case iCS_ObjectTypeEnum.Package: {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 IStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
