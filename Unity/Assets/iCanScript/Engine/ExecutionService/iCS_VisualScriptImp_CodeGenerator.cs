@@ -290,7 +290,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     					}
                         case iCS_ObjectTypeEnum.InStatePort: {
                             iCS_EngineObject endState= GetParent(port);
-                            iCS_EngineObject transitionPackage= GetParentNode(GetSourcePort(port));
+							iCS_EngineObject outTransitionPort= GetSourcePort(port);
+                            iCS_EngineObject transitionPackage= GetParentNode(outTransitionPort);
                             iCS_EngineObject triggerPort= null;
                             iCS_EngineObject outStatePort= null;
                             GetTransitionPackageParts(transitionPackage, out triggerPort, out outStatePort);
