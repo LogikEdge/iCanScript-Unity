@@ -125,6 +125,7 @@ public partial class iCS_EditorObject {
 			var funcBase= myIStorage.GetRuntimeObject(port) as iCS_ISignature;
 			if(funcBase != null) {
 			    object returnValue= funcBase.GetSignatureDataSource().ReturnValue;
+				return returnValue;
 			}
             // Get value from parent node.
 			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_ISignature;

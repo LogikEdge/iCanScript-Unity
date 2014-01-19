@@ -5,7 +5,7 @@ public class iCS_Transition : iCS_Action {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_Action              myGuard;
+    iCS_Package             myTransitionPackage;
     iCS_State               myEndState;
     iCS_ActionWithSignature myTriggerFunction;
     int                     myTriggerPortIdx;
@@ -20,11 +20,11 @@ public class iCS_Transition : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Transition(iCS_VisualScriptImp visualScript, iCS_State endState, iCS_Action guard, iCS_ActionWithSignature triggerFunc, int portIdx, int priority) : base(visualScript, priority) {
-        myGuard          = guard;
-        myEndState       = endState;
-        myTriggerPortIdx = portIdx;
-        myTriggerFunction= triggerFunc;
+    public iCS_Transition(iCS_VisualScriptImp visualScript, iCS_State endState, iCS_Package transitionPackage, iCS_ActionWithSignature triggerFunc, int portIdx, int priority) : base(visualScript, priority) {
+        myTransitionPackage= transitionPackage;
+        myEndState         = endState;
+        myTriggerPortIdx   = portIdx;
+        myTriggerFunction  = triggerFunc;
     }
     
     // ======================================================================
@@ -32,10 +32,10 @@ public class iCS_Transition : iCS_Action {
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         myIsTriggered= false;
-        if(myGuard != null && myTriggerFunction != null) {
-            myGuard.Execute(frameId);            
-            if(!myGuard.IsCurrent(frameId)) {
-                IsStalled= myGuard.IsStalled;
+        if(myTransitionPackage != null && myTriggerFunction != null) {
+            myTransitionPackage.Execute(frameId);            
+            if(!myTransitionPackage.IsCurrent(frameId)) {
+                IsStalled= myTransitionPackage.IsStalled;
                 return;
             }
             myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
@@ -45,10 +45,10 @@ public class iCS_Transition : iCS_Action {
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         myIsTriggered= false;
-        if(myGuard != null && myTriggerFunction != null) {
-            myGuard.ForceExecute(frameId);            
-            if(!myGuard.IsCurrent(frameId)) {
-                IsStalled= myGuard.IsStalled;
+        if(myTransitionPackage != null && myTriggerFunction != null) {
+            myTransitionPackage.ForceExecute(frameId);            
+            if(!myTransitionPackage.IsCurrent(frameId)) {
+                IsStalled= myTransitionPackage.IsStalled;
                 return;
             }
             myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
