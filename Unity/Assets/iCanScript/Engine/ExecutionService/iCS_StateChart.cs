@@ -98,26 +98,36 @@ public sealed class iCS_StateChart : iCS_Action {
     // ----------------------------------------------------------------------
     void ExecuteVerifyTransitions(int frameId) {
         // Determine if a transition exists for one of the active states.
+		bool atLeastOneIsStalled   = false;
+		bool atLeastOneIsNotStalled= false;
         iCS_State state= null;
         int end= myActiveStack.Count;
-        while(myQueueIdx < end) {
+		for(int idx= myQueueIdx; idx < end; ++idx) {
             state= myActiveStack[myQueueIdx];
             iCS_VerifyTransitions transitions= state.Transitions;
-            transitions.Execute(frameId);
-            if(!transitions.IsCurrent(frameId)) {
-                if(!transitions.IsStalled) {
-                    IsStalled= false;
-                }
-                return;
-            }
-            IsStalled= false;
-            myFiredTransition= transitions.TriggeredTransition;
-            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
-                MoveToState(myFiredTransition.EndState, frameId);
-                return;
-            }
-            ++myQueueIdx;
-        }
+			if(!transitions.IsCurrent(frameId)) {
+	            transitions.Execute(frameId);
+	            if(transitions.IsCurrent(frameId)) {
+		            myFiredTransition= transitions.TriggeredTransition;
+		            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
+		                MoveToState(myFiredTransition.EndState, frameId);
+		                return;
+		            }
+					if(idx == myQueueIdx) {
+						++myQueueIdx;
+					}
+					atLeastOneIsNotStalled= true;
+				} else {
+					if(transitions.IsStalled) {
+						atLeastOneIsStalled= true;
+					}
+				}
+			}
+		}
+		if(atLeastOneIsStalled && !atLeastOneIsNotStalled) {
+			IsStalled= true;
+			return;
+		}
         IsStalled= false;
         myQueueIdx= 0;
         myExecutionState= ExecutionState.RunningUpdate;
