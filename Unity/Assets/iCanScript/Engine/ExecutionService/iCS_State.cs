@@ -63,15 +63,15 @@ public sealed class iCS_State : iCS_Object {
             (transition)=> {
                 myTransitions.AddChild(transition);
             },
-            (module)=> {
-                if(module.Name == iCS_Strings.OnEntry) {
-                    myOnEntryAction= module;
+            (package)=> {
+                if(package.Name == iCS_Strings.OnEntry) {
+                    myOnEntryAction= package;
                 }
-                else if(module.Name == iCS_Strings.OnUpdate) {
-                    myOnUpdateAction= module;
+                else if(package.Name == iCS_Strings.OnUpdate) {
+                    myOnUpdateAction= package;
                 }
-                else if(module.Name == iCS_Strings.OnExit) {
-                    myOnExitAction= module;
+                else if(package.Name == iCS_Strings.OnExit) {
+                    myOnExitAction= package;
                 }
                 else {
                     Debug.LogWarning("iCanScript: Only OnEntry, OnUpdate, and OnExit modules can be added to a iCS_State");
@@ -91,14 +91,14 @@ public sealed class iCS_State : iCS_Object {
             (transition)=> {
                 myTransitions.RemoveChild(transition);
             },
-            (module)=> {
-                if(module == myOnEntryAction) {
+            (package)=> {
+                if(package == myOnEntryAction) {
                     myOnEntryAction= null;
                 }
-                else if(module == myOnUpdateAction) {
+                else if(package == myOnUpdateAction) {
                     myOnUpdateAction= null;
                 }
-                else if(module == myOnExitAction) {
+                else if(package == myOnExitAction) {
                     myOnExitAction= null;
                 }
                 else {
