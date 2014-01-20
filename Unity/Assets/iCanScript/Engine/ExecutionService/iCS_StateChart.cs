@@ -75,19 +75,19 @@ public sealed class iCS_StateChart : iCS_Action {
     public override void ForceExecute(int frameId) {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
-            ForceExecuteVerifyTransitions(frameId);            
+            ExecuteVerifyTransitions(frameId, /*forced=*/true);            
         }
         // Execute state exit functions.
         if(myExecutionState == ExecutionState.RunningExit) {
-            ForceExecuteExits(frameId);
+            ExecuteExits(frameId, /*forced=*/true);
         }
         // Execute state entry functions.
         if(myExecutionState == ExecutionState.RunningEntry) {
-            ForceExecuteEntries(frameId);
+            ExecuteEntries(frameId, /*forced=*/true);
         }
         // Execute state update functions.
         if(myExecutionState == ExecutionState.RunningUpdate) {
-            ForceExecuteUpdates(frameId);
+            ExecuteUpdates(frameId, /*forced=*/true);
         }
 		// Execute all other functions (packge like)
 		if(!myDispatcher.IsCurrent(frameId)) {
@@ -96,27 +96,31 @@ public sealed class iCS_StateChart : iCS_Action {
     }
     
     // ----------------------------------------------------------------------
-    void ExecuteVerifyTransitions(int frameId) {
+    void ExecuteVerifyTransitions(int frameId, bool forced= false) {
         // Determine if a transition exists for one of the active states.
-		bool atLeastOneIsStalled   = false;
-		bool atLeastOneIsNotStalled= false;
-        iCS_State state= null;
+		bool atLeastOneIsStalled = false;
+		bool atLeastOneDidExecute= false;
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
-            state= myActiveStack[myQueueIdx];
+            iCS_State state= myActiveStack[idx];
             iCS_VerifyTransitions transitions= state.Transitions;
 			if(!transitions.IsCurrent(frameId)) {
-	            transitions.Execute(frameId);
+				if(forced) {
+		            transitions.ForceExecute(frameId);					
+				} else {
+		            transitions.Execute(frameId);						
+				}
 	            if(transitions.IsCurrent(frameId)) {
 		            myFiredTransition= transitions.TriggeredTransition;
 		            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
 		                MoveToState(myFiredTransition.EndState, frameId);
+						IsStalled= false;
 		                return;
 		            }
 					if(idx == myQueueIdx) {
 						++myQueueIdx;
 					}
-					atLeastOneIsNotStalled= true;
+					atLeastOneDidExecute= true;
 				} else {
 					if(transitions.IsStalled) {
 						atLeastOneIsStalled= true;
@@ -124,7 +128,7 @@ public sealed class iCS_StateChart : iCS_Action {
 				}
 			}
 		}
-		if(atLeastOneIsStalled && !atLeastOneIsNotStalled) {
+		if(atLeastOneIsStalled && (forced || !atLeastOneDidExecute)) {
 			IsStalled= true;
 			return;
 		}
@@ -133,173 +137,105 @@ public sealed class iCS_StateChart : iCS_Action {
         myExecutionState= ExecutionState.RunningUpdate;
     }
     // ----------------------------------------------------------------------
-    void ForceExecuteVerifyTransitions(int frameId) {
-        // Determine if a transition exists for one of the active states.
-        iCS_State state= null;
+    void ExecuteUpdates(int frameId, bool forced= false) {
+		// Run the update of each active state.
+		bool atLeastOneIsStalled = false;
+		bool atLeastOneDidExecute= false;
         int end= myActiveStack.Count;
-        if(myQueueIdx < end) {
-            state= myActiveStack[myQueueIdx];
-            iCS_VerifyTransitions transitions= state.Transitions;
-            transitions.ForceExecute(frameId);
-            if(!transitions.IsCurrent(frameId)) {
-                if(!transitions.IsStalled) {
-                    IsStalled= false;
-                }
-                return;
-            }
-            IsStalled= false;
-            myFiredTransition= transitions.TriggeredTransition;
-            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
-                MoveToState(myFiredTransition.EndState, frameId);
-                return;
-            }
-        }
-        if(++myQueueIdx >= end) {
-            myQueueIdx= 0;
-            myExecutionState= ExecutionState.RunningUpdate;            
-        }
-    }
-    // ----------------------------------------------------------------------
-    void ExecuteUpdates(int frameId) {
-        bool stalled= true;
-        while(myQueueIdx < myActiveStack.Count) {
-            iCS_State state= myActiveStack[myQueueIdx];
+		for(int idx= myQueueIdx; idx < end; ++idx) {
+            iCS_State state= myActiveStack[idx];
             iCS_Action action= state.OnUpdateAction;
-            if(action != null) {
-                action.Execute(frameId);            
-                if(!action.IsCurrent(frameId)) {
-                    // Verify if the child is a staled dispatcher.
-                    if(!action.IsStalled) {
-                        stalled= false;
-                    }                    
-                    IsStalled= stalled;
-                    return;
-                }
-                stalled= false;                
-            }
-            ++myQueueIdx;
-        }
+			if(action != null && !action.IsCurrent(frameId)) {
+				if(forced) {
+					action.ForceExecute(frameId);
+				} else {
+	                action.Execute(frameId);            						
+				}
+                if(action.IsCurrent(frameId)) {
+					if(idx == myQueueIdx) {
+						++myQueueIdx;
+					}
+					atLeastOneDidExecute= true;
+				} else {
+					atLeastOneIsStalled= true;
+				}
+				
+			}
+		}
+		if(atLeastOneIsStalled) {
+			IsStalled= !atLeastOneDidExecute;
+			return;
+		}
         // Reset iterators for next frame.
+        IsStalled= false;
         myQueueIdx= 0;
         myExecutionState= ExecutionState.VerifyingTransition;
         myFiredTransition= null;            
         MarkAsExecuted(frameId);
     }
     // ----------------------------------------------------------------------
-    void ForceExecuteUpdates(int frameId) {
-        int stackSize= myActiveStack.Count;
-        if(myQueueIdx < stackSize) {
-            iCS_State state= myActiveStack[myQueueIdx];
-            iCS_Action action= state.OnUpdateAction;
-            if(action != null) {
-                action.ForceExecute(frameId);            
-                if(!action.IsCurrent(frameId)) {
-                    // Verify if the child is a staled dispatcher.
-                    IsStalled= action.IsStalled;
-                    return;
-                }
-                IsStalled= false;                
-            }
-        }
-        // Reset iterators for next frame.
-        if(++myQueueIdx >= stackSize) {
-            myQueueIdx= 0;
-            myExecutionState= ExecutionState.VerifyingTransition;            
-            myFiredTransition= null;            
-            MarkAsExecuted(frameId);            
-        }
-    }
-    // ----------------------------------------------------------------------
-    void ExecuteExits(int frameId) {
-        bool stalled= true;
-        while(myQueueIdx >= 0) {
-            iCS_State state= myActiveStack[myQueueIdx];
+    void ExecuteExits(int frameId, bool forced= false) {
+		// Run the OnExist functions until the common state of the transition.
+		bool atLeastOneIsStalled = false;
+		bool atLeastOneDidExecute= false;
+		for(int idx= myQueueIdx; idx >= 0; --idx) {
+            iCS_State state= myActiveStack[idx];
             if(state == myTransitionParent) break;
             iCS_Action action= state.OnExitAction;
-            if(action != null) {
-                action.Execute(frameId);            
-                if(!action.IsCurrent(frameId)) {
-                    // Verify if the child is a staled dispatcher.
-                    if(!action.IsStalled) {
-                        stalled= false;
-                    }                    
-                    IsStalled= stalled;
-                    return;
-                }
-                stalled= false;                
-            }
-            --myQueueIdx;
-        }
+			if(action != null && !action.IsCurrent(frameId)) {
+				if(forced) {
+	                action.ForceExecute(frameId);            
+				} else {
+	                action.Execute(frameId);		
+				}
+                if(action.IsCurrent(frameId)) {
+					atLeastOneDidExecute= true;
+					if(idx == myQueueIdx) {
+						--myQueueIdx;
+					}
+				} else {
+					atLeastOneIsStalled= true;
+				}
+			}
+		}
+		if(atLeastOneIsStalled) {
+			IsStalled= !atLeastOneDidExecute;
+			return;
+		}
         // Update active stack state.
         UpdateActiveStack();
     }
     // ----------------------------------------------------------------------
-    void ForceExecuteExits(int frameId) {
-        iCS_State state= null;
-        if(myQueueIdx >= 0) {
-            state= myActiveStack[myQueueIdx];
-            if(state != myTransitionParent) {
-                iCS_Action action= state.OnExitAction;
-                if(action != null) {
-                    action.ForceExecute(frameId);            
-                    if(!action.IsCurrent(frameId)) {
-                        IsStalled= action.IsStalled;
-                        return;
-                    }
-                    IsStalled= false;                                    
-                }
-            }
-        }
-        // Update active stack state.
-        if(--myQueueIdx < 0 || state == myTransitionParent) {
-            UpdateActiveStack();            
-        }
-    }
-    // ----------------------------------------------------------------------
-    void ExecuteEntries(int frameId) {
-        bool stalled= true;
-        int stackSize= myActiveStack.Count;
-        while(myQueueIdx < stackSize) {
-            iCS_State state= myActiveStack[myQueueIdx];
+    void ExecuteEntries(int frameId, bool forced= false) {
+		bool atLeastOneIsStalled = false;
+		bool atLeastOneDidExecute= false;
+        int end= myActiveStack.Count;
+		for(int idx= myQueueIdx; idx < end; ++idx) {
+            iCS_State state= myActiveStack[idx];
             iCS_Action action= state.OnEntryAction;
-            if(action != null) {
-                action.Execute(frameId);            
-                if(!action.IsCurrent(frameId)) {
-                    // Verify if the child is a staled dispatcher.
-                    if(!action.IsStalled) {
-                        stalled= false;
-                    }                    
-                    IsStalled= stalled;
-                    return;
-                }
-                stalled= false;                
-            }
-            ++myQueueIdx;
-        }
+			if(action != null && !action.IsCurrent(frameId)) {
+				if(forced) {
+	                action.ForceExecute(frameId);            
+				} else {
+	                action.Execute(frameId);            						
+				}
+                if(action.IsCurrent(frameId)) {
+					atLeastOneDidExecute= true;
+					if(idx == myQueueIdx) {
+						++myQueueIdx;
+					}
+				} else {
+					atLeastOneIsStalled= true;
+				}
+			}
+		}
+		if(atLeastOneIsStalled) {
+			IsStalled= !atLeastOneDidExecute;
+			return;
+		}
         // Prepare to execute update functions
         myExecutionState= ExecutionState.RunningUpdate;
         myQueueIdx= 0;        
-    }
-    // ----------------------------------------------------------------------
-    void ForceExecuteEntries(int frameId) {
-        int stackSize= myActiveStack.Count;
-        if(myQueueIdx < stackSize) {
-            iCS_State state= myActiveStack[myQueueIdx];
-            iCS_Action action= state.OnEntryAction;
-            if(action != null) {
-                action.ForceExecute(frameId);            
-                if(!action.IsCurrent(frameId)) {
-                    IsStalled= action.IsStalled;
-                    return;
-                }
-                IsStalled= false;                
-            }
-        }
-        // Prepare to execute update functions
-        if(++myQueueIdx >= stackSize) {
-            myExecutionState= ExecutionState.RunningUpdate;
-            myQueueIdx= 0;                    
-        }
     }
     // ----------------------------------------------------------------------
     void MoveToState(iCS_State newState, int frameId) {
