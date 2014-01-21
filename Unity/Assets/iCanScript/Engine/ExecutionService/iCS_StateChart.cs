@@ -96,73 +96,90 @@ public sealed class iCS_StateChart : iCS_Action {
     }
     
     // ----------------------------------------------------------------------
+	// The transition verification are ran unorderly according to their
+	// readyiness.  The verification is completed once one transition
+	// trigger has fired or all transition have been verified.
     void ExecuteVerifyTransitions(int frameId, bool forced= false) {
+		// Remove any pending triggers.
+		myFiredTransition= null;
         // Determine if a transition exists for one of the active states.
-		bool atLeastOneIsStalled = false;
 		bool atLeastOneDidExecute= false;
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
             iCS_VerifyTransitions transitions= state.Transitions;
-			if(!transitions.IsCurrent(frameId)) {
-				if(forced) {
-		            transitions.ForceExecute(frameId);					
-				} else {
-		            transitions.Execute(frameId);						
+			// Transition has already been tested.  Just move on to next one.
+			if(transitions.IsCurrent(frameId)) {
+				if(idx == myQueueIdx) {
+					++myQueueIdx;
+				}					
+				continue;
+			}
+			// Verify transition.
+			if(forced) {
+	            transitions.ForceExecute(frameId);					
+			} else {
+	            transitions.Execute(frameId);						
+			}
+            if(transitions.IsCurrent(frameId)) {
+	            myFiredTransition= transitions.TriggeredTransition;
+	            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
+					IsStalled= false;
+	                MoveToState(myFiredTransition.EndState, frameId);
+	                return;
+	            }
+				if(idx == myQueueIdx) {
+					++myQueueIdx;
 				}
-	            if(transitions.IsCurrent(frameId)) {
-		            myFiredTransition= transitions.TriggeredTransition;
-		            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
-		                MoveToState(myFiredTransition.EndState, frameId);
-						IsStalled= false;
-		                return;
-		            }
-					if(idx == myQueueIdx) {
-						++myQueueIdx;
-					}
-					atLeastOneDidExecute= true;
-				} else {
-					if(transitions.IsStalled) {
-						atLeastOneIsStalled= true;
-					}
-				}
+				atLeastOneDidExecute= true;
+				continue;
+			}
+			if(transitions.IsStalled == false) {
+				atLeastOneDidExecute= true;
 			}
 		}
-		if(atLeastOneIsStalled && (forced || !atLeastOneDidExecute)) {
-			IsStalled= true;
+		// Not all transitions have ran.
+		if(myQueueIdx < end) {
+			// Update stalled indication.
+			IsStalled= !atLeastOneDidExecute;
 			return;
 		}
+		// All transition have ran & none have triggered.
         IsStalled= false;
         myQueueIdx= 0;
         myExecutionState= ExecutionState.RunningUpdate;
     }
     // ----------------------------------------------------------------------
+	// The state updates are ran unorderly according to their readyiness.
     void ExecuteUpdates(int frameId, bool forced= false) {
 		// Run the update of each active state.
-		bool atLeastOneIsStalled = false;
 		bool atLeastOneDidExecute= false;
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
             iCS_Action action= state.OnUpdateAction;
-			if(action != null && !action.IsCurrent(frameId)) {
-				if(forced) {
-					action.ForceExecute(frameId);
-				} else {
-	                action.Execute(frameId);            						
+			// Update is not needed or already ran.  Just move to the next state...
+			if(action == null || action.IsCurrent(frameId)) {
+				if(idx == myQueueIdx) {
+					++myQueueIdx;
 				}
-                if(action.IsCurrent(frameId)) {
-					if(idx == myQueueIdx) {
-						++myQueueIdx;
-					}
-					atLeastOneDidExecute= true;
-				} else {
-					atLeastOneIsStalled= true;
+				continue;
+			}
+			// Run the update action.
+			if(forced) {
+				action.ForceExecute(frameId);
+			} else {
+                action.Execute(frameId);            						
+			}
+            if(action.IsCurrent(frameId)) {
+				if(idx == myQueueIdx) {
+					++myQueueIdx;
 				}
-				
+				atLeastOneDidExecute= true;
 			}
 		}
-		if(atLeastOneIsStalled) {
+		// Not all updates have ran.
+		if(myQueueIdx < end) {
 			IsStalled= !atLeastOneDidExecute;
 			return;
 		}
@@ -174,12 +191,13 @@ public sealed class iCS_StateChart : iCS_Action {
         MarkAsExecuted(frameId);
     }
     // ----------------------------------------------------------------------
+	// The state exits are ran orderly from the inner state towards the
+	// outter state.
     void ExecuteExits(int frameId, bool forced= false) {
 		// Run the OnExist functions until the common state of the transition.
-		bool atLeastOneIsStalled = false;
 		bool atLeastOneDidExecute= false;
-		for(int idx= myQueueIdx; idx >= 0; --idx) {
-            iCS_State state= myActiveStack[idx];
+		for(; myQueueIdx >= 0; --myQueueIdx) {
+            iCS_State state= myActiveStack[myQueueIdx];
             if(state == myTransitionParent) break;
             iCS_Action action= state.OnExitAction;
 			if(action != null && !action.IsCurrent(frameId)) {
@@ -190,28 +208,28 @@ public sealed class iCS_StateChart : iCS_Action {
 				}
                 if(action.IsCurrent(frameId)) {
 					atLeastOneDidExecute= true;
-					if(idx == myQueueIdx) {
-						--myQueueIdx;
-					}
 				} else {
-					atLeastOneIsStalled= true;
+					if(atLeastOneDidExecute == false && action.IsStalled) {
+						IsStalled= true;
+					} else {
+						IsStalled= false;
+					}
+					return;
 				}
 			}
 		}
-		if(atLeastOneIsStalled) {
-			IsStalled= !atLeastOneDidExecute;
-			return;
-		}
         // Update active stack state.
-        UpdateActiveStack();
+		IsStalled= false;
+		UpdateActiveStack();
     }
     // ----------------------------------------------------------------------
+	// The state entries are ran orderly from the outter state towards the
+	// inner state.
     void ExecuteEntries(int frameId, bool forced= false) {
-		bool atLeastOneIsStalled = false;
 		bool atLeastOneDidExecute= false;
         int end= myActiveStack.Count;
-		for(int idx= myQueueIdx; idx < end; ++idx) {
-            iCS_State state= myActiveStack[idx];
+		for(; myQueueIdx < end; ++myQueueIdx) {
+            iCS_State state= myActiveStack[myQueueIdx];
             iCS_Action action= state.OnEntryAction;
 			if(action != null && !action.IsCurrent(frameId)) {
 				if(forced) {
@@ -221,19 +239,18 @@ public sealed class iCS_StateChart : iCS_Action {
 				}
                 if(action.IsCurrent(frameId)) {
 					atLeastOneDidExecute= true;
-					if(idx == myQueueIdx) {
-						++myQueueIdx;
-					}
 				} else {
-					atLeastOneIsStalled= true;
+					if(atLeastOneDidExecute == false && action.IsStalled) {
+						IsStalled= true;
+					} else {
+						IsStalled= false;
+					}
+					return;					
 				}
 			}
 		}
-		if(atLeastOneIsStalled) {
-			IsStalled= !atLeastOneDidExecute;
-			return;
-		}
         // Prepare to execute update functions
+		IsStalled= false;
         myExecutionState= ExecutionState.RunningUpdate;
         myQueueIdx= 0;        
     }
