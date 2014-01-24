@@ -64,16 +64,20 @@ mkdir $PUBLISH_EDITOR_DIR
 cp iCanScriptEngine.dll $PUBLISH_ENGINE_DIR
 cp iCanScriptEditor.dll $PUBLISH_EDITOR_DIR
 # Install documentation.
-if [ -e $PRODUCT_DIR/*.txt ]; then
+if test -n "$(find $PRODUCT_DIR -maxdepth 1 -name '*.txt' -print -quit)"; then
+	echo "Copying *.txt files into" $PUBLISH_PRODUCT_DIR
 	cp $PRODUCT_DIR/*.txt $PUBLISH_PRODUCT_DIR
 fi
-if [ -e $PRODUCT_DIR/*.pdf ]; then
+if test -n "$(find $PRODUCT_DIR -maxdepth 1 -name '*.pdf' -print -quit)"; then
+	echo "Copying *.pdf files into" $PUBLISH_PRODUCT_DIR
 	cp $PRODUCT_DIR/*.pdf $PUBLISH_PRODUCT_DIR
 fi
-if [ -e $PRODUCT_DIR/*.md ]; then
+if test -n "$(find $PRODUCT_DIR -maxdepth 1 -name '*.md' -print -quit)"; then
+	echo "Copying *.md files into" $PUBLISH_PRODUCT_DIR
 	cp $PRODUCT_DIR/*.md $PUBLISH_PRODUCT_DIR
 fi
-if [ -e $PRODUCT_DIR/*.html ]; then
+if test -n "$(find $PRODUCT_DIR -maxdepth 1 -name '*.html' -print -quit)"; then
+	echo "Copying *.html files into" $PUBLISH_PRODUCT_DIR
 	cp $PRODUCT_DIR/*.html $PUBLISH_PRODUCT_DIR
 fi
 # Install visible source files.
@@ -102,7 +106,6 @@ mkdir $DEMO_EDITOR_DIR
 mkdir $DEMO_ENGINE_DIR
 cp iCanScriptEditor.dll $DEMO_EDITOR_DIR
 cp iCanScriptEngine.dll $DEMO_ENGINE_DIR
-cp $PRODUCT_DIR/readme.txt $DEMO_INSTALL_DIR
 cp -r $EDITOR_DIR/Resources $DEMO_EDITOR_DIR
 rsync -av $EDITOR_PUBLIC_NODE_INSTALLER_DIR $DEMO_EDITOR_DIR >/dev/null
 rsync -av $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR $DEMO_EDITOR_DIR >/dev/null

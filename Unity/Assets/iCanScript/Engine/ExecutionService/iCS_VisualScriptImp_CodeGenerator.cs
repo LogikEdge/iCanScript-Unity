@@ -320,9 +320,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 						case iCS_ObjectTypeEnum.OutParentMuxPort: {
 							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
                             object parentObj= myRuntimeNodes[isMux ? port.InstanceId : port.ParentId];
-							if(port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort) {
-								Debug.Log("iCanScript: Setting default value for: "+(parentObj as iCS_Object).FullName+" port idx= "+port.PortIndex);
-							}
+//							if(port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort) {
+//								Debug.Log("iCanScript: Setting default value for: "+(parentObj as iCS_Object).FullName+" port idx= "+port.PortIndex);
+//							}
                             Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Mux>(parentObj,
                                 instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 getInstanceField=> getInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
