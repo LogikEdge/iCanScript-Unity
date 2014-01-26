@@ -81,14 +81,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Only data ports can be connected together.
         if(!fixPort.IsDataOrControlPort || !overlappingPort.IsDataOrControlPort) return false;
         // Verify for Mux port creation
-        if(overlappingPort.IsRelayPort) {
+        if(overlappingPort.IsRelayPort && overlappingPort.IsDynamicDataPort) {
             CreateMuxPort(fixPort, overlappingPort);
             return true;
         }
         iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
         if(overlappingPort.IsOutputPort && 
 		   overlappingPort.Source != null &&
-		   (overlappingPortParent.IsKindOfPackage || overlappingPortParent.IsKindOfState)) {
+		   overlappingPort.IsDynamicDataPort) {
             CreateMuxPort(fixPort, overlappingPort);
             return true;
         }
