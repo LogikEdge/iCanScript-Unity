@@ -7,6 +7,10 @@ MONO_LIB_DIR=$MONO_ROOT/lib
 MONO_ETC_DIR=$MONO_ROOT/etc
 # Tools
 GMCS=$MONO_BIN_DIR/gmcs
+# Build Info Constants
+BUILD_INFO_GENERATOR=./createBuildInfo
+BUILD_INFO_CLASS=iCS_BuildInfo
+BUILD_DATE_VAR=kBuildDateStr
 # Constants
 ROOT_DIR=../..
 UNITY_DIR=$ROOT_DIR/Unity
@@ -25,6 +29,7 @@ PUBLISH_ASSETS_DIR=$PUBLISH_ROOT/Assets
 PUBLISH_PRODUCT_DIR=$PUBLISH_ASSETS_DIR/iCanScript
 PUBLISH_EDITOR_DIR=$PUBLISH_PRODUCT_DIR/Editor
 PUBLISH_ENGINE_DIR=$PUBLISH_PRODUCT_DIR/Engine
+BUILD_INFO_FILE=$EDITOR_DIR/iCS_BuildInfo.cs
 # Generate file list.
 echo "Generating file list ..."
 find $EDITOR_PUBLIC_NODE_INSTALLER_DIR -name "*.cs" >editorFilesToExclude
@@ -40,6 +45,8 @@ grep -v -f engineFilesToExclude _engineFiles >engineFiles
 cat EditorCommands editorFiles >iCanScriptEditor.rsp
 cat EngineCommands engineFiles >iCanScriptEngine.rsp
 # Compile libraries.
+echo "Creating Build Info file..."
+$BUILD_INFO_GENERATOR $ENGINE_DIR $BUILD_INFO_CLASS $BUILD_DATE_VAR
 echo "Compiling engine code..."
 $GMCS @iCanScriptEngine.rsp
 echo "Compiling editor code..."

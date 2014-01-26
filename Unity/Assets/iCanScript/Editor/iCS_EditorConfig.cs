@@ -46,9 +46,7 @@ public static class iCS_EditorConfig {
 		get {
 			return "Version "+VersionId;
 		}
-	}
-    public const string VersionLabel= "build 0000";
-	
+	}	
 	
     // ======================================================================
     public static GUIStyle NodeStyle        { get { return GUI.skin.button; }}

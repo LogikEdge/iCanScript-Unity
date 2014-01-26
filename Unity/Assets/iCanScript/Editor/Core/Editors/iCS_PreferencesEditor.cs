@@ -549,7 +549,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 
         // Show iCanScript version information.
         string version= iCS_EditorConfig.VersionStr;
-        string versionLabel= iCS_EditorConfig.VersionLabel;
         GUIContent versionContent= new GUIContent(version);
         Vector2 versionSize= GUI.skin.label.CalcSize(versionContent);
         float x= column1Rect.x+0.5f*(column1Rect.width-versionSize.x);
@@ -557,10 +556,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         Rect pos= new Rect(x, y, versionSize.x, versionSize.y);
         GUI.Label(pos, versionContent);
         pos.y+= versionSize.y;
-        versionContent= new GUIContent(versionLabel);
-        versionSize= GUI.skin.label.CalcSize(versionContent);        
-        pos.x= column1Rect.x+0.5f*(column1Rect.width-versionSize.x);
-        GUI.Label(pos, versionContent);
+        string buildDate= iCS_BuildInfo.kBuildDateStr;
+        GUIContent buildDateContent= new GUIContent(buildDate);
+        Vector2 buildDateSize= GUI.skin.label.CalcSize(buildDateContent);        
+        pos.x= column1Rect.x+0.5f*(column1Rect.width-buildDateSize.x);
+		pos.width= buildDateSize.x;
+		pos.height= buildDateSize.y;
+        GUI.Label(pos, buildDateContent);
 
         // Show product icon
         var logoWidth= 64f;
