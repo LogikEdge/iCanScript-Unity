@@ -6,7 +6,7 @@ public static class iCS_EditorStartup {
     // Initialization
     // ----------------------------------------------------------------------
 	static iCS_EditorStartup() {
-		iCS_UpdateController.PeriodicUpdateVerification();
+		iCS_SoftwareUpdateController.PeriodicUpdateVerification();
 		iCS_SystemEvents.Start();
 		iCS_InstallerMgr.Start();
 		iCS_CodeGenerator.Start();		

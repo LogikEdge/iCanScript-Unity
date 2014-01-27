@@ -5,12 +5,12 @@ using System.Collections;
 using iCanScript;
 using P=Prelude;
 
-public static class iCS_UpdateController {
+public static class iCS_SoftwareUpdateController {
     // ----------------------------------------------------------------------
 	// Performs the periodic verification for an update.
 	public static void PeriodicUpdateVerification() {
 		if(!iCS_PreferencesEditor.SoftwareUpdateWatchEnabled) return;
-		string latestVersion= iCS_UpdateController.GetLatestReleaseId();
+		string latestVersion= iCS_SoftwareUpdateController.GetLatestReleaseId();
 		if(latestVersion == null) {
 			Debug.Log("iCanScript: Version server not accessible...");
 			return;
