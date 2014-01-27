@@ -5,6 +5,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum iCS_UpdateInterval { Day= 0, Week= 1, Month= 2 };
 
 public class iCS_PreferencesEditor : iCS_EditorBase {
     // =================================================================================
@@ -114,6 +115,14 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kInstanceAutocreateOutPropertiesKey     = "iCS_InstanceAutocreateOutProperties"; 
     const string kInstanceAutocreateInClassPropertiesKey = "iCS_InstanceAutocreateInClassProperties";
     const string kInstanceAutocreateOutClassPropertiesKey= "iCS_InstanceAutocreateOutClassProperties";
+    // ---------------------------------------------------------------------------------
+	// Software Updates Config Constants
+	const bool	 kSoftwareUpdateWatchEnabled			= true;
+	const int    kSoftwareUpdateInterval				= 0;  // 0= day, 1= week, 2= month
+	const string kSoftwareUpdateSkippedVersion			= "";
+	const string kSoftwareUpdateWatchEnabledKey			= "iCS_SoftwareUpdateWatchEnabled";
+	const string kSoftwareUpdateIntervalKey             = "iCS_SoftwareUpdateInterval";
+	const string kSoftwareUpdateSkippedVersionKey		= "iCS_SoftwareUpdateSkippedVersion";
 #if CODE_GENERATION_CONFIG
     // ---------------------------------------------------------------------------------
 	// Code Engineering Config Constants
@@ -138,6 +147,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 	    "Node Colors",
 	    "Type Colors",
 	    "Instance Wizard",
+		"Software Update",
 #if CODE_GENERATION_CONFIG
 	    "Code Engineering"
 #endif
@@ -377,7 +387,23 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassPropertiesKey, kInstanceAutocreateOutClassProperties); }
         set { EditorPrefs.SetBool(kInstanceAutocreateOutClassPropertiesKey, value); }        
     }
+    // -------------------------------------------------------------------------
+	// Software Update Config Accessor
+    public static bool SoftwareUpdateWatchEnabled {
+        get { return EditorPrefs.GetBool(kSoftwareUpdateWatchEnabledKey, kSoftwareUpdateWatchEnabled); }
+        set { EditorPrefs.SetBool(kSoftwareUpdateWatchEnabledKey, value); }        
+    }
+    public static iCS_UpdateInterval SoftwareUpdateInterval {
+        get { return (iCS_UpdateInterval)EditorPrefs.GetInt(kSoftwareUpdateIntervalKey, kSoftwareUpdateInterval); }
+        set { EditorPrefs.SetInt(kSoftwareUpdateIntervalKey, (int)value); }        
+    }
+    public static string SoftwareUpdateSkippedVersion {
+        get { return EditorPrefs.GetString(kSoftwareUpdateSkippedVersionKey, kSoftwareUpdateSkippedVersion); }
+        set { EditorPrefs.SetString(kSoftwareUpdateSkippedVersionKey, value); }        
+    }
 #if CODE_GENERATION_CONFIG
+    // -------------------------------------------------------------------------
+	// Code Generation Config Accessor
     public static string CodeGenerationFolder {
         get { return EditorPrefs.GetString(kCodeGenerationFolderKey, kCodeGenerationFolder); }
         set {
@@ -541,8 +567,9 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             case 2: NodeColors(); break;
             case 3: TypeColors(); break;
             case 4: InstanceWizard(); break;
+			case 5: SoftwareUpdate(); break;
 #if CODE_GENERATION_CONFIG
-            case 5: CodeEngineering(); break;
+            case 6: CodeEngineering(); break;
 #endif
             default: break;
         }
@@ -820,6 +847,35 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             InstanceAutocreateOutClassProperties= kInstanceAutocreateOutClassProperties;
         }        
     }
+    // ---------------------------------------------------------------------------------
+	void SoftwareUpdate() {
+        // Column 2
+        Rect[] pos= new Rect[3];
+        pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
+        for(int i= 1; i < pos.Length; ++i) {
+            pos[i]= pos[i-1];
+            pos[i].y= pos[i-1].yMax;
+        }
+        GUI.Label(pos[0], "Watch for Updates");
+        GUI.Label(pos[1], "Verification Internal");
+        GUI.Label(pos[2], "Skipped Version");
+        
+        // Draw Column 3
+        for(int i= 0; i < pos.Length; ++i) {
+            pos[i].x+= kColumn2Width;
+            pos[i].width= kColumn3Width;
+        }
+		SoftwareUpdateWatchEnabled  = EditorGUI.Toggle(pos[0], SoftwareUpdateWatchEnabled);
+		SoftwareUpdateInterval      = (iCS_UpdateInterval)EditorGUI.EnumPopup(pos[1], SoftwareUpdateInterval);
+		SoftwareUpdateSkippedVersion= EditorGUI.TextField(pos[2], SoftwareUpdateSkippedVersion);
+
+        // Reset Button
+        if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
+			SoftwareUpdateWatchEnabled  = kSoftwareUpdateWatchEnabled;
+			SoftwareUpdateInterval      = kSoftwareUpdateInterval;
+			SoftwareUpdateSkippedVersion= kSoftwareUpdateSkippedVersion;
+        }        
+	}
 #if CODE_GENERATION_CONFIG
     // ---------------------------------------------------------------------------------
 	void CodeEngineering() {
