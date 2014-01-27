@@ -57,9 +57,9 @@ public static class iCS_InstallerMgr {
     // Install the iCanScript Gizmo (if not already done).
     // ---------------------------------------------------------------------------------
     public static Maybe<bool> CheckForUpdates() {
-		var isLatest= iCS_WebUtils.IsLatestVersion();
+		var isLatest= iCS_UpdateController.IsLatestVersion();
         if(isLatest.maybe(false, b=> !b)) {
-	        var latestVersion= iCS_WebUtils.GetLatestReleaseId();
+	        var latestVersion= iCS_UpdateController.GetLatestReleaseId();
 	        var download= EditorUtility.DisplayDialog("A new version of iCanScript is available!",
 	                                                  "Version "+latestVersion+" is available for download.\n"+
 	                                                  "Would you like to download it?",

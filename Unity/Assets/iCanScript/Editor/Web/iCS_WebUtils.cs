@@ -8,7 +8,7 @@ using P=Prelude;
 public static class iCS_WebUtils {
     // ----------------------------------------------------------------------
     // Performs a Web form request on the given url.
-    public static WWW WebRequest(string url, WWWForm form, float waitTime= 500f) {
+    public static WWW WebRequest(string url, WWWForm form, float waitTime= 2f) {
         return WaitForTransaction(new WWW(url, form), waitTime);
     }
     // ----------------------------------------------------------------------
@@ -18,7 +18,7 @@ public static class iCS_WebUtils {
     }
     // ----------------------------------------------------------------------
 	// Wait for Web transaction to complete.
-    public static WWW WaitForTransaction(WWW transaction, float waitTime= 500f) {
+    public static WWW WaitForTransaction(WWW transaction, float waitTime= 2f) {
         var startTime= Time.realtimeSinceStartup;
         while(!transaction.isDone) {
             if((Time.realtimeSinceStartup-startTime) > waitTime) {
@@ -28,32 +28,4 @@ public static class iCS_WebUtils {
         }
         return transaction;	
 	}
-	
-    // ----------------------------------------------------------------------
-    // Returns the version string of the latest available release.
-    public static string GetLatestReleaseId() {
-		var url= iCS_WebConfig.WebService_Versions;
-        var download = WebRequest(url);
-        if(!String.IsNullOrEmpty(download.error)) {
-            return null;
-        }
-//        Debug.Log(download.text);
-        JString jVersion= null;
-        try {
-            jVersion= JSON.GetValueFor(download.text, "versions.iCanScript") as JString;            
-        }
-        catch(System.Exception) {}
-        return jVersion == null ? null : jVersion.value;
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns true if the current version is the latest version.
-    public static Maybe<bool> IsLatestVersion() {
-        var latestVersion= GetLatestReleaseId();
-        if(String.IsNullOrEmpty(latestVersion)) {
-            return new Nothing<bool>();
-        }
-        var currentVersion= "v"+iCS_EditorConfig.VersionId;
-        return new Just<bool>(currentVersion == latestVersion);
-    }
 }

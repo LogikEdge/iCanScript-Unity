@@ -3,7 +3,7 @@ using System.Collections;
 
 public static class iCS_Config {
     // ----------------------------------------------------------------------
-    // Product descriptions.
+    // Product descriptions. 
 	public const int    MajorVersion = 1;
 	public const int    MinorVersion = 0;
 	public const int    BugFixVersion= 1;
