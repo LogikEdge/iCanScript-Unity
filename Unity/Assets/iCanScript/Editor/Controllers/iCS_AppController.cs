@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public static class iCS_EditorStartup {
+public static class iCS_AppController {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-	static iCS_EditorStartup() {
+	static iCS_AppController() {
 		iCS_SoftwareUpdateController.PeriodicUpdateVerification();
 		iCS_SystemEvents.Start();
 		iCS_InstallerMgr.Start();
