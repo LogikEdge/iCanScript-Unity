@@ -4,8 +4,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-
-public enum iCS_UpdateInterval { Daily= 0, Weekly= 1, Monthly= 2 };
+using Prefs=iCS_PreferencesController;
 
 public class iCS_PreferencesEditor : iCS_EditorBase {
     // =================================================================================
@@ -115,14 +114,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kInstanceAutocreateOutPropertiesKey     = "iCS_InstanceAutocreateOutProperties"; 
     const string kInstanceAutocreateInClassPropertiesKey = "iCS_InstanceAutocreateInClassProperties";
     const string kInstanceAutocreateOutClassPropertiesKey= "iCS_InstanceAutocreateOutClassProperties";
-    // ---------------------------------------------------------------------------------
-	// Software Updates Config Constants
-	const bool	 kSoftwareUpdateWatchEnabled			= true;
-	const int    kSoftwareUpdateInterval				= 0;  // 0= day, 1= week, 2= month
-	const string kSoftwareUpdateSkippedVersion			= "";
-	const string kSoftwareUpdateWatchEnabledKey			= "iCS_SoftwareUpdateWatchEnabled";
-	const string kSoftwareUpdateIntervalKey             = "iCS_SoftwareUpdateInterval";
-	const string kSoftwareUpdateSkippedVersionKey		= "iCS_SoftwareUpdateSkippedVersion";
 #if CODE_GENERATION_CONFIG
     // ---------------------------------------------------------------------------------
 	// Code Engineering Config Constants
@@ -386,20 +377,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     public static bool InstanceAutocreateOutClassProperties {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassPropertiesKey, kInstanceAutocreateOutClassProperties); }
         set { EditorPrefs.SetBool(kInstanceAutocreateOutClassPropertiesKey, value); }        
-    }
-    // -------------------------------------------------------------------------
-	// Software Update Config Accessor
-    public static bool SoftwareUpdateWatchEnabled {
-        get { return EditorPrefs.GetBool(kSoftwareUpdateWatchEnabledKey, kSoftwareUpdateWatchEnabled); }
-        set { EditorPrefs.SetBool(kSoftwareUpdateWatchEnabledKey, value); }        
-    }
-    public static iCS_UpdateInterval SoftwareUpdateInterval {
-        get { return (iCS_UpdateInterval)EditorPrefs.GetInt(kSoftwareUpdateIntervalKey, kSoftwareUpdateInterval); }
-        set { EditorPrefs.SetInt(kSoftwareUpdateIntervalKey, (int)value); }        
-    }
-    public static string SoftwareUpdateSkippedVersion {
-        get { return EditorPrefs.GetString(kSoftwareUpdateSkippedVersionKey, kSoftwareUpdateSkippedVersion); }
-        set { EditorPrefs.SetString(kSoftwareUpdateSkippedVersionKey, value); }        
     }
 #if CODE_GENERATION_CONFIG
     // -------------------------------------------------------------------------
@@ -865,15 +842,15 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
-		SoftwareUpdateWatchEnabled  = EditorGUI.Toggle(pos[0], SoftwareUpdateWatchEnabled);
-		SoftwareUpdateInterval      = (iCS_UpdateInterval)EditorGUI.EnumPopup(pos[1], SoftwareUpdateInterval);
-		SoftwareUpdateSkippedVersion= EditorGUI.TextField(pos[2], SoftwareUpdateSkippedVersion);
+		Prefs.SoftwareUpdateWatchEnabled  = EditorGUI.Toggle(pos[0], Prefs.SoftwareUpdateWatchEnabled);
+		Prefs.SoftwareUpdateInterval      = (iCS_UpdateInterval)EditorGUI.EnumPopup(pos[1], Prefs.SoftwareUpdateInterval);
+		Prefs.SoftwareUpdateSkippedVersion= EditorGUI.TextField(pos[2], Prefs.SoftwareUpdateSkippedVersion);
 
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-			SoftwareUpdateWatchEnabled  = kSoftwareUpdateWatchEnabled;
-			SoftwareUpdateInterval      = kSoftwareUpdateInterval;
-			SoftwareUpdateSkippedVersion= kSoftwareUpdateSkippedVersion;
+			Prefs.ResetSoftwareUpdateWatchEnabled();
+			Prefs.ResetSoftwareUpdateInterval();
+			Prefs.ResetSoftwareUpdateSkippedVersion();
         }        
 	}
 #if CODE_GENERATION_CONFIG
