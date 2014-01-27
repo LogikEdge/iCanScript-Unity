@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
-public enum iCS_UpdateInterval { Day= 0, Week= 1, Month= 2 };
+public enum iCS_UpdateInterval { Daily= 0, Weekly= 1, Monthly= 2 };
 
 public class iCS_PreferencesEditor : iCS_EditorBase {
     // =================================================================================
