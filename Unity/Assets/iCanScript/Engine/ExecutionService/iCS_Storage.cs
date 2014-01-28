@@ -12,9 +12,9 @@ public class iCS_Storage : MonoBehaviour {
     // Fields
     // ----------------------------------------------------------------------
                       public iCS_EngineObject         EngineObject       = null;
-    [HideInInspector] public int			          MajorVersion       = iCS_Config.MajorVersion;
-    [HideInInspector] public int    		          MinorVersion       = iCS_Config.MinorVersion;
-    [HideInInspector] public int    		          BugFixVersion      = iCS_Config.BugFixVersion;
+    [HideInInspector] public uint			          MajorVersion       = iCS_Config.MajorVersion;
+    [HideInInspector] public uint    		          MinorVersion       = iCS_Config.MinorVersion;
+    [HideInInspector] public uint    		          BugFixVersion      = iCS_Config.BugFixVersion;
     [HideInInspector] public int                      UndoRedoId         = 0;
 	[HideInInspector] public Vector2		          ScrollPosition     = Vector2.zero;
 	[HideInInspector] public float  		          GuiScale           = 1f;	

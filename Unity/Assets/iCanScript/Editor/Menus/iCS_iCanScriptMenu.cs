@@ -1,3 +1,4 @@
+#define DEBUG
 using UnityEngine;
 using UnityEditor;
 using P=Prelude;
@@ -68,7 +69,15 @@ public static class iCS_iCanScriptMenu {
 		}
     }
     
-    
+#if DEBUG
+    // ======================================================================
+    // Trigger Periodic Software Update Verification
+	[MenuItem("Help/iCanScript/Test Periodic Software Update Verification",false,1000)]
+	public static void PeriodicSoftwareUpdateVerification() {
+		iCS_SoftwareUpdateController.PeriodicUpdateVerification();
+	}
+#endif
+	    
 //    // ======================================================================
 //	// iCanScript License.
 //    [MenuItem("iCanScript/Get FingerPrint")]

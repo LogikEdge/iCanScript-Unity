@@ -35,4 +35,9 @@ public static class iCS_TextUtility {
         return fileName.ToString();
     }
 
+    // ---------------------------------------------------------------------------------
+	// Converts a string to it Unicode equivalent.
+	public static string ToASCII(string inputString) {
+		return Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(inputString));
+	}
 }

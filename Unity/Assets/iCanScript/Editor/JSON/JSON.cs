@@ -13,6 +13,17 @@ public abstract class JSON {
     public abstract string Encode();
 
     // =============================================================================
+    // Returns the decoded root JSON object.
+    // -----------------------------------------------------------------------------
+    public static JObject GetRootObject(string _jsonStr) {
+		// Convert to ASCII string.
+		string jsonStr= iCS_TextUtility.ToASCII(_jsonStr);
+		// Read the root json object
+        int i= 0;
+		return ParseObject(jsonStr, ref i);
+    }
+
+    // =============================================================================
     // Encoding functions
     // -----------------------------------------------------------------------------
     protected static string Encode(string value) {
@@ -48,6 +59,7 @@ public abstract class JSON {
         accessorStr= accessorStr.Substring(i, accessorStr.Length-i);
         return root.value.GetValueFor(accessorStr);
     }
+
     // -----------------------------------------------------------------------------
     public static string ParseName(string s, ref int i) {
         return ParseString(s, ref i);

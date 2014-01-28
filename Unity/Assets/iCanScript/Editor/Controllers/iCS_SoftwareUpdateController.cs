@@ -19,62 +19,65 @@ public static class iCS_SoftwareUpdateController {
 #endif
 			return;
 		}
-		// Return if we already verified within the prescribed interval;
-		DateTime nextWatchDate= Prefs.SoftwareUpdateLastWatchDate;
-		switch(Prefs.SoftwareUpdateInterval) {
-			case iCS_UpdateInterval.Daily:
-				nextWatchDate= nextWatchDate.AddDays(1);
-				break;
-			case iCS_UpdateInterval.Weekly:
-				nextWatchDate= nextWatchDate.AddDays(7);
-				break;
-			case iCS_UpdateInterval.Monthly:
-				nextWatchDate= nextWatchDate.AddMonths(1);
-				break;
-		}
+		// Initialize last watch date if not in database.
+		// (The date returned will be the "now" date if it is not found in the database.)
 		DateTime now= DateTime.Now;
+		DateTime nextWatchDate= Prefs.SoftwareUpdateLastWatchDate;
+		if(now.CompareTo(nextWatchDate) <= 0 && nextWatchDate.CompareTo(DateTime.Now) <= 0) {
+#if DEBUG
+			Debug.Log("iCanScript: Software update last watch date not initialized. Initializing...");
+#endif
+			Prefs.SoftwareUpdateLastWatchDate= now;
+		}
+		// Return if we already verified within the prescribed interval;
+		nextWatchDate= AddInterval(nextWatchDate);
 		if(nextWatchDate.CompareTo(now) >= 0) {
 #if DEBUG
 			Debug.Log("iCanScript: Software Update does not need to be verified before: "+nextWatchDate);
 #endif
-			return;
+//			return;
 		}
-		
 		// Get the last revision from the server.
-		string latestVersion= GetLatestReleaseId();
-		if(latestVersion == null) {
+		string serverVersion= GetLatestReleaseId();
+		if(serverVersion == null) {
 			Debug.Log("iCanScript: Unable to contact version server. Software update verification aborted.");
 			return;
 		}
+		// Update last watch date now that we can contact the version server.
+		Prefs.SoftwareUpdateLastWatchDate= AddInterval(now);
 		// Return if the user wants to skip this version.
-		if(Prefs.SoftwareUpdateSkippedVersion == latestVersion) {
+		if(Prefs.SoftwareUpdateSkippedVersion == serverVersion) {
 #if DEBUG
-			Debug.Log("iCanScript: User requested to skipped software update for: "+latestVersion);
+			Debug.Log("iCanScript: User requested to skipped software update for: "+serverVersion);
 #endif
 			return;
 		}
 		// Determine if we are up-to-date.
-		Maybe<bool> isLatest= IsLatestVersion(latestVersion);
-		if(isLatest.isNothing) {
+		Maybe<bool> isUpToDate= IsUpToDate(serverVersion);
+		if(isUpToDate.isNothing) {
 #if DEBUG
 			Debug.Log("iCanScript: Unable to contact version server.");
 #endif
 			return;
 		}
-		Debug.Log("iCanScript: Latest version is: "+latestVersion+" up to date: "+isLatest.Value);
+		Debug.Log("iCanScript: Latest version is: "+serverVersion+" up to date: "+isUpToDate.Value);
 	}
     // ----------------------------------------------------------------------
     // Returns the version string of the latest available release.
     public static string GetLatestReleaseId(float waitTime= 500f) {
 		var url= iCS_WebConfig.WebService_Versions;
+		url= "www.icanscript.com/versions.txt";
         var download = iCS_WebUtils.WebRequest(url, waitTime);
         if(!String.IsNullOrEmpty(download.error)) {
             return null;
         }
-//        Debug.Log(download.text);
+#if DEBUG
+        Debug.Log(download.text);
+#endif
         JString jVersion= null;
         try {
-            jVersion= JSON.GetValueFor(download.text, "versions.iCanScript") as JString;            
+			JObject rootObject= JSON.GetRootObject(download.text);
+            jVersion= rootObject.GetValueFor("versions.iCanScript") as JString;            
         }
         catch(System.Exception) {}
         return jVersion == null ? null : jVersion.value;
@@ -94,4 +97,32 @@ public static class iCS_SoftwareUpdateController {
         var currentVersion= "v"+iCS_EditorConfig.VersionId;
         return new Just<bool>(currentVersion == latestVersion);
     }
+    // ----------------------------------------------------------------------
+    // Returns true if the current version is equal or younger then the
+	// version returned by the server.
+    public static Maybe<bool> IsUpToDate(string serverVersionStr) {
+        if(String.IsNullOrEmpty(serverVersionStr)) {
+            return new Nothing<bool>();
+        }
+        var currentVersion= new iCS_Version(iCS_Config.MajorVersion,
+											iCS_Config.MinorVersion,
+											iCS_Config.BugFixVersion);
+
+		serverVersionStr= serverVersionStr.Substring(1);
+		var serverVersion= iCS_Version.FromString(serverVersionStr);
+        return new Just<bool>(currentVersion.IsNewerOrSameAs(serverVersion));
+    }
+    // ----------------------------------------------------------------------
+	// Returns the given plus the software update interval.
+	public static DateTime AddInterval(DateTime date) {
+		switch(Prefs.SoftwareUpdateInterval) {
+			case iCS_UpdateInterval.Daily:
+				return date.AddDays(1);
+			case iCS_UpdateInterval.Weekly:
+				return date.AddDays(7);
+			case iCS_UpdateInterval.Monthly:
+				return date.AddMonths(1);
+		}
+		return date.AddDays(1);
+	}
 }
