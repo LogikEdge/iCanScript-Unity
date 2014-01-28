@@ -37,6 +37,9 @@ public static class iCS_PreferencesController {
 	public static void ResetSoftwareUpdateSkippedVersion() {
 		SoftwareUpdateSkippedVersion= kSoftwareUpdateSkippedVersion;
 	}
+	public static void ResetSoftwareUpdateLastWatchDate() {
+		
+	}
 
 	//
 	// Accessors
@@ -80,20 +83,20 @@ public static class iCS_PreferencesController {
 	// -------------------------------------------------------------------------
 	public static void SetDateTime(string key, DateTime dateTime) {
 		long binaryTime= dateTime.ToBinary();
-		int low= (int)(binaryTime & 0xffff);
-		int high= (int)((binaryTime >> 32) & 0xffff);
+		int low= (int)(binaryTime & 0xffffffff);
+		int high= (int)((binaryTime >> 32) & 0xffffffff);
 		EditorPrefs.SetInt(key+"Low", low);
 		EditorPrefs.SetInt(key+"High", high);
 	}
 	public static DateTime GetDateTime(string key, DateTime defaultDateTime) {
 		long binaryTime= defaultDateTime.ToBinary();
-		int low= (int)(binaryTime & 0xffff);
-		int high= (int)((binaryTime >> 32) & 0xffff);
+		int low= (int)(binaryTime & 0xffffffff);
+		int high= (int)((binaryTime >> 32) & 0xffffffff);
 		low= EditorPrefs.GetInt(key+"Low", low);
 		high= EditorPrefs.GetInt(key+"High", high);
-		binaryTime= high & 0xffff;
+		binaryTime= high & 0xffffffff;
 		binaryTime <<= 32;
-		binaryTime |= low;
-		return new DateTime(binaryTime);
+		binaryTime |= ((long)(low)) & 0xffffffff;
+		return DateTime.FromBinary(binaryTime);
 	}
 }

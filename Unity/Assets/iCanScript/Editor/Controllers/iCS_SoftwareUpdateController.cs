@@ -20,6 +20,25 @@ public static class iCS_SoftwareUpdateController {
 			return;
 		}
 		// Return if we already verified within the prescribed interval;
+		DateTime nextWatchDate= Prefs.SoftwareUpdateLastWatchDate;
+		switch(Prefs.SoftwareUpdateInterval) {
+			case iCS_UpdateInterval.Daily:
+				nextWatchDate= nextWatchDate.AddDays(1);
+				break;
+			case iCS_UpdateInterval.Weekly:
+				nextWatchDate= nextWatchDate.AddDays(7);
+				break;
+			case iCS_UpdateInterval.Monthly:
+				nextWatchDate= nextWatchDate.AddMonths(1);
+				break;
+		}
+		DateTime now= DateTime.Now;
+		if(nextWatchDate.CompareTo(now) >= 0) {
+#if DEBUG
+			Debug.Log("iCanScript: Software Update does not need to be verified before: "+nextWatchDate);
+#endif
+			return;
+		}
 		
 		// Get the last revision from the server.
 		string latestVersion= GetLatestReleaseId();
