@@ -9,8 +9,19 @@ using P=Prelude;
 using Prefs=iCS_PreferencesController;
 
 public static class iCS_SoftwareUpdateController {
-    // ----------------------------------------------------------------------
-	// Performs the periodic verification for an update.
+	// =================================================================================
+    // Server URL Information
+    // ---------------------------------------------------------------------------------
+	const string URL_VersionFile=  "www.icanscript.com/versions.txt";
+	const string URL_DownloadPage= "http://www.icanscript.com/support/downloads";
+	
+		
+	// =================================================================================
+    // Manual & Periodic Software Update Verification functions.
+    // ---------------------------------------------------------------------------------
+	//
+	// Periodic Verification
+	//
 	public static void PeriodicUpdateVerification() {
 		// Return if software update watch is disabled.
 		if(!Prefs.SoftwareUpdateWatchEnabled) {
@@ -62,14 +73,50 @@ public static class iCS_SoftwareUpdateController {
 		}
 		Debug.Log("iCanScript: Latest version is: "+serverVersion+" up to date: "+isUpToDate.Value);
 		if(!isUpToDate.Value) {
-			EditorApplication.ExecuteMenuItem("Help/iCanScript/Check for Updates...");
+			ManualUpdateVerification();
 		}
 	}
-    // ----------------------------------------------------------------------
+
+    // ---------------------------------------------------------------------------------
+	//
+	// Manual Verification
+	//
+	public static void ManualUpdateVerification() {
+		// Check if we have the most up-to-date software
+		string latestVersion= GetLatestReleaseId();
+		// Tell the user we can't contact the server and abort.
+		if(String.IsNullOrEmpty(latestVersion)) {
+			iCS_SoftwareUpdateView.ShowServerUnavailableDialog();
+			return;
+		}
+		// Tell the user we have the latest version.
+		var isLatest= IsLatestVersion(latestVersion);
+        if(isLatest.Value) {
+			iCS_SoftwareUpdateView.ShowAlreadyCurrentDialog();
+		}
+		// Tell the user a new version exists and ask him/her to download it.
+        var currentVersion= "v"+iCS_EditorConfig.VersionId;
+		var selection= iCS_SoftwareUpdateView.ShowNewVersionDialog(currentVersion, latestVersion);
+		switch(selection) {
+			case 0:	// Download
+				Application.OpenURL(URL_DownloadPage);            
+				break;
+			case 1:	// Skip this version
+				iCS_PreferencesController.SoftwareUpdateSkippedVersion= latestVersion;
+				break;
+			default: // Cancel
+				break;
+		}
+	}
+	
+	
+	// =================================================================================
+	// Software Update Verification Support Functions.
+    // ---------------------------------------------------------------------------------
     // Returns the version string of the latest available release.
-    public static string GetLatestReleaseId(float waitTime= 2f) {
+    static string GetLatestReleaseId(float waitTime= 2f) {
 		var url= iCS_WebConfig.WebService_Versions;
-		url= "www.icanscript.com/versions.txt";
+		url= URL_VersionFile;
         var download = iCS_WebUtils.WebRequest(url, waitTime);
         if(!String.IsNullOrEmpty(download.error)) {
             return null;
@@ -94,12 +141,12 @@ public static class iCS_SoftwareUpdateController {
 
     // ----------------------------------------------------------------------
     // Returns true if the current version is the latest version.
-    public static Maybe<bool> IsLatestVersion() {
+    static Maybe<bool> IsLatestVersion() {
 		return IsLatestVersion(GetLatestReleaseId());
     }
     // ----------------------------------------------------------------------
     // Returns true if the current version is the latest version.
-    public static Maybe<bool> IsLatestVersion(string latestVersion) {
+    static Maybe<bool> IsLatestVersion(string latestVersion) {
         if(String.IsNullOrEmpty(latestVersion)) {
             return new Nothing<bool>();
         }
@@ -109,7 +156,7 @@ public static class iCS_SoftwareUpdateController {
     // ----------------------------------------------------------------------
     // Returns true if the current version is equal or younger then the
 	// version returned by the server.
-    public static Maybe<bool> IsUpToDate(string serverVersionStr) {
+    static Maybe<bool> IsUpToDate(string serverVersionStr) {
         if(String.IsNullOrEmpty(serverVersionStr)) {
             return new Nothing<bool>();
         }
@@ -123,7 +170,7 @@ public static class iCS_SoftwareUpdateController {
     }
     // ----------------------------------------------------------------------
 	// Returns the given plus the software update interval.
-	public static DateTime AddInterval(DateTime date) {
+	static DateTime AddInterval(DateTime date) {
 		switch(Prefs.SoftwareUpdateInterval) {
 			case iCS_UpdateInterval.Daily:
 				return date.AddDays(1);

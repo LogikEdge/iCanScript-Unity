@@ -53,23 +53,4 @@ public static class iCS_InstallerMgr {
 //        }
     }
     
-    // =================================================================================
-    // Install the iCanScript Gizmo (if not already done).
-    // ---------------------------------------------------------------------------------
-    public static Maybe<bool> CheckForUpdates() {
-		var isLatest= iCS_SoftwareUpdateController.IsLatestVersion();
-        if(isLatest.maybe(false, b=> !b)) {
-	        var latestVersion= iCS_SoftwareUpdateController.GetLatestReleaseId();
-	        var download= EditorUtility.DisplayDialog("A new version of iCanScript is available!",
-	                                                  "Version "+latestVersion+" is available for download.\n"+
-	                                                  "Would you like to download it?",
-	                                                  "Download", "Skip This Version");
-	        if(download) {
-	            Application.OpenURL("http://www.icanscript.com/support/downloads");            
-			} else {
-				iCS_PreferencesController.SoftwareUpdateSkippedVersion= latestVersion;
-			}
-		}
-        return isLatest;
-    }
 }

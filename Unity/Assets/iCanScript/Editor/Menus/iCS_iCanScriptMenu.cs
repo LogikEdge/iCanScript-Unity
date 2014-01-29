@@ -55,18 +55,7 @@ public static class iCS_iCanScriptMenu {
     }
     [MenuItem("Help/iCanScript/Check for Updates...",false,61)]
     public static void CheckForUpdate() {
-		var isLatest= iCS_InstallerMgr.CheckForUpdates();
-		if(isLatest.isNothing) {
-			EditorUtility.DisplayDialog("Unable to determine latest version !!!",
-										"Problem accessing iCanScript version information.\nPlease try again later.",
-										"Ok");			
-			return;
-		}
-        if(isLatest.Value) {
-			EditorUtility.DisplayDialog("You have the latest version of iCanScript!",
-										 "The version installed is: v"+iCS_EditorConfig.VersionId+".\nNo updates are available.",
-										 "Ok");
-		}
+		iCS_SoftwareUpdateController.ManualUpdateVerification();
     }
     
 #if DEBUG
