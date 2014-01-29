@@ -2,7 +2,6 @@ using UnityEditor;
 using UnityEngine;
 using System;
 using System.Collections;
-using iCanScript;
 using P=Prelude;
 
 public static class iCS_WebUtils {

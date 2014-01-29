@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security;
 using System.Security.Cryptography;
-using iCanScript;
+using DisruptiveSoftware;
 
 public class iCS_CSGenerateBehaviour {
 	// ----------------------------------------------------------------------

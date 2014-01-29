@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using System;
 using System.Collections;
-using iCanScript;
+using DisruptiveSoftware;
 using P=Prelude;
 using Prefs=iCS_PreferencesController;
 
