@@ -98,12 +98,13 @@ public abstract class JSON {
                         return new JNull();
                     }
                 }
+				// Assume that we have a number.
 				return ParseNumber(s, ref i);
-//				return new JNull();
             }
         }
     }
     // -----------------------------------------------------------------------------
+	// Parses the string representation of a JSON string.
     public static string ParseString(string s, ref int i) {
         MustBeChar(s, ref i, '"');
         string result= "";
@@ -136,6 +137,7 @@ public abstract class JSON {
         return result;
     }
     // -----------------------------------------------------------------------------
+	// Parses the string representation of a JSON number.
 	static JValue ParseNumber(string s, ref int i) {
 		int sign= 1;
 		int integer= 0;
@@ -219,6 +221,7 @@ public abstract class JSON {
 		return new JNumber(number*Mathf.Pow(10f,expSign*exponent));
 	}
     // -----------------------------------------------------------------------------
+	// Parses the string representation of a JSON array.
     static JValue ParseArray(string s, ref int i) {
         MustBeChar(s, ref i, '[');
         RemoveWhiteSpaces(s, ref i);
@@ -243,6 +246,7 @@ public abstract class JSON {
         return new JArray(values.ToArray());        
     }
     // -----------------------------------------------------------------------------
+	// Parses the string representation of a JSON object.
     public static JObject ParseObject(string s, ref int i) {
         MustBeChar(s, ref i, '{');
         RemoveWhiteSpaces(s, ref i);
