@@ -29,11 +29,11 @@ public static class iCS_CSFileTemplates {
         // Return null if we can't find the JSON marker.
         if(fileHeader == null) return null;
         if(!fileHeader.StartsWith("//{")) return null;
+		fileHeader= fileHeader.Substring(2);
 
         // Attempt to extract the json object.
         try {
-            int c= 2;
-            JObject jObject= JSON.ParseObject(fileHeader, ref c);
+            JObject jObject= JSON.GetRootObject(fileHeader);
             return jObject;
         }
         catch(Exception) {

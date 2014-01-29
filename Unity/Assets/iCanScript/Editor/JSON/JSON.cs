@@ -48,7 +48,7 @@ public abstract class JSON {
     // Decoding functions
     // -----------------------------------------------------------------------------
     // Returns the value of an attribute from the JSON formatted string.
-    public static JValue GetValueFor(string jsonStr, string accessorStr) {
+    protected static JValue GetValueFor(string jsonStr, string accessorStr) {
         int i= 0;
         var root= JNameValuePair.Decode(jsonStr, ref i);
         i= 0;
@@ -61,11 +61,11 @@ public abstract class JSON {
     }
 
     // -----------------------------------------------------------------------------
-    public static string ParseName(string s, ref int i) {
+    protected static string ParseName(string s, ref int i) {
         return ParseString(s, ref i);
     }
     // -----------------------------------------------------------------------------
-    public static JValue ParseValue(string s, ref int i) {
+    protected static JValue ParseValue(string s, ref int i) {
         RemoveWhiteSpaces(s, ref i);
         if(eof(s,i)) {
             throw new SystemException("JSON: eof seen where value was expected.");
@@ -105,7 +105,7 @@ public abstract class JSON {
     }
     // -----------------------------------------------------------------------------
 	// Parses the string representation of a JSON string.
-    public static string ParseString(string s, ref int i) {
+    protected static string ParseString(string s, ref int i) {
         MustBeChar(s, ref i, '"');
         string result= "";
         do {
@@ -138,7 +138,7 @@ public abstract class JSON {
     }
     // -----------------------------------------------------------------------------
 	// Parses the string representation of a JSON number.
-	static JValue ParseNumber(string s, ref int i) {
+	protected static JValue ParseNumber(string s, ref int i) {
 		int sign= 1;
 		int integer= 0;
 		float decimal_= 0;
@@ -222,7 +222,7 @@ public abstract class JSON {
 	}
     // -----------------------------------------------------------------------------
 	// Parses the string representation of a JSON array.
-    static JValue ParseArray(string s, ref int i) {
+    protected static JValue ParseArray(string s, ref int i) {
         MustBeChar(s, ref i, '[');
         RemoveWhiteSpaces(s, ref i);
         if(eof(s,i)) {
@@ -247,7 +247,7 @@ public abstract class JSON {
     }
     // -----------------------------------------------------------------------------
 	// Parses the string representation of a JSON object.
-    public static JObject ParseObject(string s, ref int i) {
+    protected static JObject ParseObject(string s, ref int i) {
         MustBeChar(s, ref i, '{');
         RemoveWhiteSpaces(s, ref i);
         if(eof(s,i)) {
@@ -272,15 +272,15 @@ public abstract class JSON {
         return new JObject(attributes.ToArray());        
     }
     // -----------------------------------------------------------------------------
-    public static void RemoveWhiteSpaces(string s, ref int i) {
+    protected static void RemoveWhiteSpaces(string s, ref int i) {
         for(; !eof(s,i) && Char.IsWhiteSpace(s[i]); ++i);
     }
     // -----------------------------------------------------------------------------
-    public static bool eof(string s, int i) {
+    protected static bool eof(string s, int i) {
         return i >= s.Length;
     }
     // -----------------------------------------------------------------------------
-    public static void MustBeChar(string s, ref int i, char c) {
+    protected static void MustBeChar(string s, ref int i, char c) {
         if(eof(s,i)) {
             throw new SystemException("JSON: eof reach but expected: "+c);
         }
@@ -294,7 +294,7 @@ public abstract class JSON {
         ++i;
     }
     // -----------------------------------------------------------------------------
-    public static int ParseDigits(string s, ref int i) {
+    protected static int ParseDigits(string s, ref int i) {
         RemoveWhiteSpaces(s, ref i);
         if(eof(s, i)) return 0;
         int result= 0;
@@ -308,7 +308,7 @@ public abstract class JSON {
     // =============================================================================
     // Query parsing
     // -----------------------------------------------------------------------------
-    public static string ParseAttribute(string s, ref int i) {
+    protected static string ParseAttribute(string s, ref int i) {
         RemoveWhiteSpaces(s, ref i);
         int start= i;
         if(eof(s,i)) {
