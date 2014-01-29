@@ -66,7 +66,9 @@ public static class iCS_InstallerMgr {
 	                                                  "Download", "Skip This Version");
 	        if(download) {
 	            Application.OpenURL("http://www.icanscript.com/support/downloads");            
-	        }
+			} else {
+				iCS_PreferencesController.SoftwareUpdateSkippedVersion= latestVersion;
+			}
 		}
         return isLatest;
     }

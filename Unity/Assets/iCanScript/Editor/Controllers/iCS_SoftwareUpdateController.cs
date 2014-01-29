@@ -40,7 +40,7 @@ public static class iCS_SoftwareUpdateController {
 		// Get the last revision from the server.
 		string serverVersion= GetLatestReleaseId();
 		if(serverVersion == null) {
-			Debug.Log("iCanScript: Unable to contact version server. Software update verification aborted.");
+			Debug.Log("iCanScript: Unable to contact version server. Software update verification postponed.");
 			return;
 		}
 		// Update last watch date now that we can contact the version server.
@@ -61,10 +61,13 @@ public static class iCS_SoftwareUpdateController {
 			return;
 		}
 		Debug.Log("iCanScript: Latest version is: "+serverVersion+" up to date: "+isUpToDate.Value);
+		if(!isUpToDate.Value) {
+			EditorApplication.ExecuteMenuItem("Help/iCanScript/Check for Updates...");
+		}
 	}
     // ----------------------------------------------------------------------
     // Returns the version string of the latest available release.
-    public static string GetLatestReleaseId(float waitTime= 500f) {
+    public static string GetLatestReleaseId(float waitTime= 2f) {
 		var url= iCS_WebConfig.WebService_Versions;
 		url= "www.icanscript.com/versions.txt";
         var download = iCS_WebUtils.WebRequest(url, waitTime);
@@ -77,9 +80,15 @@ public static class iCS_SoftwareUpdateController {
         JString jVersion= null;
         try {
 			JObject rootObject= JSON.GetRootObject(download.text);
-            jVersion= rootObject.GetValueFor("versions.iCanScript") as JString;            
+            jVersion= rootObject.GetValueFor("versions.iCanScript") as JString;
         }
+#if DEBUG
+        catch(System.Exception e) {
+			Debug.LogWarning("iCanScript: JSON exception: "+e.Message);
+        }
+#else
         catch(System.Exception) {}
+#endif        	
         return jVersion == null ? null : jVersion.value;
     }
 

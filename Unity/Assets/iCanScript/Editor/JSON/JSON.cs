@@ -98,8 +98,8 @@ public abstract class JSON {
                         return new JNull();
                     }
                 }
-                Debug.LogWarning("JSON: parsing numeric not yet implemented !!!");
-                return new JNull();
+				return ParseNumber(s, ref i);
+//				return new JNull();
             }
         }
     }
@@ -115,7 +115,7 @@ public abstract class JSON {
                         ++i;
                         break;
                     }
-                    if(s[i+1] == '"') {
+                    if(s[i+1] == '"') {  // Accept string quote
                         result+= '"';
                         i+= 2;
                         break;
@@ -135,6 +135,89 @@ public abstract class JSON {
         ++i;
         return result;
     }
+    // -----------------------------------------------------------------------------
+	static JValue ParseNumber(string s, ref int i) {
+		int sign= 1;
+		int integer= 0;
+		float decimal_= 0;
+		int exponent= 0;
+		// Parse sign section
+		if(s[i] == '-') {
+			sign= -1;
+			++i;
+			if(eof(s,i)) {
+	            throw new SystemException("JSON: EOF while parsing number!");
+			}
+		}
+		// Parse integer section
+		if(!Char.IsDigit(s[i])) {
+            throw new SystemException("JSON: Error parsing number: Expected digit and received: "+s[i]);			
+		}
+  	  	if(s[i] != 0) {
+  	  		while(Char.IsDigit(s[i])) {
+  	  			integer*= 10;
+				integer+= s[i]-'0';
+				++i;
+				if(eof(s,i)) {
+					// Integer Number
+					return new JNumber((float)(sign*integer));
+				}
+  	  		}
+  	  	}
+		// Return integer value
+		if(s[i] != '.' && s[i] != 'e' && s[i] != 'E') {
+			return new JNumber((float)(sign*integer));
+		}
+		// Parse decimal section
+		if(s[i] == '.') {
+			++i;
+			if(eof(s,i)) {
+				// FLoat Number
+				return new JNumber((float)(sign*integer));
+			}
+			float scale= 0.1f;
+			while(Char.IsDigit(s[i])) {
+				decimal_+= scale*(s[i]-'0');
+				scale /= 10;
+				++i;
+				if(eof(s,i)) {
+					// Float
+					return new JNumber(sign*(integer+decimal_));
+				}
+			}
+		}
+		float number= sign*(integer+decimal_);
+		if(s[i] != 'e' && s[i] != 'E') {
+			return new JNumber(number);
+		}
+		// Parse exponent section
+		++i;
+		if(eof(s,i)) {
+			// Float
+			return new JNumber(number);			
+		}
+		float expSign= 1f;
+		if(s[i] == '-') {
+			expSign= -1f;
+		}
+		if(s[i] == '-' || s[i] == '+') {
+			++i;
+			if(eof(s,i)) {
+				// Float
+				return new JNumber(number);				
+			}
+		}
+		while(Char.IsDigit(s[i])) {
+			exponent*= 10;
+			exponent+= s[i]-'0';
+			++i;
+			if(eof(s,i)) {
+				// Float with exponent.
+				return new JNumber(number*Mathf.Pow(10f,expSign*exponent));
+			}
+		}
+		return new JNumber(number*Mathf.Pow(10f,expSign*exponent));
+	}
     // -----------------------------------------------------------------------------
     static JValue ParseArray(string s, ref int i) {
         MustBeChar(s, ref i, '[');
