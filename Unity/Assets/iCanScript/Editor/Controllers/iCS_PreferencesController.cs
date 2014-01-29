@@ -8,6 +8,56 @@ public enum iCS_UpdateInterval { Daily= 0, Weekly= 1, Monthly= 2 };
 
 public static class iCS_PreferencesController {
 	// =================================================================================
+    // Canvas Preferences
+    // ---------------------------------------------------------------------------------
+	//
+	// Default Values
+	//
+    static  Color   kCanvasBackgroundColor;
+    static  Color   kGridColor;
+    const   float   kGridSpacing             = 20.0f;
+
+	//
+	// Database access keys
+	//
+    const   string  kCanvasBackgroundColorKey= "iCS_CanvasBackgroundColor";
+    const   string  kGridColorKey            = "iCS_GridColor";
+    const   string  kGridSpacingKey          = "iCS_GridSpacing";
+
+	//
+	// Reset to default value functions
+	//
+	public static void ResetCanvasBackgroundColor() {
+		CanvasBackgroundColor= kCanvasBackgroundColor;
+	}
+	public static void ResetGridColor() {
+		GridColor= kGridColor;
+	}
+	public static void ResetGridSpacing() {
+		GridSpacing= kGridSpacing;
+	}
+	
+	//
+	// Accessors
+	//
+    public static Color CanvasBackgroundColor {
+        get { return LoadColor(kCanvasBackgroundColorKey, kCanvasBackgroundColor); }
+        set { SaveColor(kCanvasBackgroundColorKey, value); }
+    }
+    public static Color GridColor {
+        get { return LoadColor(kGridColorKey, kGridColor); }
+        set { SaveColor(kGridColorKey, value); }
+    }
+    public static float GridSpacing {
+        get { return EditorPrefs.GetFloat(kGridSpacingKey, kGridSpacing); }
+        set {
+            if(value < 5.0f) return;
+            EditorPrefs.SetFloat(kGridSpacingKey, value);
+        }
+    }
+
+
+	// =================================================================================
 	// Software Updates Preferences
     // ---------------------------------------------------------------------------------
 	//
@@ -38,7 +88,7 @@ public static class iCS_PreferencesController {
 		SoftwareUpdateSkippedVersion= kSoftwareUpdateSkippedVersion;
 	}
 	public static void ResetSoftwareUpdateLastWatchDate() {
-		
+		SoftwareUpdateLastWatchDate= DateTime.Now;
 	}
 
 	//
@@ -61,26 +111,39 @@ public static class iCS_PreferencesController {
 		set { SetDateTime(kSoftwareUpdateLastWatchDateKey, value); }
 	}
 	
-//	public static void ResetSoftwareUpdateWatchDate() {
-//		SoftwareUpdateLastWatchDate= GetDefaultSoftwareUpdateWatchTime();
-//	}
-//	public static DateTime GetDefaultSoftwareUpdateWatchTime() {
-//		DateTime lastWatch= DateTime.Now;
-//		switch(SoftwareUpdateInterval) {
-//			case Daily:
-//				break;
-//			case Weekly:
-//				break;
-//			case Montly:
-//				break;
-//		}
-//		return lastWatch;
-//	}
-
 
 	// =================================================================================
+	// Activation
+	// ---------------------------------------------------------------------------------
+	static iCS_PreferencesController() {
+        // Canvas colors
+        kCanvasBackgroundColor= new Color(0.169f, 0.188f, 0.243f);
+        kGridColor            = new Color(0.25f, 0.25f, 0.25f);
+	}
+	
+	// =================================================================================
 	// Utilities
-	// -------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------
+	//
+	// Saving / Loading Colors
+	//
+    static void SaveColor(string name, Color color) {
+        EditorPrefs.SetFloat(name+"_R", color.r);
+        EditorPrefs.SetFloat(name+"_G", color.g);
+        EditorPrefs.SetFloat(name+"_B", color.b);
+        EditorPrefs.SetFloat(name+"_A", color.a);        
+    }
+    static Color LoadColor(string name, Color defaultColor) {
+        float r= EditorPrefs.GetFloat(name+"_R", defaultColor.r);
+        float g= EditorPrefs.GetFloat(name+"_G", defaultColor.g);
+        float b= EditorPrefs.GetFloat(name+"_B", defaultColor.b);
+        float a= EditorPrefs.GetFloat(name+"_A", defaultColor.a);
+        return new Color(r,g,b,a);        
+    }
+
+	//
+	// Saving / Loading Date & Time
+	//
 	public static void SetDateTime(string key, DateTime dateTime) {
 		long binaryTime= dateTime.ToBinary();
 		int low= (int)(binaryTime & 0xffffffff);

@@ -57,9 +57,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void DrawGrid() {
         myGraphics.DrawGrid(position,
-                            iCS_PreferencesEditor.CanvasBackgroundColor,
-                            iCS_PreferencesEditor.GridColor,
-                            iCS_PreferencesEditor.GridSpacing);
+                            iCS_PreferencesController.CanvasBackgroundColor,
+                            iCS_PreferencesController.GridColor,
+                            iCS_PreferencesController.GridSpacing);
     }                       
     
 	// ----------------------------------------------------------------------

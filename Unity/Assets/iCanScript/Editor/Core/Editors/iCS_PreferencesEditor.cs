@@ -41,14 +41,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kPortValueRefreshPeriodKey  = "iCS_PortValueRefresh";
     const string kShowRuntimeFrameIdKey      = "iCS_ShowRuntimeFrameId";
     // ---------------------------------------------------------------------------------
-    // Canvas Constants
-    static  Color   kCanvasBackgroundColor;
-    static  Color   kGridColor;
-    const   float   kGridSpacing             = 20.0f;
-    const   string  kCanvasBackgroundColorKey= "iCS_CanvasBackgroundColor";
-    const   string  kGridColorKey            = "iCS_GridColor";
-    const   string  kGridSpacingKey          = "iCS_GridSpacing";
-    // ---------------------------------------------------------------------------------
     // Node Color Constants
     const float    kSelectedBrightnessGain= 1.75f;
     static Color   kNodeTitleColor;
@@ -232,23 +224,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
         set {
             EditorPrefs.SetBool(kShowRuntimeFrameIdKey, value);
-        }
-    }
-    public static Color CanvasBackgroundColor {
-        get { return LoadColor(kCanvasBackgroundColorKey, kCanvasBackgroundColor); }
-        set { SaveColor(kCanvasBackgroundColorKey, value); }
-    }
-    public static Color GridColor {
-        get { return LoadColor(kGridColorKey, kGridColor); }
-        set { SaveColor(kGridColorKey, value); }
-    }
-    public static float GridSpacing {
-        get {
-            return EditorPrefs.GetFloat(kGridSpacingKey, kGridSpacing);
-        }
-        set {
-            if(value < 5.0f) return;
-            EditorPrefs.SetFloat(kGridSpacingKey, value);
         }
     }
     public static float SelectedBrightnessGain {
@@ -438,10 +413,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     static iCS_PreferencesEditor() {
-        // Canvas colors
-        kCanvasBackgroundColor= new Color(0.169f, 0.188f, 0.243f);
-        kGridColor            = new Color(0.25f, 0.25f, 0.25f);
-        
         // Node colors
         var c= new Func<int,float>(i=> ((float)i)/255f);
         kNodeTitleColor             = Color.black;
@@ -656,15 +627,15 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
-        GridSpacing= EditorGUI.FloatField(pos[0], GridSpacing);
-        GridColor= EditorGUI.ColorField(pos[1], GridColor);
-        CanvasBackgroundColor= EditorGUI.ColorField(pos[2], CanvasBackgroundColor);
+        Prefs.GridSpacing= EditorGUI.FloatField(pos[0], Prefs.GridSpacing);
+        Prefs.GridColor= EditorGUI.ColorField(pos[1], Prefs.GridColor);
+        Prefs.CanvasBackgroundColor= EditorGUI.ColorField(pos[2], Prefs.CanvasBackgroundColor);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-            GridSpacing= kGridSpacing;
-            GridColor= kGridColor;
-            CanvasBackgroundColor= kCanvasBackgroundColor;
+            Prefs.ResetGridSpacing();
+            Prefs.ResetGridColor();
+            Prefs.ResetCanvasBackgroundColor();
         }        
     }
     // ---------------------------------------------------------------------------------
