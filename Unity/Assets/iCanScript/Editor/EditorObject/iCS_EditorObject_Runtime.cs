@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Prefs= iCS_PreferencesController;
 
 public partial class iCS_EditorObject {
     // ======================================================================
@@ -12,7 +13,7 @@ public partial class iCS_EditorObject {
 	public string DisplayName {
 		get {
 			var name= iCS_PreferencesEditor.RemoveProductPrefix(Name);
-			if(iCS_PreferencesEditor.ShowRuntimeFrameId && IsNode && Application.isPlaying) {
+			if(Prefs.ShowRuntimeFrameId && IsNode && Application.isPlaying) {
 				var action= GetRuntimeObject as iCS_Action;
 				if(action != null) {
 					name+= " ("+action.ExecutionFrameId+")";

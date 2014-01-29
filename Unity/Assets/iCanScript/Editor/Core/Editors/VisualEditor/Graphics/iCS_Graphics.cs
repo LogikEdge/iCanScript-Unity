@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
+using Prefs= iCS_PreferencesController;
 
 public partial class iCS_Graphics {
     // ======================================================================
@@ -235,7 +236,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     void BuildLabelStyle() {
-        Color labelColor= iCS_PreferencesEditor.NodeLabelColor;
+        Color labelColor= Prefs.NodeLabelColor;
         if(LabelStyle == null) LabelStyle= new GUIStyle();
         LabelStyle.normal.textColor= labelColor;
         LabelStyle.hover.textColor= labelColor;
@@ -248,7 +249,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     void BuildTitleStyle() {
-        Color titleColor= iCS_PreferencesEditor.NodeTitleColor;
+        Color titleColor= Prefs.NodeTitleColor;
         if(TitleStyle == null) TitleStyle= new GUIStyle();
         TitleStyle.normal.textColor= titleColor;
         TitleStyle.hover.textColor= titleColor;
@@ -271,7 +272,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     void BuildValueStyle() {
-        Color valueColor= iCS_PreferencesEditor.NodeValueColor;
+        Color valueColor= Prefs.NodeValueColor;
         if(ValueStyle == null) ValueStyle= new GUIStyle();
         ValueStyle.normal.textColor= valueColor;
         ValueStyle.hover.textColor= valueColor;
@@ -385,7 +386,7 @@ public partial class iCS_Graphics {
     Color GetBackgroundColor(iCS_EditorObject node) {
         Color backgroundColor= BackgroundColor;
         if(node == selectedObject) {
-            float adj= iCS_PreferencesEditor.SelectedBrightnessGain;
+            float adj= Prefs.SelectedBrightnessGain;
             backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
         }
         return backgroundColor;        
@@ -447,25 +448,25 @@ public partial class iCS_Graphics {
             return new Color(0.75f, 0.75f, 0.75f);
         }
         if(node.IsMessage) {
-            return iCS_PreferencesEditor.MessageNodeColor;
+            return Prefs.MessageNodeColor;
         }
         if(node.IsEntryState) {
-            return iCS_PreferencesEditor.EntryStateNodeColor;
+            return Prefs.EntryStateNodeColor;
         }
         if(node.IsState || node.IsStateChart) {
-            return iCS_PreferencesEditor.StateNodeColor;
+            return Prefs.StateNodeColor;
         }
         if(node.IsInstanceNode) {
-            return iCS_PreferencesEditor.InstanceNodeColor;
+            return Prefs.InstanceNodeColor;
         }
         if(node.IsConstructor) {
-            return iCS_PreferencesEditor.ConstructorNodeColor;
+            return Prefs.ConstructorNodeColor;
         }
         if(node.IsKindOfFunction) {
-            return iCS_PreferencesEditor.FunctionNodeColor;
+            return Prefs.FunctionNodeColor;
         }
         if(node.IsKindOfPackage) {
-            return iCS_PreferencesEditor.PackageNodeColor;
+            return Prefs.PackageNodeColor;
         }
         return Color.gray;
     }
@@ -547,7 +548,7 @@ public partial class iCS_Graphics {
         GUI.color= new Color(1f,1f,1f,alpha);
         
 		// Determine port colors
-        Color portColor= iCS_PreferencesEditor.GetTypeColor(portValueType);
+        Color portColor= Prefs.GetTypeColor(portValueType);
         Color nodeColor= GetNodeColor(port.Parent);
 
         // Draw port icon
@@ -836,7 +837,7 @@ public partial class iCS_Graphics {
             highlight= true;
         }
         // Determine if this connection is part of a drag.
-        Color color= iCS_PreferencesEditor.GetTypeColor(source.RuntimeType);
+        Color color= Prefs.GetTypeColor(source.RuntimeType);
         color.a*= alpha;
         iCS_BindingParams cp= new iCS_BindingParams(port, portPos, source, sourcePos, iStorage);
         Vector3 startPos= TranslateAndScale(cp.Start);

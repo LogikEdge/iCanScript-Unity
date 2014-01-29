@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Prefs= iCS_PreferencesController;
 
 // ==========================================================================
 // Port utilities.
@@ -124,7 +125,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortValue(iCS_EditorObject port) {
-		if(port.IsParentMuxPort && Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
+		if(port.IsParentMuxPort && Application.isPlaying && Prefs.ShowRuntimePortValue) {
 			return true;
 		}
         if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
@@ -139,7 +140,7 @@ public partial class iCS_Graphics {
         }
         object portValue= port.PortValue;
         if(portValue == null) return false;
-        if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) return true;
+        if(Application.isPlaying && Prefs.ShowRuntimePortValue) return true;
         if(!Application.isPlaying) return true;
         return false;
     }

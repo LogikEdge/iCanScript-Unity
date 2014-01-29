@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using P=Prelude;
+using P= Prelude;
+using Prefs= iCS_PreferencesController;
 
 public partial class iCS_EditorObject {   
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -233,7 +234,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Rect AnimatedRect {
 		get {
-			if(IsAnimated && iCS_PreferencesEditor.AnimationEnabled) {
+			if(IsAnimated && Prefs.AnimationEnabled) {
     			return myAnimatedRect.CurrentValue;
 			}
 			var parent= ParentNode;
@@ -295,7 +296,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	public void Animate(P.TimeRatio timeRatio) {
-	    if(!iCS_PreferencesEditor.AnimationEnabled) return;
+	    if(!Prefs.AnimationEnabled) return;
 		myIStorage.IsAnimationPlaying= true;
         if(myAnimatedRect.IsActive) {
             float time= Mathf.Max(myAnimatedRect.RemainingTime, timeRatio.RemainingTime);

@@ -10,6 +10,8 @@ using System.Threading;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using Prefs= iCS_PreferencesController;
+
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
@@ -109,8 +111,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 myNeedRepaint= false;                    
             }
             // Repaint if game is running.
-            else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
-                float period= iCS_PreferencesEditor.PortValueRefreshPeriod;
+            else if(Application.isPlaying && Prefs.ShowRuntimePortValue) {
+                float period= Prefs.PortValueRefreshPeriod;
                 if(period < 0.1f) period= 0.1f;
                 float refreshFactor= 1f/period;
                 int newRefreshCounter= (int)(currentTime*refreshFactor);

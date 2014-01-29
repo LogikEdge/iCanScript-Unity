@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
+using Prefs= iCS_PreferencesController;
 
 // ===========================================================================
 // Graph editor event processing.
@@ -120,13 +121,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Vector2 delta= Event.current.delta;
         if(IsScaleKeyDown) {
             Vector2 pivot= GraphMousePosition;
-			float zoomDirection= iCS_PreferencesEditor.InverseZoom ? -1f : 1f;
-			float scaleDelta= Scale*0.09f*iCS_PreferencesEditor.ZoomSpeed;
+			float zoomDirection= Prefs.InverseZoom ? -1f : 1f;
+			float scaleDelta= Scale*0.09f*Prefs.ZoomSpeed;
             Scale= Scale+(delta.y > 0 ? -scaleDelta : scaleDelta)*zoomDirection;
             Vector2 offset= pivot-GraphMousePosition;
             ScrollPosition+= offset;
         } else {
-            delta*= iCS_PreferencesEditor.ScrollSpeed*(1f/Scale); 
+            delta*= Prefs.ScrollSpeed*(1f/Scale); 
             ScrollPosition+= delta;                    
         }        
     }

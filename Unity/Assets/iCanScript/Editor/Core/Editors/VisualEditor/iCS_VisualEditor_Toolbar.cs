@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using Prefs= iCS_PreferencesController;
 
 /*
     TODO: Should show frameId in header bar.
@@ -24,25 +25,25 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// --------------
 		// LEFT TOOLBAR
 		// Show Runtime frame id.
-        bool showFrameId= iCS_PreferencesEditor.ShowRuntimeFrameId;
+        bool showFrameId= Prefs.ShowRuntimeFrameId;
         bool newShowFrameId= iCS_ToolbarUtility.Toggle(ref r, showFrameId, spacer, spacer);
         if(newShowFrameId != showFrameId) {
-            iCS_PreferencesEditor.ShowRuntimeFrameId= newShowFrameId;
+            Prefs.ShowRuntimeFrameId= newShowFrameId;
         }
         iCS_ToolbarUtility.MiniLabel(ref r, "Frame Id", 0,0);
         iCS_ToolbarUtility.Separator(ref r);
 		
         // Show Runtime values.
-        bool showRuntime= iCS_PreferencesEditor.ShowRuntimePortValue;
+        bool showRuntime= Prefs.ShowRuntimePortValue;
         bool newShowRuntime= iCS_ToolbarUtility.Toggle(ref r, showRuntime, spacer, spacer);
         if(newShowRuntime != showRuntime) {
-            iCS_PreferencesEditor.ShowRuntimePortValue= newShowRuntime;
+            Prefs.ShowRuntimePortValue= newShowRuntime;
         }
         iCS_ToolbarUtility.MiniLabel(ref r, "Runtime Values", 0,0);
-        float refreshSpeed= Mathf.Sqrt(iCS_PreferencesEditor.PortValueRefreshPeriod);
+        float refreshSpeed= Mathf.Sqrt(Prefs.PortValueRefreshPeriod);
         float newRefreshSpeed= iCS_ToolbarUtility.Slider(ref r, kSliderSize, refreshSpeed, 0.3162f, 1.414f, spacer, spacer);
         if(newRefreshSpeed != refreshSpeed) {
-            iCS_PreferencesEditor.PortValueRefreshPeriod= newRefreshSpeed*newRefreshSpeed;
+            Prefs.PortValueRefreshPeriod= newRefreshSpeed*newRefreshSpeed;
         }
         iCS_ToolbarUtility.Separator(ref r);
 		

@@ -18,104 +18,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const float kColumn1X    = 0;
     const float kColumn2X    = kColumn1X+kColumn1Width;
     const float kColumn3X    = kColumn2X+kColumn2Width;
-    // ---------------------------------------------------------------------------------
-    // Display Option Constants
-    const bool   kAnimationEnabled           = true;
-    const float  kAnimationPixelsPerSecond   = 1500f;
-    const float  kMinAnimationTime           = 0.5f;
-    const float  kScrollSpeed                = 3.0f;
-    const float  kEdgeScrollSpeed            = 400.0f;
-    const bool   kInverseZoom                = false;
-    const float  kZoomSpeed                  = 1.0f;
-    const string kAnimationEnabledKey        = "iCS_AnimationEnabled";
-    const string kAnimationPixelsPerSecondKey= "iCS_AnimationPixelsPerSecond";
-    const string kMinAnimationTimeKey        = "iCS_MinAnimationTime";
-    const string kScrollSpeedKey             = "iCS_ScrollSpeed";
-    const string kEdgeScrollSpeedKey         = "iCS_EdgeScrollSpeed";
-    const string kInverseZoomKey             = "iCS_InverseZoom";
-    const string kZoomSpeedKey               = "iCS_ZoomSpeed";
-    const bool   kShowRuntimePortValue       = false;
-    const float  kPortValueRefreshPeriod     = 0.1f;
-	const bool   kShowRuntimeFrameId         = false;
-    const string kShowRuntimePortValueKey    = "iCS_ShowRuntimePortValue";
-    const string kPortValueRefreshPeriodKey  = "iCS_PortValueRefresh";
-    const string kShowRuntimeFrameIdKey      = "iCS_ShowRuntimeFrameId";
-    // ---------------------------------------------------------------------------------
-    // Node Color Constants
-    const float    kSelectedBrightnessGain= 1.75f;
-    static Color   kNodeTitleColor;
-    static Color   kNodeLabelColor;
-    static Color   kNodeValueColor;
-    static Color   kEntryStateNodeColor;
-    static Color   kStateNodeColor;
-    static Color   kPackageNodeColor;
-    static Color   kInstanceNodeColor;
-    static Color   kConstructorNodeColor;
-    static Color   kFunctionNodeColor;
-    static Color   kMessageNodeColor;
-    static Color   kSelectedNodeBackgroundColor;            
-    const string   kSelectedBrightnessGainKey     = "iCS_SelectedBrightnessGain";
-    const string   kNodeTitleColorKey             = "iCS_NodeTitleColor";
-    const string   kNodeLabelColorKey             = "iCS_NodeLabelColor";
-    const string   kNodeValueColorKey             = "iCS_NodeValueColor";
-    const string   kPackageNodeColorKey           = "iCS_PackageNodeColor";
-    const string   kFunctionNodeColorKey          = "iCS_FunctionNodeColor";
-    const string   kConstructorNodeColorKey       = "iCS_ConstructorNodeColor";
-    const string   kInstanceNodeColorKey          = "iCS_InstanceNodeColor";
-    const string   kStateNodeColorKey             = "iCS_StateNodeColor";
-    const string   kEntryStateNodeColorKey        = "iCS_EntryStateNodeColor";
-    const string   kMessageNodeColorKey           = "iCS_MessageNodeColor";
-    const string   kSelectedNodeBackgroundColorKey= "iCS_SelectedNodeBackgroundColor";         
-    // ---------------------------------------------------------------------------------
-    // Type Color Constants
-    static Color kBoolTypeColor;
-    static Color kIntTypeColor;
-    static Color kFloatTypeColor;
-    static Color kVector2TypeColor;
-    static Color kVector3TypeColor;
-    static Color kVector4TypeColor;
-    static Color kStringTypeColor;
-    static Color kGameObjectTypeColor;
-    static Color kDefaultTypeColor;
-    const string kBoolTypeColorKey      = "iCS_BoolTypeColor";
-    const string kIntTypeColorKey       = "iCS_IntTypeColor";
-    const string kFloatTypeColorKey     = "iCS_FloatTypeColor";
-    const string kVector2TypeColorKey   = "iCS_Vector2TypeColor";
-    const string kVector3TypeColorKey   = "iCS_Vector3TypeColor";
-    const string kVector4TypeColorKey   = "iCS_Vector4TypeColor";
-    const string kStringTypeColorKey    = "iCS_StringTypeColor";
-    const string kGameObjectTypeColorKey= "iCS_GameObjectTypeColor";
-    const string kDefaultTypeColorKey   = "iCS_DefaultTypeColor";
-    // ---------------------------------------------------------------------------------
-    // Instance Node Config Constants
-    const bool   kInstanceAutocreateInThis            = true;
-    const bool   kInstanceAutocreateInFields          = false;
-    const bool   kInstanceAutocreateOutFields         = false;
-    const bool   kInstanceAutocreateInClassFields     = false;
-    const bool   kInstanceAutocreateOutClassFields    = false;
-    const bool   kInstanceAutocreateInProperties      = false;
-    const bool   kInstanceAutocreateOutProperties     = false;
-    const bool   kInstanceAutocreateInClassProperties = false;
-    const bool   kInstanceAutocreateOutClassProperties= false;
-    const string kInstanceAutocreateInThisKey            = "iCS_InstanceAutocreateInThis";
-    const string kInstanceAutocreateInFieldsKey          = "iCS_InstanceAutocreateInFields"; 
-    const string kInstanceAutocreateOutFieldsKey         = "iCS_InstanceAutocreateOutFields"; 
-    const string kInstanceAutocreateInClassFieldsKey     = "iCS_InstanceAutocreateInClassFields";
-    const string kInstanceAutocreateOutClassFieldsKey    = "iCS_InstanceAutocreateOutClassFields";
-    const string kInstanceAutocreateInPropertiesKey      = "iCS_InstanceAutocreateInProperties";
-    const string kInstanceAutocreateOutPropertiesKey     = "iCS_InstanceAutocreateOutProperties"; 
-    const string kInstanceAutocreateInClassPropertiesKey = "iCS_InstanceAutocreateInClassProperties";
-    const string kInstanceAutocreateOutClassPropertiesKey= "iCS_InstanceAutocreateOutClassProperties";
-#if CODE_GENERATION_CONFIG
-    // ---------------------------------------------------------------------------------
-	// Code Engineering Config Constants
-	const string kCodeGenerationFolder           = "iCanScript_GeneratedCode";
-	const string kBehaviourGenerationSubFolder   = "Behaviours";
-    const string kCodeGenerationFilePrefix       = "";
-	const string kCodeGenerationFolderKey        = "iCS_CodeGenerationFolder";
-	const string kBehaviourGenerationSubFolderKey= "iCS_BehaviourGenerationSubFolder";
-	const string kCodeGenerationFilePrefixKey    = "iCS_CodeGenerationFilePrefix";
-#endif
 	
     // =================================================================================
     // Fields
@@ -139,220 +41,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-    public static bool AnimationEnabled {
-        get {
-            return EditorPrefs.GetBool(kAnimationEnabledKey, kAnimationEnabled);
-        }
-        set {
-            EditorPrefs.SetBool(kAnimationEnabledKey, value);
-        }
-    }
-    public static float AnimationPixelsPerSecond {
-        get {
-            return EditorPrefs.GetFloat(kAnimationPixelsPerSecondKey, kAnimationPixelsPerSecond);
-        }
-        set {
-            if(value < 10f) value= 10f;
-            EditorPrefs.SetFloat(kAnimationPixelsPerSecondKey, value);
-        }
-    }
-    public static float MinAnimationTime {
-        get {
-            return EditorPrefs.GetFloat(kMinAnimationTimeKey, kMinAnimationTime);
-        }
-        set {
-            if(value < 0.1f) value= 0.1f;
-            EditorPrefs.SetFloat(kMinAnimationTimeKey, value);
-        }
-    }
-    public static float ScrollSpeed {
-        get {
-            return EditorPrefs.GetFloat(kScrollSpeedKey, kScrollSpeed);
-        }
-        set {
-            if(value < 0) return;
-            EditorPrefs.SetFloat(kScrollSpeedKey, value);
-        }
-    }
-    public static float EdgeScrollSpeed {
-        get {
-            return EditorPrefs.GetFloat(kEdgeScrollSpeedKey, kEdgeScrollSpeed);
-        }
-        set {
-            if(value < 0) return;
-            EditorPrefs.SetFloat(kEdgeScrollSpeedKey, value);
-        }
-    }
-    public static bool InverseZoom {
-        get {
-            return EditorPrefs.GetBool(kInverseZoomKey, kInverseZoom);
-        }
-        set {
-            EditorPrefs.SetBool(kInverseZoomKey, value);
-        }
-    }
-    public static float ZoomSpeed {
-        get {
-            return EditorPrefs.GetFloat(kZoomSpeedKey, kZoomSpeed);
-        }
-        set {
-            if(value < 0.1f || value >5.0f) return;
-            EditorPrefs.SetFloat(kZoomSpeedKey, value);
-        }
-    }
-    public static bool ShowRuntimePortValue {
-        get {
-            return EditorPrefs.GetBool(kShowRuntimePortValueKey, kShowRuntimePortValue);
-        }
-        set {
-            EditorPrefs.SetBool(kShowRuntimePortValueKey, value);
-        }
-    }
-    public static float PortValueRefreshPeriod {
-        get {
-            return EditorPrefs.GetFloat(kPortValueRefreshPeriodKey, kPortValueRefreshPeriod);
-        }
-        set {
-            if(value < 0.1f) value= 0.1f;
-            if(value > 2.0f) value= 2.0f;
-            EditorPrefs.SetFloat(kPortValueRefreshPeriodKey, value);
-        }
-    }
-    public static bool ShowRuntimeFrameId {
-        get {
-            return EditorPrefs.GetBool(kShowRuntimeFrameIdKey, kShowRuntimeFrameId);
-        }
-        set {
-            EditorPrefs.SetBool(kShowRuntimeFrameIdKey, value);
-        }
-    }
-    public static float SelectedBrightnessGain {
-        get {
-            return EditorPrefs.GetFloat(kSelectedBrightnessGainKey, kSelectedBrightnessGain);
-        }
-        set {
-            if(value < 0.25f) return;
-            EditorPrefs.SetFloat(kSelectedBrightnessGainKey, value);
-        }
-    }
     // -------------------------------------------------------------------------
-    public static Color NodeTitleColor {
-        get { return LoadColor(kNodeTitleColorKey, kNodeTitleColor); }
-        set { SaveColor(kNodeTitleColorKey, value); }
-    }
-    public static Color NodeLabelColor {
-        get { return LoadColor(kNodeLabelColorKey, kNodeLabelColor); }
-        set { SaveColor(kNodeLabelColorKey, value); }
-    }
-    public static Color NodeValueColor {
-        get { return LoadColor(kNodeValueColorKey, kNodeValueColor); }
-        set { SaveColor(kNodeValueColorKey, value); }
-    }
-    public static Color PackageNodeColor {
-        get { return LoadColor(kPackageNodeColorKey, kPackageNodeColor); }
-        set { SaveColor(kPackageNodeColorKey, value); }
-    }
-    public static Color FunctionNodeColor {
-        get { return LoadColor(kFunctionNodeColorKey, kFunctionNodeColor); }
-        set { SaveColor(kFunctionNodeColorKey, value); }
-    }
-    public static Color ConstructorNodeColor {
-        get { return LoadColor(kConstructorNodeColorKey, kConstructorNodeColor); }
-        set { SaveColor(kConstructorNodeColorKey, value); }
-    }
-    public static Color InstanceNodeColor {
-        get { return LoadColor(kInstanceNodeColorKey, kInstanceNodeColor); }
-        set { SaveColor(kInstanceNodeColorKey, value); }
-    }
-    public static Color MessageNodeColor {
-        get { return LoadColor(kMessageNodeColorKey, kMessageNodeColor); }
-        set { SaveColor(kMessageNodeColorKey, value); }        
-    }
-    public static Color StateNodeColor {
-        get { return LoadColor(kStateNodeColorKey, kStateNodeColor); }
-        set { SaveColor(kStateNodeColorKey, value); }
-    }
-    public static Color EntryStateNodeColor {
-        get { return LoadColor(kEntryStateNodeColorKey, kEntryStateNodeColor); }
-        set { SaveColor(kEntryStateNodeColorKey, value); }
-    }
-    public static Color SelectedNodeBackgroundColor {
-        get { return LoadColor(kSelectedNodeBackgroundColorKey, kSelectedNodeBackgroundColor); }
-        set { SaveColor(kSelectedNodeBackgroundColorKey, value); }
-    }
-    // -------------------------------------------------------------------------
-    public static Color BoolTypeColor {
-        get { return LoadColor(kBoolTypeColorKey, kBoolTypeColor); }
-        set { SaveColor(kBoolTypeColorKey, value); }
-    }
-    public static Color IntTypeColor {
-        get { return LoadColor(kIntTypeColorKey, kIntTypeColor); }
-        set { SaveColor(kIntTypeColorKey, value); }
-    }
-    public static Color FloatTypeColor {
-        get { return LoadColor(kFloatTypeColorKey, kFloatTypeColor); }
-        set { SaveColor(kFloatTypeColorKey, value); }
-    }
-    public static Color StringTypeColor {
-        get { return LoadColor(kStringTypeColorKey, kStringTypeColor);} 
-        set { SaveColor(kStringTypeColorKey, value); }
-    }
-    public static Color Vector2TypeColor {
-        get { return LoadColor(kVector2TypeColorKey, kVector2TypeColor); }
-        set { SaveColor(kVector2TypeColorKey, value); }
-    }
-    public static Color Vector3TypeColor {
-        get { return LoadColor(kVector3TypeColorKey, kVector3TypeColor); }
-        set { SaveColor(kVector3TypeColorKey, value); }
-    }
-    public static Color Vector4TypeColor {
-        get { return LoadColor(kVector4TypeColorKey, kVector4TypeColor); }
-        set { SaveColor(kVector4TypeColorKey, value); }
-    }
-    public static Color GameObjectTypeColor {
-        get { return LoadColor(kGameObjectTypeColorKey, kGameObjectTypeColor); }
-        set { SaveColor(kGameObjectTypeColorKey, value); }
-    }
-    public static Color DefaultTypeColor {
-        get { return LoadColor(kDefaultTypeColorKey, kDefaultTypeColor); }
-        set { SaveColor(kDefaultTypeColorKey, value); }
-    }
-    public static bool InstanceAutocreateInThis {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateInThisKey, kInstanceAutocreateInThis); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInThisKey, value); }        
-    }
-    public static bool InstanceAutocreateInFields {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateInFieldsKey, kInstanceAutocreateInFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInFieldsKey, value); }        
-    }
-    public static bool InstanceAutocreateOutFields {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateOutFieldsKey, kInstanceAutocreateOutFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutFieldsKey, value); }        
-    }
-    public static bool InstanceAutocreateInClassFields {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateInClassFieldsKey, kInstanceAutocreateInClassFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInClassFieldsKey, value); }        
-    }
-    public static bool InstanceAutocreateOutClassFields {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassFieldsKey, kInstanceAutocreateOutClassFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutClassFieldsKey, value); }        
-    }
-    public static bool InstanceAutocreateInProperties {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateInPropertiesKey, kInstanceAutocreateInProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInPropertiesKey, value); }        
-    }
-    public static bool InstanceAutocreateOutProperties {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateOutPropertiesKey, kInstanceAutocreateOutProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutPropertiesKey, value); }        
-    }
-    public static bool InstanceAutocreateInClassProperties {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateInClassPropertiesKey, kInstanceAutocreateInClassProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInClassPropertiesKey, value); }        
-    }
-    public static bool InstanceAutocreateOutClassProperties {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassPropertiesKey, kInstanceAutocreateOutClassProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutClassPropertiesKey, value); }        
-    }
 #if CODE_GENERATION_CONFIG
     // -------------------------------------------------------------------------
 	// Code Generation Config Accessor
@@ -392,52 +81,9 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     }
 #endif
     
-	// =================================================================================
-    // Storage Utilities
-    // ---------------------------------------------------------------------------------
-    static void SaveColor(string name, Color color) {
-        EditorPrefs.SetFloat(name+"_R", color.r);
-        EditorPrefs.SetFloat(name+"_G", color.g);
-        EditorPrefs.SetFloat(name+"_B", color.b);
-        EditorPrefs.SetFloat(name+"_A", color.a);        
-    }
-    static Color LoadColor(string name, Color defaultColor) {
-        float r= EditorPrefs.GetFloat(name+"_R", defaultColor.r);
-        float g= EditorPrefs.GetFloat(name+"_G", defaultColor.g);
-        float b= EditorPrefs.GetFloat(name+"_B", defaultColor.b);
-        float a= EditorPrefs.GetFloat(name+"_A", defaultColor.a);
-        return new Color(r,g,b,a);        
-    }
-    
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    static iCS_PreferencesEditor() {
-        // Node colors
-        var c= new Func<int,float>(i=> ((float)i)/255f);
-        kNodeTitleColor             = Color.black;
-        kNodeLabelColor             = Color.white;
-        kNodeValueColor             = new Color(1f, 0.8f, 0.4f);
-        kEntryStateNodeColor        = new Color(1f, 0.8f, 0.4f);
-        kStateNodeColor             = Color.cyan;
-        kPackageNodeColor           = Color.yellow;
-        kInstanceNodeColor          = new Color(1f, 0.5f, 0f);
-        kConstructorNodeColor       = new Color(1f, 0.25f, 0.5f);
-        kFunctionNodeColor          = Color.green;
-        kMessageNodeColor           = new Color(c(0x36), c(0x8a), c(0xff));
-        kSelectedNodeBackgroundColor= Color.white;
-        
-        // Type colors
-        kBoolTypeColor      = Color.red;
-        kIntTypeColor       = Color.magenta;
-        kFloatTypeColor     = Color.cyan;
-        kVector2TypeColor   = Color.yellow;
-        kVector3TypeColor   = Color.green;
-        kVector4TypeColor   = Color.blue;
-        kStringTypeColor    = Color.red;
-        kGameObjectTypeColor= Color.blue;
-        kDefaultTypeColor   = Color.white;
-    }
     public new void OnEnable() {
         base.OnEnable();
         title= "iCanScript Preferences";
@@ -582,31 +228,31 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
-        AnimationEnabled= EditorGUI.Toggle(pos[0], AnimationEnabled);
-        EditorGUI.BeginDisabledGroup(AnimationEnabled==false);
-        AnimationPixelsPerSecond= EditorGUI.FloatField(pos[1], AnimationPixelsPerSecond);
-        MinAnimationTime= EditorGUI.FloatField(pos[2], MinAnimationTime);
+        Prefs.AnimationEnabled= EditorGUI.Toggle(pos[0], Prefs.AnimationEnabled);
+        EditorGUI.BeginDisabledGroup(Prefs.AnimationEnabled==false);
+        Prefs.AnimationPixelsPerSecond= EditorGUI.FloatField(pos[1], Prefs.AnimationPixelsPerSecond);
+        Prefs.MinAnimationTime= EditorGUI.FloatField(pos[2], Prefs.MinAnimationTime);
         EditorGUI.EndDisabledGroup();
-        ScrollSpeed= EditorGUI.FloatField(pos[3], ScrollSpeed);
-        EdgeScrollSpeed= EditorGUI.FloatField(pos[4], EdgeScrollSpeed);
-        InverseZoom= EditorGUI.Toggle(pos[5], InverseZoom);
-        ZoomSpeed= EditorGUI.FloatField(pos[6], ZoomSpeed);
-        ShowRuntimePortValue= EditorGUI.Toggle(pos[7], ShowRuntimePortValue);
-        PortValueRefreshPeriod= EditorGUI.FloatField(pos[8], PortValueRefreshPeriod);
-		ShowRuntimeFrameId= EditorGUI.Toggle(pos[9], ShowRuntimeFrameId);
+        Prefs.ScrollSpeed= EditorGUI.FloatField(pos[3], Prefs.ScrollSpeed);
+        Prefs.EdgeScrollSpeed= EditorGUI.FloatField(pos[4], Prefs.EdgeScrollSpeed);
+        Prefs.InverseZoom= EditorGUI.Toggle(pos[5], Prefs.InverseZoom);
+        Prefs.ZoomSpeed= EditorGUI.FloatField(pos[6], Prefs.ZoomSpeed);
+        Prefs.ShowRuntimePortValue= EditorGUI.Toggle(pos[7], Prefs.ShowRuntimePortValue);
+        Prefs.PortValueRefreshPeriod= EditorGUI.FloatField(pos[8], Prefs.PortValueRefreshPeriod);
+		Prefs.ShowRuntimeFrameId= EditorGUI.Toggle(pos[9], Prefs.ShowRuntimeFrameId);
 
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-            AnimationEnabled        = kAnimationEnabled;
-            AnimationPixelsPerSecond= kAnimationPixelsPerSecond;
-            MinAnimationTime        = kMinAnimationTime;
-            ScrollSpeed             = kScrollSpeed;
-            EdgeScrollSpeed         = kEdgeScrollSpeed;
-            InverseZoom             = kInverseZoom;
-            ZoomSpeed               = kZoomSpeed;
-            ShowRuntimePortValue    = kShowRuntimePortValue;
-            PortValueRefreshPeriod  = kPortValueRefreshPeriod;
-			ShowRuntimeFrameId      = kShowRuntimeFrameId;   
+            Prefs.ResetAnimationEnabled();
+            Prefs.ResetAnimationPixelsPerSecond();
+            Prefs.ResetMinAnimationTime();
+            Prefs.ResetScrollSpeed();
+            Prefs.ResetEdgeScrollSpeed();
+            Prefs.ResetInverseZoom();
+            Prefs.ResetZoomSpeed();
+            Prefs.ResetShowRuntimePortValue();
+            Prefs.ResetPortValueRefreshPeriod();
+			Prefs.ResetShowRuntimeFrameId();   
         }
     }
     // ---------------------------------------------------------------------------------
@@ -665,33 +311,33 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
-        SelectedBrightnessGain= EditorGUI.FloatField(pos[0], SelectedBrightnessGain);
-        NodeTitleColor= EditorGUI.ColorField(pos[1], NodeTitleColor);
-        NodeLabelColor= EditorGUI.ColorField(pos[2], NodeLabelColor);
-        NodeValueColor= EditorGUI.ColorField(pos[3], NodeValueColor);
-        PackageNodeColor= EditorGUI.ColorField(pos[4], PackageNodeColor);
-        FunctionNodeColor= EditorGUI.ColorField(pos[5], FunctionNodeColor);
-        ConstructorNodeColor= EditorGUI.ColorField(pos[6], ConstructorNodeColor);
-        InstanceNodeColor= EditorGUI.ColorField(pos[7], InstanceNodeColor);
-        StateNodeColor= EditorGUI.ColorField(pos[8], StateNodeColor);
-        EntryStateNodeColor= EditorGUI.ColorField(pos[9], EntryStateNodeColor);
-        MessageNodeColor= EditorGUI.ColorField(pos[10], MessageNodeColor);
-        SelectedNodeBackgroundColor= EditorGUI.ColorField(pos[11], SelectedNodeBackgroundColor);
+        Prefs.SelectedBrightnessGain= EditorGUI.FloatField(pos[0], Prefs.SelectedBrightnessGain);
+        Prefs.NodeTitleColor= EditorGUI.ColorField(pos[1], Prefs.NodeTitleColor);
+        Prefs.NodeLabelColor= EditorGUI.ColorField(pos[2], Prefs.NodeLabelColor);
+        Prefs.NodeValueColor= EditorGUI.ColorField(pos[3], Prefs.NodeValueColor);
+        Prefs.PackageNodeColor= EditorGUI.ColorField(pos[4], Prefs.PackageNodeColor);
+        Prefs.FunctionNodeColor= EditorGUI.ColorField(pos[5], Prefs.FunctionNodeColor);
+        Prefs.ConstructorNodeColor= EditorGUI.ColorField(pos[6], Prefs.ConstructorNodeColor);
+        Prefs.InstanceNodeColor= EditorGUI.ColorField(pos[7], Prefs.InstanceNodeColor);
+        Prefs.StateNodeColor= EditorGUI.ColorField(pos[8], Prefs.StateNodeColor);
+        Prefs.EntryStateNodeColor= EditorGUI.ColorField(pos[9], Prefs.EntryStateNodeColor);
+        Prefs.MessageNodeColor= EditorGUI.ColorField(pos[10], Prefs.MessageNodeColor);
+        Prefs.SelectedNodeBackgroundColor= EditorGUI.ColorField(pos[11], Prefs.SelectedNodeBackgroundColor);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-            SelectedBrightnessGain= kSelectedBrightnessGain;
-            NodeTitleColor= kNodeTitleColor;
-            NodeLabelColor= kNodeLabelColor;
-            NodeValueColor= kNodeValueColor;
-            PackageNodeColor= kPackageNodeColor;
-            FunctionNodeColor= kFunctionNodeColor;
-            ConstructorNodeColor= kConstructorNodeColor;
-            InstanceNodeColor= kInstanceNodeColor;
-            StateNodeColor= kStateNodeColor;
-            EntryStateNodeColor= kEntryStateNodeColor;
-            MessageNodeColor= kMessageNodeColor;
-            SelectedNodeBackgroundColor= kSelectedNodeBackgroundColor;
+            Prefs.ResetSelectedBrightnessGain();
+            Prefs.ResetNodeTitleColor();
+            Prefs.ResetNodeLabelColor();
+            Prefs.ResetNodeValueColor();
+            Prefs.ResetPackageNodeColor();
+            Prefs.ResetFunctionNodeColor();
+            Prefs.ResetConstructorNodeColor();
+            Prefs.ResetInstanceNodeColor();
+            Prefs.ResetStateNodeColor();
+            Prefs.ResetEntryStateNodeColor();
+            Prefs.ResetMessageNodeColor();
+            Prefs.ResetSelectedNodeBackgroundColor();
         }        
     }
     // ---------------------------------------------------------------------------------
@@ -718,28 +364,28 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
-        BoolTypeColor= EditorGUI.ColorField(pos[0], BoolTypeColor);
-        IntTypeColor= EditorGUI.ColorField(pos[1], IntTypeColor);
-        FloatTypeColor= EditorGUI.ColorField(pos[2], FloatTypeColor);
-        StringTypeColor= EditorGUI.ColorField(pos[3], StringTypeColor);
-        Vector2TypeColor= EditorGUI.ColorField(pos[4], Vector2TypeColor);
-        Vector3TypeColor= EditorGUI.ColorField(pos[5], Vector3TypeColor);
-        Vector4TypeColor= EditorGUI.ColorField(pos[6], Vector4TypeColor);
-        GameObjectTypeColor= EditorGUI.ColorField(pos[7], GameObjectTypeColor);
-        DefaultTypeColor= EditorGUI.ColorField(pos[8], DefaultTypeColor);
+        Prefs.BoolTypeColor      = EditorGUI.ColorField(pos[0], Prefs.BoolTypeColor);
+        Prefs.IntTypeColor       = EditorGUI.ColorField(pos[1], Prefs.IntTypeColor);
+        Prefs.FloatTypeColor     = EditorGUI.ColorField(pos[2], Prefs.FloatTypeColor);
+        Prefs.StringTypeColor    = EditorGUI.ColorField(pos[3], Prefs.StringTypeColor);
+        Prefs.Vector2TypeColor   = EditorGUI.ColorField(pos[4], Prefs.Vector2TypeColor);
+        Prefs.Vector3TypeColor   = EditorGUI.ColorField(pos[5], Prefs.Vector3TypeColor);
+        Prefs.Vector4TypeColor   = EditorGUI.ColorField(pos[6], Prefs.Vector4TypeColor);
+        Prefs.GameObjectTypeColor= EditorGUI.ColorField(pos[7], Prefs.GameObjectTypeColor);
+        Prefs.DefaultTypeColor   = EditorGUI.ColorField(pos[8], Prefs.DefaultTypeColor);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-            BoolTypeColor      = kBoolTypeColor;
-            IntTypeColor       = kIntTypeColor;
-            FloatTypeColor     = kFloatTypeColor;
-            StringTypeColor    = kStringTypeColor;
-            Vector2TypeColor   = kVector2TypeColor;
-            Vector3TypeColor   = kVector3TypeColor;
-            Vector4TypeColor   = kVector4TypeColor;
-            GameObjectTypeColor= kGameObjectTypeColor;
-            DefaultTypeColor   = kDefaultTypeColor;
-        }        
+            Prefs.ResetBoolTypeColor();
+			Prefs.ResetIntTypeColor();
+			Prefs.ResetFloatTypeColor();
+			Prefs.ResetStringTypeColor();
+			Prefs.ResetVector2TypeColor();
+			Prefs.ResetVector3TypeColor();
+			Prefs.ResetVector4TypeColor();
+			Prefs.ResetGameObjectTypeColor();
+            Prefs.ResetDefaultTypeColor();
+		}        
     }
     // ---------------------------------------------------------------------------------
     void InstanceWizard() {
@@ -769,30 +415,30 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= 40f;
         }
-        InstanceAutocreateInThis           = EditorGUI.Toggle(pos[0], InstanceAutocreateInThis);
-        InstanceAutocreateInFields         = EditorGUI.Toggle(pos[1], InstanceAutocreateInFields);
-        InstanceAutocreateInClassFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateInClassFields);
-        InstanceAutocreateInProperties     = EditorGUI.Toggle(pos[3], InstanceAutocreateInProperties);
-        InstanceAutocreateInClassProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateInClassProperties);
+        Prefs.InstanceAutocreateInThis           = EditorGUI.Toggle(pos[0], Prefs.InstanceAutocreateInThis);
+        Prefs.InstanceAutocreateInFields         = EditorGUI.Toggle(pos[1], Prefs.InstanceAutocreateInFields);
+        Prefs.InstanceAutocreateInClassFields    = EditorGUI.Toggle(pos[2], Prefs.InstanceAutocreateInClassFields);
+        Prefs.InstanceAutocreateInProperties     = EditorGUI.Toggle(pos[3], Prefs.InstanceAutocreateInProperties);
+        Prefs.InstanceAutocreateInClassProperties= EditorGUI.Toggle(pos[4], Prefs.InstanceAutocreateInClassProperties);
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= 45f;
         }
-        InstanceAutocreateOutFields         = EditorGUI.Toggle(pos[1], InstanceAutocreateOutFields);
-        InstanceAutocreateOutClassFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateOutClassFields);
-        InstanceAutocreateOutProperties     = EditorGUI.Toggle(pos[3], InstanceAutocreateOutProperties);
-        InstanceAutocreateOutClassProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateOutClassProperties);
+        Prefs.InstanceAutocreateOutFields         = EditorGUI.Toggle(pos[1], Prefs.InstanceAutocreateOutFields);
+        Prefs.InstanceAutocreateOutClassFields    = EditorGUI.Toggle(pos[2], Prefs.InstanceAutocreateOutClassFields);
+        Prefs.InstanceAutocreateOutProperties     = EditorGUI.Toggle(pos[3], Prefs.InstanceAutocreateOutProperties);
+        Prefs.InstanceAutocreateOutClassProperties= EditorGUI.Toggle(pos[4], Prefs.InstanceAutocreateOutClassProperties);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-            InstanceAutocreateInThis            = kInstanceAutocreateInThis;
-            InstanceAutocreateInFields          = kInstanceAutocreateInFields;
-            InstanceAutocreateInClassFields     = kInstanceAutocreateInClassFields;
-            InstanceAutocreateInProperties      = kInstanceAutocreateInProperties;
-            InstanceAutocreateInClassProperties = kInstanceAutocreateInClassProperties;
-            InstanceAutocreateOutFields         = kInstanceAutocreateOutFields;
-            InstanceAutocreateOutClassFields    = kInstanceAutocreateOutClassFields;
-            InstanceAutocreateOutProperties     = kInstanceAutocreateOutProperties;
-            InstanceAutocreateOutClassProperties= kInstanceAutocreateOutClassProperties;
+            Prefs.ResetInstanceAutocreateInThis();
+            Prefs.ResetInstanceAutocreateInFields();
+            Prefs.ResetInstanceAutocreateInClassFields();
+            Prefs.ResetInstanceAutocreateInProperties();
+            Prefs.ResetInstanceAutocreateInClassProperties();
+            Prefs.ResetInstanceAutocreateOutFields();
+            Prefs.ResetInstanceAutocreateOutClassFields();
+            Prefs.ResetInstanceAutocreateOutProperties();
+            Prefs.ResetInstanceAutocreateOutClassProperties();
         }        
     }
     // ---------------------------------------------------------------------------------
@@ -858,19 +504,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 	
 	// =================================================================================
     // Helpers.
-    // ---------------------------------------------------------------------------------
-    public static Color GetTypeColor(Type type) {
-        Type t= iCS_Types.GetElementType(type);
-        if(t == typeof(bool))       return BoolTypeColor;
-        if(t == typeof(int))        return IntTypeColor;
-        if(t == typeof(float))      return FloatTypeColor;
-        if(t == typeof(string))     return StringTypeColor;
-        if(t == typeof(GameObject)) return GameObjectTypeColor;
-        if(t == typeof(Vector2))    return Vector2TypeColor;
-        if(t == typeof(Vector3))    return Vector3TypeColor;
-        if(t == typeof(Vector4))    return Vector4TypeColor;
-        return DefaultTypeColor;
-    }
     // ---------------------------------------------------------------------------------
     public static string RemoveProductPrefix(string name) {
         if(name.StartsWith(iCS_Config.ProductPrefix)) {

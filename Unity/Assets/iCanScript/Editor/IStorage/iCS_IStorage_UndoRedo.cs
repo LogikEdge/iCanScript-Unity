@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using P= Prelude;
+using Prefs= iCS_PreferencesController;
 
 public partial class iCS_IStorage {
     // ======================================================================
@@ -58,7 +59,7 @@ public partial class iCS_IStorage {
         // Rebuild layout
         ForcedRelayoutOfTree(EditorObjects[0]);
         // Animate change.
-		var animTime= Mathf.Max(iCS_PreferencesEditor.MinAnimationTime, 0.5f);
+		var animTime= Mathf.Max(Prefs.MinAnimationTime, 0.5f);
         var timeRatio= iCS_EditorObject.BuildTimeRatio(animTime);
         ForEach(
             obj=> {

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
+using Prefs=iCS_PreferencesController;
 
 public partial class iCS_EditorObject {
     // ======================================================================
@@ -47,7 +48,7 @@ public partial class iCS_EditorObject {
 	                var newMagnitude= newOffset.magnitude;
 	                bool sameDirection= dotProduct > 0.98f*(prevMagnitude*newMagnitude);
 					var distance= (targetPos-startPos).magnitude;
-					bool shortDistance= distance*20f < iCS_PreferencesEditor.AnimationPixelsPerSecond;
+					bool shortDistance= distance*20f < Prefs.AnimationPixelsPerSecond;
 	                if(!sameDirection || !shortDistance) {
                     	c.Animate(startRect, targetRect);
 					}

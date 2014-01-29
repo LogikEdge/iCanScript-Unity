@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using Prefs= iCS_PreferencesController;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
@@ -10,7 +11,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Compute the amount of scroll needed.
         var dir= CanScrollInDirection(DetectScrollZone());
         if(Math3D.IsZero(dir)) return;
-        dir*= iCS_PreferencesEditor.EdgeScrollSpeed*myDeltaTime;
+        dir*= Prefs.EdgeScrollSpeed*myDeltaTime;
 
         // Adjust according to scroll zone.
         switch(DragType) {

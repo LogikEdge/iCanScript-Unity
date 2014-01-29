@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Prefs= iCS_PreferencesController;
 
 public static class iCS_BuiltinTextures {
     // =================================================================================
@@ -176,8 +177,8 @@ public static class iCS_BuiltinTextures {
         float scale= 0.8f*kPortIconHeight/(iCS_EditorConfig.PortDiameter*1.4f);
         iCS_PortIcons.BuildInTriggerPortTemplate(scale, ref inPortTemplate);
         iCS_PortIcons.BuildOutTriggerPortTemplate(scale, ref outPortTemplate);
-        Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(iCS_PreferencesEditor.BoolTypeColor, inPortTemplate);
-        Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(iCS_PreferencesEditor.BoolTypeColor, outPortTemplate);
+        Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(Prefs.BoolTypeColor, inPortTemplate);
+        Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(Prefs.BoolTypeColor, outPortTemplate);
 
         myInTriggerPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         myOutTriggerPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);

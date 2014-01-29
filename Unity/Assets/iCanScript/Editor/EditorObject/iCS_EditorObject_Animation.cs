@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using P=Prelude;
+using Prefs= iCS_PreferencesController;
 
 public partial class iCS_EditorObject {
     // ======================================================================
@@ -29,7 +30,7 @@ public partial class iCS_EditorObject {
     public static float RawAnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
         var distance= Vector2.Distance(p1,p2);
 	    var time= AnimationTimeFromDistance(distance);
-        var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
+        var minAnimationTime= Prefs.MinAnimationTime;
         return time < minAnimationTime ? minAnimationTime : time;
     }
     // ----------------------------------------------------------------------
@@ -40,7 +41,7 @@ public partial class iCS_EditorObject {
 			var remainingTime= myAnimatedRect.RemainingTime;
 			return Mathf.Max(remainingTime, time);
 		}
-        var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
+        var minAnimationTime= Prefs.MinAnimationTime;
         return time < minAnimationTime ? minAnimationTime : time;
     }
     // ----------------------------------------------------------------------
@@ -51,7 +52,7 @@ public partial class iCS_EditorObject {
 			var remainingTime= myAnimatedRect.RemainingTime;
 			return Mathf.Max(remainingTime, time);			
 		}
-        var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
+        var minAnimationTime= Prefs.MinAnimationTime;
         return time < minAnimationTime ? minAnimationTime : time;
     }
     // ----------------------------------------------------------------------
@@ -66,7 +67,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public static float AnimationTimeFromDistance(float distance) {
-	    return distance/iCS_PreferencesEditor.AnimationPixelsPerSecond;
+	    return distance/Prefs.AnimationPixelsPerSecond;
     }
     // ----------------------------------------------------------------------
 	public P.TimeRatio BuildTimeRatioFromRect(Rect r1, Rect r2) {
@@ -138,7 +139,7 @@ public partial class iCS_EditorObject {
     // Full graph animation
     // ----------------------------------------------------------------------
 	public P.TimeRatio AnimateGraph(Action<iCS_EditorObject> fnc) {
-        if(iCS_PreferencesEditor.AnimationEnabled) {
+        if(Prefs.AnimationEnabled) {
             EditorObjects[0].ForEachRecursiveDepthLast(
                 (c,_)=> c.IsNode,
                 node => {
@@ -155,7 +156,7 @@ public partial class iCS_EditorObject {
 		fnc(this);
         myIStorage.ForcedRelayoutOfTree(EditorObjects[0]);
         var timeRatio= BuildTimeRatioFromRect(AnimationStart, LayoutRect);		
-        if(iCS_PreferencesEditor.AnimationEnabled) {
+        if(Prefs.AnimationEnabled) {
             EditorObjects[0].ForEachRecursiveDepthLast(
                 (c,_)=> c.IsNode,
                 node=> {

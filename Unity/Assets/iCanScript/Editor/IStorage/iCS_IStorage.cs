@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
+using Prefs= iCS_PreferencesController;
 
 public partial class iCS_IStorage {
     // ======================================================================
@@ -191,7 +192,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public void UpdateAnimations() {
         IsAnimationPlaying= false;
-        if(iCS_PreferencesEditor.AnimationEnabled) {
+        if(Prefs.AnimationEnabled) {
             ForEach(
                 obj=> {
         			if(obj.IsAnimated) {
