@@ -233,7 +233,7 @@ public abstract class JSON {
                 throw new SystemException("JSON: eof seen parsing array.");
             }
             switch(s[i]) {
-                case ',': { ++i; break; }
+                case ',': { ++i; RemoveWhiteSpaces(s, ref i); break; }
                 case ']': { break; }
                 default: {
                     throw new SystemException("JSON: invalid character: "+s[i]+" used as seperator in parsing array.");
@@ -258,7 +258,7 @@ public abstract class JSON {
                 throw new SystemException("JSON: eof seen parsing object.");
             }
             switch(s[i]) {
-                case ',': { ++i; break; }
+                case ',': { ++i; RemoveWhiteSpaces(s, ref i); break; }
                 case '}': { break; }
                 default: {
                     throw new SystemException("JSON: invalid character: "+s[i]+" used as seperator in parsing object.");
