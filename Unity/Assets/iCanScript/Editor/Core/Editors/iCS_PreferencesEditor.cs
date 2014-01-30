@@ -461,8 +461,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
 		Prefs.SoftwareUpdateWatchEnabled  = EditorGUI.Toggle(pos[0], Prefs.SoftwareUpdateWatchEnabled);
 		Prefs.SoftwareUpdateInterval      = (iCS_UpdateInterval)EditorGUI.EnumPopup(pos[1], Prefs.SoftwareUpdateInterval);
+		pos[2].width*= 0.5f;
 		Prefs.SoftwareUpdateSkippedVersion= EditorGUI.TextField(pos[2], Prefs.SoftwareUpdateSkippedVersion);
-
+		pos[2].x+= pos[2].width;
+		if(GUI.Button(pos[2], "Clear")) {
+			Prefs.ResetSoftwareUpdateSkippedVersion();			
+		}
+		
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
 			Prefs.ResetSoftwareUpdateWatchEnabled();
