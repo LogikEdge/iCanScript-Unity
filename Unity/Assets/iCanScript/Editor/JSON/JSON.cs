@@ -243,6 +243,7 @@ public abstract class JSON {
                 }
             }
         }
+		++i;
         return new JArray(values.ToArray());        
     }
     // -----------------------------------------------------------------------------
@@ -269,6 +270,7 @@ public abstract class JSON {
                 }
             }
         }
+		++i;
         return new JObject(attributes.ToArray());        
     }
     // -----------------------------------------------------------------------------

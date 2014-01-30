@@ -1,4 +1,4 @@
-//#define DEBUG
+#define DEBUG
 
 using UnityEditor;
 using UnityEngine;
@@ -50,7 +50,8 @@ public static class iCS_SoftwareUpdateController {
 #endif
 		}
 		// Get the last revision from the server.
-		iCS_Version serverVersion= GetLatestReleaseId();
+		string downloadUrl= null;
+		iCS_Version serverVersion= GetLatestReleaseId(out downloadUrl);
 		if(serverVersion == null) {
 			Debug.Log("iCanScript: Unable to contact version server. Software update verification postponed.");
 			return;
@@ -84,9 +85,10 @@ public static class iCS_SoftwareUpdateController {
 	//
 	public static void ManualUpdateVerification() {
 		// Check if we have the most up-to-date software
-		iCS_Version latestVersion= GetLatestReleaseId();
+		string downloadUrl= null;
+		iCS_Version latestVersion= GetLatestReleaseId(out downloadUrl);
 		// Tell the user we can't contact the server and abort.
-		if(latestVersion == null) {
+		if(latestVersion == null || downloadUrl == null) {
 			iCS_SoftwareUpdateView.ShowServerUnavailableDialog();
 			return;
 		}
@@ -100,7 +102,8 @@ public static class iCS_SoftwareUpdateController {
 		var selection= iCS_SoftwareUpdateView.ShowNewVersionDialog(iCS_Version.Current, latestVersion);
 		switch(selection) {
 			case 0:	// Download
-				Application.OpenURL(URL_DownloadPage);            
+				Application.OpenURL(downloadUrl);
+//				Application.OpenURL(URL_DownloadPage);            
 				break;
 			case 1:	// Skip this version
 				iCS_PreferencesController.SoftwareUpdateSkippedVersion= latestVersion.ToString();
@@ -115,7 +118,8 @@ public static class iCS_SoftwareUpdateController {
 	// Software Update Verification Support Functions.
     // ---------------------------------------------------------------------------------
     // Returns the version string of the latest available release.
-    static iCS_Version GetLatestReleaseId(float waitTime= 2f) {
+    static iCS_Version GetLatestReleaseId(out string downloadUrl, float waitTime= 2f) {
+		downloadUrl= null;
 		var url= URL_VersionFile;
         var download = iCS_WebUtils.WebRequest(url, waitTime);
         if(!String.IsNullOrEmpty(download.error)) {
@@ -134,6 +138,16 @@ public static class iCS_SoftwareUpdateController {
 				jMajor = latestVersion.GetValueFor("major") as JNumber;
 				jMinor = latestVersion.GetValueFor("minor") as JNumber;
 				jBugFix= latestVersion.GetValueFor("bugFix") as JNumber;
+				JString jDownloadUrl= rootObject.GetValueFor("downloadUrl") as JString;
+				if(jDownloadUrl != null) {
+					downloadUrl= jDownloadUrl.value;
+				}
+#if DEBUG
+				else {
+					Debug.Log("iCanScript: Unable to determine the download URL");
+					Debug.Log("iCanScript: JSON root object is: "+rootObject.Encode());
+				}
+#endif					
 			}
         }
 #if DEBUG
