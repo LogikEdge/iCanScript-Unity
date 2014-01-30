@@ -1,4 +1,5 @@
-#define DEBUG
+//#define DEBUG
+
 using UnityEngine;
 using UnityEditor;
 using P=Prelude;

@@ -10,6 +10,12 @@ public class iCS_Version {
 	public uint MinorVersion;
 	public uint BugFixVersion;
 	
+	public static iCS_Version Current=
+		new iCS_Version(iCS_Config.MajorVersion,
+					    iCS_Config.MinorVersion,
+						iCS_Config.BugFixVersion);
+	
+
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
@@ -65,6 +71,17 @@ public class iCS_Version {
 		if(MinorVersion < minor) return true;
 		if(MinorVersion > minor) return false;
 		return BugFixVersion < bugFix;
+	}
+    // ----------------------------------------------------------------------
+	public bool IsOlderOrSameAs(iCS_Version other) {
+		return IsOlderOrSameAs(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
+	}
+	public bool IsOlderOrSameAs(uint major, uint minor, uint bugFix) {
+		if(MajorVersion < major) return true;
+		if(MajorVersion > major) return false;
+		if(MinorVersion < minor) return true;
+		if(MinorVersion > minor) return false;
+		return BugFixVersion <= bugFix;
 	}
 
     // ======================================================================

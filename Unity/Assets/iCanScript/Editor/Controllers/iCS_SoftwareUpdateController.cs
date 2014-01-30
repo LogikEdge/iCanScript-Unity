@@ -1,4 +1,4 @@
-#define DEBUG
+//#define DEBUG
 
 using UnityEditor;
 using UnityEngine;
@@ -12,8 +12,8 @@ public static class iCS_SoftwareUpdateController {
 	// =================================================================================
     // Server URL Information
     // ---------------------------------------------------------------------------------
-	const string URL_VersionFile=  "www.icanscript.com/versions.txt";
-	const string URL_DownloadPage= "http://www.icanscript.com/support/downloads";
+	const string URL_VersionFile=  iCS_WebConfig.LatestVersionInfoFile;
+	const string URL_DownloadPage= "http://"+iCS_WebConfig.DownloadsPage;
 	
 		
 	// =================================================================================
@@ -45,11 +45,12 @@ public static class iCS_SoftwareUpdateController {
 		if(nextWatchDate.CompareTo(now) >= 0) {
 #if DEBUG
 			Debug.Log("iCanScript: Software Update does not need to be verified before: "+nextWatchDate);
+#else
+			return;
 #endif
-//			return;
 		}
 		// Get the last revision from the server.
-		string serverVersion= GetLatestReleaseId();
+		iCS_Version serverVersion= GetLatestReleaseId();
 		if(serverVersion == null) {
 			Debug.Log("iCanScript: Unable to contact version server. Software update verification postponed.");
 			return;
@@ -57,7 +58,7 @@ public static class iCS_SoftwareUpdateController {
 		// Update last watch date now that we can contact the version server.
 		Prefs.SoftwareUpdateLastWatchDate= AddInterval(now);
 		// Return if the user wants to skip this version.
-		if(Prefs.SoftwareUpdateSkippedVersion == serverVersion) {
+		if(Prefs.SoftwareUpdateSkippedVersion == serverVersion.ToString()) {
 #if DEBUG
 			Debug.Log("iCanScript: User requested to skipped software update for: "+serverVersion);
 #endif
@@ -83,26 +84,26 @@ public static class iCS_SoftwareUpdateController {
 	//
 	public static void ManualUpdateVerification() {
 		// Check if we have the most up-to-date software
-		string latestVersion= GetLatestReleaseId();
+		iCS_Version latestVersion= GetLatestReleaseId();
 		// Tell the user we can't contact the server and abort.
-		if(String.IsNullOrEmpty(latestVersion)) {
+		if(latestVersion == null) {
 			iCS_SoftwareUpdateView.ShowServerUnavailableDialog();
 			return;
 		}
 		// Tell the user we have the latest version.
-		var isLatest= IsLatestVersion(latestVersion);
+		var isLatest= IsUpToDate(latestVersion);
         if(isLatest.Value) {
 			iCS_SoftwareUpdateView.ShowAlreadyCurrentDialog();
+			return;
 		}
 		// Tell the user a new version exists and ask him/her to download it.
-        var currentVersion= "v"+iCS_EditorConfig.VersionId;
-		var selection= iCS_SoftwareUpdateView.ShowNewVersionDialog(currentVersion, latestVersion);
+		var selection= iCS_SoftwareUpdateView.ShowNewVersionDialog(iCS_Version.Current, latestVersion);
 		switch(selection) {
 			case 0:	// Download
 				Application.OpenURL(URL_DownloadPage);            
 				break;
 			case 1:	// Skip this version
-				iCS_PreferencesController.SoftwareUpdateSkippedVersion= latestVersion;
+				iCS_PreferencesController.SoftwareUpdateSkippedVersion= latestVersion.ToString();
 				break;
 			default: // Cancel
 				break;
@@ -114,9 +115,8 @@ public static class iCS_SoftwareUpdateController {
 	// Software Update Verification Support Functions.
     // ---------------------------------------------------------------------------------
     // Returns the version string of the latest available release.
-    static string GetLatestReleaseId(float waitTime= 2f) {
-		var url= iCS_WebConfig.WebService_Versions;
-		url= URL_VersionFile;
+    static iCS_Version GetLatestReleaseId(float waitTime= 2f) {
+		var url= URL_VersionFile;
         var download = iCS_WebUtils.WebRequest(url, waitTime);
         if(!String.IsNullOrEmpty(download.error)) {
             return null;
@@ -124,10 +124,17 @@ public static class iCS_SoftwareUpdateController {
 #if DEBUG
         Debug.Log(download.text);
 #endif
-        JString jVersion= null;
+        JNumber jMajor = null;
+		JNumber jMinor = null;
+		JNumber jBugFix= null;
         try {
 			JObject rootObject= JSON.GetRootObject(download.text);
-            jVersion= rootObject.GetValueFor("versions.iCanScript") as JString;
+            JObject latestVersion=  rootObject.GetValueFor("iCanScript") as JObject;
+			if(!latestVersion.isNull) {
+				jMajor = latestVersion.GetValueFor("major") as JNumber;
+				jMinor = latestVersion.GetValueFor("minor") as JNumber;
+				jBugFix= latestVersion.GetValueFor("bugFix") as JNumber;
+			}
         }
 #if DEBUG
         catch(System.Exception e) {
@@ -136,37 +143,22 @@ public static class iCS_SoftwareUpdateController {
 #else
         catch(System.Exception) {}
 #endif        	
-        return jVersion == null ? null : jVersion.value;
+		if(jMajor == null || jMinor == null || jBugFix == null) return null;
+		return new iCS_Version((uint)jMajor.value, (uint)jMinor.value, (uint)jBugFix.value);
     }
 
-    // ----------------------------------------------------------------------
-    // Returns true if the current version is the latest version.
-    static Maybe<bool> IsLatestVersion() {
-		return IsLatestVersion(GetLatestReleaseId());
-    }
-    // ----------------------------------------------------------------------
-    // Returns true if the current version is the latest version.
-    static Maybe<bool> IsLatestVersion(string latestVersion) {
-        if(String.IsNullOrEmpty(latestVersion)) {
-            return new Nothing<bool>();
-        }
-        var currentVersion= "v"+iCS_EditorConfig.VersionId;
-        return new Just<bool>(currentVersion == latestVersion);
-    }
     // ----------------------------------------------------------------------
     // Returns true if the current version is equal or younger then the
 	// version returned by the server.
-    static Maybe<bool> IsUpToDate(string serverVersionStr) {
-        if(String.IsNullOrEmpty(serverVersionStr)) {
+    static Maybe<bool> IsUpToDate(iCS_Version serverVersion) {
+        if(serverVersion == null) {
             return new Nothing<bool>();
         }
-        var currentVersion= new iCS_Version(iCS_Config.MajorVersion,
-											iCS_Config.MinorVersion,
-											iCS_Config.BugFixVersion);
-
-		serverVersionStr= serverVersionStr.Substring(1);
-		var serverVersion= iCS_Version.FromString(serverVersionStr);
-        return new Just<bool>(currentVersion.IsNewerOrSameAs(serverVersion));
+        return new Just<bool>(
+			serverVersion.IsOlderOrSameAs(iCS_Config.MajorVersion,
+								  		  iCS_Config.MinorVersion,
+								  		  iCS_Config.BugFixVersion)
+		);
     }
     // ----------------------------------------------------------------------
 	// Returns the given plus the software update interval.

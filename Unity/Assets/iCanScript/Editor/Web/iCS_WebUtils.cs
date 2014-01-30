@@ -1,3 +1,5 @@
+//#define DEBUG
+
 using UnityEditor;
 using UnityEngine;
 using System;
@@ -21,7 +23,9 @@ public static class iCS_WebUtils {
         var startTime= Time.realtimeSinceStartup;
         while(!transaction.isDone) {
             if((Time.realtimeSinceStartup-startTime) > waitTime) {
+#if DEBUG
                 Debug.LogWarning("iCanScript: Timeout waiting for URL: "+transaction.url);
+#endif
                 break;
             }
         }
