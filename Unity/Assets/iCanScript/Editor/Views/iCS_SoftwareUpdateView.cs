@@ -12,7 +12,7 @@ public static class iCS_SoftwareUpdateView {
     // ---------------------------------------------------------------------------------
 	public static int ShowNewVersionDialog(iCS_Version currentVersion, iCS_Version latestVersion) {
         return EditorUtility.DisplayDialogComplex("A new version of iCanScript is available!",
-                                                  "Version "+latestVersion+" is available for download.\n"+
+                                                  "iCanScript "+latestVersion+" is available for download.\n"+
                                                   "Would you like to download it?",
                                                   "Download", "Skip This Version","Cancel");
 	}
@@ -27,7 +27,7 @@ public static class iCS_SoftwareUpdateView {
     // ---------------------------------------------------------------------------------
 	public static void ShowAlreadyCurrentDialog() {
 		EditorUtility.DisplayDialog("You have the latest version of iCanScript!",
-									 "The version installed is: v"+iCS_EditorConfig.VersionId+".\nNo updates are available.",
+									 "iCanScript "+iCS_EditorConfig.VersionId+"is the newest version available.",
 									 "Ok");
 	}
 }
