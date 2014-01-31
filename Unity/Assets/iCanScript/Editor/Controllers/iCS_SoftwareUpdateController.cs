@@ -73,7 +73,9 @@ public static class iCS_SoftwareUpdateController {
 #endif
 			return;
 		}
+#if DEBUG
 		Debug.Log("iCanScript: Latest version is: "+serverVersion+" up to date: "+isUpToDate.Value);
+#endif
 		if(!isUpToDate.Value) {
 			ManualUpdateVerification();
 		}

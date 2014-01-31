@@ -1,3 +1,4 @@
+#define DEBUG
 #define NEW_RECONNECTION
 using UnityEngine;
 using UnityEditor;
@@ -357,79 +358,88 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		);
 	}
 	// ----------------------------------------------------------------------
-	void RebuildDataConnection(iCS_EditorObject srcEndPoint, iCS_EditorObject dstPort) {
+	void RebuildDataConnection(iCS_EditorObject outputPort, iCS_EditorObject inputPort) {
+#if DEBUG
+		Debug.Log("iCanScript: RebuildDataConnection: output= "+outputPort.Name+" input= "+inputPort.Name);
+#endif
 		// Have we completed rebuilding ... if so return.
-		if(dstPort == srcEndPoint) return;
-		var dstNode= dstPort.ParentNode;
-		var commonParentNode= srcEndPoint.GetCommonParent(dstPort);
+		if(inputPort == outputPort) return;
+		var dstNode= inputPort.ParentNode;
+		var commonParentNode= outputPort.GetCommonParent(inputPort);
 		if(dstNode == commonParentNode) {
+#if DEBUG
+			Debug.Log("iCanScript: RebuildDataConnection: Common parent is destination node");
+#endif
+			// Nothing to do for looping data port on same node.
+			var srcNode= outputPort.ParentNode;
+			if(srcNode == dstNode) return;
 			// Rebuild moving down from the common parent towards the source port.
-			var newDstNode= srcEndPoint.ParentNode;
+			var newDstNode= srcNode;
 			while(newDstNode != dstNode && newDstNode.ParentNode != dstNode) {
 				newDstNode= newDstNode.ParentNode;
 			}
-			var existingPort= FindPortWithSourceEndPoint(newDstNode, srcEndPoint);
+			var existingPort= FindPortWithSourceEndPoint(newDstNode, outputPort);
 			if(existingPort != null) {
-				var prevSource= dstPort.Source;
+				var prevSource= inputPort.Source;
 				if(prevSource != existingPort) {
-					dstPort.Source= existingPort;
-					if(prevSource.IsDynamicDataPort && !dstPort.IsPartOfConnection(prevSource)) {
+					inputPort.Source= existingPort;
+					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
 				}
-				RebuildDataConnection(srcEndPoint, existingPort);
+				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(dstPort.Name, newDstNode.InstanceId, dstPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-				SetBestPositionForAutocreatedPort(newPort, srcEndPoint.LayoutPosition, dstPort.LayoutPosition);
-				newPort.Source= dstPort.Source;
-				dstPort.Source= newPort;
-				RebuildDataConnection(srcEndPoint, newPort);				
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
+				newPort.Source= inputPort.Source;
+				inputPort.Source= newPort;
+				RebuildDataConnection(outputPort, newPort);				
 			}			
 			return;
 		}
 		var dstNodeParent= dstNode.ParentNode;
 		if(dstNodeParent == commonParentNode) {
 			// Rebuild traversing from moving upwards to downwords.
-			var newDstNode= srcEndPoint.ParentNode;
+			var newDstNode= outputPort.ParentNode;
 			while(newDstNode != commonParentNode && newDstNode.ParentNode != commonParentNode) {
 				newDstNode= newDstNode.ParentNode;
 			}
-			var existingPort= FindPortWithSourceEndPoint(newDstNode, srcEndPoint);
+			var existingPort= FindPortWithSourceEndPoint(newDstNode, outputPort);
 			if(existingPort != null) {
-				var prevSource= dstPort.Source;
+				var prevSource= inputPort.Source;
 				if(prevSource != existingPort) {
-					dstPort.Source= existingPort;
-					if(prevSource.IsDynamicDataPort && !dstPort.IsPartOfConnection(prevSource)) {
+					inputPort.Source= existingPort;
+					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
 				}
-				RebuildDataConnection(srcEndPoint, existingPort);
+				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(dstPort.Name, newDstNode.InstanceId, dstPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-				SetBestPositionForAutocreatedPort(newPort, srcEndPoint.LayoutPosition, dstPort.LayoutPosition);
-				newPort.Source= dstPort.Source;
-				dstPort.Source= newPort;
-				RebuildDataConnection(srcEndPoint, newPort);				
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
+				newPort.Source= inputPort.Source;
+				inputPort.Source= newPort;
+				RebuildDataConnection(outputPort, newPort);				
 			}
 			return;
 		} else {
 			// Rebuilding moving up from the destination port towards the common parent.
-			var existingPort= FindPortWithSourceEndPoint(dstNodeParent, srcEndPoint);
+			var existingPort= FindPortWithSourceEndPoint(dstNodeParent, outputPort);
 			if(existingPort != null) {
-				var prevSource= dstPort.Source;
+				var prevSource= inputPort.Source;
 				if(prevSource != existingPort) {
-					dstPort.Source= existingPort;
-					if(prevSource.IsDynamicDataPort && !dstPort.IsPartOfConnection(prevSource)) {
+					inputPort.Source= existingPort;
+					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
 				}
-				RebuildDataConnection(srcEndPoint, existingPort);
+				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(dstPort.Name, dstNodeParent.InstanceId, dstPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
-				SetBestPositionForAutocreatedPort(newPort, srcEndPoint.LayoutPosition, dstPort.LayoutPosition);
-				newPort.Source= dstPort.Source;
-				dstPort.Source= newPort;
-				RebuildDataConnection(srcEndPoint, newPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, dstNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
+				newPort.Source= inputPort.Source;
+				inputPort.Source= newPort;
+				RebuildDataConnection(outputPort, newPort);
 			}			
 		}
 	}
