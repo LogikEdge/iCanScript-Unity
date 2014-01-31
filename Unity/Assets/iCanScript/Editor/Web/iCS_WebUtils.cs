@@ -10,12 +10,30 @@ public static class iCS_WebUtils {
     // ----------------------------------------------------------------------
     // Performs a Web form request on the given url.
     public static WWW WebRequest(string url, WWWForm form, float waitTime= 2f) {
-        return WaitForTransaction(new WWW(url, form), waitTime);
+        WWW response= null;
+		try {
+			response= WaitForTransaction(new WWW(url, form), waitTime);			
+		}
+#if DEBUG
+		catch(System.Exception e) { Debug.LogWarning("iCanScript: Error accessing WWW: "+e.Message); }
+#else
+		catch(System.Exception) {}
+#endif
+		return response;
     }
     // ----------------------------------------------------------------------
     // Performs a Web request on the given url.
     public static WWW WebRequest(string url, float waitTime= 500f) {
-        return WaitForTransaction(new WWW(url), waitTime);
+        WWW response= null;
+		try {
+			response= WaitForTransaction(new WWW(url), waitTime);			
+		}
+#if DEBUG
+		catch(System.Exception e) { Debug.LogWarning("iCanScript: Error accessing WWW: "+e.Message); }
+#else
+		catch(System.Exception) {}
+#endif
+		return response;
     }
     // ----------------------------------------------------------------------
 	// Wait for Web transaction to complete.

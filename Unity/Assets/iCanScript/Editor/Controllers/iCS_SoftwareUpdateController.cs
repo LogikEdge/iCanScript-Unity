@@ -1,4 +1,4 @@
-#define DEBUG
+//#define DEBUG
 
 using UnityEditor;
 using UnityEngine;
@@ -46,7 +46,7 @@ public static class iCS_SoftwareUpdateController {
 #if DEBUG
 			Debug.Log("iCanScript: Software Update does not need to be verified before: "+nextWatchDate);
 #else
-			return;
+//			return;
 #endif
 		}
 		// Get the last revision from the server.
