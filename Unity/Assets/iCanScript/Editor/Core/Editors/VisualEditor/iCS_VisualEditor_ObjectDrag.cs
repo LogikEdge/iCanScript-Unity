@@ -780,7 +780,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void AutocreateInstanceNode(Vector2 globalPosition, iCS_EditorObject newParent) {
         var sourcePort= DragFixPort;
-        Type instanceType= sourcePort.RuntimeType;
+        Type instanceType= iCS_Types.GetElementType(sourcePort.RuntimeType);
         if(iCS_Types.IsStaticClass(instanceType)) return;
         if(DragOriginalPort != DragFixPort) return;
         var instance= IStorage.CreatePackage(newParent.InstanceId, globalPosition, "", iCS_ObjectTypeEnum.Package, instanceType);

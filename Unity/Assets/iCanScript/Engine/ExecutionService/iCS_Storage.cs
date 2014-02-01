@@ -80,11 +80,11 @@ public class iCS_Storage : MonoBehaviour {
 		return parentNode;
 	}
     // ----------------------------------------------------------------------
-	public string GetFullPathName(iCS_EngineObject obj) {
+	public string GetFullName(iCS_EngineObject obj) {
 		if(obj == null) return "";
 		string fullName= null;
-		for(fullName= obj.Name; obj != null; obj= GetParentNode(obj)) {
-			fullName+= "::"+obj.Name;
+		for(; obj != null; obj= GetParentNode(obj)) {
+			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "::"+fullName);
 		}
 		return fullName;
 	}

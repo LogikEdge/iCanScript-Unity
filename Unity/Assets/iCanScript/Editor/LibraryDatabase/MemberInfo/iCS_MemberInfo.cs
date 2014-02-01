@@ -112,9 +112,6 @@ public abstract class iCS_MemberInfo {
     }
     public string IconPath {
         get {
-            if(String.IsNullOrEmpty(myIconPath)) {
-                return ParentTypeInfo == null ? "" : ParentTypeInfo.IconPath;
-            }
             return myIconPath;            
         }
         set {

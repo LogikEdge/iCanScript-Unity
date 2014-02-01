@@ -97,9 +97,10 @@ public class iCS_SignatureDataSource {
             }
 		}
 #if UNITY_EDITOR
-        Debug.LogWarning("iCanScript: Trying to get a signature value with wrong index: "+idx);
-#endif
+		throw new System.Exception("Invalid signature access: ["+idx+"]");
+#else
         return null;		
+#endif
 	}
 	// -------------------------------------------------------------------------
     // Sets the value of the object in the signature.  This should be called
@@ -130,15 +131,14 @@ public class iCS_SignatureDataSource {
 			return;
 		}
 #if UNITY_EDITOR
-        Debug.LogWarning("iCanScript: Trying to set a signature value with wrong index: "+idx);
+		throw new System.Exception("Invalid signature access: ["+idx+"]");
 #endif
 	}
 	// -------------------------------------------------------------------------
     public void SetParameter(int idx, object value) {
 #if UNITY_EDITOR
         if(idx >= myParameters.Length) {
-            Debug.LogWarning("iCanScript: Trying to set a signature value with wrong index: "+idx);
-            return;
+			throw new System.Exception("Invalid signature access: ["+idx+"]");
         }
 #endif        
         myParameters[idx]= value;
@@ -148,8 +148,7 @@ public class iCS_SignatureDataSource {
 		var i= idx-(int)iCS_PortIndex.EnablesStart;
 #if UNITY_EDITOR
 		if(i >= myEnables.Length) {
-            Debug.LogWarning("iCanScript: Trying to set a signature enable with wrong index: "+idx);
-		    return;
+			throw new System.Exception("Invalid signature access: ["+idx+"]");
 	    }
 #endif
 		myEnables[i]= value;

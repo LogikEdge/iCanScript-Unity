@@ -352,7 +352,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 								if(!parent.IsMessage) {
 									initValue= System.Activator.CreateInstance(port.RuntimeType);									
 									if(initValue == null) {
-										Debug.LogWarning("iCanScript: Unable to create instance for: "+GetFullPathName(parent));
+										Debug.LogWarning("iCanScript: Unable to create instance for: "+GetFullName(parent));
 									}
 								}
 							}
@@ -400,7 +400,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                     }
                 }
                 catch(System.Exception exception) {
-                    Debug.LogWarning("iCanScript: Exception in binding code generation for port #"+port.InstanceId+": "+exception.Message);
+                    Debug.LogWarning("iCanScript: Exception thrown in "+GetFullName(port)+" => "+exception.Message);
                 }
             }
         }
