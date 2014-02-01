@@ -1,10 +1,11 @@
-#define DEBUG
+//#define DEBUG
 #define NEW_RECONNECTION
 using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
@@ -341,12 +342,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 #if NEW_RECONNECTION
 	// ----------------------------------------------------------------------
 	void RebuildConnectionsFor(iCS_EditorObject node) {
+		// Rebuild connection from end-to-end.
 		node.ForEachChildPort(
 			p=> {
 			    if(p.IsDataOrControlPort) {
-    				var srcEndPoint= p.SourceEndPort;
-    				foreach(var dep in p.DestinationEndPoints) {
-    					RebuildDataConnection(srcEndPoint, dep);
+    				var outputPort= p.SourceEndPort;
+    				foreach(var inputPort in p.DestinationEndPoints) {
+    					RebuildDataConnection(outputPort, inputPort);
     				}			        
 			    }
 			    if(p.IsStatePort) {
@@ -364,21 +366,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 #endif
 		// Have we completed rebuilding ... if so return.
 		if(inputPort == outputPort) return;
-		var dstNode= inputPort.ParentNode;
+		var inputNode= inputPort.ParentNode;
+		var outputNode= outputPort.ParentNode;
+		if(inputNode == outputNode) return;
+		// outputPort is inside the node with the inputPort.
 		var commonParentNode= outputPort.GetCommonParent(inputPort);
-		if(dstNode == commonParentNode) {
-#if DEBUG
-			Debug.Log("iCanScript: RebuildDataConnection: Common parent is destination node");
-#endif
-			// Nothing to do for looping data port on same node.
-			var srcNode= outputPort.ParentNode;
-			if(srcNode == dstNode) return;
-			// Rebuild moving down from the common parent towards the source port.
-			var newDstNode= srcNode;
-			while(newDstNode != dstNode && newDstNode.ParentNode != dstNode) {
-				newDstNode= newDstNode.ParentNode;
+		if(inputNode == commonParentNode) {
+			// Rebuild moving down from the common parent towards the output port.
+			var newInputNode= outputPort.ParentNode;
+			while(newInputNode != inputNode && newInputNode.ParentNode != inputNode) {
+				newInputNode= newInputNode.ParentNode;
 			}
-			var existingPort= FindPortWithSourceEndPoint(newDstNode, outputPort);
+			var existingPort= FindPortWithSourceEndPoint(newInputNode, outputPort);
 			if(existingPort != null) {
 				var prevSource= inputPort.Source;
 				if(prevSource != existingPort) {
@@ -389,7 +388,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
 				newPort.Source= inputPort.Source;
 				inputPort.Source= newPort;
@@ -397,8 +396,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}			
 			return;
 		}
-		var dstNodeParent= dstNode.ParentNode;
-		if(dstNodeParent == commonParentNode) {
+		var inputNodeParent= inputNode.ParentNode;
+		if(inputNodeParent == commonParentNode) {
 			// Rebuild traversing from moving upwards to downwords.
 			var newDstNode= outputPort.ParentNode;
 			while(newDstNode != commonParentNode && newDstNode.ParentNode != commonParentNode) {
@@ -424,7 +423,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			return;
 		} else {
 			// Rebuilding moving up from the destination port towards the common parent.
-			var existingPort= FindPortWithSourceEndPoint(dstNodeParent, outputPort);
+			var existingPort= FindPortWithSourceEndPoint(inputNodeParent, outputPort);
 			if(existingPort != null) {
 				var prevSource= inputPort.Source;
 				if(prevSource != existingPort) {
@@ -435,7 +434,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, dstNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
 				newPort.Source= inputPort.Source;
 				inputPort.Source= newPort;
@@ -469,17 +468,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 #endif
     // ----------------------------------------------------------------------
 	iCS_EditorObject FindPortWithSourceEndPoint(iCS_EditorObject node, iCS_EditorObject srcEP) {
-		iCS_EditorObject result= null;
-		node.UntilMatchingChild(
-			p=> {
-				if(p.IsPort && p.SourceEndPort == srcEP) {
-					result= p;
-					return true;
-				}
-				return false;
-			}
-		);
-		return result;
+		// Get all ports that match request (supports connection loops).
+		var matchingPorts= node.BuildListOfChildPorts(p=> p.SourceEndPort == srcEP);
+		if(matchingPorts.Length == 0) return null;
+		if(matchingPorts.Length == 1) return matchingPorts[0];
+		foreach(var p in matchingPorts) {
+			if(p.IsOutputPort) return p;
+		}
+		Debug.LogWarning("iCanScript: Invalid circular connection of input ports on: "+node.Name);
+		return matchingPorts[0];
 	}
     // ----------------------------------------------------------------------
     void CleanupConnections(iCS_EditorObject node) {
