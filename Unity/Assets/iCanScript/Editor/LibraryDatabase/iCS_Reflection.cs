@@ -411,6 +411,7 @@ public class iCS_Reflection {
             accessor= iCS_AccessorType.Set;
         }
         if(isProperty) {
+			returnType.name= displayName.Substring(4);
             iCS_LibraryDatabase.AddProperty(_classTypeInfo,
                                             displayName, description, iconPath,
                                             parameters, returnType,
