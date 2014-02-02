@@ -56,9 +56,18 @@ public partial class iCS_IStorage {
         }
         return enables;
     }
-    
+	
+	
     // =========================================================================
     // Input This Port
+    // -------------------------------------------------------------------------
+	public iCS_EditorObject CreateInInstancePort(int parentId, Type runtimeType) {
+		var port= CreatePort(iCS_Strings.DefaultInstanceName, parentId, runtimeType,
+							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);
+		port.IsNameEditable= false;
+		return port;
+	}
+
     // -------------------------------------------------------------------------
     public bool HasInInstancePort(iCS_EditorObject node)  {
         return GetInInstancePort(node) != null;
@@ -68,8 +77,9 @@ public partial class iCS_IStorage {
         return FindInChildren(node, c=> c.IsInInstancePort);
     }
 
+
     // =========================================================================
-    // Input This Port
+    // Output This Port
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateOutInstancePort(int parentId, Type runtimeType) {
         iCS_EditorObject port= CreatePort(iCS_Strings.DefaultInstanceName, parentId, runtimeType,
@@ -86,6 +96,80 @@ public partial class iCS_IStorage {
         return FindInChildren(node, c=> c.IsOutInstancePort);
     }
     
+	
+    // ======================================================================
+    // Dynamic Ports
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject CreateInDynamicDataPort(string name, int parentId, Type valueType) {
+		var parent= EditorObjects[parentId];
+		int index= GetNextDynamicOrProposedPortIndex(parent);
+		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.InDynamicDataPort, index);
+	}
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject CreateOutDynamicDataPort(string name, int parentId, Type valueType) {
+		var parent= EditorObjects[parentId];
+		int index= GetNextDynamicOrProposedPortIndex(parent);
+		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.OutDynamicDataPort, index);		
+	}
+
+
+    // ======================================================================
+    // Proposed Ports
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject CreateInProposedDataPort(string name, int parentId, Type valueType) {
+		var parent= EditorObjects[parentId];
+		int index= GetNextDynamicOrProposedPortIndex(parent);
+		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.InProposedDataPort, index);
+	}
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject CreateOutProposedDataPort(string name, int parentId, Type valueType) {
+		var parent= EditorObjects[parentId];
+		int index= GetNextDynamicOrProposedPortIndex(parent);
+		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.OutProposedDataPort, index);		
+	}
+
+
+    // ======================================================================
+    // Common Creation
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType, int index= -1) {
+        int id= GetNextAvailableId();
+        var parent= EditorObjects[parentId];
+        if(index == -1) {
+            if(portType == iCS_ObjectTypeEnum.TriggerPort) {
+                index= (int)iCS_PortIndex.Trigger;
+            } if(portType == iCS_ObjectTypeEnum.EnablePort) {
+                index= GetNextAvailableEnablePortIndex(parent);
+            }
+            else {
+        		index= GetNextDynamicOrProposedPortIndex(parent);                
+            }
+        }
+        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
+        port.PortIndex= index;
+        if(parent.IsPort) {
+            port.LocalOffset= parent.LocalOffset;
+        } else {
+            var globalPos= parent.LayoutPosition;
+    		port.LayoutPosition= globalPos;            
+        }
+		// Set initial port edge.
+		if(port.IsEnablePort) {
+			port.Edge= iCS_EdgeEnum.Top;
+		} else if(port.IsTriggerPort) {
+			port.Edge= iCS_EdgeEnum.Bottom;
+		} else if(port.IsInputPort) {
+			port.Edge= iCS_EdgeEnum.Left;
+		} else if(port.IsDataPort) {
+			port.Edge= iCS_EdgeEnum.Right;
+		} else {
+			port.UpdatePortEdge();			
+		}
+		port.CleanupPortEdgePosition();
+        return EditorObjects[id];        
+    }
+
+
     // ======================================================================
     // Creation
     // ----------------------------------------------------------------------

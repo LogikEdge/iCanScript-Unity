@@ -557,42 +557,20 @@ public partial class iCS_IStorage {
         return instance;
     }    
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType, int index= -1) {
-        int id= GetNextAvailableId();
-        var parent= EditorObjects[parentId];
-        if(index == -1) {
-            if(portType == iCS_ObjectTypeEnum.TriggerPort) {
-                index= (int)iCS_PortIndex.Trigger;
-            } if(portType == iCS_ObjectTypeEnum.EnablePort) {
-                index= GetNextAvailableEnablePortIndex(parent);
-            }
-            else {
-        		index= GetNextDynamicOrProposedPortIndex(parent);                
-            }
-        }
-        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
-        port.PortIndex= index;
-        if(parent.IsPort) {
-            port.LocalOffset= parent.LocalOffset;
-        } else {
-            var globalPos= parent.LayoutPosition;
-    		port.LayoutPosition= globalPos;            
-        }
-		// Set initial port edge.
-		if(port.IsEnablePort) {
-			port.Edge= iCS_EdgeEnum.Top;
-		} else if(port.IsTriggerPort) {
-			port.Edge= iCS_EdgeEnum.Bottom;
-		} else if(port.IsInputPort) {
-			port.Edge= iCS_EdgeEnum.Left;
-		} else if(port.IsDataPort) {
-			port.Edge= iCS_EdgeEnum.Right;
-		} else {
-			port.UpdatePortEdge();			
+	public iCS_EditorObject CreateInParameterPort(string name, int parentId, Type valueType, int index) {
+		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.InFixDataPort, index);
+	}
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject CreateOutParameterPort(string name, int parentId, Type valueType, int index) {
+		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.OutFixDataPort, index);
+	}
+    // ----------------------------------------------------------------------
+	private iCS_EditorObject CreateParameterPort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType, int index) {
+		if(index < (int)iCS_PortIndex.ParametersStart || index > (int)iCS_PortIndex.ParametersEnd) {
+			Debug.LogError("iCanScript: Invalid parameter port index: "+index);
 		}
-		port.CleanupPortEdgePosition();
-        return EditorObjects[id];        
-    }
+		return CreatePort(name, parentId, valueType, portType, index);
+	}
     // ----------------------------------------------------------------------
     Vector2 VisualEditorCenter() {
         iCS_VisualEditor editor= iCS_EditorMgr.FindVisualEditor();
