@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
-public static class iCS_Debug {
+
+public static class iCS_Debug {	
+	public enum Flags { CodeGeneration };
+
 	public static string Message(string message) {
 		return "iCanScript: "+message;
 	}
@@ -17,5 +21,10 @@ public static class iCS_Debug {
 	}
 	public static void LogError(string message) {
 		Debug.LogError(Message(message));
+	}
+	public static void Log(Flags flag, string s, Action<string> fnc) {
+		if(flag == Flags.CodeGeneration) {
+			fnc("iCanScript: "+s);			
+		}
 	}
 }

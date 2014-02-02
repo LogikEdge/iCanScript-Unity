@@ -1,3 +1,5 @@
+//#define DEBUG
+
 using UnityEngine;
 using System;
 using System.Reflection;
@@ -166,11 +168,6 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                                 }
                                 break;
                             }
-                            case iCS_ObjectTypeEnum.TransitionPackage: {
-                                var module= new iCS_Package(this, node.InstanceId, priority);                                
-                                myRuntimeNodes[node.InstanceId]= module;
-                                break;
-                            }
                             case iCS_ObjectTypeEnum.InstanceMessage:
                             case iCS_ObjectTypeEnum.ClassMessage: {
                                 int nbParams;
@@ -184,11 +181,12 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 							case iCS_ObjectTypeEnum.OnStateEntry:
 							case iCS_ObjectTypeEnum.OnStateUpdate:
 							case iCS_ObjectTypeEnum.OnStateExit:
+                            case iCS_ObjectTypeEnum.TransitionPackage:
                             case iCS_ObjectTypeEnum.Package: {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                var module= new iCS_Package(this, node.InstanceId, priority, nbParams);                                
+                                var module= new iCS_Package(this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= module;
                                 InvokeAddChildIfExists(parent, module);                                
                                 break;
@@ -316,6 +314,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         }
                         // Data ports.
                         case iCS_ObjectTypeEnum.OutDynamicDataPort:
+						case iCS_ObjectTypeEnum.OutProposedDataPort:
                         case iCS_ObjectTypeEnum.OutFixDataPort:
 						case iCS_ObjectTypeEnum.OutParentMuxPort: {
 							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
@@ -338,9 +337,6 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                         case iCS_ObjectTypeEnum.InProposedDataPort:
                         case iCS_ObjectTypeEnum.InFixDataPort:
                         case iCS_ObjectTypeEnum.EnablePort: {
-    						if(!(port.IsInputPort && IsEndPort(port))) {
-    						    break;
-    					    }
                             // Build connection.
                             iCS_EngineObject sourcePort= GetSourceEndPort(port);
     						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
@@ -456,6 +452,9 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                 }
             }
         }
+#if DEBUG
+		Debug.Log("iCanScript: NbParams= "+nbParams+" NbEnables= "+nbEnables+" => "+GetFullName(node));
+#endif
     }
 	// -------------------------------------------------------------------------
     int GetNbOfChildMuxPorts(iCS_EngineObject parentMuxPort) {
