@@ -125,11 +125,6 @@ public static class iCS_ObjectType {
     public static bool IsFixDataPort		  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsOutFixDataPort(obj); }
     public static bool IsInFixDataPort        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFixDataPort; }
     public static bool IsOutFixDataPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFixDataPort; }
-
-    // Parameter Data Flow Ports
-    public static bool IsParameterDataPort    (iCS_EngineObject obj) { return IsInParameterDataPort(obj) || IsOutParameterDataPort(obj); }
-    public static bool IsInParameterDataPort  (iCS_EngineObject obj) { return IsInFixDataPort(obj) && !IsInInstancePort(obj); }
-    public static bool IsOutParameterDataPort (iCS_EngineObject obj) { return IsOutFixDataPort(obj) && !IsOutInstancePort(obj); }
     
     // Dynamic Data Flow Ports 
 	public static bool IsDynamicDataPort	  (iCS_EngineObject obj) { return IsInDynamicDataPort(obj) || IsOutDynamicDataPort(obj); }
@@ -149,9 +144,13 @@ public static class iCS_ObjectType {
     public static bool IsOutDataPort		  (iCS_EngineObject obj) { return IsOutFixDataPort(obj) || IsOutDynamicDataPort(obj) ||
 		                                                                      IsOutProposedDataPort(obj) || IsOutMuxPort(obj) ||
 																			  IsOutInstancePort(obj); }
+
+	// Parameter Data Flow Ports
 	public static bool IsParameterPort        (iCS_EngineObject obj) { return IsPort(obj) &&
 	                                                                          obj.PortIndex >= (int)iCS_PortIndex.ParametersStart &&
 	                                                                          obj.PortIndex <= (int)iCS_PortIndex.ParametersEnd; }
+	public static bool IsInParameterPort	  (iCS_EngineObject obj) { return IsInputPort(obj) && IsParameterPort(obj); }
+	public static bool IsOutParameterPort     (iCS_EngineObject obj) { return IsOutputPort(obj) && IsParameterPort(obj); }
 
     // Control Ports
     public static bool IsControlPort          (iCS_EngineObject obj) { return IsEnablePort(obj) || IsTriggerPort(obj); }

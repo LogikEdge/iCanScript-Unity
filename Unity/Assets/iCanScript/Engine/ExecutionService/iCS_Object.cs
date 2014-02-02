@@ -54,11 +54,7 @@ public class iCS_Object {
     }
     public string FullName {
         get {
-            string fullName= Name;
-            for(var parentObject= ParentObject; parentObject != null; parentObject= VisualScript.GetParent(parentObject)) {
-                fullName= parentObject.Name+"."+fullName;
-            }
-            return VisualScript.gameObject.name+"."+fullName;
+			return VisualScript.GetFullName(EngineObject);
         }
     }
     public string           TypeName        { get { return GetType().Name; }}

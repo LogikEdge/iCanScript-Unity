@@ -198,14 +198,14 @@ public class iCS_EngineObject {
     public bool IsTransitionPort        { get { return iCS_ObjectType.IsTransitionPort(this); }}
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
+    // Parameter Data Ports
+    public bool IsParameterPort     	{ get { return iCS_ObjectType.IsParameterPort(this); }}
+    public bool IsInParameterPort   	{ get { return iCS_ObjectType.IsInParameterPort(this); }}
+    public bool IsOutParameterPort  	{ get { return iCS_ObjectType.IsOutParameterPort(this); }}
     // Fix Data Flow Ports
     public bool IsFixDataPort          	{ get { return iCS_ObjectType.IsFixDataPort(this); }}
     public bool IsInFixDataPort         { get { return iCS_ObjectType.IsInFixDataPort(this); }}
     public bool IsOutFixDataPort        { get { return iCS_ObjectType.IsOutFixDataPort(this); }}
-    // Parameter Data Ports
-    public bool IsParameterDataPort     { get { return iCS_ObjectType.IsParameterDataPort(this); }}
-    public bool IsInParameterDataPort   { get { return iCS_ObjectType.IsInParameterDataPort(this); }}
-    public bool IsOutParameterDataPort  { get { return iCS_ObjectType.IsOutParameterDataPort(this); }}
     // Dynamic Data Flow Ports
     public bool IsDynamicDataPort       { get { return iCS_ObjectType.IsDynamicDataPort(this); }}
     public bool IsInDynamicDataPort     { get { return iCS_ObjectType.IsInDynamicDataPort(this); }}
@@ -218,7 +218,6 @@ public class iCS_EngineObject {
     public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
     public bool IsInDataPort            { get { return iCS_ObjectType.IsInDataPort(this); }}
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
-    public bool IsParameterPort         { get { return iCS_ObjectType.IsParameterPort(this); }}
     // Control Ports
     public bool IsControlPort           { get { return iCS_ObjectType.IsControlPort(this); }}
     public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}

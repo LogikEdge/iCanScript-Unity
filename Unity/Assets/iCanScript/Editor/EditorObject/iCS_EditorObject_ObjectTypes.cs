@@ -45,14 +45,14 @@ public partial class iCS_EditorObject {
     public bool IsTransitionPort            { get { return EngineObject.IsTransitionPort; }}
     public bool IsInTransitionPort          { get { return EngineObject.IsInTransitionPort; }}
     public bool IsOutTransitionPort         { get { return EngineObject.IsOutTransitionPort; }}
+    // Parameter Data Flow Ports
+    public bool IsParameterPort         	{ get { return EngineObject.IsParameterPort; }}
+    public bool IsInParameterPort       	{ get { return EngineObject.IsInParameterPort; }}
+    public bool IsOutParameterPort      	{ get { return EngineObject.IsOutParameterPort; }}
     // Fix Data Flow Ports
     public bool IsFixDataPort               { get { return EngineObject.IsFixDataPort; }}
     public bool IsInFixDataPort             { get { return EngineObject.IsInFixDataPort; }}
     public bool IsOutFixDataPort            { get { return EngineObject.IsOutFixDataPort; }}
-    // Parameter Data Flow Ports
-    public bool IsParameterDataPort         { get { return EngineObject.IsParameterDataPort; }}
-    public bool IsInParameterDataPort       { get { return EngineObject.IsInParameterDataPort; }}
-    public bool IsOutParameterDataPort      { get { return EngineObject.IsOutParameterDataPort; }}
     // Dynamic Data Flow Ports
     public bool IsDynamicDataPort           { get { return EngineObject.IsDynamicDataPort; }}
     public bool IsInDynamicDataPort         { get { return EngineObject.IsInDynamicDataPort; }}

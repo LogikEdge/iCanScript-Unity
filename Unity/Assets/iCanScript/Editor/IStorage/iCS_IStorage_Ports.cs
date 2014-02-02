@@ -193,7 +193,7 @@ public partial class iCS_IStorage {
 		// Find first dynamic or proposed port
 		int firstDynamicIdx= 0;
 		for(int i= 0; i < result.Length; ++i) {
-		    if(result[i].IsParameterDataPort) {
+		    if(result[i].IsParameterPort && result[i].IsFixDataPort) {
 		        firstDynamicIdx= result[i].PortIndex+1;
 		    }
 		}

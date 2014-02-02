@@ -102,6 +102,10 @@ public partial class iCS_IStorage {
         return IsChildOf(child.Parent, parent);
     }
     // ----------------------------------------------------------------------
+	public void ForEachNode(Action<iCS_EditorObject> fnc) {
+		ForEach(obj=> { if(obj.IsNode) fnc(obj); } );
+	}
+    // ----------------------------------------------------------------------
     public void ForEachChildNode(iCS_EditorObject node, Action<iCS_EditorObject> action) {
         ForEachChild(node, child=> ExecuteIf(child, port=> port.IsNode, action));        
     }
