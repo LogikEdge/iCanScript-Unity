@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="Rolling Ball Demo", Library="SimplePhysic")]
+[iCS_Class(Company="Demos", Library="SimplePhysic")]
 public class iCS_ForceIntegrator {
     // ======================================================================
     // Fields

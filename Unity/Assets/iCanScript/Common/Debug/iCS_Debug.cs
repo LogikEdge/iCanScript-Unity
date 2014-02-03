@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 
-
 public static class iCS_Debug {	
 	public enum Flags { CodeGeneration };
 
