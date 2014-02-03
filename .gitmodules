@@ -1,6 +1,3 @@
-[submodule "Unity/Assets/iCanScript_Examples"]
-	path = Unity/Assets/iCanScript_Examples
-	url = git@github.com:Disruptive-Software/iCanScript_Examples.git
 [submodule "Unity/Assets/iCanScript_Nodes"]
 	path = Unity/Assets/iCanScript_Nodes
 	url = git@github.com:Disruptive-Software/iCanScript_Nodes.git

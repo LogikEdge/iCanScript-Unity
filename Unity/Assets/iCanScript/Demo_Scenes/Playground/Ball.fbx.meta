@@ -1,14 +1,12 @@
 fileFormatVersion: 2
-guid: 950bbd73b46774b55b5b0b194a8230e5
+guid: 08e7df8f1cd6646dbb7ba6cfcb470db4
 ModelImporter:
   serializedVersion: 15
   fileIDToRecycleName:
-    100000: Ball
-    100002: //RootNode
-    400000: Ball
-    400002: //RootNode
-    2300000: Ball
-    3300000: Ball
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: Ball
     9500000: //RootNode
   materials:
@@ -29,7 +27,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: .00999999978
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
