@@ -1,1 +1,0 @@
-cd publish; ./publish.sh

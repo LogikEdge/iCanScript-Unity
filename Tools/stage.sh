@@ -1,0 +1,1 @@
+cd staging; ./stage.sh

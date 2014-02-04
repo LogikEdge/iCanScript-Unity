@@ -24,11 +24,11 @@ EDITOR_PUBLIC_EDITOR_WINDOWS_DIR=$EDITOR_DIR/EditorWindows
 ENGINE_PUBLIC_COMPONENTS_DIR=$ENGINE_DIR/Components
 ENGINE_PUBLIC_NODES_DIR=$ENGINE_DIR/Nodes
 DEMO_SCENES_DIR=$PRODUCT_DIR/Demo_Scenes
-PUBLISH_ROOT=$ROOT_DIR/../Published
-PUBLISH_ASSETS_DIR=$PUBLISH_ROOT/Assets
-PUBLISH_PRODUCT_DIR=$PUBLISH_ASSETS_DIR/iCanScript
-PUBLISH_EDITOR_DIR=$PUBLISH_PRODUCT_DIR/Editor
-PUBLISH_ENGINE_DIR=$PUBLISH_PRODUCT_DIR/Engine
+STAGING_ROOT=$ROOT_DIR/../Staging
+STAGING_ASSETS_DIR=$STAGING_ROOT/Assets
+STAGING_PRODUCT_DIR=$STAGING_ASSETS_DIR/iCanScript
+STAGING_EDITOR_DIR=$STAGING_PRODUCT_DIR/Editor
+STAGING_ENGINE_DIR=$STAGING_PRODUCT_DIR/Engine
 BUILD_INFO_FILE=$EDITOR_DIR/iCS_BuildInfo.cs
 # Generate file list.
 echo "Generating file list ..."
@@ -55,48 +55,48 @@ $GMCS @iCanScriptEditor.rsp
 #echo "Running obfuscator..."
 #./obfuscate.sh
 # Install libraries inside the publish directory.
-echo "Installing into" $PUBLISH_PRODUCT_DIR "..."
-if [ ! -d $PUBLISH_ROOT ]; then
-    mkdir $PUBLISH_ROOT
+echo "Installing into" $STAGING_PRODUCT_DIR "..."
+if [ ! -d $STAGING_ROOT ]; then
+    mkdir $STAGING_ROOT
 fi
-if [ ! -d $PUBLISH_ASSETS_DIR ]; then
-    mkdir $PUBLISH_ASSETS_DIR
+if [ ! -d $STAGING_ASSETS_DIR ]; then
+    mkdir $STAGING_ASSETS_DIR
 fi
-if [ -d $PUBLISH_PRODUCT_DIR ]; then
-    rm -r -f $PUBLISH_PRODUCT_DIR
+if [ -d $STAGING_PRODUCT_DIR ]; then
+    rm -r -f $STAGING_PRODUCT_DIR
 fi
-mkdir $PUBLISH_PRODUCT_DIR
-mkdir $PUBLISH_ENGINE_DIR
-mkdir $PUBLISH_EDITOR_DIR
-cp iCanScriptEngine.dll $PUBLISH_ENGINE_DIR
-cp iCanScriptEditor.dll $PUBLISH_EDITOR_DIR
+mkdir $STAGING_PRODUCT_DIR
+mkdir $STAGING_ENGINE_DIR
+mkdir $STAGING_EDITOR_DIR
+cp iCanScriptEngine.dll $STAGING_ENGINE_DIR
+cp iCanScriptEditor.dll $STAGING_EDITOR_DIR
 # Install documentation.
 if test -n "$(find $PRODUCT_DIR -maxdepth 1 -name '*.txt' -print -quit)"; then
-	echo "Copying *.txt files into" $PUBLISH_PRODUCT_DIR
-	cp $PRODUCT_DIR/*.txt $PUBLISH_PRODUCT_DIR
+	echo "Copying *.txt files into" $STAGING_PRODUCT_DIR
+	cp $PRODUCT_DIR/*.txt $STAGING_PRODUCT_DIR
 fi
 if test -n "$(find $PRODUCT_DIR -maxdepth 1 -name '*.pdf' -print -quit)"; then
-	echo "Copying *.pdf files into" $PUBLISH_PRODUCT_DIR
-	cp $PRODUCT_DIR/*.pdf $PUBLISH_PRODUCT_DIR
+	echo "Copying *.pdf files into" $STAGING_PRODUCT_DIR
+	cp $PRODUCT_DIR/*.pdf $STAGING_PRODUCT_DIR
 fi
 if test -n "$(find $PRODUCT_DIR -maxdepth 1 -name '*.md' -print -quit)"; then
-	echo "Copying *.md files into" $PUBLISH_PRODUCT_DIR
-	cp $PRODUCT_DIR/*.md $PUBLISH_PRODUCT_DIR
+	echo "Copying *.md files into" $STAGING_PRODUCT_DIR
+	cp $PRODUCT_DIR/*.md $STAGING_PRODUCT_DIR
 fi
 if test -n "$(find $PRODUCT_DIR -maxdepth 1 -name '*.html' -print -quit)"; then
-	echo "Copying *.html files into" $PUBLISH_PRODUCT_DIR
-	cp $PRODUCT_DIR/*.html $PUBLISH_PRODUCT_DIR
+	echo "Copying *.html files into" $STAGING_PRODUCT_DIR
+	cp $PRODUCT_DIR/*.html $STAGING_PRODUCT_DIR
 fi
 # Install visible source files.
-cp -r $EDITOR_DIR/Resources $PUBLISH_EDITOR_DIR
-rsync -av $EDITOR_PUBLIC_NODE_INSTALLER_DIR $PUBLISH_EDITOR_DIR >/dev/null
-rsync -av $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR $PUBLISH_EDITOR_DIR >/dev/null
-rsync -av $ENGINE_PUBLIC_COMPONENTS_DIR $PUBLISH_ENGINE_DIR >/dev/null
-rsync -av $ENGINE_PUBLIC_NODES_DIR $PUBLISH_ENGINE_DIR >/dev/null
-rsync -av $DEMO_SCENES_DIR $PUBLISH_PRODUCT_DIR >/dev/null
-rsync -av $ASSET_STORE_TOOLS_DIR $PUBLISH_ASSETS_DIR >/dev/null
-#rsync -av --exclude=*/*.meta $EDITOR_PUBLIC_NODE_INSTALLER_DIR $PUBLISH_EDITOR_DIR >/dev/null
-#rsync -av --exclude=*/*.meta $ENGINE_PUBLIC_NODES_DIR $PUBLISH_ENGINE_DIR >/dev/null
+cp -r $EDITOR_DIR/Resources $STAGING_EDITOR_DIR
+rsync -av $EDITOR_PUBLIC_NODE_INSTALLER_DIR $STAGING_EDITOR_DIR >/dev/null
+rsync -av $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR $STAGING_EDITOR_DIR >/dev/null
+rsync -av $ENGINE_PUBLIC_COMPONENTS_DIR $STAGING_ENGINE_DIR >/dev/null
+rsync -av $ENGINE_PUBLIC_NODES_DIR $STAGING_ENGINE_DIR >/dev/null
+rsync -av $DEMO_SCENES_DIR $STAGING_PRODUCT_DIR >/dev/null
+rsync -av $ASSET_STORE_TOOLS_DIR $STAGING_ASSETS_DIR >/dev/null
+#rsync -av --exclude=*/*.meta $EDITOR_PUBLIC_NODE_INSTALLER_DIR $STAGING_EDITOR_DIR >/dev/null
+#rsync -av --exclude=*/*.meta $ENGINE_PUBLIC_NODES_DIR $STAGING_ENGINE_DIR >/dev/null
 
 # ==================================================================================
 # Example demo project
