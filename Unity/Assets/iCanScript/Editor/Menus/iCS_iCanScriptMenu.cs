@@ -1,8 +1,5 @@
-//#define DEBUG
-
 using UnityEngine;
 using UnityEditor;
-using P=Prelude;
 
 public static class iCS_iCanScriptMenu {
     // ======================================================================
@@ -59,25 +56,6 @@ public static class iCS_iCanScriptMenu {
 		iCS_SoftwareUpdateController.ManualUpdateVerification();
     }
     
-#if DEBUG
-    // ======================================================================
-    // Sanity Check
-	[MenuItem("DEBUG/Sanity Check Selection",false,1000)]
-	public static void MenuSanityCheck() {
-		iCS_IStorage storage= iCS_StorageMgr.IStorage;
-		if(storage == null) return;
-		Debug.Log("iCanScript: Start Sanity Check on: "+storage.Storage.name);
-		storage.SanityCheck();
-		Debug.Log("iCanScript: Completed Sanity Check on: "+storage.Storage.name);
-	}
-    // ======================================================================
-    // Trigger Periodic Software Update Verification
-	[MenuItem("DEBUG/Invoke Periodic Software Update Verification",false,1001)]
-	public static void MenuPeriodicSoftwareUpdateVerification() {
-		iCS_SoftwareUpdateController.PeriodicUpdateVerification();
-	}	
-#endif
-	    
 //    // ======================================================================
 //	// iCanScript License.
 //    [MenuItem("iCanScript/Get FingerPrint")]
