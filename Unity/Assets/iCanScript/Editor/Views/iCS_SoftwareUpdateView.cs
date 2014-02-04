@@ -27,7 +27,7 @@ public static class iCS_SoftwareUpdateView {
     // ---------------------------------------------------------------------------------
 	public static void ShowAlreadyCurrentDialog() {
 		EditorUtility.DisplayDialog("You have the latest version of iCanScript!",
-									 "iCanScript "+iCS_EditorConfig.VersionId+"is the newest version available.",
+									 "iCanScript "+iCS_EditorConfig.VersionId+" is the newest version available.",
 									 "Ok");
 	}
 }
