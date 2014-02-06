@@ -13,7 +13,7 @@ public partial class iCS_EditorObject {
 		if(obj == null) return false;
 		var parent= obj.Parent;
 		if(parent == this) return true;
-		return IsParentOf(obj);
+		return IsParentOf(parent);
 	}
     public bool IsAboveOrEqualInHierarchyTo(iCS_EditorObject node) {
         if(node == this) return true;

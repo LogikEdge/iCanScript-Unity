@@ -180,7 +180,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             SelectedObject= DisplayRoot;
         }
         ShowInstanceEditor();
-        myDynamicMenu.Update(SelectedObject, IStorage, GraphMousePosition);
+        myDynamicMenu.Update(iCS_DynamicMenu.MenuType.SelectedObject, SelectedObject, IStorage, GraphMousePosition);
     }
 	// ----------------------------------------------------------------------
     void ShowInstanceEditor() {

@@ -1,4 +1,4 @@
-//#define NEW_CODE
+#define NEW_CODE
 
 using UnityEngine;
 using UnityEditor;
@@ -322,92 +322,99 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     break;
                 case DragTypeEnum.PortConnection:                
-                    // Verify for a new connection.
-                    if(!VerifyNewDragConnection()) {
-                        bool isNearParent= DragObject.IsPortOnParentEdge;
-                        if(DragFixPort.IsDataOrControlPort) {
-                            // We don't need the drag port anymore.
-                            var dragPortPos= DragObject.LayoutPosition;
-                            DragObject.IsSticky= false;
-                            DragObject.IsFloating= false;
-							IStorage.DestroyInstance(DragObject);
-							DragObject= null;
-                            // Verify for disconnection.
-                            if(!isNearParent) {
-                                // Let's determine if we want to create a module port.
-                                iCS_EditorObject newPortParent= GetNodeWithEdgeAtMousePosition();
-                                if(newPortParent != null && newPortParent.IsKindOfPackage) {
-                                    iCS_EditorObject portParent= DragFixPort.Parent;
-                                    if(DragFixPort.IsInputPort) {
-                                        if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
-                                            if(IStorage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
-                                                newPort.SetAnchorAndLayoutPosition(dragPortPos);
-                                                newPort.PortValue= DragFixPort.PortValue;
-                                                SetNewDataConnection(DragFixPort, newPort);
-                                                break;
-                                            }
-                                        }
-                                        if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
-                                            if(!IStorage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-                                                newPort.SetAnchorAndLayoutPosition(dragPortPos);
-                                                newPort.PortValue= DragFixPort.PortValue;
-                                                SetNewDataConnection(DragFixPort, newPort);
-                                                break;                                                
-                                            }
-                                        }                                    
-                                    }
-                                    if(DragFixPort.IsOutputPort) {
-                                        if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
-                                            if(IStorage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-                                                newPort.SetAnchorAndLayoutPosition(dragPortPos);
-                                                SetNewDataConnection(newPort, DragFixPort);
-                                                break;                                                                                                    
-                                            }
-                                        }
-                                        if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
-                                            if(!IStorage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
-                                                newPort.SetAnchorAndLayoutPosition(dragPortPos);
-                                                SetNewDataConnection(newPort, DragFixPort);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                // Autocreate instance node if inside a composite module.
-                                newPortParent= GetNodeAtMousePosition();
-                                if(newPortParent != null && newPortParent.IsKindOfPackage) {
-                                    // Don't autocreate within the same parent for output ports.
-                                    if(DragFixPort.IsOutputPort && newPortParent.IsBelowOrEqualInHierarchyTo(DragFixPort.Parent)) {
-                                        break;
-                                    }
-                                    // Don't autocreate outside the parent for input ports.
-                                    if(DragFixPort.IsInputPort && newPortParent.IsAboveInHierarchyTo(DragFixPort.Parent)) {
-                                        break;
-                                    }
-                                    // Determine if we need to create an instance node.
-                                    AutocreateInstanceNode(dragPortPos, newPortParent);
-                                    break;                                  
-                                }
-								// Allow output data connection on state modules.
-                                if(DragFixPort.IsOutputPort && newPortParent != null && (newPortParent.IsState || newPortParent.IsStateChart)) {
-									if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
-	                                    iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-	                                    SetNewDataConnection(newPort, DragFixPort);
-										break;
+                    // Attempt new port binding.
+                    if(VerifyNewDragConnection()) break;
+					// Attempt to publish port on nearby package.
+                    bool isNearParent= DragObject.IsPortOnParentEdge;
+                    if(DragFixPort.IsDataOrControlPort) {
+                        // We assume a disconnection.
+						// The drag port is of no use anymore.  Let's cleanup...
+                        var dragPortPos= DragObject.LayoutPosition;
+                        DragObject.IsSticky= false;
+                        DragObject.IsFloating= false;
+						IStorage.DestroyInstance(DragObject);
+						DragObject= null;
+                        // Avoid publishing on the parent node.
+                        if(!isNearParent) {
+                            // Get node with an edge close to the drag position.
+                            iCS_EditorObject newPortParent= GetNodeWithEdgeAtMousePosition();
+                            if(newPortParent != null && newPortParent.IsKindOfPackage) {
+								// We found a suitable package.  Let's create the apprpriate port.
+                                iCS_EditorObject portParent= DragFixPort.ParentNode;
+								bool isFixParentOfNew= portParent.IsParentOf(newPortParent);
+								bool isNewParentOfFix= newPortParent.IsParentOf(portParent);
+								iCS_ObjectTypeEnum newPortType;
+								bool fixPortIsBindingTo;
+								if(isFixParentOfNew) {
+									if(DragFixPort.IsInputPort) {
+										newPortType= iCS_ObjectTypeEnum.InDynamicDataPort;
+										fixPortIsBindingTo= false;
 									}
-                                }
-								// Cleanup child Mux port if it is disconnected.
-								if(DragOriginalPort.IsChildMuxPort && DragOriginalPort.Source == null) {
-									IStorage.DestroyInstance(DragOriginalPort);
+									else {
+										newPortType= iCS_ObjectTypeEnum.OutDynamicDataPort;
+										fixPortIsBindingTo= true;										
+									}
+								}
+								else if(isNewParentOfFix) {
+									if(DragFixPort.IsInputPort) {
+										newPortType= iCS_ObjectTypeEnum.InDynamicDataPort;
+										fixPortIsBindingTo= true;
+									}
+									else {
+										newPortType= iCS_ObjectTypeEnum.OutDynamicDataPort;
+										fixPortIsBindingTo= false;										
+									}
+								}
+								else {
+									if(DragFixPort.IsInputPort) {
+										newPortType= iCS_ObjectTypeEnum.OutDynamicDataPort;
+										fixPortIsBindingTo= true;
+									}
+									else {
+										newPortType= iCS_ObjectTypeEnum.InDynamicDataPort;
+										fixPortIsBindingTo= false;																				
+									}									
+								}
+                                iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, newPortType);
+                                newPort.SetAnchorAndLayoutPosition(dragPortPos);
+                                newPort.PortValue= DragFixPort.PortValue;
+								if(fixPortIsBindingTo) {
+	                                SetNewDataConnection(DragFixPort, newPort);
+								}
+								else {									
+	                                SetNewDataConnection(newPort, DragFixPort);
+								}
+                                break;
+							}
+                            // Attempt to quick create node if a disconnection was not performed.
+							if(DragFixPort == DragOriginalPort) { // This is not a disconnection
+	                            newPortParent= GetNodeAtMousePosition();
+	                            if(newPortParent != null && newPortParent.IsKindOfPackage) {
+	                                QuickNodeCreate(dragPortPos, newPortParent);
+	                                break;                                  
+	                            }								
+							}
+							/*
+								CHANGED : CODE REVIEW NEEDED => Publishing to state chart.
+							*/
+							// Allow output data connection on state modules.
+                            if(DragFixPort.IsOutputPort && newPortParent != null && (newPortParent.IsState || newPortParent.IsStateChart)) {
+								if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
+                                    iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+                                    SetNewDataConnection(newPort, DragFixPort);
+									break;
 								}
                             }
-                        }                    
-                    }
-                    break;
+							/*
+								CHANGED : CODE REVIEW NEEDED => Cleanup of disconnected child multiplexer port.
+							*/
+							// Cleanup child Mux port if it is disconnected.
+							if(DragOriginalPort.IsChildMuxPort && DragOriginalPort.Source == null) {
+								IStorage.DestroyInstance(DragOriginalPort);
+							}
+                        }
+                    }                    
+					break;
                 case DragTypeEnum.TransitionCreation:
                     iCS_EditorObject destState= GetNodeAtMousePosition();
                     if(destState != null && destState.IsState) {
@@ -780,15 +787,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		return new Vector2(x,y);        
     }
 	// ----------------------------------------------------------------------
-    void AutocreateInstanceNode(Vector2 globalPosition, iCS_EditorObject newParent) {
+    void QuickNodeCreate(Vector2 globalPosition, iCS_EditorObject newParent) {
 #if NEW_CODE
 		var port= DragFixPort;
 		var parent= port.ParentNode;
-		myDynamicMenu.Update(port, IStorage, globalPosition);
+		// Determine if quick node create is desired.
+		if(DragOriginalPort == DragFixPort) {
+			Debug.Log("QuickNodeCreate wanted!");
+		}
+//		myDynamicMenu.Update(port, IStorage, globalPosition);
 		bool isInside= false;
-//		if(parent == newParent || parent.IsParentOf(newParent)) {
-//			isInside= true;
-//		}
+		if(parent == newParent || parent.IsParentOf(newParent)) {
+			isInside= true;
+		}
 		Debug.Log("IsInside= "+isInside);
 #else
         var sourcePort= DragFixPort;

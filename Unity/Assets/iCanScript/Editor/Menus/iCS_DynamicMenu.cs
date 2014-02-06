@@ -6,6 +6,11 @@ using System.Collections.Generic;
 
 public class iCS_DynamicMenu {
     // ======================================================================
+    // Types
+    // ----------------------------------------------------------------------
+	public enum MenuType { SelectedObject, ReleaseAfterDrag };
+	
+    // ======================================================================
     // Field
     // ----------------------------------------------------------------------
     Vector2 				GraphPosition  = Vector2.zero;
@@ -42,7 +47,7 @@ public class iCS_DynamicMenu {
 		GUICommandQueue.Clear();
 	}
 	// ----------------------------------------------------------------------
-    public void Update(iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 graphPosition) {
+    public void Update(MenuType menuType, iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 graphPosition) {
         // Update mouse position if not already done.
         if(GraphPosition == Vector2.zero) GraphPosition= graphPosition;
 
