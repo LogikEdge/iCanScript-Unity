@@ -60,7 +60,7 @@ public static class iCS_StorageMgr {
 	}
     // ---------------------------------------------------------------------------------
     public static void CreateRootBehaviourNode(iCS_Storage storage) {
-        var behaviour= new iCS_EngineObject(0, "Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour);
+        var behaviour= new iCS_EngineObject(0, storage.name+"::Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour);
         storage.EngineObjects.Add(behaviour);        
     }
 

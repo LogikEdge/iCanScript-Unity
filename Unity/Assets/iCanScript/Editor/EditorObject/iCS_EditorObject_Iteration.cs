@@ -9,6 +9,12 @@ using P=Prelude;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
 	// Hierarchy Queries ====================================================
+	public bool IsParentOf(iCS_EditorObject obj) {
+		if(obj == null) return false;
+		var parent= obj.Parent;
+		if(parent == this) return true;
+		return IsParentOf(obj);
+	}
     public bool IsAboveOrEqualInHierarchyTo(iCS_EditorObject node) {
         if(node == this) return true;
         return IsAboveInHierarchyTo(node);

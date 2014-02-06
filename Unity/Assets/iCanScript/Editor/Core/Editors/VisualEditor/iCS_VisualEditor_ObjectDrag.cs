@@ -1,3 +1,5 @@
+//#define NEW_CODE
+
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -779,6 +781,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void AutocreateInstanceNode(Vector2 globalPosition, iCS_EditorObject newParent) {
+#if NEW_CODE
+		var port= DragFixPort;
+		var parent= port.ParentNode;
+		myDynamicMenu.Update(port, IStorage, globalPosition);
+		bool isInside= false;
+//		if(parent == newParent || parent.IsParentOf(newParent)) {
+//			isInside= true;
+//		}
+		Debug.Log("IsInside= "+isInside);
+#else
         var sourcePort= DragFixPort;
         Type instanceType= iCS_Types.GetElementType(sourcePort.RuntimeType);
         if(iCS_Types.IsStaticClass(instanceType)) return;
@@ -786,5 +798,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var instance= IStorage.CreatePackage(newParent.InstanceId, globalPosition, "", iCS_ObjectTypeEnum.Package, instanceType);
         var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
         SetNewDataConnection(thisPort, sourcePort);
+#endif
     }
 }

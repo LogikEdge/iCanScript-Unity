@@ -78,7 +78,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myNeedRepaint= true;
         mySubEditor= null;
     }
-    
+    // ======================================================================
+    // Update all message ports when hierarchy has changed
+	// ----------------------------------------------------------------------
+    public void OnHierarchyChange() {
+		if(IStorage == null) return;
+		iCS_EditorObject behaviour= IStorage.EditorObjects[0];
+		if(behaviour == null || !behaviour.IsBehaviour) return;
+		behaviour.ForEachChildNode(
+			n=> {
+				if(n.IsMessage) {
+					IStorage.UpdateBehaviourMessagePorts(n);
+				}
+			}
+		);
+    }
     // ======================================================================
     // Periodic Update
 	// ----------------------------------------------------------------------

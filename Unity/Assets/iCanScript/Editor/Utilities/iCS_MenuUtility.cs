@@ -10,7 +10,7 @@ public static class iCS_MenuUtility {
         // Build new visual script with behviour node
 		var visualScript= gameObject.AddComponent("iCS_VisualScript") as iCS_VisualScriptImp;
         iCS_IStorage iStorage= new iCS_IStorage(visualScript as iCS_Storage);
-        iStorage.CreateBehaviour();
+        iStorage.CreateBehaviour(gameObject.name);
         iStorage= null;
 
         // Install behaviour if not already present.

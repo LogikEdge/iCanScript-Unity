@@ -27,7 +27,7 @@ public partial class iCS_IStorage {
         var neededPorts= BuildListOfPortInfoForBehaviourMessage(node.Parent);
         var changed= CleanupExistingProposedPorts(node, neededPorts);
         changed |= BuildMissingPorts(node, neededPorts);
-        if(changed) node.LayoutNode();
+        if(changed) node.IsDirty= true;
     }
 
     // ----------------------------------------------------------------------
@@ -37,6 +37,7 @@ public partial class iCS_IStorage {
         foreach(var pi in neededPorts) {
             if(!DoesPortExist(node, pi.Name, pi.ValueType, pi.PortType)) {
         	    var port= CreatePort(pi.Name, node.InstanceId, pi.ValueType, pi.PortType);
+				port.IsNameEditable= false;
                 port.PortValue= pi.InitialValue;            
                 changed= true;
             }

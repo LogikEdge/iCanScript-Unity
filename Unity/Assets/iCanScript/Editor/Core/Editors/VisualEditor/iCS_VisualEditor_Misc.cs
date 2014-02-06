@@ -640,6 +640,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         pasted.LayoutNode();
         pasted.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
     }
+	// ----------------------------------------------------------------------
     iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 point) {
 		var validParent= IStorage.CreatePackage(0, point, messageName);
 		validParent.Tooltip= iCS_AllowedChildren.TooltipForBehaviourChild(iCS_Strings.Update);

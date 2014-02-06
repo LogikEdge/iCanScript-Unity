@@ -40,6 +40,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     public void RunMessage(string messageName) {
         iCS_RunContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
+//            var rtMessage= runContext.Action as iCS_Message;
+//            rtMessage.GetSignatureDataSource().This= this;
             runContext.Run();
         }
     }

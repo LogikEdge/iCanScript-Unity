@@ -343,13 +343,25 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             // Build initial value.
     						object initValue= GetInitialValue(sourcePort);
 							// Automatically build instance object if not specified.
+							var parent= GetParentNode(port);
 							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.This) {
-								var parent= GetParentNode(port);
 								if(!parent.IsMessage) {
 									initValue= System.Activator.CreateInstance(port.RuntimeType);									
 									if(initValue == null) {
 										Debug.LogWarning("iCanScript: Unable to create instance for: "+GetFullName(parent));
 									}
+								} else {
+									// Messages 'This' port.
+									initValue= this;
+								}
+							}
+							// Refresh the game object values for Message nodes
+							if(parent.IsMessage && port.IsInProposedDataPort) {
+								var component= gameObject.GetComponent(port.RuntimeType);
+								if(component != null) {
+									initValue= component;
+								} else {
+									Debug.LogWarning("iCanScript: Unable to find "+port.Name+" component for "+gameObject.name);
 								}
 							}
                             // Set data port.

@@ -381,7 +381,7 @@ public partial class iCS_IStorage {
         );
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateBehaviour() {
+    public iCS_EditorObject CreateBehaviour(string name) {
         // Create the function node.
         int id= GetNextAvailableId();
         // Validate that behaviour is at the root.
@@ -389,7 +389,7 @@ public partial class iCS_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(0, "Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
+        iCS_EditorObject.CreateInstance(0, name+"::Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
         this[0].SetAnchorAndLayoutPosition(VisualEditorCenter());
 		this[0].IsNameEditable= false;
         return this[0];
@@ -552,6 +552,8 @@ public partial class iCS_IStorage {
                 port.InitialValue= instance.Parent.Storage as Component;
             }
         }
+		// Update available component ports
+		UpdateBehaviourMessagePorts(instance);
         // Perform initial node layout.
         instance.Unhide();
         return instance;
