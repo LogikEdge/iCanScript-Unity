@@ -29,6 +29,7 @@ public class iCS_DynamicMenu {
     const string OnEntryStr= "+ "+iCS_Strings.OnEntry;
     const string OnUpdateStr= "+ "+iCS_Strings.OnUpdate;
     const string OnExitStr= "+ "+iCS_Strings.OnExit;
+	const string ObjectInstanceStr= "+ Object Instance";
     const string EnablePortStr= "+ Enable Port";
     const string TriggerPortStr= "+ Trigger Port";
     const string OutputThisPortStr= "+ This Port (output)";
@@ -47,7 +48,8 @@ public class iCS_DynamicMenu {
 		GUICommandQueue.Clear();
 	}
 	// ----------------------------------------------------------------------
-    public void Update(MenuType menuType, iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 graphPosition) {
+	// Note: reverseInOut is only applicable for Port :: ReleaseAfterDrag.
+    public void Update(MenuType menuType, iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 graphPosition, bool reverseInOut= false) {
         // Update mouse position if not already done.
         if(GraphPosition == Vector2.zero) GraphPosition= graphPosition;
 
@@ -77,7 +79,7 @@ public class iCS_DynamicMenu {
                                                              PackageMenu(selectedObject, storage);
                                                        }
                                                        break;
-            default: if(selectedObject.IsPort)         PortMenu(selectedObject, storage); break;
+            default: if(selectedObject.IsPort)         PortMenu(menuType, selectedObject, storage, reverseInOut); break;
         }
     }
 
@@ -224,17 +226,48 @@ public class iCS_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
-    void PortMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        iCS_MenuContext[] menu= new iCS_MenuContext[0];
-        // Allow to publish port if the grand-parent is a module.
+    void PortMenu(MenuType menuType, iCS_EditorObject port, iCS_IStorage storage, bool reverseInOut) {
+		switch(menuType) {
+			case MenuType.SelectedObject:
+				SelectedPortMenu(port, storage);
+				break;
+			case MenuType.ReleaseAfterDrag:
+				ReleaseAfterDragPortMenu(port, storage, reverseInOut);
+				break;
+		}
+    }
+	// ----------------------------------------------------------------------
+    void SelectedPortMenu(iCS_EditorObject port, iCS_IStorage storage) {
+        iCS_MenuContext[] menu= new iCS_MenuContext[1];
+        menu[0]= new iCS_MenuContext(ShowHierarchyStr);
+        // Allow to delete a port if its parent is a module.
+        if(port.IsStatePort || !port.IsFixDataPort) {
+            AddDeleteMenuItem(ref menu);
+        }
+        ShowMenu(menu, port, storage);            
+    }
+	// ----------------------------------------------------------------------
+    void ReleaseAfterDragPortMenu(iCS_EditorObject port, iCS_IStorage storage, bool reverseInOut) {
+        iCS_MenuContext[] menu= new iCS_MenuContext[2];
+		// Add shortcut ti instance node creation.
+		menu[0]= new iCS_MenuContext(ObjectInstanceStr);
+        menu[1]= new iCS_MenuContext(SeparatorStr);
         // Get compatible functions.
-        if(selectedObject.IsDataOrControlPort) {
+        if(port.IsDataOrControlPort) {
             List<iCS_MethodBaseInfo> functionMenu= null;
-            if(selectedObject.IsInputPort) {
-                functionMenu= iCS_LibraryDatabase.BuildMenu(null, selectedObject.RuntimeType);
+			Type inputType= null;
+			Type outputType= null;
+			if(port.IsInputPort) {
+                outputType= port.RuntimeType;
             } else {
-                functionMenu= iCS_LibraryDatabase.BuildMenu(selectedObject.RuntimeType, null);
+                inputType= port.RuntimeType;
             }
+			if(reverseInOut) {
+				var tmp= inputType;
+				inputType= outputType;
+				outputType= tmp;
+			}
+            functionMenu= iCS_LibraryDatabase.BuildMenu(inputType, outputType);
             if(functionMenu.Count != 0) {
                 int len= menu.Length;
                 iCS_MenuContext[] tmp= null;
@@ -252,17 +285,7 @@ public class iCS_DynamicMenu {
                 }
             }
         }
-        if(menu.Length == 0) {
-            menu= new iCS_MenuContext[1];
-            menu[0]= new iCS_MenuContext(ShowHierarchyStr);
-        } else {
-            AddShowInHierarchyMenuItem(ref menu);            
-        }
-        // Allow to delete a port if its parent is a module.
-        if(selectedObject.IsStatePort || !selectedObject.IsFixDataPort) {
-            AddDeleteMenuItem(ref menu);
-        }
-        ShowMenu(menu, selectedObject, storage);            
+        ShowMenu(menu, port, storage);            
     }
 
     // ======================================================================
@@ -358,6 +381,7 @@ public class iCS_DynamicMenu {
             case OnEntryStr:        ProcessCreateOnEntryModule(context, tooltip); break;
             case OnUpdateStr:       ProcessCreateOnUpdateModule(context, tooltip); break;
             case OnExitStr:         ProcessCreateOnExitModule(context, tooltip); break;
+			case ObjectInstanceStr: ProcessCreateObjectInstance(context); break;
             case ShowHierarchyStr:  ProcessShowInHierarchy(context); break;
             case DeleteStr:         ProcessDestroyObject(context); break;
             case EnablePortStr:     ProcessCreateEnablePort(context); break;
@@ -474,6 +498,15 @@ public class iCS_DynamicMenu {
 		var parent = context.SelectedObject;
 		var storage= context.Storage;
 		storage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
+    }
+    // -------------------------------------------------------------------------
+    static void ProcessCreateObjectInstance(iCS_MenuContext context) {
+		var port = context.SelectedObject;
+		var storage= context.Storage;
+		var pos= context.GraphPosition;
+		var parent= storage.GetNodeAt(pos);
+		if(parent == null) return;
+		storage.CreateObjectInstance(parent, port.RuntimeType, pos, port);        
     }
     
     // ======================================================================

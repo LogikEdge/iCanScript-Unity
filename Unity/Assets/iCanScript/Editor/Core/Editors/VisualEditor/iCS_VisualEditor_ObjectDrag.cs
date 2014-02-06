@@ -379,10 +379,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 newPort.SetAnchorAndLayoutPosition(dragPortPos);
                                 newPort.PortValue= DragFixPort.PortValue;
 								if(fixPortIsBindingTo) {
-	                                SetNewDataConnection(DragFixPort, newPort);
+	                                IStorage.SetNewDataConnection(DragFixPort, newPort);
 								}
 								else {									
-	                                SetNewDataConnection(newPort, DragFixPort);
+	                                IStorage.SetNewDataConnection(newPort, DragFixPort);
 								}
                                 break;
 							}
@@ -401,7 +401,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(DragFixPort.IsOutputPort && newPortParent != null && (newPortParent.IsState || newPortParent.IsStateChart)) {
 								if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
                                     iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-                                    SetNewDataConnection(newPort, DragFixPort);
+                                    IStorage.SetNewDataConnection(newPort, DragFixPort);
 									break;
 								}
                             }
@@ -791,16 +791,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 #if NEW_CODE
 		var port= DragFixPort;
 		var parent= port.ParentNode;
-		// Determine if quick node create is desired.
-		if(DragOriginalPort == DragFixPort) {
-			Debug.Log("QuickNodeCreate wanted!");
-		}
-//		myDynamicMenu.Update(port, IStorage, globalPosition);
-		bool isInside= false;
+		bool reverseInOut= false;
 		if(parent == newParent || parent.IsParentOf(newParent)) {
-			isInside= true;
+			reverseInOut= true;
 		}
-		Debug.Log("IsInside= "+isInside);
+		myDynamicMenu.Update(iCS_DynamicMenu.MenuType.ReleaseAfterDrag, port, IStorage, globalPosition, reverseInOut);
 #else
         var sourcePort= DragFixPort;
         Type instanceType= iCS_Types.GetElementType(sourcePort.RuntimeType);
