@@ -184,6 +184,7 @@ public class iCS_LibraryDatabase {
     public static List<iCS_MethodBaseInfo> BuildMenu(Type inputType, Type outputType) {
         QSort();
         var menu= new List<iCS_MethodBaseInfo>();
+		inputType= iCS_Types.GetElementType(inputType);
         for(int i= 0; i < Functions.Count; ++i) {
             // Filter functions according to input or output filter.
             bool shouldInclude= false;

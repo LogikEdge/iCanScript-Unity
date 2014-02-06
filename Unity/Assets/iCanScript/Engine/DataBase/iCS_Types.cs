@@ -104,6 +104,7 @@ public static class iCS_Types {
     }
 	// ----------------------------------------------------------------------
     public static Type GetElementType(Type t) {
+		if(t == null) return null;
         return t.HasElementType ? t.GetElementType() : t;
     }
     // ----------------------------------------------------------------------
