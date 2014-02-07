@@ -562,9 +562,6 @@ public class iCS_DynamicMenu {
 		if(newNodeParent == null) return null;
         if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;
         iCS_EditorObject method= CreateMethod(newNodeParent, storage, graphPosition, desc);
-		/*
-			TODO : Manage Package ports.  InputWithRespectTo(...) & OutputWithRespectTo(...) 
-		*/
 
 		// Inverse effective data flow if new node is inside port parent.
 		bool isInputPort= port.IsInputPort;

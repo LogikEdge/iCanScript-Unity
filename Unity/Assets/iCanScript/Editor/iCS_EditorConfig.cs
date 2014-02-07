@@ -25,8 +25,8 @@ public static class iCS_EditorConfig {
     public static Vector2 PortSize;
 
     // ----------------------------------------------------------------------
-    public const  float MarginSize = 10.0f;
-    public const  float PaddingSize= 5.0f;
+    public const  float MarginSize = 2*PortDiameter;
+    public const  float PaddingSize= PortDiameter;
 
     // ----------------------------------------------------------------------
     public const float EditorWindowMarginSize = MarginSize;
