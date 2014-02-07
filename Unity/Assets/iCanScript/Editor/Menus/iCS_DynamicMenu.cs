@@ -554,11 +554,17 @@ public class iCS_DynamicMenu {
         return storage.CreateFunction(parent.InstanceId, graphPosition, desc);            
 	}
 	// ----------------------------------------------------------------------
+	/*
+		TODO : Should move this function to IStorage.
+	*/
     static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage storage, Vector2 graphPosition, iCS_MethodBaseInfo desc) {
-        var parent= port.Parent;
-        iCS_EditorObject grandParent= parent.Parent;
-        if(!grandParent.IsKindOfPackage) return null;
-        iCS_EditorObject method= CreateMethod(grandParent, storage, graphPosition, desc);
+        iCS_EditorObject newNodeParent= storage.GetNodeAt(graphPosition);
+		if(newNodeParent == null) return null;
+        if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;
+        iCS_EditorObject method= CreateMethod(newNodeParent, storage, graphPosition, desc);
+		/*
+			TODO : Manage Package ports.  InputWithRespectTo(...) & OutputWithRespectTo(...) 
+		*/
         if(port.IsInputPort) {
 			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), storage.GetChildOutputDataPorts(method)); 
 			// Connect if only one possibility.
