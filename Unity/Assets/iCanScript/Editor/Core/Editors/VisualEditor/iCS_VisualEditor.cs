@@ -27,14 +27,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_Graphics    myGraphics     = null;
     
     // ----------------------------------------------------------------------
-    bool  myShowDynamicMenu  = false;
-    int   myUpdateCounter    = 0;
-    int   myRefreshCounter   = 0;
-    float myCurrentTime      = 0;
-    float myDeltaTime        = 0;
-    bool  myNeedRepaint      = true;
-    bool  myNotificationShown= false; 
-    
+    bool  myShowDynamicMenu   = false;
+    int   myUpdateCounter     = 0;
+    int   myRefreshCounter    = 0;
+    float myCurrentTime       = 0;
+    float myDeltaTime         = 0;
+    bool  myNeedRepaint       = true;
+    bool  myNotificationShown = false; 
+	
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
 
@@ -70,7 +70,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             myDisplayRootId= value == null ? -1 : value.InstanceId;
         }
     }
-    
+	
     // ======================================================================
     // Force a repaint on selection change.
 	// ----------------------------------------------------------------------
@@ -93,6 +93,29 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 		);
     }
+    // ======================================================================
+    // Update all message ports when hierarchy has changed
+	// ----------------------------------------------------------------------
+	public void OnPostRender()
+	{
+		if(iCS_DevToolsConfig.framesWithoutBackground != 0) {
+			--iCS_DevToolsConfig.framesWithoutBackground;
+			return;
+		}
+		if(iCS_DevToolsConfig.takeVisualEditorSnapshot) {
+			iCS_DevToolsConfig.takeVisualEditorSnapshot= false;
+			var pos= position;
+			Debug.Log("iCanScript: Visual Editor Snapshot taken at "+DateTime.Now);
+			var snapshot= new Texture2D((int)pos.width, (int)pos.height, TextureFormat.ARGB32, false);
+			pos.x= 0; pos.y= 0;
+			snapshot.ReadPixels(pos, 0, 0, false);
+			snapshot.Apply();
+			var PNGsnapshot= snapshot.EncodeToPNG();
+			UnityEngine.Object.DestroyImmediate(snapshot);
+			string fileName= iCS_DevToolsConfig.ScreenShotsFolder+"/"+iCS_DateTime.DateTimeAsString()+" VisualEditor.png";
+			File.WriteAllBytes(Application.dataPath + fileName, PNGsnapshot);
+		}
+	}
     // ======================================================================
     // Periodic Update
 	// ----------------------------------------------------------------------
@@ -202,6 +225,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 #if SHOW_FRAME_RATE || SHOW_FRAME_TIME
         FrameRateDebugInfo();
 #endif
+
+		// Simulate OnPostRender.
+		OnPostRender();
 	}
 
 	// ----------------------------------------------------------------------

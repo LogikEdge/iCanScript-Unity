@@ -40,7 +40,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myGraphics.Begin(UpdateScrollPosition(), UpdateScale(), ClipingArea, SelectedObject, GraphMousePosition);
         
         // Draw editor grid.
-        DrawGrid();
+	    DrawGrid();			
         
         // Draw nodes and their connections.
         DisplayGraphNodes();
@@ -56,6 +56,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	
 	// ----------------------------------------------------------------------
     void DrawGrid() {
+		// No grid if editor snapshot without background requested.
+		if(iCS_DevToolsConfig.framesWithoutBackground != 0) return;
+		// Draw Grid
         myGraphics.DrawGrid(position,
                             iCS_PreferencesController.CanvasBackgroundColor,
                             iCS_PreferencesController.GridColor,
