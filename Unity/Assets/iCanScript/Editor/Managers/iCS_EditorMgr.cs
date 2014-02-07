@@ -104,9 +104,20 @@ public static class iCS_EditorMgr {
     public static iCS_LibraryEditor FindLibraryEditor() {
         return FindWindow(typeof(iCS_LibraryEditor)) as iCS_LibraryEditor;
     }    
+    public static iCS_PreferencesEditor FindPreferencesEditor() {
+        return FindWindow(typeof(iCS_PreferencesEditor)) as iCS_PreferencesEditor;
+    }    
     // ======================================================================
 	public static void RepaintVisualEditor() {
 		var editor= FindVisualEditor();
-		editor.Repaint();
+		if(editor != null) {
+			editor.Repaint();			
+		}
+	}
+	public static void RepaintPreferencesEditor() {
+		var editor= FindPreferencesEditor();
+		if(editor != null) {
+			editor.Repaint();			
+		}
 	}
 }

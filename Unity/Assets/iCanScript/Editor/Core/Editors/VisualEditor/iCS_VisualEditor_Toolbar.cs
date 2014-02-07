@@ -27,9 +27,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 		// --------------
 		// LEFT TOOLBAR
+		// Show Behaviour Node.
+		GUI.changed= false;
+		Prefs.ShowBehaviourNode= iCS_ToolbarUtility.Toggle(ref r, Prefs.ShowBehaviourNode, spacer, spacer);
 		// Show Runtime frame id.
         bool showFrameId= Prefs.ShowRuntimeFrameId;
-        bool newShowFrameId= iCS_ToolbarUtility.Toggle(ref r, showFrameId, spacer, spacer);
+        bool newShowFrameId= iCS_ToolbarUtility.Toggle(ref r, showFrameId, 0, 0);
         if(newShowFrameId != showFrameId) {
             Prefs.ShowRuntimeFrameId= newShowFrameId;
         }
@@ -49,6 +52,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             Prefs.PortValueRefreshPeriod= newRefreshSpeed*newRefreshSpeed;
         }
         iCS_ToolbarUtility.Separator(ref r);
+		// Refresh Preferences window
+		if(GUI.changed) {
+			iCS_EditorMgr.RepaintPreferencesEditor();
+		}
 		
 		// --------------
 		// RIGHT TOOLBAR

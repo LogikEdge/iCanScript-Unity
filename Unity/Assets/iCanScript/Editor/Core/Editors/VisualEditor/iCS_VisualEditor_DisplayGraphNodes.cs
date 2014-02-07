@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Pref=iCS_PreferencesController;
 
 /*
     TODO: Cleanup conditional tree descent VS full tree descent when drawing graph.
@@ -83,6 +84,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             node=> {
                 if(node.IsNode) {
+					if(node.IsBehaviour && !Pref.ShowBehaviourNode) return;
                     if(node.IsFloating && floatingRootNode == null) {
                         floatingRootNode= node;
                     } else {
