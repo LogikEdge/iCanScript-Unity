@@ -181,6 +181,55 @@ public class iCS_LibraryDatabase {
         return messages.ToArray();
     }
     // ----------------------------------------------------------------------
+    public static List<iCS_MethodBaseInfo> BuildMenuForMembersOfType(Type classType, Type inputType, Type outputType) {
+        QSort();
+        var menu= new List<iCS_MethodBaseInfo>();
+		classType= iCS_Types.GetElementType(classType);
+		inputType= iCS_Types.GetElementType(inputType);
+		outputType= iCS_Types.GetElementType(outputType);
+        for(int i= 0; i < Functions.Count; ++i) {
+            var func= Functions[i];
+            if(func.ClassType == classType) {
+                switch(func.ObjectType) {
+					case iCS_ObjectTypeEnum.ClassFunction:
+					case iCS_ObjectTypeEnum.ClassField:
+                    case iCS_ObjectTypeEnum.InstanceFunction:
+                    case iCS_ObjectTypeEnum.InstanceField: {
+			            bool shouldInclude= false;
+			            if(inputType != null) {
+			                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+			                    var param= func.Parameters[j];
+			                    if(param.direction != iCS_ParamDirection.Out) {
+									if(param.type == inputType) {
+			//                        if(iCS_Types.IsA(func.ParamTypes[j], inputType)) {
+			                            shouldInclude= true;
+			                        }
+			                    }
+			                }
+						}
+			            if(!shouldInclude && outputType != null) {
+			                if(func.ReturnType == outputType) shouldInclude= true;
+			                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+			                    var param= func.Parameters[j];
+			                    if(param.direction != iCS_ParamDirection.In) {
+			                        if(outputType == param.type) {
+			//                        if(iCS_Types.IsA(outputType, func.ParamTypes[j])) {
+			                            shouldInclude= true;
+			                        }
+			                    }
+			                }
+						}
+						if(shouldInclude) {
+			                menu.Add(func);							
+						}
+                        break;
+                    }
+                }
+            }
+		}
+		return menu;
+	}
+    // ----------------------------------------------------------------------
     public static List<iCS_MethodBaseInfo> BuildMenu(Type inputType, Type outputType) {
         QSort();
         var menu= new List<iCS_MethodBaseInfo>();

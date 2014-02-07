@@ -15,7 +15,7 @@ public class iCS_ImpulseForceGenerator {
 	[iCS_Function]
 	public iCS_ImpulseForceGenerator(Vector3 mainImpulseAccel, float mainImpulseTime,
 	                                 Vector3 secondaryImpulseAccel, float secondaryImpulseTime,
-	                                 float retriggerDelay, float initialVelocityBoost) {
+	                                 float retriggerDelay=1.2f, float initialVelocityBoost= 10f) {
 		MainImpulse         = mainImpulseAccel;
 		MainImpulseTime     = mainImpulseTime;
 		SecondaryImpulse    = secondaryImpulseAccel;

@@ -248,10 +248,16 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void ReleaseAfterDragPortMenu(iCS_EditorObject port, iCS_IStorage storage, bool reverseInOut) {
-        iCS_MenuContext[] menu= new iCS_MenuContext[2];
-		// Add shortcut ti instance node creation.
-		menu[0]= new iCS_MenuContext(ObjectInstanceStr);
-        menu[1]= new iCS_MenuContext(SeparatorStr);
+		// Different behaviour for "object instance" and standard packages.
+        iCS_EditorObject newNodeParent= storage.GetNodeAt(GraphPosition);
+		if(newNodeParent == null) return;
+        iCS_MenuContext[] menu= new iCS_MenuContext[0];
+		if(!newNodeParent.IsInstanceNode) {
+			// Add shortcut ti instance node creation.
+			menu= new iCS_MenuContext[2];
+			menu[0]= new iCS_MenuContext(ObjectInstanceStr);
+	        menu[1]= new iCS_MenuContext(SeparatorStr);
+		}
         // Get compatible functions.
         if(port.IsDataOrControlPort) {
             List<iCS_MethodBaseInfo> functionMenu= null;
@@ -267,7 +273,12 @@ public class iCS_DynamicMenu {
 				inputType= outputType;
 				outputType= tmp;
 			}
-            functionMenu= iCS_LibraryDatabase.BuildMenu(inputType, outputType);
+			if(newNodeParent.IsInstanceNode) {
+	            functionMenu= iCS_LibraryDatabase.BuildMenuForMembersOfType(newNodeParent.RuntimeType, inputType, outputType);								
+			}
+			else {
+	            functionMenu= iCS_LibraryDatabase.BuildMenu(inputType, outputType);				
+			}
             if(functionMenu.Count != 0) {
                 int len= menu.Length;
                 iCS_MenuContext[] tmp= null;
@@ -561,7 +572,13 @@ public class iCS_DynamicMenu {
         iCS_EditorObject newNodeParent= storage.GetNodeAt(graphPosition);
 		if(newNodeParent == null) return null;
         if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;
-        iCS_EditorObject method= CreateMethod(newNodeParent, storage, graphPosition, desc);
+		iCS_EditorObject method= null;
+		if(newNodeParent.IsInstanceNode) {
+			method= storage.InstanceWizardCreate(newNodeParent, desc);
+		}
+		else {
+	        method= CreateMethod(newNodeParent, storage, graphPosition, desc);			
+		}
 
 		// Inverse effective data flow if new node is inside port parent.
 		bool isInputPort= port.IsInputPort;
