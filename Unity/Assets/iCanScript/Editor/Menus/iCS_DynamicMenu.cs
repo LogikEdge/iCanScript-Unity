@@ -396,7 +396,12 @@ public class iCS_DynamicMenu {
                 if(desc.IsMessage) {
                     storage.CreateMessageHandler(selectedObject.InstanceId, pos, desc);
                 } else {
-                    CreateMethod(selectedObject, storage, pos, desc);                                                               
+					if(selectedObject.IsPort) {
+	                    CreateAttachedMethod(selectedObject, storage, pos, desc);
+					}
+					else {
+	                    CreateMethod(selectedObject, storage, pos, desc);
+					}
                 }
                 break;                
             }
@@ -546,48 +551,60 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_MethodBaseInfo desc) {
-        if(parent.IsPort) {
-            iCS_EditorObject port= parent;
-            parent= port.Parent;
-            iCS_EditorObject grandParent= parent.Parent;
-            if(!grandParent.IsKindOfPackage) return null;
-			switch(port.Edge) {
-				case iCS_EdgeEnum.Top: {
-					graphPosition.y-= 100;
-					break;
-				}
-				case iCS_EdgeEnum.Bottom: {
-					graphPosition.y+= 100;
-					break;
-				}
-				case iCS_EdgeEnum.Left: {
-					graphPosition.x-= 100;
-                    graphPosition.y-= 20;
-					break;
-				}
-				case iCS_EdgeEnum.Right:
-				default: {
-					graphPosition.x+= 100;
-					graphPosition.y-= 20;
-					break;
+        return storage.CreateFunction(parent.InstanceId, graphPosition, desc);            
+	}
+	// ----------------------------------------------------------------------
+    static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage storage, Vector2 graphPosition, iCS_MethodBaseInfo desc) {
+        var parent= port.Parent;
+        iCS_EditorObject grandParent= parent.Parent;
+        if(!grandParent.IsKindOfPackage) return null;
+        iCS_EditorObject method= CreateMethod(grandParent, storage, graphPosition, desc);
+        if(port.IsInputPort) {
+			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), storage.GetChildOutputDataPorts(method)); 
+			// Connect if only one possibility.
+			if(outputPorts.Length == 1) {
+				storage.SetNewDataConnection(port, outputPorts[0]);
+			}
+			else {
+				var bestPort= GetClosestMatch(port, outputPorts);
+				if(bestPort != null) {
+					storage.SetNewDataConnection(port, bestPort);						
 				}
 			}
-            iCS_EditorObject method= storage.CreateFunction(grandParent.InstanceId, graphPosition, desc);
-            if(port.IsInputPort) {
-				iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), storage.GetChildOutputDataPorts(method)); 
-				if(outputPorts.Length >= 1) {
-					storage.SetSource(port, outputPorts[0]);
+        } else {
+			iCS_EditorObject[] inputPorts= Prelude.filter(x=> iCS_Types.IsA(x.RuntimeType, port.RuntimeType), storage.GetChildInputDataPorts(method));
+			// Connect if only one posiibility
+			if(inputPorts.Length == 1) {
+				storage.SetNewDataConnection(inputPorts[0], port);
+			}
+			// Multiple choices exist so try the one with the closest name.
+			else {
+				var bestPort= GetClosestMatch(port, inputPorts);
+				if(bestPort != null) {
+					storage.SetNewDataConnection(bestPort, port);											
 				}
-            } else {
-				iCS_EditorObject[] inputPorts= Prelude.filter(x=> iCS_Types.IsA(x.RuntimeType, port.RuntimeType), storage.GetChildInputDataPorts(method));
-				if(inputPorts.Length >= 1) {
-					storage.SetSource(inputPorts[0], port);
-				}
-            }
-            return method;
+			}
         }
-        return storage.CreateFunction(parent.InstanceId, graphPosition, desc);            
+        return method;
     }
+	// ----------------------------------------------------------------------
+	static iCS_EditorObject GetClosestMatch(iCS_EditorObject refPort, iCS_EditorObject[] otherPorts) {
+		if(otherPorts.Length == 0) return null;
+		float bestScore= 0f;
+		iCS_EditorObject bestPort= null;
+		string refName= refPort.Name;
+		if(string.IsNullOrEmpty(refPort.RawName)) refName= refPort.ParentNode.Name;
+		foreach(var p in otherPorts) {
+			string pName= p.Name;
+			if(string.IsNullOrEmpty(p.RawName)) pName= p.ParentNode.Name;
+			var score= iCS_StringUtil.FuzzyCompare(refName, pName);
+			if(score > bestScore) {
+				bestScore= score;
+				bestPort= p;
+			}
+		}
+		return bestPort;		
+	}
 	// ----------------------------------------------------------------------
     static void DestroyObject(iCS_MenuContext context) {
 		var selectedObject= context.SelectedObject;

@@ -7,7 +7,9 @@ public static class iCS_Types {
     // Returns true if type can be converted to another type
     public static bool IsA(Type baseType, Type derivedType) {
 		if((baseType.IsArray && !derivedType.IsArray) || (!baseType.IsArray && derivedType.IsArray)) return false;
+        baseType= RemoveRefOrPointer(baseType);
         for(; derivedType != null; derivedType= derivedType.BaseType) {
+			derivedType= RemoveRefOrPointer(derivedType);
             if(baseType == derivedType) return true;
         }
         return false;
@@ -85,7 +87,7 @@ public static class iCS_Types {
             return Enum.ToObject(type, enumValues.GetValue(0));
         }
         // Remove reference & pointer modifiers.
-        if(type.IsByRef || type.IsPointer) type= GetElementType(type);
+        type= RemoveRefOrPointer(type);
         // Create default value type.
         return (type.IsValueType || type.IsEnum ? Activator.CreateInstance(type) : null);
     }
@@ -102,6 +104,11 @@ public static class iCS_Types {
         Type outDataType= GetElementType(outType);
         return IsA(outDataType, inDataType);
     }
+	// ----------------------------------------------------------------------
+	public static Type RemoveRefOrPointer(Type type) {
+        if(type.IsByRef || type.IsPointer) type= GetElementType(type);		
+		return type;
+	}
 	// ----------------------------------------------------------------------
     public static Type GetElementType(Type t) {
 		if(t == null) return null;
