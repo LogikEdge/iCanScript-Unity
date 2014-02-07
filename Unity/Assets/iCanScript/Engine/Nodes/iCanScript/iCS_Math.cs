@@ -24,14 +24,6 @@ public static class iCS_Math {
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector3 Div(Vector3 v, float div) { return v/div; }
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector4 Div(Vector4 v, float div) { return v/div; }
 
-    [iCS_Function(Icon="iCS_SplitIcon_32x32.psd")] public static void    FromVector(Vector2 v, out float x, out float y)                           { x= v.x; y= v.y; }
-    [iCS_Function(Icon="iCS_SplitIcon_32x32.psd")] public static void    FromVector(Vector3 v, out float x, out float y, out float z)              { x= v.x; y= v.y; z= v.z; }
-    [iCS_Function(Icon="iCS_SplitIcon_32x32.psd")] public static void    FromVector(Vector4 v, out float x, out float y, out float z, out float w) { x= v.x; y= v.y; z= v.z; w= v.w; }
-
-    [iCS_Function(Icon="iCS_JoinIcon_32x32.psd")] public static Vector2 ToVector(float x, float y)                   { return new Vector2(x,y); }
-    [iCS_Function(Icon="iCS_JoinIcon_32x32.psd")] public static Vector3 ToVector(float x, float y, float z)          { return new Vector3(x,y,z); }
-    [iCS_Function(Icon="iCS_JoinIcon_32x32.psd")] public static Vector4 ToVector(float x, float y, float z, float w) { return new Vector4(x,y,z,w); }
-
     [iCS_Function] public static int     Lerp(int v1, int v2, float ratio)            { return (int)(v1+(v2-v1)*ratio); }
     [iCS_Function] public static float   Lerp(float v1, float v2, float ratio)        { return v1+(v2-v1)*ratio; }
     [iCS_Function] public static Vector2 Lerp(Vector2 v1, Vector2 v2, float ratio)    { return v1+(v2-v1)*ratio; }
