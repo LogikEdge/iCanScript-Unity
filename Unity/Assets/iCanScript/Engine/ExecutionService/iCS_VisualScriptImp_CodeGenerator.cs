@@ -357,11 +357,23 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 							}
 							// Refresh the game object values for Message nodes
 							if(parent.IsMessage && port.IsInProposedDataPort) {
-								var component= gameObject.GetComponent(port.RuntimeType);
-								if(component != null) {
-									initValue= component;
-								} else {
-									Debug.LogWarning("iCanScript: Unable to find "+port.Name+" component for "+gameObject.name);
+								if(port.RuntimeType == typeof(GameObject)) {
+									initValue= gameObject;
+								}
+								else {
+									var propInfo= typeof(GameObject).GetProperty(port.Name);
+									if(propInfo != null) {
+										initValue= propInfo.GetValue(gameObject, null);
+									}
+									else {
+										var fieldInfo= typeof(GameObject).GetField(port.Name);
+										if(fieldInfo != null) {
+											initValue= fieldInfo.GetValue(gameObject);
+										}
+										else {
+											Debug.LogWarning("iCanScript: Unable to find property "+port.Name+" of "+gameObject.name);
+										}
+									}
 								}
 							}
                             // Set data port.
