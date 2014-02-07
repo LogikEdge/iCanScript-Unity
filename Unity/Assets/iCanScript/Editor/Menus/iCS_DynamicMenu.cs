@@ -565,7 +565,12 @@ public class iCS_DynamicMenu {
 		/*
 			TODO : Manage Package ports.  InputWithRespectTo(...) & OutputWithRespectTo(...) 
 		*/
-        if(port.IsInputPort) {
+
+		// Inverse effective data flow if new node is inside port parent.
+		bool isInputPort= port.IsInputPort;
+		var portParent= port.ParentNode;
+		if(portParent.IsParentOf(method)) isInputPort= !isInputPort;
+        if(isInputPort) {
 			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), storage.GetChildOutputDataPorts(method)); 
 			// Connect if only one possibility.
 			if(outputPorts.Length == 1) {
