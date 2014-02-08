@@ -6,13 +6,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ======================================================================
 	// Properties
 	// ----------------------------------------------------------------------
-	bool    HasKeyboardFocus    { get { return EditorWindow.focusedWindow == this; }}
-    bool    IsShiftKeyDown      { get { return Event.current.shift; }}
-    bool    IsControlKeyDown    { get { return Event.current.control; }}
-    bool    IsAltKeyDown        { get { return Event.current.alt; }}
-    bool    IsFloatingKeyDown	{ get { return IsControlKeyDown; }}
-    bool    IsCopyKeyDown       { get { return IsShiftKeyDown; }}
-    bool    IsScaleKeyDown      { get { return IsAltKeyDown; }}
+	bool    HasKeyboardFocus     { get { return EditorWindow.focusedWindow == this; }}
+    bool    IsShiftKeyDown       { get { return Event.current.shift; }}
+    bool    IsControlKeyDown     { get { return Event.current.control; }}
+    bool    IsAltKeyDown         { get { return Event.current.alt; }}
+    bool    IsFloatingKeyDown	 { get { return IsControlKeyDown; }}
+    bool    IsCopyKeyDown        { get { return IsShiftKeyDown; }}
+    bool    IsScaleKeyDown       { get { return IsAltKeyDown; }}
+	bool	IsMultiSelectKeyDown { get { return Event.current.command; }}
     
 	// ----------------------------------------------------------------------
     void KeyDownEvent() {
@@ -23,6 +24,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var ev= Event.current;
 		if(ev.keyCode == KeyCode.None) return;
         switch(ev.keyCode) {
+			// Multi-Select
+			case KeyCode.Escape: {
+				ClearMultiSelected();
+				break;
+			}
             // Tree navigation
             case KeyCode.UpArrow: {
                 if(SelectedObject != null) {

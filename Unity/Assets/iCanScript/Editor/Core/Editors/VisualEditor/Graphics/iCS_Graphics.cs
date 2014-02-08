@@ -385,7 +385,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     Color GetBackgroundColor(iCS_EditorObject node) {
         Color backgroundColor= BackgroundColor;
-        if(node == selectedObject) {
+        if(node.IsMultiSelected || node == selectedObject) {
             float adj= Prefs.SelectedBrightnessGain;
             backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
         }
@@ -427,7 +427,7 @@ public partial class iCS_Graphics {
 		pos.y-=5f;	// Put title a bit higher.
         pos= TranslateAndScale(pos);
         Rect labelRect= new Rect(0.5f*(pos.x+pos.xMax-labelSize.x), pos.y-labelSize.y, labelSize.x, labelSize.y);
-        if(node == selectedObject) {
+        if(node.IsMultiSelected || node == selectedObject) {
             Vector3[] vectors= new Vector3[4];
             vectors[0]= new Vector3(labelRect.x-2, labelRect.y-2, 0);
             vectors[1]= new Vector3(labelRect.xMax+2, labelRect.y-2, 0);

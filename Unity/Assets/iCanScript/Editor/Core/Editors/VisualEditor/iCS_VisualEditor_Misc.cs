@@ -29,12 +29,32 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			return SelectedObject;
 		}
 		ShouldRotateMuxPort= false;
-		// Special case for multiselection.
-        SelectedObject= newSelected;
-        ShowInstanceEditor();
+		/*
+			TODO : Process multi-select key (Command/Windows)
+		*/
+		if(IsMultiSelectKeyDown) {
+			if(newSelected == SelectedObject) {
+				SelectedObject= null;
+			}
+			else {
+				IStorage.ToggleMultiSelect(newSelected);
+				IsMultiSelectActive= true;				
+			}
+		}
+		else {
+			ClearMultiSelected();
+	        SelectedObject= newSelected;
+	        ShowInstanceEditor();			
+		}
         return SelectedObject;
     }
 
+	// ----------------------------------------------------------------------
+	void ClearMultiSelected() {
+		IsMultiSelectActive= false;
+		IStorage.ClearMultiSelected();
+	}
+	
 	// ----------------------------------------------------------------------
     void RotateSelectedMuxPort() {
 		if(SelectedObject == null || !SelectedObject.IsMuxPort) return;

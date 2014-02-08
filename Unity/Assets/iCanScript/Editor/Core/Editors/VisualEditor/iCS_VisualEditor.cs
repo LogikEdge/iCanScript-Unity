@@ -27,13 +27,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_Graphics    myGraphics     = null;
     
     // ----------------------------------------------------------------------
-    bool  myShowDynamicMenu   = false;
-    int   myUpdateCounter     = 0;
-    int   myRefreshCounter    = 0;
-    float myCurrentTime       = 0;
-    float myDeltaTime         = 0;
-    bool  myNeedRepaint       = true;
-    bool  myNotificationShown = false; 
+    bool  myShowDynamicMenu      = false;
+    int   myUpdateCounter        = 0;
+    int   myRefreshCounter       = 0;
+    float myCurrentTime          = 0;
+    float myDeltaTime            = 0;
+    bool  myNeedRepaint          = true;
+    bool  myNotificationShown    = false;
+	bool  myIsMultiSelectedActive= false; 
 	
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
@@ -70,6 +71,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             myDisplayRootId= value == null ? -1 : value.InstanceId;
         }
     }
+	public bool IsMultiSelectActive {
+		get { return myIsMultiSelectedActive; }
+		set { myIsMultiSelectedActive= value; }
+	}
 	
     // ======================================================================
     // Force a repaint on selection change.
