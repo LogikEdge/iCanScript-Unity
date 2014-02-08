@@ -551,7 +551,10 @@ public class iCS_DynamicMenu {
 	static void ProcessWrapInPackage(iCS_MenuContext context) {
 		var obj= context.SelectedObject;
 		var storage= context.Storage;
-		storage.WrapInPackage(obj);
+		var package= storage.WrapInPackage(obj);
+		if(package != null) {
+			storage.SelectedObject= package;
+		}
 	}
 	
     // ======================================================================
