@@ -577,7 +577,29 @@ public class iCS_DynamicMenu {
 			method= storage.InstanceWizardCreate(newNodeParent, desc);
 		}
 		else {
-	        method= CreateMethod(newNodeParent, storage, graphPosition, desc);			
+			bool createMethod= true;
+			if(desc.IsInstanceFunction || desc.IsInstanceField) {
+				if(desc.ClassType != port.RuntimeType) {
+					int sel= EditorUtility.DisplayDialogComplex("Missing the Instance Node",
+																"The function you selected requires an instance.\nPlease select one of the following:\n1) automatically create the Instance Builder and Instance Wizard;\n2) automatically create the Instance Wizard (I will provide the instance);\n3) just create the function. (I will provide the instance).",
+																"Function",
+																"Build Instance",
+																"Instance Wizard");
+					switch(sel) {
+					case 0:
+						break;
+					case 1:
+						Debug.Log("Selected Build variable node");
+						break;
+					case 2:
+						Debug.Log("Selected Instance Wizard node");
+						break;
+					}
+				}
+			}
+			if(createMethod) {
+		        method= CreateMethod(newNodeParent, storage, graphPosition, desc);							
+			}
 		}
 
 		// Inverse effective data flow if new node is inside port parent.
