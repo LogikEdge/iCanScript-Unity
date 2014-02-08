@@ -29,6 +29,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			return SelectedObject;
 		}
 		ShouldRotateMuxPort= false;
+		// Special case for multiselection.
         SelectedObject= newSelected;
         ShowInstanceEditor();
         return SelectedObject;
