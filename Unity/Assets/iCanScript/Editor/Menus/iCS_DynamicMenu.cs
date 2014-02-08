@@ -588,13 +588,31 @@ public class iCS_DynamicMenu {
 					switch(sel) {
 					case 0:
 						break;
-					case 1:
-						Debug.Log("Selected Build variable node");
-						break;
-					case 2:
-						Debug.Log("Selected Instance Wizard node");
+					case 1: {
+						var objectInstance= storage.CreateObjectInstance(newNodeParent, desc.ClassType, graphPosition, null);        
+				        iCS_ConstructorInfo[] myConstructors= iCS_LibraryDatabase.GetConstructors(desc.ClassType);
+				    	Array.Sort(myConstructors, (x,y)=> x.FunctionSignatureNoThis.CompareTo(y.FunctionSignatureNoThis));
+						if(myConstructors.Length != 0) {
+							iCS_EditorObject builder= null;
+							if(myConstructors.Length == 1) {
+								builder= storage.InstanceWizardCreateConstructor(objectInstance, myConstructors[0]);								
+								builder.SetAnchorAndLayoutPosition(new Vector2(graphPosition.x-75f, graphPosition.y));
+							}
+							else {
+								Debug.LogWarning("iCanScript: Multiple Builders exists.  Please create the builder manually.");								
+							}
+							
+						}         
+						method= storage.InstanceWizardCreate(objectInstance, desc);
+						createMethod= false;
 						break;
 					}
+					case 2: {
+						var objectInstance= storage.CreateObjectInstance(newNodeParent, desc.ClassType, graphPosition, null);        
+						method= storage.InstanceWizardCreate(objectInstance, desc);
+						createMethod= false;
+						break;
+					}}
 				}
 			}
 			if(createMethod) {

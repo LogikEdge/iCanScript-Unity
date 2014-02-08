@@ -559,10 +559,13 @@ public partial class iCS_IStorage {
         return instance;
     }    
 	// ----------------------------------------------------------------------
-	public void CreateObjectInstance(iCS_EditorObject parent, Type instanceType, Vector2 globalPosition, iCS_EditorObject sourcePort) {
+	public iCS_EditorObject CreateObjectInstance(iCS_EditorObject parent, Type instanceType, Vector2 globalPosition, iCS_EditorObject sourcePort) {
         var instance= CreatePackage(parent.InstanceId, globalPosition, "", iCS_ObjectTypeEnum.Package, instanceType);
-        var thisPort= InstanceWizardGetInputThisPort(instance);
-        SetNewDataConnection(thisPort, sourcePort);		
+		if(sourcePort != null) {
+	        var thisPort= InstanceWizardGetInputThisPort(instance);
+	        SetNewDataConnection(thisPort, sourcePort);					
+		}
+		return instance;
 	}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject CreateInParameterPort(string name, int parentId, Type valueType, int index) {

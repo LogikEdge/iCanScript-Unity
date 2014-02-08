@@ -383,7 +383,7 @@ public partial class iCS_IStorage {
                                                                iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);
         if(moduleThisPort == null) return null;
         Rect thisPos= moduleThisPort.LayoutRect; 
-        iCS_EditorObject constructor= CreateFunction(module.ParentId, new Vector2(thisPos.x-50f, thisPos.y-20), desc);
+        iCS_EditorObject constructor= CreateFunction(module.ParentId, new Vector2(thisPos.x-75f, thisPos.y), desc);
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.DefaultInstanceName);
 		constructorThisPort.IsNameEditable= false;
         SetSource(moduleThisPort, constructorThisPort);
