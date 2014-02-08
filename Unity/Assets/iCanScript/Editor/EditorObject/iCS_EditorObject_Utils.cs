@@ -5,6 +5,16 @@ public partial class iCS_EditorObject {
     // =====================================================================
     // Layout utilites
     // ----------------------------------------------------------------------
+	public bool CanHavePackageAsParent() {
+		if(IsPort || IsBehaviour || IsState || IsMessage || IsOnStatePackage) {
+			return false;
+		}
+		return true;
+	}
+	
+    // =====================================================================
+    // Layout utilites
+    // ----------------------------------------------------------------------
     // Adds a margin around the given rectangle
     static Rect AddMargins(Rect r) {
         var m= iCS_EditorConfig.MarginSize;

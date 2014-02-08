@@ -19,21 +19,22 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Menu Items
 	// ----------------------------------------------------------------------
-    const string ShowHierarchyStr= "Show in hierarchy";
-    const string DeleteStr= "- Delete";
-    const string PackageStr= "+ Package";
-    const string StateChartStr= "+ State Chart";
-    const string StateStr= "+ State";
-    const string EntryStateStr= "+ Entry State";
-    const string SetAsEntryStr="Set as Entry";
-    const string OnEntryStr= "+ "+iCS_Strings.OnEntry;
-    const string OnUpdateStr= "+ "+iCS_Strings.OnUpdate;
-    const string OnExitStr= "+ "+iCS_Strings.OnExit;
+    const string ShowHierarchyStr = "Show in hierarchy";
+    const string DeleteStr        = "- Delete";
+    const string PackageStr       = "+ Package";
+    const string StateChartStr    = "+ State Chart";
+    const string StateStr         = "+ State";
+    const string EntryStateStr    = "+ Entry State";
+    const string SetAsEntryStr    = "Set as Entry";
+    const string OnEntryStr       = "+ "+iCS_Strings.OnEntry;
+    const string OnUpdateStr      = "+ "+iCS_Strings.OnUpdate;
+    const string OnExitStr        = "+ "+iCS_Strings.OnExit;
 	const string ObjectInstanceStr= "+ Object Instance";
-    const string EnablePortStr= "+ Enable Port";
-    const string TriggerPortStr= "+ Trigger Port";
+    const string EnablePortStr    = "+ Enable Port";
+    const string TriggerPortStr   = "+ Trigger Port";
     const string OutputThisPortStr= "+ This Port (output)";
-    const string SeparatorStr= "";
+	const string WrapInPackageStr = "+ Wrap in Package";
+    const string SeparatorStr     = "";
 
     // ======================================================================
     // Menu state management
@@ -118,9 +119,8 @@ public class iCS_DynamicMenu {
                 menu[4]= new iCS_MenuContext(TriggerPortStr);                
             }
         }
-        // Show in hierarchy
+		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         AddShowInHierarchyMenuItem(ref menu);
-        // Delete menu item
         AddDeleteMenuItem(ref menu);
 		ShowMenu(menu, selectedObject, storage);
     }
@@ -147,9 +147,8 @@ public class iCS_DynamicMenu {
                 }                
             }
         }
-        // Show in hierarchy
+		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         AddShowInHierarchyMenuItem(ref menu);
-        // Delete menu item
         AddDeleteMenuItem(ref menu);
         ShowMenu(menu, selectedObject, storage);
     }
@@ -221,6 +220,7 @@ public class iCS_DynamicMenu {
         } else {
             menu= new iCS_MenuContext[0];
         }
+		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         AddShowInHierarchyMenuItem(ref menu);
         AddDeleteMenuItem(ref menu);
         ShowMenu(menu, selectedObject, storage);
@@ -298,7 +298,29 @@ public class iCS_DynamicMenu {
         }
         ShowMenu(menu, port, storage);            
     }
-
+	// ----------------------------------------------------------------------
+	void AddWrapInPackageIfAppropriate(ref iCS_MenuContext[] menu, iCS_EditorObject obj) {
+		// Don't add if object cannot support a parent package.
+		if(!obj.CanHavePackageAsParent()) return;
+		if(menu == null || menu.Length == 0) {
+			menu= new iCS_MenuContext[1];
+			menu[0]= new iCS_MenuContext(WrapInPackageStr);
+			return;
+		}
+		int i= GrowMenuBy(ref menu, 2);
+		menu[i]  = new iCS_MenuContext(WrapInPackageStr);
+		menu[i+1]= new iCS_MenuContext(SeparatorStr);
+	}
+	// ----------------------------------------------------------------------
+	int GrowMenuBy(ref iCS_MenuContext[] menu, int additionalSize) {
+		int sze= menu == null ? 0 : menu.Length;
+		if(additionalSize == 0) return sze;
+		var newMenu= new iCS_MenuContext[sze+additionalSize];
+		menu.CopyTo(newMenu, 0);
+		menu= newMenu;
+		return sze;
+	}
+	
     // ======================================================================
     // Menu Utilities
 	// ----------------------------------------------------------------------
@@ -398,6 +420,7 @@ public class iCS_DynamicMenu {
             case EnablePortStr:     ProcessCreateEnablePort(context); break;
             case TriggerPortStr:    ProcessCreateTriggerPort(context); break;
             case OutputThisPortStr: ProcessCreateOutInstancePort(context); break;
+			case WrapInPackageStr:  ProcessWrapInPackage(context); break;
             default: {
 				iCS_MethodBaseInfo desc= context.Descriptor;
 				if(desc == null) {
@@ -524,7 +547,13 @@ public class iCS_DynamicMenu {
 		if(parent == null) return;
 		storage.CreateObjectInstance(parent, port.RuntimeType, pos, port);        
     }
-    
+    // -------------------------------------------------------------------------
+	static void ProcessWrapInPackage(iCS_MenuContext context) {
+		var obj= context.SelectedObject;
+		var storage= context.Storage;
+		storage.WrapInPackage(obj);
+	}
+	
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------

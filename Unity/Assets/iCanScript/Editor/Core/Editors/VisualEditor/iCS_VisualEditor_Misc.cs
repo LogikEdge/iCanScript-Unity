@@ -203,64 +203,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         return newParent;
     }
-	// ----------------------------------------------------------------------
-    void ChangeParent(iCS_EditorObject node, iCS_EditorObject newParent) {
-        iCS_EditorObject oldParent= node.Parent;
-        if(newParent == null || newParent == oldParent) return;
-		// Change parent and relayout.
-		var nodePos= node.LayoutPosition;
-		node.Parent= newParent;
-		node.SetAnchorAndLayoutPosition(nodePos);
-		node.LayoutNode();
-		node.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
-		if(node.IsState) CleanupEntryState(node, oldParent);
 #if NEW_RECONNECTION
-        RebuildConnectionsFor(node);
-#else
-		CleanupConnections(node);
-#endif
-    }
-	// ----------------------------------------------------------------------
-	void CleanupEntryState(iCS_EditorObject state, iCS_EditorObject prevParent) {
-		state.IsEntryState= false;
-		iCS_EditorObject newParent= state.Parent;
-		bool anEntryExists= false;
-		IStorage.ForEachChild(newParent, child=> { if(child.IsEntryState) anEntryExists= true; });
-		if(!anEntryExists) state.IsEntryState= true;
-		anEntryExists= false;
-		IStorage.ForEachChild(prevParent, child=> { if(child.IsEntryState) anEntryExists= true; });
-		if(!anEntryExists) {
-			IStorage.UntilMatchingChild(prevParent,
-				child=> {
-					if(child.IsState) {
-						child.IsEntryState= true;
-						return true;
-					}
-					return false;
-				}
-			);
-		}
-	}
-#if NEW_RECONNECTION
-	// ----------------------------------------------------------------------
-	void RebuildConnectionsFor(iCS_EditorObject node) {
-		// Rebuild connection from end-to-end.
-		node.ForEachChildPort(
-			p=> {
-			    if(p.IsDataOrControlPort) {
-    				var outputPort= p.SourceEndPort;
-    				foreach(var inputPort in p.DestinationEndPoints) {
-    					RebuildDataConnection(outputPort, inputPort);
-    				}			        
-			    }
-			    if(p.IsStatePort) {
-			        var fromState= IStorage.GetFromStatePort(p);
-			        var toState  = IStorage.GetToStatePort(p);
-			        RebuildStateConnection(fromState, toState);
-			    }
-			}
-		);
-	}
 	// ----------------------------------------------------------------------
 	void RebuildDataConnection(iCS_EditorObject outputPort, iCS_EditorObject inputPort) {
 #if DEBUG
@@ -279,13 +222,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			while(newInputNode != inputNode && newInputNode.ParentNode != inputNode) {
 				newInputNode= newInputNode.ParentNode;
 			}
-			var existingPort= FindPortWithSourceEndPoint(newInputNode, outputPort);
+			var existingPort= IStorage.FindPortWithSourceEndPoint(newInputNode, outputPort);
 			if(existingPort != null) {
 				var prevSource= inputPort.Source;
 				if(prevSource != existingPort) {
 					inputPort.Source= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
-						CleanupHangingConnection(prevSource);
+						IStorage.CleanupHangingConnection(prevSource);
 					}					
 				}
 				RebuildDataConnection(outputPort, existingPort);
@@ -305,13 +248,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			while(newDstNode != commonParentNode && newDstNode.ParentNode != commonParentNode) {
 				newDstNode= newDstNode.ParentNode;
 			}
-			var existingPort= FindPortWithSourceEndPoint(newDstNode, outputPort);
+			var existingPort= IStorage.FindPortWithSourceEndPoint(newDstNode, outputPort);
 			if(existingPort != null) {
 				var prevSource= inputPort.Source;
 				if(prevSource != existingPort) {
 					inputPort.Source= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
-						CleanupHangingConnection(prevSource);
+						IStorage.CleanupHangingConnection(prevSource);
 					}					
 				}
 				RebuildDataConnection(outputPort, existingPort);
@@ -325,13 +268,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			return;
 		} else {
 			// Rebuilding moving up from the destination port towards the common parent.
-			var existingPort= FindPortWithSourceEndPoint(inputNodeParent, outputPort);
+			var existingPort= IStorage.FindPortWithSourceEndPoint(inputNodeParent, outputPort);
 			if(existingPort != null) {
 				var prevSource= inputPort.Source;
 				if(prevSource != existingPort) {
 					inputPort.Source= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
-						CleanupHangingConnection(prevSource);
+						IStorage.CleanupHangingConnection(prevSource);
 					}					
 				}
 				RebuildDataConnection(outputPort, existingPort);
@@ -344,42 +287,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}			
 		}
 	}
-    // ----------------------------------------------------------------------
-	void CleanupHangingConnection(iCS_EditorObject port) {
-		if(port.Destinations.Length == 0) {
-			var src= port.Source;
-			IStorage.DestroyInstance(port);
-			if(src != null) {
-				CleanupHangingConnection(src);
-			}
-		}
-	}
-	// ----------------------------------------------------------------------
-	void RebuildStateConnection(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
-		var commonParent= fromStatePort.GetCommonParent(toStatePort);
-		if(commonParent == null) {
-			Debug.LogWarning("iCanScript: Unable to find common parent after relocating state !!!");
-			return;
-		}
-		var transitionPackage= IStorage.GetTransitionPackage(toStatePort);
-		if(transitionPackage == null) return;
-		if(transitionPackage.ParentNode == commonParent) return;
-		ChangeParent(transitionPackage, commonParent);
-		IStorage.LayoutTransitionPackage(transitionPackage);
-	}
 #endif
-    // ----------------------------------------------------------------------
-	iCS_EditorObject FindPortWithSourceEndPoint(iCS_EditorObject node, iCS_EditorObject srcEP) {
-		// Get all ports that match request (supports connection loops).
-		var matchingPorts= node.BuildListOfChildPorts(p=> p.SourceEndPort == srcEP);
-		if(matchingPorts.Length == 0) return null;
-		if(matchingPorts.Length == 1) return matchingPorts[0];
-		foreach(var p in matchingPorts) {
-			if(p.IsOutputPort) return p;
-		}
-		Debug.LogWarning("iCanScript: Invalid circular connection of input ports on: "+node.Name);
-		return matchingPorts[0];
-	}
     // ----------------------------------------------------------------------
     void CleanupConnections(iCS_EditorObject node) {
         switch(node.ObjectType) {
@@ -410,7 +318,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             iCS_EditorObject inState= IStorage.GetToStatePort(transitionPackage).Parent;
                             iCS_EditorObject newParent= IStorage.GetTransitionParent(inState, outState);
                             if(newParent != null && newParent != transitionPackage.Parent) {
-                                ChangeParent(transitionPackage, newParent);
+                                IStorage.ChangeParent(transitionPackage, newParent);
                                 IStorage.LayoutTransitionPackage(transitionPackage);
                             }
                         }

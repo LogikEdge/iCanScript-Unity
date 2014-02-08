@@ -240,7 +240,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         iCS_EditorObject newParent= GetValidParentNodeUnder(GraphMousePosition, node);
                         if(newParent != null) {
                             if(newParent != oldParent) {
-                                ChangeParent(node, newParent);
+                                IStorage.ChangeParent(node, newParent);
                             } else {
                                 oldParent.LayoutNode(iCS_AnimationControl.Always);
                                 oldParent.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
