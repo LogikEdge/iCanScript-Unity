@@ -24,9 +24,17 @@ public partial class iCS_IStorage {
             }
         }
         if(!inParentSeen && inGrandParent != null) {
-            iCS_EditorObject newPort= CreatePort(outPort.Name, inGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
-            SetSource(inPort, newPort, conversion);
-			SetBestPositionForAutocreatedPort(newPort, inPort.LayoutPosition, outPort.LayoutPosition);
+			var sourcePort= inPort.Source;
+			iCS_EditorObject newPort= null;
+			// Attempt to reuse existing ports.
+			if(sourcePort != null && sourcePort.ParentNode == inGrandParent && conversion == null) {
+				newPort= sourcePort;
+			}
+			else {
+				newPort= CreatePort(inPort.Name, inGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+	            SetSource(inPort, newPort, conversion);
+				SetBestPositionForAutocreatedPort(newPort, inPort.LayoutPosition, outPort.LayoutPosition);
+			}
             SetNewDataConnection(newPort, outPort);
             OptimizeDataConnection(inPort, outPort);
             return;                       
@@ -40,9 +48,24 @@ public partial class iCS_IStorage {
             }
         }
         if(!outParentSeen && outGrandParent != null) {
-            iCS_EditorObject newPort= CreatePort(outPort.Name, outGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-            SetSource(newPort, outPort, conversion);
-			SetBestPositionForAutocreatedPort(newPort, inPort.LayoutPosition, outPort.LayoutPosition);
+			// Attempt to reuse existing port.
+			iCS_EditorObject newPort= null;
+			if(conversion == null &&
+			   outGrandParent.UntilMatchingChild(
+				   p=> {
+					   if(p.IsPort && p.Source == outPort) {
+						   newPort= p;
+						   return true;
+					   }
+					   return false;
+				   }
+			   )
+			) {}
+			else {
+				newPort= CreatePort(outPort.Name, outGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            SetSource(newPort, outPort, conversion);
+				SetBestPositionForAutocreatedPort(newPort, inPort.LayoutPosition, outPort.LayoutPosition);
+			}
             SetNewDataConnection(inPort, newPort);
             OptimizeDataConnection(inPort, outPort);
             return;                       

@@ -260,6 +260,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject port= InstanceWizardGetPort(module, portName, objType, portIdx);
         if(port == null) {
             port= CreatePort(portName, module.InstanceId, portType, objType);                
+			port.IsNameEditable= false;
             if(portIdx != -1) {
                 port.PortIndex= portIdx;                
             }
@@ -309,6 +310,7 @@ public partial class iCS_IStorage {
                         iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicDataPort);
                         if(classPort == null) {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+							classPort.IsNameEditable= false;
                             SetSource(port, classPort);
                         } else {
                             SetSource(port, classPort);
@@ -321,6 +323,7 @@ public partial class iCS_IStorage {
                         iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicDataPort);
                         if(classPort == null) {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+							classPort.IsNameEditable= false;
                             SetSource(classPort, port);
                         } else {
                             SetSource(classPort, port);
@@ -382,6 +385,7 @@ public partial class iCS_IStorage {
         Rect thisPos= moduleThisPort.LayoutRect; 
         iCS_EditorObject constructor= CreateFunction(module.ParentId, new Vector2(thisPos.x-50f, thisPos.y-20), desc);
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.DefaultInstanceName);
+		constructorThisPort.IsNameEditable= false;
         SetSource(moduleThisPort, constructorThisPort);
         Iconize(constructor);
         return constructor;
