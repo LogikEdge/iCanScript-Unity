@@ -3,7 +3,7 @@ using System.Collections;
 
 public partial class iCS_EditorObject {
     // =====================================================================
-    // Layout utilites
+    // Edition Utility
     // ----------------------------------------------------------------------
 	public bool CanHavePackageAsParent() {
 		if(IsPort || IsBehaviour || IsState || IsMessage || IsOnStatePackage) {
@@ -11,6 +11,11 @@ public partial class iCS_EditorObject {
 		}
 		return true;
 	}
+    // ----------------------------------------------------------------------
+    public bool CanBeDeleted() {
+        if(IsBehaviour || IsFixDataPort) return false;
+        return true;
+    }
 	
     // =====================================================================
     // Layout utilites

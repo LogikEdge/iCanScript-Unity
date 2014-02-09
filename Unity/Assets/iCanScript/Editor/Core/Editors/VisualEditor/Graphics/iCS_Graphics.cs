@@ -384,12 +384,15 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     Color GetBackgroundColor(iCS_EditorObject node) {
-        Color backgroundColor= BackgroundColor;
-        if(node.IsMultiSelected || node == selectedObject) {
-            float adj= Prefs.SelectedBrightnessGain;
-            backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
+        if(node.IStorage.IsSelectedOrMultiSelected(node)) {
+            return GetSelectedBackgroundColor(node);
         }
-        return backgroundColor;        
+        return BackgroundColor;        
+    }
+    // ----------------------------------------------------------------------
+    Color GetSelectedBackgroundColor(iCS_EditorObject obj) {
+        float adj= Prefs.SelectedBrightnessGain;
+        return new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
     }
     // ----------------------------------------------------------------------
     public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
@@ -529,7 +532,8 @@ public partial class iCS_Graphics {
         if(!IsVisible(displayArea)) return;
         
         // Determine if port is selected.
-        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataOrControlPort && port == selectedObject.Parent);
+        bool isSelectedPort= port.IStorage.IsSelectedOrMultiSelected(port) ||
+                             (selectedObject != null && selectedObject.IsDataOrControlPort && port == selectedObject.Parent);
 
 		// Compute port radius (radius is increased if port is selected).
 		if(isSelectedPort) {
@@ -833,7 +837,10 @@ public partial class iCS_Graphics {
         // Determine if this connection is part of the selected object.
         float highlightWidth= 2f;
         Color highlightColor= new Color(0.67f, 0.67f, 0.67f, alpha);
-        if(port == selectedObject || source == selectedObject || portParent == selectedObject || sourceParent == selectedObject) {
+        if(iStorage.IsSelectedOrMultiSelected(port) ||
+           iStorage.IsSelectedOrMultiSelected(source) ||
+           iStorage.IsSelectedOrMultiSelected(portParent) ||
+           iStorage.IsSelectedOrMultiSelected(sourceParent)) {
             highlight= true;
         }
         // Determine if this connection is part of a drag.

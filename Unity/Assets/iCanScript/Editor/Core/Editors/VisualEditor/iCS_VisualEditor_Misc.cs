@@ -33,16 +33,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			TODO : Process multi-select key (Command/Windows)
 		*/
 		if(IsMultiSelectKeyDown) {
-			if(newSelected == SelectedObject) {
-				SelectedObject= null;
-			}
-			else {
-				IStorage.ToggleMultiSelect(newSelected);
-				IsMultiSelectActive= true;				
-			}
+			ToggleMultiSelection(newSelected);
 		}
 		else {
-			ClearMultiSelected();
+			ClearMultiSelection();
 	        SelectedObject= newSelected;
 	        ShowInstanceEditor();			
 		}
@@ -50,11 +44,27 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 
 	// ----------------------------------------------------------------------
-	void ClearMultiSelected() {
-		IsMultiSelectActive= false;
-		IStorage.ClearMultiSelected();
+	void ClearMultiSelection() {
+		if(!IsMultiSelectionActive) return;
+		IStorage.ClearMultiSelection();
+		myMultiSelectionCount= 0;
 	}
-	
+	// ----------------------------------------------------------------------
+	void SetMultiSelection(iCS_EditorObject obj) {
+		if(!obj.IsMultiSelected) {
+			++myMultiSelectionCount;			
+		}
+		IStorage.SetMultiSelection(obj);
+	}
+	// ----------------------------------------------------------------------
+	void ToggleMultiSelection(iCS_EditorObject obj) {
+		if(IStorage.ToggleMultiSelection(obj)) {
+			++myMultiSelectionCount;
+		}
+		else {
+			--myMultiSelectionCount;
+		}
+	}
 	// ----------------------------------------------------------------------
     void RotateSelectedMuxPort() {
 		if(SelectedObject == null || !SelectedObject.IsMuxPort) return;

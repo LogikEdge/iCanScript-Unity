@@ -98,7 +98,35 @@ public static class iCS_EditorUtility {
 			_=> iStorage.DestroyInstance(selectedObject.InstanceId)                        
 		);
 	}
-    
+	// ----------------------------------------------------------------------
+    public static bool SafeDeleteMultiSelectedObjects(iCS_IStorage iStorage) {
+        var selectedObjects= iStorage.GetMultiSelectedObjects();
+        if(selectedObjects == null || selectedObjects.Length == 0) return false;
+        // Ask user to make sure he/she wants to delete the multi-selection.
+        if(!EditorUtility.DisplayDialog("Multi-Selection Deletion",
+                                        "Are you sure you want to remove the selected Nodes/Ports.",
+                                        "Delete", "Cancel")) {
+            return false;
+        }
+        // User has confirm the deletion.
+        iStorage.RegisterUndo("Multi-Selection Deletion");
+        foreach(var obj in selectedObjects) {
+            if(!obj.CanBeDeleted()) continue;
+            var parent= obj.ParentNode;
+            if(obj.IsInstanceNodePort) {
+        		parent.AnimateGraph(
+        			_=> iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj)                        
+        		);
+            }
+            else {
+                // TODO: Should animate parent node on node delete.
+        		parent.AnimateGraph(
+        			_=> iStorage.DestroyInstance(obj.InstanceId)                        
+        		);                            
+            }
+        }
+        return true;
+    }
 
     // ======================================================================
     // GUI helpers

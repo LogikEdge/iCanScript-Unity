@@ -22,13 +22,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	    */
 	    if(!HasKeyboardFocus) return;
 		var ev= Event.current;
-		if(ev.keyCode == KeyCode.None) return;
+		var keyCode= ev.keyCode;
+		if(keyCode == KeyCode.None) return;
+		// Remove MultiSelect for all except DELETE
+		if(!(keyCode == KeyCode.Delete || keyCode == KeyCode.Backspace)) {
+			ClearMultiSelection();			
+		}
         switch(ev.keyCode) {
-			// Multi-Select
-			case KeyCode.Escape: {
-				ClearMultiSelected();
-				break;
-			}
             // Tree navigation
             case KeyCode.UpArrow: {
                 if(SelectedObject != null) {
@@ -161,6 +161,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Object deletion
             case KeyCode.Delete:
             case KeyCode.Backspace: {
+				// First attempt to delete multi-selected objects.
+				if(iCS_EditorUtility.SafeDeleteMultiSelectedObjects(IStorage)) break;
                 if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
                    !SelectedObject.IsFixDataPort) {
 	                iCS_EditorObject parent= SelectedObject.Parent;
