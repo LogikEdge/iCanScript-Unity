@@ -8,7 +8,7 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
-	public enum MenuType { SelectedObject, ReleaseAfterDrag, MultiSelection };
+	public enum MenuType { SelectedObject, ReleaseAfterDrag };
 	
     // ======================================================================
     // Field
@@ -57,7 +57,7 @@ public class iCS_DynamicMenu {
         if(GraphPosition == Vector2.zero) GraphPosition= graphPosition;
 
         // Multi-Selection has its own set of menus.
-        if(menuType == MenuType.MultiSelection) {
+        if(storage.IsMultiSelectionActive) {
             MultiSelectionMenu(storage);
             return;
         }
