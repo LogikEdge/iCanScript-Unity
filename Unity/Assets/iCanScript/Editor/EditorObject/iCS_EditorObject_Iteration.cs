@@ -358,6 +358,8 @@ public partial class iCS_EditorObject {
     public iCS_EditorObject GetCommonParent(iCS_EditorObject theOther) {
         var l1= BuildListOfParentNodes();
         var l2= theOther.BuildListOfParentNodes();
+        l1= P.insertAt(this, l1.Length, l1);
+        l2= P.insertAt(theOther, l2.Length, l2);
         iCS_EditorObject commonParent= null;
         for(int i= 0; i < l1.Length && i < l2.Length; ++i) {
             if(l1[i] != l2[i]) break;

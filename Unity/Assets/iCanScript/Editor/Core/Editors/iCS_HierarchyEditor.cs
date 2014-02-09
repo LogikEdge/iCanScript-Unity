@@ -121,7 +121,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
                     // Delete object under cursor.
                     case KeyCode.Backspace:
                     case KeyCode.Delete: {
-                        iCS_EditorUtility.SafeDestroyObject(selected, IStorage);
+                        iCS_UserCommands.DeleteObject(selected);
                         myController.Selected= null;
                         ev.Use();
                         break;

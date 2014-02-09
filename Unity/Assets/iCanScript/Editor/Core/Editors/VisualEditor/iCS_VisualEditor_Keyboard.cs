@@ -24,13 +24,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var ev= Event.current;
 		var keyCode= ev.keyCode;
 		if(keyCode == KeyCode.None) return;
-		// Remove MultiSelect for all except DELETE
-		if(!(keyCode == KeyCode.Delete || keyCode == KeyCode.Backspace)) {
-			ClearMultiSelection();			
-		}
         switch(ev.keyCode) {
             // Tree navigation
             case KeyCode.UpArrow: {
+    			ClearMultiSelection();			
                 if(SelectedObject != null) {
                     // Move node
                     if(IsShiftKeyDown && SelectedObject.IsNode) {
@@ -49,6 +46,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.DownArrow: {
+    			ClearMultiSelection();			
                 if(IsShiftKeyDown && SelectedObject.IsNode) {
                     var newPos= SelectedObject.LayoutPosition;
                     newPos.y+= IsAltKeyDown ? 5f: 1f;
@@ -67,6 +65,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.RightArrow: {
+    			ClearMultiSelection();			
                 if(IsShiftKeyDown && SelectedObject.IsNode) {
                     var newPos= SelectedObject.LayoutPosition;
                     newPos.x+= IsAltKeyDown ? 5f: 1f;
@@ -82,6 +81,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.LeftArrow: {
+    			ClearMultiSelection();			
                 if(IsShiftKeyDown && SelectedObject.IsNode) {
                     var newPos= SelectedObject.LayoutPosition;
                     newPos.x-= IsAltKeyDown ? 5f: 1f;
@@ -103,6 +103,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
                 if(selected != null) {
                     iCS_EditorUtility.SafeFocusOn(selected, IStorage);                        
+                }
+                Event.current.Use();
+                break;
+            }
+            // Wrap in package
+            case KeyCode.W: {
+                if(IsMultiSelectionActive) {
+                    iCS_UserCommands.WrapMultiSelectionInPackage(IStorage);
+                }
+                else {
+                    if(SelectedObject != null) {
+                        iCS_UserCommands.WrapInPackage(SelectedObject);
+                    }                    
                 }
                 Event.current.Use();
                 break;
@@ -129,6 +142,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.G: {  // Goto bookmark
+    			ClearMultiSelection();			
                 if(myBookmark != null) {
                     SelectedObject= myBookmark;
                     CenterOnSelected();
@@ -137,6 +151,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.S: {  // Switch bookmark and selected object
+    			ClearMultiSelection();			
                 if(myBookmark != null && SelectedObject != null) {
                     iCS_EditorObject prevmyBookmark= myBookmark;
                     myBookmark= SelectedObject;
@@ -162,18 +177,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case KeyCode.Delete:
             case KeyCode.Backspace: {
 				// First attempt to delete multi-selected objects.
-				if(iCS_EditorUtility.SafeDeleteMultiSelectedObjects(IStorage)) break;
+				if(iCS_UserCommands.DeleteMultiSelectedObjects(IStorage)) break;
                 if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
                    !SelectedObject.IsFixDataPort) {
 	                iCS_EditorObject parent= SelectedObject.Parent;
 					bool changeSelected= true;
-					if(IsControlKeyDown) {
-						iCS_EditorUtility.ForceDestroyObject(SelectedObject, IStorage);
-					} else {
-	                    changeSelected= iCS_EditorUtility.SafeDestroyObject(SelectedObject, IStorage);						
-					}
+					iCS_UserCommands.DeleteObject(SelectedObject);
                     if(changeSelected) {
-	                    SelectedObject= parent;	
+                        SelectedObject= parent;	
 					}
                 }
                 Event.current.Use();
@@ -182,6 +193,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Object creation.
             case KeyCode.KeypadEnter: // fnc+return on Mac
             case KeyCode.Insert: {
+    			ClearMultiSelection();
                 if(SelectedObject == null) SelectedObject= DisplayRoot;
                 // Don't use mouse position if it is too far from selected node.
                 Vector2 graphPos= GraphMousePosition;

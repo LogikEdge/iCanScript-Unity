@@ -708,8 +708,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     static void DestroyObject(iCS_MenuContext context) {
 		var selectedObject= context.SelectedObject;
-		var iStorage      = context.Storage;
-        iCS_EditorUtility.SafeDestroyObject(selectedObject, iStorage);
+        iCS_UserCommands.DeleteObject(selectedObject);
     }
 	// ----------------------------------------------------------------------
     static bool AsChildNodeWithName(iCS_EditorObject parent, string name, iCS_IStorage storage) {
