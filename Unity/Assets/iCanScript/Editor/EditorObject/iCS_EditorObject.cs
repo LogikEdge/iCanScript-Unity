@@ -12,7 +12,6 @@ public partial class iCS_EditorObject {
     bool            myIsFloating     = false;
     List<int>		myChildren       = new List<int>();
     bool            myIsSticky       = false;
-	bool			myIsMultiSelected= false;
 
     // ======================================================================
     // Conversion Utilities
@@ -122,11 +121,6 @@ public partial class iCS_EditorObject {
 		    engineObject.Tooltip= value;
 		    IsDirty= true;
 		}
-	}
-    // ----------------------------------------------------------------------
-	public bool IsMultiSelected {
-		get { return myIsMultiSelected; }
-		set { myIsMultiSelected= value; }
 	}
 	
     // ======================================================================

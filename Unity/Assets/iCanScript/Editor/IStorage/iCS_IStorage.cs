@@ -37,14 +37,6 @@ public partial class iCS_IStorage {
         get { return Storage.GuiScale; }
         set { Storage.GuiScale= value; }
     }
-    public int SelectedObjectId {
-        get { return Storage.SelectedObject; }
-        set { Storage.SelectedObject= value; }
-    }
-    public iCS_EditorObject SelectedObject {
-        get { return this[SelectedObjectId]; }
-        set { SelectedObjectId= value != null ? value.InstanceId : -1; }
-    }
     public bool IsDirty {
         get { return myIsDirty; }
         set {

@@ -8,7 +8,7 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
-	public enum MenuType { SelectedObject, ReleaseAfterDrag };
+	public enum MenuType { SelectedObject, ReleaseAfterDrag, MultiSelection };
 	
     // ======================================================================
     // Field
@@ -19,22 +19,24 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Menu Items
 	// ----------------------------------------------------------------------
-    const string ShowHierarchyStr = "Show in hierarchy";
-    const string DeleteStr        = "- Delete";
-    const string PackageStr       = "+ Package";
-    const string StateChartStr    = "+ State Chart";
-    const string StateStr         = "+ State";
-    const string EntryStateStr    = "+ Entry State";
-    const string SetAsEntryStr    = "Set as Entry";
-    const string OnEntryStr       = "+ "+iCS_Strings.OnEntry;
-    const string OnUpdateStr      = "+ "+iCS_Strings.OnUpdate;
-    const string OnExitStr        = "+ "+iCS_Strings.OnExit;
-	const string ObjectInstanceStr= "+ Object Instance";
-    const string EnablePortStr    = "+ Enable Port";
-    const string TriggerPortStr   = "+ Trigger Port";
-    const string OutputThisPortStr= "+ This Port (output)";
-	const string WrapInPackageStr = "+ Wrap in Package";
-    const string SeparatorStr     = "";
+    const string ShowHierarchyStr              = "Show in hierarchy";
+    const string DeleteStr                     = "- Delete";
+    const string PackageStr                    = "+ Package";
+    const string StateChartStr                 = "+ State Chart";
+    const string StateStr                      = "+ State";
+    const string EntryStateStr                 = "+ Entry State";
+    const string SetAsEntryStr                 = "Set as Entry";
+    const string OnEntryStr                    = "+ "+iCS_Strings.OnEntry;
+    const string OnUpdateStr                   = "+ "+iCS_Strings.OnUpdate;
+    const string OnExitStr                     = "+ "+iCS_Strings.OnExit;
+	const string ObjectInstanceStr             = "+ Object Instance";
+    const string EnablePortStr                 = "+ Enable Port";
+    const string TriggerPortStr                = "+ Trigger Port";
+    const string OutputThisPortStr             = "+ This Port (output)";
+	const string WrapInPackageStr              = "+ Wrap in Package";
+    const string MultiSelectionWrapInPackageStr= "+ Wrap Multi-Selection in Package";
+    const string MultiSelectionDeleteStr       = "- Delete Multi-Selection";
+    const string SeparatorStr                  = "";
 
     // ======================================================================
     // Menu state management
@@ -54,6 +56,12 @@ public class iCS_DynamicMenu {
         // Update mouse position if not already done.
         if(GraphPosition == Vector2.zero) GraphPosition= graphPosition;
 
+        // Multi-Selection has its own set of menus.
+        if(menuType == MenuType.MultiSelection) {
+            MultiSelectionMenu(storage);
+            return;
+        }
+        
         // Nothing to show if menu is inactive.
         if(selectedObject == null || GraphPosition != graphPosition) {
             Reset();
@@ -299,6 +307,16 @@ public class iCS_DynamicMenu {
         ShowMenu(menu, port, storage);            
     }
 	// ----------------------------------------------------------------------
+    void MultiSelectionMenu(iCS_IStorage iStorage) {
+        var multiSelectedObjects= iStorage.GetMultiSelectedObjects();
+        if(multiSelectedObjects == null || multiSelectedObjects.Length == 0) return;
+        iCS_MenuContext[] menu= new iCS_MenuContext[3];
+        menu[0]= new iCS_MenuContext(MultiSelectionWrapInPackageStr);
+        menu[1]= new iCS_MenuContext(SeparatorStr);
+        menu[2]= new iCS_MenuContext(MultiSelectionDeleteStr);
+        ShowMenu(menu, null, iStorage);
+    }
+	// ----------------------------------------------------------------------
 	void AddWrapInPackageIfAppropriate(ref iCS_MenuContext[] menu, iCS_EditorObject obj) {
 		// Don't add if object cannot support a parent package.
 		if(!obj.CanHavePackageAsParent()) return;
@@ -391,7 +409,7 @@ public class iCS_DynamicMenu {
         storage.RegisterUndo(context.Command);
         // Reject request if child node is not allowed.
 		string tooltip= null;
-        if(selectedObject.IsState) {
+        if(selectedObject != null && selectedObject.IsState) {
 			bool isAllowed= false;
             string name= context.Command.Substring(2);
             if(name[0] == ' ') name= name.Substring(1);
@@ -421,12 +439,15 @@ public class iCS_DynamicMenu {
             case TriggerPortStr:    ProcessCreateTriggerPort(context); break;
             case OutputThisPortStr: ProcessCreateOutInstancePort(context); break;
 			case WrapInPackageStr:  ProcessWrapInPackage(context); break;
+            case MultiSelectionWrapInPackageStr: ProcessMultiSelectionWrapInPackage(context); break;
+            case MultiSelectionDeleteStr:        ProcessMultiSelectionDelete(context); break;
             default: {
 				iCS_MethodBaseInfo desc= context.Descriptor;
 				if(desc == null) {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
 				}
+                if(selectedObject == null) break;
                 if(desc.IsMessage) {
                     storage.CreateMessageHandler(selectedObject.InstanceId, pos, desc);
                 } else {
@@ -556,6 +577,14 @@ public class iCS_DynamicMenu {
 			storage.SelectedObject= package;
 		}
 	}
+    // -------------------------------------------------------------------------
+	static void ProcessMultiSelectionWrapInPackage(iCS_MenuContext context) {
+        iCS_UserCommands.WrapMultiSelectionInPackage(context.Storage);
+    }
+    // -------------------------------------------------------------------------
+	static void ProcessMultiSelectionDelete(iCS_MenuContext context) {
+        iCS_UserCommands.DeleteMultiSelectedObjects(context.Storage);
+    }
 	
     // ======================================================================
     // Creation Utilities

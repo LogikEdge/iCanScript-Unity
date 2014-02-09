@@ -34,7 +34,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     float myDeltaTime          = 0;
     bool  myNeedRepaint        = true;
     bool  myNotificationShown  = false;
-	int   myMultiSelectionCount= 0; 
 	
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
@@ -72,7 +71,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
 	public bool IsMultiSelectionActive {
-		get { return myMultiSelectionCount != 0; }
+		get { return IStorage.IsMultiSelectionActive; }
 	}
 	
     // ======================================================================

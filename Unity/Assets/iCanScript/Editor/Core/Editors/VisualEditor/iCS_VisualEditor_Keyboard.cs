@@ -27,7 +27,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         switch(ev.keyCode) {
             // Tree navigation
             case KeyCode.UpArrow: {
-    			ClearMultiSelection();			
                 if(SelectedObject != null) {
                     // Move node
                     if(IsShiftKeyDown && SelectedObject.IsNode) {
@@ -46,7 +45,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.DownArrow: {
-    			ClearMultiSelection();			
                 if(IsShiftKeyDown && SelectedObject.IsNode) {
                     var newPos= SelectedObject.LayoutPosition;
                     newPos.y+= IsAltKeyDown ? 5f: 1f;
@@ -65,7 +63,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.RightArrow: {
-    			ClearMultiSelection();			
                 if(IsShiftKeyDown && SelectedObject.IsNode) {
                     var newPos= SelectedObject.LayoutPosition;
                     newPos.x+= IsAltKeyDown ? 5f: 1f;
@@ -81,7 +78,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.LeftArrow: {
-    			ClearMultiSelection();			
                 if(IsShiftKeyDown && SelectedObject.IsNode) {
                     var newPos= SelectedObject.LayoutPosition;
                     newPos.x-= IsAltKeyDown ? 5f: 1f;
@@ -142,7 +138,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.G: {  // Goto bookmark
-    			ClearMultiSelection();			
                 if(myBookmark != null) {
                     SelectedObject= myBookmark;
                     CenterOnSelected();
@@ -151,7 +146,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.S: {  // Switch bookmark and selected object
-    			ClearMultiSelection();			
                 if(myBookmark != null && SelectedObject != null) {
                     iCS_EditorObject prevmyBookmark= myBookmark;
                     myBookmark= SelectedObject;
@@ -193,7 +187,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Object creation.
             case KeyCode.KeypadEnter: // fnc+return on Mac
             case KeyCode.Insert: {
-    			ClearMultiSelection();
                 if(SelectedObject == null) SelectedObject= DisplayRoot;
                 // Don't use mouse position if it is too far from selected node.
                 Vector2 graphPos= GraphMousePosition;

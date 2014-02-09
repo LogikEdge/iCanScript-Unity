@@ -3,35 +3,62 @@ using System.Collections;
 using System.Collections.Generic;
 
 public partial class iCS_IStorage {
+    // =========================================================================
+    // Fields
+	// -------------------------------------------------------------------------
+    List<iCS_EditorObject>  mySelectedObjects= new List<iCS_EditorObject>();
+    
+    // =========================================================================
+    // Properties
+	// -------------------------------------------------------------------------
+    int SelectedObjectId {
+        get { return Storage.SelectedObject; }
+        set { Storage.SelectedObject= value; }
+    }
+    public iCS_EditorObject SelectedObject {
+        get { return SelectedObjectId == -1 ? null : this[SelectedObjectId]; }
+        set {
+            mySelectedObjects.Clear();
+            if(value != null) {
+                mySelectedObjects.Add(value);
+            }
+            SelectedObjectId= value != null ? value.InstanceId : -1;
+        }
+    }
+    // -------------------------------------------------------------------------
+    public bool IsMultiSelectionActive {
+        get { return mySelectedObjects.Count > 1; }
+    }
+    
+    // =========================================================================
+    // Public methods
+    // -------------------------------------------------------------------------
+    public void ClearSelected() {
+        SelectedObject= null;
+    }
 	// -------------------------------------------------------------------------
 	public void ClearMultiSelection() {
-		ForEach(n => { n.IsMultiSelected= false; });
+        while(mySelectedObjects.Count > 1) {
+            mySelectedObjects.RemoveAt(1);
+        }
 	}
 	// -------------------------------------------------------------------------
 	public bool ToggleMultiSelection(iCS_EditorObject obj) {
 		if(!IsMultiSelectionAllowed(obj)) return false;
-        TransformSelectedToMultiSelected();
-		obj.IsMultiSelected= !obj.IsMultiSelected;			
-        return obj.IsMultiSelected;
-	}
-	// -------------------------------------------------------------------------
-	public void SetMultiSelection(iCS_EditorObject obj) {
-		if(!IsMultiSelectionAllowed(obj)) return;
-        TransformSelectedToMultiSelected();
-		obj.IsMultiSelected= true;
+        if(IsSelectedOrMultiSelected(obj)) {
+            RemoveFromSelectedObjects(obj);
+            return false;
+        }
+        AddToSelectedObjects(obj);
+        return true;
 	}
 	// -------------------------------------------------------------------------
     public bool IsSelectedOrMultiSelected(iCS_EditorObject obj) {
-        return obj == SelectedObject || obj.IsMultiSelected;
+        return mySelectedObjects.Contains(obj);
     }
 	// -------------------------------------------------------------------------
 	public iCS_EditorObject[] GetMultiSelectedObjects() {
-		var multiSelectedObjects= Filter(obj => obj.IsMultiSelected);
-		if(multiSelectedObjects == null || multiSelectedObjects.Count == 0) return null;
-		if(SelectedObject != null) {
-			multiSelectedObjects.Add(SelectedObject);
-		}
-		return multiSelectedObjects.ToArray(); 
+		return mySelectedObjects.ToArray(); 
 	}
 	// -------------------------------------------------------------------------
     public iCS_EditorObject[] FilterMultiSelectionForDelete(ref iCS_EditorObject[] invalidList) {
@@ -61,21 +88,30 @@ public partial class iCS_IStorage {
     // =========================================================================
     // Utilities
 	// -------------------------------------------------------------------------
+    void RemoveFromSelectedObjects(iCS_EditorObject obj) {
+        int idx= mySelectedObjects.IndexOf(obj);
+        if(idx == -1) return;
+        mySelectedObjects.RemoveAt(idx);
+        if(idx == 0) {
+            SelectedObjectId= mySelectedObjects.Count == 0 ? -1 : mySelectedObjects[0].InstanceId;
+        }
+    }
+	// -------------------------------------------------------------------------
+    void AddToSelectedObjects(iCS_EditorObject obj) {
+        if(mySelectedObjects.Count == 0) {
+            SelectedObject= obj;
+        }
+        else {
+            mySelectedObjects.Add(obj);            
+        }
+    }
+	// -------------------------------------------------------------------------
 	bool IsMultiSelectionAllowed(iCS_EditorObject obj) {
 		if(obj == null) return false;
 		if(obj.IsBehaviour) return false;
         if(obj.IsFixDataPort) return false;
 		return true;
 	}
-	// -------------------------------------------------------------------------
-    void TransformSelectedToMultiSelected() {
-        if(SelectedObject != null) {
-            if(SelectedObject.IsValid) {
-                SelectedObject.IsMultiSelected= true;
-            }
-            SelectedObject= null;
-        }
-    }
 	// -------------------------------------------------------------------------
     iCS_EditorObject[] FilterMultiSelectionUnderSameParent() {
         var multiSelectedObjects= GetMultiSelectedObjects();

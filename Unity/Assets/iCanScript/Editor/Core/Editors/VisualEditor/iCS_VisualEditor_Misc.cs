@@ -36,7 +36,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			ToggleMultiSelection(newSelected);
 		}
 		else {
-			ClearMultiSelection();
 	        SelectedObject= newSelected;
 	        ShowInstanceEditor();			
 		}
@@ -44,26 +43,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 
 	// ----------------------------------------------------------------------
-	void ClearMultiSelection() {
-		if(!IsMultiSelectionActive) return;
-		IStorage.ClearMultiSelection();
-		myMultiSelectionCount= 0;
-	}
-	// ----------------------------------------------------------------------
-	void SetMultiSelection(iCS_EditorObject obj) {
-		if(!obj.IsMultiSelected) {
-			++myMultiSelectionCount;			
-		}
-		IStorage.SetMultiSelection(obj);
-	}
-	// ----------------------------------------------------------------------
 	void ToggleMultiSelection(iCS_EditorObject obj) {
-		if(IStorage.ToggleMultiSelection(obj)) {
-			++myMultiSelectionCount;
-		}
-		else {
-			--myMultiSelectionCount;
-		}
+		IStorage.ToggleMultiSelection(obj);
 	}
 	// ----------------------------------------------------------------------
     void RotateSelectedMuxPort() {

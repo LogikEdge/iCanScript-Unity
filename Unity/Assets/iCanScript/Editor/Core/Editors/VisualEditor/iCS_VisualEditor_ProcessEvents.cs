@@ -57,9 +57,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         DragStartDisplayPosition= ScrollPosition;
         // Update the selected object.
         SelectedObjectBeforeMouseDown= SelectedObject;
-        DetermineSelectedObject();
         switch(Event.current.button) {
             case 0: { // Left mouse button
+                DetermineSelectedObject();
                 if(SelectedObject != null && !SelectedObject.IsBehaviour) {
                     IsDragEnabled= true;                            
                 }
@@ -67,6 +67,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case 1: { // Right mouse button
+                if(!IsMultiSelectionActive) {
+                    DetermineSelectedObject();                    
+                }
                 myShowDynamicMenu= true;
                 break;
             }
@@ -180,7 +183,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             SelectedObject= DisplayRoot;
         }
         ShowInstanceEditor();
-        myDynamicMenu.Update(iCS_DynamicMenu.MenuType.SelectedObject, SelectedObject, IStorage, GraphMousePosition);
+        if(IsMultiSelectionActive) {
+            myDynamicMenu.Update(iCS_DynamicMenu.MenuType.MultiSelection, null, IStorage, GraphMousePosition);
+        }
+        else {
+            myDynamicMenu.Update(iCS_DynamicMenu.MenuType.SelectedObject, SelectedObject, IStorage, GraphMousePosition);            
+        }
     }
 	// ----------------------------------------------------------------------
     void ShowInstanceEditor() {
