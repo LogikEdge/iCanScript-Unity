@@ -25,6 +25,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var keyCode= ev.keyCode;
 		if(keyCode == KeyCode.None) return;
         switch(ev.keyCode) {
+            // Reset to default
+            case KeyCode.Escape: {
+                IStorage.ClearMultiSelection();
+                break;
+            }
             // Tree navigation
             case KeyCode.UpArrow: {
                 if(SelectedObject != null) {

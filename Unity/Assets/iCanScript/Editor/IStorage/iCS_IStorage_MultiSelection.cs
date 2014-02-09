@@ -7,6 +7,8 @@ public partial class iCS_IStorage {
     // Fields
 	// -------------------------------------------------------------------------
     List<iCS_EditorObject>  mySelectedObjects= new List<iCS_EditorObject>();
+    iCS_EditorObject[]      myMultiSelectNodeDragObjects= null;
+    Vector2[]               myMultiSelectNodeDragStartPosition= null;
     
     // =========================================================================
     // Properties
@@ -81,8 +83,34 @@ public partial class iCS_IStorage {
         return FilterMultiSelectionUnderSameParent();
     }
 	// -------------------------------------------------------------------------
-    public iCS_EditorObject[] FilterMultiSelectionForMove(ref iCS_EditorObject[] invalidList) {
+    public iCS_EditorObject[] FilterMultiSelectionForMove() {
         return FilterMultiSelectionUnderSameParent();
+    }
+	// -------------------------------------------------------------------------
+    public void StartMultiSelectionNodeDrag() {
+        myMultiSelectNodeDragObjects= FilterMultiSelectionForMove();
+        var len= myMultiSelectNodeDragObjects.Length;
+        myMultiSelectNodeDragStartPosition= new Vector2[len];
+        for(int i= 0; i < len; ++i) {
+            myMultiSelectNodeDragStartPosition[i]= myMultiSelectNodeDragObjects[i].LayoutPosition;
+        }
+    }
+	// -------------------------------------------------------------------------
+    public void MoveMultiSelectedNodesBy(Vector2 delta) {
+        var len= myMultiSelectNodeDragObjects.Length;
+        for(int i= 0; i < len; ++i) {
+            var newPos= myMultiSelectNodeDragStartPosition[i]+delta;
+            myMultiSelectNodeDragObjects[i].NodeDragTo(newPos);
+        }
+    }
+	// -------------------------------------------------------------------------
+    public void EndMultiSelectionNodeDrag() {
+        // Remove sticky on parent nodes.
+        foreach(var node in myMultiSelectNodeDragObjects) {
+            node.EndNodeDrag();                    
+        }
+        myMultiSelectNodeDragObjects= null;
+        myMultiSelectNodeDragStartPosition= null;
     }
     
     // =========================================================================

@@ -10,7 +10,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
-    enum DragTypeEnum { None, PortConnection, PortRelocation, NodeDrag, NodeRelocation, TransitionCreation };
+    enum DragTypeEnum { None, PortConnection, PortRelocation, NodeDrag, NodeRelocation, TransitionCreation, MultiSelectionNodeDrag };
 
 
     // ======================================================================
@@ -104,9 +104,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     node.LayoutPosition= DragStartDisplayPosition;
 					node.StartNodeRelocate();
                 } else {
-                    IStorage.RegisterUndo("Node Drag");
-                    DragType= DragTypeEnum.NodeDrag;                    
-                    node.StartNodeDrag();
+                    if(IStorage.IsMultiSelectionActive) {
+                        IStorage.RegisterUndo("Multi-Selection Node Drag");
+                        DragType= DragTypeEnum.MultiSelectionNodeDrag;                    
+                        IStorage.StartMultiSelectionNodeDrag();                                                
+                    }
+                    else {
+                        IStorage.RegisterUndo("Node Drag");
+                        DragType= DragTypeEnum.NodeDrag;                    
+                        node.StartNodeDrag();                        
+                    }
+                    
                 }
             }
             return true;
@@ -150,6 +158,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
                 DragObject.NodeDragTo(newPosition);
+                break;
+            case DragTypeEnum.MultiSelectionNodeDrag:
+                IStorage.MoveMultiSelectedNodesBy(delta);
                 break;
             case DragTypeEnum.NodeRelocation:
                 DragObject.NodeRelocateTo(newPosition);
@@ -230,6 +241,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.NodeDrag: {
                     // Remove sticky on parent nodes.
                     DragObject.EndNodeDrag();
+                    break;
+                }
+                case DragTypeEnum.MultiSelectionNodeDrag: {
+                    IStorage.EndMultiSelectionNodeDrag();
                     break;
                 }
                 case DragTypeEnum.NodeRelocation: {

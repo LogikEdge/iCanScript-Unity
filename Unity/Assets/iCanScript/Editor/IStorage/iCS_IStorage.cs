@@ -89,6 +89,10 @@ public partial class iCS_IStorage {
             });            
         }
         CleanupUnityObjects();
+        
+        // Re-initialize multi-selection list.
+        var selectedObject= SelectedObject;
+        SelectedObject= selectedObject;
     }
     
     // ----------------------------------------------------------------------

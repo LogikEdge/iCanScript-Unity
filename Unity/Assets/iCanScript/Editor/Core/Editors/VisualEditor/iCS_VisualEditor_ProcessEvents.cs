@@ -59,7 +59,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         SelectedObjectBeforeMouseDown= SelectedObject;
         switch(Event.current.button) {
             case 0: { // Left mouse button
-                DetermineSelectedObject();
+                DetermineSelectedObject();                    
                 if(SelectedObject != null && !SelectedObject.IsBehaviour) {
                     IsDragEnabled= true;                            
                 }
@@ -183,12 +183,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             SelectedObject= DisplayRoot;
         }
         ShowInstanceEditor();
-        if(IsMultiSelectionActive) {
-            myDynamicMenu.Update(iCS_DynamicMenu.MenuType.MultiSelection, null, IStorage, GraphMousePosition);
-        }
-        else {
-            myDynamicMenu.Update(iCS_DynamicMenu.MenuType.SelectedObject, SelectedObject, IStorage, GraphMousePosition);            
-        }
+        myDynamicMenu.Update(iCS_DynamicMenu.MenuType.SelectedObject, SelectedObject, IStorage, GraphMousePosition);            
     }
 	// ----------------------------------------------------------------------
     void ShowInstanceEditor() {
