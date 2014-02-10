@@ -811,7 +811,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(parent == newParent || parent.IsParentOf(newParent)) {
 			reverseInOut= true;
 		}
-		myDynamicMenu.Update(iCS_DynamicMenu.MenuType.ReleaseAfterDrag, port, IStorage, globalPosition, reverseInOut);
+		myContextualMenu.Update(iCS_ContextualMenu.MenuType.ReleaseAfterDrag, port, IStorage, globalPosition, reverseInOut);
 #else
         var sourcePort= DragFixPort;
         Type instanceType= iCS_Types.GetElementType(sourcePort.RuntimeType);

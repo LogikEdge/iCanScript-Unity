@@ -22,9 +22,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    int             myDisplayRootId= 0;
-    iCS_DynamicMenu myDynamicMenu  = null;
-    iCS_Graphics    myGraphics     = null;
+    int                 myDisplayRootId = 0;
+    iCS_ContextualMenu  myContextualMenu= null;
+    iCS_Graphics        myGraphics      = null;
     
     // ----------------------------------------------------------------------
     bool  myShowDynamicMenu    = false;
@@ -207,7 +207,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
 		// Update pending menu commands
-		myDynamicMenu.OnGUI();
+		myContextualMenu.OnGUI();
 		
 		// Update sub editor if active.
 		if(mySubEditor != null) {

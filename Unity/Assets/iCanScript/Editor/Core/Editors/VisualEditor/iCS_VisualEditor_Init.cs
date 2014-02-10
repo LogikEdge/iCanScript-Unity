@@ -20,8 +20,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		wantsMouseMove= true;
 
         // Create worker objects.
-        myGraphics   = new iCS_Graphics();
-        myDynamicMenu= new iCS_DynamicMenu();
+        myGraphics      = new iCS_Graphics();
+        myContextualMenu= new iCS_ContextualMenu();
         
         // Inspect the assemblies for components.
         if(!ourAlreadyParsed) {
@@ -39,9 +39,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         base.OnDisable();
         
         // Release all worker objects.
-        myGraphics   = null;
-        myDynamicMenu= null;
-		mySubEditor  = null;
+        myGraphics      = null;
+        myContextualMenu= null;
+		mySubEditor     = null;
     }
 
 	// ----------------------------------------------------------------------

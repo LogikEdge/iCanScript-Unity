@@ -442,7 +442,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					case 1:
 						ShowNotification(new GUIContent("Please use right mouse click on canvas to create behaviour event type before adding new object."));
 						SelectedObject= IStorage.EditorObjects[0];
-						myDynamicMenu.Update(iCS_DynamicMenu.MenuType.SelectedObject, SelectedObject, IStorage, point);
+						myContextualMenu.Update(iCS_ContextualMenu.MenuType.SelectedObject, SelectedObject, IStorage, point);
 						return;
 					case 2:
 						validParent= AutoCreateBehaviourMessage(iCS_Strings.OnGUI, point);
