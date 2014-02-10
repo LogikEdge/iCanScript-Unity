@@ -34,6 +34,12 @@ public static partial class Prelude {
     public static List<R> zipWith<A,B,R>(System.Func<A,B,R> fnc, List<A> l1, List<B> l2) {
         return zipWith_(new List<R>(), fnc, l1, l2);
     }
+    public static void zipWith<A,B>(System.Action<A,B> fnc, A[] l1, B[] l2) {
+        int len= Math3D.Min(length(l1), length(l2));
+        for(int i= 0; i < len; ++i) {
+            fnc(l1[i], l2[i]);
+        }
+    }
     // ----------------------------------------------------------------------
     // zip :: [a]->[b]->[(a,b)]
     public static Tuple<A,B>[] zip<A,B>(A[] l1, B[] l2) {

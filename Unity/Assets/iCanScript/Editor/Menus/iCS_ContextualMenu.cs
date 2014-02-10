@@ -36,6 +36,7 @@ public class iCS_ContextualMenu {
 	const string WrapInPackageStr              = "+ Wrap in Package";
     const string MultiSelectionWrapInPackageStr= "+ Wrap Multi-Selection in Package";
     const string MultiSelectionDeleteStr       = "- Delete Multi-Selection";
+    const string DeleteKeepChildrenStr         = "- Delete Keep Children";
     const string SeparatorStr                  = "";
 
     // ======================================================================
@@ -130,6 +131,12 @@ public class iCS_ContextualMenu {
 		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         AddShowInHierarchyMenuItem(ref menu);
         AddDeleteMenuItem(ref menu);
+        if(selectedObject.ObjectType == iCS_ObjectTypeEnum.Package) {
+            if(selectedObject.HasChildNode()) {
+                int idx= GrowMenuBy(ref menu, 1);
+                menu[idx]= new iCS_MenuContext(DeleteKeepChildrenStr);                
+            }
+        }
 		ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
@@ -441,6 +448,7 @@ public class iCS_ContextualMenu {
 			case WrapInPackageStr:  ProcessWrapInPackage(context); break;
             case MultiSelectionWrapInPackageStr: ProcessMultiSelectionWrapInPackage(context); break;
             case MultiSelectionDeleteStr:        ProcessMultiSelectionDelete(context); break;
+            case DeleteKeepChildrenStr:          ProcessDeleteKeepChildren(context); break;
             default: {
 				iCS_MethodBaseInfo desc= context.Descriptor;
 				if(desc == null) {
@@ -585,7 +593,11 @@ public class iCS_ContextualMenu {
 	static void ProcessMultiSelectionDelete(iCS_MenuContext context) {
         iCS_UserCommands.DeleteMultiSelectedObjects(context.Storage);
     }
-	
+    // -------------------------------------------------------------------------
+    static void ProcessDeleteKeepChildren(iCS_MenuContext context) {
+        iCS_UserCommands.DeleteKeepChildren(context.SelectedObject);
+    }	
+
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------
