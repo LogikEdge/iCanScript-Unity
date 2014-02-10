@@ -57,6 +57,7 @@ public class iCS_UserCommands {
         P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
         iStorage.DestroyInstance(obj.InstanceId);
         P.zipWith((n,p) => { n.SetAnchorAndLayoutPosition(p);}, childNodes, childPos);
+        P.forEach(n => { n.StopAnimation();}, childNodes);
     }
     
     // ======================================================================

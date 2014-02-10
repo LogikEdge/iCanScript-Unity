@@ -174,6 +174,7 @@ public class iCS_ContextualMenu {
             menu= new iCS_MenuContext[1];
             menu[0]= new iCS_MenuContext(StateStr); 
         }
+		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         AddShowInHierarchyMenuItem(ref menu);
         if(selectedObject.InstanceId != 0) {
             AddDeleteMenuItem(ref menu);
