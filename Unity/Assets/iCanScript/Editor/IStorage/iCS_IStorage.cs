@@ -129,7 +129,7 @@ public partial class iCS_IStorage {
     public bool IsParentValid(iCS_EditorObject obj)  { return IsIdValid(obj.ParentId); }
     // ----------------------------------------------------------------------
 	public bool IsAnimationPlaying {
-		get { return myIsAnimationPlaying; }
+		get { UpdateAllAnimations(); return myAnimatedObjects.Count != 0; /*return myIsAnimationPlaying;*/ }
 		set { myIsAnimationPlaying= value; }
 	}
     // ----------------------------------------------------------------------
@@ -167,7 +167,7 @@ public partial class iCS_IStorage {
 	    }
         // Update object animations.
 		if(IsAnimationPlaying) {
-			UpdateAnimations();			
+			UpdateAllAnimations();			
 		}
 
         // Perform graph cleanup once objects & layout are stable.
@@ -184,26 +184,7 @@ public partial class iCS_IStorage {
         if(!behaviour.IsBehaviour) return;
         behaviour.ForEachChildNode(c=> { if(c.IsMessage) UpdateBehaviourMessagePorts(c); });
     }
-    
-    // ----------------------------------------------------------------------
-	public void UpdateAnimations() {
-        IsAnimationPlaying= false;
-        if(Prefs.AnimationEnabled) {
-            ForEach(
-                obj=> {
-        			if(obj.IsAnimated) {
-    					obj.UpdateAnimation();
-        				IsAnimationPlaying= true;
-        			}
-                }
-            );
-			// Force full relayout after animation has completed.
-            if(IsAnimationPlaying == false) {
-				ForcedRelayoutOfTree(EditorObjects[0]);
-			}
-        }		
-	}
-	
+    	
     // ----------------------------------------------------------------------
     /*
         FEATURE: Should use the layout rule the determine execution priority.

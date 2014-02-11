@@ -1,26 +1,31 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿//
+// File: iCS_UserCommands_Delete
+//
+using UnityEngine;
 using System.Collections;
 using P=Prelude;
 
-public class iCS_UserCommands {
+public static partial class iCS_UserCommands {
     // ======================================================================
-    // Object destruction editor utilities.
+    // Object destruction.
 	// ----------------------------------------------------------------------
     public static void DeleteObject(iCS_EditorObject obj) {
         if(obj == null) return;
         var iStorage= obj.IStorage;
-        iStorage.RegisterUndo("Deleting: "+obj.Name);
-        var parent= obj.ParentNode;
+        iStorage.RegisterUndo("Delete "+obj.Name);
         if(obj.IsInstanceNodePort) {
-    		parent.AnimateGraph(
+    		iStorage.AnimateGraph(null,
     			_=> iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj)                        
     		);
             return;
         }
         // TODO: Should animate parent node on node delete.
-		parent.AnimateGraph(
-			_=> iStorage.DestroyInstance(obj.InstanceId)                        
+		iStorage.AnimateGraph(null,
+            _=> {
+                var parent= obj.ParentNode;
+                iStorage.DestroyInstance(obj.InstanceId);
+                parent.LayoutNodeAndParents();
+            }
 		);
 	}
 	// ----------------------------------------------------------------------
@@ -29,7 +34,7 @@ public class iCS_UserCommands {
         var selectedObjects= iStorage.GetMultiSelectedObjects();
         if(selectedObjects == null || selectedObjects.Length == 0) return false;
         // User has confirm the deletion.
-        iStorage.RegisterUndo("Multi-Selection Deletion");
+        iStorage.RegisterUndo("Delete Selection");
         foreach(var obj in selectedObjects) {
             if(!obj.CanBeDeleted()) continue;
             var parent= obj.ParentNode;
@@ -50,31 +55,18 @@ public class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     public static void DeleteKeepChildren(iCS_EditorObject obj) {
         var iStorage= obj.IStorage;
-        iStorage.RegisterUndo("Deleting Package: "+obj.Name);
+        iStorage.RegisterUndo("Delete "+obj.Name);
         var newParent= obj.ParentNode;
         var childNodes= obj.BuildListOfChildNodes(_ => true);
         var childPos= P.map(n => n.LayoutPosition, childNodes);
-        P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
-        iStorage.DestroyInstance(obj.InstanceId);
-        P.zipWith((n,p) => { n.SetAnchorAndLayoutPosition(p);}, childNodes, childPos);
-        P.forEach(n => { n.StopAnimation();}, childNodes);
+        iStorage.AnimateGraph(obj,
+            _=> {
+                P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
+                iStorage.DestroyInstance(obj.InstanceId);
+                P.zipWith((n,p) => { n.SetAnchorAndLayoutPosition(p);}, childNodes, childPos);
+                newParent.LayoutNodeAndParents();
+            }
+        );
     }
-    
-    // ======================================================================
-    // Node Wrapping in package.
-	// ----------------------------------------------------------------------
-    public static void WrapInPackage(iCS_EditorObject obj) {
-        if(obj == null || !obj.CanHavePackageAsParent()) return;
-        var iStorage= obj.IStorage;
-        iStorage.RegisterUndo("Wrap node in Package: "+obj.Name);
-        iStorage.WrapInPackage(obj);
-    }
-	// ----------------------------------------------------------------------
-    public static void WrapMultiSelectionInPackage(iCS_IStorage iStorage) {
-        if(iStorage == null) return;
-        var selectedObjects= iStorage.FilterMultiSelectionForWrapInPackage();
-        if(selectedObjects == null || selectedObjects.Length == 0) return;
-        iStorage.RegisterUndo("Wrap Multi-Selection in Package");
-        iStorage.WrapInPackage(selectedObjects);
-    }
+
 }

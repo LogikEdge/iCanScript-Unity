@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using P=Prelude;
 
 public partial class iCS_IStorage {
 	// -------------------------------------------------------------------------
 	// Wraps the given object in a package
 	public iCS_EditorObject WrapInPackage(iCS_EditorObject obj) {
 		if(obj == null || !obj.CanHavePackageAsParent()) return null;
-		var pos= obj.LayoutPosition;
+		var r= obj.LayoutRect;
 		var parent= obj.ParentNode;
-        var package= CreatePackage(parent.InstanceId, pos, obj.Name);
+        var package= CreatePackage(parent.InstanceId, Math3D.Middle(r), obj.Name);
 		ChangeParent(obj, package);
 		// Attempt to reposition the package ports to match the object ports.		
 		obj.ForEachChildPort(
@@ -32,6 +33,9 @@ public partial class iCS_IStorage {
 				}
 			}
 		);
+        package.WrapAroundChildRect(r);
+        obj.SetAnchorAndLayoutRect(r);
+        obj.LayoutParentNodesUntilTop();
 		return package;
 	}
 	// -------------------------------------------------------------------------
@@ -40,21 +44,9 @@ public partial class iCS_IStorage {
         if(objects.Length == 1) {
             return WrapInPackage(objects[0]);
         }
-        // Compute new package rectangle.
-        Rect rect= objects[0].LayoutRect;
-        for(int i= 1; i < objects.Length; ++i) {
-            var oRect= objects[i].LayoutRect;
-            if(oRect.x < rect.x) rect.x= oRect.x;
-            if(oRect.y < rect.y) rect.y= oRect.y;
-            if(oRect.xMax > rect.xMax) rect.xMax= oRect.xMax;
-            if(oRect.yMax > rect.yMax) rect.yMax= oRect.yMax;
-        }
-        // Add margins
-        float margin= iCS_EditorConfig.MarginSize;
-        rect.x-= margin; rect.y-= margin; rect.xMax+= margin; rect.yMax+= margin;
+        var rs= P.map(n => n.LayoutRect, objects);
         var parent= objects[0].ParentNode;
-        var package= CreatePackage(parent.InstanceId, Math3D.Middle(rect), "");
-        package.SetAnchorAndLayoutRect(rect);
+        var package= CreatePackage(parent.InstanceId, Math3D.Middle(rs[0]), "");
         foreach(var obj in objects) {
     		ChangeParent(obj, package);
     		// Attempt to reposition the package ports to match the object ports.		
@@ -80,6 +72,11 @@ public partial class iCS_IStorage {
     			}
     		);            
         }
+        package.WrapAroundChildRects(rs);
+        for(int i= 0; i < objects.Length; ++i) {
+            objects[i].SetAnchorAndLayoutRect(rs[i]);
+        }
+        package.LayoutParentNodesUntilTop();
         return package;
     }
 }

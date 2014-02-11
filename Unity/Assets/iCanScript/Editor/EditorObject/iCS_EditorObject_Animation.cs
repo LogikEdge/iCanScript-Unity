@@ -9,7 +9,7 @@ public partial class iCS_EditorObject {
 	// Fields
     // ----------------------------------------------------------------------
 	public bool LayoutUsingAnimatedChildren= false;
-	private P.Animate<Rect> myAnimatedRect=
+	public P.Animate<Rect> myAnimatedRect=
 		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     
     // ======================================================================
@@ -94,30 +94,6 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Animation update
     // ----------------------------------------------------------------------
-    // IMPROVE: Should avoid performing the layout on the parents multiple times.
-	public void UpdateAnimation() {
-		if(myAnimatedRect.IsActive) {
-            var prevRect= myAnimatedRect.CurrentValue;
-            Rect newRect;
-			if(myAnimatedRect.IsElapsed) {
-				myAnimatedRect.Reset(myAnimatedRect.TargetValue);
-                newRect= LayoutRect;
-                IsFloating= false;
-			} else {
-				myAnimatedRect.Update();
-                newRect= myAnimatedRect.CurrentValue;
-			}
-			if(!IsFloating && Math3D.IsNotEqual(prevRect, newRect)) {
-                // Update child ports
-                LayoutPorts();
-                // Update parent node
-				var parent= ParentNode;
-				if(parent != null && !parent.IsAnimated && parent.LayoutUsingAnimatedChildren) {
-					LayoutUnfoldedParentNodesUsingAnimatedChildren();
-				}
-			}
-		}
-	}
 
     // ----------------------------------------------------------------------
     public float DisplayAlpha {

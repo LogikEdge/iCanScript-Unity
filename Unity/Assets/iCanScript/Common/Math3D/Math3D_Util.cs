@@ -223,6 +223,11 @@ public static partial class Math3D {
         return new Rect(xMin, yMin, xMax-xMin, yMax-yMin);
     }
 	// ----------------------------------------------------------------------
+    public static Rect Union(Rect[] rs) {
+        if(rs.Length == 0) return new Rect(0,0,0,0);
+        return P.fold((acc,r) => Union(acc,r), rs[0], rs);
+    }
+	// ----------------------------------------------------------------------
     public static Rect BuildRect(Vector2 pos, Vector2 size) {
         return new Rect(pos.x, pos.y, size.x, size.y);
     }

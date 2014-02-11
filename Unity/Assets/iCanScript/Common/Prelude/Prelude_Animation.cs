@@ -72,6 +72,11 @@ public static partial class Prelude {
 			myTargetValue= targetValue;
 			Start(timeRatio, animFunc);
         }
+        public void Start(T startValue, T targetValue, TimeRatio timeRatio) {
+			myStartValue= startValue;
+			myTargetValue= targetValue;
+			Start(timeRatio);
+        }
 		public void Start(float animTime, Func<T,T,float,T> animFunc) {
             myAnimFunc= animFunc;
 			Start(animTime);

@@ -602,13 +602,10 @@ public class iCS_ContextualMenu {
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreatePackage(iCS_MenuContext context, string name= "", bool nameEditable= true) {
-		var parent       = context.SelectedObject;
-		var storage      = context.Storage;
-		var graphPosition= context.GraphPosition;
-        iCS_EditorObject module= storage.CreatePackage(parent.InstanceId, graphPosition, name);
-        module.IsNameEditable= nameEditable;
-        return module;
+    static iCS_EditorObject CreatePackage(iCS_MenuContext context, string name= "", bool isNameEditable= true) {
+		var parent   = context.SelectedObject;
+		var globalPos= context.GraphPosition;
+        return iCS_UserCommands.CreatePackage(parent, globalPos, name, isNameEditable);
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject CreateClassModule(iCS_MenuContext context, Type classType) {
@@ -620,19 +617,15 @@ public class iCS_ContextualMenu {
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject CreateStateChart(iCS_MenuContext context, string name= "", bool nameEditable= true) {
-		var parent       = context.SelectedObject;
-		var storage      = context.Storage;
-		var graphPosition= context.GraphPosition;
-        iCS_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, graphPosition, name);
-        stateChart.IsNameEditable= nameEditable;
-        return stateChart;
+		var parent   = context.SelectedObject;
+		var globalPos= context.GraphPosition;
+        return iCS_UserCommands.CreateStateChart(parent, globalPos, name);
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject CreateState(iCS_MenuContext context, string name= "") {
-		var parent       = context.SelectedObject;
-		var storage      = context.Storage;
-		var graphPosition= context.GraphPosition;
-        return storage.CreateState(parent.InstanceId, graphPosition, name);
+		var parent   = context.SelectedObject;
+		var globalPos= context.GraphPosition;
+        return iCS_UserCommands.CreateState(parent, globalPos, name);
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_MethodBaseInfo desc) {

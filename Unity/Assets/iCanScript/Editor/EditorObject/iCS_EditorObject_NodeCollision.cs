@@ -11,49 +11,15 @@ public partial class iCS_EditorObject {
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
     // ----------------------------------------------------------------------
-    public void ResolveCollisionOnChildrenNodes(iCS_AnimationControl animCtrl) {
+    public void ResolveCollisionOnChildrenNodes() {
 		// Get a snapshot of the children state.
 		var children= BuildListOfChildNodes(c=> !c.IsFloating);
-		var childStartRect = new Rect[children.Length];
-		var childRect= new Rect[children.Length];
-		for(int i= 0; i < children.Length; ++i) {
-			var c= children[i];
-    		childStartRect[i]= c.AnimatedRect;
-    		var cAnchor= c.AnchorPosition;                
-			childRect[i]    = BuildRect(cAnchor, c.LayoutSize);
-		}
+		var childRect= P.map(n => BuildRect(n.AnchorPosition, n.LayoutSize), children);
         // Resolve collisions.
         ResolveCollisionOnChildrenImp(children, ref childRect);
-		// Animate all nodes affected by collisions.
+        // Update child position.
 		for(int i= 0; i < children.Length; ++i) {
-			var targetRect= childRect[i];
-			var targetPos= PositionFrom(targetRect);
-			var startRect= childStartRect[i];
-			var startPos= PositionFrom(startRect);
-			if(Math3D.IsNotEqual(startRect, targetRect)) {
-				// Update layout position
-				var c= children[i];
-				c.LayoutPosition= targetPos;
-				// Determine if we should animate the displacement.
-				if(c.IsAnimated || animCtrl == iCS_AnimationControl.Always) {
-					c.Animate(startRect, targetRect);
-				} else if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
-					// Don't animate.
-				} else {
-	                var anchor= AnchorPosition;
-	                var prevOffset= startPos-anchor;
-	                var newOffset= targetPos-anchor;
-	                var dotProduct= Vector2.Dot(prevOffset, newOffset);
-	                var prevMagnitude= prevOffset.magnitude;
-	                var newMagnitude= newOffset.magnitude;
-	                bool sameDirection= dotProduct > 0.98f*(prevMagnitude*newMagnitude);
-					var distance= (targetPos-startPos).magnitude;
-					bool shortDistance= distance*20f < Prefs.AnimationPixelsPerSecond;
-	                if(!sameDirection || !shortDistance) {
-                    	c.Animate(startRect, targetRect);
-					}
-				}
-			}
+            children[i].LayoutPosition= PositionFrom(childRect[i]);
 		}
     }
     // ----------------------------------------------------------------------

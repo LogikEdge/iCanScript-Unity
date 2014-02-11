@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //  NODE LAYOUT
@@ -11,24 +12,37 @@ public partial class iCS_EditorObject {
     // Layout the nodes from the parent of the object moving up the hierarchy
     // until we reach the top.  The sticky bit is carried over from the object
     // to the parent.
-    public void LayoutParentNodesUntilTop(iCS_AnimationControl animCtrl= iCS_AnimationControl.Normal) {
+    /*
+        TODO : Verify how the sticky bit is promoted.
+    */
+    public void LayoutParentNodesUntilTop() {
         var parent= ParentNode;
         if(parent == null) return;
         var parentGlobalRect= parent.LayoutRect;
-        parent.LayoutNode(animCtrl);
+        parent.LayoutNode();
         if(Math3D.IsNotEqual(parentGlobalRect, parent.LayoutRect)) {
-            parent.LayoutParentNodesUntilTop(animCtrl);
+            parent.LayoutParentNodesUntilTop();
         }
     }
+
     // ----------------------------------------------------------------------
+    /*
+        TODO : Should remove this.
+    */
 	public void LayoutUnfoldedParentNodesUsingAnimatedChildren() {
 		for(var parent= ParentNode; parent != null; parent= parent.ParentNode) {
-			parent.ResolveCollisionOnChildrenNodes(iCS_AnimationControl.Normal);
-            parent.WrapAroundChildrenNodes(o=> o.AnimatedUnfoldedNodeRect());                                
+			parent.ResolveCollisionOnChildrenNodes();
+            parent.WrapAroundChildrenNodes();                                
 		}		
 	}
     // ----------------------------------------------------------------------
-	public void LayoutNode(iCS_AnimationControl animCtrl= iCS_AnimationControl.Normal) {
+    public void LayoutNodeAndParents() {
+        LayoutNode();
+        LayoutParentNodesUntilTop();
+    }
+    // ----------------------------------------------------------------------
+    // Revised: feb 10, 2014
+	public void LayoutNode() {
         // Nothing to do for invisible ports.
         if(!IsVisibleInLayout) return;
         // Just update the size of the node if it is iconized.
@@ -37,8 +51,8 @@ public partial class iCS_EditorObject {
             return;
         }
         // Resolve any existing collisions on children for unfolded modules.
-        if(IsUnfoldedInLayout && !IsKindOfFunction) {
-            ResolveCollisionOnChildrenNodes(animCtrl);
+        if(IsUnfoldedInLayout && NbOfChildNodes != 0) {
+            ResolveCollisionOnChildrenNodes();
             WrapAroundChildrenNodes();                                
     		return;            
         }
@@ -52,58 +66,41 @@ public partial class iCS_EditorObject {
     // layout size will be updated accordingly.
     // NOTE: This function must not be called for iconized nodes.
     // ----------------------------------------------------------------------
-	public void WrapAroundChildrenNodes() {
-		WrapAroundChildrenNodes(o=> o.UnfoldedNodeRect());
-	}
-    public void WrapAroundChildrenNodes(Func<iCS_EditorObject,Rect> childRectFnc) { 
+    // Revised: feb 10, 2014
+    public void WrapAroundChildrenNodes() { 
 		// Nothing to do if node is not visible.
 		if(!IsVisibleInLayout || IsIconizedInLayout) {
 		    return;
 	    }
-		// Take a snapshot of the children global position.
-		var childAnchorPositions= new List<Vector2>();
-		ForEachChildNode(
-		    c=> {
-		        childAnchorPositions.Add(c.AnchorPosition);
-	        }
-		);
-        // Determine node global layout.
-        var r= childRectFnc(this);
-		// Update parent node anchor positions.
-		var center= Math3D.Middle(r);
-		AnchorPosition= center-LocalOffset;
-		// Update layout size.
-		LayoutSize= new Vector2(r.width, r.height);
-		// Reposition child to maintain their global positions.
-		int i= 0;
-		ForEachChildNode(
-		    c=> {
-    		    c.AnchorPosition= childAnchorPositions[i++];                    
-	        }
-		);
+        if(IsFoldedInLayout) {
+            var pos= LayoutPosition;
+            var r= new Rect(pos.x, pos.y, 0, 0);
+            WrapAroundChildRect(r);
+            return;
+        }
+        var childNodes= BuildListOfChildNodes(_ => true);
+        var childAnchors= P.map(n => n.AnchorPosition, childNodes);
+        var childRects= P.map(n => n.LayoutRect, childNodes);
+        WrapAroundChildRects(childRects);
+        // Restore child global position.
+        for(int i= 0; i < childNodes.Length; ++i) {
+            childNodes[i].AnchorPosition= childAnchors[i];
+        }
     }
 
     // ----------------------------------------------------------------------
+    // Revised: feb 10, 2014
     Vector2 IconizedSize() {
         return iCS_Graphics.GetMaximizeIconSize(this);
     }
     // ----------------------------------------------------------------------
+    // Revised: feb 10, 2014
     Rect FoldedNodeRect() {
         return NodeRectFromChildrenRectWithMargins(new Rect(0,0,0,0));
     }
 
     // ----------------------------------------------------------------------
-    // We assume that the children have already been properly layed out.
-    Rect UnfoldedNodeRect() {
-        return NodeRectFromChildrenRectWithMargins(ChildRectWithMargins);        
-    }
-    // ----------------------------------------------------------------------
-    // We assume that the children have already been properly layed out.
-    Rect AnimatedUnfoldedNodeRect() {
-        return NodeRectFromChildrenRectWithMargins(AnimatedChildRectWithMargins);        
-    }
-    
-    // ----------------------------------------------------------------------
+    // Revised: feb 10, 2014
     Rect NodeRectFromChildrenRectWithMargins(Rect childRect) {
         // Get padding for all sides.
 		float topPadding= NodeTopPadding;
@@ -145,6 +142,37 @@ public partial class iCS_EditorObject {
         return r;
     }
     
+    // ----------------------------------------------------------------------
+    public void WrapAroundChildRect(Rect childRect) {
+        childRect= NodeRectFromChildrenRectWithMargins(childRect);
+        SetNodeLayoutRect(childRect); 
+    }
+    // ----------------------------------------------------------------------
+    public void WrapAroundChildRects(Rect[] childRects) {
+        Rect r= GetRectWithMargins(childRects);
+        WrapAroundChildRect(r);
+    }
+    // ----------------------------------------------------------------------
+    public void SetNodeLayoutRect(Rect r) {
+		// Update parent node anchor positions.
+		var center= Math3D.Middle(r);
+		AnchorPosition= center-LocalOffset;
+		// Update layout size.
+		LayoutSize= new Vector2(r.width, r.height);        
+    }
+    
+    // ======================================================================
+    // Utilities
+    // ----------------------------------------------------------------------
+    static Rect GetRectWithMargins(Rect[] rs) {
+        // Determine child area
+        Rect r= Math3D.Union(rs);
+        // Add margins
+        if(Math3D.IsNotZero(Math3D.Area(r))) {
+            r= AddMargins(r);
+        }
+        return r;
+    }
     
 }
 

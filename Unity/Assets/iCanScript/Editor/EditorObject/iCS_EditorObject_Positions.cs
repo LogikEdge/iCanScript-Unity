@@ -234,7 +234,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Rect AnimatedRect {
 		get {
-			if(IsAnimated && Prefs.AnimationEnabled) {
+			if(IStorage.IsAnimationPlaying) {
     			return myAnimatedRect.CurrentValue;
 			}
 			var parent= ParentNode;
@@ -274,11 +274,6 @@ public partial class iCS_EditorObject {
 	public void Animate(Rect start, Rect target) {
 		AnimationStart= start;
 		Animate(target);
-	}
-    // ----------------------------------------------------------------------
-	public void Animate(Rect start, Rect target, P.TimeRatio timeRatio) {
-		AnimationStart= start;
-		Animate(target, timeRatio);
 	}
     // ----------------------------------------------------------------------
 	public void Animate(Rect target, P.TimeRatio timeRatio) {
@@ -376,17 +371,6 @@ public partial class iCS_EditorObject {
                     }
 				}
             );
-            return childRect;
-        }
-    }
-    // ----------------------------------------------------------------------
-    // Returns the global rectangle currently used by the children.
-    public Rect AnimatedChildRectWithMargins {
-        get {
-            var childRect= AnimatedChildRect;
-            if(Math3D.IsNotZero(Math3D.Area(childRect))) {
-                childRect= AddMargins(childRect);
-            }
             return childRect;
         }
     }

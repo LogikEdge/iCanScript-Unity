@@ -11,7 +11,7 @@ public partial class iCS_IStorage {
 		node.Parent= newParent;
 		node.SetAnchorAndLayoutPosition(nodePos);
 		node.LayoutNode();
-		node.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
+		node.LayoutParentNodesUntilTop();
 		if(node.IsState) CleanupEntryState(node, oldParent);
         RebuildConnectionsFor(node);
     }

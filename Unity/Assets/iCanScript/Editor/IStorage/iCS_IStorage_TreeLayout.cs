@@ -13,7 +13,7 @@ public partial class iCS_IStorage {
         	    }
                 // Layout all nodes (ports will also be updated).
 				if(obj.IsNode) {
-					obj.LayoutNode(iCS_AnimationControl.None);
+					obj.LayoutNode();
 				}
             }
         );    		

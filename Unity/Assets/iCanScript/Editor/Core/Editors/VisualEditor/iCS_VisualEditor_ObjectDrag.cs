@@ -257,8 +257,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(newParent != oldParent) {
                                 IStorage.ChangeParent(node, newParent);
                             } else {
-                                oldParent.LayoutNode(iCS_AnimationControl.Always);
-                                oldParent.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
+                                oldParent.LayoutNode();
+                                oldParent.LayoutParentNodesUntilTop();
                             }
                         } else {
                             // Animate node back to its original position.

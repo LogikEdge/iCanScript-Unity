@@ -460,7 +460,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             IStorage.Fold(pasted);            
         }
         pasted.LayoutNode();
-        pasted.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
+        pasted.LayoutParentNodesUntilTop();
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 point) {
