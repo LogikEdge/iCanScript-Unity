@@ -7,9 +7,8 @@ public partial class iCS_IStorage {
 	// Wraps the given object in a package
 	public iCS_EditorObject WrapInPackage(iCS_EditorObject obj) {
 		if(obj == null || !obj.CanHavePackageAsParent()) return null;
-		var r= obj.LayoutRect;
 		var parent= obj.ParentNode;
-        var package= CreatePackage(parent.InstanceId, Math3D.Middle(r), obj.Name);
+        var package= CreatePackage(parent.InstanceId, obj.Name);
 		ChangeParent(obj, package);
 		// Attempt to reposition the package ports to match the object ports.		
 		obj.ForEachChildPort(
@@ -33,9 +32,6 @@ public partial class iCS_IStorage {
 				}
 			}
 		);
-        package.WrapAroundChildRect(r);
-        obj.SetAnchorAndLayoutRect(r);
-        obj.LayoutParentNodesUntilTop();
 		return package;
 	}
 	// -------------------------------------------------------------------------
@@ -44,9 +40,8 @@ public partial class iCS_IStorage {
         if(objects.Length == 1) {
             return WrapInPackage(objects[0]);
         }
-        var rs= P.map(n => n.LayoutRect, objects);
         var parent= objects[0].ParentNode;
-        var package= CreatePackage(parent.InstanceId, Math3D.Middle(rs[0]), "");
+        var package= CreatePackage(parent.InstanceId, "");
         foreach(var obj in objects) {
     		ChangeParent(obj, package);
     		// Attempt to reposition the package ports to match the object ports.		
@@ -72,11 +67,6 @@ public partial class iCS_IStorage {
     			}
     		);            
         }
-        package.WrapAroundChildRects(rs);
-        for(int i= 0; i < objects.Length; ++i) {
-            objects[i].SetAnchorAndLayoutRect(rs[i]);
-        }
-        package.LayoutParentNodesUntilTop();
         return package;
     }
 }

@@ -146,11 +146,6 @@ public partial class iCS_EditorObject {
 		}
 		set {
 			// Update animated target position if active.
-			if(IsAnimated) {
-				myAnimatedRect.StartValue= myAnimatedRect.CurrentValue;
-				var target= BuildRect(value, SizeFrom(myAnimatedRect.TargetValue));
-				myAnimatedRect.TargetValue= target;
-			}
             var offsetWithoutParent= value-LocalAnchorPosition;
             var parent= ParentNode;
 		    if(parent == null) {
@@ -177,11 +172,6 @@ public partial class iCS_EditorObject {
 		set {
 		    if(IsPort) return;
 			// Update animated target position if active.
-			if(IsAnimated) {
-				myAnimatedRect.StartValue= myAnimatedRect.CurrentValue;
-				var target= BuildRect(PositionFrom(myAnimatedRect.TargetValue), value);
-				myAnimatedRect.TargetValue= target;
-			}		
     		myLayoutSize= value;
             LayoutPorts();
 		}
@@ -303,6 +293,12 @@ public partial class iCS_EditorObject {
 	
 	// ======================================================================
     // High-order functions
+    // ----------------------------------------------------------------------
+    public void SetInitialPosition(Vector2 pos) {
+        var r= BuildRect(pos, Vector2.zero);
+        SetAnchorAndLayoutRect(r);
+        AnimationStartRect= r;
+    }
     // ----------------------------------------------------------------------
     public void SetAnchorAndLayoutRect(Rect r) {
         SetAnchorAndLayoutPosition(PositionFrom(r));

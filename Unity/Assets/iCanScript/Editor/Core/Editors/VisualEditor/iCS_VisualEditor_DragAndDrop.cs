@@ -95,9 +95,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
                 // Allow dropping Unity object in modules.
                 if(eObj.IsKindOfPackage && draggedObject is GameObject) {
-        	        IStorage.RegisterUndo("DragAndDrop");			
                     GameObject gameObject= draggedObject as GameObject;
-                    CreateGameObject(eObj.InstanceId, gameObject, GraphMousePosition);
+                    iCS_UserCommands.CreateGameObject(gameObject, eObj, GraphMousePosition);
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.AcceptDrag();
                     return;
@@ -129,21 +128,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         }
         return null;
-    }
-	// ----------------------------------------------------------------------
-    iCS_EditorObject CreateGameObject(int parentId, GameObject gameObject, Vector2 position) {
-        var module= IStorage.CreatePackage(parentId, GraphMousePosition, gameObject.name, iCS_ObjectTypeEnum.Package, gameObject.GetType());
-        var thisPort= IStorage.InstanceWizardGetInputThisPort(module);
-        if(thisPort != null) {
-            thisPort.PortValue= gameObject;
-        }
-        /*
-            TODO: Should construct the full gameobject including its components
-        */
-//        Component[] components= gameObject.GetComponents(typeof(Component));
-//        foreach(var component in components) {
-//            IStorage.CreatePackage(parentId, GraphMousePosition+new Vector2(100,0), component.name, iCS_ObjectTypeEnum.Module, component.GetType());
-//        }
-        return module;
     }
 }

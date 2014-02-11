@@ -463,11 +463,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         pasted.LayoutParentNodesUntilTop();
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 point) {
-		var validParent= IStorage.CreatePackage(0, point, messageName);
-		validParent.Tooltip= iCS_AllowedChildren.TooltipForBehaviourChild(iCS_Strings.Update);
-        IStorage.Unfold(validParent);
-        return validParent;
+    iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {
+        var updateDesc= P.filter(d => d.DisplayName == iCS_Strings.Update, iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour)));
+        if(updateDesc == null || updateDesc.Length == 0) return null;
+        return iCS_UserCommands.CreateMessageHandler(IStorage[0], globalPos, updateDesc[0]);
     }
 
 }

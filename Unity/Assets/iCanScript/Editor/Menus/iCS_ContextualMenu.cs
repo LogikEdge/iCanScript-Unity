@@ -437,9 +437,9 @@ public class iCS_ContextualMenu {
             case StateChartStr:     ProcessCreateStateChart(context); break;
             case StateStr:          ProcessCreateState(context);  break;
             case SetAsEntryStr:     ProcessSetStateEntry(context); break;
-            case OnEntryStr:        ProcessCreateOnEntryModule(context, tooltip); break;
-            case OnUpdateStr:       ProcessCreateOnUpdateModule(context, tooltip); break;
-            case OnExitStr:         ProcessCreateOnExitModule(context, tooltip); break;
+            case OnEntryStr:        ProcessCreateOnEntryPackage(context, tooltip); break;
+            case OnUpdateStr:       ProcessCreateOnUpdatePackage(context, tooltip); break;
+            case OnExitStr:         ProcessCreateOnExitPackage(context, tooltip); break;
 			case ObjectInstanceStr: ProcessCreateObjectInstance(context); break;
             case ShowHierarchyStr:  ProcessShowInHierarchy(context); break;
             case DeleteStr:         ProcessDestroyObject(context); break;
@@ -458,7 +458,7 @@ public class iCS_ContextualMenu {
 				}
                 if(selectedObject == null) break;
                 if(desc.IsMessage) {
-                    storage.CreateMessageHandler(selectedObject.InstanceId, pos, desc);
+                    iCS_UserCommands.CreateMessageHandler(selectedObject, pos, desc as iCS_MessageInfo);
                 } else {
 					if(selectedObject.IsPort) {
 	                    CreateAttachedMethod(selectedObject, storage, pos, desc);
@@ -491,9 +491,8 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     static iCS_EditorObject ProcessCreateState(iCS_MenuContext context) {
 		var parent       = context.SelectedObject;
-		var storage      = context.Storage;
 		var graphPosition= context.GraphPosition;
-        return storage.CreateState(parent.InstanceId, graphPosition);
+        return iCS_UserCommands.CreateState(parent, graphPosition, null);
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject ProcessSetStateEntry(iCS_MenuContext context) {
@@ -510,35 +509,29 @@ public class iCS_ContextualMenu {
         return state;
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnEntryModule(iCS_MenuContext context, string tooltip) {
+    static iCS_EditorObject ProcessCreateOnEntryPackage(iCS_MenuContext context, string tooltip) {
 		var parent       = context.SelectedObject;
-		var storage      = context.Storage;
 		var graphPosition= context.GraphPosition;
-        iCS_EditorObject module= storage.CreatePackage(parent.InstanceId, graphPosition, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
-        module.IsNameEditable= false;
-        module.Tooltip= tooltip;
-        return module;
+        var package= iCS_UserCommands.CreateOnEntryPackage(parent, graphPosition);
+        package.Tooltip= tooltip;
+        return package;
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnUpdateModule(iCS_MenuContext context, string tooltip) {
+    static iCS_EditorObject ProcessCreateOnUpdatePackage(iCS_MenuContext context, string tooltip) {
 		var parent       = context.SelectedObject;
-		var storage      = context.Storage;
 		var graphPosition= context.GraphPosition;
-        iCS_EditorObject module= storage.CreatePackage(parent.InstanceId, graphPosition, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
-        module.IsNameEditable= false;
-        module.Tooltip= tooltip;
-        return module;
+        var package= iCS_UserCommands.CreateOnUpdatePackage(parent, graphPosition);
+        package.Tooltip= tooltip;
+        return package;
 
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnExitModule(iCS_MenuContext context, string tooltip) {
+    static iCS_EditorObject ProcessCreateOnExitPackage(iCS_MenuContext context, string tooltip) {
 		var parent       = context.SelectedObject;
-		var storage      = context.Storage;
 		var graphPosition= context.GraphPosition;
-        iCS_EditorObject module= storage.CreatePackage(parent.InstanceId, graphPosition, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
-        module.IsNameEditable= false;
-        module.Tooltip= tooltip;
-        return module;
+        var package= iCS_UserCommands.CreateOnExitPackage(parent, graphPosition);
+        package.Tooltip= tooltip;
+        return package;
     }
 	// ----------------------------------------------------------------------
     static void ProcessShowInHierarchy(iCS_MenuContext context) {
@@ -575,7 +568,7 @@ public class iCS_ContextualMenu {
 		var pos= context.GraphPosition;
 		var parent= storage.GetNodeAt(pos);
 		if(parent == null) return;
-		storage.CreateObjectInstance(parent, port.RuntimeType, pos, port);        
+		iCS_UserCommands.CreateObjectInstance(parent, pos, port.RuntimeType, port);        
     }
     // -------------------------------------------------------------------------
 	static void ProcessWrapInPackage(iCS_MenuContext context) {
@@ -605,15 +598,15 @@ public class iCS_ContextualMenu {
     static iCS_EditorObject CreatePackage(iCS_MenuContext context, string name= "", bool isNameEditable= true) {
 		var parent   = context.SelectedObject;
 		var globalPos= context.GraphPosition;
-        return iCS_UserCommands.CreatePackage(parent, globalPos, name, isNameEditable);
+        var package= iCS_UserCommands.CreatePackage(parent, globalPos, name);
+        package.IsNameEditable= isNameEditable;
+        return package;
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateClassModule(iCS_MenuContext context, Type classType) {
+    static iCS_EditorObject CreateObjectInstance(iCS_MenuContext context, Type classType) {
 		var parent       = context.SelectedObject;
-		var storage      = context.Storage;
 		var graphPosition= context.GraphPosition;
-        iCS_EditorObject module= storage.CreatePackage(parent.InstanceId, graphPosition, null, iCS_ObjectTypeEnum.Package, classType);
-        return module;
+        return iCS_UserCommands.CreateObjectInstance(parent, graphPosition, classType, null);
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject CreateStateChart(iCS_MenuContext context, string name= "", bool nameEditable= true) {
@@ -641,7 +634,7 @@ public class iCS_ContextualMenu {
         if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;
 		iCS_EditorObject method= null;
 		if(newNodeParent.IsInstanceNode) {
-			method= storage.InstanceWizardCreate(newNodeParent, desc);
+			method= iCS_UserCommands.CreateInstanceElement(newNodeParent, desc);
 		}
 		else {
 			bool createMethod= true;
@@ -656,30 +649,12 @@ public class iCS_ContextualMenu {
 					case 0:
 						break;
 					case 1: {
-						var objectInstance= storage.CreateObjectInstance(newNodeParent, desc.ClassType, graphPosition, null);        
-				        iCS_ConstructorInfo[] myConstructors= iCS_LibraryDatabase.GetConstructors(desc.ClassType);
-				    	Array.Sort(myConstructors, (x,y)=> x.FunctionSignatureNoThis.CompareTo(y.FunctionSignatureNoThis));
-						if(myConstructors.Length != 0) {
-							iCS_EditorObject builder= null;
-							if(myConstructors.Length == 1) {
-								builder= storage.InstanceWizardCreateConstructor(objectInstance, myConstructors[0]);								
-								builder.SetAnchorAndLayoutPosition(new Vector2(graphPosition.x-75f, graphPosition.y));
-							}
-							else {
-								/*
-									TODO : Support Multiple Instance Builders on drag port quick menu. 
-								*/
-								Debug.LogWarning("iCanScript: Multiple Builders exists.  Please create the builder manually.");								
-							}
-							
-						}         
-						method= storage.InstanceWizardCreate(objectInstance, desc);
+						method= iCS_UserCommands.CreateInstanceBuilderAndObjectAndElement(newNodeParent, graphPosition, desc.ClassType, desc);
 						createMethod= false;
 						break;
 					}
 					case 2: {
-						var objectInstance= storage.CreateObjectInstance(newNodeParent, desc.ClassType, graphPosition, null);        
-						method= storage.InstanceWizardCreate(objectInstance, desc);
+						method= iCS_UserCommands.CreateInstanceObjectAndElement(newNodeParent, graphPosition, desc.ClassType, desc);
 						createMethod= false;
 						break;
 					}}

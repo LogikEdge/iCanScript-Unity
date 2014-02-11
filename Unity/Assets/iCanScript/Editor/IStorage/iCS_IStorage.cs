@@ -372,33 +372,28 @@ public partial class iCS_IStorage {
         return this[0];
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreatePackage(int parentId, Vector2 globalPos, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
+    public iCS_EditorObject CreatePackage(int parentId, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
 		if(runtimeType == null) runtimeType= typeof(iCS_Package);
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
-        instance.SetAnchorAndLayoutPosition(globalPos);
         if(instance.IsInstanceNode) InstanceWizardCompleteCreation(instance);
         // Perform initial node layout.
         instance.Unhide();
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateStateChart(int parentId, Vector2 globalPos, string name= "") {
+    public iCS_EditorObject CreateStateChart(int parentId, string name= "") {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
-        instance.SetAnchorAndLayoutPosition(globalPos);
-        // Automatically create entry state.
-        CreateState(id, globalPos, "EntryState");
-        // Perform initial node layout.
         instance.Unhide();
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateState(int parentId, Vector2 globalPos, string name= "") {
+    public iCS_EditorObject CreateState(int parentId, string name= "") {
         // Validate that we have a good parent.
         iCS_EditorObject parent= EditorObjects[parentId];
         if(parent == null || (!parent.IsStateChart && !parent.IsState)) {
@@ -408,7 +403,6 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
-        instance.SetAnchorAndLayoutPosition(globalPos);
         // Set first state as the default entry state.
         instance.IsEntryState= !UntilMatchingChild(parent,
             child=> {
@@ -497,12 +491,12 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateMessageHandler(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateMessageHandler(int parentId, iCS_MessageInfo desc) {
+        if(desc == null) return null;
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        instance.SetAnchorAndLayoutPosition(globalPos);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
 		iCS_EditorObject port= null;
@@ -536,8 +530,8 @@ public partial class iCS_IStorage {
         return instance;
     }    
 	// ----------------------------------------------------------------------
-	public iCS_EditorObject CreateObjectInstance(iCS_EditorObject parent, Type instanceType, Vector2 globalPosition, iCS_EditorObject sourcePort) {
-        var instance= CreatePackage(parent.InstanceId, globalPosition, "", iCS_ObjectTypeEnum.Package, instanceType);
+	public iCS_EditorObject CreateObjectInstance(int parentId, string name, Type instanceType, iCS_EditorObject sourcePort) {
+        var instance= CreatePackage(parentId, name, iCS_ObjectTypeEnum.Package, instanceType);
 		if(sourcePort != null) {
 	        var thisPort= InstanceWizardGetInputThisPort(instance);
 	        SetNewDataConnection(thisPort, sourcePort);					

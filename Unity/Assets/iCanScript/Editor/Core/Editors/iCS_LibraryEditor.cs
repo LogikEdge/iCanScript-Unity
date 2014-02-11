@@ -200,11 +200,11 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     // FIXME: Should pass along the object type to the module instead of multiple creation.
     iCS_EditorObject CreatePackage(string name, iCS_IStorage iStorage) {
-        return iStorage.CreatePackage(-1, Vector2.zero, name);
+        return iStorage.CreatePackage(-1, name);
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateObjectInstance(Type classType, iCS_IStorage iStorage) {
-        return iStorage.CreatePackage(-1, Vector2.zero, null, iCS_ObjectTypeEnum.Package, classType);
+        return iStorage.CreateObjectInstance(-1, null, classType, null);
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {
@@ -212,6 +212,6 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }    
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {
-        return iStorage.CreatePackage(-1, Vector2.zero, desc.DisplayName, desc.ObjectType, typeof(iCS_Package));            
+        return iStorage.CreateMessageHandler(-1, desc as iCS_MessageInfo);            
     }    
 }

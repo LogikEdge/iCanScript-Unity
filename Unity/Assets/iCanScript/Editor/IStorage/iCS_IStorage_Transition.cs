@@ -5,49 +5,6 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Creation methods
     // ----------------------------------------------------------------------
-    public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
-        Vector2 fromStatePortPos= fromStatePort.LayoutPosition;
-
-        // Create toStatePort
-        iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-        toStatePort.SetAnchorAndLayoutPosition(toStatePortPos);
-        SetSource(toStatePort, fromStatePort);
-        toStatePort.UpdatePortEdge();        
-
-        // Update fromStatePort position.
-        fromStatePort.UpdatePortEdge();
-
-        // Determine transition parent
-        iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
-
-        // Create transition module
-        var transitionPackagePos= 0.5f*(fromStatePortPos+toStatePortPos);
-        iCS_EditorObject transitionPackage= CreatePackage(transitionParent.InstanceId, transitionPackagePos, "false", iCS_ObjectTypeEnum.TransitionPackage);
-        var transitionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionPackageIcon);
-        if(transitionIconGUID != null) {
-            transitionPackage.IconGUID= transitionIconGUID;            
-        } else {
-            Debug.LogWarning("Missing transition module icon: "+iCS_EditorStrings.TransitionPackageIcon);
-        }
-        transitionPackage.Tooltip= "The transition package must evaluate to 'true' for the transition to fire.";
-        iCS_EditorObject inModulePort=  CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
-        iCS_EditorObject outModulePort= CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
-        SetSource(inModulePort, fromStatePort);
-        SetSource(toStatePort, outModulePort);
-        iCS_EditorObject guardPort= CreatePort("trigger", transitionPackage.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutFixDataPort);
-        SetSource(fromStatePort, guardPort);
-        Iconize(transitionPackage);
-
-        // Update port names
-        UpdatePortNames(fromStatePort, toStatePort);
-
-        // Set initial transition module position.
-        var transitionIcon= iCS_TextureCache.GetTextureFromGUID(transitionPackage.IconGUID);
-        transitionPackage.LayoutSize= new Vector2(transitionIcon.width, transitionIcon.height);
-        outModulePort= inModulePort;
-        LayoutTransitionPackage(transitionPackage);
-    }
-    // ----------------------------------------------------------------------
     // Updates the port names of a transition.
     public void UpdatePortNames(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
         // State ports
@@ -231,12 +188,6 @@ public partial class iCS_IStorage {
 		return null;
     }
     // ----------------------------------------------------------------------
-    public string GetTransitionName(iCS_EditorObject transitionObject) {
-        iCS_EditorObject transitionPackage= GetTransitionPackage(transitionObject);
-		if(transitionPackage == null) return "";
-		return transitionPackage.Name;
-    }
-    // ----------------------------------------------------------------------
     public Vector2 ProposeTransitionPackagePosition(iCS_EditorObject module) {
         iCS_EditorObject fromStatePort= GetFromStatePort(module);
         iCS_EditorObject toStatePort= GetToStatePort(module);
@@ -263,7 +214,6 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void LayoutTransitionPackage(iCS_EditorObject package) {
-        GetTransitionName(package);
         package.SetAnchorAndLayoutPosition(ProposeTransitionPackagePosition(package));
     }
     // ----------------------------------------------------------------------

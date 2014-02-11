@@ -7,6 +7,31 @@ using P= Prelude;
 using Prefs= iCS_PreferencesController;
 
 public partial class iCS_IStorage {
+	// ----------------------------------------------------------------------
+    public iCS_EditorObject CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
+        // Determine transition parent
+        iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
+
+        // Create transition module
+        iCS_EditorObject transitionPackage= CreatePackage(transitionParent.InstanceId, "false", iCS_ObjectTypeEnum.TransitionPackage);
+        var transitionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionPackageIcon);
+        if(transitionIconGUID != null) {
+            transitionPackage.IconGUID= transitionIconGUID;            
+        } else {
+            Debug.LogWarning("Missing transition module icon: "+iCS_EditorStrings.TransitionPackageIcon);
+        }
+        transitionPackage.Tooltip= "The transition package must evaluate to 'true' for the transition to fire.";
+        iCS_EditorObject inModulePort=  CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
+        iCS_EditorObject outModulePort= CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
+        SetSource(inModulePort, fromStatePort);
+        SetSource(toStatePort, outModulePort);
+        iCS_EditorObject guardPort= CreatePort("trigger", transitionPackage.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutFixDataPort);
+        SetSource(fromStatePort, guardPort);
+
+        // Update port names
+        UpdatePortNames(fromStatePort, toStatePort);
+        return transitionPackage;
+    }
     // ----------------------------------------------------------------------
     void InstanceWizardCompleteCreation(iCS_EditorObject module) {
         Fold(module);

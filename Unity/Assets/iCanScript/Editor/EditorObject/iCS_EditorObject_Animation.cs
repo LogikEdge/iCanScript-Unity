@@ -5,12 +5,22 @@ using P=Prelude;
 using Prefs= iCS_PreferencesController;
 
 public partial class iCS_EditorObject {
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // Verified
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-	public bool LayoutUsingAnimatedChildren= false;
 	public P.Animate<Rect> myAnimatedRect=
 		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+    
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+    public Rect AnimationStartRect {
+        get { return myAnimatedRect.StartValue; }
+        set { myAnimatedRect.StartValue= value; }
+    }
     
     // ======================================================================
     // Queries
@@ -19,6 +29,19 @@ public partial class iCS_EditorObject {
     public bool IsAnimated {
         get { return myAnimatedRect.IsActive; }
     }
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // End Verified
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    // ======================================================================
+	// Fields
+    // ----------------------------------------------------------------------
+	public bool LayoutUsingAnimatedChildren= false;
+    
+    // ======================================================================
+    // Queries
+    // ----------------------------------------------------------------------
 	public void StopAnimation() {
 		myAnimatedRect.Reset(myAnimatedRect.TargetValue);
 	}
