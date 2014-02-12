@@ -92,42 +92,17 @@ public partial class iCS_EditorObject {
     // Display State Change
     // ----------------------------------------------------------------------
     public void Iconize() {
-        // Nothing to do if already iconized.
-        if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
-        // Set the node has iconized.
-		SetAsHighestLayoutPriority();
-		AnimateGraph(
-			o=> o.DisplayOption= iCS_DisplayOptionEnum.Iconized
-		);
+		DisplayOption= iCS_DisplayOptionEnum.Iconized;
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
-        // Nothing to do if already fold.
-        if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
-        // Set the node has folded.
-		SetAsHighestLayoutPriority();
-		AnimateGraph(
-			o=> o.DisplayOption= iCS_DisplayOptionEnum.Folded
-		);
+		DisplayOption= iCS_DisplayOptionEnum.Folded;
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Unfold() {
-        // Nothing to do if already unfold.
-        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
-        // Set the node has unfolded.
-		SetAsHighestLayoutPriority();
-		AnimateGraph(
-			o=> {
-				// Keep a copy of the anchor position.
-				var savedAnchor= o.AnchorPosition;
-		        o.DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-				// Relayout chidlren nodes.
-				myIStorage.ForcedRelayoutOfTree(o);
-				o.SetAnchorAndLayoutPosition(savedAnchor);
-			}
-		);
+        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsDirty= true;
     }
     // ======================================================================

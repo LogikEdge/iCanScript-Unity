@@ -14,12 +14,15 @@ public static partial class iCS_UserCommands {
 #if DEBUG
         Debug.Log("iCanScript: Unfold => "+node.Name);
 #endif
-        if(!node.IsNode) return;
+        if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
+            return;
+        }
         var iStorage= node.IStorage;
         iStorage.RegisterUndo("Unfold "+node.Name);
         iStorage.AnimateGraph(null,
             _=> {
                 node.Unfold();
+                node.LayoutNodeAndParents();
             }
         );
     }
@@ -29,16 +32,20 @@ public static partial class iCS_UserCommands {
 #if DEBUG
         Debug.Log("iCanScript: Fold => "+node.Name);
 #endif        
-        if(!node.IsNode) return;
+        if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Folded) {
+            return;
+        }
         var iStorage= node.IStorage;        
         iStorage.RegisterUndo("Fold "+node.Name);
         iStorage.AnimateGraph(null,
             _=> {
                 if(node.IsKindOfFunction || node.IsInstanceNode) {
                     node.Unfold();
+                    node.LayoutNodeAndParents();
                 }
                 else {
                     node.Fold();
+                    node.LayoutNodeAndParents();
                 }
             }
         );
@@ -50,12 +57,15 @@ public static partial class iCS_UserCommands {
 #if DEBUG
         Debug.Log("iCanScript: Iconize => "+node.Name);
 #endif        
-        if(!node.IsNode) return;
+        if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Iconized) {
+            return;
+        }
         var iStorage= node.IStorage;
         iStorage.RegisterUndo("Iconize "+node.Name);
         iStorage.AnimateGraph(null,
             _=> {
                 node.Iconize();
+                node.LayoutNodeAndParents();
             }
         );
     }
