@@ -18,7 +18,6 @@ public partial class iCS_IStorage {
     public  int                 UndoRedoId          = 0;
     public  int                 ModificationId      = -1;
     public  bool                CleanupDeadPorts    = true;
-    private bool                myIsAnimationPlaying= true;
     
     // ======================================================================
     // Public Accessors
@@ -129,8 +128,7 @@ public partial class iCS_IStorage {
     public bool IsParentValid(iCS_EditorObject obj)  { return IsIdValid(obj.ParentId); }
     // ----------------------------------------------------------------------
 	public bool IsAnimationPlaying {
-		get { UpdateAllAnimations(); return myAnimatedObjects.Count != 0; /*return myIsAnimationPlaying;*/ }
-		set { myIsAnimationPlaying= value; }
+		get { UpdateAllAnimations(); return myAnimatedObjects.Count != 0; }
 	}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetParentMuxPort(iCS_EditorObject eObj) {
