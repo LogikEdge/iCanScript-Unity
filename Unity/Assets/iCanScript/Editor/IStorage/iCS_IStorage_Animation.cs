@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define NEW_ANIM
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,13 +53,12 @@ public partial class iCS_IStorage {
                 myWasPresent[i]= myWasVisible[i]= false;
                 continue;
             }
+#if NEW_ANIM
             myWasPresent[i]= true;
             myWasVisible[i]= IsVisibleInLayout(obj);
-            if(!myWasVisible[i]) continue;
+#endif
             // Get copy of the initial position.
-            var r= obj.LayoutRect;
-            obj.myAnimatedRect.Reset(r);
-            obj.AnimationStartRect= r;
+            obj.ResetAnimationRect(obj.LayoutRect);
         }
     }
     // ----------------------------------------------------------------------
@@ -68,23 +68,32 @@ public partial class iCS_IStorage {
         myAnimationTime.Start(Prefs.MinAnimationTime);
         ForEach(
             obj => {
+#if NEW_ANIM
                 bool isVisible= IsVisibleInLayout(obj);
-                int i= obj.InstanceId;
-                if(!myWasVisible[i]) {
+                bool wasVisible= WasVisible(obj);
+                if(!wasVisible) {
                     if(!isVisible) {
                         return;
                     }
-                    var parent= GetFirstVisibleParentNode(obj);
-                    if(parent != null) {
-                        var pp= parent.LayoutPosition;
-                        var r= new Rect(pp.x, pp.y, 0, 0);
-                        obj.myAnimatedRect.Reset(r);
-                        obj.AnimationStartRect= r;
+                    if(!WasPresent(obj)) {
+                        var parent= obj.ParentNode;
+                        Vector2 pos;
+                        if(obj.IsNode && WasPresent(parent)) {
+                            pos= obj.LayoutPosition;                            
+                        }
+                        else {
+                            parent= GetFirstNotPresentParentNode(parent);
+                            pos= parent.LayoutPosition;                            
+                        }
+                        var r= new Rect(pos.x, pos.y, 0, 0);
+                        obj.ResetAnimationRect(r);                        
                     }
                 }
-                if(!Math3D.IsEqual(obj.LayoutRect, obj.myAnimatedRect.StartValue)) {
+#endif
+                var objLayoutRect= obj.LayoutRect;
+                if(!Math3D.IsEqual(objLayoutRect, obj.myAnimatedRect.StartValue)) {
                     myAnimatedObjects.Add(obj);
-                    obj.myAnimatedRect.Start(obj.myAnimatedRect.StartValue, obj.LayoutRect, myAnimationTime);
+                    obj.myAnimatedRect.Start(obj.myAnimatedRect.StartValue, objLayoutRect, myAnimationTime);
                 }
             }
         );
@@ -95,11 +104,30 @@ public partial class iCS_IStorage {
         return obj.IsPort && obj.ParentNode.IsVisibleInLayout;
     }
     // ----------------------------------------------------------------------
-    private iCS_EditorObject GetFirstVisibleParentNode(iCS_EditorObject obj) {
+    private bool WasVisible(iCS_EditorObject obj) {
+        if(obj == null) return false;
+        int id= obj.InstanceId;
+        if(id < 0 || id >= myWasVisible.Length) return false;
+        return myWasVisible[id];
+    }
+    // ----------------------------------------------------------------------
+    private bool WasPresent(iCS_EditorObject obj) {
+        if(obj == null) return false;
+        int id= obj.InstanceId;
+        if(id < 0 || id >= myWasPresent.Length) return false;
+        return myWasPresent[id];        
+    }
+    // ----------------------------------------------------------------------
+    private iCS_EditorObject GetFirstNotPresentParentNode(iCS_EditorObject obj) {
         var parent= obj.ParentNode;
-        while(parent != null && !parent.IsVisibleInLayout) {
-            parent= parent.ParentNode;
+        if(WasPresent(parent)) return obj;
+        while(parent != null) {
+            var grandParent= parent.ParentNode;
+            if(WasPresent(grandParent)) {
+                return parent;
+            }
+            parent= grandParent;
         }
-        return parent;
+        return null;
     }
 }

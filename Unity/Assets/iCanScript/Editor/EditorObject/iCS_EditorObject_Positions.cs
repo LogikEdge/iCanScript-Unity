@@ -145,7 +145,6 @@ public partial class iCS_EditorObject {
     		return parent.LayoutPosition+LocalAnchorPosition+LocalOffset;			    			        
 		}
 		set {
-			// Update animated target position if active.
             var offsetWithoutParent= value-LocalAnchorPosition;
             var parent= ParentNode;
 		    if(parent == null) {

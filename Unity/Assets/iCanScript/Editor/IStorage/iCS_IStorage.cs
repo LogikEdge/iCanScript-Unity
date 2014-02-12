@@ -71,7 +71,7 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    void GenerateEditorData() {
+    public void GenerateEditorData() {
 		// Rebuild Editor Objects from the Engine Objects.
 		if(myEditorObjects == null) {
 		    myEditorObjects= new List<iCS_EditorObject>();
@@ -119,7 +119,7 @@ public partial class iCS_IStorage {
 		return id >= 0 && id < EngineObjects.Count;
 	}
 	public bool IsValid(int id) {
-		return IsIdValid(id) && EditorObjects[id] != null;
+		return IsIdValid(id) && IsValid(EditorObjects[id]);
 	}
     public bool IsValid(iCS_EditorObject obj) {
 		return obj != null && IsIdValid(obj.InstanceId);
@@ -217,6 +217,8 @@ public partial class iCS_IStorage {
         bool modified= false;
         ForEach(
             obj=> {
+                // Keep a copy of the final position.
+                obj.AnimationTargetRect= obj.LayoutRect;
                 // Cleanup disconnected or dangling ports.
                 if(CleanupDeadPorts) {
 					if(obj.IsPort) {

@@ -40,23 +40,22 @@ public static partial class iCS_UserCommands {
         if(iStorage == null) return false;
         var selectedObjects= iStorage.GetMultiSelectedObjects();
         if(selectedObjects == null || selectedObjects.Length == 0) return false;
-        // User has confirm the deletion.
         iStorage.RegisterUndo("Delete Selection");
-        foreach(var obj in selectedObjects) {
-            if(!obj.CanBeDeleted()) continue;
-            var parent= obj.ParentNode;
-            if(obj.IsInstanceNodePort) {
-        		parent.AnimateGraph(
-        			_=> iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj)                        
-        		);
+        iStorage.AnimateGraph(null,
+            _=> {
+                foreach(var obj in selectedObjects) {
+                    if(!obj.CanBeDeleted()) continue;
+                    var parent= obj.ParentNode;
+                    if(obj.IsInstanceNodePort) {
+                		iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);                        
+                    }
+                    else {
+                		iStorage.DestroyInstance(obj.InstanceId);                        
+                    }
+                    parent.LayoutNodeAndParents();
+                }                
             }
-            else {
-                // TODO: Should animate parent node on node delete.
-        		parent.AnimateGraph(
-        			_=> iStorage.DestroyInstance(obj.InstanceId)                        
-        		);                            
-            }
-        }
+        );
         return true;
     }
 	// ----------------------------------------------------------------------

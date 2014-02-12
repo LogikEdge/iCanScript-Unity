@@ -35,7 +35,7 @@ public partial class iCS_EditorObject {
             StopAnimation();
             AnchorPosition= newPosition;
             LocalOffset= Vector2.zero;
-			LayoutUnfoldedParentNodesUsingAnimatedChildren();
+			LayoutParentNodesUntilTop();
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}

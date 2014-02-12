@@ -26,16 +26,6 @@ public partial class iCS_EditorObject {
     }
 
     // ----------------------------------------------------------------------
-    /*
-        TODO : Should remove this.
-    */
-	public void LayoutUnfoldedParentNodesUsingAnimatedChildren() {
-		for(var parent= ParentNode; parent != null; parent= parent.ParentNode) {
-			parent.ResolveCollisionOnChildrenNodes();
-            parent.WrapAroundChildrenNodes();                                
-		}		
-	}
-    // ----------------------------------------------------------------------
     public void LayoutNodeAndParents() {
         LayoutNode();
         LayoutParentNodesUntilTop();

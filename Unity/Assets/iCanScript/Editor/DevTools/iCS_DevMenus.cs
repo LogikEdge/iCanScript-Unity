@@ -49,4 +49,16 @@ public static class iCS_DevMenu {
 	public static void MenuPeriodicSoftwareUpdateVerification() {
 		iCS_SoftwareUpdateController.PeriodicUpdateVerification();
 	}	
+    // ======================================================================
+    // Extract some info.
+	[MenuItem("DevTools/Get Layout Info",false,1022)]
+	public static void MenuGetLayoutInfo() {
+		iCS_IStorage iStorage= iCS_StorageMgr.IStorage;
+		if(iStorage == null) return;
+        var selectedObj= iStorage.SelectedObject;
+        if(selectedObj == null) return;
+        Debug.Log("Layout Info for => "+selectedObj.Name+"\n"+
+            "LayoutRect => "+selectedObj.LayoutRect
+        );
+    }
 }

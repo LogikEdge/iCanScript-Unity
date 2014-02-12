@@ -21,6 +21,13 @@ public partial class iCS_EditorObject {
         get { return myAnimatedRect.StartValue; }
         set { myAnimatedRect.StartValue= value; }
     }
+    public void ResetAnimationRect(Rect r) {
+        AnimationStartRect= r; myAnimatedRect.Reset(r);
+    }
+    public Rect AnimationTargetRect {
+        get { return myAnimatedRect.TargetValue; }
+        set { myAnimatedRect.TargetValue= value; }
+    }
     
     // ======================================================================
     // Queries
