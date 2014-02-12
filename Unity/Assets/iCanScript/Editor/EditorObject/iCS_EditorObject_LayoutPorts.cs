@@ -7,6 +7,8 @@ public partial class iCS_EditorObject {
     // Lays out the ports of this node using the position ratio and node size
     // as basis.
     public void LayoutPorts() {
+        if(IsBehaviour) return;
+        Debug.Log("LayoutPorts for => "+Name+" size => "+LayoutSize);
         LayoutPortsOnVerticalEdge(LeftPorts);
         LayoutPortsOnVerticalEdge(RightPorts);
         LayoutPortsOnHorizontalEdge(TopPorts);
@@ -38,7 +40,7 @@ public partial class iCS_EditorObject {
         // Resolve port collisions.
         ys= ResolvePortCollisions(ys, bottom-top);
 		// Update position from new layout.
-		var displaySize= AnimatedSize;
+		var displaySize= LayoutSize;
         var halfSize= 0.5f*displaySize.x;
 		var x= ports[0].IsOnLeftEdge ? -halfSize : halfSize;
 		for(int i= 0; i < nbPorts; ++i) {
@@ -62,7 +64,7 @@ public partial class iCS_EditorObject {
         // Resolve port collisions.
         xs= ResolvePortCollisions(xs, right-left);
 		// Update position from new layout.
-		var displaySize= AnimatedSize;
+		var displaySize= LayoutSize;
         var halfSize= 0.5f*displaySize.y;
 		var y= ports[0].IsOnTopEdge ? -halfSize : halfSize;
 		for(int i= 0; i < nbPorts; ++i) {

@@ -89,7 +89,7 @@ public static partial class iCS_UserCommands {
                 msgHandler.SetInitialPosition(globalPos);
                 msgHandler.ForEachChildPort(p=> {p.AnimationStart= BuildRect(globalPos, Vector2.zero);});
                 msgHandler.LayoutNodeAndParents(); 
-                msgHandler.LayoutPorts();               
+//                msgHandler.LayoutPorts();               
             }
         );
         return msgHandler;

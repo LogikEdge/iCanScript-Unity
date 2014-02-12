@@ -133,11 +133,11 @@ public partial class iCS_EditorObject {
 			    return LocalAnchorPosition+LocalOffset;
 		    }
 			// Special case for iconized transition module ports.
-			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
-				return parent.AnimatedPosition;
+			if(IsTransitionPort && parent.IsIconizedInLayout) {
+				return parent.LayoutPosition;
 			}
 			if(IsPort) {
-				return parent.AnimatedPosition+LocalAnchorPosition+LocalOffset;
+				return parent.LayoutPosition+LocalAnchorPosition+LocalOffset;
 			}
 			if(!IsVisibleInLayout) {
 			    return parent.LayoutPosition;
@@ -153,7 +153,7 @@ public partial class iCS_EditorObject {
 		        return;
 		    }
 			if(IsPort) {
-				LocalOffset= offsetWithoutParent-parent.AnimatedPosition;
+				LocalOffset= offsetWithoutParent-parent.LayoutPosition;
 			}
 	        LocalOffset= offsetWithoutParent-parent.LayoutPosition;
 		}
@@ -172,8 +172,10 @@ public partial class iCS_EditorObject {
 		set {
 		    if(IsPort) return;
 			// Update animated target position if active.
-    		myLayoutSize= value;
-            LayoutPorts();
+            if(Math3D.IsNotEqual(myLayoutSize, value)) {
+        		myLayoutSize= value;
+                LayoutPorts();                
+            }
 		}
 	}
     // ----------------------------------------------------------------------

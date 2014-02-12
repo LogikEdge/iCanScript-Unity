@@ -8,8 +8,8 @@ public partial class iCS_EditorObject {
     // Returns the available height to layout ports on the vertical edge.
     public float AvailableHeightForPorts {
         get {
-            if(!IsVisibleOnDisplay) return 0f;
-			if(IsTransitionPackage && IsIconizedOnDisplay) return 0f;
+            if(!IsVisibleInLayout) return 0f;
+			if(IsTransitionPackage && IsIconizedInLayout) return 0f;
             return VerticalPortsBottom-VerticalPortsTop;
         }
     }
@@ -17,8 +17,8 @@ public partial class iCS_EditorObject {
     // Returns the available width to layout ports on the horizontal edge.
     public float AvailableWidthForPorts {
         get {
-            if(!IsVisibleOnDisplay) return 0f;
-			if(IsTransitionPackage && IsIconizedOnDisplay) return 0f;
+            if(!IsVisibleInLayout) return 0f;
+			if(IsTransitionPackage && IsIconizedInLayout) return 0f;
             return HorizontalPortsRight-HorizontalPortsLeft;
         }
     }
@@ -27,44 +27,44 @@ public partial class iCS_EditorObject {
     // Returns the top most coordinate for a port on the vertical edge.
     public float VerticalPortsTop {
         get {
-            if(!IsVisibleOnDisplay) return 0f;
-            if(IsIconizedOnDisplay) {
-				return IsTransitionPackage ? 0f : -0.25f*AnimatedSize.y;
+            if(!IsVisibleInLayout) return 0f;
+            if(IsIconizedInLayout) {
+				return IsTransitionPackage ? 0f : -0.25f*LayoutSize.y;
 			}
-            return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-AnimatedSize.y);
+            return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-LayoutSize.y);
         }
     }
     // ----------------------------------------------------------------------
     // Returns the bottom most coordinate for a port on the vertical edge.
     public float VerticalPortsBottom {
         get {
-            if(!IsVisibleOnDisplay) return 0f;
-            if(IsIconizedOnDisplay) {
-				return IsTransitionPackage ? 0f : 0.25f*AnimatedSize.y;
+            if(!IsVisibleInLayout) return 0f;
+            if(IsIconizedInLayout) {
+				return IsTransitionPackage ? 0f : 0.25f*LayoutSize.y;
 			}
-            return 0.5f*(AnimatedSize.y-iCS_EditorConfig.MinimumPortSeparation);
+            return 0.5f*(LayoutSize.y-iCS_EditorConfig.MinimumPortSeparation);
         }
     }
     // ----------------------------------------------------------------------
     // Returns the left most coordinate for a port on the horizontal edge.
     public float HorizontalPortsLeft {
         get {
-            if(!IsVisibleOnDisplay) return 0f;
-            if(IsIconizedOnDisplay) {
-				return IsTransitionPackage ? 0f : -0.25f*AnimatedSize.x;
+            if(!IsVisibleInLayout) return 0f;
+            if(IsIconizedInLayout) {
+				return IsTransitionPackage ? 0f : -0.25f*LayoutSize.x;
 			}
-            return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-AnimatedSize.x);
+            return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-LayoutSize.x);
         }
     }
     // ----------------------------------------------------------------------
     // Returns the left most coordinate for a port on the horizontal edge.
     public float HorizontalPortsRight {
         get {
-            if(!IsVisibleOnDisplay) return 0f;
-            if(IsIconizedOnDisplay) {
-				return IsTransitionPackage ? 0f : 0.25f*AnimatedSize.x;
+            if(!IsVisibleInLayout) return 0f;
+            if(IsIconizedInLayout) {
+				return IsTransitionPackage ? 0f : 0.25f*LayoutSize.x;
 			}
-            return 0.5f*(AnimatedSize.x-iCS_EditorConfig.MinimumPortSeparation);
+            return 0.5f*(LayoutSize.x-iCS_EditorConfig.MinimumPortSeparation);
         }
     }    
     // ----------------------------------------------------------------------
