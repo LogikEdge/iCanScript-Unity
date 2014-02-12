@@ -63,7 +63,7 @@ public partial class iCS_IStorage {
 			myCachedDestroyQueue.Add(toDestroy);
 		}
 		// Detroy the transition as a single block.
-		if(toDestroy.IsStatePort || toDestroy.IsTransitionPackage) {
+		if(toDestroy.IsStatePort || toDestroy.IsTransitionPackage || toDestroy.IsTransitionPort) {
 	        iCS_EditorObject outStatePort= GetFromStatePort(toDestroy);
 	        iCS_EditorObject inStatePort= GetInTransitionPort(toDestroy);
 	        iCS_EditorObject transitionPackage= GetTransitionPackage(toDestroy);

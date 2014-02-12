@@ -22,7 +22,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject outModulePort= CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
         SetSource(inModulePort, fromStatePort);
         SetSource(toStatePort, outModulePort);
-        iCS_EditorObject guardPort= CreatePort("trigger", transitionPackage.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutFixDataPort);
+        CreatePort("trigger", transitionPackage.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutFixDataPort);
 
         // Update port names
         UpdatePortNames(fromStatePort, toStatePort);
@@ -77,7 +77,6 @@ public partial class iCS_IStorage {
         if(transitionObject.IsInStatePort) {
         	iCS_EditorObject source= transitionObject.Source;
 			if(source == null) {
-				Debug.LogWarning("iCanScript: State Transition destination port not connected on state: "+transitionObject.ParentNode.Name);
 				return null;
 			}
             if(source.IsOutStatePort) return source;
@@ -106,7 +105,6 @@ public partial class iCS_IStorage {
 			transitionObject= source;
         }
         if(transitionObject.IsOutStatePort) return transitionObject;
-		Debug.LogWarning("iCanScript: State Transition destination port not connected on state: "+transitionObject.ParentNode.Name);
         return null;
     }
     // ----------------------------------------------------------------------
