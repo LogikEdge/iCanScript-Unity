@@ -124,6 +124,9 @@ public static partial class iCS_UserCommands {
     }
 	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
+#if DEBUG
+        Debug.Log("iCanScript: Create Transition Package");
+#endif
         if(fromStatePort == null || toState == null) return null;
         var iStorage= toState.IStorage;
         iStorage.RegisterUndo("Create Transition");
@@ -132,7 +135,7 @@ public static partial class iCS_UserCommands {
             _=> {
                 // Create toStatePort
                 iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-                toStatePort.SetAnchorAndLayoutPosition(toStatePortPos);
+                toStatePort.SetInitialPosition(toStatePortPos);
                 iStorage.SetSource(toStatePort, fromStatePort);
                 toStatePort.UpdatePortEdge();        
                 // Update fromStatePort position.
@@ -141,8 +144,9 @@ public static partial class iCS_UserCommands {
                 transitionPackage= iStorage.CreateTransition(fromStatePort, toStatePort);
                 // Try to position the transition in the middle
                 var fromStatePortPos= fromStatePort.LayoutPosition;
-                var transitionPackagePos= 0.5f*(fromStatePortPos+toStatePortPos);
-                transitionPackage.SetInitialPosition(transitionPackagePos);
+                var globalPos= 0.5f*(fromStatePortPos+toStatePortPos);
+                transitionPackage.SetInitialPosition(globalPos);
+                transitionPackage.ForEachChildPort(p=> {p.AnimationStart= BuildRect(globalPos, Vector2.zero);});
                 iStorage.Iconize(transitionPackage);
                 transitionPackage.LayoutNodeAndParents();
             }
