@@ -71,6 +71,7 @@ public static partial class iCS_UserCommands {
         return state;        
     }
 	// ----------------------------------------------------------------------
+	// OK
     public static iCS_EditorObject CreateMessageHandler(iCS_EditorObject parent, Vector2 globalPos, iCS_MessageInfo desc) {
 #if DEBUG
         Debug.Log("iCanScript: Create Message Handler => "+desc.DisplayName);
@@ -95,6 +96,7 @@ public static partial class iCS_UserCommands {
         return msgHandler;
     }
 	// ----------------------------------------------------------------------
+	// OK
     public static iCS_EditorObject CreateOnEntryPackage(iCS_EditorObject parent, Vector2 globalPos) {
         var package= CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
         if(package != null) {
@@ -103,7 +105,8 @@ public static partial class iCS_UserCommands {
         return package;
     }
 	// ----------------------------------------------------------------------
-    public static iCS_EditorObject CreateOnUpdatePackage(iCS_EditorObject parent, Vector2 globalPos) {
+	// OK
+	public static iCS_EditorObject CreateOnUpdatePackage(iCS_EditorObject parent, Vector2 globalPos) {
         var package= CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
         if(package != null) {
             package.IsNameEditable= false;            
@@ -111,7 +114,8 @@ public static partial class iCS_UserCommands {
         return package;
     }
 	// ----------------------------------------------------------------------
-    public static iCS_EditorObject CreateOnExitPackage(iCS_EditorObject parent, Vector2 globalPos) {
+    // OK
+	public static iCS_EditorObject CreateOnExitPackage(iCS_EditorObject parent, Vector2 globalPos) {
         var package= CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
         if(package != null) {
             package.IsNameEditable= false;            

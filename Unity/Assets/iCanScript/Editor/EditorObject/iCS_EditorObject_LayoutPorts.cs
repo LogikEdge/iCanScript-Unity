@@ -8,7 +8,6 @@ public partial class iCS_EditorObject {
     // as basis.
     public void LayoutPorts() {
         if(IsBehaviour) return;
-        Debug.Log("LayoutPorts for => "+Name+" size => "+LayoutSize);
         LayoutPortsOnVerticalEdge(LeftPorts);
         LayoutPortsOnVerticalEdge(RightPorts);
         LayoutPortsOnHorizontalEdge(TopPorts);
