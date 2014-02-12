@@ -147,7 +147,7 @@ public static partial class iCS_UserCommands {
                 var globalPos= 0.5f*(fromStatePortPos+toStatePortPos);
                 transitionPackage.SetInitialPosition(globalPos);
 //                transitionPackage.ForEachChildPort(p=> {p.AnimationStart= BuildRect(globalPos, Vector2.zero);});
-                iStorage.Iconize(transitionPackage);
+                transitionPackage.Iconize();
                 transitionPackage.LayoutNodeAndParents();
 //            }
 //        );

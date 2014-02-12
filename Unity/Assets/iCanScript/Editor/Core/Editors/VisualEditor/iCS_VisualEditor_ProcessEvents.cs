@@ -92,15 +92,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 Vector2 mouseGraphPos= GraphMousePosition;
                 if(myGraphics.IsFoldIconPicked(SelectedObject, mouseGraphPos)) {
                     if(SelectedObject.IsFoldedOnDisplay) {
-                        IStorage.RegisterUndo("Unfold");
-                        IStorage.Unfold(SelectedObject);
+                        iCS_UserCommands.Unfold(SelectedObject);
                     } else {
-                        IStorage.RegisterUndo("Fold");
-                        IStorage.Fold(SelectedObject);
+                        iCS_UserCommands.Fold(SelectedObject);
                     }
                 } else if(myGraphics.IsMinimizeIconPicked(SelectedObject, mouseGraphPos)) {
-                    IStorage.RegisterUndo("Minimize");
-                    IStorage.Iconize(SelectedObject);
+                    iCS_UserCommands.Iconize(SelectedObject);
                 } else {
                     // Fold/Unfold on double click.
                     if(SelectedObject == SelectedObjectBeforeMouseDown) {
@@ -140,38 +137,30 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(SelectedObject == null || !SelectedObject.IsNode) return;
         if(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode) {
             if(SelectedObject.IsIconizedOnDisplay && !IsShiftKeyDown) {
-                IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
-                IStorage.Unfold(SelectedObject);                                                                            
+                iCS_UserCommands.Unfold(SelectedObject);                                                                            
             } else if(SelectedObject.IsUnfoldedOnDisplay && IsShiftKeyDown) {
-                IStorage.RegisterUndo("Iconize "+SelectedObject.Name);
-                IStorage.Iconize(SelectedObject);                    
+                iCS_UserCommands.Iconize(SelectedObject);                    
             }
         } else {
             if(IsShiftKeyDown) {
                 if(SelectedObject.IsUnfoldedOnDisplay) {
                     if(IsControlKeyDown) {
-                        IStorage.RegisterUndo("Iconize "+SelectedObject.Name);
-                        IStorage.Iconize(SelectedObject);                                                
+                        iCS_UserCommands.Iconize(SelectedObject);                                                
                     } else {
-                        IStorage.RegisterUndo("Fold "+SelectedObject.Name);
-                        IStorage.Fold(SelectedObject);                                                                    
+                        iCS_UserCommands.Fold(SelectedObject);                                                                    
                     }
                 } else if(SelectedObject.IsFoldedOnDisplay) {
-                    IStorage.RegisterUndo("Iconize "+SelectedObject.Name);
-                    IStorage.Iconize(SelectedObject);                        
+                    iCS_UserCommands.Iconize(SelectedObject);                        
                 }
             } else {
                 if(SelectedObject.IsIconizedOnDisplay) {
                     if(IsControlKeyDown) {
-                        IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
-                        IStorage.Unfold(SelectedObject);                                                                                                    
+                        iCS_UserCommands.Unfold(SelectedObject);                                                                                                    
                     } else {
-                        IStorage.RegisterUndo("Fold "+SelectedObject.Name);
-                        IStorage.Fold(SelectedObject);                                            
+                        iCS_UserCommands.Fold(SelectedObject);                                            
                     }
                 } else if(SelectedObject.IsFoldedOnDisplay) {
-                    IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
-                    IStorage.Unfold(SelectedObject);                                                                            
+                    iCS_UserCommands.Unfold(SelectedObject);                                                                            
                 }                    
             }
         }

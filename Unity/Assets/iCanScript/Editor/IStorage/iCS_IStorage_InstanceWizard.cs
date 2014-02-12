@@ -9,7 +9,7 @@ using Prefs= iCS_PreferencesController;
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void InstanceWizardCompleteCreation(iCS_EditorObject module) {
-        Fold(module);
+        module.Fold();
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
             iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, iCS_Strings.DefaultInstanceName, classType,
@@ -33,7 +33,7 @@ public partial class iCS_IStorage {
                 module.IconGUID= iconGUID;
             }            
         }
-        Fold(module);
+        module.Fold();
     }
     // ----------------------------------------------------------------------
     public void InstanceWizardCreateOutputInstanceFields(iCS_EditorObject module) {
@@ -332,7 +332,7 @@ public partial class iCS_IStorage {
                 }
             }
         );
-        Iconize(func);
+        func.Iconize();
         return func;
     }
     // -------------------------------------------------------------------------
@@ -387,7 +387,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.DefaultInstanceName);
 		constructorThisPort.IsNameEditable= false;
         SetSource(moduleThisPort, constructorThisPort);
-        Iconize(constructor);
+        constructor.Iconize();
         return constructor;
     }
     public void InstanceWizardDestroyConstructor(iCS_EditorObject module) {

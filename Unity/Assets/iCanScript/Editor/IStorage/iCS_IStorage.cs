@@ -587,7 +587,7 @@ public partial class iCS_IStorage {
                 }
             }
         );
-        Iconize(conv);
+        conv.Iconize();
     }
     // ----------------------------------------------------------------------
     public void DisconnectPort(iCS_EditorObject port) {

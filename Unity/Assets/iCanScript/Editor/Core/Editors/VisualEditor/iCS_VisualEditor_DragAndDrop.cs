@@ -87,7 +87,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(newTexture != null) {
             	        IStorage.RegisterUndo("DragAndDrop");			
                         eObj.IconGUID= iconGUID;                    
-                        IStorage.Iconize(eObj);
+                        eObj.Iconize();
                         // Remove data so that we don't get called multiple times (Unity bug !!!).
     		            DragAndDrop.AcceptDrag();
     				}
