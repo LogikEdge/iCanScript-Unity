@@ -176,7 +176,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case KeyCode.Delete:
             case KeyCode.Backspace: {
 				// First attempt to delete multi-selected objects.
-				if(iCS_UserCommands.DeleteMultiSelectedObjects(IStorage)) break;
+				if(iCS_UserCommands.DeleteMultiSelectedObjects(IStorage)) {
+	                Event.current.Use();
+					break;
+				}
                 if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
                    !SelectedObject.IsFixDataPort) {
 	                iCS_EditorObject parent= SelectedObject.Parent;

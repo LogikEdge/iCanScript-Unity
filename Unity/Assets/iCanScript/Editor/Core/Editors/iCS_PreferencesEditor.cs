@@ -529,6 +529,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // Helpers.
     // ---------------------------------------------------------------------------------
     public static string RemoveProductPrefix(string name) {
+		if(string.IsNullOrEmpty(name)) return "";
         if(name.StartsWith(iCS_Config.ProductPrefix)) {
             return name.Substring(iCS_Config.ProductPrefix.Length);
         }

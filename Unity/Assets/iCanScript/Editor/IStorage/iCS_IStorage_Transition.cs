@@ -71,7 +71,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject GetFromStatePort(iCS_EditorObject transitionObject) {
 		if(transitionObject == null) {
-			Debug.LogWarning("iCanScript: Trying to get transition source port with a NULL object");
 			return null;
 		}
         if(transitionObject.IsInStatePort) {
@@ -92,14 +91,12 @@ public partial class iCS_IStorage {
                     return false;
                 }
             )) {
-				Debug.LogWarning("iCanScript: Unable to find transition input port on Transition package");
 				return null;            	
             }
         }
         if(transitionObject.IsInTransitionPort) {
         	iCS_EditorObject source= transitionObject.Source;
 			if(source == null) {
-				Debug.LogWarning("iCanScript: Transition package input port not connected to a state");
 				return null;
 			}
 			transitionObject= source;

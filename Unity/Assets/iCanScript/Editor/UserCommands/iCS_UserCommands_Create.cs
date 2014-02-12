@@ -131,8 +131,8 @@ public static partial class iCS_UserCommands {
         var iStorage= toState.IStorage;
         iStorage.RegisterUndo("Create Transition");
         iCS_EditorObject transitionPackage= null;
-        iStorage.AnimateGraph(null,
-            _=> {
+//        iStorage.AnimateGraph(null,
+//            _=> {
                 // Create toStatePort
                 iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
                 toStatePort.SetInitialPosition(toStatePortPos);
@@ -146,11 +146,11 @@ public static partial class iCS_UserCommands {
                 var fromStatePortPos= fromStatePort.LayoutPosition;
                 var globalPos= 0.5f*(fromStatePortPos+toStatePortPos);
                 transitionPackage.SetInitialPosition(globalPos);
-                transitionPackage.ForEachChildPort(p=> {p.AnimationStart= BuildRect(globalPos, Vector2.zero);});
+//                transitionPackage.ForEachChildPort(p=> {p.AnimationStart= BuildRect(globalPos, Vector2.zero);});
                 iStorage.Iconize(transitionPackage);
                 transitionPackage.LayoutNodeAndParents();
-            }
-        );
+//            }
+//        );
         return transitionPackage;
     }
 
