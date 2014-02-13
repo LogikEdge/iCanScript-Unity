@@ -411,41 +411,24 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void ProcessMenu(object obj) {
         iCS_MenuContext context= obj as iCS_MenuContext;
-        iCS_EditorObject selectedObject= context.SelectedObject;
-		Vector2 pos= context.GraphPosition;
+        iCS_EditorObject targetObject= context.SelectedObject;
+		Vector2 globalPos= context.GraphPosition;
         iCS_IStorage storage= context.Storage;
-        storage.RegisterUndo(context.Command);
-        // Reject request if child node is not allowed.
-		string tooltip= null;
-        if(selectedObject != null && selectedObject.IsState) {
-			bool isAllowed= false;
-            string name= context.Command.Substring(2);
-            if(name[0] == ' ') name= name.Substring(1);
-            for(int i= 0; i < iCS_AllowedChildren.StateChildNames.Length; ++i) {
-                string childName= iCS_AllowedChildren.StateChildNames[i];
-                if(name == childName) {
-                    tooltip= iCS_AllowedChildren.StateChildTooltips[i];
-					isAllowed= true;
-					break;
-                }
-            }
-			if(isAllowed == false) return;            
-        }
         // Process all other types of requests.
         switch(context.Command) {
-            case PackageStr:        ProcessCreatePackage(context); break;
-            case StateChartStr:     ProcessCreateStateChart(context); break;
-            case StateStr:          ProcessCreateState(context);  break;
-            case SetAsEntryStr:     ProcessSetStateEntry(context); break;
-            case OnEntryStr:        ProcessCreateOnEntryPackage(context, tooltip); break;
-            case OnUpdateStr:       ProcessCreateOnUpdatePackage(context, tooltip); break;
-            case OnExitStr:         ProcessCreateOnExitPackage(context, tooltip); break;
+            case PackageStr:        iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
+            case StateChartStr:     iCS_UserCommands.CreateStateChart(targetObject, globalPos, null); break;
+            case StateStr:          iCS_UserCommands.CreateState(targetObject, globalPos, null);  break;
+            case SetAsEntryStr:     iCS_UserCommands.CreateOnEntryPackage(targetObject, globalPos); break;
+            case OnEntryStr:        iCS_UserCommands.CreateOnEntryPackage(targetObject, globalPos); break;
+            case OnUpdateStr:       iCS_UserCommands.CreateOnUpdatePackage(targetObject, globalPos); break;
+            case OnExitStr:         iCS_UserCommands.CreateOnExitPackage(targetObject, globalPos); break;
 			case ObjectInstanceStr: ProcessCreateObjectInstance(context); break;
             case ShowHierarchyStr:  ProcessShowInHierarchy(context); break;
-            case DeleteStr:         ProcessDestroyObject(context); break;
-            case EnablePortStr:     ProcessCreateEnablePort(context); break;
-            case TriggerPortStr:    ProcessCreateTriggerPort(context); break;
-            case OutputThisPortStr: ProcessCreateOutInstancePort(context); break;
+            case DeleteStr:         iCS_UserCommands.DeleteObject(targetObject); break;
+            case EnablePortStr:     iCS_UserCommands.CreateEnablePort(targetObject); break;
+            case TriggerPortStr:    iCS_UserCommands.CreateTriggerPort(targetObject); break;
+            case OutputThisPortStr: iCS_UserCommands.CreateOutInstancePort(targetObject); break;
 			case WrapInPackageStr:  ProcessWrapInPackage(context); break;
             case MultiSelectionWrapInPackageStr: ProcessMultiSelectionWrapInPackage(context); break;
             case MultiSelectionDeleteStr:        ProcessMultiSelectionDelete(context); break;
@@ -456,15 +439,15 @@ public class iCS_ContextualMenu {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
 				}
-                if(selectedObject == null) break;
+                if(targetObject == null) break;
                 if(desc.IsMessage) {
-                    iCS_UserCommands.CreateMessageHandler(selectedObject, pos, desc as iCS_MessageInfo);
+                    iCS_UserCommands.CreateMessageHandler(targetObject, globalPos, desc as iCS_MessageInfo);
                 } else {
-					if(selectedObject.IsPort) {
-	                    CreateAttachedMethod(selectedObject, storage, pos, desc);
+					if(targetObject.IsPort) {
+	                    CreateAttachedMethod(targetObject, storage, globalPos, desc);
 					}
 					else {
-	                    CreateMethod(selectedObject, storage, pos, desc);
+	                    CreateMethod(targetObject, storage, globalPos, desc);
 					}
                 }
                 break;                
@@ -484,17 +467,6 @@ public class iCS_ContextualMenu {
         return module;
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateStateChart(iCS_MenuContext context) {
-        iCS_EditorObject stateChart= CreateStateChart(context);
-        return stateChart;
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateState(iCS_MenuContext context) {
-		var parent       = context.SelectedObject;
-		var graphPosition= context.GraphPosition;
-        return iCS_UserCommands.CreateState(parent, graphPosition, null);
-    }
-	// ----------------------------------------------------------------------
     static iCS_EditorObject ProcessSetStateEntry(iCS_MenuContext context) {
 		var state        = context.SelectedObject;
 		var storage      = context.Storage;
@@ -509,31 +481,6 @@ public class iCS_ContextualMenu {
         return state;
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnEntryPackage(iCS_MenuContext context, string tooltip) {
-		var parent       = context.SelectedObject;
-		var graphPosition= context.GraphPosition;
-        var package= iCS_UserCommands.CreateOnEntryPackage(parent, graphPosition);
-        package.Tooltip= tooltip;
-        return package;
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnUpdatePackage(iCS_MenuContext context, string tooltip) {
-		var parent       = context.SelectedObject;
-		var graphPosition= context.GraphPosition;
-        var package= iCS_UserCommands.CreateOnUpdatePackage(parent, graphPosition);
-        package.Tooltip= tooltip;
-        return package;
-
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreateOnExitPackage(iCS_MenuContext context, string tooltip) {
-		var parent       = context.SelectedObject;
-		var graphPosition= context.GraphPosition;
-        var package= iCS_UserCommands.CreateOnExitPackage(parent, graphPosition);
-        package.Tooltip= tooltip;
-        return package;
-    }
-	// ----------------------------------------------------------------------
     static void ProcessShowInHierarchy(iCS_MenuContext context) {
 		var obj    = context.SelectedObject;
         var editor= iCS_EditorMgr.FindHierarchyEditor();
@@ -542,21 +489,6 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     static void ProcessDestroyObject(iCS_MenuContext context) {
         DestroyObject(context);    
-    }
-    // -------------------------------------------------------------------------
-    static void ProcessCreateEnablePort(iCS_MenuContext context) {
-		var parent = context.SelectedObject;
-		iCS_UserCommands.CreateEnablePort(parent);        
-    }
-    // -------------------------------------------------------------------------
-    static void ProcessCreateTriggerPort(iCS_MenuContext context) {
-		var parent = context.SelectedObject;
-		iCS_UserCommands.CreateTriggerPort(parent);        
-    }
-    // -------------------------------------------------------------------------
-    static void ProcessCreateOutInstancePort(iCS_MenuContext context) {
-		var parent = context.SelectedObject;
-		iCS_UserCommands.CreateOutInstancePort(parent);        
     }
     // -------------------------------------------------------------------------
     static void ProcessCreateObjectInstance(iCS_MenuContext context) {
@@ -604,18 +536,6 @@ public class iCS_ContextualMenu {
 		var parent       = context.SelectedObject;
 		var graphPosition= context.GraphPosition;
         return iCS_UserCommands.CreateObjectInstance(parent, graphPosition, classType, null);
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateStateChart(iCS_MenuContext context, string name= "", bool nameEditable= true) {
-		var parent   = context.SelectedObject;
-		var globalPos= context.GraphPosition;
-        return iCS_UserCommands.CreateStateChart(parent, globalPos, name);
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateState(iCS_MenuContext context, string name= "") {
-		var parent   = context.SelectedObject;
-		var globalPos= context.GraphPosition;
-        return iCS_UserCommands.CreateState(parent, globalPos, name);
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_MethodBaseInfo desc) {

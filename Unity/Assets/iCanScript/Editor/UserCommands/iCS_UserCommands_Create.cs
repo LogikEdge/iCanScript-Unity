@@ -100,7 +100,8 @@ public static partial class iCS_UserCommands {
     public static iCS_EditorObject CreateOnEntryPackage(iCS_EditorObject parent, Vector2 globalPos) {
         var package= CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
         if(package != null) {
-            package.IsNameEditable= false;            
+            package.IsNameEditable= false;
+            package.Tooltip= iCS_ObjectTooltips.OnEntry;            
         }
         return package;
     }
@@ -110,6 +111,7 @@ public static partial class iCS_UserCommands {
         var package= CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
         if(package != null) {
             package.IsNameEditable= false;            
+            package.Tooltip= iCS_ObjectTooltips.OnUpdate;            
         }
         return package;
     }
@@ -119,6 +121,7 @@ public static partial class iCS_UserCommands {
         var package= CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
         if(package != null) {
             package.IsNameEditable= false;            
+            package.Tooltip= iCS_ObjectTooltips.OnExit;            
         }
         return package;
     }
