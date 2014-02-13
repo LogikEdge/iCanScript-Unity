@@ -83,15 +83,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Allow change of icon on minimized nodes.
     			if(draggedObject is Texture && eObj.IsIconizedOnDisplay) {
                     Texture newTexture= draggedObject as Texture;
-                    string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
-                    if(newTexture != null) {
-            	        IStorage.RegisterUndo("DragAndDrop");			
-                        eObj.IconGUID= iconGUID;                    
-                        eObj.Iconize();
-                        // Remove data so that we don't get called multiple times (Unity bug !!!).
-    		            DragAndDrop.AcceptDrag();
-    				}
-    				return;				
+                    iCS_UserCommands.ChangeIcon(eObj, newTexture);
+                    // Remove data so that we don't get called multiple times (Unity bug !!!).
+    		        DragAndDrop.AcceptDrag();
+                    return;				
                 }
                 // Allow dropping Unity object in modules.
                 if(eObj.IsKindOfPackage && draggedObject is GameObject) {
