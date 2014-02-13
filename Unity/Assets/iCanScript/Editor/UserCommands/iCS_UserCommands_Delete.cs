@@ -40,6 +40,10 @@ public static partial class iCS_UserCommands {
         if(iStorage == null) return false;
         var selectedObjects= iStorage.GetMultiSelectedObjects();
         if(selectedObjects == null || selectedObjects.Length == 0) return false;
+        if(selectedObjects.Length == 1) {
+            DeleteObject(selectedObjects[0]);
+            return true;
+        }
         iStorage.RegisterUndo("Delete Selection");
         iStorage.AnimateGraph(null,
             _=> {
