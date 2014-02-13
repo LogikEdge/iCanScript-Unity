@@ -528,13 +528,8 @@ public partial class iCS_IStorage {
         return instance;
     }    
 	// ----------------------------------------------------------------------
-	public iCS_EditorObject CreateObjectInstance(int parentId, string name, Type instanceType, iCS_EditorObject sourcePort) {
-        var instance= CreatePackage(parentId, name, iCS_ObjectTypeEnum.Package, instanceType);
-		if(sourcePort != null) {
-	        var thisPort= InstanceWizardGetInputThisPort(instance);
-	        SetNewDataConnection(thisPort, sourcePort);					
-		}
-		return instance;
+	public iCS_EditorObject CreateObjectInstance(int parentId, string name, Type instanceType) {
+        return CreatePackage(parentId, name, iCS_ObjectTypeEnum.Package, instanceType);
 	}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject CreateInParameterPort(string name, int parentId, Type valueType, int index) {

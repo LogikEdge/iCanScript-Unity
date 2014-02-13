@@ -204,7 +204,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateObjectInstance(Type classType, iCS_IStorage iStorage) {
-        return iStorage.CreateObjectInstance(-1, null, classType, null);
+        return iStorage.CreateObjectInstance(-1, null, classType);
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {

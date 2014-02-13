@@ -215,7 +215,7 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Instance Object creation.
 	// ----------------------------------------------------------------------
-    public static iCS_EditorObject CreateObjectInstance(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_EditorObject sourcePort) {
+    public static iCS_EditorObject CreateObjectInstance(iCS_EditorObject parent, Vector2 globalPos, Type instanceType) {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         var name= instanceType.Name;
@@ -223,7 +223,7 @@ public static partial class iCS_UserCommands {
         iCS_EditorObject instance= null;
         iStorage.AnimateGraph(null,
             _=> {
-                instance= iStorage.CreateObjectInstance(parent.InstanceId, name, instanceType, sourcePort);
+                instance= iStorage.CreateObjectInstance(parent.InstanceId, name, instanceType);
                 instance.SetInitialPosition(globalPos);
                 instance.LayoutNodeAndParents();                
             }
@@ -254,7 +254,7 @@ public static partial class iCS_UserCommands {
         iCS_EditorObject element= null;
         iStorage.AnimateGraph(null,
             _=> {
-                var instance= iStorage.CreateObjectInstance(parent.InstanceId, instanceType.Name, instanceType, null);
+                var instance= iStorage.CreateObjectInstance(parent.InstanceId, instanceType.Name, instanceType);
                 instance.SetInitialPosition(globalPos);
                 element= iStorage.InstanceWizardCreate(instance, desc);
                 element.SetInitialPosition(globalPos);
@@ -273,7 +273,7 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 // Object Instance
-                var instance= iStorage.CreateObjectInstance(parent.InstanceId, instanceType.Name, instanceType, null);
+                var instance= iStorage.CreateObjectInstance(parent.InstanceId, instanceType.Name, instanceType);
                 instance.SetInitialPosition(globalPos);
                 // Internal element
                 element= iStorage.InstanceWizardCreate(instance, desc);

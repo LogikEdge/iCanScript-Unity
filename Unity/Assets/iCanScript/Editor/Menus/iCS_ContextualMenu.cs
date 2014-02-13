@@ -419,12 +419,12 @@ public class iCS_ContextualMenu {
             case PackageStr:        iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
             case StateChartStr:     iCS_UserCommands.CreateStateChart(targetObject, globalPos, null); break;
             case StateStr:          iCS_UserCommands.CreateState(targetObject, globalPos, null);  break;
-            case SetAsEntryStr:     iCS_UserCommands.CreateOnEntryPackage(targetObject, globalPos); break;
+            case SetAsEntryStr:     iCS_UserCommands.SetAsStateEntry(targetObject); break;
             case OnEntryStr:        iCS_UserCommands.CreateOnEntryPackage(targetObject, globalPos); break;
             case OnUpdateStr:       iCS_UserCommands.CreateOnUpdatePackage(targetObject, globalPos); break;
             case OnExitStr:         iCS_UserCommands.CreateOnExitPackage(targetObject, globalPos); break;
-			case ObjectInstanceStr: ProcessCreateObjectInstance(context); break;
-            case ShowHierarchyStr:  ProcessShowInHierarchy(context); break;
+			case ObjectInstanceStr: CreateObjectInstance(context); break;
+            case ShowHierarchyStr:  iCS_UserCommands.ShowInHierarchy(targetObject); break;
             case DeleteStr:         iCS_UserCommands.DeleteObject(targetObject); break;
             case EnablePortStr:     iCS_UserCommands.CreateEnablePort(targetObject); break;
             case TriggerPortStr:    iCS_UserCommands.CreateTriggerPort(targetObject); break;
@@ -447,76 +447,34 @@ public class iCS_ContextualMenu {
 	                    CreateAttachedMethod(targetObject, iStorage, globalPos, desc);
 					}
 					else {
-	                    CreateMethod(targetObject, iStorage, globalPos, desc);
+	                    iCS_UserCommands.CreateFunction(targetObject, globalPos, desc);
 					}
                 }
                 break;                
             }
         }
     }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreatePackageWithUnchangableName(string behName, iCS_MenuContext context, string toolTip="") {
-        iCS_EditorObject module= CreatePackage(context, behName, false);
-        module.IsNameEditable= false;
-        module.Tooltip= toolTip;
-        return module;        
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessSetStateEntry(iCS_MenuContext context) {
-		var state        = context.SelectedObject;
-		var storage      = context.Storage;
-        storage.ForEachChild(state.Parent,
-            child=>{
-                if(child.IsEntryState) {
-                    child.IsEntryState= false;
-                }
-            }
-        );
-        state.IsEntryState= true;
-        return state;
-    }
-	// ----------------------------------------------------------------------
-    static void ProcessShowInHierarchy(iCS_MenuContext context) {
-		var obj    = context.SelectedObject;
-        var editor= iCS_EditorMgr.FindHierarchyEditor();
-        if(editor != null) editor.ShowElement(obj);
-    }
-    // -------------------------------------------------------------------------
-    static void ProcessCreateObjectInstance(iCS_MenuContext context) {
-		var port = context.SelectedObject;
-		var storage= context.Storage;
-		var pos= context.GraphPosition;
-		var parent= storage.GetNodeAt(pos);
-		if(parent == null) return;
-		iCS_UserCommands.CreateObjectInstance(parent, pos, port.RuntimeType, port);        
-    }
+
 
     // ======================================================================
-    // Creation Utilities
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreatePackage(iCS_MenuContext context, string name= "", bool isNameEditable= true) {
-		var parent   = context.SelectedObject;
-		var globalPos= context.GraphPosition;
-        var package= iCS_UserCommands.CreatePackage(parent, globalPos, name);
-        package.IsNameEditable= isNameEditable;
-        return package;
+    // High-Level Creation Utilities
+    // -------------------------------------------------------------------------
+    static void CreateObjectInstance(iCS_MenuContext context) {
+		var iStorage= context.Storage;
+		var sourcePort = context.SelectedObject;
+		var pos= context.GraphPosition;
+		var parent= iStorage.GetNodeAt(pos);
+		if(parent == null) return;
+		var instance= iCS_UserCommands.CreateObjectInstance(parent, pos, sourcePort.RuntimeType);   
+		if(sourcePort != null) {
+	        var thisPort= iStorage.InstanceWizardGetInputThisPort(instance);
+	        iStorage.SetNewDataConnection(thisPort, sourcePort);					
+		}
     }
+
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateObjectInstance(iCS_MenuContext context, Type classType) {
-		var parent       = context.SelectedObject;
-		var graphPosition= context.GraphPosition;
-        return iCS_UserCommands.CreateObjectInstance(parent, graphPosition, classType, null);
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_MethodBaseInfo desc) {
-        return iCS_UserCommands.CreateFunction(parent, graphPosition, desc);            
-	}
-	// ----------------------------------------------------------------------
-	/*
-		TODO : Should move this function to IStorage.
-	*/
-    static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage storage, Vector2 graphPosition, iCS_MethodBaseInfo desc) {
-        iCS_EditorObject newNodeParent= storage.GetNodeAt(graphPosition);
+    static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage storage, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+        iCS_EditorObject newNodeParent= storage.GetNodeAt(globalPos);
 		if(newNodeParent == null) return null;
         if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;
 		iCS_EditorObject method= null;
@@ -536,19 +494,19 @@ public class iCS_ContextualMenu {
 					case 0:
 						break;
 					case 1: {
-						method= iCS_UserCommands.CreateInstanceBuilderAndObjectAndElement(newNodeParent, graphPosition, desc.ClassType, desc);
+						method= iCS_UserCommands.CreateInstanceBuilderAndObjectAndElement(newNodeParent, globalPos, desc.ClassType, desc);
 						createMethod= false;
 						break;
 					}
 					case 2: {
-						method= iCS_UserCommands.CreateInstanceObjectAndElement(newNodeParent, graphPosition, desc.ClassType, desc);
+						method= iCS_UserCommands.CreateInstanceObjectAndElement(newNodeParent, globalPos, desc.ClassType, desc);
 						createMethod= false;
 						break;
 					}}
 				}
 			}
 			if(createMethod) {
-		        method= CreateMethod(newNodeParent, storage, graphPosition, desc);							
+                method= iCS_UserCommands.CreateFunction(newNodeParent, globalPos, desc);							
 			}
 		}
 
@@ -584,6 +542,10 @@ public class iCS_ContextualMenu {
         }
         return method;
     }
+    
+    
+    // ======================================================================
+    // Utilities
 	// ----------------------------------------------------------------------
 	static iCS_EditorObject GetClosestMatch(iCS_EditorObject refPort, iCS_EditorObject[] otherPorts) {
 		if(otherPorts.Length == 0) return null;
@@ -602,20 +564,4 @@ public class iCS_ContextualMenu {
 		}
 		return bestPort;		
 	}
-	// ----------------------------------------------------------------------
-    static void DestroyObject(iCS_MenuContext context) {
-		var selectedObject= context.SelectedObject;
-        iCS_UserCommands.DeleteObject(selectedObject);
-    }
-	// ----------------------------------------------------------------------
-    static bool AsChildNodeWithName(iCS_EditorObject parent, string name, iCS_IStorage storage) {
-        return storage.UntilMatchingChild(parent,
-            child=> {
-                if(child.IsNode) {
-                    return child.Name == name;
-                }
-                return false;
-            }
-        );
-    }
 }
