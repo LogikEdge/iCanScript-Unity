@@ -413,7 +413,7 @@ public class iCS_ContextualMenu {
         iCS_MenuContext context= obj as iCS_MenuContext;
         iCS_EditorObject targetObject= context.SelectedObject;
 		Vector2 globalPos= context.GraphPosition;
-        iCS_IStorage storage= context.Storage;
+        iCS_IStorage iStorage= context.Storage;
         // Process all other types of requests.
         switch(context.Command) {
             case PackageStr:        iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
@@ -429,10 +429,10 @@ public class iCS_ContextualMenu {
             case EnablePortStr:     iCS_UserCommands.CreateEnablePort(targetObject); break;
             case TriggerPortStr:    iCS_UserCommands.CreateTriggerPort(targetObject); break;
             case OutputThisPortStr: iCS_UserCommands.CreateOutInstancePort(targetObject); break;
-			case WrapInPackageStr:  ProcessWrapInPackage(context); break;
-            case MultiSelectionWrapInPackageStr: ProcessMultiSelectionWrapInPackage(context); break;
-            case MultiSelectionDeleteStr:        ProcessMultiSelectionDelete(context); break;
-            case DeleteKeepChildrenStr:          ProcessDeleteKeepChildren(context); break;
+			case WrapInPackageStr:  iCS_UserCommands.WrapInPackage(targetObject); break;
+            case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
+            case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
+            case DeleteKeepChildrenStr:          iCS_UserCommands.DeleteKeepChildren(targetObject); break;
             default: {
 				iCS_MethodBaseInfo desc= context.Descriptor;
 				if(desc == null) {
@@ -444,10 +444,10 @@ public class iCS_ContextualMenu {
                     iCS_UserCommands.CreateMessageHandler(targetObject, globalPos, desc as iCS_MessageInfo);
                 } else {
 					if(targetObject.IsPort) {
-	                    CreateAttachedMethod(targetObject, storage, globalPos, desc);
+	                    CreateAttachedMethod(targetObject, iStorage, globalPos, desc);
 					}
 					else {
-	                    CreateMethod(targetObject, storage, globalPos, desc);
+	                    CreateMethod(targetObject, iStorage, globalPos, desc);
 					}
                 }
                 break;                
@@ -460,11 +460,6 @@ public class iCS_ContextualMenu {
         module.IsNameEditable= false;
         module.Tooltip= toolTip;
         return module;        
-    }
-	// ----------------------------------------------------------------------
-    static iCS_EditorObject ProcessCreatePackage(iCS_MenuContext context) {
-        iCS_EditorObject module= CreatePackage(context);
-        return module;
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject ProcessSetStateEntry(iCS_MenuContext context) {
@@ -486,10 +481,6 @@ public class iCS_ContextualMenu {
         var editor= iCS_EditorMgr.FindHierarchyEditor();
         if(editor != null) editor.ShowElement(obj);
     }
-	// ----------------------------------------------------------------------
-    static void ProcessDestroyObject(iCS_MenuContext context) {
-        DestroyObject(context);    
-    }
     // -------------------------------------------------------------------------
     static void ProcessCreateObjectInstance(iCS_MenuContext context) {
 		var port = context.SelectedObject;
@@ -499,27 +490,6 @@ public class iCS_ContextualMenu {
 		if(parent == null) return;
 		iCS_UserCommands.CreateObjectInstance(parent, pos, port.RuntimeType, port);        
     }
-    // -------------------------------------------------------------------------
-	static void ProcessWrapInPackage(iCS_MenuContext context) {
-		var obj= context.SelectedObject;
-		var storage= context.Storage;
-		var package= iCS_UserCommands.WrapInPackage(obj);
-		if(package != null) {
-			storage.SelectedObject= package;
-		}
-	}
-    // -------------------------------------------------------------------------
-	static void ProcessMultiSelectionWrapInPackage(iCS_MenuContext context) {
-        iCS_UserCommands.WrapMultiSelectionInPackage(context.Storage);
-    }
-    // -------------------------------------------------------------------------
-	static void ProcessMultiSelectionDelete(iCS_MenuContext context) {
-        iCS_UserCommands.DeleteMultiSelectedObjects(context.Storage);
-    }
-    // -------------------------------------------------------------------------
-    static void ProcessDeleteKeepChildren(iCS_MenuContext context) {
-        iCS_UserCommands.DeleteKeepChildren(context.SelectedObject);
-    }	
 
     // ======================================================================
     // Creation Utilities
