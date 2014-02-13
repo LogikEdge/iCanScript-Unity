@@ -83,6 +83,9 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.TypeCast:          FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceField:     FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassField:        FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
+            case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
+            case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.Package:           if(selectedObject.IsInstanceNode) {
                                                              InstanceMenu(selectedObject, storage);
                                                        } else {
@@ -138,6 +141,20 @@ public class iCS_ContextualMenu {
             }
         }
 		ShowMenu(menu, selectedObject, storage);
+    }
+	// ----------------------------------------------------------------------
+    void OnStatePackageMenu(iCS_EditorObject targetObject) {
+        iCS_MenuContext[] menu= new iCS_MenuContext[0];
+        if(!targetObject.IsIconizedInLayout && !targetObject.IsFoldedInLayout) {
+            // Base menu items
+            menu= new iCS_MenuContext[3];
+            menu[0]= new iCS_MenuContext(PackageStr);
+            menu[1]= new iCS_MenuContext(StateChartStr);
+            menu[2]= new iCS_MenuContext(SeparatorStr);
+        }
+        AddShowInHierarchyMenuItem(ref menu);
+        AddDeleteMenuItem(ref menu);
+		ShowMenu(menu, targetObject, targetObject.IStorage);
     }
 	// ----------------------------------------------------------------------
     void InstanceMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {

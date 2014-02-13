@@ -1,7 +1,7 @@
 ﻿//
 // File: iCS_UserCommands_UndoRedo
 //
-#define DEBUG
+//#define DEBUG
 using UnityEngine;
 using System.Collections;
 
@@ -10,6 +10,7 @@ public static partial class iCS_UserCommands {
     // Undo/Redo is a condition detected by the storage.  It simulates
     // a User Command.
 	// ----------------------------------------------------------------------
+    // OK
     public static void UndoRedo(iCS_IStorage iStorage) {
 #if DEBUG
         Debug.Log("iCanScript: Undo/Redo");

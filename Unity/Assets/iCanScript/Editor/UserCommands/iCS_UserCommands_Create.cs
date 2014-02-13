@@ -3,6 +3,7 @@
 //
 #define DEBUG
 using UnityEngine;
+using UnityEditor;
 using System;
 using System.Collections;
 using P=Prelude;
@@ -126,6 +127,7 @@ public static partial class iCS_UserCommands {
         return package;
     }
 	// ----------------------------------------------------------------------
+    // OK
     public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos, iCS_MethodBaseInfo desc) {
 #if DEBUG
         Debug.Log("iCanScript: Create Function => "+desc.DisplayName);
@@ -215,7 +217,13 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Instance Object creation.
 	// ----------------------------------------------------------------------
+    // OK
     public static iCS_EditorObject CreateObjectInstance(iCS_EditorObject parent, Vector2 globalPos, Type instanceType) {
+        if(instanceType == null) return null;
+        instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
+#if DEBUG
+        Debug.Log("iCanScript: Create Object Instance => "+instanceType.Name);
+#endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         var name= instanceType.Name;
@@ -231,7 +239,11 @@ public static partial class iCS_UserCommands {
         return instance;
     }
 	// ----------------------------------------------------------------------
+    // OK
     public static iCS_EditorObject CreateInstanceElement(iCS_EditorObject parent, iCS_MethodBaseInfo desc) {
+#if DEBUG
+        Debug.Log("iCanScript: Create Instance Element => "+desc.DisplayName);
+#endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         iStorage.RegisterUndo("Create "+desc.DisplayName);
@@ -247,7 +259,13 @@ public static partial class iCS_UserCommands {
         return instance;
     }
 	// ----------------------------------------------------------------------
+    // OK
     public static iCS_EditorObject CreateInstanceObjectAndElement(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_MethodBaseInfo desc) {
+        if(instanceType == null) return null;
+        instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
+#if DEBUG
+        Debug.Log("iCanScript: Create Instance Object & Element => "+desc.DisplayName);
+#endif
         if(parent == null || instanceType == null || desc == null) return null;
         var iStorage= parent.IStorage;
         iStorage.RegisterUndo("Create "+desc.DisplayName);
@@ -265,7 +283,13 @@ public static partial class iCS_UserCommands {
         return element;
     }
 	// ----------------------------------------------------------------------
+    // OK
     public static iCS_EditorObject CreateInstanceBuilderAndObjectAndElement(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_MethodBaseInfo desc) {
+        if(instanceType == null) return null;
+        instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
+#if DEBUG
+        Debug.Log("iCanScript: Create Builder, Instance Object & Element => "+desc.DisplayName);
+#endif
         if(parent == null || instanceType == null || desc == null) return null;
         var iStorage= parent.IStorage;
         iStorage.RegisterUndo("Create "+desc.DisplayName);
@@ -292,6 +316,10 @@ public static partial class iCS_UserCommands {
 						/*
 							TODO : Support Multiple Instance Builders on drag port quick menu. 
 						*/
+                        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+                        if(visualEditor != null) {
+                            visualEditor.ShowNotification(new GUIContent("Multiple Builders exists.  Please create the builder manually."));
+                        }
 						Debug.LogWarning("iCanScript: Multiple Builders exists.  Please create the builder manually.");								
 					}
 					
@@ -342,10 +370,14 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Create from Drag & Drop
 	// ----------------------------------------------------------------------
+    // OK
     public static iCS_EditorObject CreateGameObject(GameObject go, iCS_EditorObject parent, Vector2 globalPos) {
+#if DEBUG
+        Debug.Log("iCanScript: Create Game Object => "+go.name);
+#endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("DragAndDrop");
+        iStorage.RegisterUndo("Create "+go.name);
         iCS_EditorObject instance= null;
         iStorage.AnimateGraph(null,
             _=> {
