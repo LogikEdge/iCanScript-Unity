@@ -1,7 +1,7 @@
 ﻿//
 // File: iCS_UserCommands_DisplayOptions
 //
-#define DEBUG
+//#define DEBUG
 using UnityEngine;
 using System.Collections;
 

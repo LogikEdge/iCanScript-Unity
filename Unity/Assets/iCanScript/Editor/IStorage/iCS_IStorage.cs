@@ -417,22 +417,21 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateFunction(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateFunction(int parentId, iCS_MethodBaseInfo desc) {
         iCS_EditorObject instance= desc.IsInstanceMember ?
-                    				CreateInstanceFunction(parentId, globalPos, desc) : 
-                    				CreateClassFunction(parentId, globalPos, desc);
+                    				CreateInstanceFunction(parentId, desc) : 
+                    				CreateClassFunction(parentId, desc);
 
 		instance.MethodName= desc.MethodName;
 		instance.NbOfParams= desc.Parameters != null ? desc.Parameters.Length : 0;
 		return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateClassFunction(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateClassFunction(int parentId, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        instance.SetAnchorAndLayoutPosition(globalPos);
         // Determine icon.
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
@@ -459,12 +458,11 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateInstanceFunction(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateInstanceFunction(int parentId, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        instance.SetAnchorAndLayoutPosition(globalPos);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
 		iCS_EditorObject port= null;
@@ -579,7 +577,8 @@ public partial class iCS_IStorage {
         var outPos= outPort.LayoutPosition;
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= inPort.ParentNode.ParentId;
-        iCS_EditorObject conv= CreateFunction(grandParentId, convPos, convDesc);
+        iCS_EditorObject conv= CreateFunction(grandParentId, convDesc);
+        conv.SetInitialPosition(convPos);
         ForEachChild(conv,
             (child) => {
                 if(child.IsInputPort) {

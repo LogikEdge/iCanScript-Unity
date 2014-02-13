@@ -208,7 +208,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {
-        return iStorage.CreateFunction(-1, Vector2.zero, desc.ToMethodBaseInfo);            
+        return iStorage.CreateFunction(-1, desc.ToMethodBaseInfo);            
     }    
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {

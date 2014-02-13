@@ -546,20 +546,17 @@ public class iCS_ContextualMenu {
     // -------------------------------------------------------------------------
     static void ProcessCreateEnablePort(iCS_MenuContext context) {
 		var parent = context.SelectedObject;
-		var storage= context.Storage;
-		storage.CreateEnablePort(parent.InstanceId);        
+		iCS_UserCommands.CreateEnablePort(parent);        
     }
     // -------------------------------------------------------------------------
     static void ProcessCreateTriggerPort(iCS_MenuContext context) {
 		var parent = context.SelectedObject;
-		var storage= context.Storage;
-		storage.CreateTriggerPort(parent.InstanceId);        
+		iCS_UserCommands.CreateTriggerPort(parent);        
     }
     // -------------------------------------------------------------------------
     static void ProcessCreateOutInstancePort(iCS_MenuContext context) {
 		var parent = context.SelectedObject;
-		var storage= context.Storage;
-		storage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
+		iCS_UserCommands.CreateOutInstancePort(parent);        
     }
     // -------------------------------------------------------------------------
     static void ProcessCreateObjectInstance(iCS_MenuContext context) {
@@ -574,7 +571,7 @@ public class iCS_ContextualMenu {
 	static void ProcessWrapInPackage(iCS_MenuContext context) {
 		var obj= context.SelectedObject;
 		var storage= context.Storage;
-		var package= storage.WrapInPackage(obj);
+		var package= iCS_UserCommands.WrapInPackage(obj);
 		if(package != null) {
 			storage.SelectedObject= package;
 		}
@@ -622,7 +619,7 @@ public class iCS_ContextualMenu {
     }
 	// ----------------------------------------------------------------------
     static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_MethodBaseInfo desc) {
-        return storage.CreateFunction(parent.InstanceId, graphPosition, desc);            
+        return iCS_UserCommands.CreateFunction(parent, graphPosition, desc);            
 	}
 	// ----------------------------------------------------------------------
 	/*

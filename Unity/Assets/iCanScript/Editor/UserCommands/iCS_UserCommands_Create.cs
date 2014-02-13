@@ -123,6 +123,26 @@ public static partial class iCS_UserCommands {
         return package;
     }
 	// ----------------------------------------------------------------------
+    public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+#if DEBUG
+        Debug.Log("iCanScript: Create Function => "+desc.DisplayName);
+#endif
+        if(parent == null || desc == null) return null;
+		var name= desc.DisplayName;
+		var iStorage= parent.IStorage;
+        iStorage.RegisterUndo("Create "+name);
+        iCS_EditorObject function= null;
+        iStorage.AnimateGraph(null,
+            _=> {
+                function= iStorage.CreateFunction(parent.InstanceId, desc);
+                function.SetInitialPosition(globalPos);
+                function.LayoutNodeAndParents();                
+            }
+        );
+        return function;        
+    }
+
+	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
 #if DEBUG
         Debug.Log("iCanScript: Create Transition Package");
@@ -153,6 +173,41 @@ public static partial class iCS_UserCommands {
 //        );
         return transitionPackage;
     }
+    // -------------------------------------------------------------------------
+    // OK
+    public static iCS_EditorObject CreateEnablePort(iCS_EditorObject parent) {
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        iStorage.RegisterUndo("Create Enable Port");
+		var port= iStorage.CreateEnablePort(parent.InstanceId);
+        var pRect= parent.LayoutRect;
+        port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
+        parent.LayoutPorts();
+        return port;
+    }
+    // -------------------------------------------------------------------------
+    // OK
+    public static iCS_EditorObject CreateTriggerPort(iCS_EditorObject parent) {
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        iStorage.RegisterUndo("Create Trigger Port");
+		var port= iStorage.CreateTriggerPort(parent.InstanceId);        
+        var pRect= parent.LayoutRect;
+        port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
+        parent.LayoutPorts();
+        return port;
+    }
+    // -------------------------------------------------------------------------
+    // OK
+    public static iCS_EditorObject CreateOutInstancePort(iCS_EditorObject parent) {
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        iStorage.RegisterUndo("Create 'this' Port");
+		var port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
+        parent.LayoutPorts();
+        return port;
+    }
+    
 
     // ======================================================================
     // Instance Object creation.
@@ -248,6 +303,7 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Node Wrapping in package.
 	// ----------------------------------------------------------------------
+    // OK
     public static iCS_EditorObject WrapInPackage(iCS_EditorObject obj) {
         if(obj == null || !obj.CanHavePackageAsParent()) return null;
         var iStorage= obj.IStorage;
@@ -262,6 +318,7 @@ public static partial class iCS_UserCommands {
         return package;
     }
 	// ----------------------------------------------------------------------
+    // OK
     public static iCS_EditorObject WrapMultiSelectionInPackage(iCS_IStorage iStorage) {
         if(iStorage == null) return null;
         var selectedObjects= iStorage.FilterMultiSelectionForWrapInPackage();
