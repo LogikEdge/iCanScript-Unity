@@ -155,27 +155,22 @@ public static partial class iCS_UserCommands {
         if(fromStatePort == null || toState == null) return null;
         var iStorage= toState.IStorage;
         iStorage.RegisterUndo("Create Transition");
-        iCS_EditorObject transitionPackage= null;
-//        iStorage.AnimateGraph(null,
-//            _=> {
-                // Create toStatePort
-                iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-                toStatePort.SetInitialPosition(toStatePortPos);
-                iStorage.SetSource(toStatePort, fromStatePort);
-                toStatePort.UpdatePortEdge();        
-                // Update fromStatePort position.
-                fromStatePort.UpdatePortEdge();
-                // Create transition package
-                transitionPackage= iStorage.CreateTransition(fromStatePort, toStatePort);
-                // Try to position the transition in the middle
-                var fromStatePortPos= fromStatePort.LayoutPosition;
-                var globalPos= 0.5f*(fromStatePortPos+toStatePortPos);
-                transitionPackage.SetInitialPosition(globalPos);
-//                transitionPackage.ForEachChildPort(p=> {p.AnimationStart= BuildRect(globalPos, Vector2.zero);});
-                transitionPackage.Iconize();
-                transitionPackage.LayoutNodeAndParents();
-//            }
-//        );
+        // Create toStatePort
+        iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
+        // Update port positions
+        toStatePort.SetInitialPosition(toStatePortPos);
+        toStatePort.UpdatePortEdge();        
+        fromStatePort.UpdatePortEdge();
+        // Temporally connect state ports together.
+        iStorage.SetSource(toStatePort, fromStatePort);
+        // Create transition package
+        var transitionPackage= iStorage.CreateTransition(fromStatePort, toStatePort);
+        // Try to position the transition in the middle
+        var fromStatePortPos= fromStatePort.LayoutPosition;
+        var globalPos= 0.5f*(fromStatePortPos+toStatePortPos);
+        transitionPackage.SetInitialPosition(globalPos);
+        transitionPackage.Iconize();
+        transitionPackage.LayoutNodeAndParents();
         return transitionPackage;
     }
     // -------------------------------------------------------------------------
@@ -237,98 +232,6 @@ public static partial class iCS_UserCommands {
             }
         );
         return instance;
-    }
-	// ----------------------------------------------------------------------
-    // OK
-    public static iCS_EditorObject CreateInstanceElement(iCS_EditorObject parent, iCS_MethodBaseInfo desc) {
-#if DEBUG
-        Debug.Log("iCanScript: Create Instance Element => "+desc.DisplayName);
-#endif
-        if(parent == null) return null;
-        var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create "+desc.DisplayName);
-        iCS_EditorObject instance= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                instance= iStorage.InstanceWizardCreate(parent, desc);
-                instance.SetInitialPosition(parent.LayoutPosition);
-                instance.Iconize();
-                parent.LayoutNode();                
-            }
-        );
-        return instance;
-    }
-	// ----------------------------------------------------------------------
-    // OK
-    public static iCS_EditorObject CreateInstanceObjectAndElement(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_MethodBaseInfo desc) {
-        if(instanceType == null) return null;
-        instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
-#if DEBUG
-        Debug.Log("iCanScript: Create Instance Object & Element => "+desc.DisplayName);
-#endif
-        if(parent == null || instanceType == null || desc == null) return null;
-        var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create "+desc.DisplayName);
-        iCS_EditorObject element= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                var instance= iStorage.CreateObjectInstance(parent.InstanceId, instanceType.Name, instanceType);
-                instance.SetInitialPosition(globalPos);
-                element= iStorage.InstanceWizardCreate(instance, desc);
-                element.SetInitialPosition(globalPos);
-                element.Iconize();
-                instance.LayoutNodeAndParents();
-            }
-        );
-        return element;
-    }
-	// ----------------------------------------------------------------------
-    // OK
-    public static iCS_EditorObject CreateInstanceBuilderAndObjectAndElement(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_MethodBaseInfo desc) {
-        if(instanceType == null) return null;
-        instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
-#if DEBUG
-        Debug.Log("iCanScript: Create Builder, Instance Object & Element => "+desc.DisplayName);
-#endif
-        if(parent == null || instanceType == null || desc == null) return null;
-        var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create "+desc.DisplayName);
-        iCS_EditorObject element= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                // Object Instance
-                var instance= iStorage.CreateObjectInstance(parent.InstanceId, instanceType.Name, instanceType);
-                instance.SetInitialPosition(globalPos);
-                // Internal element
-                element= iStorage.InstanceWizardCreate(instance, desc);
-                element.SetInitialPosition(globalPos);
-                element.Iconize();
-                // Object Builder
-		        iCS_ConstructorInfo[] myConstructors= iCS_LibraryDatabase.GetConstructors(desc.ClassType);
-		    	Array.Sort(myConstructors, (x,y)=> x.FunctionSignatureNoThis.CompareTo(y.FunctionSignatureNoThis));
-				if(myConstructors.Length != 0) {
-					iCS_EditorObject builder= null;
-					if(myConstructors.Length == 1) {
-						builder= iStorage.InstanceWizardCreateConstructor(instance, myConstructors[0]);								
-						builder.SetInitialPosition(new Vector2(globalPos.x-75f, globalPos.y));
-					}
-					else {
-						/*
-							TODO : Support Multiple Instance Builders on drag port quick menu. 
-						*/
-                        var visualEditor= iCS_EditorMgr.FindVisualEditor();
-                        if(visualEditor != null) {
-                            visualEditor.ShowNotification(new GUIContent("Multiple Builders exists.  Please create the builder manually."));
-                        }
-						Debug.LogWarning("iCanScript: Multiple Builders exists.  Please create the builder manually.");								
-					}
-					
-				}         
-                // Layout
-                instance.LayoutNodeAndParents();
-            }
-        );
-        return element;
     }
 
     // ======================================================================

@@ -56,7 +56,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Copy/Paste library from prefab
         iCS_Storage storage= GetDraggedLibrary(draggedObject);
 		if(storage != null) {
-		    IStorage.RegisterUndo("DragAndDrop");			
             PasteIntoGraph(GraphMousePosition, storage, storage.EngineObjects[0]);
 			// Remove data so that we don't get called multiple times (Unity bug !!!).
             DragAndDrop.AcceptDrag();
@@ -69,7 +68,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
-        	        IStorage.RegisterUndo("DragAndDrop");			
+                    iCS_UserCommands.DragAndDropPortValue(eObj);
                     eObj.PortValue= draggedObject;
                     /*
                         TODO: Update node name if the port is "this" and the object is unnamed.

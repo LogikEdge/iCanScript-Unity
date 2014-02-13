@@ -453,14 +453,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				return;
 			}
         }
-        iCS_IStorage srcIStorage= new iCS_IStorage(sourceStorage);
-        iCS_EditorObject srcRoot= srcIStorage.EditorObjects[sourceRoot.InstanceId];
-        iCS_EditorObject pasted= IStorage.Copy(srcRoot, srcIStorage, validParent, point, IStorage);
-        if(pasted.IsUnfoldedInLayout) {
-            pasted.Fold();            
-        }
-        pasted.LayoutNode();
-        pasted.LayoutParentNodesUntilTop();
+        iCS_UserCommands.PasteIntoGraph(sourceStorage, sourceRoot, IStorage, validParent, point);
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {

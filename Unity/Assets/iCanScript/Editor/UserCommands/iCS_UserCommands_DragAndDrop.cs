@@ -23,4 +23,26 @@ public static partial class iCS_UserCommands {
         node.LayoutNode();
         return true;
     }
+	// ----------------------------------------------------------------------
+    public static void PasteIntoGraph(iCS_Storage sourceStorage, iCS_EngineObject sourceRoot,
+                                      iCS_IStorage iStorage, iCS_EditorObject parent, Vector2 globalPos) {
+        iStorage.RegisterUndo("Add Prefab "+sourceRoot.Name);
+        iStorage.AnimateGraph(null,
+            _=> {
+                iCS_IStorage srcIStorage= new iCS_IStorage(sourceStorage);
+                iCS_EditorObject srcRoot= srcIStorage.EditorObjects[sourceRoot.InstanceId];
+                iCS_EditorObject pasted= iStorage.Copy(srcRoot, srcIStorage, parent, globalPos, iStorage);
+                if(pasted.IsUnfoldedInLayout) {
+                    pasted.Fold();            
+                }
+                pasted.LayoutNodeAndParents();                
+            }
+        );
+    }
+	// ----------------------------------------------------------------------
+    public static void DragAndDropPortValue(iCS_EditorObject port) {
+        var iStorage= port.IStorage;
+        iStorage.RegisterUndo("Set port "+port.Name);
+    }
+
 }

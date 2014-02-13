@@ -64,7 +64,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Port drag.
         iCS_EditorObject port= SelectedObject;
         if(port != null && port.IsPort && port.IsVisibleOnDisplay) {
-            IStorage.RegisterUndo("Port Drag");
+            iCS_UserCommands.StartPortDrag(port);
             IStorage.CleanupDeadPorts= false;		// Suspend object cleanup.
             DragType= DragTypeEnum.PortRelocation;
             DragOriginalPort= port;
@@ -96,21 +96,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 DragObject= node;
                 DragStartDisplayPosition= node.LayoutPosition;                                                                    
                 if(IsFloatingKeyDown && !node.IsTransitionPackage) {
-                    IStorage.RegisterUndo("Node Relocation");
+                    iCS_UserCommands.StartNodeRelocation(node);
                     DragType= DragTypeEnum.NodeRelocation;                                        
                     DragStartAnchorPosition= node.AnchorPosition;
-                    var parent= node.ParentNode;
-                    parent.AnimateGraph(_=> node.IsFloating= true);
+                    node.IsFloating= true;
                     node.LayoutPosition= DragStartDisplayPosition;
 					node.StartNodeRelocate();
                 } else {
                     if(IStorage.IsMultiSelectionActive) {
-                        IStorage.RegisterUndo("Multi-Selection Node Drag");
+                        iCS_UserCommands.StartMultiSelectionNodeDrag(IStorage);
                         DragType= DragTypeEnum.MultiSelectionNodeDrag;                    
                         IStorage.StartMultiSelectionNodeDrag();                                                
                     }
                     else {
-                        IStorage.RegisterUndo("Node Drag");
+                        iCS_UserCommands.StartNodeDrag(node);
                         DragType= DragTypeEnum.NodeDrag;                    
                         node.StartNodeDrag();                        
                     }
@@ -122,16 +121,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
         // New state transition drag.
         if(node != null && node.IsState) {
-            IStorage.RegisterUndo("Transition Creation");
             DragType= DragTypeEnum.TransitionCreation;
-            iCS_EditorObject outTransition= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutStatePort);
-            iCS_EditorObject inTransition= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-            outTransition.SetAnchorAndLayoutPosition(pos);
-            inTransition.SetAnchorAndLayoutPosition(pos);
-            inTransition.SourceId= outTransition.InstanceId;
-            DragFixPort= outTransition;
-            DragObject= inTransition;
-            DragStartDisplayPosition= DragObject.LayoutPosition;
+            iCS_EditorObject outStatePort= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutStatePort);
+            iCS_EditorObject inStatePort= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
+            outStatePort.SetAnchorAndLayoutPosition(pos);
+            inStatePort.SetAnchorAndLayoutPosition(pos);
+            inStatePort.SourceId= outStatePort.InstanceId;
+            DragFixPort= outStatePort;
+            DragObject= inStatePort;
+            DragStartDisplayPosition= pos;
             DragObject.IsFloating= true;
             DragObject.IsSticky= true;
             return true;
@@ -442,6 +440,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         IStorage.DestroyInstance(DragObject);
                     } else {
                         IStorage.DestroyInstance(DragObject.SourceId);
+                        DragObject.SourceId= -1;
                         IStorage.DestroyInstance(DragObject);
                     }
                     break;

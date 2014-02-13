@@ -158,7 +158,6 @@ public partial class iCS_IStorage {
 	        );
 			if(transitionObject.IsInTransitionPort) return transitionObject;
 		}
-		Debug.LogWarning("iCanScript: Input Transition port not found: "+transitionObject.Name);
 		return null;
     }
     // ----------------------------------------------------------------------
