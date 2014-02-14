@@ -14,9 +14,8 @@ public partial class iCS_IStorage {
     // Undo/Redo support
     // ----------------------------------------------------------------------
     public void RegisterUndo(string message= "iCanScript") {
-        Debug.Log("iCanScript: Register Undo => "+message);
         Undo.RecordObject(Storage, message);
-        Storage.UndoRedoId= ++UndoRedoId;        
+        Storage.UndoRedoId= ++UndoRedoId;
     }
     // ----------------------------------------------------------------------
     void DetectUndoRedo() {
@@ -36,7 +35,7 @@ public partial class iCS_IStorage {
         Storage.UndoRedoId= ++UndoRedoId;
         iCS_UserCommands.UndoRedo(this);
         undoRedoRunning= false; 
-//		IsDirty= true;
+		IsDirty= true;
 		iCS_EditorMgr.RepaintVisualEditor();
     }
     

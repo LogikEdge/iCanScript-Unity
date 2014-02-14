@@ -83,6 +83,8 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.TypeCast:          FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceField:     FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassField:        FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassProperty:     FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
@@ -231,7 +233,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void FunctionMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu;
-        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
+        if(!selectedObject.IsIconizedInLayout) {
             // Determine if we should support output 'this' port.
             Type classType= selectedObject.RuntimeType;
             bool shouldSupportThis= !iCS_Types.IsStaticClass(classType);

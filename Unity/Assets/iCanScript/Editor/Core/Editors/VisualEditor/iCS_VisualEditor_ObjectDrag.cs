@@ -355,7 +355,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         // Avoid publishing on the parent node.
                         iCS_EditorObject newPortParent= GetNodeWithEdgeAtMousePosition();
 						if(newPortParent != null && newPortParent == DragOriginalPort.ParentNode) {
-                            Debug.Log("this is relocation");
 			                DragOriginalPort.SetAnchorAndLayoutPosition(dragPortPos);
                             iCS_UserCommands.EndPortDrag(DragOriginalPort);
 							break;

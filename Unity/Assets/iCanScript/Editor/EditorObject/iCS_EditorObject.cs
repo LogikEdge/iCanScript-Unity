@@ -308,11 +308,11 @@ public partial class iCS_EditorObject {
             iCS_EditorObject editorObj= null;
 		    if(iStorage.EngineObjects[i].InstanceId != -1) {
 		        editorObj= new iCS_EditorObject(i, iStorage);
-				if(editorObj.IsNode) {
-					editorObj.myAnchorCache= editorObj.LocalAnchorPosition;					
-				}
 		    }
 	        iStorage.EditorObjects.Add(editorObj);
+            if(editorObj != null && editorObj.Name == "tag") {
+                Debug.Log("Reguilding tag with edge => "+editorObj.Edge);
+            }
 		}
 		RebuildChildrenLists(iStorage);
 	}

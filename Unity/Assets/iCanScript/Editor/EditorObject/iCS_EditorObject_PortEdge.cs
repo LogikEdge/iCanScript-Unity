@@ -23,7 +23,7 @@ public partial class iCS_EditorObject {
             if(engineObject.Edge == value) return;
             engineObject.Edge= value;
             if(!IsFloating) CleanupPortEdgePosition();
-//            IsDirty= true;
+            IStorage.IsDirty= true;
 		}
 	}
 

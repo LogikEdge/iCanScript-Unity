@@ -1,8 +1,9 @@
 ﻿//
 // File: iCS_UserCommands_UndoRedo
 //
-//#define DEBUG
+#define DEBUG
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 
 public static partial class iCS_UserCommands {
@@ -13,7 +14,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static void UndoRedo(iCS_IStorage iStorage) {
 #if DEBUG
-        Debug.Log("iCanScript: Undo/Redo");
+        Debug.Log("iCanScript: Undo/Redo. Undo Group => "+Undo.GetCurrentGroup());
 #endif
         var animationStarts= new Rect[iStorage.EditorObjects.Count];
         iStorage.ForEach(obj=> { animationStarts[obj.InstanceId]= obj.AnimationTargetRect;});
@@ -24,7 +25,9 @@ public static partial class iCS_UserCommands {
                 try {
                     iStorage.GenerateEditorData();                    
                 }
-                catch(System.Exception) {}
+                catch(System.Exception) {
+                    Debug.LogWarning("iCanScript: Problem found regenerating data");
+                }
                 // Rebuild layout
                 iStorage.ForcedRelayoutOfTree(iStorage.EditorObjects[0]);
                 // Put back the animation start Rect.
