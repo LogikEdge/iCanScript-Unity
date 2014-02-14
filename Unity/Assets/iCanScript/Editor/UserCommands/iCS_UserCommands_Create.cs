@@ -170,6 +170,41 @@ public static partial class iCS_UserCommands {
         var globalPos= 0.5f*(fromStatePortPos+toStatePortPos);
         transitionPackage.SetInitialPosition(globalPos);
         transitionPackage.Iconize();
+        // Attempt to proper edge for transition ports.
+        var outTransitionPort= toStatePort.Source;
+        var inTransitionPort= iStorage.GetInTransitionPort(transitionPackage);
+        var diff= toStatePortPos-fromStatePortPos;
+        if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y)) {
+            if(Vector2.Dot(diff, Vector2.right) > 0) {
+                inTransitionPort.Edge= iCS_EdgeEnum.Left;
+                toStatePort.Edge= iCS_EdgeEnum.Left;
+                outTransitionPort.Edge= iCS_EdgeEnum.Right;
+                fromStatePort.Edge= iCS_EdgeEnum.Right;
+            }
+            else {
+                inTransitionPort.Edge= iCS_EdgeEnum.Right;
+                toStatePort.Edge= iCS_EdgeEnum.Right;
+                outTransitionPort.Edge= iCS_EdgeEnum.Left;
+                fromStatePort.Edge= iCS_EdgeEnum.Left;
+            }
+        }
+        else {
+            if(Vector2.Dot(diff, Vector2.up) > 0) {
+                inTransitionPort.Edge= iCS_EdgeEnum.Top;
+                toStatePort.Edge= iCS_EdgeEnum.Top;
+                outTransitionPort.Edge= iCS_EdgeEnum.Bottom; 
+                fromStatePort.Edge= iCS_EdgeEnum.Bottom;
+            }
+            else {
+                inTransitionPort.Edge= iCS_EdgeEnum.Bottom;
+                toStatePort.Edge= iCS_EdgeEnum.Bottom;
+                outTransitionPort.Edge= iCS_EdgeEnum.Top; 
+                fromStatePort.Edge= iCS_EdgeEnum.Top;
+            }            
+        }
+        inTransitionPort.PortPositionRatio= 0.5f;
+        outTransitionPort.PortPositionRatio= 0.5f;
+        // Layout the graph
         transitionPackage.LayoutNodeAndParents();
         return transitionPackage;
     }
