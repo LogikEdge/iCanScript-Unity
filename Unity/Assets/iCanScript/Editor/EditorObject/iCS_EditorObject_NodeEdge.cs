@@ -36,7 +36,7 @@ public partial class iCS_EditorObject {
             float leftPadding= iCS_EditorConfig.PaddingSize;
             ForEachLeftChildPort(
                 port=> {
-                    if(!port.IsStatePort && port.IsPortOnParentEdge) {
+                    if(!port.IsStatePort && !port.IsFloating) {
                         Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(port.Name);
                         float nameSize= paddingBy2+labelSize.x+iCS_EditorConfig.PortDiameter;
                         if(leftPadding < nameSize) leftPadding= nameSize;
