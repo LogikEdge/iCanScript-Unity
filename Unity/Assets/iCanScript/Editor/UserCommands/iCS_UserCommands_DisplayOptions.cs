@@ -22,6 +22,7 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 node.Unfold();
+                LayoutChildNodes(node);
                 node.LayoutNodeAndParents();
             }
         );
@@ -70,5 +71,22 @@ public static partial class iCS_UserCommands {
             }
         );
         iStorage.IsDirty= true;
+    }
+
+    // ======================================================================
+    // Utilities
+	// ----------------------------------------------------------------------
+    private static void LayoutChildNodes(iCS_EditorObject parent) {
+        parent.ForEachChildNode(
+            c=> {
+                if(c.IsUnfoldedInLayout) {
+                    LayoutChildNodes(c);
+                }
+                else {
+                    c.LayoutNode();
+                }
+            }
+        );
+        parent.LayoutNode();
     }
 }
