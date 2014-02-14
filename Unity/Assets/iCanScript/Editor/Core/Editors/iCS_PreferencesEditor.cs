@@ -199,48 +199,51 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Draw column 2
         Rect p= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
         GUI.Label(p, "Animation Controls", EditorStyles.boldLabel);
-        Rect[] pos= new Rect[9];
+        Rect[] pos= new Rect[10];
         pos[0]= new Rect(p.x, p.yMax, p.width, p.height);
-        for(int i= 1; i < 7; ++i) {
+        for(int i= 1; i < 8; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
-        pos[6].y+= pos[5].height;
-        GUI.Label(pos[6], "Runtime Configuration", EditorStyles.boldLabel);
-        pos[6].y+= pos[6].height;
-        for(int i= 7; i < pos.Length; ++i) {
+        pos[7].y+= pos[6].height;
+        GUI.Label(pos[7], "Runtime Configuration", EditorStyles.boldLabel);
+        pos[7].y+= pos[7].height;
+        for(int i= 8; i < pos.Length; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;            
         }
-        GUI.Label(pos[0], "Animation Enabled");
-        GUI.Label(pos[1], "Animation Time");
-        GUI.Label(pos[2], "Scroll Speed");
-        GUI.Label(pos[3], "Edge Scroll Speed (pixels)");
-        GUI.Label(pos[4], "Inverse Zoom");
-        GUI.Label(pos[5], "Zoom Speed");
-        GUI.Label(pos[6], "Show Runtime Values");
-        GUI.Label(pos[7], "Refresh Period (seconds)");
-		GUI.Label(pos[8], "Show Frame Id");
+        GUI.Label(pos[0], "Show Behaviour Node");
+        GUI.Label(pos[1], "Animation Enabled");
+        GUI.Label(pos[2], "Animation Time");
+        GUI.Label(pos[3], "Scroll Speed");
+        GUI.Label(pos[4], "Edge Scroll Speed (pixels)");
+        GUI.Label(pos[5], "Inverse Zoom");
+        GUI.Label(pos[6], "Zoom Speed");
+        GUI.Label(pos[7], "Show Runtime Values");
+        GUI.Label(pos[8], "Refresh Period (seconds)");
+		GUI.Label(pos[9], "Show Frame Id");
         
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
-        Prefs.IsAnimationEnabled= EditorGUI.Toggle(pos[0], Prefs.IsAnimationEnabled);
+        Prefs.ShowBehaviourNode= EditorGUI.Toggle(pos[0], Prefs.ShowBehaviourNode);
+        Prefs.IsAnimationEnabled= EditorGUI.Toggle(pos[1], Prefs.IsAnimationEnabled);
         EditorGUI.BeginDisabledGroup(Prefs.IsAnimationEnabled==false);
-        Prefs.AnimationTime= EditorGUI.FloatField(pos[1], Prefs.AnimationTime);
+        Prefs.AnimationTime= EditorGUI.FloatField(pos[2], Prefs.AnimationTime);
         EditorGUI.EndDisabledGroup();
-        Prefs.ScrollSpeed= EditorGUI.FloatField(pos[2], Prefs.ScrollSpeed);
-        Prefs.EdgeScrollSpeed= EditorGUI.FloatField(pos[3], Prefs.EdgeScrollSpeed);
-        Prefs.InverseZoom= EditorGUI.Toggle(pos[4], Prefs.InverseZoom);
-        Prefs.ZoomSpeed= EditorGUI.FloatField(pos[5], Prefs.ZoomSpeed);
-        Prefs.ShowRuntimePortValue= EditorGUI.Toggle(pos[6], Prefs.ShowRuntimePortValue);
-        Prefs.PortValueRefreshPeriod= EditorGUI.FloatField(pos[7], Prefs.PortValueRefreshPeriod);
-		Prefs.ShowRuntimeFrameId= EditorGUI.Toggle(pos[8], Prefs.ShowRuntimeFrameId);
+        Prefs.ScrollSpeed= EditorGUI.FloatField(pos[3], Prefs.ScrollSpeed);
+        Prefs.EdgeScrollSpeed= EditorGUI.FloatField(pos[4], Prefs.EdgeScrollSpeed);
+        Prefs.InverseZoom= EditorGUI.Toggle(pos[5], Prefs.InverseZoom);
+        Prefs.ZoomSpeed= EditorGUI.FloatField(pos[6], Prefs.ZoomSpeed);
+        Prefs.ShowRuntimePortValue= EditorGUI.Toggle(pos[7], Prefs.ShowRuntimePortValue);
+        Prefs.PortValueRefreshPeriod= EditorGUI.FloatField(pos[8], Prefs.PortValueRefreshPeriod);
+		Prefs.ShowRuntimeFrameId= EditorGUI.Toggle(pos[9], Prefs.ShowRuntimeFrameId);
 
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
+			Prefs.ResetShowBehaviourNode();
             Prefs.ResetIsAnimationEnabled();
             Prefs.ResetAnimationTime();
             Prefs.ResetScrollSpeed();
@@ -251,21 +254,23 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             Prefs.ResetPortValueRefreshPeriod();
 			Prefs.ResetShowRuntimeFrameId();   
         }
+		// Ask to repaint visual editor if an option has changed.
+		if(GUI.changed) {
+			iCS_EditorMgr.RepaintVisualEditor();
+		}
     }
     // ---------------------------------------------------------------------------------
     void Canvas() {
         // Column 2
-        Rect[] pos= new Rect[4];
+        Rect[] pos= new Rect[3];
         pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
         for(int i= 1; i < pos.Length; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
-		pos[3].y= pos[3].yMax;
         GUI.Label(pos[0], "Grid Spacing");
         GUI.Label(pos[1], "Grid Color");
         GUI.Label(pos[2], "Background Color");
-        GUI.Label(pos[3], "Show Behaviour Node");
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
@@ -274,14 +279,12 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         Prefs.GridSpacing= EditorGUI.FloatField(pos[0], Prefs.GridSpacing);
         Prefs.GridColor= EditorGUI.ColorField(pos[1], Prefs.GridColor);
         Prefs.CanvasBackgroundColor= EditorGUI.ColorField(pos[2], Prefs.CanvasBackgroundColor);
-        Prefs.ShowBehaviourNode= EditorGUI.Toggle(pos[3], Prefs.ShowBehaviourNode);
 		
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             Prefs.ResetGridSpacing();
             Prefs.ResetGridColor();
             Prefs.ResetCanvasBackgroundColor();
-			Prefs.ResetShowBehaviourNode();
         }
 		
 		// Ask to repaint visual editor if an option has changed.
