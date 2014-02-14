@@ -105,44 +105,5 @@ public partial class iCS_EditorObject {
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsDirty= true;
     }
-    // ======================================================================
-    // Animation High-Order Utilities
-    // ----------------------------------------------------------------------
-	void Hide(P.TimeRatio timeRatio) {
-		var target= BuildRect(ParentNode.LayoutPosition, Vector2.zero);
-		Animate(target, timeRatio);
-		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-			ForEachChildNode(c=> c.Hide(timeRatio));
-		}
-	}
-    // ----------------------------------------------------------------------
-	void PrepareToUnhide() {
-		AnimationStart= BuildRect(ParentNode.LayoutPosition, Vector2.zero);
-		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-			ForEachChildNode(c=> c.PrepareToUnhide());
-		}		
-	}
-    // ----------------------------------------------------------------------
-    // We assume that our parent has just unfolded.
-    public void Unhide() {
-        var parent= ParentNode;
-        if(parent ==  null) return;
-		var start= BuildRect(ParentNode.LayoutPosition, Vector2.zero);
-        // Unhide iconized node
-        if(DisplayOption == iCS_DisplayOptionEnum.Iconized) {
-			Animate(start, LayoutRect);
-            return;
-        }
-        // Unhide folded node
-        if(IsKindOfFunction || DisplayOption == iCS_DisplayOptionEnum.Folded) {
-			Animate(start, LayoutRect);
-            return;
-        }
-        // Unhide unfolded node
-        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-            ForEachChildNode(c=> c.Unhide());
-			Animate(start, LayoutRect);
-        }
-    }
 
 }

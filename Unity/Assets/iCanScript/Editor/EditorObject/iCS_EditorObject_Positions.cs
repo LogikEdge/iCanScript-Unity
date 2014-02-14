@@ -252,44 +252,6 @@ public partial class iCS_EditorObject {
 			myAnimatedRect.StartValue= myAnimatedRect.IsActive ? myAnimatedRect.CurrentValue : value;
 		}
 	}
-    // ----------------------------------------------------------------------
-	public Rect AnimationTarget {
-		get {
-			return myAnimatedRect.TargetValue;
-		}
-		set {
-			myAnimatedRect.TargetValue= value;
-		}
-	}
-    // ----------------------------------------------------------------------
-	public void Animate(Rect start, Rect target) {
-		AnimationStart= start;
-		Animate(target);
-	}
-    // ----------------------------------------------------------------------
-	public void Animate(Rect target, P.TimeRatio timeRatio) {
-		AnimationTarget= target;
-		Animate(timeRatio);
-	}
-    // ----------------------------------------------------------------------
-	public void Animate(Rect target) {
-		AnimationTarget= target;
-		Animate();
-	}
-    // ----------------------------------------------------------------------
-	public void Animate() {
-		Animate(BuildTimeRatioFromRect(myAnimatedRect.StartValue, myAnimatedRect.TargetValue));
-	}
-    // ----------------------------------------------------------------------
-	public void Animate(P.TimeRatio timeRatio) {
-	    if(!Prefs.AnimationEnabled) return;
-        if(myAnimatedRect.IsActive) {
-            float time= Mathf.Max(myAnimatedRect.RemainingTime, timeRatio.RemainingTime);
-            myAnimatedRect.Start(time);
-            return;
-        }
-		myAnimatedRect.Start(timeRatio);
-	}
 	
 	// ======================================================================
     // High-order functions
