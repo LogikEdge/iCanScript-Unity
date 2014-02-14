@@ -826,11 +826,9 @@ public partial class iCS_Graphics {
         // No connection to draw if outside clipping area.
         var portPos= port.AnimatedPosition;
         var sourcePos= source.AnimatedPosition;
-        Rect displayArea= new Rect(portPos.x, portPos.y, sourcePos.x-portPos.x, sourcePos.y-portPos.y);
-        if(displayArea.width < 0) { displayArea.x= sourcePos.x; displayArea.width= portPos.x-sourcePos.x; }
-        if(displayArea.height < 0) { displayArea.y= sourcePos.y; displayArea.height= portPos.y-sourcePos.y; }
+        Rect displayArea= Math3D.Union(new Rect(portPos.x, portPos.y, 1f, 1f), new Rect(sourcePos.x, sourcePos.y, 1f, 1f));
         if(!IsVisible(displayArea)) return;
-        
+
         // Set connection alpha according to port alpha.
         var alpha= port.DisplayAlpha*source.DisplayAlpha;
         
