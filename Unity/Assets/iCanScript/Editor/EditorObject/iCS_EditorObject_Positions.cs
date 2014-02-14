@@ -24,7 +24,7 @@ public partial class iCS_EditorObject {
 			    return;
 		    }
 			engineObject.PortPositionRatio= value;
-			IsDirty= true;  // Save new port ratio.
+//			IsDirty= true;  // Save new port ratio.
 		}
     }
 	
@@ -52,13 +52,13 @@ public partial class iCS_EditorObject {
                 // Transform to a position ratio between 0f and 1f.
     			UpdatePortEdge(value);
     			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);			
-    			IsDirty= true;  // Save new anchor position.
+//    			IsDirty= true;  // Save new anchor position.
                 // Update nested ports
                 ForEachChildPort(
                     p=> {
             			p.UpdatePortEdge(value);
             			p.PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);			
-            			p.IsDirty= true;  // Save new anchor position.
+//            			p.IsDirty= true;  // Save new anchor position.
                     }
                 );
 				return;
@@ -68,7 +68,7 @@ public partial class iCS_EditorObject {
 			    return;
 		    }
 			engineObject.LocalAnchorPosition= value;
-			IsDirty= true;  // Save new anchor position.
+//			IsDirty= true;  // Save new anchor position.
 		}
 	}
     // ----------------------------------------------------------------------

@@ -31,6 +31,7 @@ public static partial class iCS_UserCommands {
                 parent.LayoutNodeAndParents();
             }
 		);
+        iStorage.IsDirty= true;
 	}
 	// ----------------------------------------------------------------------
     public static bool DeleteMultiSelectedObjects(iCS_IStorage iStorage) {
@@ -60,6 +61,7 @@ public static partial class iCS_UserCommands {
                 }                
             }
         );
+        iStorage.IsDirty= true;
         return true;
     }
 	// ----------------------------------------------------------------------
@@ -77,6 +79,7 @@ public static partial class iCS_UserCommands {
                 newParent.LayoutNodeAndParents();
             }
         );
+        iStorage.IsDirty= true;
     }
 
 }

@@ -22,7 +22,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
 			if(engineObject.PortIndex == value) return;
 			engineObject.PortIndex= value;
-			IsDirty= true;
+//			IsDirty= true;
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -32,7 +32,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.SourceId == value) return;
 			EngineObject.SourceId= value;
-			IsDirty= true;
+//			IsDirty= true;
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -98,7 +98,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
 			if(engineObject.InitialValueArchive == value) return;
 			engineObject.InitialValueArchive= value;
-			IsDirty= true;
+//			IsDirty= true;
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -134,7 +134,7 @@ public partial class iCS_EditorObject {
 		set {
 			InitialPortValue= value;
 			RuntimePortValue= value;
-	        Parent.IsDirty= true;			
+//	        Parent.IsDirty= true;			
 		}
 	}
 	// ----------------------------------------------------------------------

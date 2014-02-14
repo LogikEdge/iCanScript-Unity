@@ -25,6 +25,7 @@ public static partial class iCS_UserCommands {
                 node.LayoutNodeAndParents();
             }
         );
+        iStorage.IsDirty= true;
     }
 	// ----------------------------------------------------------------------
     // OK
@@ -49,7 +50,7 @@ public static partial class iCS_UserCommands {
                 }
             }
         );
-
+        iStorage.IsDirty= true;
     }
 	// ----------------------------------------------------------------------
     // OK
@@ -68,5 +69,6 @@ public static partial class iCS_UserCommands {
                 node.LayoutNodeAndParents();
             }
         );
+        iStorage.IsDirty= true;
     }
 }

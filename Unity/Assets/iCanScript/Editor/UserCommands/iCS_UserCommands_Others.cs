@@ -26,6 +26,7 @@ public static partial class iCS_UserCommands {
             }
         );
         state.IsEntryState= true;
+        iStorage.IsDirty= true;
         return state;
     }
 	// ----------------------------------------------------------------------

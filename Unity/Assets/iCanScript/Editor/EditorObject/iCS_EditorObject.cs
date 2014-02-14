@@ -47,7 +47,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.ObjectType == value) return;
 		    engineObject.ObjectType= value;
-		    IsDirty= true;
+//		    IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -61,7 +61,7 @@ public partial class iCS_EditorObject {
 				oldParent.RemoveChild(this);
 			}
 			EngineObject.ParentId= value;
-			IsDirty= true;
+//			IsDirty= true;
 			if(IsIdValid(value)) {
 				var newParent= EditorObjects[value];
 				newParent.AddChild(this);
@@ -75,7 +75,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.DisplayOption == value) return;
             engineObject.DisplayOption= value;
-            IsDirty= true;
+//            IsDirty= true;
         }
     }
     // ----------------------------------------------------------------------
@@ -89,7 +89,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.RawName == value) return;
 		    engineObject.RawName= value;
-		    IsDirty= true;
+//		    IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -99,7 +99,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.Name == value) return;
 		    engineObject.Name= value;
-		    IsDirty= true;
+//		    IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -109,7 +109,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.IsNameEditable == value) return;
 		    engineObject.IsNameEditable= value;
-		    IsDirty= true;
+//		    IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -119,7 +119,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.Tooltip == value) return;
 		    engineObject.Tooltip= value;
-		    IsDirty= true;
+//		    IsDirty= true;
 		}
 	}
 	
@@ -152,17 +152,16 @@ public partial class iCS_EditorObject {
 		set {
             if(myIsFloating == value) return;
 		    myIsFloating= value;
-		    IsDirty= true;
+//		    IsDirty= true;
 		}
 	}
-    public bool IsDirty {
-		set {
-			if(value) {
-				myIStorage.IsDirty= true;
-//				Debug.Log("iCanScript: "+Name+" is dirty");
-			}
-		}
-	}
+//    public bool IsDirty {
+//		set {
+//			if(value) {
+//				myIStorage.IsDirty= true;
+//			}
+//		}
+//	}
 	public bool IsSticky {
 	    get { return myIsSticky; }
 	    set { myIsSticky= value; }
@@ -182,7 +181,7 @@ public partial class iCS_EditorObject {
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
-		editorObject.IsDirty= true;
+//		editorObject.IsDirty= true;
         RunOnCreated(editorObject);
 		return editorObject;
 	}
@@ -199,7 +198,7 @@ public partial class iCS_EditorObject {
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
         editorObject.LayoutSize= toClone.LayoutSize;
-		editorObject.IsDirty= true;
+//		editorObject.IsDirty= true;
         RunOnCreated(editorObject);
 		return editorObject;
     }
@@ -299,7 +298,7 @@ public partial class iCS_EditorObject {
         myId= id;
 		var parent= Parent;
 		if(parent != null) parent.AddChild(this);
-        IsDirty= true;
+//        IsDirty= true;
     }
     // ----------------------------------------------------------------------
 	public static void RebuildFromEngineObjects(iCS_IStorage iStorage) {
@@ -337,7 +336,7 @@ public partial class iCS_EditorObject {
         int id= toAdd.InstanceId;
         if(Prelude.elem(id, myChildren.ToArray())) return;
         myChildren.Add(id);
-		IsDirty= true;
+//		IsDirty= true;
     }
     // ----------------------------------------------------------------------
     public void RemoveChild(iCS_EditorObject toDelete) {
@@ -345,7 +344,7 @@ public partial class iCS_EditorObject {
         for(int i= 0; i < myChildren.Count; ++i) {
             if(myChildren[i] == id) {
                 myChildren.RemoveAt(i);
-				IsDirty= true;
+//				IsDirty= true;
                 return;
             }
         }
@@ -367,7 +366,7 @@ public partial class iCS_EditorObject {
         int i= 0;
         Prelude.forEach(c=> Children[i++]= c, orderedChildren);
         Prelude.forEach(c=> Children[i++]= c, others);
-		IsDirty= true;
+//		IsDirty= true;
     }
 
 }

@@ -21,6 +21,7 @@ public static partial class iCS_UserCommands {
         string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
         node.IconGUID= iconGUID;                    
         node.LayoutNode();
+        iStorage.IsDirty= true;
         return true;
     }
 	// ----------------------------------------------------------------------
@@ -38,8 +39,12 @@ public static partial class iCS_UserCommands {
                 pasted.LayoutNodeAndParents();                
             }
         );
+        iStorage.IsDirty= true;
     }
 	// ----------------------------------------------------------------------
+    /*
+        TODO : Set IsDirty
+    */
     public static void DragAndDropPortValue(iCS_EditorObject port) {
         var iStorage= port.IStorage;
         iStorage.RegisterUndo("Set port "+port.Name);

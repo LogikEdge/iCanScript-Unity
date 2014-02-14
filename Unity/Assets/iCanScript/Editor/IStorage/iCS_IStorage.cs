@@ -39,6 +39,7 @@ public partial class iCS_IStorage {
     public bool IsDirty {
         get { return myIsDirty; }
         set {
+            Debug.Log("IStorage is Dirty");
             myIsDirty= value;
             if(value) ++ModificationId;
         }
@@ -159,6 +160,7 @@ public partial class iCS_IStorage {
 	    if(myIsDirty) {
 	        // Tell Unity that our storage has changed.
 	        EditorUtility.SetDirty(Storage);
+            Debug.Log("iCanScript: Tell Unity Storage is Dirty");
 	        // Prepare for cleanup after storage change.
 	        CleanupNeeded= true;
 	        myIsDirty= false;

@@ -27,6 +27,7 @@ public static partial class iCS_UserCommands {
                 package.LayoutNodeAndParents();
             }
         );
+        iStorage.IsDirty= true;
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -50,6 +51,7 @@ public static partial class iCS_UserCommands {
                 entryState.LayoutNodeAndParents();
             }
         );
+        iStorage.IsDirty= true;
         return stateChart;        
     }
 	// ----------------------------------------------------------------------
@@ -69,6 +71,7 @@ public static partial class iCS_UserCommands {
                 state.LayoutNodeAndParents();                
             }
         );
+        iStorage.IsDirty= true;
         return state;        
     }
 	// ----------------------------------------------------------------------
@@ -91,39 +94,36 @@ public static partial class iCS_UserCommands {
                 msgHandler.SetInitialPosition(globalPos);
                 msgHandler.ForEachChildPort(p=> {p.AnimationStartRect= BuildRect(globalPos, Vector2.zero);});
                 msgHandler.LayoutNodeAndParents(); 
-//                msgHandler.LayoutPorts();               
             }
         );
+        iStorage.IsDirty= true;
         return msgHandler;
     }
 	// ----------------------------------------------------------------------
 	// OK
     public static iCS_EditorObject CreateOnEntryPackage(iCS_EditorObject parent, Vector2 globalPos) {
         var package= CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
-        if(package != null) {
-            package.IsNameEditable= false;
-            package.Tooltip= iCS_ObjectTooltips.OnEntry;            
-        }
+        package.IsNameEditable= false;
+        package.Tooltip= iCS_ObjectTooltips.OnEntry;            
+        package.IStorage.IsDirty= true;
         return package;
     }
 	// ----------------------------------------------------------------------
 	// OK
 	public static iCS_EditorObject CreateOnUpdatePackage(iCS_EditorObject parent, Vector2 globalPos) {
         var package= CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
-        if(package != null) {
-            package.IsNameEditable= false;            
-            package.Tooltip= iCS_ObjectTooltips.OnUpdate;            
-        }
+        package.IsNameEditable= false;            
+        package.Tooltip= iCS_ObjectTooltips.OnUpdate;            
+        package.IStorage.IsDirty= true;
         return package;
     }
 	// ----------------------------------------------------------------------
     // OK
 	public static iCS_EditorObject CreateOnExitPackage(iCS_EditorObject parent, Vector2 globalPos) {
         var package= CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
-        if(package != null) {
-            package.IsNameEditable= false;            
-            package.Tooltip= iCS_ObjectTooltips.OnExit;            
-        }
+        package.IsNameEditable= false;            
+        package.Tooltip= iCS_ObjectTooltips.OnExit;            
+        package.IStorage.IsDirty= true;
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -144,6 +144,7 @@ public static partial class iCS_UserCommands {
                 function.LayoutNodeAndParents();                
             }
         );
+        iStorage.IsDirty= true;
         return function;        
     }
 
@@ -206,6 +207,7 @@ public static partial class iCS_UserCommands {
         outTransitionPort.PortPositionRatio= 0.5f;
         // Layout the graph
         transitionPackage.LayoutNodeAndParents();
+        iStorage.IsDirty= true;
         return transitionPackage;
     }
     // -------------------------------------------------------------------------
@@ -218,6 +220,7 @@ public static partial class iCS_UserCommands {
         var pRect= parent.LayoutRect;
         port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
         parent.LayoutPorts();
+        iStorage.IsDirty= true;
         return port;
     }
     // -------------------------------------------------------------------------
@@ -230,6 +233,7 @@ public static partial class iCS_UserCommands {
         var pRect= parent.LayoutRect;
         port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
         parent.LayoutPorts();
+        iStorage.IsDirty= true;
         return port;
     }
     // -------------------------------------------------------------------------
@@ -240,6 +244,7 @@ public static partial class iCS_UserCommands {
         iStorage.RegisterUndo("Create 'this' Port");
 		var port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
         parent.LayoutPorts();
+        iStorage.IsDirty= true;
         return port;
     }
     
@@ -266,6 +271,7 @@ public static partial class iCS_UserCommands {
                 instance.LayoutNodeAndParents();                
             }
         );
+        iStorage.IsDirty= true;
         return instance;
     }
 
@@ -284,6 +290,7 @@ public static partial class iCS_UserCommands {
                 package.LayoutNodeAndParents();
             }
         );
+        iStorage.IsDirty= true;
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -302,6 +309,7 @@ public static partial class iCS_UserCommands {
                 package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);
             }
         );
+        iStorage.IsDirty= true;
         return package;
     }
 
@@ -328,6 +336,7 @@ public static partial class iCS_UserCommands {
                 instance.LayoutNodeAndParents();    
             }
         );
+        iStorage.IsDirty= true;
         return instance;
     }
 }

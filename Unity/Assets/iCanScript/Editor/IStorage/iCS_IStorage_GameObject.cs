@@ -27,7 +27,7 @@ public partial class iCS_IStorage {
         var neededPorts= BuildListOfPortInfoForBehaviourMessage(node.Parent);
         var changed= CleanupExistingProposedPorts(node, neededPorts);
         changed |= BuildMissingPorts(node, neededPorts);
-        if(changed) node.IsDirty= true;
+//        if(changed) node.IsDirty= true;
     }
 
     // ----------------------------------------------------------------------

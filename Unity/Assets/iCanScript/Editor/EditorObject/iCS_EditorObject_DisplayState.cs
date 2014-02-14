@@ -93,17 +93,17 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public void Iconize() {
 		DisplayOption= iCS_DisplayOptionEnum.Iconized;
-        IsDirty= true;
+//        IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
 		DisplayOption= iCS_DisplayOptionEnum.Folded;
-        IsDirty= true;
+//        IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Unfold() {
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-        IsDirty= true;
+//        IsDirty= true;
     }
 
 }

@@ -140,7 +140,7 @@ public partial class iCS_EditorObject {
 		var parent= ParentNode;
 		if(parent != null) parent.ReduceChildrenLayoutPriority();
 		LayoutPriority= 0;
-		IsDirty=true;
+//		IsDirty=true;
 		if(parent != null) parent.SetAsHighestLayoutPriority();
 	}
 }
