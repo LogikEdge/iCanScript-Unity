@@ -152,16 +152,8 @@ public partial class iCS_EditorObject {
 		set {
             if(myIsFloating == value) return;
 		    myIsFloating= value;
-//		    IsDirty= true;
 		}
 	}
-//    public bool IsDirty {
-//		set {
-//			if(value) {
-//				myIStorage.IsDirty= true;
-//			}
-//		}
-//	}
 	public bool IsSticky {
 	    get { return myIsSticky; }
 	    set { myIsSticky= value; }
@@ -310,9 +302,6 @@ public partial class iCS_EditorObject {
 		        editorObj= new iCS_EditorObject(i, iStorage);
 		    }
 	        iStorage.EditorObjects.Add(editorObj);
-            if(editorObj != null && editorObj.Name == "tag") {
-                Debug.Log("Reguilding tag with edge => "+editorObj.Edge);
-            }
 		}
 		RebuildChildrenLists(iStorage);
 	}

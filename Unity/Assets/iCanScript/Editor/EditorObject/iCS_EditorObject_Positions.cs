@@ -23,7 +23,6 @@ public partial class iCS_EditorObject {
 			    return;
 		    }
 			engineObject.PortPositionRatio= value;
-			IStorage.IsDirty= true;  // Save new port ratio.
 		}
     }
 	

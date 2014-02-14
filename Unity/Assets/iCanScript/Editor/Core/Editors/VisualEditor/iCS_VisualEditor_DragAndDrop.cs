@@ -68,11 +68,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
-                    iCS_UserCommands.DragAndDropPortValue(eObj);
-                    eObj.PortValue= draggedObject;
-                    /*
-                        TODO: Update node name if the port is "this" and the object is unnamed.
-                    */
+                    iCS_UserCommands.DragAndDropSetPortValue(eObj, draggedObject);
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.AcceptDrag();
 					return;

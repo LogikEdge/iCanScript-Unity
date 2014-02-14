@@ -42,12 +42,11 @@ public static partial class iCS_UserCommands {
         iStorage.IsDirty= true;
     }
 	// ----------------------------------------------------------------------
-    /*
-        TODO : Set IsDirty
-    */
-    public static void DragAndDropPortValue(iCS_EditorObject port) {
+    public static void DragAndDropSetPortValue(iCS_EditorObject port, UnityEngine.Object value) {
         var iStorage= port.IStorage;
         iStorage.RegisterUndo("Set port "+port.Name);
+        port.PortValue= value;
+        iStorage.IsDirty= true;
     }
 
 }
