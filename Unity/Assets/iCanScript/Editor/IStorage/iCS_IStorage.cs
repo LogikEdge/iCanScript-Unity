@@ -379,8 +379,6 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         if(instance.IsInstanceNode) InstanceWizardCompleteCreation(instance);
-        // Perform initial node layout.
-        instance.Unhide();
         return instance;
     }
     // ----------------------------------------------------------------------
@@ -389,7 +387,6 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
-        instance.Unhide();
         return instance;
     }
     // ----------------------------------------------------------------------
@@ -412,8 +409,6 @@ public partial class iCS_IStorage {
                 return false;
             }
         );
-        // Perform initial node layout.
-        instance.Unhide();
         return instance;
     }
     // ----------------------------------------------------------------------
@@ -453,8 +448,6 @@ public partial class iCS_IStorage {
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
-        // Perform initial node layout.
-        instance.Unhide();
         return instance;
     }
     // ----------------------------------------------------------------------
@@ -484,8 +477,6 @@ public partial class iCS_IStorage {
 		}
 		// Create 'this' ports.
         port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);
-        // Perform initial node layout.
-        instance.Unhide();
         return instance;
     }
     // ----------------------------------------------------------------------
@@ -523,8 +514,6 @@ public partial class iCS_IStorage {
         }
 		// Update available component ports
 		UpdateBehaviourMessagePorts(instance);
-        // Perform initial node layout.
-        instance.Unhide();
         return instance;
     }    
 	// ----------------------------------------------------------------------

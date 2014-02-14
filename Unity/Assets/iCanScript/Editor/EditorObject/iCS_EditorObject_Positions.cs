@@ -354,20 +354,4 @@ public partial class iCS_EditorObject {
             return childRect;
         }
     }
- 	// ----------------------------------------------------------------------
-    public Rect AnimatedChildRect {
-        get {
-            Rect childRect= BuildRect(LayoutPosition, Vector2.zero);
-            ForEachChildNode(
-                c=> {
-                    if(!c.IsFloating) {
-    					if(c.IsVisibleInLayout) {
-        					childRect= Math3D.Merge(childRect, c.AnimatedRect);											        
-    					}
-                    }
-				}
-            );
-            return childRect;
-        }
-    }
 }
