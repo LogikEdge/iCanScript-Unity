@@ -57,13 +57,6 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Animation timer builders
     // ----------------------------------------------------------------------
-    public static float RawAnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
-        var distance= Vector2.Distance(p1,p2);
-	    var time= AnimationTimeFromDistance(distance);
-        var minAnimationTime= Prefs.MinAnimationTime;
-        return time < minAnimationTime ? minAnimationTime : time;
-    }
-    // ----------------------------------------------------------------------
     public float AnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
         var distance= Vector2.Distance(p1,p2);
 	    var time= AnimationTimeFromDistance(distance);
@@ -104,18 +97,6 @@ public partial class iCS_EditorObject {
 	    return BuildTimeRatio(AnimationTimeFromRect(r1, r2));
 	}
     // ----------------------------------------------------------------------
-	public P.TimeRatio BuildTimeRatioFromPosition(Vector2 p1, Vector2 p2) {
-	    return BuildTimeRatio(AnimationTimeFromPosition(p1, p2));
-	}
-    // ----------------------------------------------------------------------
-	public P.TimeRatio BuildTimeRatioFromSize(Vector2 s1, Vector2 s2) {
-	    return BuildTimeRatio(AnimationTimeFromSize(s1, s2));
-	}
-    // ----------------------------------------------------------------------
-	public P.TimeRatio BuildTimeRatioFromDistance(float distance) {
-	    return BuildTimeRatio(AnimationTimeFromDistance(distance));
-	}
-    // ----------------------------------------------------------------------
 	public static P.TimeRatio BuildTimeRatio(float time) {
 		var timeRatio= new P.TimeRatio();
         timeRatio.Start(time);
@@ -140,42 +121,5 @@ public partial class iCS_EditorObject {
             return 1f;
         }
     }
-
-    // ======================================================================
-    // Full graph animation
-    // ----------------------------------------------------------------------
-	public P.TimeRatio AnimateGraph(Action<iCS_EditorObject> fnc) {
-        if(Prefs.AnimationEnabled) {
-            EditorObjects[0].ForEachRecursiveDepthLast(
-                (c,_)=> c.IsNode,
-                node => {
-                    if(node.IsVisibleOnDisplay) {
-                        node.AnimationStart= node.AnimatedRect;
-                    } else {
-                        var t= node.ParentNode;
-                        while(!t.IsVisibleOnDisplay) t= t.ParentNode;
-                        node.AnimationStart= BuildRect(t.AnimatedPosition, Vector2.zero);                    
-                    }
-                }
-            );            
-        }
-		fnc(this);
-        myIStorage.ForcedRelayoutOfTree(EditorObjects[0]);
-        var timeRatio= BuildTimeRatioFromRect(AnimationStart, LayoutRect);		
-        if(Prefs.AnimationEnabled) {
-            EditorObjects[0].ForEachRecursiveDepthLast(
-                (c,_)=> c.IsNode,
-                node=> {
-                    var r= node.LayoutRect;
-                    if(!node.IsFloating) {
-                        if(Math3D.Area(node.AnimationStart) > 0.1f || Math3D.Area(r) > 0.1f) {
-                            node.Animate(r, timeRatio);
-                        }                        
-                    }
-                }
-            );
-        }
-		return timeRatio;
-	}
     
 }
