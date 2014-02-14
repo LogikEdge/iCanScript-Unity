@@ -24,7 +24,17 @@ public static partial class iCS_UserCommands {
     public static void StartNodeRelocation(iCS_EditorObject node) {
         node.IStorage.RegisterUndo("Node Relocation");
     }
-    public static void EndNodeRelocation(iCS_EditorObject node) {
+    public static void EndNodeRelocation(iCS_EditorObject node, iCS_EditorObject oldParent, iCS_EditorObject newParent) {
+        var iStorage= node.IStorage;
+        iStorage.AnimateGraph(null,
+            _=> {
+                if(oldParent != newParent) {
+                    iStorage.ChangeParent(node, newParent); 
+                    oldParent.LayoutNodeAndParents();                   
+                }
+                node.LayoutNodeAndParents();
+            }
+        );
         node.IStorage.IsDirty= true;
     }
     public static void StartPortDrag(iCS_EditorObject port) {

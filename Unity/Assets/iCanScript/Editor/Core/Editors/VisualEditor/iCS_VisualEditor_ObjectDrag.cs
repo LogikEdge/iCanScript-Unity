@@ -255,12 +255,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(oldParent != null) {
                         iCS_EditorObject newParent= GetValidParentNodeUnder(GraphMousePosition, node);
                         if(newParent != null) {
-                            if(newParent != oldParent) {
-                                IStorage.ChangeParent(node, newParent);
-                            } else {
-                                oldParent.LayoutNode();
-                                oldParent.LayoutParentNodesUntilTop();
-                            }
+                            DragObject.EndNodeRelocate();
+                            iCS_UserCommands.EndNodeRelocation(node, oldParent, newParent);
+                            break;
                         } else {
                             // Animate node back to its original position.
 							node.IsSticky= false;
@@ -275,7 +272,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     // Remove sticky on parent nodes.
                     DragObject.EndNodeRelocate();
-                    iCS_UserCommands.EndNodeRelocation(DragObject);
                     break;
                 }
                 case DragTypeEnum.PortRelocation:

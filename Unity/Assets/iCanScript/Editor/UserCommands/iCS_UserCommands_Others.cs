@@ -36,6 +36,4 @@ public static partial class iCS_UserCommands {
             editor.ShowElement(obj);
         }
     }
-
-
 }
