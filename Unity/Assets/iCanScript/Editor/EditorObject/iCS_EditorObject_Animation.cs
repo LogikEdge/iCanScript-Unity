@@ -5,9 +5,6 @@ using P=Prelude;
 using Prefs= iCS_PreferencesController;
 
 public partial class iCS_EditorObject {
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // Verified
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
@@ -37,75 +34,13 @@ public partial class iCS_EditorObject {
         get { return myAnimatedRect.IsActive; }
     }
 
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // End Verified
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    // ======================================================================
-	// Fields
-    // ----------------------------------------------------------------------
-	public bool LayoutUsingAnimatedChildren= false;
-    
     // ======================================================================
     // Queries
     // ----------------------------------------------------------------------
-	public void StopAnimation() {
-		myAnimatedRect.Reset(myAnimatedRect.TargetValue);
-	}
 	public float AnimationTimeRatio { get { return myAnimatedRect.Ratio; }}
 	
     // ======================================================================
-	// Animation timer builders
-    // ----------------------------------------------------------------------
-    public float AnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
-        var distance= Vector2.Distance(p1,p2);
-	    var time= AnimationTimeFromDistance(distance);
-		if(IsAnimated) {
-			var remainingTime= myAnimatedRect.RemainingTime;
-			return Mathf.Max(remainingTime, time);
-		}
-        var minAnimationTime= Prefs.MinAnimationTime;
-        return time < minAnimationTime ? minAnimationTime : time;
-    }
-    // ----------------------------------------------------------------------
-    public float AnimationTimeFromSize(Vector2 s1, Vector2 s2) {
-        var distance= Vector2.Distance(s1,s2);
-	    var time= AnimationTimeFromDistance(distance);
-		if(IsAnimated) {
-			var remainingTime= myAnimatedRect.RemainingTime;
-			return Mathf.Max(remainingTime, time);			
-		}
-        var minAnimationTime= Prefs.MinAnimationTime;
-        return time < minAnimationTime ? minAnimationTime : time;
-    }
-    // ----------------------------------------------------------------------
-    public float AnimationTimeFromRect(Rect r1, Rect r2) {
-		var p1= PositionFrom(r1);
-		var p2= PositionFrom(r2);
-		var s1= SizeFrom(r1);
-		var s2= SizeFrom(r2);
-		var positionTime= AnimationTimeFromPosition(p1, p2);
-		var sizeTime= AnimationTimeFromSize(s1, s2);
-		return Mathf.Max(positionTime, sizeTime);
-    }
-    // ----------------------------------------------------------------------
-    public static float AnimationTimeFromDistance(float distance) {
-	    return distance/Prefs.AnimationPixelsPerSecond;
-    }
-    // ----------------------------------------------------------------------
-	public P.TimeRatio BuildTimeRatioFromRect(Rect r1, Rect r2) {
-	    return BuildTimeRatio(AnimationTimeFromRect(r1, r2));
-	}
-    // ----------------------------------------------------------------------
-	public static P.TimeRatio BuildTimeRatio(float time) {
-		var timeRatio= new P.TimeRatio();
-        timeRatio.Start(time);
-		return timeRatio;		
-	}
-    // ======================================================================
 	// Animation update
-    // ----------------------------------------------------------------------
-
     // ----------------------------------------------------------------------
     public float DisplayAlpha {
         get {

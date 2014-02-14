@@ -12,7 +12,6 @@ public partial class iCS_EditorObject {
 		ForEachParentNode(
 			p=> {
 				p.IsSticky= true;
-				p.LayoutUsingAnimatedChildren= true;
 			}
 		);		
 	}
@@ -23,7 +22,6 @@ public partial class iCS_EditorObject {
 		ForEachParentNode(
 			p=> {
 				p.IsSticky= false;
-				p.LayoutUsingAnimatedChildren= false;
 			}
 		);
 		myIStorage.ForcedRelayoutOfTree(myIStorage.EditorObjects[0]);		
@@ -32,7 +30,7 @@ public partial class iCS_EditorObject {
     // Forces a new position on the object being dragged by the uesr.
     public void NodeDragTo(Vector2 newPosition) {
 		if(IsNode) {
-            StopAnimation();
+            IStorage.StopAllAnimations();
             AnchorPosition= newPosition;
             LocalOffset= Vector2.zero;
 			LayoutParentNodesUntilTop();
@@ -58,7 +56,7 @@ public partial class iCS_EditorObject {
     // Forces a new position on the object being dragged by the uesr.
     public void NodeRelocateTo(Vector2 newPosition) {
 		if(IsNode) {
-            StopAnimation();
+            IStorage.StopAllAnimations();
             AnchorPosition= newPosition;
             LocalOffset= Vector2.zero;
 		} else {

@@ -243,15 +243,6 @@ public partial class iCS_EditorObject {
 			return r;
 		}
 	}
-    // ----------------------------------------------------------------------
-	public Rect AnimationStart {
-		get {
-			return myAnimatedRect.StartValue;
-		}
-		set {
-			myAnimatedRect.StartValue= myAnimatedRect.IsActive ? myAnimatedRect.CurrentValue : value;
-		}
-	}
 	
 	// ======================================================================
     // High-order functions
