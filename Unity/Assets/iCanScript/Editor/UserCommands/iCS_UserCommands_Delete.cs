@@ -1,7 +1,7 @@
 ﻿//
 // File: iCS_UserCommands_Delete
 //
-#define DEBUG
+//#define DEBUG
 using UnityEngine;
 using System.Collections;
 using P=Prelude;

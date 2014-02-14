@@ -1,7 +1,7 @@
 ﻿//
 // File: iCS_UserCommands_InstanceWizard
 //
-#define DEBUG
+//#define DEBUG
 using UnityEngine;
 using UnityEditor;
 using System;

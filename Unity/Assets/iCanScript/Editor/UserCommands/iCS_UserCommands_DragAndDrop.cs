@@ -1,7 +1,7 @@
 ﻿//
 // File: iCS_UserCommands_DragAndDrop
 //
-#define DEBUG
+//#define DEBUG
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
