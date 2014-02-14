@@ -79,9 +79,8 @@ public static class iCS_PreferencesController {
 	//
 	// Default Values
 	//
-    const bool   kAnimationEnabled           = true;
-    const float  kAnimationPixelsPerSecond   = 1500f;
-    const float  kMinAnimationTime           = 0.5f;
+    const bool   kIsAnimationEnabled         = true;
+    const float  kAnimationTime              = 0.5f;
     const float  kScrollSpeed                = 3.0f;
     const float  kEdgeScrollSpeed            = 400.0f;
     const bool   kInverseZoom                = false;
@@ -93,9 +92,8 @@ public static class iCS_PreferencesController {
 	//
 	// Database access keys
 	//
-    const string kAnimationEnabledKey        = "iCS_AnimationEnabled";
-    const string kAnimationPixelsPerSecondKey= "iCS_AnimationPixelsPerSecond";
-    const string kMinAnimationTimeKey        = "iCS_MinAnimationTime";
+    const string kIsAnimationEnabledKey      = "iCS_IsAnimationEnabled";
+    const string kAnimationTimeKey           = "iCS_AnimationTime";
     const string kScrollSpeedKey             = "iCS_ScrollSpeed";
     const string kEdgeScrollSpeedKey         = "iCS_EdgeScrollSpeed";
     const string kInverseZoomKey             = "iCS_InverseZoom";
@@ -107,14 +105,11 @@ public static class iCS_PreferencesController {
 	//
 	// Reset to default value functions
 	//
-    public static void ResetAnimationEnabled() {
-	    AnimationEnabled= kAnimationEnabled;
+    public static void ResetIsAnimationEnabled() {
+	    IsAnimationEnabled= kIsAnimationEnabled;
     }
-    public static void ResetAnimationPixelsPerSecond() {
-	    AnimationPixelsPerSecond= kAnimationPixelsPerSecond;
-    }
-    public static void ResetMinAnimationTime() {
-	    MinAnimationTime= kMinAnimationTime;
+    public static void ResetAnimationTime() {
+	    AnimationTime= kAnimationTime;
     }
     public static void ResetScrollSpeed() {
 	    ScrollSpeed= kScrollSpeed;
@@ -141,30 +136,21 @@ public static class iCS_PreferencesController {
 	//
 	// Accessors
 	//
-    public static bool AnimationEnabled {
+    public static bool IsAnimationEnabled {
         get {
-            return EditorPrefs.GetBool(kAnimationEnabledKey, kAnimationEnabled);
+            return EditorPrefs.GetBool(kIsAnimationEnabledKey, kIsAnimationEnabled);
         }
         set {
-            EditorPrefs.SetBool(kAnimationEnabledKey, value);
+            EditorPrefs.SetBool(kIsAnimationEnabledKey, value);
         }
     }
-    public static float AnimationPixelsPerSecond {
+    public static float AnimationTime {
         get {
-            return EditorPrefs.GetFloat(kAnimationPixelsPerSecondKey, kAnimationPixelsPerSecond);
-        }
-        set {
-            if(value < 10f) value= 10f;
-            EditorPrefs.SetFloat(kAnimationPixelsPerSecondKey, value);
-        }
-    }
-    public static float MinAnimationTime {
-        get {
-            return EditorPrefs.GetFloat(kMinAnimationTimeKey, kMinAnimationTime);
+            return EditorPrefs.GetFloat(kAnimationTimeKey, kAnimationTime);
         }
         set {
             if(value < 0.1f) value= 0.1f;
-            EditorPrefs.SetFloat(kMinAnimationTimeKey, value);
+            EditorPrefs.SetFloat(kAnimationTimeKey, value);
         }
     }
     public static float ScrollSpeed {

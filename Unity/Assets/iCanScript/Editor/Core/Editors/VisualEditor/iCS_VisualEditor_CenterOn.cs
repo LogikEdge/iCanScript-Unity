@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using Prefs=iCS_PreferencesController;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
@@ -42,7 +43,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public void CenterAt(Vector2 point) {
         if(IStorage == null) return;
         Vector2 newScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
-        float deltaTime= iCS_PreferencesController.MinAnimationTime;
+        float deltaTime= Prefs.AnimationTime;
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         ScrollPosition= newScrollPosition;
     }
@@ -50,7 +51,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public void CenterAtWithScale(Vector2 point, float newScale) {
         if(IStorage == null) return;
         Vector2 newScrollPosition= point-0.5f/newScale*new Vector2(position.width, position.height);
-        float deltaTime= iCS_PreferencesController.MinAnimationTime;
+        float deltaTime= Prefs.AnimationTime;
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         ScrollPosition= newScrollPosition;
         myAnimatedScale.Start(Scale, newScale, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));

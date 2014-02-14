@@ -1,5 +1,4 @@
-﻿#define NEW_ANIM
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,9 +19,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void AnimateGraph(iCS_EditorObject obj, Action<iCS_EditorObject> fnc) {
         StopAllAnimations();
-        TakeAnimationSnapshotForAll();
+        if(Prefs.IsAnimationEnabled) {
+            TakeAnimationSnapshotForAll();            
+        }
         fnc(obj);
-        StartAllAnimations();
+        if(Prefs.IsAnimationEnabled) {
+            StartAllAnimations();            
+        }
     }
     // ----------------------------------------------------------------------
     public void UpdateAllAnimations() {
@@ -53,10 +56,8 @@ public partial class iCS_IStorage {
                 myWasPresent[i]= myWasVisible[i]= false;
                 continue;
             }
-#if NEW_ANIM
             myWasPresent[i]= true;
             myWasVisible[i]= IsVisibleInLayout(obj);
-#endif
             // Get copy of the initial position.
             obj.ResetAnimationRect(obj.LayoutRect);
         }
@@ -65,10 +66,9 @@ public partial class iCS_IStorage {
     public void StartAllAnimations() {
         // Update animated objects.
         myAnimatedObjects.Clear();
-        myAnimationTime.Start(Prefs.MinAnimationTime);
+        myAnimationTime.Start(Prefs.AnimationTime);
         ForEach(
             obj => {
-#if NEW_ANIM
                 bool isVisible= IsVisibleInLayout(obj);
                 bool wasVisible= WasVisible(obj);
                 if(!wasVisible) {
@@ -89,7 +89,6 @@ public partial class iCS_IStorage {
                         obj.ResetAnimationRect(r);                        
                     }
                 }
-#endif
                 var objLayoutRect= obj.LayoutRect;
                 if(!Math3D.IsEqual(objLayoutRect, obj.myAnimatedRect.StartValue)) {
                     myAnimatedObjects.Add(obj);
