@@ -95,11 +95,9 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
         if(GUI.Button(position, myMethods[row].FunctionSignatureNoThis) && myTarget != null && myStorage != null) {
             myIsMethodPresent[row]^= true;
             if(myIsMethodPresent[row]) {
-				myStorage.RegisterUndo("Create "+myMethods[row].DisplayName);
-                myStorage.InstanceWizardCreate(myTarget, myMethods[row]);
+                iCS_UserCommands.CreateInstanceWizardElement(myTarget, myMethods[row]);
             } else {
-				myStorage.RegisterUndo("Delete "+myMethods[row].DisplayName);
-                myStorage.InstanceWizardDestroy(myTarget, myMethods[row]);
+                iCS_UserCommands.DeleteInstanceWizardElement(myTarget, myMethods[row]);
             }
         }
         style.normal.textColor= textColor;

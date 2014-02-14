@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿//
+// File: iCS_UserCommands_InstanceWizard
+//
+#define DEBUG
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
@@ -6,7 +10,7 @@ using System.Collections;
 public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // OK
-    public static iCS_EditorObject CreateInstanceElement(iCS_EditorObject parent, iCS_MethodBaseInfo desc) {
+    public static iCS_EditorObject CreateInstanceWizardElement(iCS_EditorObject parent, iCS_MethodBaseInfo desc) {
 #if DEBUG
         Debug.Log("iCanScript: Create Instance Element => "+desc.DisplayName);
 #endif
@@ -19,12 +23,27 @@ public static partial class iCS_UserCommands {
                 instance= iStorage.InstanceWizardCreate(parent, desc);
                 instance.SetInitialPosition(parent.LayoutPosition);
                 instance.Iconize();
-                parent.LayoutNode();                
+                parent.LayoutNodeAndParents();                
             }
         );
         return instance;
     }
 	// ----------------------------------------------------------------------
+    public static void DeleteInstanceWizardElement(iCS_EditorObject parent, iCS_MethodBaseInfo desc) {
+#if DEBUG
+        Debug.Log("iCanScript: Delete Instance Element => "+desc.DisplayName);
+#endif
+        if(parent == null || desc == null) return;
+        var iStorage= parent.IStorage;
+        iStorage.RegisterUndo("Delete "+desc.DisplayName);
+        iStorage.AnimateGraph(null,
+            _=> {
+                iStorage.InstanceWizardDestroy(parent, desc);
+                parent.LayoutNodeAndParents();                
+            }
+        );
+    }
+ 	// ----------------------------------------------------------------------
     // OK
     public static iCS_EditorObject CreateInstanceObjectAndElement(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_MethodBaseInfo desc) {
         if(instanceType == null) return null;

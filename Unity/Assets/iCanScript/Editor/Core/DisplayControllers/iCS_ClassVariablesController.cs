@@ -192,11 +192,9 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
                 if(prevActive != inputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(inputControlPair.IsActive) {
-						myStorage.RegisterUndo("Create "+inputControlPair.Component.DisplayName);
-                        myStorage.InstanceWizardCreate(myTarget, inputControlPair.Component);
+                        iCS_UserCommands.CreateInstanceWizardElement(myTarget, inputControlPair.Component);
                     } else {
-						myStorage.RegisterUndo("Delete "+inputControlPair.Component.DisplayName);
-                        myStorage.InstanceWizardDestroy(myTarget, inputControlPair.Component);
+                        iCS_UserCommands.DeleteInstanceWizardElement(myTarget, inputControlPair.Component);
                     }                
                 }                					
 			}
@@ -207,11 +205,9 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
                 if(prevActive != outputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(outputControlPair.IsActive) {
-						myStorage.RegisterUndo("Create "+outputControlPair.Component.DisplayName);
-                        myStorage.InstanceWizardCreate(myTarget, outputControlPair.Component);
+                        iCS_UserCommands.CreateInstanceWizardElement(myTarget, outputControlPair.Component);
                     } else {
-						myStorage.RegisterUndo("Delete "+outputControlPair.Component.DisplayName);
-                        myStorage.InstanceWizardDestroy(myTarget, outputControlPair.Component);
+                        iCS_UserCommands.DeleteInstanceWizardElement(myTarget, outputControlPair.Component);
                     }                
 				}
             }                

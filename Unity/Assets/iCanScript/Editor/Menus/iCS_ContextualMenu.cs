@@ -496,7 +496,7 @@ public class iCS_ContextualMenu {
         if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;
 		iCS_EditorObject method= null;
 		if(newNodeParent.IsInstanceNode) {
-			method= iCS_UserCommands.CreateInstanceElement(newNodeParent, desc);
+			method= iCS_UserCommands.CreateInstanceWizardElement(newNodeParent, desc);
 		}
 		else {
 			bool createMethod= true;
