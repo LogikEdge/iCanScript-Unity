@@ -49,7 +49,7 @@ public static class iCS_iCanScriptMenu {
     // Support Access
     [MenuItem("Help/iCanScript/Customer Request",false,60)]
     public static void ReportBug() {
-        Application.OpenURL("http://www.disruptive-sw.com/support/customer-request");
+        Application.OpenURL("http://www.icanscript.com/support/customer-request");
     }
     [MenuItem("Help/iCanScript/Check for Updates...",false,61)]
     public static void CheckForUpdate() {
