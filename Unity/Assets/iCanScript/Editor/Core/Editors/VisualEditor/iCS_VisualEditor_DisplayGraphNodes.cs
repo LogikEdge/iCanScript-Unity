@@ -88,7 +88,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(node.IsFloating && floatingRootNode == null) {
                         floatingRootNode= node;
                     } else {
-                        myGraphics.DrawNormalNode(node, IStorage);
+						if( !node.IsParentFloating ) {
+	                        myGraphics.DrawNormalNode(node, IStorage);							
+						}
                     }
                 }
             }
@@ -99,8 +101,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void DisplayFloatingNormalNode(iCS_EditorObject rootNode) {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             child=> {
-                if(child.IsNode) myGraphics.DrawNormalNode(child, IStorage);
-                if(child.IsPort) myGraphics.DrawPort(child, IStorage);
+                if(child.IsNode) {
+					if( child.IsIconizedInLayout ) {
+						myGraphics.DrawMinimizedNode(child, IStorage);						
+					}
+					else {
+						myGraphics.DrawNormalNode(child, IStorage);
+					}
+				}
+                if(child.IsPort) {
+					myGraphics.DrawPort(child, IStorage);
+					myGraphics.DrawBinding(child, IStorage);
+				}
             }
         );
     }
@@ -133,22 +145,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
             }
         );
-//        IStorage.ForEachChild(rootNode,
-//            child=> {
-//                if(child.IsPort) {
-//                    myGraphics.DrawPort(child, IStorage);
-//                }
-//                if(child.IsNode) {
-//                    if(IStorage.IsVisible(child)) {
-//                        if(child.IsIconized) {
-//                            if(child.IsFloating && floatingRootNode == null) floatingRootNode= child;
-//                            myGraphics.DrawMinimizedNode(child, IStorage);
-//                        }
-//                        DisplayPortsAndMinimizedNodes(child);
-//                    }                        
-//                }
-//            }
-//        );
         if(floatingRootNode != null) {
             myGraphics.DrawMinimizedNode(floatingRootNode, IStorage);
         }        

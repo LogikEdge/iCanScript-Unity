@@ -154,6 +154,14 @@ public partial class iCS_EditorObject {
 		    myIsFloating= value;
 		}
 	}
+	public bool IsParentFloating {
+		get {
+			for( var parent= ParentNode; parent != null; parent= parent.ParentNode)  {
+				if( parent.IsFloating ) return true;
+			}
+			return false;
+		}
+	}
 	public bool IsSticky {
 	    get { return myIsSticky; }
 	    set { myIsSticky= value; }
