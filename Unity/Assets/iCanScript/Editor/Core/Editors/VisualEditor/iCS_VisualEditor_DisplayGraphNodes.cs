@@ -122,7 +122,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void DisplayConnections(iCS_EditorObject rootNode) {
         IStorage.ForEachRecursiveDepthLast(rootNode,
-            child=> { if(child.IsPort) myGraphics.DrawBinding(child, IStorage); }
+            child=> {
+				if(child.IsPort) {
+					var parent= child.ParentNode;
+					if( !parent.IsParentFloating ) {
+						myGraphics.DrawBinding(child, IStorage);						
+					}
+				}
+			}
         );
     }
 
