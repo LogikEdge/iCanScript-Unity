@@ -23,9 +23,6 @@ public static partial class iCS_UserCommands {
     }
     public static void StartNodeRelocation(iCS_EditorObject node) {
         node.IStorage.RegisterUndo("Node Relocation");
-        Debug.Log("iCanScript: Undo Group => "+Undo.GetCurrentGroup());
-        node.IStorage.RegisterUndo("Node Relocation");
-        Debug.Log("iCanScript: Undo Group => "+Undo.GetCurrentGroup());        
     }
     public static void EndNodeRelocation(iCS_EditorObject node, iCS_EditorObject oldParent, iCS_EditorObject newParent) {
         var iStorage= node.IStorage;
