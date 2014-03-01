@@ -102,20 +102,20 @@ rsync -av $ASSET_STORE_TOOLS_DIR $STAGING_ASSETS_DIR >/dev/null
 
 # ==================================================================================
 # Example demo project
-DEMO_PROJECT_DIR=$HOME/Workspaces/ZaZoo
-DEMO_INSTALL_DIR=$DEMO_PROJECT_DIR/Assets/iCanScript
-DEMO_EDITOR_DIR=$DEMO_INSTALL_DIR/Editor
-DEMO_ENGINE_DIR=$DEMO_INSTALL_DIR/Engine
-echo "Installing into" $DEMO_PROJECT_DIR 
-if [ -d $DEMO_INSTALL_DIR ]; then
-    rm -r -f $DEMO_INSTALL_DIR
-fi
-mkdir $DEMO_INSTALL_DIR
-mkdir $DEMO_EDITOR_DIR
-mkdir $DEMO_ENGINE_DIR
-cp iCanScriptEditor.dll $DEMO_EDITOR_DIR
-cp iCanScriptEngine.dll $DEMO_ENGINE_DIR
-cp -r $EDITOR_DIR/Resources $DEMO_EDITOR_DIR
-rsync -av $EDITOR_PUBLIC_NODE_INSTALLER_DIR $DEMO_EDITOR_DIR >/dev/null
-rsync -av $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR $DEMO_EDITOR_DIR >/dev/null
-rsync -av $ENGINE_PUBLIC_COMPONENTS_DIR $DEMO_ENGINE_DIR >/dev/null
+#DEMO_PROJECT_DIR=$HOME/Workspaces/ZaZoo
+#DEMO_INSTALL_DIR=$DEMO_PROJECT_DIR/Assets/iCanScript
+#DEMO_EDITOR_DIR=$DEMO_INSTALL_DIR/Editor
+#DEMO_ENGINE_DIR=$DEMO_INSTALL_DIR/Engine
+#echo "Installing into" $DEMO_PROJECT_DIR 
+#if [ -d $DEMO_INSTALL_DIR ]; then
+#    rm -r -f $DEMO_INSTALL_DIR
+#fi
+#mkdir $DEMO_INSTALL_DIR
+#mkdir $DEMO_EDITOR_DIR
+#mkdir $DEMO_ENGINE_DIR
+#cp iCanScriptEditor.dll $DEMO_EDITOR_DIR
+#cp iCanScriptEngine.dll $DEMO_ENGINE_DIR
+#cp -r $EDITOR_DIR/Resources $DEMO_EDITOR_DIR
+#rsync -av $EDITOR_PUBLIC_NODE_INSTALLER_DIR $DEMO_EDITOR_DIR >/dev/null
+#rsync -av $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR $DEMO_EDITOR_DIR >/dev/null
+#rsync -av $ENGINE_PUBLIC_COMPONENTS_DIR $DEMO_ENGINE_DIR >/dev/null
