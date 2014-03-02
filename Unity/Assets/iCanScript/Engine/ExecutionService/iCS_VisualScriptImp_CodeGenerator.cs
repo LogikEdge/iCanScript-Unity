@@ -406,10 +406,13 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 							var parent= GetParentNode(port);
 							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.This) {
 								if(!parent.IsMessage) {
-									initValue= System.Activator.CreateInstance(port.RuntimeType);									
-									if(initValue == null) {
-										Debug.LogWarning("iCanScript: Unable to create instance for: "+GetFullName(parent));
-									}
+                                    try {
+    									initValue= System.Activator.CreateInstance(port.RuntimeType);                                        
+                                        compileWarnings.Add( new CompileWarning(parent.InstanceId, "No instance provided.  Generating a default builder.") );
+                                    }
+                                    catch(System.Exception) {
+                                        compileErrors.Add( new CompileError(parent.InstanceId, "No instance provided (this) and no default builder available.") );                                        
+                                    }
 								} else {
 									// Messages 'This' port.
 									initValue= this;
@@ -431,7 +434,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 											initValue= fieldInfo.GetValue(gameObject);
 										}
 										else {
-											Debug.LogWarning("iCanScript: Unable to find property "+port.Name+" of "+gameObject.name);
+                                            compileErrors.Add( new CompileError(parent.InstanceId, "Unable to find property "+port.Name+" of "+gameObject.name) );
 										}
 									}
 								}
