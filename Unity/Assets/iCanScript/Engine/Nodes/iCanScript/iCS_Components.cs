@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [iCS_Class(Company="iCanScript")]
-public sealed class iCS_Components {
+public sealed class nity {
     // Mesh
     [iCS_Function(Return="meshFilter", Tooltip="Returns the MeshFilter associated with the game object.")]
     public static MeshFilter GetMeshFilter(GameObject gameObject) {

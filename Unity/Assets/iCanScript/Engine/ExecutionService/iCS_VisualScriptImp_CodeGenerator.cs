@@ -5,6 +5,9 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
+using CompileError  =Prelude.Tuple<int,string>;
+using CompileWarning=Prelude.Tuple<int,string>;
 
 public partial class iCS_VisualScriptImp : iCS_Storage {
     // ======================================================================
@@ -61,7 +64,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     // ======================================================================
     // Code Generation
     // ----------------------------------------------------------------------
-    public void GenerateCode() {
+    public bool GenerateCode() {
 #if UNITY_EDITOR
 //        Debug.Log("iCanScript: Generating real-time code for "+gameObject.name+"...");            
 #endif
@@ -72,12 +75,30 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         // Remove any previous runtime object creation.
         ClearGeneratedCode();
         // Create all the runtime nodes.
-        GenerateRuntimeNodes();
+        var compileErrors= new List<CompileError>();
+        var compileWarnings= new List<CompileWarning>();
+        GenerateRuntimeNodes(ref compileErrors, ref compileWarnings);
+        if( compileErrors.Count != 0) {
+            ClearGeneratedCode();
+            return false;
+        }
+        if( compileWarnings.Count != 0 ) {
+            
+        }    
+        
         // Connect the runtime nodes.
-        ConnectRuntimeNodes();    
+        ConnectRuntimeNodes(ref compileErrors, ref compileWarnings);
+        if( compileErrors.Count != 0) {
+            ClearGeneratedCode();
+            return false;
+        }
+        if( compileWarnings.Count != 0 ) {
+            
+        }    
 #if UNITY_EDITOR
 //		Debug.Log("iCanScript: Completed code generation for "+gameObject.name);    
 #endif
+        return true;
     }
     // ----------------------------------------------------------------------
     public object GetRuntimeObject(int id) {
@@ -90,7 +111,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         Reset();
     }
     // ----------------------------------------------------------------------
-    public void GenerateRuntimeNodes() {
+    public void GenerateRuntimeNodes(ref List<CompileError> compileErrors, ref List<CompileWarning> compileWarnings) {
         // Allocate runtime node array (if not already done).
         if(EngineObjects.Count != myRuntimeNodes.Length) {
             myRuntimeNodes= new iCS_Object[EngineObjects.Count];
@@ -264,7 +285,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         } while(needAdditionalPass);
     }
     // ----------------------------------------------------------------------
-    public void ConnectRuntimeNodes() {
+    public void ConnectRuntimeNodes(ref List<CompileError> compileErrors, ref List<CompileWarning> compileWarnings) {
         foreach(var port in EngineObjects) {
 			if(port == null) continue;
 			if(port.InstanceId == -1) continue;

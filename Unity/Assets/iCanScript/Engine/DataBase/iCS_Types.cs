@@ -151,14 +151,14 @@ public static class iCS_Types {
                 // Don't give warning for known conversions.
                 var newAssemblyName= newType.Assembly.FullName.Split(new char[]{','})[0];
                 if(assemblyName != "iCanScriptEngine" && newAssemblyName != "iCanScriptEngine") {
-                    Debug.LogWarning("iCanScript: Unable to find type: "+typeName+" in assembly: "+assemblyName+" ... using assembly: "+newAssemblyName+" instead.");                        
+                    Debug.LogWarning("iCanScript: Unable to locate type: "+typeName+" from assembly: "+assemblyName+" ... using assembly: "+newAssemblyName+" instead.");                        
                 }
                 // Correct assembly qualified name.
                 conversionPerformed= true;
                 return newType;
             }
         }
-        Debug.LogWarning("iCanScript: Unable to find type: "+typeName+" in assembly: "+assemblyName);
+        Debug.LogWarning("iCanScript: Unable to locate type: "+typeName+" from assembly: "+assemblyName);
         return null;        
     }
 }

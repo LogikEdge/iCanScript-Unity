@@ -82,11 +82,13 @@ public class iCS_Storage : MonoBehaviour {
     // ----------------------------------------------------------------------
 	public string GetFullName(iCS_EngineObject obj) {
 		if(obj == null) return "";
-		string fullName= null;
+		string fullName= "";
 		for(; obj != null; obj= GetParentNode(obj)) {
-			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "::"+fullName);
+            if( !obj.IsBehaviour ) {
+    			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "::"+fullName);                
+            }
 		}
-		return fullName;
+		return name+"::"+fullName;
 	}
 	
     // ======================================================================

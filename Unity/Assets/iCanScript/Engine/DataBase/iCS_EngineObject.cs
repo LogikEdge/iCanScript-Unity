@@ -261,8 +261,9 @@ public class iCS_EngineObject {
     // ----------------------------------------------------------------------
 	public MethodBase GetMethodBase(List<iCS_EngineObject> engineObjects) {
         // Extract MethodBase for constructor.
-        MethodBase method= null;
 		Type classType= RuntimeType;
+        if(classType == null) return null;
+        MethodBase method= null;
         if(ObjectType == iCS_ObjectTypeEnum.Constructor) {
             method= classType.GetConstructor(GetParamTypes(engineObjects));
             if(method == null) {
