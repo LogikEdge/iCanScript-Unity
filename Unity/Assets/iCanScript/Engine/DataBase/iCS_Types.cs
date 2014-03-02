@@ -1,3 +1,4 @@
+#define DEBUG
 using UnityEngine;
 using System;
 using System.Collections;
@@ -136,29 +137,39 @@ public static class iCS_Types {
         return TypeFromAssemblyQualifiedName(assemblyQualifiedName, out dummy);
     }
     // ----------------------------------------------------------------------
+    public static void GetAssemblyQualifiedNameComponents(string assemblyQualifiedName, ref string typeName, ref string assemblyName) {
+        var typeIdent= assemblyQualifiedName.Split(new char[]{','});
+        typeName= typeIdent[0];
+        assemblyName= typeIdent[1];
+    }
+    // ----------------------------------------------------------------------
     public static Type TypeFromAssemblyQualifiedName(string assemblyQualifiedName, out bool conversionPerformed) {
         conversionPerformed= false;
         if(string.IsNullOrEmpty(assemblyQualifiedName)) return null;
         var t= Type.GetType(assemblyQualifiedName);
         if(t != null) return t;
         // Attempt to find type in different assembly.
-        var typeIdent= assemblyQualifiedName.Split(new char[]{','});
-        var typeName= typeIdent[0];
-        var assemblyName= typeIdent[1];
+        string typeName= null;
+        string assemblyName= null;
+        GetAssemblyQualifiedNameComponents( assemblyQualifiedName, ref typeName, ref assemblyName );
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             var newType= assembly.GetType(typeName);
             if(newType != null) {
                 // Don't give warning for known conversions.
                 var newAssemblyName= newType.Assembly.FullName.Split(new char[]{','})[0];
+#if DEBUG
                 if(assemblyName != "iCanScriptEngine" && newAssemblyName != "iCanScriptEngine") {
                     Debug.LogWarning("iCanScript: Unable to locate type: "+typeName+" from assembly: "+assemblyName+" ... using assembly: "+newAssemblyName+" instead.");                        
                 }
+#endif
                 // Correct assembly qualified name.
                 conversionPerformed= true;
                 return newType;
             }
         }
+#if DEBUG
         Debug.LogWarning("iCanScript: Unable to locate type: "+typeName+" from assembly: "+assemblyName);
+#endif
         return null;        
     }
 }

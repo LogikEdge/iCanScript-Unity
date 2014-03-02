@@ -80,25 +80,46 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         GenerateRuntimeNodes(ref compileErrors, ref compileWarnings);
         if( compileErrors.Count != 0) {
             ClearGeneratedCode();
+            ShowErrors( ref compileErrors );
             return false;
         }
         if( compileWarnings.Count != 0 ) {
-            
+            ShowWarnings( ref compileWarnings );            
         }    
         
         // Connect the runtime nodes.
         ConnectRuntimeNodes(ref compileErrors, ref compileWarnings);
         if( compileErrors.Count != 0) {
             ClearGeneratedCode();
+            ShowErrors( ref compileErrors );
             return false;
         }
         if( compileWarnings.Count != 0 ) {
-            
+            ShowWarnings( ref compileWarnings );
         }    
 #if UNITY_EDITOR
 //		Debug.Log("iCanScript: Completed code generation for "+gameObject.name);    
 #endif
         return true;
+    }
+    // ----------------------------------------------------------------------
+    private void ShowErrors(ref List<CompileError> compileErrors) {
+        foreach(var error in compileErrors ) {
+            try {
+                Debug.LogError("iCanScript: ERROR: "+GetFullName( EngineObjects[error.Item1] )+" => "+error.Item2 );
+            }
+            catch(System.Exception) {}
+        }
+        try {
+            Debug.LogError("iCanScript: COMPILE ABORTED !!! Please correct error(s) before restarting the engine.");
+        }
+        catch(System.Exception) {}        
+    }
+    // ----------------------------------------------------------------------
+    private void ShowWarnings(ref List<CompileError> compileWarnings) {
+        foreach(var warning in compileWarnings ) {
+            Debug.LogWarning("iCanScript: Warning: "+GetFullName( EngineObjects[warning.Item1] )+" => "+warning.Item2 );
+        }
     }
     // ----------------------------------------------------------------------
     public object GetRuntimeObject(int id) {
@@ -214,20 +235,28 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             }
                             case iCS_ObjectTypeEnum.InstanceFunction: {
                                 // Create method.
+                                var methodBase= GetMethodBase( node, ref compileErrors );
+                                if( methodBase == null ) {
+                                    continue;
+                                }
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                var method= new iCS_InstanceFunction(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
+                                var method= new iCS_InstanceFunction(methodBase, this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= method;
                                 InvokeAddChildIfExists(parent, method);
                                 break;                            
                             }
                             case iCS_ObjectTypeEnum.Constructor: {
                                 // Create function.
+                                var methodBase= GetMethodBase( node, ref compileErrors );
+                                if( methodBase == null ) {
+                                    continue;
+                                }
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                iCS_Constructor func= new iCS_Constructor(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
+                                iCS_Constructor func= new iCS_Constructor(methodBase, this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= func;
                                 InvokeAddChildIfExists(parent, func);
                                 break;
@@ -235,17 +264,24 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             case iCS_ObjectTypeEnum.TypeCast:
                             case iCS_ObjectTypeEnum.ClassFunction: {
                                 // Create function.
+                                var methodBase= GetMethodBase( node, ref compileErrors );
+                                if( methodBase == null ) {
+                                    continue;
+                                }
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                var func= new iCS_ClassFunction(GetMethodBase(node), this, priority, nbParams, nbEnables);                                
+                                var func= new iCS_ClassFunction(methodBase, this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= func;
                                 InvokeAddChildIfExists(parent, func);
                                 break;
                             }
                             case iCS_ObjectTypeEnum.InstanceField: {
                                 // Create function.
-                                FieldInfo fieldInfo= GetFieldInfo(node);
+                                FieldInfo fieldInfo= GetFieldInfo( node, ref compileErrors );
+                                if( fieldInfo == null) {
+                                    continue;
+                                }
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
@@ -259,10 +295,13 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
                             }
                             case iCS_ObjectTypeEnum.ClassField: {
                                 // Create function.
+    							FieldInfo fieldInfo= GetFieldInfo( node, ref compileErrors );
+                                if( fieldInfo == null ) {
+                                    continue;
+                                }
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-    							FieldInfo fieldInfo= GetFieldInfo(node);
     							var inDataPorts= GetChildInParameters(node);
                                 iCS_ActionWithSignature rtField= inDataPorts.Length == 0 ?
                                     new iCS_GetClassField(fieldInfo, this, priority, nbEnables) as iCS_ActionWithSignature:
@@ -475,11 +514,25 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
     // ======================================================================
     // Runtime information extraction
     // ----------------------------------------------------------------------
-	MethodBase GetMethodBase(iCS_EngineObject node) {
-        return node.GetMethodBase(EngineObjects);
+	MethodBase GetMethodBase( iCS_EngineObject node, ref List<CompileError> compileErrors ) {
+        var methodBase= node.GetMethodBase(EngineObjects);
+        if( methodBase == null ) {
+            string typeName= null;
+            string assemblyName= null;
+            iCS_Types.GetAssemblyQualifiedNameComponents( node.QualifiedType, ref typeName, ref assemblyName );
+            compileErrors.Add( new CompileError( node.InstanceId, "Unable to locate type: "+typeName+" from assembly: "+assemblyName));
+        }
+        return methodBase;
 	}
-	FieldInfo GetFieldInfo(iCS_EngineObject node) {
-        return node.GetFieldInfo();
+	FieldInfo GetFieldInfo( iCS_EngineObject node, ref List<CompileError> compileErrors ) {
+        var fieldInfo= node.GetFieldInfo();
+        if( fieldInfo == null ) {
+            string typeName= null;
+            string assemblyName= null;
+            iCS_Types.GetAssemblyQualifiedNameComponents( node.QualifiedType, ref typeName, ref assemblyName );
+            compileErrors.Add( new CompileError( node.InstanceId, "Unable to locate type: "+typeName+" from assembly: "+assemblyName));
+        }
+        return fieldInfo;
 	}
 
     // ======================================================================

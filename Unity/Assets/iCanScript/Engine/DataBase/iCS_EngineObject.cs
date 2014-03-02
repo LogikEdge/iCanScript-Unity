@@ -251,6 +251,7 @@ public class iCS_EngineObject {
 	public FieldInfo GetFieldInfo() {
         if(MethodName == null) return null;
 		Type classType= RuntimeType;
+        if( classType == null ) return null;
         FieldInfo field= classType.GetField(MethodName);
         if(field == null) {
             Debug.LogWarning("iCanScript: Unable to extract FieldInfo from RuntimeDesc: "+MethodName);                
