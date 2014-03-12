@@ -60,3 +60,7 @@ user.lock
 /Unity/Library/CurrentLayout.dwlt
 
 /Unity/Library/EditorUserBuildSettings.asset
+
+/bin/staging/iCanScriptEditor.dll
+
+/bin/staging/iCanScriptEngine.dll
