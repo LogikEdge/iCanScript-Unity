@@ -23,8 +23,8 @@ public static class iCS_PreferencesController {
 	//
     static  Color   kCanvasBackgroundColor;
     static  Color   kGridColor;
-    const   float   kGridSpacing      = 20.0f;
-	const   bool    kShowBehaviourNode= false;
+    const   float   kGridSpacing = 20.0f;
+	const   bool    kShowRootNode= false;
 
 	//
 	// Database access keys
@@ -32,7 +32,7 @@ public static class iCS_PreferencesController {
     const   string  kCanvasBackgroundColorKey= "iCS_CanvasBackgroundColor";
     const   string  kGridColorKey            = "iCS_GridColor";
     const   string  kGridSpacingKey          = "iCS_GridSpacing";
-	const   string  kShowBehaviourNodeKey    = "iCS_ShowBehaviourNode";
+	const   string  kShowRootNodeKey         = "iCS_ShowRootNode";
 	
 	//
 	// Reset to default value functions
@@ -46,8 +46,8 @@ public static class iCS_PreferencesController {
 	public static void ResetGridSpacing() {
 		GridSpacing= kGridSpacing;
 	}
-	public static void ResetShowBehaviourNode() {
-		ShowBehaviourNode= kShowBehaviourNode;
+	public static void ResetShowRootNode() {
+		ShowRootNode= kShowRootNode;
 	}
 	
 	//
@@ -68,9 +68,9 @@ public static class iCS_PreferencesController {
             EditorPrefs.SetFloat(kGridSpacingKey, value);
         }
     }
-	public static bool ShowBehaviourNode {
-		get { return EditorPrefs.GetBool(kShowBehaviourNodeKey, kShowBehaviourNode); }
-		set { EditorPrefs.SetBool(kShowBehaviourNodeKey, value); }
+	public static bool ShowRootNode {
+		get { return EditorPrefs.GetBool(kShowRootNodeKey, kShowRootNode); }
+		set { EditorPrefs.SetBool(kShowRootNodeKey, value); }
 	}
 
 	// =================================================================================

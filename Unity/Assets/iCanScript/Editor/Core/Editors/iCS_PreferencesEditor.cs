@@ -212,7 +212,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;            
         }
-        GUI.Label(pos[0], "Show Behaviour Node");
+        GUI.Label(pos[0], "Show Root Node");
         GUI.Label(pos[1], "Animation Enabled");
         GUI.Label(pos[2], "Animation Time");
         GUI.Label(pos[3], "Scroll Speed");
@@ -228,7 +228,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
-        Prefs.ShowBehaviourNode= EditorGUI.Toggle(pos[0], Prefs.ShowBehaviourNode);
+        Prefs.ShowRootNode= EditorGUI.Toggle(pos[0], Prefs.ShowRootNode);
         Prefs.IsAnimationEnabled= EditorGUI.Toggle(pos[1], Prefs.IsAnimationEnabled);
         EditorGUI.BeginDisabledGroup(Prefs.IsAnimationEnabled==false);
         Prefs.AnimationTime= EditorGUI.FloatField(pos[2], Prefs.AnimationTime);
@@ -243,7 +243,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-			Prefs.ResetShowBehaviourNode();
+			Prefs.ResetShowRootNode();
             Prefs.ResetIsAnimationEnabled();
             Prefs.ResetAnimationTime();
             Prefs.ResetScrollSpeed();

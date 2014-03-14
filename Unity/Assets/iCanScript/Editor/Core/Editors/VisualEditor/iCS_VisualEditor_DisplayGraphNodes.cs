@@ -84,7 +84,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             node=> {
                 if(node.IsNode) {
-					if(node.IsBehaviour && !Pref.ShowBehaviourNode) return;
+					if(node == rootNode && !Pref.ShowRootNode) return;
                     if(node.IsFloating && floatingRootNode == null) {
                         floatingRootNode= node;
                     } else {
