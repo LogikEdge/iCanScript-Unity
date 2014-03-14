@@ -20,10 +20,33 @@ public partial class iCS_IStorage {
     public  bool                CleanupDeadPorts    = true;
     
     // ======================================================================
-    // Public Accessors
+    // Properties
     // ----------------------------------------------------------------------
-    public List<iCS_EditorObject>    EditorObjects    { get { return myEditorObjects; }}
-    public List<iCS_EngineObject>    EngineObjects    { get { return Storage.EngineObjects; }}
+    public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
+    public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
+    public iCS_EditorObject DisplayRoot {
+        get {
+            int id= Storage.DisplayRoot;
+            if(!IsIdValid(id)) {
+                Storage.DisplayRoot= 0;
+                return EditorObjects[0];
+            }
+            var obj= EditorObjects[id];
+            if(!IsValid(obj) || !obj.IsNode) {
+                Storage.DisplayRoot= 0;
+                return EditorObjects[0];
+            }
+            return obj;
+        }
+        set {
+            if(value == null || !IsIdValid(value.InstanceId)) {
+                Storage.DisplayRoot= 0;
+                return;
+            }
+            if(!value.IsNode) return;
+            Storage.DisplayRoot= value.InstanceId;
+        }
+    } 
     public bool ForceRelayout {
         get { return myForceRelayout; }
         set { myForceRelayout= value; }
@@ -92,6 +115,9 @@ public partial class iCS_IStorage {
         // Re-initialize multi-selection list.
         var selectedObject= SelectedObject;
         SelectedObject= selectedObject;
+        
+        // Cleanup Visual Editor display root.
+        DisplayRoot= DisplayRoot;
     }
     
     // ----------------------------------------------------------------------

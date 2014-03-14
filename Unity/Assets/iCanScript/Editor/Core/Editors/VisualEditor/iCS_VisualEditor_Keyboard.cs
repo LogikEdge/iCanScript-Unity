@@ -181,7 +181,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					break;
 				}
                 if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
-                   !SelectedObject.IsFixDataPort) {
+                   SelectedObject != DisplayRoot && !SelectedObject.IsFixDataPort) {
 	                iCS_EditorObject parent= SelectedObject.Parent;
 					bool changeSelected= true;
 					iCS_UserCommands.DeleteObject(SelectedObject);

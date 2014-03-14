@@ -22,7 +22,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    int                 myDisplayRootId = 0;
     iCS_ContextualMenu  myContextualMenu= null;
     iCS_Graphics        myGraphics      = null;
     
@@ -61,13 +60,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
     iCS_EditorObject DisplayRoot {
         get {
-            if(myDisplayRootId < 0 || IStorage == null || Prelude.length(IStorage.EditorObjects) <= myDisplayRootId) {
+            if(IStorage == null) {
                 return null;
             }
-            return IStorage.EditorObjects[myDisplayRootId];
+            return IStorage.DisplayRoot;
         }
         set {
-            myDisplayRootId= value == null ? -1 : value.InstanceId;
+            IStorage.DisplayRoot= value;
         }
     }
 	public bool IsMultiSelectionActive {

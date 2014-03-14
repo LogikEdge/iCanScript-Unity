@@ -18,7 +18,8 @@ public class iCS_Storage : MonoBehaviour {
     [HideInInspector] public int                      UndoRedoId         = 0;
 	[HideInInspector] public Vector2		          ScrollPosition     = Vector2.zero;
 	[HideInInspector] public float  		          GuiScale           = 1f;	
-	[HideInInspector] public int    		          SelectedObject     = -1;	
+	[HideInInspector] public int    		          SelectedObject     = -1;
+    [HideInInspector] public int                      DisplayRoot        = -1;	
     [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
 
