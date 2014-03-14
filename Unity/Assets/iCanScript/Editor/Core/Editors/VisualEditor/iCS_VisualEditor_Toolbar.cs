@@ -29,7 +29,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// LEFT TOOLBAR
 		// Show Behaviour Node.
 		GUI.changed= false;
-		Prefs.ShowBehaviourNode= iCS_ToolbarUtility.Toggle(ref r, Prefs.ShowBehaviourNode, spacer, spacer);
+		Prefs.ShowRootNode= iCS_ToolbarUtility.Toggle(ref r, Prefs.ShowRootNode, spacer, spacer);
 		// Show Runtime frame id.
         bool showFrameId= Prefs.ShowRuntimeFrameId;
         bool newShowFrameId= iCS_ToolbarUtility.Toggle(ref r, showFrameId, 0, 0);
