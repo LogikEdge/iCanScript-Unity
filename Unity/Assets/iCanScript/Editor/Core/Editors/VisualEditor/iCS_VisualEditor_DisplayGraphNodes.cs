@@ -61,9 +61,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(iCS_DevToolsConfig.framesWithoutBackground != 0) return;
 		// Draw Grid
         myGraphics.DrawGrid(position,
-                            iCS_PreferencesController.CanvasBackgroundColor,
-                            iCS_PreferencesController.GridColor,
-                            iCS_PreferencesController.GridSpacing);
+                            Pref.CanvasBackgroundColor,
+                            Pref.GridColor,
+                            Pref.GridSpacing);
     }                       
     
 	// ----------------------------------------------------------------------
@@ -125,6 +125,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             child=> {
 				if(child.IsPort) {
 					var parent= child.ParentNode;
+                    var source= child.Source;
+                    var srcParent= source != null ? source.ParentNode : null;
+                    if(!Pref.ShowRootNode) {
+                        if(parent == rootNode) {
+                            return;
+                        }
+                        if(source != null) {
+                            if(srcParent == rootNode) {
+                                return;                        
+                            }
+                        }
+                    }
+                    else {
+                        if(srcParent != rootNode && !rootNode.IsParentOf(srcParent)) {
+                            return; 
+                        }
+                    }
 					if( !parent.IsParentFloating ) {
 						myGraphics.DrawBinding(child, IStorage);						
 					}
@@ -141,6 +158,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             child=> {
                 if(child.IsPort) {
+                    if(!Pref.ShowRootNode && child.ParentNode == rootNode) return;
                     myGraphics.DrawPort(child, IStorage);
                 }
                 if(child.IsNode) {
