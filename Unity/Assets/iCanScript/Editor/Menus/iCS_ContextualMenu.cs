@@ -121,14 +121,7 @@ public class iCS_ContextualMenu {
     }
 	// ----------------------------------------------------------------------
     void PackageMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        iCS_MenuContext[] menu= new iCS_MenuContext[2];
-        if(selectedObject == storage.DisplayRoot && storage.DisplayRoot != storage.RootObject) {
-            menu[0]= new iCS_MenuContext(FocusOnParentStr);
-        }
-        else {
-            menu[0]= new iCS_MenuContext(FocusStr);            
-        }
-        menu[1]= new iCS_MenuContext(SeparatorStr);
+        iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items
             int idx= GrowMenuBy(ref menu, 5);
@@ -155,13 +148,13 @@ public class iCS_ContextualMenu {
     }
 	// ----------------------------------------------------------------------
     void OnStatePackageMenu(iCS_EditorObject targetObject) {
-        iCS_MenuContext[] menu= new iCS_MenuContext[0];
+        iCS_MenuContext[] menu= StartWithFocusMenu(targetObject);
         if(!targetObject.IsIconizedInLayout && !targetObject.IsFoldedInLayout) {
             // Base menu items
-            menu= new iCS_MenuContext[3];
-            menu[0]= new iCS_MenuContext(PackageStr);
-            menu[1]= new iCS_MenuContext(StateChartStr);
-            menu[2]= new iCS_MenuContext(SeparatorStr);
+            int idx= GrowMenuBy(ref menu, 3);
+            menu[idx]= new iCS_MenuContext(PackageStr);
+            menu[idx+1]= new iCS_MenuContext(StateChartStr);
+            menu[idx+2]= new iCS_MenuContext(SeparatorStr);
         }
         AddShowInHierarchyMenuItem(ref menu);
         AddDeleteMenuItem(ref menu);
@@ -197,10 +190,10 @@ public class iCS_ContextualMenu {
     }
 	// ----------------------------------------------------------------------
     void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        iCS_MenuContext[] menu= new iCS_MenuContext[0];
+        iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
-            menu= new iCS_MenuContext[1];
-            menu[0]= new iCS_MenuContext(StateStr); 
+            int idx= GrowMenuBy(ref menu, 1);
+            menu[idx]= new iCS_MenuContext(StateStr); 
         }
 		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         AddShowInHierarchyMenuItem(ref menu);
@@ -211,28 +204,26 @@ public class iCS_ContextualMenu {
     }
 	// ----------------------------------------------------------------------
     void StateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        iCS_MenuContext[] menu;
+        iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             int len= iCS_AllowedChildren.StateChildNames.Length;
-            menu= new iCS_MenuContext[len+4];
-            menu[0]= new iCS_MenuContext(StateStr);
-            menu[1]= new iCS_MenuContext(SeparatorStr);
+            int idx= GrowMenuBy(ref menu, len+4);
+            menu[idx]= new iCS_MenuContext(StateStr);
+            menu[idx+1]= new iCS_MenuContext(SeparatorStr);
             for(int i= 0; i < len; ++i) {
                 string name= iCS_AllowedChildren.StateChildNames[i];
                 if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Package, selectedObject, storage)) {
-                    menu[i+2]= new iCS_MenuContext(String.Concat("+ ", name));
+                    menu[idx+i+2]= new iCS_MenuContext(String.Concat("+ ", name));
                 } else {
-                    menu[i+2]= new iCS_MenuContext(String.Concat("#+ ", name));
+                    menu[idx+i+2]= new iCS_MenuContext(String.Concat("#+ ", name));
                 }
             }
-            menu[len+2]= new iCS_MenuContext(SeparatorStr);
+            menu[idx+len+2]= new iCS_MenuContext(SeparatorStr);
             if(selectedObject.IsEntryState) {
-                menu[len+3]= new iCS_MenuContext(String.Concat("#", SetAsEntryStr));
+                menu[idx+len+3]= new iCS_MenuContext(String.Concat("#", SetAsEntryStr));
             } else {
-                menu[len+3]= new iCS_MenuContext(SetAsEntryStr);
+                menu[idx+len+3]= new iCS_MenuContext(SetAsEntryStr);
             }
-        } else {
-            menu= new iCS_MenuContext[0];
         }
         AddShowInHierarchyMenuItem(ref menu);
         AddDeleteMenuItem(ref menu);
@@ -365,6 +356,25 @@ public class iCS_ContextualMenu {
 		menu[i]  = new iCS_MenuContext(WrapInPackageStr);
 		menu[i+1]= new iCS_MenuContext(SeparatorStr);
 	}
+	// ----------------------------------------------------------------------
+    iCS_MenuContext[] StartWithFocusMenu(iCS_EditorObject selectedObject) {
+        iCS_MenuContext[] menu= new iCS_MenuContext[0];
+        AddFocusMenu(ref menu, selectedObject);
+        int idx= GrowMenuBy(ref menu, 1);
+        menu[idx]= new iCS_MenuContext(SeparatorStr);
+        return menu;        
+    }
+	// ----------------------------------------------------------------------
+    void AddFocusMenu(ref iCS_MenuContext[] menu, iCS_EditorObject obj) {
+        var iStorage= obj.IStorage;
+        int idx= GrowMenuBy(ref menu, 1);
+        if(obj == iStorage.DisplayRoot && iStorage.DisplayRoot != iStorage.RootObject) {
+            menu[idx]= new iCS_MenuContext(FocusOnParentStr);
+        }
+        else {
+            menu[idx]= new iCS_MenuContext(FocusStr);            
+        }        
+    }
 	// ----------------------------------------------------------------------
 	int GrowMenuBy(ref iCS_MenuContext[] menu, int additionalSize) {
 		int sze= menu == null ? 0 : menu.Length;
