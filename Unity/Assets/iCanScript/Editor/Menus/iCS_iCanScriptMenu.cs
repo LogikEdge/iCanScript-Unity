@@ -26,7 +26,7 @@ public static class iCS_iCanScriptMenu {
         iCS_VisualEditor visualEditor= iCS_EditorMgr.FindVisualEditor();
         if(visualEditor != null) visualEditor.CenterAndScaleOnRoot();
     }
-    [MenuItem("Edit/iCanScript/Focus On Selected _f",false,122)]
+    [MenuItem("Edit/iCanScript/Center Selected _f",false,122)]
     public static void FocusOnSelected() {
         iCS_VisualEditor graphEditor= iCS_EditorMgr.FindVisualEditor();
         if(graphEditor != null) graphEditor.CenterAndScaleOnSelected();

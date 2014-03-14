@@ -65,7 +65,7 @@ public static class iCS_EditorUtility {
     public static int SafeSelectAndMakeVisible(iCS_EditorObject selected, iCS_IStorage iStorage) {
         iStorage.RegisterUndo("Focus on: "+selected.Name);
         iStorage.SelectedObject= selected;        
-        FocusOn(selected, iStorage);
+        CenterOn(selected, iStorage);
         return iStorage.UndoRedoId;
     }
     public static void MakeVisible(iCS_EditorObject eObj, iCS_IStorage iStorage) {
@@ -86,11 +86,11 @@ public static class iCS_EditorUtility {
         }
     }
 	// ----------------------------------------------------------------------
-    public static void SafeFocusOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
+    public static void SafeCenterOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
         iStorage.RegisterUndo("Focus on "+eObj.Name);
-        FocusOn(eObj, iStorage);
+        CenterOn(eObj, iStorage);
     }
-    public static void FocusOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
+    public static void CenterOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
         MakeVisible(eObj, iStorage);
         var graphEditor= iCS_EditorMgr.FindVisualEditor();
         if(graphEditor != null) graphEditor.CenterAndScaleOn(eObj);        

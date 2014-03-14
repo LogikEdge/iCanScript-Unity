@@ -103,7 +103,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     selected= DisplayRoot;
                 }
                 if(selected != null) {
-                    iCS_EditorUtility.SafeFocusOn(selected, IStorage);                        
+                    iCS_EditorUtility.SafeCenterOn(selected, IStorage);                        
                 }
                 Event.current.Use();
                 break;

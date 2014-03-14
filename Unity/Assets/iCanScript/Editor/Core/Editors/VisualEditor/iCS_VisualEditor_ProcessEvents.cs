@@ -61,7 +61,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case 0: { // Left mouse button
                 DetermineSelectedObject();                    
                 if(SelectedObject != null && !SelectedObject.IsBehaviour) {
-                    IsDragEnabled= true;                            
+                    // Determine if user want's to change display root.
+                    if(SelectedObject.IsNode && Event.current.clickCount >= 2) {
+                        Debug.Log("Changing display root to => "+SelectedObject.Name);                    
+                    }
+                    else {
+                        IsDragEnabled= true;                                                    
+                    }
                 }
                 mySubEditor= null;
                 break;
