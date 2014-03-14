@@ -14,6 +14,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool    IsCopyKeyDown        { get { return IsShiftKeyDown; }}
     bool    IsScaleKeyDown       { get { return IsAltKeyDown; }}
 	bool	IsMultiSelectKeyDown { get { return Event.current.command; }}
+    bool    IsDoubleClick        { get { return Event.current.clickCount >= 2; }}
     
 	// ----------------------------------------------------------------------
     void KeyDownEvent() {

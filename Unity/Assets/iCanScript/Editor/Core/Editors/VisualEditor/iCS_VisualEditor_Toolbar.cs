@@ -81,7 +81,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// --------------
 		// CENTER TOOLBAR
         // Show game object name in middle of toolbar.
-		var name= IStorage.Storage.name;
+		var name= SelectedObject == null ? DisplayRoot.FullName : SelectedObject.FullName;
 		if(Application.isPlaying) {
 			var visualScript= IStorage.Storage as iCS_VisualScriptImp;
 			if(visualScript != null) {

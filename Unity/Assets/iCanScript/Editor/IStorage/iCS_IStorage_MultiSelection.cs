@@ -18,7 +18,10 @@ public partial class iCS_IStorage {
         set { Storage.SelectedObject= value; }
     }
     public iCS_EditorObject SelectedObject {
-        get { return SelectedObjectId == -1 ? null : this[SelectedObjectId]; }
+        get {
+            int id= SelectedObjectId;
+            return id == -1 ? null : this[id];
+        }
         set {
             mySelectedObjects.Clear();
             if(value != null) {

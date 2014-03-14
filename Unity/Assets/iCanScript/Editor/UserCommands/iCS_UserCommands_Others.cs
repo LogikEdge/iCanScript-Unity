@@ -36,4 +36,23 @@ public static partial class iCS_UserCommands {
             editor.ShowElement(obj);
         }
     }
+    // ----------------------------------------------------------------------
+    // Change the display root to the selected object.
+    public static void FocusOn(iCS_EditorObject obj) {
+        if(obj == null || !obj.IsNode) return;
+        var iStorage= obj.IStorage;
+        iStorage.RegisterUndo("Focus On "+obj.Name);
+        iStorage.DisplayRoot= obj;
+    }
+    // ----------------------------------------------------------------------
+    // Change the display root to the parent of the selected object.
+    public static void FocusOnParent(iCS_EditorObject obj) {
+        if(obj == null) return;
+        var parent= obj.ParentNode;
+        if(parent == null) return;
+        var iStorage= parent.IStorage;
+        iStorage.RegisterUndo("Focus On "+parent.Name);
+        parent.IStorage.DisplayRoot= parent;
+    }
+
 }

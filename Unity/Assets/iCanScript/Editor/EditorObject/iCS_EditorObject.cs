@@ -61,7 +61,6 @@ public partial class iCS_EditorObject {
 				oldParent.RemoveChild(this);
 			}
 			EngineObject.ParentId= value;
-//			IsDirty= true;
 			if(IsIdValid(value)) {
 				var newParent= EditorObjects[value];
 				newParent.AddChild(this);
@@ -75,7 +74,6 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.DisplayOption == value) return;
             engineObject.DisplayOption= value;
-//            IsDirty= true;
         }
     }
     // ----------------------------------------------------------------------
@@ -89,7 +87,6 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.RawName == value) return;
 		    engineObject.RawName= value;
-//		    IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -99,9 +96,12 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.Name == value) return;
 		    engineObject.Name= value;
-//		    IsDirty= true;
 		}
 	}
+    // ----------------------------------------------------------------------
+    public string FullName {
+        get { return Storage.GetFullName(EngineObject); }
+    }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
 		get { return EngineObject.IsNameEditable; }
@@ -109,7 +109,6 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.IsNameEditable == value) return;
 		    engineObject.IsNameEditable= value;
-//		    IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -119,7 +118,6 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.Tooltip == value) return;
 		    engineObject.Tooltip= value;
-//		    IsDirty= true;
 		}
 	}
 	

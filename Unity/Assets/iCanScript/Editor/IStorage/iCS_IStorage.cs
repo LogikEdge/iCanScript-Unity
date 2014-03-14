@@ -24,6 +24,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
     public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
+    public iCS_EditorObject RootObject {
+        get { return EditorObjects[0]; }
+    }
     public iCS_EditorObject DisplayRoot {
         get {
             int id= Storage.DisplayRoot;
