@@ -61,6 +61,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case 0: { // Left mouse button
                 DetermineSelectedObject();                    
                 if(SelectedObject != null && !SelectedObject.IsBehaviour) {
+					if(SelectedObject.IsNode && IsIsolateKeyDown && IsDoubleClick &&
+					   !(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode)) {
+						iCS_UserCommands.IsolateInView(SelectedObject);
+					}
                     IsDragEnabled= true;                                                    
                 }
                 mySubEditor= null;

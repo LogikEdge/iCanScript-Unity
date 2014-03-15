@@ -4,6 +4,8 @@
 //#define DEBUG
 using UnityEngine;
 using System.Collections;
+using Pref= iCS_PreferencesController;
+
 
 public static partial class iCS_UserCommands {
     // ======================================================================
@@ -38,7 +40,7 @@ public static partial class iCS_UserCommands {
     }
     // ----------------------------------------------------------------------
     // Change the display root to the selected object.
-    public static void FocusOn(iCS_EditorObject obj) {
+    public static void IsolateInView(iCS_EditorObject obj) {
         if(obj == null || !obj.IsNode) return;
         var iStorage= obj.IStorage;
         iStorage.RegisterUndo("Focus On "+obj.Name);
@@ -54,5 +56,9 @@ public static partial class iCS_UserCommands {
         iStorage.RegisterUndo("Focus On "+parent.Name);
         parent.IStorage.DisplayRoot= parent;
     }
-
+    // ----------------------------------------------------------------------
+	public static void ToggleShowRootNode(iCS_IStorage iStorage) {
+		iStorage.RegisterUndo("Toggle Show Root Node");
+		Pref.ShowRootNode= !Pref.ShowRootNode;
+	}
 }

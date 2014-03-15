@@ -20,7 +20,7 @@ public class iCS_ContextualMenu {
     // Menu Items
 	// ----------------------------------------------------------------------
     const string ShowHierarchyStr              = "Show in hierarchy";
-    const string FocusStr                      = "Focus";
+    const string IsolateInViewStr              = "Isolate in View";
     const string FocusOnParentStr              = "Focus on Parent";
     const string DeleteStr                     = "- Delete";
     const string PackageStr                    = "+ Package";
@@ -372,7 +372,7 @@ public class iCS_ContextualMenu {
             menu[idx]= new iCS_MenuContext(FocusOnParentStr);
         }
         else {
-            menu[idx]= new iCS_MenuContext(FocusStr);            
+            menu[idx]= new iCS_MenuContext(IsolateInViewStr);            
         }        
     }
 	// ----------------------------------------------------------------------
@@ -454,7 +454,7 @@ public class iCS_ContextualMenu {
         iCS_IStorage iStorage= context.Storage;
         // Process all other types of requests.
         switch(context.Command) {
-            case FocusStr:          iCS_UserCommands.FocusOn(targetObject); break;
+            case IsolateInViewStr:  iCS_UserCommands.IsolateInView(targetObject); break;
             case FocusOnParentStr:  iCS_UserCommands.FocusOnParent(targetObject); break;
             case PackageStr:        iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
             case StateChartStr:     iCS_UserCommands.CreateStateChart(targetObject, globalPos, null); break;

@@ -15,6 +15,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool    IsScaleKeyDown       { get { return IsAltKeyDown; }}
 	bool	IsMultiSelectKeyDown { get { return Event.current.command; }}
     bool    IsDoubleClick        { get { return Event.current.clickCount >= 2; }}
+	bool    IsIsolateKeyDown     { get { return IsAltKeyDown; }}
+	
     
 	// ----------------------------------------------------------------------
     void KeyDownEvent() {
@@ -109,6 +111,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 Event.current.Use();
                 break;
             }
+			case KeyCode.P: {
+				iCS_UserCommands.ToggleShowRootNode(IStorage);
+                Event.current.Use();
+				break;
+			}
             // Wrap in package
             case KeyCode.W: {
                 if(IsMultiSelectionActive) {
