@@ -85,8 +85,8 @@ public static class iCS_EditorMgr {
     public static EditorWindow FindInstanceEditorWindow() {
         return FindWindow<iCS_InstanceEditor>();
     }
-    public static EditorWindow FindHierarchyEditorWindow() {
-        return FindWindow<iCS_HierarchyEditor>();
+    public static EditorWindow FindTreeViewEditorWindow() {
+        return FindWindow<iCS_TreeViewEditor>();
     }
     public static EditorWindow FindLibraryEditorWindow() {
         return FindWindow<iCS_LibraryEditor>();
@@ -98,8 +98,8 @@ public static class iCS_EditorMgr {
     public static iCS_InstanceEditor FindInstanceEditor() {
         return FindWindow(typeof(iCS_InstanceEditor)) as iCS_InstanceEditor;
     }
-    public static iCS_HierarchyEditor FindHierarchyEditor() {
-        return FindWindow(typeof(iCS_HierarchyEditor)) as iCS_HierarchyEditor;
+    public static iCS_TreeViewEditor FindTreeViewEditor() {
+        return FindWindow(typeof(iCS_TreeViewEditor)) as iCS_TreeViewEditor;
     }
     public static iCS_LibraryEditor FindLibraryEditor() {
         return FindWindow(typeof(iCS_LibraryEditor)) as iCS_LibraryEditor;

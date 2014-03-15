@@ -63,7 +63,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(SelectedObject != null && !SelectedObject.IsBehaviour) {
 					if(SelectedObject.IsNode && IsIsolateKeyDown && IsDoubleClick &&
 					   !(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode)) {
-						iCS_UserCommands.IsolateInView(SelectedObject);
+						iCS_UserCommands.SetAsDisplayRoot(SelectedObject);
 					}
                     IsDragEnabled= true;                                                    
                 }

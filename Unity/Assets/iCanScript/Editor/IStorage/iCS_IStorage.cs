@@ -50,6 +50,10 @@ public partial class iCS_IStorage {
             Storage.DisplayRoot= value.InstanceId;
         }
     } 
+	public bool ShowDisplayRootNode {
+		get { return Storage.ShowDisplayRootNode; }
+		set { Storage.ShowDisplayRootNode= value; }
+	}
     public bool ForceRelayout {
         get { return myForceRelayout; }
         set { myForceRelayout= value; }

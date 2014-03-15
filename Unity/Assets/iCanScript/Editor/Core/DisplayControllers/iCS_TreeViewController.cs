@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_HierarchyController : DSTreeViewDataSource {
+public class iCS_TreeViewController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-	public iCS_HierarchyController(iCS_EditorObject target, iCS_IStorage storage) {
+	public iCS_TreeViewController(iCS_EditorObject target, iCS_IStorage storage) {
         Init(target, storage);
 	}
     // ---------------------------------------------------------------------------------

@@ -24,7 +24,6 @@ public static class iCS_PreferencesController {
     static  Color   kCanvasBackgroundColor;
     static  Color   kGridColor;
     const   float   kGridSpacing = 20.0f;
-	const   bool    kShowRootNode= false;
 
 	//
 	// Database access keys
@@ -32,7 +31,6 @@ public static class iCS_PreferencesController {
     const   string  kCanvasBackgroundColorKey= "iCS_CanvasBackgroundColor";
     const   string  kGridColorKey            = "iCS_GridColor";
     const   string  kGridSpacingKey          = "iCS_GridSpacing";
-	const   string  kShowRootNodeKey         = "iCS_ShowRootNode";
 	
 	//
 	// Reset to default value functions
@@ -45,9 +43,6 @@ public static class iCS_PreferencesController {
 	}
 	public static void ResetGridSpacing() {
 		GridSpacing= kGridSpacing;
-	}
-	public static void ResetShowRootNode() {
-		ShowRootNode= kShowRootNode;
 	}
 	
 	//
@@ -68,10 +63,6 @@ public static class iCS_PreferencesController {
             EditorPrefs.SetFloat(kGridSpacingKey, value);
         }
     }
-	public static bool ShowRootNode {
-		get { return EditorPrefs.GetBool(kShowRootNodeKey, kShowRootNode); }
-		set { EditorPrefs.SetBool(kShowRootNodeKey, value); }
-	}
 
 	// =================================================================================
     // Display Option Constants

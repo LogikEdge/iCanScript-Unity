@@ -112,7 +112,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
 			case KeyCode.P: {
-				iCS_UserCommands.ToggleShowRootNode(IStorage);
+				iCS_UserCommands.ToggleShowDisplayRootNode(IStorage);
                 Event.current.Use();
 				break;
 			}

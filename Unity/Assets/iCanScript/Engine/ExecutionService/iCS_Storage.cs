@@ -11,6 +11,7 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+					  public bool                     ShowDisplayRootNode= true;
                       public iCS_EngineObject         EngineObject       = null;
     [HideInInspector] public uint			          MajorVersion       = iCS_Config.MajorVersion;
     [HideInInspector] public uint    		          MinorVersion       = iCS_Config.MinorVersion;

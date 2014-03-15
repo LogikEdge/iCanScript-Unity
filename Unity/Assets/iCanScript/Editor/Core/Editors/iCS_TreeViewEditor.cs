@@ -6,12 +6,12 @@ using System.Collections.Generic;
 /*
     FIXME: Fix bug which does not properly initialize hiearchy view on code reload
 */
-public class iCS_HierarchyEditor : iCS_EditorBase {
+public class iCS_TreeViewEditor : iCS_EditorBase {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
     DSScrollView            myMainView;
-	iCS_HierarchyController myController;
+	iCS_TreeViewController  myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
 	int                     myLastFocusId= -1;
 	int                     myUndoRedoId= -1;
@@ -36,7 +36,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
             return false;
         }
         if(myController == null || myController.IStorage != IStorage) {
-            myController= new iCS_HierarchyController(IStorage[0], IStorage);                        
+            myController= new iCS_TreeViewController(IStorage[0], IStorage);                        
             myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);            
             myUndoRedoId= IStorage.UndoRedoId;
             return true;

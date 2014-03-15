@@ -33,14 +33,14 @@ public static partial class iCS_UserCommands {
     }
 	// ----------------------------------------------------------------------
     public static void ShowInHierarchy(iCS_EditorObject obj) {
-        var editor= iCS_EditorMgr.FindHierarchyEditor();
+        var editor= iCS_EditorMgr.FindTreeViewEditor();
         if(editor != null) {
             editor.ShowElement(obj);
         }
     }
     // ----------------------------------------------------------------------
     // Change the display root to the selected object.
-    public static void IsolateInView(iCS_EditorObject obj) {
+    public static void SetAsDisplayRoot(iCS_EditorObject obj) {
         if(obj == null || !obj.IsNode) return;
         var iStorage= obj.IStorage;
         iStorage.RegisterUndo("Focus On "+obj.Name);
@@ -57,8 +57,8 @@ public static partial class iCS_UserCommands {
         parent.IStorage.DisplayRoot= parent;
     }
     // ----------------------------------------------------------------------
-	public static void ToggleShowRootNode(iCS_IStorage iStorage) {
-		iStorage.RegisterUndo("Toggle Show Root Node");
-		Pref.ShowRootNode= !Pref.ShowRootNode;
+	public static void ToggleShowDisplayRootNode(iCS_IStorage iStorage) {
+        iStorage.RegisterUndo("Toggle Show Display Root");
+		iStorage.ShowDisplayRootNode= !iStorage.ShowDisplayRootNode;
 	}
 }

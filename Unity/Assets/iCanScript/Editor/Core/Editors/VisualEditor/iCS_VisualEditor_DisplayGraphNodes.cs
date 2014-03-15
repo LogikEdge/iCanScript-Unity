@@ -85,7 +85,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             node=> {
                 if(node.IsNode) {
 					if(node.IsBehaviour) return;
-					if(node == rootNode && !Pref.ShowRootNode) return;
+					if(node == rootNode && !IStorage.ShowDisplayRootNode) return;
                     if(node.IsFloating && floatingRootNode == null) {
                         floatingRootNode= node;
                     } else {
@@ -128,7 +128,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					var parent= child.ParentNode;
                     var source= child.Source;
                     var srcParent= source != null ? source.ParentNode : null;
-                    if(!Pref.ShowRootNode) {
+                    if(!IStorage.ShowDisplayRootNode) {
                         if(parent == rootNode) {
                             return;
                         }
@@ -159,7 +159,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             child=> {
                 if(child.IsPort) {
-                    if(!Pref.ShowRootNode && child.ParentNode == rootNode) return;
+                    if(!IStorage.ShowDisplayRootNode && child.ParentNode == rootNode) return;
                     myGraphics.DrawPort(child, IStorage);
                 }
                 if(child.IsNode) {
