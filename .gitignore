@@ -64,3 +64,5 @@ user.lock
 /bin/staging/iCanScriptEditor.dll
 
 /bin/staging/iCanScriptEngine.dll
+
+/Unity/Library/CurrentMaximizeLayout.dwlt
