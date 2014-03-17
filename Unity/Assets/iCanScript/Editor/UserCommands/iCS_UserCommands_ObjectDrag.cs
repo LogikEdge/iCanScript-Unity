@@ -39,6 +39,7 @@ public static partial class iCS_UserCommands {
     }
     public static void StartPortDrag(iCS_EditorObject port) {
         port.IStorage.RegisterUndo("Port Drag");
+		Debug.Log("Port edge => "+port.Edge);
     }
     public static void EndPortDrag(iCS_EditorObject port) {
         port.IStorage.AnimateGraph(null,
@@ -47,5 +48,6 @@ public static partial class iCS_UserCommands {
             }
         );
         port.IStorage.IsDirty= true;
+		Debug.Log("Port edge => "+port.Edge);
     }
 }
