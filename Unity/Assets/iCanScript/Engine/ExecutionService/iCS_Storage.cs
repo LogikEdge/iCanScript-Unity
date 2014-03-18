@@ -38,6 +38,10 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
+    public void CopyTo(iCS_Storage to) {
+        Copy(this, to);
+    }
+    // ----------------------------------------------------------------------
     public static void Copy(iCS_Storage from, iCS_Storage to) {
         to.ShowDisplayRootNode= from.ShowDisplayRootNode;
         to.EngineObject= from.EngineObject;
