@@ -115,27 +115,7 @@ public class iCS_EngineObject {
 	}
     // ----------------------------------------------------------------------
     public iCS_EngineObject Clone() {
-        iCS_EngineObject to= new iCS_EngineObject();
-        to.ObjectType= ObjectType;
-        to.InstanceId= InstanceId;
-        to.ParentId= ParentId;
-        to.QualifiedType= QualifiedType;
-        to.RawName= RawName;
-        to.LocalAnchorPosition= LocalAnchorPosition;
-        to.Scale= Scale;
-        to.DisplayOption= DisplayOption;
-        to.IsNameEditable= IsNameEditable;
-        to.MethodName= MethodName;
-        to.NbOfParams= NbOfParams;
-        to.IconGUID= IconGUID;
-        to.Tooltip= Tooltip;
-        to.ExecutionPriority= ExecutionPriority;
-        to.LayoutPriority= LayoutPriority;
-        to.SourceId= SourceId;
-        to.PortIndex= PortIndex;
-        to.InitialValueArchive= InitialValueArchive;
-        to.IsEntryState= IsEntryState;
-        return to;
+        return CopyTo(new iCS_EngineObject());
     }
     // ----------------------------------------------------------------------
     public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent) {
@@ -157,6 +137,29 @@ public class iCS_EngineObject {
         }
         return instance;
     }
+    // ----------------------------------------------------------------------
+	public iCS_EngineObject CopyTo(iCS_EngineObject to) {
+        to.ObjectType= ObjectType;
+        to.InstanceId= InstanceId;
+        to.ParentId= ParentId;
+        to.QualifiedType= QualifiedType;
+        to.RawName= RawName;
+        to.LocalAnchorPosition= LocalAnchorPosition;
+        to.Scale= Scale;
+        to.DisplayOption= DisplayOption;
+        to.IsNameEditable= IsNameEditable;
+        to.MethodName= MethodName;
+        to.NbOfParams= NbOfParams;
+        to.IconGUID= IconGUID;
+        to.Tooltip= Tooltip;
+        to.ExecutionPriority= ExecutionPriority;
+        to.LayoutPriority= LayoutPriority;
+        to.SourceId= SourceId;
+        to.PortIndex= PortIndex;
+        to.InitialValueArchive= InitialValueArchive;
+        to.IsEntryState= IsEntryState;
+		return to;
+	}
     // ----------------------------------------------------------------------
     public void Reset() {
 		// Common
