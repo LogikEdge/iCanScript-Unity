@@ -295,7 +295,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case EventType.DragExited: {
                 if(EditorWindow.mouseOverWindow == this) {
                     DragAndDropExited();
-                    Event.current.Use();
+                    ev.Use();
                 }
                 break;
             }
@@ -305,9 +305,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     			break;
 			}
 			case EventType.ValidateCommand: {
-                // Force repaint on undo/redo.
+                // Accept undo/redo.
 			    if(ev.commandName == "UndoRedoPerformed") {
-			        Repaint();
+                    ev.Use();
+			    }
+			    break;
+			}
+			case EventType.ExecuteCommand: {
+                // Rebuild engine objects on undo/redo.
+			    if(ev.commandName == "UndoRedoPerformed") {
+                    Debug.Log("Execute Undo/Redo Called");
+                    IStorage.SynchronizeAfterUndoRedo();
+                    ev.Use();
 			        break;
 			    }
 			    break;

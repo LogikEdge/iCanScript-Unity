@@ -304,7 +304,11 @@ public partial class iCS_EditorObject {
 		iStorage.EditorObjects.Capacity= iStorage.EngineObjects.Count;		
 		for(int i= 0; i < iStorage.EngineObjects.Count; ++i) {
             iCS_EditorObject editorObj= null;
-		    if(iStorage.EngineObjects[i].InstanceId != -1) {
+            var engineObj= iStorage.EngineObjects[i];
+		    if(engineObj.InstanceId != -1) {
+                if(engineObj.Name == "this" && engineObj.SourceId == -1) {
+                    Debug.Log("Rebuilding => "+engineObj.Name+" Edge => "+engineObj.Edge);
+                }
 		        editorObj= new iCS_EditorObject(i, iStorage);
 		    }
 	        iStorage.EditorObjects.Add(editorObj);

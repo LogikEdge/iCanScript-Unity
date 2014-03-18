@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
+[Serializable]
 public class iCS_EngineObject {
     // ======================================================================
     // Database Fields
@@ -113,6 +113,30 @@ public class iCS_EngineObject {
 	public void DestroyInstance() {
 		Reset();
 	}
+    // ----------------------------------------------------------------------
+    public iCS_EngineObject Clone() {
+        iCS_EngineObject to= new iCS_EngineObject();
+        to.ObjectType= ObjectType;
+        to.InstanceId= InstanceId;
+        to.ParentId= ParentId;
+        to.QualifiedType= QualifiedType;
+        to.RawName= RawName;
+        to.LocalAnchorPosition= LocalAnchorPosition;
+        to.Scale= Scale;
+        to.DisplayOption= DisplayOption;
+        to.IsNameEditable= IsNameEditable;
+        to.MethodName= MethodName;
+        to.NbOfParams= NbOfParams;
+        to.IconGUID= IconGUID;
+        to.Tooltip= Tooltip;
+        to.ExecutionPriority= ExecutionPriority;
+        to.LayoutPriority= LayoutPriority;
+        to.SourceId= SourceId;
+        to.PortIndex= PortIndex;
+        to.InitialValueArchive= InitialValueArchive;
+        to.IsEntryState= IsEntryState;
+        return to;
+    }
     // ----------------------------------------------------------------------
     public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent) {
         iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);

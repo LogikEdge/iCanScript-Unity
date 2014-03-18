@@ -34,6 +34,29 @@ public class iCS_Storage : MonoBehaviour {
 		return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null;
 	}
 
+
+    // ======================================================================
+    // Duplication Utilities
+    // ----------------------------------------------------------------------
+    public static void Copy(iCS_Storage from, iCS_Storage to) {
+        to.ShowDisplayRootNode= from.ShowDisplayRootNode;
+        to.EngineObject= from.EngineObject;
+        to.MajorVersion= from.MajorVersion;
+        to.MinorVersion= from.MinorVersion;
+        to.BugFixVersion= from.BugFixVersion;
+        to.UndoRedoId= from.UndoRedoId;
+        to.ScrollPosition= from.ScrollPosition;
+        to.GuiScale= from.GuiScale;
+        to.SelectedObject= from.SelectedObject;
+        to.DisplayRoot= from.DisplayRoot;
+        to.UnityObjects= from.UnityObjects;
+        int len= from.EngineObjects.Count;
+        to.EngineObjects.Capacity= len;
+        for(int i= 0; i < len; ++i) {
+            to.EngineObjects[i]= from.EngineObjects[i].Clone();
+        }
+    }
+
     // ======================================================================
     // Unity Object Utilities
     // ----------------------------------------------------------------------

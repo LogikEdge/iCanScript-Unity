@@ -20,8 +20,7 @@ public partial class iCS_EditorObject {
 		}
 		set {
             var engineObject= EngineObject;
-            if(engineObject.Edge == value) return;
-			Debug.Log("Changing Edge for => "+Name);
+//            if(engineObject.Edge == value) return;
             engineObject.Edge= value;
             if(!IsFloating) CleanupPortEdgePosition();
 		}
@@ -35,7 +34,6 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
     // Updates the port edge information from the port type.
     public void UpdatePortEdge(Vector2 localPosition) {
-		Debug.Log("Updating port position for => "+Name);
         Edge= GetClosestEdge(localPosition);
     }
     // ----------------------------------------------------------------------

@@ -100,32 +100,6 @@ public partial class iCS_IStorage {
             ForceRelayout= true;
         }
     }
-    // ----------------------------------------------------------------------
-    public void GenerateEditorData() {
-		// Rebuild Editor Objects from the Engine Objects.
-		if(myEditorObjects == null) {
-		    myEditorObjects= new List<iCS_EditorObject>();
-	    }
-		iCS_EditorObject.RebuildFromEngineObjects(this);
-		
-        // Re-initialize internal values.
-        if(EditorObjects.Count > 0 && IsValid(EditorObjects[0])) {
-            ForEach(obj=> {
-				// Initialize initial port values.
-				if(obj.IsInDataOrControlPort) {
-					LoadInitialPortValueFromArchive(obj);
-				}
-            });            
-        }
-        CleanupUnityObjects();
-        
-        // Re-initialize multi-selection list.
-        var selectedObject= SelectedObject;
-        SelectedObject= selectedObject;
-        
-        // Cleanup Visual Editor display root.
-        DisplayRoot= DisplayRoot;
-    }
     
     // ----------------------------------------------------------------------
     public bool IsBehaviour {
@@ -179,9 +153,6 @@ public partial class iCS_IStorage {
         // Processing any changed caused by Undo/Redo
         DetectUndoRedo();
         
-//        // Verify for any change on the game object.
-//        UpdateBehaviourMessages();
-        
         // Force a relayout if it is requested
         if(myForceRelayout) {
             myForceRelayout= false;
@@ -190,8 +161,6 @@ public partial class iCS_IStorage {
 		
 	    // Perform layout if one or more objects has changed.
 	    if(myIsDirty) {
-	        // Tell Unity that our storage has changed.
-	        EditorUtility.SetDirty(Storage);
 	        // Prepare for cleanup after storage change.
 	        CleanupNeeded= true;
 	        myIsDirty= false;
@@ -206,7 +175,8 @@ public partial class iCS_IStorage {
             UpdateExecutionPriority();
             CleanupNeeded= Cleanup();
             if(!CleanupNeeded) {
-                EditorUtility.SetDirty(Storage);
+                // Tell Unity that our storage has changed.
+                SaveStorage();
             }
         }
     }
