@@ -18,8 +18,6 @@ public static partial class iCS_UserCommands {
 #endif
         if(state == null) return null;
         var iStorage= state.IStorage;
-        var name= state.Name;
-        iStorage.RegisterUndo("Set As Entry "+name);
         iStorage.ForEachChild(state.Parent,
             child=>{
                 if(child.IsEntryState) {
@@ -28,7 +26,8 @@ public static partial class iCS_UserCommands {
             }
         );
         state.IsEntryState= true;
-        iStorage.IsDirty= true;
+        var name= state.Name;
+        iStorage.SaveStorage("Set As Entry "+name);
         return state;
     }
 	// ----------------------------------------------------------------------
@@ -43,8 +42,8 @@ public static partial class iCS_UserCommands {
     public static void SetAsDisplayRoot(iCS_EditorObject obj) {
         if(obj == null || !obj.IsNode) return;
         var iStorage= obj.IStorage;
-        iStorage.RegisterUndo("Focus On "+obj.Name);
         iStorage.DisplayRoot= obj;
+        iStorage.SaveStorage("Change Display Root");
     }
     // ----------------------------------------------------------------------
     // Change the display root to the parent of the selected object.
@@ -53,12 +52,18 @@ public static partial class iCS_UserCommands {
         var parent= obj.ParentNode;
         if(parent == null) return;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Focus On "+parent.Name);
-        parent.IStorage.DisplayRoot= parent;
+        iStorage.DisplayRoot= parent;
+        iStorage.SaveStorage("Change Display Root");
     }
     // ----------------------------------------------------------------------
 	public static void ToggleShowDisplayRootNode(iCS_IStorage iStorage) {
-        iStorage.RegisterUndo("Toggle Show Display Root");
 		iStorage.ShowDisplayRootNode= !iStorage.ShowDisplayRootNode;
+        iStorage.SaveStorage("Toggle Show Display Root");
 	}
+    // ----------------------------------------------------------------------
+    public static void ChangeName(iCS_EditorObject obj, string name) {
+        if(string.Compare(obj.RawName, name) == 0) return;
+        obj.Name= name;
+        obj.IStorage.SaveStorage("Change name => "+name);
+    }
 }

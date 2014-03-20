@@ -175,17 +175,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(SelectedObject == null && DisplayRoot.IsBehaviour) {
             SelectedObject= DisplayRoot;
         }
-        ShowInstanceEditor();
         myContextualMenu.Update(iCS_ContextualMenu.MenuType.SelectedObject, SelectedObject, IStorage, GraphMousePosition);            
-    }
-	// ----------------------------------------------------------------------
-    void ShowInstanceEditor() {
-        if(SelectedObject != null && (SelectedObject.IsInstanceNode || SelectedObject.IsBehaviour)) {
-            bool hadKeyboardFocus= HasKeyboardFocus;
-            iCS_EditorMgr.ShowInstanceEditor();
-            // Keep keyboard focus.
-            if(hadKeyboardFocus) Focus();
-        }        
     }
 	// ----------------------------------------------------------------------
     void ProcessPicking(iCS_PickInfo pickInfo) {

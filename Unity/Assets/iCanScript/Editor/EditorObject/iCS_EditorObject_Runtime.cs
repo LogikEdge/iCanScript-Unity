@@ -25,7 +25,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public iCS_Object GetRuntimeObject {
 		get {
-	        iCS_VisualScriptImp bh= Storage as iCS_VisualScriptImp;
+	        iCS_VisualScriptImp bh= IStorage.iCSMonoBehaviour as iCS_VisualScriptImp;
 	        return bh == null ? null : (bh.GetRuntimeObject(InstanceId) as iCS_Object);
 		}
 	}

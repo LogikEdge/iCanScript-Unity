@@ -22,6 +22,9 @@ public partial class iCS_EditorObject {
 	public iCS_Storage Storage {
 		get { return myIStorage.Storage; }
 	}
+    public iCS_MonoBehaviour iCSMonoBehaviour {
+        get { return myIStorage.iCSMonoBehaviour; }
+    }
     public List<iCS_EditorObject> EditorObjects {
         get { return myIStorage.EditorObjects; }
     }
@@ -306,9 +309,6 @@ public partial class iCS_EditorObject {
             iCS_EditorObject editorObj= null;
             var engineObj= iStorage.EngineObjects[i];
 		    if(engineObj.InstanceId != -1) {
-                if(engineObj.Name == "this" && engineObj.SourceId == -1) {
-                    Debug.Log("Rebuilding => "+engineObj.Name+" Edge => "+engineObj.Edge);
-                }
 		        editorObj= new iCS_EditorObject(i, iStorage);
 		    }
 	        iStorage.EditorObjects.Add(editorObj);

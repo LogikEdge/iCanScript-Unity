@@ -33,11 +33,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			TODO : Process multi-select key (Command/Windows)
 		*/
 		if(IsMultiSelectKeyDown) {
-			ToggleMultiSelection(newSelected);
+			iCS_UserCommands.ToggleMultiSelection(newSelected);
 		}
 		else {
-	        SelectedObject= newSelected;
-	        ShowInstanceEditor();			
+	        iCS_UserCommands.Select(newSelected, IStorage);
 		}
         return SelectedObject;
     }
@@ -428,7 +427,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
 	// ----------------------------------------------------------------------
-    void PasteIntoGraph(Vector2 point, iCS_Storage sourceStorage, iCS_EngineObject sourceRoot) {
+    void PasteIntoGraph(Vector2 point, iCS_MonoBehaviour sourceMonoBehaviour, iCS_EngineObject sourceRoot) {
         if(sourceRoot == null) return;
         iCS_EditorObject validParent= GetValidParentNodeUnder(point, sourceRoot.ObjectType, sourceRoot.Name);
         if(validParent == null) {
@@ -453,7 +452,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				return;
 			}
         }
-        iCS_UserCommands.PasteIntoGraph(sourceStorage, sourceRoot, IStorage, validParent, point);
+        iCS_UserCommands.PasteIntoGraph(sourceMonoBehaviour, sourceRoot, IStorage, validParent, point);
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {

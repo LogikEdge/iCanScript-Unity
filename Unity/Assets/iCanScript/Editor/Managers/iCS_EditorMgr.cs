@@ -36,6 +36,9 @@ public static class iCS_EditorMgr {
 	public static void Update() {
         // Update storage information for selected object.
 		iCS_StorageMgr.Update();
+        foreach(var editor in myEditors) {
+            editor.Repaint();
+        }
 	}
 	
     // =================================================================================

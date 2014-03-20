@@ -5,13 +5,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 [AddComponentMenu("")]
-public partial class iCS_VisualScriptImp : iCS_Storage {
+public partial class iCS_VisualScriptImp : iCS_MonoBehaviour {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     object[]                            myRuntimeNodes   = new object[0];
     Dictionary<string,iCS_RunContext>   myMessageContexts= new Dictionary<string,iCS_RunContext>();
     
+
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
@@ -35,6 +36,8 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
         }
     }
     
+    // ======================================================================
+    // Message Handler
     // ----------------------------------------------------------------------
     // Run messages without parameter.
     public void RunMessage(string messageName) {

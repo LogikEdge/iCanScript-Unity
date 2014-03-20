@@ -14,7 +14,7 @@ public class iCS_Inspector : Editor {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-    private iCS_IStorage              myStorage             = null;
+    private iCS_IStorage              myIStorage            = null;
 	private iCS_EditorObject          mySelectedObject      = null;
 	private Dictionary<string,object> myFoldoutDB           = new Dictionary<string,object>();
 	
@@ -38,7 +38,7 @@ public class iCS_Inspector : Editor {
 	// ----------------------------------------------------------------------
 	public  iCS_EditorObject SelectedObject {
 	    get {
-	        iCS_EditorObject selectedObject= myStorage != null ? myStorage.SelectedObject : null;
+	        iCS_EditorObject selectedObject= myIStorage != null ? myIStorage.SelectedObject : null;
 	        if(selectedObject != mySelectedObject) {
                 myFoldoutDB.Clear();
 	            mySelectedObject= selectedObject;
@@ -60,7 +60,7 @@ public class iCS_Inspector : Editor {
 	public void OnDisable ()
 	{
         // Forget the selected object.
-		myStorage= null;
+		myIStorage= null;
 		mySelectedObject= null;
 	}
 	
@@ -69,16 +69,16 @@ public class iCS_Inspector : Editor {
     void UpdateVariables() {
         // Verify that the target reflects the selected storage.
         iCS_EditorMgr.Update();
-        iCS_Storage realStorage= target as iCS_Storage;
-        if(realStorage == null || realStorage != iCS_StorageMgr.Storage) {
-            myStorage= null;
+        var monoBehaviour= target as iCS_MonoBehaviour;
+        if(monoBehaviour == null || !iCS_StorageMgr.IsSameVisualScript(monoBehaviour, iCS_StorageMgr.IStorage)) {
+            myIStorage= null;
 			mySelectedObject= null;
             return;
         }
 
         // Configure the editor with the selected graph.
-		myStorage= iCS_StorageMgr.IStorage;
-		mySelectedObject= myStorage.SelectedObject;
+		myIStorage= iCS_StorageMgr.IStorage;
+		mySelectedObject= myIStorage.SelectedObject;
     }
     
 	// ----------------------------------------------------------------------
@@ -89,7 +89,9 @@ public class iCS_Inspector : Editor {
         UpdateVariables();
 		
         // Nothing to show if no storage is selected.
-        if(myStorage == null) return;
+        if(myIStorage == null) {
+            return;
+        }
         
         // Restore inspector skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
@@ -103,13 +105,13 @@ public class iCS_Inspector : Editor {
         switch(Event.current.type) {
             case EventType.Layout:
                 myAbortRepaint= false;
-                if(myPreviousStorage != myStorage) {
+                if(myPreviousStorage != myIStorage) {
                     myAbortRepaint= true;
-                    myPreviousStorage= myStorage;
+                    myPreviousStorage= myIStorage;
                 }
-                if(myPreviousModificationId != myStorage.ModificationId) {
+                if(myPreviousModificationId != myIStorage.ModificationId) {
                     myAbortRepaint= true;
-                    myPreviousModificationId= myStorage.ModificationId;
+                    myPreviousModificationId= myIStorage.ModificationId;
                 }
                 if(myPreviousSelectedObject != mySelectedObject) {
                     myAbortRepaint= true;
@@ -135,17 +137,22 @@ public class iCS_Inspector : Editor {
         if(mySelectedObject != null) {
             mySelectedObjectFold= EditorGUILayout.Foldout(mySelectedObjectFold, "Selected Object");
             if(mySelectedObjectFold) {
-                // Display object name.
                 EditorGUI.indentLevel= 1;
+                // Display object id.
+                EditorGUILayout.LabelField("id", SelectedObject.InstanceId.ToString());
+                // Display object type.
+                var typeName= ObjectNames.NicifyVariableName(SelectedObject.ObjectType.ToString());
+                EditorGUILayout.LabelField("Type", typeName);
+                // Display object name.
                 string name= SelectedObject.RawName;
-                if(mySelectedObject.IsOutStatePort) name= myStorage.FindAConnectedPort(SelectedObject).RawName;
+                if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).RawName;
                 if(name == null || name == "") name= EmptyStr;
                 if(mySelectedObject.IsNameEditable) {
                     name= EditorGUILayout.TextField("Name", name);
                     if(name != EmptyStr && name != SelectedObject.RawName) {
-                        SelectedObject.Name= name;
+                        iCS_UserCommands.ChangeName(SelectedObject, name);
                         if(SelectedObject.IsStatePort) {
-                            if(SelectedObject.IsOutStatePort) myStorage.FindAConnectedPort(SelectedObject).Name= name;
+                            if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Name= name;
                             else SelectedObject.Source.Name= name;                            
                         }
                     }                    
@@ -154,14 +161,14 @@ public class iCS_Inspector : Editor {
                 }
                 // Show object tooltip.
                 string toolTip= SelectedObject.Tooltip;
-                if(mySelectedObject.IsOutStatePort) toolTip= myStorage.FindAConnectedPort(SelectedObject).Tooltip;
+                if(mySelectedObject.IsOutStatePort) toolTip= myIStorage.FindAConnectedPort(SelectedObject).Tooltip;
                 if(toolTip == null || toolTip == "") toolTip= EmptyStr;
 				GUI.SetNextControlName("tooltip");
                 toolTip= EditorGUILayout.TextField("Tool Tip", toolTip);
                 if(toolTip != EmptyStr && toolTip != mySelectedObject.Tooltip) {
                     SelectedObject.Tooltip= toolTip;
                     if(SelectedObject.IsStatePort) {
-                        if(SelectedObject.IsOutStatePort) myStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
+                        if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
                         else SelectedObject.Source.Tooltip= toolTip;
                     }
                 }
@@ -175,7 +182,7 @@ public class iCS_Inspector : Editor {
             myEngineObjectFold= EditorGUILayout.Foldout(myEngineObjectFold, "Selected Engine Object");
             if(myEngineObjectFold) {
                 // Update engine selected object.
-                var storage= myStorage.Storage;
+                var storage= myIStorage.Storage;
                 var selectedId= storage.SelectedObject;
                 storage.EngineObject= selectedId != -1 ? storage.EngineObjects[selectedId] : null;
 
@@ -187,13 +194,13 @@ public class iCS_Inspector : Editor {
 
 
         // Allow repaint for modifications done by the user.
-        myPreviousModificationId= myStorage.ModificationId;		
+        myPreviousModificationId= myIStorage.ModificationId;		
 	}
 
 	// ----------------------------------------------------------------------
     void InspectNode(iCS_EditorObject node) {
         // Show runtime frame id.
-        var runtimeObject= myStorage.GetRuntimeObject(node) as iCS_Action;
+        var runtimeObject= myIStorage.GetRuntimeObject(node) as iCS_Action;
         if(runtimeObject != null) {
             EditorGUILayout.LabelField("FrameId", runtimeObject.FrameId.ToString());
         }
@@ -222,7 +229,7 @@ public class iCS_Inspector : Editor {
         // Collect data ports.
         List<iCS_EditorObject> inPorts= new List<iCS_EditorObject>();
         List<iCS_EditorObject> outPorts= new List<iCS_EditorObject>();
-        myStorage.ForEachChild(node,
+        myIStorage.ForEachChild(node,
             child=> {
                 if(child.IsInDataOrControlPort)  inPorts.Add(child);
                 if(child.IsOutDataOrControlPort) outPorts.Add(child);
@@ -230,7 +237,7 @@ public class iCS_Inspector : Editor {
         );
 
         // Show inputs.
-        var runtimeObject= myStorage.GetRuntimeObject(node) as iCS_ISignature;
+        var runtimeObject= myIStorage.GetRuntimeObject(node) as iCS_ISignature;
         if(inPorts.Count > 0) {
             int indentLevel= 1;
             if(runtimeObject != null) {
@@ -242,7 +249,7 @@ public class iCS_Inspector : Editor {
             }
             if(myShowInputs) {
                 EditorGUIUtility.LookLikeControls();
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, myStorage, indentLevel, myFoldoutDB), inPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, myIStorage, indentLevel, myFoldoutDB), inPorts);
             }        
         }
 
@@ -251,7 +258,7 @@ public class iCS_Inspector : Editor {
             EditorGUI.indentLevel= 1;
             myShowOutputs= EditorGUILayout.Foldout(myShowOutputs, "Outputs");
             if(myShowOutputs) {
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, myStorage, 2, myFoldoutDB), outPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, myIStorage, 2, myFoldoutDB), outPorts);
             }            
         }
     }
@@ -260,7 +267,7 @@ public class iCS_Inspector : Editor {
     // Inspect state node.
     void InspectStateNode(iCS_EditorObject node) {
         // Collect transitions.
-        iCS_EditorObject[] dataPorts= myStorage.RecalculatePortIndexes(node);
+        iCS_EditorObject[] dataPorts= myIStorage.RecalculatePortIndexes(node);
         List<iCS_EditorObject> inPorts= new List<iCS_EditorObject>();
         List<iCS_EditorObject> outPorts= new List<iCS_EditorObject>();
         foreach(var child in dataPorts) {
@@ -275,7 +282,7 @@ public class iCS_Inspector : Editor {
             if(myShowOutputs) {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in outPorts) {
-                    iCS_EditorObject inPort= myStorage.FindAConnectedPort(port);
+                    iCS_EditorObject inPort= myIStorage.FindAConnectedPort(port);
                     EditorGUILayout.LabelField("Name", inPort.Name);                        
                     EditorGUILayout.LabelField("State", inPort.Parent.Name);                    
                 }
@@ -301,9 +308,7 @@ public class iCS_Inspector : Editor {
     void InspectPort(iCS_EditorObject port) {
         iCS_EditorObject parent= port.Parent;
         EditorGUILayout.LabelField("Parent", parent.Name);
-        string inOut= port.IsInputPort ? (port.IsEnablePort ? "enable":"in") : "out";
-        EditorGUILayout.LabelField("Direction", inOut);
-        iCS_GuiUtilities.OnInspectorDataPortGUI(port, myStorage, 1, myFoldoutDB);        
+        iCS_GuiUtilities.OnInspectorDataPortGUI(port, myIStorage, 1, myFoldoutDB);        
     }
 
 

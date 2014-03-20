@@ -16,7 +16,6 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create "+desc.DisplayName);
         iCS_EditorObject instance= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -26,7 +25,9 @@ public static partial class iCS_UserCommands {
                 parent.LayoutNodeAndParents();                
             }
         );
-        iStorage.IsDirty= true;
+        if(!iStorage.IsTransactionOpened) {
+            CloseTransaction(iStorage, "Create "+desc.DisplayName);            
+        }
         return instance;
     }
 	// ----------------------------------------------------------------------
@@ -36,14 +37,15 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null || desc == null) return;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Delete "+desc.DisplayName);
         iStorage.AnimateGraph(null,
             _=> {
                 iStorage.InstanceWizardDestroy(parent, desc);
                 parent.LayoutNodeAndParents();                
             }
         );
-        iStorage.IsDirty= true;
+        if(!iStorage.IsTransactionOpened) {
+            CloseTransaction(iStorage, "Delete "+desc.DisplayName);            
+        }
     }
  	// ----------------------------------------------------------------------
     // OK
@@ -55,7 +57,6 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null || instanceType == null || desc == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create "+desc.DisplayName);
         iCS_EditorObject element= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -67,7 +68,9 @@ public static partial class iCS_UserCommands {
                 instance.LayoutNodeAndParents();
             }
         );
-        iStorage.IsDirty= true;
+        if(!iStorage.IsTransactionOpened) {
+            CloseTransaction(iStorage, "Delete "+desc.DisplayName);            
+        }
         return element;
     }
 	// ----------------------------------------------------------------------
@@ -80,7 +83,6 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null || instanceType == null || desc == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create "+desc.DisplayName);
         iCS_EditorObject element= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -116,7 +118,9 @@ public static partial class iCS_UserCommands {
                 instance.LayoutNodeAndParents();
             }
         );
-        iStorage.IsDirty= true;
+        if(!iStorage.IsTransactionOpened) {
+            CloseTransaction(iStorage, "Delete "+desc.DisplayName);            
+        }
         return element;
     }
 }

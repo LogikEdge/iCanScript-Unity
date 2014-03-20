@@ -16,18 +16,9 @@ public static partial class iCS_UserCommands {
 #if DEBUG
         Debug.Log("iCanScript: CreatePackage => "+name);
 #endif
-        if(parent == null) return null;
-        var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create "+name);
-        iCS_EditorObject package= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                package= iStorage.CreatePackage(parent.InstanceId, name, objectType, runtimeType);
-                package.SetInitialPosition(globalPos);
-                package.LayoutNodeAndParents();
-            }
-        );
-        iStorage.IsDirty= true;
+        iCS_EditorObject package= _CreatePackage(parent, globalPos, name, objectType, runtimeType);
+        if(package == null) return null;
+        package.IStorage.SaveStorage("Create "+name);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -38,7 +29,6 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create StateChart");
         iCS_EditorObject stateChart= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -51,7 +41,7 @@ public static partial class iCS_UserCommands {
                 entryState.LayoutNodeAndParents();
             }
         );
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Create StateChart");
         return stateChart;        
     }
 	// ----------------------------------------------------------------------
@@ -62,7 +52,6 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create State");
         iCS_EditorObject state= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -71,7 +60,7 @@ public static partial class iCS_UserCommands {
                 state.LayoutNodeAndParents();                
             }
         );
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Create State");
         return state;        
     }
 	// ----------------------------------------------------------------------
@@ -86,7 +75,6 @@ public static partial class iCS_UserCommands {
         if(!iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.InstanceMessage, parent, iStorage)) {
             return null;
         }
-        iStorage.RegisterUndo("Create "+name);
         iCS_EditorObject msgHandler= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -96,34 +84,37 @@ public static partial class iCS_UserCommands {
                 msgHandler.LayoutNodeAndParents(); 
             }
         );
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Create "+name);
         return msgHandler;
     }
 	// ----------------------------------------------------------------------
 	// OK
     public static iCS_EditorObject CreateOnEntryPackage(iCS_EditorObject parent, Vector2 globalPos) {
-        var package= CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
+        var package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
+        if(package == null) return null;
         package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnEntry;            
-        package.IStorage.IsDirty= true;
+        package.IStorage.SaveStorage("Create "+package.Name);
         return package;
     }
 	// ----------------------------------------------------------------------
 	// OK
 	public static iCS_EditorObject CreateOnUpdatePackage(iCS_EditorObject parent, Vector2 globalPos) {
-        var package= CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
+        var package= _CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
+        if(package == null) return null;
         package.IsNameEditable= false;            
         package.Tooltip= iCS_ObjectTooltips.OnUpdate;            
-        package.IStorage.IsDirty= true;
+        package.IStorage.SaveStorage("Create "+package.Name);
         return package;
     }
 	// ----------------------------------------------------------------------
     // OK
 	public static iCS_EditorObject CreateOnExitPackage(iCS_EditorObject parent, Vector2 globalPos) {
-        var package= CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
+        var package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
+        if(package == null) return null;
         package.IsNameEditable= false;            
         package.Tooltip= iCS_ObjectTooltips.OnExit;            
-        package.IStorage.IsDirty= true;
+        package.IStorage.SaveStorage("Create "+package.Name);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -135,7 +126,6 @@ public static partial class iCS_UserCommands {
         if(parent == null || desc == null) return null;
 		var name= desc.DisplayName;
 		var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create "+name);
         iCS_EditorObject function= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -144,7 +134,7 @@ public static partial class iCS_UserCommands {
                 function.LayoutNodeAndParents();                
             }
         );
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Create "+name);
         return function;        
     }
 
@@ -155,7 +145,6 @@ public static partial class iCS_UserCommands {
 #endif
         if(fromStatePort == null || toState == null) return null;
         var iStorage= toState.IStorage;
-        iStorage.RegisterUndo("Create Transition");
         // Create toStatePort
         iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         // Update port positions
@@ -207,7 +196,9 @@ public static partial class iCS_UserCommands {
         outTransitionPort.PortPositionRatio= 0.5f;
         // Layout the graph
         transitionPackage.LayoutNodeAndParents();
-        iStorage.IsDirty= true;
+        if(!iStorage.IsTransactionOpened) {
+            CloseTransaction(iStorage, "Create Transition");            
+        }
         return transitionPackage;
     }
     // -------------------------------------------------------------------------
@@ -215,12 +206,11 @@ public static partial class iCS_UserCommands {
     public static iCS_EditorObject CreateEnablePort(iCS_EditorObject parent) {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create Enable Port");
 		var port= iStorage.CreateEnablePort(parent.InstanceId);
         var pRect= parent.LayoutRect;
         port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
         parent.LayoutPorts();
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Create Enable Port");
         return port;
     }
     // -------------------------------------------------------------------------
@@ -228,12 +218,11 @@ public static partial class iCS_UserCommands {
     public static iCS_EditorObject CreateTriggerPort(iCS_EditorObject parent) {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create Trigger Port");
 		var port= iStorage.CreateTriggerPort(parent.InstanceId);        
         var pRect= parent.LayoutRect;
         port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
         parent.LayoutPorts();
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Create Trigger Port");
         return port;
     }
     // -------------------------------------------------------------------------
@@ -241,10 +230,9 @@ public static partial class iCS_UserCommands {
     public static iCS_EditorObject CreateOutInstancePort(iCS_EditorObject parent) {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create 'this' Port");
 		var port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
         parent.LayoutPorts();
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Create 'this' Port");
         return port;
     }
     
@@ -262,7 +250,6 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         var name= instanceType.Name;
-        iStorage.RegisterUndo("Create "+name);
         iCS_EditorObject instance= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -271,7 +258,9 @@ public static partial class iCS_UserCommands {
                 instance.LayoutNodeAndParents();                
             }
         );
-        iStorage.IsDirty= true;
+        if(!iStorage.IsTransactionOpened) {
+            CloseTransaction(iStorage, "Create "+name);            
+        }
         return instance;
     }
 
@@ -282,7 +271,6 @@ public static partial class iCS_UserCommands {
     public static iCS_EditorObject WrapInPackage(iCS_EditorObject obj) {
         if(obj == null || !obj.CanHavePackageAsParent()) return null;
         var iStorage= obj.IStorage;
-        iStorage.RegisterUndo("Wrap : "+obj.Name);
         iCS_EditorObject package= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -290,7 +278,7 @@ public static partial class iCS_UserCommands {
                 package.LayoutNodeAndParents();
             }
         );
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Wrap : "+obj.Name);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -299,7 +287,6 @@ public static partial class iCS_UserCommands {
         if(iStorage == null) return null;
         var selectedObjects= iStorage.FilterMultiSelectionForWrapInPackage();
         if(selectedObjects == null || selectedObjects.Length == 0) return null;
-        iStorage.RegisterUndo("Wrap Selection");
         iCS_EditorObject package= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -309,7 +296,7 @@ public static partial class iCS_UserCommands {
                 package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);
             }
         );
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Wrap Selection");
         return package;
     }
 
@@ -323,7 +310,6 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
-        iStorage.RegisterUndo("Create "+go.name);
         iCS_EditorObject instance= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -336,7 +322,29 @@ public static partial class iCS_UserCommands {
                 instance.LayoutNodeAndParents();    
             }
         );
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Create "+go.name);
         return instance;
     }
+    
+    
+    // ======================================================================
+    // Utilities
+	// ----------------------------------------------------------------------
+    private static iCS_EditorObject _CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
+#if DEBUG
+        Debug.Log("iCanScript: CreatePackage => "+name);
+#endif
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        iCS_EditorObject package= null;
+        iStorage.AnimateGraph(null,
+            _=> {
+                package= iStorage.CreatePackage(parent.InstanceId, name, objectType, runtimeType);
+                package.SetInitialPosition(globalPos);
+                package.LayoutNodeAndParents();
+            }
+        );
+        return package;
+    }
+    
 }

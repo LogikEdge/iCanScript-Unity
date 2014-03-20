@@ -11,14 +11,20 @@ public static class iCS_StorageMgr {
     static bool             myIsPlaying       = false;
     static GameObject       myActiveGameObject= null;
 	static iCS_IStorage 	myIStorage        = null;
-	static iCS_EditorObject mySelectedObject  = null;
 	
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
     public static iCS_IStorage     IStorage         { get { return myIStorage; }}
     public static iCS_Storage      Storage          { get { return IStorage != null ? IStorage.Storage : null; }}
-    public static iCS_EditorObject SelectedObject   { get { return IStorage != null ? IStorage.SelectedObject : null; } set { if(IStorage != null) IStorage.SelectedObject= value; }}
+    public static iCS_EditorObject SelectedObject   {
+        get { return IStorage != null ? IStorage.SelectedObject : null; }
+        set {
+            if(IStorage != null) {
+                iCS_UserCommands.Select(value, IStorage);                
+            }
+        }
+    }
 	
     // =================================================================================
     // Storage & Selected object Update.
@@ -26,42 +32,51 @@ public static class iCS_StorageMgr {
 	public static void Update() {
         // Use previous game object if new selection does not include a visual script.
 		GameObject go= Selection.activeGameObject;
-		iCS_Storage storage= go != null ? go.GetComponent<iCS_Storage>() : null;
-        if(storage == null) {
+        var monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviour>() : null;
+        if(monoBehaviour == null) {
             go= myActiveGameObject;
-            storage= go != null ? go.GetComponent<iCS_Storage>() : null;
+            monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviour>() : null;
             // Clear if previous game object is not valid.
-            if(storage == null) {
+            if(monoBehaviour == null) {
                 myIStorage= null;
-                mySelectedObject= null;
                 myIsPlaying= Application.isPlaying;
                 return;                
             }
         }
         // Create a root object if one does not exist.
         myActiveGameObject= go;
-        if(storage.EngineObjects.Count == 0) {
-            if(storage is iCS_VisualScriptImp) {
-                CreateRootBehaviourNode(storage);
+        var visualScript= monoBehaviour as iCS_VisualScriptImp;
+        if(visualScript != null) {
+            var storage= monoBehaviour.Storage;
+            if(storage == null) return;
+            if(storage.EngineObjects.Count == 0) {
+                CreateRootBehaviourNode(visualScript);
             }
         }
 		// Verify for storage change.
         bool isPlaying= Application.isPlaying;
-		if(myIStorage == null || myIStorage.Storage != storage || myIsPlaying != isPlaying) {
+		if(myIStorage == null || myIStorage.iCSMonoBehaviour != monoBehaviour || myIsPlaying != isPlaying) {
             myIsPlaying= isPlaying;
-			myIStorage= new iCS_IStorage(storage);
-			mySelectedObject= myIStorage.SelectedObject;
+			myIStorage= new iCS_IStorage(monoBehaviour);
 			return;
-		}
-		// Verify for selected object change.
-		if(mySelectedObject != myIStorage.SelectedObject) {
-			mySelectedObject= myIStorage.SelectedObject;
 		}
 	}
     // ---------------------------------------------------------------------------------
-    public static void CreateRootBehaviourNode(iCS_Storage storage) {
-        var behaviour= new iCS_EngineObject(0, storage.name+"::Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour);
-        storage.EngineObjects.Add(behaviour);        
+    public static void CreateRootBehaviourNode(iCS_VisualScriptImp visualScript) {
+        var behaviour= new iCS_EngineObject(0, visualScript.name+"::Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour);
+        visualScript.Storage.EngineObjects.Add(behaviour);        
     }
 
+    // ---------------------------------------------------------------------------------
+    public static bool IsSameVisualScript(iCS_IStorage iStorage, iCS_Storage storage) {
+        if(iStorage == null || storage == null) return false;
+        if(iStorage.Storage == storage) return true;
+        return false;
+    }
+    // ---------------------------------------------------------------------------------
+    public static bool IsSameVisualScript(iCS_MonoBehaviour monoBehaviour, iCS_IStorage iStorage) {
+        if(monoBehaviour == null || iStorage == null) return false;
+        if(iStorage.iCSMonoBehaviour == monoBehaviour) return true;
+        return false;
+    }
 }

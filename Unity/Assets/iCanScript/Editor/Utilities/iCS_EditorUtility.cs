@@ -63,9 +63,10 @@ public static class iCS_EditorUtility {
     // GUI helpers
 	// ----------------------------------------------------------------------
     public static int SafeSelectAndMakeVisible(iCS_EditorObject selected, iCS_IStorage iStorage) {
-        iStorage.RegisterUndo("Focus on: "+selected.Name);
-        iStorage.SelectedObject= selected;        
+        iCS_UserCommands.OpenTransaction(iStorage);
+        iCS_UserCommands.Select(selected, iStorage);        
         CenterOn(selected, iStorage);
+        iCS_UserCommands.CloseTransaction(iStorage, "Focus on: "+selected.Name);
         return iStorage.UndoRedoId;
     }
     public static void MakeVisible(iCS_EditorObject eObj, iCS_IStorage iStorage) {
@@ -87,8 +88,9 @@ public static class iCS_EditorUtility {
     }
 	// ----------------------------------------------------------------------
     public static void SafeCenterOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
-        iStorage.RegisterUndo("Focus on "+eObj.Name);
+        iCS_UserCommands.OpenTransaction(iStorage);
         CenterOn(eObj, iStorage);
+        iCS_UserCommands.CloseTransaction(iStorage, "Focus on "+eObj.Name);
     }
     public static void CenterOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
         MakeVisible(eObj, iStorage);

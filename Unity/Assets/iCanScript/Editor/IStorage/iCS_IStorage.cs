@@ -12,10 +12,10 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
             bool                myForceRelayout     = true;
             bool                myIsDirty           = true;
-            bool                CleanupNeeded       = true;
+    public  bool                IsTransactionOpened = false;
+    public  iCS_MonoBehaviour   iCSMonoBehaviour    = null;
     public  iCS_Storage         Storage             = null;
     List<iCS_EditorObject>      myEditorObjects     = null;
-    public  int                 UndoRedoId          = 0;
     public  int                 ModificationId      = -1;
     public  bool                CleanupDeadPorts    = true;
     
@@ -24,6 +24,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
     public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
+    public iCS_Storage MonoBehaviourStorage {
+        get { return iCSMonoBehaviour.Storage; }
+    }
     public iCS_EditorObject RootObject {
         get { return EditorObjects[0]; }
     }
@@ -66,6 +69,9 @@ public partial class iCS_IStorage {
         get { return Storage.GuiScale; }
         set { Storage.GuiScale= value; }
     }
+    public int UndoRedoId {
+        get { return Storage.UndoRedoId; }
+    }
     public bool IsDirty {
         get { return myIsDirty; }
         set {
@@ -87,14 +93,20 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_IStorage(iCS_Storage storage) {
-        Init(storage);
+    public iCS_IStorage(iCS_MonoBehaviour monoBehaviour) {
+        Init(monoBehaviour);
     }
-    public void Init(iCS_Storage storage) {
-        if(Storage != storage) {
-            IsDirty= true;
-            Storage= storage;
-            UndoRedoId= Storage.UndoRedoId;          
+    public void Init(iCS_MonoBehaviour monoBehaviour) {
+        // Verify that the storage is valid on the new iCS_MonoBehaviour
+        iCS_Storage storage= monoBehaviour.Storage;
+        if(storage == null) {
+            Debug.LogError("iCanScript: Unable to find the storage for => "+monoBehaviour.name);
+        }
+        // Update the MonoBehaviour variable
+        var oldMonoBehaviour= iCSMonoBehaviour;
+        iCSMonoBehaviour= monoBehaviour;
+        // Rebuild the editor information if the MonoBehaviour has changed.
+        if(oldMonoBehaviour != monoBehaviour) {
 			PerformEngineDataUpgrade();
             GenerateEditorData();
             ForceRelayout= true;
@@ -159,26 +171,10 @@ public partial class iCS_IStorage {
             ForcedRelayoutOfTree(EditorObjects[0]);    			
         }
 		
-	    // Perform layout if one or more objects has changed.
-	    if(myIsDirty) {
-	        // Prepare for cleanup after storage change.
-	        CleanupNeeded= true;
-	        myIsDirty= false;
-	    }
         // Update object animations.
 		if(IsAnimationPlaying) {
 			UpdateAllAnimations();			
 		}
-
-        // Perform graph cleanup once objects & layout are stable.
-        if(CleanupNeeded) {
-            UpdateExecutionPriority();
-            CleanupNeeded= Cleanup();
-            if(!CleanupNeeded) {
-                // Tell Unity that our storage has changed.
-                SaveStorage();
-            }
-        }
     }
 
     // ----------------------------------------------------------------------
@@ -514,8 +510,9 @@ public partial class iCS_IStorage {
         // Create 'this' port.
         if(desc.IsInstanceMember) {
             port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);            
+            port.IsNameEditable= false;
             if(instance.Parent.IsBehaviour) {
-                port.InitialValue= instance.Parent.Storage as Component;
+                port.InitialValue= instance.Parent.iCSMonoBehaviour;
             }
         }
 		// Update available component ports

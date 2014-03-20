@@ -82,7 +82,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public PortInfo[] BuildListOfPortInfoForBehaviourMessage(iCS_EditorObject behaviour) {
-        var go= behaviour.Storage.gameObject;
+        var go= behaviour.iCSMonoBehaviour.gameObject;
         var portInfos= new List<PortInfo>();        
         portInfos.Add(new PortInfo("gameObject", typeof(GameObject), iCS_ObjectTypeEnum.InProposedDataPort, go));
         return BuildListOfPortInfoForGameObject(go, portInfos);

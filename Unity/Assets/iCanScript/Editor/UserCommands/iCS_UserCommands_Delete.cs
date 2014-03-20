@@ -16,7 +16,6 @@ public static partial class iCS_UserCommands {
 #endif
         if(obj == null) return;
         var iStorage= obj.IStorage;
-        iStorage.RegisterUndo("Delete "+obj.Name);
         if(obj.IsInstanceNodePort) {
     		iStorage.AnimateGraph(null,
     			_=> iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj)                        
@@ -31,7 +30,7 @@ public static partial class iCS_UserCommands {
                 parent.LayoutNodeAndParents();
             }
 		);
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Delete "+obj.Name);
 	}
 	// ----------------------------------------------------------------------
     public static bool DeleteMultiSelectedObjects(iCS_IStorage iStorage) {
@@ -45,7 +44,6 @@ public static partial class iCS_UserCommands {
             DeleteObject(selectedObjects[0]);
             return true;
         }
-        iStorage.RegisterUndo("Delete Selection");
         iStorage.AnimateGraph(null,
             _=> {
                 foreach(var obj in selectedObjects) {
@@ -61,13 +59,12 @@ public static partial class iCS_UserCommands {
                 }                
             }
         );
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Delete Selection");
         return true;
     }
 	// ----------------------------------------------------------------------
     public static void DeleteKeepChildren(iCS_EditorObject obj) {
         var iStorage= obj.IStorage;
-        iStorage.RegisterUndo("Delete "+obj.Name);
         var newParent= obj.ParentNode;
         var childNodes= obj.BuildListOfChildNodes(_ => true);
         var childPos= P.map(n => n.LayoutPosition, childNodes);
@@ -79,7 +76,7 @@ public static partial class iCS_UserCommands {
                 newParent.LayoutNodeAndParents();
             }
         );
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Delete "+obj.Name);
     }
 
 }

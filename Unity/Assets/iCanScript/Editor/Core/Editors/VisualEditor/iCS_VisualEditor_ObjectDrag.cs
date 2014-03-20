@@ -85,6 +85,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 iCS_LibraryImp library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
                 iCS_IStorage iStorage= new iCS_IStorage(library);
                 iStorage.Copy(node, IStorage, null, Vector2.zero, iStorage);
+                iStorage.SaveStorage();
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
                 DragAndDrop.StartDrag(node.Name);
@@ -109,8 +110,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         IStorage.StartMultiSelectionNodeDrag();                                                
                     }
                     else {
-                        IStorage.RegisterUndo("Node Drag");
-//                        iCS_UserCommands.StartNodeDrag(node);
+                        iCS_UserCommands.StartNodeDrag(node);
                         DragType= DragTypeEnum.NodeDrag;                    
                         node.StartNodeDrag();                        
                     }
@@ -446,9 +446,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         iCS_EditorObject outStatePort= IStorage[DragObject.SourceId];
                         outStatePort.IsFloating= false;
                         outStatePort.IsSticky= false;
-                        iCS_UserCommands.CreateTransition(outStatePort, destState, DragObject.LayoutPosition);
+                        var toPosition= DragObject.LayoutPosition;
                         DragObject.SourceId= -1;
                         IStorage.DestroyInstance(DragObject);
+                        iCS_UserCommands.CreateTransition(outStatePort, destState, toPosition);
                     } else {
                         IStorage.DestroyInstance(DragObject.SourceId);
                         DragObject.SourceId= -1;

@@ -25,8 +25,8 @@ public static partial class iCS_UserCommands {
                 try {
                     iStorage.GenerateEditorData();                    
                 }
-                catch(System.Exception) {
-                    Debug.LogWarning("iCanScript: Problem found regenerating data");
+                catch(System.Exception e) {
+                    Debug.LogWarning("iCanScript: Problem found regenerating data: "+e.Message);
                 }
                 // Rebuild layout
                 iStorage.ForcedRelayoutOfTree(iStorage.EditorObjects[0]);
@@ -40,5 +40,8 @@ public static partial class iCS_UserCommands {
                 }
             }
         );
+        iCS_EditorMgr.Update();
+        // Force redraw of Inspector Window.
+        EditorUtility.SetDirty(iStorage.iCSMonoBehaviour);
     }
 }

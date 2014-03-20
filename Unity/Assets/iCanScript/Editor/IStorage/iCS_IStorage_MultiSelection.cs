@@ -15,7 +15,7 @@ public partial class iCS_IStorage {
 	// -------------------------------------------------------------------------
     int SelectedObjectId {
         get { return Storage.SelectedObject; }
-        set { Storage.SelectedObject= value; }
+        set { Storage.SelectedObject= value; ++ModificationId; }
     }
     public iCS_EditorObject SelectedObject {
         get {

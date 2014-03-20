@@ -1,4 +1,4 @@
 using UnityEngine;
 
 [AddComponentMenu("")]
-public class iCS_LibraryImp : iCS_Storage {}
+public class iCS_LibraryImp : iCS_MonoBehaviour {}

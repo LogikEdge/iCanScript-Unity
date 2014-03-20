@@ -30,11 +30,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
                 if(draggedObject is GameObject) {
                      if(objectUnderMouse.IsKindOfPackage) {
-                         var storage= GetDraggedLibrary(draggedObject);
-                         if(storage ==  null) {
+                         var library= GetDraggedLibrary(draggedObject);
+                         if(library ==  null) {
          		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;                        
                             return;
                          }
+                         var storage= library.Storage;
                          if(storage.EngineObjects.Count > 0) {
                              var engineObject= storage.EngineObjects[0];
                              if(iCS_AllowedChildren.CanAddChildNode(engineObject.Name, engineObject.ObjectType, objectUnderMouse, IStorage)) {
@@ -54,9 +55,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(draggedObject == null) { return; }
 		
 		// Copy/Paste library from prefab
-        iCS_Storage storage= GetDraggedLibrary(draggedObject);
-		if(storage != null) {
-            PasteIntoGraph(GraphMousePosition, storage, storage.EngineObjects[0]);
+        var library= GetDraggedLibrary(draggedObject);
+		if(library != null) {
+            PasteIntoGraph(GraphMousePosition, library, library.Storage.EngineObjects[0]);
 			// Remove data so that we don't get called multiple times (Unity bug !!!).
             DragAndDrop.AcceptDrag();
 			return;
@@ -109,12 +110,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return draggedObjects.Length >= 1 ? draggedObjects[0] : null;        
     }
 	// ----------------------------------------------------------------------
-    iCS_Storage GetDraggedLibrary(UnityEngine.Object draggedObject) {
+    iCS_LibraryImp GetDraggedLibrary(UnityEngine.Object draggedObject) {
         if(draggedObject != null) {
             GameObject go= draggedObject as GameObject;
             if(go != null) {
-                iCS_Storage storage= go.GetComponent<iCS_LibraryImp>();
-                return storage;
+                var library= go.GetComponent<iCS_LibraryImp>();
+                return library == null ? null : library;
             }
         }
         return null;

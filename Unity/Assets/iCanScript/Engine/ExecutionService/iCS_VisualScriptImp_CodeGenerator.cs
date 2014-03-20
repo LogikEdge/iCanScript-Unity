@@ -9,7 +9,7 @@ using P=Prelude;
 using CompileError  =Prelude.Tuple<int,string>;
 using CompileWarning=Prelude.Tuple<int,string>;
 
-public partial class iCS_VisualScriptImp : iCS_Storage {
+public partial class iCS_VisualScriptImp : iCS_MonoBehaviour {
     // ======================================================================
     // Sanity Check
     // ----------------------------------------------------------------------
@@ -590,7 +590,7 @@ public partial class iCS_VisualScriptImp : iCS_Storage {
 	object GetInitialValue(iCS_EngineObject port) {
 	    if(port.InitialValueArchive == null || port.InitialValueArchive == "") return iCS_Types.DefaultValue(port.RuntimeType);
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
-		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
+		return coder.DecodeObjectForKey("InitialValue", Storage) ?? iCS_Types.DefaultValue(port.RuntimeType);
 	}
     // ----------------------------------------------------------------------
 	iCS_Connection BuildConnection(iCS_EngineObject port) {

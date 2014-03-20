@@ -7,7 +7,7 @@ using System.Collections.Generic;
 // This class is the main storage of iCanScript.  All object are derived
 // from this storage class.
 [AddComponentMenu("")]
-public class iCS_Storage : MonoBehaviour {
+public class iCS_Storage : ScriptableObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -43,21 +43,32 @@ public class iCS_Storage : MonoBehaviour {
     }
     // ----------------------------------------------------------------------
     public static void Copy(iCS_Storage from, iCS_Storage to) {
+        to.name               = from.name;
         to.ShowDisplayRootNode= from.ShowDisplayRootNode;
-        to.EngineObject= from.EngineObject;
-        to.MajorVersion= from.MajorVersion;
-        to.MinorVersion= from.MinorVersion;
-        to.BugFixVersion= from.BugFixVersion;
-        to.UndoRedoId= from.UndoRedoId;
-        to.ScrollPosition= from.ScrollPosition;
-        to.GuiScale= from.GuiScale;
-        to.SelectedObject= from.SelectedObject;
-        to.DisplayRoot= from.DisplayRoot;
-        to.UnityObjects= from.UnityObjects;
+        to.EngineObject       = from.EngineObject;
+        to.MajorVersion       = from.MajorVersion;
+        to.MinorVersion       = from.MinorVersion;
+        to.BugFixVersion      = from.BugFixVersion;
+        to.UndoRedoId         = from.UndoRedoId;
+        to.ScrollPosition     = from.ScrollPosition;
+        to.GuiScale           = from.GuiScale;
+        to.SelectedObject     = from.SelectedObject;
+        to.DisplayRoot        = from.DisplayRoot;
+        to.UnityObjects       = from.UnityObjects;
         int len= from.EngineObjects.Count;
         to.EngineObjects.Capacity= len;
         for(int i= 0; i < len; ++i) {
-            to.EngineObjects[i]= from.EngineObjects[i].Clone();
+            var fromObj= from.EngineObjects[i];
+            if(fromObj == null) fromObj= iCS_EngineObject.CreateInvalidInstance();
+            if(to.EngineObjects.Count <= i) {
+                to.EngineObjects.Add(fromObj.Clone());
+            }
+            else if(to.EngineObjects[i] == null) {
+                to.EngineObjects[i]= fromObj.Clone();                
+            }
+            else {
+                to.EngineObjects[i]= fromObj.CopyTo(to.EngineObjects[i]);                                
+            }
         }
     }
 
@@ -114,10 +125,10 @@ public class iCS_Storage : MonoBehaviour {
 		string fullName= "";
 		for(; obj != null; obj= GetParentNode(obj)) {
             if( !obj.IsBehaviour ) {
-    			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "::"+fullName);                
+    			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "."+fullName);                
             }
 		}
-		return name+"::"+fullName;
+		return name+"."+fullName;
 	}
 	
     // ======================================================================

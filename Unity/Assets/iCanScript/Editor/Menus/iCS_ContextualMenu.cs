@@ -21,7 +21,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     const string ShowHierarchyStr              = "Show in hierarchy";
     const string SetAsDisplayRootStr           = "Set as Display Root";
-    const string FocusOnParentStr              = "Focus on Parent";
+    const string FocusOnParentStr              = "Set Parent as Display Root";
     const string DeleteStr                     = "- Delete";
     const string PackageStr                    = "+ Package";
     const string StateChartStr                 = "+ State Chart";
@@ -505,18 +505,22 @@ public class iCS_ContextualMenu {
 		var pos= context.GraphPosition;
 		var parent= iStorage.GetNodeAt(pos);
 		if(parent == null) return;
+        iCS_UserCommands.OpenTransaction(iStorage);
 		var instance= iCS_UserCommands.CreateObjectInstance(parent, pos, sourcePort.RuntimeType);   
 		if(sourcePort != null) {
 	        var thisPort= iStorage.InstanceWizardGetInputThisPort(instance);
 	        iStorage.SetNewDataConnection(thisPort, sourcePort);					
 		}
+        iCS_UserCommands.CloseTransaction(iStorage, "Create Object Instance");
     }
 
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage storage, Vector2 globalPos, iCS_MethodBaseInfo desc) {
-        iCS_EditorObject newNodeParent= storage.GetNodeAt(globalPos);
+    static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage iStorage, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+        iCS_EditorObject newNodeParent= iStorage.GetNodeAt(globalPos);
 		if(newNodeParent == null) return null;
         if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;
+        // Open a transaction for multi-operations
+        iCS_UserCommands.OpenTransaction(iStorage);
 		iCS_EditorObject method= null;
 		if(newNodeParent.IsInstanceNode) {
 			method= iCS_UserCommands.CreateInstanceWizardElement(newNodeParent, desc);
@@ -555,31 +559,32 @@ public class iCS_ContextualMenu {
 		var portParent= port.ParentNode;
 		if(portParent.IsParentOf(method)) isInputPort= !isInputPort;
         if(isInputPort) {
-			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), storage.GetChildOutputDataPorts(method)); 
+			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), iStorage.GetChildOutputDataPorts(method)); 
 			// Connect if only one possibility.
 			if(outputPorts.Length == 1) {
-				storage.SetNewDataConnection(port, outputPorts[0]);
+				iStorage.SetNewDataConnection(port, outputPorts[0]);
 			}
 			else {
 				var bestPort= GetClosestMatch(port, outputPorts);
 				if(bestPort != null) {
-					storage.SetNewDataConnection(port, bestPort);						
+					iStorage.SetNewDataConnection(port, bestPort);						
 				}
 			}
         } else {
-			iCS_EditorObject[] inputPorts= Prelude.filter(x=> iCS_Types.IsA(x.RuntimeType, port.RuntimeType), storage.GetChildInputDataPorts(method));
+			iCS_EditorObject[] inputPorts= Prelude.filter(x=> iCS_Types.IsA(x.RuntimeType, port.RuntimeType), iStorage.GetChildInputDataPorts(method));
 			// Connect if only one posiibility
 			if(inputPorts.Length == 1) {
-				storage.SetNewDataConnection(inputPorts[0], port);
+				iStorage.SetNewDataConnection(inputPorts[0], port);
 			}
 			// Multiple choices exist so try the one with the closest name.
 			else {
 				var bestPort= GetClosestMatch(port, inputPorts);
 				if(bestPort != null) {
-					storage.SetNewDataConnection(bestPort, port);											
+					iStorage.SetNewDataConnection(bestPort, port);											
 				}
 			}
         }
+        iCS_UserCommands.CloseTransaction(iStorage, "Create => "+desc.DisplayName);
         return method;
     }
     

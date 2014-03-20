@@ -7,16 +7,16 @@ public static class iCS_iCanScriptMenu {
 	[MenuItem("Edit/", false, 100)]
 	[MenuItem("Edit/iCanScript/Create Visual Script", false, 101)]
 	public static void CreateVisualScript() {
-		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
-		if(storage == null) {
+		var visualScript = Selection.activeGameObject.GetComponent<iCS_VisualScriptImp>();
+		if(visualScript == null) {
 		    iCS_MenuUtility.InstallVisualScriptOn(Selection.activeGameObject);
 		}
 	}
 	[MenuItem("Edit/iCanScript/Create Visual Script", true, 101)]
 	public static bool ValidateCreateVisualScript() {
-		if(Selection.activeTransform == null) return false;
-		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
-		return storage == null;
+		if(Selection.activeGameObject == null) return false;
+		var visualScript = Selection.activeGameObject.GetComponent<iCS_VisualScriptImp>();
+		return visualScript == null;
 	}
 
     // ======================================================================

@@ -10,19 +10,16 @@ public static partial class iCS_UserCommands {
     // Node drag
 	// ----------------------------------------------------------------------
     public static void StartNodeDrag(iCS_EditorObject node) {
-        node.IStorage.RegisterUndo("Node Drag");
     }
     public static void EndNodeDrag(iCS_EditorObject node) {
-        node.IStorage.IsDirty= true;
+        node.IStorage.SaveStorage("Node Drag");
     }
     public static void StartMultiSelectionNodeDrag(iCS_IStorage iStorage) {
-        iStorage.RegisterUndo("Multi-Selection Node Drag");
     }
     public static void EndMultiSelectionDrag(iCS_IStorage iStorage) {
-        iStorage.IsDirty= true;
+        iStorage.SaveStorage("Multi-Selection Node Drag");
     }
     public static void StartNodeRelocation(iCS_EditorObject node) {
-        node.IStorage.RegisterUndo("Node Relocation");
     }
     public static void EndNodeRelocation(iCS_EditorObject node, iCS_EditorObject oldParent, iCS_EditorObject newParent) {
         var iStorage= node.IStorage;
@@ -35,10 +32,9 @@ public static partial class iCS_UserCommands {
                 node.LayoutNodeAndParents();
             }
         );
-        node.IStorage.IsDirty= true;
+        iStorage.SaveStorage("Node Relocation");
     }
     public static void StartPortDrag(iCS_EditorObject port) {
-        port.IStorage.RegisterUndo("Port Drag");
     }
     public static void EndPortDrag(iCS_EditorObject port) {
         port.IStorage.AnimateGraph(null,
@@ -46,6 +42,6 @@ public static partial class iCS_UserCommands {
                 port.ParentNode.LayoutNodeAndParents();                
             }
         );
-        port.IStorage.IsDirty= true;
+        port.IStorage.SaveStorage("Port Drag");
     }
 }

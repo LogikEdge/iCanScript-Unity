@@ -38,7 +38,6 @@ public class iCS_TreeViewEditor : iCS_EditorBase {
         if(myController == null || myController.IStorage != IStorage) {
             myController= new iCS_TreeViewController(IStorage[0], IStorage);                        
             myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);            
-            myUndoRedoId= IStorage.UndoRedoId;
             return true;
         }
         if(myMainView == null) {

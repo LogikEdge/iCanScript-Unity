@@ -5,7 +5,7 @@ using System.Collections;
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	void PerformEngineDataUpgrade() {
-		iCS_Version storageVersion= new iCS_Version(Storage.MajorVersion, Storage.MinorVersion, Storage.BugFixVersion);
+		iCS_Version storageVersion= new iCS_Version(MonoBehaviourStorage.MajorVersion, MonoBehaviourStorage.MinorVersion, MonoBehaviourStorage.BugFixVersion);
 		iCS_Version softwareVersion= new iCS_Version(iCS_Config.MajorVersion, iCS_Config.MinorVersion, iCS_Config.BugFixVersion);
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
@@ -16,22 +16,22 @@ public partial class iCS_IStorage {
 			SaveCurrentScene();
 		}
 		// Update storage version identifiers
-		Storage.MajorVersion = iCS_Config.MajorVersion;
-		Storage.MinorVersion = iCS_Config.MinorVersion;
-		Storage.BugFixVersion= iCS_Config.BugFixVersion;
+		MonoBehaviourStorage.MajorVersion = iCS_Config.MajorVersion;
+		MonoBehaviourStorage.MinorVersion = iCS_Config.MinorVersion;
+		MonoBehaviourStorage.BugFixVersion= iCS_Config.BugFixVersion;
 	}
 
     // ----------------------------------------------------------------------
 	// Convert module under behaviour to message.
 	void v0_9_3_Upgrade() {
         // Convert behaviour type
-        if(EngineObjects.Count != 0) {
-            EngineObjects[0].QualifiedType= typeof(iCS_VisualScriptImp).AssemblyQualifiedName;
+        if(MonoBehaviourStorage.EngineObjects.Count != 0) {
+            MonoBehaviourStorage.EngineObjects[0].QualifiedType= typeof(iCS_VisualScriptImp).AssemblyQualifiedName;
         }
-		foreach(var n in EngineObjects) {
+		foreach(var n in MonoBehaviourStorage.EngineObjects) {
 			if(n.IsValid && n.IsParentValid) {
 				// Convert behaviour modules to messages.
-				var parent= EngineObjects[n.ParentId];
+				var parent= MonoBehaviourStorage.EngineObjects[n.ParentId];
 				if(parent.IsBehaviour) {
 					if(n.IsKindOfPackage) {
 						n.ObjectType= iCS_ObjectTypeEnum.InstanceMessage;						
