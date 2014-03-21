@@ -9,12 +9,11 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
     // Fields
     // ---------------------------------------------------------------------------------
 	iCS_EditorObject    			        myTarget           = null;
-	iCS_IStorage	    			        myStorage          = null;
+	iCS_IStorage	    			        myIStorage         = null;
 	DSTreeView		    			        myTreeView         = null;
 	Rect                                    mySelectedArea     = new Rect(0,0,0,0);
 	float               			        myFoldOffset       = 0;
 	bool                			        myNameEdition      = false;
-	string                                  myNameBeforeEdition= null;
 	string              			        mySearchString     = null;
     int                                     myTreeSize         = 0;
 	Prelude.Tree<iCS_EditorObject>	        myTree		       = null;
@@ -26,12 +25,18 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 	Stack<int>								myIterStackChildIdx= null;
 	
     // =================================================================================
+    // Specialized editors
+    // ---------------------------------------------------------------------------------
+    iCS_BufferedTextField   myNameEditor= new iCS_BufferedTextField();
+
+
+    // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
 	public DSView 					View 	     { get { return myTreeView; }}
 	public iCS_EditorObject 		Target	     { get { return myTarget; }}
-	public iCS_IStorage             IStorage     { get { return myStorage; }}
-	public iCS_EditorObject 		Selected     { get { return myStorage.SelectedObject; } set { myStorage.SelectedObject= value; }}
+	public iCS_IStorage             IStorage     { get { return myIStorage; }}
+	public iCS_EditorObject 		Selected     { get { return myIStorage.SelectedObject; } set { myIStorage.SelectedObject= value; }}
 	public Rect                     SelectedArea { get { return mySelectedArea; }}
 	public bool             		IsSelected   { get { return IterNode != null ? IterNode.Value == Selected : false; }}
     public int                      TreeSize     { get { return myTreeSize; }}
@@ -73,9 +78,9 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
         Init(target, storage);
 	}
     // ---------------------------------------------------------------------------------
-	public void Init(iCS_EditorObject target, iCS_IStorage storage) {
+	public void Init(iCS_EditorObject target, iCS_IStorage iStorage) {
 		myTarget= target;
-		myStorage= storage;
+		myIStorage= iStorage;
 		BuildTree();
 		if(myTreeView == null) {
 		    myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
@@ -93,23 +98,23 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void BuildTree() {
         // Build filter list of object...
-        var filterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
+        var filterFlags= Prelude.map(o=> FilterIn(o), myIStorage.EditorObjects);
         // ... make certain the parents are also filtered in !!!
         myTreeSize= 0;
         for(int i= 0; i < filterFlags.Count; ++i) {
             if(filterFlags[i]) {
                 ++myTreeSize;
                 Prelude.until(
-                    myStorage.IsValid,
+                    myIStorage.IsValid,
                     id=> {
-                        if(myStorage.IsIdValid(id)) {
+                        if(myIStorage.IsIdValid(id)) {
                             filterFlags[id]= true;
-                            return myStorage.EditorObjects[id].ParentId;
+                            return myIStorage.EditorObjects[id].ParentId;
                         }
                         filterFlags[id]= false;
                         return -1;
                     },
-                    myStorage.IsIdValid(i) ? myStorage.EditorObjects[i].ParentId : -1
+                    myIStorage.IsIdValid(i) ? myIStorage.EditorObjects[i].ParentId : -1
                 );
             }
         }
@@ -118,12 +123,12 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 			myTree= null;
 			return;
 		}
-        var rootNode= myStorage.EditorObjects[0];
+        var rootNode= myIStorage.EditorObjects[0];
 		myTree= BuildTreeNode(rootNode, filterFlags);
     }
 	Prelude.Tree<iCS_EditorObject> BuildTreeNode(iCS_EditorObject nodeRoot, List<bool> filterFlags) {
 		Prelude.Tree<iCS_EditorObject> tree= new Prelude.Tree<iCS_EditorObject>(nodeRoot);
-		myStorage.ForEachChild(nodeRoot,
+		myIStorage.ForEachChild(nodeRoot,
 			c=> {
 				Prelude.Tree<iCS_EditorObject> newNode= BuildTreeNode(c, filterFlags);
 				if(filterFlags[c.InstanceId]) tree.AddChild(newNode);
@@ -143,7 +148,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_EditorObject eObj) {
-        if(eObj == null || !myStorage.IsIdValid(eObj.InstanceId)) return false;
+        if(eObj == null || !myIStorage.IsIdValid(eObj.InstanceId)) return false;
         // Don't display object instance internals.
         var topObjectInstance= eObj.TopObjectInstanceNode();
         if(topObjectInstance != null) {
@@ -170,7 +175,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 	public void BeginDisplay() { EditorGUIUtility.LookLikeControls(); }
 	public void EndDisplay() {}
 	public bool	MoveToNext() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myIStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
 		if(MoveToFirstChild()) return true;
 		if(MoveToNextSibling()) return true;
 		do {
@@ -180,7 +185,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
 	public bool	MoveToNextSibling() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myIStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
 		if(myIterStackNode.Count == 1) return false;
 		var savedNode= myIterStackNode.Pop();
 		var savedIdx= myIterStackChildIdx.Pop();
@@ -193,14 +198,14 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
 	public bool MoveToParent() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myIStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
 		myIterStackNode.Pop();
 		myIterStackChildIdx.Pop();
 		return myIterStackNode.Count != 0;
 	}
 	// ---------------------------------------------------------------------------------
 	public bool	MoveToFirstChild() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myIStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
 		var node= IterNode;
 		if(node == null || node.Children == null) return false;
 		myIterStackChildIdx.Pop();
@@ -212,7 +217,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 	}
 	// ---------------------------------------------------------------------------------
 	public bool	MoveToNextChild() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myIStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
 		var node= IterNode;
 		if(node == null || node.Children == null) return false;
 		int idx= myIterStackChildIdx.Pop();
@@ -225,7 +230,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 
     // ---------------------------------------------------------------------------------
 	public Vector2	CurrentObjectLayoutSize() {
-		if(myStorage == null) return Vector2.zero;
+		if(myIStorage == null) return Vector2.zero;
 		if(myFoldOffset == 0) {
             var emptySize= EditorStyles.foldout.CalcSize(new GUIContent(""));
     		myFoldOffset= emptySize.x;
@@ -235,7 +240,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
-		if(myStorage == null) return true;
+		if(myIStorage == null) return true;
         // Show selected outline.
         GUIStyle labelStyle= EditorStyles.label;
 		if(IsSelected) {
@@ -265,21 +270,10 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     void ProcessNameChange(Rect pos, Rect frameArea) {
-        GUI.SetNextControlName("iCS_Hierarchy_NameChange");
-	    string newName= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), IterValue.RawName);            
-        if(iCS_InputMgr.IsGUI("iCS_Hierarchy_NameChange")) {
-            bool isEscape= iCS_InputMgr.IsEscape;
-            if(isEscape) {
-                newName= myNameBeforeEdition;
-            }
-            if(isEscape || iCS_InputMgr.IsReturn) {
-                NameEdition= false;
-                Event.current.Use();
-            }
-        }
-        if(newName != IterValue.RawName) {
-            IterValue.Name= newName;
-        }        
+        var rect= new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f);
+        myNameEditor.Update(rect, IterValue.RawName,
+            newName=> iCS_UserCommands.ChangeName(IterValue, newName)
+        );
     }
     // ---------------------------------------------------------------------------------
 	public object	CurrentObjectKey() {
@@ -322,7 +316,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
     }
     // ---------------------------------------------------------------------------------
     bool ShouldUseFoldout() {
-        if(myStorage == null) return false;
+        if(myIStorage == null) return false;
         return IterValue.IsNode;
     }
     // ---------------------------------------------------------------------------------
@@ -334,7 +328,6 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
         if(!myNameEdition && eObj == Selected) {
             if(eObj.IsNameEditable) {
                 myNameEdition= true;
-                myNameBeforeEdition= eObj.RawName;
             } else {       
                 myNameEdition= false;    
                 EditorWindow.focusedWindow.ShowNotification(new GUIContent("The selected name cannot be changed !!!"));            

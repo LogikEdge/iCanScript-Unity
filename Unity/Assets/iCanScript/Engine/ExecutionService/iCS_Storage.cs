@@ -55,9 +55,15 @@ public class iCS_Storage : ScriptableObject {
         to.SelectedObject     = from.SelectedObject;
         to.DisplayRoot        = from.DisplayRoot;
         to.UnityObjects       = from.UnityObjects;
-        int len= from.EngineObjects.Count;
-        to.EngineObjects.Capacity= len;
-        for(int i= 0; i < len; ++i) {
+        // Resize destination engine object array.
+        int fromLen= from.EngineObjects.Count;
+        int toLen= to.EngineObjects.Count;
+        if(toLen > fromLen) {
+            to.EngineObjects.RemoveRange(fromLen, toLen-fromLen);
+        }
+        to.EngineObjects.Capacity= fromLen;
+        // Copy engine objects.
+        for(int i= 0; i < fromLen; ++i) {
             var fromObj= from.EngineObjects[i];
             if(fromObj == null) fromObj= iCS_EngineObject.CreateInvalidInstance();
             if(to.EngineObjects.Count <= i) {
@@ -69,7 +75,7 @@ public class iCS_Storage : ScriptableObject {
             else {
                 to.EngineObjects[i]= fromObj.CopyTo(to.EngineObjects[i]);                                
             }
-        }
+        }            
     }
 
     // ======================================================================

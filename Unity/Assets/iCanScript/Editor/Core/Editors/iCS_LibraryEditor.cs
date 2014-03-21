@@ -150,6 +150,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         var library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
         iCS_IStorage iStorage= new iCS_IStorage(library);
         CreateInstance(node, iStorage);
+        iStorage.SaveStorage();
         // Fill drag info.
         DragAndDrop.PrepareStartDrag();
         DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};

@@ -114,8 +114,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(draggedObject != null) {
             GameObject go= draggedObject as GameObject;
             if(go != null) {
-                var library= go.GetComponent<iCS_LibraryImp>();
-                return library == null ? null : library;
+                return go.GetComponent<iCS_LibraryImp>();
             }
         }
         return null;

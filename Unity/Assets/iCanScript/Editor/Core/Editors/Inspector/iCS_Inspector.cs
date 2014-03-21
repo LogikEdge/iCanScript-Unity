@@ -33,6 +33,12 @@ public class iCS_Inspector : Editor {
     private iCS_EditorObject    myPreviousSelectedObject= null;
     private int                 myPreviousPortSourceId  = -1;
     
+	// ----------------------------------------------------------------------
+    // Keyboard input functions
+    iCS_BufferedTextField myNameEditor   = new iCS_BufferedTextField();
+    iCS_BufferedTextField myTooltipEditor= new iCS_BufferedTextField();
+
+    
     // ======================================================================
     // Properties
 	// ----------------------------------------------------------------------
@@ -148,14 +154,9 @@ public class iCS_Inspector : Editor {
                 if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).RawName;
                 if(name == null || name == "") name= EmptyStr;
                 if(mySelectedObject.IsNameEditable) {
-                    name= EditorGUILayout.TextField("Name", name);
-                    if(name != EmptyStr && name != SelectedObject.RawName) {
-                        iCS_UserCommands.ChangeName(SelectedObject, name);
-                        if(SelectedObject.IsStatePort) {
-                            if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Name= name;
-                            else SelectedObject.Source.Name= name;                            
-                        }
-                    }                    
+                    myNameEditor.Update("Name", SelectedObject.RawName,
+                        newName=> iCS_UserCommands.ChangeName(SelectedObject, newName)
+                    );
                 } else {
                     EditorGUILayout.LabelField("Name", name);                    
                 }
@@ -164,14 +165,17 @@ public class iCS_Inspector : Editor {
                 if(mySelectedObject.IsOutStatePort) toolTip= myIStorage.FindAConnectedPort(SelectedObject).Tooltip;
                 if(toolTip == null || toolTip == "") toolTip= EmptyStr;
 				GUI.SetNextControlName("tooltip");
-                toolTip= EditorGUILayout.TextField("Tool Tip", toolTip);
-                if(toolTip != EmptyStr && toolTip != mySelectedObject.Tooltip) {
-                    SelectedObject.Tooltip= toolTip;
-                    if(SelectedObject.IsStatePort) {
-                        if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
-                        else SelectedObject.Source.Tooltip= toolTip;
+                myTooltipEditor.Update("Tooltip", toolTip,
+                    newTooltip=> {
+                        iCS_UserCommands.OpenTransaction(myIStorage);
+                        SelectedObject.Tooltip= newTooltip;
+                        if(SelectedObject.IsStatePort) {
+                            if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
+                            else SelectedObject.Source.Tooltip= toolTip;
+                        }
+                        iCS_UserCommands.CloseTransaction(myIStorage, "Change tooltip");
                     }
-                }
+                );
                 // Show inspector specific for each type of component.
                 if(SelectedObject.IsNode)      InspectNode(SelectedObject);
                 else if(SelectedObject.IsPort) InspectPort(SelectedObject);
