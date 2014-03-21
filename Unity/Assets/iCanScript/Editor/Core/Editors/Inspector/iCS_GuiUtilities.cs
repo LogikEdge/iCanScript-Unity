@@ -171,14 +171,22 @@ public static class iCS_GuiUtilities {
         // C# data types.
         if(valueElementType == typeof(byte)) {
             byte value= (byte)currentValue;
-            byte newValue= (byte)((int)EditorGUILayout.IntField(niceName, (int)value));
-            if(newValue != value) isDirty= true;
+            byte newValue= value;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (byte)EditorGUILayout.IntField(n,(int)v), foldoutDB)) {
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
+            }
             return newValue;
         }
         if(valueElementType == typeof(sbyte)) {
             sbyte value= (sbyte)currentValue;
-            sbyte newValue= (sbyte)((int)EditorGUILayout.IntField(niceName, (int)value));            
-            if(newValue != value) isDirty= true;
+            sbyte= newValue= value;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (sbyte)EditorGUILayout.IntField(n,(int)v), foldoutDB)) {
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
+            }
             return newValue;
         }
         if(valueElementType == typeof(bool)) {
@@ -189,8 +197,12 @@ public static class iCS_GuiUtilities {
         }
         if(valueElementType == typeof(int)) {
             int value= (int)currentValue;
-            int newValue= EditorGUILayout.IntField(niceName, value);
-            if(newValue != value) isDirty= true;
+            int newValue= value;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.IntField(n,v), foldoutDB)) {
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
+            }
             return newValue;
         }
         if(valueElementType == typeof(uint)) {
@@ -201,14 +213,22 @@ public static class iCS_GuiUtilities {
         }
         if(valueElementType == typeof(short)) {
             short value= (short)currentValue;
-            short newValue= (short)((int)EditorGUILayout.IntField(niceName, (int)value));            
-            if(newValue != value) isDirty= true;
+            short newValue= value;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (short)EditorGUILayout.IntField(n,(int)v), foldoutDB)) {
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
+            }
             return newValue;
         }
         if(valueElementType == typeof(ushort)) {
             int value= (ushort)currentValue;
-            int newValue= (ushort)((int)EditorGUILayout.IntField(niceName, (int)value));            
-            if(newValue != value) isDirty= true;
+            int newValue= value;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (ushort)EditorGUILayout.IntField(n,(int)v), foldoutDB)) {
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
+            }
             return newValue;
         }
         if(valueElementType == typeof(long)) {
