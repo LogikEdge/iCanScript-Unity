@@ -224,23 +224,32 @@ public static class iCS_GuiUtilities {
             return Convert.ChangeType(newULongAsString, typeof(ulong));
         }
         if(valueElementType == typeof(float)) {
-            float newValue= (float)currentValue; 
+            float value= (float)currentValue; 
+            float newValue= value;
             if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.FloatField(n,v), foldoutDB)) {
-                isDirty= true;
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
             }
             return newValue;
         }
         if(valueElementType == typeof(double)) {
-            string newValue= (string)Convert.ChangeType((double)currentValue, typeof(string));
+            string value= (string)Convert.ChangeType((double)currentValue, typeof(string));
+            string newValue= value;
             if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
-                isDirty= true;
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
             }
             return Convert.ChangeType(newValue, typeof(double));
         }
         if(valueElementType == typeof(decimal)) {
-            float newValue= (float)((decimal)currentValue);
+            float value= (float)((decimal)currentValue);
+            float newValue= value;
             if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.FloatField(n,v), foldoutDB)) {
-                isDirty= true;
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
             }
             return (decimal)newValue;
         }
