@@ -210,9 +210,9 @@ public class iCS_Inspector : Editor {
         }
         // Show Iconic image configuration.
         Texture2D iconicTexture= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
-        Object newTexture= EditorGUILayout.ObjectField("Iconic Texture", iconicTexture, typeof(Texture2D), false) as Texture2D;
+        Texture2D newTexture= EditorGUILayout.ObjectField("Iconic Texture", iconicTexture, typeof(Texture2D), false) as Texture2D;
         if(newTexture != iconicTexture) {
-            node.IconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
+            iCS_UserCommands.ChangeIcon(node, newTexture);
         }
         // Display specific node type information.
         switch(node.ObjectType) {

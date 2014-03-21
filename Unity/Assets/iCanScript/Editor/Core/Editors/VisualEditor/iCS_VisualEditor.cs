@@ -314,7 +314,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			case EventType.ExecuteCommand: {
                 // Rebuild engine objects on undo/redo.
 			    if(ev.commandName == "UndoRedoPerformed") {
-                    Debug.Log("Execute Undo/Redo Called");
+//                    Debug.Log("Execute Undo/Redo Called");
                     IStorage.SynchronizeAfterUndoRedo();
                     ev.Use();
 			        break;

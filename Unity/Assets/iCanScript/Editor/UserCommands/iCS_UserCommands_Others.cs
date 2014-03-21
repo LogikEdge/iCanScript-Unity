@@ -63,7 +63,18 @@ public static partial class iCS_UserCommands {
     // ----------------------------------------------------------------------
     public static void ChangeName(iCS_EditorObject obj, string name) {
         if(string.Compare(obj.RawName, name) == 0) return;
-        obj.Name= name;
+        var iStorage= obj.IStorage;
+        iStorage.AnimateGraph(null,
+            _=> {
+                obj.Name= name;
+                if(obj.IsNode) {
+                    obj.LayoutNodeAndParents();
+                }
+                else if(obj.IsDataOrControlPort) {
+                    obj.ParentNode.LayoutNodeAndParents();
+                }
+            }
+        );
         obj.IStorage.SaveStorage("Change name => "+name);
     }
 }
