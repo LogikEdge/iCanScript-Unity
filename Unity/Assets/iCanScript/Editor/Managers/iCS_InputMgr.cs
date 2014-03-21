@@ -75,3 +75,45 @@ public class iCS_BufferedTextField {
         }
     }
 }
+
+// ----------------------------------------------------------------------
+public class iCS_BufferedEditor<T> {
+    private int myControlId     = -1;
+    private T   myBuffer        = default(T);
+    
+    public iCS_BufferedEditor() {}
+    public void Update(string label, T originalValue, System.Func<string,T,T> editor, System.Action<T> onChangeFnc) {
+        if(myControlId == -1) {
+            myBuffer= originalValue;
+        }
+        GUI.changed= false;
+        myBuffer= editor(label, myBuffer);
+        if(GUI.changed) {
+            myControlId= GUIUtility.keyboardControl;
+        }
+        if(myControlId != GUIUtility.keyboardControl || !EditorGUIUtility.editingTextField) {
+            // Save any change to the text field.
+            if(!myBuffer.Equals(originalValue)) {
+                onChangeFnc(myBuffer);                        
+            }
+            myControlId= -1;                
+        }
+    }
+    public void Update(Rect rect, T originalValue, System.Func<Rect,T,T> editor, System.Action<T> onChangeFnc) {
+        if(myControlId == -1) {
+            myBuffer= originalValue;
+        }
+        GUI.changed= false;
+        myBuffer= editor(rect, myBuffer);
+        if(GUI.changed) {
+            myControlId= GUIUtility.keyboardControl;
+        }
+        if(myControlId != GUIUtility.keyboardControl || !EditorGUIUtility.editingTextField) {
+            // Save any change to the text field.
+            if(!myBuffer.Equals(originalValue)) {
+                onChangeFnc(myBuffer);                        
+            }
+            myControlId= -1;                
+        }
+    }
+}

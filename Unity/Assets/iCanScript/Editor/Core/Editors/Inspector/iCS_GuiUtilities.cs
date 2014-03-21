@@ -25,7 +25,7 @@ public static class iCS_GuiUtilities {
     static void ControlID(Dictionary<string,object> db, string key, int value)     { ((GUIFieldInfo)(db[key])).ControlID= value; }
 
     // -----------------------------------------------------------------------
-    public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,object> foldoutDB) {
+    public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage iStorage, int indentLevel, Dictionary<string,object> foldoutDB) {
         // Only accept data ports.
         if(!port.IsDataOrControlPort) return;
         // Extract port information
@@ -34,7 +34,7 @@ public static class iCS_GuiUtilities {
         iCS_EditorObject sourcePort= port.Source;
         bool hasSource= sourcePort != null;
         // Get runtime object if it exists.
-        var runtimeObject= storage.GetRuntimeObject(parent) as iCS_ISignature;
+        var runtimeObject= iStorage.GetRuntimeObject(parent) as iCS_ISignature;
         // Determine if we are allowed to modify port value.
         bool isReadOnly= !(!hasSource && (port.IsInputPort || port.IsKindOfPackagePort));
         // Nothing to display if we don't have a runtime object and we are in readonly.
@@ -47,7 +47,9 @@ public static class iCS_GuiUtilities {
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
         if(!isReadOnly && isDirty) {
+            iCS_UserCommands.OpenTransaction(iStorage);
 			port.PortValue= newPortValue;
+            iCS_UserCommands.CloseTransaction(iStorage, "Change port value");
         }
     }
 
@@ -222,22 +224,25 @@ public static class iCS_GuiUtilities {
             return Convert.ChangeType(newULongAsString, typeof(ulong));
         }
         if(valueElementType == typeof(float)) {
-			float value= (float)currentValue;
-            float newValue= EditorGUILayout.FloatField(niceName, (float)currentValue);
-			if(newValue != value) isDirty= true;
-			return newValue;
+            float newValue= (float)currentValue; 
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.FloatField(n,v), foldoutDB)) {
+                isDirty= true;
+            }
+            return newValue;
         }
         if(valueElementType == typeof(double)) {
-            string doubleAsString= (string)Convert.ChangeType((double)currentValue, typeof(string));
-            string newDoubleAsString= EditorGUILayout.TextField(niceName, doubleAsString);
-            if(doubleAsString.CompareTo(newDoubleAsString) != 0) isDirty= true;
-            return Convert.ChangeType(newDoubleAsString, typeof(double));
+            string newValue= (string)Convert.ChangeType((double)currentValue, typeof(string));
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+                isDirty= true;
+            }
+            return Convert.ChangeType(newValue, typeof(double));
         }
         if(valueElementType == typeof(decimal)) {
-            float valueAsFloat= (float)((decimal)currentValue);
-            float newDecimalAsFloat= EditorGUILayout.FloatField(niceName, valueAsFloat);
-            if(valueAsFloat != newDecimalAsFloat) isDirty= true;
-            return (decimal)newDecimalAsFloat;
+            float newValue= (float)((decimal)currentValue);
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.FloatField(n,v), foldoutDB)) {
+                isDirty= true;
+            }
+            return (decimal)newValue;
         }
         if(valueElementType == typeof(char)) {
             string value= ""+((char)currentValue);
@@ -248,37 +253,55 @@ public static class iCS_GuiUtilities {
         }
         if(valueElementType == typeof(string)) {
             string value= ((string)currentValue) ?? "";
-            string newValue= EditorGUILayout.TextField(niceName, value);
-            if(newValue != value) isDirty= true;
+            string newValue= value;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
+            }
             return newValue;
         }
         // Unity data types.
         if(valueElementType == typeof(Vector2)) {
             Vector2 value= (Vector2)currentValue;
-            Vector2 newValue= EditorGUILayout.Vector2Field(niceName, value);
-            if(Math3D.IsNotEqual(newValue, value)) isDirty= true;
-            return newValue;
+            Vector2 newValue= value;
+            if(ModalEdit(niceName, name, ref value, compositeParent, (n,v)=> EditorGUILayout.Vector2Field(n,v), foldoutDB)) {
+                if(Math3D.IsNotEqual(value, newValue)) {
+                    isDirty= true;                    
+                }
+            }
+            return value;
         }
         if(valueElementType == typeof(Vector3)) {
             Vector3 value= (Vector3)currentValue;
-            Vector3 newValue= EditorGUILayout.Vector3Field(niceName, value);
-            if(Math3D.IsNotEqual(newValue, value)) isDirty= true;
-            return newValue;
+            Vector3 newValue= value;
+            if(ModalEdit(niceName, name, ref value, compositeParent, (n,v)=> EditorGUILayout.Vector3Field(n,v), foldoutDB)) {
+                if(Math3D.IsNotEqual(value, newValue)) {
+                    isDirty= true;                    
+                }
+            }
+            return value;
         }
         if(valueElementType == typeof(Vector4)) {
             Vector4 value= (Vector4)currentValue;
-            Vector4 newValue= EditorGUILayout.Vector4Field(niceName, value);
-            if(Math3D.IsNotEqual(newValue, value)) isDirty= true;
+            Vector4 newValue= value;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.Vector4Field(n,v), foldoutDB)) {
+                if(Math3D.IsNotEqual(value, newValue)) {
+                    isDirty= true;                    
+                }
+            }
             return newValue;
         }
         if(valueElementType == typeof(Color)) {
             Color value= (Vector4)currentValue;
-            Color newValue= EditorGUILayout.ColorField(niceName, value);
-            if(Math3D.IsNotEqual(newValue.r, value.r) ||
-               Math3D.IsNotEqual(newValue.g, value.g) ||
-               Math3D.IsNotEqual(newValue.b, value.b) ||
-               Math3D.IsNotEqual(newValue.a, value.a)) {
-                isDirty= true;
+            Color newValue= value;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.Vector4Field(n,v), foldoutDB)) {
+                if(Math3D.IsNotEqual(newValue.r, value.r) ||
+                   Math3D.IsNotEqual(newValue.g, value.g) ||
+                   Math3D.IsNotEqual(newValue.b, value.b) ||
+                   Math3D.IsNotEqual(newValue.a, value.a)) {
+                    isDirty= true;
+                }
             }
             return newValue;
         }
@@ -322,14 +345,16 @@ public static class iCS_GuiUtilities {
         string controlName= parentName+"."+name;
 		if(!db.ContainsKey(controlName)) AddValue(db, controlName, currentValue);
         T value= (T)Value(db, controlName);
-		GUI.SetNextControlName(controlName);
+        GUI.changed= false;
         T newValue= editor(niceName, value);
         Value(db, controlName, newValue);
 		int keyControlID= GUIUtility.keyboardControl;
-		if(GUI.GetNameOfFocusedControl() == controlName) ControlID(db, controlName, keyControlID);
+        if(GUI.changed) {
+            ControlID(db, controlName, keyControlID);
+        }
 		int savedKeyControlID= ControlID(db, controlName);
 		if(savedKeyControlID == -1) return false;
-        if(savedKeyControlID != keyControlID) {
+        if(savedKeyControlID != keyControlID || !EditorGUIUtility.editingTextField) {
 			ControlID(db, controlName, -1);
 		    currentValue= newValue;
 		    return true;
