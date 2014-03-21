@@ -181,7 +181,7 @@ public static class iCS_GuiUtilities {
         }
         if(valueElementType == typeof(sbyte)) {
             sbyte value= (sbyte)currentValue;
-            sbyte= newValue= value;
+            sbyte newValue= value;
             if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (sbyte)EditorGUILayout.IntField(n,(int)v), foldoutDB)) {
                 if(value != newValue) {
                     isDirty= true;                    
