@@ -207,9 +207,13 @@ public static class iCS_GuiUtilities {
         }
         if(valueElementType == typeof(uint)) {
             string uintAsString= (string)Convert.ChangeType((uint)currentValue, typeof(string));
-            string newUIntAsString= EditorGUILayout.TextField(niceName, uintAsString);
-            if(uintAsString.CompareTo(newUIntAsString) != 0) isDirty= true;
-            return Convert.ChangeType(newUIntAsString, typeof(uint));
+            string newValue= uintAsString;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+                if(uintAsString.CompareTo(newValue) != 0) {
+                    isDirty= true;                    
+                }
+            }
+            return Convert.ChangeType(newValue, typeof(uint));
         }
         if(valueElementType == typeof(short)) {
             short value= (short)currentValue;
@@ -233,15 +237,23 @@ public static class iCS_GuiUtilities {
         }
         if(valueElementType == typeof(long)) {
             string longAsString= (string)Convert.ChangeType((long)currentValue, typeof(string));
-            string newLongAsString= EditorGUILayout.TextField(niceName, longAsString);
-            if(longAsString.CompareTo(newLongAsString) != 0) isDirty= true;
-            return Convert.ChangeType(newLongAsString, typeof(long));
+            string newValue= longAsString;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+                if(longAsString.CompareTo(newValue) != 0) {
+                    isDirty= true;                    
+                }
+            }
+            return Convert.ChangeType(newValue, typeof(long));
         }
         if(valueElementType == typeof(ulong)) {
             string ulongAsString= (string)Convert.ChangeType((ulong)currentValue, typeof(string));
-            string newULongAsString= EditorGUILayout.TextField(niceName, ulongAsString);
-            if(ulongAsString.CompareTo(newULongAsString) != 0) isDirty= true;
-            return Convert.ChangeType(newULongAsString, typeof(ulong));
+            string newValue= ulongAsString;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+                if(ulongAsString.CompareTo(newValue) != 0) {
+                    isDirty= true;                    
+                }
+            }
+            return Convert.ChangeType(newValue, typeof(ulong));
         }
         if(valueElementType == typeof(float)) {
             float value= (float)currentValue; 
@@ -275,10 +287,14 @@ public static class iCS_GuiUtilities {
         }
         if(valueElementType == typeof(char)) {
             string value= ""+((char)currentValue);
-            string newCharAsString= EditorGUILayout.TextField(niceName, value);
-			if(newCharAsString == null || newCharAsString == "" || newCharAsString[0] == 0) newCharAsString= " ";
-            if(newCharAsString[0] != value[0]) isDirty= true;
-            return (newCharAsString != null && newCharAsString.Length >= 1) ? newCharAsString[0] : default(char);
+            string newValue= value;
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+    			if(newValue == null || newValue == "" || newValue[0] == 0) newValue= " ";
+                if(value != newValue) {
+                    isDirty= true;                    
+                }
+            }
+            return (newValue != null && newValue.Length >= 1) ? newValue[0] : default(char);
         }
         if(valueElementType == typeof(string)) {
             string value= ((string)currentValue) ?? "";
