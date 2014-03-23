@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [AddComponentMenu("")]
-public partial class iCS_VisualScriptImp : iCS_MonoBehaviour {
+public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------

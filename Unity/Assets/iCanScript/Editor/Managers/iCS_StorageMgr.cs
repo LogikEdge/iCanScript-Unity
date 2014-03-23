@@ -32,10 +32,10 @@ public static class iCS_StorageMgr {
 	public static void Update() {
         // Use previous game object if new selection does not include a visual script.
 		GameObject go= Selection.activeGameObject;
-        var monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviour>() : null;
+        var monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviourImp>() : null;
         if(monoBehaviour == null) {
             go= myActiveGameObject;
-            monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviour>() : null;
+            monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviourImp>() : null;
             // Clear if previous game object is not valid.
             if(monoBehaviour == null) {
                 myIStorage= null;
@@ -74,7 +74,7 @@ public static class iCS_StorageMgr {
         return false;
     }
     // ---------------------------------------------------------------------------------
-    public static bool IsSameVisualScript(iCS_MonoBehaviour monoBehaviour, iCS_IStorage iStorage) {
+    public static bool IsSameVisualScript(iCS_MonoBehaviourImp monoBehaviour, iCS_IStorage iStorage) {
         if(monoBehaviour == null || iStorage == null) return false;
         if(iStorage.iCSMonoBehaviour == monoBehaviour) return true;
         return false;

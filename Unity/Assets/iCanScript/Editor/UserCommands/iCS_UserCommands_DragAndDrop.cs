@@ -1,4 +1,4 @@
-﻿//
+//
 // File: iCS_UserCommands_DragAndDrop
 //
 //#define DEBUG
@@ -24,7 +24,7 @@ public static partial class iCS_UserCommands {
         return true;
     }
 	// ----------------------------------------------------------------------
-    public static void PasteIntoGraph(iCS_MonoBehaviour sourceMonoBehaviour, iCS_EngineObject sourceRoot,
+    public static void PasteIntoGraph(iCS_MonoBehaviourImp sourceMonoBehaviour, iCS_EngineObject sourceRoot,
                                       iCS_IStorage iStorage, iCS_EditorObject parent, Vector2 globalPos) {
         iStorage.AnimateGraph(null,
             _=> {

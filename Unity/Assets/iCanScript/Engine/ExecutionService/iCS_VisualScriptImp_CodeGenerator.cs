@@ -9,7 +9,7 @@ using P=Prelude;
 using CompileError  =Prelude.Tuple<int,string>;
 using CompileWarning=Prelude.Tuple<int,string>;
 
-public partial class iCS_VisualScriptImp : iCS_MonoBehaviour {
+public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ======================================================================
     // Sanity Check
     // ----------------------------------------------------------------------

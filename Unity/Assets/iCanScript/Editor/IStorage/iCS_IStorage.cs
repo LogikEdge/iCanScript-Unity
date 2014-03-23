@@ -13,7 +13,7 @@ public partial class iCS_IStorage {
             bool                myForceRelayout     = true;
             bool                myIsDirty           = true;
     public  bool                IsTransactionOpened = false;
-    public  iCS_MonoBehaviour   iCSMonoBehaviour    = null;
+    public  iCS_MonoBehaviourImp   iCSMonoBehaviour    = null;
     public  iCS_Storage         Storage             = null;
     List<iCS_EditorObject>      myEditorObjects     = null;
     public  int                 ModificationId      = -1;
@@ -93,11 +93,11 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_IStorage(iCS_MonoBehaviour monoBehaviour) {
+    public iCS_IStorage(iCS_MonoBehaviourImp monoBehaviour) {
         Init(monoBehaviour);
     }
-    public void Init(iCS_MonoBehaviour monoBehaviour) {
-        // Verify that the storage is valid on the new iCS_MonoBehaviour
+    public void Init(iCS_MonoBehaviourImp monoBehaviour) {
+        // Verify that the storage is valid on the new iCS_MonoBehaviourImp
         iCS_Storage storage= monoBehaviour.Storage;
         if(storage == null) {
             Debug.LogError("iCanScript: Unable to find the storage for => "+monoBehaviour.name);

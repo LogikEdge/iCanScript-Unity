@@ -15,14 +15,15 @@ public static class iCS_GuiUtilities {
     }
     
     // -----------------------------------------------------------------------
-    static void AddFoldout(Dictionary<string,object> db, string key, bool foldout) { db.Add(key, new GUIFieldInfo(foldout)); }
-    static bool Foldout(Dictionary<string,object> db, string key)                  { return ((GUIFieldInfo)(db[key])).Foldout; }
-    static void Foldout(Dictionary<string,object> db, string key, bool foldout)    { ((GUIFieldInfo)(db[key])).Foldout= foldout; }
-    static void   AddValue(Dictionary<string,object> db, string key, object value) { db.Add(key, new GUIFieldInfo(value)); }
-    static object Value(Dictionary<string,object> db, string key)                  { return ((GUIFieldInfo)(db[key])).Value; }
-    static void   Value(Dictionary<string,object> db, string key, object value)    { ((GUIFieldInfo)(db[key])).Value= value; }
-    static int  ControlID(Dictionary<string,object> db, string key)                { return ((GUIFieldInfo)(db[key])).ControlID; }
-    static void ControlID(Dictionary<string,object> db, string key, int value)     { ((GUIFieldInfo)(db[key])).ControlID= value; }
+    static void   AddFoldout(Dictionary<string,object> db, string key, bool foldout) { db.Add(key, new GUIFieldInfo(foldout)); }
+    static bool   Foldout(Dictionary<string,object> db, string key)                  { return ((GUIFieldInfo)(db[key])).Foldout; }
+    static void   Foldout(Dictionary<string,object> db, string key, bool foldout)    { ((GUIFieldInfo)(db[key])).Foldout= foldout; }
+    static void   AddValue(Dictionary<string,object> db, string key, object value)   { db.Add(key, new GUIFieldInfo(value)); }
+    static void   RemoveValue(Dictionary<string,object> db, string key)              { db.Remove(key); }
+    static object Value(Dictionary<string,object> db, string key)                    { return ((GUIFieldInfo)(db[key])).Value; }
+    static void   Value(Dictionary<string,object> db, string key, object value)      { ((GUIFieldInfo)(db[key])).Value= value; }
+    static int    ControlID(Dictionary<string,object> db, string key)                { return ((GUIFieldInfo)(db[key])).ControlID; }
+    static void   ControlID(Dictionary<string,object> db, string key, int value)     { ((GUIFieldInfo)(db[key])).ControlID= value; }
 
     // -----------------------------------------------------------------------
     public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage iStorage, int indentLevel, Dictionary<string,object> foldoutDB) {
@@ -49,7 +50,7 @@ public static class iCS_GuiUtilities {
         if(!isReadOnly && isDirty) {
             iCS_UserCommands.OpenTransaction(iStorage);
 			port.PortValue= newPortValue;
-            iCS_UserCommands.CloseTransaction(iStorage, "Change port value");
+            iCS_UserCommands.CloseTransaction(iStorage, "Change port value => "+port.Name);
         }
     }
 
@@ -401,6 +402,7 @@ public static class iCS_GuiUtilities {
 		if(savedKeyControlID == -1) return false;
         if(savedKeyControlID != keyControlID || !EditorGUIUtility.editingTextField) {
 			ControlID(db, controlName, -1);
+            RemoveValue(db, controlName);
 		    currentValue= newValue;
 		    return true;
 	    }

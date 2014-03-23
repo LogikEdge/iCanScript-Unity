@@ -427,7 +427,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
 	// ----------------------------------------------------------------------
-    void PasteIntoGraph(Vector2 point, iCS_MonoBehaviour sourceMonoBehaviour, iCS_EngineObject sourceRoot) {
+    void PasteIntoGraph(Vector2 point, iCS_MonoBehaviourImp sourceMonoBehaviour, iCS_EngineObject sourceRoot) {
         if(sourceRoot == null) return;
         iCS_EditorObject validParent= GetValidParentNodeUnder(point, sourceRoot.ObjectType, sourceRoot.Name);
         if(validParent == null) {

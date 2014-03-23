@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 [AddComponentMenu("")]
-public class iCS_MonoBehaviour : MonoBehaviour {
+public class iCS_MonoBehaviourImp : MonoBehaviour {
     // ======================================================================
     // Storage
     // ----------------------------------------------------------------------

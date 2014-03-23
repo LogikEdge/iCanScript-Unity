@@ -75,7 +75,7 @@ public class iCS_Inspector : Editor {
     void UpdateVariables() {
         // Verify that the target reflects the selected storage.
         iCS_EditorMgr.Update();
-        var monoBehaviour= target as iCS_MonoBehaviour;
+        var monoBehaviour= target as iCS_MonoBehaviourImp;
         if(monoBehaviour == null || !iCS_StorageMgr.IsSameVisualScript(monoBehaviour, iCS_StorageMgr.IStorage)) {
             myIStorage= null;
 			mySelectedObject= null;
