@@ -594,7 +594,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
 	static iCS_EditorObject GetClosestMatch(iCS_EditorObject refPort, iCS_EditorObject[] otherPorts) {
 		if(otherPorts.Length == 0) return null;
-		float bestScore= 0f;
+		float bestScore= -1f;
 		iCS_EditorObject bestPort= null;
 		string refName= refPort.Name;
 		if(string.IsNullOrEmpty(refPort.RawName)) refName= refPort.ParentNode.Name;
