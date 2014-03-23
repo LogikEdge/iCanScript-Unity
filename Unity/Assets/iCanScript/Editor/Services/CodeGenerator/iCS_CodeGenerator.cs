@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_CodeGenerator {
+public static class iCS_CodeGenerator {
     // ======================================================================
 	// Start Code generator service.
     // ----------------------------------------------------------------------
