@@ -19,7 +19,7 @@ public static class iCS_WindowMenu {
 	}
     // ======================================================================
  	// iCanScript Hierarchy editor Menu.
- 	[MenuItem("Window/iCanScript/TreeView")]
+ 	[MenuItem("Window/iCanScript/Tree View")]
  	public static void MenuTreeViewEditor() {
         var editor= EditorWindow.GetWindow(typeof(iCS_TreeViewEditorWindow), false, "Tree View");
         EditorWindow.DontDestroyOnLoad(editor);
