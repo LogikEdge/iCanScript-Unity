@@ -15,8 +15,9 @@ public static partial class iCS_UserCommands {
 		Debug.Log("iCanScript: Deleting => "+obj.Name);
 #endif
         if(obj == null) return;
+        var name= obj.Name;
         if(!obj.CanBeDeleted()) {
-            ShowNotification("Fix port=> \""+obj.Name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
+            ShowNotification("Fix port=> \""+name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
             return;
         }
         var iStorage= obj.IStorage;
@@ -34,7 +35,7 @@ public static partial class iCS_UserCommands {
                 parent.LayoutNodeAndParents();
             }
 		);
-        iStorage.SaveStorage("Delete "+obj.Name);
+        iStorage.SaveStorage("Delete "+name);
 	}
 	// ----------------------------------------------------------------------
     public static bool DeleteMultiSelectedObjects(iCS_IStorage iStorage) {
