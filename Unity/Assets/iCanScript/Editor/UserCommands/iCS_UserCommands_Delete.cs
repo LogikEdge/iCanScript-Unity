@@ -52,7 +52,10 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 foreach(var obj in selectedObjects) {
-                    if(!obj.CanBeDeleted()) continue;
+                    if(!obj.CanBeDeleted()) {
+                        ShowNotification("Fix port=> \""+obj.Name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
+                        continue;
+                    }
                     var parent= obj.ParentNode;
                     if(obj.IsInstanceNodePort) {
                 		iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);                        
