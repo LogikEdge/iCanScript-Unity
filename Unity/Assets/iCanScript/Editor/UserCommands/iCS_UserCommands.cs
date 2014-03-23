@@ -26,4 +26,16 @@ public static partial class iCS_UserCommands {
     static Rect BuildRect(Vector2 p, Vector2 s) {
         return new Rect(p.x, p.y, s.x, s.y);
     }
+	// ----------------------------------------------------------------------
+    // Shows a notification in the Visual Editor window.
+    static void ShowNotification(string message) {
+        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        if(visualEditor != null) {
+            visualEditor.ShowNotification(new GUIContent(message));
+        }
+        else {
+            Debug.LogWarning("iCanScript: "+message);
+        }
+    }
+
 }
