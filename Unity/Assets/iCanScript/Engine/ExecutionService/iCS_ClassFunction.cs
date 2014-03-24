@@ -42,6 +42,18 @@ public class iCS_ClassFunction : iCS_FunctionBase {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
+            string thisName= (This == null ? "null" : This.ToString());
+            string parametersAsStr= "";
+            int nbOfParams= Parameters.Length;
+            if(nbOfParams != 0) {
+                for(int i= 0; i < nbOfParams; ++i) {
+                    parametersAsStr+= Parameters[i].ToString();
+                    if(i != nbOfParams-1) {
+                        parametersAsStr+=", ";
+                    }
+                }
+            }
+            Debug.LogWarning("iCanScript: while invoking => "+thisName+"."+Name+"("+parametersAsStr+")");
             MarkAsCurrent(frameId);
         }
 #endif        

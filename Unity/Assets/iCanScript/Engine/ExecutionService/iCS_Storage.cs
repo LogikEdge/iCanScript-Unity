@@ -76,6 +76,23 @@ public class iCS_Storage : ScriptableObject {
                 to.EngineObjects[i]= fromObj.CopyTo(to.EngineObjects[i]);                                
             }
         }            
+        // Resize Unity object reference array
+        fromLen= from.UnityObjects.Count;
+        toLen= to.UnityObjects.Count;
+        if(toLen > fromLen) {
+            to.UnityObjects.RemoveRange(fromLen, toLen-fromLen);
+        }
+        to.UnityObjects.Capacity= fromLen;
+        // Copy Unity Object references.
+        for(int i= 0; i < fromLen; ++i) {
+            var fromObj= from.UnityObjects[i];
+            if(to.UnityObjects.Count <= i) {
+                to.UnityObjects.Add(fromObj);
+            }
+            else {
+                to.UnityObjects[i]= fromObj;                
+            }
+        }                    
     }
 
     // ======================================================================
