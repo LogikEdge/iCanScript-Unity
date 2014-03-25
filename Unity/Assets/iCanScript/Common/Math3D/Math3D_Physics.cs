@@ -64,7 +64,7 @@ public static partial class Math3D {
         return true;
     }
     // ----------------------------------------------------------------------
-    // Determine the interscetion point of two line segments if
+    // Determine the intersection point of two line segments if
     // they are not parallel.  "true" is returned if an intersection
     // point is found, otherwise 'false' is return for parallel lines.
     public static bool LineSegmentIntersection(Vector2 l1p1, Vector2 l1p2, Vector2 l2p1, Vector2 l2p2, out Vector2 intersection) {
@@ -76,5 +76,23 @@ public static partial class Math3D {
         bool isValidY= ((intersection.y <= l1p1.y && intersection.y >= l1p2.y) ||
                         (intersection.y >= l1p1.y && intersection.y <= l1p2.y));
         return isValidX && isValidY;                
+    }
+    // ----------------------------------------------------------------------
+    // Determines the intersection point of a line segment and the edge
+    // of a rectangle. "true" is returned if an intersection is found.
+    public static bool LineSegmentAndRectEdgeIntersection(Vector2 lp1, Vector2 lp2, Rect rect, out Vector2 intersection) {
+        if(LineSegmentIntersection(lp1, lp2, TopLeftCorner(rect), TopRightCorner(rect), out intersection)) {
+            return true;
+        }
+        if(LineSegmentIntersection(lp1, lp2, BottomLeftCorner(rect), BottomRightCorner(rect), out intersection)) {
+            return true;
+        }
+        if(LineSegmentIntersection(lp1, lp2, TopLeftCorner(rect), BottomLeftCorner(rect), out intersection)) {
+            return true;
+        }
+        if(LineSegmentIntersection(lp1, lp2, TopRightCorner(rect), BottomRightCorner(rect), out intersection)) {
+            return true;
+        }
+        return false;
     }
 }
