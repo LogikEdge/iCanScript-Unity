@@ -131,7 +131,7 @@ public partial class iCS_Graphics {
         if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
-        if((port.IsInputPort || port.IsKindOfPackagePort) && port.SourceId != -1) {
+        if((port.IsInputPort || port.IsKindOfPackagePort) && port.ProviderPortId != -1) {
             var sourcePort= port.ProviderPort;
             var sourceCenter= sourcePort.AnimatedPosition;
             var portCenter= port.AnimatedPosition;

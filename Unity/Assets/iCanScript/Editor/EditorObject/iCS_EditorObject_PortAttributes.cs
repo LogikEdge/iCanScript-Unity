@@ -26,19 +26,14 @@ public partial class iCS_EditorObject {
 		}
 	}
 	// ----------------------------------------------------------------------
-    public int SourceId {
+    public int ProviderPortId {
 		get { return EngineObject.SourceId; }
-		set {
-            var engineObject= EngineObject;
-            if(engineObject.SourceId == value) return;
-			EngineObject.SourceId= value;
-//			IsDirty= true;
-		}
+		set { EngineObject.SourceId= value; }
 	}
 	// ----------------------------------------------------------------------
     public iCS_EditorObject ProviderPort {
-		get { return SourceId != -1 ? myIStorage[SourceId] : null; }
-		set { SourceId= (value != null ? value.InstanceId : -1); }
+		get { return ProviderPortId != -1 ? myIStorage[ProviderPortId] : null; }
+		set { ProviderPortId= (value != null ? value.InstanceId : -1); }
 	}
 	// ----------------------------------------------------------------------
 	public iCS_EditorObject FirstProviderPort {
@@ -50,7 +45,7 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
 	public iCS_EditorObject[] ConsumerPorts {
 		get {
-			return Filter(c=> c.IsPort && c.SourceId == InstanceId).ToArray();
+			return Filter(c=> c.IsPort && c.ProviderPortId == InstanceId).ToArray();
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -105,12 +100,12 @@ public partial class iCS_EditorObject {
 	public object InitialPortValue {
 		get {
 			if(!IsInDataOrControlPort) return null;
-			if(SourceId != -1) return null;
+			if(ProviderPortId != -1) return null;
 			return InitialValue;			
 		}
 		set {
 			if(!IsInDataOrControlPort) return;
-			if(SourceId != -1) return;
+			if(ProviderPortId != -1) return;
 			InitialValue= value;
 	        myIStorage.StoreInitialPortValueInArchive(this);			
 		}

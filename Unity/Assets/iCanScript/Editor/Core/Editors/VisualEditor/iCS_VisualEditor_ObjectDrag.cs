@@ -127,7 +127,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             iCS_EditorObject inStatePort= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
             outStatePort.SetAnchorAndLayoutPosition(pos);
             inStatePort.SetAnchorAndLayoutPosition(pos);
-            inStatePort.SourceId= outStatePort.InstanceId;
+            inStatePort.ProviderPortId= outStatePort.InstanceId;
             DragFixPort= outStatePort;
             DragObject= inStatePort;
             DragStartDisplayPosition= pos;
@@ -443,16 +443,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.TransitionCreation:
                     iCS_EditorObject destState= GetNodeAtMousePosition();
                     if(destState != null && destState.IsState) {
-                        iCS_EditorObject outStatePort= IStorage[DragObject.SourceId];
+                        iCS_EditorObject outStatePort= IStorage[DragObject.ProviderPortId];
                         outStatePort.IsFloating= false;
                         outStatePort.IsSticky= false;
                         var toPosition= DragObject.LayoutPosition;
-                        DragObject.SourceId= -1;
+                        DragObject.ProviderPortId= -1;
                         IStorage.DestroyInstance(DragObject);
                         iCS_UserCommands.CreateTransition(outStatePort, destState, toPosition);
                     } else {
-                        IStorage.DestroyInstance(DragObject.SourceId);
-                        DragObject.SourceId= -1;
+                        IStorage.DestroyInstance(DragObject.ProviderPortId);
+                        DragObject.ProviderPortId= -1;
                         IStorage.DestroyInstance(DragObject);
                     }
                     break;

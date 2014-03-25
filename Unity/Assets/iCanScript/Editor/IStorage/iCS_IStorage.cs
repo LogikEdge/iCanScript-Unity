@@ -149,7 +149,7 @@ public partial class iCS_IStorage {
     public bool IsValid(iCS_EditorObject obj) {
 		return obj != null && IsIdValid(obj.InstanceId);
 	}
-    public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.SourceId); }
+    public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.ProviderPortId); }
     public bool IsParentValid(iCS_EditorObject obj)  { return IsIdValid(obj.ParentId); }
     // ----------------------------------------------------------------------
 	public bool IsAnimationPlaying {
@@ -208,7 +208,7 @@ public partial class iCS_IStorage {
         Storage.ClearUnityObjects();
         ForEach(
             obj=> {
-                if(obj.IsInDataOrControlPort && obj.SourceId == -1 && obj.InitialValue != null) {
+                if(obj.IsInDataOrControlPort && obj.ProviderPortId == -1 && obj.InitialValue != null) {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
@@ -345,7 +345,7 @@ public partial class iCS_IStorage {
     void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_IStorage destStorage, List<Prelude.Tuple<int,int>> xlat) {
         srcStorage.ForEachRecursive(srcObj,
             child=> {
-                if(child.SourceId != -1) {
+                if(child.ProviderPortId != -1) {
                     int id= -1;
                     int sourceId= -1;
                     foreach(var pair in xlat) {
@@ -353,7 +353,7 @@ public partial class iCS_IStorage {
                             id= pair.Item2;
                             if(sourceId != -1) break;
                         }
-                        if(pair.Item1 == child.SourceId) {
+                        if(pair.Item1 == child.ProviderPortId) {
                             sourceId= pair.Item2;
                             if(id != -1) break;
                         }

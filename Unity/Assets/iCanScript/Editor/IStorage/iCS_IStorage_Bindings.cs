@@ -7,8 +7,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject obj, iCS_EditorObject src) {
         int id= src == null ? -1 : src.InstanceId;
-        if(id != obj.SourceId) {
-            obj.SourceId= id; 
+        if(id != obj.ProviderPortId) {
+            obj.ProviderPortId= id; 
         }
     }
     // ----------------------------------------------------------------------
@@ -51,7 +51,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     bool IsPortConnected(iCS_EditorObject port) {
         if(port.IsSourceValid) return true;
-        if(FindFirst(o=> o.IsPort && o.SourceId == port.InstanceId) != null) return true;
+        if(FindFirst(o=> o.IsPort && o.ProviderPortId == port.InstanceId) != null) return true;
         return false;
     }
     bool IsPortDisconnected(iCS_EditorObject port) { return !IsPortConnected(port); }

@@ -124,9 +124,9 @@ public class iCS_Inspector : Editor {
                     myPreviousSelectedObject= mySelectedObject;
                 }
                 if(mySelectedObject != null && mySelectedObject.IsDataOrControlPort) {
-                    if(myPreviousPortSourceId != mySelectedObject.SourceId) {
+                    if(myPreviousPortSourceId != mySelectedObject.ProviderPortId) {
                         myAbortRepaint= true;
-                        myPreviousPortSourceId= mySelectedObject.SourceId;
+                        myPreviousPortSourceId= mySelectedObject.ProviderPortId;
                     }
                 }
                 break;
