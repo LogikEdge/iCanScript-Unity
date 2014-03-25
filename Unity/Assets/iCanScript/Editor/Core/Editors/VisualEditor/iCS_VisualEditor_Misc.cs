@@ -317,7 +317,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(p.IsInStatePort) {
                                 transitionPackage= p.Source.Parent;
                             } else {
-                                iCS_EditorObject[] connectedPorts= p.Destinations;
+                                iCS_EditorObject[] connectedPorts= p.Consumers;
                                 foreach(var cp in connectedPorts) {
                                     if(cp.IsInTransitionPort) {
                                         transitionPackage= cp.Parent;
@@ -390,7 +390,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_EditorObject tmpPort= inPort.Source;
         List<iCS_EditorObject> toDestroy= new List<iCS_EditorObject>();
         while(tmpPort != null && tmpPort != sourcePort) {
-            iCS_EditorObject[] connected= tmpPort.Destinations;
+            iCS_EditorObject[] connected= tmpPort.Consumers;
             if(connected.Length == 1) {
                 iCS_EditorObject t= tmpPort.Source;
                 toDestroy.Add(tmpPort);
@@ -413,7 +413,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void FillConnectedInDataPorts(iCS_EditorObject outPort, List<iCS_EditorObject> result) {
         if(outPort == null) return;
-        iCS_EditorObject[] connectedPorts= outPort.Destinations;
+        iCS_EditorObject[] connectedPorts= outPort.Consumers;
         foreach(var port in connectedPorts) {
             if(port.IsDataOrControlPort) {
                 if(port.IsKindOfPackagePort) {

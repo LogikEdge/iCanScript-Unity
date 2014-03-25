@@ -2,6 +2,78 @@
 using System.Collections;
 
 public partial class iCS_IStorage {
+    // ======================================================================
+    // Port Connectivity
+    // ----------------------------------------------------------------------
+    public void SetSource(iCS_EditorObject obj, iCS_EditorObject src) {
+        int id= src == null ? -1 : src.InstanceId;
+        if(id != obj.SourceId) {
+            obj.SourceId= id; 
+        }
+    }
+    // ----------------------------------------------------------------------
+    public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_TypeCastInfo convDesc) {
+        if(convDesc == null) {
+            SetSource(inPort, outPort);
+            return;
+        }
+        var inPos= inPort.LayoutPosition;
+        var outPos= outPort.LayoutPosition;
+        Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
+        int grandParentId= inPort.ParentNode.ParentId;
+        iCS_EditorObject conv= CreateFunction(grandParentId, convDesc);
+        conv.SetInitialPosition(convPos);
+        ForEachChild(conv,
+            (child) => {
+                if(child.IsInputPort) {
+                    SetSource(child, outPort);
+                } else if(child.IsOutputPort) {
+                    SetSource(inPort, child);
+                }
+            }
+        );
+        conv.Iconize();
+    }
+    // ----------------------------------------------------------------------
+    public void DisconnectPort(iCS_EditorObject port) {
+        SetSource(port, null);
+        Prelude.forEach(p=> SetSource(p, null), port.Consumers);        
+    }
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject FindAConnectedPort(iCS_EditorObject port) {
+        iCS_EditorObject[] connectedPorts= port.Consumers;
+        return connectedPorts.Length != 0 ? connectedPorts[0] : null;
+    }
+    // ----------------------------------------------------------------------
+    public bool IsPortSourced(iCS_EditorObject port) {
+        return port.Consumers.Length != 0;
+    }
+    // ----------------------------------------------------------------------
+    bool IsPortConnected(iCS_EditorObject port) {
+        if(port.IsSourceValid) return true;
+        if(FindFirst(o=> o.IsPort && o.SourceId == port.InstanceId) != null) return true;
+        return false;
+    }
+    bool IsPortDisconnected(iCS_EditorObject port) { return !IsPortConnected(port); }
+    // ----------------------------------------------------------------------
+    // Returns the last data port in the connection or NULL if none exist.
+    public iCS_EditorObject GetSourceEndPort(iCS_EditorObject port) {
+        iCS_EngineObject engineObject= Storage.GetSourceEndPort(port.EngineObject);
+        return engineObject != null ? EditorObjects[engineObject.InstanceId] : null;
+    }
+    
+    
+    // ======================================================================
+    // Binding Queries
+	// ----------------------------------------------------------------------
+    public void GetBindingDescription(iCS_EditorObject port, out iCS_EditorObject providerPort,
+                                                             out iCS_EditorObject[] consumerPorts) {
+        providerPort= port.SourceEndPort;
+        consumerPorts= port.EndConsumers;
+    }
+
+    // ======================================================================
+    // Binding Utilities
 	// ----------------------------------------------------------------------
     public void ChangeParent(iCS_EditorObject node, iCS_EditorObject newParent) {
         iCS_EditorObject oldParent= node.Parent;
@@ -177,7 +249,7 @@ public partial class iCS_IStorage {
 			p=> {
 			    if(p.IsDataOrControlPort) {
     				var outputPort= p.SourceEndPort;
-    				foreach(var inputPort in p.DestinationEndPoints) {
+    				foreach(var inputPort in p.EndConsumers) {
     					RebuildDataConnection(outputPort, inputPort);
     				}			        
 			    }
@@ -267,7 +339,7 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
 	public void CleanupHangingConnection(iCS_EditorObject port) {
-		if(port.Destinations.Length == 0) {
+		if(port.Consumers.Length == 0) {
 			var src= port.Source;
 			DestroyInstance(port);
 			if(src != null) {

@@ -48,26 +48,26 @@ public partial class iCS_EditorObject {
 		}
 	}
 	// ----------------------------------------------------------------------
-	public iCS_EditorObject[] Destinations {
+	public iCS_EditorObject[] Consumers {
 		get {
 			return Filter(c=> c.IsPort && c.SourceId == InstanceId).ToArray();
 		}
 	}
 	// ----------------------------------------------------------------------
-	public iCS_EditorObject[] DestinationEndPoints {
+	public iCS_EditorObject[] EndConsumers {
 		get {
 			var result= new List<iCS_EditorObject>();
-			BuildDestinationEndPoints(ref result);
+			BuildListOfEndConsumerPorts(ref result);
 			return result.ToArray();
 		}
 	}
-	private void BuildDestinationEndPoints(ref List<iCS_EditorObject> r) {
-		var destinations= Destinations;
+	private void BuildListOfEndConsumerPorts(ref List<iCS_EditorObject> r) {
+		var destinations= Consumers;
 		if(destinations.Length == 0) {
 			r.Add(this);
 		} else {
 			foreach(var p in destinations) {
-				p.BuildDestinationEndPoints(ref r);
+				p.BuildListOfEndConsumerPorts(ref r);
 			}
 		}
 	}
@@ -76,8 +76,8 @@ public partial class iCS_EditorObject {
 		get {
 			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
 			var source= SourceEndPort;
-			foreach(var destination in source.DestinationEndPoints) {
-				result.Add(new P.Tuple<iCS_EditorObject,iCS_EditorObject>(source, destination));
+			foreach(var consumer in source.EndConsumers) {
+				result.Add(new P.Tuple<iCS_EditorObject,iCS_EditorObject>(source, consumer));
 			}			        
 			return result.ToArray();
 		}
@@ -152,7 +152,7 @@ public partial class iCS_EditorObject {
 	        }
 	        // Propagate value for module port.
 	        if(IsKindOfPackagePort) {
-	            iCS_EditorObject[] connectedPorts= Destinations;
+	            iCS_EditorObject[] connectedPorts= Consumers;
 	            foreach(var cp in connectedPorts) {
 	                cp.RuntimePortValue= value;
 	            }
