@@ -555,19 +555,21 @@ public class iCS_ContextualMenu {
 		}
 
 		// Inverse effective data flow if new node is inside port parent.
-		bool isInputPort= port.IsInputPort;
+		bool isConsumerPort= port.IsInputPort;
 		var portParent= port.ParentNode;
-		if(portParent.IsParentOf(method)) isInputPort= !isInputPort;
-        if(isInputPort) {
+		if(portParent.IsParentOf(method)) isConsumerPort= !isConsumerPort;
+        if(isConsumerPort) {
 			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), iStorage.GetChildOutputDataPorts(method)); 
 			// Connect if only one possibility.
 			if(outputPorts.Length == 1) {
 				iStorage.SetNewDataConnection(port, outputPorts[0]);
+                iStorage.AutomaticLayoutOfPointToPointBinding(outputPorts[0], port);
 			}
 			else {
 				var bestPort= GetClosestMatch(port, outputPorts);
 				if(bestPort != null) {
 					iStorage.SetNewDataConnection(port, bestPort);						
+                    iStorage.AutomaticLayoutOfPointToPointBinding(outputPorts[0], port);
 				}
 			}
         } else {
@@ -575,12 +577,14 @@ public class iCS_ContextualMenu {
 			// Connect if only one posiibility
 			if(inputPorts.Length == 1) {
 				iStorage.SetNewDataConnection(inputPorts[0], port);
+                iStorage.AutomaticLayoutOfPointToPointBinding(port, inputPorts[0]);
 			}
 			// Multiple choices exist so try the one with the closest name.
 			else {
 				var bestPort= GetClosestMatch(port, inputPorts);
 				if(bestPort != null) {
 					iStorage.SetNewDataConnection(bestPort, port);											
+                    iStorage.AutomaticLayoutOfPointToPointBinding(port, bestPort);
 				}
 			}
         }

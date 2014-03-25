@@ -68,6 +68,39 @@ public partial class iCS_IStorage {
 	// ----------------------------------------------------------------------
 
     // ======================================================================
+    // Binding Automatic Layout
+	// ----------------------------------------------------------------------
+    public void AutomaticLayoutOfPointToPointBinding(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return;
+        var providerParentNode= providerPort.ParentNode;
+        var consumerParentNode= consumerPort.ParentNode;
+        var providerParentPos= providerParentNode.LayoutPosition;
+        var consumerParentPos= consumerParentNode.LayoutPosition;
+        Vector2 intersection;
+        if(Math3D.LineSegmentAndRectEdgeIntersection(providerParentPos, consumerParentPos, providerParentNode.LayoutRect, out intersection)) {
+            providerPort.SetAnchorAndLayoutPosition(intersection);
+        }
+        if(Math3D.LineSegmentAndRectEdgeIntersection(providerParentPos, consumerParentPos, consumerParentNode.LayoutRect, out intersection)) {
+            consumerPort.SetAnchorAndLayoutPosition(intersection);
+        }
+        AutomaticLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
+    }
+	// ----------------------------------------------------------------------
+    public void AutomaticLayoutOfPointToPointBindingExclusive(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return;
+        var providerPos= providerPort.LayoutPosition;
+        var consumerPos= consumerPort.LayoutPosition;
+        for(consumerPort= consumerPort.ProviderPort; consumerPort != providerPort; consumerPort= consumerPort.ProviderPort) {
+            var parentNode= consumerPort.ParentNode;
+            var r= parentNode.LayoutRect;
+            Vector2 intersection;
+            if(Math3D.LineSegmentAndRectEdgeIntersection(providerPos, consumerPos, r, out intersection)) {
+                consumerPort.SetAnchorAndLayoutPosition(intersection);
+            }
+        }
+    }
+
+    // ======================================================================
     // Binding Utilities
 	// ----------------------------------------------------------------------
     public void ChangeParent(iCS_EditorObject node, iCS_EditorObject newParent) {
