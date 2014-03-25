@@ -562,29 +562,25 @@ public class iCS_ContextualMenu {
 			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), iStorage.GetChildOutputDataPorts(method)); 
 			// Connect if only one possibility.
 			if(outputPorts.Length == 1) {
-				iStorage.SetNewDataConnection(port, outputPorts[0]);
-                iStorage.AutomaticLayoutOfPointToPointBinding(outputPorts[0], port);
+				iStorage.SetAndAutoLayoutNewDataConnection(port, outputPorts[0]);
 			}
 			else {
 				var bestPort= GetClosestMatch(port, outputPorts);
 				if(bestPort != null) {
-					iStorage.SetNewDataConnection(port, bestPort);						
-                    iStorage.AutomaticLayoutOfPointToPointBinding(outputPorts[0], port);
+					iStorage.SetAndAutoLayoutNewDataConnection(port, bestPort);						
 				}
 			}
         } else {
 			iCS_EditorObject[] inputPorts= Prelude.filter(x=> iCS_Types.IsA(x.RuntimeType, port.RuntimeType), iStorage.GetChildInputDataPorts(method));
 			// Connect if only one posiibility
 			if(inputPorts.Length == 1) {
-				iStorage.SetNewDataConnection(inputPorts[0], port);
-                iStorage.AutomaticLayoutOfPointToPointBinding(port, inputPorts[0]);
+				iStorage.SetAndAutoLayoutNewDataConnection(inputPorts[0], port);
 			}
 			// Multiple choices exist so try the one with the closest name.
 			else {
 				var bestPort= GetClosestMatch(port, inputPorts);
 				if(bestPort != null) {
-					iStorage.SetNewDataConnection(bestPort, port);											
-                    iStorage.AutomaticLayoutOfPointToPointBinding(port, bestPort);
+					iStorage.SetAndAutoLayoutNewDataConnection(bestPort, port);											
 				}
 			}
         }

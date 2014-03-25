@@ -66,11 +66,28 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Binding Queries
 	// ----------------------------------------------------------------------
-
+    public iCS_EditorObject GetPointToPointProviderPortForConsumerPort(iCS_EditorObject consumerPort) {
+        if(consumerPort == null) return null;
+        var providerPort= consumerPort.ProviderPort;
+        while( providerPort != null ) {
+            if(providerPort.ConsumerPorts.Length > 1) break;
+            consumerPort= providerPort;
+            providerPort= providerPort.ProviderPort;
+        }
+        return consumerPort; 
+    }
+    
     // ======================================================================
     // Binding Automatic Layout
 	// ----------------------------------------------------------------------
-    public void AutomaticLayoutOfPointToPointBinding(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+    public void AutoLayoutOfPointToPointBinding(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return;
+        AutoLayoutOfProviderPort(providerPort, consumerPort);
+        AutoLayoutOfConsumerPort(providerPort, consumerPort);
+        AutoLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
+    }
+	// ----------------------------------------------------------------------
+    public void AutoLayoutOfProviderPort(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
         if(providerPort == null || consumerPort == null || providerPort == consumerPort) return;
         var providerParentNode= providerPort.ParentNode;
         var consumerParentNode= consumerPort.ParentNode;
@@ -80,14 +97,23 @@ public partial class iCS_IStorage {
         if(Math3D.LineSegmentAndRectEdgeIntersection(providerParentPos, consumerParentPos, providerParentNode.LayoutRect, out intersection)) {
             providerPort.SetAnchorAndLayoutPosition(intersection);
         }
+    }
+	// ----------------------------------------------------------------------
+    public void AutoLayoutOfConsumerPort(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return;
+        var providerParentNode= providerPort.ParentNode;
+        var consumerParentNode= consumerPort.ParentNode;
+        var providerParentPos= providerParentNode.LayoutPosition;
+        var consumerParentPos= consumerParentNode.LayoutPosition;
+        Vector2 intersection;
         if(Math3D.LineSegmentAndRectEdgeIntersection(providerParentPos, consumerParentPos, consumerParentNode.LayoutRect, out intersection)) {
             consumerPort.SetAnchorAndLayoutPosition(intersection);
         }
-        AutomaticLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
     }
 	// ----------------------------------------------------------------------
-    public void AutomaticLayoutOfPointToPointBindingExclusive(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
-        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return;
+    public bool AutoLayoutOfPointToPointBindingExclusive(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return false;
+        bool hasChanged= false;
         var providerPos= providerPort.LayoutPosition;
         var consumerPos= consumerPort.LayoutPosition;
         for(consumerPort= consumerPort.ProviderPort; consumerPort != providerPort; consumerPort= consumerPort.ProviderPort) {
@@ -95,9 +121,13 @@ public partial class iCS_IStorage {
             var r= parentNode.LayoutRect;
             Vector2 intersection;
             if(Math3D.LineSegmentAndRectEdgeIntersection(providerPos, consumerPos, r, out intersection)) {
-                consumerPort.SetAnchorAndLayoutPosition(intersection);
+                if(Math3D.IsNotEqual(consumerPort.LayoutPosition, intersection)) {
+                    consumerPort.SetAnchorAndLayoutPosition(intersection);
+                    hasChanged= true;
+                }
             }
         }
+        return hasChanged;
     }
 
     // ======================================================================
@@ -114,6 +144,12 @@ public partial class iCS_IStorage {
 		node.LayoutParentNodesUntilTop();
 		if(node.IsState) CleanupEntryState(node, oldParent);
         RebuildConnectionsFor(node);
+    }
+	// ----------------------------------------------------------------------
+    public void SetAndAutoLayoutNewDataConnection(iCS_EditorObject consumerPort, iCS_EditorObject providerPort, iCS_TypeCastInfo conversion= null) {
+        SetNewDataConnection(consumerPort, providerPort, conversion);
+        var autoLayoutProviderPort= GetPointToPointProviderPortForConsumerPort(consumerPort);
+        AutoLayoutOfPointToPointBinding(autoLayoutProviderPort, consumerPort);
     }
 	// ----------------------------------------------------------------------
     public void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_TypeCastInfo conversion= null) {

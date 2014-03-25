@@ -71,10 +71,18 @@ public static partial class Math3D {
         bool isParallel= !LineIntersection(l1p1, l1p2, l2p1, l2p2, out intersection);
         if(isParallel) return false;
         // Determine if intersection point is on the given line segment.
-        bool isValidX= ((intersection.x <= l1p1.x && intersection.x >= l1p2.x) ||
-                        (intersection.x >= l1p1.x && intersection.x <= l1p2.x));
-        bool isValidY= ((intersection.y <= l1p1.y && intersection.y >= l1p2.y) ||
-                        (intersection.y >= l1p1.y && intersection.y <= l1p2.y));
+        float l1xMin= l1p1.x; if(l1p2.x < l1p1.x) l1xMin= l1p2.x;
+        float l1xMax= l1p1.x; if(l1p2.x > l1p1.x) l1xMax= l1p2.x;
+        float l1yMin= l1p1.y; if(l1p2.y < l1p1.y) l1yMin= l1p2.y;
+        float l1yMax= l1p1.y; if(l1p2.y > l1p1.y) l1yMax= l1p2.y;
+        float l2xMin= l2p1.x; if(l2p2.x < l2p1.x) l2xMin= l2p2.x;
+        float l2xMax= l2p1.x; if(l2p2.x > l2p1.x) l2xMax= l2p2.x;
+        float l2yMin= l2p1.y; if(l2p2.y < l2p1.y) l2yMin= l2p2.y;
+        float l2yMax= l2p1.y; if(l2p2.y > l2p1.y) l2yMax= l2p2.y;
+        bool isValidX= Math3D.IsWithinOrEqual(intersection.x, l1xMin, l1xMax) &&
+                       Math3D.IsWithinOrEqual(intersection.x, l2xMin, l2xMax);
+        bool isValidY= Math3D.IsWithinOrEqual(intersection.y, l1yMin, l1yMax) &&
+                       Math3D.IsWithinOrEqual(intersection.y, l2yMin, l2yMax);
         return isValidX && isValidY;                
     }
     // ----------------------------------------------------------------------

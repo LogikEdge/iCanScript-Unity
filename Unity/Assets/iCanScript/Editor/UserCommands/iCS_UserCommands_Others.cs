@@ -77,4 +77,19 @@ public static partial class iCS_UserCommands {
         );
         obj.IStorage.SaveStorage("Change name => "+name);
     }
+    // ----------------------------------------------------------------------
+    public static void AutoLayoutPort(iCS_EditorObject port) {
+        if(port == null) return;
+        bool modified= false;
+        var iStorage= port.IStorage;
+        var providerPort= iStorage.GetPointToPointProviderPortForConsumerPort(port);
+        if(providerPort != null && providerPort != port) {
+            modified= true;
+            iStorage.AutoLayoutOfProviderPort(providerPort, port);
+            iStorage.AutoLayoutOfPointToPointBindingExclusive(providerPort, port);
+        }
+        if(modified) {
+            iStorage.SaveStorage("AutoLayout Port => "+port.Name);
+        }
+    }
 }

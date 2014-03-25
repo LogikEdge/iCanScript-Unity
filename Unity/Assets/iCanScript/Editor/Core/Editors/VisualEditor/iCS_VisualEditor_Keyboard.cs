@@ -116,6 +116,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 Event.current.Use();
 				break;
 			}
+            case KeyCode.L: {
+                if(SelectedObject != null && SelectedObject.IsDataOrControlPort) {
+                    iCS_UserCommands.AutoLayoutPort(SelectedObject);
+                    Event.current.Use();                    
+                }
+                break;
+            }
             // Wrap in package
             case KeyCode.W: {
                 if(IsMultiSelectionActive) {
