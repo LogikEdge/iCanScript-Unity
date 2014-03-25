@@ -40,7 +40,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void BreakDataConnectionDrag() {
-        var originalSource= DragOriginalPort.Source;
+        var originalSource= DragOriginalPort.ProviderPort;
         if(originalSource != null && originalSource != DragObject) {
             DragFixPort= originalSource;
             IStorage.SetSource(DragObject, DragFixPort);
@@ -434,7 +434,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 							CHANGED : CODE REVIEW NEEDED => Cleanup of disconnected child multiplexer port.
 						*/
 						// Cleanup child Mux port if it is disconnected.
-						if(DragOriginalPort.IsChildMuxPort && DragOriginalPort.Source == null) {
+						if(DragOriginalPort.IsChildMuxPort && DragOriginalPort.ProviderPort == null) {
 							IStorage.DestroyInstance(DragOriginalPort);
 						}
                     }                    
@@ -498,7 +498,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(DragObject != DragOriginalPort) return;
 			if(DragOriginalPort.IsInputPort) {
 				// Create the appropriate drag port.
-				var sourcePort= DragOriginalPort.Source;
+				var sourcePort= DragOriginalPort.ProviderPort;
 				if(sourcePort != null) {	// Disconnect if the port is connected.
 					RemoveDragPort();
 					var sourceParent= sourcePort.ParentNode;
@@ -539,7 +539,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					// Nothing to do if already properly connected.
 					if(DragObject != DragOriginalPort &&
 					   DragFixPort == DragOriginalPort &&
-					   DragObject.Source == DragFixPort) {
+					   DragObject.ProviderPort == DragFixPort) {
 						return;
 					}
 					RemoveDragPort();
@@ -554,12 +554,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				else {		// Outside parent node
 					// Nothing to do if already properly connected.
 					if(DragObject != DragOriginalPort &&
-					   ((DragFixPort != DragOriginalPort && DragObject.Source == DragFixPort) ||
-					    (DragFixPort == DragOriginalPort && DragOriginalPort.Source == DragObject))) {
+					   ((DragFixPort != DragOriginalPort && DragObject.ProviderPort == DragFixPort) ||
+					    (DragFixPort == DragOriginalPort && DragOriginalPort.ProviderPort == DragObject))) {
 						return;
 					}
 					RemoveDragPort();
-					var sourcePort= DragOriginalPort.Source;
+					var sourcePort= DragOriginalPort.ProviderPort;
 					if(sourcePort != null) {
 						var sourceParent= sourcePort.ParentNode;
 			            var newPort= IStorage.CreatePort(sourcePort.Name,
@@ -586,12 +586,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				if(isInside) {	// Inside parent node
 					// Nothing to do if already properly connected.
                     if(DragObject != DragOriginalPort &&
-                       (DragFixPort != DragOriginalPort && DragObject.Source == DragFixPort) ||
-                       (DragFixPort == DragOriginalPort && DragOriginalPort.Source == DragObject)) {
+                       (DragFixPort != DragOriginalPort && DragObject.ProviderPort == DragFixPort) ||
+                       (DragFixPort == DragOriginalPort && DragOriginalPort.ProviderPort == DragObject)) {
                         return;    
                     }
 					RemoveDragPort();
-					var sourcePort= DragOriginalPort.Source;
+					var sourcePort= DragOriginalPort.ProviderPort;
 					if(sourcePort != null) {
 						var sourceParent= sourcePort.ParentNode;
 			            var newPort= IStorage.CreatePort(sourcePort.Name,
@@ -617,7 +617,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					// Nothing to do if already properly connected.
 					if(DragObject != DragOriginalPort &&
 					   DragFixPort == DragOriginalPort &&
-					   DragObject.Source == DragOriginalPort) {
+					   DragObject.ProviderPort == DragOriginalPort) {
 						return;
 					}
 					RemoveDragPort();

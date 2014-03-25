@@ -40,7 +40,7 @@ public class iCS_BindingParams {
     // ----------------------------------------------------------------------
     public iCS_BindingParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, port.AnimatedPosition, source, source.AnimatedPosition, storage) {}
     // ----------------------------------------------------------------------
-    public iCS_BindingParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, port.Source, storage) {}
+    public iCS_BindingParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, port.ProviderPort, storage) {}
     // ----------------------------------------------------------------------
     static Vector2 BindingDirectionFromTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         // Don't compute complex tangents if we don't have a proper parent.

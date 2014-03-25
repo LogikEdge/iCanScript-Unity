@@ -37,16 +37,16 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void DisconnectPort(iCS_EditorObject port) {
         SetSource(port, null);
-        Prelude.forEach(p=> SetSource(p, null), port.Consumers);        
+        Prelude.forEach(p=> SetSource(p, null), port.ConsumerPorts);        
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject FindAConnectedPort(iCS_EditorObject port) {
-        iCS_EditorObject[] connectedPorts= port.Consumers;
+        iCS_EditorObject[] connectedPorts= port.ConsumerPorts;
         return connectedPorts.Length != 0 ? connectedPorts[0] : null;
     }
     // ----------------------------------------------------------------------
     public bool IsPortSourced(iCS_EditorObject port) {
-        return port.Consumers.Length != 0;
+        return port.ConsumerPorts.Length != 0;
     }
     // ----------------------------------------------------------------------
     bool IsPortConnected(iCS_EditorObject port) {
@@ -58,7 +58,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
     public iCS_EditorObject GetSourceEndPort(iCS_EditorObject port) {
-        iCS_EngineObject engineObject= Storage.GetSourceEndPort(port.EngineObject);
+        iCS_EngineObject engineObject= Storage.GetFirstProviderPort(port.EngineObject);
         return engineObject != null ? EditorObjects[engineObject.InstanceId] : null;
     }
     
@@ -66,11 +66,6 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Binding Queries
 	// ----------------------------------------------------------------------
-    public void GetBindingDescription(iCS_EditorObject port, out iCS_EditorObject providerPort,
-                                                             out iCS_EditorObject[] consumerPorts) {
-        providerPort= port.SourceEndPort;
-        consumerPorts= port.EndConsumers;
-    }
 
     // ======================================================================
     // Binding Utilities
@@ -109,7 +104,7 @@ public partial class iCS_IStorage {
             }
         }
         if(!inParentSeen && inGrandParent != null) {
-			var sourcePort= inPort.Source;
+			var sourcePort= inPort.ProviderPort;
 			iCS_EditorObject newPort= null;
 			// Attempt to reuse existing ports.
 			if(sourcePort != null && sourcePort.ParentNode == inGrandParent && conversion == null) {
@@ -138,7 +133,7 @@ public partial class iCS_IStorage {
 			if(conversion == null &&
 			   outGrandParent.UntilMatchingChild(
 				   p=> {
-					   if(p.IsPort && p.Source == outPort) {
+					   if(p.IsPort && p.ProviderPort == outPort) {
 						   newPort= p;
 						   return true;
 					   }
@@ -179,9 +174,9 @@ public partial class iCS_IStorage {
 			}
 			var existingPort= FindPortWithSourceEndPoint(newInputNode, outputPort);
 			if(existingPort != null) {
-				var prevSource= inputPort.Source;
+				var prevSource= inputPort.ProviderPort;
 				if(prevSource != existingPort) {
-					inputPort.Source= existingPort;
+					inputPort.ProviderPort= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
@@ -190,8 +185,8 @@ public partial class iCS_IStorage {
 			} else {
 	            iCS_EditorObject newPort= CreatePort(inputPort.Name, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
-				newPort.Source= inputPort.Source;
-				inputPort.Source= newPort;
+				newPort.ProviderPort= inputPort.ProviderPort;
+				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
 			}			
 			return;
@@ -205,9 +200,9 @@ public partial class iCS_IStorage {
 			}
 			var existingPort= FindPortWithSourceEndPoint(newDstNode, outputPort);
 			if(existingPort != null) {
-				var prevSource= inputPort.Source;
+				var prevSource= inputPort.ProviderPort;
 				if(prevSource != existingPort) {
-					inputPort.Source= existingPort;
+					inputPort.ProviderPort= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
@@ -216,18 +211,18 @@ public partial class iCS_IStorage {
 			} else {
 	            iCS_EditorObject newPort= CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
-				newPort.Source= inputPort.Source;
-				inputPort.Source= newPort;
+				newPort.ProviderPort= inputPort.ProviderPort;
+				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
 			}
 			return;
 		} else {
-			// Rebuilding moving up from the destination port towards the common parent.
+			// Rebuilding moving up from the consumer port towards the common parent.
 			var existingPort= FindPortWithSourceEndPoint(inputNodeParent, outputPort);
 			if(existingPort != null) {
-				var prevSource= inputPort.Source;
+				var prevSource= inputPort.ProviderPort;
 				if(prevSource != existingPort) {
-					inputPort.Source= existingPort;
+					inputPort.ProviderPort= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
@@ -236,8 +231,8 @@ public partial class iCS_IStorage {
 			} else {
 	            iCS_EditorObject newPort= CreatePort(inputPort.Name, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
-				newPort.Source= inputPort.Source;
-				inputPort.Source= newPort;
+				newPort.ProviderPort= inputPort.ProviderPort;
+				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);
 			}			
 		}
@@ -248,8 +243,8 @@ public partial class iCS_IStorage {
 		node.ForEachChildPort(
 			p=> {
 			    if(p.IsDataOrControlPort) {
-    				var outputPort= p.SourceEndPort;
-    				foreach(var inputPort in p.EndConsumers) {
+    				var outputPort= p.FirstProviderPort;
+    				foreach(var inputPort in p.EndConsumerPorts) {
     					RebuildDataConnection(outputPort, inputPort);
     				}			        
 			    }
@@ -328,7 +323,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public iCS_EditorObject FindPortWithSourceEndPoint(iCS_EditorObject node, iCS_EditorObject srcEP) {
 		// Get all ports that match request (supports connection loops).
-		var matchingPorts= node.BuildListOfChildPorts(p=> p.SourceEndPort == srcEP);
+		var matchingPorts= node.BuildListOfChildPorts(p=> p.FirstProviderPort == srcEP);
 		if(matchingPorts.Length == 0) return null;
 		if(matchingPorts.Length == 1) return matchingPorts[0];
 		foreach(var p in matchingPorts) {
@@ -339,8 +334,8 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
 	public void CleanupHangingConnection(iCS_EditorObject port) {
-		if(port.Consumers.Length == 0) {
-			var src= port.Source;
+		if(port.ConsumerPorts.Length == 0) {
+			var src= port.ProviderPort;
 			DestroyInstance(port);
 			if(src != null) {
 				CleanupHangingConnection(src);

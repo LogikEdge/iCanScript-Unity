@@ -126,7 +126,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             child=> {
 				if(child.IsPort) {
 					var parent= child.ParentNode;
-                    var source= child.Source;
+                    var source= child.ProviderPort;
                     var srcParent= source != null ? source.ParentNode : null;
                     if(!IStorage.ShowDisplayRootNode) {
                         if(parent == rootNode) {

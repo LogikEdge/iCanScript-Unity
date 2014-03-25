@@ -58,13 +58,13 @@ public partial class iCS_Graphics {
         var parent= port.ParentNode;
         if(parent.IsIconizedOnDisplay) return false;
         if(port.IsVisualEndPort && !port.IsParentMuxPort) return true;
-        var source= port.Source;
+        var source= port.ProviderPort;
         if(source != null && source.IsVisibleOnDisplay && !source.ParentNode.IsIconizedOnDisplay) return false;
         if(port.IsParentMuxPort) {
             bool isChildNameVisible= false;
             port.ForEachChildPort(
                 c=> {
-                    var src= c.Source;
+                    var src= c.ProviderPort;
                     if(src != null && src.IsVisibleOnDisplay && !src.ParentNode.IsIconizedOnDisplay) {
                         isChildNameVisible= true;
                     }
@@ -132,7 +132,7 @@ public partial class iCS_Graphics {
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if((port.IsInputPort || port.IsKindOfPackagePort) && port.SourceId != -1) {
-            var sourcePort= port.Source;
+            var sourcePort= port.ProviderPort;
             var sourceCenter= sourcePort.AnimatedPosition;
             var portCenter= port.AnimatedPosition;
             var distance= Vector2.Distance(portCenter, sourceCenter);

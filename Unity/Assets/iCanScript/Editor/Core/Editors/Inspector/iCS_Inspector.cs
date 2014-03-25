@@ -171,7 +171,7 @@ public class iCS_Inspector : Editor {
                         SelectedObject.Tooltip= newTooltip;
                         if(SelectedObject.IsStatePort) {
                             if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
-                            else SelectedObject.Source.Tooltip= toolTip;
+                            else SelectedObject.ProviderPort.Tooltip= toolTip;
                         }
                         iCS_UserCommands.CloseTransaction(myIStorage, "Change tooltip");
                     }
@@ -300,7 +300,7 @@ public class iCS_Inspector : Editor {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in inPorts) {
                     EditorGUILayout.LabelField("Name", port.Name);                        
-                    iCS_EditorObject outPort= port.Source;
+                    iCS_EditorObject outPort= port.ProviderPort;
                     EditorGUILayout.LabelField("State", outPort.Parent.Name);                    
                 }
             }

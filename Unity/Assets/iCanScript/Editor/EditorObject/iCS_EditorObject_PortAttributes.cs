@@ -36,25 +36,25 @@ public partial class iCS_EditorObject {
 		}
 	}
 	// ----------------------------------------------------------------------
-    public iCS_EditorObject Source {
+    public iCS_EditorObject ProviderPort {
 		get { return SourceId != -1 ? myIStorage[SourceId] : null; }
 		set { SourceId= (value != null ? value.InstanceId : -1); }
 	}
 	// ----------------------------------------------------------------------
-	public iCS_EditorObject SourceEndPort {
+	public iCS_EditorObject FirstProviderPort {
 		get {
-		    var engineObject= Storage.GetSourceEndPort(EngineObject);
+		    var engineObject= Storage.GetFirstProviderPort(EngineObject);
 		    return engineObject != null ? EditorObjects[engineObject.InstanceId] : this;
 		}
 	}
 	// ----------------------------------------------------------------------
-	public iCS_EditorObject[] Consumers {
+	public iCS_EditorObject[] ConsumerPorts {
 		get {
 			return Filter(c=> c.IsPort && c.SourceId == InstanceId).ToArray();
 		}
 	}
 	// ----------------------------------------------------------------------
-	public iCS_EditorObject[] EndConsumers {
+	public iCS_EditorObject[] EndConsumerPorts {
 		get {
 			var result= new List<iCS_EditorObject>();
 			BuildListOfEndConsumerPorts(ref result);
@@ -62,11 +62,11 @@ public partial class iCS_EditorObject {
 		}
 	}
 	private void BuildListOfEndConsumerPorts(ref List<iCS_EditorObject> r) {
-		var destinations= Consumers;
-		if(destinations.Length == 0) {
+		var consumers= ConsumerPorts;
+		if(consumers.Length == 0) {
 			r.Add(this);
 		} else {
-			foreach(var p in destinations) {
+			foreach(var p in consumers) {
 				p.BuildListOfEndConsumerPorts(ref r);
 			}
 		}
@@ -75,8 +75,8 @@ public partial class iCS_EditorObject {
 	public P.Tuple<iCS_EditorObject,iCS_EditorObject>[] Connections {
 		get {
 			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
-			var source= SourceEndPort;
-			foreach(var consumer in source.EndConsumers) {
+			var source= FirstProviderPort;
+			foreach(var consumer in source.EndConsumerPorts) {
 				result.Add(new P.Tuple<iCS_EditorObject,iCS_EditorObject>(source, consumer));
 			}			        
 			return result.ToArray();
@@ -85,7 +85,7 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
 	public bool IsPartOfConnection(iCS_EditorObject testedPort) {
 		if(this == testedPort) return true;
-		var src= Source;
+		var src= ProviderPort;
 		if(src == null) return false;
 		return src.IsPartOfConnection(testedPort);
 	} 
@@ -120,7 +120,7 @@ public partial class iCS_EditorObject {
 	public object PortValue {
 		get {
 			if(!IsDataOrControlPort) return null;
-			var port= SourceEndPort;
+			var port= FirstProviderPort;
 			// Get value from port group (ex: ParentMuxPort).
 			var funcBase= myIStorage.GetRuntimeObject(port) as iCS_ISignature;
 			if(funcBase != null) {
@@ -152,7 +152,7 @@ public partial class iCS_EditorObject {
 	        }
 	        // Propagate value for module port.
 	        if(IsKindOfPackagePort) {
-	            iCS_EditorObject[] connectedPorts= Consumers;
+	            iCS_EditorObject[] connectedPorts= ConsumerPorts;
 	            foreach(var cp in connectedPorts) {
 	                cp.RuntimePortValue= value;
 	            }

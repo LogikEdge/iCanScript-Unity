@@ -125,7 +125,7 @@ public partial class iCS_Graphics {
     public bool IsPortValuePicked(iCS_EditorObject port, Vector2 pick) {
         if(!ShouldDisplayPortValue(port)) return false;
         if(!port.IsInputPort) return false;
-        if(port.Source != null) return false;
+        if(port.ProviderPort != null) return false;
         Rect portValuePos= GetPortValuePosition(port);
         float invScale= 1.0f/Scale;
         portValuePos.width*= invScale;

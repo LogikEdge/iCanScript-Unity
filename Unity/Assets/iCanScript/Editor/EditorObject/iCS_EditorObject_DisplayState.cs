@@ -76,7 +76,7 @@ public partial class iCS_EditorObject {
                 var instanceName= iCS_Strings.DefaultInstanceName;
                 if(Name == instanceName && parentNode.IsKindOfFunction) {
                     var grandParentNode= parentNode.ParentNode;
-                    if(grandParentNode.IsInstanceNode && IsSourceValid && Source.ParentNode == grandParentNode && Source.Name == instanceName) {
+                    if(grandParentNode.IsInstanceNode && IsSourceValid && ProviderPort.ParentNode == grandParentNode && ProviderPort.Name == instanceName) {
                         return false;
                     }
                 }

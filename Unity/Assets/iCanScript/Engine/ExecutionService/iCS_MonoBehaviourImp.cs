@@ -31,7 +31,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour {
         return Storage.GetParent(obj);
     }
     public iCS_EngineObject GetSourceEndPort(iCS_EngineObject port) {
-        return Storage.GetSourceEndPort(port);
+        return Storage.GetFirstProviderPort(port);
     }
     public iCS_EngineObject GetSourcePort(iCS_EngineObject port) {
         return Storage.GetSourcePort(port);

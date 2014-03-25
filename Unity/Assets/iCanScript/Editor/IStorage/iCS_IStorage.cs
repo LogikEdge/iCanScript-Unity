@@ -235,9 +235,9 @@ public partial class iCS_IStorage {
 	                        shouldRemove= true;
 	                    } else if(obj.IsParentMuxPort && IsPortDisconnected(obj) && obj.HasChildPort() == false) {
 	                        shouldRemove= true;
-	                    } else if(obj.IsChildMuxPort && obj.Source == null) {
+	                    } else if(obj.IsChildMuxPort && obj.ProviderPort == null) {
 	                        shouldRemove= true;
-	                    } else if(obj.Source == null) {
+	                    } else if(obj.ProviderPort == null) {
 							if(obj.IsChildMuxPort || obj.IsInStatePort || obj.IsInTransitionPort) {
 		                        shouldRemove= true;								
 							}
@@ -260,7 +260,7 @@ public partial class iCS_IStorage {
 	                                break;
 	                            case 1:
 	                                var childPorts= obj.BuildListOfChildPorts(_=> true);
-	                                obj.Source= childPorts[0].Source;
+	                                obj.ProviderPort= childPorts[0].ProviderPort;
 	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
 	                                DestroyInstanceInternal(childPorts[0]);
 	                                break;
@@ -270,7 +270,7 @@ public partial class iCS_IStorage {
                     // Cleanup disconnected typecasts.
     				if(obj.IsTypeCast) {
 						var inDataPort= FindInChildren(obj, c=> c.IsInDataOrControlPort);
-                        if(inDataPort.Source == null &&
+                        if(inDataPort.ProviderPort == null &&
                            FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataOrControlPort)) == null) {
                            DestroyInstanceInternal(obj);
                            modified= true;

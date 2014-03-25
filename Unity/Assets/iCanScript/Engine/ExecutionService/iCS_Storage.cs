@@ -164,7 +164,7 @@ public class iCS_Storage : ScriptableObject {
     }
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
-    public iCS_EngineObject GetSourceEndPort(iCS_EngineObject port) {
+    public iCS_EngineObject GetFirstProviderPort(iCS_EngineObject port) {
         if(port == null) return null;
         int linkLength= 0;
         for(iCS_EngineObject sourcePort= GetSourcePort(port); sourcePort != null; sourcePort= GetSourcePort(port)) {
@@ -177,16 +177,16 @@ public class iCS_Storage : ScriptableObject {
         return port;
     }
     // ----------------------------------------------------------------------
-    // Returns the list of destination ports.
-    public iCS_EngineObject[] GetDestinationPorts(iCS_EngineObject port) {
+    // Returns the list of consumer ports.
+    public iCS_EngineObject[] GetConsumerPorts(iCS_EngineObject port) {
         if(port == null) return new iCS_EngineObject[0];
-        var destinationPorts= new List<iCS_EngineObject>();
+        var consumerPorts= new List<iCS_EngineObject>();
         foreach(var obj in EngineObjects) {
             if(obj.IsPort && GetSourcePort(obj) == port) {
-                destinationPorts.Add(obj);
+                consumerPorts.Add(obj);
             }
         }
-        return destinationPorts.ToArray();
+        return consumerPorts.ToArray();
     }
     // ----------------------------------------------------------------------
     public bool IsEndPort(iCS_EngineObject port) {
@@ -206,7 +206,7 @@ public class iCS_Storage : ScriptableObject {
     }
     // ----------------------------------------------------------------------
     public bool HasADestination(iCS_EngineObject port) {
-        return GetDestinationPorts(port).Length != 0;
+        return GetConsumerPorts(port).Length != 0;
     }
     
     // ======================================================================
