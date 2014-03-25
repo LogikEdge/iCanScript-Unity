@@ -96,12 +96,6 @@ public partial class iCS_IStorage {
     public iCS_IStorage(iCS_MonoBehaviourImp monoBehaviour) {
         Init(monoBehaviour);
     }
-    ~iCS_IStorage() {
-        Debug.Log("iCanScript: Should schedule Storage destruction");
-//        if(Storage != null) {
-//            ScriptableObject.DestroyImmediate(Storage);
-//        }
-    }
     public void Init(iCS_MonoBehaviourImp monoBehaviour) {
         // Verify that the storage is valid on the new iCS_MonoBehaviourImp
         iCS_Storage storage= monoBehaviour.Storage;
