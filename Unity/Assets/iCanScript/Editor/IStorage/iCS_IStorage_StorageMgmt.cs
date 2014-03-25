@@ -65,6 +65,7 @@ public partial class iCS_IStorage {
         // Duplicate engine storage
         if(Storage == null) {
             Storage= ScriptableObject.CreateInstance("iCS_Storage") as iCS_Storage;
+            Storage.hideFlags= HideFlags.HideAndDontSave;
         }
         try {
             MonoBehaviourStorage.CopyTo(Storage);            
