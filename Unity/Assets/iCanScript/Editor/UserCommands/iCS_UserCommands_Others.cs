@@ -81,19 +81,22 @@ public static partial class iCS_UserCommands {
     public static void AutoLayoutPort(iCS_EditorObject port) {
         if(port == null) return;
         var iStorage= port.IStorage;
+        var portPos= port.LayoutPosition;
         // First layout from port to provider
         var providerPort= iStorage.GetPointToPointProviderPortForConsumerPort(port);
         if(providerPort != null && providerPort != port) {
             var providerLayoutEndPoint= iStorage.GetProviderLineSegmentPosition(providerPort);
-            iStorage.AutoLayoutPort(providerPort, port.LayoutPosition, providerLayoutEndPoint);
+            iStorage.AutoLayoutPort(providerPort, portPos, providerLayoutEndPoint);
             iStorage.AutoLayoutOfPointToPointBindingExclusive(providerPort, port);
         }
         // Secondly, layout from port to consumer.
-        var consumerPort= iStorage.GetPointToPointConsumerPortForProviderPort(port);
-        if(consumerPort != null && consumerPort != port) {
-            var consumerLayoutEndPoint= iStorage.GetConsumerLineSegmentPosition(consumerPort);
-            iStorage.AutoLayoutPort(consumerPort, port.LayoutPosition, consumerLayoutEndPoint);
-            iStorage.AutoLayoutOfPointToPointBindingExclusive(port, consumerPort);
+        var consumerPorts= iStorage.GetPointToPointConsumerPortsForProviderPort(port);
+        if(consumerPorts != null) {
+            foreach(var consumerPort in consumerPorts) {
+                var consumerLayoutEndPoint= iStorage.GetConsumerLineSegmentPosition(consumerPort);
+                iStorage.AutoLayoutPort(consumerPort, portPos, consumerLayoutEndPoint);
+                iStorage.AutoLayoutOfPointToPointBindingExclusive(port, consumerPort);                
+            }
         }
         // Save result.
         iStorage.SaveStorage("AutoLayout Port => "+port.Name);

@@ -87,6 +87,17 @@ public partial class iCS_IStorage {
         }
         return providerPort;
     }
+	// ----------------------------------------------------------------------
+    public iCS_EditorObject[] GetPointToPointConsumerPortsForProviderPort(iCS_EditorObject providerPort) {
+        if(providerPort == null) return null;
+        var consumerPorts= providerPort.ConsumerPorts;
+        if(consumerPorts == null || consumerPorts.Length == 0) return new iCS_EditorObject[0];
+        var len= consumerPorts.Length;
+        for(int i= 0; i < len; ++i) {
+            consumerPorts[i]= GetPointToPointConsumerPortForProviderPort(consumerPorts[i]);
+        }
+        return consumerPorts;
+    }
     
     // ======================================================================
     // Binding Automatic Layout
@@ -131,7 +142,8 @@ public partial class iCS_IStorage {
         if(Math3D.LineSegmentAndRectEdgeIntersection(p1, p2, parentNode.LayoutRect, out intersection)) {
             if(Math3D.IsNotEqual(port.LayoutPosition, intersection)) {
                 port.SetAnchorAndLayoutPosition(intersection);
-                port.ParentNode.LayoutPorts();
+                parentNode.LayoutNode();
+                parentNode.LayoutPorts();
                 return true;
             }
         }
