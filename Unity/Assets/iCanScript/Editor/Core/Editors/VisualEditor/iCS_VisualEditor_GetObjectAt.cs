@@ -94,7 +94,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Returns the closest visible port at graph position.
     iCS_EditorObject GetVisibleNodeWithEdgeAt(Vector2 graphPosition) {
         var node= IStorage.GetNodeWithEdgeAt(graphPosition);
-        if(node != null && DisplayRoot.IsParentOf(node)) return node;
+        if(node != null) {
+            if(DisplayRoot.IsParentOf(node)) return node;
+            if(node == DisplayRoot && IStorage.ShowDisplayRootNode == true) return node;
+        }
         return null;
     }
 }
