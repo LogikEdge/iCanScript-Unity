@@ -76,6 +76,17 @@ public partial class iCS_IStorage {
         }
         return consumerPort; 
     }
+	// ----------------------------------------------------------------------
+    public iCS_EditorObject GetPointToPointConsumerPortForProviderPort(iCS_EditorObject providerPort) {
+        if(providerPort == null) return null;
+        while(providerPort != null) {
+            var consumerPorts= providerPort.ConsumerPorts;
+            if(consumerPorts == null || consumerPorts.Length == 0) return providerPort;
+            if(consumerPorts.Length > 1) return providerPort;
+            providerPort= consumerPorts[0];            
+        }
+        return providerPort;
+    }
     
     // ======================================================================
     // Binding Automatic Layout
@@ -87,28 +98,53 @@ public partial class iCS_IStorage {
         AutoLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
     }
 	// ----------------------------------------------------------------------
+    public Vector2 GetProviderLineSegmentPosition(iCS_EditorObject port) {
+        if(port == null) {
+            Debug.LogWarning("iCanScript: GetProviderPosition(...) should not be called with null!");
+            return Vector2.zero;
+        }
+        var providerPort= port.ProviderPort;
+        return providerPort == null ? port.ParentNode.LayoutPosition : providerPort.LayoutPosition;
+    }
+	// ----------------------------------------------------------------------
+    public Vector2 GetConsumerLineSegmentPosition(iCS_EditorObject port) {
+        if(port == null) {
+            Debug.LogWarning("iCanScript: GetConsumerPosition(...) should not be called with null!");
+            return Vector2.zero;
+        }
+        var consumerPorts= port.ConsumerPorts;
+        if(consumerPorts == null || consumerPorts.Length == 0) {
+            return port.ParentNode.LayoutPosition;
+        }
+        Vector2 averagePos= Vector2.zero;
+        foreach(var p in consumerPorts) {
+            averagePos+= p.LayoutPosition;
+        }
+        return averagePos / consumerPorts.Length;
+    }
+	// ----------------------------------------------------------------------
+    public void AutoLayoutPort(iCS_EditorObject port, Vector2 p1, Vector2 p2) {
+        if(port == null) return;
+        var parentNode= port.ParentNode;
+        // Project port on line segment.
+        Vector2 intersection;
+        if(Math3D.LineSegmentAndRectEdgeIntersection(p1, p2, parentNode.LayoutRect, out intersection)) {
+            port.SetAnchorAndLayoutPosition(intersection);
+        }
+    }
+	// ----------------------------------------------------------------------
     public void AutoLayoutOfProviderPort(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
         if(providerPort == null || consumerPort == null || providerPort == consumerPort) return;
-        var providerParentNode= providerPort.ParentNode;
-        var consumerParentNode= consumerPort.ParentNode;
-        var providerParentPos= providerParentNode.LayoutPosition;
-        var consumerParentPos= consumerParentNode.LayoutPosition;
-        Vector2 intersection;
-        if(Math3D.LineSegmentAndRectEdgeIntersection(providerParentPos, consumerParentPos, providerParentNode.LayoutRect, out intersection)) {
-            providerPort.SetAnchorAndLayoutPosition(intersection);
-        }
+        var providerPos= GetProviderLineSegmentPosition(providerPort);
+        var consumerPos= GetConsumerLineSegmentPosition(consumerPort);
+        AutoLayoutPort(providerPort, providerPos, consumerPos);
     }
 	// ----------------------------------------------------------------------
     public void AutoLayoutOfConsumerPort(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
         if(providerPort == null || consumerPort == null || providerPort == consumerPort) return;
-        var providerParentNode= providerPort.ParentNode;
-        var consumerParentNode= consumerPort.ParentNode;
-        var providerParentPos= providerParentNode.LayoutPosition;
-        var consumerParentPos= consumerParentNode.LayoutPosition;
-        Vector2 intersection;
-        if(Math3D.LineSegmentAndRectEdgeIntersection(providerParentPos, consumerParentPos, consumerParentNode.LayoutRect, out intersection)) {
-            consumerPort.SetAnchorAndLayoutPosition(intersection);
-        }
+        var providerPos= GetProviderLineSegmentPosition(providerPort);
+        var consumerPos= GetConsumerLineSegmentPosition(consumerPort);
+        AutoLayoutPort(consumerPort, providerPos, consumerPos);
     }
 	// ----------------------------------------------------------------------
     public bool AutoLayoutOfPointToPointBindingExclusive(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {

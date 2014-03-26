@@ -80,17 +80,22 @@ public static partial class iCS_UserCommands {
     // ----------------------------------------------------------------------
     public static void AutoLayoutPort(iCS_EditorObject port) {
         if(port == null) return;
-        bool modified= false;
         var iStorage= port.IStorage;
+        // First layout from port to provider
         var providerPort= iStorage.GetPointToPointProviderPortForConsumerPort(port);
-        Debug.Log("iCanScript: Provider port => "+providerPort.Name+" from => "+providerPort.ParentNode.Name);
         if(providerPort != null && providerPort != port) {
-            modified= true;
-            iStorage.AutoLayoutOfProviderPort(providerPort, port);
+            var providerLayoutEndPoint= iStorage.GetProviderLineSegmentPosition(providerPort);
+            iStorage.AutoLayoutPort(providerPort, port.LayoutPosition, providerLayoutEndPoint);
             iStorage.AutoLayoutOfPointToPointBindingExclusive(providerPort, port);
         }
-        if(modified) {
-            iStorage.SaveStorage("AutoLayout Port => "+port.Name);
+        // Secondly, layout from port to consumer.
+        var consumerPort= iStorage.GetPointToPointConsumerPortForProviderPort(port);
+        if(consumerPort != null && consumerPort != port) {
+            var consumerLayoutEndPoint= iStorage.GetConsumerLineSegmentPosition(consumerPort);
+            iStorage.AutoLayoutPort(consumerPort, port.LayoutPosition, consumerLayoutEndPoint);
+            iStorage.AutoLayoutOfPointToPointBindingExclusive(port, consumerPort);
         }
+        // Save result.
+        iStorage.SaveStorage("AutoLayout Port => "+port.Name);
     }
 }
