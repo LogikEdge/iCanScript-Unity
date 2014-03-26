@@ -57,7 +57,7 @@ public partial class iCS_IStorage {
     bool IsPortDisconnected(iCS_EditorObject port) { return !IsPortConnected(port); }
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
-    public iCS_EditorObject GetSourceEndPort(iCS_EditorObject port) {
+    public iCS_EditorObject GetFirstProviderPort(iCS_EditorObject port) {
         iCS_EngineObject engineObject= Storage.GetFirstProviderPort(port.EngineObject);
         return engineObject != null ? EditorObjects[engineObject.InstanceId] : null;
     }

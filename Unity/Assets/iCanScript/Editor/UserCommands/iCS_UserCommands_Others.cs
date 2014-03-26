@@ -83,6 +83,7 @@ public static partial class iCS_UserCommands {
         bool modified= false;
         var iStorage= port.IStorage;
         var providerPort= iStorage.GetPointToPointProviderPortForConsumerPort(port);
+        Debug.Log("iCanScript: Provider port => "+providerPort.Name+" from => "+providerPort.ParentNode.Name);
         if(providerPort != null && providerPort != port) {
             modified= true;
             iStorage.AutoLayoutOfProviderPort(providerPort, port);
