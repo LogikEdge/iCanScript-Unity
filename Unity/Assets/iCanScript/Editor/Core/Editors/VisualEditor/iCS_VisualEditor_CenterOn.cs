@@ -35,7 +35,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(obj.IsNode) {
             float widthScale= position.width/(1.1f*size.x);
             float heightScale= position.height/(1.1f*size.y);
-            newScale= Mathf.Min(1.0f, Mathf.Min(widthScale, heightScale));
+            newScale= Mathf.Min(2.0f, Mathf.Min(widthScale, heightScale));
         }
         CenterAtWithScale(obj.LayoutPosition, newScale);
     }

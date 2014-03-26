@@ -43,6 +43,10 @@ public static partial class iCS_UserCommands {
         if(obj == null || !obj.IsNode) return;
         var iStorage= obj.IStorage;
         iStorage.DisplayRoot= obj;
+        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        if(visualEditor != null) {
+            visualEditor.CenterAndScaleOn(obj);
+        }
         iStorage.SaveStorage("Change Display Root");
     }
     // ----------------------------------------------------------------------
@@ -53,6 +57,10 @@ public static partial class iCS_UserCommands {
         if(parent == null) return;
         var iStorage= parent.IStorage;
         iStorage.DisplayRoot= parent;
+        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        if(visualEditor != null) {
+            visualEditor.CenterAndScaleOn(parent);
+        }
         iStorage.SaveStorage("Change Display Root");
     }
     // ----------------------------------------------------------------------
