@@ -142,12 +142,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode) {
             if(SelectedObject.IsIconizedOnDisplay && !IsShiftKeyDown) {
                 iCS_UserCommands.Unfold(SelectedObject);                                                                            
-            } else if(SelectedObject.IsUnfoldedOnDisplay && IsShiftKeyDown) {
+            } else if(SelectedObject.IsUnfoldedInLayout && IsShiftKeyDown) {
                 iCS_UserCommands.Iconize(SelectedObject);                    
             }
         } else {
             if(IsShiftKeyDown) {
-                if(SelectedObject.IsUnfoldedOnDisplay) {
+                if(SelectedObject.IsUnfoldedInLayout) {
                     if(IsControlKeyDown) {
                         iCS_UserCommands.Iconize(SelectedObject);                                                
                     } else {

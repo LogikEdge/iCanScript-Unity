@@ -111,7 +111,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Navigation
             case KeyCode.LeftBracket: {
 //                if(IsNavigationKeyDown) {
-                    Debug.Log("iCanScript: Backward navigation history");
                     IStorage.ReloadNavigationFromBackwardHistory();
                     Event.current.Use();                    
 //                }
@@ -119,7 +118,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.RightBracket: {
 //                if(IsNavigationKeyDown) {
-                    Debug.Log("iCanScript: Forward navigation history");
                     IStorage.ReloadNavigationFromForwardHistory();
                     Event.current.Use();                    
 //                }

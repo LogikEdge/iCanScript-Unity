@@ -103,7 +103,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void BehaviourMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         // Don't show any menu if behaviour not visible.
-        if(selectedObject.IsIconizedOnDisplay || selectedObject.IsFoldedOnDisplay) return;
+        if(selectedObject.IsIconizedInLayout || selectedObject.IsFoldedInLayout) return;
 
 		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
         int len= messages.Length;
@@ -122,7 +122,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void PackageMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
-        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
+        if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             // Base menu items
             int idx= GrowMenuBy(ref menu, 5);
             menu[idx]= new iCS_MenuContext(PackageStr);
@@ -163,7 +163,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void InstanceMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
-        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
+        if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             // Determine if we should support output 'this' port.
             Type classType= selectedObject.RuntimeType;
             bool shouldSupportThis= !iCS_Types.IsStaticClass(classType);
@@ -191,7 +191,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
-        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
+        if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             int idx= GrowMenuBy(ref menu, 1);
             menu[idx]= new iCS_MenuContext(StateStr); 
         }
@@ -205,7 +205,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void StateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
-        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
+        if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             int len= iCS_AllowedChildren.StateChildNames.Length;
             int idx= GrowMenuBy(ref menu, len+4);
             menu[idx]= new iCS_MenuContext(StateStr);
