@@ -16,16 +16,19 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------    
     public bool IsUnfoldedInLayout  {
         get {
+            if(this == IStorage.DisplayRoot) return true;
             return IsVisibleInLayout && DisplayOption == iCS_DisplayOptionEnum.Unfolded;
         }
     }
     public bool IsFoldedInLayout {
         get {
+            if(this == IStorage.DisplayRoot) return false;
             return IsVisibleInLayout && DisplayOption == iCS_DisplayOptionEnum.Folded;
         }
     }
     public bool IsIconizedInLayout {
         get {
+            if(this == IStorage.DisplayRoot) return false;
             return IsVisibleInLayout && DisplayOption == iCS_DisplayOptionEnum.Iconized;
         }
     }
@@ -56,7 +59,8 @@ public partial class iCS_EditorObject {
     public bool IsVisibleInLayout {
         get {
             var parent= Parent;
-            if(parent == null) return true;    
+            if(parent == null) return true;
+            if(parent == IStorage.DisplayRoot) return true;    
             if(parent.DisplayOption == iCS_DisplayOptionEnum.Iconized) return false;
             if(IsNode) {
                 if(parent.DisplayOption == iCS_DisplayOptionEnum.Folded) return false;

@@ -10,14 +10,15 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-            bool                myForceRelayout     = true;
-            bool                myIsDirty           = true;
-    public  bool                IsTransactionOpened = false;
-    public  iCS_MonoBehaviourImp   iCSMonoBehaviour    = null;
-    public  iCS_Storage         Storage             = null;
-    List<iCS_EditorObject>      myEditorObjects     = null;
-    public  int                 ModificationId      = -1;
-    public  bool                CleanupDeadPorts    = true;
+            bool                    myForceRelayout     = true;
+            bool                    myIsDirty           = true;
+    public  bool                    IsTransactionOpened = false;
+    public  iCS_MonoBehaviourImp    iCSMonoBehaviour    = null;
+    public  iCS_Storage             Storage             = null;
+    List<iCS_EditorObject>          myEditorObjects     = null;
+    public  int                     ModificationId      = -1;
+    public  bool                    CleanupDeadPorts    = true;
+    public  iCS_NavigationHistory   NavigationHistory   = new iCS_NavigationHistory();
     
     // ======================================================================
     // Properties

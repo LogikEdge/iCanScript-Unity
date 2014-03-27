@@ -11,13 +11,8 @@ public static partial class iCS_UserCommands {
 	public static void Select(iCS_EditorObject obj, iCS_IStorage iStorage) {
         if(obj == iStorage.SelectedObject) return;
 		iStorage.SelectedObject= obj;
-        if(!iStorage.IsTransactionOpened) {
-            if(obj != null) {
-                CloseTransaction(iStorage, "Select => "+obj.Name);            
-            }
-            else {
-                CloseTransaction(iStorage, "Remove Selection");
-            }            
+        if(obj != null && obj.IsNode && obj.IsParentOf(iStorage.DisplayRoot)) {
+            iCS_UserCommands.SetAsDisplayRoot(obj);
         }
 	}
     // ----------------------------------------------------------------------
@@ -25,9 +20,6 @@ public static partial class iCS_UserCommands {
         if(obj == null) return;
         var iStorage= obj.IStorage;
 		iStorage.ToggleMultiSelection(obj);
-        if(!iStorage.IsTransactionOpened) {
-            CloseTransaction(iStorage, "Toggle MultiSelect => "+obj.Name);            
-        }
 	}
 
 }

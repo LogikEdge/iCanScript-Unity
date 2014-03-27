@@ -16,6 +16,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	bool	IsMultiSelectKeyDown { get { return Event.current.command; }}
     bool    IsDoubleClick        { get { return Event.current.clickCount >= 2; }}
 	bool    IsIsolateKeyDown     { get { return IsAltKeyDown; }}
+    bool    IsNavigationKeyDown  { get { return Event.current.command; }}
 	
     
 	// ----------------------------------------------------------------------
@@ -46,8 +47,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         Event.current.Use();
                         return;
                     }
+                    if(SelectedObject == DisplayRoot) {
+                        
+                    }                    
                     SelectedObject= SelectedObject.Parent;
-                    CenterOnSelected();
+                    if(SelectedObject.IsParentOf(DisplayRoot)) {
+                        DisplayRoot= SelectedObject;
+                        CenterAndScaleOn(SelectedObject);
+                    }
+                    CenterOn(SelectedObject);
                 } 
                 Event.current.Use();
                 break;
@@ -98,6 +106,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 SelectedObject= iCS_EditorUtility.GetPreviousSibling(SelectedObject, IStorage);
                 CenterOnSelected();
                 Event.current.Use();
+                break;
+            }
+            // Navigation
+            case KeyCode.LeftBracket: {
+//                if(IsNavigationKeyDown) {
+                    Debug.Log("iCanScript: Backward navigation history");
+                    IStorage.ReloadNavigationFromBackwardHistory();
+                    Event.current.Use();                    
+//                }
+                break;
+            }
+            case KeyCode.RightBracket: {
+//                if(IsNavigationKeyDown) {
+                    Debug.Log("iCanScript: Forward navigation history");
+                    IStorage.ReloadNavigationFromForwardHistory();
+                    Event.current.Use();                    
+//                }
                 break;
             }
             case KeyCode.F: {
