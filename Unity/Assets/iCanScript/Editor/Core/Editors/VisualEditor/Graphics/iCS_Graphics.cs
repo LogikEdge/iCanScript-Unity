@@ -372,7 +372,7 @@ public partial class iCS_Graphics {
         }
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node)) {
-            var icon= node.IsFoldedOnDisplay ? iCS_BuiltinTextures.FoldIcon(Scale) : iCS_BuiltinTextures.UnfoldIcon(Scale);
+            var icon= node.IsFoldedInLayout ? iCS_BuiltinTextures.FoldIcon(Scale) : iCS_BuiltinTextures.UnfoldIcon(Scale);
             GUI_DrawTexture(new Rect(position.x+6f, position.y-0.5f, 16, 16), icon);                           
         }
         // Minimize Icon

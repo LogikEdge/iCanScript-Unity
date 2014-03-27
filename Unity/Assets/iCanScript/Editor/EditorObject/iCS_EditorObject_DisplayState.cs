@@ -36,8 +36,6 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // High-order queries.
     // ----------------------------------------------------------------------
-	public bool IsFoldedOnDisplay	{ get { return IsFoldedInLayout; }}
-    // ----------------------------------------------------------------------
 	public bool IsIconizedOnDisplay	{
 		get {
             if(IsPort) return false;
