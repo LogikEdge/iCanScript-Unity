@@ -27,6 +27,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 		// --------------
 		// LEFT TOOLBAR
+        // Navigation History
+        var backwardNavigationIcon= iCS_BuiltinTextures.BackwardNavigationHistoryIcon();
+        var forwardNavigationIcon= iCS_BuiltinTextures.ForwardNavigationHistoryIcon();
+        var hasBackwardHistory= IStorage.HasBackwardHistory;
+        bool pressed= iCS_ToolbarUtility.Button(ref r, hasBackwardHistory, backwardNavigationIcon, 0f, 0f);
+        if(pressed && hasBackwardHistory) {
+            IStorage.ReloadNavigationFromBackwardHistory();
+        }
+        var hasForwardHistory= IStorage.HasForwardHistory;
+        pressed= iCS_ToolbarUtility.Button(ref r, hasForwardHistory, forwardNavigationIcon, 0f, 0f);
+        if(pressed && hasForwardHistory) {
+            IStorage.ReloadNavigationFromForwardHistory();
+        }
 		// Show Behaviour Node.
 		GUI.changed= false;
 		IStorage.ShowDisplayRootNode= iCS_ToolbarUtility.Toggle(ref r, IStorage.ShowDisplayRootNode, spacer, spacer);

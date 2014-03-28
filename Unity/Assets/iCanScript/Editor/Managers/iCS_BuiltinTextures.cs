@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
 
@@ -46,6 +47,12 @@ public static class iCS_BuiltinTextures {
         }
         return myUnfoldIcon;
     }
+    public static Texture2D BackwardNavigationHistoryIcon() {
+        return myBackwardNavigationHistoryIcon;
+    }
+    public static Texture2D ForwardNavigationHistoryIcon() {
+        return myForwardNavigationHistoryIcon;
+    }
     
     // =================================================================================
     // Constants
@@ -73,12 +80,16 @@ public static class iCS_BuiltinTextures {
 	static Texture2D    myMaximizeIcon;
 	static Texture2D    myFoldIcon;
 	static Texture2D    myUnfoldIcon;
+    static Texture2D    myBackwardNavigationHistoryIcon;
+    static Texture2D    myForwardNavigationHistoryIcon;
 
     // =================================================================================
     // Polygons
     // ---------------------------------------------------------------------------------
-    static Vector2[] myFoldIconPolygon  = null;
-    static Vector2[] myUnfoldIconPolygon= null;
+    static Vector2[] myFoldIconPolygon                 = null;
+    static Vector2[] myUnfoldIconPolygon               = null;
+    static Vector2[] myBackwardNavigationHistoryPolygon= null;
+    static Vector2[] myForwardNavigationHistoryPolygon = null;
     
     // =================================================================================
     // Constrcutor
@@ -93,9 +104,19 @@ public static class iCS_BuiltinTextures {
         myUnfoldIconPolygon[0]= new Vector2(-0.45f, 0.5f);
         myUnfoldIconPolygon[1]= new Vector2( 0.45f, 0.5f);
         myUnfoldIconPolygon[2]= new Vector2( 0,   -0.5f);
+        myBackwardNavigationHistoryPolygon= new Vector2[3];
+        myBackwardNavigationHistoryPolygon[0]= new Vector2(-0.5f, -0.45f);
+        myBackwardNavigationHistoryPolygon[1]= new Vector2( 0.5f,  0);
+        myBackwardNavigationHistoryPolygon[2]= new Vector2(-0.5f,  0.45f);
+        myForwardNavigationHistoryPolygon= new Vector2[3];
+        myForwardNavigationHistoryPolygon[0]= new Vector2( 0.5f, -0.45f);
+        myForwardNavigationHistoryPolygon[1]= new Vector2(-0.5f,  0);
+        myForwardNavigationHistoryPolygon[2]= new Vector2( 0.5f,  0.45f);
         // Build scale independent textures.
         BuildScaleIndependantTextures();
         BuildScaleDependantTextures();
+        // Build fix size icons
+        BuildNavigationHistoryIcons();
     }
     // ---------------------------------------------------------------------------------
     static void BuildScaleIndependantTextures() {
@@ -313,7 +334,7 @@ public static class iCS_BuiltinTextures {
         if(myFoldIcon != null) Texture2D.DestroyImmediate(myFoldIcon);
 		myFoldIcon= new Texture2D(textureSize, textureSize);
 		iCS_TextureUtil.Clear(ref myFoldIcon);
-        Color c= new Color(0,0,0,0.3f);
+        Color c= new Color(0,0,0,0.5f);
 	    iCS_TextureUtil.DrawFilledPolygon(ref myFoldIcon, polygon, c);
 	    float lineWidth= 1.2f*myScale;
 	    iCS_TextureUtil.DrawPolygonOutline(ref myFoldIcon, polygon, Color.black, lineWidth);
@@ -334,12 +355,40 @@ public static class iCS_BuiltinTextures {
         if(myUnfoldIcon != null) Texture2D.DestroyImmediate(myUnfoldIcon);
 		myUnfoldIcon= new Texture2D(textureSize, textureSize);
 		iCS_TextureUtil.Clear(ref myUnfoldIcon);
-        Color c= new Color(0,0,0,0.3f);
+        Color c= new Color(0,0,0,0.5f);
 	    iCS_TextureUtil.DrawFilledPolygon(ref myUnfoldIcon, polygon, c);
 	    float lineWidth= 1.2f*myScale;
 	    iCS_TextureUtil.DrawPolygonOutline(ref myUnfoldIcon, polygon, Color.black, lineWidth);
         // Finalize icons.
         myUnfoldIcon.Apply();
         myUnfoldIcon.hideFlags= HideFlags.DontSave;
+    }
+    // ---------------------------------------------------------------------------------
+    static void BuildNavigationHistoryIcons() {
+        // Build polygon
+        float size= 16f;
+        int textureSize= ((int)size)+1;
+        float offset= 0.5f*((float)textureSize-size);
+        var center= new Vector2(0.5f*textureSize+offset, 0.5f*textureSize+offset);
+        var scale= new Vector2(0.7f*size, 0.7f*size);
+        var backwardPolygon= Math3D.ScaleAndTranslatePolygon(myBackwardNavigationHistoryPolygon, scale, center);
+        var forwardPolygon= Math3D.ScaleAndTranslatePolygon(myForwardNavigationHistoryPolygon, scale, center);
+        // Allocate & Clear textures
+		myForwardNavigationHistoryIcon= new Texture2D(textureSize, textureSize);
+		myBackwardNavigationHistoryIcon= new Texture2D(textureSize, textureSize);
+		iCS_TextureUtil.Clear(ref myForwardNavigationHistoryIcon);
+		iCS_TextureUtil.Clear(ref myBackwardNavigationHistoryIcon);
+        // Build texture
+        Color c= Color.black;
+        if(EditorGUIUtility.isProSkin) {
+            c= Color.white;
+        }
+	    iCS_TextureUtil.DrawFilledPolygon(ref myForwardNavigationHistoryIcon, backwardPolygon, c);
+	    iCS_TextureUtil.DrawFilledPolygon(ref myBackwardNavigationHistoryIcon, forwardPolygon, c);
+        // Finalize icons.
+        myForwardNavigationHistoryIcon.Apply();
+        myBackwardNavigationHistoryIcon.Apply();
+        myForwardNavigationHistoryIcon.hideFlags= HideFlags.DontSave;        
+        myBackwardNavigationHistoryIcon.hideFlags= HideFlags.DontSave;        
     }
 }

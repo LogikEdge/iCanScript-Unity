@@ -107,7 +107,28 @@ public static class iCS_ToolbarUtility {
 		toolbarRect.width= 0;
     }
 	// ----------------------------------------------------------------------
-    public static int Buttons(ref Rect toolbarRect, float width, int value, string[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
+    public static bool Button(ref Rect toolbarRect, bool value, Texture texture, float leftMargin, float rightMargin, bool isRightJustified= false) {
+        float width= texture.width;
+		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
+        if(r.width < 1f) return value;
+        var content= new GUIContent(texture);
+        var newValue= GUI.Button(r, content/*, EditorStyles.toolbarButton*/);
+        GUI.Toolbar(r, (value ? 0 : -1), new GUIContent[1]{content}, EditorStyles.toolbarButton);
+        GUI.DrawTexture(r, texture);
+        return newValue;
+    }
+	// ----------------------------------------------------------------------
+    public static bool Button(ref Rect toolbarRect, float width, bool value, Texture texture, float leftMargin, float rightMargin, bool isRightJustified= false) {
+		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
+        if(r.width < 1f) return value;
+        var content= new GUIContent("fred", texture);
+        Debug.Log("R= "+r);
+        var newValue= GUI.Button(r, content/*, EditorStyles.toolbarButton*/);
+//        GUI.Toolbar(r, (value ? 0 : -1), new GUIContent[1]{content}, EditorStyles.toolbarButton);
+        return newValue;
+    }
+	// ----------------------------------------------------------------------
+    public static int Toolbar(ref Rect toolbarRect, float width, int value, string[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
         int newValue= GUI.Toolbar(r, value, options, EditorStyles.toolbarButton);

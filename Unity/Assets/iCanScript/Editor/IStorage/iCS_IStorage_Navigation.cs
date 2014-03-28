@@ -13,5 +13,11 @@ public partial class iCS_IStorage {
     public void ReloadNavigationFromForwardHistory() {
         NavigationHistory.ReloadFromForwardHistory(this);
     }
+    public bool HasBackwardHistory {
+        get { return NavigationHistory.HasBackwardHistory; }
+    }
+    public bool HasForwardHistory {
+        get { return NavigationHistory.HasForwardHistory; }
+    }
 }
 
