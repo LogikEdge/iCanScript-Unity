@@ -16,6 +16,8 @@ public static partial class iCS_UserCommands {
 #if DEBUG
         Debug.Log("iCanScript: Undo/Redo. Undo Group => "+Undo.GetCurrentGroup());
 #endif
+        Debug.Log("iCanScript: Display Root after Undo => "+iStorage.iCSMonoBehaviour.Storage.DisplayRoot);
+
         var animationStarts= new Rect[iStorage.EditorObjects.Count];
         iStorage.ForEach(obj=> { animationStarts[obj.InstanceId]= obj.AnimationTargetRect;});
         iStorage.AnimateGraph(null,

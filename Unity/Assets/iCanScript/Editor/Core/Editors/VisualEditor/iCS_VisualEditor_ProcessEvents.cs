@@ -60,7 +60,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         switch(Event.current.button) {
             case 0: { // Left mouse button
                 DetermineSelectedObject();                    
-                if(SelectedObject != null && !SelectedObject.IsBehaviour) {
+                if(SelectedObject != null && DisplayRoot.IsParentOf(SelectedObject)) {
 					if(SelectedObject.IsNode && IsDisplayRootKeyDown && IsDoubleClick &&
 					   !(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode)) {
                            if(SelectedObject == DisplayRoot) {
