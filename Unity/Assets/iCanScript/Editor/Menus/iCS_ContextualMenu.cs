@@ -21,7 +21,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     const string ShowHierarchyStr              = "Show in hierarchy";
     const string SetAsDisplayRootStr           = "Set as Display Root";
-    const string FocusOnParentStr              = "Set Parent as Display Root";
+    const string ResetDisplayRootStr           = "Reset Display Root";
     const string DeleteStr                     = "- Delete";
     const string PackageStr                    = "+ Package";
     const string StateChartStr                 = "+ State Chart";
@@ -359,19 +359,21 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     iCS_MenuContext[] StartWithFocusMenu(iCS_EditorObject selectedObject) {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
-        AddFocusMenu(ref menu, selectedObject);
+        AddNavigationMenu(ref menu, selectedObject);
         int idx= GrowMenuBy(ref menu, 1);
         menu[idx]= new iCS_MenuContext(SeparatorStr);
         return menu;        
     }
 	// ----------------------------------------------------------------------
-    void AddFocusMenu(ref iCS_MenuContext[] menu, iCS_EditorObject obj) {
+    void AddNavigationMenu(ref iCS_MenuContext[] menu, iCS_EditorObject obj) {
         var iStorage= obj.IStorage;
-        int idx= GrowMenuBy(ref menu, 1);
-        if(obj == iStorage.DisplayRoot && iStorage.DisplayRoot != iStorage.RootObject) {
-            menu[idx]= new iCS_MenuContext(FocusOnParentStr);
+        if(iStorage.DisplayRoot != iStorage.RootObject ||
+           iStorage.HasNavigationForwardHistory || iStorage.HasNavigationBackwardHistory) {
+            int idx= GrowMenuBy(ref menu, 1);
+            menu[idx]= new iCS_MenuContext(ResetDisplayRootStr);
         }
-        else {
+        if(obj != iStorage.DisplayRoot) {
+            int idx= GrowMenuBy(ref menu, 1);
             menu[idx]= new iCS_MenuContext(SetAsDisplayRootStr);            
         }        
     }
@@ -455,7 +457,7 @@ public class iCS_ContextualMenu {
         // Process all other types of requests.
         switch(context.Command) {
             case SetAsDisplayRootStr: iCS_UserCommands.SetAsDisplayRoot(targetObject); break;
-            case FocusOnParentStr:    iCS_UserCommands.FocusOnParent(targetObject); break;
+            case ResetDisplayRootStr: iCS_UserCommands.ResetDisplayRoot(iStorage); break;
             case PackageStr:          iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
             case StateChartStr:       iCS_UserCommands.CreateStateChart(targetObject, globalPos, null); break;
             case StateStr:            iCS_UserCommands.CreateState(targetObject, globalPos, null);  break;

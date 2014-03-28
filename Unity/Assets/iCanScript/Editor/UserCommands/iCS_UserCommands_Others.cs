@@ -54,11 +54,14 @@ public static partial class iCS_UserCommands {
     }
     // ----------------------------------------------------------------------
     // Change the display root to the parent of the selected object.
-    public static void FocusOnParent(iCS_EditorObject obj) {
-        if(obj == null) return;
-        var parent= obj.ParentNode;
-        if(parent == null) return;
-        SetAsDisplayRoot(parent);
+    public static void ResetDisplayRoot(iCS_IStorage iStorage) {
+        if(iStorage == null) return;
+        iStorage.ClearNavigationHistory();
+        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        if(visualEditor != null) {
+            visualEditor.CenterAndScaleOn(iStorage.DisplayRoot);
+            visualEditor.Repaint();
+        }
     }
     // ----------------------------------------------------------------------
 	public static void ToggleShowDisplayRootNode(iCS_IStorage iStorage) {

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
+[Serializable]
 public class iCS_NavigationHistory {
     // ======================================================================
     // Fields
@@ -26,13 +28,13 @@ public class iCS_NavigationHistory {
     public bool HasForwardHistory { get { return myMementos.Count > myCursor; }}
     // ----------------------------------------------------------------------
     // Saves the navigation state of the given IStorage.
-    public void Save(iCS_IStorage iStorage) {
+    public void Save(iCS_Storage storage) {
         // Erase previous forward history.
         if(HasForwardHistory) {
             myMementos.RemoveRange(myCursor, myMementos.Count-myCursor);
         }
         // Save new memento.
-        myMementos.Add(new iCS_NavigationMemento(iStorage));
+        myMementos.Add(new iCS_NavigationMemento(storage));
         // Limit the size the the navigation history
         if(myMementos.Count > kMaxHistory) {
             myMementos.RemoveRange(0, myMementos.Count-kMaxHistory);
@@ -43,21 +45,43 @@ public class iCS_NavigationHistory {
     // ----------------------------------------------------------------------
     // Reloads the navigation state of the given IStorage from the backward
     // history.
-    public void ReloadFromBackwardHistory(iCS_IStorage iStorage) {
+    public void ReloadFromBackwardHistory(iCS_Storage storage) {
         if(!HasBackwardHistory) return;
-        var forwardMemento= new iCS_NavigationMemento(iStorage);
+        var forwardMemento= new iCS_NavigationMemento(storage);
         --myCursor;
-        myMementos[myCursor].RestoreState(iStorage);
+        myMementos[myCursor].RestoreState(storage);
         myMementos[myCursor]= forwardMemento;
     }
     // ----------------------------------------------------------------------
     // Reloads the navigation state of the given IStorage from the forward
     // history.
-    public void ReloadFromForwardHistory(iCS_IStorage iStorage) {
+    public void ReloadFromForwardHistory(iCS_Storage storage) {
         if(!HasForwardHistory) return;
-        var backwardMemento= new iCS_NavigationMemento(iStorage);
-        myMementos[myCursor].RestoreState(iStorage);
+        var backwardMemento= new iCS_NavigationMemento(storage);
+        myMementos[myCursor].RestoreState(storage);
         myMementos[myCursor]= backwardMemento;
         ++myCursor;
+    }
+    // ----------------------------------------------------------------------
+    // Copy history
+    public void CopyFrom(iCS_NavigationHistory from) {
+        // Copy cursor
+        myCursor= from.myCursor;
+        // Adjust size
+        int fromLen= from.myMementos.Count;
+        int toLen= myMementos.Count;
+        if(toLen > fromLen) {
+            myMementos.RemoveRange(fromLen, toLen-fromLen);
+        }
+        myMementos.Capacity= fromLen;
+        // Copy each memento
+        for(int i= 0; i < fromLen; ++i) {
+            if(i < myMementos.Count) {
+                myMementos[i].CopyFrom(from.myMementos[i]);
+            }
+            else {
+                myMementos.Add(from.myMementos[i].Clone());
+            }
+        }
     }
 }

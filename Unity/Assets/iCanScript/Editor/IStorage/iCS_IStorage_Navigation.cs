@@ -5,13 +5,15 @@ public partial class iCS_IStorage {
     // ======================================================================
     // ----------------------------------------------------------------------
     public void SaveNavigationState() {
-        NavigationHistory.Save(this);
+        NavigationHistory.Save(Storage);
     }
     public void ReloadNavigationFromBackwardHistory() {
-        NavigationHistory.ReloadFromBackwardHistory(this);
+        NavigationHistory.ReloadFromBackwardHistory(Storage);
+        ForcedRelayoutOfTree(DisplayRoot);
     }
     public void ReloadNavigationFromForwardHistory() {
-        NavigationHistory.ReloadFromForwardHistory(this);
+        NavigationHistory.ReloadFromForwardHistory(Storage);
+        ForcedRelayoutOfTree(DisplayRoot);
     }
     public bool HasNavigationBackwardHistory {
         get { return NavigationHistory.HasBackwardHistory; }
@@ -21,6 +23,8 @@ public partial class iCS_IStorage {
     }
     public void ClearNavigationHistory() {
         NavigationHistory.Clear();
+        DisplayRoot= EditorObjects[0];
+        ForcedRelayoutOfTree(DisplayRoot);
     }
 }
 

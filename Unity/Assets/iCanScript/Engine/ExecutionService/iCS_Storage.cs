@@ -23,6 +23,8 @@ public class iCS_Storage : ScriptableObject {
     [HideInInspector] public int                      DisplayRoot        = -1;	
     [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
+    [HideInInspector] public iCS_NavigationHistory    NavigationHistory  = new iCS_NavigationHistory();
+    
 
     // ======================================================================
     // Properties
@@ -92,7 +94,9 @@ public class iCS_Storage : ScriptableObject {
             else {
                 to.UnityObjects[i]= fromObj;                
             }
-        }                    
+        }
+        // Copy navigation history
+        to.NavigationHistory.CopyFrom(from.NavigationHistory);                    
     }
 
     // ======================================================================

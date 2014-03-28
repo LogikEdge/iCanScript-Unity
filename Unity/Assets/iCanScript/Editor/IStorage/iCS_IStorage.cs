@@ -18,7 +18,6 @@ public partial class iCS_IStorage {
     List<iCS_EditorObject>          myEditorObjects     = null;
     public  int                     ModificationId      = -1;
     public  bool                    CleanupDeadPorts    = true;
-    public  iCS_NavigationHistory   NavigationHistory   = new iCS_NavigationHistory();
     
     // ======================================================================
     // Properties
@@ -90,6 +89,10 @@ public partial class iCS_IStorage {
             EditorObjects[id]= value;
         }
     }
+    public iCS_NavigationHistory NavigationHistory {
+        get { return Storage.NavigationHistory; }
+    }
+    
 
     // ======================================================================
     // Initialization
