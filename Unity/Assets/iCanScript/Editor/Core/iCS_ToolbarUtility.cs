@@ -125,7 +125,7 @@ public static class iCS_ToolbarUtility {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
         if(!value) {
-            GUI.color= new Color(1f,1f,1f,0.5f);            
+            GUI.color= new Color(1f,1f,1f,0.35f);            
         }
         var newValue= GUI.Button(r, texture, myButtonStyle);
         GUI.color= Color.white;            
@@ -137,7 +137,7 @@ public static class iCS_ToolbarUtility {
         if(r.width < 1f) return value;
         if(r.width < 1f) return value;
         if(!value) {
-            GUI.color= new Color(1f,1f,1f,0.5f);            
+            GUI.color= new Color(1f,1f,1f,0.35f);            
         }
         var newValue= GUI.Button(r, texture, myButtonStyle);
         GUI.color= Color.white;            

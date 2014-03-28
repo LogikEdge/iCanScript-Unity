@@ -22,8 +22,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 		// Insert an initial spacer.
 		float spacer= 8f;
-		r.x+= spacer;
-		r.width-= spacer;
+//		r.x+= spacer;
+//		r.width-= spacer;
 
 		// --------------
 		// LEFT TOOLBAR
@@ -31,14 +31,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var backwardNavigationIcon= iCS_BuiltinTextures.BackwardNavigationHistoryIcon();
         var forwardNavigationIcon= iCS_BuiltinTextures.ForwardNavigationHistoryIcon();
         var hasBackwardHistory= IStorage.HasBackwardHistory;
-        bool pressed= iCS_ToolbarUtility.Button(ref r, hasBackwardHistory, backwardNavigationIcon, 0f, 0f);
-        if(pressed && hasBackwardHistory) {
-            IStorage.ReloadNavigationFromBackwardHistory();
+        float width= backwardNavigationIcon.width+spacer;
+        if(iCS_ToolbarUtility.Button(ref r, width, hasBackwardHistory, backwardNavigationIcon, 0, 0)) {
+            if(hasBackwardHistory) {
+                IStorage.ReloadNavigationFromBackwardHistory();
+            }            
         }
         var hasForwardHistory= IStorage.HasForwardHistory;
-        pressed= iCS_ToolbarUtility.Button(ref r, hasForwardHistory, forwardNavigationIcon, 0f, 0f);
-        if(pressed && hasForwardHistory) {
-            IStorage.ReloadNavigationFromForwardHistory();
+        width= forwardNavigationIcon.width+spacer;
+        if(iCS_ToolbarUtility.Button(ref r, width, hasForwardHistory, forwardNavigationIcon, 0, 0)) {
+            if(hasForwardHistory) {
+                IStorage.ReloadNavigationFromForwardHistory();
+            }            
         }
 		// Show Behaviour Node.
 		GUI.changed= false;

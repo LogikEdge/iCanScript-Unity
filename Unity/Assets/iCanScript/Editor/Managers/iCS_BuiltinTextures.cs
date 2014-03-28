@@ -48,12 +48,14 @@ public static class iCS_BuiltinTextures {
         return myUnfoldIcon;
     }
     public static Texture2D BackwardNavigationHistoryIcon() {
+        Validate();
         if(myBackwardNavigationHistoryIcon == null) {
             BuildNavigationHistoryIcons();
         }
         return myBackwardNavigationHistoryIcon;
     }
     public static Texture2D ForwardNavigationHistoryIcon() {
+        Validate();
         if(myForwardNavigationHistoryIcon == null) {
             BuildNavigationHistoryIcons();
         }
@@ -74,6 +76,7 @@ public static class iCS_BuiltinTextures {
     // Fields
     // ---------------------------------------------------------------------------------
     static float        myScale= 1f;
+    static bool         myIsProSkin= false;
 	static Texture2D    myInEndPortIcon;
 	static Texture2D    myOutEndPortIcon;
 	static Texture2D    myInRelayPortIcon;
@@ -110,17 +113,17 @@ public static class iCS_BuiltinTextures {
         myUnfoldIconPolygon[0]= new Vector2(-0.45f, 0.5f);
         myUnfoldIconPolygon[1]= new Vector2( 0.45f, 0.5f);
         myUnfoldIconPolygon[2]= new Vector2( 0,   -0.5f);
-        myBackwardNavigationHistoryPolygon= new Vector2[3];
-        myBackwardNavigationHistoryPolygon[0]= new Vector2(-0.5f, -0.45f);
-        myBackwardNavigationHistoryPolygon[1]= new Vector2( 0.5f,  0);
-        myBackwardNavigationHistoryPolygon[2]= new Vector2(-0.5f,  0.45f);
-        myForwardNavigationHistoryPolygon= new Vector2[3];
-        myForwardNavigationHistoryPolygon[0]= new Vector2( 0.5f, -0.45f);
-        myForwardNavigationHistoryPolygon[1]= new Vector2(-0.5f,  0);
-        myForwardNavigationHistoryPolygon[2]= new Vector2( 0.5f,  0.45f);
         // Build scale independent textures.
         BuildScaleIndependantTextures();
         BuildScaleDependantTextures();
+    }
+    // ---------------------------------------------------------------------------------
+    static void Validate() {
+        if(myIsProSkin != EditorGUIUtility.isProSkin) {
+            myBackwardNavigationHistoryPolygon= null;
+            myForwardNavigationHistoryPolygon= null;
+            myIsProSkin= EditorGUIUtility.isProSkin;
+        }
     }
     // ---------------------------------------------------------------------------------
     static void BuildScaleIndependantTextures() {
@@ -369,7 +372,16 @@ public static class iCS_BuiltinTextures {
     }
     // ---------------------------------------------------------------------------------
     static void BuildNavigationHistoryIcons() {
-        // Build polygon
+        // Build polygons
+        myBackwardNavigationHistoryPolygon= new Vector2[3];
+        myBackwardNavigationHistoryPolygon[0]= new Vector2(-0.5f, -0.45f);
+        myBackwardNavigationHistoryPolygon[1]= new Vector2( 0.5f,  0);
+        myBackwardNavigationHistoryPolygon[2]= new Vector2(-0.5f,  0.45f);
+        myForwardNavigationHistoryPolygon= new Vector2[3];
+        myForwardNavigationHistoryPolygon[0]= new Vector2( 0.5f, -0.45f);
+        myForwardNavigationHistoryPolygon[1]= new Vector2(-0.5f,  0);
+        myForwardNavigationHistoryPolygon[2]= new Vector2( 0.5f,  0.45f);
+        // Scale and translate polygon to meet desired size needs.
         float size= 16f;
         int textureSize= ((int)size)+1;
         float offset= 0.5f*((float)textureSize-size);
@@ -383,7 +395,7 @@ public static class iCS_BuiltinTextures {
 		iCS_TextureUtil.Clear(ref myForwardNavigationHistoryIcon);
 		iCS_TextureUtil.Clear(ref myBackwardNavigationHistoryIcon);
         // Build texture
-        Color c= GUI.contentColor;
+        Color c= EditorStyles.label.normal.textColor;
 	    iCS_TextureUtil.DrawFilledPolygon(ref myForwardNavigationHistoryIcon, backwardPolygon, c);
 	    iCS_TextureUtil.DrawFilledPolygon(ref myBackwardNavigationHistoryIcon, forwardPolygon, c);
         // Finalize icons.
