@@ -4,6 +4,19 @@ using System.Collections;
 
 public static class iCS_ToolbarUtility {
     // ======================================================================
+    // Fields
+	// ----------------------------------------------------------------------
+    static GUIStyle    myButtonStyle= null;
+    
+    // ======================================================================
+    // Initialization
+	// ----------------------------------------------------------------------
+    static iCS_ToolbarUtility() {
+        myButtonStyle= new GUIStyle(EditorStyles.toolbarButton);
+        myButtonStyle.padding= new RectOffset(0,0,0,0);
+    }
+    
+    // ======================================================================
     // Toolbar utilities.
 	// ----------------------------------------------------------------------
     public static Rect BuildToolbar(float width, float yOffset= 0) {
@@ -111,20 +124,23 @@ public static class iCS_ToolbarUtility {
         float width= texture.width;
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
-        var content= new GUIContent(texture);
-        var newValue= GUI.Button(r, content/*, EditorStyles.toolbarButton*/);
-        GUI.Toolbar(r, (value ? 0 : -1), new GUIContent[1]{content}, EditorStyles.toolbarButton);
-        GUI.DrawTexture(r, texture);
+        if(!value) {
+            GUI.color= new Color(1f,1f,1f,0.5f);            
+        }
+        var newValue= GUI.Button(r, texture, myButtonStyle);
+        GUI.color= Color.white;            
         return newValue;
     }
 	// ----------------------------------------------------------------------
     public static bool Button(ref Rect toolbarRect, float width, bool value, Texture texture, float leftMargin, float rightMargin, bool isRightJustified= false) {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
-        var content= new GUIContent("fred", texture);
-        Debug.Log("R= "+r);
-        var newValue= GUI.Button(r, content/*, EditorStyles.toolbarButton*/);
-//        GUI.Toolbar(r, (value ? 0 : -1), new GUIContent[1]{content}, EditorStyles.toolbarButton);
+        if(r.width < 1f) return value;
+        if(!value) {
+            GUI.color= new Color(1f,1f,1f,0.5f);            
+        }
+        var newValue= GUI.Button(r, texture, myButtonStyle);
+        GUI.color= Color.white;            
         return newValue;
     }
 	// ----------------------------------------------------------------------

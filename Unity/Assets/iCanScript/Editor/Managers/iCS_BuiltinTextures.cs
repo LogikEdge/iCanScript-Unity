@@ -48,9 +48,15 @@ public static class iCS_BuiltinTextures {
         return myUnfoldIcon;
     }
     public static Texture2D BackwardNavigationHistoryIcon() {
+        if(myBackwardNavigationHistoryIcon == null) {
+            BuildNavigationHistoryIcons();
+        }
         return myBackwardNavigationHistoryIcon;
     }
     public static Texture2D ForwardNavigationHistoryIcon() {
+        if(myForwardNavigationHistoryIcon == null) {
+            BuildNavigationHistoryIcons();
+        }
         return myForwardNavigationHistoryIcon;
     }
     
@@ -115,8 +121,6 @@ public static class iCS_BuiltinTextures {
         // Build scale independent textures.
         BuildScaleIndependantTextures();
         BuildScaleDependantTextures();
-        // Build fix size icons
-        BuildNavigationHistoryIcons();
     }
     // ---------------------------------------------------------------------------------
     static void BuildScaleIndependantTextures() {
@@ -379,10 +383,7 @@ public static class iCS_BuiltinTextures {
 		iCS_TextureUtil.Clear(ref myForwardNavigationHistoryIcon);
 		iCS_TextureUtil.Clear(ref myBackwardNavigationHistoryIcon);
         // Build texture
-        Color c= Color.black;
-        if(EditorGUIUtility.isProSkin) {
-            c= Color.white;
-        }
+        Color c= GUI.contentColor;
 	    iCS_TextureUtil.DrawFilledPolygon(ref myForwardNavigationHistoryIcon, backwardPolygon, c);
 	    iCS_TextureUtil.DrawFilledPolygon(ref myBackwardNavigationHistoryIcon, forwardPolygon, c);
         // Finalize icons.
