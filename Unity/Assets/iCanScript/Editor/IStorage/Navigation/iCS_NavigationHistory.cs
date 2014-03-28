@@ -13,6 +13,12 @@ public class iCS_NavigationHistory {
     // ======================================================================
     // History management methods.
     // ----------------------------------------------------------------------
+    // Clear history
+    public void Clear() {
+        myCursor= 0;
+        myMementos.Clear();
+    }
+    // ----------------------------------------------------------------------
     // Returns "true" if a backward history is available.
     public bool HasBackwardHistory { get { return myCursor > 0; }}
     // ----------------------------------------------------------------------

@@ -61,9 +61,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case 0: { // Left mouse button
                 DetermineSelectedObject();                    
                 if(SelectedObject != null && !SelectedObject.IsBehaviour) {
-					if(SelectedObject.IsNode && IsIsolateKeyDown && IsDoubleClick &&
+					if(SelectedObject.IsNode && IsDisplayRootKeyDown && IsDoubleClick &&
 					   !(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode)) {
-						iCS_UserCommands.SetAsDisplayRoot(SelectedObject);
+                           if(SelectedObject == DisplayRoot) {
+                               if(IsShiftKeyDown && IStorage.HasNavigationBackwardHistory) {
+                                  IStorage.ReloadNavigationFromBackwardHistory();
+                              }                               
+                           }
+                           else {
+       						iCS_UserCommands.SetAsDisplayRoot(SelectedObject);                               
+                           }
 					}
                     IsDragEnabled= true;                                                    
                 }
@@ -140,7 +147,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ProcessNodeDisplayOptionEvent() {
         if(SelectedObject == null || !SelectedObject.IsNode) return;
         if(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode) {
-            if(SelectedObject.IsIconizedOnDisplay && !IsShiftKeyDown) {
+            if(SelectedObject.IsIconizedInLayout && !IsShiftKeyDown) {
                 iCS_UserCommands.Unfold(SelectedObject);                                                                            
             } else if(SelectedObject.IsUnfoldedInLayout && IsShiftKeyDown) {
                 iCS_UserCommands.Iconize(SelectedObject);                    
@@ -148,7 +155,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         } else {
             if(IsShiftKeyDown) {
                 if(SelectedObject.IsUnfoldedInLayout) {
-                    if(IsControlKeyDown) {
+                    if(IsAltKeyDown) {
                         iCS_UserCommands.Iconize(SelectedObject);                                                
                     } else {
                         iCS_UserCommands.Fold(SelectedObject);                                                                    
@@ -158,7 +165,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
             } else {
                 if(SelectedObject.IsIconizedOnDisplay) {
-                    if(IsControlKeyDown) {
+                    if(IsAltKeyDown) {
                         iCS_UserCommands.Unfold(SelectedObject);                                                                                                    
                     } else {
                         iCS_UserCommands.Fold(SelectedObject);                                            

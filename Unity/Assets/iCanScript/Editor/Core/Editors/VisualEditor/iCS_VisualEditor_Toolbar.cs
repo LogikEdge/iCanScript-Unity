@@ -30,14 +30,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Navigation History
         var backwardNavigationIcon= iCS_BuiltinTextures.BackwardNavigationHistoryIcon();
         var forwardNavigationIcon= iCS_BuiltinTextures.ForwardNavigationHistoryIcon();
-        var hasBackwardHistory= IStorage.HasBackwardHistory;
+        var hasBackwardHistory= IStorage.HasNavigationBackwardHistory;
         float width= backwardNavigationIcon.width+spacer;
         if(iCS_ToolbarUtility.Button(ref r, width, hasBackwardHistory, backwardNavigationIcon, 0, 0)) {
             if(hasBackwardHistory) {
                 IStorage.ReloadNavigationFromBackwardHistory();
             }            
         }
-        var hasForwardHistory= IStorage.HasForwardHistory;
+        var hasForwardHistory= IStorage.HasNavigationForwardHistory;
         width= forwardNavigationIcon.width+spacer;
         if(iCS_ToolbarUtility.Button(ref r, width, hasForwardHistory, forwardNavigationIcon, 0, 0)) {
             if(hasForwardHistory) {

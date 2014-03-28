@@ -10,13 +10,26 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool    IsShiftKeyDown       { get { return Event.current.shift; }}
     bool    IsControlKeyDown     { get { return Event.current.control; }}
     bool    IsAltKeyDown         { get { return Event.current.alt; }}
+    bool    IsCommandKeyDown     { get { return Event.current.command; }}
+    bool    IsDoubleClick        { get { return Event.current.clickCount >= 2; }}
+
     bool    IsFloatingKeyDown	 { get { return IsControlKeyDown; }}
     bool    IsCopyKeyDown        { get { return IsShiftKeyDown; }}
     bool    IsScaleKeyDown       { get { return IsAltKeyDown; }}
-	bool	IsMultiSelectKeyDown { get { return Event.current.command; }}
-    bool    IsDoubleClick        { get { return Event.current.clickCount >= 2; }}
-	bool    IsIsolateKeyDown     { get { return IsAltKeyDown; }}
-    bool    IsNavigationKeyDown  { get { return Event.current.command; }}
+    bool    IsMaximizeKeyDown    { get { return IsAltKeyDown; }}
+    bool    IsIconizeKeyDown     { get { return IsAltKeyDown && IsShiftKeyDown; }}
+	bool    IsDisplayRootKeyDown { get { return IsControlKeyDown; }}
+    bool    IsHistoryKeyDown     { get { return IsCommandKeyDown; }}
+	bool	IsMultiSelectKeyDown {
+        get {
+            if(Application.platform == RuntimePlatform.OSXEditor) {
+                return IsCommandKeyDown;                
+            }
+            else {
+                return IsControlKeyDown;
+            }
+        }
+    }
 	
     
 	// ----------------------------------------------------------------------
@@ -134,11 +147,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 Event.current.Use();
                 break;
             }
-			case KeyCode.P: {
+            // Toggle show root node
+			case KeyCode.R: {
 				iCS_UserCommands.ToggleShowDisplayRootNode(IStorage);
                 Event.current.Use();
 				break;
 			}
+            // Layout
             case KeyCode.L: {
                 if(SelectedObject != null && SelectedObject.IsDataOrControlPort) {
                     iCS_UserCommands.AutoLayoutPort(SelectedObject);

@@ -6,14 +6,16 @@ public static class iCS_ToolbarUtility {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-    static GUIStyle    myButtonStyle= null;
+    static GUIStyle    myButtonStyle    = null;
+    static GUIContent  myEmptyGUIContent= null;
     
     // ======================================================================
     // Initialization
 	// ----------------------------------------------------------------------
     static iCS_ToolbarUtility() {
-        myButtonStyle= new GUIStyle(EditorStyles.toolbarButton);
+        myButtonStyle        = new GUIStyle(EditorStyles.toolbarButton);
         myButtonStyle.padding= new RectOffset(0,0,0,0);
+        myEmptyGUIContent    = new GUIContent();
     }
     
     // ======================================================================
@@ -193,8 +195,7 @@ public static class iCS_ToolbarUtility {
     }
 	// ----------------------------------------------------------------------
     public static bool Toggle(ref Rect toolbarRect, bool value, float leftMargin, float rightMargin, bool isRightJustified= false) {
-        GUIContent content= new GUIContent();
-        var contentSize= GUI.skin.toggle.CalcSize(content);
+        var contentSize= GUI.skin.toggle.CalcSize(myEmptyGUIContent);
 		Rect r= ReserveArea(ref toolbarRect, contentSize.x, leftMargin, rightMargin, isRightJustified);
         if(r.width < 1f) return value;
         float offset= 0.5f*(r.height-contentSize.y);
