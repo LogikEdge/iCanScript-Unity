@@ -39,6 +39,7 @@ public partial class iCS_EditorObject {
 	public bool IsIconizedOnDisplay	{
 		get {
             if(IsPort) return false;
+            if(this == IStorage.DisplayRoot) return false;
 			if(!IsAnimated) {
 				if(!IsVisibleInLayout) return false;
 				return IsIconizedInLayout;
@@ -54,6 +55,7 @@ public partial class iCS_EditorObject {
     // Returns true if the object object is visible excluding all animations.
     public bool IsVisibleInLayout {
         get {
+            if(this == IStorage.DisplayRoot) return true;
             var parent= Parent;
             if(parent == null) return true;
             if(parent == IStorage.DisplayRoot) return true;    
@@ -82,6 +84,7 @@ public partial class iCS_EditorObject {
                 }
                 return true;
             }
+            if(this == IStorage.DisplayRoot) return true;
             if(!IsAnimated) return IsVisibleInLayout;
             var area= Math3D.Area(AnimatedSize);
             return Math3D.IsGreater(area, iCS_EditorConfig.kMinIconicArea);
