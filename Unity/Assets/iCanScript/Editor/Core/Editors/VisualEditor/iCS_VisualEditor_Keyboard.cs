@@ -124,14 +124,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Navigation
             case KeyCode.LeftBracket: {
 //                if(IsNavigationKeyDown) {
-                    IStorage.ReloadNavigationFromBackwardHistory();
+                    IStorage.ReloadFromBackwardNavigationHistory();
                     Event.current.Use();                    
 //                }
                 break;
             }
             case KeyCode.RightBracket: {
 //                if(IsNavigationKeyDown) {
-                    IStorage.ReloadNavigationFromForwardHistory();
+                    IStorage.ReloadFromForwardNavigationHistory();
                     Event.current.Use();                    
 //                }
                 break;
@@ -176,8 +176,22 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             // Fold/Minimize/Maximize.
             case KeyCode.Return: {
-                ProcessNodeDisplayOptionEvent();
-                Event.current.Use();
+				if(IsControlKeyDown) {
+					if(SelectedObject == DisplayRoot) {
+   						if(IStorage.HasBackwardNavigationHistory) {
+      						IStorage.ReloadFromBackwardNavigationHistory();
+      					}
+		                Event.current.Use();
+		                break;						
+					}
+					if(SelectedObject != null && SelectedObject.IsNode) {
+						iCS_UserCommands.SetAsDisplayRoot(SelectedObject);						
+					}
+	                Event.current.Use();
+	                break;						
+				}
+	            ProcessNodeDisplayOptionEvent();					
+				Event.current.Use();
                 break;
             }
             case KeyCode.H: {  // Show Help

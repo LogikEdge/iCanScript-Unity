@@ -7,18 +7,18 @@ public partial class iCS_IStorage {
     public void SaveNavigationState() {
         NavigationHistory.Save(Storage);
     }
-    public void ReloadNavigationFromBackwardHistory() {
+    public void ReloadFromBackwardNavigationHistory() {
         NavigationHistory.ReloadFromBackwardHistory(Storage);
         ForcedRelayoutOfTree(DisplayRoot);
     }
-    public void ReloadNavigationFromForwardHistory() {
+    public void ReloadFromForwardNavigationHistory() {
         NavigationHistory.ReloadFromForwardHistory(Storage);
         ForcedRelayoutOfTree(DisplayRoot);
     }
-    public bool HasNavigationBackwardHistory {
+    public bool HasBackwardNavigationHistory {
         get { return NavigationHistory.HasBackwardHistory; }
     }
-    public bool HasNavigationForwardHistory {
+    public bool HasForwardNavigationHistory {
         get { return NavigationHistory.HasForwardHistory; }
     }
     public void ClearNavigationHistory() {

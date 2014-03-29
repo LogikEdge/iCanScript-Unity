@@ -30,18 +30,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Navigation History
         var backwardNavigationIcon= iCS_BuiltinTextures.BackwardNavigationHistoryIcon();
         var forwardNavigationIcon= iCS_BuiltinTextures.ForwardNavigationHistoryIcon();
-        var hasBackwardHistory= IStorage.HasNavigationBackwardHistory;
+        var hasBackwardHistory= IStorage.HasBackwardNavigationHistory;
         float width= backwardNavigationIcon.width+spacer;
         if(iCS_ToolbarUtility.Button(ref r, width, hasBackwardHistory, backwardNavigationIcon, 0, 0)) {
             if(hasBackwardHistory) {
-                IStorage.ReloadNavigationFromBackwardHistory();
+                IStorage.ReloadFromBackwardNavigationHistory();
             }            
         }
-        var hasForwardHistory= IStorage.HasNavigationForwardHistory;
+        var hasForwardHistory= IStorage.HasForwardNavigationHistory;
         width= forwardNavigationIcon.width+spacer;
         if(iCS_ToolbarUtility.Button(ref r, width, hasForwardHistory, forwardNavigationIcon, 0, 0)) {
             if(hasForwardHistory) {
-                IStorage.ReloadNavigationFromForwardHistory();
+                IStorage.ReloadFromForwardNavigationHistory();
             }            
         }
 		// Show Behaviour Node.

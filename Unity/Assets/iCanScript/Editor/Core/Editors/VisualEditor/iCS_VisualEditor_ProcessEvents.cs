@@ -64,8 +64,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					if(SelectedObject.IsNode && IsDisplayRootKeyDown && IsDoubleClick &&
 					   !(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode)) {
                            if(SelectedObject == DisplayRoot) {
-                               if(IsShiftKeyDown && IStorage.HasNavigationBackwardHistory) {
-                                  IStorage.ReloadNavigationFromBackwardHistory();
+                               if(IsShiftKeyDown && IStorage.HasBackwardNavigationHistory) {
+                                  IStorage.ReloadFromBackwardNavigationHistory();
                               }                               
                            }
                            else {

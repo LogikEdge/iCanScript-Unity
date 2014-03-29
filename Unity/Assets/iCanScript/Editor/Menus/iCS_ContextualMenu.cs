@@ -368,7 +368,7 @@ public class iCS_ContextualMenu {
     void AddNavigationMenu(ref iCS_MenuContext[] menu, iCS_EditorObject obj) {
         var iStorage= obj.IStorage;
         if(iStorage.DisplayRoot != iStorage.RootObject ||
-           iStorage.HasNavigationForwardHistory || iStorage.HasNavigationBackwardHistory) {
+           iStorage.HasForwardNavigationHistory || iStorage.HasBackwardNavigationHistory) {
             int idx= GrowMenuBy(ref menu, 1);
             menu[idx]= new iCS_MenuContext(ResetDisplayRootStr);
         }
