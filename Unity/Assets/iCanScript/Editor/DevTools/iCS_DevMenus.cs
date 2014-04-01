@@ -23,12 +23,7 @@ public static class iCS_DevMenu {
         if(monoBehaviour == null) return;
         iCS_Storage storage= monoBehaviour.Storage;
         if(storage == null) return;
-//        var archive= storage.BuildArchive();
-//        Debug.Log(archive);    
-        var root= new JObject(new JNameValuePair("Storage", JValue.Build(storage)));
-
-		string fileName= iCS_DevToolsConfig.ScreenShotsFolder+"/"+iCS_DateTime.DateTimeAsString()+"--"+storage.name+".json";
-		File.WriteAllText(Application.dataPath + fileName, JSONPrettyPrint.Print(root.Encode()));
+        iCS_StorageImportExport.Export(storage);
     }
     [MenuItem("DevTools/Export Storage",true,900)]
     public static bool ValidateExportStorage() {
@@ -36,7 +31,30 @@ public static class iCS_DevMenu {
         if(transform == null) return false;
         var go= transform.gameObject;
         if(go == null) return false;
-        var visualEditor= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_VisualScriptImp;
+        var visualEditor= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
+        return visualEditor != null;
+    }
+    // ======================================================================
+    // Import Storage
+    [MenuItem("DevTools/Import Storage",false,901)]
+    public static void ImportStorage() {
+        var transform= Selection.activeTransform;
+        if(transform == null) return;
+        var go= transform.gameObject;
+        if(go == null) return;
+        var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
+        if(monoBehaviour == null) return;
+        iCS_Storage storage= monoBehaviour.Storage;
+        if(storage == null) return;
+        iCS_StorageImportExport.Import(storage);
+    }
+    [MenuItem("DevTools/Import Storage",true,901)]
+    public static bool ValidateImportStorage() {
+        var transform= Selection.activeTransform;
+        if(transform == null) return false;
+        var go= transform.gameObject;
+        if(go == null) return false;
+        var visualEditor= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         return visualEditor != null;
     }
     

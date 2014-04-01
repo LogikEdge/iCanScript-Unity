@@ -9,15 +9,15 @@ public class iCS_EngineObject {
     // ======================================================================
     // Database Fields
     // ----------------------------------------------------------------------
+    public string                RawName            = "";
     public iCS_ObjectTypeEnum    ObjectType         = iCS_ObjectTypeEnum.Unknown;
     public int                   InstanceId         = -1;
     public int                   ParentId           = -1;
-    public string                QualifiedType      = "";
-    public string                RawName            = "";
-	public Vector2				 LocalAnchorPosition= Vector2.zero;
-	public float				 Scale              = 1.0f;  // Used for children scale
-    public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded;
     public bool                  IsNameEditable     = true;
+    public string                QualifiedType      = "";
+	public Vector2				 LocalAnchorPosition= Vector2.zero;
+    public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded;
+	public float				 Scale              = 1.0f;  // Used for children scale
 
 	// Node specific attributes ---------------------------------------------
 	public string				 MethodName       = null;

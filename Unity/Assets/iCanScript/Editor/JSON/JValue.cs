@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections;
@@ -21,9 +22,19 @@ public abstract class JValue : JSON {
         if(value == null)               { return JNull.identity; }
         // Process Arrays
         var valueType= value.GetType();
-        if(valueType.IsArray)           { return Build(value as Array); }
-        if(valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(IList<>)) {
-            return Build((dynamic)value);
+        if(valueType.IsArray) {
+            var result= new List<JValue>();
+            foreach(var obj in (Array)value) {
+                result.Add(Build(obj));
+            }
+            return new JArray(result.ToArray());
+        }
+        if(valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(List<>)) {
+            var result= new List<JValue>();
+            foreach(var obj in (IList)value) {
+                result.Add(Build(obj));
+            }
+            return new JArray(result.ToArray());
         }
         // Basic Types
 		if(value is bool)               { return new JBool((bool)value); }
@@ -40,6 +51,59 @@ public abstract class JValue : JSON {
 		if(value is float)              { return new JNumber((float)value); }
 		if(value is double)             { return new JNumber((float)((double)value)); }
 		if(value is decimal)            { return new JNumber((float)((decimal)value)); }
+        // Special case for Unity Engine Objects
+        if(value is UnityEngine.Object && !(value is UnityEngine.ScriptableObject)) {
+            var obj= value as UnityEngine.Object;
+            var desc= new List<JNameValuePair>();
+            desc.Add(new JNameValuePair("InstanceId", obj.GetInstanceID()));
+            desc.Add(new JNameValuePair("Name", obj.name));
+            desc.Add(new JNameValuePair("Type", obj.GetType().Name));
+            if(value is GameObject || value is Component) {
+                GameObject parent= null;
+                if(value is GameObject) {
+                    var go= value as GameObject;
+                    var transform= go.transform;
+                    if(transform != null) {
+                        transform= transform.parent;
+                        if(transform != null) {
+                            parent= transform.gameObject;
+                        }
+                    }
+                }
+                if(value is Component) {
+                    parent= (value as Component).gameObject;
+                }
+                var parentList= new List<JValue>();
+                while(parent != null) {
+                    parentList.Add(new JString(parent.name));
+                    var transform= parent.transform;
+                    if(transform != null) {
+                        transform= transform.parent;
+                        if(transform != null) {
+                            parent= transform.gameObject;                                                    
+                        }
+                        else {
+                            parent= null;
+                        }
+                    }
+                    else {
+                        parent= null;
+                    }
+                }
+                parentList.Reverse();
+                desc.Add(new JNameValuePair("Parents", parentList));
+                var scenePath= EditorApplication.currentScene;
+                desc.Add(new JNameValuePair("SceneGUID", AssetDatabase.AssetPathToGUID(scenePath)));
+            }
+            // Handle Unity Assets
+            else {
+                var assetPath= AssetDatabase.GetAssetPath(obj.GetInstanceID());
+                if(!string.IsNullOrEmpty(assetPath)) {
+                    desc.Add(new JNameValuePair("AssetGUID", AssetDatabase.AssetPathToGUID(assetPath)));
+                }
+            }
+            return new JObject(desc);
+        }
         // Process Objects
         var attributes= new List<JNameValuePair>();
 		foreach(var field in valueType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
@@ -59,20 +123,6 @@ public abstract class JValue : JSON {
             }
 		}
         return new JObject(attributes);
-    }
-    static JValue Build(Array array) {
-        var result= new List<JValue>();
-        foreach(var obj in array) {
-            result.Add(Build(obj));
-        }
-        return new JArray(result.ToArray());
-    }
-    static JValue Build<T>(IList<T> list) {
-        var result= new List<JValue>();
-        foreach(var obj in list) {
-            result.Add(Build(obj));
-        }
-        return new JArray(result.ToArray());        
     }
 }
 public class JNull   : JValue {
