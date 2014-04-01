@@ -9,6 +9,30 @@ public static class iCS_DevMenu {
 	const string ScreenShotsFolder= "/../../../ScreenShots";
 
     // ======================================================================
+    [MenuItem("DevTools/Export Storage",false,900)]
+    public static void ExportStorage() {
+        var transform= Selection.activeTransform;
+        if(transform == null) return;
+        var go= transform.gameObject;
+        if(go == null) return;
+        var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
+        if(monoBehaviour == null) return;
+        var storage= monoBehaviour.Storage;
+        if(storage == null) return;
+        var archive= storage.BuildArchive();
+        Debug.Log(archive);    
+    }
+    [MenuItem("DevTools/Export Storage",true,900)]
+    public static bool ValidateExportStorage() {
+        var transform= Selection.activeTransform;
+        if(transform == null) return false;
+        var go= transform.gameObject;
+        if(go == null) return false;
+        var visualEditor= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_VisualScriptImp;
+        return visualEditor != null;
+    }
+    
+    // ======================================================================
     // Visual Editor Snapshot
 	[MenuItem("DevTools/Visual Editor Snapshot",false,1000)]
 	public static void MenuVisualEditorSnapshot() {

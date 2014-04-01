@@ -10,8 +10,8 @@ public class iCS_NavigationMemento {
     bool                    ShowDisplayRootNode;
     Vector2                 ScrollPosition;
     float                   GuiScale;
-    int                     DisplayRoot;
     int                     SelectedObject;
+    int                     DisplayRoot;
 
     // ----------------------------------------------------------------------
     // Creates a new memento and saves the navigation state of the given
@@ -22,17 +22,16 @@ public class iCS_NavigationMemento {
     // ----------------------------------------------------------------------
     // Save the navigation state of the given IStorage.
     public void SaveState(iCS_Storage storage) {
-        ShowDisplayRootNode    = storage.ShowDisplayRootNode;
-        ScrollPosition         = storage.ScrollPosition;
-        GuiScale               = storage.GuiScale;
-        DisplayRoot            = storage.DisplayRoot;
-        SelectedObject         = storage.SelectedObject;
+        ShowDisplayRootNode= storage.ShowDisplayRootNode;
+        ScrollPosition     = storage.ScrollPosition;
+        GuiScale           = storage.GuiScale;
+        SelectedObject     = storage.SelectedObject;
+        DisplayRoot        = storage.DisplayRoot;
     }
     // ----------------------------------------------------------------------
     // Restores the navigation state into the given IStorage.
     public void RestoreState(iCS_Storage storage) {
-        if(DisplayRoot < 0 || DisplayRoot >= storage.EngineObjects.Count) return;
-        if(storage.EngineObjects[DisplayRoot].InstanceId == -1) return;
+        if(!storage.IsValidEngineObject(DisplayRoot)) return;
         storage.ShowDisplayRootNode= ShowDisplayRootNode;
         storage.ScrollPosition     = ScrollPosition;
         storage.GuiScale           = GuiScale;

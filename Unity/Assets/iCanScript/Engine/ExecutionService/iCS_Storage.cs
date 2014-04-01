@@ -21,11 +21,17 @@ public class iCS_Storage : ScriptableObject {
 	[HideInInspector] public float  		          GuiScale           = 1f;	
 	[HideInInspector] public int    		          SelectedObject     = -1;
     [HideInInspector] public int                      DisplayRoot        = -1;	
+//    public int myDisplayRoot= -2;
     [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
     [HideInInspector] public iCS_NavigationHistory    NavigationHistory  = new iCS_NavigationHistory();
     
 
+//    public int DisplayRoot {
+//        get { return myDisplayRoot; }
+//        set { Debug.Log("iCanScript: Setting display root from => "+myDisplayRoot+ " to => "+value); myDisplayRoot= value; }
+//    }
+    
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -37,6 +43,15 @@ public class iCS_Storage : ScriptableObject {
 	}
 
 
+    // ======================================================================
+    // Archiving Utilities
+    // ----------------------------------------------------------------------
+    public string BuildArchive() {
+        var coder= new iCS_Coder();
+        coder.EncodeObject(name+".Storage", this, null);
+        return coder.Archive;
+    }
+    
     // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
@@ -56,7 +71,7 @@ public class iCS_Storage : ScriptableObject {
         to.GuiScale           = from.GuiScale;
         to.SelectedObject     = from.SelectedObject;
         to.DisplayRoot        = from.DisplayRoot;
-        to.UnityObjects       = from.UnityObjects;
+//        to.UnityObjects       = from.UnityObjects;
         // Resize destination engine object array.
         int fromLen= from.EngineObjects.Count;
         int toLen= to.EngineObjects.Count;

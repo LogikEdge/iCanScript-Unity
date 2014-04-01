@@ -34,7 +34,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void SaveStorageWithUndoRedoSupport() {
         // Start recording changes for Undo.
-        Debug.Log("Saving visual script");
         ++Storage.UndoRedoId;
         Undo.RecordObject(MonoBehaviourStorage, myUndoMessage);
         SaveStorage();
@@ -42,8 +41,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SaveStorage(string undoMessage) {
         // Start recording changes for Undo.
-        Debug.Log("Saving visual script");
+//        Debug.Log("Saving visual script");
         ++Storage.UndoRedoId;
+        MonoBehaviourStorage.DisplayRoot= Storage.DisplayRoot;
         Undo.RecordObject(MonoBehaviourStorage, undoMessage);
         SaveStorage();        
     }
@@ -55,6 +55,7 @@ public partial class iCS_IStorage {
         // Tell Unity that our storage has changed.
         Storage.CopyTo(MonoBehaviourStorage);
         // Commit Undo transaction and forces redraw of inspector window.
+        EditorUtility.SetDirty(MonoBehaviourStorage);
         EditorUtility.SetDirty(iCSMonoBehaviour);
         IsTransactionOpened= false;
         ++ModificationId;

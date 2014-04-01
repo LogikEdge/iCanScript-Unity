@@ -123,7 +123,10 @@ public class iCS_Coder {
 		if(value is Color)              { EncodeColor(key, (Color)value); return; }
 		if(value is Quaternion)         { EncodeQuaternion(key, (Quaternion)value); return; }
 		if(value is Matrix4x4)          { EncodeMatrix4x4(key, (Matrix4x4)value); return; }
-		if(value is UnityEngine.Object) { EncodeUnityObject(key, value as UnityEngine.Object, storage); return; }
+        // S[ecial case for Unity Object inside a storage.
+		if(value is UnityEngine.Object && storage != null) {
+            EncodeUnityObject(key, value as UnityEngine.Object, storage); return;
+        }
 		// All other types.
 		foreach(var field in valueType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
             bool shouldEncode= true;
@@ -551,7 +554,10 @@ public class iCS_Coder {
 		if(elementType == typeof(Color))                   return DecodeColor(valueStr);
 		if(elementType == typeof(Quaternion))              return DecodeQuaternion(valueStr);
 		if(elementType == typeof(Matrix4x4))               return DecodeMatrix4x4(valueStr);
-		if(iCS_Types.IsA<UnityEngine.Object>(elementType)) return DecodeUnityObject(valueStr, storage);
+        // Special case for Unity Objects within a storage.
+		if(iCS_Types.IsA<UnityEngine.Object>(elementType) && storage != null) {
+            return DecodeUnityObject(valueStr, storage);
+        }
 		// All other types.
         coder.Archive= valueStr;
         object obj= iCS_Types.CreateInstance(valueType);

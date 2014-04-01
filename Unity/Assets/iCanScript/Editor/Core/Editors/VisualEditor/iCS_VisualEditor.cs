@@ -136,7 +136,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(IStorage != null) {
             // Update DisplayRoot
             if(DisplayRoot == null && IStorage.IsValid(0)) {
-                Debug.Log("Setting Display Root to 0");
                 DisplayRoot= IStorage[0];
             }            
             
@@ -308,7 +307,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			case EventType.ValidateCommand: {
                 // Accept undo/redo.
 			    if(ev.commandName == "UndoRedoPerformed") {
-                    Debug.Log("iCanScript: Display Root before Undo => "+DisplayRoot.Name);
+//                    Debug.Log("iCanScript: Display Root before Undo => "+IStorage.iCSMonoBehaviour.Storage.DisplayRoot);
                     ev.Use();
 			    }
 			    break;
@@ -316,7 +315,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			case EventType.ExecuteCommand: {
                 // Rebuild engine objects on undo/redo.
 			    if(ev.commandName == "UndoRedoPerformed") {
-//                    Debug.Log("Execute Undo/Redo Called");
+//                    Debug.Log("iCanScript: Display Root after Undo => "+IStorage.iCSMonoBehaviour.Storage.DisplayRoot);
                     IStorage.SynchronizeAfterUndoRedo();
                     ev.Use();
 			        break;

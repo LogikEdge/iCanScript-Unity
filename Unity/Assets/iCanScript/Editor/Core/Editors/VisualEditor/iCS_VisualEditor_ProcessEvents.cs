@@ -212,4 +212,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Vector2 diff= ViewportMousePosition-MouseDragStartPosition;
         ScrollPosition= DragStartDisplayPosition-diff;        
     }
+	// ----------------------------------------------------------------------
+    public void PanViewportBy(Vector2 additionalPan) {
+        ScrollPosition-= additionalPan;
+    }
 }
