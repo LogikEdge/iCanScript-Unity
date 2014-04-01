@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,6 +16,64 @@ public abstract class JValue : JSON {
     public bool isArray  { get { return this is JArray; }}
     public bool isObject { get { return this is JObject; }}
     public virtual JValue GetValueFor(string accesor) { return this; }
+    public static JValue Build(System.Object value) {
+        // Process Null
+        if(value == null)               { return JNull.identity; }
+        // Process Arrays
+        var valueType= value.GetType();
+        if(valueType.IsArray)           { return Build(value as Array); }
+        if(valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(IList<>)) {
+            return Build((dynamic)value);
+        }
+        // Basic Types
+		if(value is bool)               { return new JBool((bool)value); }
+		if(value is string)             { return new JString((string)value); }
+		if(value is char)               { return new JString(new string((char)value,1)); }
+		if(value is byte)               { return new JNumber((float)((byte)value)); }
+		if(value is sbyte)              { return new JNumber((float)((sbyte)value)); }
+		if(value is int)                { return new JNumber((float)((int)value)); }
+		if(value is uint)               { return new JNumber((float)((uint)value)); }
+		if(value is short)              { return new JNumber((float)((short)value)); }
+		if(value is ushort)             { return new JNumber((float)((ushort)value)); }
+		if(value is long)               { return new JNumber((float)((long)value)); }
+		if(value is ulong)              { return new JNumber((float)((ulong)value)); }
+		if(value is float)              { return new JNumber((float)value); }
+		if(value is double)             { return new JNumber((float)((double)value)); }
+		if(value is decimal)            { return new JNumber((float)((decimal)value)); }
+        // Process Objects
+        var attributes= new List<JNameValuePair>();
+		foreach(var field in valueType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+            bool shouldEncode= true;
+            if(field.IsPublic) {
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is System.NonSerializedAttribute) shouldEncode= false;
+                }
+            } else {
+                shouldEncode= false;
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is SerializeField) shouldEncode= true;
+                }                
+            }
+            if(shouldEncode) {
+    			attributes.Add(new JNameValuePair(field.Name, Build(field.GetValue(value))));                                
+            }
+		}
+        return new JObject(attributes);
+    }
+    static JValue Build(Array array) {
+        var result= new List<JValue>();
+        foreach(var obj in array) {
+            result.Add(Build(obj));
+        }
+        return new JArray(result.ToArray());
+    }
+    static JValue Build<T>(IList<T> list) {
+        var result= new List<JValue>();
+        foreach(var obj in list) {
+            result.Add(Build(obj));
+        }
+        return new JArray(result.ToArray());        
+    }
 }
 public class JNull   : JValue {
     public static JNull identity= new JNull();

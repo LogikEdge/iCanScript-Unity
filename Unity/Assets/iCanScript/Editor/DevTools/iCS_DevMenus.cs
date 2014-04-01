@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 using System.IO;
+
+using DisruptiveSoftware;
 
 public static class iCS_DevMenu {
     // ======================================================================
@@ -9,6 +12,7 @@ public static class iCS_DevMenu {
 	const string ScreenShotsFolder= "/../../../ScreenShots";
 
     // ======================================================================
+    // Export Storage
     [MenuItem("DevTools/Export Storage",false,900)]
     public static void ExportStorage() {
         var transform= Selection.activeTransform;
@@ -17,10 +21,14 @@ public static class iCS_DevMenu {
         if(go == null) return;
         var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         if(monoBehaviour == null) return;
-        var storage= monoBehaviour.Storage;
+        iCS_Storage storage= monoBehaviour.Storage;
         if(storage == null) return;
-        var archive= storage.BuildArchive();
-        Debug.Log(archive);    
+//        var archive= storage.BuildArchive();
+//        Debug.Log(archive);    
+        var root= new JObject(new JNameValuePair("Storage", JValue.Build(storage)));
+
+		string fileName= iCS_DevToolsConfig.ScreenShotsFolder+"/"+iCS_DateTime.DateTimeAsString()+"--"+storage.name+".json";
+		File.WriteAllText(Application.dataPath + fileName, JSONPrettyPrint.Print(root.Encode()));
     }
     [MenuItem("DevTools/Export Storage",true,900)]
     public static bool ValidateExportStorage() {

@@ -11,20 +11,20 @@ public class iCS_Storage : ScriptableObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-					  public bool                     ShowDisplayRootNode= true;
-                      public iCS_EngineObject         EngineObject       = null;
     [HideInInspector] public uint			          MajorVersion       = iCS_Config.MajorVersion;
     [HideInInspector] public uint    		          MinorVersion       = iCS_Config.MinorVersion;
     [HideInInspector] public uint    		          BugFixVersion      = iCS_Config.BugFixVersion;
-    [HideInInspector] public int                      UndoRedoId         = 0;
-	[HideInInspector] public Vector2		          ScrollPosition     = Vector2.zero;
-	[HideInInspector] public float  		          GuiScale           = 1f;	
-	[HideInInspector] public int    		          SelectedObject     = -1;
     [HideInInspector] public int                      DisplayRoot        = -1;	
+	[HideInInspector] public int    		          SelectedObject     = -1;
+	[HideInInspector] public bool                     ShowDisplayRootNode= true;
+	[HideInInspector] public float  		          GuiScale           = 1f;	
+	[HideInInspector] public Vector2		          ScrollPosition     = Vector2.zero;
+    [HideInInspector] public int                      UndoRedoId         = 0;
 //    public int myDisplayRoot= -2;
-    [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
+    [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
     [HideInInspector] public iCS_NavigationHistory    NavigationHistory  = new iCS_NavigationHistory();
+                      public iCS_EngineObject         EngineObject       = null;
     
 
 //    public int DisplayRoot {
