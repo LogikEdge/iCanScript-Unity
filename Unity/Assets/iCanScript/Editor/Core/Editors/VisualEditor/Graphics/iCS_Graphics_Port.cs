@@ -25,7 +25,12 @@ public partial class iCS_Graphics {
         if(value is Vector4) return ((Vector4)value).ToString();
         if(value is Color) return ((Color)value).ToString();
         if(value is string) return (string)value;
-        if(value is UnityEngine.Object) return (value as UnityEngine.Object).name;
+        if(value is UnityEngine.Object) {
+            var obj= value as UnityEngine.Object;
+            if(obj != null) {
+                return obj.name;
+            }
+        }
         return null;
     }
 

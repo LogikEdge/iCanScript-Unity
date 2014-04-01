@@ -72,6 +72,7 @@ public static class iCS_StorageImportExport {
         foreach(var uobj in unityObjects.value) {
             cache.UnityObjects.Add(ReadUnityObject(uobj as JObject));
         }
+        cache.name= storage.name;
         cache.CopyTo(storage);
         return true;
     }
@@ -117,20 +118,21 @@ public static class iCS_StorageImportExport {
     }
     // ---------------------------------------------------------------------------------
     static UnityEngine.Object ReadUnityObject(JObject jobj) {
-        JNumber jinstanceId= jobj.GetValueFor("InstanceId") as JNumber;
+//        JNumber jinstanceId= jobj.GetValueFor("InstanceId") as JNumber;
         JString jname      = jobj.GetValueFor("Name") as JString;
         JString jtypeName  = jobj.GetValueFor("Type") as JString;
-        if(jinstanceId == null || jname == null || jtypeName == null) return null;
-        int    instanceId= (int)jinstanceId.value;
+        if(/*jinstanceId == null ||*/ jname == null || jtypeName == null) return null;
+//        int    instanceId= (int)jinstanceId.value;
         string name      = jname.value;
         string typeName  = jtypeName.value;
         var unityAssembly= typeof(GameObject).Assembly;
+        var type= unityAssembly.GetType(typeName);
         // Attempt to read an asset.
         JString assetGUID= jobj.GetValueFor("AssetGUID") as JString;
         if(assetGUID != null) {
             var path= AssetDatabase.GUIDToAssetPath(assetGUID.value);
             if(!string.IsNullOrEmpty(path)) {
-                Type assetType= unityAssembly.GetType(typeName);
+                Type assetType= type;
                 if(assetType != null) {
                     var result= AssetDatabase.LoadAssetAtPath(path, assetType);
                     if(result != null) {
@@ -147,12 +149,35 @@ public static class iCS_StorageImportExport {
             Debug.LogWarning("iCanScript: Import failure: Expected a Scene GUID for => "+name+" of type => "+typeName);
             return null;
         }
-        string sceneGUID= jsceneGUID.value;
+//        string sceneGUID= jsceneGUID.value;
         JArray parents= jobj.GetValueFor("Parents") as JArray;
         if(parents == null) {
             Debug.LogWarning("iCanScript: Import failure: Expected parent list for => "+name+" of type =>"+typeName);
         }
-        Debug.Log("Decoding: Name => "+name+" of type => "+typeName+" id => "+instanceId);            
+        // Build GameObject path.
+        var gameObjectPath= "";
+        foreach(var p in parents.value) {
+            var pAsJString= p as JString; 
+            if(pAsJString != null) {
+                gameObjectPath+= "/"+pAsJString.value;
+            }
+        }
+        if(type == typeof(GameObject)) {
+            gameObjectPath+= "/"+name;
+            var go= GameObject.Find(gameObjectPath);
+            if(go != null) {
+                return go;
+            }
+            Debug.LogWarning("iCanScript: Import failure: Unable to reconnect with GameObject => "+name);
+        }
+        var parentGameObject= GameObject.Find(gameObjectPath);
+        if(parentGameObject != null) {
+            var component= parentGameObject.GetComponent(type.Name);
+            if(component != null) {
+                return component;
+            }
+        }
+        Debug.LogWarning("iCanScript: Import failure: Unable to reconnect Component => "+name+" of type => "+typeName);
         return null;
     }
 }
