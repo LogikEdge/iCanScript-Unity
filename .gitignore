@@ -66,3 +66,17 @@ user.lock
 /bin/staging/iCanScriptEngine.dll
 
 /Unity/Library/CurrentMaximizeLayout.dwlt
+
+/bin/staging/_editorFiles
+
+/bin/staging/_engineFiles
+
+/bin/staging/editorFiles
+
+/bin/staging/editorFilesToExclude
+
+/bin/staging/engineFiles
+
+/bin/staging/iCanScriptEditor.rsp
+
+/bin/staging/iCanScriptEngine.rsp
