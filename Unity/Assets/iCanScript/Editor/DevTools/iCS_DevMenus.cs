@@ -47,6 +47,9 @@ public static class iCS_DevMenu {
         iCS_Storage storage= monoBehaviour.Storage;
         if(storage == null) return;
         iCS_StorageImportExport.Import(storage);
+        var iStorage= iCS_StorageMgr.IStorage;
+        iStorage.GenerateEditorData();
+//        iStorage.ForcedRelayoutOfTree(iStorage[0]);
     }
     [MenuItem("DevTools/Import Storage",true,901)]
     public static bool ValidateImportStorage() {

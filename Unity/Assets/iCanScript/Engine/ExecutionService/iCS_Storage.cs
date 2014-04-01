@@ -44,15 +44,6 @@ public class iCS_Storage : ScriptableObject {
 
 
     // ======================================================================
-    // Archiving Utilities
-    // ----------------------------------------------------------------------
-    public string BuildArchive() {
-        var coder= new iCS_Coder();
-        coder.EncodeObject(name+".Storage", this, null);
-        return coder.Archive;
-    }
-    
-    // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
     public void CopyTo(iCS_Storage to) {

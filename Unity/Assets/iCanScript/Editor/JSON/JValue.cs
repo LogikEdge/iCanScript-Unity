@@ -57,7 +57,7 @@ public abstract class JValue : JSON {
             var desc= new List<JNameValuePair>();
             desc.Add(new JNameValuePair("InstanceId", obj.GetInstanceID()));
             desc.Add(new JNameValuePair("Name", obj.name));
-            desc.Add(new JNameValuePair("Type", obj.GetType().Name));
+            desc.Add(new JNameValuePair("Type", obj.GetType().FullName));
             if(value is GameObject || value is Component) {
                 GameObject parent= null;
                 if(value is GameObject) {

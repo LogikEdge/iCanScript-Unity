@@ -13,7 +13,8 @@ public static class JSONPrettyPrint {
     public static string Print(string encoded, int lineWidth= 132) {
         int indent= 0;
         string result= "";
-        foreach(var c in encoded) {
+        for(int i= 0; i < encoded.Length; ++i) {
+            char c= encoded[i];
             switch(c) {
                 case '[':
                 case '{':
@@ -27,6 +28,20 @@ public static class JSONPrettyPrint {
                     break;
                 case ',':
                     result+= c+"\n"+GenerateIndent(indent);
+                    break;
+                case '"':
+                    result+= c;
+                    for(++i; i < encoded.Length; ++i) {
+                        c= encoded[i];
+                        result+= c;
+                        if(c == '"') {
+                            break;
+                        }
+                        if(c == '\\') {
+                            ++i;
+                            result+= encoded[i];
+                        }
+                    }
                     break;
                 default:
                     result+= c;
