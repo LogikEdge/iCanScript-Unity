@@ -7,7 +7,7 @@ using System.Collections.Generic;
 // This class is the main storage of iCanScript.  All object are derived
 // from this storage class.
 [AddComponentMenu("")]
-public class iCS_Storage : ScriptableObject {
+public class iCS_StorageImp : ScriptableObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -46,11 +46,11 @@ public class iCS_Storage : ScriptableObject {
     // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
-    public void CopyTo(iCS_Storage to) {
+    public void CopyTo(iCS_StorageImp to) {
         Copy(this, to);
     }
     // ----------------------------------------------------------------------
-    public static void Copy(iCS_Storage from, iCS_Storage to) {
+    public static void Copy(iCS_StorageImp from, iCS_StorageImp to) {
         to.name               = from.name;
         to.ShowDisplayRootNode= from.ShowDisplayRootNode;
         to.EngineObject       = from.EngineObject;

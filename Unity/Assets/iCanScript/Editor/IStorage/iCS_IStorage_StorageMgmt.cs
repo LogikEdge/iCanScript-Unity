@@ -65,7 +65,7 @@ public partial class iCS_IStorage {
     public void GenerateEditorData() {
         // Duplicate engine storage
         if(Storage == null) {
-            Storage= ScriptableObject.CreateInstance("iCS_Storage") as iCS_Storage;
+            Storage= ScriptableObject.CreateInstance("iCS_Storage") as iCS_StorageImp;
             Storage.hideFlags= HideFlags.HideAndDontSave;
         }
         try {

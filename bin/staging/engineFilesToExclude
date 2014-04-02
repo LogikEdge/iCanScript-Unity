@@ -1,5 +1,6 @@
 ../../Unity/Assets/iCanScript/Engine/Components/iCS_Behaviour.cs
 ../../Unity/Assets/iCanScript/Engine/Components/iCS_Library.cs
+../../Unity/Assets/iCanScript/Engine/Components/iCS_Storage.cs
 ../../Unity/Assets/iCanScript/Engine/Components/iCS_VisualScript.cs
 ../../Unity/Assets/iCanScript/Engine/Nodes/_NET/_NET_Variables.cs
 ../../Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Accumulators.cs

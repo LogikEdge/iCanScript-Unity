@@ -21,7 +21,7 @@ public static class iCS_DevMenu {
         if(go == null) return;
         var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         if(monoBehaviour == null) return;
-        iCS_Storage storage= monoBehaviour.Storage;
+        iCS_StorageImp storage= monoBehaviour.Storage;
         if(storage == null) return;
         iCS_StorageImportExport.Export(storage);
     }
@@ -44,7 +44,7 @@ public static class iCS_DevMenu {
         if(go == null) return;
         var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         if(monoBehaviour == null) return;
-        iCS_Storage storage= monoBehaviour.Storage;
+        iCS_StorageImp storage= monoBehaviour.Storage;
         if(storage == null) return;
         iCS_StorageImportExport.Import(storage);
         var iStorage= iCS_StorageMgr.IStorage;

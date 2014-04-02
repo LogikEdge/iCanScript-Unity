@@ -7,11 +7,11 @@ public class iCS_MonoBehaviourImp : MonoBehaviour {
     // Storage
     // ----------------------------------------------------------------------
     [SerializeField]
-    private iCS_Storage myStorage= null;
-    public iCS_Storage Storage {
+    private iCS_StorageImp myStorage= null;
+    public iCS_StorageImp Storage {
         get {
             if(myStorage == null) {
-                myStorage= ScriptableObject.CreateInstance("iCS_Storage") as iCS_Storage;
+                myStorage= ScriptableObject.CreateInstance("iCS_Storage") as iCS_StorageImp;
                 myStorage.name= name;
             }
             return myStorage;

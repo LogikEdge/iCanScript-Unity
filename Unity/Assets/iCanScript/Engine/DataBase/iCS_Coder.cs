@@ -85,7 +85,7 @@ public class iCS_Coder {
 		}
 	}
 	// ----------------------------------------------------------------------
-	public void EncodeObject(string key, object value, iCS_Storage storage) {
+	public void EncodeObject(string key, object value, iCS_StorageImp storage) {
         if(value == null) return;
 		Type valueType= value.GetType();
 		// Special case for arrays.
@@ -147,7 +147,7 @@ public class iCS_Coder {
 		Add(key, valueType, coder.Archive);
 	}
 	// ----------------------------------------------------------------------
-    void EncodeArrayOfObjects(string key, object value, iCS_Storage storage) {
+    void EncodeArrayOfObjects(string key, object value, iCS_StorageImp storage) {
 		Type valueType= value.GetType();
 		// Special cases.
 		if(valueType == typeof(byte[])) {
@@ -504,19 +504,19 @@ public class iCS_Coder {
 		Add(key, typeof(Color), EncodeColor(value));
 	}
 	// ----------------------------------------------------------------------
-    string EncodeUnityObject(UnityEngine.Object uObj, iCS_Storage storage) {
+    string EncodeUnityObject(UnityEngine.Object uObj, iCS_StorageImp storage) {
         int id= storage.AddUnityObject(uObj);
         return EncodeInt(id);
     }
 	// ----------------------------------------------------------------------
-    public void EncodeUnityObject(string key, UnityEngine.Object uObj, iCS_Storage storage) {
+    public void EncodeUnityObject(string key, UnityEngine.Object uObj, iCS_StorageImp storage) {
         Add(key, typeof(UnityEngine.Object), EncodeUnityObject(uObj, storage));
     }
     
     // ======================================================================
     // Decoding
 	// ----------------------------------------------------------------------
-    public object DecodeObjectForKey(string key, iCS_Storage storage) {
+    public object DecodeObjectForKey(string key, iCS_StorageImp storage) {
         if(!myDictionary.ContainsKey(key)) { return null; }
         Prelude.Tuple<string,string> tuple= myDictionary[key];
         Type valueType= DecodeType(tuple.Item1);
@@ -580,7 +580,7 @@ public class iCS_Coder {
         return obj;
     }
 	// ----------------------------------------------------------------------
-    object DecodeArrayOfObjects(Type valueType, string valueStr, iCS_Storage storage) {
+    object DecodeArrayOfObjects(Type valueType, string valueStr, iCS_StorageImp storage) {
         Type arrayBaseType= iCS_Types.GetElementType(valueType);
 		// Special cases.
 		if(valueType == typeof(byte[])) {
@@ -1023,7 +1023,7 @@ public class iCS_Coder {
         return new Color(r,g,b,a);
     }
 	// ----------------------------------------------------------------------
-    public UnityEngine.Object DecodeUnityObjectForKey(string key, iCS_Storage storage) {
+    public UnityEngine.Object DecodeUnityObjectForKey(string key, iCS_StorageImp storage) {
         if(!myDictionary.ContainsKey(key)) return null;
         Prelude.Tuple<string,string> tuple= myDictionary[key];
         Type valueType= DecodeType(tuple.Item1);
@@ -1034,7 +1034,7 @@ public class iCS_Coder {
         return DecodeUnityObject(tuple.Item2, storage);        
     }
 	// ----------------------------------------------------------------------
-    UnityEngine.Object DecodeUnityObject(string value, iCS_Storage storage) {
+    UnityEngine.Object DecodeUnityObject(string value, iCS_StorageImp storage) {
         int id= DecodeInt(value);
         return storage.GetUnityObject(id);
     }

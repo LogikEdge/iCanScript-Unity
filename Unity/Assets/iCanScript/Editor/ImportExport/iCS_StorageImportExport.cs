@@ -10,12 +10,12 @@ public static class iCS_StorageImportExport {
 	// =================================================================================
     // Export
     // ---------------------------------------------------------------------------------
-    public static void Export(iCS_Storage storage) {
+    public static void Export(iCS_StorageImp storage) {
 		string fileName= iCS_DevToolsConfig.ScreenShotsFolder+"/"+storage.name+".json";
         Export(storage, fileName);
     }
     // ---------------------------------------------------------------------------------
-    public static void Export(iCS_Storage storage, string path) {
+    public static void Export(iCS_StorageImp storage, string path) {
         var root= new JObject(new JNameValuePair("Storage", JValue.Build(storage)));
 		File.WriteAllText(Application.dataPath + path, JSONPrettyPrint.Print(root.Encode()));     
     }
@@ -23,7 +23,7 @@ public static class iCS_StorageImportExport {
 	// =================================================================================
     // Import
     // ---------------------------------------------------------------------------------
-    public static bool Import(iCS_Storage storage) {
+    public static bool Import(iCS_StorageImp storage) {
         if(storage == null) {
             return false;
         }
@@ -31,7 +31,7 @@ public static class iCS_StorageImportExport {
         return Import(storage, fileName);
     }
     // ---------------------------------------------------------------------------------
-    public static bool Import(iCS_Storage storage, string path) {
+    public static bool Import(iCS_StorageImp storage, string path) {
         // Open JSON file.
         string jsonText= File.ReadAllText(Application.dataPath + path);
         if(string.IsNullOrEmpty(jsonText)) {
@@ -55,7 +55,7 @@ public static class iCS_StorageImportExport {
             return false;
         }
         // Initialize storage using JSON data.
-        var cache= ScriptableObject.CreateInstance("iCS_Storage") as iCS_Storage;
+        var cache= ScriptableObject.CreateInstance("iCS_Storage") as iCS_StorageImp;
         cache.EngineObjects.Clear();
         cache.EngineObjects.Capacity= engineObjects.value.Length;
         foreach(var eobj in engineObjects.value) {

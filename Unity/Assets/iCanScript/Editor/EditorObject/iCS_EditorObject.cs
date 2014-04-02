@@ -19,7 +19,7 @@ public partial class iCS_EditorObject {
     public iCS_IStorage IStorage {
         get { return myIStorage; }
     }
-	public iCS_Storage Storage {
+	public iCS_StorageImp Storage {
 		get { return myIStorage.Storage; }
 	}
     public iCS_MonoBehaviourImp iCSMonoBehaviour {

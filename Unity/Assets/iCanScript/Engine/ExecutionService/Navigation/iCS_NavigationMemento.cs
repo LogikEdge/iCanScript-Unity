@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 
@@ -16,12 +16,12 @@ public class iCS_NavigationMemento {
     // ----------------------------------------------------------------------
     // Creates a new memento and saves the navigation state of the given
     // IStorage.
-    public iCS_NavigationMemento(iCS_Storage storage) {
+    public iCS_NavigationMemento(iCS_StorageImp storage) {
         SaveState(storage);
     }
     // ----------------------------------------------------------------------
     // Save the navigation state of the given IStorage.
-    public void SaveState(iCS_Storage storage) {
+    public void SaveState(iCS_StorageImp storage) {
         ShowDisplayRootNode= storage.ShowDisplayRootNode;
         ScrollPosition     = storage.ScrollPosition;
         GuiScale           = storage.GuiScale;
@@ -30,7 +30,7 @@ public class iCS_NavigationMemento {
     }
     // ----------------------------------------------------------------------
     // Restores the navigation state into the given IStorage.
-    public void RestoreState(iCS_Storage storage) {
+    public void RestoreState(iCS_StorageImp storage) {
         if(!storage.IsValidEngineObject(DisplayRoot)) return;
         storage.ShowDisplayRootNode= ShowDisplayRootNode;
         storage.ScrollPosition     = ScrollPosition;
