@@ -48,8 +48,7 @@ public static partial class iCS_UserCommands {
         iStorage.ForcedRelayoutOfTree(obj);
         var visualEditor= iCS_EditorMgr.FindVisualEditor();
         if(visualEditor != null) {
-            visualEditor.CenterAndScaleOn(obj);
-            visualEditor.Repaint();
+            visualEditor.OnDisplayRootChange();
         }
     }
     // ----------------------------------------------------------------------
@@ -59,8 +58,7 @@ public static partial class iCS_UserCommands {
         iStorage.ClearNavigationHistory();
         var visualEditor= iCS_EditorMgr.FindVisualEditor();
         if(visualEditor != null) {
-            visualEditor.CenterAndScaleOn(iStorage.DisplayRoot);
-            visualEditor.Repaint();
+            visualEditor.OnDisplayRootChange();
         }
     }
     // ----------------------------------------------------------------------

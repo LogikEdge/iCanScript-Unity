@@ -74,6 +74,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	
     // ======================================================================
+    // Change in display Root.
+	// ----------------------------------------------------------------------
+    public void OnDisplayRootChange() {
+        GridOffset= Vector2.zero;
+        CenterAndScaleOn(DisplayRoot);
+        Repaint();        
+    }
+    
+    // ======================================================================
     // Force a repaint on selection change.
 	// ----------------------------------------------------------------------
     public void OnSelectionChange() {
