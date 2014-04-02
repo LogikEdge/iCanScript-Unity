@@ -242,9 +242,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(DisplayRoot != StorageRoot) {
             var deltaAnchor= DisplayRoot.AnchorPosition-DisplayRootAnchorBeforeDrag;
             if(Math3D.IsNotZero(deltaAnchor)) {
-                Debug.Log("Delta anchor => "+deltaAnchor);
                 DisplayRoot.AnchorPosition= DisplayRootAnchorBeforeDrag;
-                ScrollPosition-= deltaAnchor;                            
+                ScrollPosition-= deltaAnchor;
+                GridOffset+= deltaAnchor;                            
             }
         }
         

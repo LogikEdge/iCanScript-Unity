@@ -295,7 +295,7 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  GRID
     // ----------------------------------------------------------------------
-    public void DrawGrid(Rect screenArea, Color backgroundColor, Color gridColor, float gridSpacing) {
+    public void DrawGrid(Rect screenArea, Vector2 offset, Color backgroundColor, Color gridColor, float gridSpacing) {
         // Draw background.
         Vector3[] vect= { new Vector3(0,0,0),
                           new Vector3(screenArea.width, 0, 0),
@@ -307,11 +307,13 @@ public partial class iCS_Graphics {
         // Draw grid lines.
         if(gridSpacing*Scale < 2) return;
         
+        float xOffset= -Translation.x-offset.x;
+        float yOffset= -Translation.y-offset.y;
         float gridSpacing5= 5f*gridSpacing;
-        float x= (-Translation.x)-gridSpacing*Mathf.Floor((-Translation.x)/gridSpacing);
-        float y= (-Translation.y)-gridSpacing*Mathf.Floor((-Translation.y)/gridSpacing);
-        float x5= (-Translation.x)-gridSpacing5*Mathf.Floor((-Translation.x)/gridSpacing5);
-        float y5= (-Translation.y)-gridSpacing5*Mathf.Floor((-Translation.y)/gridSpacing5);
+        float x= (xOffset)-gridSpacing*Mathf.Floor((xOffset)/gridSpacing);
+        float y= (yOffset)-gridSpacing*Mathf.Floor((yOffset)/gridSpacing);
+        float x5= (xOffset)-gridSpacing5*Mathf.Floor((xOffset)/gridSpacing5);
+        float y5= (yOffset)-gridSpacing5*Mathf.Floor((yOffset)/gridSpacing5);
         
         // Scale grid
         x*= Scale;

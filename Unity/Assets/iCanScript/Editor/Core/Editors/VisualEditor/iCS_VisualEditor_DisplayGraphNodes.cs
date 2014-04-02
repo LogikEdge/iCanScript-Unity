@@ -11,6 +11,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
     Prelude.Animate<float>      myAnimatedScale         = new Prelude.Animate<float>();
+    Vector2                     GridOffset              = Vector2.zero;
 
 
     // ======================================================================
@@ -60,7 +61,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// No grid if editor snapshot without background requested.
 		if(iCS_DevToolsConfig.framesWithoutBackground != 0) return;
 		// Draw Grid
-        myGraphics.DrawGrid(position,
+        myGraphics.DrawGrid(position, GridOffset,
                             Pref.CanvasBackgroundColor,
                             Pref.GridColor,
                             Pref.GridSpacing);
