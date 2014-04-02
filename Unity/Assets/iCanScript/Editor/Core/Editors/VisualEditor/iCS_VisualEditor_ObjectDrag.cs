@@ -16,14 +16,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields.
     // ----------------------------------------------------------------------
-    DragTypeEnum     DragType                = DragTypeEnum.None;
-    iCS_EditorObject DragObject              = null;
-    iCS_EditorObject DragFixPort             = null;
-    iCS_EditorObject DragOriginalPort        = null;
-    Vector2          MouseDragStartPosition  = Vector2.zero;
-    Vector2          DragStartDisplayPosition= Vector2.zero;
-    Vector2          DragStartAnchorPosition = Vector2.zero;
-    bool             IsDragEnabled           = false;
+    DragTypeEnum     DragType                   = DragTypeEnum.None;
+    iCS_EditorObject DragObject                 = null;
+    iCS_EditorObject DragFixPort                = null;
+    iCS_EditorObject DragOriginalPort           = null;
+    Vector2          MouseDragStartPosition     = Vector2.zero;
+    Vector2          DragStartDisplayPosition   = Vector2.zero;
+    Vector2          DragStartAnchorPosition    = Vector2.zero;
+    Vector2          DisplayRootAnchorBeforeDrag= Vector2.zero;
+    bool             IsDragEnabled              = false;
     bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
 
     // ======================================================================
@@ -56,6 +57,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool StartDrag() {
         // Don't select new drag type if drag already started.
         if(IsDragStarted) return true;
+
+        // Keep a copy of the display root anchor position.
+        DisplayRootAnchorBeforeDrag= DisplayRoot.AnchorPosition;
 
         // Use the Left mouse down position has drag start position.
         MouseDragStartPosition= MouseDownPosition;
@@ -234,6 +238,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void EndDrag() {
 		ProcessDrag();
+        // Reset anchor position of display root to avoid movement in parent node.
+        if(DisplayRoot != StorageRoot) {
+            var deltaAnchor= DisplayRoot.AnchorPosition-DisplayRootAnchorBeforeDrag;
+            if(Math3D.IsNotZero(deltaAnchor)) {
+                Debug.Log("Delta anchor => "+deltaAnchor);
+                DisplayRoot.AnchorPosition= DisplayRootAnchorBeforeDrag;
+                ScrollPosition-= deltaAnchor;                            
+            }
+        }
+        
+        // End the drag according to the drag type.
         try {
             switch(DragType) {
                 case DragTypeEnum.None: break;
