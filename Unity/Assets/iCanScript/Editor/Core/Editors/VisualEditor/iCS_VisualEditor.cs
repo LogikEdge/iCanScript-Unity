@@ -320,6 +320,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     ev.Use();
 			        break;
 			    }
+                if(ev.commandName == "ReloadStorage") {
+                    IStorage.SynchronizeAfterUndoRedo();
+                    ev.Use();
+			        break;                    
+                }
 			    break;
 			}
         }

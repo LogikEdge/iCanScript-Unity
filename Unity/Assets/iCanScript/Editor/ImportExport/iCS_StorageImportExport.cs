@@ -10,30 +10,17 @@ public static class iCS_StorageImportExport {
 	// =================================================================================
     // Export
     // ---------------------------------------------------------------------------------
-    public static void Export(iCS_StorageImp storage) {
-		string fileName= iCS_DevToolsConfig.ScreenShotsFolder+"/"+storage.name+".json";
-        Export(storage, fileName);
-    }
-    // ---------------------------------------------------------------------------------
     public static void Export(iCS_StorageImp storage, string path) {
         var root= new JObject(new JNameValuePair("Storage", JValue.Build(storage)));
-		File.WriteAllText(Application.dataPath + path, JSONPrettyPrint.Print(root.Encode()));     
+		File.WriteAllText(path, JSONPrettyPrint.Print(root.Encode()));     
     }
 
 	// =================================================================================
     // Import
     // ---------------------------------------------------------------------------------
-    public static bool Import(iCS_StorageImp storage) {
-        if(storage == null) {
-            return false;
-        }
-		string fileName= iCS_DevToolsConfig.ScreenShotsFolder+"/"+storage.name+".json";
-        return Import(storage, fileName);
-    }
-    // ---------------------------------------------------------------------------------
     public static bool Import(iCS_StorageImp storage, string path) {
         // Open JSON file.
-        string jsonText= File.ReadAllText(Application.dataPath + path);
+        string jsonText= File.ReadAllText(path);
         if(string.IsNullOrEmpty(jsonText)) {
             Debug.LogWarning("iCanScript: No text to import from => "+path);
             return false;

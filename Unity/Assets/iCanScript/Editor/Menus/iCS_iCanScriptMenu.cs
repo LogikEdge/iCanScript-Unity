@@ -32,6 +32,65 @@ public static class iCS_iCanScriptMenu {
         if(graphEditor != null) graphEditor.CenterAndScaleOnSelected();
     }
     // ======================================================================
+    // Export Storage
+    [MenuItem("Edit/iCanScript/Export...",false,900)]
+    public static void ExportStorage() {
+        var transform= Selection.activeTransform;
+        if(transform == null) return;
+        var go= transform.gameObject;
+        if(go == null) return;
+        var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
+        if(monoBehaviour == null) return;
+        iCS_StorageImp storage= monoBehaviour.Storage;
+        if(storage == null) return;
+        var initialPath= EditorApplication.applicationContentsPath;
+        var path= EditorUtility.SaveFilePanel("Export Visual Script",initialPath,storage.name,"json");
+        if(string.IsNullOrEmpty(path)) return;
+        iCS_StorageImportExport.Export(storage, path);
+        Debug.Log("iCanScript: Export completed => "+path);
+    } 
+    [MenuItem("Edit/iCanScript/Export...",true,900)]
+    public static bool ValidateExportStorage() {
+        var transform= Selection.activeTransform;
+        if(transform == null) return false;
+        var go= transform.gameObject;
+        if(go == null) return false;
+        var visualEditor= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
+        return visualEditor != null;
+    }
+    // ======================================================================
+    // Import Storage
+    [MenuItem("Edit/iCanScript/Import...",false,901)]
+    public static void ImportStorage() {
+        var transform= Selection.activeTransform;
+        if(transform == null) return;
+        var go= transform.gameObject;
+        if(go == null) return;
+        var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
+        if(monoBehaviour == null) return;
+        iCS_StorageImp storage= monoBehaviour.Storage;
+        if(storage == null) return;
+        var initialPath= EditorApplication.applicationContentsPath;
+        var path= EditorUtility.OpenFilePanel("Import Visual Script", initialPath, "json");
+        if(string.IsNullOrEmpty(path)) return;
+        iCS_StorageImportExport.Import(storage, path);
+        Debug.Log("iCanScript: Import completed => "+path);
+        // Attempt to reload and relayout if the selection is visible in the visual editor.
+        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        if(visualEditor == null) return;
+        if(visualEditor.IStorage.MonoBehaviourStorage != storage) return;
+        visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
+    }
+    [MenuItem("Edit/iCanScript/Import...",true,901)]
+    public static bool ValidateImportStorage() {
+        var transform= Selection.activeTransform;
+        if(transform == null) return false;
+        var go= transform.gameObject;
+        if(go == null) return false;
+        var visualEditor= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
+        return visualEditor != null;
+    }
+    // ======================================================================
     // Documentation Access
     [MenuItem("Help/iCanScript/Home Page",false,31)]
     public static void HomePage() {

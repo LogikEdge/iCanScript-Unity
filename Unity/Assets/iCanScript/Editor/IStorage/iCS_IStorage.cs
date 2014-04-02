@@ -14,7 +14,7 @@ public partial class iCS_IStorage {
             bool                    myIsDirty           = true;
     public  bool                    IsTransactionOpened = false;
     public  iCS_MonoBehaviourImp    iCSMonoBehaviour    = null;
-    public  iCS_StorageImp             Storage             = null;
+    public  iCS_StorageImp          Storage             = null;
     List<iCS_EditorObject>          myEditorObjects     = null;
     public  int                     ModificationId      = -1;
     public  bool                    CleanupDeadPorts    = true;

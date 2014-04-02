@@ -10,56 +10,6 @@ public static class iCS_DevMenu {
     // ======================================================================
     // Snapshot definitions
 	const string ScreenShotsFolder= "/../../../ScreenShots";
-
-    // ======================================================================
-    // Export Storage
-    [MenuItem("DevTools/Export Storage",false,900)]
-    public static void ExportStorage() {
-        var transform= Selection.activeTransform;
-        if(transform == null) return;
-        var go= transform.gameObject;
-        if(go == null) return;
-        var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
-        if(monoBehaviour == null) return;
-        iCS_StorageImp storage= monoBehaviour.Storage;
-        if(storage == null) return;
-        iCS_StorageImportExport.Export(storage);
-    }
-    [MenuItem("DevTools/Export Storage",true,900)]
-    public static bool ValidateExportStorage() {
-        var transform= Selection.activeTransform;
-        if(transform == null) return false;
-        var go= transform.gameObject;
-        if(go == null) return false;
-        var visualEditor= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
-        return visualEditor != null;
-    }
-    // ======================================================================
-    // Import Storage
-    [MenuItem("DevTools/Import Storage",false,901)]
-    public static void ImportStorage() {
-        var transform= Selection.activeTransform;
-        if(transform == null) return;
-        var go= transform.gameObject;
-        if(go == null) return;
-        var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
-        if(monoBehaviour == null) return;
-        iCS_StorageImp storage= monoBehaviour.Storage;
-        if(storage == null) return;
-        iCS_StorageImportExport.Import(storage);
-        var iStorage= iCS_StorageMgr.IStorage;
-        iStorage.GenerateEditorData();
-//        iStorage.ForcedRelayoutOfTree(iStorage[0]);
-    }
-    [MenuItem("DevTools/Import Storage",true,901)]
-    public static bool ValidateImportStorage() {
-        var transform= Selection.activeTransform;
-        if(transform == null) return false;
-        var go= transform.gameObject;
-        if(go == null) return false;
-        var visualEditor= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
-        return visualEditor != null;
-    }
     
     // ======================================================================
     // Visual Editor Snapshot
