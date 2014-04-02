@@ -307,7 +307,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			case EventType.ValidateCommand: {
                 // Accept undo/redo.
 			    if(ev.commandName == "UndoRedoPerformed") {
-//                    Debug.Log("iCanScript: Display Root before Undo => "+IStorage.iCSMonoBehaviour.Storage.DisplayRoot);
+                    Debug.Log("iCanScript: Display Root before Undo => "+IStorage.iCSMonoBehaviour.Storage.DisplayRoot);
                     ev.Use();
 			    }
 			    break;
@@ -315,7 +315,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			case EventType.ExecuteCommand: {
                 // Rebuild engine objects on undo/redo.
 			    if(ev.commandName == "UndoRedoPerformed") {
-//                    Debug.Log("iCanScript: Display Root after Undo => "+IStorage.iCSMonoBehaviour.Storage.DisplayRoot);
+                    Debug.Log("iCanScript: Display Root after Undo => "+IStorage.iCSMonoBehaviour.Storage.DisplayRoot);
                     IStorage.SynchronizeAfterUndoRedo();
                     ev.Use();
 			        break;
