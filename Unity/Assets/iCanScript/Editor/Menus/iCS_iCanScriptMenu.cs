@@ -43,8 +43,8 @@ public static class iCS_iCanScriptMenu {
         if(monoBehaviour == null) return;
         iCS_StorageImp storage= monoBehaviour.Storage;
         if(storage == null) return;
-        var initialPath= EditorApplication.applicationContentsPath;
-        var path= EditorUtility.SaveFilePanel("Export Visual Script",initialPath,storage.name,"json");
+        var initialPath= Application.dataPath;
+        var path= EditorUtility.SaveFilePanel("Export Visual Script", initialPath, storage.name+".json", "json");
         if(string.IsNullOrEmpty(path)) return;
         iCS_StorageImportExport.Export(storage, path);
         Debug.Log("iCanScript: Export completed => "+path);
@@ -70,7 +70,7 @@ public static class iCS_iCanScriptMenu {
         if(monoBehaviour == null) return;
         iCS_StorageImp storage= monoBehaviour.Storage;
         if(storage == null) return;
-        var initialPath= EditorApplication.applicationContentsPath;
+        var initialPath= Application.dataPath;
         var path= EditorUtility.OpenFilePanel("Import Visual Script", initialPath, "json");
         if(string.IsNullOrEmpty(path)) return;
         iCS_StorageImportExport.Import(storage, path);
