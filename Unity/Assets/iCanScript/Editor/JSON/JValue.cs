@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Text;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
@@ -176,12 +177,13 @@ public class JArray  : JValue {
         return value[idx].GetValueFor(accessor);
     }
     public override string Encode() {
-        string result= "";
+        var result= new StringBuilder("[", 1000);
         for(int i= 0; i < value.Length; ++i) {
-            result+= value[i].Encode();
-            if(i < value.Length-1) result+= ",";
+            result.Append(value[i].Encode());
+            if(i < value.Length-1) result.Append(",");
         }
-        return "["+result+"]";
+        result.Append("]");
+        return result.ToString();
     }
 }
 public class JObject : JValue {
@@ -215,13 +217,14 @@ public class JObject : JValue {
         return nv.value.GetValueFor(accessor);
     }
     public override string Encode() {
-        string result= "";
-        foreach(var nv in value) {
-            result+= nv.Encode()+",";
+        var result= new StringBuilder("{", 1000);
+        for(int i= 0; i < value.Length; ++i) {
+            var nv= value[i];
+            result.Append(nv.Encode());
+            if(i < value.Length-1) result.Append(",");
         }
-        int len= result.Length;
-        if(len != 0) result= result.Substring(0, len-1);
-        return "{"+result+"}";
+        result.Append("}");
+        return result.ToString();
     }
 }
 
