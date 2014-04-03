@@ -45,6 +45,7 @@ public partial class iCS_IStorage {
             return obj;
         }
         set {
+            // Keep MonoBehaviourStorage & Storage in sync since DisplayRoot is not comprised in the Undo.
             if(value == null || !IsIdValid(value.InstanceId)) {
                 Storage.DisplayRoot= 0;
                 MonoBehaviourStorage.DisplayRoot= 0;
