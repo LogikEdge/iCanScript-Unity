@@ -58,7 +58,10 @@ public partial class iCS_IStorage {
     } 
 	public bool ShowDisplayRootNode {
 		get { return Storage.ShowDisplayRootNode; }
-		set { Storage.ShowDisplayRootNode= value; }
+		set {
+            Storage.ShowDisplayRootNode= value;
+            MonoBehaviourStorage.ShowDisplayRootNode= value;
+        }
 	}
     public bool ForceRelayout {
         get { return myForceRelayout; }
