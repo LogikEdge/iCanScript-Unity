@@ -11,8 +11,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
     Prelude.Animate<float>      myAnimatedScale         = new Prelude.Animate<float>();
-    Vector2                     GridOffset              = Vector2.zero;
-
 
     // ======================================================================
     // Properties.

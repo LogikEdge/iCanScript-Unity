@@ -124,14 +124,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Navigation
             case KeyCode.LeftBracket: {
 //                if(IsNavigationKeyDown) {
-                    IStorage.ReloadFromBackwardNavigationHistory();
+                    iCS_UserCommands.ReloadFromBackwardNavigationHistory(IStorage);
                     Event.current.Use();                    
 //                }
                 break;
             }
             case KeyCode.RightBracket: {
 //                if(IsNavigationKeyDown) {
-                    IStorage.ReloadFromForwardNavigationHistory();
+                    iCS_UserCommands.ReloadFromForwardNavigationHistory(IStorage);
                     Event.current.Use();                    
 //                }
                 break;
@@ -179,7 +179,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				if(IsControlKeyDown) {
 					if(SelectedObject == DisplayRoot) {
    						if(IStorage.HasBackwardNavigationHistory) {
-      						IStorage.ReloadFromBackwardNavigationHistory();
+      						iCS_UserCommands.ReloadFromBackwardNavigationHistory(IStorage);
       					}
 		                Event.current.Use();
 		                break;						

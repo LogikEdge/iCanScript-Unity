@@ -34,14 +34,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         float width= backwardNavigationIcon.width+spacer;
         if(iCS_ToolbarUtility.Button(ref r, width, hasBackwardHistory, backwardNavigationIcon, 0, 0)) {
             if(hasBackwardHistory) {
-                IStorage.ReloadFromBackwardNavigationHistory();
+                iCS_UserCommands.ReloadFromBackwardNavigationHistory(IStorage);
             }            
         }
         var hasForwardHistory= IStorage.HasForwardNavigationHistory;
         width= forwardNavigationIcon.width+spacer;
         if(iCS_ToolbarUtility.Button(ref r, width, hasForwardHistory, forwardNavigationIcon, 0, 0)) {
             if(hasForwardHistory) {
-                IStorage.ReloadFromForwardNavigationHistory();
+                iCS_UserCommands.ReloadFromForwardNavigationHistory(IStorage);
             }            
         }
 		// Show Behaviour Node.

@@ -21,7 +21,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     const string ShowHierarchyStr              = "Show in hierarchy";
     const string SetAsDisplayRootStr           = "Set as Display Root";
-    const string ResetDisplayRootStr           = "Reset Display Root";
+    const string ClearNavigationHistoryStr     = "Clear Navigation History";
     const string DeleteStr                     = "- Delete";
     const string PackageStr                    = "+ Package";
     const string StateChartStr                 = "+ State Chart";
@@ -370,7 +370,7 @@ public class iCS_ContextualMenu {
         if(iStorage.DisplayRoot != iStorage.RootObject ||
            iStorage.HasForwardNavigationHistory || iStorage.HasBackwardNavigationHistory) {
             int idx= GrowMenuBy(ref menu, 1);
-            menu[idx]= new iCS_MenuContext(ResetDisplayRootStr);
+            menu[idx]= new iCS_MenuContext(ClearNavigationHistoryStr);
         }
         if(obj != iStorage.DisplayRoot) {
             int idx= GrowMenuBy(ref menu, 1);
@@ -456,22 +456,22 @@ public class iCS_ContextualMenu {
         iCS_IStorage iStorage= context.Storage;
         // Process all other types of requests.
         switch(context.Command) {
-            case SetAsDisplayRootStr: iCS_UserCommands.SetAsDisplayRoot(targetObject); break;
-            case ResetDisplayRootStr: iCS_UserCommands.ResetDisplayRoot(iStorage); break;
-            case PackageStr:          iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
-            case StateChartStr:       iCS_UserCommands.CreateStateChart(targetObject, globalPos, null); break;
-            case StateStr:            iCS_UserCommands.CreateState(targetObject, globalPos, null);  break;
-            case SetAsEntryStr:       iCS_UserCommands.SetAsStateEntry(targetObject); break;
-            case OnEntryStr:          iCS_UserCommands.CreateOnEntryPackage(targetObject, globalPos); break;
-            case OnUpdateStr:         iCS_UserCommands.CreateOnUpdatePackage(targetObject, globalPos); break;
-            case OnExitStr:           iCS_UserCommands.CreateOnExitPackage(targetObject, globalPos); break;
-			case ObjectInstanceStr:   CreateObjectInstance(context); break;
-            case ShowHierarchyStr:    iCS_UserCommands.ShowInHierarchy(targetObject); break;
-            case DeleteStr:           iCS_UserCommands.DeleteObject(targetObject); break;
-            case EnablePortStr:       iCS_UserCommands.CreateEnablePort(targetObject); break;
-            case TriggerPortStr:      iCS_UserCommands.CreateTriggerPort(targetObject); break;
-            case OutputThisPortStr:   iCS_UserCommands.CreateOutInstancePort(targetObject); break;
-			case WrapInPackageStr:    iCS_UserCommands.WrapInPackage(targetObject); break;
+            case SetAsDisplayRootStr:       iCS_UserCommands.SetAsDisplayRoot(targetObject); break;
+            case ClearNavigationHistoryStr: iCS_UserCommands.ResetDisplayRoot(iStorage); break;
+            case PackageStr:                iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
+            case StateChartStr:             iCS_UserCommands.CreateStateChart(targetObject, globalPos, null); break;
+            case StateStr:                  iCS_UserCommands.CreateState(targetObject, globalPos, null);  break;
+            case SetAsEntryStr:             iCS_UserCommands.SetAsStateEntry(targetObject); break;
+            case OnEntryStr:                iCS_UserCommands.CreateOnEntryPackage(targetObject, globalPos); break;
+            case OnUpdateStr:               iCS_UserCommands.CreateOnUpdatePackage(targetObject, globalPos); break;
+            case OnExitStr:                 iCS_UserCommands.CreateOnExitPackage(targetObject, globalPos); break;
+			case ObjectInstanceStr:         CreateObjectInstance(context); break;
+            case ShowHierarchyStr:          iCS_UserCommands.ShowInHierarchy(targetObject); break;
+            case DeleteStr:                 iCS_UserCommands.DeleteObject(targetObject); break;
+            case EnablePortStr:             iCS_UserCommands.CreateEnablePort(targetObject); break;
+            case TriggerPortStr:            iCS_UserCommands.CreateTriggerPort(targetObject); break;
+            case OutputThisPortStr:         iCS_UserCommands.CreateOutInstancePort(targetObject); break;
+			case WrapInPackageStr:          iCS_UserCommands.WrapInPackage(targetObject); break;
             case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
             case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
             case DeleteKeepChildrenStr:          iCS_UserCommands.DeleteKeepChildren(targetObject); break;

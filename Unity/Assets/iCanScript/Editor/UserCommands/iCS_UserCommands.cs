@@ -37,5 +37,25 @@ public static partial class iCS_UserCommands {
             Debug.LogWarning("iCanScript: "+message);
         }
     }
-
+	// ----------------------------------------------------------------------
+    static void SendDisplayRootChange(iCS_IStorage iStorage) {
+        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        if(visualEditor != null && visualEditor.IStorage == iStorage) {
+            visualEditor.OnDisplayRootChange();
+        }        
+    }
+	// ----------------------------------------------------------------------
+    static void SendStartRelayoutOfTree(iCS_IStorage iStorage) {
+        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        if(visualEditor != null && visualEditor.IStorage == iStorage) {
+            visualEditor.OnStartRelayoutOfTree();
+        }
+    }
+	// ----------------------------------------------------------------------
+    static void SendEndRelayoutOfTree(iCS_IStorage iStorage) {
+        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        if(visualEditor != null && visualEditor.IStorage == iStorage) {
+            visualEditor.OnEndRelayoutOfTree();
+        }
+    }
 }

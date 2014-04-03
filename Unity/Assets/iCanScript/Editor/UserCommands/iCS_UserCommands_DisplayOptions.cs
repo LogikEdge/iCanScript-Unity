@@ -18,6 +18,7 @@ public static partial class iCS_UserCommands {
             return;
         }
         var iStorage= node.IStorage;
+        SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 node.Unfold();
@@ -25,6 +26,7 @@ public static partial class iCS_UserCommands {
                 node.LayoutNodeAndParents();
             }
         );
+        SendEndRelayoutOfTree(iStorage);
         iStorage.SaveStorage("Unfold "+node.Name);
     }
 	// ----------------------------------------------------------------------
@@ -37,6 +39,7 @@ public static partial class iCS_UserCommands {
             return;
         }
         var iStorage= node.IStorage;        
+        SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 if(node.IsKindOfFunction || node.IsInstanceNode) {
@@ -49,6 +52,7 @@ public static partial class iCS_UserCommands {
                 }
             }
         );
+        SendEndRelayoutOfTree(iStorage);
         iStorage.SaveStorage("Fold "+node.Name);
     }
 	// ----------------------------------------------------------------------
@@ -61,12 +65,14 @@ public static partial class iCS_UserCommands {
             return;
         }
         var iStorage= node.IStorage;
+        SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 node.Iconize();
                 node.LayoutNodeAndParents();
             }
         );
+        SendEndRelayoutOfTree(iStorage);
         iStorage.SaveStorage("Iconize "+node.Name);
     }
 

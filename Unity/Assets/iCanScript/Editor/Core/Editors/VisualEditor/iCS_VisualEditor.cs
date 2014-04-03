@@ -24,6 +24,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     iCS_ContextualMenu  myContextualMenu= null;
     iCS_Graphics        myGraphics      = null;
+
+    // ----------------------------------------------------------------------
+    Vector2 GridOffset= Vector2.zero;
+    Vector2 SavedDisplayRootAnchorPosition= Vector2.zero;
     
     // ----------------------------------------------------------------------
     bool  myShowDynamicMenu    = false;
@@ -80,6 +84,22 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         GridOffset= Vector2.zero;
         CenterAndScaleOn(DisplayRoot);
         Repaint();        
+    }
+    public void OnStartRelayoutOfTree() {
+        // Keep a copy of the display root anchor position.
+        SavedDisplayRootAnchorPosition= DisplayRoot.AnchorPosition;
+    }
+    public void OnEndRelayoutOfTree() {
+        // Reset anchor position of display root to avoid movement in parent node.
+        if(DisplayRoot != StorageRoot) {
+            var anchorPosition= DisplayRoot.AnchorPosition;
+            var deltaAnchor= anchorPosition-SavedDisplayRootAnchorPosition;
+            if(Math3D.IsNotZero(deltaAnchor)) {
+                DisplayRoot.AnchorPosition= SavedDisplayRootAnchorPosition;
+                ScrollPosition-= deltaAnchor;
+                GridOffset+= deltaAnchor;                            
+            }
+        }  
     }
     
     // ======================================================================

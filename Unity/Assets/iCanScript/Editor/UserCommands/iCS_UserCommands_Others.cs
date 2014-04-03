@@ -38,35 +38,6 @@ public static partial class iCS_UserCommands {
         }
     }
     // ----------------------------------------------------------------------
-    // Change the display root to the selected object.
-    public static void SetAsDisplayRoot(iCS_EditorObject obj) {
-        if(obj == null || !obj.IsNode) return;
-        var iStorage= obj.IStorage;
-        if(iStorage.DisplayRoot == obj) return;
-        iStorage.SaveNavigationState();
-        iStorage.DisplayRoot= obj;
-        iStorage.ForcedRelayoutOfTree(obj);
-        var visualEditor= iCS_EditorMgr.FindVisualEditor();
-        if(visualEditor != null) {
-            visualEditor.OnDisplayRootChange();
-        }
-    }
-    // ----------------------------------------------------------------------
-    // Change the display root to the parent of the selected object.
-    public static void ResetDisplayRoot(iCS_IStorage iStorage) {
-        if(iStorage == null) return;
-        iStorage.ClearNavigationHistory();
-        var visualEditor= iCS_EditorMgr.FindVisualEditor();
-        if(visualEditor != null) {
-            visualEditor.OnDisplayRootChange();
-        }
-    }
-    // ----------------------------------------------------------------------
-	public static void ToggleShowDisplayRootNode(iCS_IStorage iStorage) {
-		iStorage.ShowDisplayRootNode= !iStorage.ShowDisplayRootNode;
-        iStorage.SaveStorage("Toggle Show Display Root");
-	}
-    // ----------------------------------------------------------------------
     public static void ChangeName(iCS_EditorObject obj, string name) {
         if(string.Compare(obj.RawName, name) == 0) return;
         var iStorage= obj.IStorage;
