@@ -43,7 +43,6 @@ public partial class iCS_IStorage {
         // Start recording changes for Undo.
 //        Debug.Log("Saving visual script");
         ++Storage.UndoRedoId;
-        MonoBehaviourStorage.DisplayRoot= Storage.DisplayRoot;
         Undo.RecordObject(MonoBehaviourStorage, undoMessage);
         SaveStorage();        
     }

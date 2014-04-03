@@ -47,10 +47,12 @@ public partial class iCS_IStorage {
         set {
             if(value == null || !IsIdValid(value.InstanceId)) {
                 Storage.DisplayRoot= 0;
+                MonoBehaviourStorage.DisplayRoot= 0;
                 return;
             }
             if(!value.IsNode) return;
             Storage.DisplayRoot= value.InstanceId;
+            MonoBehaviourStorage.DisplayRoot= value.InstanceId;
         }
     } 
 	public bool ShowDisplayRootNode {
