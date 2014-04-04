@@ -24,18 +24,26 @@ public static class iCS_DevMenu {
 		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
 		return edWindow != null;
 	}
-	[MenuItem("DevTools/Visual Editor Snapshot - No Background",false,1000)]
+	[MenuItem("DevTools/Visual Editor Snapshot - No Background",false,1001)]
 	public static void MenuVisualEditorSnapshotNoBackground() {
 		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
 		if(edWindow == null) return;
 		iCS_DevToolsConfig.framesWithoutBackground= 2;
 		iCS_DevToolsConfig.takeVisualEditorSnapshot= true;
 	}
-	[MenuItem("DevTools/Visual Editor Snapshot - No Background",true,1000)]
+	[MenuItem("DevTools/Visual Editor Snapshot - No Background",true,1001)]
 	public static bool ValidateMenuVisualEditorSnapshotNoBackground() {
 		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
 		return edWindow != null;
 	}
+    [MenuItem("DevTools/Toggle Big Image Frame",false,1002)]
+    public static void ToggleBigImageFrame() {
+        iCS_Graphics.ShowBigImageFrame = !iCS_Graphics.ShowBigImageFrame;
+    }
+    [MenuItem("DevTools/Toggle Small Image Frame",false,1003)]
+    public static void ToggleSmallImageFrame() {
+        iCS_Graphics.ShowSmallImageFrame= !iCS_Graphics.ShowSmallImageFrame;
+    }
     // ======================================================================
     // Sanity Check
 	[MenuItem("DevTools/Sanity Check Selection",false,1020)]
