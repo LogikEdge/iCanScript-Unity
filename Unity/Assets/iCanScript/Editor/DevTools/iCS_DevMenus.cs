@@ -36,11 +36,11 @@ public static class iCS_DevMenu {
 		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
 		return edWindow != null;
 	}
-    [MenuItem("DevTools/Toggle Big Image Frame",false,1002)]
+    [MenuItem("DevTools/Toggle Asset Store Big Image Frame",false,1002)]
     public static void ToggleBigImageFrame() {
         iCS_Graphics.ShowBigImageFrame = !iCS_Graphics.ShowBigImageFrame;
     }
-    [MenuItem("DevTools/Toggle Small Image Frame",false,1003)]
+    [MenuItem("DevTools/Toggle Asset Store Small Image Frame",false,1003)]
     public static void ToggleSmallImageFrame() {
         iCS_Graphics.ShowSmallImageFrame= !iCS_Graphics.ShowSmallImageFrame;
     }
