@@ -632,8 +632,8 @@ public static class iCS_PreferencesController {
 	// ---------------------------------------------------------------------------------
 	static iCS_PreferencesController() {
         // Canvas colors
-        kCanvasBackgroundColor= new Color(0.169f, 0.188f, 0.243f);
-        kGridColor            = new Color(0.32f, 0.32f, 0.32f);
+        kCanvasBackgroundColor= new Color(0.125f, 0.1875f, 0.25f);
+        kGridColor            = new Color(0.5f, 0.5f, 0.5f);
 		
         // Node colors
         var c= new Func<int,float>(i=> ((float)i)/255f);

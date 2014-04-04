@@ -323,7 +323,10 @@ public partial class iCS_Graphics {
         gridSpacing*= Scale;
         gridSpacing5*= Scale;
         
-        Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.25f);
+        if(Scale < 1f) {
+            gridColor.a *= Scale;
+        }
+        Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.5f*gridColor.a);
         for(; x < screenArea.width; x+= gridSpacing) {
             if(Mathf.Abs(x-x5) < 1f) {
                 Handles.color= gridColor;
