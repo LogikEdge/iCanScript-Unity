@@ -15,7 +15,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // -----------------------------------------------------------------------
 	void Toolbar() {
 		// No toolbar if editor snapshot without background requested.
-		if(iCS_DevToolsConfig.framesWithoutBackground != 0) return;
+		if(iCS_DevToolsConfig.FramesWithoutBackground != 0) return;
 		
 		// Build standard toolbar at top of editor window.
 		Rect r= iCS_ToolbarUtility.BuildToolbar(position.width, -1f);

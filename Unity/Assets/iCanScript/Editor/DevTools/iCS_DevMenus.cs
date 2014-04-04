@@ -17,32 +17,42 @@ public static class iCS_DevMenu {
 	public static void MenuVisualEditorSnapshot() {
 		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
 		if(edWindow == null) return;
-		iCS_DevToolsConfig.takeVisualEditorSnapshot= true;
+		iCS_DevToolsConfig.TakeVisualEditorSnapshot= true;
 	}
 	[MenuItem("DevTools/Visual Editor Snapshot",true,1000)]
 	public static bool ValidateMenuVisualEditorSnapshot() {
-		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
-		return edWindow != null;
+        return IsVisualEditor;
 	}
 	[MenuItem("DevTools/Visual Editor Snapshot - No Background",false,1001)]
 	public static void MenuVisualEditorSnapshotNoBackground() {
 		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
 		if(edWindow == null) return;
-		iCS_DevToolsConfig.framesWithoutBackground= 2;
-		iCS_DevToolsConfig.takeVisualEditorSnapshot= true;
+		iCS_DevToolsConfig.FramesWithoutBackground= 2;
+		iCS_DevToolsConfig.TakeVisualEditorSnapshot= true;
 	}
 	[MenuItem("DevTools/Visual Editor Snapshot - No Background",true,1001)]
 	public static bool ValidateMenuVisualEditorSnapshotNoBackground() {
-		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
-		return edWindow != null;
+        return IsVisualEditor;
 	}
-    [MenuItem("DevTools/Toggle Asset Store Big Image Frame",false,1002)]
+    [MenuItem("DevTools/Toggle Asset Store Big Image Frame",false,1006)]
     public static void ToggleBigImageFrame() {
-        iCS_Graphics.ShowBigImageFrame = !iCS_Graphics.ShowBigImageFrame;
+        iCS_DevToolsConfig.ShowAssetStoreBigImageFrame = !iCS_DevToolsConfig.ShowAssetStoreBigImageFrame;
+        if(iCS_DevToolsConfig.ShowAssetStoreBigImageFrame) {
+            iCS_DevToolsConfig.ShowAssetStoreSmallImageFrame= false;
+        }
     }
-    [MenuItem("DevTools/Toggle Asset Store Small Image Frame",false,1003)]
+    [MenuItem("DevTools/Toggle Asset Store Small Image Frame",false,1007)]
     public static void ToggleSmallImageFrame() {
-        iCS_Graphics.ShowSmallImageFrame= !iCS_Graphics.ShowSmallImageFrame;
+        iCS_DevToolsConfig.ShowAssetStoreSmallImageFrame= !iCS_DevToolsConfig.ShowAssetStoreSmallImageFrame;
+        if(iCS_DevToolsConfig.ShowAssetStoreSmallImageFrame) {
+            iCS_DevToolsConfig.ShowAssetStoreBigImageFrame= false;
+        }
+    }
+    public static bool IsVisualEditor {
+		get {
+            EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
+		    return edWindow != null;
+        }
     }
     // ======================================================================
     // Sanity Check

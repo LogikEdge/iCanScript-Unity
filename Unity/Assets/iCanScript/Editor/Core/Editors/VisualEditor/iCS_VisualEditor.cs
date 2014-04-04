@@ -129,17 +129,32 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	public void OnPostRender()
 	{
-		if(iCS_DevToolsConfig.framesWithoutBackground != 0) {
-			--iCS_DevToolsConfig.framesWithoutBackground;
+		if(iCS_DevToolsConfig.FramesWithoutBackground != 0) {
+			--iCS_DevToolsConfig.FramesWithoutBackground;
 			return;
 		}
-		if(iCS_DevToolsConfig.takeVisualEditorSnapshot) {
-			iCS_DevToolsConfig.takeVisualEditorSnapshot= false;
-			var pos= position;
+		if(iCS_DevToolsConfig.TakeVisualEditorSnapshot) {
+			iCS_DevToolsConfig.TakeVisualEditorSnapshot= false;
+            // Snapshot the asset store big image frame
+            Rect pos;
+            if(iCS_DevToolsConfig.ShowAssetStoreBigImageFrame) {
+                Rect liveRect;
+                pos= iCS_DevToolsConfig.GetAssetStoreBigImageRect(new Vector2(position.width, position.height), out liveRect);
+            }
+            // Snapshot the asset store small image frame
+            else if(iCS_DevToolsConfig.ShowAssetStoreSmallImageFrame) {
+                Rect liveRect;
+                pos= iCS_DevToolsConfig.GetAssetStoreSmallImageRect(new Vector2(position.width, position.height), out liveRect);
+            }
+            // Snapshot the entire viewport
+            else {
+    			pos= new Rect(0, 0, position.width, position.height);
+            }
 			Debug.Log("iCanScript: Visual Editor Snapshot taken at "+DateTime.Now);
 			var snapshot= new Texture2D((int)pos.width, (int)pos.height, TextureFormat.ARGB32, false);
-			pos.x= 0; pos.y= 0;
-			snapshot.ReadPixels(pos, 0, 0, false);
+            pos.x+= 2;
+            pos.y+= 3;
+			snapshot.ReadPixels(pos, 0, 0, false);                
 			snapshot.Apply();
 			var PNGsnapshot= snapshot.EncodeToPNG();
 			UnityEngine.Object.DestroyImmediate(snapshot);

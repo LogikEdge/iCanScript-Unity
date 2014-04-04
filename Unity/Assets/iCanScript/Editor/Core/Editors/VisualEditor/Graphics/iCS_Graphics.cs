@@ -22,7 +22,6 @@ public partial class iCS_Graphics {
     const float kNodeTitleHeight = iCS_EditorConfig.kNodeTitleHeight;
     const int   kLabelFontSize   = iCS_EditorConfig.kLabelFontSize;
     const int   kTitleFontSize   = iCS_EditorConfig.kTitleFontSize;
-    const bool  IsMarketingImage = true;
     
     // ======================================================================
     // FIELDS
@@ -53,12 +52,6 @@ public partial class iCS_Graphics {
     Vector2          Translation= Vector2.zero;
     Rect             ClipingArea= new Rect(0,0,0,0);
     Vector2          MousePosition= Vector2.zero;
-    
-    // ======================================================================
-    // DEVTOOLS
-    // ----------------------------------------------------------------------
-    public static bool ShowBigImageFrame  = false;
-    public static bool ShowSmallImageFrame= false;
     
     // ======================================================================
 	// CONSTANTS
@@ -353,77 +346,49 @@ public partial class iCS_Graphics {
             Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
         }        
         // Draw guides for marketing images
-        if(IsMarketingImage) {
-            const float kBigWidth= 860f;
-            const float kBigHeight= 389f;
-            const float kBigLiveWidth= 550f;
-            const float kBigLiveHeight= 330f;
-            const float kSmallWidth= 200f;
-            const float kSmallHeight= 258f;
-            const float kSmallLiveWidth= 175f;
-            const float kSmallLiveHeight= 100f;
-            var center= new Vector2(0.5f*screenArea.width, 0.5f*screenArea.height);
-
-            if(ShowBigImageFrame) {
-                float width= kBigWidth;
-                float height= kBigHeight;
-                float liveWidth= kBigLiveWidth;
-                float liveHeight= kBigLiveHeight;
-                float padding= 0.5f*(height-liveHeight);
-            
-                float halfWidth= 0.5f*width;
-                float halfHeight= 0.5f*height;
-                Rect r= new Rect(center.x-halfWidth, center.y-halfHeight, width, height);
-                Handles.color= Color.red;
-                Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.xMax, r.y, 0));
-                Handles.DrawLine(new Vector3(r.x, r.yMax, 0), new Vector3(r.xMax, r.yMax, 0));
-                Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.x, r.yMax, 0));
-                Handles.DrawLine(new Vector3(r.xMax, r.y, 0), new Vector3(r.xMax, r.yMax, 0));
-                // Live area
-                var liveRect= new Rect(r.xMax-padding-liveWidth, r.y+padding, liveWidth, liveHeight);
-                Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.y, 0));
-                Handles.DrawLine(new Vector3(liveRect.x, liveRect.yMax, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
-                Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
-                Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));            
-                // Show iCanScript Title
-                Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript_Title_large_shadow_838x178x32.png");
-                if(title != null) {
-                    var titleWidth= Mathf.Min(title.width, liveRect.width);
-                    var titleHeight= title.height*(titleWidth/title.width);
-                    var titleRect= new Rect(liveRect.x+0.5f*(liveRect.width-titleWidth), liveRect.y, titleWidth, titleHeight);    
-                    GUI.DrawTexture(titleRect, title);
-                }                
-            }
-            if(ShowSmallImageFrame) {
-                float width= kSmallWidth;
-                float height= kSmallHeight;
-                float liveWidth= kSmallLiveWidth;
-                float liveHeight= kSmallLiveHeight;
-                float padding= 0.5f*(width-liveWidth);
-            
-                float halfWidth= 0.5f*width;
-                float halfHeight= 0.5f*height;
-                Rect r= new Rect(center.x-halfWidth, center.y-halfHeight, width, height);
-                Handles.color= Color.red;
-                Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.xMax, r.y, 0));
-                Handles.DrawLine(new Vector3(r.x, r.yMax, 0), new Vector3(r.xMax, r.yMax, 0));
-                Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.x, r.yMax, 0));
-                Handles.DrawLine(new Vector3(r.xMax, r.y, 0), new Vector3(r.xMax, r.yMax, 0));
-                // Live area
-                var liveRect= new Rect(r.xMax-padding-liveWidth, r.y+padding, liveWidth, liveHeight);
-                Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.y, 0));
-                Handles.DrawLine(new Vector3(liveRect.x, liveRect.yMax, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
-                Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
-                Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));            
-                // Show iCanScript Title
-                Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript_Title_large_shadow_838x178x32.png");
-                if(title != null) {
-                    var titleWidth= Mathf.Min(title.width, liveRect.width);
-                    var titleHeight= title.height*(titleWidth/title.width);
-                    var titleRect= new Rect(liveRect.x+0.5f*(liveRect.width-titleWidth), liveRect.y, titleWidth, titleHeight);    
-                    GUI.DrawTexture(titleRect, title);
-                }                                
-            }
+        if(iCS_DevToolsConfig.ShowAssetStoreBigImageFrame && !iCS_DevToolsConfig.IsSnapshotActive) {
+            Rect liveRect;
+            Rect r= iCS_DevToolsConfig.GetAssetStoreBigImageRect(new Vector2(screenArea.width, screenArea.height), out liveRect);
+            Handles.color= Color.red;
+            Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.xMax, r.y, 0));
+            Handles.DrawLine(new Vector3(r.x, r.yMax, 0), new Vector3(r.xMax, r.yMax, 0));
+            Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.x, r.yMax, 0));
+            Handles.DrawLine(new Vector3(r.xMax, r.y, 0), new Vector3(r.xMax, r.yMax, 0));
+            // Live area
+            Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.y, 0));
+            Handles.DrawLine(new Vector3(liveRect.x, liveRect.yMax, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
+            Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
+            Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));            
+            // Show iCanScript Title
+            Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript_Title_large_shadow_838x178x32.png");
+            if(title != null) {
+                var titleWidth= Mathf.Min(title.width, liveRect.width);
+                var titleHeight= title.height*(titleWidth/title.width);
+                var titleRect= new Rect(liveRect.x+0.5f*(liveRect.width-titleWidth), liveRect.y, titleWidth, titleHeight);    
+                GUI.DrawTexture(titleRect, title);
+            }                
+        }
+        if(iCS_DevToolsConfig.ShowAssetStoreSmallImageFrame && !iCS_DevToolsConfig.IsSnapshotActive) {
+            Rect liveRect;
+            Rect r= iCS_DevToolsConfig.GetAssetStoreSmallImageRect(new Vector2(screenArea.width, screenArea.height), out liveRect);
+            Handles.color= Color.red;
+            Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.xMax, r.y, 0));
+            Handles.DrawLine(new Vector3(r.x, r.yMax, 0), new Vector3(r.xMax, r.yMax, 0));
+            Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.x, r.yMax, 0));
+            Handles.DrawLine(new Vector3(r.xMax, r.y, 0), new Vector3(r.xMax, r.yMax, 0));
+            // Live area
+            Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.y, 0));
+            Handles.DrawLine(new Vector3(liveRect.x, liveRect.yMax, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
+            Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
+            Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));            
+            // Show iCanScript Title
+            Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript_Title_large_shadow_838x178x32.png");
+            if(title != null) {
+                var titleWidth= Mathf.Min(title.width, liveRect.width);
+                var titleHeight= title.height*(titleWidth/title.width);
+                var titleRect= new Rect(liveRect.x+0.5f*(liveRect.width-titleWidth), liveRect.y, titleWidth, titleHeight);    
+                GUI.DrawTexture(titleRect, title);
+            }                                
         }
     }
     
