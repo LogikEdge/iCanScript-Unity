@@ -127,6 +127,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Update all message ports when hierarchy has changed
 	// ----------------------------------------------------------------------
+    static int SnapshotDelay= 0;
 	public void OnPostRender()
 	{
 		if(iCS_DevToolsConfig.FramesWithoutBackground != 0) {
@@ -134,6 +135,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			return;
 		}
 		if(iCS_DevToolsConfig.TakeVisualEditorSnapshot) {
+            Debug.Log("iCanScript: This code needs to be revised...");
+            if(SnapshotDelay == 0) {
+                SnapshotDelay= 2;
+                return;
+            }
+            if(--SnapshotDelay != 0) {
+                return;
+            }
 			iCS_DevToolsConfig.TakeVisualEditorSnapshot= false;
             // Snapshot the asset store big image frame
             Rect pos;

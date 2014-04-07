@@ -61,7 +61,6 @@ public partial class iCS_Graphics {
     public static readonly Vector2 RightDirection  = new Vector2(1,0);
     public static readonly Vector2 LeftDirection   = new Vector2(-1,0);
     public static readonly Vector3 FacingNormal    = new Vector3(0,0,-1);
-	       static readonly Color   BackgroundColor = new Color(0.24f, 0.27f, 0.32f);
 	       static readonly Color   BlackShadowColor= new Color(0,0,0,0.25f);
 	       static readonly Color   WhiteShadowColor= new Color(1f,1f,1f,0.125f);
            
@@ -88,7 +87,15 @@ public partial class iCS_Graphics {
         // Set font size according to scale.
         LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
         TitleStyle.fontSize= (int)(kTitleFontSize*Scale);
-        ValueStyle.fontSize= (int)(kLabelFontSize*Scale);        
+        ValueStyle.fontSize= (int)(kLabelFontSize*Scale);
+
+        // Special case for asset store images
+        if(iCS_DevToolsConfig.IsAssetStoreFrameActive) {
+            LabelStyle.fontSize= (int)(LabelStyle.fontSize*1.2f);
+            ValueStyle.fontSize= (int)(ValueStyle.fontSize*1.2f);
+            LabelStyle.fontStyle= FontStyle.Bold;
+            ValueStyle.fontStyle= FontStyle.Bold;
+        }                
     }
     public void End(iCS_IStorage iStorage) {
     }
@@ -246,6 +253,8 @@ public partial class iCS_Graphics {
         LabelStyle.onHover.textColor= labelColor;
         LabelStyle.onFocused.textColor= labelColor;
         LabelStyle.onActive.textColor= labelColor;
+        LabelStyle.fontStyle= FontStyle.Bold;
+        LabelStyle.fontSize= 11;
     }
     // ----------------------------------------------------------------------
     void BuildTitleStyle() {
@@ -282,7 +291,7 @@ public partial class iCS_Graphics {
         ValueStyle.onHover.textColor= valueColor;
         ValueStyle.onFocused.textColor= valueColor;
         ValueStyle.onActive.textColor= valueColor;
-        TitleStyle.fontStyle= FontStyle.Bold;
+        ValueStyle.fontStyle= FontStyle.Bold;
         ValueStyle.fontSize= 11;
     }
     // ----------------------------------------------------------------------
@@ -290,7 +299,16 @@ public partial class iCS_Graphics {
         if(icon == null) return;
         GUI_DrawTexture(new Rect(point.x-0.5f*icon.width,point.y-0.5f*icon.height, icon.width, icon.height), icon);
     }
-    
+    // ----------------------------------------------------------------------
+    void DrawLabelBackground(Rect r, float alpha, Color backgroundColor, Color outlineColor) {
+        Vector3[] vectors= new Vector3[4];
+        vectors[0]= new Vector3(r.x-2, r.y-2, 0);
+        vectors[1]= new Vector3(r.xMax+2, r.y-2, 0);
+        vectors[2]= new Vector3(r.xMax+2, r.yMax+2, 0);
+        vectors[3]= new Vector3(r.x-2, r.yMax+2, 0);
+        Handles.color= new Color(1f, 1f, 1f, alpha);
+        Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, outlineColor);
+    }
     
     // ======================================================================
     //  GRID
@@ -345,29 +363,35 @@ public partial class iCS_Graphics {
             }
             Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
         }        
-        // Draw guides for marketing images
-        if(iCS_DevToolsConfig.ShowAssetStoreBigImageFrame && !iCS_DevToolsConfig.IsSnapshotActive) {
+        // Draw guides for asset store big image
+        if(iCS_DevToolsConfig.ShowAssetStoreBigImageFrame) {
             Rect liveRect;
             Rect r= iCS_DevToolsConfig.GetAssetStoreBigImageRect(new Vector2(screenArea.width, screenArea.height), out liveRect);
-            Handles.color= Color.red;
-            Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.xMax, r.y, 0));
-            Handles.DrawLine(new Vector3(r.x, r.yMax, 0), new Vector3(r.xMax, r.yMax, 0));
-            Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.x, r.yMax, 0));
-            Handles.DrawLine(new Vector3(r.xMax, r.y, 0), new Vector3(r.xMax, r.yMax, 0));
-            // Live area
-            Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.y, 0));
-            Handles.DrawLine(new Vector3(liveRect.x, liveRect.yMax, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
-            Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
-            Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));            
-            // Show iCanScript Title
-            Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript_Title_large_shadow_838x178x32.png");
-            if(title != null) {
-                var titleWidth= Mathf.Min(title.width, liveRect.width);
-                var titleHeight= title.height*(titleWidth/title.width);
-                var titleRect= new Rect(liveRect.x+0.5f*(liveRect.width-titleWidth), liveRect.y, titleWidth, titleHeight);    
-                GUI.DrawTexture(titleRect, title);
-            }                
+            if(!iCS_DevToolsConfig.IsSnapshotActive) {
+                Handles.color= Color.red;
+                Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.xMax, r.y, 0));
+                Handles.DrawLine(new Vector3(r.x, r.yMax, 0), new Vector3(r.xMax, r.yMax, 0));
+                Handles.DrawLine(new Vector3(r.x, r.y, 0), new Vector3(r.x, r.yMax, 0));
+                Handles.DrawLine(new Vector3(r.xMax, r.y, 0), new Vector3(r.xMax, r.yMax, 0));
+                // Live area
+                Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.y, 0));
+                Handles.DrawLine(new Vector3(liveRect.x, liveRect.yMax, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
+                Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
+                Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));                            
+            }
+                // Show iCanScript Title
+                Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript.png");
+                if(title != null) {
+                    float titleRatio= 0.65f;
+                    float reservedTitleWidth= titleRatio*liveRect.width;
+                    var titleWidth= Mathf.Min(title.width, reservedTitleWidth);
+                    var titleHeight= title.height*(titleWidth/title.width);
+                    var yMin= 0.5f*(liveRect.y + r.y);
+                    var titleRect= new Rect(liveRect.xMax-titleWidth, yMin, titleWidth, titleHeight);    
+                    GUI.DrawTexture(titleRect, title);
+                }                
         }
+        // Draw guides for asset store big image
         if(iCS_DevToolsConfig.ShowAssetStoreSmallImageFrame && !iCS_DevToolsConfig.IsSnapshotActive) {
             Rect liveRect;
             Rect r= iCS_DevToolsConfig.GetAssetStoreSmallImageRect(new Vector2(screenArea.width, screenArea.height), out liveRect);
@@ -382,7 +406,7 @@ public partial class iCS_Graphics {
             Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
             Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));            
             // Show iCanScript Title
-            Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript_Title_large_shadow_838x178x32.png");
+            Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript.png");
             if(title != null) {
                 var titleWidth= Mathf.Min(title.width, liveRect.width);
                 var titleHeight= title.height*(titleWidth/title.width);
@@ -435,14 +459,9 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     Color GetBackgroundColor(iCS_EditorObject node) {
         if(node.IStorage.IsSelectedOrMultiSelected(node)) {
-            return GetSelectedBackgroundColor(node);
+            return Prefs.SelectedBackgroundColor;
         }
-        return BackgroundColor;        
-    }
-    // ----------------------------------------------------------------------
-    Color GetSelectedBackgroundColor(iCS_EditorObject obj) {
-        float adj= Prefs.SelectedBrightnessGain;
-        return new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
+        return Prefs.BackgroundColor;        
     }
     // ----------------------------------------------------------------------
     public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
@@ -480,15 +499,15 @@ public partial class iCS_Graphics {
 		pos.y-=5f;	// Put title a bit higher.
         pos= TranslateAndScale(pos);
         Rect labelRect= new Rect(0.5f*(pos.x+pos.xMax-labelSize.x), pos.y-labelSize.y, labelSize.x, labelSize.y);
+        var boxAlpha= 0.10f;
+        var outlineColor= Color.black;
+        var backgroundColor= Color.black;
         if(node.IStorage.IsSelectedOrMultiSelected(node)) {
-            Vector3[] vectors= new Vector3[4];
-            vectors[0]= new Vector3(labelRect.x-2, labelRect.y-2, 0);
-            vectors[1]= new Vector3(labelRect.xMax+2, labelRect.y-2, 0);
-            vectors[2]= new Vector3(labelRect.xMax+2, labelRect.yMax+2, 0);
-            vectors[3]= new Vector3(labelRect.x-2, labelRect.yMax+2, 0);
-            Handles.color= Color.white;
-            Handles.DrawSolidRectangleWithOutline(vectors, GetBackgroundColor(node), GetNodeColor(node));
+            boxAlpha= 1f;
+            outlineColor= GetNodeColor(node);
+            backgroundColor= GetBackgroundColor(node);
         }
+        DrawLabelBackground(labelRect, boxAlpha, backgroundColor, outlineColor);
         GUI.Label(labelRect, new GUIContent(title, node.Tooltip), LabelStyle);		
 	}
 	
@@ -584,10 +603,13 @@ public partial class iCS_Graphics {
         // Determine if port is selected.
         bool isSelectedPort= port.IStorage.IsSelectedOrMultiSelected(port) ||
                              (selectedObject != null && selectedObject.IsDataOrControlPort && port == selectedObject.Parent);
-
+        
+        // Special case for asset store images
 		// Compute port radius (radius is increased if port is selected).
-		if(isSelectedPort) {
+        bool useLargePort= false;
+		if(isSelectedPort || iCS_DevToolsConfig.IsAssetStoreFrameActive) {
 			portRadius= iCS_EditorConfig.PortRadius*iCS_EditorConfig.SelectedPortFactor;			
+            useLargePort= true;
 		}
 
         // Get port type information.
@@ -606,7 +628,7 @@ public partial class iCS_Graphics {
         Color nodeColor= GetNodeColor(port.Parent);
 
         // Draw port icon
-		DrawPortIcon(port, portCenter, isSelectedPort, portColor, nodeColor, portRadius, iStorage);
+		DrawPortIcon(port, portCenter, useLargePort, portColor, nodeColor, portRadius, iStorage);
 
         // Configure move cursor for port.
         Rect portPos= new Rect(portCenter.x-portRadius, portCenter.y-portRadius, 2f*portRadius, 2f*portRadius);
@@ -628,6 +650,13 @@ public partial class iCS_Graphics {
         // Display port name.
         if(ShouldDisplayPortName(port)) {
 	        Rect portNamePos= GetPortNameGUIPosition(port, iStorage);
+            var boxAlpha= 0.10f;
+            var outlineColor= Color.black;
+            if(isSelectedPort) {
+                boxAlpha= 1f;
+                outlineColor= portColor;
+            }
+            DrawLabelBackground(portNamePos, boxAlpha, Color.black, outlineColor);
 	        string name= GetPortName(port);
 	        GUI.Label(portNamePos, name, LabelStyle);                                            	
         }
@@ -638,6 +667,7 @@ public partial class iCS_Graphics {
     			EditorGUIUtility.LookLikeControls();
                 Rect portValuePos= GetPortValueGUIPosition(port);
         		if(Math3D.IsNotZero(portValuePos.width)) {
+                    DrawLabelBackground(portValuePos, 0.10f, Color.black, Color.black);
             		string valueAsStr= GetPortValueAsString(port);
         			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
         		}            				
@@ -882,6 +912,9 @@ public partial class iCS_Graphics {
         // Set connection alpha according to port alpha.
         var alpha= port.DisplayAlpha*source.DisplayAlpha;
         
+        // Determine line color.
+        Color color= Prefs.GetTypeColor(source.RuntimeType);
+        color.a*= alpha;
         // Determine if this connection is part of the selected object.
         float highlightWidth= 2f;
         Color highlightColor= new Color(0.67f, 0.67f, 0.67f, alpha);
@@ -891,9 +924,12 @@ public partial class iCS_Graphics {
            iStorage.IsSelectedOrMultiSelected(sourceParent)) {
             highlight= true;
         }
+        // Special case for asset store images.
+        if(iCS_DevToolsConfig.IsAssetStoreFrameActive) {
+            highlight= true;
+            highlightColor= color;
+        }
         // Determine if this connection is part of a drag.
-        Color color= Prefs.GetTypeColor(source.RuntimeType);
-        color.a*= alpha;
         iCS_BindingParams cp= new iCS_BindingParams(port, portPos, source, sourcePos, iStorage);
         Vector3 startPos= TranslateAndScale(cp.Start);
         Vector3 endPos= TranslateAndScale(cp.End);

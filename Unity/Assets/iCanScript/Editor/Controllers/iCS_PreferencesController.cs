@@ -213,7 +213,6 @@ public static class iCS_PreferencesController {
 	//
 	// Default Values
 	//
-    const float    kSelectedBrightnessGain= 1.75f;
     static Color   kNodeTitleColor;
     static Color   kNodeLabelColor;
     static Color   kNodeValueColor;
@@ -224,12 +223,12 @@ public static class iCS_PreferencesController {
     static Color   kConstructorNodeColor;
     static Color   kFunctionNodeColor;
     static Color   kMessageNodeColor;
-    static Color   kSelectedNodeBackgroundColor;            
+    static Color   kBackgroundColor;
+    static Color   kSelectedBackgroundColor;            
 
 	//
 	// Database access keys
 	//
-    const string   kSelectedBrightnessGainKey     = "iCS_SelectedBrightnessGain";
     const string   kNodeTitleColorKey             = "iCS_NodeTitleColor";
     const string   kNodeLabelColorKey             = "iCS_NodeLabelColor";
     const string   kNodeValueColorKey             = "iCS_NodeValueColor";
@@ -240,14 +239,12 @@ public static class iCS_PreferencesController {
     const string   kStateNodeColorKey             = "iCS_StateNodeColor";
     const string   kEntryStateNodeColorKey        = "iCS_EntryStateNodeColor";
     const string   kMessageNodeColorKey           = "iCS_MessageNodeColor";
-    const string   kSelectedNodeBackgroundColorKey= "iCS_SelectedNodeBackgroundColor";         
+    const string   kBackgroundColorKey            = "iCS_BackgroundColor";         
+    const string   kSelectedBackgroundColorKey    = "iCS_SelectedBackgroundColor";         
 
 	//
 	// Reset to default value functions
 	//
-	public static void ResetSelectedBrightnessGain() {
-		SelectedBrightnessGain= kSelectedBrightnessGain;
-	}
 	public static void ResetNodeTitleColor() {
 		NodeTitleColor= kNodeTitleColor;
 	}
@@ -278,22 +275,16 @@ public static class iCS_PreferencesController {
     public static void ResetEntryStateNodeColor() {
 		EntryStateNodeColor= kEntryStateNodeColor;
     }
-    public static void ResetSelectedNodeBackgroundColor() {
-		SelectedNodeBackgroundColor= kSelectedNodeBackgroundColor;
+    public static void ResetBackgroundColor() {
+		BackgroundColor= kBackgroundColor;
+    }
+    public static void ResetSelectedBackgroundColor() {
+		SelectedBackgroundColor= kSelectedBackgroundColor;
     }
 	
 	//
 	// Accessors
 	//
-    public static float SelectedBrightnessGain {
-        get {
-            return EditorPrefs.GetFloat(kSelectedBrightnessGainKey, kSelectedBrightnessGain);
-        }
-        set {
-            if(value < 0.25f) return;
-            EditorPrefs.SetFloat(kSelectedBrightnessGainKey, value);
-        }
-    }
     public static Color NodeTitleColor {
         get { return LoadColor(kNodeTitleColorKey, kNodeTitleColor); }
         set { SaveColor(kNodeTitleColorKey, value); }
@@ -334,9 +325,13 @@ public static class iCS_PreferencesController {
         get { return LoadColor(kEntryStateNodeColorKey, kEntryStateNodeColor); }
         set { SaveColor(kEntryStateNodeColorKey, value); }
     }
-    public static Color SelectedNodeBackgroundColor {
-        get { return LoadColor(kSelectedNodeBackgroundColorKey, kSelectedNodeBackgroundColor); }
-        set { SaveColor(kSelectedNodeBackgroundColorKey, value); }
+    public static Color BackgroundColor {
+        get { return LoadColor(kBackgroundColorKey, kBackgroundColor); }
+        set { SaveColor(kBackgroundColorKey, value); }
+    }
+    public static Color SelectedBackgroundColor {
+        get { return LoadColor(kSelectedBackgroundColorKey, kSelectedBackgroundColor); }
+        set { SaveColor(kSelectedBackgroundColorKey, value); }
     }
 
 
@@ -647,7 +642,8 @@ public static class iCS_PreferencesController {
         kConstructorNodeColor       = new Color(1f, 0.25f, 0.5f);
         kFunctionNodeColor          = Color.green;
         kMessageNodeColor           = new Color(c(0x36), c(0x8a), c(0xff));
-        kSelectedNodeBackgroundColor= Color.white;
+        kBackgroundColor            = new Color(c(0), c(0), c(0));
+        kSelectedBackgroundColor    = new Color(c(0x45), c(0x4d), c(0x5d));
         
         // Type colors
         kBoolTypeColor      = Color.red;

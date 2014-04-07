@@ -298,17 +298,17 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
-        GUI.Label(pos[0],  "Selected Brightness Gain");
-        GUI.Label(pos[1],  "Title");
-        GUI.Label(pos[2],  "Label");
-        GUI.Label(pos[3],  "Value");
-        GUI.Label(pos[4],  "Package");
-        GUI.Label(pos[5],  "Function");
-        GUI.Label(pos[6],  "Object Constructor");
-        GUI.Label(pos[7],  "Object Instance");
-        GUI.Label(pos[8],  "State");
-        GUI.Label(pos[9],  "Entry State");
-        GUI.Label(pos[10], "Message Handler");
+        GUI.Label(pos[0],  "Title");
+        GUI.Label(pos[1],  "Label");
+        GUI.Label(pos[2],  "Value");
+        GUI.Label(pos[3],  "Package");
+        GUI.Label(pos[4],  "Function");
+        GUI.Label(pos[5],  "Object Constructor");
+        GUI.Label(pos[6],  "Object Instance");
+        GUI.Label(pos[7],  "State");
+        GUI.Label(pos[8],  "Entry State");
+        GUI.Label(pos[9], "Message Handler");
+        GUI.Label(pos[10], "Background");
         GUI.Label(pos[11], "Selected Background");
 
         // Draw Column 3
@@ -316,22 +316,21 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
-        Prefs.SelectedBrightnessGain= EditorGUI.FloatField(pos[0], Prefs.SelectedBrightnessGain);
-        Prefs.NodeTitleColor= EditorGUI.ColorField(pos[1], Prefs.NodeTitleColor);
-        Prefs.NodeLabelColor= EditorGUI.ColorField(pos[2], Prefs.NodeLabelColor);
-        Prefs.NodeValueColor= EditorGUI.ColorField(pos[3], Prefs.NodeValueColor);
-        Prefs.PackageNodeColor= EditorGUI.ColorField(pos[4], Prefs.PackageNodeColor);
-        Prefs.FunctionNodeColor= EditorGUI.ColorField(pos[5], Prefs.FunctionNodeColor);
-        Prefs.ConstructorNodeColor= EditorGUI.ColorField(pos[6], Prefs.ConstructorNodeColor);
-        Prefs.InstanceNodeColor= EditorGUI.ColorField(pos[7], Prefs.InstanceNodeColor);
-        Prefs.StateNodeColor= EditorGUI.ColorField(pos[8], Prefs.StateNodeColor);
-        Prefs.EntryStateNodeColor= EditorGUI.ColorField(pos[9], Prefs.EntryStateNodeColor);
-        Prefs.MessageNodeColor= EditorGUI.ColorField(pos[10], Prefs.MessageNodeColor);
-        Prefs.SelectedNodeBackgroundColor= EditorGUI.ColorField(pos[11], Prefs.SelectedNodeBackgroundColor);
+        Prefs.NodeTitleColor= EditorGUI.ColorField(pos[0], Prefs.NodeTitleColor);
+        Prefs.NodeLabelColor= EditorGUI.ColorField(pos[1], Prefs.NodeLabelColor);
+        Prefs.NodeValueColor= EditorGUI.ColorField(pos[2], Prefs.NodeValueColor);
+        Prefs.PackageNodeColor= EditorGUI.ColorField(pos[3], Prefs.PackageNodeColor);
+        Prefs.FunctionNodeColor= EditorGUI.ColorField(pos[4], Prefs.FunctionNodeColor);
+        Prefs.ConstructorNodeColor= EditorGUI.ColorField(pos[5], Prefs.ConstructorNodeColor);
+        Prefs.InstanceNodeColor= EditorGUI.ColorField(pos[6], Prefs.InstanceNodeColor);
+        Prefs.StateNodeColor= EditorGUI.ColorField(pos[7], Prefs.StateNodeColor);
+        Prefs.EntryStateNodeColor= EditorGUI.ColorField(pos[8], Prefs.EntryStateNodeColor);
+        Prefs.MessageNodeColor= EditorGUI.ColorField(pos[9], Prefs.MessageNodeColor);
+        Prefs.BackgroundColor= EditorGUI.ColorField(pos[10], Prefs.BackgroundColor);
+        Prefs.SelectedBackgroundColor= EditorGUI.ColorField(pos[11], Prefs.SelectedBackgroundColor);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-            Prefs.ResetSelectedBrightnessGain();
             Prefs.ResetNodeTitleColor();
             Prefs.ResetNodeLabelColor();
             Prefs.ResetNodeValueColor();
@@ -342,7 +341,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             Prefs.ResetStateNodeColor();
             Prefs.ResetEntryStateNodeColor();
             Prefs.ResetMessageNodeColor();
-            Prefs.ResetSelectedNodeBackgroundColor();
+            Prefs.ResetBackgroundColor();
+            Prefs.ResetSelectedBackgroundColor();
         }        
 		
 		// Ask to repaint visual editor if an option has changed.

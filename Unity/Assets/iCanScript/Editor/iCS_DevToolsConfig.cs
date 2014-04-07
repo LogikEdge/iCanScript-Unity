@@ -22,7 +22,12 @@ public static class iCS_DevToolsConfig {
             return TakeVisualEditorSnapshot;
         }
     }
-
+    public static bool IsAssetStoreFrameActive {
+        get {
+            return ShowAssetStoreSmallImageFrame || ShowAssetStoreBigImageFrame;
+        }
+    }
+    
     // ======================================================================
     // Utilities
     // ----------------------------------------------------------------------
@@ -38,7 +43,8 @@ public static class iCS_DevToolsConfig {
         float liveWidth= kBigLiveWidth;
         float liveHeight= kBigLiveHeight;
         float padding= 0.5f*(height-liveHeight);
-    
+//        float padding= 0;
+        
         float halfWidth= 0.5f*width;
         float halfHeight= 0.5f*height;
         Rect r= new Rect(center.x-halfWidth, center.y-halfHeight, width, height);
@@ -46,6 +52,7 @@ public static class iCS_DevToolsConfig {
         liveRect= new Rect(r.xMax-padding-liveWidth, r.y+padding, liveWidth, liveHeight);
         return r;
     }
+    // ----------------------------------------------------------------------
     public static Rect GetAssetStoreSmallImageRect(Vector2 size, out Rect liveRect) {
         const float kSmallWidth= 200f;
         const float kSmallHeight= 258f;
