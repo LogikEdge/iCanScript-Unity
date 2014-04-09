@@ -5,14 +5,17 @@ public static class iCS_DevToolsConfig {
 	// =========================================================================
     // Snapshot definitions
 	public const string ScreenShotsFolder= "/../../../ScreenShots";
-	public static bool TakeVisualEditorSnapshot= false;
-	public static int  FramesWithoutBackground = 0;
+	public static bool TakeVisualEditorSnapshot = false;
+	public static bool SnapshotWithoutBackground= false;
+    public static int  SnapshotCountDown        = -1;
+    public static bool UseBackgroundImage       = false;
 
     // ======================================================================
     // DEVTOOLS FIELDS
     // ----------------------------------------------------------------------
     public static bool ShowAssetStoreBigImageFrame  = false;
     public static bool ShowAssetStoreSmallImageFrame= false;
+    public static bool ShowBoldImage                = false;
     
     // ======================================================================
     // DEVTOOLS PROPERTIES
@@ -25,6 +28,16 @@ public static class iCS_DevToolsConfig {
     public static bool IsAssetStoreFrameActive {
         get {
             return ShowAssetStoreSmallImageFrame || ShowAssetStoreBigImageFrame;
+        }
+    }
+    public static bool IsSnapshotWithoutBackground {
+        get {
+            return SnapshotWithoutBackground;
+        }
+    }
+    public static bool IsFrameWithoutBackground {
+        get {
+            return IsSnapshotActive && IsSnapshotWithoutBackground;
         }
     }
     

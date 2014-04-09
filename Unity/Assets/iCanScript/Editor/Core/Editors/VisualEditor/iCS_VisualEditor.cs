@@ -127,22 +127,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Update all message ports when hierarchy has changed
 	// ----------------------------------------------------------------------
-    static int SnapshotDelay= 0;
 	public void OnPostRender()
 	{
-		if(iCS_DevToolsConfig.FramesWithoutBackground != 0) {
-			--iCS_DevToolsConfig.FramesWithoutBackground;
-			return;
-		}
-		if(iCS_DevToolsConfig.TakeVisualEditorSnapshot) {
-            Debug.Log("iCanScript: This code needs to be revised...");
-            if(SnapshotDelay == 0) {
-                SnapshotDelay= 2;
+        if(iCS_DevToolsConfig.TakeVisualEditorSnapshot) {
+            // Start countdown
+            if(iCS_DevToolsConfig.SnapshotCountDown == -1) {
+                iCS_DevToolsConfig.SnapshotCountDown= 3;
+            }
+            if(iCS_DevToolsConfig.SnapshotCountDown != 0) {
+                --iCS_DevToolsConfig.SnapshotCountDown;
                 return;
             }
-            if(--SnapshotDelay != 0) {
-                return;
-            }
+            iCS_DevToolsConfig.SnapshotCountDown= -1;
 			iCS_DevToolsConfig.TakeVisualEditorSnapshot= false;
             // Snapshot the asset store big image frame
             Rect pos;
@@ -160,7 +156,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     			pos= new Rect(0, 0, position.width, position.height);
             }
 			Debug.Log("iCanScript: Visual Editor Snapshot taken at "+DateTime.Now);
-			var snapshot= new Texture2D((int)pos.width, (int)pos.height, TextureFormat.ARGB32, false);
+            Texture2D snapshot;
+            if(iCS_DevToolsConfig.IsSnapshotWithoutBackground) {
+    			snapshot= new Texture2D((int)pos.width, (int)pos.height, TextureFormat.ARGB32, false);                                
+            }
+            else {
+                snapshot= new Texture2D((int)pos.width, (int)pos.height, TextureFormat.RGB24, false);                
+            }
             pos.x+= 2;
             pos.y+= 3;
 			snapshot.ReadPixels(pos, 0, 0, false);                

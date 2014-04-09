@@ -90,7 +90,7 @@ public partial class iCS_Graphics {
         ValueStyle.fontSize= (int)(kLabelFontSize*Scale);
 
         // Special case for asset store images
-        if(iCS_DevToolsConfig.IsAssetStoreFrameActive) {
+        if(iCS_DevToolsConfig.ShowBoldImage) {
             LabelStyle.fontSize= (int)(LabelStyle.fontSize*1.2f);
             ValueStyle.fontSize= (int)(ValueStyle.fontSize*1.2f);
             LabelStyle.fontStyle= FontStyle.Bold;
@@ -314,55 +314,62 @@ public partial class iCS_Graphics {
     //  GRID
     // ----------------------------------------------------------------------
     public void DrawGrid(Rect screenArea, Vector2 offset, Color backgroundColor, Color gridColor, float gridSpacing) {
-        // Draw background.
-        Vector3[] vect= { new Vector3(0,0,0),
-                          new Vector3(screenArea.width, 0, 0),
-                          new Vector3(screenArea.width,screenArea.height,0),
-                          new Vector3(0,screenArea.height,0)};
-        Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
+        if(iCS_DevToolsConfig.UseBackgroundImage) {
+            Texture2D background= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/background.png");
+            var backgroundRect= new Rect(0,0,background.width, background.height);
+            GUI.DrawTexture(backgroundRect, background);            
+        }
+        else {
+            // Draw background.
+            Vector3[] vect= { new Vector3(0,0,0),
+                              new Vector3(screenArea.width, 0, 0),
+                              new Vector3(screenArea.width,screenArea.height,0),
+                              new Vector3(0,screenArea.height,0)};
+            Handles.color= Color.white;
+            Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
 
-        // Draw grid lines.
-        if(gridSpacing*Scale < 2) return;
+            // Draw grid lines.
+            if(gridSpacing*Scale < 2) return;
         
-        float xOffset= -Translation.x-offset.x;
-        float yOffset= -Translation.y-offset.y;
-        float gridSpacing5= 5f*gridSpacing;
-        float x= (xOffset)-gridSpacing*Mathf.Floor((xOffset)/gridSpacing);
-        float y= (yOffset)-gridSpacing*Mathf.Floor((yOffset)/gridSpacing);
-        float x5= (xOffset)-gridSpacing5*Mathf.Floor((xOffset)/gridSpacing5);
-        float y5= (yOffset)-gridSpacing5*Mathf.Floor((yOffset)/gridSpacing5);
+            float xOffset= -Translation.x-offset.x;
+            float yOffset= -Translation.y-offset.y;
+            float gridSpacing5= 5f*gridSpacing;
+            float x= (xOffset)-gridSpacing*Mathf.Floor((xOffset)/gridSpacing);
+            float y= (yOffset)-gridSpacing*Mathf.Floor((yOffset)/gridSpacing);
+            float x5= (xOffset)-gridSpacing5*Mathf.Floor((xOffset)/gridSpacing5);
+            float y5= (yOffset)-gridSpacing5*Mathf.Floor((yOffset)/gridSpacing5);
         
-        // Scale grid
-        x*= Scale;
-        y*= Scale;
-        x5*= Scale;
-        y5*=Scale;
-        gridSpacing*= Scale;
-        gridSpacing5*= Scale;
+            // Scale grid
+            x*= Scale;
+            y*= Scale;
+            x5*= Scale;
+            y5*=Scale;
+            gridSpacing*= Scale;
+            gridSpacing5*= Scale;
         
-        if(Scale < 1f) {
-            gridColor.a *= Scale;
-        }
-        Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.5f*gridColor.a);
-        for(; x < screenArea.width; x+= gridSpacing) {
-            if(Mathf.Abs(x-x5) < 1f) {
-                Handles.color= gridColor;
-                x5+= gridSpacing5;
-            } else {
-                Handles.color= gridColor2;                
+            if(Scale < 1f) {
+                gridColor.a *= Scale;
             }
-            Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,screenArea.height,0));            
-        }
-        for(; y < screenArea.height; y+= gridSpacing) {
-            if(Mathf.Abs(y-y5) < 1f) {
-                Handles.color= gridColor;
-                y5+= gridSpacing5;
-            } else {
-                Handles.color= gridColor2;                
+            Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.5f*gridColor.a);
+            for(; x < screenArea.width; x+= gridSpacing) {
+                if(Mathf.Abs(x-x5) < 1f) {
+                    Handles.color= gridColor;
+                    x5+= gridSpacing5;
+                } else {
+                    Handles.color= gridColor2;                
+                }
+                Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,screenArea.height,0));            
             }
-            Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
-        }        
+            for(; y < screenArea.height; y+= gridSpacing) {
+                if(Mathf.Abs(y-y5) < 1f) {
+                    Handles.color= gridColor;
+                    y5+= gridSpacing5;
+                } else {
+                    Handles.color= gridColor2;                
+                }
+                Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
+            }            
+        }
         // Draw guides for asset store big image
         if(iCS_DevToolsConfig.ShowAssetStoreBigImageFrame) {
             Rect liveRect;
@@ -607,7 +614,7 @@ public partial class iCS_Graphics {
         // Special case for asset store images
 		// Compute port radius (radius is increased if port is selected).
         bool useLargePort= false;
-		if(isSelectedPort || iCS_DevToolsConfig.IsAssetStoreFrameActive) {
+		if(isSelectedPort || iCS_DevToolsConfig.ShowBoldImage) {
 			portRadius= iCS_EditorConfig.PortRadius*iCS_EditorConfig.SelectedPortFactor;			
             useLargePort= true;
 		}
@@ -925,7 +932,7 @@ public partial class iCS_Graphics {
             highlight= true;
         }
         // Special case for asset store images.
-        if(iCS_DevToolsConfig.IsAssetStoreFrameActive) {
+        if(iCS_DevToolsConfig.ShowBoldImage) {
             highlight= true;
             highlightColor= color;
         }

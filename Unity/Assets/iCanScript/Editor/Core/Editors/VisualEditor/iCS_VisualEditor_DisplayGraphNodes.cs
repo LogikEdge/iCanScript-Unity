@@ -57,7 +57,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void DrawGrid() {
 		// No grid if editor snapshot without background requested.
-		if(iCS_DevToolsConfig.FramesWithoutBackground != 0) return;
+		if(iCS_DevToolsConfig.IsFrameWithoutBackground) return;
 		// Draw Grid
         myGraphics.DrawGrid(position, GridOffset,
                             Pref.CanvasBackgroundColor,
