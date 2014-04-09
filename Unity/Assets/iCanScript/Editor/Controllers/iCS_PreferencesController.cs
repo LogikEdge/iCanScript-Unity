@@ -23,7 +23,7 @@ public static class iCS_PreferencesController {
 	//
     static  Color   kCanvasBackgroundColor;
     static  Color   kGridColor;
-    const   float   kGridSpacing = 20.0f;
+    const   float   kGridSpacing = 40.0f;
 
 	//
 	// Database access keys
@@ -626,12 +626,13 @@ public static class iCS_PreferencesController {
 	// Activation
 	// ---------------------------------------------------------------------------------
 	static iCS_PreferencesController() {
+        var c= new Func<int,float>(i=> ((float)i)/255f);
+
         // Canvas colors
-        kCanvasBackgroundColor= new Color(0.125f, 0.1875f, 0.25f);
-        kGridColor            = new Color(0.5f, 0.5f, 0.5f);
+        kCanvasBackgroundColor= new Color(c(9), c(69), c(167));
+        kGridColor            = new Color(c(160), c(160), c(160));
 		
         // Node colors
-        var c= new Func<int,float>(i=> ((float)i)/255f);
         kNodeTitleColor             = Color.black;
         kNodeLabelColor             = Color.white;
         kNodeValueColor             = new Color(1f, 0.8f, 0.4f);
