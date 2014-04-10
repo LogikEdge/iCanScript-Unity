@@ -22,7 +22,6 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
 			if(engineObject.PortIndex == value) return;
 			engineObject.PortIndex= value;
-//			IsDirty= true;
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -93,7 +92,6 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
 			if(engineObject.InitialValueArchive == value) return;
 			engineObject.InitialValueArchive= value;
-//			IsDirty= true;
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -124,12 +122,20 @@ public partial class iCS_EditorObject {
 			}
             // Get value from parent node.
 			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_ISignature;
-			return funcBase == null ? port.InitialPortValue : funcBase.GetSignatureDataSource().GetValue(port.PortIndex);			
+            if(funcBase == null) {
+                return port.InitialPortValue;
+            }
+            try {
+    			return funcBase.GetSignatureDataSource().GetValue(port.PortIndex);			                
+            }
+            catch(System.Exception) {
+                Debug.LogWarning("iCanScript: Unable to get runtime value for port => "+port.FullName);
+                return port.InitialPortValue;
+            }
 		}
 		set {
 			InitialPortValue= value;
 			RuntimePortValue= value;
-//	        Parent.IsDirty= true;			
 		}
 	}
 	// ----------------------------------------------------------------------

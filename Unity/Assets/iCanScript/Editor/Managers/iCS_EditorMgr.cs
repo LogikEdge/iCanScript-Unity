@@ -94,6 +94,9 @@ public static class iCS_EditorMgr {
     public static EditorWindow FindLibraryEditorWindow() {
         return FindWindow<iCS_LibraryEditor>();
     }    
+//    public static EditorWindow FindInspectorWindow() {
+//        
+//    }
     // ======================================================================
     public static iCS_VisualEditor FindVisualEditor() {
         return FindWindow(typeof(iCS_VisualEditor)) as iCS_VisualEditor;
@@ -109,7 +112,7 @@ public static class iCS_EditorMgr {
     }    
     public static iCS_PreferencesEditor FindPreferencesEditor() {
         return FindWindow(typeof(iCS_PreferencesEditor)) as iCS_PreferencesEditor;
-    }    
+    }
     // ======================================================================
 	public static void RepaintVisualEditor() {
 		var editor= FindVisualEditor();
@@ -123,4 +126,10 @@ public static class iCS_EditorMgr {
 			editor.Repaint();			
 		}
 	}
+//    public static void RepaintInspector() {
+//        var editor= FindInspector();
+//        if(editor != null) {
+//            editor.Repaint();
+//        }
+//    }
 }

@@ -97,7 +97,6 @@ public class iCS_SignatureDataSource {
             }
 		}
 #if UNITY_EDITOR
-		Debug.LogWarning("iCanScript: Invalid signature access: ["+idx+"]");
 		throw new System.Exception("Invalid signature access: ["+idx+"]");
 #else
         return null;		
@@ -132,7 +131,6 @@ public class iCS_SignatureDataSource {
 			return;
 		}
 #if UNITY_EDITOR
-		Debug.LogWarning("iCanScript: Invalid signature access: ["+idx+"]");
 		throw new System.Exception("Invalid signature access: ["+idx+"]");
 #endif
 	}
