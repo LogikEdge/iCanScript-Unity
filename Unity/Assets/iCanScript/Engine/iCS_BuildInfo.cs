@@ -1,3 +1,3 @@
 public static class iCS_BuildInfo {
-public const string kBuildDateStr= "14/04/02 11:37:53";
+public const string kBuildDateStr= "14/04/10 18:03:11";
 }
