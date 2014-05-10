@@ -99,4 +99,10 @@ public static class iCS_DevMenu {
             "LayoutRect => "+selectedObj.LayoutRect
         );
     }
+    // ======================================================================
+    // Licensing.
+    [MenuItem("DevTools/Machine Finger Print",false,1040)]
+    public static void MenuMachineFingerPrint() {
+        Debug.Log("Machine Finger Print=> "+iCS_ComputerFingerPrint.ToString());
+    }
 }

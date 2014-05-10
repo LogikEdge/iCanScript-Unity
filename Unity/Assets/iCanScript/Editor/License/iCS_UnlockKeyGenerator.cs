@@ -5,7 +5,7 @@ public static class iCS_UnlockKeyGenerator {
 
     public static byte[] Standard {
         get {
-            byte[] fingerPrint= iCS_FingerPrint.FingerPrint;
+            byte[] fingerPrint= iCS_ComputerFingerPrint.FingerPrint;
             byte[] serialNumber= iCS_LicenseFile.SerialNumber;
             byte[] unlockKey= new byte[fingerPrint.Length];
             int b0= (((int)iCS_LicenseType.Standard >>8) & 255);
@@ -19,7 +19,7 @@ public static class iCS_UnlockKeyGenerator {
 
     public static byte[] Pro {
         get {
-            byte[] fingerPrint= iCS_FingerPrint.FingerPrint;
+            byte[] fingerPrint= iCS_ComputerFingerPrint.FingerPrint;
             byte[] serialNumber= iCS_LicenseFile.SerialNumber;
             byte[] unlockKey= new byte[fingerPrint.Length];
             int b0= (((int)iCS_LicenseType.Pro >>8) & 255);

@@ -1,14 +1,14 @@
 using System.Security.Cryptography;
 using System.Text;
 
-public static class iCS_FingerPrint {
+public static class iCS_ComputerFingerPrint {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     static byte[]  ourFingerPrint;
     
     // ----------------------------------------------------------------------
-    static iCS_FingerPrint() {
+    static iCS_ComputerFingerPrint() {
         ourFingerPrint= iCS_LicenseUtil.GetMD5Hash(System.Environment.MachineName);        
     }
     // ----------------------------------------------------------------------

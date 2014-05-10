@@ -80,7 +80,7 @@ public static class iCS_LicenseFile {
     
     // ----------------------------------------------------------------------
     public static byte[] Decode() {
-        return iCS_LicenseUtil.Xor(iCS_LicenseUtil.Xor(iCS_FingerPrint.FingerPrint, UnlockKey), SerialNumber);
+        return iCS_LicenseUtil.Xor(iCS_LicenseUtil.Xor(iCS_ComputerFingerPrint.FingerPrint, UnlockKey), SerialNumber);
     }
 
     // ----------------------------------------------------------------------
