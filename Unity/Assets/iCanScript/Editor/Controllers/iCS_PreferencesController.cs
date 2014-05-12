@@ -659,6 +659,48 @@ public static class iCS_PreferencesController {
 	}
 	
 	// =================================================================================
+    // License Information
+	// ---------------------------------------------------------------------------------
+	//
+	// Default Values
+	//
+    const int kNumberOfTrialDays= 15;
+    
+	//
+	// Database access keys
+	//
+    const string kTrialStartDateKey= "iCS_TrialStartDate";
+    const string kActivationKeyKey = "iCS_ActivationKey";
+    
+	//
+	// Accessors
+	//
+    public static int RemainingTrialDays {
+        get {
+            var today= DateTime.Today;
+            var trialStartDate= GetDateTime(kTrialStartDateKey, today);
+            if(trialStartDate == today) {
+                SetDateTime(kTrialStartDateKey, today);
+                return kNumberOfTrialDays;
+            }
+            var elapseDay= trialStartDate.AddDays(kNumberOfTrialDays);
+            int remainingDays= -1;
+            while(today.CompareTo(elapseDay) < 0) {
+                ++remainingDays;
+                today.AddDays(1);
+            }
+            return remainingDays;
+        }
+    }
+    public static bool IsTrialPeriod {
+        get { return RemainingTrialDays >= 0; }
+    }
+    public static string ActivationKey {
+        get { return EditorPrefs.GetString(kActivationKeyKey, ""); }
+        set { EditorPrefs.SetString(kActivationKeyKey, value); }                
+    }
+
+	// =================================================================================
 	// Utilities
 	// ---------------------------------------------------------------------------------
 	//
@@ -698,5 +740,5 @@ public static class iCS_PreferencesController {
 		binaryTime <<= 32;
 		binaryTime |= ((long)(low)) & 0xffffffff;
 		return DateTime.FromBinary(binaryTime);
-	}
+	}    
 }
