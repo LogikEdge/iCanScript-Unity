@@ -103,7 +103,7 @@ public static class iCS_DevMenu {
     // Licensing.
     [MenuItem("DevTools/Machine Finger Print",false,1040)]
     public static void MenuMachineFingerPrint() {
-        Debug.Log("Machine Finger Print=> "+iCS_ComputerFingerPrint.ToString());
+        Debug.Log("Machine Finger Print=> "+iCS_LicenseController.FingerPrint.ToString());
     }
     [MenuItem("DevTools/Remaining Trial Days",false,1041)]
     public static void MenuRemainingTrialDays() {
@@ -111,7 +111,7 @@ public static class iCS_DevMenu {
     }
     [MenuItem("DevTools/Generate User Licenses",false,1042)]
     public static void MenuGenerateUserLicenses() {
-        var fingerPrint= iCS_ComputerFingerPrint.FingerPrint;
+        var fingerPrint= iCS_LicenseController.FingerPrint;
         var proLicense     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseTypeEnum.Pro, 1234);
         var standardLicense= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseTypeEnum.Standard, 1234);
         Debug.Log("Finger print=> "+iCS_LicenseController.ToString(fingerPrint));
@@ -120,7 +120,7 @@ public static class iCS_DevMenu {
     }
     [MenuItem("DevTools/Set Activation Keys",false,1043)]
     public static void MenuSetActivationKeys() {
-        var fingerPrint= iCS_ComputerFingerPrint.FingerPrint;
+        var fingerPrint= iCS_LicenseController.FingerPrint;
         var proActivationKey     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseTypeEnum.Pro, 1234);
         var standardActivationKey= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseTypeEnum.Standard, 5678);
         

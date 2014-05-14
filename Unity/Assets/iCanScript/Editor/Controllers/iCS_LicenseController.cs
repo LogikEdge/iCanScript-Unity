@@ -7,6 +7,19 @@ using System.Text;
 
 public static class iCS_LicenseController {
     // ======================================================================
+    // Finger Print
+    // ----------------------------------------------------------------------
+    static byte[]   ourFingerPrint;
+    
+    // ----------------------------------------------------------------------
+    static iCS_LicenseController() {
+        ourFingerPrint= iCS_LicenseController.GetMD5Hash(System.Environment.MachineName);        
+    }
+    public static byte[] FingerPrint {
+        get { return ourFingerPrint; }
+    }
+    
+    // ======================================================================
     // Utilities
     // ----------------------------------------------------------------------
     public static byte[] GetMD5Hash(string input) {
