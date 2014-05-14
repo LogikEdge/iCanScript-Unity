@@ -9,7 +9,7 @@ public static class iCS_ComputerFingerPrint {
     
     // ----------------------------------------------------------------------
     static iCS_ComputerFingerPrint() {
-        ourFingerPrint= iCS_LicenseUtil.GetMD5Hash(System.Environment.MachineName);        
+        ourFingerPrint= iCS_LicenseController.GetMD5Hash(System.Environment.MachineName);        
     }
     // ----------------------------------------------------------------------
     public static byte[] FingerPrint {
@@ -17,6 +17,6 @@ public static class iCS_ComputerFingerPrint {
     }
     // ----------------------------------------------------------------------
     public static new string ToString() {
-        return iCS_LicenseUtil.ToString(FingerPrint);
+        return iCS_LicenseController.ToString(FingerPrint);
     }
 }

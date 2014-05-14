@@ -670,34 +670,25 @@ public static class iCS_PreferencesController {
 	// Database access keys
 	//
     const string kTrialStartDateKey= "iCS_TrialStartDate";
-    const string kActivationKeyKey = "iCS_ActivationKey";
+    const string kUserLicenseKey   = "iCS_UserLicenseKey";
     
 	//
 	// Accessors
 	//
-    public static int RemainingTrialDays {
+    public static DateTime TrialStartDate {
         get {
-            var today= DateTime.Today;
+            DateTime today= DateTime.Today;
             var trialStartDate= GetDateTime(kTrialStartDateKey, today);
             if(trialStartDate == today) {
                 SetDateTime(kTrialStartDateKey, today);
-                return kNumberOfTrialDays;
             }
-            var elapseDay= trialStartDate.AddDays(kNumberOfTrialDays);
-            int remainingDays= -1;
-            while(today.CompareTo(elapseDay) < 0) {
-                ++remainingDays;
-                today.AddDays(1);
-            }
-            return remainingDays;
+            return trialStartDate;
         }
+        set { SetDateTime(kTrialStartDateKey, value); }
     }
-    public static bool IsTrialPeriod {
-        get { return RemainingTrialDays >= 0; }
-    }
-    public static string ActivationKey {
-        get { return EditorPrefs.GetString(kActivationKeyKey, ""); }
-        set { EditorPrefs.SetString(kActivationKeyKey, value); }                
+    public static string UserLicense {
+        get { return EditorPrefs.GetString(kUserLicenseKey, ""); }
+        set { EditorPrefs.SetString(kUserLicenseKey, value); }                
     }
 
 	// =================================================================================

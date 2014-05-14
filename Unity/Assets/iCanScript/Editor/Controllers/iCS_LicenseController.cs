@@ -1,11 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-public static class iCS_LicenseUtil {
+public static class iCS_LicenseController {
+    // ======================================================================
+    // Utilities
     // ----------------------------------------------------------------------
     public static byte[] GetMD5Hash(string input) {
         return GetMD5Hash(Encoding.UTF8.GetBytes(input));                
@@ -27,27 +29,6 @@ public static class iCS_LicenseUtil {
             }
         }
         return result;
-    }
-    // ----------------------------------------------------------------------
-    public static bool IsEqual(byte[] a, byte[] b) {
-        return IsZero(Xor(a,b));
-    }
-    // ----------------------------------------------------------------------
-    public static bool IsZero(byte[] a) {
-        foreach(var b in a) {
-            if(b != 0) return false;
-        }
-        return true;
-    }
-    // ----------------------------------------------------------------------
-    public static int GetSignature(byte[] securityCode) {
-        if(securityCode.Length < 2) return 0;
-        int signature= 256*securityCode[0]+securityCode[1];
-        for(int i= 2; i < securityCode.Length-1; i+= 2) {
-            int newValue= 256*securityCode[i]+securityCode[i+1];
-            if(newValue != signature) return 0;
-        }
-        return signature;
     }
     // ----------------------------------------------------------------------
     public static byte[] FromString(string hexString) {
@@ -76,5 +57,51 @@ public static class iCS_LicenseUtil {
             if(i != len-1) result+= '-';
         }
         return result;
+    }
+    // ----------------------------------------------------------------------
+    public static bool GetSignature(byte[] securityCode, out int key1, out int key2) {
+        if(securityCode.Length < 4) {
+            key1= key2= -1;
+            return false;
+        }
+        int w0= 256*securityCode[0]+securityCode[1];
+        int w1= 256*securityCode[2]+securityCode[3];
+        int c= w0^w1;
+        key1= 0;
+        for(int i= 0, bit= 1, mask= 1; i < 16; ++i, mask <<= 1, bit <<= 1) {
+            bit = (c^bit) & mask;
+            key1 |= bit;
+        }
+        key2= w0 ^ key1;
+        int r= (key1 << 2) & 0xfffc;
+        r |= (key1 >> 14) & 3;
+        for(int j= 4; j < securityCode.Length-1; j+= 2) {
+            int newValue= (256*securityCode[j]+securityCode[j+1]) ^ key2;
+            if(newValue != (r | 1)) {
+                key1= key2= -1;
+                return false;
+            }
+            r = (r << 1) & 0x1fffe;
+            r = (r & 0xfffe) | ((r >> 16) & 1);
+        }
+        return true;
+    }
+    // ----------------------------------------------------------------------
+    public static byte[] BuildSignature(byte[] toEncode, int k1, int k2) {
+        var sig= new byte[toEncode.Length];
+        int w0= 256*toEncode[0]+toEncode[1];
+        int s0= w0^k1^k2;
+        sig[0]= (byte)((s0 >> 8) & 0xff);
+        sig[1]= (byte)(s0 & 0xff);
+        int r= ((k1 << 1) & 0xfffe) | ((k1 >> 15) & 1);
+        for(int i= 2; i < toEncode.Length-1; i+= 2) {
+            int w= 256*toEncode[i]+toEncode[i+1];
+            s0= w^(r | 1)^k2;
+            sig[i]= (byte)((s0 >> 8) & 0xff);
+            sig[i+1]= (byte)(s0 & 0xff);
+            r= (r << 1) & 0x1fffe;
+            r= (r & 0xfffe) | ((r >> 16) & 1);
+        }
+        return sig;
     }
 }
