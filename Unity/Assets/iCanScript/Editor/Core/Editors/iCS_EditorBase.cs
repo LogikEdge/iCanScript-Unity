@@ -33,6 +33,13 @@ public class iCS_EditorBase : EditorWindow {
     // OnGUI
     // ---------------------------------------------------------------------------------
     public void OnGUI() {
+        // Stop all processing if not registered & trial period is over
+        if(iCS_LicenseController.IsCommunityMode) {
+            string message= "Your trial period is over !!!";
+            ShowNotification(new GUIContent(message));
+            return;
+        }
+        
         // Install iCanScript icon in tab title area.
         // (must hack since Unity does not provide a direct way of adding editor title images).
         var propertyInfo= GetType().GetProperty("cachedTitleContent", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);

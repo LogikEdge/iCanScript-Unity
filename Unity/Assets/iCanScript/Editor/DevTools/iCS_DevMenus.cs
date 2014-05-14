@@ -101,43 +101,69 @@ public static class iCS_DevMenu {
     }
     // ======================================================================
     // Licensing.
-    [MenuItem("DevTools/Machine Finger Print",false,1040)]
-    public static void MenuMachineFingerPrint() {
-        Debug.Log("Machine Finger Print=> "+iCS_LicenseController.FingerPrint.ToString());
+    [MenuItem("DevTools/Get License Type",false,1040)]
+    public static void MenuGetLicenseType() {
+        if(iCS_LicenseController.IsTrialLicense) {
+            Debug.Log("Trial license.  Remaining days=> "+iCS_LicenseController.RemainingTrialDays);
+        }
+        if(iCS_LicenseController.IsCommunityLicense) {
+            Debug.Log("Community license.");
+        }
+        if(iCS_LicenseController.IsStandardLicense) {
+            Debug.Log("Standard license.");
+        }
+        if(iCS_LicenseController.IsProLicense) {
+            Debug.Log("Pro license.");
+        }
+        if(iCS_LicenseController.IsCommunityMode) {
+            Debug.Log("Operating in Community mode.");
+        }
+        if(iCS_LicenseController.IsStandardMode) {
+            Debug.Log("Operating in Standard mode.");
+        }
+        if(iCS_LicenseController.IsProMode) {
+            Debug.Log("Operating in Pro mode.");
+        }
     }
-    [MenuItem("DevTools/Remaining Trial Days",false,1041)]
+    [MenuItem("DevTools/Finger Print",false,1041)]
+    public static void MenuFingerPrint() {
+        Debug.Log("Finger Print=> "+iCS_LicenseController.ToString(iCS_LicenseController.FingerPrint));
+    }
+    [MenuItem("DevTools/Remaining Trial Days",false,1042)]
     public static void MenuRemainingTrialDays() {
         Debug.Log("Remaining Trial Days=> "+iCS_LicenseController.RemainingTrialDays);
     }
-    [MenuItem("DevTools/Generate User Licenses",false,1042)]
+    [MenuItem("DevTools/Generate User Licenses",false,1043)]
     public static void MenuGenerateUserLicenses() {
         var fingerPrint= iCS_LicenseController.FingerPrint;
-        var proLicense     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, 1234);
-        var standardLicense= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Standard, 1234);
-        Debug.Log("Finger print=> "+iCS_LicenseController.ToString(fingerPrint));
+        var proLicense     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, (int)iCS_Config.MajorVersion);
+        var standardLicense= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Standard, (int)iCS_Config.MajorVersion);
         Debug.Log("Pro license=> "+iCS_LicenseController.ToString(proLicense));
         Debug.Log("Standard license=> "+iCS_LicenseController.ToString(standardLicense));            
     }
-    [MenuItem("DevTools/Set Activation Keys",false,1043)]
+    [MenuItem("DevTools/Set Activation Keys",false,1044)]
     public static void MenuSetActivationKeys() {
         var fingerPrint= iCS_LicenseController.FingerPrint;
-        var proActivationKey     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, 1234);
-        var standardActivationKey= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Standard, 5678);
+        var proActivationKey     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, (int)iCS_Config.MajorVersion);
+        var standardActivationKey= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Standard, (int)iCS_Config.MajorVersion);
         
         var proDecode= iCS_LicenseController.Xor(fingerPrint, proActivationKey);
         var standardDecode= iCS_LicenseController.Xor(fingerPrint, standardActivationKey);
-        int license, date;
-        if(iCS_LicenseController.GetSignature(proDecode, out license, out date)) {
-            Debug.Log("Pro License key=> "+license+" date=> "+date);
+        int license, version;
+        if(iCS_LicenseController.GetSignature(proDecode, out license, out version)) {
+            Debug.Log("Pro License for version=> "+version+".x");
         }
         else {
             Debug.Log("Unable to decode Pro Activation Key=> "+iCS_LicenseController.ToString(proDecode));
         }
-        if(iCS_LicenseController.GetSignature(standardDecode, out license, out date)) {
-            Debug.Log("Standard License key=> "+license+" date=> "+date);
+        if(iCS_LicenseController.GetSignature(standardDecode, out license, out version)) {
+            Debug.Log("Standard License for version=> "+version+".x");
         }
         else {
             Debug.Log("Unable to decode standard Activation Key=> "+iCS_LicenseController.ToString(standardDecode));
         }
+        
+        var userRegistration= new iCS_UserRegistration();
+        userRegistration.OnGUI();
     }
 }

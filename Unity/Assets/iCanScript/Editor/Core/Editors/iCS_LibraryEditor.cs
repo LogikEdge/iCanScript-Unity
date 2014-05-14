@@ -33,6 +33,12 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         // Draw the base stuff for all windows.
         base.OnGUI();
         
+        // Libray components are not available for unregistered clients.
+        if(iCS_LicenseController.IsCommunityMode) {
+            return;
+        }
+        
+        // Show library components.
         UpdateMgr();
 		if(!IsInitialized()) return;
 		var toolbarRect= ShowToolbar();

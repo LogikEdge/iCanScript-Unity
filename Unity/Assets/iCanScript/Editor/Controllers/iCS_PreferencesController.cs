@@ -670,6 +670,7 @@ public static class iCS_PreferencesController {
 	// Database access keys
 	//
     const string kTrialStartDateKey= "iCS_TrialStartDate";
+    const string kTrialVersionKey  = "iCS_TrialVersion";
     const string kUserLicenseKey   = "iCS_UserLicenseKey";
     
 	//
@@ -686,9 +687,29 @@ public static class iCS_PreferencesController {
         }
         set { SetDateTime(kTrialStartDateKey, value); }
     }
+    public static iCS_Version TrialVersion {
+        get {
+            var trialVersion= EditorPrefs.GetString(kTrialVersionKey, "");
+            if(String.IsNullOrEmpty(trialVersion)) {
+                trialVersion= iCS_Version.Current.ToString();
+                EditorPrefs.SetString(kTrialVersionKey, trialVersion);
+            }
+            return iCS_Version.FromString(trialVersion);
+        }
+    }
     public static string UserLicense {
         get { return EditorPrefs.GetString(kUserLicenseKey, ""); }
-        set { EditorPrefs.SetString(kUserLicenseKey, value); }                
+        set {
+            // Cleanup the license string.
+            value= iCS_LicenseController.CleanupLicenseString(value);
+            // Only save valid license string.
+            iCS_LicenseType licenseType;
+            uint version;
+            string errorMessage;
+            if(iCS_LicenseController.ValidateLicense(value, out licenseType, out version, out errorMessage)) {
+                EditorPrefs.SetString(kUserLicenseKey, value);                
+            }
+        }                
     }
 
 	// =================================================================================
