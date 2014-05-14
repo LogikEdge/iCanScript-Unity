@@ -166,4 +166,8 @@ public static class iCS_DevMenu {
         var userRegistration= new iCS_UserRegistration();
         userRegistration.OnGUI();
     }
+    [MenuItem("DevTools/Clear User License", false, 1045)]
+    public static void MenuClearLicense() {
+        iCS_PreferencesController.ResetUserLicense();
+    }
 }

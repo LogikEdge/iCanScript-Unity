@@ -239,4 +239,8 @@ public static class iCS_LicenseController {
         errorMessage= null;
         return true;
     }
+    // ----------------------------------------------------------------------
+    public static void PurchaseUserLicense() {
+        Application.OpenURL("https://www.assetstore.unity3d.com/en/#!/content/16872");
+    }
 }

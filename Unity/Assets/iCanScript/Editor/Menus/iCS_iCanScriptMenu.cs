@@ -105,12 +105,25 @@ public static class iCS_iCanScriptMenu {
         Application.OpenURL("http://www.icanscript.com/support/release-notes");
     }
     // ======================================================================
+    // Purchase
+    [MenuItem("Help/iCanScript/Purchase", false, 60)]
+    public static void Purchase() {
+        iCS_LicenseController.PurchaseUserLicense();
+    }
+    [MenuItem("Help/iCanScript/Purchase", true, 60)]
+    public static bool IsNotPurchased() {
+        if(iCS_LicenseController.IsStandardLicense || iCS_LicenseController.IsProLicense) {
+            return false;
+        }
+        return true;
+    }
+    // ======================================================================
     // Support Access
-    [MenuItem("Help/iCanScript/Customer Request",false,60)]
+    [MenuItem("Help/iCanScript/Customer Request",false,80)]
     public static void ReportBug() {
         Application.OpenURL("http://www.icanscript.com/support/customer-request");
     }
-    [MenuItem("Help/iCanScript/Check for Updates...",false,61)]
+    [MenuItem("Help/iCanScript/Check for Updates...",false,81)]
     public static void CheckForUpdate() {
 		iCS_SoftwareUpdateController.ManualUpdateVerification();
     }

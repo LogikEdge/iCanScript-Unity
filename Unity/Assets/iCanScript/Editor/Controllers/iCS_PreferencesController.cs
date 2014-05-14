@@ -674,6 +674,13 @@ public static class iCS_PreferencesController {
     const string kUserLicenseKey   = "iCS_UserLicenseKey";
     
 	//
+	// Reset to default value functions
+	//
+    public static void ResetUserLicense() {
+        EditorPrefs.SetString(kUserLicenseKey, "");
+    }
+    
+	//
 	// Accessors
 	//
     public static DateTime TrialStartDate {
