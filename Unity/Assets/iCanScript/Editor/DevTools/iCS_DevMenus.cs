@@ -107,13 +107,13 @@ public static class iCS_DevMenu {
     }
     [MenuItem("DevTools/Remaining Trial Days",false,1041)]
     public static void MenuRemainingTrialDays() {
-        Debug.Log("Remaining Trial Days=> "+iCS_LicenseType.RemainingTrialDays);
+        Debug.Log("Remaining Trial Days=> "+iCS_LicenseController.RemainingTrialDays);
     }
     [MenuItem("DevTools/Generate User Licenses",false,1042)]
     public static void MenuGenerateUserLicenses() {
         var fingerPrint= iCS_LicenseController.FingerPrint;
-        var proLicense     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseTypeEnum.Pro, 1234);
-        var standardLicense= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseTypeEnum.Standard, 1234);
+        var proLicense     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, 1234);
+        var standardLicense= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Standard, 1234);
         Debug.Log("Finger print=> "+iCS_LicenseController.ToString(fingerPrint));
         Debug.Log("Pro license=> "+iCS_LicenseController.ToString(proLicense));
         Debug.Log("Standard license=> "+iCS_LicenseController.ToString(standardLicense));            
@@ -121,8 +121,8 @@ public static class iCS_DevMenu {
     [MenuItem("DevTools/Set Activation Keys",false,1043)]
     public static void MenuSetActivationKeys() {
         var fingerPrint= iCS_LicenseController.FingerPrint;
-        var proActivationKey     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseTypeEnum.Pro, 1234);
-        var standardActivationKey= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseTypeEnum.Standard, 5678);
+        var proActivationKey     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, 1234);
+        var standardActivationKey= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Standard, 5678);
         
         var proDecode= iCS_LicenseController.Xor(fingerPrint, proActivationKey);
         var standardDecode= iCS_LicenseController.Xor(fingerPrint, standardActivationKey);

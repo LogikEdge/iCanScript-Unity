@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
+public enum iCS_LicenseType {
+    Trial= 0, Community= 1, Standard= 0x5f23, Pro= 0xdc45
+}
+
 public static class iCS_LicenseController {
     // ======================================================================
     // Finger Print
@@ -18,6 +22,19 @@ public static class iCS_LicenseController {
     public static byte[] FingerPrint {
         get { return ourFingerPrint; }
     }
+    
+    // ======================================================================
+    // License Type
+    // ----------------------------------------------------------------------
+    public static int RemainingTrialDays {
+        get {
+            var today= DateTime.Today;
+            var trialEndDate= iCS_PreferencesController.TrialStartDate.AddDays(15);
+            var remainingTrialPeriod= trialEndDate.Subtract(today);
+            return remainingTrialPeriod.Days;
+        }
+    }
+    
     
     // ======================================================================
     // Utilities

@@ -2,11 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public enum iCS_LicenseTypeEnum {
-    Trial= 0, Community= 1, Standard= 0x5f23, Pro= 0xdc45
-}
-
-public static class iCS_LicenseType {
+//public static class iCS_LicenseTypeOld {
 //    public static iCS_LicenseTypeEnum ActualEdition {
 //        get {
 //            if(IsPro) return iCS_LicenseTypeEnum.Pro;
@@ -68,14 +64,14 @@ public static class iCS_LicenseType {
 //            return signature;
 //        }
 //    }
-    public static int RemainingTrialDays {
-        get {
-            var today= DateTime.Today;
-            var trialEndDate= iCS_PreferencesController.TrialStartDate.AddDays(15);
-            var remainingTrialPeriod= trialEndDate.Subtract(today);
-            return remainingTrialPeriod.Days;
-        }
-    }
-    
-    
-}
+//    public static int RemainingTrialDays {
+//        get {
+//            var today= DateTime.Today;
+//            var trialEndDate= iCS_PreferencesController.TrialStartDate.AddDays(15);
+//            var remainingTrialPeriod= trialEndDate.Subtract(today);
+//            return remainingTrialPeriod.Days;
+//        }
+//    }
+//    
+//    
+//}
