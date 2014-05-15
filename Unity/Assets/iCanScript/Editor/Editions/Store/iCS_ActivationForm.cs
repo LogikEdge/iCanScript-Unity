@@ -13,19 +13,7 @@ public class iCS_ActivationForm : EditorWindow {
     // ---------------------------------------------------------------------------------
     [MenuItem("Help/iCanScript/Activation...", false, 70)]
     public static void Initialize() {
-        string title= "iCanScript Activation Needed ("+iCS_LicenseController.RemainingTrialDays+" days remaining)";
-        var option= EditorUtility.DisplayDialogComplex(title, "Activation is needed to use the Unity Asset Store edition of iCanScript.  Please choose one of the following options.",
-                                                              "Waiting for License",
-                                                              "Request License",
-                                                              "Enter License key");
-        switch(option) {
-            // Waiting for License
-            case 0: break;
-            // Request License
-            case 1: break;
-            // Enter License key
-            case 2: break;
-        }
+        iCS_LicenseDialogs.ActivationDialog();
     }
     [MenuItem("Help/iCanScript/Activation...", true, 70)]
     public static bool IsNotActivated() {

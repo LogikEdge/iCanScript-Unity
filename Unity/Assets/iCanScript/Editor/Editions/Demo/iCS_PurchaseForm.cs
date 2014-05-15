@@ -12,12 +12,7 @@ public class iCS_PurchaseForm {
     // ---------------------------------------------------------------------------------
     [MenuItem("Help/iCanScript/Purchase...", false, 71)]
     public static void Initialize() {
-        string title= "iCanScript Demo ("+iCS_LicenseController.RemainingTrialDays+" days remaining)";
-        if(EditorUtility.DisplayDialog(title, "You may purchase the full version of iCanScript on the Unity Asset Store.", "Purchase", "Use Demo")) {
-            Application.OpenURL("https://www.assetstore.unity3d.com/en/#!/content/16872");
-        }
-        
-//        EditorWindow.GetWindow(typeof(iCS_PurchaseForm), true, "iCanScript Purchase Form");
+        iCS_LicenseDialogs.TrialDialog();
     }
     [MenuItem("Help/iCanScript/Purchase...", true, 71)]
     public static bool IsNotPurchased() {
