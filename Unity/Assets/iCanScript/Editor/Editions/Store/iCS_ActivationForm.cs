@@ -2,19 +2,27 @@
 using UnityEditor;
 using System.Collections;
 
-public class iCS_UserRegistration : EditorWindow {
+public class iCS_ActivationForm : EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
     string  userLicenseStr;
     
     // =================================================================================
+    // Menu
+    // ---------------------------------------------------------------------------------
+    [MenuItem("Help/iCanScript/Activation...", false, 70)]
+    static void Initialize() {
+        EditorWindow.GetWindow(typeof(iCS_ActivationForm), true, "iCanScript Activation Form");
+    }
+    [MenuItem("Help/iCanScript/Activation...", true, 70)]
+    public static bool IsNotActivated() {
+        return !iCS_LicenseController.IsActivated;
+    }
+    
+    // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    [MenuItem("DevTools/User Registration", false, 1050)]
-    static void Initialize() {
-        EditorWindow.GetWindow(typeof(iCS_UserRegistration), true, "iCanScript User Registration");
-    }
     public void OnEnable() {
         ReadLicense();
     }

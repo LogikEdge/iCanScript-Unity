@@ -103,16 +103,16 @@ public static class iCS_DevMenu {
     // Licensing.
     [MenuItem("DevTools/Get License Type",false,1040)]
     public static void MenuGetLicenseType() {
-        if(iCS_LicenseController.IsTrialLicense) {
+        if(iCS_LicenseController.HasTrialLicense) {
             Debug.Log("Trial license.  Remaining days=> "+iCS_LicenseController.RemainingTrialDays);
         }
-        if(iCS_LicenseController.IsCommunityLicense) {
+        if(iCS_LicenseController.HasCommunityLicense) {
             Debug.Log("Community license.");
         }
-        if(iCS_LicenseController.IsStandardLicense) {
+        if(iCS_LicenseController.HasStandardLicense) {
             Debug.Log("Standard license.");
         }
-        if(iCS_LicenseController.IsProLicense) {
+        if(iCS_LicenseController.HasProLicense) {
             Debug.Log("Pro license.");
         }
         if(iCS_LicenseController.IsCommunityMode) {
@@ -163,11 +163,20 @@ public static class iCS_DevMenu {
             Debug.Log("Unable to decode standard Activation Key=> "+iCS_LicenseController.ToString(standardDecode));
         }
         
-        var userRegistration= new iCS_UserRegistration();
-        userRegistration.OnGUI();
+        var activationForm= new iCS_ActivationForm();
+        activationForm.OnGUI();
     }
     [MenuItem("DevTools/Clear User License", false, 1045)]
     public static void MenuClearLicense() {
         iCS_PreferencesController.ResetUserLicense();
+    }
+    [MenuItem("DevTools/Environment", false, 1050)]
+    public static void ShowEnvironment() {
+        Debug.Log("Machine Name=> "+System.Environment.MachineName);
+        Debug.Log("User Name=> "+System.Environment.UserName);
+    }
+    [MenuItem("DevTools/Open New Ticket", false, 1052)]
+    public static void OpenNewTicket() {
+        Application.OpenURL("http://helpdesk.icanscript.com/support/tickets/new");
     }
 }

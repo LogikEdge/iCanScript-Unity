@@ -91,59 +91,27 @@ public static class iCS_iCanScriptMenu {
         return visualEditor != null;
     }
     // ======================================================================
-    // Documentation Access
-    [MenuItem("Help/iCanScript/Home Page",false,31)]
+    // Support Access
+    [MenuItem("Help/iCanScript/About",false,31)]
+    public static void About() {
+            
+    }
+    [MenuItem("Help/iCanScript/Home Page",false,51)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com");
     }
-    [MenuItem("Help/iCanScript/User Guide",false,32)]
-    public static void UserManual() {
-        Application.OpenURL("http://www.user-guide.icanscript.com/all-in-one");
+    [MenuItem("Help/iCanScript/Helpdesk and Community",false,52)]
+    public static void Helpdesk() {
+        Application.OpenURL("http://helpdesk.icanscript.com");
     }
-    [MenuItem("Help/iCanScript/Release Notes",false,34)]
+    [MenuItem("Help/iCanScript/Submit a ticket",false,53)]
     public static void ReleaseNotes() {
-        Application.OpenURL("http://www.icanscript.com/support/release-notes");
+        Application.OpenURL("http://helpdesk.icanscript.com/support/tickets/new");
     }
     // ======================================================================
     // Purchase
-    [MenuItem("Help/iCanScript/Purchase", false, 60)]
-    public static void Purchase() {
-        iCS_LicenseController.PurchaseUserLicense();
-    }
-    [MenuItem("Help/iCanScript/Purchase", true, 60)]
-    public static bool IsNotPurchased() {
-        if(iCS_LicenseController.IsStandardLicense || iCS_LicenseController.IsProLicense) {
-            return false;
-        }
-        return true;
-    }
-    // ======================================================================
-    // Support Access
-    [MenuItem("Help/iCanScript/Customer Request",false,80)]
-    public static void ReportBug() {
-        Application.OpenURL("http://www.icanscript.com/support/customer-request");
-    }
-    [MenuItem("Help/iCanScript/Check for Updates...",false,81)]
+    [MenuItem("Help/iCanScript/Check for Updates...",false,72)]
     public static void CheckForUpdate() {
 		iCS_SoftwareUpdateController.ManualUpdateVerification();
     }
-    
-//    // ======================================================================
-//	// iCanScript License.
-//    [MenuItem("iCanScript/Get FingerPrint")]
-//    public static void GetFingerPrint() {
-//        Debug.Log(iCS_LicenseUtil.ToString(iCS_FingerPrint.FingerPrint));
-//    }
-//    [MenuItem("iCanScript/Get Standard License")]
-//    public static void GetStandardLicense() {
-//        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Standard));
-//    }
-//    [MenuItem("iCanScript/Get Pro License")]
-//    public static void GetProLicense() {
-//        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Pro));
-//    }
-//    [MenuItem("iCanScript/License Manager")]
-//    public static void EnterLicense() {
-//    }
-    
 }

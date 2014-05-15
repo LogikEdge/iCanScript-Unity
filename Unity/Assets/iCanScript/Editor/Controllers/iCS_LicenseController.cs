@@ -29,21 +29,26 @@ public static class iCS_LicenseController {
             return ourSignature;
         }
     }
+    public static bool IsActivated {
+        get {
+            return iCS_LicenseController.HasStandardLicense || iCS_LicenseController.HasProLicense;
+        }
+    }
     
     // ======================================================================
     // License Type
     // ----------------------------------------------------------------------
     public static bool IsProMode {
-        get { return IsProLicense || IsTrialLicense; }
+        get { return HasProLicense || HasTrialLicense; }
     }
     public static bool IsStandardMode {
-        get { return IsStandardLicense; }
+        get { return HasStandardLicense; }
     }
     public static bool IsCommunityMode {
-        get { return IsCommunityLicense; }
+        get { return HasCommunityLicense; }
     }
     // ----------------------------------------------------------------------
-    public static bool IsProLicense {
+    public static bool HasProLicense {
         get {
             int license;
             int version;
@@ -53,7 +58,7 @@ public static class iCS_LicenseController {
             return license == (int)iCS_LicenseType.Pro && version == (int)iCS_Config.MajorVersion;
         }
     }
-    public static bool IsStandardLicense {
+    public static bool HasStandardLicense {
         get {
             int license;
             int version;
@@ -63,7 +68,7 @@ public static class iCS_LicenseController {
             return license == (int)iCS_LicenseType.Standard && version == (int)iCS_Config.MajorVersion;
         }
     }
-    public static bool IsCommunityLicense {
+    public static bool HasCommunityLicense {
         get {
             if(RemainingTrialDays >= 0) {
                 return false;
@@ -71,7 +76,7 @@ public static class iCS_LicenseController {
             return IsUnlicensed;
         }
     }
-    public static bool IsTrialLicense {
+    public static bool HasTrialLicense {
         get {
             if(RemainingTrialDays < 0) {
                 return false;
