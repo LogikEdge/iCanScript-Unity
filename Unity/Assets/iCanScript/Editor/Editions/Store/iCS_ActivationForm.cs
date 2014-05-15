@@ -12,7 +12,7 @@ public class iCS_ActivationForm : EditorWindow {
     // Menu
     // ---------------------------------------------------------------------------------
     [MenuItem("Help/iCanScript/Activation...", false, 70)]
-    static void Initialize() {
+    public static void Initialize() {
         EditorWindow.GetWindow(typeof(iCS_ActivationForm), true, "iCanScript Activation Form");
     }
     [MenuItem("Help/iCanScript/Activation...", true, 70)]

@@ -94,7 +94,6 @@ public static class iCS_iCanScriptMenu {
     // Support Access
     [MenuItem("Help/iCanScript/About",false,31)]
     public static void About() {
-            
     }
     [MenuItem("Help/iCanScript/Home Page",false,51)]
     public static void HomePage() {

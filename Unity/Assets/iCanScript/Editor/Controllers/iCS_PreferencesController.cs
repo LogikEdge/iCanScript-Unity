@@ -669,9 +669,10 @@ public static class iCS_PreferencesController {
 	//
 	// Database access keys
 	//
-    const string kTrialStartDateKey= "iCS_TrialStartDate";
-    const string kTrialVersionKey  = "iCS_TrialVersion";
-    const string kUserLicenseKey   = "iCS_UserLicenseKey";
+    const string kTrialStartDateKey      = "iCS_TrialStartDate";
+    const string kTrialVersionKey        = "iCS_TrialVersion";
+    const string kUserLicenseKey         = "iCS_UserLicenseKey";
+    const string kTrialLastWarningDateKey= "iCS_TrialLastWarningDate";
     
 	//
 	// Reset to default value functions
@@ -690,6 +691,15 @@ public static class iCS_PreferencesController {
             if(trialStartDate == today) {
                 SetDateTime(kTrialStartDateKey, today);
             }
+            else {
+                var trialVersion= TrialVersion;
+                if(iCS_Version.Current.IsNewerThen(trialVersion)) {
+                    trialStartDate= today.AddDays(-(kNumberOfTrialDays/2));
+                    SetDateTime(kTrialStartDateKey, trialStartDate);
+                    string trialVersionStr= iCS_Version.Current.ToString();
+                    EditorPrefs.SetString(kTrialVersionKey, trialVersionStr);
+                }
+            }
             return trialStartDate;
         }
         set { SetDateTime(kTrialStartDateKey, value); }
@@ -703,6 +713,19 @@ public static class iCS_PreferencesController {
             }
             return iCS_Version.FromString(trialVersion);
         }
+    }
+    public static DateTime TrialLastWarningDate {
+        get {
+            DateTime today= DateTime.Today;
+            DateTime yesterday= today.AddDays(-1);
+            var warningDate= GetDateTime(kTrialLastWarningDateKey, yesterday);
+            if(warningDate == yesterday) {
+                SetDateTime(kTrialLastWarningDateKey, yesterday);
+                return yesterday;
+            }
+            return warningDate;
+        }
+        set { SetDateTime(kTrialLastWarningDateKey, value); }
     }
     public static string UserLicense {
         get { return EditorPrefs.GetString(kUserLicenseKey, ""); }

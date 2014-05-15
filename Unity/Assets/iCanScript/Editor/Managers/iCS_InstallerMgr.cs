@@ -31,6 +31,20 @@ public static class iCS_InstallerMgr {
         if(iCS_Strings.IsEmpty(AssetDatabase.ValidateMoveAsset(gizmoSrc, gizmoDest))) {
     	    AssetDatabase.CopyAsset(gizmoSrc,gizmoDest);
     	    Debug.Log("iCanScript: Copying iCanScriptGizmo.png into the Gizmos folder");            
+        }
+        // Warning customer of trial period.
+        if(iCS_LicenseController.HasTrialLicense) {
+            var lastWarningDate= iCS_PreferencesController.TrialLastWarningDate;
+            var today= DateTime.Today;
+            if(today != lastWarningDate) {
+                iCS_PreferencesController.TrialLastWarningDate= today;
+                if(iCS_EditionController.IsDemoEdition) {
+                    iCS_PurchaseForm.Initialize();
+                }
+                if(iCS_EditionController.IsStoreEdition) {
+                    iCS_ActivationForm.Initialize();
+                }                
+            }
         }	    
 	}
 
