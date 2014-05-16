@@ -15,6 +15,7 @@ public static class iCS_LicenseController {
     // ----------------------------------------------------------------------
     static byte[]   ourFingerPrint;
     static byte[]   ourSignature;
+    static int      ourReinitializeCnt= 0;
     static bool     isProMode= false;
     static bool     isStandardMode= false;
     static bool     isCommunityMode= true;
@@ -24,10 +25,11 @@ public static class iCS_LicenseController {
         Initialize();
     }
     public static void Initialize() {
-        ourFingerPrint= GetMD5Hash(System.Environment.MachineName);
-        isProMode      = HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;
-        isStandardMode = HasStandardLicense;
-        isCommunityMode= HasCommunityLicense;
+        ourFingerPrint    = GetMD5Hash(System.Environment.MachineName);
+        isProMode         = HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;
+        isStandardMode    = HasStandardLicense;
+        isCommunityMode   = HasCommunityLicense;
+        ourReinitializeCnt= 0;
     }
     public static byte[] FingerPrint {
         get { return ourFingerPrint; }
@@ -48,13 +50,18 @@ public static class iCS_LicenseController {
     // License Type
     // ----------------------------------------------------------------------
     public static bool IsProMode {
-        get { return isProMode; /*HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;*/ }
+        get { Refresh(); return isProMode; /*HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;*/ }
     }
     public static bool IsStandardMode {
-        get { return isStandardMode; /*HasStandardLicense;*/ }
+        get { Refresh(); return isStandardMode; /*HasStandardLicense;*/ }
     }
     public static bool IsCommunityMode {
-        get { return isCommunityMode; /*HasCommunityLicense;*/ }
+        get { Refresh(); return isCommunityMode; /*HasCommunityLicense;*/ }
+    }
+    static void Refresh() {
+        if(++ourReinitializeCnt > 1000) {
+            Initialize();
+        }
     }
     // ----------------------------------------------------------------------
     public static bool HasProLicense {
