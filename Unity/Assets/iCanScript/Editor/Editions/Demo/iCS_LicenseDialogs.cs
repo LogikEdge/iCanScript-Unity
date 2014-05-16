@@ -48,9 +48,11 @@ public static class iCS_LicenseDialogs {
     }
     public static void RequestLicense() {
         FunctionalityNotAvailableInDemo();
+        iCS_LicenseController.Initialize();
     }
     public static void ActivateLicense() {
         FunctionalityNotAvailableInDemo();
+        iCS_LicenseController.Initialize();
     }
     public static void FunctionalityNotAvailableInDemo() {
         if(!EditorUtility.DisplayDialog("Functionality not available in the Demo Edition",

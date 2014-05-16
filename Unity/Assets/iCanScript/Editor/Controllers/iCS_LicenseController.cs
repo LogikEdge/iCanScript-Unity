@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 public enum iCS_LicenseType {
-    Trial= 0, Community= 1, Standard= 0x5f23, Pro= 0xdc45
+    Trial= 0, Community= 1, WaitingForActivation= 0x1234, Standard= 0x5f23, Pro= 0xdc45
 }
 
 public static class iCS_LicenseController {
@@ -15,10 +15,19 @@ public static class iCS_LicenseController {
     // ----------------------------------------------------------------------
     static byte[]   ourFingerPrint;
     static byte[]   ourSignature;
+    static bool     isProMode= false;
+    static bool     isStandardMode= false;
+    static bool     isCommunityMode= true;
     
     // ----------------------------------------------------------------------
     static iCS_LicenseController() {
-        ourFingerPrint= iCS_LicenseController.GetMD5Hash(System.Environment.MachineName);        
+        Initialize();
+    }
+    public static void Initialize() {
+        ourFingerPrint= GetMD5Hash(System.Environment.MachineName);
+        isProMode      = HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;
+        isStandardMode = HasStandardLicense;
+        isCommunityMode= HasCommunityLicense;
     }
     public static byte[] FingerPrint {
         get { return ourFingerPrint; }
@@ -31,7 +40,7 @@ public static class iCS_LicenseController {
     }
     public static bool IsActivated {
         get {
-            return iCS_LicenseController.HasStandardLicense || iCS_LicenseController.HasProLicense;
+            return HasStandardLicense || HasProLicense;
         }
     }
     
@@ -39,13 +48,13 @@ public static class iCS_LicenseController {
     // License Type
     // ----------------------------------------------------------------------
     public static bool IsProMode {
-        get { return HasProLicense || HasTrialLicense; }
+        get { return isProMode; /*HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;*/ }
     }
     public static bool IsStandardMode {
-        get { return HasStandardLicense; }
+        get { return isStandardMode; /*HasStandardLicense;*/ }
     }
     public static bool IsCommunityMode {
-        get { return HasCommunityLicense; }
+        get { return isCommunityMode; /*HasCommunityLicense;*/ }
     }
     // ----------------------------------------------------------------------
     public static bool HasProLicense {
@@ -55,7 +64,13 @@ public static class iCS_LicenseController {
             if(!GetSignature(Signature, out license, out version)) {
                 return false;
             }
-            return license == (int)iCS_LicenseType.Pro && version == (int)iCS_Config.MajorVersion;
+            if(license == (int)iCS_LicenseType.Pro) {
+                if(version == (int)iCS_Config.MajorVersion) {
+                    return true;
+                }
+                RestartTrial(15);                
+            }
+            return false;
         }
     }
     public static bool HasStandardLicense {
@@ -65,41 +80,79 @@ public static class iCS_LicenseController {
             if(!GetSignature(Signature, out license, out version)) {
                 return false;
             }
-            return license == (int)iCS_LicenseType.Standard && version == (int)iCS_Config.MajorVersion;
+            if(license == (int)iCS_LicenseType.Standard) {
+                if(version == (int)iCS_Config.MajorVersion) {
+                    return true;
+                }
+                RestartTrial(15);
+            }
+            return false;
+        }
+    }
+    public static bool IsLicensed {
+        get {
+            return HasProLicense || HasStandardLicense;
         }
     }
     public static bool HasCommunityLicense {
         get {
-            if(RemainingTrialDays >= 0) {
+            if(RemainingTrialDays < 0 && IsLicensed == false) {
+                ResetLicense();
+                var trialVersion= iCS_PreferencesController.TrialVersion;
+                if(iCS_Version.Current.IsNewerThen(trialVersion)) {
+                    RestartTrial(7);
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+    }
+    public static bool HasWaitingForActivationLicense {
+        get {
+            if(IsLicensed) {
                 return false;
             }
-            return IsUnlicensed;
+            if(RemainingTrialDays < 0) {
+                return false;
+            }
+            int license;
+            int version;
+            if(!GetSignature(Signature, out license, out version)) {
+                return false;
+            }
+            return license == (int)iCS_LicenseType.WaitingForActivation;
         }
     }
     public static bool HasTrialLicense {
         get {
-            if(RemainingTrialDays < 0) {
+            if(IsLicensed) {
                 return false;
             }
-            return IsUnlicensed;
-        }
-    }
-    public static bool IsUnlicensed {
-        get {
+            if(RemainingTrialDays < 0) {
+                var trialVersion= iCS_PreferencesController.TrialVersion;
+                if(iCS_Version.Current.IsNewerThen(trialVersion)) {
+                    RestartTrial(7);
+                    return true;
+                }
+                return false;    
+            }
             int license;
             int version;
             if(!GetSignature(Signature, out license, out version)) {
                 return true;
             }
-            if(version != iCS_Config.MajorVersion) {
-                return true;
-            }
-            if(license == (int)iCS_LicenseType.Pro || license == (int)iCS_LicenseType.Standard) {
-                return false;
-            }
-            return true;            
+            return license != (int)iCS_LicenseType.WaitingForActivation;
         }
     }
+    public static void RestartTrial(int timeoutInDays) {
+        ResetLicense();
+        iCS_PreferencesController.TrialStartDate= DateTime.Today.AddDays(timeoutInDays-15);
+    }
+    public static void ResetLicense() {
+        iCS_PreferencesController.UserLicense= "";
+    }
+    
     // ----------------------------------------------------------------------
     public static int RemainingTrialDays {
         get {
