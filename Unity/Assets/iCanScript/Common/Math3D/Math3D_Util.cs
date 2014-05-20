@@ -15,6 +15,15 @@ public static partial class Math3D {
     public static int Min(int a, int b, int c, int d, int e) { return Min(a, Min(b,c,d), e); }
     public static int Max(int a, int b, int c, int d, int e) { return Max(a, Max(b,c,d), e); }
 
+    public static float Min(float a, float b) { return a < b ? a : b; }
+    public static float Max(float a, float b) { return a > b ? a : b; }
+    public static float Min(float a, float b, float c) { return a < b ? (a < c ? a : c) : (b < c ? b : c); }
+    public static float Max(float a, float b, float c) { return a > b ? (a > c ? a : c) : (b > c ? b : c); }
+    public static float Min(float a, float b, float c, float d) { return Min(a, Min(b,c,d)); }
+    public static float Max(float a, float b, float c, float d) { return Max(a, Max(b,c,d)); }
+    public static float Min(float a, float b, float c, float d, float e) { return Min(a, Min(b,c,d), e); }
+    public static float Max(float a, float b, float c, float d, float e) { return Max(a, Max(b,c,d), e); }
+
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // Float conditional statement using Epsilon.
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

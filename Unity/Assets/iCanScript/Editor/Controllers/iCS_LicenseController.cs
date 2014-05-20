@@ -158,7 +158,7 @@ public static class iCS_LicenseController {
             return license != (int)iCS_LicenseType.WaitingForActivation;
         }
     }
-    public static string LicenseAsString() {
+    public static string LicenseTypeAsString() {
         if(HasProLicense)                  return "Pro";
         if(HasStandardLicense)             return "Standard";
         if(HasWaitingForActivationLicense) return "Waiting for License";
@@ -166,6 +166,9 @@ public static class iCS_LicenseController {
         if(HasTrialLicense)                return "Demo";
         return "Unknown";
     }
+	public static string LicenseAsString() {
+        return iCS_PreferencesController.UserLicense;
+	}
     public static void RestartTrial(int timeoutInDays) {
         ResetLicense();
         iCS_PreferencesController.TrialStartDate= DateTime.Today.AddDays(timeoutInDays-15);
