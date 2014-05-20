@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
+
 public enum iCS_LicenseType {
     Trial= 0, Community= 1, WaitingForActivation= 0x1234, Standard= 0x5f23, Pro= 0xdc45
 }
@@ -26,7 +27,7 @@ public static class iCS_LicenseController {
     }
     public static void Initialize() {
         ourFingerPrint    = GetMD5Hash(System.Environment.MachineName);
-        isProMode         = HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;
+        isProMode         = HasProLicense || HasDemoLicense || HasWaitingForActivationLicense;
         isStandardMode    = HasStandardLicense;
         isCommunityMode   = HasCommunityLicense;
         ourReinitializeCnt= 0;
@@ -110,7 +111,7 @@ public static class iCS_LicenseController {
     public static bool HasCommunityLicense {
         get {
             if(RemainingTrialDays < 0 && IsLicensed == false) {
-                ResetLicense();
+                ResetUserLicense();
                 var trialVersion= iCS_PreferencesController.TrialVersion;
                 if(iCS_Version.Current.IsNewerThen(trialVersion)) {
                     RestartTrial(7);
@@ -137,7 +138,7 @@ public static class iCS_LicenseController {
             return license == (int)iCS_LicenseType.WaitingForActivation;
         }
     }
-    public static bool HasTrialLicense {
+    public static bool HasDemoLicense {
         get {
             if(IsLicensed) {
                 return false;
@@ -163,18 +164,18 @@ public static class iCS_LicenseController {
         if(HasStandardLicense)             return "Standard";
         if(HasWaitingForActivationLicense) return "Waiting for License";
         if(HasCommunityLicense)            return "Community";
-        if(HasTrialLicense)                return "Demo";
+        if(HasDemoLicense)                 return "Demo";
         return "Unknown";
     }
 	public static string LicenseAsString() {
         return iCS_PreferencesController.UserLicense;
 	}
     public static void RestartTrial(int timeoutInDays) {
-        ResetLicense();
+        ResetUserLicense();
         iCS_PreferencesController.TrialStartDate= DateTime.Today.AddDays(timeoutInDays-15);
     }
-    public static void ResetLicense() {
-        iCS_PreferencesController.UserLicense= "";
+    public static void ResetUserLicense() {
+        iCS_PreferencesController.ResetUserLicense();
     }
     
     // ----------------------------------------------------------------------

@@ -6,7 +6,7 @@ using System.IO;
 
 using DisruptiveSoftware;
 
-public static class iCS_DevMenu {
+public static class iCS_DevMenus {
     // ======================================================================
     // Snapshot definitions
 	const string ScreenShotsFolder= "/../../../ScreenShots";
@@ -101,30 +101,6 @@ public static class iCS_DevMenu {
     }
     // ======================================================================
     // Licensing.
-    [MenuItem("DevTools/Get License Type",false,1040)]
-    public static void MenuGetLicenseType() {
-        if(iCS_LicenseController.HasTrialLicense) {
-            Debug.Log("Trial license.");
-        }
-        if(iCS_LicenseController.HasCommunityLicense) {
-            Debug.Log("Community license.");
-        }
-        if(iCS_LicenseController.HasStandardLicense) {
-            Debug.Log("Standard license.");
-        }
-        if(iCS_LicenseController.HasProLicense) {
-            Debug.Log("Pro license.");
-        }
-        if(iCS_LicenseController.IsCommunityMode) {
-            Debug.Log("Operating in Community mode.");
-        }
-        if(iCS_LicenseController.IsStandardMode) {
-            Debug.Log("Operating in Standard mode.");
-        }
-        if(iCS_LicenseController.IsProMode) {
-            Debug.Log("Operating in Pro mode.");
-        }
-    }
     [MenuItem("DevTools/Generate User Licenses",false,1043)]
     public static void MenuGenerateUserLicenses() {
         var fingerPrint= iCS_LicenseController.FingerPrint;
@@ -161,7 +137,8 @@ public static class iCS_DevMenu {
     }
     [MenuItem("DevTools/Clear User License", false, 1045)]
     public static void MenuClearLicense() {
-        iCS_PreferencesController.ResetUserLicense();
+        iCS_LicenseController.ResetUserLicense();
+		iCS_PreferencesController.TrialLastWarningDate= DateTime.Today.AddDays(-1);
     }
     [MenuItem("DevTools/Environment", false, 1050)]
     public static void ShowEnvironment() {

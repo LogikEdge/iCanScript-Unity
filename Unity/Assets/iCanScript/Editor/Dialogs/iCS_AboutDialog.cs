@@ -7,25 +7,26 @@ public class iCS_AboutDialog : EditorWindow {
     // Fields
     // ----------------------------------------------------------------------
 	const float kSpacer= 5f;
-	GUIStyle    h1;
+	GUIStyle    h1     = null;
 	
     // ======================================================================
     // Initialization/Teardown
     // ----------------------------------------------------------------------
     public void OnEnable() {
         title= "About iCanScript";
-		// Build H1 style
-		h1= new GUIStyle(EditorStyles.boldLabel);
-		h1.fontSize= 24;
     }
     public void OnDisable() {
-        
     }
 
     // ======================================================================
     // GUI Update
     // ----------------------------------------------------------------------
     public void OnGUI() {
+		// Init.
+		if(h1 == null) {
+			BuildStyles();
+		}
+		
         // Show product icon
         var logoWidth= 64f;
         var logoHeight= 64f;
@@ -50,6 +51,7 @@ public class iCS_AboutDialog : EditorWindow {
 
 		// Column info
 		float column1X= kSpacer;
+		var editionTitle= new GUIContent("Edition: ");
 		var licenseTypeTitle= new GUIContent("License Type: ");
 		var operatingModeTitle= new GUIContent("Operating Mode: ");
 		var buildDateTitle= new GUIContent("Build Date: ");
@@ -78,7 +80,6 @@ public class iCS_AboutDialog : EditorWindow {
 		var rOperatingMode= new Rect(column1X, rLicenseType.yMax, column2Width, labelHeight);
 		GUI.Label(rOperatingMode, operatingModeTitle);
 		GUIContent operatingMode= new GUIContent(iCS_LicenseController.OperatingModeAsString());
-		var operatingModeSize= GUI.skin.label.CalcSize(operatingMode);
 		rOperatingMode.x= column2X; rOperatingMode.width= column2Width;
 		GUI.Label(rOperatingMode, operatingMode);
 		
@@ -86,15 +87,23 @@ public class iCS_AboutDialog : EditorWindow {
 		var rBuildDate= new Rect(column1X, rOperatingMode.yMax, column2Width, labelHeight);
 		GUI.Label(rBuildDate, buildDateTitle);
 		GUIContent buildDate= new GUIContent(iCS_BuildInfo.kBuildDateStr);
-		var buildDateSize= GUI.skin.label.CalcSize(buildDate);
 		rBuildDate.x= column2X; rBuildDate.width= column2Width;
 		GUI.Label(rBuildDate, buildDate);
 		
+		// Edition
+		var rEdition= new Rect(column1X, rBuildDate.yMax, column2Width, labelHeight);
+		GUI.Label(rEdition, editionTitle);
+		rEdition.x= column2X; rEdition.width= column2Width;
+		GUI.Label(rEdition, iCS_EditionController.ToString());
+
 		// User License
-		var rUserLicense= new Rect(column1X, rBuildDate.yMax, column1Width, labelHeight);
+		var rUserLicense= new Rect(column1X, rEdition.yMax, column1Width, labelHeight);
 		GUI.Label(rUserLicense, userLicenseTitle);
-		GUIContent userLicense= new GUIContent(iCS_LicenseController.LicenseAsString());
-		var userLicenseSize= GUI.skin.label.CalcSize(userLicense);
+		var userLicense= iCS_LicenseController.LicenseAsString();
+		if(string.IsNullOrEmpty(userLicense)) {
+			userLicense= "None";
+		}
+		var userLicenseSize= GUI.skin.label.CalcSize(new GUIContent(userLicense));
 		rUserLicense.x= column2X; rUserLicense.width= column2Width;
 		GUI.Label(rUserLicense, userLicense);
 
@@ -105,8 +114,17 @@ public class iCS_AboutDialog : EditorWindow {
 		GUI.Label(rCopyright, copyright);
 	
 		var p= position;
-		p.width= copyrightSize.x+2f*kSpacer;
+		p.width= Math3D.Max(copyrightSize.x+2f*kSpacer, column2X+userLicenseSize.x+kSpacer);
 		p.height= rCopyright.yMax+kSpacer;
 		position= p;
     }
+
+    // ======================================================================
+    // Helpers
+    // ----------------------------------------------------------------------
+	void BuildStyles() {
+		// Build H1 style
+		h1= new GUIStyle(EditorStyles.boldLabel);
+		h1.fontSize= 24;		
+	}
 }
