@@ -104,7 +104,7 @@ public static class iCS_DevMenu {
     [MenuItem("DevTools/Get License Type",false,1040)]
     public static void MenuGetLicenseType() {
         if(iCS_LicenseController.HasTrialLicense) {
-            Debug.Log("Trial license.  Remaining days=> "+iCS_LicenseController.RemainingTrialDays);
+            Debug.Log("Trial license.");
         }
         if(iCS_LicenseController.HasCommunityLicense) {
             Debug.Log("Community license.");
@@ -125,19 +125,12 @@ public static class iCS_DevMenu {
             Debug.Log("Operating in Pro mode.");
         }
     }
-    [MenuItem("DevTools/Finger Print",false,1041)]
-    public static void MenuFingerPrint() {
-        Debug.Log("Finger Print=> "+iCS_LicenseController.ToString(iCS_LicenseController.FingerPrint));
-    }
-    [MenuItem("DevTools/Remaining Trial Days",false,1042)]
-    public static void MenuRemainingTrialDays() {
-        Debug.Log("Remaining Trial Days=> "+iCS_LicenseController.RemainingTrialDays);
-    }
     [MenuItem("DevTools/Generate User Licenses",false,1043)]
     public static void MenuGenerateUserLicenses() {
         var fingerPrint= iCS_LicenseController.FingerPrint;
         var proLicense     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, (int)iCS_Config.MajorVersion);
         var standardLicense= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Standard, (int)iCS_Config.MajorVersion);
+        Debug.Log("Finger Print=> "+iCS_LicenseController.ToString(iCS_LicenseController.FingerPrint));
         Debug.Log("Pro license=> "+iCS_LicenseController.ToString(proLicense));
         Debug.Log("Standard license=> "+iCS_LicenseController.ToString(standardLicense));            
     }
@@ -174,9 +167,5 @@ public static class iCS_DevMenu {
     public static void ShowEnvironment() {
         Debug.Log("Machine Name=> "+System.Environment.MachineName);
         Debug.Log("User Name=> "+System.Environment.UserName);
-    }
-    [MenuItem("DevTools/Open New Ticket", false, 1052)]
-    public static void OpenNewTicket() {
-        Application.OpenURL("http://helpdesk.icanscript.com/support/tickets/new");
     }
 }
