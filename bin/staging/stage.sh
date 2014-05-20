@@ -19,6 +19,10 @@ ASSET_STORE_TOOLS_DIR=$ASSETS_DIR/AssetStoreTools
 PRODUCT_DIR=$ASSETS_DIR/iCanScript
 EDITOR_DIR=$PRODUCT_DIR/Editor
 ENGINE_DIR=$PRODUCT_DIR/Engine
+EDITOR_EDITIONS_ROOT=$EDITOR_DIR/Editions
+EDITOR_DEV_EDITION_DIR=$EDITOR_EDITIONS_ROOT/Dev
+EDITOR_DEMO_EDITION_DIR=$EDITOR_EDITIONS_ROOT/Demo
+EDITOR_UNITY_STORE_EDITION_DIR=$EDITOR_EDITIONS_ROOT/UnityStore
 EDITOR_DEVTOOLS_DIR=$EDITOR_DIR/DevTools
 EDITOR_PUBLIC_NODE_INSTALLER_DIR=$EDITOR_DIR/NodeInstaller
 EDITOR_PUBLIC_EDITOR_WINDOWS_DIR=$EDITOR_DIR/EditorWindows
@@ -36,6 +40,9 @@ echo "Generating file list ..."
 find $EDITOR_PUBLIC_NODE_INSTALLER_DIR -name "*.cs" >editorFilesToExclude
 find $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR -name "*.cs" >>editorFilesToExclude
 find $EDITOR_DEVTOOLS_DIR -name "*.cs" >>editorFilesToExclude
+find $EDITOR_DEV_EDITION_DIR -name "*.cs" >>editorFilesToExclude
+find $EDITOR_DEMO_EDITION_DIR -name "*.cs" >> editorFilesToExclude
+find $EDITOR_UNITY_STORE_EDITION_DIR -name "*.cs" >>editorFilesToExclude
 find $ENGINE_PUBLIC_COMPONENTS_DIR -name "*.cs" >engineFilesToExclude
 find $ENGINE_PUBLIC_NODES_DIR -name "*.cs" >>engineFilesToExclude
 find $DEMO_SCENES_DIR >>engineFilesToExclude
