@@ -114,12 +114,12 @@ public static class iCS_ToolbarUtility {
 			w= toolbarRect.width;
 		}
         float offset= 0.5f*(toolbarRect.height-contentSize.y);
-        toolbarRect.y+= offset;
-        toolbarRect.height-= offset;
-		toolbarRect.x+= dx;
-		toolbarRect.width= w;
-        GUI.Label(toolbarRect, content, style);
-		toolbarRect.width= 0;
+        Rect r= toolbarRect;
+        r.y+= offset;
+        r.height-= offset;
+		r.x+= dx;
+		r.width= w;
+        GUI.Label(r, content, style);
     }
 	// ----------------------------------------------------------------------
     public static bool Button(ref Rect toolbarRect, bool value, Texture texture, float leftMargin, float rightMargin, bool isRightJustified= false) {

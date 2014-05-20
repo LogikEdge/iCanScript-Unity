@@ -18,7 +18,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(iCS_DevToolsConfig.IsFrameWithoutBackground) return;
 		
 		// Build standard toolbar at top of editor window.
-		Rect r= iCS_ToolbarUtility.BuildToolbar(position.width, -1f);
+		Rect r= iCS_ToolbarUtility.BuildToolbar(position.width, 0f);
 
 		// Insert an initial spacer.
 		float spacer= 8f;
@@ -111,5 +111,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 		}
 		iCS_ToolbarUtility.CenteredTitle(ref r, name);
+
+        // Trial information.
+        // This information is displayed under the toolbar.
+        if(!iCS_LicenseController.IsActivated) {
+            string remainingTimeMessage= iCS_LicenseController.HasWaitingForActivationLicense ? "Activation: " : "Trial: ";
+            remainingTimeMessage+= " ("+iCS_LicenseController.RemainingTrialDays.ToString()+" days remaining) ";
+            GUIStyle style= EditorStyles.toolbarTextField;
+            var remainingTimeMessageSize= style.CalcSize(new GUIContent(remainingTimeMessage));
+            var x= r.x+0.5f*(r.width-remainingTimeMessageSize.x);
+            GUI.Label(new Rect(x,r.yMax,remainingTimeMessageSize.x, remainingTimeMessageSize.y), remainingTimeMessage, style);
+        }
 	}
 }
