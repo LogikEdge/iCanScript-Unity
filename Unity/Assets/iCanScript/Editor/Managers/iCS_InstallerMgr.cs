@@ -39,10 +39,10 @@ public static class iCS_InstallerMgr {
             if(today != lastWarningDate) {
                 iCS_PreferencesController.TrialLastWarningDate= today;
                 if(iCS_EditionController.IsDemoEdition) {
-                    iCS_TrialDialogs.TrialDialog();
+                    iCS_DemoDialogs.PurchaseDialog();
                 }
                 if(iCS_EditionController.IsStoreEdition) {
-                    iCS_TrialDialogs.ActivationDialog();
+                    iCS_DemoDialogs.ActivationDialog();
                 }                
             }
         }	    

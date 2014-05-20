@@ -2,9 +2,9 @@
 using UnityEditor;
 using System.Collections;
 
-public static class iCS_TrialDialogs {
+public static class iCS_DemoDialogs {
     [MenuItem("Help/iCanScript/Purchase...", false, 71)]
-    public static void TrialDialog() {
+    public static void PurchaseDialog() {
         string title= "iCanScript Activation Needed ("+iCS_LicenseController.RemainingTrialDays+" days remaining)";
         var option= EditorUtility.DisplayDialogComplex(title, "Activation is needed to use the Unity Asset Store edition of iCanScript.  Please choose one of the following options.",
                                                               "Use Demo",

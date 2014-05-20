@@ -92,6 +92,11 @@ public static class iCS_iCanScriptMenu {
     }
     // ======================================================================
     // Support Access
+    [MenuItem("Help/iCanScript/About...",false,10)]
+    public static void About() {
+        var aboutDialog= iCS_AboutDialog.CreateInstance<iCS_AboutDialog>();
+        aboutDialog.ShowUtility();
+    }
     [MenuItem("Help/iCanScript/Home Page",false,51)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com");

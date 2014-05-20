@@ -63,6 +63,12 @@ public static class iCS_LicenseController {
             Initialize();
         }
     }
+    public static string OperatingModeAsString() {
+        if(IsProMode)       return "Pro";
+        if(IsStandardMode)  return "Standard";
+        if(IsCommunityMode) return "Community";
+        return "Unknown";
+    }
     // ----------------------------------------------------------------------
     public static bool HasProLicense {
         get {
@@ -151,6 +157,14 @@ public static class iCS_LicenseController {
             }
             return license != (int)iCS_LicenseType.WaitingForActivation;
         }
+    }
+    public static string LicenseAsString() {
+        if(HasProLicense)                  return "Pro";
+        if(HasStandardLicense)             return "Standard";
+        if(HasWaitingForActivationLicense) return "Waiting for License";
+        if(HasCommunityLicense)            return "Community";
+        if(HasTrialLicense)                return "Demo";
+        return "Unknown";
     }
     public static void RestartTrial(int timeoutInDays) {
         ResetLicense();
