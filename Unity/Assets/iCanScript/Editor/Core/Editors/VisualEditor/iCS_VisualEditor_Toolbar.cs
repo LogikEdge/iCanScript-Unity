@@ -115,12 +115,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Trial information.
         // This information is displayed under the toolbar.
         if(!iCS_LicenseController.IsActivated) {
-            string remainingTimeMessage= iCS_LicenseController.HasWaitingForActivationLicense ? "Activation: " : "Trial: ";
-            remainingTimeMessage+= " ("+iCS_LicenseController.RemainingTrialDays.ToString()+" days remaining) ";
             GUIStyle style= EditorStyles.toolbarTextField;
-            var remainingTimeMessageSize= style.CalcSize(new GUIContent(remainingTimeMessage));
+            var remainingTimeMessageSize= style.CalcSize(myCached_RemainingTrialDaysMessage);
             var x= r.x+0.5f*(r.width-remainingTimeMessageSize.x);
-            GUI.Label(new Rect(x,r.yMax,remainingTimeMessageSize.x, remainingTimeMessageSize.y), remainingTimeMessage, style);
+            GUI.Label(new Rect(x,r.yMax,remainingTimeMessageSize.x, remainingTimeMessageSize.y), myCached_RemainingTrialDaysMessage, style);
         }
 	}
 }

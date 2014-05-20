@@ -6,7 +6,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Properties.
 	// ----------------------------------------------------------------------
     iCS_IStorage    myPreviousIStorage= null;
-
+    
+    // ======================================================================
+    // Cached Properties.
+	// ----------------------------------------------------------------------
+    GUIContent myCached_RemainingTrialDaysMessage;
+    
     // ======================================================================
     // Initialization
 	// ----------------------------------------------------------------------
@@ -30,7 +35,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         
         // Get snapshot for realtime clock.
-        myCurrentTime= Time.realtimeSinceStartup;	    
+        myCurrentTime= Time.realtimeSinceStartup;	
+        
+        // Update visual editor cache.
+        UpdateVisualEditorCache();    
 	}
 
 	// ----------------------------------------------------------------------
@@ -72,7 +80,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             iCS_Graphics.Init(IStorage);
 		}
         iCS_AppController.Start();
+
+        // Update visual script cache.
+        UpdateVisualScriptCache();
         return true;
 	}
 
+	// ----------------------------------------------------------------------
+    // System level cache update.
+    void UpdateVisualEditorCache() {
+        string remainingTimeMessage= iCS_LicenseController.HasWaitingForActivationLicense ? "Activation: " : "Trial: ";
+        remainingTimeMessage+= " ("+iCS_LicenseController.RemainingTrialDays.ToString()+" days remaining) ";
+        myCached_RemainingTrialDaysMessage= new GUIContent(remainingTimeMessage);        
+    }
+    
+	// ----------------------------------------------------------------------
+    // Visual script level cache update.
+    void UpdateVisualScriptCache() {
+        
+    }
 }
