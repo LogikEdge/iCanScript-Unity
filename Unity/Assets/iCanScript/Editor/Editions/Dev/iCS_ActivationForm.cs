@@ -9,18 +9,6 @@ public class iCS_ActivationForm : EditorWindow {
     string  userLicenseStr;
     
     // =================================================================================
-    // Menu
-    // ---------------------------------------------------------------------------------
-    [MenuItem("Help/iCanScript/Activation...", false, 70)]
-    public static void Initialize() {
-        iCS_LicenseDialogs.ActivationDialog();
-    }
-    [MenuItem("Help/iCanScript/Activation...", true, 70)]
-    public static bool IsNotActivated() {
-        return !iCS_LicenseController.IsActivated;
-    }
-    
-    // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     public void OnEnable() {

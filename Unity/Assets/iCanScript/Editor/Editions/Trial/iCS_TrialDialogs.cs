@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections;
 
-public static class iCS_LicenseDialogs {
+public static class iCS_TrialDialogs {
     [MenuItem("Help/iCanScript/Purchase...", false, 71)]
     public static void TrialDialog() {
         string title= "iCanScript Activation Needed ("+iCS_LicenseController.RemainingTrialDays+" days remaining)";
