@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 
 public static class iCS_LicenseDialogs {
+    [MenuItem("Help/iCanScript/Purchase...", false, 71)]
     public static void TrialDialog() {
         string title= "iCanScript Activation Needed ("+iCS_LicenseController.RemainingTrialDays+" days remaining)";
         var option= EditorUtility.DisplayDialogComplex(title, "Activation is needed to use the Unity Asset Store edition of iCanScript.  Please choose one of the following options.",
@@ -25,6 +26,7 @@ public static class iCS_LicenseDialogs {
             break;
         }
     }
+    [MenuItem("Help/iCanScript/Activation...", false, 70)]
     public static void ActivationDialog() {
         string title= "Activate Your User License ("+iCS_LicenseController.RemainingTrialDays+" days remaining)";
         var option= EditorUtility.DisplayDialogComplex(title, "Activation of the Unity Asset Store edition of iCanScript requires a user license.  Please request a license if you haven't already do so.",
@@ -46,6 +48,15 @@ public static class iCS_LicenseDialogs {
             break;
         }        
     }
+    [MenuItem("Help/iCanScript/Activation...", true, 70)]
+    public static bool IsNotActivated() {
+        return !iCS_LicenseController.IsActivated;
+    }
+    [MenuItem("Help/iCanScript/Purchase...", true, 71)]        
+    public static bool IsNotPurchased() {
+        return !iCS_LicenseController.IsActivated;
+    }    
+    
     public static void RequestLicense() {
         FunctionalityNotAvailableInDemo();
         iCS_LicenseController.Initialize();
