@@ -4,28 +4,14 @@ using System.Collections;
 
 public static class iCS_DemoDialogs {
 //    [MenuItem("Help/iCanScript/Purchase...", false, 71)]
-//    public static void PurchaseDialog() {
-//        string title= "iCanScript Activation Needed ("+iCS_LicenseController.RemainingTrialDays+" days remaining)";
-//        var option= EditorUtility.DisplayDialogComplex(title, "Activation is needed to use the Unity Asset Store edition of iCanScript.  Please choose one of the following options.",
-//                                                              "Use Demo",
-//                                                              "Purchase",
-//                                                              "Activate");
-//        switch(option) {
-//            // Use Demo
-//            case 0: {}
-//            break;
-//            // Purchase
-//            case 1: {
-//                Application.OpenURL("https://www.assetstore.unity3d.com/en/#!/content/16872");
-//            }
-//            break;                
-//            // Activate
-//            case 2: {
-//                ActivationDialog();
-//            } 
-//            break;
-//        }
-//    }
+    public static void PurchaseDialog() {
+        string title= "iCanScript Activation Needed ("+iCS_LicenseController.RemainingTrialDays+" days remaining)";
+        if(EditorUtility.DisplayDialog(title, "Activation is needed to use the Unity Asset Store edition of iCanScript.  Please choose one of the following options.",
+                                                              "Use Demo",
+                                                              "Purchase")) {
+            Application.OpenURL("https://www.assetstore.unity3d.com/en/#!/content/16872");
+        }
+    }
 //    [MenuItem("Help/iCanScript/Activation...", false, 70)]
 //    public static void ActivationDialog() {
 //        string title= "Activate Your User License ("+iCS_LicenseController.RemainingTrialDays+" days remaining)";

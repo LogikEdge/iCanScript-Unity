@@ -34,15 +34,19 @@ public static class iCS_InstallerMgr {
         }
 #if DEMO_EDITION
         // Warning customer of trial period.
+        var today= DateTime.Today;
         if(iCS_LicenseController.HasDemoLicense) {
             var lastWarningDate= iCS_PreferencesController.TrialLastWarningDate;
-            var today= DateTime.Today;
             if(today != lastWarningDate) {
                 iCS_PreferencesController.TrialLastWarningDate= today;
                 if(iCS_EditionController.IsDemoEdition) {
                     iCS_DemoDialogs.PurchaseDialog();
                 }
             }
+        }
+        else {
+            iCS_LicenseController.ResetUserLicense();
+            iCS_PreferencesController.TrialStartDate= today;
         }
 #else
 #if UNITY_STORE_EDITION
