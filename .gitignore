@@ -80,3 +80,15 @@ user.lock
 /bin/staging/iCanScriptEditor.rsp
 
 /bin/staging/iCanScriptEngine.rsp
+
+/bin/staging/demoFilesToInclude
+
+/bin/staging/iCanScriptEditorDemo.dll
+
+/bin/staging/iCanScriptEditorDemo.rsp
+
+/bin/staging/iCanScriptEditorUnityStore.dll
+
+/bin/staging/iCanScriptEditorUnityStore.rsp
+
+/bin/staging/unityStoreFilesToInclude

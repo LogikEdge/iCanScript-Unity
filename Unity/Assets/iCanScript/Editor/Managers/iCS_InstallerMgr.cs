@@ -32,6 +32,7 @@ public static class iCS_InstallerMgr {
     	    AssetDatabase.CopyAsset(gizmoSrc,gizmoDest);
     	    Debug.Log("iCanScript: Copying iCanScriptGizmo.png into the Gizmos folder");            
         }
+#if DEMO_EDITION
         // Warning customer of trial period.
         if(iCS_LicenseController.HasDemoLicense) {
             var lastWarningDate= iCS_PreferencesController.TrialLastWarningDate;
@@ -41,6 +42,15 @@ public static class iCS_InstallerMgr {
                 if(iCS_EditionController.IsDemoEdition) {
                     iCS_DemoDialogs.PurchaseDialog();
                 }
+            }
+        }
+#else
+#if UNITY_STORE_EDITION
+        if(iCS_LicenseController.HasDemoLicense) {
+            var lastWarningDate= iCS_PreferencesController.TrialLastWarningDate;
+            var today= DateTime.Today;
+            if(today != lastWarningDate) {
+                iCS_PreferencesController.TrialLastWarningDate= today;
                 if(iCS_EditionController.IsStoreEdition) {
 					var userLicense= iCS_PreferencesController.UserLicense;
 					if(String.IsNullOrEmpty(userLicense)) {
@@ -50,17 +60,21 @@ public static class iCS_InstallerMgr {
 						var license= iCS_LicenseController.BuildSignature(fingerPrint, (int)licenseType, (int)version);
 						iCS_PreferencesController.UserLicense= iCS_LicenseController.ToString(license);						
 					}
-//                    iCS_DemoDialogs.ActivationDialog();
                 }
-				if(iCS_EditionController.IsDevEdition) {
-					var fingerPrint= iCS_LicenseController.FingerPrint;
-					var licenseType= iCS_LicenseType.Pro;
-					var version= iCS_Config.MajorVersion;
-					var license= iCS_LicenseController.BuildSignature(fingerPrint, (int)licenseType, (int)version);
-					iCS_PreferencesController.UserLicense= iCS_LicenseController.ToString(license);
-				}                
             }
-        }	    
+        }
+#else
+        if(iCS_LicenseController.HasDemoLicense) {
+			if(iCS_EditionController.IsDevEdition) {
+				var fingerPrint= iCS_LicenseController.FingerPrint;
+				var licenseType= iCS_LicenseType.Pro;
+				var version= iCS_Config.MajorVersion;
+				var license= iCS_LicenseController.BuildSignature(fingerPrint, (int)licenseType, (int)version);
+				iCS_PreferencesController.UserLicense= iCS_LicenseController.ToString(license);
+			}                
+        }
+#endif
+#endif
 	}
 
     // ================================================================================
