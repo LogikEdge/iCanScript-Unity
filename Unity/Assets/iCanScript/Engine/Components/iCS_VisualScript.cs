@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 
 [AddComponentMenu("iCanScript/Visual Script")]
 [RequireComponent (typeof(iCS_Behaviour))]

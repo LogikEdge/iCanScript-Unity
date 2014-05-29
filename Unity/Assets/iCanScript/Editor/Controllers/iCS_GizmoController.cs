@@ -42,7 +42,7 @@ public static class iCS_GizmoController {
 
     // ---------------------------------------------------------------------------------
     [DrawGizmo(GizmoType.NotSelected | GizmoType.Selected)]
-    public static void DrawGizmos(iCS_VisualScript visualScript, GizmoType gizmoType) {
+    public static void DrawGizmos(iCS_VisualScriptImp visualScript, GizmoType gizmoType) {
         var go= visualScript.gameObject;
         var p= go.transform.position;
         Gizmos.DrawIcon(p, GizmoIcon);
