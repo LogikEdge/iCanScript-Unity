@@ -23,12 +23,12 @@ public static class iCS_iCanScriptMenu {
     // Navigation
     [MenuItem("Edit/iCanScript/Center Visual Script #f",false,121)]
     public static void FocusOnVisualScript() {
-        iCS_VisualEditor visualEditor= iCS_EditorMgr.FindVisualEditor();
+        iCS_VisualEditor visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor != null) visualEditor.CenterAndScaleOnRoot();
     }
     [MenuItem("Edit/iCanScript/Center Selected _f",false,122)]
     public static void FocusOnSelected() {
-        iCS_VisualEditor graphEditor= iCS_EditorMgr.FindVisualEditor();
+        iCS_VisualEditor graphEditor= iCS_EditorController.FindVisualEditor();
         if(graphEditor != null) graphEditor.CenterAndScaleOnSelected();
     }
     // ======================================================================
@@ -76,7 +76,7 @@ public static class iCS_iCanScriptMenu {
         iCS_StorageImportExport.Import(storage, path);
         Debug.Log("iCanScript: Import completed => "+path);
         // Attempt to reload and relayout if the selection is visible in the visual editor.
-        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        var visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor == null) return;
         if(visualEditor.IStorage.MonoBehaviourStorage != storage) return;
         visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));

@@ -1,4 +1,4 @@
-﻿//
+//
 // iCS_UserCommands_Others
 //
 //#define DEBUG
@@ -32,7 +32,7 @@ public static partial class iCS_UserCommands {
     }
 	// ----------------------------------------------------------------------
     public static void ShowInHierarchy(iCS_EditorObject obj) {
-        var editor= iCS_EditorMgr.FindTreeViewEditor();
+        var editor= iCS_EditorController.FindTreeViewEditor();
         if(editor != null) {
             editor.ShowElement(obj);
         }

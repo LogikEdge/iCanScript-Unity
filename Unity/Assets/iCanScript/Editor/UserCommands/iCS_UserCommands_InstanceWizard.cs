@@ -1,4 +1,4 @@
-﻿//
+//
 // File: iCS_UserCommands_InstanceWizard
 //
 //#define DEBUG
@@ -106,7 +106,7 @@ public static partial class iCS_UserCommands {
 						/*
 							TODO : Support Multiple Instance Builders on drag port quick menu. 
 						*/
-                        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+                        var visualEditor= iCS_EditorController.FindVisualEditor();
                         if(visualEditor != null) {
                             visualEditor.ShowNotification(new GUIContent("Multiple Builders exists.  Please create the builder manually."));
                         }

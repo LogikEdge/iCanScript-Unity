@@ -550,7 +550,7 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
     Vector2 VisualEditorCenter() {
-        iCS_VisualEditor editor= iCS_EditorMgr.FindVisualEditor();
+        iCS_VisualEditor editor= iCS_EditorController.FindVisualEditor();
         var center= editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
 		return center;
     }

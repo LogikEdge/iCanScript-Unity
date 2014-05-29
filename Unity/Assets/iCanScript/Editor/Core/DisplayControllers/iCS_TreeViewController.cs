@@ -369,7 +369,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void FocusGraphOnSelected() {
         var myEditor= EditorWindow.focusedWindow;
-        var graphEditor= iCS_EditorMgr.FindVisualEditor();
+        var graphEditor= iCS_EditorController.FindVisualEditor();
         if(graphEditor != null) graphEditor.CenterAndScaleOn(Selected);
         myEditor.Focus();
     }

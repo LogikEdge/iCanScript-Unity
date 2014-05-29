@@ -1,4 +1,4 @@
-﻿//
+//
 // File: iCS_UserCommands_UndoRedo
 //
 //#define DEBUG
@@ -42,7 +42,7 @@ public static partial class iCS_UserCommands {
                 }
             }
         );
-        iCS_EditorMgr.Update();
+        iCS_EditorController.Update();
         // Force redraw of Inspector Window.
         EditorUtility.SetDirty(iStorage.iCSMonoBehaviour);
     }

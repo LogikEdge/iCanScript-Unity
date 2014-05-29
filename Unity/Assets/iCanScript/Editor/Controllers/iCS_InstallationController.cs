@@ -6,15 +6,17 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-public static class iCS_InstallerMgr {
+public static class iCS_InstallationController {
     // =================================================================================
     // Installs all needed components
     // ---------------------------------------------------------------------------------
-	static iCS_InstallerMgr() {
+	static iCS_InstallationController() {
         InstallEdition();
         CreateCodeGenerationFolder();		
 	}
-    public static void Start() {}
+    public static void Start()    {}
+    public static void Shutdown() {}
+
     
     // =================================================================================
     // Installs the iCanScript Gizmo (if not already done).

@@ -253,7 +253,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
 		// Ask to repaint visual editor if an option has changed.
 		if(GUI.changed) {
-			iCS_EditorMgr.RepaintVisualEditor();
+			iCS_EditorController.RepaintVisualEditor();
 		}
     }
     // ---------------------------------------------------------------------------------
@@ -286,7 +286,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 		
 		// Ask to repaint visual editor if an option has changed.
 		if(GUI.changed) {
-			iCS_EditorMgr.RepaintVisualEditor();
+			iCS_EditorController.RepaintVisualEditor();
 		}
     }
     // ---------------------------------------------------------------------------------
@@ -347,7 +347,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 		
 		// Ask to repaint visual editor if an option has changed.
 		if(GUI.changed) {
-			iCS_EditorMgr.RepaintVisualEditor();
+			iCS_EditorController.RepaintVisualEditor();
 		}
     }
     // ---------------------------------------------------------------------------------
@@ -399,7 +399,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 		
 		// Ask to repaint visual editor if an option has changed.
 		if(GUI.changed) {
-			iCS_EditorMgr.RepaintVisualEditor();
+			iCS_EditorController.RepaintVisualEditor();
 		}
     }
     // ---------------------------------------------------------------------------------

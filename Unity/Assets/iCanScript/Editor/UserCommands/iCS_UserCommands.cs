@@ -1,4 +1,4 @@
-﻿//
+//
 // File: iCS_UserCommands
 //
 using UnityEngine;
@@ -29,7 +29,7 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // Shows a notification in the Visual Editor window.
     static void ShowNotification(string message) {
-        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        var visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor != null) {
             visualEditor.ShowNotification(new GUIContent(message));
         }
@@ -39,21 +39,21 @@ public static partial class iCS_UserCommands {
     }
 	// ----------------------------------------------------------------------
     static void SendDisplayRootChange(iCS_IStorage iStorage) {
-        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        var visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor != null && visualEditor.IStorage == iStorage) {
             visualEditor.OnDisplayRootChange();
         }        
     }
 	// ----------------------------------------------------------------------
     static void SendStartRelayoutOfTree(iCS_IStorage iStorage) {
-        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        var visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor != null && visualEditor.IStorage == iStorage) {
             visualEditor.OnStartRelayoutOfTree();
         }
     }
 	// ----------------------------------------------------------------------
     static void SendEndRelayoutOfTree(iCS_IStorage iStorage) {
-        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        var visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor != null && visualEditor.IStorage == iStorage) {
             visualEditor.OnEndRelayoutOfTree();
         }

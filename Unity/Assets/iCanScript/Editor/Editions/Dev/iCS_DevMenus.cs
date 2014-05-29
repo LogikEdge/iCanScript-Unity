@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
@@ -15,7 +15,7 @@ public static class iCS_DevMenus {
     // Visual Editor Snapshot
 	[MenuItem("DevTools/Visual Editor Snapshot",false,1000)]
 	public static void MenuVisualEditorSnapshot() {
-		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
+		EditorWindow edWindow= iCS_EditorController.FindVisualEditorWindow();
 		if(edWindow == null) return;
 		iCS_DevToolsConfig.SnapshotWithoutBackground= false;
 		iCS_DevToolsConfig.TakeVisualEditorSnapshot= true;
@@ -26,7 +26,7 @@ public static class iCS_DevMenus {
 	}
 	[MenuItem("DevTools/Visual Editor Snapshot - No Background",false,1001)]
 	public static void MenuVisualEditorSnapshotNoBackground() {
-		EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
+		EditorWindow edWindow= iCS_EditorController.FindVisualEditorWindow();
 		if(edWindow == null) return;
 		iCS_DevToolsConfig.SnapshotWithoutBackground= true;
 		iCS_DevToolsConfig.TakeVisualEditorSnapshot= true;
@@ -67,7 +67,7 @@ public static class iCS_DevMenus {
     }
     public static bool IsVisualEditor {
 		get {
-            EditorWindow edWindow= iCS_EditorMgr.FindVisualEditorWindow();
+            EditorWindow edWindow= iCS_EditorController.FindVisualEditorWindow();
 		    return edWindow != null;
         }
     }
@@ -75,7 +75,7 @@ public static class iCS_DevMenus {
     // Sanity Check
 	[MenuItem("DevTools/Sanity Check Selection",false,1020)]
 	public static void MenuSanityCheck() {
-		iCS_IStorage storage= iCS_StorageMgr.IStorage;
+		iCS_IStorage storage= iCS_StorageController.IStorage;
 		if(storage == null) return;
 		Debug.Log("iCanScript: Start Sanity Check on: "+storage.Storage.name);
 		storage.SanityCheck();
@@ -91,7 +91,7 @@ public static class iCS_DevMenus {
     // Extract some info.
 	[MenuItem("DevTools/Get Layout Info",false,1022)]
 	public static void MenuGetLayoutInfo() {
-		iCS_IStorage iStorage= iCS_StorageMgr.IStorage;
+		iCS_IStorage iStorage= iCS_StorageController.IStorage;
 		if(iStorage == null) return;
         var selectedObj= iStorage.SelectedObject;
         if(selectedObj == null) return;

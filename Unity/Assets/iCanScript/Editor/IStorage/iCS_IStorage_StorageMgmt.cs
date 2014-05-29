@@ -29,7 +29,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SynchronizeAfterUndoRedo() {
         iCS_UserCommands.UndoRedo(this);
-		iCS_EditorMgr.RepaintVisualEditor();
+		iCS_EditorController.RepaintVisualEditor();
     }
     // ----------------------------------------------------------------------
     void SaveStorageWithUndoRedoSupport() {
@@ -58,7 +58,7 @@ public partial class iCS_IStorage {
         EditorUtility.SetDirty(iCSMonoBehaviour);
         IsTransactionOpened= false;
         ++ModificationId;
-        iCS_EditorMgr.Update();
+        iCS_EditorController.Update();
     }
     // ----------------------------------------------------------------------
     public void GenerateEditorData() {

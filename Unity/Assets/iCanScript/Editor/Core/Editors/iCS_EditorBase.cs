@@ -23,10 +23,10 @@ public class iCS_EditorBase : EditorWindow {
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     public void OnEnable() {
-        iCS_EditorMgr.Add(this);
+        iCS_EditorController.Add(this);
     }
     public void OnDisable() {
-        iCS_EditorMgr.Remove(this);
+        iCS_EditorController.Remove(this);
     }
 
     // =================================================================================
@@ -61,7 +61,7 @@ public class iCS_EditorBase : EditorWindow {
     // Update the editor manager.
     // ---------------------------------------------------------------------------------
     protected void UpdateMgr() {
-        iCS_EditorMgr.Update();
-        myIStorage= iCS_StorageMgr.IStorage;
+        iCS_EditorController.Update();
+        myIStorage= iCS_StorageController.IStorage;
     }
 }

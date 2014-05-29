@@ -22,14 +22,14 @@ public partial class iCS_IStorage {
 	}
 	// ----------------------------------------------------------------------
     void SendStartRelayoutOfTree() {
-        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        var visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor != null && visualEditor.IStorage == this) {
             visualEditor.OnStartRelayoutOfTree();
         }
     }
 	// ----------------------------------------------------------------------
     void SendEndRelayoutOfTree() {
-        var visualEditor= iCS_EditorMgr.FindVisualEditor();
+        var visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor != null && visualEditor.IStorage == this) {
             visualEditor.OnEndRelayoutOfTree();
         }

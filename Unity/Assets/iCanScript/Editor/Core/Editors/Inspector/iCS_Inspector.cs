@@ -74,16 +74,16 @@ public class iCS_Inspector : Editor {
     // Bring up the graph editor window when the inspector is activated.
     void UpdateVariables() {
         // Verify that the target reflects the selected storage.
-        iCS_EditorMgr.Update();
+        iCS_EditorController.Update();
         var monoBehaviour= target as iCS_MonoBehaviourImp;
-        if(monoBehaviour == null || !iCS_StorageMgr.IsSameVisualScript(monoBehaviour, iCS_StorageMgr.IStorage)) {
+        if(monoBehaviour == null || !iCS_StorageController.IsSameVisualScript(monoBehaviour, iCS_StorageController.IStorage)) {
             myIStorage= null;
 			mySelectedObject= null;
             return;
         }
 
         // Configure the editor with the selected graph.
-		myIStorage= iCS_StorageMgr.IStorage;
+		myIStorage= iCS_StorageController.IStorage;
 		mySelectedObject= myIStorage.SelectedObject;
     }
     

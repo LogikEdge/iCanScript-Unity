@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public static class iCS_EditorMgr {
+public static class iCS_EditorController {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ public static class iCS_EditorMgr {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-    static iCS_EditorMgr() {
+    static iCS_EditorController() {
         myEditors= new List<iCS_EditorBase>();
     }
     
@@ -35,7 +35,7 @@ public static class iCS_EditorMgr {
     // ---------------------------------------------------------------------------------
 	public static void Update() {
         // Update storage information for selected object.
-		iCS_StorageMgr.Update();
+		iCS_StorageController.Update();
         foreach(var editor in myEditors) {
             editor.Repaint();
         }

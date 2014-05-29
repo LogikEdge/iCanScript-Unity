@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public static class iCS_StorageMgr {
+public static class iCS_StorageController {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ public static class iCS_StorageMgr {
     // Properties
     // ---------------------------------------------------------------------------------
     public static iCS_IStorage     IStorage         { get { return myIStorage; }}
-    public static iCS_StorageImp      Storage          { get { return IStorage != null ? IStorage.Storage : null; }}
+    public static iCS_StorageImp   Storage          { get { return IStorage != null ? IStorage.Storage : null; }}
     public static iCS_EditorObject SelectedObject   {
         get { return IStorage != null ? IStorage.SelectedObject : null; }
         set {

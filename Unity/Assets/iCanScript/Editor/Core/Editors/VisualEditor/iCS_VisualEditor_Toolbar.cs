@@ -71,7 +71,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_ToolbarUtility.Separator(ref r);
 		// Refresh Preferences window
 		if(GUI.changed) {
-			iCS_EditorMgr.RepaintPreferencesEditor();
+			iCS_EditorController.RepaintPreferencesEditor();
 		}
 		
 		// --------------

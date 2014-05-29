@@ -94,7 +94,7 @@ public static class iCS_EditorUtility {
     }
     public static void CenterOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
         MakeVisible(eObj, iStorage);
-        var graphEditor= iCS_EditorMgr.FindVisualEditor();
+        var graphEditor= iCS_EditorController.FindVisualEditor();
         if(graphEditor != null) graphEditor.CenterAndScaleOn(eObj);        
     }
 	// ----------------------------------------------------------------------
