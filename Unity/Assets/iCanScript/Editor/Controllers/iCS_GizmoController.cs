@@ -42,8 +42,8 @@ public static class iCS_GizmoController {
 
     // ---------------------------------------------------------------------------------
     [DrawGizmo(GizmoType.NotSelected | GizmoType.Selected)]
-    public static void DrawGizmos(Component component, GizmoType gizmoType) {
-        var go= component.gameObject;
+    public static void DrawGizmos(iCS_VisualScript visualScript, GizmoType gizmoType) {
+        var go= visualScript.gameObject;
         var p= go.transform.position;
         Gizmos.DrawIcon(p, GizmoIcon);
         if(go.renderer != null) {
