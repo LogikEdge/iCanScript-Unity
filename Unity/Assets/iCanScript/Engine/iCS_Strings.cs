@@ -38,10 +38,6 @@ public static class iCS_Strings {
     public const string RemoveChildMethod= "RemoveChild";
     
     // -----------------------------------------------------------------------
-    // Gizmos
-    public const string GizmoIcon            = "iCanScriptGizmo.png";
-
-    // -----------------------------------------------------------------------
     public static bool IsEmpty(string s)       { return s == null || s ==""; }
     public static bool IsNotEmpty(string s)    { return !IsEmpty(s); }
 }

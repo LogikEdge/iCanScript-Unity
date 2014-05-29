@@ -11,7 +11,6 @@ public static class iCS_InstallerMgr {
     // Installs all needed components
     // ---------------------------------------------------------------------------------
 	static iCS_InstallerMgr() {
-        iCS_GizmoController.Start();
         InstallEdition();
         CreateCodeGenerationFolder();		
 	}

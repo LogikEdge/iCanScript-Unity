@@ -8,6 +8,7 @@ public static class iCS_AppController {
 	static iCS_AppController() {
 		iCS_SoftwareUpdateController.PeriodicUpdateVerification();
 		iCS_SystemEvents.Start();
+        iCS_GizmoController.Start();
 		iCS_InstallerMgr.Start();
 		iCS_CodeGenerator.Start();		
 	}
