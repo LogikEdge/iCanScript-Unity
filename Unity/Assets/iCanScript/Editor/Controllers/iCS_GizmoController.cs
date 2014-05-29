@@ -8,8 +8,9 @@ public static class iCS_GizmoController {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	public const string SourceGizmoIcon      = "iCS_Logo128x128.png";
-    public const string GizmoIcon            = "iCanScriptGizmo.png";
+    public const string GizmosFolder   = "Gizmos";
+	public const string SourceGizmoIcon= "iCS_Logo128x128.png";
+    public const string GizmoIcon      = "iCanScriptGizmo.png";
           
     // ---------------------------------------------------------------------------------
     static iCS_GizmoController() {
@@ -25,12 +26,14 @@ public static class iCS_GizmoController {
     // ---------------------------------------------------------------------------------
     static void InstallGizmo() {
         // Copy the iCanScript gizmo file into the "Gizmos" project folder.
-        string assetPath= Application.dataPath;
-        if(!Directory.Exists(assetPath+"/"+iCS_Config.GizmosFolder)) {
-            AssetDatabase.CreateFolder("Assets",iCS_Config.GizmosFolder);            
+        string systemAssetPath= Application.dataPath;
+        string systemGizmosFolder= systemAssetPath+"/"+GizmosFolder;
+        string unityGizmosFolder= "Assets/"+GizmosFolder;
+        if(!Directory.Exists(systemGizmosFolder)) {
+            AssetDatabase.CreateFolder("Assets",GizmosFolder);            
         }
         string gizmoSrc= iCS_Config.ResourcePath+"/"+SourceGizmoIcon;
-        string gizmoDest= "Assets/Gizmos/iCanScriptGizmo.png";
+        string gizmoDest= unityGizmosFolder+"/"+GizmoIcon;
         if(iCS_Strings.IsEmpty(AssetDatabase.ValidateMoveAsset(gizmoSrc, gizmoDest))) {
             AssetDatabase.CopyAsset(gizmoSrc,gizmoDest);
             Debug.Log("iCanScript: Installing the iCanScript Gizmo graphic file.");            
