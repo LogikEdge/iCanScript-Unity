@@ -12,4 +12,5 @@ public static class iCS_AppController {
 		iCS_CodeGenerator.Start();		
 	}
 	public static void Start() {}
+    public static void Shutdown() {}
 }
