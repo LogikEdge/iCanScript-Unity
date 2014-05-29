@@ -92,3 +92,5 @@ user.lock
 /bin/staging/iCanScriptEditorUnityStore.rsp
 
 /bin/staging/unityStoreFilesToInclude
+
+/Unity/Library/ShaderCache.db
