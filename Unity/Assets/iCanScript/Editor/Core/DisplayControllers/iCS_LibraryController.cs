@@ -256,6 +256,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();
         if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(desc.ParentTypeInfo.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Library) && desc.Library.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Company) && desc.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
