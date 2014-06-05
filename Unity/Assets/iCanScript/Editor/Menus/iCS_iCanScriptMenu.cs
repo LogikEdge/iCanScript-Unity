@@ -78,7 +78,7 @@ public static class iCS_iCanScriptMenu {
         // Attempt to reload and relayout if the selection is visible in the visual editor.
         var visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor == null) return;
-        if(visualEditor.IStorage.MonoBehaviourStorage != storage) return;
+        if(visualEditor.IStorage.PersistentStorage != storage) return;
         visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
     }
     [MenuItem("Edit/iCanScript/Import...",true,901)]

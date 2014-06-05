@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ public partial class iCS_IStorage {
         get { return Storage.SelectedObject; }
         set {
             Storage.SelectedObject= value;
-            MonoBehaviourStorage.SelectedObject= value;
+            PersistentStorage.SelectedObject= value;
             EditorUtility.SetDirty(iCSMonoBehaviour);
             ++ModificationId;
         }

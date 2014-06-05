@@ -24,7 +24,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
     public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
-    public iCS_StorageImp MonoBehaviourStorage {
+    public iCS_StorageImp PersistentStorage {
         get { return iCSMonoBehaviour.Storage; }
     }
     public iCS_EditorObject RootObject {
@@ -45,22 +45,22 @@ public partial class iCS_IStorage {
             return obj;
         }
         set {
-            // Keep MonoBehaviourStorage & Storage in sync since DisplayRoot is not comprised in the Undo.
+            // Keep PersistentStorage & Storage in sync since DisplayRoot is not comprised in the Undo.
             if(value == null || !IsIdValid(value.InstanceId)) {
                 Storage.DisplayRoot= 0;
-                MonoBehaviourStorage.DisplayRoot= 0;
+                PersistentStorage.DisplayRoot= 0;
                 return;
             }
             if(!value.IsNode) return;
             Storage.DisplayRoot= value.InstanceId;
-            MonoBehaviourStorage.DisplayRoot= value.InstanceId;
+            PersistentStorage.DisplayRoot= value.InstanceId;
         }
     } 
 	public bool ShowDisplayRootNode {
 		get { return Storage.ShowDisplayRootNode; }
 		set {
             Storage.ShowDisplayRootNode= value;
-            MonoBehaviourStorage.ShowDisplayRootNode= value;
+            PersistentStorage.ShowDisplayRootNode= value;
         }
 	}
     public bool ForceRelayout {

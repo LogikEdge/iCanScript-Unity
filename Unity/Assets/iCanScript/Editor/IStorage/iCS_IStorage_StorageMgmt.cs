@@ -22,7 +22,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void DetectUndoRedo() {
 //        // Regenerate internal structures if undo/redo was performed.
-//        if(MonoBehaviourStorage.UndoRedoId != Storage.UndoRedoId) {
+//        if(PersistentStorage.UndoRedoId != Storage.UndoRedoId) {
 //			SynchronizeAfterUndoRedo();
 //        }        
     }
@@ -35,7 +35,7 @@ public partial class iCS_IStorage {
     void SaveStorageWithUndoRedoSupport() {
         // Start recording changes for Undo.
         ++Storage.UndoRedoId;
-        Undo.RecordObject(MonoBehaviourStorage, myUndoMessage);
+        Undo.RecordObject(PersistentStorage, myUndoMessage);
         SaveStorage();
     }
     // ----------------------------------------------------------------------
@@ -43,7 +43,7 @@ public partial class iCS_IStorage {
         // Start recording changes for Undo.
 //        Debug.Log("Saving visual script");
         ++Storage.UndoRedoId;
-        Undo.RecordObject(MonoBehaviourStorage, undoMessage);
+        Undo.RecordObject(PersistentStorage, undoMessage);
         SaveStorage();        
     }
     // ----------------------------------------------------------------------
@@ -52,9 +52,9 @@ public partial class iCS_IStorage {
         UpdateExecutionPriority();
         for(int retries= 0; retries < 10 && Cleanup(); ++retries);
         // Tell Unity that our storage has changed.
-        Storage.CopyTo(MonoBehaviourStorage);
+        Storage.CopyTo(PersistentStorage);
         // Commit Undo transaction and forces redraw of inspector window.
-        EditorUtility.SetDirty(MonoBehaviourStorage);
+        EditorUtility.SetDirty(PersistentStorage);
         EditorUtility.SetDirty(iCSMonoBehaviour);
         IsTransactionOpened= false;
         ++ModificationId;
@@ -68,7 +68,7 @@ public partial class iCS_IStorage {
             Storage.hideFlags= HideFlags.HideAndDontSave;
         }
         try {
-            MonoBehaviourStorage.CopyTo(Storage);            
+            PersistentStorage.CopyTo(Storage);            
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Unable to copy engine storage: "+e.Message);
