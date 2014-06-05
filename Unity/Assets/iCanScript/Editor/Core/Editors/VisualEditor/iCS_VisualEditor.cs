@@ -113,7 +113,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Update all message ports when hierarchy has changed
 	// ----------------------------------------------------------------------
     public void OnHierarchyChange() {
-		if(IStorage == null) return;
+		if(IStorage == null || IStorage.EditorObjects.Count == 0) return;
 		iCS_EditorObject behaviour= IStorage.EditorObjects[0];
 		if(behaviour == null || !behaviour.IsBehaviour) return;
 		behaviour.ForEachChildNode(

@@ -140,7 +140,10 @@ public class iCS_Inspector : Editor {
         
         // Draw selected object.
         EditorGUI.indentLevel= 0;
-        if(mySelectedObject != null) {
+        if(mySelectedObject == null) {
+            EditorGUILayout.LabelField("No Visual Script object selected.");
+        }
+        else {
             mySelectedObjectFold= EditorGUILayout.Foldout(mySelectedObjectFold, "Selected Object");
             if(mySelectedObjectFold) {
                 EditorGUI.indentLevel= 1;
@@ -195,7 +198,6 @@ public class iCS_Inspector : Editor {
         		DrawDefaultInspector();            
             }
         }
-
 
         // Allow repaint for modifications done by the user.
         myPreviousModificationId= myIStorage.ModificationId;		

@@ -119,7 +119,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
             }
         }
 		// Build tree and sort it elements.
-		if(!filterFlags[0]) {
+		if(filterFlags.Count == 0 || !filterFlags[0]) {
 			myTree= null;
 			return;
 		}
