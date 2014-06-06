@@ -57,11 +57,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Copy/Paste library from prefab
         var library= GetDraggedLibrary(draggedObject);
 		if(library != null) {
-            if(library.Storage == null) {
-                Debug.Log("Storage is null");
-            }
             if(library.Storage.EngineObjects.Count == 0) {
-                Debug.Log("Storage is empty");
+                Debug.LogWarning("iCanScript: Storage of pasted object is empty !!!");
             }
             PasteIntoGraph(GraphMousePosition, library, library.Storage.EngineObjects[0]);
 			// Remove data so that we don't get called multiple times (Unity bug !!!).
