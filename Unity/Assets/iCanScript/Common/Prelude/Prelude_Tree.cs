@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static partial class Prelude {
-	public class Tree<T> {
+	public class Tree<T> where T : class {
 	    // =================================================================================
 	    // Fields
 	    // ---------------------------------------------------------------------------------
@@ -31,6 +31,21 @@ public static partial class Prelude {
 		}
 		public void AddChild(T childValue)	{
 			AddChild(new Tree<T>(childValue));
+		}
+		// This method exist to bypass bug in MonoDev compiler.
+		public void AddChild(System.Object child) {
+			var tree = child as Tree<T>;
+			if (tree != null) {
+				AddChild (tree);
+			} else {
+				var t = child as T;
+				if (t != null) {
+					AddChild (t);
+				}
+				else {
+					Debug.Log ("Prelude.Tree<T>: Unable to determine type to add");
+				}
+			}
 		}
 		public bool RemoveChild(T childValue) {
 			if(myChildren == null) return false;
