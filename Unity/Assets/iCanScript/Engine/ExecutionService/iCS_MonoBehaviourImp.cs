@@ -7,7 +7,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour {
     // Storage
     // ----------------------------------------------------------------------
     [SerializeField]
-    private iCS_StorageImp myStorage= null;
+    public iCS_StorageImp myStorage= null;
     public iCS_StorageImp Storage {
         get {
             if(myStorage == null) {
@@ -43,4 +43,11 @@ public class iCS_MonoBehaviourImp : MonoBehaviour {
         return Storage.IsOutPackagePort(port);
     }
     
+//    // ======================================================================
+//    // Initialization
+//    // ----------------------------------------------------------------------
+//    void Awake() {
+//        Debug.Log("Awakening=> "+name);
+//    }
+
  }
