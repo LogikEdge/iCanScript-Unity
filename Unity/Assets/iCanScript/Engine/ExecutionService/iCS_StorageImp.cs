@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-// TODO : Should storage be changed to a scriptable object ?
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is the main storage of iCanScript.  All object are derived
 // from this storage class.
@@ -20,18 +19,12 @@ public class iCS_StorageImp : ScriptableObject {
 	[HideInInspector] public float  		          GuiScale           = 1f;	
 	[HideInInspector] public Vector2		          ScrollPosition     = Vector2.zero;
     [HideInInspector] public int                      UndoRedoId         = 0;
-//    public int myDisplayRoot= -2;
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
     [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
     [HideInInspector] public iCS_NavigationHistory    NavigationHistory  = new iCS_NavigationHistory();
                       public iCS_EngineObject         EngineObject       = null;
     
 
-//    public int DisplayRoot {
-//        get { return myDisplayRoot; }
-//        set { Debug.Log("iCanScript: Setting display root from => "+myDisplayRoot+ " to => "+value); myDisplayRoot= value; }
-//    }
-    
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -62,7 +55,6 @@ public class iCS_StorageImp : ScriptableObject {
         to.GuiScale           = from.GuiScale;
         to.SelectedObject     = from.SelectedObject;
         to.DisplayRoot        = from.DisplayRoot;
-//        to.UnityObjects       = from.UnityObjects;
         // Resize destination engine object array.
         int fromLen= from.EngineObjects.Count;
         int toLen= to.EngineObjects.Count;
