@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 [AddComponentMenu("")]
-public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
+public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScript {
     // ======================================================================
     // Storage
     // ----------------------------------------------------------------------
@@ -34,6 +34,23 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     public int                      GetUndoRedoId()          { return Storage.UndoRedoId; }
     public void                     SetUndoRedoId(int id)    { Storage.UndoRedoId= id; }
     
+    // ======================================================================
+    // Visual Script Editor Data Interface Implementation
+    // ----------------------------------------------------------------------
+    public int     GetDisplayRoot()                     { return Storage.DisplayRoot; }
+    public void    SetDisplayRoot(int id)               { Storage.DisplayRoot= id; }
+    public int     GetSelectedObject()                  { return Storage.SelectedObject; }
+    public void    SetSelectedObject(int id)            { Storage.SelectedObject= id; }
+    public bool    GetShowDisplayRootNode()             { return Storage.ShowDisplayRootNode; }
+    public void    SetShowDisplayRootNode(bool show)    { Storage.ShowDisplayRootNode= show; }
+    public float   GetGuiScale()                        { return Storage.GuiScale; }
+    public void    SetGuiScale(float scale)             { Storage.GuiScale= scale; }
+    public Vector2 GetScrollPosition()                  { return Storage.ScrollPosition; }
+    public void    SetScrollPosition(Vector2 pos)       { Storage.ScrollPosition= pos; }
+    public iCS_NavigationHistory GetNavigationHistory() { return Storage.NavigationHistory; }
+    public iCS_NavigationHistory NavigationHistory {
+        get { return Storage.NavigationHistory; }
+    }
     
     // ======================================================================
     // Storage Redirect
