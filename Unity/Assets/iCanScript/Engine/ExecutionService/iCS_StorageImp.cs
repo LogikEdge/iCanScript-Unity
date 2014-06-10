@@ -39,11 +39,7 @@ public class iCS_StorageImp : ScriptableObject {
     // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
-    public void CopyTo(iCS_StorageImp to) {
-        Copy(this, to);
-    }
-    // ----------------------------------------------------------------------
-    public static void Copy(iCS_StorageImp from, iCS_StorageImp to) {
+    public static void CopyFromTo(iCS_StorageImp from, iCS_StorageImp to) {
         to.name               = from.name;
         to.ShowDisplayRootNode= from.ShowDisplayRootNode;
         to.EngineObject       = from.EngineObject;

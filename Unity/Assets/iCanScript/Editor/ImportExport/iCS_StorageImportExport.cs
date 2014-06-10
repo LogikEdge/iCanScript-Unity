@@ -60,7 +60,7 @@ public static class iCS_StorageImportExport {
             cache.UnityObjects.Add(ReadUnityObject(uobj as JObject));
         }
         cache.name= storage.name;
-        cache.CopyTo(storage);
+        iCS_StorageImp.CopyFromTo(cache, storage);
         return true;
     }
     

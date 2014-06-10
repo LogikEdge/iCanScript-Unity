@@ -52,7 +52,7 @@ public partial class iCS_IStorage {
         UpdateExecutionPriority();
         for(int retries= 0; retries < 10 && Cleanup(); ++retries);
         // Tell Unity that our storage has changed.
-        Storage.CopyTo(PersistentStorage);
+        iCS_StorageImp.CopyFromTo(Storage, PersistentStorage);
         // Commit Undo transaction and forces redraw of inspector window.
         EditorUtility.SetDirty(PersistentStorage);
         EditorUtility.SetDirty(iCSMonoBehaviour);
@@ -68,7 +68,7 @@ public partial class iCS_IStorage {
             Storage.hideFlags= HideFlags.HideAndDontSave;
         }
         try {
-            PersistentStorage.CopyTo(Storage);            
+            iCS_StorageImp.CopyFromTo(PersistentStorage, Storage);            
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Unable to copy engine storage: "+e.Message);
