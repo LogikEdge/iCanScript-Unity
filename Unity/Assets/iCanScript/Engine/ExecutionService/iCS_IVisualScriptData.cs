@@ -14,4 +14,6 @@ public interface iCS_IVisualScriptData {
     void                    SetBugFixVersion(uint v);
     List<iCS_EngineObject>  GetEngineObjects();
     List<Object>            GetUnityObjects();
+    int                     GetUndoRedoId();
+    void                    SetUndoRedoId(int id);
 }

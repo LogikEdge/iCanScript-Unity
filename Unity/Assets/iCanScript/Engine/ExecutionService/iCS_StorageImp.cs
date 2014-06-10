@@ -37,6 +37,8 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     public void                     SetBugFixVersion(uint v) { BugFixVersion= v; }
     public List<iCS_EngineObject>   GetEngineObjects()       { return EngineObjects; }
     public List<Object>             GetUnityObjects()        { return UnityObjects; }
+    public int                      GetUndoRedoId()          { return UndoRedoId; }
+    public void                     SetUndoRedoId(int id)    { UndoRedoId= id; }
     
 
     // ======================================================================

@@ -30,6 +30,9 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     public void                     SetBugFixVersion(uint v) { Storage.BugFixVersion= v; }
     public List<iCS_EngineObject>   GetEngineObjects()       { return Storage.EngineObjects; }
     public List<Object>             GetUnityObjects()        { return Storage.UnityObjects; }
+    public int                      GetUndoRedoId()          { return Storage.UndoRedoId; }
+    public void                     SetUndoRedoId(int id)    { Storage.UndoRedoId= id; }
+    
     
     // ======================================================================
     // Storage Redirect
