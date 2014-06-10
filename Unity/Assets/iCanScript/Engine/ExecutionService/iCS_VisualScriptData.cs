@@ -18,60 +18,74 @@ public static class iCS_VisualScriptData {
     // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
-    public static void CopyFromTo(iCS_StorageImp from, iCS_StorageImp to) {
-        to.name               = from.name;
-        to.ShowDisplayRootNode= from.ShowDisplayRootNode;
-        to.EngineObject       = from.EngineObject;
-        to.MajorVersion       = from.MajorVersion;
-        to.MinorVersion       = from.MinorVersion;
-        to.BugFixVersion      = from.BugFixVersion;
-        to.UndoRedoId         = from.UndoRedoId;
-        to.ScrollPosition     = from.ScrollPosition;
-        to.GuiScale           = from.GuiScale;
-        to.SelectedObject     = from.SelectedObject;
-        to.DisplayRoot        = from.DisplayRoot;
+    public static void CopyFromTo(iCS_IVisualScript from, iCS_IVisualScript to) {
+        CopyDataFromTo(from, to);
+        CopyEditorDataFromTo(from, to);
+    }
+
+    // ----------------------------------------------------------------------
+    public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
+        to.SetHostName(from.GetHostName());
+//        to.EngineObject       = from.EngineObject;
+        to.SetMajorVersion(from.GetMajorVersion());
+        to.SetMinorVersion(from.GetMinorVersion());
+        to.SetBugFixVersion(from.GetBugFixVersion());
+        to.SetUndoRedoId(from.GetUndoRedoId());
+        
         // Resize destination engine object array.
-        int fromLen= from.EngineObjects.Count;
-        int toLen= to.EngineObjects.Count;
+        var fromEngineObjects= from.GetEngineObjects();
+        var toEngineObjects= to.GetEngineObjects();
+        int fromLen= fromEngineObjects.Count;
+        int toLen= toEngineObjects.Count;
         if(toLen > fromLen) {
-            to.EngineObjects.RemoveRange(fromLen, toLen-fromLen);
+            toEngineObjects.RemoveRange(fromLen, toLen-fromLen);
         }
-        to.EngineObjects.Capacity= fromLen;
+        toEngineObjects.Capacity= fromLen;
         // Copy engine objects.
         for(int i= 0; i < fromLen; ++i) {
-            var fromObj= from.EngineObjects[i];
+            var fromObj= fromEngineObjects[i];
             if(fromObj == null) fromObj= iCS_EngineObject.CreateInvalidInstance();
-            if(to.EngineObjects.Count <= i) {
-                to.EngineObjects.Add(fromObj.Clone());
+            if(toEngineObjects.Count <= i) {
+                toEngineObjects.Add(fromObj.Clone());
             }
-            else if(to.EngineObjects[i] == null) {
-                to.EngineObjects[i]= fromObj.Clone();                
+            else if(toEngineObjects[i] == null) {
+                toEngineObjects[i]= fromObj.Clone();                
             }
             else {
-                to.EngineObjects[i]= fromObj.CopyTo(to.EngineObjects[i]);                                
+                toEngineObjects[i]= fromObj.CopyTo(toEngineObjects[i]);                                
             }
         }            
         // Resize Unity object reference array
-        fromLen= from.UnityObjects.Count;
-        toLen= to.UnityObjects.Count;
+        var fromUnityObjects= from.GetUnityObjects();
+        var toUnityObjects= to.GetUnityObjects();
+        fromLen= fromUnityObjects.Count;
+        toLen= toUnityObjects.Count;
         if(toLen > fromLen) {
-            to.UnityObjects.RemoveRange(fromLen, toLen-fromLen);
+            toUnityObjects.RemoveRange(fromLen, toLen-fromLen);
         }
-        to.UnityObjects.Capacity= fromLen;
+        toUnityObjects.Capacity= fromLen;
         // Copy Unity Object references.
         for(int i= 0; i < fromLen; ++i) {
-            var fromObj= from.UnityObjects[i];
-            if(to.UnityObjects.Count <= i) {
-                to.UnityObjects.Add(fromObj);
+            var fromObj= fromUnityObjects[i];
+            if(toUnityObjects.Count <= i) {
+                toUnityObjects.Add(fromObj);
             }
             else {
-                to.UnityObjects[i]= fromObj;                
+                toUnityObjects[i]= fromObj;                
             }
         }
-        // Copy navigation history
-        to.NavigationHistory.CopyFrom(from.NavigationHistory);                    
     }
-
+    // ----------------------------------------------------------------------
+    public static void CopyEditorDataFromTo(iCS_IVisualScriptEditorData from, iCS_IVisualScriptEditorData to) {
+        to.SetShowDisplayRootNode(from.GetShowDisplayRootNode());
+        to.SetScrollPosition(from.GetScrollPosition());
+        to.SetGuiScale(from.GetGuiScale());
+        to.SetSelectedObject(from.GetSelectedObject());
+        to.SetDisplayRoot(from.GetDisplayRoot());
+        // Copy navigation history
+        to.GetNavigationHistory().CopyFrom(from.GetNavigationHistory());                    
+    }
+    
     // ======================================================================
     // Unity Object Utilities
     // ----------------------------------------------------------------------

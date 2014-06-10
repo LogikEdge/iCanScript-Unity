@@ -6,7 +6,7 @@ using System.Collections.Generic;
 // This class is the main storage of iCanScript.  All object are derived
 // from this storage class.
 [AddComponentMenu("")]
-public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
+public class iCS_StorageImp : ScriptableObject, iCS_IVisualScript {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -29,6 +29,7 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
     public string                   GetHostName()            { return name; }
+    public void                     SetHostName(string nm)   { name= nm; }
     public uint                     GetMajorVersion()        { return MajorVersion; }
     public uint                     GetMinorVersion()        { return MinorVersion; }
     public uint                     GetBugFixVersion()       { return BugFixVersion; }
@@ -40,6 +41,21 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     public int                      GetUndoRedoId()          { return UndoRedoId; }
     public void                     SetUndoRedoId(int id)    { UndoRedoId= id; }
     
+    // ======================================================================
+    // Visual Script Editor Data Interface Implementation
+    // ----------------------------------------------------------------------
+    public int     GetDisplayRoot()                     { return DisplayRoot; }
+    public void    SetDisplayRoot(int id)               { DisplayRoot= id; }
+    public int     GetSelectedObject()                  { return SelectedObject; }
+    public void    SetSelectedObject(int id)            { SelectedObject= id; }
+    public bool    GetShowDisplayRootNode()             { return ShowDisplayRootNode; }
+    public void    SetShowDisplayRootNode(bool show)    { ShowDisplayRootNode= show; }
+    public float   GetGuiScale()                        { return GuiScale; }
+    public void    SetGuiScale(float scale)             { GuiScale= scale; }
+    public Vector2 GetScrollPosition()                  { return ScrollPosition; }
+    public void    SetScrollPosition(Vector2 pos)       { ScrollPosition= pos; }
+    public iCS_NavigationHistory GetNavigationHistory() { return NavigationHistory; }
+
 
     // ======================================================================
     // Properties

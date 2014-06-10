@@ -22,6 +22,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
     public string                   GetHostName()            { return name; }
+    public void                     SetHostName(string nm)   { name= nm; }
     public uint                     GetMajorVersion()        { return Storage.MajorVersion; }
     public uint                     GetMinorVersion()        { return Storage.MinorVersion; }
     public uint                     GetBugFixVersion()       { return Storage.BugFixVersion; }
