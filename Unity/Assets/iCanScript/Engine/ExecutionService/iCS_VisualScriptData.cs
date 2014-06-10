@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class iCS_StorageUtility {
+public static class iCS_VisualScriptData {
 }

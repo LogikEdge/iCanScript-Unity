@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 [AddComponentMenu("")]
-public class iCS_MonoBehaviourImp : MonoBehaviour {
+public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // Storage
     // ----------------------------------------------------------------------
@@ -17,6 +17,18 @@ public class iCS_MonoBehaviourImp : MonoBehaviour {
             return myStorage;
         }
     }
+    
+    // ======================================================================
+    // Visual Script Data Interface Implementation
+    // ----------------------------------------------------------------------
+    public uint                     GetMajorVersion()        { return Storage.MajorVersion; }
+    public uint                     GetMinorVersion()        { return Storage.MinorVersion; }
+    public uint                     GetBugFixVersion()       { return Storage.BugFixVersion; }
+    public void                     SetMajorVersion(uint v)  { Storage.MajorVersion = v; }
+    public void                     SetMinorVersion(uint v)  { Storage.MinorVersion = v; }
+    public void                     SetBugFixVersion(uint v) { Storage.BugFixVersion= v; }
+    public List<iCS_EngineObject>   GetEngineObjects()       { return Storage.EngineObjects; }
+    public List<Object>             GetUnityObjects()        { return Storage.UnityObjects; }
     
     // ======================================================================
     // Storage Redirect
