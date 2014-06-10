@@ -43,127 +43,47 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // Properties
     // ----------------------------------------------------------------------
     public bool IsValidEngineObject(int id) {
-		return id >= 0 && id < EngineObjects.Count && EngineObjects[id].InstanceId != -1;
+		return iCS_VisualScriptData.IsValidEngineObject(this, id);
 	}
     public bool IsValidUnityObject(int id)  {
-		return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null;
+        return iCS_VisualScriptData.IsValidUnityObject(this, id);
 	}
-
 
     // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
     public static void CopyFromTo(iCS_StorageImp from, iCS_StorageImp to) {
-        to.name               = from.name;
-        to.ShowDisplayRootNode= from.ShowDisplayRootNode;
-        to.EngineObject       = from.EngineObject;
-        to.MajorVersion       = from.MajorVersion;
-        to.MinorVersion       = from.MinorVersion;
-        to.BugFixVersion      = from.BugFixVersion;
-        to.UndoRedoId         = from.UndoRedoId;
-        to.ScrollPosition     = from.ScrollPosition;
-        to.GuiScale           = from.GuiScale;
-        to.SelectedObject     = from.SelectedObject;
-        to.DisplayRoot        = from.DisplayRoot;
-        // Resize destination engine object array.
-        int fromLen= from.EngineObjects.Count;
-        int toLen= to.EngineObjects.Count;
-        if(toLen > fromLen) {
-            to.EngineObjects.RemoveRange(fromLen, toLen-fromLen);
-        }
-        to.EngineObjects.Capacity= fromLen;
-        // Copy engine objects.
-        for(int i= 0; i < fromLen; ++i) {
-            var fromObj= from.EngineObjects[i];
-            if(fromObj == null) fromObj= iCS_EngineObject.CreateInvalidInstance();
-            if(to.EngineObjects.Count <= i) {
-                to.EngineObjects.Add(fromObj.Clone());
-            }
-            else if(to.EngineObjects[i] == null) {
-                to.EngineObjects[i]= fromObj.Clone();                
-            }
-            else {
-                to.EngineObjects[i]= fromObj.CopyTo(to.EngineObjects[i]);                                
-            }
-        }            
-        // Resize Unity object reference array
-        fromLen= from.UnityObjects.Count;
-        toLen= to.UnityObjects.Count;
-        if(toLen > fromLen) {
-            to.UnityObjects.RemoveRange(fromLen, toLen-fromLen);
-        }
-        to.UnityObjects.Capacity= fromLen;
-        // Copy Unity Object references.
-        for(int i= 0; i < fromLen; ++i) {
-            var fromObj= from.UnityObjects[i];
-            if(to.UnityObjects.Count <= i) {
-                to.UnityObjects.Add(fromObj);
-            }
-            else {
-                to.UnityObjects[i]= fromObj;                
-            }
-        }
-        // Copy navigation history
-        to.NavigationHistory.CopyFrom(from.NavigationHistory);                    
+        iCS_VisualScriptData.CopyFromTo(from, to);
     }
 
     // ======================================================================
     // Unity Object Utilities
     // ----------------------------------------------------------------------
     public void ClearUnityObjects() {
-        UnityObjects.Clear();
+        iCS_VisualScriptData.ClearUnityObjects(this);
     }
     // ----------------------------------------------------------------------
     public int AddUnityObject(Object obj) {
-        if(obj == null) return -1;
-		// Search for an existing entry.
-        int id= 0;
-		int availableSlot= -1;
-		for(id= 0; id < UnityObjects.Count; ++id) {
-			if(UnityObjects[id] == obj) {
-				return id;
-			}
-			if(UnityObjects[id] == null) {
-				availableSlot= id;
-			}
-		}
-		if(availableSlot != -1) {
-			UnityObjects[availableSlot]= obj;
-			return availableSlot;
-		}
-        UnityObjects.Add(obj);
-        return id;
+        return iCS_VisualScriptData.AddUnityObject(this, obj);
     }
     // ----------------------------------------------------------------------
     public Object GetUnityObject(int id) {
-        return (id >= 0 && id < UnityObjects.Count) ? UnityObjects[id] : null;
+        return iCS_VisualScriptData.GetUnityObject(this, id);
     }
 
     // ======================================================================
     // Tree Navigation Queries
     // ----------------------------------------------------------------------
     public iCS_EngineObject GetParent(iCS_EngineObject child) {
-        if(child == null || child.ParentId == -1) return null;
-        return EngineObjects[child.ParentId]; 
+        return iCS_VisualScriptData.GetParent(this, child);
     }
     // ----------------------------------------------------------------------
 	public iCS_EngineObject GetParentNode(iCS_EngineObject child) {
-		var parentNode= GetParent(child);
-		while(parentNode != null && !parentNode.IsNode) {
-			parentNode= GetParent(parentNode);
-		}
-		return parentNode;
+        return iCS_VisualScriptData.GetParentNode(this, child);
 	}
     // ----------------------------------------------------------------------
 	public string GetFullName(iCS_EngineObject obj) {
-		if(obj == null) return "";
-		string fullName= "";
-		for(; obj != null; obj= GetParentNode(obj)) {
-            if( !obj.IsBehaviour ) {
-    			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "."+fullName);                
-            }
-		}
-		return name+"."+fullName;
+        return iCS_VisualScriptData.GetFullName(this, obj);
 	}
 	
     // ======================================================================
@@ -171,70 +91,44 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ----------------------------------------------------------------------
     // Returns the immediate source of the port.
     public iCS_EngineObject GetSourcePort(iCS_EngineObject port) {
-        if(port == null || port.SourceId == -1) return null;
-        return EngineObjects[port.SourceId];
+        return iCS_VisualScriptData.GetSourcePort(this, port);
     }
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
     public iCS_EngineObject GetFirstProviderPort(iCS_EngineObject port) {
-        if(port == null) return null;
-        int linkLength= 0;
-        for(iCS_EngineObject sourcePort= GetSourcePort(port); sourcePort != null; sourcePort= GetSourcePort(port)) {
-            port= sourcePort;
-            if(++linkLength > 1000) {
-                Debug.LogWarning("iCanScript: Circular port connection detected on: "+GetParentNode(port).Name+"."+port.Name);
-                return null;                
-            }
-        }
-        return port;
+        return iCS_VisualScriptData.GetFirstProviderPort(this, port);
     }
     // ----------------------------------------------------------------------
     // Returns the list of consumer ports.
     public iCS_EngineObject[] GetConsumerPorts(iCS_EngineObject port) {
-        if(port == null) return new iCS_EngineObject[0];
-        var consumerPorts= new List<iCS_EngineObject>();
-        foreach(var obj in EngineObjects) {
-            if(obj.IsPort && GetSourcePort(obj) == port) {
-                consumerPorts.Add(obj);
-            }
-        }
-        return consumerPorts.ToArray();
+        return iCS_VisualScriptData.GetConsumerPorts(this, port);
     }
     // ----------------------------------------------------------------------
     public bool IsEndPort(iCS_EngineObject port) {
-        if(port == null) return false;
-        if(!HasASource(port)) return true;
-        return !HasADestination(port);
+        return iCS_VisualScriptData.IsEndPort(this, port);
     }
     // ----------------------------------------------------------------------
     public bool IsRelayPort(iCS_EngineObject port) {
-        if(port == null) return false;
-        return HasASource(port) && HasADestination(port);
+        return iCS_VisualScriptData.IsRelayPort(this, port);
     }
     // ----------------------------------------------------------------------
     public bool HasASource(iCS_EngineObject port) {
-        var source= GetSourcePort(port);
-        return source != null && source != port; 
+        return iCS_VisualScriptData.HasASource(this, port);
     }
     // ----------------------------------------------------------------------
     public bool HasADestination(iCS_EngineObject port) {
-        return GetConsumerPorts(port).Length != 0;
+        return iCS_VisualScriptData.HasADestination(this, port);
     }
     
     // ======================================================================
     // EnginObject Utilities
     // ----------------------------------------------------------------------
-    // ----------------------------------------------------------------------
 	public bool IsInPackagePort(iCS_EngineObject obj) {
-		if(!obj.IsInDataOrControlPort) return false;
-		var parent= GetParentNode(obj);
-		return parent != null && parent.IsKindOfPackage;
+        return iCS_VisualScriptData.IsInPackagePort(this, obj);
 	}
     // ----------------------------------------------------------------------
 	public bool IsOutPackagePort(iCS_EngineObject obj) {
-		if(!obj.IsOutDataOrControlPort) return false;
-		var parent= GetParentNode(obj);
-		return parent != null && parent.IsKindOfPackage;
+        return iCS_VisualScriptData.IsOutPackagePort(this, obj);
 	}
     
 }
