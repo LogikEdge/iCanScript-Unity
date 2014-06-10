@@ -6,7 +6,7 @@ using System.Collections.Generic;
 // This class is the main storage of iCanScript.  All object are derived
 // from this storage class.
 [AddComponentMenu("")]
-public class iCS_StorageImp : ScriptableObject {
+public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -23,6 +23,20 @@ public class iCS_StorageImp : ScriptableObject {
     [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
     [HideInInspector] public iCS_NavigationHistory    NavigationHistory  = new iCS_NavigationHistory();
                       public iCS_EngineObject         EngineObject       = null;
+    
+
+    // ======================================================================
+    // Visual Script Data Interface Implementation
+    // ----------------------------------------------------------------------
+    public string                   GetHostName()            { return name; }
+    public uint                     GetMajorVersion()        { return MajorVersion; }
+    public uint                     GetMinorVersion()        { return MinorVersion; }
+    public uint                     GetBugFixVersion()       { return BugFixVersion; }
+    public void                     SetMajorVersion(uint v)  { MajorVersion = v; }
+    public void                     SetMinorVersion(uint v)  { MinorVersion = v; }
+    public void                     SetBugFixVersion(uint v) { BugFixVersion= v; }
+    public List<iCS_EngineObject>   GetEngineObjects()       { return EngineObjects; }
+    public List<Object>             GetUnityObjects()        { return UnityObjects; }
     
 
     // ======================================================================
