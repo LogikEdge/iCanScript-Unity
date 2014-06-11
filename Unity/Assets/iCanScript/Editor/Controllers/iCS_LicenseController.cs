@@ -164,7 +164,7 @@ public static class iCS_LicenseController {
         if(HasStandardLicense)             return "Standard";
         if(HasWaitingForActivationLicense) return "Waiting for License";
         if(HasCommunityLicense)            return "Community";
-        if(HasDemoLicense)                 return "Demo";
+        if(HasDemoLicense)                 return "Trial";
         return "Unknown";
     }
 	public static string LicenseAsString() {
