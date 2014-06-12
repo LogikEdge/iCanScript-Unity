@@ -75,7 +75,7 @@ $BUILD_INFO_GENERATOR $ENGINE_DIR $BUILD_INFO_CLASS $BUILD_DATE_VAR
 echo "Compiling engine code..."
 $GMCS @iCanScriptEngine.rsp
 echo "Compiling editor code..."
-$GMCS -d:DEMO_EDITION @iCanScriptEditorTrial.rsp
+$GMCS -d:TRIAL_EDITION @iCanScriptEditorTrial.rsp
 $GMCS -d:UNITY_STORE_EDITION @iCanScriptEditorUnityStore.rsp
 
 # ============================================================================
