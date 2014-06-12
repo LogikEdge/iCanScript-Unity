@@ -8,8 +8,9 @@ public class iCS_InstanceEditor : iCS_EditorBase {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    DSCellView              myMainView  = null;
-    iCS_InstanceController  myController= null;
+    DSCellView              myMainView         = null;
+    iCS_InstanceController  myController       = null;
+    bool                    myNotificationShown= false;
     
     // =================================================================================
     // Constants
@@ -49,8 +50,19 @@ public class iCS_InstanceEditor : iCS_EditorBase {
 		// Update storage manager.
         UpdateMgr();
         // Wait until window is configured.
-        if(!IsInitialized()) return;
-//        EditorGUIUtility.LookLikeInspector();
+        if(!IsInitialized() || IStorage == null) {
+            // Tell the user that we can display without a behavior or library.
+            ShowNotification(new GUIContent("No instance node selected !!!"));
+            myNotificationShown= true;
+            return;            
+        }
+
+        // Remove any previously shown notification.
+        if(myNotificationShown) {
+            RemoveNotification();
+            myNotificationShown= false;
+        }
+        
         myMainView.Display(new Rect(0,0,position.width, position.height));
     }
 }

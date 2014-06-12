@@ -9,7 +9,6 @@ public static class iCS_StorageController {
     // Fields
     // ---------------------------------------------------------------------------------
     static bool             myIsPlaying       = false;
-    static GameObject       myActiveGameObject= null;
 	static iCS_IStorage 	myIStorage        = null;
 	
     // =================================================================================
@@ -34,17 +33,12 @@ public static class iCS_StorageController {
 		GameObject go= Selection.activeGameObject;
         var monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviourImp>() : null;
         if(monoBehaviour == null) {
-            go= myActiveGameObject;
-            monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviourImp>() : null;
             // Clear if previous game object is not valid.
-            if(monoBehaviour == null) {
                 myIStorage= null;
                 myIsPlaying= Application.isPlaying;
                 return;                
-            }
         }
         // Create a root object if one does not exist.
-        myActiveGameObject= go;
         var visualScript= monoBehaviour as iCS_VisualScriptImp;
         if(visualScript != null) {
             var storage= monoBehaviour.Storage;

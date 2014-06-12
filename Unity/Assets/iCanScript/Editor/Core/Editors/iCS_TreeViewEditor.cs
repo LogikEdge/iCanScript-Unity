@@ -13,8 +13,9 @@ public class iCS_TreeViewEditor : iCS_EditorBase {
     DSScrollView            myMainView;
 	iCS_TreeViewController  myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
-	int                     myLastFocusId= -1;
-	int                     myUndoRedoId= -1;
+	int                     myLastFocusId      = -1;
+	int                     myUndoRedoId       = -1;
+    bool                    myNotificationShown= false;
 	    
     // =================================================================================
     // Activation/Deactivation.
@@ -57,7 +58,20 @@ public class iCS_TreeViewEditor : iCS_EditorBase {
         base.OnGUI();
         
         UpdateMgr();
-        if(!IsInitialized()) return;
+		// Nothing to be drawn until we are fully initialized.
+        if(!IsInitialized() || IStorage == null) {
+            // Tell the user that we can display without a behavior or library.
+            ShowNotification(new GUIContent("No iCanScript component selected !!!"));
+            myNotificationShown= true;
+            return;            
+        }
+
+        // Remove any previously shown notification.
+        if(myNotificationShown) {
+            RemoveNotification();
+            myNotificationShown= false;
+        }
+            
 		var toolbarRect= ShowToolbar();
         var frameArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
 		myMainView.Display(frameArea);
