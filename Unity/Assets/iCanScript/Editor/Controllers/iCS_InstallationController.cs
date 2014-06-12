@@ -30,7 +30,7 @@ public static class iCS_InstallationController {
             if(today != lastWarningDate) {
                 iCS_PreferencesController.TrialLastWarningDate= today;
                 if(iCS_EditionController.IsDemoEdition) {
-                    iCS_DemoDialogs.PurchaseDialog();
+                    iCS_TrialDialogs.PurchaseDialog();
                 }
             }
         }
