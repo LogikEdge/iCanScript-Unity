@@ -26,7 +26,7 @@ EDITOR_DIR=$PRODUCT_DIR/Editor
 ENGINE_DIR=$PRODUCT_DIR/Engine
 EDITOR_EDITIONS_DIR=$EDITOR_DIR/Editions
 EDITOR_DEV_EDITION_DIR=$EDITOR_EDITIONS_DIR/Dev
-EDITOR_DEMO_EDITION_DIR=$EDITOR_EDITIONS_DIR/Demo
+EDITOR_TRIAL_EDITION_DIR=$EDITOR_EDITIONS_DIR/Trial
 EDITOR_UNITY_STORE_EDITION_DIR=$EDITOR_EDITIONS_DIR/UnityStore
 EDITOR_PUBLIC_NODE_INSTALLER_DIR=$EDITOR_DIR/NodeInstaller
 EDITOR_PUBLIC_EDITOR_WINDOWS_DIR=$EDITOR_DIR/EditorWindows
@@ -59,12 +59,12 @@ find $DEMO_SCENES_DIR >>engineFilesToExclude
 grep -v -f editorFilesToExclude _editorFiles >editorFiles
 grep -v -f engineFilesToExclude _engineFiles >engineFiles
 # Build list of edition specific files
-find $EDITOR_DEMO_EDITION_DIR -name "*.cs" >demoFilesToInclude
+find $EDITOR_TRIAL_EDITION_DIR -name "*.cs" >trialFilesToInclude
 find $EDITOR_UNITY_STORE_EDITION_DIR -name "*.cs" >unityStoreFilesToInclude
 
 # ============================================================================
 # Create compiler response files.
-cat EditorCommandsDemo editorFiles demoFilesToInclude >iCanScriptEditorDemo.rsp
+cat EditorCommandsTrial editorFiles trialFilesToInclude >iCanScriptEditorTrial.rsp
 cat EditorCommandsUnityStore editorFiles unityStoreFilesToInclude >iCanScriptEditorUnityStore.rsp
 cat EngineCommands engineFiles >iCanScriptEngine.rsp
 
@@ -75,7 +75,7 @@ $BUILD_INFO_GENERATOR $ENGINE_DIR $BUILD_INFO_CLASS $BUILD_DATE_VAR
 echo "Compiling engine code..."
 $GMCS @iCanScriptEngine.rsp
 echo "Compiling editor code..."
-$GMCS -d:DEMO_EDITION @iCanScriptEditorDemo.rsp
+$GMCS -d:DEMO_EDITION @iCanScriptEditorTrial.rsp
 $GMCS -d:UNITY_STORE_EDITION @iCanScriptEditorUnityStore.rsp
 
 # ============================================================================
@@ -143,7 +143,7 @@ function build_edition {
     rsync -av $ENGINE_PUBLIC_NODES_DIR $STAGING_ENGINE_DIR >/dev/null
     rsync -av $DEMO_SCENES_DIR $STAGING_PRODUCT_DIR >/dev/null
 }
-build_edition Demo
+build_edition Trial
 build_edition UnityStore
 
 # ============================================================================

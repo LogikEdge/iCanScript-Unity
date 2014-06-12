@@ -1,5 +1,5 @@
 /target:library
-/out:iCanScriptEditorDemo.dll
+/out:iCanScriptEditorTrial.dll
 /reference:/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll
 /reference:/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll
 /reference:iCanScriptEngine.dll

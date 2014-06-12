@@ -15,6 +15,7 @@
 ../../Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs
 ../../Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs
 ../../Unity/Assets/iCanScript/Demo_Scenes
+../../Unity/Assets/iCanScript/Demo_Scenes/.DS_Store
 ../../Unity/Assets/iCanScript/Demo_Scenes/Playground
 ../../Unity/Assets/iCanScript/Demo_Scenes/Playground/Ball.fbx
 ../../Unity/Assets/iCanScript/Demo_Scenes/Playground/Ball.fbx.meta
@@ -67,3 +68,12 @@
 ../../Unity/Assets/iCanScript/Demo_Scenes/resources/Lightbulb_32x32.png
 ../../Unity/Assets/iCanScript/Demo_Scenes/resources/Lightbulb_32x32.png.meta
 ../../Unity/Assets/iCanScript/Demo_Scenes/resources.meta
+../../Unity/Assets/iCanScript/Demo_Scenes/Your First Visual Script
+../../Unity/Assets/iCanScript/Demo_Scenes/Your First Visual Script/.DS_Store
+../../Unity/Assets/iCanScript/Demo_Scenes/Your First Visual Script/Packages and Navigation.unity
+../../Unity/Assets/iCanScript/Demo_Scenes/Your First Visual Script/Packages and Navigation.unity.meta
+../../Unity/Assets/iCanScript/Demo_Scenes/Your First Visual Script/Using the Library.unity
+../../Unity/Assets/iCanScript/Demo_Scenes/Your First Visual Script/Using the Library.unity.meta
+../../Unity/Assets/iCanScript/Demo_Scenes/Your First Visual Script/Your First Visual Script.unity
+../../Unity/Assets/iCanScript/Demo_Scenes/Your First Visual Script/Your First Visual Script.unity.meta
+../../Unity/Assets/iCanScript/Demo_Scenes/Your First Visual Script.meta

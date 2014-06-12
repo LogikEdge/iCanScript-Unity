@@ -22,7 +22,7 @@ public static class iCS_InstallationController {
     // Installs the iCanScript Gizmo (if not already done).
     // ---------------------------------------------------------------------------------
 	static public void InstallEdition() {
-#if DEMO_EDITION
+#if TRIAL_EDITION
         // Warning customer of trial period.
         var today= DateTime.Today;
         if(iCS_LicenseController.HasDemoLicense) {
