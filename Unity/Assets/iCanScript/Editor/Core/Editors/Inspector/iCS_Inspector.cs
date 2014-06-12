@@ -137,6 +137,7 @@ public class iCS_Inspector : Editor {
                 }
                 break;
         }
+        DrawDefaultInspector();
         
         // Draw selected object.
         EditorGUI.indentLevel= 0;

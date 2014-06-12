@@ -2,86 +2,97 @@
 using System.Collections.Generic;
 
 [AddComponentMenu("")]
-public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScript {
+public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // Storage
     // ----------------------------------------------------------------------
-    [SerializeField]
-    public iCS_StorageImp myStorage= null;
-    public iCS_StorageImp Storage {
-        get {
-            if(myStorage == null) {
-                myStorage= ScriptableObject.CreateInstance("iCS_Storage") as iCS_StorageImp;
-                myStorage.name= name;
-            }
-            return myStorage;
-        }
-    }
-    
+    [HideInInspector] public uint			          MajorVersion       = iCS_Config.MajorVersion;
+    [HideInInspector] public uint    		          MinorVersion       = iCS_Config.MinorVersion;
+    [HideInInspector] public uint    		          BugFixVersion      = iCS_Config.BugFixVersion;
+    [HideInInspector] public int                      DisplayRoot        = -1;	
+	[HideInInspector] public int    		          SelectedObject     = -1;
+	[HideInInspector] public bool                     ShowDisplayRootNode= true;
+	[HideInInspector] public float  		          GuiScale           = 1f;	
+	[HideInInspector] public Vector2		          ScrollPosition     = Vector2.zero;
+    [HideInInspector] public int                      UndoRedoId         = 0;
+    [HideInInspector] public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
+    [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
+    [HideInInspector] public iCS_NavigationHistory    NavigationHistory  = new iCS_NavigationHistory();
+                      public iCS_EngineObject         EngineObject       = null;
+
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
     public string                   GetHostName()            { return name; }
     public void                     SetHostName(string nm)   { name= nm; }
-    public uint                     GetMajorVersion()        { return Storage.MajorVersion; }
-    public uint                     GetMinorVersion()        { return Storage.MinorVersion; }
-    public uint                     GetBugFixVersion()       { return Storage.BugFixVersion; }
-    public void                     SetMajorVersion(uint v)  { Storage.MajorVersion = v; }
-    public void                     SetMinorVersion(uint v)  { Storage.MinorVersion = v; }
-    public void                     SetBugFixVersion(uint v) { Storage.BugFixVersion= v; }
-    public List<iCS_EngineObject>   GetEngineObjects()       { return Storage.EngineObjects; }
-    public List<Object>             GetUnityObjects()        { return Storage.UnityObjects; }
-    public int                      GetUndoRedoId()          { return Storage.UndoRedoId; }
-    public void                     SetUndoRedoId(int id)    { Storage.UndoRedoId= id; }
+    public uint                     GetMajorVersion()        { return MajorVersion; }
+    public uint                     GetMinorVersion()        { return MinorVersion; }
+    public uint                     GetBugFixVersion()       { return BugFixVersion; }
+    public void                     SetMajorVersion(uint v)  { MajorVersion = v; }
+    public void                     SetMinorVersion(uint v)  { MinorVersion = v; }
+    public void                     SetBugFixVersion(uint v) { BugFixVersion= v; }
+    public List<iCS_EngineObject>   GetEngineObjects()       { return EngineObjects; }
+    public List<Object>             GetUnityObjects()        { return UnityObjects; }
+    public int                      GetUndoRedoId()          { return UndoRedoId; }
+    public void                     SetUndoRedoId(int id)    { UndoRedoId= id; }
     
     // ======================================================================
     // Visual Script Editor Data Interface Implementation
     // ----------------------------------------------------------------------
-    public int     GetDisplayRoot()                     { return Storage.DisplayRoot; }
-    public void    SetDisplayRoot(int id)               { Storage.DisplayRoot= id; }
-    public int     GetSelectedObject()                  { return Storage.SelectedObject; }
-    public void    SetSelectedObject(int id)            { Storage.SelectedObject= id; }
-    public bool    GetShowDisplayRootNode()             { return Storage.ShowDisplayRootNode; }
-    public void    SetShowDisplayRootNode(bool show)    { Storage.ShowDisplayRootNode= show; }
-    public float   GetGuiScale()                        { return Storage.GuiScale; }
-    public void    SetGuiScale(float scale)             { Storage.GuiScale= scale; }
-    public Vector2 GetScrollPosition()                  { return Storage.ScrollPosition; }
-    public void    SetScrollPosition(Vector2 pos)       { Storage.ScrollPosition= pos; }
-    public iCS_NavigationHistory GetNavigationHistory() { return Storage.NavigationHistory; }
-    public iCS_NavigationHistory NavigationHistory {
-        get { return Storage.NavigationHistory; }
-    }
+    public int     GetDisplayRoot()                     { return DisplayRoot; }
+    public void    SetDisplayRoot(int id)               { DisplayRoot= id; }
+    public int     GetSelectedObject()                  { return SelectedObject; }
+    public void    SetSelectedObject(int id)            { SelectedObject= id; }
+    public bool    GetShowDisplayRootNode()             { return ShowDisplayRootNode; }
+    public void    SetShowDisplayRootNode(bool show)    { ShowDisplayRootNode= show; }
+    public float   GetGuiScale()                        { return GuiScale; }
+    public void    SetGuiScale(float scale)             { GuiScale= scale; }
+    public Vector2 GetScrollPosition()                  { return ScrollPosition; }
+    public void    SetScrollPosition(Vector2 pos)       { ScrollPosition= pos; }
+    public iCS_NavigationHistory GetNavigationHistory() { return NavigationHistory; }
     
     // ======================================================================
     // Storage Redirect
     // ----------------------------------------------------------------------
-    public List<iCS_EngineObject> EngineObjects {
-        get { return Storage.EngineObjects; }
-    }
     public string GetFullName(iCS_EngineObject obj) {
-        return Storage.GetFullName(obj);
+        return iCS_VisualScriptData.GetFullName(this, obj);
     }
     public iCS_EngineObject GetParent(iCS_EngineObject obj) {
-        return Storage.GetParent(obj);
+        return iCS_VisualScriptData.GetParent(this, obj);
     }
     public iCS_EngineObject GetSourceEndPort(iCS_EngineObject port) {
-        return Storage.GetFirstProviderPort(port);
+        return iCS_VisualScriptData.GetFirstProviderPort(this, port);
     }
     public iCS_EngineObject GetSourcePort(iCS_EngineObject port) {
-        return Storage.GetSourcePort(port);
+        return iCS_VisualScriptData.GetSourcePort(this, port);
     }
     public iCS_EngineObject GetParentNode(iCS_EngineObject obj) {
-        return Storage.GetParentNode(obj);
+        return iCS_VisualScriptData.GetParentNode(this, obj);
     }
     public bool IsOutPackagePort(iCS_EngineObject port) {
-        return Storage.IsOutPackagePort(port);
+        return iCS_VisualScriptData.IsOutPackagePort(this, port);
     }
     
-//    // ======================================================================
-//    // Initialization
-//    // ----------------------------------------------------------------------
-//    void Awake() {
-//        Debug.Log("Awakening=> "+name);
-//    }
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // DATABASE CONVERSION
+    // ======================================================================
+    // OLD STORAGE (TO BE REMOVED)
+    // ----------------------------------------------------------------------
+    public iCS_StorageImp myStorage= null;
+    void PerfromUpgrade() {
+        if(myStorage != null) {
+            iCS_VisualScriptData.CopyFromTo(myStorage, this);
+        }
+        myStorage= null;
+    }
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+
+    // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
+    void Awake() {
+        PerfromUpgrade();
+    }
 
  }

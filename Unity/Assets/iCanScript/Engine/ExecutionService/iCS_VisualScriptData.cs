@@ -6,11 +6,11 @@ public static class iCS_VisualScriptData {
     // ======================================================================
     // Queries
     // ----------------------------------------------------------------------
-    public static bool IsValidEngineObject(iCS_IVisualScriptData vsd, int id) {
+    public static bool IsValidEngineObject(iCS_IVisualScriptEngineData vsd, int id) {
         var engineObjects= vsd.GetEngineObjects();
 		return id >= 0 && id < engineObjects.Count && engineObjects[id].InstanceId != -1;
 	}
-    public static bool IsValidUnityObject(iCS_IVisualScriptData vsd, int id)  {
+    public static bool IsValidUnityObject(iCS_IVisualScriptEngineData vsd, int id)  {
         var unityObjects= vsd.GetUnityObjects();
 		return id >= 0 && id < unityObjects.Count && unityObjects[id] != null;
 	}
@@ -18,15 +18,14 @@ public static class iCS_VisualScriptData {
     // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
-    public static void CopyFromTo(iCS_IVisualScript from, iCS_IVisualScript to) {
+    public static void CopyFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
         CopyDataFromTo(from, to);
         CopyEditorDataFromTo(from, to);
     }
 
     // ----------------------------------------------------------------------
-    public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
+    public static void CopyDataFromTo(iCS_IVisualScriptEngineData from, iCS_IVisualScriptEngineData to) {
         to.SetHostName(from.GetHostName());
-//        to.EngineObject       = from.EngineObject;
         to.SetMajorVersion(from.GetMajorVersion());
         to.SetMinorVersion(from.GetMinorVersion());
         to.SetBugFixVersion(from.GetBugFixVersion());
@@ -89,11 +88,11 @@ public static class iCS_VisualScriptData {
     // ======================================================================
     // Unity Object Utilities
     // ----------------------------------------------------------------------
-    public static void ClearUnityObjects(iCS_IVisualScriptData vsd) {
+    public static void ClearUnityObjects(iCS_IVisualScriptEngineData vsd) {
         vsd.GetUnityObjects().Clear();
     }
     // ----------------------------------------------------------------------
-    public static int AddUnityObject(iCS_IVisualScriptData vsd, Object obj) {
+    public static int AddUnityObject(iCS_IVisualScriptEngineData vsd, Object obj) {
         if(obj == null) return -1;
 		// Search for an existing entry.
         int id= 0;
@@ -115,7 +114,7 @@ public static class iCS_VisualScriptData {
         return id;
     }
     // ----------------------------------------------------------------------
-    public static Object GetUnityObject(iCS_IVisualScriptData vsd, int id) {
+    public static Object GetUnityObject(iCS_IVisualScriptEngineData vsd, int id) {
         var unityObjects= vsd.GetUnityObjects();
         return (id >= 0 && id < unityObjects.Count) ? unityObjects[id] : null;
     }
@@ -123,12 +122,12 @@ public static class iCS_VisualScriptData {
     // ======================================================================
     // Tree Navigation Queries
     // ----------------------------------------------------------------------
-    public static iCS_EngineObject GetParent(iCS_IVisualScriptData vsd, iCS_EngineObject child) {
+    public static iCS_EngineObject GetParent(iCS_IVisualScriptEngineData vsd, iCS_EngineObject child) {
         if(child == null || child.ParentId == -1) return null;
         return vsd.GetEngineObjects()[child.ParentId]; 
     }
     // ----------------------------------------------------------------------
-	public static iCS_EngineObject GetParentNode(iCS_IVisualScriptData vsd, iCS_EngineObject child) {
+	public static iCS_EngineObject GetParentNode(iCS_IVisualScriptEngineData vsd, iCS_EngineObject child) {
 		var parentNode= GetParent(vsd, child);
 		while(parentNode != null && !parentNode.IsNode) {
 			parentNode= GetParent(vsd, parentNode);
@@ -136,7 +135,7 @@ public static class iCS_VisualScriptData {
 		return parentNode;
 	}
     // ----------------------------------------------------------------------
-	public static string GetFullName(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
+	public static string GetFullName(iCS_IVisualScriptEngineData vsd, iCS_EngineObject obj) {
 		if(obj == null) return "";
 		string fullName= "";
 		for(; obj != null; obj= GetParentNode(vsd, obj)) {
@@ -151,13 +150,13 @@ public static class iCS_VisualScriptData {
     // Connection Queries
     // ----------------------------------------------------------------------
     // Returns the immediate source of the port.
-    public static iCS_EngineObject GetSourcePort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+    public static iCS_EngineObject GetSourcePort(iCS_IVisualScriptEngineData vsd, iCS_EngineObject port) {
         if(port == null || port.SourceId == -1) return null;
         return vsd.GetEngineObjects()[port.SourceId];
     }
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
-    public static iCS_EngineObject GetFirstProviderPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+    public static iCS_EngineObject GetFirstProviderPort(iCS_IVisualScriptEngineData vsd, iCS_EngineObject port) {
         if(port == null) return null;
         int linkLength= 0;
         for(iCS_EngineObject sourcePort= GetSourcePort(vsd, port); sourcePort != null; sourcePort= GetSourcePort(vsd, port)) {
@@ -171,7 +170,7 @@ public static class iCS_VisualScriptData {
     }
     // ----------------------------------------------------------------------
     // Returns the list of consumer ports.
-    public static iCS_EngineObject[] GetConsumerPorts(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+    public static iCS_EngineObject[] GetConsumerPorts(iCS_IVisualScriptEngineData vsd, iCS_EngineObject port) {
         if(port == null) return new iCS_EngineObject[0];
         var consumerPorts= new List<iCS_EngineObject>();
         var engineObjects= vsd.GetEngineObjects();
@@ -183,36 +182,36 @@ public static class iCS_VisualScriptData {
         return consumerPorts.ToArray();
     }
     // ----------------------------------------------------------------------
-    public static bool IsEndPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+    public static bool IsEndPort(iCS_IVisualScriptEngineData vsd, iCS_EngineObject port) {
         if(port == null) return false;
         if(!HasASource(vsd, port)) return true;
         return !HasADestination(vsd, port);
     }
     // ----------------------------------------------------------------------
-    public static bool IsRelayPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+    public static bool IsRelayPort(iCS_IVisualScriptEngineData vsd, iCS_EngineObject port) {
         if(port == null) return false;
         return HasASource(vsd, port) && HasADestination(vsd, port);
     }
     // ----------------------------------------------------------------------
-    public static bool HasASource(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+    public static bool HasASource(iCS_IVisualScriptEngineData vsd, iCS_EngineObject port) {
         var source= GetSourcePort(vsd, port);
         return source != null && source != port; 
     }
     // ----------------------------------------------------------------------
-    public static bool HasADestination(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+    public static bool HasADestination(iCS_IVisualScriptEngineData vsd, iCS_EngineObject port) {
         return GetConsumerPorts(vsd, port).Length != 0;
     }
     
     // ======================================================================
     // EnginObject Utilities
     // ----------------------------------------------------------------------
-	public static bool IsInPackagePort(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
+	public static bool IsInPackagePort(iCS_IVisualScriptEngineData vsd, iCS_EngineObject obj) {
 		if(!obj.IsInDataOrControlPort) return false;
 		var parent= GetParentNode(vsd, obj);
 		return parent != null && parent.IsKindOfPackage;
 	}
     // ----------------------------------------------------------------------
-	public static bool IsOutPackagePort(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
+	public static bool IsOutPackagePort(iCS_IVisualScriptEngineData vsd, iCS_EngineObject obj) {
 		if(!obj.IsOutDataOrControlPort) return false;
 		var parent= GetParentNode(vsd, obj);
 		return parent != null && parent.IsKindOfPackage;
