@@ -35,7 +35,7 @@ public partial class iCS_IStorage {
     void SaveStorageWithUndoRedoSupport() {
         // Start recording changes for Undo.
         ++Storage.UndoRedoId;
-        Undo.RecordObject(PersistentStorage, myUndoMessage);
+        Undo.RecordObject(iCSMonoBehaviour, myUndoMessage);
         SaveStorage();
     }
     // ----------------------------------------------------------------------
@@ -43,7 +43,7 @@ public partial class iCS_IStorage {
         // Start recording changes for Undo.
 //        Debug.Log("Saving visual script");
         ++Storage.UndoRedoId;
-        Undo.RecordObject(PersistentStorage, undoMessage);
+        Undo.RecordObject(iCSMonoBehaviour, undoMessage);
         SaveStorage();        
     }
     // ----------------------------------------------------------------------
