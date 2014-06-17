@@ -24,7 +24,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
     public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
-    public iCS_MonoBehaviourImp PersistentStorage {
+    public iCS_IVisualScriptData PersistentStorage {
         get { return iCSMonoBehaviour; }
     }
     public iCS_EditorObject RootObject {

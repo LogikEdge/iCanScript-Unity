@@ -64,11 +64,10 @@ public partial class iCS_IStorage {
     public void GenerateEditorData() {
         // Duplicate engine storage
         if(Storage == null) {
-            Storage= ScriptableObject.CreateInstance("iCS_Storage") as iCS_StorageImp;
-            Storage.hideFlags= HideFlags.HideAndDontSave;
+            Storage= new iCS_VisualScriptData(iCSMonoBehaviour);
         }
         try {
-            iCS_StorageImp.CopyFromTo(PersistentStorage, Storage);            
+            iCS_VisualScriptData.CopyFromTo(PersistentStorage, Storage);            
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Unable to copy engine storage: "+e.Message);
