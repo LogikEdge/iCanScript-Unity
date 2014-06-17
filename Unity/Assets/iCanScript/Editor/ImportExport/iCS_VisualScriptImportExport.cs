@@ -6,7 +6,7 @@ using System.Collections;
 using System.IO;
 using DisruptiveSoftware;
 
-public static class iCS_StorageImportExport {
+public static class iCS_VisualScriptImportExport {
 	// =================================================================================
     // Export
     // ---------------------------------------------------------------------------------

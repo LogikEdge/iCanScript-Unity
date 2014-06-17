@@ -62,6 +62,6 @@ public class iCS_EditorBase : EditorWindow {
     // ---------------------------------------------------------------------------------
     protected void UpdateMgr() {
         iCS_EditorController.Update();
-        myIStorage= iCS_StorageController.IStorage;
+        myIStorage= iCS_VisualScriptDataController.IStorage;
     }
 }

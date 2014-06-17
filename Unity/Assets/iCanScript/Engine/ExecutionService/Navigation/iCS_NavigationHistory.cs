@@ -28,7 +28,7 @@ public class iCS_NavigationHistory {
     public bool HasForwardHistory { get { return myMementos.Count > myCursor; }}
     // ----------------------------------------------------------------------
     // Saves the navigation state of the given IStorage.
-    public void Save(iCS_StorageImp storage) {
+    public void Save(iCS_IVisualScriptData storage) {
         // Erase previous forward history.
         if(HasForwardHistory) {
             myMementos.RemoveRange(myCursor, myMementos.Count-myCursor);
@@ -45,7 +45,7 @@ public class iCS_NavigationHistory {
     // ----------------------------------------------------------------------
     // Reloads the navigation state of the given IStorage from the backward
     // history.
-    public void ReloadFromBackwardHistory(iCS_StorageImp storage) {
+    public void ReloadFromBackwardHistory(iCS_IVisualScriptData storage) {
         if(!HasBackwardHistory) return;
         var forwardMemento= new iCS_NavigationMemento(storage);
         --myCursor;
@@ -55,7 +55,7 @@ public class iCS_NavigationHistory {
     // ----------------------------------------------------------------------
     // Reloads the navigation state of the given IStorage from the forward
     // history.
-    public void ReloadFromForwardHistory(iCS_StorageImp storage) {
+    public void ReloadFromForwardHistory(iCS_IVisualScriptData storage) {
         if(!HasForwardHistory) return;
         var backwardMemento= new iCS_NavigationMemento(storage);
         myMementos[myCursor].RestoreState(storage);

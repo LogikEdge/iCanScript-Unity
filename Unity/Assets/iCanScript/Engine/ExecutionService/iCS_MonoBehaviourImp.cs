@@ -23,33 +23,61 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
-    public string                   GetHostName()            { return name; }
-    public void                     SetHostName(string nm)   { name= nm; }
-    public uint                     GetMajorVersion()        { return MajorVersion; }
-    public uint                     GetMinorVersion()        { return MinorVersion; }
-    public uint                     GetBugFixVersion()       { return BugFixVersion; }
-    public void                     SetMajorVersion(uint v)  { MajorVersion = v; }
-    public void                     SetMinorVersion(uint v)  { MinorVersion = v; }
-    public void                     SetBugFixVersion(uint v) { BugFixVersion= v; }
-    public List<iCS_EngineObject>   GetEngineObjects()       { return EngineObjects; }
-    public List<Object>             GetUnityObjects()        { return UnityObjects; }
-    public int                      GetUndoRedoId()          { return UndoRedoId; }
-    public void                     SetUndoRedoId(int id)    { UndoRedoId= id; }
+    string iCS_IVisualScriptEngineData.HostName {
+        get { return name; }
+        set { name= value; }
+    }
+    uint iCS_IVisualScriptEngineData.MajorVersion {
+        get { return MajorVersion; }
+        set { MajorVersion= value; }
+    }
+    uint iCS_IVisualScriptEngineData.MinorVersion {
+        get { return MinorVersion; }
+        set { MinorVersion= value; }
+    }
+    uint iCS_IVisualScriptEngineData.BugFixVersion {
+        get { return BugFixVersion; }
+        set { BugFixVersion= value; }
+    }
+    List<iCS_EngineObject>  iCS_IVisualScriptEngineData.EngineObjects {
+        get { return EngineObjects; }
+    }
+    List<Object> iCS_IVisualScriptEngineData.UnityObjects {
+        get { return UnityObjects; }
+    }
+    int iCS_IVisualScriptEngineData.UndoRedoId {
+        get { return UndoRedoId; }
+        set { UndoRedoId= value; }
+    }
+    
     
     // ======================================================================
     // Visual Script Editor Data Interface Implementation
     // ----------------------------------------------------------------------
-    public int     GetDisplayRoot()                     { return DisplayRoot; }
-    public void    SetDisplayRoot(int id)               { DisplayRoot= id; }
-    public int     GetSelectedObject()                  { return SelectedObject; }
-    public void    SetSelectedObject(int id)            { SelectedObject= id; }
-    public bool    GetShowDisplayRootNode()             { return ShowDisplayRootNode; }
-    public void    SetShowDisplayRootNode(bool show)    { ShowDisplayRootNode= show; }
-    public float   GetGuiScale()                        { return GuiScale; }
-    public void    SetGuiScale(float scale)             { GuiScale= scale; }
-    public Vector2 GetScrollPosition()                  { return ScrollPosition; }
-    public void    SetScrollPosition(Vector2 pos)       { ScrollPosition= pos; }
-    public iCS_NavigationHistory GetNavigationHistory() { return NavigationHistory; }
+    int iCS_IVisualScriptEditorData.DisplayRoot {
+        get { return DisplayRoot; }
+        set { DisplayRoot= value; }
+    }
+    int iCS_IVisualScriptEditorData.SelectedObject {
+        get { return SelectedObject; }
+        set { SelectedObject= value; }
+    }
+    bool iCS_IVisualScriptEditorData.ShowDisplayRootNode {
+        get { return ShowDisplayRootNode; }
+        set { ShowDisplayRootNode= value; }
+    }
+    float iCS_IVisualScriptEditorData.GuiScale {
+        get { return GuiScale; }
+        set { GuiScale= value; }
+    }
+    Vector2 iCS_IVisualScriptEditorData.ScrollPosition {
+        get { return ScrollPosition; }
+        set { ScrollPosition= value; }
+    }
+    iCS_NavigationHistory iCS_IVisualScriptEditorData.NavigationHistory {
+        get { return NavigationHistory; }
+    }
+
     
     // ======================================================================
     // Storage Redirect
@@ -79,6 +107,9 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // OLD STORAGE (TO BE REMOVED)
     // ----------------------------------------------------------------------
     public iCS_StorageImp myStorage= null;
+//    public iCS_StorageImp Storage {
+//        get { return myStorage; }
+//    }
     void PerfromUpgrade() {
         if(myStorage != null) {
             iCS_VisualScriptData.CopyFromTo(myStorage, this);

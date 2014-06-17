@@ -75,11 +75,11 @@ public static class iCS_DevMenus {
     // Sanity Check
 	[MenuItem("DevTools/Sanity Check Selection",false,1020)]
 	public static void MenuSanityCheck() {
-		iCS_IStorage storage= iCS_StorageController.IStorage;
+		iCS_IStorage storage= iCS_VisualScriptDataController.IStorage;
 		if(storage == null) return;
-		Debug.Log("iCanScript: Start Sanity Check on: "+storage.Storage.name);
+		Debug.Log("iCanScript: Start Sanity Check on: "+storage.iCSMonoBehaviour.name);
 		storage.SanityCheck();
-		Debug.Log("iCanScript: Completed Sanity Check on: "+storage.Storage.name);
+		Debug.Log("iCanScript: Completed Sanity Check on: "+storage.iCSMonoBehaviour.name);
 	}
     // ======================================================================
     // Trigger Periodic Software Update Verification
@@ -91,7 +91,7 @@ public static class iCS_DevMenus {
     // Extract some info.
 	[MenuItem("DevTools/Get Layout Info",false,1022)]
 	public static void MenuGetLayoutInfo() {
-		iCS_IStorage iStorage= iCS_StorageController.IStorage;
+		iCS_IStorage iStorage= iCS_VisualScriptDataController.IStorage;
 		if(iStorage == null) return;
         var selectedObj= iStorage.SelectedObject;
         if(selectedObj == null) return;

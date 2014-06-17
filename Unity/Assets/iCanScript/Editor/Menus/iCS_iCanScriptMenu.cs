@@ -44,9 +44,9 @@ public static class iCS_iCanScriptMenu {
         iCS_StorageImp storage= monoBehaviour.Storage;
         if(storage == null) return;
         var initialPath= Application.dataPath;
-        var path= EditorUtility.SaveFilePanel("Export Visual Script", initialPath, storage.name+".json", "json");
+        var path= EditorUtility.SaveFilePanel("Export Visual Script", initialPath, monoBehaviour.name+".json", "json");
         if(string.IsNullOrEmpty(path)) return;
-        iCS_StorageImportExport.Export(storage, path);
+        iCS_VisualScriptImportExport.Export(storage, path);
         Debug.Log("iCanScript: Export completed => "+path);
     } 
     [MenuItem("Edit/iCanScript/Export...",true,900)]
@@ -73,7 +73,7 @@ public static class iCS_iCanScriptMenu {
         var initialPath= Application.dataPath;
         var path= EditorUtility.OpenFilePanel("Import Visual Script", initialPath, "json");
         if(string.IsNullOrEmpty(path)) return;
-        iCS_StorageImportExport.Import(storage, path);
+        iCS_VisualScriptImportExport.Import(storage, path);
         Debug.Log("iCanScript: Import completed => "+path);
         // Attempt to reload and relayout if the selection is visible in the visual editor.
         var visualEditor= iCS_EditorController.FindVisualEditor();

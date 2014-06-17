@@ -35,7 +35,7 @@ public static class iCS_EditorController {
     // ---------------------------------------------------------------------------------
 	public static void Update() {
         // Update storage information for selected object.
-		iCS_StorageController.Update();
+		iCS_VisualScriptDataController.Update();
         foreach(var editor in myEditors) {
             editor.Repaint();
         }
