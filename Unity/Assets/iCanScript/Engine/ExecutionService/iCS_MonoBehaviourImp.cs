@@ -23,29 +23,29 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
-    string iCS_IVisualScriptEngineData.HostName {
+    string iCS_IVisualScriptData.HostName {
         get { return name; }
         set { name= value; }
     }
-    uint iCS_IVisualScriptEngineData.MajorVersion {
+    uint iCS_IVisualScriptData.MajorVersion {
         get { return MajorVersion; }
         set { MajorVersion= value; }
     }
-    uint iCS_IVisualScriptEngineData.MinorVersion {
+    uint iCS_IVisualScriptData.MinorVersion {
         get { return MinorVersion; }
         set { MinorVersion= value; }
     }
-    uint iCS_IVisualScriptEngineData.BugFixVersion {
+    uint iCS_IVisualScriptData.BugFixVersion {
         get { return BugFixVersion; }
         set { BugFixVersion= value; }
     }
-    List<iCS_EngineObject>  iCS_IVisualScriptEngineData.EngineObjects {
+    List<iCS_EngineObject>  iCS_IVisualScriptData.EngineObjects {
         get { return EngineObjects; }
     }
-    List<Object> iCS_IVisualScriptEngineData.UnityObjects {
+    List<Object> iCS_IVisualScriptData.UnityObjects {
         get { return UnityObjects; }
     }
-    int iCS_IVisualScriptEngineData.UndoRedoId {
+    int iCS_IVisualScriptData.UndoRedoId {
         get { return UndoRedoId; }
         set { UndoRedoId= value; }
     }
@@ -54,27 +54,27 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Editor Data Interface Implementation
     // ----------------------------------------------------------------------
-    int iCS_IVisualScriptEditorData.DisplayRoot {
+    int iCS_IVisualScriptData.DisplayRoot {
         get { return DisplayRoot; }
         set { DisplayRoot= value; }
     }
-    int iCS_IVisualScriptEditorData.SelectedObject {
+    int iCS_IVisualScriptData.SelectedObject {
         get { return SelectedObject; }
         set { SelectedObject= value; }
     }
-    bool iCS_IVisualScriptEditorData.ShowDisplayRootNode {
+    bool iCS_IVisualScriptData.ShowDisplayRootNode {
         get { return ShowDisplayRootNode; }
         set { ShowDisplayRootNode= value; }
     }
-    float iCS_IVisualScriptEditorData.GuiScale {
+    float iCS_IVisualScriptData.GuiScale {
         get { return GuiScale; }
         set { GuiScale= value; }
     }
-    Vector2 iCS_IVisualScriptEditorData.ScrollPosition {
+    Vector2 iCS_IVisualScriptData.ScrollPosition {
         get { return ScrollPosition; }
         set { ScrollPosition= value; }
     }
-    iCS_NavigationHistory iCS_IVisualScriptEditorData.NavigationHistory {
+    iCS_NavigationHistory iCS_IVisualScriptData.NavigationHistory {
         get { return NavigationHistory; }
     }
 

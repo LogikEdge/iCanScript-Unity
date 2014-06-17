@@ -41,8 +41,7 @@ public static class iCS_iCanScriptMenu {
         if(go == null) return;
         var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         if(monoBehaviour == null) return;
-        var storage= monoBehaviour.Storage;
-        if(storage == null) return;
+        var storage= new iCS_VisualScriptData(monoBehaviour, monoBehaviour);
         var initialPath= Application.dataPath;
         var path= EditorUtility.SaveFilePanel("Export Visual Script", initialPath, monoBehaviour.name+".json", "json");
         if(string.IsNullOrEmpty(path)) return;

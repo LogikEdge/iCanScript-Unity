@@ -54,7 +54,6 @@ public partial class iCS_IStorage {
         // Tell Unity that our storage has changed.
         iCS_StorageImp.CopyFromTo(Storage, PersistentStorage);
         // Commit Undo transaction and forces redraw of inspector window.
-        EditorUtility.SetDirty(PersistentStorage);
         EditorUtility.SetDirty(iCSMonoBehaviour);
         IsTransactionOpened= false;
         ++ModificationId;
