@@ -23,10 +23,10 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
-    string iCS_IVisualScriptData.HostName {
-        get { return name; }
-        set { name= value; }
-    }
+//    string iCS_IVisualScriptData.HostName {
+//        get { return name; }
+//        set { name= value; }
+//    }
     uint iCS_IVisualScriptData.MajorVersion {
         get { return MajorVersion; }
         set { MajorVersion= value; }
@@ -83,7 +83,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // Storage Redirect
     // ----------------------------------------------------------------------
     public string GetFullName(iCS_EngineObject obj) {
-        return iCS_VisualScriptData.GetFullName(this, obj);
+        return iCS_VisualScriptData.GetFullName(this, this, obj);
     }
     public iCS_EngineObject GetParent(iCS_EngineObject obj) {
         return iCS_VisualScriptData.GetParent(this, obj);

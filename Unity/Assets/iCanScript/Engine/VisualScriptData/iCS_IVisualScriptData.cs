@@ -12,7 +12,7 @@ public interface iCS_IVisualScriptData {
     iCS_NavigationHistory   NavigationHistory   { get; }
 
     // Engine Interface
-    string                  HostName            { get; set; }
+//    string                  HostName            { get; set; }
     uint                    MajorVersion        { get; set; }
     uint                    MinorVersion        { get; set; }
     uint                    BugFixVersion       { get; set; }

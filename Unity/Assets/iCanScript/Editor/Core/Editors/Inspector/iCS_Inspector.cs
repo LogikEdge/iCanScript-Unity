@@ -23,7 +23,6 @@ public class iCS_Inspector : Editor {
 	private bool    mySelectedObjectFold= true;
     private bool    myShowInputs        = false;
     private bool    myShowOutputs       = false;
-    private bool    myEngineObjectFold  = false;
     
 	// ----------------------------------------------------------------------
     // Repaint abort processing variables.

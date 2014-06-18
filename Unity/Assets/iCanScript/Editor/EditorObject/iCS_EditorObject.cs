@@ -103,7 +103,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
     public string FullName {
-        get { return Storage.GetFullName(EngineObject); }
+        get { return Storage.GetFullName(iCSMonoBehaviour, EngineObject); }
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {

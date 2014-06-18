@@ -28,10 +28,10 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
-    string iCS_IVisualScriptData.HostName {
-        get { return name; }
-        set { name= value; }
-    }
+//    string iCS_IVisualScriptData.HostName {
+//        get { return name; }
+//        set { name= value; }
+//    }
     uint iCS_IVisualScriptData.MajorVersion {
         get { return MajorVersion; }
         set { MajorVersion= value; }
@@ -128,7 +128,7 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
 	}
     // ----------------------------------------------------------------------
 	public string GetFullName(iCS_EngineObject obj) {
-        return iCS_VisualScriptData.GetFullName(this, obj);
+        return iCS_VisualScriptData.GetFullName(this, this, obj);
 	}
 	
     // ======================================================================

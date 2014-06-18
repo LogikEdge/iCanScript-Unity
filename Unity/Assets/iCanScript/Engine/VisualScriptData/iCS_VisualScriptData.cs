@@ -19,7 +19,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public UnityEngine.Object       HostObject         = null;
+//    public UnityEngine.Object       HostObject         = null;
     public uint			            MajorVersion       = iCS_Config.MajorVersion;
     public uint    		            MinorVersion       = iCS_Config.MinorVersion;
     public uint    		            BugFixVersion      = iCS_Config.BugFixVersion;
@@ -37,10 +37,10 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
-    string iCS_IVisualScriptData.HostName {
-        get { return HostObject != null ? HostObject.name : ""; }
-        set { if(HostObject != null) HostObject.name= value; }
-    }
+ //   string iCS_IVisualScriptData.HostName {
+ //       get { return HostObject != null ? HostObject.name : ""; }
+ //       set { if(HostObject != null) HostObject.name= value; }
+ //   }
     uint iCS_IVisualScriptData.MajorVersion {
         get { return MajorVersion; }
         set { MajorVersion= value; }
@@ -94,11 +94,11 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Builders
     // ----------------------------------------------------------------------
-    public iCS_VisualScriptData(UnityEngine.Object host) {
-        HostObject= host;
+    public iCS_VisualScriptData(/*UnityEngine.Object host*/) {
+//        HostObject= host;
     }
-    public iCS_VisualScriptData(UnityEngine.Object host, iCS_IVisualScriptData vsd) {
-        HostObject= host;
+    public iCS_VisualScriptData(/*UnityEngine.Object host, */iCS_IVisualScriptData vsd) {
+//        HostObject= host;
         iCS_VisualScriptData.CopyFromTo(vsd, this);
     }
 
@@ -154,8 +154,8 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
         return GetParentNode(this, child);
 	}
     // ----------------------------------------------------------------------
-	public string GetFullName(iCS_EngineObject obj) {
-        return GetFullName(this, obj);
+	public string GetFullName(UnityEngine.Object host, iCS_EngineObject obj) {
+        return GetFullName(this, host, obj);
 	}
 	
     // ======================================================================
@@ -230,7 +230,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
 
     // ----------------------------------------------------------------------
     public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
-        to.HostName     = from.HostName;
+//        to.HostName     = from.HostName;
         to.MajorVersion = from.MajorVersion;
         to.MinorVersion = from.MinorVersion;
         to.BugFixVersion= from.BugFixVersion;
@@ -340,7 +340,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
 		return parentNode;
 	}
     // ----------------------------------------------------------------------
-	public static string GetFullName(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
+	public static string GetFullName(iCS_IVisualScriptData vsd, UnityEngine.Object host, iCS_EngineObject obj) {
 		if(obj == null) return "";
 		string fullName= "";
 		for(; obj != null; obj= GetParentNode(vsd, obj)) {
@@ -348,7 +348,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "."+fullName);                
             }
 		}
-		return vsd.HostName+"."+fullName;
+		return host.name+"."+fullName;
 	}
 	
     // ======================================================================

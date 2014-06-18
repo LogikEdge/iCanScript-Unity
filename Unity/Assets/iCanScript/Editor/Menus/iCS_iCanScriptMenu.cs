@@ -41,7 +41,7 @@ public static class iCS_iCanScriptMenu {
         if(go == null) return;
         var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         if(monoBehaviour == null) return;
-        var storage= new iCS_VisualScriptData(monoBehaviour, monoBehaviour);
+        var storage= new iCS_VisualScriptData(monoBehaviour);
         var initialPath= Application.dataPath;
         var path= EditorUtility.SaveFilePanel("Export Visual Script", initialPath, monoBehaviour.name+".json", "json");
         if(string.IsNullOrEmpty(path)) return;
@@ -67,17 +67,19 @@ public static class iCS_iCanScriptMenu {
         if(go == null) return;
         var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         if(monoBehaviour == null) return;
-        iCS_StorageImp storage= monoBehaviour.Storage;
-        if(storage == null) return;
         var initialPath= Application.dataPath;
         var path= EditorUtility.OpenFilePanel("Import Visual Script", initialPath, "json");
         if(string.IsNullOrEmpty(path)) return;
-        iCS_VisualScriptImportExport.Import(storage, path);
+        var tmpVsd= new iCS_VisualScriptData();
+        if(!iCS_VisualScriptImportExport.Import(tmpVsd, path)) {
+            Debug.LogError("iCanScript: Import failure. The selected visual script was not modified.");
+        }
+        tmpVsd.CopyTo(monoBehaviour);
         Debug.Log("iCanScript: Import completed => "+path);
         // Attempt to reload and relayout if the selection is visible in the visual editor.
         var visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor == null) return;
-        if(visualEditor.IStorage.PersistentStorage != storage) return;
+        if(visualEditor.IStorage.iCSMonoBehaviour != monoBehaviour) return;
         visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
     }
     [MenuItem("Edit/iCanScript/Import...",true,901)]
