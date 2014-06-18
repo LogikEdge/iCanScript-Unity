@@ -82,7 +82,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(node != null && node.IsNode && (node.IsIconizedOnDisplay || !node.IsState || myGraphics.IsNodeTitleBarPicked(node, pos))) {
             if(IsCopyKeyDown) {
 				// Transform into Unity drag & drop protocol. 
-                GameObject go= new GameObject(node.Name);
+                GameObject go= new GameObject(node.Name+iCS_EditorStrings.SnippetTag);
                 go.hideFlags = HideFlags.HideAndDontSave;
                 iCS_LibraryImp library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
                 iCS_IStorage iStorage= new iCS_IStorage(library);

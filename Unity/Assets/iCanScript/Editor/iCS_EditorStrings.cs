@@ -39,4 +39,7 @@ public class iCS_EditorStrings {
     // File references
     public const string DefaultBehaviourClassName= "iCS_Behaviour";
     public const string DefaultBehaviourFilePath = "Assets/iCanScript/Engine/Components/"+DefaultBehaviourClassName+".cs";
+
+    // Special textual tags
+    public const string SnippetTag= " (snippet)";
 }
