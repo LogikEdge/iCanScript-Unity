@@ -91,7 +91,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
                 DragAndDrop.StartDrag(node.Name);
-                iCS_AutoReleasePool.AutoRelease(go, 60f);
+                iCS_AutoReleasePool.AutoRelease(go, 15f);
                 // Disable dragging.
                 IsDragEnabled= false;
                 DragType= DragTypeEnum.None;

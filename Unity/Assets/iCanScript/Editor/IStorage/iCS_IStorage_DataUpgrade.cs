@@ -5,7 +5,6 @@ using System.Collections;
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	void PerformEngineDataUpgrade() {
-        Debug.Log("iCanScript: Upgrade verification done.");
         // Special case for v1.1.2 that used a seperate ScriptableObject as
         // visual script data storage
 		iCS_Version softwareVersion= new iCS_Version(iCS_Config.MajorVersion, iCS_Config.MinorVersion, iCS_Config.BugFixVersion);
