@@ -107,10 +107,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // OLD STORAGE (TO BE REMOVED)
     // ----------------------------------------------------------------------
     public iCS_StorageImp myStorage= null;
-//    public iCS_StorageImp Storage {
-//        get { return myStorage; }
-//    }
-    void PerfromUpgrade() {
+    public void v1_1_2_Upgrade() {
         if(myStorage != null) {
             iCS_VisualScriptData.CopyFromTo(myStorage, this);
         }
@@ -123,7 +120,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // Initialization
     // ----------------------------------------------------------------------
     void Awake() {
-        PerfromUpgrade();
+        v1_1_2_Upgrade();
     }
 
  }
