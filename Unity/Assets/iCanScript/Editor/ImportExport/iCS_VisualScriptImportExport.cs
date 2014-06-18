@@ -6,11 +6,11 @@ using System.Collections;
 using System.IO;
 using DisruptiveSoftware;
 
-public static class iCS_StorageImportExport {
+public static class iCS_VisualScriptImportExport {
 	// =================================================================================
     // Export
     // ---------------------------------------------------------------------------------
-    public static void Export(iCS_StorageImp storage, string path) {
+    public static void Export(iCS_VisualScriptData storage, string path) {
         var root= new JObject(new JNameValuePair("Storage", JValue.Build(storage)));
 		File.WriteAllText(path, JSONPrettyPrint.Print(root.Encode()));     
     }
@@ -18,7 +18,7 @@ public static class iCS_StorageImportExport {
 	// =================================================================================
     // Import
     // ---------------------------------------------------------------------------------
-    public static bool Import(iCS_StorageImp storage, string path) {
+    public static bool Import(iCS_VisualScriptData storage, string path) {
         // Open JSON file.
         string jsonText= File.ReadAllText(path);
         if(string.IsNullOrEmpty(jsonText)) {
@@ -42,8 +42,7 @@ public static class iCS_StorageImportExport {
             return false;
         }
         // Initialize storage using JSON data.
-        var cache= ScriptableObject.CreateInstance("iCS_Storage") as iCS_StorageImp;
-        cache.EngineObjects.Clear();
+        var cache= new iCS_VisualScriptData();
         cache.EngineObjects.Capacity= engineObjects.value.Length;
         foreach(var eobj in engineObjects.value) {
             var newObj= ReadEngineObject(eobj as JObject);
@@ -59,8 +58,7 @@ public static class iCS_StorageImportExport {
         foreach(var uobj in unityObjects.value) {
             cache.UnityObjects.Add(ReadUnityObject(uobj as JObject));
         }
-        cache.name= storage.name;
-        iCS_StorageImp.CopyFromTo(cache, storage);
+        cache.CopyTo(storage);
         return true;
     }
     

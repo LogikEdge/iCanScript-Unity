@@ -6,7 +6,7 @@ using System.Collections.Generic;
 // This class is the main storage of iCanScript.  All object are derived
 // from this storage class.
 [AddComponentMenu("")]
-public class iCS_StorageImp : ScriptableObject, iCS_IVisualScript {
+public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -28,33 +28,60 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScript {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
-    public string                   GetHostName()            { return name; }
-    public void                     SetHostName(string nm)   { name= nm; }
-    public uint                     GetMajorVersion()        { return MajorVersion; }
-    public uint                     GetMinorVersion()        { return MinorVersion; }
-    public uint                     GetBugFixVersion()       { return BugFixVersion; }
-    public void                     SetMajorVersion(uint v)  { MajorVersion = v; }
-    public void                     SetMinorVersion(uint v)  { MinorVersion = v; }
-    public void                     SetBugFixVersion(uint v) { BugFixVersion= v; }
-    public List<iCS_EngineObject>   GetEngineObjects()       { return EngineObjects; }
-    public List<Object>             GetUnityObjects()        { return UnityObjects; }
-    public int                      GetUndoRedoId()          { return UndoRedoId; }
-    public void                     SetUndoRedoId(int id)    { UndoRedoId= id; }
+//    string iCS_IVisualScriptData.HostName {
+//        get { return name; }
+//        set { name= value; }
+//    }
+    uint iCS_IVisualScriptData.MajorVersion {
+        get { return MajorVersion; }
+        set { MajorVersion= value; }
+    }
+    uint iCS_IVisualScriptData.MinorVersion {
+        get { return MinorVersion; }
+        set { MinorVersion= value; }
+    }
+    uint iCS_IVisualScriptData.BugFixVersion {
+        get { return BugFixVersion; }
+        set { BugFixVersion= value; }
+    }
+    List<iCS_EngineObject>  iCS_IVisualScriptData.EngineObjects {
+        get { return EngineObjects; }
+    }
+    List<Object> iCS_IVisualScriptData.UnityObjects {
+        get { return UnityObjects; }
+    }
+    int iCS_IVisualScriptData.UndoRedoId {
+        get { return UndoRedoId; }
+        set { UndoRedoId= value; }
+    }
+    
     
     // ======================================================================
     // Visual Script Editor Data Interface Implementation
     // ----------------------------------------------------------------------
-    public int     GetDisplayRoot()                     { return DisplayRoot; }
-    public void    SetDisplayRoot(int id)               { DisplayRoot= id; }
-    public int     GetSelectedObject()                  { return SelectedObject; }
-    public void    SetSelectedObject(int id)            { SelectedObject= id; }
-    public bool    GetShowDisplayRootNode()             { return ShowDisplayRootNode; }
-    public void    SetShowDisplayRootNode(bool show)    { ShowDisplayRootNode= show; }
-    public float   GetGuiScale()                        { return GuiScale; }
-    public void    SetGuiScale(float scale)             { GuiScale= scale; }
-    public Vector2 GetScrollPosition()                  { return ScrollPosition; }
-    public void    SetScrollPosition(Vector2 pos)       { ScrollPosition= pos; }
-    public iCS_NavigationHistory GetNavigationHistory() { return NavigationHistory; }
+    int iCS_IVisualScriptData.DisplayRoot {
+        get { return DisplayRoot; }
+        set { DisplayRoot= value; }
+    }
+    int iCS_IVisualScriptData.SelectedObject {
+        get { return SelectedObject; }
+        set { SelectedObject= value; }
+    }
+    bool iCS_IVisualScriptData.ShowDisplayRootNode {
+        get { return ShowDisplayRootNode; }
+        set { ShowDisplayRootNode= value; }
+    }
+    float iCS_IVisualScriptData.GuiScale {
+        get { return GuiScale; }
+        set { GuiScale= value; }
+    }
+    Vector2 iCS_IVisualScriptData.ScrollPosition {
+        get { return ScrollPosition; }
+        set { ScrollPosition= value; }
+    }
+    iCS_NavigationHistory iCS_IVisualScriptData.NavigationHistory {
+        get { return NavigationHistory; }
+    }
 
 
     // ======================================================================
@@ -70,7 +97,7 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScript {
     // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
-    public static void CopyFromTo(iCS_StorageImp from, iCS_StorageImp to) {
+    public static void CopyFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
         iCS_VisualScriptData.CopyFromTo(from, to);
     }
 
@@ -101,7 +128,7 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScript {
 	}
     // ----------------------------------------------------------------------
 	public string GetFullName(iCS_EngineObject obj) {
-        return iCS_VisualScriptData.GetFullName(this, obj);
+        return iCS_VisualScriptData.GetFullName(this, this, obj);
 	}
 	
     // ======================================================================

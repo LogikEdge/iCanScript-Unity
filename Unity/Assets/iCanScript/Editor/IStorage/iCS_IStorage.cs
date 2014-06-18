@@ -14,7 +14,7 @@ public partial class iCS_IStorage {
             bool                    myIsDirty           = true;
     public  bool                    IsTransactionOpened = false;
     public  iCS_MonoBehaviourImp    iCSMonoBehaviour    = null;
-    public  iCS_StorageImp          Storage             = null;
+    public  iCS_VisualScriptData    Storage             = null;
     List<iCS_EditorObject>          myEditorObjects     = null;
     public  int                     ModificationId      = -1;
     public  bool                    CleanupDeadPorts    = true;
@@ -24,8 +24,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
     public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
-    public iCS_StorageImp PersistentStorage {
-        get { return iCSMonoBehaviour.Storage; }
+    public iCS_IVisualScriptData PersistentStorage {
+        get { return iCSMonoBehaviour; }
     }
     public iCS_EditorObject RootObject {
         get { return EditorObjects[0]; }
@@ -107,11 +107,6 @@ public partial class iCS_IStorage {
         Init(monoBehaviour);
     }
     public void Init(iCS_MonoBehaviourImp monoBehaviour) {
-        // Verify that the storage is valid on the new iCS_MonoBehaviourImp
-        iCS_StorageImp storage= monoBehaviour.Storage;
-        if(storage == null) {
-            Debug.LogError("iCanScript: Unable to find the storage for => "+monoBehaviour.name);
-        }
         // Update the MonoBehaviour variable
         var oldMonoBehaviour= iCSMonoBehaviour;
         iCSMonoBehaviour= monoBehaviour;

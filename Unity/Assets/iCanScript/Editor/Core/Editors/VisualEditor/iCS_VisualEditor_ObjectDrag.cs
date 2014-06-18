@@ -88,9 +88,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 iCS_IStorage iStorage= new iCS_IStorage(library);
                 iStorage.Copy(node, IStorage, null, Vector2.zero, iStorage);
                 iStorage.SaveStorage();
-                Debug.Log("PersistentStorage size=> "+iStorage.PersistentStorage.EngineObjects.Count);
-                var copy= UnityEngine.Object.Instantiate(library) as iCS_LibraryImp;
-                Debug.Log("Script size after Instantiate=> "+copy.Storage.EngineObjects.Count);
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
                 DragAndDrop.StartDrag(node.Name);

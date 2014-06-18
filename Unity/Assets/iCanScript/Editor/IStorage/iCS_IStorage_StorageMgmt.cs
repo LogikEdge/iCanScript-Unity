@@ -35,7 +35,7 @@ public partial class iCS_IStorage {
     void SaveStorageWithUndoRedoSupport() {
         // Start recording changes for Undo.
         ++Storage.UndoRedoId;
-        Undo.RecordObject(PersistentStorage, myUndoMessage);
+        Undo.RecordObject(iCSMonoBehaviour, myUndoMessage);
         SaveStorage();
     }
     // ----------------------------------------------------------------------
@@ -43,7 +43,7 @@ public partial class iCS_IStorage {
         // Start recording changes for Undo.
 //        Debug.Log("Saving visual script");
         ++Storage.UndoRedoId;
-        Undo.RecordObject(PersistentStorage, undoMessage);
+        Undo.RecordObject(iCSMonoBehaviour, undoMessage);
         SaveStorage();        
     }
     // ----------------------------------------------------------------------
@@ -54,7 +54,6 @@ public partial class iCS_IStorage {
         // Tell Unity that our storage has changed.
         iCS_StorageImp.CopyFromTo(Storage, PersistentStorage);
         // Commit Undo transaction and forces redraw of inspector window.
-        EditorUtility.SetDirty(PersistentStorage);
         EditorUtility.SetDirty(iCSMonoBehaviour);
         IsTransactionOpened= false;
         ++ModificationId;
@@ -64,11 +63,10 @@ public partial class iCS_IStorage {
     public void GenerateEditorData() {
         // Duplicate engine storage
         if(Storage == null) {
-            Storage= ScriptableObject.CreateInstance("iCS_Storage") as iCS_StorageImp;
-            Storage.hideFlags= HideFlags.HideAndDontSave;
+            Storage= new iCS_VisualScriptData(iCSMonoBehaviour);
         }
         try {
-            iCS_StorageImp.CopyFromTo(PersistentStorage, Storage);            
+            iCS_VisualScriptData.CopyFromTo(PersistentStorage, Storage);            
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Unable to copy engine storage: "+e.Message);

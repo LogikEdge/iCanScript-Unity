@@ -19,7 +19,7 @@ public partial class iCS_EditorObject {
     public iCS_IStorage IStorage {
         get { return myIStorage; }
     }
-	public iCS_StorageImp Storage {
+	public iCS_VisualScriptData Storage {
 		get { return myIStorage.Storage; }
 	}
     public iCS_MonoBehaviourImp iCSMonoBehaviour {
@@ -103,7 +103,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
     public string FullName {
-        get { return Storage.GetFullName(EngineObject); }
+        get { return Storage.GetFullName(iCSMonoBehaviour, EngineObject); }
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {

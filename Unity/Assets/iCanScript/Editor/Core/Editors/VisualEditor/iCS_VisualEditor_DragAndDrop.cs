@@ -35,7 +35,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
          		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;                        
                             return;
                          }
-                         var storage= library.Storage;
+                         iCS_IVisualScriptData storage= library;
                          if(storage.EngineObjects.Count > 0) {
                              var engineObject= storage.EngineObjects[0];
                              if(iCS_AllowedChildren.CanAddChildNode(engineObject.Name, engineObject.ObjectType, objectUnderMouse, IStorage)) {
@@ -57,10 +57,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Copy/Paste library from prefab
         var library= GetDraggedLibrary(draggedObject);
 		if(library != null) {
-            if(library.Storage.EngineObjects.Count == 0) {
+            if(library.EngineObjects.Count == 0) {
                 Debug.LogWarning("iCanScript: Storage of pasted object is empty !!!");
             }
-            PasteIntoGraph(GraphMousePosition, library, library.Storage.EngineObjects[0]);
+            PasteIntoGraph(GraphMousePosition, library, library.EngineObjects[0]);
 			// Remove data so that we don't get called multiple times (Unity bug !!!).
             DragAndDrop.AcceptDrag();
 			return;

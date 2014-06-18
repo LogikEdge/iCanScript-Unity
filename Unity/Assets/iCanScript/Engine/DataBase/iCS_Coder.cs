@@ -85,12 +85,12 @@ public class iCS_Coder {
 		}
 	}
 	// ----------------------------------------------------------------------
-	public void EncodeObject(string key, object value, iCS_StorageImp storage) {
+	public void EncodeObject(string key, object value, iCS_IVisualScriptData visualScript) {
         if(value == null) return;
 		Type valueType= value.GetType();
 		// Special case for arrays.
 		if(valueType.IsArray) {
-            EncodeArrayOfObjects(key, value, storage);
+            EncodeArrayOfObjects(key, value, visualScript);
             return;
 		}
 		// Special case for enums.
@@ -124,8 +124,8 @@ public class iCS_Coder {
 		if(value is Quaternion)         { EncodeQuaternion(key, (Quaternion)value); return; }
 		if(value is Matrix4x4)          { EncodeMatrix4x4(key, (Matrix4x4)value); return; }
         // S[ecial case for Unity Object inside a storage.
-		if(value is UnityEngine.Object && storage != null) {
-            EncodeUnityObject(key, value as UnityEngine.Object, storage); return;
+		if(value is UnityEngine.Object && visualScript != null) {
+            EncodeUnityObject(key, value as UnityEngine.Object, visualScript); return;
         }
 		// All other types.
 		foreach(var field in valueType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
@@ -141,13 +141,13 @@ public class iCS_Coder {
                 }                
             }
             if(shouldEncode) {
-    			coder.EncodeObject(field.Name, field.GetValue(value), storage);                                
+    			coder.EncodeObject(field.Name, field.GetValue(value), visualScript);                                
             }
 		}
 		Add(key, valueType, coder.Archive);
 	}
 	// ----------------------------------------------------------------------
-    void EncodeArrayOfObjects(string key, object value, iCS_StorageImp storage) {
+    void EncodeArrayOfObjects(string key, object value, iCS_IVisualScriptData visualScript) {
 		Type valueType= value.GetType();
 		// Special cases.
 		if(valueType == typeof(byte[])) {
@@ -235,7 +235,7 @@ public class iCS_Coder {
 		iCS_Coder coder= new iCS_Coder();
 		coder.EncodeInt("Length", array.Length);
 		for(int i= 0; i < array.Length; ++i) {
-			coder.EncodeObject(i.ToString(), array.GetValue(i), storage);
+			coder.EncodeObject(i.ToString(), array.GetValue(i), visualScript);
 		}
         Add(key, valueType, coder.Archive);				
     }
@@ -504,26 +504,26 @@ public class iCS_Coder {
 		Add(key, typeof(Color), EncodeColor(value));
 	}
 	// ----------------------------------------------------------------------
-    string EncodeUnityObject(UnityEngine.Object uObj, iCS_StorageImp storage) {
-        int id= storage.AddUnityObject(uObj);
+    string EncodeUnityObject(UnityEngine.Object uObj, iCS_IVisualScriptData visualScript) {
+        int id= iCS_VisualScriptData.AddUnityObject(visualScript, uObj);
         return EncodeInt(id);
     }
 	// ----------------------------------------------------------------------
-    public void EncodeUnityObject(string key, UnityEngine.Object uObj, iCS_StorageImp storage) {
-        Add(key, typeof(UnityEngine.Object), EncodeUnityObject(uObj, storage));
+    public void EncodeUnityObject(string key, UnityEngine.Object uObj, iCS_IVisualScriptData visualScript) {
+        Add(key, typeof(UnityEngine.Object), EncodeUnityObject(uObj, visualScript));
     }
     
     // ======================================================================
     // Decoding
 	// ----------------------------------------------------------------------
-    public object DecodeObjectForKey(string key, iCS_StorageImp storage) {
+    public object DecodeObjectForKey(string key, iCS_IVisualScriptData visualScript) {
         if(!myDictionary.ContainsKey(key)) { return null; }
         Prelude.Tuple<string,string> tuple= myDictionary[key];
         Type valueType= DecodeType(tuple.Item1);
         string valueStr= tuple.Item2;
         // Special case for arrays.
 		if(valueType.IsArray) {
-            return DecodeArrayOfObjects(valueType, valueStr, storage);
+            return DecodeArrayOfObjects(valueType, valueStr, visualScript);
 		}
 		// Special case for enums.
         iCS_Coder coder= new iCS_Coder();
@@ -555,8 +555,8 @@ public class iCS_Coder {
 		if(elementType == typeof(Quaternion))              return DecodeQuaternion(valueStr);
 		if(elementType == typeof(Matrix4x4))               return DecodeMatrix4x4(valueStr);
         // Special case for Unity Objects within a storage.
-		if(iCS_Types.IsA<UnityEngine.Object>(elementType) && storage != null) {
-            return DecodeUnityObject(valueStr, storage);
+		if(iCS_Types.IsA<UnityEngine.Object>(elementType) && visualScript != null) {
+            return DecodeUnityObject(valueStr, visualScript);
         }
 		// All other types.
         coder.Archive= valueStr;
@@ -574,13 +574,13 @@ public class iCS_Coder {
                 }                
             }
             if(shouldDecode) {
-    			field.SetValue(obj, coder.DecodeObjectForKey(field.Name, storage));                
+    			field.SetValue(obj, coder.DecodeObjectForKey(field.Name, visualScript));                
             }
 		}
         return obj;
     }
 	// ----------------------------------------------------------------------
-    object DecodeArrayOfObjects(Type valueType, string valueStr, iCS_StorageImp storage) {
+    object DecodeArrayOfObjects(Type valueType, string valueStr, iCS_IVisualScriptData visualScript) {
         Type arrayBaseType= iCS_Types.GetElementType(valueType);
 		// Special cases.
 		if(valueType == typeof(byte[])) {
@@ -649,7 +649,7 @@ public class iCS_Coder {
         int len= coder.DecodeIntForKey("Length");
         Array array= Array.CreateInstance(arrayBaseType, len);
 		for(int i= 0; i < len; ++i) {
-            array.SetValue(coder.DecodeObjectForKey(i.ToString(), storage), i);
+            array.SetValue(coder.DecodeObjectForKey(i.ToString(), visualScript), i);
 		}
 		return array;						
     }
@@ -1023,7 +1023,7 @@ public class iCS_Coder {
         return new Color(r,g,b,a);
     }
 	// ----------------------------------------------------------------------
-    public UnityEngine.Object DecodeUnityObjectForKey(string key, iCS_StorageImp storage) {
+    public UnityEngine.Object DecodeUnityObjectForKey(string key, iCS_IVisualScriptData visualScript) {
         if(!myDictionary.ContainsKey(key)) return null;
         Prelude.Tuple<string,string> tuple= myDictionary[key];
         Type valueType= DecodeType(tuple.Item1);
@@ -1031,12 +1031,12 @@ public class iCS_Coder {
             DecodeTypeError(typeof(UnityEngine.Object).Name, valueType);
             return null;
         }
-        return DecodeUnityObject(tuple.Item2, storage);        
+        return DecodeUnityObject(tuple.Item2, visualScript);        
     }
 	// ----------------------------------------------------------------------
-    UnityEngine.Object DecodeUnityObject(string value, iCS_StorageImp storage) {
+    UnityEngine.Object DecodeUnityObject(string value, iCS_IVisualScriptData visualScript) {
         int id= DecodeInt(value);
-        return storage.GetUnityObject(id);
+        return iCS_VisualScriptData.GetUnityObject(visualScript, id);
     }
 	// ----------------------------------------------------------------------
     T DecodeForKey<T>(string key, Func<string,T> decoder) {

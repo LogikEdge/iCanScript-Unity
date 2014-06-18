@@ -16,12 +16,12 @@ public class iCS_NavigationMemento {
     // ----------------------------------------------------------------------
     // Creates a new memento and saves the navigation state of the given
     // IStorage.
-    public iCS_NavigationMemento(iCS_StorageImp storage) {
+    public iCS_NavigationMemento(iCS_IVisualScriptData storage) {
         SaveState(storage);
     }
     // ----------------------------------------------------------------------
     // Save the navigation state of the given IStorage.
-    public void SaveState(iCS_StorageImp storage) {
+    public void SaveState(iCS_IVisualScriptData storage) {
         ShowDisplayRootNode= storage.ShowDisplayRootNode;
         ScrollPosition     = storage.ScrollPosition;
         GuiScale           = storage.GuiScale;
@@ -30,8 +30,8 @@ public class iCS_NavigationMemento {
     }
     // ----------------------------------------------------------------------
     // Restores the navigation state into the given IStorage.
-    public void RestoreState(iCS_StorageImp storage) {
-        if(!storage.IsValidEngineObject(DisplayRoot)) return;
+    public void RestoreState(iCS_IVisualScriptData storage) {
+        if(!iCS_VisualScriptData.IsValidEngineObject(storage, DisplayRoot)) return;
         storage.ShowDisplayRootNode= ShowDisplayRootNode;
         storage.ScrollPosition     = ScrollPosition;
         storage.GuiScale           = GuiScale;

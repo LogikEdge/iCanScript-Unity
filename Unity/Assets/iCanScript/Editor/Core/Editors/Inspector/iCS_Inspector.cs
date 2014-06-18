@@ -23,7 +23,6 @@ public class iCS_Inspector : Editor {
 	private bool    mySelectedObjectFold= true;
     private bool    myShowInputs        = false;
     private bool    myShowOutputs       = false;
-    private bool    myEngineObjectFold  = false;
     
 	// ----------------------------------------------------------------------
     // Repaint abort processing variables.
@@ -76,14 +75,14 @@ public class iCS_Inspector : Editor {
         // Verify that the target reflects the selected storage.
         iCS_EditorController.Update();
         var monoBehaviour= target as iCS_MonoBehaviourImp;
-        if(monoBehaviour == null || !iCS_StorageController.IsSameVisualScript(monoBehaviour, iCS_StorageController.IStorage)) {
+        if(monoBehaviour == null || !iCS_VisualScriptDataController.IsSameVisualScript(monoBehaviour, iCS_VisualScriptDataController.IStorage)) {
             myIStorage= null;
 			mySelectedObject= null;
             return;
         }
 
         // Configure the editor with the selected graph.
-		myIStorage= iCS_StorageController.IStorage;
+		myIStorage= iCS_VisualScriptDataController.IStorage;
 		mySelectedObject= myIStorage.SelectedObject;
     }
     
@@ -137,6 +136,7 @@ public class iCS_Inspector : Editor {
                 }
                 break;
         }
+        DrawDefaultInspector();
         
         // Draw selected object.
         EditorGUI.indentLevel= 0;
@@ -183,20 +183,6 @@ public class iCS_Inspector : Editor {
                 if(SelectedObject.IsNode)      InspectNode(SelectedObject);
                 else if(SelectedObject.IsPort) InspectPort(SelectedObject);
             }            
-
-            // Show default inspector
-            EditorGUI.indentLevel= 0;
-            myEngineObjectFold= EditorGUILayout.Foldout(myEngineObjectFold, "Selected Engine Object");
-            if(myEngineObjectFold) {
-                // Update engine selected object.
-                var storage= myIStorage.Storage;
-                var selectedId= storage.SelectedObject;
-                storage.EngineObject= selectedId != -1 ? storage.EngineObjects[selectedId] : null;
-
-                GUI.enabled= false;
-                EditorGUI.indentLevel= 1;
-        		DrawDefaultInspector();            
-            }
         }
 
         // Allow repaint for modifications done by the user.

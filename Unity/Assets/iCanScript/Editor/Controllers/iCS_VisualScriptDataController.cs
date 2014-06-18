@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public static class iCS_StorageController {
+public static class iCS_VisualScriptDataController {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -14,9 +14,9 @@ public static class iCS_StorageController {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-    public static iCS_IStorage     IStorage         { get { return myIStorage; }}
-    public static iCS_StorageImp   Storage          { get { return IStorage != null ? IStorage.Storage : null; }}
-    public static iCS_EditorObject SelectedObject   {
+    public static iCS_IStorage          IStorage         { get { return myIStorage; }}
+    public static iCS_VisualScriptData  Storage          { get { return IStorage != null ? IStorage.Storage : null; }}
+    public static iCS_EditorObject      SelectedObject   {
         get { return IStorage != null ? IStorage.SelectedObject : null; }
         set {
             if(IStorage != null) {
@@ -41,9 +41,8 @@ public static class iCS_StorageController {
         // Create a root object if one does not exist.
         var visualScript= monoBehaviour as iCS_VisualScriptImp;
         if(visualScript != null) {
-            var storage= monoBehaviour.Storage;
-            if(storage == null) return;
-            if(storage.EngineObjects.Count == 0) {
+            iCS_IVisualScriptData vsd= monoBehaviour;
+            if(vsd.EngineObjects.Count == 0) {
                 CreateRootBehaviourNode(visualScript);
             }
         }
@@ -58,11 +57,11 @@ public static class iCS_StorageController {
     // ---------------------------------------------------------------------------------
     public static void CreateRootBehaviourNode(iCS_VisualScriptImp visualScript) {
         var behaviour= new iCS_EngineObject(0, visualScript.name+"::Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour);
-        visualScript.Storage.EngineObjects.Add(behaviour);        
+        visualScript.EngineObjects.Add(behaviour);        
     }
 
     // ---------------------------------------------------------------------------------
-    public static bool IsSameVisualScript(iCS_IStorage iStorage, iCS_StorageImp storage) {
+    public static bool IsSameVisualScript(iCS_IStorage iStorage, iCS_VisualScriptData storage) {
         if(iStorage == null || storage == null) return false;
         if(iStorage.Storage == storage) return true;
         return false;
