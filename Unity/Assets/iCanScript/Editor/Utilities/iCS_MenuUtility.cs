@@ -5,18 +5,6 @@ using System.Collections;
 using P=Prelude;
 
 public static class iCS_MenuUtility {
-
-    // ----------------------------------------------------------------------
-    public static iCS_VisualScriptImp InstallVisualScriptOn(GameObject gameObject) {
-        // Build new visual script with behviour node
-		var visualScript= gameObject.AddComponent("iCS_VisualScript") as iCS_VisualScriptImp;
-        iCS_VisualScriptDataController.CreateRootBehaviourNode(visualScript);
-        iCS_VisualScriptDataController.CreateDefaultMessageHandlers(visualScript);
-
-        // Install behaviour if not already present.
-        UpdateBehaviourComponent(gameObject);
-        return visualScript;
-    }
     // ----------------------------------------------------------------------
     public static void RemoveVisualScriptFrom(iCS_VisualScriptImp visualScript) {
         // Destroy the given component.

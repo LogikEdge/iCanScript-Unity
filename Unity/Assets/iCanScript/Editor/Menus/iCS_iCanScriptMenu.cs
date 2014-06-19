@@ -7,9 +7,11 @@ public static class iCS_iCanScriptMenu {
 	[MenuItem("Edit/", false, 100)]
 	[MenuItem("Edit/iCanScript/Create Visual Script", false, 101)]
 	public static void CreateVisualScript() {
-		var visualScript = Selection.activeGameObject.GetComponent<iCS_VisualScriptImp>();
+        var gameObject= Selection.activeGameObject;
+        if(gameObject == null) return;
+		var visualScript= gameObject.GetComponent<iCS_VisualScriptImp>();
 		if(visualScript == null) {
-		    iCS_MenuUtility.InstallVisualScriptOn(Selection.activeGameObject);
+    		gameObject.AddComponent("iCS_VisualScript");
 		}
 	}
 	[MenuItem("Edit/iCanScript/Create Visual Script", true, 101)]
