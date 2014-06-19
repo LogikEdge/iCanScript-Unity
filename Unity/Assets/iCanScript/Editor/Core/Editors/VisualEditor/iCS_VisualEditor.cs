@@ -289,6 +289,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     // Processes all events.
+//    static int ourButton= -1;
     void ProcessEvents() {
 		var ev= Event.current;
 		// TODO: Should use undo/redo event to rebuild editor objects.
@@ -297,6 +298,29 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		//	IStorage.SynchronizeAfterUndoRedo();
 		//	Debug.Log("UndoRedo detected");
 	    //}
+
+//        // %%%%%%%%%%%%
+//        // UNITY 4.5 BUG: MouseUp / MouseDown event do not always work
+//        //-------------
+//        // This code directly reads the state of the mouse to reproduce
+//        // the MouseUp / MouseDown events. 
+//        if(ev.button > 0 || (ev.isMouse && ev.button == 0)) {
+//            if(ourButton != ev.button) {
+//                Debug.Log("Button down=> "+ev.button);
+//                MouseDownEvent();
+//            }
+//            ourButton= ev.button;
+//        }
+//        else {
+//            if(ourButton != -1) {
+//                Debug.Log("Button up=> "+ev.button);
+//                MouseUpEvent();
+//                myNeedRepaint= true;                
+//            }
+//            ourButton= -1;
+//        }
+//        // %%%%%%%%%%%%
+        
         switch(ev.type) {
             case EventType.Repaint: {
                 // Draw Graph.

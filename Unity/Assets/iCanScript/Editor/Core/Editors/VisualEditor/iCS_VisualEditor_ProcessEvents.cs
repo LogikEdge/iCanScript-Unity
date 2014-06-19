@@ -64,12 +64,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					if(SelectedObject.IsNode && IsDisplayRootKeyDown && IsDoubleClick &&
 					   !(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode)) {
                            if(SelectedObject == DisplayRoot) {
-                               if(IsShiftKeyDown && IStorage.HasBackwardNavigationHistory) {
+                              if(IsShiftKeyDown && IStorage.HasBackwardNavigationHistory) {
                                   iCS_UserCommands.ReloadFromBackwardNavigationHistory(IStorage);
                               }                               
                            }
                            else {
-       						iCS_UserCommands.SetAsDisplayRoot(SelectedObject);                               
+       					       iCS_UserCommands.SetAsDisplayRoot(SelectedObject);                               
                            }
 					}
                     IsDragEnabled= true;                                                    
@@ -116,7 +116,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             ProcessNodeDisplayOptionEvent();
                         }
                         else {
-                            Event.current.Use();
+//                            Event.current.Use();
                             iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 							if(pickInfo != null) {
 							    ProcessPicking(pickInfo);

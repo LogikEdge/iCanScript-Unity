@@ -167,7 +167,12 @@ public partial class iCS_EditorObject {
 	    get { return myIsSticky; }
 	    set { myIsSticky= value; }
 	}
-	
+	public bool IsDisplayRoot {
+	    get {
+            return this.InstanceId == Storage.DisplayRoot;
+	    }
+	}
+    
     // ======================================================================
     // Constructors/Builders
     // ----------------------------------------------------------------------

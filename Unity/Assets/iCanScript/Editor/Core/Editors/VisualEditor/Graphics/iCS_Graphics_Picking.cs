@@ -50,6 +50,7 @@ public partial class iCS_Graphics {
         if(Scale < 0.4f) return false;
         if(obj.IsIconizedOnDisplay) return false;
         if(obj.IsKindOfFunction || obj.IsInstanceNode) return false;
+        if(obj.IsDisplayRoot) return false;
         return (obj.IsKindOfPackage || obj.IsStateChart || obj.IsState);
     }
     Rect GetFoldIconPosition(iCS_EditorObject obj) {
@@ -68,6 +69,7 @@ public partial class iCS_Graphics {
     }
     bool ShouldDisplayMinimizeIcon(iCS_EditorObject obj) {
         if(Scale < 0.4f) return false;
+        if(obj.IsDisplayRoot) return false;
         return obj.InstanceId != 0 && obj.IsNode && !obj.IsIconizedOnDisplay;
     }
     Rect GetMinimizeIconPosition(iCS_EditorObject node) {
