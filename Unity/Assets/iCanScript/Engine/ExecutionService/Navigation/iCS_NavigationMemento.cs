@@ -55,4 +55,13 @@ public class iCS_NavigationMemento {
         return newMemento;
     }
     private iCS_NavigationMemento() {}
+    // ----------------------------------------------------------------------
+    public bool IsEquivalentTo(iCS_NavigationMemento other) {
+        if(ShowDisplayRootNode != other.ShowDisplayRootNode) return false;
+        if(ScrollPosition != other.ScrollPosition) return false;
+        if(GuiScale != other.GuiScale) return false;
+        if(SelectedObject != other.SelectedObject) return false;
+        if(DisplayRoot != other.DisplayRoot) return false;
+        return true;
+    }
 }

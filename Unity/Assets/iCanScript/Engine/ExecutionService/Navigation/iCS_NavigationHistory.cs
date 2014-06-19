@@ -84,4 +84,15 @@ public class iCS_NavigationHistory {
             }
         }
     }
+    // ----------------------------------------------------------------------
+    // Equivalence operator
+    public bool IsEquivalentTo(iCS_NavigationHistory other) {
+        if(myCursor != other.myCursor) return false;
+        for(int i= 0; i < myCursor; ++i) {
+            if(!myMementos[i].IsEquivalentTo(other.myMementos[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
