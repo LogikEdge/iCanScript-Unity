@@ -18,7 +18,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
     [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
     [HideInInspector] public iCS_NavigationHistory    NavigationHistory  = new iCS_NavigationHistory();
-                      public iCS_EngineObject         EngineObject       = null;
+    [HideInInspector] public iCS_EngineObject         EngineObject       = null;
 
     // ======================================================================
     // Visual Script Data Interface Implementation
@@ -106,7 +106,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // OLD STORAGE (TO BE REMOVED)
     // ----------------------------------------------------------------------
-    public iCS_StorageImp myStorage= null;
+    [HideInInspector] public iCS_StorageImp myStorage= null;
     public void v1_1_2_Upgrade() {
         if(myStorage != null) {
             iCS_VisualScriptData.CopyFromTo(myStorage, this);
