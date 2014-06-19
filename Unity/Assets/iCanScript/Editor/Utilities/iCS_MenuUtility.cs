@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Collections;
+using P=Prelude;
 
 public static class iCS_MenuUtility {
 
@@ -9,9 +10,8 @@ public static class iCS_MenuUtility {
     public static iCS_VisualScriptImp InstallVisualScriptOn(GameObject gameObject) {
         // Build new visual script with behviour node
 		var visualScript= gameObject.AddComponent("iCS_VisualScript") as iCS_VisualScriptImp;
-        iCS_IStorage iStorage= new iCS_IStorage(visualScript);
-        iStorage.CreateBehaviour(gameObject.name);
-        iStorage= null;
+        iCS_VisualScriptDataController.CreateRootBehaviourNode(visualScript);
+        iCS_VisualScriptDataController.CreateDefaultMessageHandlers(visualScript);
 
         // Install behaviour if not already present.
         UpdateBehaviourComponent(gameObject);
