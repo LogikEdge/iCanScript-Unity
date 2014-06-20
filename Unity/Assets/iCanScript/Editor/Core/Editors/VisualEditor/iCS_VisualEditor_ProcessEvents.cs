@@ -12,7 +12,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Fields
 	// ----------------------------------------------------------------------
 	iCS_ISubEditor		mySubEditor = null;
-    int                 myClickCount= 0;
     
     // ======================================================================
     // USER INTERACTIONS
@@ -95,8 +94,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void MouseUpEvent() {
-        float mouseUpDeltaTime= myCurrentTime-MouseUpTime;
-        MouseUpTime= myCurrentTime;
         if(IsDragStarted) {
             EndDrag();
         } else {
@@ -116,7 +113,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     // Fold/Unfold on double click.
                     if(SelectedObject == SelectedObjectBeforeMouseDown) {
                         if(myClickCount >= 2) {
-//                        if(mouseUpDeltaTime < 0.25f) {
                             ProcessNodeDisplayOptionEvent();
                         }
                         else {

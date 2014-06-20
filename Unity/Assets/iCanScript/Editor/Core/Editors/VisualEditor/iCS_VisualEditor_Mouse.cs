@@ -7,7 +7,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	Vector2 myMousePosition  = Vector2.zero;
 	Vector2 MouseDownPosition= Vector2.zero;
-	float   MouseUpTime      = 0f;
+    int     myClickCount     = 0;
+    
 
     // ======================================================================
     // Properties
