@@ -35,10 +35,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	void DrawGraph () {
         // Ask the storage to update itself.
         IStorage.Update();
-
 		// Start graphics
         myGraphics.Begin(UpdateScrollPosition(), UpdateScale(), ClipingArea, SelectedObject, GraphMousePosition);
-        
+
         // Draw editor grid.
 	    DrawGrid();			
         
