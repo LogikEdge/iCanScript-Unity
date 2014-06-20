@@ -11,7 +11,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-	iCS_ISubEditor		mySubEditor       = null;
+	iCS_ISubEditor		mySubEditor = null;
+    int                 myClickCount= 0;
     
     // ======================================================================
     // USER INTERACTIONS
@@ -52,6 +53,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void MouseDownEvent() {
 		MouseDownPosition= ViewportMousePosition;
+        // Update click count.
+        myClickCount= Event.current.clickCount;
         // Keep a copy of the scroll position.
         MouseDragStartPosition= ViewportMousePosition;
         DragStartDisplayPosition= ScrollPosition;
@@ -112,11 +115,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 } else {
                     // Fold/Unfold on double click.
                     if(SelectedObject == SelectedObjectBeforeMouseDown) {
-                        if(mouseUpDeltaTime < 0.25f) {
+                        if(myClickCount >= 2) {
+//                        if(mouseUpDeltaTime < 0.25f) {
                             ProcessNodeDisplayOptionEvent();
                         }
                         else {
-//                            Event.current.Use();
                             iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 							if(pickInfo != null) {
 							    ProcessPicking(pickInfo);
