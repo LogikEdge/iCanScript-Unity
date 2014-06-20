@@ -69,7 +69,7 @@ public partial class iCS_IStorage {
     }
 	public Vector2 ScrollPosition {
 	    get { return Storage.ScrollPosition; }
-	    set { Storage.ScrollPosition= value; }
+	    set { Storage.ScrollPosition= value; PersistentStorage.ScrollPosition= value; }
 	}
     public float GuiScale {
         get { return Storage.GuiScale; }
@@ -120,6 +120,10 @@ public partial class iCS_IStorage {
                     CreateDefaultObjectsForVisualScript();
                     SaveStorage();
                 }
+            }
+            // Reset display root if no navigation history present
+            if(!NavigationHistory.HasBackwardHistory && EditorObjects.Count > 0) {
+                iCS_UserCommands.SetAsDisplayRoot(EditorObjects[0]);
             }
             // Force a relayout
             ForceRelayout= true;
