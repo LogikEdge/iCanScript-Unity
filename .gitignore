@@ -94,3 +94,5 @@ user.lock
 /bin/staging/unityStoreFilesToInclude
 
 /Unity/Library/ShaderCache.db
+
+/Unity/Library/AnnotationManager
