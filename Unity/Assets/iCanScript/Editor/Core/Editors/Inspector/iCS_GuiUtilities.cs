@@ -173,7 +173,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(byte)) {
             byte value= (byte)currentValue;
             byte newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (byte)EditorGUILayout.IntField(n,(int)v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (byte)EditorGUILayout.IntField(n,(int)v), foldoutDB, true)) {
                 if(value != newValue) {
                     isDirty= true;                    
                 }
@@ -183,7 +183,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(sbyte)) {
             sbyte value= (sbyte)currentValue;
             sbyte newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (sbyte)EditorGUILayout.IntField(n,(int)v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (sbyte)EditorGUILayout.IntField(n,(int)v), foldoutDB, true)) {
                 if(value != newValue) {
                     isDirty= true;                    
                 }
@@ -199,7 +199,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(int)) {
             int value= (int)currentValue;
             int newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.IntField(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.IntField(n,v), foldoutDB, true)) {
                 if(value != newValue) {
                     isDirty= true;                    
                 }
@@ -209,7 +209,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(uint)) {
             string uintAsString= (string)Convert.ChangeType((uint)currentValue, typeof(string));
             string newValue= uintAsString;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB, true)) {
                 if(uintAsString.CompareTo(newValue) != 0) {
                     isDirty= true;                    
                 }
@@ -219,7 +219,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(short)) {
             short value= (short)currentValue;
             short newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (short)EditorGUILayout.IntField(n,(int)v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (short)EditorGUILayout.IntField(n,(int)v), foldoutDB, true)) {
                 if(value != newValue) {
                     isDirty= true;                    
                 }
@@ -229,7 +229,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(ushort)) {
             int value= (ushort)currentValue;
             int newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (ushort)EditorGUILayout.IntField(n,(int)v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> (ushort)EditorGUILayout.IntField(n,(int)v), foldoutDB, true)) {
                 if(value != newValue) {
                     isDirty= true;                    
                 }
@@ -239,7 +239,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(long)) {
             string longAsString= (string)Convert.ChangeType((long)currentValue, typeof(string));
             string newValue= longAsString;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB, true)) {
                 if(longAsString.CompareTo(newValue) != 0) {
                     isDirty= true;                    
                 }
@@ -249,7 +249,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(ulong)) {
             string ulongAsString= (string)Convert.ChangeType((ulong)currentValue, typeof(string));
             string newValue= ulongAsString;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB, true)) {
                 if(ulongAsString.CompareTo(newValue) != 0) {
                     isDirty= true;                    
                 }
@@ -259,7 +259,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(float)) {
             float value= (float)currentValue; 
             float newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.FloatField(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.FloatField(n,v), foldoutDB, true)) {
                 if(value != newValue) {
                     isDirty= true;                    
                 }
@@ -269,7 +269,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(double)) {
             string value= (string)Convert.ChangeType((double)currentValue, typeof(string));
             string newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB, true)) {
                 if(value != newValue) {
                     isDirty= true;                    
                 }
@@ -279,7 +279,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(decimal)) {
             float value= (float)((decimal)currentValue);
             float newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.FloatField(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.FloatField(n,v), foldoutDB, true)) {
                 if(value != newValue) {
                     isDirty= true;                    
                 }
@@ -289,7 +289,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(char)) {
             string value= ""+((char)currentValue);
             string newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB, true)) {
     			if(newValue == null || newValue == "" || newValue[0] == 0) newValue= " ";
                 if(value != newValue) {
                     isDirty= true;                    
@@ -300,7 +300,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(string)) {
             string value= ((string)currentValue) ?? "";
             string newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB, true)) {
                 if(value != newValue) {
                     isDirty= true;                    
                 }
@@ -311,7 +311,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(Vector2)) {
             Vector2 value= (Vector2)currentValue;
             Vector2 newValue= value;
-            if(ModalEdit(niceName, name, ref value, compositeParent, (n,v)=> EditorGUILayout.Vector2Field(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref value, compositeParent, (n,v)=> EditorGUILayout.Vector2Field(n,v), foldoutDB, true)) {
                 if(Math3D.IsNotEqual(value, newValue)) {
                     isDirty= true;                    
                 }
@@ -321,7 +321,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(Vector3)) {
             Vector3 value= (Vector3)currentValue;
             Vector3 newValue= value;
-            if(ModalEdit(niceName, name, ref value, compositeParent, (n,v)=> EditorGUILayout.Vector3Field(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref value, compositeParent, (n,v)=> EditorGUILayout.Vector3Field(n,v), foldoutDB, true)) {
                 if(Math3D.IsNotEqual(value, newValue)) {
                     isDirty= true;                    
                 }
@@ -331,7 +331,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(Vector4)) {
             Vector4 value= (Vector4)currentValue;
             Vector4 newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.Vector4Field(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.Vector4Field(n,v), foldoutDB, true)) {
                 if(Math3D.IsNotEqual(value, newValue)) {
                     isDirty= true;                    
                 }
@@ -341,7 +341,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(Color)) {
             Color value= (Vector4)currentValue;
             Color newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.Vector4Field(n,v), foldoutDB)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.Vector4Field(n,v), foldoutDB, true)) {
                 if(Math3D.IsNotEqual(newValue.r, value.r) ||
                    Math3D.IsNotEqual(newValue.g, value.g) ||
                    Math3D.IsNotEqual(newValue.b, value.b) ||
@@ -387,7 +387,19 @@ public static class iCS_GuiUtilities {
     }
 
     // ----------------------------------------------------------------------
-    static bool ModalEdit<T>(string niceName, string name, ref T currentValue, string parentName, Func<string,T,T> editor, Dictionary<string,object> db) {
+    static bool ModalEdit<T>(string niceName, string name, ref T currentValue, string parentName,
+                             Func<string,T,T> editor, Dictionary<string,object> db, bool noDelay= false) {
+        // No delay processing.
+        if(noDelay) {
+            GUI.changed= false;
+            T newValueNoDelay= editor(niceName, currentValue);
+            if(GUI.changed) {
+                currentValue= newValueNoDelay;
+                return true;
+            }
+            return false;
+        }
+        // Wait until keyboard moves to a different field.
         string controlName= parentName+"."+name;
 		if(!db.ContainsKey(controlName)) AddValue(db, controlName, currentValue);
         T value= (T)Value(db, controlName);

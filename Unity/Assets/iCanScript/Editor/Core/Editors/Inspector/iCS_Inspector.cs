@@ -1,3 +1,4 @@
+//#define BUFFERED_INPUT
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -34,7 +35,9 @@ public class iCS_Inspector : Editor {
     
 	// ----------------------------------------------------------------------
     // Keyboard input functions
+#if BUFFERED_INPUT
     iCS_BufferedTextField myNameEditor   = new iCS_BufferedTextField();
+#endif
     iCS_BufferedTextField myTooltipEditor= new iCS_BufferedTextField();
 
     
@@ -157,9 +160,17 @@ public class iCS_Inspector : Editor {
                 if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).RawName;
                 if(name == null || name == "") name= EmptyStr;
                 if(mySelectedObject.IsNameEditable) {
+#if BUFFERED_INPUT
                     myNameEditor.Update("Name", SelectedObject.RawName,
                         newName=> iCS_UserCommands.ChangeName(SelectedObject, newName)
                     );
+#else
+                    GUI.changed= false;
+                    var newName= EditorGUILayout.TextField("Name", SelectedObject.RawName);
+                    if(GUI.changed) {
+                        SelectedObject.RawName= newName;
+                    }
+#endif
                 } else {
                     EditorGUILayout.LabelField("Name", name);                    
                 }
