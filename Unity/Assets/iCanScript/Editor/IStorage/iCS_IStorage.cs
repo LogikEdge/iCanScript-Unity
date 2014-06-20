@@ -114,6 +114,14 @@ public partial class iCS_IStorage {
         if(oldMonoBehaviour != monoBehaviour) {
 			PerformEngineDataUpgrade();
             GenerateEditorData();
+            // Assure that we have the default nodes if visual script is empty.
+            if(EngineObjects.Count == 0) {
+                if(monoBehaviour is iCS_VisualScriptImp) {
+                    CreateDefaultObjectsForVisualScript();
+                    SaveStorage();
+                }
+            }
+            // Force a relayout
             ForceRelayout= true;
         }
     }

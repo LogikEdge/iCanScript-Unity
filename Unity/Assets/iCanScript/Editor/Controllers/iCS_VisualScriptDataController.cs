@@ -39,15 +39,6 @@ public static class iCS_VisualScriptDataController {
                 myIsPlaying= Application.isPlaying;
                 return;                
         }
-        // Create a root object if one does not exist.
-        var visualScript= monoBehaviour as iCS_VisualScriptImp;
-        if(visualScript != null) {
-            iCS_IVisualScriptData vsd= monoBehaviour;
-            if(vsd.EngineObjects.Count == 0) {
-                CreateRootBehaviourNode(visualScript);
-                CreateDefaultMessageHandlers(visualScript);
-            }
-        }
 		// Verify for storage change.
         bool isPlaying= Application.isPlaying;
 		if(myIStorage == null || myIStorage.iCSMonoBehaviour != monoBehaviour || myIsPlaying != isPlaying) {
@@ -56,24 +47,6 @@ public static class iCS_VisualScriptDataController {
 			return;
 		}
 	}
-    // ---------------------------------------------------------------------------------
-    public static void CreateRootBehaviourNode(iCS_VisualScriptImp visualScript) {
-        var behaviour= new iCS_EngineObject(0, visualScript.name+"::Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour);
-        visualScript.EngineObjects.Add(behaviour);        
-    }
-
-    // ---------------------------------------------------------------------------------
-    public static void CreateDefaultMessageHandlers(iCS_VisualScriptImp visualScript) {
-        var behaviourObject= visualScript.EngineObjects[0];
-        iCS_IStorage iStorage= new iCS_IStorage(visualScript);
-        var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
-        var update= P.filter(o=> o.DisplayName == "Update", messages);
-        if(update.Length ==  1) {
-            iStorage.CreateMessageHandler(behaviourObject.InstanceId, update[0]);            
-        }
-        iStorage.SaveStorage();
-        iStorage= null;   
-    }
     
     // ---------------------------------------------------------------------------------
     public static bool IsSameVisualScript(iCS_IStorage iStorage, iCS_VisualScriptData storage) {
