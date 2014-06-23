@@ -9,7 +9,7 @@ public static class iCS_GizmoController {
     // Fields
     // ---------------------------------------------------------------------------------
     public const string GizmosFolder   = "Gizmos";
-	public const string SourceGizmoIcon= "iCS_Logo128x128.png";
+	public const string SourceGizmoIcon= "iCS_Logo_128x128.png";
     public const string GizmoIcon      = "iCanScriptGizmo.png";
           
     // ---------------------------------------------------------------------------------

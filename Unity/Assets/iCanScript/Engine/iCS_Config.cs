@@ -5,8 +5,8 @@ public static class iCS_Config {
     // ----------------------------------------------------------------------
     // Product descriptions. 
 	public const uint   MajorVersion = 1;
-	public const uint   MinorVersion = 2;
-	public const uint   BugFixVersion= 0;
+	public const uint   MinorVersion = 1;
+	public const uint   BugFixVersion= 3;
     public const string ProductName= "iCanScript";
     public const string ProductAcronym= "iCS";
 	public const string ProductPrefix= ProductAcronym+"_";

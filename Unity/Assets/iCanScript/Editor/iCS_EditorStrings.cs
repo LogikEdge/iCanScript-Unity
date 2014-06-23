@@ -3,10 +3,10 @@ using System.Collections;
 
 public class iCS_EditorStrings {
     // Icons
-	public const string TitleLogoIcon        = "iCS_Logo16x16.png";
-	public const string LogoIcon             = "iCS_Logo64x64.png";
-    public const string LargeLogoIcon        = "iCS_Logo128x128.png";
-	public const string GizmoIcon            = "iCS_Logo128x128.png";
+	public const string TitleLogoIcon        = "iCS_Logo_16x16.png";
+	public const string LogoIcon             = "iCS_Logo_64x64.png";
+    public const string LargeLogoIcon        = "iCS_Logo_128x128.png";
+	public const string GizmoIcon            = "iCS_Logo_128x128.png";
 	public const string FoldedIcon           = "iCS_FoldedIcon.psd";
 	public const string UnfoldedIcon         = "iCS_UnfoldedIcon.psd";
 	public const string MinimizeIcon         = "iCS_MinimizeIcon.psd";
