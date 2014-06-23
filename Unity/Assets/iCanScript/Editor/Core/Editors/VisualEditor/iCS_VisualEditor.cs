@@ -1,4 +1,4 @@
-//#define SHOW_FRAME_RATE
+#define SHOW_FRAME_RATE
 //#define SHOW_FRAME_TIME
 //#define FORCE_REPAINT
 
@@ -195,7 +195,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }            
             
             // Repaint visual editor if it has changed
-            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
+            if(/*IStorage.IsDirty ||*/ IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
                 Repaint();
                 myNeedRepaint= true;
             }
