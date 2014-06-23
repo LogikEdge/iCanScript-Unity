@@ -42,7 +42,6 @@ public partial class iCS_IStorage {
                 changed= true;
             }
         }
-        myIsDirty|= changed;
         return changed;
     }
     // ----------------------------------------------------------------------
@@ -62,7 +61,6 @@ public partial class iCS_IStorage {
                 changed= true;
             }
         }
-        myIsDirty|= changed;
         return changed;
     }
     

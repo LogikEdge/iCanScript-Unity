@@ -76,7 +76,7 @@ public class iCS_Inspector : Editor {
     // Bring up the graph editor window when the inspector is activated.
     void UpdateVariables() {
         // Verify that the target reflects the selected storage.
-        iCS_EditorController.Update();
+        iCS_VisualScriptDataController.Update();
         var monoBehaviour= target as iCS_MonoBehaviourImp;
         if(monoBehaviour == null || !iCS_VisualScriptDataController.IsSameVisualScript(monoBehaviour, iCS_VisualScriptDataController.IStorage)) {
             myIStorage= null;
@@ -168,7 +168,7 @@ public class iCS_Inspector : Editor {
                     GUI.changed= false;
                     var newName= EditorGUILayout.TextField("Name", SelectedObject.RawName);
                     if(GUI.changed) {
-                        SelectedObject.RawName= newName;
+                        iCS_UserCommands.ChangeName(SelectedObject, newName);
                     }
 #endif
                 } else {

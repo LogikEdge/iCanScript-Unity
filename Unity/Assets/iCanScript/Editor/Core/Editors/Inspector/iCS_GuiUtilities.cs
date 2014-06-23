@@ -51,6 +51,7 @@ public static class iCS_GuiUtilities {
             iCS_UserCommands.OpenTransaction(iStorage);
 			port.PortValue= newPortValue;
             iCS_UserCommands.CloseTransaction(iStorage, "Change port value => "+port.Name);
+            iCS_EditorController.RepaintEditorsWithValues();
         }
     }
 
