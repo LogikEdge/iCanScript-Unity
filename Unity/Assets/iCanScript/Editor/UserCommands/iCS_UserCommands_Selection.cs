@@ -14,6 +14,7 @@ public static partial class iCS_UserCommands {
         if(obj != null && obj.IsNode && obj.IsParentOf(iStorage.DisplayRoot)) {
             iCS_UserCommands.SetAsDisplayRoot(obj);
         }
+        iCS_EditorController.RepaintInstanceEditor();
 	}
     // ----------------------------------------------------------------------
 	public static void ToggleMultiSelection(iCS_EditorObject obj) {
