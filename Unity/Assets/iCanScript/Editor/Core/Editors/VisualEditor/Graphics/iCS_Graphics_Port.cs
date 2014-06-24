@@ -57,9 +57,9 @@ public partial class iCS_Graphics {
 	}
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortName(iCS_EditorObject port) {
+        if(!ShouldShowLabel()) return false;
         if(port.IsChildMuxPort) return false;
         if(port.IsStatePort || port.IsTransitionPort) return false;
-        if(!ShouldShowLabel()) return false;
         if(!port.IsVisibleOnDisplay) return false;
         var parent= port.ParentNode;
         if(parent.IsIconizedOnDisplay) return false;
@@ -127,11 +127,12 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortValue(iCS_EditorObject port) {
+        if(!ShouldShowLabel()) return false;
+        if(ShouldDisplayPortName(port) == false) return false;
 		if(port.IsParentMuxPort && Application.isPlaying && Prefs.ShowRuntimePortValue) {
 			return true;
 		}
         if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
-        if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if((port.IsInputPort || port.IsKindOfPackagePort) && port.ProviderPortId != -1) {
             var sourcePort= port.ProviderPort;
