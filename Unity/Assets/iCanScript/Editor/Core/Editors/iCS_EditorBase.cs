@@ -58,6 +58,22 @@ public class iCS_EditorBase : EditorWindow {
     }
     
     // =================================================================================
+    // Common processing.
+    // ---------------------------------------------------------------------------------
+    public void OnSelectionChange() {
+        UpdateMgr();
+        Repaint();
+    }
+    public void OnHierarchyChange() {
+        UpdateMgr();
+        Repaint();
+    }
+    public void OnProjectChange() {
+        UpdateMgr();
+        Repaint();
+    }
+
+    // =================================================================================
     // Update the editor manager.
     // ---------------------------------------------------------------------------------
     protected void UpdateMgr() {
