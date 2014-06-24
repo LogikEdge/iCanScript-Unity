@@ -1,4 +1,4 @@
-#define SHOW_FRAME_RATE
+//#define SHOW_FRAME_RATE
 //#define SHOW_FRAME_TIME
 //#define FORCE_REPAINT
 

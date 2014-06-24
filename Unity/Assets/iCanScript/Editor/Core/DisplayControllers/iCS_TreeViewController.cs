@@ -1,3 +1,4 @@
+//define BUFFERED_INPUT
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -27,8 +28,9 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
     // =================================================================================
     // Specialized editors
     // ---------------------------------------------------------------------------------
+#if BUFFERED_INPUT
     iCS_BufferedTextField   myNameEditor= new iCS_BufferedTextField();
-
+#endif
 
     // =================================================================================
     // Properties
