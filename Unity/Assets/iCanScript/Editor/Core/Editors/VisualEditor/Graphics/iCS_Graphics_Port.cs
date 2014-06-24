@@ -57,28 +57,24 @@ public partial class iCS_Graphics {
 	}
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortName(iCS_EditorObject port) {
+        if(!ShouldShowLabel()) return false;
         if(port.IsChildMuxPort) return false;
         if(port.IsStatePort || port.IsTransitionPort) return false;
-        if(!ShouldShowLabel()) return false;
         if(!port.IsVisibleOnDisplay) return false;
         var parent= port.ParentNode;
         if(parent.IsIconizedOnDisplay) return false;
-        if(port.IsVisualEndPort && !port.IsParentMuxPort) return true;
-        var source= port.ProviderPort;
-        if(source != null && source.IsVisibleOnDisplay && !source.ParentNode.IsIconizedOnDisplay) return false;
-        if(port.IsParentMuxPort) {
-            bool isChildNameVisible= false;
-            port.ForEachChildPort(
-                c=> {
-                    var src= c.ProviderPort;
-                    if(src != null && src.IsVisibleOnDisplay && !src.ParentNode.IsIconizedOnDisplay) {
-                        isChildNameVisible= true;
-                    }
-                }
-            );
-            return !isChildNameVisible;
+        if(port.IsEndPort) return true;
+        var provider= port.ProviderPort;
+        if(provider == null) return true;
+        if(!provider.IsVisibleOnDisplay) return true;
+        if(provider.ParentNode.IsIconizedOnDisplay) return true;
+        var consumerPorts= port.ConsumerPorts;
+        foreach(var cp in consumerPorts) {
+            if(cp.IsVisibleOnDisplay && !cp.ParentNode.IsIconizedOnDisplay) {
+                return false;
+            }
         }
-        return true;        
+        return true;
     }
     // ----------------------------------------------------------------------
     // Returns the port name size in GUI scale.
@@ -131,11 +127,12 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortValue(iCS_EditorObject port) {
+        if(!ShouldShowLabel()) return false;
+        if(ShouldDisplayPortName(port) == false) return false;
 		if(port.IsParentMuxPort && Application.isPlaying && Prefs.ShowRuntimePortValue) {
 			return true;
 		}
         if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
-        if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if((port.IsInputPort || port.IsKindOfPackagePort) && port.ProviderPortId != -1) {
             var sourcePort= port.ProviderPort;

@@ -103,17 +103,17 @@ public partial class iCS_Graphics {
     // ======================================================================
     // GUI Warppers
 	// ----------------------------------------------------------------------
-    bool IsVisible(Vector2 point, float radius= 0f) {
-        return IsVisible(new Rect(point.x-radius, point.y-radius, 2f*radius, 2f*radius));
+    bool IsVisibleInViewport(Vector2 point, float radius= 0f) {
+        return IsVisibleInViewport(new Rect(point.x-radius, point.y-radius, 2f*radius, 2f*radius));
     }
 	// ----------------------------------------------------------------------
-    bool IsVisible(Rect r) {
+    bool IsVisibleInViewport(Rect r) {
         Rect intersection= Clip(r);
         return Math3D.IsNotZero(intersection.width) && Math3D.IsNotZero(intersection.height);        
     }
 	// ----------------------------------------------------------------------
-    bool IsFullyVisible(Rect r) {
-        return (IsVisible(new Vector2(r.x, r.y)) && IsVisible(new Vector2(r.xMax, r.yMax)));
+    bool IsFullyVisibleInViewport(Rect r) {
+        return (IsVisibleInViewport(new Vector2(r.x, r.y)) && IsVisibleInViewport(new Vector2(r.xMax, r.yMax)));
     }
 	// ----------------------------------------------------------------------
     Rect Clip(Rect r) {
@@ -432,7 +432,7 @@ public partial class iCS_Graphics {
         
         // Don't display if we are outside the clipping area.
         Rect position= node.AnimatedRect;
-        if(!IsVisible(position)) return;
+        if(!IsVisibleInViewport(position)) return;
 
         // Draw node since all draw conditions are valid.
         GUI.color= new Color(1f, 1f, 1f, node.DisplayAlpha);
@@ -477,7 +477,7 @@ public partial class iCS_Graphics {
         // Draw minimized node (if visible).
         Rect displayRect= node.AnimatedRect;
         Rect displayArea= new Rect(displayRect.x-100f, displayRect.y-16f, displayRect.width+200f, displayRect.height+16f);
-        if(!IsVisible(displayArea)) return;
+        if(!IsVisibleInViewport(displayArea)) return;
 
 		Color alphaWhite= new Color(1f, 1f, 1f, node.DisplayAlpha);
         GUI.color= alphaWhite;
@@ -605,7 +605,7 @@ public partial class iCS_Graphics {
 		if(port.IsOnRightEdge) portCenter.x-= 1f/Scale;   // Small adjustement realign right ports on visual edge.
 		float portRadius= iCS_EditorConfig.PortRadius;
         Rect displayArea= new Rect(portCenter.x-200f, portCenter.y-2f*portRadius, 400f, 4f*portRadius);
-        if(!IsVisible(displayArea)) return;
+        if(!IsVisibleInViewport(displayArea)) return;
         
         // Determine if port is selected.
         bool isSelectedPort= port.IStorage.IsSelectedOrMultiSelected(port) ||
@@ -914,7 +914,7 @@ public partial class iCS_Graphics {
         var portPos= port.AnimatedPosition;
         var sourcePos= source.AnimatedPosition;
         Rect displayArea= Math3D.Union(new Rect(portPos.x, portPos.y, 1f, 1f), new Rect(sourcePos.x, sourcePos.y, 1f, 1f));
-        if(!IsVisible(displayArea)) return;
+        if(!IsVisibleInViewport(displayArea)) return;
 
         // Set connection alpha according to port alpha.
         var alpha= port.DisplayAlpha*source.DisplayAlpha;
