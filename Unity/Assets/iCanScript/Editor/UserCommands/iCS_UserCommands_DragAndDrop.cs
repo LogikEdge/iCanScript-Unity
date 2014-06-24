@@ -20,7 +20,8 @@ public static partial class iCS_UserCommands {
         string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
         node.IconGUID= iconGUID;                    
         node.LayoutNode();
-	    iStorage.SaveStorage("Change Icon");			
+	    iStorage.SaveStorage("Change Icon");
+        iCS_EditorController.RepaintEditorsWithLabels();			
         return true;
     }
 	// ----------------------------------------------------------------------

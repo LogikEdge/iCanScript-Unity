@@ -57,7 +57,8 @@ public partial class iCS_IStorage {
         EditorUtility.SetDirty(iCSMonoBehaviour);
         IsTransactionOpened= false;
         ++ModificationId;
-        iCS_EditorController.Update();
+//        iCS_EditorController.Update();
+        iCS_EditorController.RepaintAllEditors();
     }
     // ----------------------------------------------------------------------
     public void GenerateEditorData() {

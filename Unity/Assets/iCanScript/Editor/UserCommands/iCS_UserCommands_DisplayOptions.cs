@@ -22,8 +22,7 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 node.Unfold();
-                LayoutChildNodes(node);
-                node.LayoutNodeAndParents();
+                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
             }
         );
         SendEndRelayoutOfTree(iStorage);
@@ -44,11 +43,11 @@ public static partial class iCS_UserCommands {
             _=> {
                 if(node.IsKindOfFunction || node.IsInstanceNode) {
                     node.Unfold();
-                    node.LayoutNodeAndParents();
+                    iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 }
                 else {
                     node.Fold();
-                    node.LayoutNodeAndParents();
+                    iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 }
             }
         );
@@ -69,27 +68,11 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 node.Iconize();
-                node.LayoutNodeAndParents();
+                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
             }
         );
         SendEndRelayoutOfTree(iStorage);
         iStorage.SaveStorage("Iconize "+node.Name);
     }
 
-    // ======================================================================
-    // Utilities
-	// ----------------------------------------------------------------------
-    private static void LayoutChildNodes(iCS_EditorObject parent) {
-        parent.ForEachChildNode(
-            c=> {
-                if(c.IsUnfoldedInLayout) {
-                    LayoutChildNodes(c);
-                }
-                else {
-                    c.LayoutNode();
-                }
-            }
-        );
-        parent.LayoutNode();
-    }
 }

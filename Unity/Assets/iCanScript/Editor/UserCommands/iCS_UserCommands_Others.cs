@@ -53,6 +53,7 @@ public static partial class iCS_UserCommands {
             }
         );
         obj.IStorage.SaveStorage("Change name => "+name);
+        iCS_EditorController.RepaintEditorsWithLabels();
     }
     // ----------------------------------------------------------------------
     public static void AutoLayoutPort(iCS_EditorObject port) {

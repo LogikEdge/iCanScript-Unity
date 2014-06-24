@@ -17,7 +17,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
-    const float kUpdateRate= 15f;   // time/seconds.
+    const float kUpdateRate= 30f;   // time/seconds.
     
     // ======================================================================
     // Properties
@@ -195,7 +195,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }            
             
             // Repaint visual editor if it has changed
-            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
+            if(IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
                 Repaint();
                 myNeedRepaint= true;
             }

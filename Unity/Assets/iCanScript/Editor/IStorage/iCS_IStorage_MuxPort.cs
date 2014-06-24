@@ -22,7 +22,6 @@ public partial class iCS_IStorage {
 		// Remove mux port if no children exist.
 		if(nbChildPorts == 0) {
 			DestroyInstance(port);
-			IsDirty= true;
 			return;
 		}
 		// Transform mux port to standard dynamic port if only one child port exist.
@@ -35,7 +34,6 @@ public partial class iCS_IStorage {
 			} else {
 				DestroyInstance(port);
 			}
-			IsDirty= true;
 			return;
 		}
 		// Adjust the indexes of the child ports.

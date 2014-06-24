@@ -33,13 +33,11 @@ public static class iCS_EditorController {
     // =================================================================================
     // Event distribution.
     // ---------------------------------------------------------------------------------
-	public static void Update() {
-        // Update storage information for selected object.
-		iCS_VisualScriptDataController.Update();
-        foreach(var editor in myEditors) {
-            editor.Repaint();
-        }
-	}
+//	public static void Update() {
+//        // Update storage information for selected object.
+//		iCS_VisualScriptDataController.Update();
+//        RepaintAllEditors();
+//	}
 	
     // =================================================================================
     // Search/Iterations
@@ -94,9 +92,6 @@ public static class iCS_EditorController {
     public static EditorWindow FindLibraryEditorWindow() {
         return FindWindow<iCS_LibraryEditor>();
     }    
-//    public static EditorWindow FindInspectorWindow() {
-//        
-//    }
     // ======================================================================
     public static iCS_VisualEditor FindVisualEditor() {
         return FindWindow(typeof(iCS_VisualEditor)) as iCS_VisualEditor;
@@ -120,16 +115,40 @@ public static class iCS_EditorController {
 			editor.Repaint();			
 		}
 	}
+    public static void RepaintInstanceEditor() {
+		var editor= FindInstanceEditor();
+		if(editor != null) {
+			editor.Repaint();			
+		}
+    }
+    public static void RepaintTreeViewEditor() {
+		var editor= FindTreeViewEditor();
+		if(editor != null) {
+			editor.Repaint();			
+		}
+    }
+    public static void RepaintLibraryEditor() {
+		var editor= FindLibraryEditor();
+		if(editor != null) {
+			editor.Repaint();			
+		}
+    }
 	public static void RepaintPreferencesEditor() {
 		var editor= FindPreferencesEditor();
 		if(editor != null) {
 			editor.Repaint();			
 		}
 	}
-//    public static void RepaintInspector() {
-//        var editor= FindInspector();
-//        if(editor != null) {
-//            editor.Repaint();
-//        }
-//    }
+    public static void RepaintAllEditors() {
+        foreach(var editor in myEditors) {
+            editor.Repaint();
+        }
+    }
+    public static void RepaintEditorsWithLabels() {
+        RepaintVisualEditor();
+        RepaintTreeViewEditor();
+    }
+    public static void RepaintEditorsWithValues() {
+        RepaintVisualEditor();
+    }
 }

@@ -11,7 +11,6 @@ public partial class iCS_IStorage {
     // Fields
     // ----------------------------------------------------------------------
             bool                    myForceRelayout     = true;
-            bool                    myIsDirty           = true;
     public  bool                    IsTransactionOpened = false;
     public  iCS_MonoBehaviourImp    iCSMonoBehaviour    = null;
     public  iCS_VisualScriptData    Storage             = null;
@@ -77,13 +76,6 @@ public partial class iCS_IStorage {
     }
     public int UndoRedoId {
         get { return Storage.UndoRedoId; }
-    }
-    public bool IsDirty {
-        get { return myIsDirty; }
-        set {
-            myIsDirty= value;
-            if(value) ++ModificationId;
-        }
     }
     public iCS_EditorObject this[int id] {
         get {

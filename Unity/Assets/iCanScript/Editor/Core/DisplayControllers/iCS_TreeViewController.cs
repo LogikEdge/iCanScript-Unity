@@ -1,3 +1,4 @@
+//define BUFFERED_INPUT
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -27,8 +28,9 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
     // =================================================================================
     // Specialized editors
     // ---------------------------------------------------------------------------------
+#if BUFFERED_INPUT
     iCS_BufferedTextField   myNameEditor= new iCS_BufferedTextField();
-
+#endif
 
     // =================================================================================
     // Properties
@@ -271,9 +273,11 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void ProcessNameChange(Rect pos, Rect frameArea) {
         var rect= new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f);
-        myNameEditor.Update(rect, IterValue.RawName,
-            newName=> iCS_UserCommands.ChangeName(IterValue, newName)
-        );
+        GUI.changed= false;
+        var newName= EditorGUI.TextField(rect, IterValue.RawName);
+        if(GUI.changed) {
+            iCS_UserCommands.ChangeName(IterValue, newName);            
+        }
     }
     // ---------------------------------------------------------------------------------
 	public object	CurrentObjectKey() {
