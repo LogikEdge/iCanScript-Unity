@@ -63,22 +63,18 @@ public partial class iCS_Graphics {
         if(!port.IsVisibleOnDisplay) return false;
         var parent= port.ParentNode;
         if(parent.IsIconizedOnDisplay) return false;
-        if(port.IsVisualEndPort && !port.IsParentMuxPort) return true;
-        var source= port.ProviderPort;
-        if(source != null && source.IsVisibleOnDisplay && !source.ParentNode.IsIconizedOnDisplay) return false;
-        if(port.IsParentMuxPort) {
-            bool isChildNameVisible= false;
-            port.ForEachChildPort(
-                c=> {
-                    var src= c.ProviderPort;
-                    if(src != null && src.IsVisibleOnDisplay && !src.ParentNode.IsIconizedOnDisplay) {
-                        isChildNameVisible= true;
-                    }
-                }
-            );
-            return !isChildNameVisible;
+        if(port.IsEndPort) return true;
+        var provider= port.ProviderPort;
+        if(provider == null) return true;
+        if(!provider.IsVisibleOnDisplay) return true;
+        if(provider.ParentNode.IsIconizedOnDisplay) return true;
+        var consumerPorts= port.ConsumerPorts;
+        foreach(var cp in consumerPorts) {
+            if(cp.IsVisibleOnDisplay && !cp.ParentNode.IsIconizedOnDisplay) {
+                return false;
+            }
         }
-        return true;        
+        return true;
     }
     // ----------------------------------------------------------------------
     // Returns the port name size in GUI scale.
