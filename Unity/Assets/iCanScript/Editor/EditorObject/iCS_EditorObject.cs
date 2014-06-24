@@ -304,7 +304,6 @@ public partial class iCS_EditorObject {
         myId= id;
 		var parent= Parent;
 		if(parent != null) parent.AddChild(this);
-//        IsDirty= true;
     }
     // ----------------------------------------------------------------------
 	public static void RebuildFromEngineObjects(iCS_IStorage iStorage) {
@@ -340,7 +339,6 @@ public partial class iCS_EditorObject {
         int id= toAdd.InstanceId;
         if(Prelude.elem(id, myChildren.ToArray())) return;
         myChildren.Add(id);
-//		IsDirty= true;
     }
     // ----------------------------------------------------------------------
     public void RemoveChild(iCS_EditorObject toDelete) {
@@ -348,7 +346,6 @@ public partial class iCS_EditorObject {
         for(int i= 0; i < myChildren.Count; ++i) {
             if(myChildren[i] == id) {
                 myChildren.RemoveAt(i);
-//				IsDirty= true;
                 return;
             }
         }
@@ -370,7 +367,6 @@ public partial class iCS_EditorObject {
         int i= 0;
         Prelude.forEach(c=> Children[i++]= c, orderedChildren);
         Prelude.forEach(c=> Children[i++]= c, others);
-//		IsDirty= true;
     }
 
 }

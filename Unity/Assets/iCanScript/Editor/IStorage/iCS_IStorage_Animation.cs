@@ -45,6 +45,16 @@ public partial class iCS_IStorage {
         myAnimationTime.Reset();
     }
     // ----------------------------------------------------------------------
+    public void ResetAllAnimationPositions() {
+        ForEach(
+            obj => {
+                if(IsVisibleInLayout(obj)) {
+                    obj.ResetAnimationRect(obj.LayoutRect);
+                }
+            }
+        );
+    }
+    // ----------------------------------------------------------------------
     public void TakeAnimationSnapshotForAll() {
         int len= EditorObjects.Count;
         myWasPresent= new bool[len];
@@ -59,7 +69,9 @@ public partial class iCS_IStorage {
             myWasPresent[i]= true;
             myWasVisible[i]= IsVisibleInLayout(obj);
             // Get copy of the initial position.
-            obj.ResetAnimationRect(obj.LayoutRect);
+            if(obj == DisplayRoot || DisplayRoot.IsParentOf(obj)) {
+                obj.ResetAnimationRect(obj.LayoutRect);
+            }
         }
     }
     // ----------------------------------------------------------------------
@@ -67,7 +79,7 @@ public partial class iCS_IStorage {
         // Update animated objects.
         myAnimatedObjects.Clear();
         myAnimationTime.Start(Prefs.AnimationTime);
-        ForEach(
+        ForEachRecursiveDepthFirst(DisplayRoot,
             obj => {
                 bool isVisible= IsVisibleInLayout(obj);
                 bool wasVisible= WasVisible(obj);

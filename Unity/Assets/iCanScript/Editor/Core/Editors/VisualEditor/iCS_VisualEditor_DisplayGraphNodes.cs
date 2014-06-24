@@ -88,6 +88,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         floatingRootNode= node;
                     } else {
 						if( !node.IsParentFloating ) {
+                            if(node == rootNode) {
+                            }
 	                        myGraphics.DrawNormalNode(node, IStorage);							
 						}
                     }

@@ -35,7 +35,8 @@ public partial class iCS_EditorObject {
 	            for(int j= i+1; j < children.Length; ++j) {
 					var c2= children[j];
 	                if(c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i],
-															  ref childRect[j])) {
+															  ref childRect[j],
+                                                              r < 2)) {
 					    didCollide= true;	
 					}
 					if(c1.LayoutPriority > c2.LayoutPriority) {
@@ -58,16 +59,17 @@ public partial class iCS_EditorObject {
     // Resolves collision between two nodes. "true" is returned if a collision
     // has occured.
     public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject theOtherNode,
-												ref Rect myRect, ref Rect theOtherRect) {
+												ref Rect myRect, ref Rect theOtherRect,
+                                                bool useAnchor= true) {
         // Nothing to do if they don't collide.
         if(!DoesCollideWithMargins(myRect, theOtherRect)) {
 			return false;
 		}
-
+        
         // Compute penetration.
         Vector2 penetration= GetSeperationVector(theOtherNode,
 												 myRect,
-												 theOtherRect);
+												 theOtherRect, useAnchor);
 		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) {
 			return false;
 		}
@@ -100,7 +102,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	// Returns the seperation vector of two colliding nodes.  The vector
 	// returned is the smallest distance to remove the overlap.
-	Vector2 GetSeperationVector(iCS_EditorObject theOther, Rect myRect, Rect otherRect) {
+	Vector2 GetSeperationVector(iCS_EditorObject theOther, Rect myRect, Rect otherRect, bool useAnchor= true) {
         myRect= AddMargins(myRect);
 		// No collision if X & Y distance of the enclosing rect is either
 		// larger or higher then the total width/height.
@@ -118,9 +120,13 @@ public partial class iCS_EditorObject {
 		// smallest distance to remove the overlap.  The separtion
 		// must also respect the anchor position relationship
 		// between the two overalpping nodes.
-		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
-		float sepX= anchorSepDir.x > 0 ? totalWidth-xDistance : xDistance-totalWidth;
-		float sepY= anchorSepDir.y > 0 ? totalHeight-yDistance : yDistance-totalHeight;
+        float sepX= totalWidth-xDistance;
+        float sepY= totalHeight-yDistance;
+        if(useAnchor) {
+    		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
+    		if(anchorSepDir.x <= 0) sepX= xDistance-totalWidth;
+    		if(anchorSepDir.y <= 0) sepY= yDistance-totalHeight;            
+        }
 		if(Mathf.Abs(sepX) < Mathf.Abs(sepY)) {
 			return new Vector2(sepX, 0);
 		}
@@ -140,7 +146,6 @@ public partial class iCS_EditorObject {
 		var parent= ParentNode;
 		if(parent != null) parent.ReduceChildrenLayoutPriority();
 		LayoutPriority= 0;
-//		IsDirty=true;
 		if(parent != null) parent.SetAsHighestLayoutPriority();
 	}
 }
