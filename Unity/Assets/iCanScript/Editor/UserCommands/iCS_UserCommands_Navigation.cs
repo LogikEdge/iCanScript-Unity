@@ -11,6 +11,7 @@ public static partial class iCS_UserCommands {
         iStorage.SaveNavigationState();
         iStorage.DisplayRoot= obj;
         iStorage.ForcedRelayoutOfTree(obj);
+        iStorage.ResetAllAnimationPositions();
         SendDisplayRootChange(iStorage);
         iStorage.SaveStorage();
     }
