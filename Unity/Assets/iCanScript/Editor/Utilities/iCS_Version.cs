@@ -50,10 +50,10 @@ public class iCS_Version {
 	}
 
     // ----------------------------------------------------------------------
-	public bool IsNewerOrSameAs(iCS_Version other) {
-		return IsNewerOrSameAs(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
+	public bool IsNewerOrEqualTo(iCS_Version other) {
+		return IsNewerOrEqualTo(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
 	}
-	public bool IsNewerOrSameAs(uint major, uint minor, uint bugFix) {
+	public bool IsNewerOrEqualTo(uint major, uint minor, uint bugFix) {
 		if(MajorVersion > major) return true;
 		if(MajorVersion < major) return false;
 		if(MinorVersion > minor) return true;
@@ -73,10 +73,10 @@ public class iCS_Version {
 		return BugFixVersion < bugFix;
 	}
     // ----------------------------------------------------------------------
-	public bool IsOlderOrSameAs(iCS_Version other) {
-		return IsOlderOrSameAs(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
+	public bool IsOlderOrEqualTo(iCS_Version other) {
+		return IsOlderOrEqualTo(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
 	}
-	public bool IsOlderOrSameAs(uint major, uint minor, uint bugFix) {
+	public bool IsOlderOrEqualTo(uint major, uint minor, uint bugFix) {
 		if(MajorVersion < major) return true;
 		if(MajorVersion > major) return false;
 		if(MinorVersion < minor) return true;

@@ -5,11 +5,13 @@ using System.Collections;
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	void PerformEngineDataUpgrade() {
+        bool isUpgraded= false;
+        
         // Special case for v1.1.2 that used a seperate ScriptableObject as
         // visual script data storage
-		iCS_Version softwareVersion= new iCS_Version(iCS_Config.MajorVersion, iCS_Config.MinorVersion, iCS_Config.BugFixVersion);
+		iCS_Version softwareVersion= iCS_Version.Current;
         if(iCSMonoBehaviour.myStorage != null) {
-			ShowUpgradeDialog(softwareVersion);
+			ShowUpgradeDialog(softwareVersion); 
 			v1_1_2_Upgrade();
 			SaveCurrentScene();            
         }
@@ -17,9 +19,22 @@ public partial class iCS_IStorage {
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
 		// v1.1.2: Need to convert behaviour module to message 
-		if(!storageVersion.IsOlderThen(1,1,2)) {
+		if(storageVersion.IsOlderThen(1,1,2)) {
             // Already done...
 		}
+        // v1.2.0 Needs to convert "this" port name to "type instance"
+		if(storageVersion.IsOlderThen(1,2,0)) {
+            foreach(var obj in PersistentStorage.EngineObjects) {
+                if(obj.IsDataPort && obj.RawName == "this" && obj.RuntimeType != null) {
+                    obj.RawName= GetInstancePortName(obj.RuntimeType);
+                    isUpgraded= true;
+                }         
+            }
+        }
+        // Warn the user that an upgrade toke place.
+        if(isUpgraded) {
+			ShowUpgradeDialog(softwareVersion);
+        }
 		// Update storage version identifiers
 		PersistentStorage.MajorVersion = iCS_Config.MajorVersion;
 		PersistentStorage.MinorVersion = iCS_Config.MinorVersion;

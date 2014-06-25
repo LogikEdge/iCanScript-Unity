@@ -171,7 +171,7 @@ public static class iCS_SoftwareUpdateController {
             return new Nothing<bool>();
         }
         return new Just<bool>(
-			serverVersion.IsOlderOrSameAs(iCS_Config.MajorVersion,
+			serverVersion.IsOlderOrEqualTo(iCS_Config.MajorVersion,
 								  		  iCS_Config.MinorVersion,
 								  		  iCS_Config.BugFixVersion)
 		);
