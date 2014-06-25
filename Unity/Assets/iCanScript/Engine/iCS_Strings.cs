@@ -4,7 +4,6 @@ using System.Collections;
 public static class iCS_Strings {
     // -----------------------------------------------------------------------
     // Common
-    public const string DefaultInstanceName      = "this";
     public const string DefaultFunctionReturnName= "out";
     
     // -----------------------------------------------------------------------

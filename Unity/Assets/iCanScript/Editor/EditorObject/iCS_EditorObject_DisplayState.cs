@@ -73,15 +73,6 @@ public partial class iCS_EditorObject {
             if(IsPort) {
                 var parentNode= ParentNode;
                 if(!parentNode.IsVisibleOnDisplay) return false;
-                          
-                // Don't display function "this" port if under object instance node.
-                var instanceName= iCS_Strings.DefaultInstanceName;
-                if(Name == instanceName && parentNode.IsKindOfFunction) {
-                    var grandParentNode= parentNode.ParentNode;
-                    if(grandParentNode.IsInstanceNode && IsSourceValid && ProviderPort.ParentNode == grandParentNode && ProviderPort.Name == instanceName) {
-                        return false;
-                    }
-                }
                 return true;
             }
             if(this == IStorage.DisplayRoot) return true;
