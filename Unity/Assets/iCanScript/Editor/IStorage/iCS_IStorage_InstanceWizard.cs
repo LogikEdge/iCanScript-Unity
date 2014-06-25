@@ -243,7 +243,7 @@ public partial class iCS_IStorage {
         if(thisPort == null) {
             iCS_EditorObject constructor= InstanceWizardGetConstructor(module);
             if(constructor == null) return null;
-            thisPort= FindInChildren(constructor, port=> port.IsOutInstancePort);
+            thisPort= FindInChildren(constructor, port=> port.IsOutputPort && port.RuntimeType == module.RuntimeType);
         }
         return thisPort;
     }
@@ -386,7 +386,7 @@ public partial class iCS_IStorage {
         Rect thisPos= moduleThisPort.LayoutRect; 
         iCS_EditorObject constructor= CreateFunction(module.ParentId, desc);
         constructor.SetInitialPosition(new Vector2(thisPos.x-75f, thisPos.y));
-        iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutInstancePort);
+        iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutputPort && port.RuntimeType == module.RuntimeType);
 		constructorThisPort.IsNameEditable= false;
         SetSource(moduleThisPort, constructorThisPort);
         constructor.Iconize();

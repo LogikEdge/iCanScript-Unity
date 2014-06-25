@@ -34,7 +34,7 @@ public class iCS_ContextualMenu {
 	const string ObjectInstanceStr             = "+ Object Instance";
     const string EnablePortStr                 = "+ Enable Port";
     const string TriggerPortStr                = "+ Trigger Port";
-    const string OutputThisPortStr             = "+ This Port (output)";
+    const string OutputInstancePortStr         = "+ Output Instance Port";
 	const string WrapInPackageStr              = "+ Wrap in Package";
     const string MultiSelectionWrapInPackageStr= "+ Wrap Multi-Selection in Package";
     const string MultiSelectionDeleteStr       = "- Delete Multi-Selection";
@@ -177,9 +177,9 @@ public class iCS_ContextualMenu {
             }
             if(shouldSupportThis) {
                 if(storage.HasOutInstancePort(selectedObject)) {
-                    menu[2]= new iCS_MenuContext("#"+OutputThisPortStr);
+                    menu[2]= new iCS_MenuContext("#"+OutputInstancePortStr);
                 } else {
-                    menu[2]= new iCS_MenuContext(OutputThisPortStr);                
+                    menu[2]= new iCS_MenuContext(OutputInstancePortStr);                
                 }                
             }
         }
@@ -247,9 +247,9 @@ public class iCS_ContextualMenu {
             }
             if(shouldSupportThis) {
                 if(storage.HasOutInstancePort(selectedObject)) {
-                    menu[2]= new iCS_MenuContext("#"+OutputThisPortStr);
+                    menu[2]= new iCS_MenuContext("#"+OutputInstancePortStr);
                 } else {
-                    menu[2]= new iCS_MenuContext(OutputThisPortStr);                
+                    menu[2]= new iCS_MenuContext(OutputInstancePortStr);                
                 }                
             }
         } else {
@@ -470,7 +470,7 @@ public class iCS_ContextualMenu {
             case DeleteStr:                 iCS_UserCommands.DeleteObject(targetObject); break;
             case EnablePortStr:             iCS_UserCommands.CreateEnablePort(targetObject); break;
             case TriggerPortStr:            iCS_UserCommands.CreateTriggerPort(targetObject); break;
-            case OutputThisPortStr:         iCS_UserCommands.CreateOutInstancePort(targetObject); break;
+            case OutputInstancePortStr:     iCS_UserCommands.CreateOutInstancePort(targetObject); break;
 			case WrapInPackageStr:          iCS_UserCommands.WrapInPackage(targetObject); break;
             case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
             case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
