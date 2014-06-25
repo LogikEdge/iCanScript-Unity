@@ -553,5 +553,4 @@ public partial class iCS_IStorage {
         var center= editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
 		return center;
     }
-    
 }

@@ -419,7 +419,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
-        GUI.Label(pos[0], "this");
+        GUI.Label(pos[0], "Instance Port");
         GUI.Label(pos[1], "Instance Fields");
         GUI.Label(pos[2], "Class Fields");
         GUI.Label(pos[3], "Instance Properties");
