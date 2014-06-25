@@ -404,7 +404,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     						object initValue= GetInitialValue(sourcePort);
 							// Automatically build instance object if not specified.
 							var parent= GetParentNode(port);
-							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.This) {
+							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.InInstance) {
 								if(!parent.IsMessage) {
                                     try {
     									initValue= System.Activator.CreateInstance(port.RuntimeType);                                        

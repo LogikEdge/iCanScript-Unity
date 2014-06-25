@@ -13,13 +13,13 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public object This {
-        get { return mySignature.This; }
-        set { mySignature.This= value; }
+    public object InInstance {
+        get { return mySignature.InInstance; }
+        set { mySignature.InInstance= value; }
     }
-    public object OutThis {
-        get { return mySignature.OutThis; }
-        set { mySignature.OutThis= value; }
+    public object OutInstance {
+        get { return mySignature.OutInstance; }
+        set { mySignature.OutInstance= value; }
     }
     public bool Trigger {
         get { return mySignature.Trigger; }
@@ -109,7 +109,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ----------------------------------------------------------------------
     // Override the execute marker to set the output trigger.
     public new void MarkAsExecuted(int frameId) {
-        mySignature.OutThis= mySignature.This;
+        mySignature.OutInstance= mySignature.InInstance;
         mySignature.Trigger= true;
         base.MarkAsExecuted(frameId);
     }

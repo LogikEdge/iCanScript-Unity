@@ -7,13 +7,13 @@ public class iCS_SignatureDataSource {
     // Properties
     // ----------------------------------------------------------------------
     // .NET Signature
-    object              myThis                  = null;  
-    iCS_Connection      myThisConnection        = null;
+    object              myInInstance            = null;  
+    iCS_Connection      myInInstanceConnection  = null;
     object[]            myParameters            = null;
     iCS_Connection[]    myParameterConnections  = null;
     object              myReturnValue           = null;
     // Extended Signature
-    object              myOutThis               = null;
+    object              myOutInstance           = null;
     // Controls
     bool                myTrigger               = false;
     bool[]              myEnables               = null;
@@ -26,17 +26,17 @@ public class iCS_SignatureDataSource {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public object This {
-        set { myThis= value; }
-        get { return myThisConnection == null ? myThis : myThisConnection.Value; }
+    public object InInstance {
+        set { myInInstance= value; }
+        get { return myInInstanceConnection == null ? myInInstance : myInInstanceConnection.Value; }
     }
     public object ReturnValue {
         get { return myReturnValue; }
         set { myReturnValue= value; }
     }
-    public object OutThis {
-        get { return myOutThis; }
-        set { myOutThis= value; }
+    public object OutInstance {
+        get { return myOutInstance; }
+        set { myOutInstance= value; }
     }
     public bool Trigger {
         get { return myTrigger; }
@@ -85,9 +85,9 @@ public class iCS_SignatureDataSource {
     // Returns one of the signature outputs.
     public object GetValue(int idx) {
         if(idx == (int)iCS_PortIndex.Return) return ReturnValue;
-		if(idx == (int)iCS_PortIndex.OutThis) return OutThis;
+		if(idx == (int)iCS_PortIndex.OutInstance) return OutInstance;
 		if(idx == (int)iCS_PortIndex.Trigger) return Trigger;
-        if(idx == (int)iCS_PortIndex.This) return This;
+        if(idx == (int)iCS_PortIndex.InInstance) return InInstance;
 		if(idx < myParameters.Length) return GetParameter(idx);
 		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
             int i= idx-(int)iCS_PortIndex.EnablesStart;
@@ -114,12 +114,12 @@ public class iCS_SignatureDataSource {
             ReturnValue= value;
             return;
         }
-        if(idx == (int)iCS_PortIndex.This) {
-            This= value;
+        if(idx == (int)iCS_PortIndex.InInstance) {
+            InInstance= value;
             return;
         }
-		if(idx == (int)iCS_PortIndex.OutThis) {
-			OutThis= value;
+		if(idx == (int)iCS_PortIndex.OutInstance) {
+			OutInstance= value;
 			return;
 		}
 		if(idx == (int)iCS_PortIndex.Trigger) {
@@ -161,8 +161,8 @@ public class iCS_SignatureDataSource {
     		myParameterConnections[idx]= connection;            
             return;
         }
-        if(idx == (int)iCS_PortIndex.This) {
-            myThisConnection= connection;
+        if(idx == (int)iCS_PortIndex.InInstance) {
+            myInInstanceConnection= connection;
             return;
         }
 		if(myEnableConnections != null && idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
@@ -236,8 +236,8 @@ public class iCS_SignatureDataSource {
     // Return 'true' if instance pointer is ready for the given frameId.
     // The 'This' object is also updated if the connection is ready.
     public bool IsThisReady(int frameId) {
-        if(myThisConnection == null) return true;
-        return myThisConnection.IsReady(frameId);
+        if(myInInstanceConnection == null) return true;
+        return myInInstanceConnection.IsReady(frameId);
     }
     
 	// -------------------------------------------------------------------------

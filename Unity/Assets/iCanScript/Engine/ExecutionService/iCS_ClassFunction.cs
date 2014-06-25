@@ -36,13 +36,13 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             }
             
             // Execute function
-            ReturnValue= myMethodBase.Invoke(This, Parameters);            
+            ReturnValue= myMethodBase.Invoke(InInstance, Parameters);            
             MarkAsExecuted(frameId);
 #if UNITY_EDITOR
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
-            string thisName= (This == null ? "null" : This.ToString());
+            string thisName= (InInstance == null ? "null" : InInstance.ToString());
             string parametersAsStr= "";
             int nbOfParams= Parameters.Length;
             if(nbOfParams != 0) {

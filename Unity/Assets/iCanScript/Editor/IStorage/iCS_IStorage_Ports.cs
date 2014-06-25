@@ -63,7 +63,7 @@ public partial class iCS_IStorage {
     // -------------------------------------------------------------------------
 	public iCS_EditorObject CreateInInstancePort(int parentId, Type runtimeType) {
 		var port= CreatePort(iCS_Strings.DefaultInstanceName, parentId, runtimeType,
-							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);
+							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
 		port.IsNameEditable= false;
 		return port;
 	}
@@ -83,7 +83,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateOutInstancePort(int parentId, Type runtimeType) {
         iCS_EditorObject port= CreatePort(iCS_Strings.DefaultInstanceName, parentId, runtimeType,
-                                          iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.OutThis);
+                                          iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.OutInstance);
         port.IsNameEditable= false;
         return port;
     }

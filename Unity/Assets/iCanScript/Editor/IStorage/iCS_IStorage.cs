@@ -487,7 +487,7 @@ public partial class iCS_IStorage {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
 		// Create 'this' ports.
-        port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);
+        port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
         return instance;
     }
     // ----------------------------------------------------------------------
@@ -518,7 +518,7 @@ public partial class iCS_IStorage {
 		}
         // Create 'this' port.
         if(desc.IsInstanceMember) {
-            port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.This);            
+            port= CreatePort(iCS_Strings.DefaultInstanceName, id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);            
             port.IsNameEditable= false;
             if(instance.Parent.IsBehaviour) {
                 port.InitialValue= instance.Parent.iCSMonoBehaviour;

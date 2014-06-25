@@ -22,7 +22,7 @@ public class iCS_GetClassField : iCS_FieldBase {
         try {
 #endif
             // Execute function
-            ReturnValue= myFieldInfo.GetValue(This);
+            ReturnValue= myFieldInfo.GetValue(InInstance);
             MarkAsExecuted(frameId);
 #if UNITY_EDITOR
         }
