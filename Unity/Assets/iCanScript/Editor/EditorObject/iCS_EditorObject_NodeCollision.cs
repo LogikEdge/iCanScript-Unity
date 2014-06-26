@@ -5,7 +5,7 @@ using P=Prelude;
 using Prefs=iCS_PreferencesController;
 
 public partial class iCS_EditorObject {
-    public static bool UseNewCollisionAlgorithm= false;
+    public static bool UseNewCollisionAlgorithm= true;
     
     // ======================================================================
     // Collision Functions
