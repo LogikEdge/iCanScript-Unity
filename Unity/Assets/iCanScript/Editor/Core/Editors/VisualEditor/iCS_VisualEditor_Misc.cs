@@ -16,7 +16,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	bool			 ShouldRotateMuxPort= false;
     
 
-    // ======================================================================
 	// ----------------------------------------------------------------------
     // Manages the object selection.
     iCS_EditorObject DetermineSelectedObject() {

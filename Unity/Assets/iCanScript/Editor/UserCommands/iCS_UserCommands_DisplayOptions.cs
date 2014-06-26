@@ -24,6 +24,10 @@ public static partial class iCS_UserCommands {
                 node.Unfold();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                var visualEditor= iCS_EditorController.FindVisualEditor();
+                if(visualEditor != null) {
+                    visualEditor.MakeVisibleInViewport(node);
+                }
             }
         );
         SendEndRelayoutOfTree(iStorage);
@@ -44,13 +48,15 @@ public static partial class iCS_UserCommands {
             _=> {
                 if(node.IsKindOfFunction || node.IsInstanceNode) {
                     node.Unfold();
-                    node.SetAsHighestLayoutPriority();
-                    iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 }
                 else {
                     node.Fold();
-                    node.SetAsHighestLayoutPriority();
-                    iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                }
+                node.SetAsHighestLayoutPriority();
+                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                var visualEditor= iCS_EditorController.FindVisualEditor();
+                if(visualEditor != null) {
+                    visualEditor.MakeVisibleInViewport(node);
                 }
             }
         );
@@ -73,6 +79,10 @@ public static partial class iCS_UserCommands {
                 node.Iconize();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                var visualEditor= iCS_EditorController.FindVisualEditor();
+                if(visualEditor != null) {
+                    visualEditor.MakeVisibleInViewport(node);
+                }
             }
         );
         SendEndRelayoutOfTree(iStorage);       
