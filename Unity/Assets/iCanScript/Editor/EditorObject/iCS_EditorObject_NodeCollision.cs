@@ -5,6 +5,8 @@ using P=Prelude;
 using Prefs=iCS_PreferencesController;
 
 public partial class iCS_EditorObject {
+    public static bool UseNewCollisionAlgorithm= false;
+    
     // ======================================================================
     // Collision Functions
     // ----------------------------------------------------------------------
@@ -67,9 +69,17 @@ public partial class iCS_EditorObject {
 		}
         
         // Compute penetration.
-        Vector2 penetration= GetSeperationVector(theOtherNode,
-												 myRect,
-												 theOtherRect, useAnchor);
+        Vector2 penetration;
+        if(UseNewCollisionAlgorithm == false) {
+            penetration= GetSeperationVector(theOtherNode,
+    										 myRect,
+    										 theOtherRect, useAnchor);
+        }
+        else {
+            penetration= GetSeperationVector2(theOtherNode,
+    										  myRect,
+    										  theOtherRect, useAnchor);            
+        }
 		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) {
 			return false;
 		}
@@ -131,6 +141,31 @@ public partial class iCS_EditorObject {
 			return new Vector2(sepX, 0);
 		}
 		return new Vector2(0, sepY);
+	}
+	Vector2 GetSeperationVector2(iCS_EditorObject theOther, Rect myRect, Rect otherRect, bool useAnchor= true) {
+        myRect= AddMargins(myRect);
+		// No collision if X & Y distance of the enclosing rect is either
+		// larger or higher then the total width/height.
+        var intersection= Math3D.Intersection(myRect, otherRect);
+        if(Math3D.IsSmallerOrEqual(intersection.width,0f) || Math3D.IsSmallerOrEqual(intersection.height, 0f)) {
+            return Vector2.zero;
+        }
+		// A collision is detected.  The seperation vector is the
+		// smallest distance to remove the overlap.  The separtion
+		// must also respect the anchor position relationship
+		// between the two overalpping nodes.
+		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
+        var normalizedAnchorSep= anchorSepDir.normalized;
+        if(Math3D.IsZero(normalizedAnchorSep.x)) {
+            return new Vector2(0f, intersection.height);
+        }
+        if(Math3D.IsZero(normalizedAnchorSep.y)) {
+            return new Vector2(intersection.width, 0f);
+        }
+        var scaleX= Mathf.Abs(intersection.width / normalizedAnchorSep.x);
+        var scaleY= Mathf.Abs(intersection.height / normalizedAnchorSep.y);
+        var scale= Mathf.Min(scaleX, scaleY);
+        return scale*normalizedAnchorSep;
 	}
 
 	// ======================================================================
