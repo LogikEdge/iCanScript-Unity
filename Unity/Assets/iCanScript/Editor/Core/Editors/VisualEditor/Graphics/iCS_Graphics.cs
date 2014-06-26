@@ -39,6 +39,7 @@ public partial class iCS_Graphics {
     public GUIStyle    TitleStyle              = null;
     public GUIStyle    MessageTitleStyle       = null;
     public GUIStyle    ValueStyle              = null;
+    public GUIStyle    StereotypeStyle         = null;
     public Texture2D   StateMaximizeIcon       = null;
     public Texture2D   ModuleMaximizeIcon      = null;
     public Texture2D   EntryStateMaximizeIcon  = null;
@@ -83,11 +84,13 @@ public partial class iCS_Graphics {
         BuildTitleStyle();
         BuildMessageTitleStyle();
         BuildValueStyle();
+        BuildStereotypeStyle();
         
         // Set font size according to scale.
         LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
         TitleStyle.fontSize= (int)(kTitleFontSize*Scale);
         ValueStyle.fontSize= (int)(kLabelFontSize*Scale);
+        StereotypeStyle.fontSize= (int)(kTitleFontSize*Scale);
 
         // Special case for asset store images
         if(iCS_DevToolsConfig.ShowBoldImage) {
@@ -270,6 +273,21 @@ public partial class iCS_Graphics {
         TitleStyle.onActive.textColor= titleColor;
         TitleStyle.fontStyle= FontStyle.Bold;
         TitleStyle.fontSize= 12;
+    }
+    // ----------------------------------------------------------------------
+    void BuildStereotypeStyle() {
+        Color titleColor= Prefs.NodeTitleColor;
+        if(StereotypeStyle == null) StereotypeStyle= new GUIStyle();
+        StereotypeStyle.normal.textColor= titleColor;
+        StereotypeStyle.hover.textColor= titleColor;
+        StereotypeStyle.focused.textColor= titleColor;
+        StereotypeStyle.active.textColor= titleColor;
+        StereotypeStyle.onNormal.textColor= titleColor;
+        StereotypeStyle.onHover.textColor= titleColor;
+        StereotypeStyle.onFocused.textColor= titleColor;
+        StereotypeStyle.onActive.textColor= titleColor;
+        StereotypeStyle.fontStyle= FontStyle.Bold;
+        StereotypeStyle.fontSize= 12;
     }
     // ----------------------------------------------------------------------
     void BuildMessageTitleStyle() {
@@ -501,7 +519,8 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
 	void ShowTitleOver(Rect pos, iCS_EditorObject node) {
         if(!ShouldShowTitle()) return;
-        string title= GetNodeName(node);
+        string title= node.DisplayName;
+//        string title= GetNodeName(node); // Name too long with stereotype
         Vector2 labelSize= GetNodeNameSize(node);
 		pos.y-=5f;	// Put title a bit higher.
         pos= TranslateAndScale(pos);

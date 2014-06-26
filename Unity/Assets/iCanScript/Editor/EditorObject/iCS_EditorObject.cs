@@ -123,6 +123,31 @@ public partial class iCS_EditorObject {
 		    engineObject.Tooltip= value;
 		}
 	}
+    // ----------------------------------------------------------------------
+    public string Stereotype {
+        get {
+            if(!IsNode) return null;
+            if(IsMessageHandler)    return "MessageHandler";
+            if(IsConstructor)       return "Builder";
+            if(IsTypeCast)          return "TypeCast";
+            if(IsInstanceNode)      return "Instance";
+            if(IsStateChart)        return "StateChart";
+            if(IsState)             return "State";
+            if(IsTransitionPackage) return "Trigger";
+            if(IsKindOfFunction)    return "Function";
+            if(IsKindOfPackage)     return "Package";
+            return "";
+        }
+    }
+    // ----------------------------------------------------------------------
+    public string NodeTitle {
+        get {
+            if(iCS_PreferencesController.ShowNodeStereotype) {
+                return DisplayName+" <"+Stereotype+">";
+            }
+            return DisplayName;
+        }
+    }
 	
     // ======================================================================
     // High-Level Properties

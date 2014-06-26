@@ -17,11 +17,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the scaled node name size.
 	string GetNodeName(iCS_EditorObject node) {
-		string name= node.DisplayName;
-		if(node.IsTransitionPackage) {
-			name= "["+name+"]";
-		}
-		return name;
+        return node.NodeTitle;
 	}
     // ----------------------------------------------------------------------
     // Returns the scaled node name size.
