@@ -138,8 +138,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.F: {
                 var selected= SelectedObject;
-                if(selected == null || ev.shift) {
+                if(selected == null || IsControlKeyDown) {
                     selected= DisplayRoot;
+                }
+                if(selected != null && IsShiftKeyDown) {
+                    var parent= selected.ParentNode;
+                    if(parent != null) {
+                        selected= parent;
+                    }
                 }
                 if(selected != null) {
                     iCS_EditorUtility.SafeCenterOn(selected, IStorage);                        
