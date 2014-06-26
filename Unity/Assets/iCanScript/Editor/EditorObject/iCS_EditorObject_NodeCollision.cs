@@ -142,7 +142,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	// Sets the current object as the highest layout priority.
-	void SetAsHighestLayoutPriority() {
+	public void SetAsHighestLayoutPriority() {
 		var parent= ParentNode;
 		if(parent != null) parent.ReduceChildrenLayoutPriority();
 		LayoutPriority= 0;

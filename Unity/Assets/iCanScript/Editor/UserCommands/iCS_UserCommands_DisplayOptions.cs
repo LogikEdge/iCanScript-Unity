@@ -22,6 +22,7 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 node.Unfold();
+                node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
             }
         );
@@ -43,10 +44,12 @@ public static partial class iCS_UserCommands {
             _=> {
                 if(node.IsKindOfFunction || node.IsInstanceNode) {
                     node.Unfold();
+                    node.SetAsHighestLayoutPriority();
                     iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 }
                 else {
                     node.Fold();
+                    node.SetAsHighestLayoutPriority();
                     iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 }
             }
@@ -68,10 +71,11 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 node.Iconize();
+                node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
             }
         );
-        SendEndRelayoutOfTree(iStorage);
+        SendEndRelayoutOfTree(iStorage);       
         iStorage.SaveStorage("Iconize "+node.Name);
     }
 
