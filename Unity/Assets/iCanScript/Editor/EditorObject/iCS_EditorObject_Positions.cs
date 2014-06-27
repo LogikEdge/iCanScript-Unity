@@ -7,8 +7,9 @@ public partial class iCS_EditorObject {
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	// Fields
     // ======================================================================
-	Vector2		myLayoutSize = Vector2.zero;
-	Vector2		myLocalOffset= Vector2.zero;
+	Vector2	myLayoutSize  = Vector2.zero;
+	Vector2	myCollisionOffset = Vector2.zero;
+	Vector2	myUnfoldOffset= Vector2.zero;
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
@@ -94,7 +95,7 @@ public partial class iCS_EditorObject {
     // Offset from the anchor position.  This attribute is animated.
 	public Vector2 LocalOffset {
 		get {
-			return myLocalOffset;
+			return myCollisionOffset;
 		}
 		set {
             // Update parent port for nested ports.
@@ -102,10 +103,10 @@ public partial class iCS_EditorObject {
                 if(IsNestedPort) {
                     return;
                 }
-                myLocalOffset= value;
-                ForEachChildPort(p=> p.myLocalOffset= value);                
+                myCollisionOffset= value;
+                ForEachChildPort(p=> p.myCollisionOffset= value);                
             }
-			myLocalOffset= value;
+			myCollisionOffset= value;
 		}
 	}
     // ----------------------------------------------------------------------

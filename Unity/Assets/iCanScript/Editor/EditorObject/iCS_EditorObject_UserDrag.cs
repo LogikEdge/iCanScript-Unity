@@ -24,7 +24,7 @@ public partial class iCS_EditorObject {
 				p.IsSticky= false;
 			}
 		);
-		myIStorage.ForcedRelayoutOfTree(myIStorage.EditorObjects[0]);		
+		myIStorage.ForcedRelayoutOfTree(myIStorage.DisplayRoot);
 	}
     // ----------------------------------------------------------------------
     // Forces a new position on the object being dragged by the uesr.

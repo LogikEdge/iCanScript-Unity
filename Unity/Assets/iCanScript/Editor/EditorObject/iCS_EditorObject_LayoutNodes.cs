@@ -147,6 +147,7 @@ public partial class iCS_EditorObject {
 		// Update parent node anchor positions.
 		var center= Math3D.Middle(r);
 		AnchorPosition= center-LocalOffset;
+//        LocalOffset= center-AnchorPosition;
 		// Update layout size.
 		LayoutSize= new Vector2(r.width, r.height);        
     }
