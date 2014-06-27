@@ -137,18 +137,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.F: {
-                var selected= SelectedObject;
-                if(selected == null || IsControlKeyDown) {
-                    selected= DisplayRoot;
+                if(IsControlKeyDown) {
+                    iCS_EditorUtility.SafeCenterOn(DisplayRoot, IStorage);                        
                 }
-                if(selected != null && IsShiftKeyDown) {
-                    var parent= selected.ParentNode;
-                    if(parent != null) {
-                        selected= parent;
+                else {
+                    var focusNode= SelectedObject;
+                    if(focusNode != null) {
+                        if(IsShiftKeyDown) {
+                            var parent= focusNode.ParentNode;
+                            if(parent != null) {
+                                focusNode= parent;
+                            }
+                        }
+                        SmartFocusOn(focusNode);
                     }
-                }
-                if(selected != null) {
-                    iCS_EditorUtility.SafeCenterOn(selected, IStorage);                        
                 }
                 Event.current.Use();
                 break;

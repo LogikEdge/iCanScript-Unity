@@ -5,6 +5,25 @@ using Prefs=iCS_PreferencesController;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
+    public void SmartFocusOn(iCS_EditorObject obj) {
+        var focusNode= obj;
+        // Focus on port parent.
+        if(obj.IsPort) {
+            focusNode= obj.ParentNode;
+        }
+        // Focus on parent:
+        //   - if display option is iconized or folded;
+        //   - node does not contain visual script
+        if(focusNode.IsIconizedInLayout || focusNode.IsFoldedInLayout ||
+           focusNode.IsInstanceNode || focusNode.IsKindOfFunction) {
+            var parent= focusNode.ParentNode;
+            if(parent != null) {
+                focusNode= parent;
+            }
+        }
+        iCS_EditorUtility.SafeCenterOn(focusNode, IStorage);                        
+    }
+	// ----------------------------------------------------------------------
     public void CenterOnRoot() {
         CenterOn(DisplayRoot);            
     }
