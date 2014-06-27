@@ -82,18 +82,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var clipArea= ClipingArea;
         var intersection= Math3D.Intersection(r, clipArea);
         if(Math3D.IsNotEqual(r, intersection)) {
-//            // Focus on node if node is larger then viewport.
-//            if(r.x < clipArea.x && r.xMax > clipArea.xMax || r.y < clipArea.y && r.yMax > clipArea.yMax) {
-//                CenterAndScaleOn(obj);
-//                return;        
-//            }
-//            if(Math3D.IsEqual(r.height, intersection.height)) {
-//                var diff= r.width-intersection.width;
-//                
-//            }
-//            if(Math3D.IsEqual(r.width, intersection.width)) {
-//                
-//            }
             // By default, focus on parent
             var parent= obj.ParentNode;
             if(parent == null) {

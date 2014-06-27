@@ -156,10 +156,12 @@ public partial class iCS_EditorObject {
 		// between the two overalpping nodes.
 		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
         var normalizedAnchorSep= anchorSepDir.normalized;
-        if(Math3D.IsZero(normalizedAnchorSep.x)) {
+        // Assume vertical relation if anchor diff vector under 12 degrees
+        if(Math3D.IsSmaller(Mathf.Abs(normalizedAnchorSep.x), 0.25f)) {
             return new Vector2(0f, intersection.height);
         }
-        if(Math3D.IsZero(normalizedAnchorSep.y)) {
+        // Assume horizontal relation if anchor diff vector under 12 degrees
+        if(Math3D.IsSmaller(Mathf.Abs(normalizedAnchorSep.y), 0.25f)) {
             return new Vector2(intersection.width, 0f);
         }
         var scaleX= Mathf.Abs(intersection.width / normalizedAnchorSep.x);
