@@ -7,9 +7,9 @@ public partial class iCS_EditorObject {
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	// Fields
     // ======================================================================
-	Vector2	myLayoutSize  = Vector2.zero;
+	Vector2	myLayoutSize      = Vector2.zero;
 	Vector2	myCollisionOffset = Vector2.zero;
-	Vector2	myUnfoldOffset= Vector2.zero;
+	Vector2	myWrappingOffset  = Vector2.zero;
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
