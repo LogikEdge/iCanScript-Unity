@@ -92,21 +92,21 @@ public partial class iCS_EditorObject {
 		set { EngineObject.LayoutPriority= value; }
 	}
     // ----------------------------------------------------------------------
-	public Vector2 CollisionOffset {
-		get {
-			return myCollisionOffset;
-		}
-		set {
-			myCollisionOffset= value;
-		}
-	}
-    // ----------------------------------------------------------------------
 	public Vector2 WrappingOffset {
 		get {
 			return myWrappingOffset;
 		}
 		set {
 			myWrappingOffset= value;
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Vector2 CollisionOffset {
+		get {
+			return myCollisionOffset;
+		}
+		set {
+			myCollisionOffset= value;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -128,21 +128,21 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 LocalCollisionPosition {
+	public Vector2 LocalWrappingPosition {
 		get {
-			return LocalAnchorPosition+CollisionOffset;
+			return LocalAnchorPosition+WrappingOffset;
 		}
 		set {
-			CollisionOffset= value-LocalAnchorPosition;
+			WrappingOffset= value-LocalAnchorPosition;
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 LocalWrappingPosition {
+	public Vector2 LocalCollisionPosition {
 		get {
-			return LocalAnchorPosition+CollisionOffset+WrappingOffset;
+			return LocalWrappingPosition+CollisionOffset;
 		}
 		set {
-			WrappingOffset= value-LocalAnchorPosition-CollisionOffset;
+			CollisionOffset= value-LocalWrappingPosition;
 		}
 	}
     // ----------------------------------------------------------------------
