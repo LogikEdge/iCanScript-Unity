@@ -21,11 +21,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     				return;                
                 }                
             }
-            if(objectUnderMouse.IsBehaviour) {
-                DragAndDrop.visualMode= DragAndDropVisualMode.Rejected;
-                return;
-            }
 			if(objectUnderMouse.IsNode) {
+                // Don't accept to drag an object dirctly under Behaviour.
+                if(objectUnderMouse.IsBehaviour) {
+                    DragAndDrop.visualMode= DragAndDropVisualMode.Rejected;
+                    return;
+                }
+                // Don't accept to drag object outside the root node.
+                if(objectUnderMouse == DisplayRoot && IStorage.ShowDisplayRootNode) {
+                    if(!DisplayRoot.LayoutRect.Contains(GraphMousePosition)) {
+                        DragAndDrop.visualMode= DragAndDropVisualMode.Rejected;
+                        return;
+                    }
+                }
     			if(draggedObject is Texture && objectUnderMouse.IsIconizedOnDisplay) {
 		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 				    return;				
@@ -93,6 +101,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
 			}
 			if(eObj.IsNode && !eObj.IsBehaviour) {
+                // Don't accept to drag object outside the root node.
+                if(eObj == DisplayRoot && IStorage.ShowDisplayRootNode) {
+                    if(!DisplayRoot.LayoutRect.Contains(GraphMousePosition)) {
+                        return;
+                    }
+                }
                 // Allow change of icon on minimized nodes.
     			if(draggedObject is Texture && eObj.IsIconizedOnDisplay) {
                     Texture newTexture= draggedObject as Texture;
