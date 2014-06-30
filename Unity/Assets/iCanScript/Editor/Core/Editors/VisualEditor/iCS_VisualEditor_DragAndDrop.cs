@@ -77,6 +77,47 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		            DragAndDrop.AcceptDrag();
 					return;
 				}
+                // Special case for game object
+                // TODO: Should use common reflection of variables/properties derived from Component.
+                if(iCS_Types.IsA<GameObject>(dragObjType)) {
+                    var go= draggedObject as GameObject;
+                    if(iCS_Types.IsA<Transform>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.transform);
+                    }
+                    if(iCS_Types.IsA<Collider2D>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.collider2D);
+                    }
+                    if(iCS_Types.IsA<Collider>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.collider);
+                    }
+                    if(iCS_Types.IsA<Renderer>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.renderer);
+                    }
+                    if(iCS_Types.IsA<Rigidbody2D>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.rigidbody2D);
+                    }
+                    if(iCS_Types.IsA<Rigidbody>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.rigidbody);
+                    }
+                    if(iCS_Types.IsA<Animation>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.animation);
+                    }
+                    if(iCS_Types.IsA<Camera>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.camera);
+                    }
+                    if(iCS_Types.IsA<ConstantForce>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.constantForce);
+                    }
+                    if(iCS_Types.IsA<NetworkView>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.networkView);
+                    }
+                    if(iCS_Types.IsA<ParticleEmitter>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.particleEmitter);
+                    }
+                    if(iCS_Types.IsA<ParticleSystem>(portType)) {
+                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.particleSystem);
+                    }
+                }
 			}
 			if(eObj.IsNode) {
                 // Allow change of icon on minimized nodes.
