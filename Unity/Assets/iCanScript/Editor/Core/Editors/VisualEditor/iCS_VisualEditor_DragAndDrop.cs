@@ -15,14 +15,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	    iCS_EditorObject objectUnderMouse= GetObjectAtMousePosition();
 		if(objectUnderMouse != null) {
 	        UnityEngine.Object draggedObject= GetDraggedObject();
-	        if(objectUnderMouse.IsInputPort) {
-	            Type portType= objectUnderMouse.RuntimeType;
-	            Type dragObjType= draggedObject.GetType();
-	            if(iCS_Types.IsA(portType, dragObjType)) {			
-			    	DragAndDrop.visualMode = DragAndDropVisualMode.Link;
-					return;
-				}
-			}
+            if(objectUnderMouse.IsInputPort) {
+                if(GetValidDragAndDropObjectForPort(objectUnderMouse, draggedObject) != null) {
+    		    	DragAndDrop.visualMode = DragAndDropVisualMode.Link;
+    				return;                
+                }                
+            }
 			if(objectUnderMouse.IsNode) {
     			if(draggedObject is Texture && objectUnderMouse.IsIconizedOnDisplay) {
 		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
@@ -78,44 +76,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					return;
 				}
                 // Special case for game object
-                // TODO: Should use common reflection of variables/properties derived from Component.
-                if(iCS_Types.IsA<GameObject>(dragObjType)) {
+                if(iCS_Types.IsA<GameObject>(dragObjType) && iCS_Types.IsA<Component>(portType)) {
                     var go= draggedObject as GameObject;
-                    if(iCS_Types.IsA<Transform>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.transform);
-                    }
-                    if(iCS_Types.IsA<Collider2D>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.collider2D);
-                    }
-                    if(iCS_Types.IsA<Collider>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.collider);
-                    }
-                    if(iCS_Types.IsA<Renderer>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.renderer);
-                    }
-                    if(iCS_Types.IsA<Rigidbody2D>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.rigidbody2D);
-                    }
-                    if(iCS_Types.IsA<Rigidbody>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.rigidbody);
-                    }
-                    if(iCS_Types.IsA<Animation>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.animation);
-                    }
-                    if(iCS_Types.IsA<Camera>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.camera);
-                    }
-                    if(iCS_Types.IsA<ConstantForce>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.constantForce);
-                    }
-                    if(iCS_Types.IsA<NetworkView>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.networkView);
-                    }
-                    if(iCS_Types.IsA<ParticleEmitter>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.particleEmitter);
-                    }
-                    if(iCS_Types.IsA<ParticleSystem>(portType)) {
-                        iCS_UserCommands.DragAndDropSetPortValue(eObj, go.particleSystem);
+                    foreach(var component in go.GetComponents<Component>()) {
+                        if(iCS_Types.IsA(component.GetType(), portType)) {
+                            iCS_UserCommands.DragAndDropSetPortValue(eObj, component);
+        					// Remove data so that we don't get called multiple times (Unity bug !!!).
+        		            DragAndDrop.AcceptDrag();
+                            return;
+                        }
                     }
                 }
 			}
@@ -159,6 +128,24 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             GameObject go= draggedObject as GameObject;
             if(go != null) {
                 return go.GetComponent<iCS_LibraryImp>();
+            }
+        }
+        return null;
+    }
+	// ----------------------------------------------------------------------
+    UnityEngine.Object GetValidDragAndDropObjectForPort(iCS_EditorObject port, UnityEngine.Object draggedObject) {
+        Type portType= port.RuntimeType;
+        Type dragObjType= draggedObject.GetType();
+        if(iCS_Types.IsA(portType, dragObjType)) {			
+			return draggedObject;
+		}
+        // Special case for game object
+        if(iCS_Types.IsA<GameObject>(dragObjType) && iCS_Types.IsA<Component>(portType)) {
+            var go= draggedObject as GameObject;
+            foreach(var component in go.GetComponents<Component>()) {
+                if(iCS_Types.IsA(component.GetType(), portType)) {
+                    return component;
+                }
             }
         }
         return null;
