@@ -21,6 +21,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     				return;                
                 }                
             }
+            if(objectUnderMouse.IsBehaviour) {
+                DragAndDrop.visualMode= DragAndDropVisualMode.Rejected;
+                return;
+            }
 			if(objectUnderMouse.IsNode) {
     			if(draggedObject is Texture && objectUnderMouse.IsIconizedOnDisplay) {
 		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
@@ -88,7 +92,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                 }
 			}
-			if(eObj.IsNode) {
+			if(eObj.IsNode && !eObj.IsBehaviour) {
                 // Allow change of icon on minimized nodes.
     			if(draggedObject is Texture && eObj.IsIconizedOnDisplay) {
                     Texture newTexture= draggedObject as Texture;
