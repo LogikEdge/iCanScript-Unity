@@ -16,12 +16,13 @@ public partial class iCS_EditorObject {
     public void ResolveCollisionOnChildrenNodes() {
 		// Get a snapshot of the children state.
 		var children= BuildListOfChildNodes(c=> !c.IsFloating);
-		var childRect= P.map(n => BuildRect(n.AnchorPosition, n.LayoutSize), children);
+        var childPos= P.map(n => n.LocalAnchorPosition+n.WrappingOffset, children);
+		var childRect= P.map(n => BuildRect(n.LocalAnchorPosition+n.WrappingOffset, n.LayoutSize), children);
         // Resolve collisions.
         ResolveCollisionOnChildrenImp(children, ref childRect);
         // Update child position.
 		for(int i= 0; i < children.Length; ++i) {
-            children[i].LayoutPosition= PositionFrom(childRect[i]);
+            children[i].CollisionOffset= PositionFrom(childRect[i])-childPos[i];
 		}
     }
     // ----------------------------------------------------------------------
@@ -158,11 +159,11 @@ public partial class iCS_EditorObject {
         var normalizedAnchorSep= anchorSepDir.normalized;
         // Assume vertical relation if anchor diff vector under 12 degrees
         if(Math3D.IsSmaller(Mathf.Abs(normalizedAnchorSep.x), 0.25f)) {
-            return new Vector2(0f, intersection.height);
+            return new Vector2(0f, intersection.height*Mathf.Sign(normalizedAnchorSep.y));
         }
         // Assume horizontal relation if anchor diff vector under 12 degrees
         if(Math3D.IsSmaller(Mathf.Abs(normalizedAnchorSep.y), 0.25f)) {
-            return new Vector2(intersection.width, 0f);
+            return new Vector2(intersection.width*Mathf.Sign(normalizedAnchorSep.x), 0f);
         }
         var scaleX= Mathf.Abs(intersection.width / normalizedAnchorSep.x);
         var scaleY= Mathf.Abs(intersection.height / normalizedAnchorSep.y);

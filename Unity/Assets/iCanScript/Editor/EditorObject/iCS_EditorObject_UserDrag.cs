@@ -31,8 +31,9 @@ public partial class iCS_EditorObject {
     public void NodeDragTo(Vector2 newPosition) {
 		if(IsNode) {
             IStorage.StopAllAnimations();
-            AnchorPosition= newPosition;
-            LocalOffset= Vector2.zero;
+            UserDragPosition= newPosition;
+//            AnchorPosition= newPosition;
+//            LocalOffset= Vector2.zero;
 			LayoutParentNodesUntilTop();
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
@@ -57,8 +58,9 @@ public partial class iCS_EditorObject {
     public void NodeRelocateTo(Vector2 newPosition) {
 		if(IsNode) {
             IStorage.StopAllAnimations();
-            AnchorPosition= newPosition;
-            LocalOffset= Vector2.zero;
+            UserDragPosition= newPosition;
+//            AnchorPosition= newPosition;
+//            LocalOffset= Vector2.zero;
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}

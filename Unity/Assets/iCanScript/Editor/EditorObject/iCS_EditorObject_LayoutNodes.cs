@@ -63,18 +63,22 @@ public partial class iCS_EditorObject {
 		    return;
 	    }
         if(IsFoldedInLayout) {
-            var pos= LayoutPosition;
-            var r= new Rect(pos.x, pos.y, 0, 0);
-            WrapAroundChildRect(r);
+            var r= NodeRectFromChildrenRectWithMargins(new Rect(0,0,0,0));
+            WrappingOffset= Vector2.zero;
+    		LayoutSize= new Vector2(r.width, r.height);
             return;
         }
         var childNodes= BuildListOfChildNodes(_ => true);
-        var childAnchors= P.map(n => n.AnchorPosition, childNodes);
-        var childRects= P.map(n => n.LayoutRect, childNodes);
-        WrapAroundChildRects(childRects);
+        var childRects= P.map(n => BuildRect(n.LocalAnchorPosition+n.WrappingOffset+n.CollisionOffset, n.LayoutSize), childNodes);
+        // WrapAroundChildRects(childRects);
+        var totalChildRect= GetRectWithMargins(childRects);
+        var parentRect= NodeRectFromChildrenRectWithMargins(totalChildRect);
+		var center= Math3D.Middle(parentRect);
+        WrappingOffset= center;
+		LayoutSize= new Vector2(parentRect.width, parentRect.height);        
         // Restore child global position.
         for(int i= 0; i < childNodes.Length; ++i) {
-            childNodes[i].AnchorPosition= childAnchors[i];
+            childNodes[i].CollisionOffset-= center;
         }
     }
 
@@ -146,8 +150,7 @@ public partial class iCS_EditorObject {
     public void SetNodeLayoutRect(Rect r) {
 		// Update parent node anchor positions.
 		var center= Math3D.Middle(r);
-		AnchorPosition= center-LocalOffset;
-//        LocalOffset= center-AnchorPosition;
+		WrappingPosition= center;
 		// Update layout size.
 		LayoutSize= new Vector2(r.width, r.height);        
     }

@@ -80,6 +80,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public void MakeVisibleInViewport(iCS_EditorObject obj) {
         var r= obj.LayoutRect;
         var clipArea= ClipingArea;
+        // Try to make obj visible in viewport.
         var intersection= Math3D.Intersection(r, clipArea);
         if(Math3D.IsNotEqual(r, intersection)) {
             // By default, focus on parent
@@ -89,5 +90,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             CenterAndScaleOn(parent);
         }
+//        // Scale up if visual script is too small.
+//        var displayRootArea= Math3D.Area(DisplayRoot.LayoutRect);
+//        var viewportArea   = Math3D.Area(clipArea);
+//        if(displayRootArea < viewportArea*0.25f) {
+//            CenterAndScaleOn(DisplayRoot);
+//        }
     }
 }

@@ -128,24 +128,6 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 LocalWrappingPosition {
-		get {
-			return LocalAnchorPosition+WrappingOffset;
-		}
-		set {
-			WrappingOffset= value-LocalAnchorPosition;
-		}
-	}
-    // ----------------------------------------------------------------------
-	public Vector2 LocalCollisionPosition {
-		get {
-			return LocalWrappingPosition+CollisionOffset;
-		}
-		set {
-			CollisionOffset= value-LocalWrappingPosition;
-		}
-	}
-    // ----------------------------------------------------------------------
 	public Vector2 LocalLayoutPosition {
 		get {
 			return LocalAnchorPosition+LocalOffset;
@@ -156,65 +138,6 @@ public partial class iCS_EditorObject {
 	}
     // ======================================================================
 	// Layout
-    // ----------------------------------------------------------------------
-	public Vector2 CollisionPosition {
-		get {
-			var parent= ParentNode;
-			if(parent == null) {
-			    return LocalCollisionPosition;
-		    }
-			// Special case for iconized transition module ports.
-			if(IsTransitionPort && parent.IsIconizedInLayout) {
-				return parent.CollisionPosition;
-			}
-			if(IsPort) {
-				return parent.LayoutPosition+LocalCollisionPosition;
-			}
-			if(!IsVisibleInLayout) {
-			    return parent.LayoutPosition;
-			}
-    		return parent.LayoutPosition+LocalCollisionPosition;			    			        
-		}
-		set {
-            var offsetWithoutParent= value-LocalAnchorPosition;
-            var parent= ParentNode;
-		    if(parent == null) {
-		        CollisionOffset= offsetWithoutParent;
-		        return;
-		    }
-			if(IsPort) {
-				CollisionOffset= offsetWithoutParent-parent.LayoutPosition;
-			}
-	        CollisionOffset= offsetWithoutParent-parent.LayoutPosition;
-		}
-	}
-    // ----------------------------------------------------------------------
-	public Vector2 WrappingPosition {
-		get {
-			if(IsPort) {
-				return CollisionPosition;
-			}
-			if(!IsVisibleInLayout) {
-			    return CollisionPosition;
-			}
-            var parent= ParentNode;
-		    if(parent == null) {
-		        return CollisionPosition+WrappingOffset;
-		    }
-			// Special case for iconized transition module ports.
-			if(IsTransitionPort && parent.IsIconizedInLayout) {
-				return CollisionPosition;
-			}
-    		return CollisionPosition+WrappingOffset;
-		}
-		set {
-			if(IsPort) {
-				WrappingOffset= Vector2.zero;
-                return;
-			}
-            var WrappingOffset= value-CollisionPosition;
-		}
-	}
     // ----------------------------------------------------------------------
 	public Vector2 LayoutPosition {
 		get {
@@ -232,7 +155,7 @@ public partial class iCS_EditorObject {
 			if(!IsVisibleInLayout) {
 			    return parent.LayoutPosition;
 			}
-    		return parent.LayoutPosition+LocalLayoutPosition;			    			        
+    		return parent.LayoutPosition+LocalLayoutPosition;
 		}
 		set {
             var offsetWithoutParent= value-LocalAnchorPosition;
