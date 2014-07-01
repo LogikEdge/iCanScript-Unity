@@ -144,26 +144,5 @@ public static class iCS_DevMenus {
     public static void ShowEnvironment() {
         Debug.Log("Machine Name=> "+System.Environment.MachineName);
         Debug.Log("User Name=> "+System.Environment.UserName);
-    }
-    // ======================================================================
-    [MenuItem("DevTools/Switch Collision Algorithm", false, 1060)]
-    public static void SwitchCollisionAlgorithm() {
-        iCS_EditorObject.UseNewCollisionAlgorithm= !iCS_EditorObject.UseNewCollisionAlgorithm;
-        if(iCS_EditorObject.UseNewCollisionAlgorithm) {
-            Debug.Log("Using new collision algorithm");
-        }
-        else {
-            Debug.Log("Using original collision algorithm");            
-        }
-    }
-//    [MenuItem("DevTools/ForceRelayout", false, 1061)]
-//    public static void ForceRelayout() {
-//		iCS_IStorage iStorage= iCS_VisualScriptDataController.IStorage;
-//		if(iStorage == null) return;
-//        var selectedObj= iStorage.SelectedObject;
-//        if(selectedObj == null) selectedObj= iStorage.DisplayRoot;
-//        Debug.Log("Forcing Layout on=> "+selectedObj.Name);
-//        iStorage.ForcedRelayoutOfTree(selectedObj);
-//    }
-    
+    }    
 }
