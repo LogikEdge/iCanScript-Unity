@@ -1,3 +1,4 @@
+#define NEW_COLLISION
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -113,6 +114,14 @@ public partial class iCS_EditorObject {
 		// must also respect the anchor position relationship
 		// between the two overalpping nodes.
 		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
+#if NEW_COLLISION
+        if(Mathf.Abs(anchorSepDir.x) > Mathf.Abs(anchorSepDir.y)) {
+            return new Vector2(intersection.width*Mathf.Sign(anchorSepDir.x), 0f);            
+        }
+        else {
+            return new Vector2(0f, intersection.height*Mathf.Sign(anchorSepDir.y));            
+        }
+#else
         var normalizedAnchorSep= anchorSepDir.normalized;
         // Assume vertical relation if anchor diff vector under 12 degrees
         if(Math3D.IsSmaller(Mathf.Abs(normalizedAnchorSep.x), 0.25f)) {
@@ -126,6 +135,7 @@ public partial class iCS_EditorObject {
         var scaleY= Mathf.Abs(intersection.height / normalizedAnchorSep.y);
         var scale= Mathf.Min(scaleX, scaleY);
         return scale*normalizedAnchorSep;
+#endif
 	}
 
 	// ======================================================================

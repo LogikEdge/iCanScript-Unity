@@ -105,6 +105,7 @@ public partial class iCS_EditorObject {
             return;
         }
         if(DisplayOption != iCS_DisplayOptionEnum.Unfolded) {
+            ReduceChildrenAnchorPosition();
             DisplayOption= iCS_DisplayOptionEnum.Unfolded;
             WrappingOffset= Vector2.zero;            
         }

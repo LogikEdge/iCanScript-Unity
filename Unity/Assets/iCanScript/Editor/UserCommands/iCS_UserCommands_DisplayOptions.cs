@@ -26,8 +26,8 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    visualEditor.MakeVisibleInViewport(node);
-                    visualEditor.ReduceEmptyViewport();
+//                    visualEditor.MakeVisibleInViewport(node);
+//                    visualEditor.ReduceEmptyViewport();
                 }
             }
         );
@@ -53,12 +53,12 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    var newPos= node.LayoutPosition;
-                    if(Math3D.IsNotEqual(oldPos, newPos)){
-                        visualEditor.ScrollBy(newPos-oldPos);
-                    }
-                    visualEditor.MakeVisibleInViewport(node);
-                    visualEditor.ReduceEmptyViewport();
+//                    var newPos= node.LayoutPosition;
+//                    if(Math3D.IsNotEqual(oldPos, newPos)){
+//                        visualEditor.ScrollBy(newPos-oldPos);
+//                    }
+//                    visualEditor.MakeVisibleInViewport(node);
+//                    visualEditor.ReduceEmptyViewport();
                 }
             }
         );
@@ -84,12 +84,12 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    var newPos= node.LayoutPosition;
-                    if(Math3D.IsNotEqual(oldPos, newPos)){
-                        visualEditor.ScrollBy(newPos-oldPos);
-                    }
-                    visualEditor.MakeVisibleInViewport(node);
-                    visualEditor.ReduceEmptyViewport();
+//                    var newPos= node.LayoutPosition;
+//                    if(Math3D.IsNotEqual(oldPos, newPos)){
+//                        visualEditor.ScrollBy(newPos-oldPos);
+//                    }
+//                    visualEditor.MakeVisibleInViewport(node);
+//                    visualEditor.ReduceEmptyViewport();
                 }
             }
         );

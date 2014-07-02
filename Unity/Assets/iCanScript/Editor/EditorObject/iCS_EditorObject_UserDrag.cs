@@ -13,10 +13,11 @@ public partial class iCS_EditorObject {
 			p=> {
 				p.IsSticky= true;
 			}
-		);		
+		);
 	}
     // ----------------------------------------------------------------------
 	public void EndNodeDrag() {
+		myIStorage.ForcedRelayoutOfTree(myIStorage.DisplayRoot);
         IsFloating= false;
         IsSticky= false;
 		ForEachParentNode(
@@ -24,7 +25,6 @@ public partial class iCS_EditorObject {
 				p.IsSticky= false;
 			}
 		);
-		myIStorage.ForcedRelayoutOfTree(myIStorage.DisplayRoot);
 	}
     // ----------------------------------------------------------------------
     // Forces a new position on the object being dragged by the uesr.
@@ -32,8 +32,6 @@ public partial class iCS_EditorObject {
 		if(IsNode) {
             IStorage.StopAllAnimations();
             UserDragPosition= newPosition;
-//            AnchorPosition= newPosition;
-//            LocalOffset= Vector2.zero;
 			LayoutParentNodesUntilTop();
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
@@ -59,8 +57,6 @@ public partial class iCS_EditorObject {
 		if(IsNode) {
             IStorage.StopAllAnimations();
             UserDragPosition= newPosition;
-//            AnchorPosition= newPosition;
-//            LocalOffset= Vector2.zero;
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}

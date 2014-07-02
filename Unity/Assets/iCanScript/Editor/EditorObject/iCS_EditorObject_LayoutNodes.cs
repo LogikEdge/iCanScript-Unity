@@ -154,6 +154,32 @@ public partial class iCS_EditorObject {
 		// Update layout size.
 		LayoutSize= new Vector2(r.width, r.height);        
     }
+    // ----------------------------------------------------------------------
+    public void ReduceChildrenAnchorPosition() {
+        var childNodes= BuildListOfChildNodes(_ => true);
+        if(childNodes.Length == 0) return;
+        // Reduce Local anchor position
+//        var sum= P.fold((acc,n)=> acc+n.LocalAnchorPosition, Vector2.zero, childNodes);
+//        var offset= sum / childNodes.Length;
+//        P.forEach(n=> n.LocalAnchorPosition= n.LocalAnchorPosition-offset, childNodes);
+        var max= P.fold(
+            (acc,n)=> {
+                var lap= n.LocalAnchorPosition;
+                return new Vector2(Mathf.Max(acc.x, lap.x), Mathf.Max(acc.y, lap.y));
+            },
+            childNodes[0].LocalAnchorPosition, childNodes
+        );
+        var min= P.fold(
+            (acc,n)=> {
+                var lap= n.LocalAnchorPosition;
+                return new Vector2(Mathf.Min(acc.x, lap.x), Mathf.Min(acc.y, lap.y));
+            },
+            childNodes[0].LocalAnchorPosition, childNodes
+        );
+        var delta= (max-min)/2;
+        var offset= max-delta;
+        P.forEach(n=> n.LocalAnchorPosition= n.LocalAnchorPosition-offset, childNodes);        
+    }
     
     // ======================================================================
     // Utilities
