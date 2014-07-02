@@ -88,14 +88,12 @@ public partial class iCS_EditorObject {
     public void Iconize() {
         if(DisplayOption != iCS_DisplayOptionEnum.Iconized) {
     		DisplayOption= iCS_DisplayOptionEnum.Iconized;
-            WrappingOffset= Vector2.zero;            
         }
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
 		if(DisplayOption != iCS_DisplayOptionEnum.Folded) {
     		DisplayOption= iCS_DisplayOptionEnum.Folded;
-            WrappingOffset= Vector2.zero;		    
 		}
     }
     // ----------------------------------------------------------------------    
@@ -107,7 +105,6 @@ public partial class iCS_EditorObject {
         if(DisplayOption != iCS_DisplayOptionEnum.Unfolded) {
             ReduceChildrenAnchorPosition();
             DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-            WrappingOffset= Vector2.zero;            
         }
     }
 

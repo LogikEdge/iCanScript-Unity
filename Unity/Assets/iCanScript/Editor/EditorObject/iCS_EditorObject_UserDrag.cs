@@ -5,7 +5,12 @@ public partial class iCS_EditorObject {
 	// ======================================================================
 	// Node Drag
     // ----------------------------------------------------------------------
+    static Vector2 ourNodeDragWrappingOffset= Vector2.zero;
 	public void StartNodeDrag() {
+        if(IsUnfoldedInLayout) {
+            ourNodeDragWrappingOffset= WrappingOffset;
+            ReduceChildrenAnchorPosition();            
+        }
         IsFloating= false;
 		IsSticky= true;
 		SetAsHighestLayoutPriority();
@@ -17,6 +22,10 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	public void EndNodeDrag() {
+        if(IsUnfoldedInLayout) {
+            WrapAroundChildrenNodes();
+            LocalAnchorPosition= LocalAnchorPosition-ourNodeDragWrappingOffset;
+        }
 		myIStorage.ForcedRelayoutOfTree(myIStorage.DisplayRoot);
         IsFloating= false;
         IsSticky= false;
@@ -42,12 +51,20 @@ public partial class iCS_EditorObject {
 	// Node Relocate
     // ----------------------------------------------------------------------
 	public void StartNodeRelocate() {
+        if(IsUnfoldedInLayout) {
+            ourNodeDragWrappingOffset= WrappingOffset;
+            ReduceChildrenAnchorPosition();            
+        }
 		IsFloating= true;
 		IsSticky= true;
 		SetAsHighestLayoutPriority();
 	}
     // ----------------------------------------------------------------------
 	public void EndNodeRelocate() {
+        if(IsUnfoldedInLayout) {
+            WrapAroundChildrenNodes();
+            LocalAnchorPosition= LocalAnchorPosition-ourNodeDragWrappingOffset;
+        }
 		IsFloating= false;
 		IsSticky= false;
 	}
@@ -57,6 +74,10 @@ public partial class iCS_EditorObject {
 		if(IsNode) {
             IStorage.StopAllAnimations();
             UserDragPosition= newPosition;
+            var parent= ParentNode;
+            if(parent != null) {
+                CollisionOffset-= parent.WrappingOffset;
+            }
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}

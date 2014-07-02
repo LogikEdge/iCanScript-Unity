@@ -33,6 +33,9 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Revised: feb 10, 2014
 	public void LayoutNode() {
+        // Clear information created in previous layout
+        WrappingOffset= Vector2.zero;
+        CollisionOffset= Vector2.zero;
         // Nothing to do for invisible ports.
         if(!IsVisibleInLayout) return;
         // Just update the size of the node if it is iconized.
@@ -159,9 +162,6 @@ public partial class iCS_EditorObject {
         var childNodes= BuildListOfChildNodes(_ => true);
         if(childNodes.Length == 0) return;
         // Reduce Local anchor position
-//        var sum= P.fold((acc,n)=> acc+n.LocalAnchorPosition, Vector2.zero, childNodes);
-//        var offset= sum / childNodes.Length;
-//        P.forEach(n=> n.LocalAnchorPosition= n.LocalAnchorPosition-offset, childNodes);
         var max= P.fold(
             (acc,n)=> {
                 var lap= n.LocalAnchorPosition;
