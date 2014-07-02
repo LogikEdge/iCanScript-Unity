@@ -148,8 +148,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	// Sets the current object as the highest layout priority.
 	public void SetAsHighestLayoutPriority() {
+        // Set all sibling node priority to 10
 		var parent= ParentNode;
-		if(parent != null) parent.ReduceChildrenLayoutPriority();
+		if(parent != null) {
+            parent.ForEachChildNode(n=> { n.LayoutPriority= 10; });
+        }
 		LayoutPriority= 0;
 		if(parent != null) parent.SetAsHighestLayoutPriority();
 	}
