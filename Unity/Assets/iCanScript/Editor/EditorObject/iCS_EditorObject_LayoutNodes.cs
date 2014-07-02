@@ -24,6 +24,19 @@ public partial class iCS_EditorObject {
             parent.LayoutParentNodesUntilTop();
         }
     }
+    public void LayoutParentNodesUntilDisplayRoot() {
+        var parent= ParentNode;
+        if(parent == null) return;
+        if(parent == IStorage.DisplayRoot) {
+            parent.LayoutNode();
+            return;
+        }
+        var parentGlobalRect= parent.LayoutRect;
+        parent.LayoutNode();
+        if(Math3D.IsNotEqual(parentGlobalRect, parent.LayoutRect)) {
+            parent.LayoutParentNodesUntilTop();
+        }
+    }
 
     // ----------------------------------------------------------------------
     public void LayoutNodeAndParents() {

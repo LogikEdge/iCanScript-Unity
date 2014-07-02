@@ -41,7 +41,7 @@ public partial class iCS_EditorObject {
 		if(IsNode) {
             IStorage.StopAllAnimations();
             UserDragPosition= newPosition;
-			LayoutParentNodesUntilTop();
+			LayoutParentNodesUntilDisplayRoot();
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}
