@@ -286,7 +286,7 @@ public static class iCS_UnityClasses {
             InstallMonoBehaviourMessage("OnApplicationQuit"   , noParameters, kInMailIcon);         
 
             // Trigger messages
-            var triggerParameters= new iCS_Parameter[1]{new iCS_Parameter("other", typeof(Collider))};
+            var triggerParameters= new iCS_Parameter[1]{new iCS_Parameter("colliderInfo", typeof(Collider))};
             InstallMonoBehaviourMessage("OnTriggerEnter", triggerParameters, kInMailIcon);
             InstallMonoBehaviourMessage("OnTriggerExit" , triggerParameters, kInMailIcon);
             InstallMonoBehaviourMessage("OnTriggerStay" , triggerParameters, kInMailIcon);
