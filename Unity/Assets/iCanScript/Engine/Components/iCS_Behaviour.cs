@@ -1,4 +1,4 @@
-//{"ContentHash" : "F4D7DD0686259A76CD7DD43DD5BD75F6"}
+//{"ContentHash" : "D630DBB4B8554365D1614762B48DF49B"}
 /////////////////////////////////////////////////////////////////
 //  iCS_Behaviour.cs
 //
@@ -297,31 +297,31 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
-	void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider colliderInfo)
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnTriggerEnter", other);
+				vs.RunMessage("OnTriggerEnter", colliderInfo);
 			}
 		}
 	}
 
 
-	void OnTriggerExit(Collider other)
+	void OnTriggerExit(Collider colliderInfo)
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnTriggerExit", other);
+				vs.RunMessage("OnTriggerExit", colliderInfo);
 			}
 		}
 	}
 
 
-	void OnTriggerStay(Collider other)
+	void OnTriggerStay(Collider colliderInfo)
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnTriggerStay", other);
+				vs.RunMessage("OnTriggerStay", colliderInfo);
 			}
 		}
 	}
