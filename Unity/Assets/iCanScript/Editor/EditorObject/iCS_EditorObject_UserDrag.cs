@@ -9,7 +9,6 @@ public partial class iCS_EditorObject {
 	public void StartNodeDrag() {
         if(IsUnfoldedInLayout) {
             ourNodeDragWrappingOffset= WrappingOffset;
-            ReduceChildrenAnchorPosition();            
         }
         IsFloating= false;
 		IsSticky= true;
