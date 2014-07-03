@@ -27,7 +27,7 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-//                    visualEditor.MakeVisibleInViewport(node);
+                    visualEditor.MakeVisibleInViewport(node);
 //                    visualEditor.ReduceEmptyViewport();
                 }
             }
@@ -55,11 +55,11 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-//                    var newPos= node.LayoutPosition;
-//                    if(Math3D.IsNotEqual(oldPos, newPos)){
-//                        visualEditor.ScrollBy(newPos-oldPos);
-//                    }
-//                    visualEditor.MakeVisibleInViewport(node);
+                    var newPos= node.LayoutPosition;
+                    if(Math3D.IsNotEqual(oldPos, newPos)){
+                        visualEditor.ScrollBy(newPos-oldPos);
+                    }
+                    visualEditor.MakeVisibleInViewport(node);
 //                    visualEditor.ReduceEmptyViewport();
                 }
             }
@@ -87,11 +87,11 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-//                    var newPos= node.LayoutPosition;
-//                    if(Math3D.IsNotEqual(oldPos, newPos)){
-//                        visualEditor.ScrollBy(newPos-oldPos);
-//                    }
-//                    visualEditor.MakeVisibleInViewport(node);
+                    var newPos= node.LayoutPosition;
+                    if(Math3D.IsNotEqual(oldPos, newPos)){
+                        visualEditor.ScrollBy(newPos-oldPos);
+                    }
+                    visualEditor.MakeVisibleInViewport(node);
 //                    visualEditor.ReduceEmptyViewport();
                 }
             }
