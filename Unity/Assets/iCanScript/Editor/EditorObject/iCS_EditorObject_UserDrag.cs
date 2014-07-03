@@ -33,6 +33,7 @@ public partial class iCS_EditorObject {
 				p.IsSticky= false;
 			}
 		);
+        ClearLayoutPriority();
 	}
     // ----------------------------------------------------------------------
     // Forces a new position on the object being dragged by the uesr.
@@ -40,6 +41,7 @@ public partial class iCS_EditorObject {
 		if(IsNode) {
             IStorage.StopAllAnimations();
             UserDragPosition= newPosition;
+    		SetAsHighestLayoutPriority();
 			LayoutParentNodesUntilDisplayRoot();
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
@@ -66,6 +68,7 @@ public partial class iCS_EditorObject {
         }
 		IsFloating= false;
 		IsSticky= false;
+        ClearLayoutPriority();
 	}
     // ----------------------------------------------------------------------
     // Forces a new position on the object being dragged by the uesr.

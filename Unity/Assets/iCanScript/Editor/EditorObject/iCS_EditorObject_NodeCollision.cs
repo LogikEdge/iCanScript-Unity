@@ -38,7 +38,9 @@ public partial class iCS_EditorObject {
 					var c2= children[j];
 	                if(c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i],
 															  ref childRect[j])) {
-					    didCollide= true;	
+					    didCollide= true;
+                        --c1.LayoutPriority;
+                        --c2.LayoutPriority;	
 					}
 					if(c1.LayoutPriority > c2.LayoutPriority) {
 						lowest= c1;
@@ -140,20 +142,25 @@ public partial class iCS_EditorObject {
 
 	// ======================================================================
 	// Layout priority functionality.
-	// ----------------------------------------------------------------------
-	// Reduces the layout priority of all chidren.
-	void ReduceChildrenLayoutPriority() {
-		ForEachChildNode(c=> ++c.LayoutPriority);
-	}
+    // ----------------------------------------------------------------------
+    // Clear the layout priority on all children
+    public void ClearLayoutPriority() {
+		var parent= ParentNode;
+		if(parent != null) {
+            parent.ForEachChildNode(n=> { n.LayoutPriority= n.IsSticky ? 0 : 100; });
+            parent.ClearLayoutPriority();
+        }
+        LayoutPriority= IsSticky ? 0 : 100;
+    }
     // ----------------------------------------------------------------------
 	// Sets the current object as the highest layout priority.
 	public void SetAsHighestLayoutPriority() {
         // Set all sibling node priority to 10
 		var parent= ParentNode;
 		if(parent != null) {
-            parent.ForEachChildNode(n=> { n.LayoutPriority= 10; });
-        }
+            parent.ForEachChildNode(n=> { n.LayoutPriority= n.IsSticky ? 0 : 100; });
+            parent.SetAsHighestLayoutPriority();
+        }        
 		LayoutPriority= 0;
-		if(parent != null) parent.SetAsHighestLayoutPriority();
 	}
 }
