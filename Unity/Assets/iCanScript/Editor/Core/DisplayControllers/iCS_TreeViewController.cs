@@ -332,6 +332,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
         if(!myNameEdition && eObj == Selected) {
             if(eObj.IsNameEditable) {
                 myNameEdition= true;
+                Debug.Log("Name is editable=> "+eObj.Name);
             } else {       
                 myNameEdition= false;    
                 EditorWindow.focusedWindow.ShowNotification(new GUIContent("The selected name cannot be changed !!!"));            

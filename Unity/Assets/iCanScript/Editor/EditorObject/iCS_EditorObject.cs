@@ -107,7 +107,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
-		get { return EngineObject.IsNameEditable; }
+		get { return EngineObject.IsNameEditable && !IsMessageHandler; }
 		set {
             var engineObject= EngineObject;
             if(engineObject.IsNameEditable == value) return;
