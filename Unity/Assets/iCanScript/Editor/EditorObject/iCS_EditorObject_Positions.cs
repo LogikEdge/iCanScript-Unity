@@ -260,6 +260,10 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
 	public void SetAnchorAndLayoutPosition(Vector2 pos) {
+        var parent= ParentNode;
+        if(parent != null) {
+            pos+= parent.WrappingOffset;
+        }
 		AnchorPosition = pos;
 		CollisionOffset= Vector2.zero;
 		WrappingOffset = Vector2.zero;

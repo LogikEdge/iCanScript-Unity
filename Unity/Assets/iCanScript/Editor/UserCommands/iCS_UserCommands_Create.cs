@@ -131,7 +131,11 @@ public static partial class iCS_UserCommands {
             _=> {
                 function= iStorage.CreateFunction(parent.InstanceId, desc);
                 function.SetInitialPosition(globalPos);
+                Debug.Log("Request pos=> "+globalPos+" after init=> "+function.LayoutPosition);
+                function.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                Debug.Log("Request pos=> "+globalPos+" after layout=> "+function.LayoutPosition);
+//                function.ClearLayoutPriority();
             }
         );
         iStorage.SaveStorage("Create "+name);
