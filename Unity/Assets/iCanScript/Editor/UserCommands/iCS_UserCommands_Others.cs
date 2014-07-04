@@ -63,7 +63,6 @@ public static partial class iCS_UserCommands {
         // First layout from port to provider
         var providerPort= iStorage.GetPointToPointProviderPortForConsumerPort(port);
         if(providerPort != null && providerPort != port) {
-            Debug.Log("Provider port found=> "+providerPort.Name);
             var providerLayoutEndPoint= iStorage.GetProviderLineSegmentPosition(providerPort);
             iStorage.AutoLayoutPort(providerPort, portPos, providerLayoutEndPoint);
             iStorage.AutoLayoutOfPointToPointBindingExclusive(providerPort, port);
@@ -73,7 +72,6 @@ public static partial class iCS_UserCommands {
         if(consumerPorts != null) {
             foreach(var consumerPort in consumerPorts) {
                 var consumerLayoutEndPoint= iStorage.GetConsumerLineSegmentPosition(consumerPort);
-                Debug.Log("Consumer port=> "+consumerPort.Name+" PP=> "+portPos+" CLEP=> "+consumerLayoutEndPoint);
                 iStorage.AutoLayoutPort(consumerPort, portPos, consumerLayoutEndPoint);
                 iStorage.AutoLayoutOfPointToPointBindingExclusive(port, consumerPort);                
             }
