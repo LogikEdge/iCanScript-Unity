@@ -52,8 +52,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var size= obj.LayoutSize;
         float newScale= 1.0f;
         if(obj.IsNode) {
-            float widthScale= position.width/(1.1f*size.x);
-            float heightScale= position.height/(1.1f*size.y);
+            float borderScale= obj.IsBehaviour ? 1.0f : 1.1f;
+            float widthScale= position.width/(borderScale*size.x);
+            float heightScale= position.height/(borderScale*size.y);
             newScale= Mathf.Min(2.0f, Mathf.Min(widthScale, heightScale));
         }
         CenterAtWithScale(obj.LayoutPosition, newScale);
@@ -77,9 +78,28 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Scale= newScale;
     }
 	// ----------------------------------------------------------------------
+    public void ScrollBy(Vector2 point) {
+        if(IStorage == null) return;
+        Vector2 newScrollPosition= ScrollPosition+point;
+        float deltaTime= Prefs.AnimationTime;
+        myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        ScrollPosition= newScrollPosition;        
+    }
+	// ----------------------------------------------------------------------
+    public void ScaleTo(Vector2 pivot, float newScale) {
+        if(IStorage == null) return;
+        var originalPivot= pivot/Scale;
+        float deltaTime= Prefs.AnimationTime;
+        myAnimatedScale.Start(Scale, newScale, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        Scale= newScale;        
+        var finalPivot= pivot/newScale;
+        ScrollPosition-= finalPivot-originalPivot; 
+    }
+	// ----------------------------------------------------------------------
     public void MakeVisibleInViewport(iCS_EditorObject obj) {
         var r= obj.LayoutRect;
         var clipArea= ClipingArea;
+        // Try to make obj visible in viewport.
         var intersection= Math3D.Intersection(r, clipArea);
         if(Math3D.IsNotEqual(r, intersection)) {
             // By default, focus on parent
@@ -89,5 +109,82 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             CenterAndScaleOn(parent);
         }
+        // Scale up if visual script is too small.
+        var displayRootArea= Math3D.Area(DisplayRoot.LayoutRect);
+        var viewportArea   = Math3D.Area(clipArea);
+        if(displayRootArea < viewportArea*0.25f) {
+            CenterAndScaleOn(DisplayRoot);
+        }
+    }
+	// ----------------------------------------------------------------------
+    public void ReduceEmptyViewport() {
+        var displayRootRect= DisplayRoot.LayoutRect;
+        var viewportRect= ClipingArea;
+        // Attempt to adjust size
+        var lowerScale= 0.75f;
+        var higherScale= 1.5f;
+        bool IsScaleAdjusted= false;
+        if(Scale > lowerScale) {
+            var xScale= Scale;
+            var yScale= Scale;
+            if(displayRootRect.width > viewportRect.width) {
+                xScale= Scale*viewportRect.width/displayRootRect.width;
+            }
+            if(displayRootRect.height > viewportRect.height) {
+                yScale= Scale*viewportRect.height/displayRootRect.height;
+            }
+            var newScale= Mathf.Min(xScale, yScale);
+            if(newScale < lowerScale) newScale= lowerScale;
+            if(Math3D.IsNotEqual(Scale, newScale)) {
+                ScaleTo(Math3D.Middle(displayRootRect), newScale);
+                viewportRect= ClipingArea;
+                IsScaleAdjusted= true;
+            }
+        }
+        if(IsScaleAdjusted == false && Scale < higherScale) {
+            var xScale= Scale;
+            var yScale= Scale;
+            if(displayRootRect.width < viewportRect.width) {
+                xScale= Scale*viewportRect.width/displayRootRect.width;
+            }
+            if(displayRootRect.height < viewportRect.height) {
+                yScale= Scale*viewportRect.height/displayRootRect.height;
+            }
+            var newScale= Mathf.Min(xScale, yScale);
+            if(newScale > higherScale) newScale= higherScale;
+            if(Math3D.IsNotEqual(Scale, newScale)) {
+                ScaleTo(Math3D.Middle(displayRootRect), newScale);
+                viewportRect= ClipingArea;
+                IsScaleAdjusted= true;
+            }            
+        }
+//        // Should move left
+//        if(displayRootRect.x > viewportRect.x && displayRootRect.xMax > viewportRect.xMax) {
+//            var leftOffset= displayRootRect.x-viewportRect.x;
+//            var rightOffset= displayRootRect.xMax-viewportRect.xMax;
+//            var xOffset= Mathf.Min(leftOffset, rightOffset);
+//            ScrollBy(new Vector2(xOffset, 0));
+//        }
+//        // Should move right
+//        if(displayRootRect.xMax < viewportRect.xMax && displayRootRect.x < viewportRect.x) {
+//            var leftOffset= viewportRect.x-displayRootRect.x;
+//            var rightOffset= viewportRect.xMax-displayRootRect.xMax;
+//            var xOffset= Mathf.Min(leftOffset, rightOffset);
+//            ScrollBy(new Vector2(-xOffset, 0));
+//        }
+//        // Should move up
+//        if(displayRootRect.y > viewportRect.y && displayRootRect.yMax > viewportRect.yMax) {
+//            var upOffset= displayRootRect.y-viewportRect.y;
+//            var downOffset= displayRootRect.yMax-viewportRect.yMax;
+//            var yOffset= Mathf.Min(upOffset, downOffset);
+//            ScrollBy(new Vector2(0, yOffset));
+//        }
+//        // Should move down
+//        if(displayRootRect.yMax < viewportRect.yMax && displayRootRect.y < viewportRect.y) {
+//            var upOffset= viewportRect.y-displayRootRect.y;
+//            var downOffset= viewportRect.yMax-displayRootRect.yMax;
+//            var yOffset= Mathf.Min(upOffset, downOffset);
+//            ScrollBy(new Vector2(0, -yOffset));
+//        }
     }
 }

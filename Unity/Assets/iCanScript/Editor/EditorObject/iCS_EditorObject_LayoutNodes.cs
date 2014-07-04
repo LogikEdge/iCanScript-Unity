@@ -24,6 +24,19 @@ public partial class iCS_EditorObject {
             parent.LayoutParentNodesUntilTop();
         }
     }
+    public void LayoutParentNodesUntilDisplayRoot() {
+        var parent= ParentNode;
+        if(parent == null) return;
+        if(parent == IStorage.DisplayRoot) {
+            parent.LayoutNode();
+            return;
+        }
+        var parentGlobalRect= parent.LayoutRect;
+        parent.LayoutNode();
+        if(Math3D.IsNotEqual(parentGlobalRect, parent.LayoutRect)) {
+            parent.LayoutParentNodesUntilTop();
+        }
+    }
 
     // ----------------------------------------------------------------------
     public void LayoutNodeAndParents() {
@@ -33,6 +46,9 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Revised: feb 10, 2014
 	public void LayoutNode() {
+        // Clear information created in previous layout
+        WrappingOffset= Vector2.zero;
+        CollisionOffset= Vector2.zero;
         // Nothing to do for invisible ports.
         if(!IsVisibleInLayout) return;
         // Just update the size of the node if it is iconized.
@@ -63,18 +79,22 @@ public partial class iCS_EditorObject {
 		    return;
 	    }
         if(IsFoldedInLayout) {
-            var pos= LayoutPosition;
-            var r= new Rect(pos.x, pos.y, 0, 0);
-            WrapAroundChildRect(r);
+            var r= NodeRectFromChildrenRectWithMargins(new Rect(0,0,0,0));
+            WrappingOffset= Vector2.zero;
+    		LayoutSize= new Vector2(r.width, r.height);
             return;
         }
         var childNodes= BuildListOfChildNodes(_ => true);
-        var childAnchors= P.map(n => n.AnchorPosition, childNodes);
-        var childRects= P.map(n => n.LayoutRect, childNodes);
-        WrapAroundChildRects(childRects);
+        var childRects= P.map(n => BuildRect(n.LocalAnchorPosition+n.WrappingOffset+n.CollisionOffset, n.LayoutSize), childNodes);
+        // WrapAroundChildRects(childRects);
+        var totalChildRect= GetRectWithMargins(childRects);
+        var parentRect= NodeRectFromChildrenRectWithMargins(totalChildRect);
+		var center= Math3D.Middle(parentRect);
+        WrappingOffset= center;
+		LayoutSize= new Vector2(parentRect.width, parentRect.height);        
         // Restore child global position.
         for(int i= 0; i < childNodes.Length; ++i) {
-            childNodes[i].AnchorPosition= childAnchors[i];
+            childNodes[i].CollisionOffset-= center;
         }
     }
 
@@ -146,9 +166,32 @@ public partial class iCS_EditorObject {
     public void SetNodeLayoutRect(Rect r) {
 		// Update parent node anchor positions.
 		var center= Math3D.Middle(r);
-		AnchorPosition= center-LocalOffset;
+		WrappingPosition= center;
 		// Update layout size.
 		LayoutSize= new Vector2(r.width, r.height);        
+    }
+    // ----------------------------------------------------------------------
+    public void ReduceChildrenAnchorPosition() {
+        var childNodes= BuildListOfChildNodes(_ => true);
+        if(childNodes.Length == 0) return;
+        // Reduce Local anchor position
+        var max= P.fold(
+            (acc,n)=> {
+                var lap= n.LocalAnchorPosition;
+                return new Vector2(Mathf.Max(acc.x, lap.x), Mathf.Max(acc.y, lap.y));
+            },
+            childNodes[0].LocalAnchorPosition, childNodes
+        );
+        var min= P.fold(
+            (acc,n)=> {
+                var lap= n.LocalAnchorPosition;
+                return new Vector2(Mathf.Min(acc.x, lap.x), Mathf.Min(acc.y, lap.y));
+            },
+            childNodes[0].LocalAnchorPosition, childNodes
+        );
+        var delta= (max-min)/2;
+        var offset= max-delta;
+        P.forEach(n=> n.LocalAnchorPosition= n.LocalAnchorPosition-offset, childNodes);        
     }
     
     // ======================================================================

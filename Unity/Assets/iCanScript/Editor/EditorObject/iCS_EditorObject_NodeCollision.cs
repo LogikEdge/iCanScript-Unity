@@ -1,12 +1,11 @@
+#define NEW_COLLISION
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 using Prefs=iCS_PreferencesController;
 
-public partial class iCS_EditorObject {
-    public static bool UseNewCollisionAlgorithm= true;
-    
+public partial class iCS_EditorObject {    
     // ======================================================================
     // Collision Functions
     // ----------------------------------------------------------------------
@@ -16,12 +15,13 @@ public partial class iCS_EditorObject {
     public void ResolveCollisionOnChildrenNodes() {
 		// Get a snapshot of the children state.
 		var children= BuildListOfChildNodes(c=> !c.IsFloating);
-		var childRect= P.map(n => BuildRect(n.AnchorPosition, n.LayoutSize), children);
+        var childPos= P.map(n => n.LocalAnchorPosition+n.WrappingOffset, children);
+		var childRect= P.map(n => BuildRect(n.LocalAnchorPosition+n.WrappingOffset, n.LayoutSize), children);
         // Resolve collisions.
         ResolveCollisionOnChildrenImp(children, ref childRect);
         // Update child position.
 		for(int i= 0; i < children.Length; ++i) {
-            children[i].LayoutPosition= PositionFrom(childRect[i]);
+            children[i].CollisionOffset= PositionFrom(childRect[i])-childPos[i];
 		}
     }
     // ----------------------------------------------------------------------
@@ -37,9 +37,10 @@ public partial class iCS_EditorObject {
 	            for(int j= i+1; j < children.Length; ++j) {
 					var c2= children[j];
 	                if(c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i],
-															  ref childRect[j],
-                                                              r < 2)) {
-					    didCollide= true;	
+															  ref childRect[j])) {
+					    didCollide= true;
+                        --c1.LayoutPriority;
+                        --c2.LayoutPriority;	
 					}
 					if(c1.LayoutPriority > c2.LayoutPriority) {
 						lowest= c1;
@@ -61,8 +62,7 @@ public partial class iCS_EditorObject {
     // Resolves collision between two nodes. "true" is returned if a collision
     // has occured.
     public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject theOtherNode,
-												ref Rect myRect, ref Rect theOtherRect,
-                                                bool useAnchor= true) {
+												ref Rect myRect, ref Rect theOtherRect) {
         // Nothing to do if they don't collide.
         if(!DoesCollideWithMargins(myRect, theOtherRect)) {
 			return false;
@@ -70,17 +70,8 @@ public partial class iCS_EditorObject {
         
         // Compute penetration.
         Vector2 penetration;
-        if(UseNewCollisionAlgorithm == false) {
-            penetration= GetSeperationVector(theOtherNode,
-    										 myRect,
-    										 theOtherRect, useAnchor);
-        }
-        else {
-            penetration= GetSeperationVector2(theOtherNode,
-    										  myRect,
-    										  theOtherRect, useAnchor);            
-        }
-		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) {
+        penetration= GetSeperationVector2(theOtherNode, myRect, theOtherRect);
+        if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) {
 			return false;
 		}
 		// Use Layout priority to determine which node to move.
@@ -112,37 +103,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	// Returns the seperation vector of two colliding nodes.  The vector
 	// returned is the smallest distance to remove the overlap.
-	Vector2 GetSeperationVector(iCS_EditorObject theOther, Rect myRect, Rect otherRect, bool useAnchor= true) {
-        myRect= AddMargins(myRect);
-		// No collision if X & Y distance of the enclosing rect is either
-		// larger or higher then the total width/height.
-        float xMin= Mathf.Min(myRect.xMin, otherRect.xMin);
-        float yMin= Mathf.Min(myRect.yMin, otherRect.yMin);
-        float xMax= Mathf.Max(myRect.xMax, otherRect.xMax);
-        float yMax= Mathf.Max(myRect.yMax, otherRect.yMax);
-        float xDistance= xMax-xMin;
-        float yDistance= yMax-yMin;
-        float totalWidth= myRect.width+otherRect.width;
-        float totalHeight= myRect.height+otherRect.height;
-        if(xDistance >= totalWidth) return Vector2.zero;
-        if(yDistance >= totalHeight) return Vector2.zero;
-		// A collision is detected.  The seperation vector is the
-		// smallest distance to remove the overlap.  The separtion
-		// must also respect the anchor position relationship
-		// between the two overalpping nodes.
-        float sepX= totalWidth-xDistance;
-        float sepY= totalHeight-yDistance;
-        if(useAnchor) {
-    		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
-    		if(anchorSepDir.x <= 0) sepX= xDistance-totalWidth;
-    		if(anchorSepDir.y <= 0) sepY= yDistance-totalHeight;            
-        }
-		if(Mathf.Abs(sepX) < Mathf.Abs(sepY)) {
-			return new Vector2(sepX, 0);
-		}
-		return new Vector2(0, sepY);
-	}
-	Vector2 GetSeperationVector2(iCS_EditorObject theOther, Rect myRect, Rect otherRect, bool useAnchor= true) {
+	Vector2 GetSeperationVector2(iCS_EditorObject theOther, Rect myRect, Rect otherRect) {
         myRect= AddMargins(myRect);
 		// No collision if X & Y distance of the enclosing rect is either
 		// larger or higher then the total width/height.
@@ -155,34 +116,51 @@ public partial class iCS_EditorObject {
 		// must also respect the anchor position relationship
 		// between the two overalpping nodes.
 		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
+#if NEW_COLLISION
+        if(Mathf.Abs(anchorSepDir.x) > Mathf.Abs(anchorSepDir.y)) {
+            return new Vector2(intersection.width*Mathf.Sign(anchorSepDir.x), 0f);            
+        }
+        else {
+            return new Vector2(0f, intersection.height*Mathf.Sign(anchorSepDir.y));            
+        }
+#else
         var normalizedAnchorSep= anchorSepDir.normalized;
         // Assume vertical relation if anchor diff vector under 12 degrees
         if(Math3D.IsSmaller(Mathf.Abs(normalizedAnchorSep.x), 0.25f)) {
-            return new Vector2(0f, intersection.height);
+            return new Vector2(0f, intersection.height*Mathf.Sign(normalizedAnchorSep.y));
         }
         // Assume horizontal relation if anchor diff vector under 12 degrees
         if(Math3D.IsSmaller(Mathf.Abs(normalizedAnchorSep.y), 0.25f)) {
-            return new Vector2(intersection.width, 0f);
+            return new Vector2(intersection.width*Mathf.Sign(normalizedAnchorSep.x), 0f);
         }
         var scaleX= Mathf.Abs(intersection.width / normalizedAnchorSep.x);
         var scaleY= Mathf.Abs(intersection.height / normalizedAnchorSep.y);
         var scale= Mathf.Min(scaleX, scaleY);
         return scale*normalizedAnchorSep;
+#endif
 	}
 
 	// ======================================================================
 	// Layout priority functionality.
-	// ----------------------------------------------------------------------
-	// Reduces the layout priority of all chidren.
-	void ReduceChildrenLayoutPriority() {
-		ForEachChildNode(c=> ++c.LayoutPriority);
-	}
+    // ----------------------------------------------------------------------
+    // Clear the layout priority on all children
+    public void ClearLayoutPriority() {
+		var parent= ParentNode;
+		if(parent != null) {
+            parent.ForEachChildNode(n=> { n.LayoutPriority= n.IsSticky ? 0 : 100; });
+            parent.ClearLayoutPriority();
+        }
+        LayoutPriority= IsSticky ? 0 : 100;
+    }
     // ----------------------------------------------------------------------
 	// Sets the current object as the highest layout priority.
 	public void SetAsHighestLayoutPriority() {
+        // Set all sibling node priority to 10
 		var parent= ParentNode;
-		if(parent != null) parent.ReduceChildrenLayoutPriority();
+		if(parent != null) {
+            parent.ForEachChildNode(n=> { n.LayoutPriority= n.IsSticky ? 0 : 100; });
+            parent.SetAsHighestLayoutPriority();
+        }        
 		LayoutPriority= 0;
-		if(parent != null) parent.SetAsHighestLayoutPriority();
 	}
 }

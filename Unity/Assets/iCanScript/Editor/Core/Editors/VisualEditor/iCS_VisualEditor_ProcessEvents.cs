@@ -145,34 +145,26 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void ProcessNodeDisplayOptionEvent() {
         if(SelectedObject == null || !SelectedObject.IsNode) return;
-        if(SelectedObject.IsKindOfFunction || SelectedObject.IsInstanceNode) {
-            if(SelectedObject.IsIconizedInLayout && !IsShiftKeyDown) {
-                iCS_UserCommands.Unfold(SelectedObject);                                                                            
-            } else if(SelectedObject.IsUnfoldedInLayout && IsShiftKeyDown) {
-                iCS_UserCommands.Iconize(SelectedObject);                    
+        if(IsShiftKeyDown) {
+            if(SelectedObject.IsUnfoldedInLayout) {
+                if(IsAltKeyDown) {
+                    iCS_UserCommands.Iconize(SelectedObject);                                                
+                } else {
+                    iCS_UserCommands.Fold(SelectedObject);                                                                    
+                }
+            } else if(SelectedObject.IsFoldedInLayout) {
+                iCS_UserCommands.Iconize(SelectedObject);                        
             }
         } else {
-            if(IsShiftKeyDown) {
-                if(SelectedObject.IsUnfoldedInLayout) {
-                    if(IsAltKeyDown) {
-                        iCS_UserCommands.Iconize(SelectedObject);                                                
-                    } else {
-                        iCS_UserCommands.Fold(SelectedObject);                                                                    
-                    }
-                } else if(SelectedObject.IsFoldedInLayout) {
-                    iCS_UserCommands.Iconize(SelectedObject);                        
+            if(SelectedObject.IsIconizedOnDisplay) {
+                if(IsAltKeyDown) {
+                    iCS_UserCommands.Unfold(SelectedObject);                                                                                                    
+                } else {
+                    iCS_UserCommands.Fold(SelectedObject);                                            
                 }
-            } else {
-                if(SelectedObject.IsIconizedOnDisplay) {
-                    if(IsAltKeyDown) {
-                        iCS_UserCommands.Unfold(SelectedObject);                                                                                                    
-                    } else {
-                        iCS_UserCommands.Fold(SelectedObject);                                            
-                    }
-                } else if(SelectedObject.IsFoldedInLayout) {
-                    iCS_UserCommands.Unfold(SelectedObject);                                                                            
-                }                    
-            }
+            } else if(SelectedObject.IsFoldedInLayout) {
+                iCS_UserCommands.Unfold(SelectedObject);                                                                            
+            }                    
         }
     }
 

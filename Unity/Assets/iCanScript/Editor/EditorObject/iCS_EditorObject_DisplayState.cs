@@ -86,15 +86,26 @@ public partial class iCS_EditorObject {
     // Display State Change
     // ----------------------------------------------------------------------
     public void Iconize() {
-		DisplayOption= iCS_DisplayOptionEnum.Iconized;
+        if(DisplayOption != iCS_DisplayOptionEnum.Iconized) {
+    		DisplayOption= iCS_DisplayOptionEnum.Iconized;
+        }
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
-		DisplayOption= iCS_DisplayOptionEnum.Folded;
+		if(DisplayOption != iCS_DisplayOptionEnum.Folded) {
+    		DisplayOption= iCS_DisplayOptionEnum.Folded;
+		}
     }
     // ----------------------------------------------------------------------    
     public void Unfold() {
-        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
+        if(IsInstanceNode || IsKindOfFunction) {
+            Fold();
+            return;
+        }
+        if(DisplayOption != iCS_DisplayOptionEnum.Unfolded) {
+            ReduceChildrenAnchorPosition();
+            DisplayOption= iCS_DisplayOptionEnum.Unfolded;
+        }
     }
 
 }

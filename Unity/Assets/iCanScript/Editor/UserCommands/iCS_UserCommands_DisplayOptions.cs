@@ -24,9 +24,11 @@ public static partial class iCS_UserCommands {
                 node.Unfold();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
                     visualEditor.MakeVisibleInViewport(node);
+//                    visualEditor.ReduceEmptyViewport();
                 }
             }
         );
@@ -46,17 +48,19 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
-                if(node.IsKindOfFunction || node.IsInstanceNode) {
-                    node.Unfold();
-                }
-                else {
-                    node.Fold();
-                }
+                var oldPos= node.LayoutPosition;
+                node.Fold();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
+                    var newPos= node.LayoutPosition;
+                    if(Math3D.IsNotEqual(oldPos, newPos)){
+                        visualEditor.ScrollBy(newPos-oldPos);
+                    }
                     visualEditor.MakeVisibleInViewport(node);
+//                    visualEditor.ReduceEmptyViewport();
                 }
             }
         );
@@ -76,12 +80,19 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
+                var oldPos= node.LayoutPosition;
                 node.Iconize();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
+                    var newPos= node.LayoutPosition;
+                    if(Math3D.IsNotEqual(oldPos, newPos)){
+                        visualEditor.ScrollBy(newPos-oldPos);
+                    }
                     visualEditor.MakeVisibleInViewport(node);
+//                    visualEditor.ReduceEmptyViewport();
                 }
             }
         );

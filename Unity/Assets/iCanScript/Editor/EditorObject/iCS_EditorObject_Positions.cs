@@ -7,8 +7,9 @@ public partial class iCS_EditorObject {
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	// Fields
     // ======================================================================
-	Vector2		myLayoutSize = Vector2.zero;
-	Vector2		myLocalOffset= Vector2.zero;
+	Vector2	myLayoutSize      = Vector2.zero;
+	Vector2	myCollisionOffset = Vector2.zero;
+	Vector2	myWrappingOffset  = Vector2.zero;
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
@@ -91,10 +92,28 @@ public partial class iCS_EditorObject {
 		set { EngineObject.LayoutPriority= value; }
 	}
     // ----------------------------------------------------------------------
+	public Vector2 WrappingOffset {
+		get {
+			return myWrappingOffset;
+		}
+		set {
+			myWrappingOffset= value;
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Vector2 CollisionOffset {
+		get {
+			return myCollisionOffset;
+		}
+		set {
+			myCollisionOffset= value;
+		}
+	}
+    // ----------------------------------------------------------------------
     // Offset from the anchor position.  This attribute is animated.
 	public Vector2 LocalOffset {
 		get {
-			return myLocalOffset;
+			return CollisionOffset+WrappingOffset;
 		}
 		set {
             // Update parent port for nested ports.
@@ -102,10 +121,10 @@ public partial class iCS_EditorObject {
                 if(IsNestedPort) {
                     return;
                 }
-                myLocalOffset= value;
-                ForEachChildPort(p=> p.myLocalOffset= value);                
+                myCollisionOffset= value;
+                ForEachChildPort(p=> p.myCollisionOffset= value);                
             }
-			myLocalOffset= value;
+			CollisionOffset= value;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -131,12 +150,12 @@ public partial class iCS_EditorObject {
 				return parent.LayoutPosition;
 			}
 			if(IsPort) {
-				return parent.LayoutPosition+LocalAnchorPosition+LocalOffset;
+				return parent.LayoutPosition+LocalLayoutPosition;
 			}
 			if(!IsVisibleInLayout) {
 			    return parent.LayoutPosition;
 			}
-    		return parent.LayoutPosition+LocalAnchorPosition+LocalOffset;			    			        
+    		return parent.LayoutPosition+LocalLayoutPosition;
 		}
 		set {
             var offsetWithoutParent= value-LocalAnchorPosition;
@@ -241,8 +260,9 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
 	public void SetAnchorAndLayoutPosition(Vector2 pos) {
-		AnchorPosition= pos;
-		LocalOffset= Vector2.zero;
+		AnchorPosition = pos;
+		CollisionOffset= Vector2.zero;
+		WrappingOffset = Vector2.zero;
 	}
 
 	// ======================================================================

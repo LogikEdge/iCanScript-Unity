@@ -8,6 +8,7 @@ public partial class iCS_IStorage {
         NavigationHistory.Save(Storage);
     }
     public void ReloadFromBackwardNavigationHistory() {
+        DisplayRoot.ReduceChildrenAnchorPosition();
         NavigationHistory.ReloadFromBackwardHistory(Storage);
         ForcedRelayoutOfTree(DisplayRoot);
     }

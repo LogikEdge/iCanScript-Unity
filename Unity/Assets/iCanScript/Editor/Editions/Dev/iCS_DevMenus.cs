@@ -144,17 +144,5 @@ public static class iCS_DevMenus {
     public static void ShowEnvironment() {
         Debug.Log("Machine Name=> "+System.Environment.MachineName);
         Debug.Log("User Name=> "+System.Environment.UserName);
-    }
-    // ======================================================================
-    [MenuItem("DevTools/Switch Collision Algorithm", false, 1060)]
-    public static void SwitchCollisionAlgorithm() {
-        iCS_EditorObject.UseNewCollisionAlgorithm= !iCS_EditorObject.UseNewCollisionAlgorithm;
-        if(iCS_EditorObject.UseNewCollisionAlgorithm) {
-            Debug.Log("Using new collision algorithm");
-        }
-        else {
-            Debug.Log("Using original collision algorithm");            
-        }
-    }
-    
+    }    
 }
