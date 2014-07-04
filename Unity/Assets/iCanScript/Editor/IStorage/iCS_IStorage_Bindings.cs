@@ -142,8 +142,7 @@ public partial class iCS_IStorage {
         if(Math3D.LineSegmentAndRectEdgeIntersection(p1, p2, parentNode.LayoutRect, out intersection)) {
             if(Math3D.IsNotEqual(port.LayoutPosition, intersection)) {
                 port.SetAnchorAndLayoutPosition(intersection);
-                parentNode.LayoutNode();
-                parentNode.LayoutPorts();
+                ForcedRelayoutOfTree(DisplayRoot);
                 return true;
             }
         }
