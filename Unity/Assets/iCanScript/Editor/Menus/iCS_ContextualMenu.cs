@@ -287,8 +287,8 @@ public class iCS_ContextualMenu {
         iCS_EditorObject newNodeParent= storage.GetNodeAt(GraphPosition);
 		if(newNodeParent == null) return;
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
-		if(!newNodeParent.IsInstanceNode) {
-			// Add shortcut ti instance node creation.
+		if(!newNodeParent.IsInstanceNode && port.IsOutputPort) {
+			// Add shortcut to instance node creation.
 			menu= new iCS_MenuContext[2];
 			menu[0]= new iCS_MenuContext(ObjectInstanceStr);
 	        menu[1]= new iCS_MenuContext(SeparatorStr);
