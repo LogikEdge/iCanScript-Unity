@@ -58,6 +58,8 @@ public static class iCS_Boolean {
 [iCS_Class(Company="iCanScript", Library="Logic")]
 public static class iCS_Choice {
 	[iCS_Function(Return="out")]
+	public static bool  Choice(bool trueValue,  bool falseValue,  bool sel) { return sel ? trueValue : falseValue; }
+	[iCS_Function(Return="out")]
 	public static float  Choice(float trueValue,  float falseValue,  bool sel) { return sel ? trueValue : falseValue; }
 	[iCS_Function(Return="out")]
 	public static int    Choice(int trueValue,    int falseValue,    bool sel) { return sel ? trueValue : falseValue; }
