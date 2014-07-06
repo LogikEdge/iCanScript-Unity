@@ -29,8 +29,6 @@ public static partial class iCS_UserCommands {
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
                     visualEditor.ReframeOn(node, oldNodePos, node);
-                    visualEditor.MakeVisibleInViewport(node);
-//                    visualEditor.ReduceEmptyViewport();
                 }
             }
         );
@@ -64,7 +62,6 @@ public static partial class iCS_UserCommands {
                     visualEditor.ReframeOn(node, oldNodePos, parent);
                     var newPos= node.LayoutPosition;
                     visualEditor.MakeVisibleInViewport(node);
-//                    visualEditor.ReduceEmptyViewport();
                 }
             }
         );
@@ -97,7 +94,6 @@ public static partial class iCS_UserCommands {
                     }
                     visualEditor.ReframeOn(node, oldNodePos, parent);
                     visualEditor.MakeVisibleInViewport(node);
-//                    visualEditor.ReduceEmptyViewport();
                 }
             }
         );

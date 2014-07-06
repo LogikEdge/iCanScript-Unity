@@ -192,6 +192,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var newPos= target.LayoutPosition;
         if(Math3D.IsNotEqual(targetPos, newPos)){
             ScrollPosition+= newPos-targetPos;
-        }        
+        }   
+        
+        MakeVisibleInViewport(node);     
     }
 }
