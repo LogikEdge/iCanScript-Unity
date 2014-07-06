@@ -21,12 +21,14 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
+                var oldNodePos= node.LayoutPosition;
                 node.Unfold();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
+                    visualEditor.ReframeOn(node, oldNodePos, node);
                     visualEditor.MakeVisibleInViewport(node);
 //                    visualEditor.ReduceEmptyViewport();
                 }
@@ -48,17 +50,19 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
-                var oldPos= node.LayoutPosition;
+                var oldNodePos= node.LayoutPosition;
                 node.Fold();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    var newPos= node.LayoutPosition;
-                    if(Math3D.IsNotEqual(oldPos, newPos)){
-                        visualEditor.ScrollBy(newPos-oldPos);
+                    parent= node.ParentNode;
+                    if(parent == null || parent.IsParentOf(DisplayRoot)) {
+                        parent= DisplayRoot;
                     }
+                    visualEditor.ReframeOn(node, oldNodePos, parent);
+                    var newPos= node.LayoutPosition;
                     visualEditor.MakeVisibleInViewport(node);
 //                    visualEditor.ReduceEmptyViewport();
                 }
@@ -80,17 +84,18 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
-                var oldPos= node.LayoutPosition;
+                var oldNodePos= node.LayoutPosition;
                 node.Iconize();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    var newPos= node.LayoutPosition;
-                    if(Math3D.IsNotEqual(oldPos, newPos)){
-                        visualEditor.ScrollBy(newPos-oldPos);
+                    parent= node.ParentNode;
+                    if(parent == null || parent.IsParentOf(DisplayRoot)) {
+                        parent= DisplayRoot;
                     }
+                    visualEditor.ReframeOn(node, oldNodePos, parent);
                     visualEditor.MakeVisibleInViewport(node);
 //                    visualEditor.ReduceEmptyViewport();
                 }

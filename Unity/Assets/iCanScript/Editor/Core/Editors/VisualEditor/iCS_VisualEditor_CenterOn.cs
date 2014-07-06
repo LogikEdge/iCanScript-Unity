@@ -187,4 +187,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //            ScrollBy(new Vector2(0, -yOffset));
 //        }
     }
+	// ----------------------------------------------------------------------
+    public void ReframeOn(iCS_EditorObject target, Vector2 targetPos, iCS_EditorObject focusNode) {
+        var newPos= target.LayoutPosition;
+        if(Math3D.IsNotEqual(targetPos, newPos)){
+            ScrollPosition+= newPos-targetPos;
+        }        
+    }
 }

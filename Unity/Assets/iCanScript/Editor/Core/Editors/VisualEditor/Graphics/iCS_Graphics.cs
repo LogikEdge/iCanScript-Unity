@@ -464,7 +464,7 @@ public partial class iCS_Graphics {
         string tooltip= null;
 #endif
         // Determine title style
-        var shadowColor= isMouseOver ? WhiteShadowColor : BlackShadowColor;
+        var shadowColor= isMouseOver || iStorage.IsSelectedOrMultiSelected(node) ? WhiteShadowColor : BlackShadowColor;
         GUI_Box(position, new GUIContent(title, tooltip), GetNodeColor(node), backgroundColor, shadowColor);
         if(isMouseOver) {
             EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
@@ -627,7 +627,7 @@ public partial class iCS_Graphics {
         if(!IsVisibleInViewport(displayArea)) return;
         
         // Determine if port is selected.
-        bool isSelectedPort= port.IStorage.IsSelectedOrMultiSelected(port) ||
+        bool isSelectedPort= iStorage.IsSelectedOrMultiSelected(port) ||
                              (selectedObject != null && selectedObject.IsDataOrControlPort && port == selectedObject.Parent);
         
         // Special case for asset store images
