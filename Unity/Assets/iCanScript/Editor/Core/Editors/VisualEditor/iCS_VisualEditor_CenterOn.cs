@@ -188,6 +188,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //        }
     }
 	// ----------------------------------------------------------------------
+    // TODO: Need to complete Reframe algorithm as per Grafio logic diagram.
     public void ReframeOn(iCS_EditorObject target, Vector2 targetPos, iCS_EditorObject focusNode) {
         var newPos= target.LayoutPosition;
         if(Math3D.IsNotEqual(targetPos, newPos)){

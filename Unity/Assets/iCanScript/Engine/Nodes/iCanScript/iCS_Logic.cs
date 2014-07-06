@@ -48,11 +48,17 @@ public static class iCS_Conditions {
 
 [iCS_Class(Company="iCanScript", Library="Logic")]
 public static class iCS_Boolean {
-    [iCS_Function] public static bool And(bool a, bool b) { return a & b; }
-    [iCS_Function] public static bool Or (bool a, bool b) { return a | b; }
-    [iCS_Function] public static bool Xor(bool a, bool b) { return a ^ b; }
-    [iCS_Function] public static bool Not(bool a)         { return !a; } 
-	[iCS_Function] public static bool NotAnd(bool a, bool b) { return !(a & b); }   
+    [iCS_Function] public static bool And(bool a, bool b)                       { return a & b; }
+    [iCS_Function] public static bool And(bool a, bool b, bool c)               { return a & b & c; }
+    [iCS_Function] public static bool And(bool a, bool b, bool c, bool d)       { return a & b & c & d; }
+    [iCS_Function] public static bool Or (bool a, bool b)                       { return a | b; }
+    [iCS_Function] public static bool Or (bool a, bool b, bool c)               { return a | b | c; }
+    [iCS_Function] public static bool Or (bool a, bool b, bool c, bool d)       { return a | b | c | d; }
+    [iCS_Function] public static bool Xor(bool a, bool b)                       { return a ^ b; }
+    [iCS_Function] public static bool Not(bool a)                               { return !a; } 
+	[iCS_Function] public static bool NotAnd(bool a, bool b)                    { return !(a & b); }
+	[iCS_Function] public static bool NotAnd(bool a, bool b, bool c)            { return !(a & b & c); }
+	[iCS_Function] public static bool NotAnd(bool a, bool b, bool c, bool d)    { return !(a & b & c & d); }
 }
 
 [iCS_Class(Company="iCanScript", Library="Logic")]
