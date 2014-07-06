@@ -195,6 +195,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             ScrollPosition+= newPos-targetPos;
         }   
         
-        MakeVisibleInViewport(node);     
+        MakeVisibleInViewport(target);     
     }
 }

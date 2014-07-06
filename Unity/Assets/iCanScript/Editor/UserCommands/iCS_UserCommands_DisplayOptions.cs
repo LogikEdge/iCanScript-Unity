@@ -55,9 +55,9 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    parent= node.ParentNode;
-                    if(parent == null || parent.IsParentOf(DisplayRoot)) {
-                        parent= DisplayRoot;
+                    var parent= node.ParentNode;
+                    if(parent == null || parent.IsParentOf(iStorage.DisplayRoot)) {
+                        parent= iStorage.DisplayRoot;
                     }
                     visualEditor.ReframeOn(node, oldNodePos, parent);
                     var newPos= node.LayoutPosition;
@@ -88,9 +88,9 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    parent= node.ParentNode;
-                    if(parent == null || parent.IsParentOf(DisplayRoot)) {
-                        parent= DisplayRoot;
+                    var parent= node.ParentNode;
+                    if(parent == null || parent.IsParentOf(iStorage.DisplayRoot)) {
+                        parent= iStorage.DisplayRoot;
                     }
                     visualEditor.ReframeOn(node, oldNodePos, parent);
                     visualEditor.MakeVisibleInViewport(node);
