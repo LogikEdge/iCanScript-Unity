@@ -28,7 +28,7 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    visualEditor.ReframeOn(node, oldNodePos, node);
+                    visualEditor.ReframeOn(node, oldNodePos);
                 }
             }
         );
@@ -55,13 +55,7 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    var parent= node.ParentNode;
-                    if(parent == null || parent.IsParentOf(iStorage.DisplayRoot)) {
-                        parent= iStorage.DisplayRoot;
-                    }
-                    visualEditor.ReframeOn(node, oldNodePos, parent);
-                    var newPos= node.LayoutPosition;
-                    visualEditor.MakeVisibleInViewport(node);
+                    visualEditor.ReframeOn(node, oldNodePos);
                 }
             }
         );
@@ -88,12 +82,7 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    var parent= node.ParentNode;
-                    if(parent == null || parent.IsParentOf(iStorage.DisplayRoot)) {
-                        parent= iStorage.DisplayRoot;
-                    }
-                    visualEditor.ReframeOn(node, oldNodePos, parent);
-                    visualEditor.MakeVisibleInViewport(node);
+                    visualEditor.ReframeOn(node, oldNodePos);
                 }
             }
         );

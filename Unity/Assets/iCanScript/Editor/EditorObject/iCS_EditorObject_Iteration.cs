@@ -45,6 +45,16 @@ public partial class iCS_EditorObject {
 		return false;
 	}
     // ----------------------------------------------------------------------
+    public int NumberOfChildNodes() {
+        int nbOfChildNodes= 0;
+        foreach(var childId in Children) {
+            if(IsIdValid(childId) && EditorObjects[childId].IsNode) {
+                ++nbOfChildNodes;
+            }
+        }
+        return nbOfChildNodes;
+    }
+    // ----------------------------------------------------------------------
 	public bool HasChildPort() {
         foreach(var childId in Children) {
             if(IsIdValid(childId) && EditorObjects[childId].IsPort) return true;
@@ -52,7 +62,7 @@ public partial class iCS_EditorObject {
 		return false;
 	}
     // ---------------------------------------------------------------------------------
-    public int NbOfChildPorts() {
+    public int NumberOfChildPorts() {
         int count= 0;
         foreach(var childId in Children) {
             if(IsIdValid(childId) && EditorObjects[childId].IsPort) ++count;

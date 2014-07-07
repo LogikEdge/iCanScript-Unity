@@ -10,6 +10,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             return new Rect(ScrollPosition.x, ScrollPosition.y, Viewport.width, Viewport.height);
         }
     }
+    Rect ClipingAreaWithPadding {
+        get {
+            const float kPaddingFactor= 0.08f;
+            var clipingArea= ClipingArea;
+            var xPadding= clipingArea.width  * kPaddingFactor;
+            var yPadding= clipingArea.height * kPaddingFactor;
+            clipingArea.x+= 0.5f * xPadding;
+            clipingArea.y+= 0.5f * yPadding;
+            clipingArea.width -= xPadding;
+            clipingArea.height-= yPadding;
+            return clipingArea;
+        }
+    }
 	// ----------------------------------------------------------------------
     public Vector2 ViewportCenter {
         get {

@@ -96,105 +96,115 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         ScrollPosition-= finalPivot-originalPivot; 
     }
 	// ----------------------------------------------------------------------
-    public void MakeVisibleInViewport(iCS_EditorObject obj) {
-        var r= obj.LayoutRect;
-        var clipArea= ClipingArea;
-        // Try to make obj visible in viewport.
-        var intersection= Math3D.Intersection(r, clipArea);
-        if(Math3D.IsNotEqual(r, intersection)) {
-            // By default, focus on parent
-            var parent= obj.ParentNode;
-            if(parent == null) {
-                parent= obj;
-            }
-            CenterAndScaleOn(parent);
-        }
-        // Scale up if visual script is too small.
-        var displayRootArea= Math3D.Area(DisplayRoot.LayoutRect);
-        var viewportArea   = Math3D.Area(clipArea);
-        if(displayRootArea < viewportArea*0.25f) {
-            CenterAndScaleOn(DisplayRoot);
-        }
-    }
-	// ----------------------------------------------------------------------
-    public void ReduceEmptyViewport() {
-        var displayRootRect= DisplayRoot.LayoutRect;
-        var viewportRect= ClipingArea;
-        // Attempt to adjust size
-        var lowerScale= 0.75f;
-        var higherScale= 1.5f;
-        bool IsScaleAdjusted= false;
-        if(Scale > lowerScale) {
-            var xScale= Scale;
-            var yScale= Scale;
-            if(displayRootRect.width > viewportRect.width) {
-                xScale= Scale*viewportRect.width/displayRootRect.width;
-            }
-            if(displayRootRect.height > viewportRect.height) {
-                yScale= Scale*viewportRect.height/displayRootRect.height;
-            }
-            var newScale= Mathf.Min(xScale, yScale);
-            if(newScale < lowerScale) newScale= lowerScale;
-            if(Math3D.IsNotEqual(Scale, newScale)) {
-                ScaleTo(Math3D.Middle(displayRootRect), newScale);
-                viewportRect= ClipingArea;
-                IsScaleAdjusted= true;
-            }
-        }
-        if(IsScaleAdjusted == false && Scale < higherScale) {
-            var xScale= Scale;
-            var yScale= Scale;
-            if(displayRootRect.width < viewportRect.width) {
-                xScale= Scale*viewportRect.width/displayRootRect.width;
-            }
-            if(displayRootRect.height < viewportRect.height) {
-                yScale= Scale*viewportRect.height/displayRootRect.height;
-            }
-            var newScale= Mathf.Min(xScale, yScale);
-            if(newScale > higherScale) newScale= higherScale;
-            if(Math3D.IsNotEqual(Scale, newScale)) {
-                ScaleTo(Math3D.Middle(displayRootRect), newScale);
-                viewportRect= ClipingArea;
-                IsScaleAdjusted= true;
-            }            
-        }
-//        // Should move left
-//        if(displayRootRect.x > viewportRect.x && displayRootRect.xMax > viewportRect.xMax) {
-//            var leftOffset= displayRootRect.x-viewportRect.x;
-//            var rightOffset= displayRootRect.xMax-viewportRect.xMax;
-//            var xOffset= Mathf.Min(leftOffset, rightOffset);
-//            ScrollBy(new Vector2(xOffset, 0));
-//        }
-//        // Should move right
-//        if(displayRootRect.xMax < viewportRect.xMax && displayRootRect.x < viewportRect.x) {
-//            var leftOffset= viewportRect.x-displayRootRect.x;
-//            var rightOffset= viewportRect.xMax-displayRootRect.xMax;
-//            var xOffset= Mathf.Min(leftOffset, rightOffset);
-//            ScrollBy(new Vector2(-xOffset, 0));
-//        }
-//        // Should move up
-//        if(displayRootRect.y > viewportRect.y && displayRootRect.yMax > viewportRect.yMax) {
-//            var upOffset= displayRootRect.y-viewportRect.y;
-//            var downOffset= displayRootRect.yMax-viewportRect.yMax;
-//            var yOffset= Mathf.Min(upOffset, downOffset);
-//            ScrollBy(new Vector2(0, yOffset));
-//        }
-//        // Should move down
-//        if(displayRootRect.yMax < viewportRect.yMax && displayRootRect.y < viewportRect.y) {
-//            var upOffset= viewportRect.y-displayRootRect.y;
-//            var downOffset= viewportRect.yMax-displayRootRect.yMax;
-//            var yOffset= Mathf.Min(upOffset, downOffset);
-//            ScrollBy(new Vector2(0, -yOffset));
-//        }
-    }
-	// ----------------------------------------------------------------------
-    // TODO: Need to complete Reframe algorithm as per Grafio logic diagram.
-    public void ReframeOn(iCS_EditorObject target, Vector2 targetPos, iCS_EditorObject focusNode) {
+    public void ReframeOn(iCS_EditorObject target, Vector2 targetPos) {
+        // Reposition Target.
         var newPos= target.LayoutPosition;
         if(Math3D.IsNotEqual(targetPos, newPos)){
             ScrollPosition+= newPos-targetPos;
         }   
-        
-        MakeVisibleInViewport(target);     
+        // Display entire graph if it easily fits in viewport.
+        var displayRootScale= ProposeViewportScalingFor(IStorage.DisplayRoot, 0f, 2f);
+        if(Math3D.IsWithin(displayRootScale, 0.75f, 2f)) {
+            Debug.Log("Centering on Display Root");
+//            CenterAndScaleOn(IStorage.DisplayRoot);
+            Scale= displayRootScale;
+            RepositionInViewport(IStorage.DisplayRoot);
+            return;
+        }
+        // Move the focus node to the parent if it is the only child node.
+        var focusNode= target.ParentNode;
+        if(focusNode == null) focusNode= target;
+        var focusParent= focusNode.ParentNode;
+        while(focusNode != IStorage.DisplayRoot && focusParent != null &&
+              focusParent.NumberOfChildNodes() == 1 && !focusParent.IsBehaviour) {
+            focusNode= focusParent;
+            focusParent= focusNode.ParentNode;
+        }
+        // Determine if we should rescale to fit the focus node.
+        var newScale= ProposeViewportScalingFor(focusNode, 0.5f, 2f);
+        if(Math3D.IsWithin(newScale, 0.5f, 2f)) {
+            Debug.Log("Centering on=> "+focusNode.Name);
+            Scale= newScale;
+            RepositionInViewport(focusNode);
+//            CenterAndScaleOn(focusNode);
+            return;
+        }
+        Debug.Log("Reframing on=> "+focusNode.Name);
+        Scale= newScale;
+        RepositionInViewport(focusNode);
+    }
+	// ----------------------------------------------------------------------
+    public bool IsNodeFullyVisibleInViewport(iCS_EditorObject node) {
+        var r= node.LayoutRect;
+        var clipArea= ClipingArea;
+        // Try to make obj visible in viewport.
+        var intersection= Math3D.Intersection(r, clipArea);
+        return Math3D.IsEqual(r, intersection);
+    }
+	// ----------------------------------------------------------------------
+    public float ProposeViewportScalingFor(iCS_EditorObject node, float minScale= 0.50f, float maxScale= 1.5f) {
+        var viewportRect= ClipingAreaWithPadding;
+        var nodeSize= node.LayoutSize;
+        var xScale= Scale * viewportRect.width / nodeSize.x;
+        var yScale= Scale * viewportRect.height / nodeSize.y;
+        var newScale= Mathf.Min(xScale, yScale);
+        if(newScale < minScale) newScale= minScale;
+        if(newScale > maxScale) newScale= maxScale;
+        return newScale;
+    }
+	// ----------------------------------------------------------------------
+    public void RepositionInViewport(iCS_EditorObject node) {
+        var nodeRect  = node.LayoutRect;
+        var nodeCenter= Math3D.Middle(nodeRect);
+        var viewportRect  = ClipingAreaWithPadding;
+        var viewportCenter= Math3D.Middle(viewportRect);
+        // Should center vertically
+        if(nodeRect.width < viewportRect.width) {
+            ScrollPosition+= new Vector2(nodeCenter.x - viewportCenter.x, 0);
+            viewportRect  = ClipingAreaWithPadding;
+            viewportCenter= Math3D.Middle(viewportRect);
+        }
+        // Should move left
+        if(nodeRect.x > viewportRect.x && nodeRect.xMax > viewportRect.xMax) {
+            var leftOffset= nodeRect.x-viewportRect.x;
+            var rightOffset= nodeRect.xMax-viewportRect.xMax;
+            var xOffset= Mathf.Min(leftOffset, rightOffset);
+            ScrollPosition+= new Vector2(xOffset, 0);
+            viewportRect  = ClipingAreaWithPadding;
+            viewportCenter= Math3D.Middle(viewportRect);
+        }
+        // Should move right
+        if(nodeRect.xMax < viewportRect.xMax && nodeRect.x < viewportRect.x) {
+            var leftOffset= viewportRect.x-nodeRect.x;
+            var rightOffset= viewportRect.xMax-nodeRect.xMax;
+            var xOffset= Mathf.Min(leftOffset, rightOffset);
+            ScrollPosition+= new Vector2(-xOffset, 0);
+            viewportRect  = ClipingAreaWithPadding;
+            viewportCenter= Math3D.Middle(viewportRect);
+        }
+        // Should center horizontally
+        if(nodeRect.height < viewportRect.height) {
+            ScrollPosition+= new Vector2(0, nodeCenter.y - viewportCenter.y);
+            viewportRect  = ClipingAreaWithPadding;
+            viewportCenter= Math3D.Middle(viewportRect);
+        }
+        // Should move top
+        if(nodeRect.y > viewportRect.y && nodeRect.yMax > viewportRect.yMax) {
+            var upOffset= nodeRect.y-viewportRect.y;
+            var downOffset= nodeRect.yMax-viewportRect.yMax;
+            var yOffset= Mathf.Min(upOffset, downOffset);
+            ScrollPosition+= new Vector2(0, yOffset);
+            viewportRect  = ClipingAreaWithPadding;
+            viewportCenter= Math3D.Middle(viewportRect);
+        }
+        // Should move bottom
+        if(nodeRect.yMax < viewportRect.yMax && nodeRect.y < viewportRect.y) {
+            var upOffset= viewportRect.y-nodeRect.y;
+            var downOffset= viewportRect.yMax-nodeRect.yMax;
+            var yOffset= Mathf.Min(upOffset, downOffset);
+            ScrollPosition+= new Vector2(0, -yOffset);
+            viewportRect  = ClipingAreaWithPadding;
+            viewportCenter= Math3D.Middle(viewportRect);
+        }
     }
 }

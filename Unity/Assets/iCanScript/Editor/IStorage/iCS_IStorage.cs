@@ -257,7 +257,7 @@ public partial class iCS_IStorage {
 						}
 						// Convert input mux to dynamic port if no children.
 						if(obj.IsInParentMuxPort) {
-	                        switch(obj.NbOfChildPorts()) {
+	                        switch(obj.NumberOfChildPorts()) {
 	                            case 0:
 	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
 	                                break;
