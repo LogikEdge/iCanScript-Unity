@@ -5,15 +5,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties.
     // ----------------------------------------------------------------------
-    Rect ClipingArea {
+    Rect VisibleGraphRect {
         get {
             return new Rect(ScrollPosition.x, ScrollPosition.y, Viewport.width, Viewport.height);
         }
     }
-    Rect ClipingAreaWithPadding {
+    Rect VisibleGraphRectWithPadding {
         get {
             const float kPaddingFactor= 0.08f;
-            var clipingArea= ClipingArea;
+            var clipingArea= VisibleGraphRect;
             var xPadding= clipingArea.width  * kPaddingFactor;
             var yPadding= clipingArea.height * kPaddingFactor;
             clipingArea.x+= 0.5f * xPadding;
@@ -26,7 +26,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public Vector2 ViewportCenter {
         get {
-            return new Vector2(0.5f/Scale*position.width, 0.5f/Scale*position.height);
+            return new Vector2(0.5f*position.width/Scale, 0.5f*position.height/Scale);
         }
     }
 	// ----------------------------------------------------------------------
@@ -38,31 +38,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
 	// ----------------------------------------------------------------------
-    Rect GraphArea {
+    Rect WindowRectForGraph {
         get {
             float headerHeight= iCS_ToolbarUtility.GetHeight();
             return new Rect(position.x, position.y+headerHeight, position.width, position.height-headerHeight);
             }
     }
 	// ----------------------------------------------------------------------
-    Rect HeaderArea {
+    Rect WindowRectForHeader {
         get {
             float headerHeight= iCS_ToolbarUtility.GetHeight();
             return new Rect(position.x, position.y, position.width, headerHeight);
             }    
-    }
-	// ----------------------------------------------------------------------
-    float UsableWindowWidth {
-        get {
-            return position.width-2*iCS_EditorConfig.EditorWindowPaddingSize;            
-        }
-    }    
-	// ----------------------------------------------------------------------
-    float UsableWindowHeight {
-        get {
-            return position.height-2*iCS_EditorConfig.EditorWindowPaddingSize+iCS_EditorConfig.EditorWindowToolbarHeight;
-            
-        }
     }
     
 }
