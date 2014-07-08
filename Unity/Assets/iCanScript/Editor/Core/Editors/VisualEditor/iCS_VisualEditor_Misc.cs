@@ -86,6 +86,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Destroy drag port since it is not needed anymore.
         IStorage.DestroyInstance(DragObject);
         DragObject= null;
+        // Refuse to connect the input of a builder node.
+        if( DragFixPort.IsInputPort && DragFixPort.ParentNode.IsConstructor ||
+            overlappingPort.IsInputPort && overlappingPort.ParentNode.IsConstructor) {
+                ShowNotification(new GUIContent("Instance Builder nodes must be initialized with static values !!!"));
+                return true;
+        }
         return VerifyNewConnection(DragFixPort, overlappingPort);
     }
 	// ----------------------------------------------------------------------

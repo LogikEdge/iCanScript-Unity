@@ -102,7 +102,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     iCS_UserCommands.StartNodeRelocation(node);
                     DragType= DragTypeEnum.NodeRelocation;                                        
                     DragStartAnchorPosition= node.AnchorPosition;
-//                    node.LayoutPosition= DragStartDisplayPosition;
 					node.StartNodeRelocate();
                 } else {
                     if(IStorage.IsMultiSelectionActive) {
