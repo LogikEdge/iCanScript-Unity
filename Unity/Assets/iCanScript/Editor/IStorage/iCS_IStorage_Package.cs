@@ -32,6 +32,7 @@ public partial class iCS_IStorage {
 				}
 			}
 		);
+        ForcedRelayoutOfTree(DisplayRoot);
 		return package;
 	}
 	// -------------------------------------------------------------------------
@@ -67,6 +68,7 @@ public partial class iCS_IStorage {
     			}
     		);            
         }
+        ForcedRelayoutOfTree(DisplayRoot);
         return package;
     }
 }

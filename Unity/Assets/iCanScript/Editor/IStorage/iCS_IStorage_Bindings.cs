@@ -183,9 +183,8 @@ public partial class iCS_IStorage {
 		// Change parent and relayout.
 		var nodePos= node.LayoutPosition;
 		node.Parent= newParent;
-		node.SetAnchorAndLayoutPosition(nodePos);
-		node.LayoutNode();
-		node.LayoutParentNodesUntilTop();
+		node.LocalAnchorPosition= nodePos-newParent.LayoutPosition+newParent.WrappingOffset;
+        node.CollisionOffset= -newParent.WrappingOffset;
 		if(node.IsState) CleanupEntryState(node, oldParent);
         RebuildConnectionsFor(node);
     }
