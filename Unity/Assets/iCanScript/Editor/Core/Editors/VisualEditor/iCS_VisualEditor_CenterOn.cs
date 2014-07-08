@@ -78,29 +78,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Scale= newScale;
     }
 	// ----------------------------------------------------------------------
-    public void ScrollBy(Vector2 point) {
-        if(IStorage == null) return;
-        Vector2 newScrollPosition= ScrollPosition+point;
+    public void ScaleOnPivot(Vector2 pivot, float newScale) {
         float deltaTime= Prefs.AnimationTime;
+        var newScrollPosition= pivot + (ScrollPosition - pivot) * Scale / newScale;
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
-        ScrollPosition= newScrollPosition;        
-    }
-	// ----------------------------------------------------------------------
-    public void ScaleTo(Vector2 pivot, float newScale) {
-        if(IStorage == null) return;
-        var originalPivot= pivot/Scale;
-        float deltaTime= Prefs.AnimationTime;
         myAnimatedScale.Start(Scale, newScale, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
-        Scale= newScale;        
-        var finalPivot= pivot/newScale;
-        ScrollPosition-= finalPivot-originalPivot; 
+        ScrollPosition= newScrollPosition;
+        Scale= newScale;
     }
 	// ----------------------------------------------------------------------
     public void ReframeOn(iCS_EditorObject target, Vector2 targetPos) {
-        var initialScrollPosition= ScrollPosition;
-        var initialScale= Scale;
-        float deltaTime= Prefs.AnimationTime;
-        Vector2 pivot= Vector2.zero;
+//        var initialScrollPosition= ScrollPosition;
+//        var initialScale= Scale;
+//        float deltaTime= Prefs.AnimationTime;
+//        Vector2 pivot= Vector2.zero;
         // Reposition Target.
         var newPos= target.LayoutPosition;
         if(Math3D.IsNotEqual(targetPos, newPos)){
@@ -132,15 +123,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var newScale= ProposeViewportScalingFor(focusNode, 0.5f, 2f);
         if(Math3D.IsWithin(newScale, 0.5f, 2f)) {
             Debug.Log("Centering on=> "+focusNode.Name);
-            CenterAndScaleOn(focusNode);
-//            pivot= IStorage.DisplayRoot.LayoutPosition;
-//            var newScrollPosition= ScrollPosition + (newScale-initialScale)*pivot;
-//            Debug.Log("oldSP=> "+ScrollPosition+" newSP=> "+newScrollPosition+" oldScale=> "+Scale+" newScale=> "+newScale);
-//            Debug.Log("oldVpP=> "+(pivot*Scale-ScrollPosition)+" newVpP=> "+(pivot*newScale-newScrollPosition));
-//            Scale= newScale;
-//            ScrollPosition= newScrollPosition;
+//            CenterAndScaleOn(focusNode);
+            ScaleOnPivot(focusNode.LayoutPosition, newScale);
 //            RepositionInViewport(focusNode);
-//            myAnimatedScrollPosition.Start(initialScrollPosition, ScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
             return;
         }
         Debug.Log("Reframing on=> "+focusNode.Name);
