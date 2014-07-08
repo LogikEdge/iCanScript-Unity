@@ -302,9 +302,14 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 package= iStorage.WrapInPackage(selectedObjects);
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
-                var r= Math3D.Union(P.map(n => n.LayoutRect, selectedObjects));
-                package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);
+                if(package != null) {
+                    iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                    var r= Math3D.Union(P.map(n => n.LayoutRect, selectedObjects));
+                    package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);                    
+                }
+                else {
+                    Debug.LogWarning("iCanScript: Unable to create package.  Please report problem.");
+                }
             }
         );
         iStorage.SaveStorage("Wrap Selection");
