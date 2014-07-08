@@ -320,10 +320,10 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     void DrawLabelBackground(Rect r, float alpha, Color backgroundColor, Color outlineColor) {
         Vector3[] vectors= new Vector3[4];
-        vectors[0]= new Vector3(r.x-2, r.y-2, 0);
-        vectors[1]= new Vector3(r.xMax+2, r.y-2, 0);
-        vectors[2]= new Vector3(r.xMax+2, r.yMax+2, 0);
-        vectors[3]= new Vector3(r.x-2, r.yMax+2, 0);
+        vectors[0]= new Vector3(r.x-2, r.y, 0);
+        vectors[1]= new Vector3(r.xMax+2, r.y, 0);
+        vectors[2]= new Vector3(r.xMax+2, r.yMax, 0);
+        vectors[3]= new Vector3(r.x-2, r.yMax, 0);
         Handles.color= new Color(1f, 1f, 1f, alpha);
         Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, outlineColor);
     }
@@ -676,7 +676,7 @@ public partial class iCS_Graphics {
         // Display port name.
         if(ShouldDisplayPortName(port)) {
 	        Rect portNamePos= GetPortNameGUIPosition(port, iStorage);
-            var boxAlpha= 0.10f;
+            var boxAlpha= 0.35f;
             var outlineColor= Color.black;
             if(isSelectedPort) {
                 boxAlpha= 1f;
@@ -693,7 +693,7 @@ public partial class iCS_Graphics {
     			EditorGUIUtility.LookLikeControls();
                 Rect portValuePos= GetPortValueGUIPosition(port);
         		if(Math3D.IsNotZero(portValuePos.width)) {
-                    DrawLabelBackground(portValuePos, 0.10f, Color.black, Color.black);
+                    DrawLabelBackground(portValuePos, 0.35f, Color.black, Color.black);
             		string valueAsStr= GetPortValueAsString(port);
         			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
         		}            				
