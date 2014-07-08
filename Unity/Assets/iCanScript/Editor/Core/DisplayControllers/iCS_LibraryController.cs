@@ -14,6 +14,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         public string              Name;
         public iCS_MemberInfo  Desc;
         public Node(NodeTypeEnum type, string name, iCS_MemberInfo desc) {
+            Init(type, name, desc);
+        }
+        public void Init(NodeTypeEnum type, string name, iCS_MemberInfo desc) {
             Type= type;
             Name= name;
             Desc= desc;
@@ -67,7 +70,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	            mySearchString= value;
 	            BuildTree();
 	            if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
-	                ShowAllFiltered();
+                    string upperSearchStr= mySearchString.ToUpper();
+	                ShowAllFiltered(upperSearchStr);
 	            }
 	        }
 	    }
@@ -105,9 +109,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     }
 	Prelude.Tree<Node> BuildTreeNode(List<iCS_MethodBaseInfo> functions) {
         if(functions.Count == 0) return null;
+        int treeSize= 0;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
+        string upperSearchStr= string.IsNullOrEmpty(mySearchString) ? null : mySearchString.ToUpper();
         for(int i= 0; i < functions.Count; ++i) {
-            if(FilterIn(functions[i])) {
+            if(FilterIn(functions[i], upperSearchStr)) {
                 var desc= functions[i];
                 var parentTree= GetParentTree(desc, tree);
                 Node toAdd= null;
@@ -123,18 +129,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                     toAdd= new Node(NodeTypeEnum.Message, desc.ToMessageInfo.FunctionSignature, desc);
                 }
                 if(toAdd != null) {
+                    ++treeSize;
                     parentTree.AddChild(toAdd);
-//                    var newTree= parentTree.AddChild(toAdd);
-//                    if(desc.IsConstructor || desc.IsMethod) {
-//                        var inputParamNames= desc.InputParameterNames;
-//                        foreach(var ip in inputParamNames) {
-//                            newTree.AddChild(new Node(NodeTypeEnum.InParameter, ip, desc));
-//                        }
-//                        var outputParamNames= desc.OutputParameterNames;
-//                        foreach(var op in outputParamNames) {
-//                            newTree.AddChild(new Node(NodeTypeEnum.OutParameter, op, desc));
-//                        }
-//                    }
                 }                            
             }
         }
@@ -227,34 +223,30 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
-    bool FilterInCompany(iCS_MemberInfo desc) {
+    bool FilterInCompany(iCS_MemberInfo desc, string upperSearchStr) {
         if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(mySearchString)) return true;
-        string upperSearchStr= mySearchString.ToUpper();
+        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
         if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Company) && desc.ParentTypeInfo.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterInLibrary(iCS_MemberInfo desc) {
+    bool FilterInLibrary(iCS_MemberInfo desc, string upperSearchStr) {
         if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(mySearchString)) return true;
-        string upperSearchStr= mySearchString.ToUpper();
+        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
         if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Library) && desc.ParentTypeInfo.Library.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterInName(iCS_MemberInfo desc) {
+    bool FilterInName(iCS_MemberInfo desc, string upperSearchStr) {
         if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(mySearchString)) return true;
-        string upperSearchStr= mySearchString.ToUpper();
+        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
         if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterIn(iCS_MemberInfo desc) {
+    bool FilterIn(iCS_MemberInfo desc, string upperSearchStr) {
         if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(mySearchString)) return true;
-        string upperSearchStr= mySearchString.ToUpper();
+        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
         if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         if(desc.ParentTypeInfo.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Library) && desc.Library.ToUpper().IndexOf(upperSearchStr) != -1) return true;
@@ -262,10 +254,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterIn(Node node) {
+    bool FilterIn(Node node, string upperSearchStr) {
         if(node == null) return false;
-        if(iCS_Strings.IsEmpty(mySearchString)) return true;
-        string upperSearchStr= mySearchString.ToUpper();
+        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
         if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
@@ -475,26 +466,26 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         myTreeView.ToggleFoldUnfold(Selected);
     }
     // ---------------------------------------------------------------------------------
-    public void ShowAllFiltered() {
+    public void ShowAllFiltered(string searchString) {
         if(myTree == null) return;
         var children= myTree.Children;
         if(children == null) return;
         bool result= false;
         foreach(var child in children) {
-            result |= ShowAllFilteredFrom(child);
+            result |= ShowAllFilteredFrom(child, searchString);
         }
         if(result) myTreeView.Unfold(myTree.Value);
     }
-    bool ShowAllFilteredFrom(Prelude.Tree<Node> tree) {
+    bool ShowAllFilteredFrom(Prelude.Tree<Node> tree, string searchString) {
         if(tree == null) return false;
         bool result= false;
         var children= tree.Children;
         if(children != null) {
             foreach(var child in children) {
-                result |= ShowAllFilteredFrom(child);
+                result |= ShowAllFilteredFrom(child, searchString);
             }            
             if(result) myTreeView.Unfold(tree.Value);
         }
-        return result | FilterIn(tree.Value);
+        return result | FilterIn(tree.Value, searchString);
     }
 }

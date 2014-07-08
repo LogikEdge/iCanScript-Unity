@@ -121,7 +121,7 @@ public class DSTreeView : DSView {
 				showChildren= myDataSource.DisplayCurrentObject(displayArea, showChildren, fullArea);
 				IsFoldedDictionary[key]= showChildren;
 			}
-
+            
 			if(!showChildren) {
 				while(!myDataSource.MoveToNextSibling()) {
 					if(!myDataSource.MoveToParent()) {

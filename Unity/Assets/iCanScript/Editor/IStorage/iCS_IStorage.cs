@@ -437,7 +437,7 @@ public partial class iCS_IStorage {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        var defaultName= iCS_Types.GetName(desc.ClassType)+"."+desc.DisplayName;
+        var defaultName= GetDefaultNodeName(desc);
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         // Determine icon.
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
@@ -467,7 +467,8 @@ public partial class iCS_IStorage {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        var defaultName= GetDefaultNodeName(desc);
+        var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
 		iCS_EditorObject port= null;
@@ -568,5 +569,18 @@ public partial class iCS_IStorage {
     }
     public static string GetInstancePortName(Type type) {
         return iCS_Types.GetName(type)+" Instance";
+    }
+    // ----------------------------------------------------------------------
+    public string GetDefaultNodeName(iCS_MethodBaseInfo desc) {
+        var displayName= desc.DisplayName;
+        if(displayName.StartsWith("get_") || displayName.StartsWith("set_")) {
+            displayName= displayName.Substring(4);
+        }
+        if(desc.IsConstructor) {
+            displayName= "InstanceBuilder";
+        }
+        var separator= desc.IsClassMember ? "." : ".";
+        var defaultName= iCS_Types.GetName(desc.ClassType)+separator+displayName;
+        return defaultName;
     }
 }
