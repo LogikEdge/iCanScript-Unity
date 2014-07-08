@@ -31,7 +31,7 @@ public class iCS_ContextualMenu {
     const string OnEntryStr                    = "+ "+iCS_Strings.OnEntry;
     const string OnUpdateStr                   = "+ "+iCS_Strings.OnUpdate;
     const string OnExitStr                     = "+ "+iCS_Strings.OnExit;
-	const string ObjectInstanceStr             = "+ Object Instance";
+	const string ObjectInstanceStr             = "+ Instance Node";
     const string EnablePortStr                 = "+ Enable Port";
     const string TriggerPortStr                = "+ Trigger Port";
     const string OutputInstancePortStr         = "+ Output Instance Port";
@@ -284,13 +284,17 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void ReleaseAfterDragPortMenu(iCS_EditorObject port, iCS_IStorage storage, bool reverseInOut) {
 		// Different behaviour for "object instance" and standard packages.
-        iCS_EditorObject newNodeParent= storage.GetNodeAt(GraphPosition);
+        var newNodeParent= storage.GetNodeAt(GraphPosition);
+        var portParentNode= port.ParentNode;
 		if(newNodeParent == null) return;
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
-		if(!newNodeParent.IsInstanceNode && port.IsOutputPort) {
+		if(!newNodeParent.IsInstanceNode &&
+            (port.IsOutputPort && newNodeParent != portParentNode && !portParentNode.IsParentOf(newNodeParent)) ||
+            (port.IsInputPort && (newNodeParent == portParentNode || portParentNode.IsParentOf(newNodeParent)))) {
 			// Add shortcut to instance node creation.
 			menu= new iCS_MenuContext[2];
 			menu[0]= new iCS_MenuContext(ObjectInstanceStr);
+            menu[0].Command= "+ <"+iCS_Types.GetName(port.RuntimeType)+" Instance>";
 	        menu[1]= new iCS_MenuContext(SeparatorStr);
 		}
         // Get compatible functions.
@@ -455,7 +459,7 @@ public class iCS_ContextualMenu {
 		Vector2 globalPos= context.GraphPosition;
         iCS_IStorage iStorage= context.Storage;
         // Process all other types of requests.
-        switch(context.Command) {
+        switch(context.HiddenCommand) {
             case SetAsDisplayRootStr:       iCS_UserCommands.SetAsDisplayRoot(targetObject); break;
             case ClearNavigationHistoryStr: iCS_UserCommands.ResetDisplayRoot(iStorage); break;
             case PackageStr:                iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
