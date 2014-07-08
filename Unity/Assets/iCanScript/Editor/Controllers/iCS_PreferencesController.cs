@@ -656,8 +656,8 @@ public static class iCS_PreferencesController {
         kConstructorNodeColor       = new Color(1f, 0.25f, 0.5f);
         kFunctionNodeColor          = Color.green;
         kMessageNodeColor           = new Color(c(0x36), c(0x8a), c(0xff));
-        kBackgroundColor            = new Color(c(0), c(0), c(0));
-        kSelectedBackgroundColor    = new Color(c(0x45), c(0x4d), c(0x5d));
+        kBackgroundColor            = new Color(c(41), c(41), c(41));
+        kSelectedBackgroundColor    = new Color(c(116), c(116), c(116));
         
         // Type colors
         kBoolTypeColor      = Color.red;

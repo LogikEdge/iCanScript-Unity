@@ -320,10 +320,10 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     void DrawLabelBackground(Rect r, float alpha, Color backgroundColor, Color outlineColor) {
         Vector3[] vectors= new Vector3[4];
-        vectors[0]= new Vector3(r.x-2, r.y, 0);
-        vectors[1]= new Vector3(r.xMax+2, r.y, 0);
-        vectors[2]= new Vector3(r.xMax+2, r.yMax, 0);
-        vectors[3]= new Vector3(r.x-2, r.yMax, 0);
+        vectors[0]= new Vector3(r.x-2, r.y+2, 0);
+        vectors[1]= new Vector3(r.xMax+2, r.y+2, 0);
+        vectors[2]= new Vector3(r.xMax+2, r.yMax+2, 0);
+        vectors[3]= new Vector3(r.x-2, r.yMax+2, 0);
         Handles.color= new Color(1f, 1f, 1f, alpha);
         Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, outlineColor);
     }
