@@ -89,7 +89,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Refuse to connect the input of a builder node.
         if( DragFixPort.IsInputPort && DragFixPort.ParentNode.IsConstructor ||
             overlappingPort.IsInputPort && overlappingPort.ParentNode.IsConstructor) {
-                ShowNotification(new GUIContent("Instance Builder nodes must be initialized with static values !!!"));
+                var errorMessage= "Instance Builder nodes must be initialized with static values !!!";
+                ShowNotification(new GUIContent(errorMessage));
                 return true;
         }
         return VerifyNewConnection(DragFixPort, overlappingPort);

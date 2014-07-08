@@ -16,6 +16,7 @@ public static partial class iCS_UserCommands {
 #if DEBUG
         Debug.Log("iCanScript: Change Icon => "+node.Name);
 #endif
+        if(!IsCreationAllowed()) return false;
         var iStorage= node.IStorage;
         string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
         node.IconGUID= iconGUID;                    
@@ -27,6 +28,7 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     public static void PasteIntoGraph(iCS_MonoBehaviourImp sourceMonoBehaviour, iCS_EngineObject sourceRoot,
                                       iCS_IStorage iStorage, iCS_EditorObject parent, Vector2 globalPos) {
+        if(!IsCreationAllowed()) return;
         iStorage.AnimateGraph(null,
             _=> {
                 iCS_IStorage srcIStorage= new iCS_IStorage(sourceMonoBehaviour);

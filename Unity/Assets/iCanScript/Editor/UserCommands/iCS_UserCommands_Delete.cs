@@ -15,6 +15,7 @@ public static partial class iCS_UserCommands {
 		Debug.Log("iCanScript: Deleting => "+obj.Name);
 #endif
         if(obj == null) return;
+        if(!IsDeletionAllowed()) return;
         var name= obj.Name;
         if(!obj.CanBeDeleted()) {
             ShowNotification("Fix port=> \""+name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
@@ -43,6 +44,7 @@ public static partial class iCS_UserCommands {
 		Debug.Log("iCanScript: Multi-Select Delete");
 #endif
         if(iStorage == null) return false;
+        if(!IsDeletionAllowed()) return false;
         var selectedObjects= iStorage.GetMultiSelectedObjects();
         if(selectedObjects == null || selectedObjects.Length == 0) return false;
         if(selectedObjects.Length == 1) {
@@ -72,6 +74,7 @@ public static partial class iCS_UserCommands {
     }
 	// ----------------------------------------------------------------------
     public static void DeleteKeepChildren(iCS_EditorObject obj) {
+        if(!IsDeletionAllowed()) return;
         var iStorage= obj.IStorage;
         var newParent= obj.ParentNode;
         var childNodes= obj.BuildListOfChildNodes(_ => true);

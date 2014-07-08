@@ -58,4 +58,26 @@ public static partial class iCS_UserCommands {
             visualEditor.OnEndRelayoutOfTree();
         }
     }
+	// ----------------------------------------------------------------------
+    private static bool IsCreationAllowed() {
+        if(Application.isPlaying) {
+            var visualEditor= iCS_EditorController.FindVisualEditor();
+            if(visualEditor != null) {
+                visualEditor.ShowNotification(new GUIContent("PLEASE STOP ENGINE to add new nodes !!!"));
+            }
+            return false;
+        }
+        return true;
+    }
+	// ----------------------------------------------------------------------
+    private static bool IsDeletionAllowed() {
+        if(Application.isPlaying) {
+            var visualEditor= iCS_EditorController.FindVisualEditor();
+            if(visualEditor != null) {
+                visualEditor.ShowNotification(new GUIContent("PLEASE STOP ENGINE to remove nodes !!!"));
+            }
+            return false;
+        }
+        return true;
+    }
 }

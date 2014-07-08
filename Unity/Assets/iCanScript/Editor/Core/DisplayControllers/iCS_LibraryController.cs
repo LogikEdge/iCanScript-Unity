@@ -375,6 +375,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		var current= IterValue;
 		var nodeType= current.Type;
 		string name= current.Name;
+//        var methodBaseInfo= current.Desc as iCS_MethodBaseInfo;
+//        if(methodBaseInfo != null && methodBaseInfo.IsClassMember) {
+//            name= "+"+name;
+//        }
         if(nodeType == NodeTypeEnum.Company) {
             if(name == "iCanScript") {
                 icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.iCanScript);

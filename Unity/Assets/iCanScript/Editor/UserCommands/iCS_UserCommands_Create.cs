@@ -28,6 +28,7 @@ public static partial class iCS_UserCommands {
         Debug.Log("iCanScript: Create State Chart => "+name);
 #endif
         if(parent == null) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
         iCS_EditorObject stateChart= null;
         iStorage.AnimateGraph(null,
@@ -51,6 +52,7 @@ public static partial class iCS_UserCommands {
         Debug.Log("iCanScript: Create State => "+name);
 #endif
         if(parent == null) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
         iCS_EditorObject state= null;
         iStorage.AnimateGraph(null,
@@ -70,6 +72,7 @@ public static partial class iCS_UserCommands {
         Debug.Log("iCanScript: Create Message Handler => "+desc.DisplayName);
 #endif
         if(parent == null) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
         var name= desc.DisplayName;
         if(!iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.InstanceMessage, parent, iStorage)) {
@@ -124,6 +127,7 @@ public static partial class iCS_UserCommands {
         Debug.Log("iCanScript: Create Function => "+desc.DisplayName);
 #endif
         if(parent == null || desc == null) return null;
+        if(!IsCreationAllowed()) return null;
 		var name= desc.DisplayName;
 		var iStorage= parent.IStorage;
         iCS_EditorObject function= null;
@@ -144,6 +148,7 @@ public static partial class iCS_UserCommands {
         Debug.Log("iCanScript: Create Transition Package");
 #endif
         if(fromStatePort == null || toState == null) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= toState.IStorage;
         // Create toStatePort
         iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
@@ -205,6 +210,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static iCS_EditorObject CreateEnablePort(iCS_EditorObject parent) {
         if(parent == null) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
 		var port= iStorage.CreateEnablePort(parent.InstanceId);
         var pRect= parent.LayoutRect;
@@ -217,6 +223,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static iCS_EditorObject CreateTriggerPort(iCS_EditorObject parent) {
         if(parent == null) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
 		var port= iStorage.CreateTriggerPort(parent.InstanceId);        
         var pRect= parent.LayoutRect;
@@ -229,6 +236,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static iCS_EditorObject CreateOutInstancePort(iCS_EditorObject parent) {
         if(parent == null) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
 		var port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
         parent.LayoutPorts();
@@ -243,6 +251,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static iCS_EditorObject CreateObjectInstance(iCS_EditorObject parent, Vector2 globalPos, Type instanceType) {
         if(instanceType == null) return null;
+        if(!IsCreationAllowed()) return null;
         instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
 #if DEBUG
         Debug.Log("iCanScript: Create Object Instance => "+instanceType.Name);
@@ -270,6 +279,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static iCS_EditorObject WrapInPackage(iCS_EditorObject obj) {
         if(obj == null || !obj.CanHavePackageAsParent()) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= obj.IStorage;
         iCS_EditorObject package= null;
         iStorage.AnimateGraph(null,
@@ -285,6 +295,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static iCS_EditorObject WrapMultiSelectionInPackage(iCS_IStorage iStorage) {
         if(iStorage == null) return null;
+        if(!IsCreationAllowed()) return null;
         var selectedObjects= iStorage.FilterMultiSelectionForWrapInPackage();
         if(selectedObjects == null || selectedObjects.Length == 0) return null;
         iCS_EditorObject package= null;
@@ -309,6 +320,7 @@ public static partial class iCS_UserCommands {
         Debug.Log("iCanScript: Create Game Object => "+go.name);
 #endif
         if(parent == null) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
         iCS_EditorObject instance= null;
         iStorage.AnimateGraph(null,
@@ -335,6 +347,7 @@ public static partial class iCS_UserCommands {
         Debug.Log("iCanScript: CreatePackage => "+name);
 #endif
         if(parent == null) return null;
+        if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
         iCS_EditorObject package= null;
         iStorage.AnimateGraph(null,
@@ -346,5 +359,4 @@ public static partial class iCS_UserCommands {
         );
         return package;
     }
-    
 }
