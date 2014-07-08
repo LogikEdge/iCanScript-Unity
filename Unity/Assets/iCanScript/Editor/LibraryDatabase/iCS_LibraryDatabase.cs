@@ -238,7 +238,7 @@ public class iCS_LibraryDatabase {
             // Filter functions according to input or output filter.
             bool shouldInclude= false;
             var func= Functions[i];
-            if(inputType != null) {
+            if(inputType != null && !func.IsConstructor) {
                 if(func.ClassType == inputType) {
                     switch(func.ObjectType) {
                         case iCS_ObjectTypeEnum.InstanceFunction:
