@@ -99,21 +99,25 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject overlappingPort) {
         // Only data ports can be connected together.
         if(!fixPort.IsDataOrControlPort || !overlappingPort.IsDataOrControlPort) return false;
+
         // Verify for Mux port creation
-        if(overlappingPort.IsRelayPort && overlappingPort.IsDynamicDataPort) {
-            CreateMuxPort(fixPort, overlappingPort);
-            return true;
-        }
+        iCS_EditorObject portParent= fixPort.Parent;
         iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
-        if(overlappingPort.IsOutputPort && 
-		   overlappingPort.ProviderPort != null &&
-		   overlappingPort.IsDynamicDataPort) {
-            CreateMuxPort(fixPort, overlappingPort);
-            return true;
+        if(overlappingPort.ProviderPort != null) {
+            // Mux output port creation
+            if(overlappingPort.IsOutputPort && 
+    		   overlappingPort.IsDynamicDataPort &&
+               !overlappingPortParent.IsInstanceNode) {
+                   var provideNode= overlappingPort.ProviderPort.ParentNode;
+                   if(portParent.IsParentOf(provideNode)) {
+                       CreateMuxPort(fixPort, overlappingPort);                   
+                       return true;
+                   }
+            }            
+            // Mux input port creation
         }
         
         // Connect function & modules ports together.
-        iCS_EditorObject portParent= fixPort.Parent;
         iCS_EditorObject inPort = null;
         iCS_EditorObject outPort= null;
 
