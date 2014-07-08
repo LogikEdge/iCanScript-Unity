@@ -391,7 +391,7 @@ public partial class iCS_IStorage {
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         if(instance.IsInstanceNode) {
             InstanceWizardCompleteCreation(instance);
-            instance.RawName= "<"+iCS_Types.GetName(runtimeType)+">";
+            instance.RawName= "<"+iCS_Types.TypeName(iCS_Types.RemoveRefOrPointer(runtimeType))+">";
             instance.IsNameEditable= false;
         }
         return instance;

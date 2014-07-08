@@ -288,13 +288,14 @@ public class iCS_ContextualMenu {
         var portParentNode= port.ParentNode;
 		if(newNodeParent == null) return;
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
-		if(!newNodeParent.IsInstanceNode &&
+        var portType= iCS_Types.RemoveRefOrPointer(port.RuntimeType);
+		if(!newNodeParent.IsInstanceNode && portType != typeof(float) && portType != typeof(int) &&
             (port.IsOutputPort && newNodeParent != portParentNode && !portParentNode.IsParentOf(newNodeParent)) ||
             (port.IsInputPort && (newNodeParent == portParentNode || portParentNode.IsParentOf(newNodeParent)))) {
 			// Add shortcut to instance node creation.
 			menu= new iCS_MenuContext[2];
 			menu[0]= new iCS_MenuContext(ObjectInstanceStr);
-            menu[0].Command= "+ <"+iCS_Types.GetName(port.RuntimeType)+" Instance>";
+            menu[0].Command= "+ <"+iCS_Types.TypeName(portType)+" Instance>";
 	        menu[1]= new iCS_MenuContext(SeparatorStr);
 		}
         // Get compatible functions.
