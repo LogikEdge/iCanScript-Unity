@@ -389,7 +389,11 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
-        if(instance.IsInstanceNode) InstanceWizardCompleteCreation(instance);
+        if(instance.IsInstanceNode) {
+            InstanceWizardCompleteCreation(instance);
+            instance.RawName= "<"+iCS_Types.GetName(runtimeType)+">";
+            instance.IsNameEditable= false;
+        }
         return instance;
     }
     // ----------------------------------------------------------------------
