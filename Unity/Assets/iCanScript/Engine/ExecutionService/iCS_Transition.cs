@@ -31,6 +31,7 @@ public class iCS_Transition : iCS_Action {
     // Update
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
+        if(!IsEnabled) return;
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
             myTransitionPackage.Execute(frameId);            
@@ -41,6 +42,10 @@ public class iCS_Transition : iCS_Action {
             myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
         }
         MarkAsExecuted(frameId);
+    }
+    // ----------------------------------------------------------------------
+    public override iCS_Connection GetStalledProducerPort(int frameId) {
+        return myTransitionPackage.GetStalledProducerPort(frameId);
     }
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {

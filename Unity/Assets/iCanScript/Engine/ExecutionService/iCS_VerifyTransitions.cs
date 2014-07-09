@@ -25,6 +25,7 @@ public class iCS_VerifyTransitions : iCS_Action {
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
+        if(!IsEnabled) return;
         bool stalled= true;
         int tries= 0;
         int maxTries= myTransitions.Count-myQueueIdx;
@@ -59,6 +60,19 @@ public class iCS_VerifyTransitions : iCS_Action {
         }
         // Reset iterators for next frame.
         ResetIterator(frameId);
+    }
+    // ----------------------------------------------------------------------
+    public override iCS_Connection GetStalledProducerPort(int frameId) {
+        for(int cursor= myQueueIdx; cursor < myTransitions.Count; ++cursor) {
+            iCS_Transition transition= myTransitions[cursor];
+            if(!transition.IsCurrent(frameId)) {
+                var result= transition.GetStalledProducerPort(frameId);
+                if(result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;        
     }
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {

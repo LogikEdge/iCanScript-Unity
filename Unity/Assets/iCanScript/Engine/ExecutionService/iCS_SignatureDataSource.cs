@@ -7,6 +7,7 @@ public class iCS_SignatureDataSource {
     // Properties
     // ----------------------------------------------------------------------
     // .NET Signature
+    iCS_Object          myObjectWithSignature   = null;
     object              myInInstance            = null;  
     iCS_Connection      myInInstanceConnection  = null;
     object[]            myParameters            = null;
@@ -58,7 +59,7 @@ public class iCS_SignatureDataSource {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_SignatureDataSource(int nbOfParameters, int nbOfEnables) {
+    public iCS_SignatureDataSource(int nbOfParameters, int nbOfEnables, iCS_Object obj) {
         myParameters = new object[nbOfParameters];
         myParameterConnections= new iCS_Connection[nbOfParameters];
         for(int i= 0; i < nbOfParameters; ++i) {
@@ -76,6 +77,7 @@ public class iCS_SignatureDataSource {
                 myEnableConnections[i]= null;
             }
         }
+        myObjectWithSignature= obj;
     }
 
     // ======================================================================
@@ -131,7 +133,10 @@ public class iCS_SignatureDataSource {
 			return;
 		}
 #if UNITY_EDITOR
-		throw new System.Exception("Invalid signature access: ["+idx+"]");
+        var nodeName= myObjectWithSignature == null ? "" : myObjectWithSignature.FullName;
+        var port= myObjectWithSignature.GetPortWithIndex(idx);
+        var portName= port == null ? "["+idx+"]" : port.Name;
+		throw new System.Exception("Invalid signature access: "+nodeName+"."+portName);
 #endif
 	}
 	// -------------------------------------------------------------------------
@@ -277,5 +282,32 @@ public class iCS_SignatureDataSource {
 #endif
         return myParameters[idx];
     }
-    
+	// -------------------------------------------------------------------------
+    public iCS_Connection GetStalledProducerPort(int frameId) {
+        // Let's first verify the enables.
+        int len= myEnableConnections.Length;
+        for(int i= 0; i < len; ++i) {
+            var connection= myEnableConnections[i];
+            if(connection != null) {
+                if(!connection.IsReady(frameId)) {
+                    return connection;
+                }
+            }
+        }
+        // Verify intance connection
+        if(myInInstanceConnection != null && !myInInstanceConnection.IsReady(frameId)) {
+            return myInInstanceConnection;
+        }
+        // Verify parameter connections
+        len= myParameterConnections.Length;
+        for(int i= 0; i < len; ++i) {
+            var connection= myParameterConnections[i];
+            if(connection != null) {
+                if(!connection.IsReady(frameId)) {
+                    return connection;
+                }
+            }
+        }
+        return null;
+    }
 }

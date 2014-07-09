@@ -60,6 +60,21 @@ public class iCS_Object {
     public string           TypeName        { get { return GetType().Name; }}
     public int              Priority        { get; set; }
 
+#if UNITY_EDITOR
+    public iCS_EngineObject GetPortWithIndex(int idx) {
+        var ourId= InstanceId;
+        for(int i= 0; i < VisualScript.EngineObjects.Count; ++i) {
+            var eObj= VisualScript.EngineObjects[i];
+            if(eObj != null && eObj.InstanceId != -1) {
+                if(eObj.IsPort && eObj.ParentId == ourId && eObj.PortIndex == idx) {
+                    return eObj;
+                }
+            }
+        }
+        return null;
+    }
+#endif
+    
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------

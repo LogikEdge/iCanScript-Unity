@@ -65,7 +65,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ----------------------------------------------------------------------
     public iCS_ActionWithSignature(iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
     : base(visualScript, priority) {
-        mySignature= new iCS_SignatureDataSource(nbOfParameters, nbOfEnables);
+        mySignature= new iCS_SignatureDataSource(nbOfParameters, nbOfEnables, this);
     }
     
     // ======================================================================
@@ -78,6 +78,8 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
+        // Don't execute if action disabled.
+        if(!IsEnabled) return;
         // Clear the output trigger flag.
         mySignature.Trigger= false;
         // Wait until the enables can be resolved.
@@ -96,8 +98,12 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
         DoExecute(frameId);
     }
     // ----------------------------------------------------------------------
+    public override iCS_Connection GetStalledProducerPort(int frameId) {
+        return mySignature.GetStalledProducerPort(frameId);
+    }
+    // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
-        Debug.Log("Forcing execution=> "+FullName);
+//        Debug.Log("Force execute=> "+FullName);
         // Force verify enables.
         if(mySignature.GetIsEnabled() == false) {
             MarkAsCurrent(frameId);

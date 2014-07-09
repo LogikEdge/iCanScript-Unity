@@ -29,10 +29,29 @@ public class iCS_RunContext {
     public void Run() {
         if(myAction == null) return;
         ++myFrameId;
+        int retry= 0;
         do {
             myAction.Execute(myFrameId);                                
             if(myAction.IsStalled) {
-                myAction.ForceExecute(myFrameId);
+                if(++retry < 100) {
+                    var stalledProducerPort= myAction.GetStalledProducerPort(myFrameId);
+                    if(stalledProducerPort != null) {
+                        var node= stalledProducerPort.Action;
+                        var nodeName= node == null ? "unknown node" : node.FullName;
+                        var port= node == null ? null : node.GetPortWithIndex(stalledProducerPort.PortIndex);
+                        var portName= port == null ? "" : port.Name;
+//                        Debug.Log("Found stalled port=> "+nodeName+"."+portName);
+                        node.IsEnabled= false;
+                        myAction.Execute(myFrameId);
+                        node.IsEnabled= true;
+                    }                    
+                }
+                else {
+                    myAction.ForceExecute(myFrameId);                    
+                }
+            }
+            else {
+                myAction.ForceExecute(myFrameId);                    
             }
         } while(!myAction.IsCurrent(myFrameId));        
     }

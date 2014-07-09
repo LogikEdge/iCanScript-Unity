@@ -48,6 +48,7 @@ public sealed class iCS_StateChart : iCS_Action {
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
+        if(!IsEnabled) return;
         // Make certain that at least one active state exists.
         if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState, frameId);
         // Process any active transition.
@@ -70,6 +71,46 @@ public sealed class iCS_StateChart : iCS_Action {
 		if(!myDispatcher.IsCurrent(frameId)) {
 			myDispatcher.Execute(frameId);			
 		}
+    }
+    // ----------------------------------------------------------------------
+    // TODO: GetStalledProducerPort
+    public override iCS_Connection GetStalledProducerPort(int frameId) {
+        // Process any active transition.
+        if(myExecutionState == ExecutionState.VerifyingTransition) {
+            var producerPort= GetStalledProducerPortInTransitions(frameId);            
+            if(producerPort != null) {
+                return producerPort;
+            }
+        }
+        // Execute state exit functions.
+        if(myExecutionState == ExecutionState.RunningExit) {
+            var producerPort= GetStalledProducerPortOnExit(frameId);
+            if(producerPort != null) {
+                return producerPort;
+            }
+        }
+        // Execute state entry functions.
+        if(myExecutionState == ExecutionState.RunningEntry) {
+            var producerPort= GetStalledProducerPortOnEntry(frameId);
+            if(producerPort != null) {
+                return producerPort;
+            }
+        }
+        // Execute state update functions.
+        if(myExecutionState == ExecutionState.RunningUpdate) {
+            var producerPort= GetStalledProducerPortOnUpdate(frameId);
+            if(producerPort != null) {
+                return producerPort;
+            }
+        }
+		// Execute all other functions (packge like)
+		if(!myDispatcher.IsCurrent(frameId)) {
+			var producerPort= myDispatcher.GetStalledProducerPort(frameId);			
+            if(producerPort != null) {
+                return producerPort;
+            }
+		}
+        return null;
     }
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
@@ -150,6 +191,22 @@ public sealed class iCS_StateChart : iCS_Action {
         myExecutionState= ExecutionState.RunningUpdate;
     }
     // ----------------------------------------------------------------------
+    iCS_Connection GetStalledProducerPortInTransitions(int frameId) {
+        int end= myActiveStack.Count;
+		for(int idx= myQueueIdx; idx < end; ++idx) {
+            iCS_State state= myActiveStack[idx];
+            iCS_VerifyTransitions transitions= state.Transitions;
+			// Transition has already been tested.  Just move on to next one.
+			if(!transitions.IsCurrent(frameId)) {
+                var producerPort= transitions.GetStalledProducerPort(frameId);
+                if(producerPort != null) {
+                    return producerPort;
+                }
+			}
+		}
+        return null;        
+    }            
+    // ----------------------------------------------------------------------
 	// The state updates are ran unorderly according to their readyiness.
     void ExecuteUpdates(int frameId, bool forced= false) {
 		// Run the update of each active state.
@@ -191,6 +248,23 @@ public sealed class iCS_StateChart : iCS_Action {
         MarkAsExecuted(frameId);
     }
     // ----------------------------------------------------------------------
+    iCS_Connection GetStalledProducerPortOnUpdate(int frameId) {
+        int end= myActiveStack.Count;
+		for(int idx= myQueueIdx; idx < end; ++idx) {
+            iCS_State state= myActiveStack[idx];
+            iCS_Action action= state.OnUpdateAction;
+			// Update is not needed or already ran.  Just move to the next state...
+			if(action != null && !action.IsCurrent(frameId)) {
+                var producerPort= action.GetStalledProducerPort(frameId);
+                if(producerPort != null) {
+                    return producerPort;
+                }
+			}
+		}
+        return null;        
+    }            
+
+    // ----------------------------------------------------------------------
 	// The state exits are ran orderly from the inner state towards the
 	// outter state.
     void ExecuteExits(int frameId, bool forced= false) {
@@ -223,6 +297,22 @@ public sealed class iCS_StateChart : iCS_Action {
 		UpdateActiveStack();
     }
     // ----------------------------------------------------------------------
+    iCS_Connection GetStalledProducerPortOnExit(int frameId) {
+        int end= myActiveStack.Count;
+		for(int idx= myQueueIdx; idx < end; ++idx) {
+            iCS_State state= myActiveStack[idx];
+            iCS_Action action= state.OnExitAction;
+			// Update is not needed or already ran.  Just move to the next state...
+			if(action != null && !action.IsCurrent(frameId)) {
+                var producerPort= action.GetStalledProducerPort(frameId);
+                if(producerPort != null) {
+                    return producerPort;
+                }
+			}
+		}
+        return null;        
+    }            
+    // ----------------------------------------------------------------------
 	// The state entries are ran orderly from the outter state towards the
 	// inner state.
     void ExecuteEntries(int frameId, bool forced= false) {
@@ -254,6 +344,22 @@ public sealed class iCS_StateChart : iCS_Action {
         myExecutionState= ExecutionState.RunningUpdate;
         myQueueIdx= 0;        
     }
+    // ----------------------------------------------------------------------
+    iCS_Connection GetStalledProducerPortOnEntry(int frameId) {
+        int end= myActiveStack.Count;
+		for(int idx= myQueueIdx; idx < end; ++idx) {
+            iCS_State state= myActiveStack[idx];
+            iCS_Action action= state.OnEntryAction;
+			// Update is not needed or already ran.  Just move to the next state...
+			if(action != null && !action.IsCurrent(frameId)) {
+                var producerPort= action.GetStalledProducerPort(frameId);
+                if(producerPort != null) {
+                    return producerPort;
+                }
+			}
+		}
+        return null;        
+    }            
     // ----------------------------------------------------------------------
     void MoveToState(iCS_State newState, int frameId) {
         myNextState= newState;

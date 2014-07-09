@@ -318,6 +318,7 @@ public class iCS_Inspector : Editor {
     void InspectPort(iCS_EditorObject port) {
         iCS_EditorObject parent= port.Parent;
         EditorGUILayout.LabelField("Parent", parent.Name);
+        EditorGUILayout.LabelField("Port Index", port.PortIndex.ToString());
         iCS_GuiUtilities.OnInspectorDataPortGUI(port, myIStorage, 1, myFoldoutDB);        
     }
 
