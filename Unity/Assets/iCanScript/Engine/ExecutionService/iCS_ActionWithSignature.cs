@@ -96,7 +96,21 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
         DoExecute(frameId);
     }
     // ----------------------------------------------------------------------
+    public override void ExecuteWithExistingEnables(int frameId) {
+        // Clear the output trigger flag.
+        // Wait until the enables can be resolved.
+        // Force verify enables.
+        if(mySignature.GetIsEnabled() == false) {
+            MarkAsCurrent(frameId);
+            return;
+        }
+        // Invoke derived class to execute normally.
+        IsStalled= true;
+        DoExecute(frameId);
+    }
+    // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
+        Debug.Log("Forcing execution=> "+FullName);
         // Force verify enables.
         if(mySignature.GetIsEnabled() == false) {
             MarkAsCurrent(frameId);

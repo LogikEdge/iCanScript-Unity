@@ -43,6 +43,11 @@ public class iCS_Transition : iCS_Action {
         MarkAsExecuted(frameId);
     }
     // ----------------------------------------------------------------------
+    public override void ExecuteWithExistingEnables(int frameId) {
+        // TODO: Need to implement transition with existing enables.
+        ForceExecute(frameId);
+    }
+    // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {

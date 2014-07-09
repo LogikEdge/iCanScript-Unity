@@ -72,6 +72,11 @@ public sealed class iCS_StateChart : iCS_Action {
 		}
     }
     // ----------------------------------------------------------------------
+    public override void ExecuteWithExistingEnables(int frameId) {
+        // TODO: Should provide execution with existing enables.
+        ForceExecute(frameId);
+    }
+    // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
