@@ -485,8 +485,37 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             foreach(var child in children) {
                 result |= ShowAllFilteredFrom(child, searchString);
             }            
+            // Don't unfold everthing if we have too many search results.
             if(result) {
-//                myTreeView.Unfold(tree.Value);
+                if(myTreeSize < 2000) {
+                    myTreeView.Unfold(tree.Value);                    
+                }
+                else if(myTreeSize < 4000) {
+                    switch(tree.Value.Type) {
+                        case NodeTypeEnum.Root:
+                        case NodeTypeEnum.Company:
+                        case NodeTypeEnum.Library:
+                        case NodeTypeEnum.Package:
+                        case NodeTypeEnum.Class: {
+                            myTreeView.Unfold(tree.Value);                    
+                            break;
+                        }
+                        default: break;
+                    }
+                }
+                else if(myTreeSize < 6000) {
+                    switch(tree.Value.Type) {
+                        case NodeTypeEnum.Root:
+                        case NodeTypeEnum.Company:
+                        case NodeTypeEnum.Library:
+                        case NodeTypeEnum.Package: {
+                            myTreeView.Unfold(tree.Value);                    
+                            break;
+                        }
+                        default: break;
+                    }
+                    
+                }
             }
         }
         return result | FilterIn(tree.Value, searchString);
