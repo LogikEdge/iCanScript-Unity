@@ -31,7 +31,6 @@ public abstract class iCS_Action : iCS_Object {
     // Execution
     // ----------------------------------------------------------------------
     public abstract void Execute(int frameId);
-    public abstract void ExecuteWithExistingEnables(int frameId);
     public abstract void ForceExecute(int frameId);
     
     // ----------------------------------------------------------------------
