@@ -43,6 +43,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	float               		myFoldOffset   = 0;
 	string              		mySearchString = null;
 	Prelude.Tree<Node>	        myTree		   = null;
+    int                         myTreeSize     = 0;
     // Used to move selection up/down
     Node                        myLastDisplayed  = null;
     int                         myChangeSelection= 0;
@@ -109,7 +110,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     }
 	Prelude.Tree<Node> BuildTreeNode(List<iCS_MethodBaseInfo> functions) {
         if(functions.Count == 0) return null;
-        int treeSize= 0;
+        myTreeSize= 0;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
         string upperSearchStr= string.IsNullOrEmpty(mySearchString) ? null : mySearchString.ToUpper();
         for(int i= 0; i < functions.Count; ++i) {
@@ -129,7 +130,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                     toAdd= new Node(NodeTypeEnum.Message, desc.ToMessageInfo.FunctionSignature, desc);
                 }
                 if(toAdd != null) {
-                    ++treeSize;
+                    ++myTreeSize;
                     parentTree.AddChild(toAdd);
                 }                            
             }
@@ -484,7 +485,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             foreach(var child in children) {
                 result |= ShowAllFilteredFrom(child, searchString);
             }            
-            if(result) myTreeView.Unfold(tree.Value);
+            if(result) {
+//                myTreeView.Unfold(tree.Value);
+            }
         }
         return result | FilterIn(tree.Value, searchString);
     }
