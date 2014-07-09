@@ -87,11 +87,44 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.DestroyInstance(DragObject);
         DragObject= null;
         // Refuse to connect the input of a builder node.
-        if( DragFixPort.IsInputPort && DragFixPort.ParentNode.IsConstructor ||
-            overlappingPort.IsInputPort && overlappingPort.ParentNode.IsConstructor) {
+        var dragFixPortParentNode    = DragFixPort.ParentNode;
+        var overlappingPortParentNode= overlappingPort.ParentNode;
+        if( DragFixPort.IsInputPort && dragFixPortParentNode.IsConstructor ||
+            overlappingPort.IsInputPort && overlappingPortParentNode.IsConstructor) {
                 var errorMessage= "Instance Builder nodes must be initialized with static values !!!";
                 ShowNotification(new GUIContent(errorMessage));
                 return true;
+        }
+        // Refuse invalid trigger port connections
+        var connectToOutputError= new GUIContent("Cannot connect a trigger to an output !!!");
+        var connectInsideError= new GUIContent("Cannot connect a trigger to a node involved in generating the trigger !!!");
+        if(DragFixPort.IsTriggerPort) {
+            if(overlappingPort.IsOutputPort) {
+                ShowNotification(connectToOutputError);
+                return true;
+            }
+            if(dragFixPortParentNode == overlappingPortParentNode) {
+                ShowNotification(connectInsideError);
+                return true;
+            }
+            if(dragFixPortParentNode.IsParentOf(overlappingPortParentNode)) {
+                ShowNotification(connectInsideError);
+                return true;
+            }
+        }
+        if(overlappingPort.IsTriggerPort) {
+            if(DragFixPort.IsOutputPort) {
+                ShowNotification(connectToOutputError);
+                return true;
+            }
+            if(dragFixPortParentNode == overlappingPortParentNode) {
+                ShowNotification(connectInsideError);
+                return true;
+            }
+            if(overlappingPortParentNode.IsParentOf(dragFixPortParentNode)) {
+                ShowNotification(connectInsideError);
+                return true;
+            }
         }
         return VerifyNewConnection(DragFixPort, overlappingPort);
     }

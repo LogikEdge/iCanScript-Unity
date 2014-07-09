@@ -289,7 +289,7 @@ public class iCS_ContextualMenu {
 		if(newNodeParent == null) return;
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
         var portType= iCS_Types.RemoveRefOrPointer(port.RuntimeType);
-		if(!newNodeParent.IsInstanceNode && portType != typeof(float) && portType != typeof(int) &&
+		if(!newNodeParent.IsInstanceNode && portType != typeof(float) && portType != typeof(int) && portType != typeof(bool) &&
             (port.IsOutputPort && newNodeParent != portParentNode && !portParentNode.IsParentOf(newNodeParent)) ||
             (port.IsInputPort && (newNodeParent == portParentNode || portParentNode.IsParentOf(newNodeParent)))) {
 			// Add shortcut to instance node creation.
