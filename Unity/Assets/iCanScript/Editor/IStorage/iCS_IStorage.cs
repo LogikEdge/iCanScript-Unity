@@ -583,8 +583,7 @@ public partial class iCS_IStorage {
         if(desc.IsConstructor) {
             displayName= "InstanceBuilder";
         }
-        var separator= desc.IsClassMember ? "." : ".";
-        var defaultName= iCS_Types.GetName(desc.ClassType)+separator+displayName;
+        var defaultName= displayName+"<"+iCS_Types.TypeName(desc.ClassType)+">";
         return defaultName;
     }
 }
