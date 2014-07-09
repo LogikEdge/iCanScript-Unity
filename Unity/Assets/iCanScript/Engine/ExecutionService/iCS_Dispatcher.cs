@@ -19,11 +19,15 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // Execution
     // ----------------------------------------------------------------------
     public override iCS_Connection GetStalledProducerPort(int frameId) {
+        var producerPort= mySignature.GetStalledProducerPort(frameId);
+        if(producerPort != null) {
+            return producerPort;
+        }
         int cursor= myQueueIdx;
         if(cursor < myExecuteQueue.Count) {
             iCS_Action action= myExecuteQueue[myQueueIdx];
             if(!action.IsCurrent(frameId)) {
-                var producerPort= action.GetStalledProducerPort(frameId);
+                producerPort= action.GetStalledProducerPort(frameId);
                 if(producerPort != null) {
                     return producerPort;
                 }

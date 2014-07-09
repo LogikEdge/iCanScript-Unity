@@ -8,7 +8,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_SignatureDataSource mySignature = null;
+    protected iCS_SignatureDataSource mySignature = null;
     
     // ======================================================================
     // Accessors

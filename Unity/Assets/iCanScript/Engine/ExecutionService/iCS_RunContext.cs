@@ -45,13 +45,14 @@ public class iCS_RunContext {
                         myAction.Execute(myFrameId);
                         node.IsEnabled= true;
                     }                    
+                    else {
+//                        Debug.Log("DID NOT FIND STALLED PORT");
+                        myAction.ForceExecute(myFrameId);                    
+                    }
                 }
                 else {
                     myAction.ForceExecute(myFrameId);                    
                 }
-            }
-            else {
-                myAction.ForceExecute(myFrameId);                    
             }
         } while(!myAction.IsCurrent(myFrameId));        
     }
