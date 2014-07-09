@@ -31,6 +31,7 @@ public class iCS_Transition : iCS_Action {
     // Update
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
+        if(!IsEnabled) return;
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
             myTransitionPackage.Execute(frameId);            
@@ -43,9 +44,8 @@ public class iCS_Transition : iCS_Action {
         MarkAsExecuted(frameId);
     }
     // ----------------------------------------------------------------------
-    public override void ExecuteWithExistingEnables(int frameId) {
-        // TODO: Need to implement transition with existing enables.
-        ForceExecute(frameId);
+    public override iCS_Connection GetStalledProducerPort(int frameId) {
+        return myTransitionPackage.GetStalledProducerPort(frameId);
     }
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
