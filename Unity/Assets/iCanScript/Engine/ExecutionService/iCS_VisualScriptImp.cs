@@ -104,7 +104,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // Dynamic Message Receiver Management
     // ----------------------------------------------------------------------
     public void AddChild(object obj) {
-        iCS_Message message= obj as iCS_Message;
+        iCS_Package message= obj as iCS_Package;
         if(message == null) return;
         var messageName= message.Name;
         if(myMessageContexts.ContainsKey(messageName)) {
@@ -115,7 +115,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     }
     // ----------------------------------------------------------------------
     public void RemoveChild(object obj) {
-        iCS_Message message= obj as iCS_Message;
+        iCS_Package message= obj as iCS_Package;
         if(message == null) return;
         var messageName= message.Name;
         if(myMessageContexts.ContainsKey(messageName)) {

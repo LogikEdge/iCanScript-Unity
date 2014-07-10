@@ -25,6 +25,7 @@ public class iCS_Constructor : iCS_ClassFunction {
         if(ReturnValue == null) {
             base.DoForceExecute(frameId);
             if(ReturnValue != null) {
+                // TODO: Should remove variable creation for execution queue once done.
                 ArePortsAlwaysCurrent= true;
             }
         } else {
