@@ -30,47 +30,56 @@ public class iCS_RunContext {
     public void Run() {
         if(myAction == null) return;
         ++myFrameId;
-        int retry= 0;
         do {
             myAction.Execute(myFrameId);                                
             if(myAction.IsStalled) {
-                if(++retry < 100) {
-                    var stalledProducerPort= myAction.GetStalledProducerPort(myFrameId);
-                    if(stalledProducerPort != null) {
-                        var node= stalledProducerPort.Action;
-#if UNITY_EDITOR
-                        if(myAction.VisualScript.IsTraceEnabled) {
-                        
-//                            var nodeName= nodeName == null ? "unknown node" : node.FullName;
-//                            var port= node == null ? null : node.GetPortWithIndex(stalledProducerPort.PortIndex);
-//                            var portName= port == null ? "" : port.Name;
-                            var waitingNodeName= stalledProducerPort.Signature.GetAssociatedNodeName();
-//                            Debug.Log("Found stalled port=> "+nodeName+"."+portName);
-                            Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+") NODE WAITING ON PORT=> "+waitingNodeName);
-                        }
-#endif
-                        node.IsActive= false;
-                        myAction.Execute(myFrameId);
-                        node.IsActive= true;
-#if UNITY_EDITOR
-                        if(myAction.VisualScript.IsTraceEnabled) {
-                            Debug.LogWarning("Activating=> "+node.FullName+" ("+myFrameId+")");
-                        }
-#endif
-                    }                    
-                    else {
-#if UNITY_EDITOR
-                        if(myAction.VisualScript.IsTraceEnabled) {
-                            Debug.Log("EXECUTION RECOVERY: DID NOT FIND STALLED PORT");
-                        }
-#endif
-                        myAction.ForceExecute(myFrameId);                    
-                    }
-                }
-                else {
-                    myAction.ForceExecute(myFrameId);                    
-                }
+                ResolveDeadLock(0);
             }
         } while(!myAction.IsCurrent(myFrameId));        
+    }
+    // ----------------------------------------------------------------------
+    // Attempt to resolve deadlock by using previous frame data.  This
+    // is realized by temporarly deactivating a node that needs to produce
+    // data for this frame.
+    void ResolveDeadLock(int attempts) {
+        // Force execution if to many nested attempts to resolve deadlock
+        if(attempts > 10) {
+#if UNITY_EDITOR
+            if(myAction.VisualScript.IsTraceEnabled) {
+                Debug.LogWarning("TOO MANY ATTEMPTS TO RESOLVE DEADLOCKS...FORCING EXECUTION");
+            }
+#endif
+            myAction.ForceExecute(myFrameId);
+            return;
+        }
+        // Get a producer port being waited on.
+        var stalledProducerPort= myAction.GetStalledProducerPort(myFrameId);
+        if(stalledProducerPort != null) {
+            var node= stalledProducerPort.Action;
+#if UNITY_EDITOR
+            if(myAction.VisualScript.IsTraceEnabled) {
+                Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+")");
+            }
+#endif
+            node.IsActive= false;
+            myAction.Execute(myFrameId);
+            if(myAction.IsStalled) {
+                ResolveDeadLock(attempts+1);
+            }
+            node.IsActive= true;
+#if UNITY_EDITOR
+            if(myAction.VisualScript.IsTraceEnabled) {
+                Debug.LogWarning("Activating=> "+node.FullName+" ("+myFrameId+")");
+            }
+#endif
+        }                    
+        else {
+#if UNITY_EDITOR
+            if(myAction.VisualScript.IsTraceEnabled) {
+                Debug.LogWarning("DID NOT FIND STALLED PORT BUT MESSAGE HANDLER IS STALLED !!!");
+            }
+#endif
+            myAction.ForceExecute(myFrameId);                    
+        }
     }
 }
