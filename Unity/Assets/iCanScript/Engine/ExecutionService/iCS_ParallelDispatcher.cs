@@ -1,4 +1,3 @@
-//#define NEW_EXECUTE
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,33 +13,6 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // Execution
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
-#if NEW_EXECUTE
-        int queueSize= myExecuteQueue.Count;
-        for(int cursor= myQueueIdx; cursor < queueSize; ++cursor) {
-            // Attempt to execute child function.
-            iCS_Action action= myExecuteQueue[cursor];
-            if(action.IsCurrent(frameId)) {
-                IsStalled= false;
-                if(cursor == myQueueIdx) {
-                    ++myQueueIdx;                    
-                }
-                continue;
-            }
-            action.Execute(frameId);            
-            if(action.IsCurrent(frameId)) {
-                if(cursor == myQueueIdx) {
-                    IsStalled= false;
-                    ++myQueueIdx;                        
-                }
-                continue;
-            }
-            IsStalled &= action.IsStalled;                    
-        }
-        // Reset iterators for next frame.
-        if(myQueueIdx >= queueSize) {
-            ResetIterator(frameId);            
-        }
-#else
 		int swapCursor= myQueueIdx;
         int queueSize= myExecuteQueue.Count;
         while(myQueueIdx < queueSize) {
@@ -64,36 +36,9 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
             IsStalled= false;
         }
         ResetIterator(frameId);            
-#endif
     }
     // ----------------------------------------------------------------------
     protected override void DoForceExecute(int frameId) {
-#if NEW_EXECUTE
-        int queueSize= myExecuteQueue.Count;
-        for(int cursor= myQueueIdx; cursor < queueSize; ++cursor) {
-            // Attempt to execute child function.
-            iCS_Action action= myExecuteQueue[cursor];
-            if(action.IsCurrent(frameId)) {
-                IsStalled= false;
-                if(cursor == myQueueIdx) {
-                    ++myQueueIdx;                    
-                }
-                break;
-            }
-            else {
-                action.ForceExecute(frameId);            
-                IsStalled= false;
-                if(cursor == myQueueIdx) {
-                    ++myQueueIdx;                        
-                }
-                break;
-            }                
-        }
-        // Reset iterators for next frame.
-        if(myQueueIdx >= queueSize) {
-            ResetIterator(frameId);            
-        }
-#else
         // Sort stalled action according to layout rule.
         int best= myQueueIdx;
         int queueSize= myExecuteQueue.Count;
@@ -107,6 +52,5 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
         }
         // Force execute the selected action.
         base.DoForceExecute(frameId);
-#endif
     }
 }

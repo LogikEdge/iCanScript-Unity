@@ -51,7 +51,8 @@ public class iCS_Connection {
     }
     public bool IsReady(int frameId)    {
         if(myIsAlwaysReady || !IsConnected) return true;
-        return myIsControlFlow ? Action.ArePortsCurrent(frameId) : Action.ArePortsExecuted(frameId);
+//        return myIsControlFlow ? Action.ArePortsCurrent(frameId) : Action.ArePortsExecuted(frameId);
+        return Action.ArePortsCurrent(frameId);
     }
     public bool IsCurrent(int frameId) {
     	return Action.ArePortsCurrent(frameId);
