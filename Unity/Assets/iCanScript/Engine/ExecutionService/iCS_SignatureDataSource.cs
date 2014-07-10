@@ -295,7 +295,7 @@ public class iCS_SignatureDataSource {
         return myParameters[idx];
     }
 	// -------------------------------------------------------------------------
-    public iCS_Connection GetStalledProducerPort(int frameId) {
+    public iCS_Connection GetStalledProducerPort(int frameId, bool enablesOnly= false) {
         // Let's first verify the enables.
         int len= myEnableConnections.Length;
         for(int i= 0; i < len; ++i) {
@@ -305,6 +305,9 @@ public class iCS_SignatureDataSource {
                     return connection;
                 }
             }
+        }
+        if(enablesOnly) {
+            return null;
         }
         // Verify intance connection
         if(myInInstanceConnection != null && !myInInstanceConnection.IsReady(frameId)) {

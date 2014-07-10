@@ -51,7 +51,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_ToolbarUtility.Separator(ref r);
 
         // Debug Controls
-        if(VisualScript != null && Application.isPlaying) {
+        if(VisualScript != null /*&& Application.isPlaying*/) {
     		// Show Runtime frame id.
             bool showFrameId= Prefs.ShowRuntimeFrameId;
             bool newShowFrameId= iCS_ToolbarUtility.Toggle(ref r, showFrameId, 0, 0);

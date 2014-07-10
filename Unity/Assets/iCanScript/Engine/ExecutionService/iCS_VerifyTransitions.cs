@@ -26,13 +26,18 @@ public class iCS_VerifyTransitions : iCS_Action {
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         if(!IsActive) return;
-        bool stalled= true;
-        int tries= 0;
-        int maxTries= myTransitions.Count-myQueueIdx;
+        IsStalled= true;
         myTriggeredTransition= null;
-        while(myQueueIdx < myTransitions.Count) {
+        var end= myTransitions.Count;
+        for(int cursor= myQueueIdx; cursor < end; ++cursor) {
             // Attempt to execute child function.
-            iCS_Transition transition= myTransitions[myQueueIdx];
+            iCS_Transition transition= myTransitions[cursor];
+            if(transition.IsCurrent(frameId)) {
+                if(cursor == myQueueIdx) {
+                    ++myQueueIdx;                    
+                }
+                continue;
+            }
             transition.Execute(frameId);            
             // Move to next child if sucessfully executed.
             if(transition.IsCurrent(frameId)) {
@@ -41,25 +46,19 @@ public class iCS_VerifyTransitions : iCS_Action {
                     ResetIterator(frameId);
                     return;
                 }
-                stalled= false;
-                ++myQueueIdx;
+                IsStalled= false;
+                if(cursor == myQueueIdx) {
+                    ++myQueueIdx;                    
+                }
                 continue;
             }
-            // Verify if the child is a staled dispatcher.
-            if(!transition.IsStalled) {
-                stalled= false;
-            }
-            // Return if we have seen too many staled children.
-            if(++tries > maxTries) {
-                IsStalled= stalled;
-                return;
-            }
-            // The function is not ready to execute so lets delay the execution.
-            myTransitions.RemoveAt(myQueueIdx);
-            myTransitions.Add(transition);
+            // Verify if the child is a stalled dispatcher.
+            IsStalled&= transition.IsStalled;
         }
         // Reset iterators for next frame.
-        ResetIterator(frameId);
+        if(myQueueIdx >= end) {
+            ResetIterator(frameId);            
+        }
     }
     // ----------------------------------------------------------------------
     public override iCS_Connection GetStalledProducerPort(int frameId) {

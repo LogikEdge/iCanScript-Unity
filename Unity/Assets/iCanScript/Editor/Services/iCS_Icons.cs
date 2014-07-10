@@ -102,7 +102,7 @@ public static class iCS_Icons {
 			return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.OnStateUpdate);
 		} else if(obj.IsOnStateExitPackage) {
 			return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.OnStateExit);
-		}
+        }
         return iCS_TextureCache.GetIcon(kDefaultIcon);
     }
 

@@ -22,7 +22,7 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
         if(IsCurrent(frameId)) {
             return null;
         }
-        var producerPort= mySignature.GetStalledProducerPort(frameId);
+        var producerPort= mySignature.GetStalledProducerPort(frameId, /*enablesOnly=*/true);
         if(producerPort != null) {
             return producerPort;
         }

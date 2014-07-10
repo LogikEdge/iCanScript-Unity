@@ -35,7 +35,7 @@ public class iCS_Transition : iCS_Action {
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
             myTransitionPackage.Execute(frameId);            
-            if(!myTransitionPackage.IsCurrent(frameId)) {
+            if(!myTriggerFunction.IsCurrent(frameId)) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;
             }
@@ -45,6 +45,7 @@ public class iCS_Transition : iCS_Action {
     }
     // ----------------------------------------------------------------------
     public override iCS_Connection GetStalledProducerPort(int frameId) {
+        if(IsCurrent(frameId)) return null;
         return myTransitionPackage.GetStalledProducerPort(frameId);
     }
     // ----------------------------------------------------------------------
