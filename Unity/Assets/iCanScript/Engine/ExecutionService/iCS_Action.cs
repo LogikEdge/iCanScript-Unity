@@ -13,7 +13,7 @@ public abstract class iCS_Action : iCS_Object {
     int  myExecutedFrameId= 0;
     bool myIsStalled= false;
     bool myIsActive= true;
-    bool myPortsAreAlwaysReady= false;
+    bool myPortsAreAlwaysCurrent= false;
 
     // ======================================================================
     // Accessors
@@ -24,9 +24,9 @@ public abstract class iCS_Action : iCS_Object {
     public bool IsStalled           { get { return myIsStalled; } set { myIsStalled= value; }}
     public bool IsActive            {
         get { return myIsActive; }
-        set { myIsActive= value; myPortsAreAlwaysReady= !value; }
+        set { myIsActive= value; myPortsAreAlwaysCurrent= !value; }
     }
-    public bool ArePortsAlwaysReady { get { return myPortsAreAlwaysReady; } set { myPortsAreAlwaysReady= value; }}
+    public bool ArePortsAlwaysCurrent { get { return myPortsAreAlwaysCurrent; } set { myPortsAreAlwaysCurrent= value; }}
     
     // ======================================================================
     // Creation/Destruction
@@ -48,6 +48,6 @@ public abstract class iCS_Action : iCS_Object {
     public void MarkAsExecuted(int frameId) { myExecutedFrameId= frameId; MarkAsCurrent(frameId); }
 
     // ----------------------------------------------------------------------
-    public bool ArePortsCurrent(int frameId)    { return IsCurrent(frameId) || myPortsAreAlwaysReady; }
-    public bool ArePortsExecuted(int frameId)   { return DidExecute(frameId) || myPortsAreAlwaysReady; }
+    public bool ArePortsCurrent(int frameId)    { return IsCurrent(frameId) || myPortsAreAlwaysCurrent; }
+    public bool ArePortsExecuted(int frameId)   { return DidExecute(frameId); }
 }

@@ -25,14 +25,11 @@ public class iCS_Constructor : iCS_ClassFunction {
         if(ReturnValue == null) {
             base.DoForceExecute(frameId);
             if(ReturnValue != null) {
-                ArePortsAlwaysReady= true;
+                ArePortsAlwaysCurrent= true;
             }
         } else {
             MarkAsExecuted(frameId);
         }
     }
-    // ----------------------------------------------------------------------
-    public new bool ArePortsCurrent(int frameId)    { return ReturnValue != null; }
-    public new bool ArePortsExecuted(int frameId)   { return ReturnValue != null; }
     
 }

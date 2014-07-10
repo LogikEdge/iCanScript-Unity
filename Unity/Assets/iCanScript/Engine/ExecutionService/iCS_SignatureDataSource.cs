@@ -201,7 +201,7 @@ public class iCS_SignatureDataSource {
         for(int i= 0; i < len; ++i) {
             var connection= myEnableConnections[i];
             if(connection != null) {
-                if(connection.DidExecute(frameId)) {
+                if(connection.IsCurrent(frameId)) {
                     if((bool)connection.Value == false) {
                         isEnabled= false;
                         return true;
