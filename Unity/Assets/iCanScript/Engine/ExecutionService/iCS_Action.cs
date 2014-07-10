@@ -13,6 +13,7 @@ public abstract class iCS_Action : iCS_Object {
     int  myExecutedFrameId= 0;
     bool myIsStalled= false;
     bool myIsActive= true;
+    bool myPortsAreAlwaysReady= false;
 
     // ======================================================================
     // Accessors
@@ -21,7 +22,11 @@ public abstract class iCS_Action : iCS_Object {
     public int  CurrentFrameId      { get { return myCurrentFrameId; }}
     public int  ExecutionFrameId    { get { return myExecutedFrameId; }}
     public bool IsStalled           { get { return myIsStalled; } set { myIsStalled= value; }}
-    public bool IsActive            { get { return myIsActive; } set { myIsActive= value; }}
+    public bool IsActive            {
+        get { return myIsActive; }
+        set { myIsActive= value; myPortsAreAlwaysReady= !value; }
+    }
+    public bool ArePortsAlwaysReady { get { return myPortsAreAlwaysReady; } set { myPortsAreAlwaysReady= value; }}
     
     // ======================================================================
     // Creation/Destruction
@@ -32,8 +37,8 @@ public abstract class iCS_Action : iCS_Object {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public abstract void Execute(int frameId);
-    public abstract void ForceExecute(int frameId);
+    public abstract void            Execute(int frameId);
+    public abstract void            ForceExecute(int frameId);
     public abstract iCS_Connection  GetStalledProducerPort(int frameId);
     
     // ----------------------------------------------------------------------
@@ -43,6 +48,6 @@ public abstract class iCS_Action : iCS_Object {
     public void MarkAsExecuted(int frameId) { myExecutedFrameId= frameId; MarkAsCurrent(frameId); }
 
     // ----------------------------------------------------------------------
-    public bool ArePortsCurrent(int frameId)    { return IsCurrent(frameId) || !IsActive; }
-    public bool ArePortsExecuted(int frameId)   { return DidExecute(frameId) || !IsActive; }
+    public bool ArePortsCurrent(int frameId)    { return IsCurrent(frameId) || myPortsAreAlwaysReady; }
+    public bool ArePortsExecuted(int frameId)   { return DidExecute(frameId) || myPortsAreAlwaysReady; }
 }
