@@ -11,6 +11,7 @@ public class iCS_Mux : iCS_ActionWithSignature {
     // ======================================================================
     // Execution (not used)
     // ----------------------------------------------------------------------
+    // FIXME: Mux should prefer running over current frame nodes.
     protected override void DoExecute(int frameId) {
         // Take the first valid connection.
         foreach(var connection in ParameterConnections) {
