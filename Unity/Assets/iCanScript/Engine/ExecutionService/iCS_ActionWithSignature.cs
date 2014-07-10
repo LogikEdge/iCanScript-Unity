@@ -79,31 +79,60 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         // Don't execute if action disabled.
-        if(!IsEnabled) return;
+        if(!IsActive) return;
+        Debug.Log("Executing=> "+FullName+" ("+frameId+")");
         // Clear the output trigger flag.
         mySignature.Trigger= false;
         // Wait until the enables can be resolved.
         bool isEnabled;
         if(!mySignature.GetIsEnabledIfReady(frameId, out isEnabled)) {
 			IsStalled= true;
+            Debug.Log("Executing=> "+FullName+" is waiting on the enables");
 			return;
 		}
 		// Skip execution if this action is disabled.
         if(isEnabled == false) {
             MarkAsCurrent(frameId);
+            Debug.Log("Executing=> "+FullName+" is disabled");
             return;
         }
         // Invoke derived class to execute normally.
         IsStalled= true;
         DoExecute(frameId);
+        if(DidExecute(frameId)) {
+            Debug.Log("Executing=> "+FullName+" was executed sucessfully");
+        }
+        else if(IsCurrent(frameId)){
+            Debug.Log("Executing=> "+FullName+" is Current");
+        }
+        else {
+            Debug.Log("Executing=> "+FullName+" did not complete execution");
+        }
     }
     // ----------------------------------------------------------------------
     public override iCS_Connection GetStalledProducerPort(int frameId) {
+        if(IsCurrent(frameId)) {
+            return null;
+        }
         return mySignature.GetStalledProducerPort(frameId);
     }
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
-//        Debug.Log("Force execute=> "+FullName);
+        var stalledPort= GetStalledProducerPort(frameId);
+        var stalledPortName= stalledPort == null ? "" : stalledPort.PortFullName;
+        if(stalledPort != null) {
+            var stalledNode= stalledPort.Action;
+            Debug.LogWarning("Force execute=> "+FullName+" STALLED PORT=> "+stalledPortName+" STALLED PORT NODE STATE=> "+stalledNode.IsCurrent(frameId));            
+            var stalledNodeParentId= stalledNode.ParentId;
+            if(stalledNodeParentId > 1) {
+                var stalledNodeParent= VisualScript.RuntimeNodes[stalledNodeParentId] as iCS_ActionWithSignature;
+                if(stalledNodeParent != null) {
+                    Debug.LogWarning("STALLED PORT NODE PARENT ENABLE=> "+stalledNodeParent.FullName+"("+stalledNodeParent.mySignature.GetIsEnabled()+")");
+                }
+            }
+        }
+        Debug.LogWarning("Force Execute=> "+FullName);
+        Debug.Break();
         // Force verify enables.
         if(mySignature.GetIsEnabled() == false) {
             MarkAsCurrent(frameId);

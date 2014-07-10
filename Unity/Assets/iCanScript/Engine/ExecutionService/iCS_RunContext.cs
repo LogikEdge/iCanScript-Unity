@@ -40,13 +40,16 @@ public class iCS_RunContext {
                         var nodeName= node == null ? "unknown node" : node.FullName;
                         var port= node == null ? null : node.GetPortWithIndex(stalledProducerPort.PortIndex);
                         var portName= port == null ? "" : port.Name;
+                        var waitingNodeName= stalledProducerPort.Signature.GetAssociatedNodeName();
 //                        Debug.Log("Found stalled port=> "+nodeName+"."+portName);
-                        node.IsEnabled= false;
+                        node.IsActive= false;
+                        Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+") NODE WAITING ON PORT=> "+waitingNodeName);
                         myAction.Execute(myFrameId);
-                        node.IsEnabled= true;
+                        Debug.LogWarning("Activating=> "+node.FullName+" ("+myFrameId+")");
+                        node.IsActive= true;
                     }                    
                     else {
-//                        Debug.Log("DID NOT FIND STALLED PORT");
+                        Debug.Log("DID NOT FIND STALLED PORT");
                         myAction.ForceExecute(myFrameId);                    
                     }
                 }

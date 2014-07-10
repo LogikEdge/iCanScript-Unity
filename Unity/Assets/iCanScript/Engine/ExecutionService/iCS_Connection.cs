@@ -22,6 +22,16 @@ public class iCS_Connection {
     public int PortIndex {
         get { return myPortIndex; }
     }
+#if UNITY_EDITOR
+    public string PortFullName {
+        get {
+            var nodeName= Action.FullName;
+            var port= Action.GetPortWithIndex(myPortIndex);
+            var portName= port == null ? "["+myPortIndex+"]" : port.Name;
+            return nodeName+"."+portName;            
+        }
+    }
+#endif
     
     // ======================================================================
     // Creation/Destruction
@@ -49,4 +59,6 @@ public class iCS_Connection {
     public bool DidExecute(int frameId) {
     	return Action.ArePortsExecuted(frameId);
     }
+ 
+ 
  }

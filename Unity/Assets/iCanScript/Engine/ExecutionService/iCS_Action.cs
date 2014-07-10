@@ -12,7 +12,7 @@ public abstract class iCS_Action : iCS_Object {
     int  myCurrentFrameId  = 0;
     int  myExecutedFrameId= 0;
     bool myIsStalled= false;
-    bool myIsEnabled= true;
+    bool myIsActive= true;
 
     // ======================================================================
     // Accessors
@@ -21,7 +21,7 @@ public abstract class iCS_Action : iCS_Object {
     public int  CurrentFrameId      { get { return myCurrentFrameId; }}
     public int  ExecutionFrameId    { get { return myExecutedFrameId; }}
     public bool IsStalled           { get { return myIsStalled; } set { myIsStalled= value; }}
-    public bool IsEnabled           { get { return myIsEnabled; } set { myIsEnabled= value; }}
+    public bool IsActive            { get { return myIsActive; } set { myIsActive= value; }}
     
     // ======================================================================
     // Creation/Destruction
@@ -43,6 +43,6 @@ public abstract class iCS_Action : iCS_Object {
     public void MarkAsExecuted(int frameId) { myExecutedFrameId= frameId; MarkAsCurrent(frameId); }
 
     // ----------------------------------------------------------------------
-    public bool ArePortsCurrent(int frameId)    { return IsCurrent(frameId) || !IsEnabled; }
-    public bool ArePortsExecuted(int frameId)   { return DidExecute(frameId) || !IsEnabled; }
+    public bool ArePortsCurrent(int frameId)    { return IsCurrent(frameId) || !IsActive; }
+    public bool ArePortsExecuted(int frameId)   { return DidExecute(frameId) || !IsActive; }
 }

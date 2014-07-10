@@ -25,7 +25,7 @@ public class iCS_VerifyTransitions : iCS_Action {
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
-        if(!IsEnabled) return;
+        if(!IsActive) return;
         bool stalled= true;
         int tries= 0;
         int maxTries= myTransitions.Count-myQueueIdx;

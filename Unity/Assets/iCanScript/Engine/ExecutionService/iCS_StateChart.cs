@@ -48,7 +48,7 @@ public sealed class iCS_StateChart : iCS_Action {
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
-        if(!IsEnabled) return;
+        if(!IsActive) return;
         // Make certain that at least one active state exists.
         if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState, frameId);
         // Process any active transition.

@@ -31,7 +31,7 @@ public class iCS_Transition : iCS_Action {
     // Update
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
-        if(!IsEnabled) return;
+        if(!IsActive) return;
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
             myTransitionPackage.Execute(frameId);            

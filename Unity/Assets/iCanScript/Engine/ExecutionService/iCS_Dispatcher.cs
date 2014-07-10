@@ -19,6 +19,9 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // Execution
     // ----------------------------------------------------------------------
     public override iCS_Connection GetStalledProducerPort(int frameId) {
+        if(IsCurrent(frameId)) {
+            return null;
+        }
         var producerPort= mySignature.GetStalledProducerPort(frameId);
         if(producerPort != null) {
             return producerPort;

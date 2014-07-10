@@ -55,7 +55,18 @@ public class iCS_SignatureDataSource {
     public iCS_Connection[] ParameterConnections {
         get { return myParameterConnections; }
     }
-    
+#if UNITY_EDITOR
+    public string GetAssociatedNodeName() {
+        return myObjectWithSignature == null ? "" : myObjectWithSignature.FullName;
+    }
+    public string GetPortFullName(int idx) {
+        var nodeName= myObjectWithSignature == null ? "" : myObjectWithSignature.FullName;
+        var port= myObjectWithSignature.GetPortWithIndex(idx);
+        var portName= port == null ? "["+idx+"]" : port.Name;
+        return nodeName+"."+portName;
+    }
+#endif
+        
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
@@ -133,10 +144,7 @@ public class iCS_SignatureDataSource {
 			return;
 		}
 #if UNITY_EDITOR
-        var nodeName= myObjectWithSignature == null ? "" : myObjectWithSignature.FullName;
-        var port= myObjectWithSignature.GetPortWithIndex(idx);
-        var portName= port == null ? "["+idx+"]" : port.Name;
-		throw new System.Exception("Invalid signature access: "+nodeName+"."+portName);
+		throw new System.Exception("Invalid signature access: "+GetPortFullName(idx));
 #endif
 	}
 	// -------------------------------------------------------------------------
@@ -188,6 +196,7 @@ public class iCS_SignatureDataSource {
     // Return true if the enable state can be assertained with the isEnabled
     // output parameter set appropriatly.  Otherwise, false is returned.
 	public bool GetIsEnabledIfReady(int frameId, out bool isEnabled) {
+        bool needToWait= false;
 	    int len= myEnables.Length;
         for(int i= 0; i < len; ++i) {
             var connection= myEnableConnections[i];
@@ -197,10 +206,9 @@ public class iCS_SignatureDataSource {
                         isEnabled= false;
                         return true;
                     }
-                
-                } else {
-                    isEnabled= false;
-                    return false;
+                }
+                else {
+                    needToWait= true;
                 }
             } else {
                 if(myEnables[i] == false) {
@@ -209,8 +217,12 @@ public class iCS_SignatureDataSource {
                 }
             }
         }
-        isEnabled= true;
-	    return true;
+        if(!needToWait) {
+            isEnabled= true;
+            return true;
+        }
+        isEnabled= false;
+	    return false;
 	}
 	// ----------------------------------------------------------------------
     public bool GetIsEnabled() {
