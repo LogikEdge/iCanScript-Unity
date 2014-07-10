@@ -1,3 +1,4 @@
+//#define EXECUTION_TRACE
 using UnityEngine;
 
 public class iCS_RunContext {
@@ -37,19 +38,32 @@ public class iCS_RunContext {
                     var stalledProducerPort= myAction.GetStalledProducerPort(myFrameId);
                     if(stalledProducerPort != null) {
                         var node= stalledProducerPort.Action;
-                        var nodeName= node == null ? "unknown node" : node.FullName;
-                        var port= node == null ? null : node.GetPortWithIndex(stalledProducerPort.PortIndex);
-                        var portName= port == null ? "" : port.Name;
-                        var waitingNodeName= stalledProducerPort.Signature.GetAssociatedNodeName();
-//                        Debug.Log("Found stalled port=> "+nodeName+"."+portName);
+#if UNITY_EDITOR
+                        if(myAction.VisualScript.IsTraceEnabled) {
+                        
+//                            var nodeName= nodeName == null ? "unknown node" : node.FullName;
+//                            var port= node == null ? null : node.GetPortWithIndex(stalledProducerPort.PortIndex);
+//                            var portName= port == null ? "" : port.Name;
+                            var waitingNodeName= stalledProducerPort.Signature.GetAssociatedNodeName();
+//                            Debug.Log("Found stalled port=> "+nodeName+"."+portName);
+                            Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+") NODE WAITING ON PORT=> "+waitingNodeName);
+                        }
+#endif
                         node.IsActive= false;
-                        Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+") NODE WAITING ON PORT=> "+waitingNodeName);
                         myAction.Execute(myFrameId);
-                        Debug.LogWarning("Activating=> "+node.FullName+" ("+myFrameId+")");
                         node.IsActive= true;
+#if UNITY_EDITOR
+                        if(myAction.VisualScript.IsTraceEnabled) {
+                            Debug.LogWarning("Activating=> "+node.FullName+" ("+myFrameId+")");
+                        }
+#endif
                     }                    
                     else {
-                        Debug.Log("DID NOT FIND STALLED PORT");
+#if UNITY_EDITOR
+                        if(myAction.VisualScript.IsTraceEnabled) {
+                            Debug.Log("EXECUTION RECOVERY: DID NOT FIND STALLED PORT");
+                        }
+#endif
                         myAction.ForceExecute(myFrameId);                    
                     }
                 }

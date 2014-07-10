@@ -15,6 +15,34 @@ public enum iCS_UpdateInterval { Daily= 0, Weekly= 1, Monthly= 2 };
 
 
 public static class iCS_PreferencesController {
+//	// =================================================================================
+//    // Debug Preferences
+//    // ---------------------------------------------------------------------------------
+//	//
+//	// Default Values
+//	//
+//    const bool  kDebugTrace= false;
+//
+//	//
+//	// Database access keys
+//	//
+//    const string kDebugTraceKey= "iCS_DebugTrace";
+//    
+//	//
+//	// Reset to default value functions
+//	//
+//    public static void ResetDebugTrace() {
+//        DebugTrace= kDebugTrace;
+//    }
+//    
+//	//
+//	// Accessors
+//	//
+//    public static bool DebugTrace {
+//        get { return EditorPrefs.GetBool(kDebugTraceKey, kDebugTrace); }
+//        set { EditorPrefs.SetBool(kDebugTraceKey, value); }        
+//    }
+    
 	// =================================================================================
     // Canvas Preferences
     // ---------------------------------------------------------------------------------

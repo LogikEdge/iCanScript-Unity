@@ -8,7 +8,7 @@ public class iCS_Connection {
     iCS_ISignature  mySignature    = null;
     int             myPortIndex    = -1;
     bool            myIsAlwaysReady= false;
-    bool            myIsControlFlow= false;
+//    bool            myIsControlFlow= false;
 
     // ======================================================================
     // Accessors
@@ -41,7 +41,7 @@ public class iCS_Connection {
         mySignature    = signature;
         myPortIndex    = portIndex;
         myIsAlwaysReady= isAlwaysReady;
-        myIsControlFlow= isControlFlow;
+//        myIsControlFlow= isControlFlow;
     }
 
     public bool IsConnected             { get{ return mySignature != null; }}

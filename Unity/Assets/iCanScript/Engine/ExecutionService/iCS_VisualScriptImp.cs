@@ -9,6 +9,9 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+#if UNITY_EDITOR
+    public bool                         IsTraceEnabled= false;
+#endif
     object[]                            myRuntimeNodes   = new object[0];
     Dictionary<string,iCS_RunContext>   myMessageContexts= new Dictionary<string,iCS_RunContext>();
     

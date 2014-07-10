@@ -33,6 +33,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 	    "Type Colors",
 	    "Instance Wizard",
 		"Software Update",
+//        "Debug",
 #if CODE_GENERATION_CONFIG
 	    "Code Engineering"
 #endif
@@ -162,8 +163,9 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             case 3: TypeColors(); break;
             case 4: InstanceWizard(); break;
 			case 5: SoftwareUpdate(); break;
+//            case 6: DebugConfig(); break;
 #if CODE_GENERATION_CONFIG
-            case 6: CodeEngineering(); break;
+            case 7: CodeEngineering(); break;
 #endif
             default: break;
         }
@@ -490,6 +492,29 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 			Prefs.ResetSoftwareUpdateSkippedVersion();
         }        
 	}
+//    // ---------------------------------------------------------------------------------
+//	void DebugConfig() {
+//        // Column 2
+//        Rect[] pos= new Rect[1];
+//        pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
+//        for(int i= 1; i < pos.Length; ++i) {
+//            pos[i]= pos[i-1];
+//            pos[i].y= pos[i-1].yMax;
+//        }
+//        GUI.Label(pos[0], "Enable Trace");
+//        
+//        // Draw Column 3
+//        for(int i= 0; i < pos.Length; ++i) {
+//            pos[i].x+= kColumn2Width;
+//            pos[i].width= kColumn3Width;
+//        }
+//		Prefs.DebugTrace  = EditorGUI.Toggle(pos[0], Prefs.DebugTrace);
+//		
+//        // Reset Button
+//        if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
+//			Prefs.ResetDebugTrace();
+//        }        
+//	}
 #if CODE_GENERATION_CONFIG
     // ---------------------------------------------------------------------------------
 	void CodeEngineering() {

@@ -56,6 +56,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties
 	// ----------------------------------------------------------------------
+    iCS_VisualScriptImp VisualScript {
+        get {
+            return IStorage.VisualScript;
+        }
+    }
     iCS_EditorObject StorageRoot {
         get {
             if(IStorage == null || Prelude.length(IStorage.EditorObjects) == 0) return null;
