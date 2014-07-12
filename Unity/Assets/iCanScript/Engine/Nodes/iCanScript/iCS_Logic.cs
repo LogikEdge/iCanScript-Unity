@@ -74,3 +74,23 @@ public static class iCS_Choice {
 	[iCS_Function(Return="out")]
 	public static Object Choice(Object trueValue, Object falseValue, bool sel) { return sel ? trueValue : falseValue; }
 }
+
+[iCS_Class(Company="iCanScript", Library="Logic")]
+public class iCS_Pulse {
+    bool    myState= false;
+    
+	[iCS_Function]
+    public iCS_Pulse(bool initialState= false) {
+        myState= initialState;
+    } 
+    
+	[iCS_Function(Return="out")]
+    public bool StateToPulse(bool state) {
+        if(myState == false && state == true) {
+            myState= state;
+            return true;
+        }
+        myState= state;
+        return false;
+    } 
+}
