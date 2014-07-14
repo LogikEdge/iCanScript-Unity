@@ -118,7 +118,7 @@ MonoBehaviour:
   SelectedObject: 19
   ShowDisplayRootNode: 1
   GuiScale: 1.49014664
-  ScrollPosition: {x: -422.894409, y: -485.86142}
+  ScrollPosition: {x: -422.894409, y: -494.51886}
   UndoRedoId: 99
   EngineObjects:
   - RawName: Bolt::Behaviour
