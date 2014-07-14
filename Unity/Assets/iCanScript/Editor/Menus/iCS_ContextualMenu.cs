@@ -121,26 +121,28 @@ public class iCS_ContextualMenu {
     }
 	// ----------------------------------------------------------------------
     void PackageMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+        int idx;
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
         if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             // Base menu items
-            int idx= GrowMenuBy(ref menu, 5);
+            idx= GrowMenuBy(ref menu, 3);
             menu[idx]= new iCS_MenuContext(PackageStr);
             menu[idx+1]= new iCS_MenuContext(StateChartStr);
             menu[idx+2]= new iCS_MenuContext(SeparatorStr);
-            menu[idx+3]= new iCS_MenuContext(EnablePortStr);
-            if(storage.HasTriggerPort(selectedObject)) {
-                menu[idx+4]= new iCS_MenuContext("#"+TriggerPortStr);
-            } else {
-                menu[idx+4]= new iCS_MenuContext(TriggerPortStr);                
-            }
+        }
+        idx= GrowMenuBy(ref menu, 2);
+        menu[idx]= new iCS_MenuContext(EnablePortStr);
+        if(storage.HasTriggerPort(selectedObject)) {
+            menu[idx+1]= new iCS_MenuContext("#"+TriggerPortStr);
+        } else {
+            menu[idx+1]= new iCS_MenuContext(TriggerPortStr);                
         }
 		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         AddShowInHierarchyMenuItem(ref menu);
         AddDeleteMenuItem(ref menu);
         if(selectedObject.ObjectType == iCS_ObjectTypeEnum.Package) {
             if(selectedObject.HasChildNode()) {
-                int idx= GrowMenuBy(ref menu, 1);
+                idx= GrowMenuBy(ref menu, 1);
                 menu[idx]= new iCS_MenuContext(DeleteKeepChildrenStr);                
             }
         }
