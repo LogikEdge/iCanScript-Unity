@@ -368,8 +368,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         
                         // Control flow ports.
                         case iCS_ObjectTypeEnum.TriggerPort: {
-                            var package= myRuntimeNodes[port.ParentId] as iCS_Package;
-                            package.Trigger= false;
+                            var action= myRuntimeNodes[port.ParentId] as iCS_ActionWithSignature;
+                            action.Trigger= false;
                             break;
                         }
                         // Data ports.
