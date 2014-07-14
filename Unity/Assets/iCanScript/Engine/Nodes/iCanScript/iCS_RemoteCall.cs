@@ -5,6 +5,15 @@ using System.Collections.Generic;
 [iCS_Class(Company="iCanScript", Library="Communication")]
 public static class iCS_RemoteCall {
     [iCS_Function]
+    public static Component FindWithTag(string tag, string componentType) {
+        var go= GameObject.FindWithTag(tag);
+        if(go == null) {
+            return null;
+        }
+        return go.GetComponent(componentType);
+    }
+    
+    [iCS_Function]
     public static void SendMessage(iCS_VisualScriptImp targetVisualScript, string messageName) {
         if(targetVisualScript != null) {
             targetVisualScript.RunMessage(messageName);
