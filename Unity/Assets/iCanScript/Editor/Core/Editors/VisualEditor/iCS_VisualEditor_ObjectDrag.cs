@@ -125,8 +125,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragType= DragTypeEnum.TransitionCreation;
             iCS_EditorObject outStatePort= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutStatePort);
             iCS_EditorObject inStatePort= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-            outStatePort.SetAnchorAndLayoutPosition(pos);
-            inStatePort.SetAnchorAndLayoutPosition(pos);
+            outStatePort.SetLocalAnchorFromGlobalPosition(pos);
+            inStatePort.SetLocalAnchorFromGlobalPosition(pos);
             inStatePort.ProviderPortId= outStatePort.InstanceId;
             DragFixPort= outStatePort;
             DragObject= inStatePort;
@@ -224,7 +224,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 							newPosition= new Vector2(fixPortParentRect.xMax, center.y);
 							break;
 						}
-						DragFixPort.SetAnchorAndLayoutPosition(newPosition);
+						DragFixPort.SetLocalAnchorFromGlobalPosition(newPosition);
 						fixPortParentNode.LayoutPorts();
 					}
 				}
@@ -316,7 +316,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
                                 IStorage.DestroyInstance(DragObject);
                             } else {
-                                DragObject.SetAnchorAndLayoutPosition(DragStartDisplayPosition);
+                                DragObject.SetLocalAnchorFromGlobalPosition(DragStartDisplayPosition);
                             }
                             iCS_UserCommands.EndPortDrag(DragOriginalPort);
                             break;
@@ -324,7 +324,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         // Relocate transition to the new state.
                         var dragObjectPosition= DragObject.GlobalPosition;
                         DragObject.Parent= newState;
-                        DragObject.SetAnchorAndLayoutPosition(dragObjectPosition);
+                        DragObject.SetLocalAnchorFromGlobalPosition(dragObjectPosition);
                         DragObject.UpdatePortEdge();
                         newState.LayoutPorts();
                         iCS_EditorObject transitionPackage= IStorage.GetTransitionPackage(DragObject);
@@ -358,7 +358,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         // Avoid publishing on the parent node.
                         iCS_EditorObject newPortParent= GetNodeWithEdgeAtMousePosition();
 						if(newPortParent != null && newPortParent == DragOriginalPort.ParentNode) {
-			                DragOriginalPort.SetAnchorAndLayoutPosition(dragPortPos);
+			                DragOriginalPort.SetLocalAnchorFromGlobalPosition(dragPortPos);
                             iCS_UserCommands.EndPortDrag(DragOriginalPort);
 							break;
 						}
@@ -401,7 +401,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 								}									
 							}
                             iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, newPortType);
-                            newPort.SetAnchorAndLayoutPosition(dragPortPos);
+                            newPort.SetLocalAnchorFromGlobalPosition(dragPortPos);
                             newPort.PortValue= DragFixPort.PortValue;
 							if(fixPortIsBindingTo) {
                                 IStorage.SetNewDataConnection(DragFixPort, newPort);
@@ -635,7 +635,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 		}
         DragType= DragTypeEnum.PortConnection;
-        DragObject.SetAnchorAndLayoutPosition(GraphMousePosition);
+        DragObject.SetLocalAnchorFromGlobalPosition(GraphMousePosition);
         DragObject.IsFloating= true;
         DragObject.IsSticky= true;
         SelectedObject= DragObject;
@@ -653,7 +653,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             return;
 		}                      
         // No reordering necessary if this is the only port on this edge.
-        port.SetAnchorAndLayoutPosition(newPosition);
+        port.SetLocalAnchorFromGlobalPosition(newPosition);
         var sameEdgePorts= P.filter(p=> p != port, port.BuildListOfPortsOnSameEdge());
 		var nbOfPortsOnEdge= sameEdgePorts.Length;
         if(nbOfPortsOnEdge == 0) {

@@ -83,7 +83,7 @@ public static partial class iCS_UserCommands {
             _=> {
                 P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
                 iStorage.DestroyInstance(obj.InstanceId);
-                P.zipWith((n,p) => { n.SetAnchorAndLayoutPosition(p);}, childNodes, childPos);
+                P.zipWith((n,p) => { n.SetLocalAnchorFromGlobalPosition(p);}, childNodes, childPos);
                 newParent.LayoutNodeAndParents();
             }
         );

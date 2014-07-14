@@ -86,12 +86,6 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Layout
     // ----------------------------------------------------------------------
-	// Node priority when resolving collisions.
-	public int LayoutPriority {
-		get { return EngineObject.LayoutPriority; }
-		set { EngineObject.LayoutPriority= value; }
-	}
-    // ----------------------------------------------------------------------
 	public Vector2 CollisionOffset {
 		get {
 			return myCollisionOffset;
@@ -130,7 +124,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 LocalPosition {
 		get {
-			return LocalAnchorPosition+LocalOffset;
+			return LocalAnchorPosition+CollisionOffset;
 		}
 		set {
 			LocalOffset= value-LocalAnchorPosition;
@@ -248,21 +242,40 @@ public partial class iCS_EditorObject {
 	// ======================================================================
     // High-order functions
     // ----------------------------------------------------------------------
+    public void SetLocalAnchorFromGlobalPosition(Vector2 globalPosition) {
+        var parent= ParentNode;
+        if(parent == null) {
+            LocalAnchor= globalPosition;
+            return;
+        }
+        LocalAnchor= globalPosition-parent.GlobalPosition;
+        CollisionOffset= Vector2.zero;
+    }
+    // ----------------------------------------------------------------------
+    public void SetCollisionOffsetFromGlobalPosition(Vector2 globalPosition) {
+        var parent= ParentNode;
+        if(parent == null) {
+            CollisionOffset= globalPosition-LocalAnchor;
+            return;
+        }
+        CollisionOffset= globalPosition-parent.GlobalPosition-LocalAnchor;
+    }
+    // ----------------------------------------------------------------------
+    public void SetLocalAnchorFromGlobalRect(Rect globalRect) {
+        SetLocalAnchorFromGlobalPosition(PositionFrom(globalRect));
+        LocalSize= SizeFrom(globalRect);
+    }
+    // ----------------------------------------------------------------------
+    public void SetCollisionOffsetFromGlobalRect(Rect globalRect) {
+        SetCollisionOffsetFromGlobalPosition(PositionFrom(globalRect));
+        LocalSize= SizeFrom(globalRect);
+    }
+    // ----------------------------------------------------------------------
     public void SetInitialPosition(Vector2 pos) {
         var r= BuildRect(pos, Vector2.zero);
-        SetAnchorAndLayoutRect(r);
+        SetLocalAnchorFromGlobalRect(r);
         AnimationStartRect= r;
     }
-    // ----------------------------------------------------------------------
-    public void SetAnchorAndLayoutRect(Rect r) {
-        SetAnchorAndLayoutPosition(PositionFrom(r));
-        LocalSize= SizeFrom(r);
-    }
-    // ----------------------------------------------------------------------
-	public void SetAnchorAndLayoutPosition(Vector2 pos) {
-		GlobalAnchorPosition = pos;
-		CollisionOffset= Vector2.zero;
-	}
 
 	// ======================================================================
     // Utilities
@@ -278,6 +291,12 @@ public partial class iCS_EditorObject {
     public static Vector2 SizeFrom(Rect r) {
         return new Vector2(r.width, r.height);
     }
+    // ----------------------------------------------------------------------
+	// Node priority when resolving collisions.
+	public int LayoutPriority {
+		get { return EngineObject.LayoutPriority; }
+		set { EngineObject.LayoutPriority= value; }
+	}
 
 	// ======================================================================
     // Child Position Utilities

@@ -339,7 +339,7 @@ public partial class iCS_IStorage {
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
         if(newObj.IsNode) {
-            newObj.SetAnchorAndLayoutPosition(globalPos);            
+            newObj.SetLocalAnchorFromGlobalPosition(globalPos);            
         }
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
@@ -383,7 +383,7 @@ public partial class iCS_IStorage {
         }
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(0, name+"::Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
-        this[0].SetAnchorAndLayoutPosition(VisualEditorCenter());
+        this[0].SetLocalAnchorFromGlobalPosition(VisualEditorCenter());
 		this[0].IsNameEditable= false;
         return this[0];
     }
