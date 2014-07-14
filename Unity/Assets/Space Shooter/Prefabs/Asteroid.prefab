@@ -118,8 +118,8 @@ MonoBehaviour:
   SelectedObject: 108
   ShowDisplayRootNode: 1
   GuiScale: 1.14864743
-  ScrollPosition: {x: 33.6946716, y: -869.344849}
-  UndoRedoId: 1964
+  ScrollPosition: {x: 31.822937, y: -868.097656}
+  UndoRedoId: 1966
   EngineObjects:
   - RawName: Asteroid::Behaviour
     ObjectType: 0
@@ -1997,7 +1997,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 94
-    LayoutPriority: 66
+    LayoutPriority: 64
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2873,7 +2873,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 139
-    LayoutPriority: 67
+    LayoutPriority: 65
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
