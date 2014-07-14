@@ -27,9 +27,8 @@ public static partial class iCS_UserCommands {
             _=> {
                 if(oldParent != newParent) {
                     iStorage.ChangeParent(node, newParent); 
-                    oldParent.LayoutNodeAndParents();                   
                 }
-                node.LayoutNodeAndParents();
+                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
             }
         );
         iStorage.SaveStorage("Node Relocation");
@@ -37,11 +36,12 @@ public static partial class iCS_UserCommands {
     public static void StartPortDrag(iCS_EditorObject port) {
     }
     public static void EndPortDrag(iCS_EditorObject port) {
-        port.IStorage.AnimateGraph(null,
+        var iStorage= port.IStorage;
+        iStorage.AnimateGraph(null,
             _=> {
-                port.ParentNode.LayoutNodeAndParents();                
+                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
             }
         );
-        port.IStorage.SaveStorage("Port Drag");
+        iStorage.SaveStorage("Port Drag");
     }
 }
