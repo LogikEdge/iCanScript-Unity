@@ -296,7 +296,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
+				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProviderPort= inputPort.ProviderPort;
 				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
@@ -322,7 +322,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
+				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProviderPort= inputPort.ProviderPort;
 				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
@@ -342,7 +342,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
-				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
+				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProviderPort= inputPort.ProviderPort;
 				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);

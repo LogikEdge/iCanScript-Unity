@@ -92,15 +92,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
     public void OnStartRelayoutOfTree() {
         // Keep a copy of the display root anchor position.
-        SavedDisplayRootAnchorPosition= DisplayRoot.AnchorPosition;
+        SavedDisplayRootAnchorPosition= DisplayRoot.GlobalAnchorPosition;
     }
     public void OnEndRelayoutOfTree() {
         // Reset anchor position of display root to avoid movement in parent node.
         if(DisplayRoot != StorageRoot) {
-            var anchorPosition= DisplayRoot.AnchorPosition;
+            var anchorPosition= DisplayRoot.GlobalAnchorPosition;
             var deltaAnchor= anchorPosition-SavedDisplayRootAnchorPosition;
             if(Math3D.IsNotZero(deltaAnchor)) {
-                DisplayRoot.AnchorPosition= SavedDisplayRootAnchorPosition;
+                DisplayRoot.GlobalAnchorPosition= SavedDisplayRootAnchorPosition;
                 ScrollPosition-= deltaAnchor;
                 GridOffset+= deltaAnchor;                            
             }

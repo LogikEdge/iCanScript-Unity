@@ -78,7 +78,7 @@ public static partial class iCS_UserCommands {
         var iStorage= obj.IStorage;
         var newParent= obj.ParentNode;
         var childNodes= obj.BuildListOfChildNodes(_ => true);
-        var childPos= P.map(n => n.LayoutPosition, childNodes);
+        var childPos= P.map(n => n.GlobalPosition, childNodes);
         iStorage.AnimateGraph(obj,
             _=> {
                 P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);

@@ -59,7 +59,7 @@ public static partial class iCS_UserCommands {
     public static void AutoLayoutPort(iCS_EditorObject port) {
         if(port == null) return;
         var iStorage= port.IStorage;
-        var portPos= port.LayoutPosition;
+        var portPos= port.GlobalPosition;
         // First layout from port to provider
         var providerPort= iStorage.GetPointToPointProviderPortForConsumerPort(port);
         if(providerPort != null && providerPort != port) {

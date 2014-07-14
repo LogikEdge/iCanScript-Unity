@@ -29,9 +29,9 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleInLayout) return 0f;
             if(IsIconizedInLayout) {
-				return IsTransitionPackage ? 0f : -0.25f*LayoutSize.y;
+				return IsTransitionPackage ? 0f : -0.25f*LocalSize.y;
 			}
-            return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-LayoutSize.y);
+            return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-LocalSize.y);
         }
     }
     // ----------------------------------------------------------------------
@@ -40,9 +40,9 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleInLayout) return 0f;
             if(IsIconizedInLayout) {
-				return IsTransitionPackage ? 0f : 0.25f*LayoutSize.y;
+				return IsTransitionPackage ? 0f : 0.25f*LocalSize.y;
 			}
-            return 0.5f*(LayoutSize.y-iCS_EditorConfig.MinimumPortSeparation);
+            return 0.5f*(LocalSize.y-iCS_EditorConfig.MinimumPortSeparation);
         }
     }
     // ----------------------------------------------------------------------
@@ -51,9 +51,9 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleInLayout) return 0f;
             if(IsIconizedInLayout) {
-				return IsTransitionPackage ? 0f : -0.25f*LayoutSize.x;
+				return IsTransitionPackage ? 0f : -0.25f*LocalSize.x;
 			}
-            return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-LayoutSize.x);
+            return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-LocalSize.x);
         }
     }
     // ----------------------------------------------------------------------
@@ -62,9 +62,9 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleInLayout) return 0f;
             if(IsIconizedInLayout) {
-				return IsTransitionPackage ? 0f : 0.25f*LayoutSize.x;
+				return IsTransitionPackage ? 0f : 0.25f*LocalSize.x;
 			}
-            return 0.5f*(LayoutSize.x-iCS_EditorConfig.MinimumPortSeparation);
+            return 0.5f*(LocalSize.x-iCS_EditorConfig.MinimumPortSeparation);
         }
     }    
     // ----------------------------------------------------------------------

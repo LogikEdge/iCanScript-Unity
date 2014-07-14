@@ -12,7 +12,20 @@ public partial class iCS_EditorObject {
     // 2) Wrapping is performed on agregate nodes
     // 3) Collision is resolved.
     // ----------------------------------------------------------------------
-    public Vector2 UserDragLocalPosition {
+    // @ Called when user moves a node or port
+    public Vector2 UserDragPosition {
+        set {
+            CollisionOffset= Vector2.zero;
+            var parent= ParentNode;
+            if(parent == null) {
+                LocalAnchorPosition= value;
+            }
+            LocalAnchorPosition= value-parent.GlobalPosition+parent.WrappingOffset;
+        }
+    }
+    
+    // ----------------------------------------------------------------------
+    public Vector2 LocalAnchor {
         get {
             return LocalAnchorPosition;
         }
@@ -21,42 +34,26 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    // @ Called when user moves a node or port
-    public Vector2 UserDragPosition {
-        get {
-            var parent= ParentNode;
-            if(parent == null) return UserDragLocalPosition;
-            return parent.LayoutPosition+UserDragLocalPosition;
-        }
-        set {
-            WrappingOffset= Vector2.zero;
-            CollisionOffset= Vector2.zero;
-            var parent= ParentNode;
-            if(parent == null) {
-                LocalAnchorPosition= value;
-            }
-            LocalAnchorPosition= value-parent.LayoutPosition+parent.WrappingOffset;
-        }
+    public Vector2 LocalAnchorFromGlobalPosition {
+    	set {
+			var parent= ParentNode;
+			if(parent == null) {
+				LocalAnchor= value;
+				return;
+			}
+			LocalAnchor= value-parent.GlobalPosition;
+			LocalOffset= Vector2.zero;
+    	}
     }
     // ----------------------------------------------------------------------
-    // @ Called when an agreagte node is wrapping around its children.
-    public Vector2 WrappingPosition {
-        get {
-            return UserDragPosition+WrappingOffset;
-        }
-        set {
-            CollisionOffset= Vector2.zero;
-            WrappingOffset= value-UserDragPosition;
-        }
-    }
-    // ----------------------------------------------------------------------
-    // @ Called when a collision is resolved.
-    public Vector2 CollisionPosition {
-        get {
-            return WrappingPosition+CollisionOffset;
-        }
-        set {
-            CollisionOffset= value-WrappingPosition;
-        }
+    public Vector2 LocalOffsetFromGlobalPosition {
+    	set {
+    		var parent= ParentNode;
+    		if(parent == null) {
+    			LocalOffset= value-LocalAnchor;
+    			return;
+    		}
+    		LocalOffset= value-parent.GlobalPosition-LocalAnchor;
+    	}
     }
 }

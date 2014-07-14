@@ -15,7 +15,7 @@ public partial class iCS_IStorage {
                 if(exclude != null) {
                     excludeFlag= n == exclude || IsChildOf(n, exclude);
                 }
-                return !excludeFlag && n.IsNode && n.IsVisibleInLayout && IsInside(n, pick) && (foundNode == null || n.LayoutSize.x < foundNode.LayoutSize.x);
+                return !excludeFlag && n.IsNode && n.IsVisibleInLayout && IsInside(n, pick) && (foundNode == null || n.LocalSize.x < foundNode.LocalSize.x);
             },
             n=> foundNode= n
         );
@@ -26,7 +26,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject GetPortAt(Vector2 pick, Func<iCS_EditorObject,bool> filter= null) {
         iCS_EditorObject port= GetClosestPortAt(pick, filter);
         if(port == null) return port;
-        float distance= Vector2.Distance(port.LayoutPosition, pick);
+        float distance= Vector2.Distance(port.GlobalPosition, pick);
         return (distance < iCS_EditorConfig.PortRadius*1.2f) ? port : null;
     }
     // ----------------------------------------------------------------------
@@ -38,7 +38,7 @@ public partial class iCS_IStorage {
         FilterWith(
             port=> port.IsPort && port.IsVisibleInLayout && !port.IsFloating && filter(port),
             port=> {
-                Vector2 position= port.LayoutPosition;
+                Vector2 position= port.GlobalPosition;
                 float distance= Vector2.Distance(position, pick);
                 if(distance < bestDistance) {
                     bestDistance= distance;
@@ -63,11 +63,11 @@ public partial class iCS_IStorage {
                 if(excludeFlag || !n.IsNode || !n.IsVisibleInLayout) return false;
                 var portRadius= iCS_EditorConfig.PortRadius;
                 var portSize= 2f*portRadius;
-                var globalRect= n.LayoutRect;
+                var globalRect= n.GlobalRect;
                 var outterEdge= new Rect(globalRect.x-portRadius, globalRect.y-portRadius, globalRect.width+portSize, globalRect.height+portSize);
                 var innerEdge = new Rect(globalRect.x+portRadius, globalRect.y+portRadius, globalRect.width-portSize, globalRect.height-portSize);
                 return outterEdge.Contains(pick) && !innerEdge.Contains(pick) &&
-                       (foundNode == null || n.LayoutSize.x < foundNode.LayoutSize.x);
+                       (foundNode == null || n.LocalSize.x < foundNode.LocalSize.x);
             },
             n=> foundNode= n
         );
@@ -77,11 +77,11 @@ public partial class iCS_IStorage {
     public iCS_EditorObject GetOverlappingPort(iCS_EditorObject port) {
         iCS_EditorObject foundPort= null;
 		float bestDistance= iCS_EditorConfig.PortDiameter;
-        Vector2 position= port.LayoutPosition;
+        Vector2 position= port.GlobalPosition;
         FilterWith(
             p=> p.IsPort && p != port && p.IsVisibleInLayout,
             p=> {
-                float distance= Vector2.Distance(p.LayoutPosition, position);
+                float distance= Vector2.Distance(p.GlobalPosition, position);
                 if(distance < bestDistance) {
 					bestDistance= distance;
                     foundPort= p;

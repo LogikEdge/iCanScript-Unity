@@ -87,12 +87,14 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public void Iconize() {
         if(DisplayOption != iCS_DisplayOptionEnum.Iconized) {
+        	ReduceChildrenAnchorPosition();
     		DisplayOption= iCS_DisplayOptionEnum.Iconized;
         }
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
 		if(DisplayOption != iCS_DisplayOptionEnum.Folded) {
+			ReduceChildrenAnchorPosition();
     		DisplayOption= iCS_DisplayOptionEnum.Folded;
 		}
     }

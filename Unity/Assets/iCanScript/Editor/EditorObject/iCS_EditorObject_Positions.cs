@@ -9,7 +9,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	Vector2	myLayoutSize      = Vector2.zero;
 	Vector2	myCollisionOffset = Vector2.zero;
-	Vector2	myWrappingOffset  = Vector2.zero;
+	Vector2 myWrappingOffset  = Vector2.zero;
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
@@ -67,11 +67,11 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-    public Vector2 AnchorPosition {
+    public Vector2 GlobalAnchorPosition {
 		get {
 			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
-    		return parent.LayoutPosition+LocalAnchorPosition;			    
+    		return parent.GlobalPosition+LocalAnchorPosition;			    
 		}
 		set {
 			var parent= ParentNode;
@@ -79,7 +79,7 @@ public partial class iCS_EditorObject {
 				LocalAnchorPosition= value;
 				return;
 			}
-    		LocalAnchorPosition= value-parent.LayoutPosition;                
+    		LocalAnchorPosition= value-parent.GlobalPosition;                
 		}                
     }
 
@@ -92,15 +92,6 @@ public partial class iCS_EditorObject {
 		set { EngineObject.LayoutPriority= value; }
 	}
     // ----------------------------------------------------------------------
-	public Vector2 WrappingOffset {
-		get {
-			return myWrappingOffset;
-		}
-		set {
-			myWrappingOffset= value;
-		}
-	}
-    // ----------------------------------------------------------------------
 	public Vector2 CollisionOffset {
 		get {
 			return myCollisionOffset;
@@ -110,10 +101,19 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
+	public Vector2 WrappingOffset {
+		get {
+			return myWrappingOffset;
+		}
+		set {
+			myWrappingOffset= value;
+		}
+	}
+    // ----------------------------------------------------------------------
     // Offset from the anchor position.  This attribute is animated.
 	public Vector2 LocalOffset {
 		get {
-			return CollisionOffset+WrappingOffset;
+			return CollisionOffset;
 		}
 		set {
             // Update parent port for nested ports.
@@ -128,7 +128,7 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 LocalLayoutPosition {
+	public Vector2 LocalPosition {
 		get {
 			return LocalAnchorPosition+LocalOffset;
 		}
@@ -139,7 +139,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Layout
     // ----------------------------------------------------------------------
-	public Vector2 LayoutPosition {
+	public Vector2 GlobalPosition {
 		get {
 			var parent= ParentNode;
 			if(parent == null) {
@@ -147,15 +147,15 @@ public partial class iCS_EditorObject {
 		    }
 			// Special case for iconized transition module ports.
 			if(IsTransitionPort && parent.IsIconizedInLayout) {
-				return parent.LayoutPosition;
+				return parent.GlobalPosition;
 			}
 			if(IsPort) {
-				return parent.LayoutPosition+LocalLayoutPosition;
+				return parent.GlobalPosition+LocalPosition;
 			}
 			if(!IsVisibleInLayout) {
-			    return parent.LayoutPosition;
+			    return parent.GlobalPosition;
 			}
-    		return parent.LayoutPosition+LocalLayoutPosition;
+    		return parent.GlobalPosition+LocalPosition;
 		}
 		set {
             var offsetWithoutParent= value-LocalAnchorPosition;
@@ -165,13 +165,13 @@ public partial class iCS_EditorObject {
 		        return;
 		    }
 			if(IsPort) {
-				LocalOffset= offsetWithoutParent-parent.LayoutPosition;
+				LocalOffset= offsetWithoutParent-parent.GlobalPosition;
 			}
-	        LocalOffset= offsetWithoutParent-parent.LayoutPosition;
+	        LocalOffset= offsetWithoutParent-parent.GlobalPosition;
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 LayoutSize {
+	public Vector2 LocalSize {
 		get {
 		    if(IsPort) {
 		        return iCS_EditorConfig.PortSize;
@@ -191,13 +191,13 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Rect LayoutRect {
+	public Rect GlobalRect {
 		get {
-			return BuildRect(LayoutPosition, LayoutSize);
+			return BuildRect(GlobalPosition, LocalSize);
 		}
 		set {
-			LayoutPosition= PositionFrom(value);
-			LayoutSize= SizeFrom(value);
+			GlobalPosition= PositionFrom(value);
+			LocalSize= SizeFrom(value);
 		}
 	}
 	
@@ -231,10 +231,10 @@ public partial class iCS_EditorObject {
 			}
 			var parent= ParentNode;
 			if(parent == null || (IsFloating || IsSticky)) {
-			    return LayoutRect;
+			    return GlobalRect;
 		    }
 		    var parentPos= parent.AnimatedPosition;
-		    var size= LayoutSize;
+		    var size= LocalSize;
 		    // Special case for iconized transition module ports.
 			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
 				return BuildRect(parentPos, size);
@@ -256,17 +256,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public void SetAnchorAndLayoutRect(Rect r) {
         SetAnchorAndLayoutPosition(PositionFrom(r));
-        LayoutSize= SizeFrom(r);
+        LocalSize= SizeFrom(r);
     }
     // ----------------------------------------------------------------------
 	public void SetAnchorAndLayoutPosition(Vector2 pos) {
-        var parent= ParentNode;
-        if(parent != null && !IsPort) {
-            pos+= parent.WrappingOffset;
-        }
-		AnchorPosition = pos;
+		GlobalAnchorPosition = pos;
 		CollisionOffset= Vector2.zero;
-		WrappingOffset = Vector2.zero;
 	}
 
 	// ======================================================================
@@ -289,12 +284,12 @@ public partial class iCS_EditorObject {
  	// ----------------------------------------------------------------------
     public Rect ChildRect {
         get {
-            Rect childRect= BuildRect(LayoutPosition, Vector2.zero);
+            Rect childRect= BuildRect(GlobalPosition, Vector2.zero);
             ForEachChildNode(
                 c=> {
                     if(!c.IsFloating) {
     					if(c.IsVisibleInLayout) {
-        					childRect= Math3D.Merge(childRect, c.LayoutRect);											        
+        					childRect= Math3D.Merge(childRect, c.GlobalRect);											        
     					}
                     }
 				}

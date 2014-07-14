@@ -21,7 +21,7 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
-                var oldNodePos= node.LayoutPosition;
+                var oldNodePos= node.GlobalPosition;
                 node.Unfold();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
@@ -48,7 +48,7 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
-                var oldNodePos= node.LayoutPosition;
+                var oldNodePos= node.GlobalPosition;
                 node.Fold();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
@@ -75,7 +75,7 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
-                var oldNodePos= node.LayoutPosition;
+                var oldNodePos= node.GlobalPosition;
                 node.Iconize();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);

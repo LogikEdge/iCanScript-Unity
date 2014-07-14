@@ -29,7 +29,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
                 // Don't accept to drag object outside the root node.
                 if(objectUnderMouse == DisplayRoot && IStorage.ShowDisplayRootNode) {
-                    if(!DisplayRoot.LayoutRect.Contains(GraphMousePosition)) {
+                    if(!DisplayRoot.GlobalRect.Contains(GraphMousePosition)) {
                         DragAndDrop.visualMode= DragAndDropVisualMode.Rejected;
                         return;
                     }
@@ -103,7 +103,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(eObj.IsNode && !eObj.IsBehaviour) {
                 // Don't accept to drag object outside the root node.
                 if(eObj == DisplayRoot && IStorage.ShowDisplayRootNode) {
-                    if(!DisplayRoot.LayoutRect.Contains(GraphMousePosition)) {
+                    if(!DisplayRoot.GlobalRect.Contains(GraphMousePosition)) {
                         return;
                     }
                 }

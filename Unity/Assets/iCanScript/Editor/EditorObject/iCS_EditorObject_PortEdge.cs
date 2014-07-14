@@ -29,7 +29,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Updates the port edge information from the port type.
     public void UpdatePortEdge() {
-		UpdatePortEdge(LocalLayoutPosition);
+		UpdatePortEdge(LocalPosition);
     }
 	// ----------------------------------------------------------------------
     // Updates the port edge information from the port type.
@@ -38,15 +38,15 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void CleanupPortEdgePosition() {
-        var size= Parent.AnimatedSize;
-        var lp= LocalLayoutPosition;
+        var size= Parent.LocalSize;
+        var lp= LocalPosition;
         switch(Edge) {
             case iCS_EdgeEnum.Top:      lp.y= -0.5f*size.y; break; 
             case iCS_EdgeEnum.Bottom:   lp.y=  0.5f*size.y; break;
             case iCS_EdgeEnum.Left:     lp.x= -0.5f*size.x; break;
             case iCS_EdgeEnum.Right:    lp.x=  0.5f*size.x; break;
         }
-		LocalLayoutPosition= lp;
+		LocalPosition= lp;
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {
@@ -57,16 +57,16 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnNodeEdge(iCS_EditorObject node, iCS_EdgeEnum edge) {
-		return IsPortOnRectEdge(node.AnimatedRect, edge);
+		return IsPortOnRectEdge(node.GlobalRect, edge);
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnRectEdge(Rect r, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(AnimatedPosition, r, edge);
+		return IsPositionOnRectEdge(GlobalPosition, r, edge);
     }
     // ----------------------------------------------------------------------
 	// Return true if the position is on the edge of the node.
 	public bool IsPositionOnEdge(Vector2 position, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(position, AnimatedRect, edge);
+		return IsPositionOnRectEdge(position, GlobalRect, edge);
 	}
     // ----------------------------------------------------------------------
     public static bool IsPositionOnRectEdge(Vector2 pos, Rect r, iCS_EdgeEnum edge) {

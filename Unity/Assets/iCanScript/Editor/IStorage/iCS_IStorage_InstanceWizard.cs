@@ -283,7 +283,7 @@ public partial class iCS_IStorage {
     // ======================================================================
     public iCS_EditorObject InstanceWizardCreate(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
         if(InstanceWizardFindFunction(module, desc) != null) return null;
-        Rect moduleRect= module.LayoutRect;
+        Rect moduleRect= module.GlobalRect;
         iCS_EditorObject func= CreateFunction(module.InstanceId, desc);
         func.SetInitialPosition(new Vector2(0.5f*(moduleRect.x+moduleRect.xMax), moduleRect.yMax));
         ForEachChildDataPort(func,
@@ -383,7 +383,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_IStorage.GetInstancePortName(module.RuntimeType),
                                                                iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
         if(moduleThisPort == null) return null;
-        Rect thisPos= moduleThisPort.LayoutRect; 
+        Rect thisPos= moduleThisPort.GlobalRect; 
         iCS_EditorObject constructor= CreateFunction(module.ParentId, desc);
         constructor.SetInitialPosition(new Vector2(thisPos.x-75f, thisPos.y));
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutputPort && port.RuntimeType == module.RuntimeType);

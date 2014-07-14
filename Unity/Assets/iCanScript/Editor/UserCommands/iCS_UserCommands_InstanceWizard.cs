@@ -20,7 +20,7 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 instance= iStorage.InstanceWizardCreate(parent, desc);
-                instance.SetInitialPosition(parent.LayoutPosition);
+                instance.SetInitialPosition(parent.GlobalPosition);
                 instance.Iconize();
                 parent.LayoutNodeAndParents();                
             }

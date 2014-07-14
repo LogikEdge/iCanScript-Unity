@@ -6,7 +6,7 @@ public partial class iCS_EditorObject {
     public Vector2 GetPortLocalAnchorPositionFromRatio() {
         var parent= ParentNode;
         var ratio= PortPositionRatio;
-        var parentSize= parent.LayoutSize;
+        var parentSize= parent.LocalSize;
         if(parent.IsIconizedOnDisplay) {
             parentSize*= (IsTransitionPort ? 0f : 0.5f);
         }

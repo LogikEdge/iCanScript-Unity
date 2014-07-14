@@ -52,7 +52,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(SelectedObject != null) {
                     // Move node
                     if(IsShiftKeyDown && SelectedObject.IsNode) {
-                        var newPos= SelectedObject.LayoutPosition;
+                        var newPos= SelectedObject.GlobalPosition;
                         newPos.y-= IsAltKeyDown ? 5f: 1f;
                         SelectedObject.IsSticky= true;
                         SelectedObject.NodeDragTo(newPos);
@@ -75,7 +75,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.DownArrow: {
                 if(IsShiftKeyDown && SelectedObject.IsNode) {
-                    var newPos= SelectedObject.LayoutPosition;
+                    var newPos= SelectedObject.GlobalPosition;
                     newPos.y+= IsAltKeyDown ? 5f: 1f;
                     SelectedObject.IsSticky= true;
                     SelectedObject.NodeDragTo(newPos);
@@ -93,7 +93,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.RightArrow: {
                 if(IsShiftKeyDown && SelectedObject.IsNode) {
-                    var newPos= SelectedObject.LayoutPosition;
+                    var newPos= SelectedObject.GlobalPosition;
                     newPos.x+= IsAltKeyDown ? 5f: 1f;
                     SelectedObject.IsSticky= true;
                     SelectedObject.NodeDragTo(newPos);
@@ -108,7 +108,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.LeftArrow: {
                 if(IsShiftKeyDown && SelectedObject.IsNode) {
-                    var newPos= SelectedObject.LayoutPosition;
+                    var newPos= SelectedObject.GlobalPosition;
                     newPos.x-= IsAltKeyDown ? 5f: 1f;
                     SelectedObject.IsSticky= true;
                     SelectedObject.NodeDragTo(newPos);

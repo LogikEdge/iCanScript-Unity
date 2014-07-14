@@ -150,8 +150,8 @@ public partial class iCS_IStorage {
         if(parent.IsPort) {
             port.LocalOffset= parent.LocalOffset;
         } else {
-            var globalPos= parent.LayoutPosition;
-    		port.LayoutPosition= globalPos;            
+            var globalPos= parent.GlobalPosition;
+    		port.GlobalPosition= globalPos;            
         }
 		// Set initial port edge.
 		if(port.IsEnablePort) {

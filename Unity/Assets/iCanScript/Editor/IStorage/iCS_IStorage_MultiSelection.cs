@@ -101,7 +101,7 @@ public partial class iCS_IStorage {
         var len= myMultiSelectNodeDragObjects.Length;
         myMultiSelectNodeDragStartPosition= new Vector2[len];
         for(int i= 0; i < len; ++i) {
-            myMultiSelectNodeDragStartPosition[i]= myMultiSelectNodeDragObjects[i].LayoutPosition;
+            myMultiSelectNodeDragStartPosition[i]= myMultiSelectNodeDragObjects[i].GlobalPosition;
         }
     }
 	// -------------------------------------------------------------------------

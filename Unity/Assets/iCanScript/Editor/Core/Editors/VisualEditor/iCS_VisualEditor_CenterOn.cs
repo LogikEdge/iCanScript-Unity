@@ -42,14 +42,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void CenterOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
-        CenterAt(obj.LayoutPosition);
+        CenterAt(obj.GlobalPosition);
     }
 	// ----------------------------------------------------------------------
     public void CenterAndScaleOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
         while(obj != null && !obj.IsVisibleInLayout) obj= obj.Parent;
         if(obj == null) return;
-        var size= obj.LayoutSize;
+        var size= obj.LocalSize;
         float newScale= 1.0f;
         if(obj.IsNode) {
             float borderScale= obj.IsBehaviour ? 1.0f : 1.1f;
@@ -57,7 +57,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             float heightScale= position.height/(borderScale*size.y);
             newScale= Mathf.Min(2.0f, Mathf.Min(widthScale, heightScale));
         }
-        CenterAtWithScale(obj.LayoutPosition, newScale);
+        CenterAtWithScale(obj.GlobalPosition, newScale);
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {
@@ -93,7 +93,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //        float deltaTime= Prefs.AnimationTime;
 //        Vector2 pivot= Vector2.zero;
         // Reposition Target.
-        var newPos= target.LayoutPosition;
+        var newPos= target.GlobalPosition;
         if(Math3D.IsNotEqual(targetPos, newPos)){
             ScrollPosition+= newPos-targetPos;
         }   
@@ -124,7 +124,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(Math3D.IsWithin(newScale, 0.5f, 2f)) {
             Debug.Log("Centering on=> "+focusNode.Name);
 //            CenterAndScaleOn(focusNode);
-            ScaleOnPivot(focusNode.LayoutPosition, newScale);
+            ScaleOnPivot(focusNode.GlobalPosition, newScale);
 //            RepositionInViewport(focusNode);
             return;
         }
@@ -139,7 +139,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     public bool IsNodeFullyVisibleInViewport(iCS_EditorObject node) {
-        var r= node.LayoutRect;
+        var r= node.GlobalRect;
         var clipArea= VisibleGraphRect;
         // Try to make obj visible in viewport.
         var intersection= Math3D.Intersection(r, clipArea);
@@ -148,7 +148,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public float ProposeViewportScalingFor(iCS_EditorObject node, float minScale= 0.50f, float maxScale= 1.5f) {
         var viewportRect= VisibleGraphRectWithPadding;
-        var nodeSize= node.LayoutSize;
+        var nodeSize= node.LocalSize;
         var xScale= Scale * viewportRect.width / nodeSize.x;
         var yScale= Scale * viewportRect.height / nodeSize.y;
         var newScale= Mathf.Min(xScale, yScale);
@@ -158,7 +158,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     public void RepositionInViewport(iCS_EditorObject node) {
-        var nodeRect  = node.LayoutRect;
+        var nodeRect  = node.GlobalRect;
         var nodeCenter= Math3D.Middle(nodeRect);
         var viewportRect  = VisibleGraphRectWithPadding;
         var viewportCenter= Math3D.Middle(viewportRect);

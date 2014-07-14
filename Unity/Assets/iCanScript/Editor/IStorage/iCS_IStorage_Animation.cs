@@ -49,7 +49,7 @@ public partial class iCS_IStorage {
         ForEach(
             obj => {
                 if(IsVisibleInLayout(obj)) {
-                    obj.ResetAnimationRect(obj.LayoutRect);
+                    obj.ResetAnimationRect(obj.GlobalRect);
                 }
             }
         );
@@ -70,7 +70,7 @@ public partial class iCS_IStorage {
             myWasVisible[i]= IsVisibleInLayout(obj);
             // Get copy of the initial position.
             if(obj == DisplayRoot || DisplayRoot.IsParentOf(obj)) {
-                obj.ResetAnimationRect(obj.LayoutRect);
+                obj.ResetAnimationRect(obj.GlobalRect);
             }
         }
     }
@@ -91,17 +91,17 @@ public partial class iCS_IStorage {
                         var parent= obj.ParentNode;
                         Vector2 pos;
                         if(obj.IsNode && WasPresent(parent)) {
-                            pos= obj.LayoutPosition;                            
+                            pos= obj.GlobalPosition;                            
                         }
                         else {
                             parent= GetFirstNotPresentParentNode(parent);
-                            pos= parent.LayoutPosition;                            
+                            pos= parent.GlobalPosition;                            
                         }
                         var r= new Rect(pos.x, pos.y, 0, 0);
                         obj.ResetAnimationRect(r);                        
                     }
                 }
-                var objLayoutRect= obj.LayoutRect;
+                var objLayoutRect= obj.GlobalRect;
                 if(!Math3D.IsEqual(objLayoutRect, obj.myAnimatedRect.StartValue)) {
                     myAnimatedObjects.Add(obj);
                     obj.myAnimatedRect.Start(obj.myAnimatedRect.StartValue, objLayoutRect, myAnimationTime);

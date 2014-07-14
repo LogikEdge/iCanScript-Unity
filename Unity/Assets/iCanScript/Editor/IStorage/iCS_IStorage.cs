@@ -234,7 +234,7 @@ public partial class iCS_IStorage {
         ForEach(
             obj=> {
                 // Keep a copy of the final position.
-                obj.AnimationTargetRect= obj.LayoutRect;
+                obj.AnimationTargetRect= obj.GlobalRect;
                 // Cleanup disconnected or dangling ports.
                 if(CleanupDeadPorts) {
 					if(obj.IsPort) {
@@ -329,7 +329,7 @@ public partial class iCS_IStorage {
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
         iCS_EditorObject instance= Copy(srcObj, srcStorage, destParent, destStorage, globalPos, xlat);
         ReconnectCopy(srcObj, srcStorage, destStorage, xlat);
-        instance.LayoutRect= iCS_EditorObject.BuildRect(globalPos, Vector2.zero);
+        instance.GlobalRect= iCS_EditorObject.BuildRect(globalPos, Vector2.zero);
         return instance;
     }
     iCS_EditorObject Copy(iCS_EditorObject srcObj, iCS_IStorage srcStorage,

@@ -209,10 +209,10 @@ public partial class iCS_IStorage {
     public Vector2 ProposeTransitionPackagePosition(iCS_EditorObject module) {
         iCS_EditorObject fromStatePort= GetFromStatePort(module);
         iCS_EditorObject toStatePort= GetToStatePort(module);
-		if(toStatePort == null || fromStatePort ==null) return module.LayoutPosition;
+		if(toStatePort == null || fromStatePort ==null) return module.GlobalPosition;
         iCS_EditorObject parent= module.Parent;
-		var startPos= fromStatePort.LayoutPosition;
-		var endPos= toStatePort.LayoutPosition;
+		var startPos= fromStatePort.GlobalPosition;
+		var endPos= toStatePort.GlobalPosition;
 		var delta= endPos-startPos;
 		var marginSize= iCS_EditorConfig.MarginSize; if(marginSize < 5) marginSize=5;
 		Vector2 step= 0.5f*marginSize*(delta).normalized;
@@ -245,10 +245,10 @@ public partial class iCS_IStorage {
         iCS_EditorObject outStatePort     = GetFromStatePort(package);
         iCS_EditorObject inTransitionPort = GetInTransitionPort(package);
         iCS_EditorObject outTransitionPort= GetOutTransitionPort(package);
-        var inStatePos= inStatePort.LayoutPosition;
-        var outStatePos= outStatePort.LayoutPosition;
-        var inTransitionPos= inTransitionPort.LayoutPosition;
-        var outTransitionPos= outTransitionPort.LayoutPosition;
+        var inStatePos= inStatePort.GlobalPosition;
+        var outStatePos= outStatePort.GlobalPosition;
+        var inTransitionPos= inTransitionPort.GlobalPosition;
+        var outTransitionPos= outTransitionPort.GlobalPosition;
         Vector2 dir= ((inStatePos-outTransitionPos).normalized+(inTransitionPos-outStatePos).normalized).normalized;
         return dir;
     }

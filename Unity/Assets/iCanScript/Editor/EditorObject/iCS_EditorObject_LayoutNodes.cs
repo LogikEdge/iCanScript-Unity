@@ -18,9 +18,9 @@ public partial class iCS_EditorObject {
     public void LayoutParentNodesUntilTop() {
         var parent= ParentNode;
         if(parent == null) return;
-        var parentGlobalRect= parent.LayoutRect;
+        var parentGlobalRect= parent.GlobalRect;
         parent.LayoutNode();
-        if(Math3D.IsNotEqual(parentGlobalRect, parent.LayoutRect)) {
+        if(Math3D.IsNotEqual(parentGlobalRect, parent.GlobalRect)) {
             parent.LayoutParentNodesUntilTop();
         }
     }
@@ -31,9 +31,9 @@ public partial class iCS_EditorObject {
             parent.LayoutNode();
             return;
         }
-        var parentGlobalRect= parent.LayoutRect;
+        var parentGlobalRect= parent.GlobalRect;
         parent.LayoutNode();
-        if(Math3D.IsNotEqual(parentGlobalRect, parent.LayoutRect)) {
+        if(Math3D.IsNotEqual(parentGlobalRect, parent.GlobalRect)) {
             parent.LayoutParentNodesUntilTop();
         }
     }
@@ -47,13 +47,12 @@ public partial class iCS_EditorObject {
     // Revised: feb 10, 2014
 	public void LayoutNode() {
         // Clear information created in previous layout
-        WrappingOffset= Vector2.zero;
         CollisionOffset= Vector2.zero;
         // Nothing to do for invisible ports.
         if(!IsVisibleInLayout) return;
         // Just update the size of the node if it is iconized.
         if(IsIconizedInLayout) {
-            LayoutSize= iCS_Graphics.GetMaximizeIconSize(this);
+            LocalSize= iCS_Graphics.GetMaximizeIconSize(this);
             return;
         }
         // Resolve any existing collisions on children for unfolded modules.
@@ -63,7 +62,7 @@ public partial class iCS_EditorObject {
     		return;            
         }
         // Update the size and ports for folded & Function nodes.
-        LayoutRect= FoldedNodeRect();
+        GlobalRect= FoldedNodeRect();
 	}
 
     // ----------------------------------------------------------------------
@@ -80,21 +79,19 @@ public partial class iCS_EditorObject {
 	    }
         if(IsFoldedInLayout) {
             var r= NodeRectFromChildrenRectWithMargins(new Rect(0,0,0,0));
-            WrappingOffset= Vector2.zero;
-    		LayoutSize= new Vector2(r.width, r.height);
+    		LocalSize= new Vector2(r.width, r.height);
             return;
         }
         var childNodes= BuildListOfChildNodes(_ => true);
-        var childRects= P.map(n => BuildRect(n.LocalAnchorPosition+n.WrappingOffset+n.CollisionOffset, n.LayoutSize), childNodes);
+        var childRects= P.map(n => BuildRect(n.LocalAnchorPosition+n.CollisionOffset, n.LocalSize), childNodes);
         // WrapAroundChildRects(childRects);
         var totalChildRect= GetRectWithMargins(childRects);
         var parentRect= NodeRectFromChildrenRectWithMargins(totalChildRect);
-		var center= Math3D.Middle(parentRect);
-        WrappingOffset= center;
-		LayoutSize= new Vector2(parentRect.width, parentRect.height);        
+		LocalSize= new Vector2(parentRect.width, parentRect.height);        
+        WrappingOffset= Math3D.Middle(parentRect);
         // Restore child global position.
         for(int i= 0; i < childNodes.Length; ++i) {
-            childNodes[i].CollisionOffset-= center;
+            childNodes[i].CollisionOffset-= WrappingOffset;        		
         }
     }
 
@@ -141,7 +138,7 @@ public partial class iCS_EditorObject {
 		// Determine rect to wrap children.
         float x, y;
 		if(Math3D.IsZero(childRect.width) || Math3D.IsZero(childRect.height)) {
-            var pos= LayoutPosition;
+            var pos= GlobalPosition;
 		    x= pos.x-0.5f*width;
 		    y= pos.y-0.5f*height;		    
 		} else {
@@ -164,11 +161,11 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void SetNodeLayoutRect(Rect r) {
-		// Update parent node anchor positions.
-		var center= Math3D.Middle(r);
-		WrappingPosition= center;
+//		// Update parent node anchor positions.
+//		var center= Math3D.Middle(r);
+//		WrappingPosition= center;
 		// Update layout size.
-		LayoutSize= new Vector2(r.width, r.height);        
+		LocalSize= new Vector2(r.width, r.height);        
     }
     // ----------------------------------------------------------------------
     public void ReduceChildrenAnchorPosition() {

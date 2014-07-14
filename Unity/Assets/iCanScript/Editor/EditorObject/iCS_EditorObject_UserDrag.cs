@@ -5,11 +5,7 @@ public partial class iCS_EditorObject {
 	// ======================================================================
 	// Node Drag
     // ----------------------------------------------------------------------
-    static Vector2 ourNodeDragWrappingOffset= Vector2.zero;
 	public void StartNodeDrag() {
-        if(IsUnfoldedInLayout) {
-            ourNodeDragWrappingOffset= WrappingOffset;
-        }
         IsFloating= false;
 		IsSticky= true;
 		SetAsHighestLayoutPriority();
@@ -21,10 +17,6 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	public void EndNodeDrag() {
-        if(IsUnfoldedInLayout) {
-            WrapAroundChildrenNodes();
-            LocalAnchorPosition= LocalAnchorPosition-ourNodeDragWrappingOffset;
-        }
 		myIStorage.ForcedRelayoutOfTree(myIStorage.DisplayRoot);
         IsFloating= false;
         IsSticky= false;
@@ -40,9 +32,9 @@ public partial class iCS_EditorObject {
     public void NodeDragTo(Vector2 newPosition) {
 		if(IsNode) {
             IStorage.StopAllAnimations();
-            UserDragPosition= newPosition;
     		SetAsHighestLayoutPriority();
-			LayoutParentNodesUntilDisplayRoot();
+    		UserDragPosition= newPosition;
+			IStorage.ForcedRelayoutOfTree(myIStorage.DisplayRoot);
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}
@@ -52,20 +44,12 @@ public partial class iCS_EditorObject {
 	// Node Relocate
     // ----------------------------------------------------------------------
 	public void StartNodeRelocate() {
-        if(IsUnfoldedInLayout) {
-            ourNodeDragWrappingOffset= WrappingOffset;
-            ReduceChildrenAnchorPosition();            
-        }
 		IsFloating= true;
 		IsSticky= true;
 		SetAsHighestLayoutPriority();
 	}
     // ----------------------------------------------------------------------
 	public void EndNodeRelocate() {
-        if(IsUnfoldedInLayout) {
-            WrapAroundChildrenNodes();
-            LocalAnchorPosition= LocalAnchorPosition-ourNodeDragWrappingOffset;
-        }
 		IsFloating= false;
 		IsSticky= false;
         ClearLayoutPriority();
@@ -75,11 +59,7 @@ public partial class iCS_EditorObject {
     public void NodeRelocateTo(Vector2 newPosition) {
 		if(IsNode) {
             IStorage.StopAllAnimations();
-            UserDragPosition= newPosition;
-            var parent= ParentNode;
-            if(parent != null) {
-                CollisionOffset-= parent.WrappingOffset;
-            }
+            GlobalAnchorPosition= newPosition-CollisionOffset;
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}

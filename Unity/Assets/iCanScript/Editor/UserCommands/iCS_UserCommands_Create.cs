@@ -161,7 +161,7 @@ public static partial class iCS_UserCommands {
         // Create transition package
         var transitionPackage= iStorage.CreateTransition(fromStatePort, toStatePort);
         // Try to position the transition in the middle
-        var fromStatePortPos= fromStatePort.LayoutPosition;
+        var fromStatePortPos= fromStatePort.GlobalPosition;
         var globalPos= 0.5f*(fromStatePortPos+toStatePortPos);
         transitionPackage.SetInitialPosition(globalPos);
         transitionPackage.Iconize();
@@ -213,7 +213,7 @@ public static partial class iCS_UserCommands {
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
 		var port= iStorage.CreateEnablePort(parent.InstanceId);
-        var pRect= parent.LayoutRect;
+        var pRect= parent.GlobalRect;
         port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
         parent.LayoutPorts();
         iStorage.SaveStorage("Create Enable Port");
@@ -226,7 +226,7 @@ public static partial class iCS_UserCommands {
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
 		var port= iStorage.CreateTriggerPort(parent.InstanceId);        
-        var pRect= parent.LayoutRect;
+        var pRect= parent.GlobalRect;
         port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
         parent.LayoutPorts();
         iStorage.SaveStorage("Create Trigger Port");
@@ -304,7 +304,7 @@ public static partial class iCS_UserCommands {
                 package= iStorage.WrapInPackage(selectedObjects);
                 if(package != null) {
                     iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
-                    var r= Math3D.Union(P.map(n => n.LayoutRect, selectedObjects));
+                    var r= Math3D.Union(P.map(n => n.GlobalRect, selectedObjects));
                     package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);                    
                 }
                 else {

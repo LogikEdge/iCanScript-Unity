@@ -228,7 +228,7 @@ public partial class iCS_EditorObject {
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
-        editorObject.LayoutSize= toClone.LayoutSize;
+        editorObject.LocalSize= toClone.LocalSize;
 //		editorObject.IsDirty= true;
         RunOnCreated(editorObject);
 		return editorObject;

@@ -17,8 +17,8 @@ public partial class iCS_IStorage {
             SetSource(inPort, outPort);
             return;
         }
-        var inPos= inPort.LayoutPosition;
-        var outPos= outPort.LayoutPosition;
+        var inPos= inPort.GlobalPosition;
+        var outPos= outPort.GlobalPosition;
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= inPort.ParentNode.ParentId;
         iCS_EditorObject conv= CreateFunction(grandParentId, convDesc);
@@ -115,7 +115,7 @@ public partial class iCS_IStorage {
             return Vector2.zero;
         }
         var providerPort= port.ProviderPort;
-        return providerPort == null ? port.ParentNode.LayoutPosition : providerPort.LayoutPosition;
+        return providerPort == null ? port.ParentNode.GlobalPosition : providerPort.GlobalPosition;
     }
 	// ----------------------------------------------------------------------
     public Vector2 GetConsumerLineSegmentPosition(iCS_EditorObject port) {
@@ -125,11 +125,11 @@ public partial class iCS_IStorage {
         }
         var consumerPorts= port.ConsumerPorts;
         if(consumerPorts == null || consumerPorts.Length == 0) {
-            return port.ParentNode.LayoutPosition;
+            return port.ParentNode.GlobalPosition;
         }
         Vector2 averagePos= Vector2.zero;
         foreach(var p in consumerPorts) {
-            averagePos+= p.LayoutPosition;
+            averagePos+= p.GlobalPosition;
         }
         return averagePos / consumerPorts.Length;
     }
@@ -139,8 +139,8 @@ public partial class iCS_IStorage {
         var parentNode= port.ParentNode;
         // Project port on line segment.
         Vector2 intersection;
-        if(Math3D.LineSegmentAndRectEdgeIntersection(p1, p2, parentNode.LayoutRect, out intersection)) {
-            if(Math3D.IsNotEqual(port.LayoutPosition, intersection)) {
+        if(Math3D.LineSegmentAndRectEdgeIntersection(p1, p2, parentNode.GlobalRect, out intersection)) {
+            if(Math3D.IsNotEqual(port.GlobalPosition, intersection)) {
                 port.SetAnchorAndLayoutPosition(intersection);
                 ForcedRelayoutOfTree(DisplayRoot);
                 return true;
@@ -166,8 +166,8 @@ public partial class iCS_IStorage {
     public bool AutoLayoutOfPointToPointBindingExclusive(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
         if(providerPort == null || consumerPort == null || providerPort == consumerPort) return false;
         bool hasChanged= false;
-        var providerPos= providerPort.LayoutPosition;
-        var consumerPos= consumerPort.LayoutPosition;
+        var providerPos= providerPort.GlobalPosition;
+        var consumerPos= consumerPort.GlobalPosition;
         for(consumerPort= consumerPort.ProviderPort; consumerPort != providerPort; consumerPort= consumerPort.ProviderPort) {
             hasChanged |= AutoLayoutPort(consumerPort, providerPos, consumerPos);
         }
@@ -181,10 +181,9 @@ public partial class iCS_IStorage {
         iCS_EditorObject oldParent= node.Parent;
         if(newParent == null || newParent == oldParent) return;
 		// Change parent and relayout.
-		var nodePos= node.LayoutPosition;
+		var nodePos= node.GlobalPosition;
 		node.Parent= newParent;
-		node.LocalAnchorPosition= nodePos-newParent.LayoutPosition+newParent.WrappingOffset;
-        node.CollisionOffset= -newParent.WrappingOffset;
+		node.LocalAnchorPosition= nodePos-newParent.GlobalPosition;
 		if(node.IsState) CleanupEntryState(node, oldParent);
         RebuildConnectionsFor(node);
     }
@@ -225,7 +224,7 @@ public partial class iCS_IStorage {
 			else {
 				newPort= CreatePort(inPort.Name, inGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
 	            SetSource(inPort, newPort, conversion);
-				SetBestPositionForAutocreatedPort(newPort, inPort.LayoutPosition, outPort.LayoutPosition);
+				SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
 			}
             SetNewDataConnection(newPort, outPort);
             OptimizeDataConnection(inPort, outPort);
@@ -256,7 +255,7 @@ public partial class iCS_IStorage {
 			else {
 				newPort= CreatePort(outPort.Name, outGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 	            SetSource(newPort, outPort, conversion);
-				SetBestPositionForAutocreatedPort(newPort, inPort.LayoutPosition, outPort.LayoutPosition);
+				SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
 			}
             SetNewDataConnection(inPort, newPort);
             OptimizeDataConnection(inPort, outPort);
@@ -296,7 +295,7 @@ public partial class iCS_IStorage {
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
 	            iCS_EditorObject newPort= CreatePort(inputPort.Name, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
+				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProviderPort= inputPort.ProviderPort;
 				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
@@ -322,7 +321,7 @@ public partial class iCS_IStorage {
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
 	            iCS_EditorObject newPort= CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
+				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProviderPort= inputPort.ProviderPort;
 				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
@@ -342,7 +341,7 @@ public partial class iCS_IStorage {
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
 	            iCS_EditorObject newPort= CreatePort(inputPort.Name, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
-				SetBestPositionForAutocreatedPort(newPort, outputPort.LayoutPosition, inputPort.LayoutPosition);
+				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProviderPort= inputPort.ProviderPort;
 				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);
@@ -388,7 +387,7 @@ public partial class iCS_IStorage {
 	public void SetBestPositionForAutocreatedPort(iCS_EditorObject port, Vector2 inPortPosition, Vector2 outPortPosition) {
 		// Determine the parent edge position to use.
 		var parent= port.Parent;
-		var parentGlobalRect= parent.LayoutRect;
+		var parentGlobalRect= parent.GlobalRect;
 		float x= port.IsInputPort ? parentGlobalRect.xMin : parentGlobalRect.xMax;
 		// Assure that the in position X value is smaller then the out position.
 		if(inPortPosition.x > outPortPosition.x) {
