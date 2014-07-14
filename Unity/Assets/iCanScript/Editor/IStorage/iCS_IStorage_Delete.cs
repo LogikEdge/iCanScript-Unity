@@ -93,6 +93,9 @@ public partial class iCS_IStorage {
 		if(parent != null && parent.IsParentMuxPort) {
 			CleanupMuxPort(parent);
 		}
+		if(parent != null && parent.IsNode) {
+			CleanupEnablePorts(parent);
+		}
 	}
     // ----------------------------------------------------------------------
     void SelectEntryState(iCS_EditorObject parent) {
