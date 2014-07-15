@@ -70,7 +70,7 @@ public partial class iCS_EditorObject {
     public Vector2 GlobalAnchorPosition {
 		get {
 			var parent= ParentNode;
-			if(IsDisplayRoot || parent == null) {
+			if(/*IsDisplayRoot ||*/ parent == null) {
                 return LocalAnchorPosition;
             }
     		return parent.GlobalPosition+LocalAnchorPosition;			    
@@ -116,7 +116,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 GlobalWrappingPosition {
         get {
-            return GlobalAnchorPosition+WrappingOffset;
+            return GlobalAnchorPosition;
         }
     }
     // ----------------------------------------------------------------------
@@ -131,7 +131,7 @@ public partial class iCS_EditorObject {
 	public Vector2 GlobalPosition {
 		get {
 			var parent= ParentNode;
-			if(IsDisplayRoot || parent == null) {
+			if(/*IsDisplayRoot || */parent == null) {
 			    return LocalPosition;
 		    }
 			// Special case for iconized transition module ports.
@@ -227,27 +227,40 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 LocalAnchorFromGlobalPosition {
         set {
-            if(IsNode && IsUnfoldedInLayout) {
-                value-= WrappingOffset;
-            }
             var parent= ParentNode;
-            if(IsDisplayRoot || parent == null) {
+            if(/*IsDisplayRoot ||*/ parent == null) {
                 LocalAnchorPosition= value;
+                CollisionOffset= Vector2.zero;
+                WrappingOffset= Vector2.zero;          
                 return;
             }
             LocalAnchorPosition= value-parent.GlobalPosition;
-            CollisionOffset= Vector2.zero;            
+            CollisionOffset= Vector2.zero;
+            WrappingOffset= Vector2.zero;          
+        }
+    }
+    // ----------------------------------------------------------------------
+    public Vector2 WrappingOffsetFromGlobalPosition {
+        set {
+            var parent= ParentNode;
+            if(/*IsDisplayRoot ||*/ parent == null) {
+                WrappingOffset= value-LocalAnchorPosition;
+                CollisionOffset= Vector2.zero;
+                return;
+            }
+            WrappingOffset= value-parent.GlobalPosition-LocalAnchorPosition;
+            CollisionOffset= Vector2.zero;
         }
     }
     // ----------------------------------------------------------------------
     public Vector2 CollisionOffsetFromGlobalPosition {
         set {
             var parent= ParentNode;
-            if(IsDisplayRoot || parent == null) {
-                CollisionOffset= value-LocalAnchorPosition;
+            if(/*IsDisplayRoot ||*/ parent == null) {
+                CollisionOffset= value-LocalAnchorPosition-WrappingOffset;
                 return;
             }
-            CollisionOffset= value-parent.GlobalPosition-LocalAnchorPosition;            
+            CollisionOffset= value-parent.GlobalPosition-LocalAnchorPosition-WrappingOffset;            
         }
     }
     // ----------------------------------------------------------------------

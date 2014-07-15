@@ -83,15 +83,15 @@ public partial class iCS_EditorObject {
             return;
         }
         var childNodes= BuildListOfChildNodes(_ => true);
-        var childRects= P.map(n => BuildRect(n.LocalPosition, n.LocalSize), childNodes);
+        var childRects= P.map(n => BuildRect(n.GlobalPosition, n.LocalSize), childNodes);
         // WrapAroundChildRects(childRects);
         var totalChildRect= GetRectWithMargins(childRects);
         var parentRect= NodeRectFromChildrenRectWithMargins(totalChildRect);
-		LocalSize= new Vector2(parentRect.width, parentRect.height);        
-        WrappingOffset= Math3D.Middle(parentRect);
+        LocalAnchorFromGlobalPosition= PositionFrom(parentRect);
+		LocalSize = SizeFrom (parentRect);
         // Restore child global position.
         for(int i= 0; i < childNodes.Length; ++i) {
-            childNodes[i].CollisionOffset-= WrappingOffset;        		
+            childNodes[i].LocalAnchorFromGlobalPosition= PositionFrom(childRects[i]);        		
         }
     }
 

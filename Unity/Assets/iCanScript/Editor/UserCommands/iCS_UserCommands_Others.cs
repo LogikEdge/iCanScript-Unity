@@ -77,6 +77,8 @@ public static partial class iCS_UserCommands {
             }
         }
         // Save result.
-        iStorage.SaveStorage("AutoLayout Port => "+port.Name);
+        if(IsLastTransactionOpened(iStorage)) {
+            CloseTransaction(iStorage, "AutoLayout Port => "+port.Name);
+        }
     }
 }

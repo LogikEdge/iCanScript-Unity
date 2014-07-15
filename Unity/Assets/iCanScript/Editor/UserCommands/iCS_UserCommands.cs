@@ -19,6 +19,11 @@ public static partial class iCS_UserCommands {
     public static void CloseTransaction(iCS_IStorage iStorage, string undoMessage) {
         iStorage.SaveStorage(undoMessage);
     }
+	// ----------------------------------------------------------------------
+    // Retruns true if a transaction is opened.
+    public static bool IsLastTransactionOpened(iCS_IStorage iStorage) {
+        return iStorage.IsTransactionOpened == false;
+    }
     
     // ======================================================================
     // Utilities

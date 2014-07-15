@@ -23,15 +23,17 @@ public static partial class iCS_UserCommands {
     }
     public static void EndNodeRelocation(iCS_EditorObject node, iCS_EditorObject oldParent, iCS_EditorObject newParent) {
         var iStorage= node.IStorage;
+        OpenTransaction(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 if(oldParent != newParent) {
                     iStorage.ChangeParent(node, newParent); 
                 }
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                node.ForEachChildPort(p=> AutoLayoutPort(p));
             }
         );
-        iStorage.SaveStorage("Node Relocation");
+        CloseTransaction(iStorage, "Node Relocation");
     }
     public static void StartPortDrag(iCS_EditorObject port) {
     }

@@ -100,7 +100,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             var anchorPosition= DisplayRoot.GlobalAnchorPosition;
             var deltaAnchor= anchorPosition-SavedDisplayRootAnchorPosition;
             if(Math3D.IsNotZero(deltaAnchor)) {
-                DisplayRoot.GlobalAnchorPosition= SavedDisplayRootAnchorPosition;
+//                DisplayRoot.GlobalAnchorPosition= SavedDisplayRootAnchorPosition;
                 ScrollPosition-= deltaAnchor;
                 GridOffset+= deltaAnchor;                            
             }
