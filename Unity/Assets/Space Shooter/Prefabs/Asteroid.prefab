@@ -115,11 +115,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 0
+  SelectedObject: 82
   ShowDisplayRootNode: 1
-  GuiScale: .714991868
-  ScrollPosition: {x: -475.795654, y: -1291.21594}
-  UndoRedoId: 2286
+  GuiScale: .823117793
+  ScrollPosition: {x: -403.548553, y: -1229.05835}
+  UndoRedoId: 2472
   EngineObjects:
   - RawName: Asteroid::Behaviour
     ObjectType: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 306.991028, y: -1478.14404}
+    LocalAnchorPosition: {x: 376.855469, y: -1437.38745}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -485,7 +485,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 141.157104, y: -360.447662}
+    LocalAnchorPosition: {x: 139.758484, y: -360.447754}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -505,7 +505,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .322402984}
+    LocalAnchorPosition: {x: 1, y: .0439840928}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -545,7 +545,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .834575951}
+    LocalAnchorPosition: {x: 4, y: .894757807}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -565,7 +565,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .787683308}
+    LocalAnchorPosition: {x: 4, y: .773285627}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -684,7 +684,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -269.911133, y: -630.416931}
+    LocalAnchorPosition: {x: -211.953766, y: -626.014526}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -712,7 +712,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 29
-    LayoutPriority: 45
+    LayoutPriority: -9
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -812,7 +812,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 34
-    LayoutPriority: 45
+    LayoutPriority: -9
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -864,8 +864,8 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -781.895569, y: -561.862305}
-    DisplayOption: 0
+    LocalAnchorPosition: {x: -496.073608, y: -615.896912}
+    DisplayOption: 1
     Scale: 1
     MethodName: 
     NbOfParams: 0
@@ -884,7 +884,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -423.036072, y: -302.030426}
+    LocalAnchorPosition: {x: -724.525208, y: -486.010437}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -903,7 +903,7 @@ MonoBehaviour:
     ParentId: 37
     IsNameEditable: 1
     QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .0509753041}
+    LocalAnchorPosition: {x: 1, y: .491691589}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -923,7 +923,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Conditions, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -3.47310257, y: -79.8302612}
+    LocalAnchorPosition: {x: .0186920166, y: -69.6929703}
     DisplayOption: 1
     Scale: 1
     MethodName: IsEqual
@@ -931,7 +931,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 40
-    LayoutPriority: 52
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -980,7 +980,7 @@ MonoBehaviour:
     ParentId: 40
     IsNameEditable: 1
     QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .496569812}
+    LocalAnchorPosition: {x: 2, y: .3685112}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -999,7 +999,7 @@ MonoBehaviour:
     ParentId: 40
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: 1}
+    LocalAnchorPosition: {x: 2, y: 1}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1097,7 +1097,7 @@ MonoBehaviour:
     ParentId: 38
     IsNameEditable: 0
     QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .259685487}
+    LocalAnchorPosition: {x: 2, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1177,7 +1177,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .999000013}
+    LocalAnchorPosition: {x: 2, y: .639535367}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1410,13 +1410,13 @@ MonoBehaviour:
     PortIndex: 1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: enable
+  - RawName: Else
     ObjectType: 303
     InstanceId: 65
     ParentId: 37
     IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .47691676}
+    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1425,7 +1425,7 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 65
     LayoutPriority: 0
-    SourceId: 147
+    SourceId: 43
     PortIndex: 1
     InitialValueArchive: 
     IsEntryState: 0
@@ -1436,7 +1436,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 320.049316, y: 77.2629929}
+    LocalAnchorPosition: {x: 286.800171, y: 62.6359329}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -1444,7 +1444,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 66
-    LayoutPriority: 96
+    LayoutPriority: 95
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1464,7 +1464,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 67
-    LayoutPriority: 94
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1564,7 +1564,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 72
-    LayoutPriority: 96
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1755,7 +1755,7 @@ MonoBehaviour:
     ParentId: 66
     IsNameEditable: 0
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .66016984}
+    LocalAnchorPosition: {x: 1, y: .392551422}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1783,7 +1783,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 83
-    LayoutPriority: 98
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1794,7 +1794,7 @@ MonoBehaviour:
     ParentId: 83
     IsNameEditable: 1
     QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .676242828}
+    LocalAnchorPosition: {x: 1, y: .77779007}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1832,7 +1832,7 @@ MonoBehaviour:
     ParentId: 83
     IsNameEditable: 1
     QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .00100000005}
+    LocalAnchorPosition: {x: 2, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1851,7 +1851,7 @@ MonoBehaviour:
     ParentId: 83
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .611896515}
+    LocalAnchorPosition: {x: 2, y: .86158371}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1911,7 +1911,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .00100000005}
+    LocalAnchorPosition: {x: 2, y: .00200000009}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1939,7 +1939,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 91
-    LayoutPriority: 52
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1951,7 +1951,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .803621531}
+    LocalAnchorPosition: {x: 1, y: .498134613}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1960,7 +1960,7 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 92
     LayoutPriority: 0
-    SourceId: 124
+    SourceId: 115
     PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
@@ -1998,7 +1998,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 94
-    LayoutPriority: -84
+    LayoutPriority: -265
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2267,7 +2267,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 304.646118, y: -12.1105499}
+    LocalAnchorPosition: {x: 278.132477, y: -.164054871}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -2275,7 +2275,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 108
-    LayoutPriority: 100
+    LayoutPriority: 98
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2306,15 +2306,15 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 19.3747101, y: -65.8397903}
-    DisplayOption: 0
+    LocalAnchorPosition: {x: 80.4057617, y: -12.7202835}
+    DisplayOption: 1
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 110
-    LayoutPriority: 90
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2378,6 +2378,144 @@ MonoBehaviour:
     PortIndex: 1
     InitialValueArchive: '{12:InitialValue1:S17:OnFailedToConnect}'
     IsEntryState: 0
+  - RawName: Else
+    ObjectType: 303
+    InstanceId: 114
+    ParentId: 37
+    IsNameEditable: 1
+    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: .754657626}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 114
+    LayoutPriority: 0
+    SourceId: 132
+    PortIndex: 2
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: Transform Instance
+    ObjectType: 302
+    InstanceId: 115
+    ParentId: 28
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: .584771931}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 115
+    LayoutPriority: 0
+    SourceId: 90
+    PortIndex: 5
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: enable
+    ObjectType: 308
+    InstanceId: 116
+    ParentId: 28
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .290811628}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 116
+    LayoutPriority: 0
+    SourceId: 114
+    PortIndex: 1001
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: Destroy Asteriod and collided object
+    ObjectType: 1
+    InstanceId: 117
+    ParentId: 28
+    IsNameEditable: 1
+    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 289.768311, y: 137.265778}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 117
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: obj
+    ObjectType: 302
+    InstanceId: 118
+    ParentId: 117
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Object, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .804758549}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 118
+    LayoutPriority: 0
+    SourceId: 129
+    PortIndex: 0
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: Transform Instance
+    ObjectType: 302
+    InstanceId: 119
+    ParentId: 117
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .0995703638}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 119
+    LayoutPriority: 0
+    SourceId: 130
+    PortIndex: 1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: obj
+    ObjectType: 302
+    InstanceId: 120
+    ParentId: 117
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Object, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: .078975603}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 120
+    LayoutPriority: 0
+    SourceId: 131
+    PortIndex: 2
+    InitialValueArchive: 
+    IsEntryState: 0
   - RawName: 
     ObjectType: 10000
     InstanceId: -1
@@ -2410,148 +2548,10 @@ MonoBehaviour:
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 115
+    ExecutionPriority: 0
     LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 116
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Destroy Asteriod and collided object
-    ObjectType: 1
-    InstanceId: 117
-    ParentId: 28
-    IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 289.768311, y: 137.265778}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 117
-    LayoutPriority: 98
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: obj
-    ObjectType: 302
-    InstanceId: 118
-    ParentId: 117
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Object, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .804758549}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 118
-    LayoutPriority: 0
-    SourceId: 129
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Transform Instance
-    ObjectType: 302
-    InstanceId: 119
-    ParentId: 117
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .509298146}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 119
-    LayoutPriority: 0
-    SourceId: 130
-    PortIndex: 1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: obj
-    ObjectType: 302
-    InstanceId: 120
-    ParentId: 117
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Object, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .0606888942}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 120
-    LayoutPriority: 0
-    SourceId: 131
-    PortIndex: 2
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Or<Boolean>
-    ObjectType: 102
-    InstanceId: 121
-    ParentId: 37
-    IsNameEditable: 1
-    QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 91.3918152, y: -31.0803833}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: Or
-    NbOfParams: 2
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 121
-    LayoutPriority: 3
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: a
-    ObjectType: 300
-    InstanceId: 122
-    ParentId: 121
-    IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 122
-    LayoutPriority: 0
-    SourceId: 44
-    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: targetVisualScript
@@ -2574,14 +2574,13 @@ MonoBehaviour:
     PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Transform Instance
-    ObjectType: 302
-    InstanceId: 124
-    ParentId: 28
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .111045271}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2590,17 +2589,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 124
     LayoutPriority: 0
-    SourceId: 90
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: b
-    ObjectType: 300
-    InstanceId: 125
-    ParentId: 121
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 1}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2609,8 +2608,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 125
     LayoutPriority: 0
-    SourceId: 133
-    PortIndex: 1
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: bias
@@ -2658,7 +2657,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .200644612}
+    LocalAnchorPosition: {x: 3, y: .916780174}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2668,7 +2667,7 @@ MonoBehaviour:
     ExecutionPriority: 128
     LayoutPriority: 0
     SourceId: 144
-    PortIndex: 1
+    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: obj
@@ -2678,7 +2677,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Object, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .643705487}
+    LocalAnchorPosition: {x: 4, y: .844741702}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2688,7 +2687,7 @@ MonoBehaviour:
     ExecutionPriority: 129
     LayoutPriority: 0
     SourceId: 21
-    PortIndex: 2
+    PortIndex: 1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: Transform Instance
@@ -2698,7 +2697,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .537135363}
+    LocalAnchorPosition: {x: 4, y: .59463048}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2708,7 +2707,7 @@ MonoBehaviour:
     ExecutionPriority: 130
     LayoutPriority: 0
     SourceId: 22
-    PortIndex: 3
+    PortIndex: 2
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: obj
@@ -2718,7 +2717,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Object, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .352419704}
+    LocalAnchorPosition: {x: 1, y: .866050422}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2728,7 +2727,7 @@ MonoBehaviour:
     ExecutionPriority: 131
     LayoutPriority: 0
     SourceId: 53
-    PortIndex: 4
+    PortIndex: 3
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: Else
@@ -2737,7 +2736,7 @@ MonoBehaviour:
     ParentId: 91
     IsNameEditable: 1
     QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 1}
+    LocalAnchorPosition: {x: 2, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2756,7 +2755,7 @@ MonoBehaviour:
     ParentId: 91
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .958017051}
+    LocalAnchorPosition: {x: 2, y: .00100000005}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2769,13 +2768,13 @@ MonoBehaviour:
     PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: :bool
-    ObjectType: 301
-    InstanceId: 134
-    ParentId: 121
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2785,36 +2784,35 @@ MonoBehaviour:
     ExecutionPriority: 134
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Not<Boolean>
-    ObjectType: 102
-    InstanceId: 135
-    ParentId: 37
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 246.091812, y: -35.6092606}
-    DisplayOption: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
     Scale: 1
-    MethodName: Not
-    NbOfParams: 1
+    MethodName: 
+    NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 135
-    LayoutPriority: 99
+    LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: a
-    ObjectType: 300
-    InstanceId: 136
-    ParentId: 135
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .286731362}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2823,8 +2821,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 136
     LayoutPriority: 0
-    SourceId: 134
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: tag
@@ -2880,7 +2878,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 139
-    LayoutPriority: -83
+    LayoutPriority: -264
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2971,7 +2969,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .99142462}
+    LocalAnchorPosition: {x: 3, y: .933584213}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2991,7 +2989,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .836861432}
+    LocalAnchorPosition: {x: 4, y: .942220926}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -3010,7 +3008,7 @@ MonoBehaviour:
     ParentId: 28
     IsNameEditable: 1
     QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .944336236}
+    LocalAnchorPosition: {x: 1, y: .435150355}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -3020,16 +3018,16 @@ MonoBehaviour:
     ExecutionPriority: 146
     LayoutPriority: 0
     SourceId: 49
-    PortIndex: 5
+    PortIndex: 4
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: :bool
-    ObjectType: 301
-    InstanceId: 147
-    ParentId: 135
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -3039,7 +3037,7 @@ MonoBehaviour:
     ExecutionPriority: 147
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: enable
@@ -3048,7 +3046,7 @@ MonoBehaviour:
     ParentId: 28
     IsNameEditable: 0
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .394924462}
+    LocalAnchorPosition: {x: 1, y: .252015889}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -3058,7 +3056,7 @@ MonoBehaviour:
     ExecutionPriority: 148
     LayoutPriority: 0
     SourceId: 65
-    PortIndex: 1001
+    PortIndex: 1002
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: targetVisualScript
