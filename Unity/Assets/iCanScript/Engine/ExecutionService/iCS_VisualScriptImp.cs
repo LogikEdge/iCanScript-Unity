@@ -90,6 +90,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         iCS_RunContext startContext= null;
         myMessageContexts.TryGetValue("Start", out startContext);
         if(startContext != null) {
+            startContext.Action.IsActive= true;
             do {
                 startContext.Action.Execute(-2);
                 if(startContext.Action.IsStalled) {
@@ -97,6 +98,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                     return;
                 }
             } while(!startContext.Action.IsCurrent(-2));
+            startContext.Action.IsActive= false;
         }
     }
         
