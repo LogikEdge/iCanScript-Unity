@@ -151,6 +151,7 @@ public class iCS_Inspector : Editor {
         EditorGUILayout.LabelField("Name", mySelectedObject.Name);
         EditorGUILayout.Toggle("IsSticky", mySelectedObject.IsSticky);
         EditorGUILayout.IntField("LayoutPriority", mySelectedObject.LayoutPriority);
+        EditorGUILayout.Vector2Field("GlobalPosition", mySelectedObject.GlobalPosition);
         EditorGUILayout.Vector2Field("LocalAnchor", mySelectedObject.LocalAnchorPosition);
         EditorGUILayout.Vector2Field("WrappingOffset", mySelectedObject.WrappingOffset);
         EditorGUILayout.Vector2Field("CollisionOffset", mySelectedObject.CollisionOffset);

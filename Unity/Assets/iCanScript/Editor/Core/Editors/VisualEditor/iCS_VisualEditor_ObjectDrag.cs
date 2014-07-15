@@ -657,15 +657,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             return;
 		}                      
         // No reordering necessary if this is the only port on this edge.
-        port.LocalAnchorFromGlobalPosition= newPosition;
         var sameEdgePorts= P.filter(p=> p != port, port.BuildListOfPortsOnSameEdge());
 		var nbOfPortsOnEdge= sameEdgePorts.Length;
         if(nbOfPortsOnEdge == 0) {
+            port.LocalAnchorFromGlobalPosition= newPosition;
 			return;
         }
 		// Build port related information (sortedPorts, portRatios, and portGlobalPositions).
-		parent.LayoutPortsOnSameEdge(sameEdgePorts);
-		var sortedPorts        = iCS_EditorObject.SortPortsOnLayout(sameEdgePorts);		
+		var sortedPorts        = iCS_EditorObject.SortPortsOnLayout(sameEdgePorts);
 		var portRatios         = P.map(p=> p.PortPositionRatio, sortedPorts);
 		var portPositionsOnEdge= P.map(p=> (p.IsOnHorizontalEdge ? p.GlobalPosition.x : p.GlobalPosition.y), sortedPorts);
 		var newPositionOnEdge  = port.IsOnHorizontalEdge ? newPosition.x : newPosition.y;
@@ -686,6 +685,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				break;
 			}
 			if(Math3D.IsEqual(newPositionOnEdge, a) && Math3D.IsSmaller(deltaOnEdge, 0f)) {
+                // Here...
 				break;
 			}
 		}
@@ -782,7 +782,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 } else {
                     pos.y+= offset;
                 }
-//                sortedPorts[i+1].GlobalPosition= pos;
                 sortedPorts[i+1].CollisionOffsetFromGlobalPosition= pos;
                 portPositionsOnEdge[i+1]+= offset;
             }
@@ -797,14 +796,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 } else {
                     pos.y-= offset;
                 }
-//                sortedPorts[i-1].GlobalPosition= pos;
                 sortedPorts[i-1].CollisionOffsetFromGlobalPosition= pos;
                 portPositionsOnEdge[i-1]-= offset;
             }
         }
         // Finaly, set the drag port layout position.
-//        port.GlobalPosition= newPosition;
-        port.CollisionOffsetFromGlobalPosition= newPosition;
+        parent.LayoutPorts();
     }
 	// ----------------------------------------------------------------------
     Vector2 CleanupPortGlobalPositionOnEdge(iCS_EditorObject port, Vector2 pos, iCS_EditorObject parent, Vector2 parentGloablPos, Rect parentRect) {
