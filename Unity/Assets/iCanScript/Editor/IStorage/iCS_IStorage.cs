@@ -34,6 +34,14 @@ public partial class iCS_IStorage {
     public iCS_EditorObject RootObject {
         get { return EditorObjects[0]; }
     }
+    public int DisplayRootId {
+        get {
+            return Storage.DisplayRoot;
+        }
+        set {
+            Storage.DisplayRoot= value;
+        }
+    }
     public iCS_EditorObject DisplayRoot {
         get {
             int id= Storage.DisplayRoot;
@@ -329,7 +337,8 @@ public partial class iCS_IStorage {
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
         iCS_EditorObject instance= Copy(srcObj, srcStorage, destParent, destStorage, globalPos, xlat);
         ReconnectCopy(srcObj, srcStorage, destStorage, xlat);
-        instance.GlobalRect= iCS_EditorObject.BuildRect(globalPos, Vector2.zero);
+//        instance.GlobalRect= iCS_EditorObject.BuildRect(globalPos, Vector2.zero);
+        instance.CollisionOffsetFromGlobalPosition= globalPos;
         return instance;
     }
     iCS_EditorObject Copy(iCS_EditorObject srcObj, iCS_IStorage srcStorage,
@@ -339,7 +348,7 @@ public partial class iCS_IStorage {
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
         if(newObj.IsNode) {
-            newObj.SetLocalAnchorFromGlobalPosition(globalPos);            
+            newObj.LocalAnchorFromGlobalPosition= globalPos;            
         }
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
@@ -383,7 +392,7 @@ public partial class iCS_IStorage {
         }
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(0, name+"::Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
-        this[0].SetLocalAnchorFromGlobalPosition(VisualEditorCenter());
+        this[0].LocalAnchorFromGlobalPosition= VisualEditorCenter();
 		this[0].IsNameEditable= false;
         return this[0];
     }

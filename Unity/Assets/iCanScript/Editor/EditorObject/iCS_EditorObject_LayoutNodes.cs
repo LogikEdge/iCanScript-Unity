@@ -62,7 +62,8 @@ public partial class iCS_EditorObject {
     		return;            
         }
         // Update the size and ports for folded & Function nodes.
-        GlobalRect= FoldedNodeRect();
+//        GlobalRect= FoldedNodeRect();
+        CollisionOffsetFromGlobalRect= FoldedNodeRect();
 	}
 
     // ----------------------------------------------------------------------

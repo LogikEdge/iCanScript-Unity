@@ -46,7 +46,8 @@ public partial class iCS_EditorObject {
             case iCS_EdgeEnum.Left:     lp.x= -0.5f*size.x; break;
             case iCS_EdgeEnum.Right:    lp.x=  0.5f*size.x; break;
         }
-		LocalPosition= lp;
+//		LocalPosition= lp;
+        CollisionOffsetFromLocalPosition= lp;
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {

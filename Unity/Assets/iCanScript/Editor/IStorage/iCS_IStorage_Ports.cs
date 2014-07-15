@@ -148,10 +148,12 @@ public partial class iCS_IStorage {
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         port.PortIndex= index;
         if(parent.IsPort) {
-            port.LocalOffset= parent.LocalOffset;
+//            port.LocalOffset= parent.LocalOffset;
+            port.CollisionOffset= parent.CollisionOffset;
         } else {
             var globalPos= parent.GlobalPosition;
-    		port.GlobalPosition= globalPos;            
+//    		port.GlobalPosition= globalPos;            
+            port.CollisionOffsetFromGlobalPosition= globalPos;
         }
 		// Set initial port edge.
 		if(port.IsEnablePort) {

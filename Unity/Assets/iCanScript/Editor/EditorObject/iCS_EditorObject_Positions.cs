@@ -25,7 +25,7 @@ public partial class iCS_EditorObject {
 		    }
 			engineObject.PortPositionRatio= value;
 		}
-    }
+    } // @done
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//							NODE POSITIONS
@@ -65,20 +65,22 @@ public partial class iCS_EditorObject {
 		    }
 			engineObject.LocalAnchorPosition= value;
 		}
-	}
+    } // @done
     // ----------------------------------------------------------------------
     public Vector2 GlobalAnchorPosition {
 		get {
+			if(IsDisplayRoot) {
+                return LocalAnchorPosition;
+            }
 			var parent= ParentNode;
-			if(parent == null) return LocalAnchorPosition;
     		return parent.GlobalPosition+LocalAnchorPosition;			    
 		}
 		set {
-			var parent= ParentNode;
-			if(parent == null) {
+            if(IsDisplayRoot) {
 				LocalAnchorPosition= value;
 				return;
 			}
+			var parent= ParentNode;
     		LocalAnchorPosition= value-parent.GlobalPosition;                
 		}                
     }
@@ -89,25 +91,6 @@ public partial class iCS_EditorObject {
 	public Vector2 CollisionOffset {
 		get {
 			return myCollisionOffset;
-		}
-		set {
-			myCollisionOffset= value;
-		}
-	}
-    // ----------------------------------------------------------------------
-	public Vector2 WrappingOffset {
-		get {
-			return myWrappingOffset;
-		}
-		set {
-			myWrappingOffset= value;
-		}
-	}
-    // ----------------------------------------------------------------------
-    // Offset from the anchor position.  This attribute is animated.
-	public Vector2 LocalOffset {
-		get {
-			return CollisionOffset;
 		}
 		set {
             // Update parent port for nested ports.
@@ -122,13 +105,40 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
+	public Vector2 WrappingOffset {
+		get {
+			return myWrappingOffset;
+		}
+		set {
+			myWrappingOffset= value;
+		}
+	}
+//    // ----------------------------------------------------------------------
+//    // Offset from the anchor position.  This attribute is animated.
+//	public Vector2 LocalOffset {
+//		get {
+//			return CollisionOffset;
+//		}
+//		set {
+//            // Update parent port for nested ports.
+//            if(IsPort) {
+//                if(IsNestedPort) {
+//                    return;
+//                }
+//                myCollisionOffset= value;
+//                ForEachChildPort(p=> p.myCollisionOffset= value);                
+//            }
+//			CollisionOffset= value;
+//		}
+//	}
+    // ----------------------------------------------------------------------
 	public Vector2 LocalPosition {
 		get {
 			return LocalAnchorPosition+CollisionOffset;
 		}
-		set {
-			LocalOffset= value-LocalAnchorPosition;
-		}
+//		set {
+//			LocalOffset= value-LocalAnchorPosition;
+//		}
 	}
     // ======================================================================
 	// Layout
@@ -136,8 +146,8 @@ public partial class iCS_EditorObject {
 	public Vector2 GlobalPosition {
 		get {
 			var parent= ParentNode;
-			if(parent == null) {
-			    return LocalAnchorPosition+LocalOffset;
+			if(IsDisplayRoot || parent == null) {
+			    return LocalPosition;
 		    }
 			// Special case for iconized transition module ports.
 			if(IsTransitionPort && parent.IsIconizedInLayout) {
@@ -151,18 +161,18 @@ public partial class iCS_EditorObject {
 			}
     		return parent.GlobalPosition+LocalPosition;
 		}
-		set {
-            var offsetWithoutParent= value-LocalAnchorPosition;
-            var parent= ParentNode;
-		    if(parent == null) {
-		        LocalOffset= offsetWithoutParent;
-		        return;
-		    }
-			if(IsPort) {
-				LocalOffset= offsetWithoutParent-parent.GlobalPosition;
-			}
-	        LocalOffset= offsetWithoutParent-parent.GlobalPosition;
-		}
+//		set {
+//            var offsetWithoutParent= value-LocalAnchorPosition;
+//            var parent= ParentNode;
+//		    if(IsDisplayRoot || parent == null) {
+//		        LocalOffset= offsetWithoutParent;
+//		        return;
+//		    }
+//			if(IsPort) {
+//				LocalOffset= offsetWithoutParent-parent.GlobalPosition;
+//			}
+//	        LocalOffset= offsetWithoutParent-parent.GlobalPosition;
+//		}
 	}
     // ----------------------------------------------------------------------
 	public Vector2 LocalSize {
@@ -189,10 +199,10 @@ public partial class iCS_EditorObject {
 		get {
 			return BuildRect(GlobalPosition, LocalSize);
 		}
-		set {
-			GlobalPosition= PositionFrom(value);
-			LocalSize= SizeFrom(value);
-		}
+//		set {
+//			GlobalPosition= PositionFrom(value);
+//			LocalSize= SizeFrom(value);
+//		}
 	}
 	
 	// ======================================================================
@@ -233,7 +243,7 @@ public partial class iCS_EditorObject {
 			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
 				return BuildRect(parentPos, size);
 			}
-            var pos= parentPos+LocalAnchorPosition+LocalOffset;
+            var pos= parentPos+LocalPosition;
             var r= BuildRect(pos, size);
 			return r;
 		}
@@ -242,38 +252,52 @@ public partial class iCS_EditorObject {
 	// ======================================================================
     // High-order functions
     // ----------------------------------------------------------------------
-    public void SetLocalAnchorFromGlobalPosition(Vector2 globalPosition) {
-        var parent= ParentNode;
-        if(parent == null) {
-            LocalAnchor= globalPosition;
-            return;
+    public Vector2 LocalAnchorFromGlobalPosition {
+        set {
+            var parent= ParentNode;
+            if(IsDisplayRoot || parent == null) {
+                LocalAnchorPosition= value;
+                return;
+            }
+            LocalAnchorPosition= value-parent.GlobalPosition;
+            CollisionOffset= Vector2.zero;            
         }
-        LocalAnchor= globalPosition-parent.GlobalPosition;
-        CollisionOffset= Vector2.zero;
     }
     // ----------------------------------------------------------------------
-    public void SetCollisionOffsetFromGlobalPosition(Vector2 globalPosition) {
-        var parent= ParentNode;
-        if(parent == null) {
-            CollisionOffset= globalPosition-LocalAnchor;
-            return;
+    public Vector2 CollisionOffsetFromGlobalPosition {
+        set {
+            var parent= ParentNode;
+            if(IsDisplayRoot || parent == null) {
+                CollisionOffset= value-LocalAnchorPosition;
+                return;
+            }
+            CollisionOffset= value-parent.GlobalPosition-LocalAnchorPosition;            
         }
-        CollisionOffset= globalPosition-parent.GlobalPosition-LocalAnchor;
     }
     // ----------------------------------------------------------------------
-    public void SetLocalAnchorFromGlobalRect(Rect globalRect) {
-        SetLocalAnchorFromGlobalPosition(PositionFrom(globalRect));
-        LocalSize= SizeFrom(globalRect);
+    public Vector2 CollisionOffsetFromLocalPosition {
+        set {
+            CollisionOffset= value-LocalAnchorPosition;            
+        }
     }
     // ----------------------------------------------------------------------
-    public void SetCollisionOffsetFromGlobalRect(Rect globalRect) {
-        SetCollisionOffsetFromGlobalPosition(PositionFrom(globalRect));
-        LocalSize= SizeFrom(globalRect);
+    public Rect LocalAnchorFromGlobalRect {
+        set {
+            LocalAnchorFromGlobalPosition= PositionFrom(value);
+            LocalSize= SizeFrom(value);            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public Rect CollisionOffsetFromGlobalRect {
+        set {
+            CollisionOffsetFromGlobalPosition= PositionFrom(value);
+            LocalSize= SizeFrom(value);            
+        }
     }
     // ----------------------------------------------------------------------
     public void SetInitialPosition(Vector2 pos) {
         var r= BuildRect(pos, Vector2.zero);
-        SetLocalAnchorFromGlobalRect(r);
+        LocalAnchorFromGlobalRect= r;
         AnimationStartRect= r;
     }
 
@@ -297,7 +321,7 @@ public partial class iCS_EditorObject {
 		get { return EngineObject.LayoutPriority; }
 		set { EngineObject.LayoutPriority= value; }
 	}
-
+    
 	// ======================================================================
     // Child Position Utilities
  	// ----------------------------------------------------------------------

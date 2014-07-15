@@ -88,6 +88,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     public void ReframeOn(iCS_EditorObject target, Vector2 targetPos) {
+        return;
 //        var initialScrollPosition= ScrollPosition;
 //        var initialScale= Scale;
 //        float deltaTime= Prefs.AnimationTime;

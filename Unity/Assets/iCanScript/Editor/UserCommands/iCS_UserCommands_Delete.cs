@@ -1,4 +1,4 @@
-﻿//
+//
 // File: iCS_UserCommands_Delete
 //
 //#define DEBUG
@@ -83,7 +83,7 @@ public static partial class iCS_UserCommands {
             _=> {
                 P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
                 iStorage.DestroyInstance(obj.InstanceId);
-                P.zipWith((n,p) => { n.SetLocalAnchorFromGlobalPosition(p);}, childNodes, childPos);
+                P.zipWith((n,p) => { n.LocalAnchorFromGlobalPosition= p; }, childNodes, childPos);
                 newParent.LayoutNodeAndParents();
             }
         );

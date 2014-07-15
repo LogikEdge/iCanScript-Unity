@@ -232,7 +232,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void LayoutTransitionPackage(iCS_EditorObject package) {
-        package.SetLocalAnchorFromGlobalPosition(ProposeTransitionPackagePosition(package));
+        package.LocalAnchorFromGlobalPosition= ProposeTransitionPackagePosition(package);
     }
     // ----------------------------------------------------------------------
     public Vector2 GetTransitionPackageVector(iCS_EditorObject package) {

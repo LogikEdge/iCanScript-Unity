@@ -24,36 +24,4 @@ public partial class iCS_EditorObject {
         }
     }
     
-    // ----------------------------------------------------------------------
-    public Vector2 LocalAnchor {
-        get {
-            return LocalAnchorPosition;
-        }
-        set {
-            LocalAnchorPosition= value;
-        }
-    }
-    // ----------------------------------------------------------------------
-    public Vector2 LocalAnchorFromGlobalPosition {
-    	set {
-			var parent= ParentNode;
-			if(parent == null) {
-				LocalAnchor= value;
-				return;
-			}
-			LocalAnchor= value-parent.GlobalPosition;
-			LocalOffset= Vector2.zero;
-    	}
-    }
-    // ----------------------------------------------------------------------
-    public Vector2 LocalOffsetFromGlobalPosition {
-    	set {
-    		var parent= ParentNode;
-    		if(parent == null) {
-    			LocalOffset= value-LocalAnchor;
-    			return;
-    		}
-    		LocalOffset= value-parent.GlobalPosition-LocalAnchor;
-    	}
-    }
 }

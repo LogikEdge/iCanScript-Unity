@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public partial class iCS_IStorage {
@@ -141,7 +141,7 @@ public partial class iCS_IStorage {
         Vector2 intersection;
         if(Math3D.LineSegmentAndRectEdgeIntersection(p1, p2, parentNode.GlobalRect, out intersection)) {
             if(Math3D.IsNotEqual(port.GlobalPosition, intersection)) {
-                port.SetLocalAnchorFromGlobalPosition(intersection);
+                port.LocalAnchorFromGlobalPosition= intersection;
                 ForcedRelayoutOfTree(DisplayRoot);
                 return true;
             }
@@ -407,11 +407,11 @@ public partial class iCS_IStorage {
 			if(y > bottom) {
 				y= bottom;
 			}
-			port.SetLocalAnchorFromGlobalPosition(new Vector2(x,y));
+			port.LocalAnchorFromGlobalPosition= new Vector2(x,y);
 			return;
 		}
 		if(Math3D.IsEqual(inPortPosition.y, outPortPosition.y)) {
-			port.SetLocalAnchorFromGlobalPosition(new Vector2(x, 0.5f*(top+bottom)));
+			port.LocalAnchorFromGlobalPosition= new Vector2(x, 0.5f*(top+bottom));
 			return;
 		}
 		// Assure that the in position Y value is smaller then the out position.
@@ -428,7 +428,7 @@ public partial class iCS_IStorage {
 			float y1= bottom-inPortPosition.y;
 			y= bottom-(y1*y1/(y1+y2));			
 		}
-		port.SetLocalAnchorFromGlobalPosition(new Vector2(x,y));
+		port.LocalAnchorFromGlobalPosition= new Vector2(x,y);
 		return;			
 	}
     // ----------------------------------------------------------------------
