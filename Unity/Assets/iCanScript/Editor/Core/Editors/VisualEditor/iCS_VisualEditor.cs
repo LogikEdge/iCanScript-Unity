@@ -91,20 +91,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Repaint();        
     }
     public void OnStartRelayoutOfTree() {
-        // Keep a copy of the display root anchor position.
-        SavedDisplayRootAnchorPosition= DisplayRoot.GlobalAnchorPosition;
+//        // Keep a copy of the display root anchor position.
+//        SavedDisplayRootAnchorPosition= DisplayRoot.GlobalAnchorPosition;
     }
     public void OnEndRelayoutOfTree() {
-        // Reset anchor position of display root to avoid movement in parent node.
-        if(DisplayRoot != StorageRoot) {
-            var anchorPosition= DisplayRoot.GlobalAnchorPosition;
-            var deltaAnchor= anchorPosition-SavedDisplayRootAnchorPosition;
-            if(Math3D.IsNotZero(deltaAnchor)) {
+//        // Reset anchor position of display root to avoid movement in parent node.
+//        if(DisplayRoot != StorageRoot) {
+//            var anchorPosition= DisplayRoot.GlobalAnchorPosition;
+//            var deltaAnchor= anchorPosition-SavedDisplayRootAnchorPosition;
+//            if(Math3D.IsNotZero(deltaAnchor)) {
 //                DisplayRoot.GlobalAnchorPosition= SavedDisplayRootAnchorPosition;
-                ScrollPosition-= deltaAnchor;
-                GridOffset+= deltaAnchor;                            
-            }
-        }  
+//                ScrollPosition-= deltaAnchor;
+//                GridOffset+= deltaAnchor;                            
+//            }
+//        }  
     }
     
     // ======================================================================
