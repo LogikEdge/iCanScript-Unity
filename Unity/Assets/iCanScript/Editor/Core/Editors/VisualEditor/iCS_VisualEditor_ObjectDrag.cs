@@ -172,13 +172,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case DragTypeEnum.PortConnection: {
                 // Update port position.
 //                DragObject.GlobalPosition= newPosition;
-                DragObject.CollisionOffsetFromGlobalPosition= newPosition;
                 // Determine if we should go back to port relocation. (IsPositionOnEdge)
-                if(DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
+                var originalPortParent= DragOriginalPort.ParentNode;
+                var localPosition= newPosition-originalPortParent.GlobalPosition;
+                var closestEdge= DragOriginalPort.GetClosestEdge(localPosition);
+                if(originalPortParent.IsPositionOnEdge(newPosition, closestEdge)) {
                     RemoveDragPort();
+                    DragOriginalPort.Edge= closestEdge;
+                    ProcessPortRelocation(DragObject, newPosition);
                     break;
                 }
                 // Snap to nearby ports
+                DragObject.CollisionOffsetFromGlobalPosition= newPosition;
                 Vector2 mousePosInGraph= GraphMousePosition;
                 iCS_EditorObject closestPort= IStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataOrControlPort);
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
