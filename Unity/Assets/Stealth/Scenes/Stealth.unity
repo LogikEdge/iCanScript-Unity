@@ -38208,7 +38208,7 @@ MonoBehaviour:
   SelectedObject: 1
   ShowDisplayRootNode: 1
   GuiScale: .893269241
-  ScrollPosition: {x: -110.068779, y: -663.389709}
+  ScrollPosition: {x: -89.9168472, y: -561.286499}
   UndoRedoId: 991
   EngineObjects:
   - RawName: light_alarm_directional::Behaviour

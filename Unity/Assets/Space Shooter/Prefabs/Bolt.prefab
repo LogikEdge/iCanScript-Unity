@@ -117,9 +117,9 @@ MonoBehaviour:
   DisplayRoot: 0
   SelectedObject: 19
   ShowDisplayRootNode: 1
-  GuiScale: 1.49014664
-  ScrollPosition: {x: -422.894409, y: -494.51886}
-  UndoRedoId: 99
+  GuiScale: 2
+  ScrollPosition: {x: -292.954468, y: -364.498474}
+  UndoRedoId: 100
   EngineObjects:
   - RawName: Bolt::Behaviour
     ObjectType: 0
@@ -505,7 +505,7 @@ MonoBehaviour:
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     LocalAnchorPosition: {x: -163.592941, y: -127.258247}
-    DisplayOption: 0
+    DisplayOption: 1
     Scale: 1
     MethodName: 
     NbOfParams: 0
