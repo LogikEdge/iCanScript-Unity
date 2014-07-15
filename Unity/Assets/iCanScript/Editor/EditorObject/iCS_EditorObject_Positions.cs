@@ -69,18 +69,18 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 GlobalAnchorPosition {
 		get {
-			if(IsDisplayRoot) {
+			var parent= ParentNode;
+			if(IsDisplayRoot || parent == null) {
                 return LocalAnchorPosition;
             }
-			var parent= ParentNode;
     		return parent.GlobalPosition+LocalAnchorPosition;			    
 		}
 		set {
-            if(IsDisplayRoot) {
+			var parent= ParentNode;
+            if(IsDisplayRoot || parent == null) {
 				LocalAnchorPosition= value;
 				return;
 			}
-			var parent= ParentNode;
     		LocalAnchorPosition= value-parent.GlobalPosition;                
 		}                
     }
@@ -101,7 +101,7 @@ public partial class iCS_EditorObject {
                 myCollisionOffset= value;
                 ForEachChildPort(p=> p.myCollisionOffset= value);                
             }
-			CollisionOffset= value;
+			myCollisionOffset= value;
 		}
 	}
     // ----------------------------------------------------------------------
