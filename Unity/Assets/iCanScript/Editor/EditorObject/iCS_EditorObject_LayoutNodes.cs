@@ -62,7 +62,6 @@ public partial class iCS_EditorObject {
     		return;            
         }
         // Update the size and ports for folded & Function nodes.
-//        GlobalRect= FoldedNodeRect();
         CollisionOffsetFromGlobalRect= FoldedNodeRect();
 	}
 
@@ -84,7 +83,7 @@ public partial class iCS_EditorObject {
             return;
         }
         var childNodes= BuildListOfChildNodes(_ => true);
-        var childRects= P.map(n => BuildRect(n.LocalAnchorPosition+n.CollisionOffset, n.LocalSize), childNodes);
+        var childRects= P.map(n => BuildRect(n.LocalPosition, n.LocalSize), childNodes);
         // WrapAroundChildRects(childRects);
         var totalChildRect= GetRectWithMargins(childRects);
         var parentRect= NodeRectFromChildrenRectWithMargins(totalChildRect);

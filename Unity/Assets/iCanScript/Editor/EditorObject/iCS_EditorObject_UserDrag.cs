@@ -33,7 +33,7 @@ public partial class iCS_EditorObject {
 		if(IsNode) {
             IStorage.StopAllAnimations();
     		SetAsHighestLayoutPriority();
-    		UserDragPosition= newPosition;
+    		LocalAnchorFromGlobalPosition= newPosition;
 			IStorage.ForcedRelayoutOfTree(myIStorage.DisplayRoot);
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");

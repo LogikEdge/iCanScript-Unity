@@ -113,32 +113,17 @@ public partial class iCS_EditorObject {
 			myWrappingOffset= value;
 		}
 	}
-//    // ----------------------------------------------------------------------
-//    // Offset from the anchor position.  This attribute is animated.
-//	public Vector2 LocalOffset {
-//		get {
-//			return CollisionOffset;
-//		}
-//		set {
-//            // Update parent port for nested ports.
-//            if(IsPort) {
-//                if(IsNestedPort) {
-//                    return;
-//                }
-//                myCollisionOffset= value;
-//                ForEachChildPort(p=> p.myCollisionOffset= value);                
-//            }
-//			CollisionOffset= value;
-//		}
-//	}
+    // ----------------------------------------------------------------------
+    public Vector2 GlobalWrappingPosition {
+        get {
+            return GlobalAnchorPosition+WrappingOffset;
+        }
+    }
     // ----------------------------------------------------------------------
 	public Vector2 LocalPosition {
 		get {
-			return LocalAnchorPosition+CollisionOffset;
+			return LocalAnchorPosition+CollisionOffset+WrappingOffset;
 		}
-//		set {
-//			LocalOffset= value-LocalAnchorPosition;
-//		}
 	}
     // ======================================================================
 	// Layout
@@ -161,18 +146,6 @@ public partial class iCS_EditorObject {
 			}
     		return parent.GlobalPosition+LocalPosition;
 		}
-//		set {
-//            var offsetWithoutParent= value-LocalAnchorPosition;
-//            var parent= ParentNode;
-//		    if(IsDisplayRoot || parent == null) {
-//		        LocalOffset= offsetWithoutParent;
-//		        return;
-//		    }
-//			if(IsPort) {
-//				LocalOffset= offsetWithoutParent-parent.GlobalPosition;
-//			}
-//	        LocalOffset= offsetWithoutParent-parent.GlobalPosition;
-//		}
 	}
     // ----------------------------------------------------------------------
 	public Vector2 LocalSize {
@@ -254,6 +227,9 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 LocalAnchorFromGlobalPosition {
         set {
+            if(IsNode && IsUnfoldedInLayout) {
+                value-= WrappingOffset;
+            }
             var parent= ParentNode;
             if(IsDisplayRoot || parent == null) {
                 LocalAnchorPosition= value;
