@@ -23,6 +23,9 @@ public class iCS_RunContext {
     // ----------------------------------------------------------------------
     public iCS_RunContext(iCS_Action action) {
         Action= action;
+        if(Action != null) {
+            Action.IsActive= false;
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -30,12 +33,14 @@ public class iCS_RunContext {
     public void Run() {
         if(myAction == null) return;
         ++myFrameId;
+        myAction.IsActive= true;
         do {
             myAction.Execute(myFrameId);                                
             if(myAction.IsStalled) {
                 ResolveDeadLock(0);
             }
-        } while(!myAction.IsCurrent(myFrameId));        
+        } while(!myAction.IsCurrent(myFrameId));
+        myAction.IsActive= false;
     }
     // ----------------------------------------------------------------------
     // Attempt to resolve deadlock by using previous frame data.  This

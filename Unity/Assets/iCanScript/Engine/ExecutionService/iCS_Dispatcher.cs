@@ -72,8 +72,10 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // ----------------------------------------------------------------------
     public void AddChild(iCS_Action action) {
         myExecuteQueue.Add(action);
+        action.Parent= this;
     }
     public void RemoveChild(iCS_Action action) {
         myExecuteQueue.Remove(action);
+        action.Parent= null;
     }
 }

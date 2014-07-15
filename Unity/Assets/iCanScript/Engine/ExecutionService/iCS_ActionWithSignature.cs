@@ -84,7 +84,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
         }
 #if UNITY_EDITOR
         if(VisualScript.IsTraceEnabled) {
-            Debug.Log("Executing=> "+FullName+" ("+frameId+")");            
+//            Debug.Log("Executing=> "+FullName+" ("+frameId+")");            
         }        
 #endif
         // Clear the output trigger flag.
@@ -95,7 +95,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
 			IsStalled= true;
 #if UNITY_EDITOR
             if(VisualScript.IsTraceEnabled) {
-                Debug.Log("Executing=> "+FullName+" is waiting on the enables");
+//                Debug.Log("Executing=> "+FullName+" is waiting on the enables");
             }
 #endif
 			return;
@@ -105,7 +105,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
             MarkAsCurrent(frameId);
 #if UNITY_EDITOR
             if(VisualScript.IsTraceEnabled) {
-                Debug.Log("Executing=> "+FullName+" is disabled");
+                Debug.Log("Executing=> "+FullName+" is disabled"+" ("+frameId+")");
             }
 #endif
             return;
@@ -116,13 +116,13 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
 #if UNITY_EDITOR
         if(VisualScript.IsTraceEnabled) {    
             if(DidExecute(frameId)) {
-                Debug.Log("Executing=> "+FullName+" was executed sucessfully");
+                Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+frameId+")");
             }
             else if(IsCurrent(frameId)){
-                Debug.Log("Executing=> "+FullName+" is Current");
+//                Debug.Log("Executing=> "+FullName+" is Current");
             }
             else {
-                Debug.Log("Executing=> "+FullName+" did not complete execution");
+//                Debug.Log("Executing=> "+FullName+" is waiting for an input");
             }
         }
 #endif

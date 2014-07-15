@@ -9,11 +9,12 @@ public abstract class iCS_Action : iCS_Object {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    int  myCurrentFrameId  = 0;
-    int  myExecutedFrameId= 0;
-    bool myIsStalled= false;
-    bool myIsActive= true;
-    bool myPortsAreAlwaysCurrent= false;
+    int         myCurrentFrameId  = 0;
+    int         myExecutedFrameId= 0;
+    bool        myIsStalled= false;
+    bool        myIsActive= true;
+    bool        myPortsAreAlwaysCurrent= false;
+    iCS_Action  myParent= null;
 
     // ======================================================================
     // Accessors
@@ -22,9 +23,15 @@ public abstract class iCS_Action : iCS_Object {
     public int  CurrentFrameId      { get { return myCurrentFrameId; }}
     public int  ExecutionFrameId    { get { return myExecutedFrameId; }}
     public bool IsStalled           { get { return myIsStalled; } set { myIsStalled= value; }}
+    public iCS_Action   Parent      { get { return myParent; } set { myParent= value; }}
     public bool IsActive            {
-        get { return myIsActive; }
-        set { myIsActive= value; myPortsAreAlwaysCurrent= !value; }
+        get {
+            if(myIsActive == false) {
+                return false;
+            }
+            return myParent == null ? true : myParent.IsActive;
+        }
+        set { myIsActive= value; }
     }
     public bool ArePortsAlwaysCurrent { get { return myPortsAreAlwaysCurrent; } set { myPortsAreAlwaysCurrent= value; }}
     
@@ -48,6 +55,6 @@ public abstract class iCS_Action : iCS_Object {
     public void MarkAsExecuted(int frameId) { myExecutedFrameId= frameId; MarkAsCurrent(frameId); }
 
     // ----------------------------------------------------------------------
-    public bool ArePortsCurrent(int frameId)    { return IsCurrent(frameId) || myPortsAreAlwaysCurrent; }
+    public bool ArePortsCurrent(int frameId)    { return IsCurrent(frameId) || ArePortsAlwaysCurrent || !IsActive; }
     public bool ArePortsExecuted(int frameId)   { return DidExecute(frameId); }
 }
