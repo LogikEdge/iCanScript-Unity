@@ -350,7 +350,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     break;
                 case DragTypeEnum.PortConnection:                
-                iCS_UserCommands.StartPortConnection(DragOriginalPort);
+                	iCS_UserCommands.StartPortConnection(DragOriginalPort);
                     // Attempt new port binding.
                     if(VerifyNewDragConnection()) {
                         iCS_UserCommands.EndPortConnection(DragOriginalPort);
@@ -419,7 +419,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 							else {									
                                 IStorage.SetNewDataConnection(newPort, DragFixPort);
 							}
-                            iCS_UserCommands.EndPortConnection(DragOriginalPort);
+                            iCS_UserCommands.EndPortPublishing(DragOriginalPort);
                             break;
 						}
                         // Attempt to quick create node if a disconnection was not performed.

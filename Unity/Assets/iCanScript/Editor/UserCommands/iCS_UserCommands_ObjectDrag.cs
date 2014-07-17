@@ -35,6 +35,13 @@ public static partial class iCS_UserCommands {
         );
         CloseTransaction(iStorage, "Node Relocation");
     }
+
+
+	// ----------------------------------------------------------------------
+	// We are not certain if we shoud be animating or not..
+    public static void StartPortDrag(iCS_EditorObject port) {
+    }
+
     public static void StartPortConnection(iCS_EditorObject port) {
         var iStorage= port.IStorage;
         iStorage.PrepareToAnimate();
@@ -43,10 +50,15 @@ public static partial class iCS_UserCommands {
         var iStorage= port.IStorage;
         iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
         iStorage.StartToAnimate();
-        iStorage.SaveStorage("Port Drag");
+        iStorage.SaveStorage("Port Connection=> "+port.Name);
     }
-    public static void StartPortDrag(iCS_EditorObject port) {
+    public static void EndPortPublishing(iCS_EditorObject port) {
+        var iStorage= port.IStorage;
+        iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+        iStorage.SaveStorage("Port Publishing=> "+port.Name);
     }
+
+
     public static void EndPortDrag(iCS_EditorObject port) {
         var iStorage= port.IStorage;
         iStorage.AnimateGraph(null,
