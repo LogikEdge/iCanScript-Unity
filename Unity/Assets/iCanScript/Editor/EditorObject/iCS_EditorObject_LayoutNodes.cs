@@ -55,6 +55,7 @@ public partial class iCS_EditorObject {
             LocalSize= iCS_Graphics.GetMaximizeIconSize(this);
             return;
         }
+        LayoutPorts();
         // Resolve any existing collisions on children for unfolded modules.
         if(IsUnfoldedInLayout && NbOfChildNodes != 0) {
             ResolveCollisionOnChildrenNodes();
