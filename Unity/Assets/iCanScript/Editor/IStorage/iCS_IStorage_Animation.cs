@@ -18,14 +18,22 @@ public partial class iCS_IStorage {
 	// Animation Control
     // ----------------------------------------------------------------------
     public void AnimateGraph(iCS_EditorObject obj, Action<iCS_EditorObject> fnc) {
+        PrepareToAnimate();
+        fnc(obj);
+        StartToAnimate();
+    }
+    // ----------------------------------------------------------------------
+    public void PrepareToAnimate() {
         StopAllAnimations();
         if(Prefs.IsAnimationEnabled) {
             TakeAnimationSnapshotForAll();            
         }
-        fnc(obj);
+    }
+    // ----------------------------------------------------------------------
+    public void StartToAnimate() {
         if(Prefs.IsAnimationEnabled) {
             StartAllAnimations();            
-        }
+        }        
     }
     // ----------------------------------------------------------------------
     public void UpdateAllAnimations() {

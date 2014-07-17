@@ -350,9 +350,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     break;
                 case DragTypeEnum.PortConnection:                
+                iCS_UserCommands.StartPortConnection(DragOriginalPort);
                     // Attempt new port binding.
                     if(VerifyNewDragConnection()) {
-                        iCS_UserCommands.EndPortDrag(DragOriginalPort);
+                        iCS_UserCommands.EndPortConnection(DragOriginalPort);
                         break;
                     }
 					// Attempt to publish port on nearby package.
@@ -368,7 +369,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         iCS_EditorObject newPortParent= GetNodeWithEdgeAtMousePosition();
 						if(newPortParent != null && newPortParent == DragOriginalPort.ParentNode) {
 			                DragOriginalPort.LocalAnchorFromGlobalPosition= dragPortPos;
-                            iCS_UserCommands.EndPortDrag(DragOriginalPort);
+                            iCS_UserCommands.EndPortConnection(DragOriginalPort);
 							break;
 						}
                         // Get node with an edge close to the drag position.
@@ -418,7 +419,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 							else {									
                                 IStorage.SetNewDataConnection(newPort, DragFixPort);
 							}
-                            iCS_UserCommands.EndPortDrag(DragOriginalPort);
+                            iCS_UserCommands.EndPortConnection(DragOriginalPort);
                             break;
 						}
                         // Attempt to quick create node if a disconnection was not performed.
@@ -426,7 +427,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             newPortParent= GetNodeAtMousePosition();
                             if(newPortParent != null && newPortParent.IsKindOfPackage) {
                                 QuickNodeCreate(dragPortPos, newPortParent);
-                                iCS_UserCommands.EndPortDrag(DragOriginalPort);
+                                iCS_UserCommands.EndPortConnection(DragOriginalPort);
                                 break;                                  
                             }								
 						}
@@ -438,7 +439,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 							if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
                                 IStorage.SetNewDataConnection(newPort, DragFixPort);
-                                iCS_UserCommands.EndPortDrag(DragOriginalPort);
+                                iCS_UserCommands.EndPortConnection(DragOriginalPort);
 								break;
 							}
                         }
@@ -450,7 +451,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 							IStorage.DestroyInstance(DragOriginalPort);
 						}
                     }                    
-                    iCS_UserCommands.EndPortDrag(DragOriginalPort);
+                    iCS_UserCommands.EndPortConnection(DragOriginalPort);
 					break;
                 case DragTypeEnum.TransitionCreation:
                     iCS_EditorObject destState= GetNodeAtMousePosition();

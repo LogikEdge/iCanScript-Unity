@@ -35,6 +35,16 @@ public static partial class iCS_UserCommands {
         );
         CloseTransaction(iStorage, "Node Relocation");
     }
+    public static void StartPortConnection(iCS_EditorObject port) {
+        var iStorage= port.IStorage;
+        iStorage.PrepareToAnimate();
+    }
+    public static void EndPortConnection(iCS_EditorObject port) {
+        var iStorage= port.IStorage;
+        iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+        iStorage.StartToAnimate();
+        iStorage.SaveStorage("Port Drag");
+    }
     public static void StartPortDrag(iCS_EditorObject port) {
     }
     public static void EndPortDrag(iCS_EditorObject port) {
