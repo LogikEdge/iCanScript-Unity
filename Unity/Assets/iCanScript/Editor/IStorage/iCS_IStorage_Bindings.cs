@@ -134,6 +134,30 @@ public partial class iCS_IStorage {
         return averagePos / consumerPorts.Length;
     }
 	// ----------------------------------------------------------------------
+	public void AutoLayoutPortOnNode(iCS_EditorObject node) {
+		node.ForEachChildPort(p=> AutoLayoutPort(p));
+	}
+	// ----------------------------------------------------------------------
+	public void AutoLayoutPort(iCS_EditorObject port) {
+        var portPos= port.GlobalPosition;		
+        // First layout from port to provider
+        var providerPort= GetPointToPointProviderPortForConsumerPort(port);
+        if(providerPort != null && providerPort != port) {
+            var providerLayoutEndPoint= GetProviderLineSegmentPosition(providerPort);
+            AutoLayoutPort(providerPort, portPos, providerLayoutEndPoint);
+            AutoLayoutOfPointToPointBindingExclusive(providerPort, port);
+        }
+        // Secondly, layout from port to consumer.
+        var consumerPorts= GetPointToPointConsumerPortsForProviderPort(port);
+        if(consumerPorts != null) {
+            foreach(var consumerPort in consumerPorts) {
+                var consumerLayoutEndPoint= GetConsumerLineSegmentPosition(consumerPort);
+                AutoLayoutPort(consumerPort, portPos, consumerLayoutEndPoint);
+                AutoLayoutOfPointToPointBindingExclusive(port, consumerPort);
+            }
+        }		
+	}
+	// ----------------------------------------------------------------------
     public bool AutoLayoutPort(iCS_EditorObject port, Vector2 p1, Vector2 p2) {
         if(port == null) return false;
         var parentNode= port.ParentNode;

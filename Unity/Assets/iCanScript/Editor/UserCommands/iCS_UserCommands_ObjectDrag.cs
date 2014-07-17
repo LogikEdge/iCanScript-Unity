@@ -30,7 +30,7 @@ public static partial class iCS_UserCommands {
                     iStorage.ChangeParent(node, newParent); 
                 }
                 iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
-                node.ForEachChildPort(p=> AutoLayoutPort(p));
+				iStorage.AutoLayoutPortOnNode(node);
             }
         );
         CloseTransaction(iStorage, "Node Relocation");

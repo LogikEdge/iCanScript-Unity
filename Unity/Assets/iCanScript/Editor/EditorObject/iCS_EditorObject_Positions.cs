@@ -114,12 +114,6 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-    public Vector2 GlobalWrappingPosition {
-        get {
-            return GlobalAnchorPosition;
-        }
-    }
-    // ----------------------------------------------------------------------
 	public Vector2 LocalPosition {
 		get {
 			return LocalAnchorPosition+CollisionOffset+WrappingOffset;
@@ -242,6 +236,11 @@ public partial class iCS_EditorObject {
                 LocalAnchorPosition= value-WrappingOffset;
                 return;
             }
+			if(IsPort) {
+	            LocalAnchorPosition= value-parent.GlobalPosition;
+	            CollisionOffset= Vector2.zero;
+				return;
+			}
             LocalAnchorPosition= value-WrappingOffset-parent.GlobalPosition+parent.WrappingOffset;
             CollisionOffset-= parent.WrappingOffset;
         }
