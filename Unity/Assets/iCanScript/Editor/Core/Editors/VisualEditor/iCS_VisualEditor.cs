@@ -27,7 +27,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
     // ----------------------------------------------------------------------
     Vector2 GridOffset= Vector2.zero;
-    Vector2 SavedDisplayRootAnchorPosition= Vector2.zero;
+//    Vector2 SavedDisplayRootAnchorPosition= Vector2.zero;
     
     // ----------------------------------------------------------------------
     bool  myShowDynamicMenu    = false;
