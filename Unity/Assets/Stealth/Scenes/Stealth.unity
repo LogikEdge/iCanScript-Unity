@@ -8439,11 +8439,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 238
+  SelectedObject: 1
   ShowDisplayRootNode: 1
   GuiScale: 1.12181151
-  ScrollPosition: {x: -547.584961, y: 480.921387}
-  UndoRedoId: 1272
+  ScrollPosition: {x: -644.649658, y: 609.261475}
+  UndoRedoId: 1356
   EngineObjects:
   - RawName: GameController::Behaviour
     ObjectType: 0
@@ -8718,7 +8718,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 13
-    LayoutPriority: 98
+    LayoutPriority: 90
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -8738,7 +8738,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 14
-    LayoutPriority: 98
+    LayoutPriority: 90
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -10436,7 +10436,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 101
-    LayoutPriority: -3433
+    LayoutPriority: -3982
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -10533,7 +10533,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 106
-    LayoutPriority: -3433
+    LayoutPriority: -3982
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -10828,7 +10828,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 121
-    LayoutPriority: 94
+    LayoutPriority: 70
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -11281,7 +11281,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 144
-    LayoutPriority: 97
+    LayoutPriority: 89
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -11400,7 +11400,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 150
-    LayoutPriority: -445
+    LayoutPriority: 99
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -11538,7 +11538,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 157
-    LayoutPriority: 96
+    LayoutPriority: 80
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -11558,7 +11558,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 158
-    LayoutPriority: 95
+    LayoutPriority: 79
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -11598,7 +11598,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 160
-    LayoutPriority: 98
+    LayoutPriority: 90
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -11696,7 +11696,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 165
-    LayoutPriority: 95
+    LayoutPriority: 70
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -11755,7 +11755,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 168
-    LayoutPriority: 95
+    LayoutPriority: 80
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -12512,7 +12512,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 207
-    LayoutPriority: -989
+    LayoutPriority: -54
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -12543,7 +12543,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -1.06196594, y: 36.3098679}
+    LocalAnchorPosition: {x: -1.0619812, y: 37.2013855}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -12551,7 +12551,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 209
-    LayoutPriority: -988
+    LayoutPriority: -53
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -12582,7 +12582,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -89.1980667, y: -53.0095367}
+    LocalAnchorPosition: {x: -146.717545, y: -29.8031921}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -12590,7 +12590,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 211
-    LayoutPriority: 98
+    LayoutPriority: 97
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -12642,7 +12642,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -88.8063202, y: -69.5875549}
+    LocalAnchorPosition: {x: -89.6976624, y: 17.7711639}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -12650,7 +12650,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 214
-    LayoutPriority: -1260
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -12762,7 +12762,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 112.373466, y: -77.4919281}
+    LocalAnchorPosition: {x: 86.4906464, y: -81.0521545}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -12770,7 +12770,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 220
-    LayoutPriority: 97
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -12782,7 +12782,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: 1}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -12862,7 +12862,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .708779573}
+    LocalAnchorPosition: {x: 2, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -12882,7 +12882,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 116.294022, y: -127.486328}
+    LocalAnchorPosition: {x: 143.927948, y: 15.1400299}
     DisplayOption: 0
     Scale: 1
     MethodName: Stop
@@ -12890,7 +12890,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 226
-    LayoutPriority: -172
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -12922,7 +12922,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 116.066086, y: -2.84228516}
+    LocalAnchorPosition: {x: 86.2260895, y: 16.7689972}
     DisplayOption: 0
     Scale: 1
     MethodName: Play
@@ -12930,7 +12930,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 228
-    LayoutPriority: 99
+    LayoutPriority: 89
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -12941,7 +12941,7 @@ MonoBehaviour:
     ParentId: 266
     IsNameEditable: 0
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .5}
+    LocalAnchorPosition: {x: 3, y: .891431034}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -12950,9 +12950,9 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 229
     LayoutPriority: 0
-    SourceId: -1
+    SourceId: 249
     PortIndex: 1001
-    InitialValueArchive: '{12:InitialValue1:b1:T}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: AudioSource Instance
     ObjectType: 300
@@ -12961,7 +12961,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .143781155}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13039,7 +13039,7 @@ MonoBehaviour:
     ParentId: 220
     IsNameEditable: 0
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .852556765}
+    LocalAnchorPosition: {x: 4, y: .770536482}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13058,7 +13058,7 @@ MonoBehaviour:
     ParentId: 228
     IsNameEditable: 0
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .5}
+    LocalAnchorPosition: {x: 3, y: .833956838}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13067,9 +13067,9 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 235
     LayoutPriority: 0
-    SourceId: -1
+    SourceId: 244
     PortIndex: 1001
-    InitialValueArchive: '{12:InitialValue1:b1:T}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: <GameObject>
     ObjectType: 1
@@ -13078,7 +13078,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -115.546623, y: 76.4795837}
+    LocalAnchorPosition: {x: -156.201904, y: 114.810394}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -13126,7 +13126,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 238
-    LayoutPriority: -2
+    LayoutPriority: 90
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -13226,9 +13226,9 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 243
     LayoutPriority: 0
-    SourceId: -1
+    SourceId: 234
     PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:b1:F}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: :bool
     ObjectType: 301
@@ -13236,7 +13236,7 @@ MonoBehaviour:
     ParentId: 238
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
+    LocalAnchorPosition: {x: 1, y: 1}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13244,6 +13244,104 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 244
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: <AudioSource>
+    ObjectType: 1
+    InstanceId: 245
+    ParentId: 157
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 108.808609, y: 64.0441132}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
+    Tooltip: 
+    ExecutionPriority: 245
+    LayoutPriority: 95
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: AudioSource Instance
+    ObjectType: 300
+    InstanceId: 246
+    ParentId: 245
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 3.99927876e-06}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 246
+    LayoutPriority: 0
+    SourceId: 257
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: Not<Boolean>
+    ObjectType: 102
+    InstanceId: 247
+    ParentId: 157
+    IsNameEditable: 1
+    QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 274.824646, y: 112.20871}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: Not
+    NbOfParams: 1
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 247
+    LayoutPriority: 95
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: a
+    ObjectType: 300
+    InstanceId: 248
+    ParentId: 247
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 248
+    LayoutPriority: 0
+    SourceId: 260
+    PortIndex: 0
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: :bool
+    ObjectType: 301
+    InstanceId: 249
+    ParentId: 247
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 1}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 249
     LayoutPriority: 0
     SourceId: -1
     PortIndex: 400
@@ -13262,7 +13360,7 @@ MonoBehaviour:
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 245
+    ExecutionPriority: 0
     LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
@@ -13281,7 +13379,7 @@ MonoBehaviour:
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 246
+    ExecutionPriority: 0
     LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
@@ -13300,117 +13398,23 @@ MonoBehaviour:
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 247
+    ExecutionPriority: 0
     LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: isPlaying<AudioSource>
+    ObjectType: 101
+    InstanceId: 253
+    ParentId: 245
     IsNameEditable: 1
-    QualifiedType: 
+    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
+    DisplayOption: 2
     Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 248
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 249
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 250
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 251
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 252
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
+    MethodName: get_isPlaying
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
@@ -13487,7 +13491,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: 1}
+    LocalAnchorPosition: {x: 2, y: .270458609}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13497,6 +13501,64 @@ MonoBehaviour:
     ExecutionPriority: 257
     LayoutPriority: 0
     SourceId: 255
+    PortIndex: 0
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: isPlaying
+    ObjectType: 301
+    InstanceId: 258
+    ParentId: 253
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 258
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: AudioSource Instance
+    ObjectType: 300
+    InstanceId: 259
+    ParentId: 253
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 259
+    LayoutPriority: 0
+    SourceId: 246
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: isPlaying
+    ObjectType: 303
+    InstanceId: 260
+    ParentId: 245
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 4, y: .886525393}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 260
+    LayoutPriority: 0
+    SourceId: 258
     PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
@@ -13513,64 +13575,7 @@ MonoBehaviour:
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 258
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 259
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 260
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 261
+    ExecutionPriority: 0
     LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
@@ -13659,7 +13664,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 115.546623, y: 77.4919281}
+    LocalAnchorPosition: {x: 105.857132, y: 168.323486}
     DisplayOption: 1
     Scale: 1
     MethodName: Play
@@ -13667,7 +13672,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 266
-    LayoutPriority: 100
+    LayoutPriority: 95
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -13692,34 +13697,32 @@ MonoBehaviour:
     PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Stop<AudioSource>
-    ObjectType: 101
-    InstanceId: 268
-    ParentId: 209
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 114.511124, y: -79.7948837}
-    DisplayOption: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
     Scale: 1
-    MethodName: Stop
+    MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 268
-    LayoutPriority: -444
+    LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: AudioSource Instance
-    ObjectType: 300
-    InstanceId: 269
-    ParentId: 268
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13728,38 +13731,36 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 269
     LayoutPriority: 0
-    SourceId: 291
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Stop<AudioSource>
-    ObjectType: 101
-    InstanceId: 270
-    ParentId: 209
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 119.110855, y: -23.9101791}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: Stop
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 270
-    LayoutPriority: -444
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: AudioSource Instance
-    ObjectType: 300
-    InstanceId: 271
-    ParentId: 270
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 270
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13768,38 +13769,36 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 271
     LayoutPriority: 0
-    SourceId: 295
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Stop<AudioSource>
-    ObjectType: 101
-    InstanceId: 272
-    ParentId: 209
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 124.557022, y: 28.258728}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: Stop
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 272
-    LayoutPriority: -444
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: AudioSource Instance
-    ObjectType: 300
-    InstanceId: 273
-    ParentId: 272
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 272
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13808,38 +13807,36 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 273
     LayoutPriority: 0
-    SourceId: 299
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Stop<AudioSource>
-    ObjectType: 101
-    InstanceId: 274
-    ParentId: 209
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 120.630142, y: 84.8426056}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: Stop
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 274
-    LayoutPriority: -444
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: AudioSource Instance
-    ObjectType: 300
-    InstanceId: 275
-    ParentId: 274
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 274
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13848,8 +13845,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 275
     LayoutPriority: 0
-    SourceId: 303
-    PortIndex: 401
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: Stop<AudioSource>
@@ -13859,7 +13856,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 117.052689, y: 141.748993}
+    LocalAnchorPosition: {x: 146.26651, y: 80.0700226}
     DisplayOption: 1
     Scale: 1
     MethodName: Stop
@@ -13867,7 +13864,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 276
-    LayoutPriority: -172
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -13892,34 +13889,32 @@ MonoBehaviour:
     PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: <GameObject>
-    ObjectType: 1
-    InstanceId: 278
-    ParentId: 209
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -100.488815, y: -12.32164}
-    DisplayOption: 1
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
-    IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
+    IconGUID: 
     Tooltip: 
     ExecutionPriority: 278
-    LayoutPriority: -2621
+    LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 279
-    ParentId: 278
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13929,8 +13924,8 @@ MonoBehaviour:
     ExecutionPriority: 279
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 401
-    InitialValueArchive: '{12:InitialValue1:O1:6}'
+    PortIndex: -1
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: <GameObject>
     ObjectType: 1
@@ -13947,7 +13942,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 280
-    LayoutPriority: -989
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -13972,34 +13967,32 @@ MonoBehaviour:
     PortIndex: 401
     InitialValueArchive: '{12:InitialValue1:O1:5}'
     IsEntryState: 0
-  - RawName: <GameObject>
-    ObjectType: 1
-    InstanceId: 282
-    ParentId: 209
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -124.557022, y: 41.1632233}
-    DisplayOption: 1
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
-    IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
+    IconGUID: 
     Tooltip: 
     ExecutionPriority: 282
-    LayoutPriority: -2621
+    LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 283
-    ParentId: 282
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14009,37 +14002,35 @@ MonoBehaviour:
     ExecutionPriority: 283
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 401
-    InitialValueArchive: '{12:InitialValue1:O1:7}'
+    PortIndex: -1
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: <GameObject>
-    ObjectType: 1
-    InstanceId: 284
-    ParentId: 209
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -113.950623, y: 17.7787018}
-    DisplayOption: 1
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
-    IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
+    IconGUID: 
     Tooltip: 
     ExecutionPriority: 284
-    LayoutPriority: -2621
+    LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 285
-    ParentId: 284
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14049,37 +14040,35 @@ MonoBehaviour:
     ExecutionPriority: 285
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 401
-    InitialValueArchive: '{12:InitialValue1:O1:8}'
+    PortIndex: -1
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: <GameObject>
-    ObjectType: 1
-    InstanceId: 286
-    ParentId: 209
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -93.5942993, y: -40.0757751}
-    DisplayOption: 1
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
-    IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
+    IconGUID: 
     Tooltip: 
     ExecutionPriority: 286
-    LayoutPriority: -2348
+    LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 287
-    ParentId: 286
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14089,20 +14078,19 @@ MonoBehaviour:
     ExecutionPriority: 287
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 401
-    InitialValueArchive: '{12:InitialValue1:O1:9}'
+    PortIndex: -1
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio<GameObject>
-    ObjectType: 101
-    InstanceId: 288
-    ParentId: 286
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    QualifiedType: 
     LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 2
+    DisplayOption: 0
     Scale: 1
-    MethodName: get_audio
+    MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
@@ -14112,14 +14100,13 @@ MonoBehaviour:
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio
-    ObjectType: 301
-    InstanceId: 289
-    ParentId: 288
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14129,17 +14116,16 @@ MonoBehaviour:
     ExecutionPriority: 289
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 290
-    ParentId: 288
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14148,18 +14134,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 290
     LayoutPriority: 0
-    SourceId: 287
-    PortIndex: 401
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio
-    ObjectType: 303
-    InstanceId: 291
-    ParentId: 286
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .277448118}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14168,21 +14153,20 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 291
     LayoutPriority: 0
-    SourceId: 289
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio<GameObject>
-    ObjectType: 101
-    InstanceId: 292
-    ParentId: 278
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    QualifiedType: 
     LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 2
+    DisplayOption: 0
     Scale: 1
-    MethodName: get_audio
+    MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
@@ -14192,14 +14176,13 @@ MonoBehaviour:
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio
-    ObjectType: 301
-    InstanceId: 293
-    ParentId: 292
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14209,17 +14192,16 @@ MonoBehaviour:
     ExecutionPriority: 293
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 294
-    ParentId: 292
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14228,18 +14210,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 294
     LayoutPriority: 0
-    SourceId: 279
-    PortIndex: 401
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio
-    ObjectType: 303
-    InstanceId: 295
-    ParentId: 278
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: 1}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14248,21 +14229,20 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 295
     LayoutPriority: 0
-    SourceId: 293
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio<GameObject>
-    ObjectType: 101
-    InstanceId: 296
-    ParentId: 284
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    QualifiedType: 
     LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 2
+    DisplayOption: 0
     Scale: 1
-    MethodName: get_audio
+    MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
@@ -14272,14 +14252,13 @@ MonoBehaviour:
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio
-    ObjectType: 301
-    InstanceId: 297
-    ParentId: 296
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14289,17 +14268,16 @@ MonoBehaviour:
     ExecutionPriority: 297
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 298
-    ParentId: 296
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14308,18 +14286,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 298
     LayoutPriority: 0
-    SourceId: 285
-    PortIndex: 401
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio
-    ObjectType: 303
-    InstanceId: 299
-    ParentId: 284
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: 0}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14328,21 +14305,20 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 299
     LayoutPriority: 0
-    SourceId: 297
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio<GameObject>
-    ObjectType: 101
-    InstanceId: 300
-    ParentId: 282
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    QualifiedType: 
     LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 2
+    DisplayOption: 0
     Scale: 1
-    MethodName: get_audio
+    MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
@@ -14352,14 +14328,13 @@ MonoBehaviour:
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio
-    ObjectType: 301
-    InstanceId: 301
-    ParentId: 300
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14369,17 +14344,16 @@ MonoBehaviour:
     ExecutionPriority: 301
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 302
-    ParentId: 300
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14388,18 +14362,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 302
     LayoutPriority: 0
-    SourceId: 283
-    PortIndex: 401
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: audio
-    ObjectType: 303
-    InstanceId: 303
-    ParentId: 282
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .0406120606}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14408,8 +14381,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 303
     LayoutPriority: 0
-    SourceId: 301
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: audio<GameObject>
@@ -14518,10 +14491,6 @@ MonoBehaviour:
   - {fileID: 1040831442}
   - {fileID: 1132090319}
   - {fileID: 1883784841}
-  - {fileID: 1326592496}
-  - {fileID: 463258746}
-  - {fileID: 6526543}
-  - {fileID: 131911127}
   EngineObject:
     RawName: 
     ObjectType: 10000
