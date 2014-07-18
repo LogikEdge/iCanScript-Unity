@@ -3,17 +3,27 @@ using System.Collections;
 
 [iCS_Class(Company="iCanScript", Library="Math", HideClassFromLibrary=true)]
 public static class iCS_Math {
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static int     Add(int a, int b)         { return a+b; }
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static float   Add(float a, float b)     { return a+b; }
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector2 Add(Vector2 a, Vector2 b) { return a+b; }
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector3 Add(Vector3 a, Vector3 b) { return a+b; }
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector4 Add(Vector4 a, Vector4 b) { return a+b; }
+    [iCS_Function(Return="a+b",Icon="iCS_CalculatorIcon.psd")]
+        public static int     Add(int a, int b)         { return a+b; }
+    [iCS_Function(Return="a+b",Icon="iCS_CalculatorIcon.psd")]
+        public static float   Add(float a, float b)     { return a+b; }
+    [iCS_Function(Return="a+b",Icon="iCS_CalculatorIcon.psd")]
+        public static Vector2 Add(Vector2 a, Vector2 b) { return a+b; }
+    [iCS_Function(Return="a+b",Icon="iCS_CalculatorIcon.psd")]
+        public static Vector3 Add(Vector3 a, Vector3 b) { return a+b; }
+    [iCS_Function(Return="a+b",Icon="iCS_CalculatorIcon.psd")]
+        public static Vector4 Add(Vector4 a, Vector4 b) { return a+b; }
 
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static int     Sub(int a, int b)         { return a-b; }
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static float   Sub(float a, float b)     { return a-b; }
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector2 Sub(Vector2 a, Vector2 b) { return a-b; }
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector3 Sub(Vector3 a, Vector3 b) { return a-b; }
-    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector4 Sub(Vector4 a, Vector4 b) { return a-b; }
+    [iCS_Function(Return="a-b",Icon="iCS_CalculatorIcon.psd")]
+        public static int     Sub(int a, int b)         { return a-b; }
+    [iCS_Function(Return="a-b",Icon="iCS_CalculatorIcon.psd")]
+        public static float   Sub(float a, float b)     { return a-b; }
+    [iCS_Function(Return="a-b",Icon="iCS_CalculatorIcon.psd")]
+        public static Vector2 Sub(Vector2 a, Vector2 b) { return a-b; }
+    [iCS_Function(Return="a-b",Icon="iCS_CalculatorIcon.psd")]
+        public static Vector3 Sub(Vector3 a, Vector3 b) { return a-b; }
+    [iCS_Function(Return="a-b",Icon="iCS_CalculatorIcon.psd")]
+        public static Vector4 Sub(Vector4 a, Vector4 b) { return a-b; }
 
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static int     Mul(int a, int b)         { return a*b; }
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static float   Mul(float a, float b)     { return a*b; }
