@@ -135,5 +135,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             var x= r.x+0.5f*(r.width-remainingTimeMessageSize.x);
             GUI.Label(new Rect(x,r.yMax,remainingTimeMessageSize.x, remainingTimeMessageSize.y), myCached_RemainingTrialDaysMessage, style);
         }
+
+		// Show scroll position
+		var scrollPositionAsStr= ScrollPosition.ToString();
+		var scrollPositionAsGUIContent= new GUIContent(scrollPositionAsStr);
+		var scrollPositionSize= EditorStyles.label.CalcSize(scrollPositionAsGUIContent);
+		r= new Rect(position.width-scrollPositionSize.x, position.height-scrollPositionSize.y,
+			        scrollPositionSize.x, scrollPositionSize.y);
+		GUI.Label(r, scrollPositionAsGUIContent);
 	}
 }

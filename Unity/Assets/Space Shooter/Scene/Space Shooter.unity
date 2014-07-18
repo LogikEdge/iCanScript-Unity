@@ -2287,11 +2287,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 73
+  SelectedObject: 174
   ShowDisplayRootNode: 1
-  GuiScale: 1.74533737
-  ScrollPosition: {x: -2876.87549, y: -17.1799622}
-  UndoRedoId: 1571
+  GuiScale: .784760475
+  ScrollPosition: {x: -3210.8606, y: -184.53595}
+  UndoRedoId: 1580
   EngineObjects:
   - RawName: GameController::Behaviour
     ObjectType: 0
@@ -3613,7 +3613,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 67
-    LayoutPriority: 100
+    LayoutPriority: -3
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -3651,7 +3651,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 69
-    LayoutPriority: 100
+    LayoutPriority: 48
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -3670,7 +3670,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 70
-    LayoutPriority: 100
+    LayoutPriority: -56
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -3729,7 +3729,7 @@ MonoBehaviour:
     Tooltip: The transition package must evaluate to 'true' for the transition to
       fire.
     ExecutionPriority: 73
-    LayoutPriority: 100
+    LayoutPriority: 48
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -3845,7 +3845,7 @@ MonoBehaviour:
     Tooltip: The transition package must evaluate to 'true' for the transition to
       fire.
     ExecutionPriority: 79
-    LayoutPriority: 100
+    LayoutPriority: -4
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -3961,7 +3961,7 @@ MonoBehaviour:
     Tooltip: The transition package must evaluate to 'true' for the transition to
       fire.
     ExecutionPriority: 85
-    LayoutPriority: 100
+    LayoutPriority: 48
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -5635,7 +5635,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 171
-    LayoutPriority: 100
+    LayoutPriority: -3
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -5707,7 +5707,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_AccumulatorInt, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -245.0737, y: -126.731483}
+    LocalAnchorPosition: {x: -263.150238, y: -65.415741}
     DisplayOption: 1
     Scale: 1
     MethodName: .ctor
@@ -5766,7 +5766,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GUIText, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 281.226776, y: -65.5451279}
+    LocalAnchorPosition: {x: 263.150238, y: -4.22938538}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -5884,7 +5884,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_AccumulatorInt, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -217.05954, y: -55.2754135}
+    LocalAnchorPosition: {x: -235.136078, y: 6.04032898}
     DisplayOption: 0
     Scale: 1
     MethodName: Accumulate
@@ -5962,7 +5962,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_TypeCasts, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -49.6174011, y: 4.09999847}
+    LocalAnchorPosition: {x: -67.6939392, y: 65.415741}
     DisplayOption: 2
     Scale: 1
     MethodName: ToString
@@ -6019,7 +6019,7 @@ MonoBehaviour:
     ParentId: 174
     IsNameEditable: 1
     QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 64.1152649, y: -53.0015488}
+    LocalAnchorPosition: {x: 46.0387268, y: 8.31419373}
     DisplayOption: 1
     Scale: 1
     MethodName: Concat
@@ -6261,7 +6261,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 203
-    LayoutPriority: -371
+    LayoutPriority: -378
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -6301,7 +6301,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 205
-    LayoutPriority: -371
+    LayoutPriority: -378
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -6489,7 +6489,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -2791.60376, y: 297.806458}
+    LocalAnchorPosition: {x: -2787.78101, y: 241.738342}
     DisplayOption: 0
     Scale: 1
     MethodName: 

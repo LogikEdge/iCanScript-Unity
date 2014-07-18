@@ -59,26 +59,26 @@ public static partial class iCS_UserCommands {
     public static void AutoLayoutPort(iCS_EditorObject port) {
         if(port == null) return;
         var iStorage= port.IStorage;
-        var portPos= port.GlobalPosition;
-        // First layout from port to provider
-        var providerPort= iStorage.GetPointToPointProviderPortForConsumerPort(port);
-        if(providerPort != null && providerPort != port) {
-            var providerLayoutEndPoint= iStorage.GetProviderLineSegmentPosition(providerPort);
-            iStorage.AutoLayoutPort(providerPort, portPos, providerLayoutEndPoint);
-            iStorage.AutoLayoutOfPointToPointBindingExclusive(providerPort, port);
-        }
-        // Secondly, layout from port to consumer.
-        var consumerPorts= iStorage.GetPointToPointConsumerPortsForProviderPort(port);
-        if(consumerPorts != null) {
-            foreach(var consumerPort in consumerPorts) {
-                var consumerLayoutEndPoint= iStorage.GetConsumerLineSegmentPosition(consumerPort);
-                iStorage.AutoLayoutPort(consumerPort, portPos, consumerLayoutEndPoint);
-                iStorage.AutoLayoutOfPointToPointBindingExclusive(port, consumerPort);                
-            }
-        }
+        iStorage.AnimateGraph(null,
+            _=> {
+				iStorage.AutoLayoutPort(port);
+				iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+		    }
+		);
         // Save result.
-        if(IsLastTransactionOpened(iStorage)) {
-            CloseTransaction(iStorage, "AutoLayout Port => "+port.Name);
-        }
+        CloseTransaction(iStorage, "AutoLayout Port => "+port.Name);
+    }
+    // ----------------------------------------------------------------------
+    public static void AutoLayoutPortsOnNode(iCS_EditorObject node) {
+        if(node == null || !node.IsNode) return;
+        var iStorage= node.IStorage;
+        iStorage.AnimateGraph(null,
+            _=> {
+				iStorage.AutoLayoutPortOnNode(node);
+				iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+		    }
+		);
+        // Save result.
+        CloseTransaction(iStorage, "AutoLayout Ports on=> "+node.Name);
     }
 }

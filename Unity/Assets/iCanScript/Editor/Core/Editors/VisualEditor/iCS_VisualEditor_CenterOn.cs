@@ -88,7 +88,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     public void ReframeOn(iCS_EditorObject target, Vector2 targetPos) {
-        return;
 //        var initialScrollPosition= ScrollPosition;
 //        var initialScale= Scale;
 //        float deltaTime= Prefs.AnimationTime;
@@ -101,7 +100,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Display entire graph if it easily fits in viewport.
         var displayRootScale= ProposeViewportScalingFor(IStorage.DisplayRoot, 0f, 2f);
         if(Math3D.IsWithin(displayRootScale, 0.75f, 2f)) {
-            Debug.Log("Centering on Display Root");
             CenterAndScaleOn(IStorage.DisplayRoot);
 //            Scale= displayRootScale;
 //            pivot= IStorage.DisplayRoot.LayoutPosition;
@@ -123,13 +121,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Determine if we should rescale to fit the focus node.
         var newScale= ProposeViewportScalingFor(focusNode, 0.5f, 2f);
         if(Math3D.IsWithin(newScale, 0.5f, 2f)) {
-            Debug.Log("Centering on=> "+focusNode.Name);
-//            CenterAndScaleOn(focusNode);
-            ScaleOnPivot(focusNode.GlobalPosition, newScale);
+            CenterAndScaleOn(focusNode);
+//            ScaleOnPivot(focusNode.GlobalPosition, newScale);
 //            RepositionInViewport(focusNode);
             return;
         }
-        Debug.Log("Reframing on=> "+focusNode.Name);
 //        pivot= IStorage.DisplayRoot.LayoutPosition;
 //        initialScrollPosition= ScrollPosition + (Scale-initialScale)*pivot;
         Scale= newScale;

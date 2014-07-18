@@ -115,11 +115,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 82
+  SelectedObject: 0
   ShowDisplayRootNode: 1
   GuiScale: .823117793
-  ScrollPosition: {x: -403.548553, y: -1229.05835}
-  UndoRedoId: 2472
+  ScrollPosition: {x: -483.737305, y: -1144.13208}
+  UndoRedoId: 2482
   EngineObjects:
   - RawName: Asteroid::Behaviour
     ObjectType: 0
@@ -844,7 +844,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 178.907379, y: 30.3066788}
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 1
     Scale: 1
     MethodName: SendMessage
@@ -1444,7 +1444,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 66
-    LayoutPriority: 95
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1456,7 +1456,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Object, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 94.0082245, y: 65.8397827}
+    LocalAnchorPosition: {x: 94.0082245, y: 39.2800331}
     DisplayOption: 1
     Scale: 1
     MethodName: Instantiate
@@ -1556,7 +1556,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -94.0082245, y: 58.5748901}
+    LocalAnchorPosition: {x: -94.0082245, y: 32.0151405}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -1783,7 +1783,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 83
-    LayoutPriority: 93
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1998,7 +1998,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 94
-    LayoutPriority: -265
+    LayoutPriority: -276
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2275,7 +2275,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 108
-    LayoutPriority: 98
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2306,7 +2306,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 80.4057617, y: -12.7202835}
+    LocalAnchorPosition: {x: 80.4057617, y: -39.2800331}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -2878,7 +2878,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 139
-    LayoutPriority: -264
+    LayoutPriority: -275
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 

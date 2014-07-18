@@ -85,7 +85,6 @@ public partial class iCS_EditorObject {
         }
         var childNodes= BuildListOfChildNodes(_ => true);
         var childRects= P.map(n => BuildRect(n.LocalPosition, n.LocalSize), childNodes);
-        var childGlobalPositions= P.map(n => n.GlobalPosition, childNodes);
         // WrapAroundChildRects(childRects);
         var totalChildRect= GetRectWithMargins(childRects);
         var parentRect= NodeRectFromChildrenRectWithMargins(totalChildRect);

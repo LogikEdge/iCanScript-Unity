@@ -8,9 +8,15 @@ public static partial class iCS_UserCommands {
         if(obj == null || !obj.IsNode) return;
         var iStorage= obj.IStorage;
         if(iStorage.DisplayRoot == obj) return;
+		// The display root must be a package with visible children capabilities.
+		var newDisplayRoot= obj;
+		while(newDisplayRoot != null && (!newDisplayRoot.IsKindOfPackage || newDisplayRoot.IsInstanceNode)) {
+			newDisplayRoot= newDisplayRoot.ParentNode;
+		}
+		if(newDisplayRoot == null) return;
         iStorage.SaveNavigationState();
-        iStorage.DisplayRoot= obj;
-        iStorage.ForcedRelayoutOfTree(obj);
+        iStorage.DisplayRoot= newDisplayRoot;
+        iStorage.ForcedRelayoutOfTree(newDisplayRoot);
         iStorage.ResetAllAnimationPositions();
         SendDisplayRootChange(iStorage);
         iStorage.SaveStorage();

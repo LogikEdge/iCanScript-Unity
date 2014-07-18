@@ -163,10 +163,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
             // Layout
             case KeyCode.L: {
-                if(SelectedObject != null && SelectedObject.IsDataOrControlPort) {
-                    iCS_UserCommands.AutoLayoutPort(SelectedObject);
-                    Event.current.Use();                    
-                }
+                if(SelectedObject != null) {
+	                if(SelectedObject.IsDataOrControlPort) {
+	                    iCS_UserCommands.AutoLayoutPort(SelectedObject);
+	                    Event.current.Use();                    
+						break;
+	                }
+					if(SelectedObject.IsNode) {
+						iCS_UserCommands.AutoLayoutPortsOnNode(SelectedObject);
+	                    Event.current.Use();                    
+						break;
+					}
+				}
                 break;
             }
             // Wrap in package

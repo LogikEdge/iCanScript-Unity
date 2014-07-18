@@ -8,12 +8,16 @@ public partial class iCS_IStorage {
         NavigationHistory.Save(Storage);
     }
     public void ReloadFromBackwardNavigationHistory() {
+		DisplayRoot.WrappingOffset= Vector2.zero;
         DisplayRoot.ReduceChildrenAnchorPosition();
         NavigationHistory.ReloadFromBackwardHistory(Storage);
+		DisplayRoot.WrappingOffset= Vector2.zero;
         ForcedRelayoutOfTree(DisplayRoot);
     }
     public void ReloadFromForwardNavigationHistory() {
+		DisplayRoot.WrappingOffset= Vector2.zero;
         NavigationHistory.ReloadFromForwardHistory(Storage);
+		DisplayRoot.WrappingOffset= Vector2.zero;
         ForcedRelayoutOfTree(DisplayRoot);
     }
     public bool HasBackwardNavigationHistory {
@@ -23,8 +27,10 @@ public partial class iCS_IStorage {
         get { return NavigationHistory.HasForwardHistory; }
     }
     public void ClearNavigationHistory() {
+		DisplayRoot.WrappingOffset= Vector2.zero;
         NavigationHistory.Clear();
         DisplayRoot= EditorObjects[0];
+		DisplayRoot.WrappingOffset= Vector2.zero;
         ForcedRelayoutOfTree(DisplayRoot);
     }
 }
