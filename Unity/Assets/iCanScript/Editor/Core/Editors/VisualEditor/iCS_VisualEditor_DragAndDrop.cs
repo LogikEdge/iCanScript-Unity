@@ -82,7 +82,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
                 if(iCS_Types.IsA<GameObject>(dragObjType) && PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
-                    ShowNotification(new GUIContent("Unity does not allow bindings of a GameObject to a Prefab.\nPlease bind your GameObject in the specific Prefab instance."));
+                    ShowNotification(new GUIContent("Unity does not allow binding a GameObject to a Prefab.\nPlease bind your GameObject in the specific Prefab instance."));
                     return;
                 }
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
@@ -122,7 +122,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Allow dropping Unity object in modules.
                 if(eObj.IsKindOfPackage && draggedObject is GameObject) {
                     GameObject gameObject= draggedObject as GameObject;
-                    iCS_UserCommands.CreateGameObject(gameObject, eObj, GraphMousePosition);
+                    var instance= iCS_UserCommands.CreateGameObject(gameObject, eObj, GraphMousePosition);
+                    if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
+                        ShowNotification(new GUIContent("Unity does not allow binding a GameObject to a Prefab.\nThe GameObject will be added but the binding will be removed !!!"));
+                        var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
+                        if(thisPort != null) {
+                            thisPort.PortValue= null;
+                        }
+                    }
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.AcceptDrag();
                     return;
