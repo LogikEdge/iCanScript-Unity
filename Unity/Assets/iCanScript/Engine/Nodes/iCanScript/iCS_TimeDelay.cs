@@ -18,17 +18,17 @@ public class iCS_TimeDelay {
         myTriggerType   = triggerType;
         myOutputType    = outputControl;
     }
-    [iCS_Function]
-    public bool Delay(float delayTime, bool trigger) {
+    [iCS_Function(Return="output")]
+    public bool Delay(float delayTime, bool startTrigger) {
         switch(myTriggerType) {
             case TriggerType.TriggerOnTrueState: {
                 // Restart delay.
-                if(trigger == true) {
+                if(startTrigger == true) {
                     if(myState == false) {
                         myElapseTime= Time.time+delayTime;
                         myIsArmed= true;
                     }
-                    myState= trigger;
+                    myState= startTrigger;
                     if(Time.time >= myElapseTime) {
                         if(myOutputType == OutputType.ContinuousState) {
                             return true;
@@ -40,18 +40,18 @@ public class iCS_TimeDelay {
                         return false;
                     }
                 }
-                myState= trigger;
+                myState= startTrigger;
                 return false;
             }
             case TriggerType.TriggerOnFalseState: {
-                trigger ^= true;
+                startTrigger ^= true;
                 myState ^= true;
-                if(trigger == true) {
+                if(startTrigger == true) {
                     if(myState == false) {
                         myElapseTime= Time.time+delayTime;
                         myIsArmed= true;
                     }
-                    myState= trigger ^ true;
+                    myState= startTrigger ^ true;
                     if(Time.time >= myElapseTime) {
                         if(myOutputType == OutputType.ContinuousState) {
                             return true;
@@ -63,21 +63,21 @@ public class iCS_TimeDelay {
                         return false;
                     }
                 }
-                myState= trigger ^ true;
+                myState= startTrigger ^ true;
                 return false;
             }
             case TriggerType.TriggerOnFalseToTrueEdge: {
                 // Restart delay.
-                if(trigger == true && myState == false) {
+                if(startTrigger == true && myState == false) {
                     myElapseTime= Time.time+delayTime;
                     myIsArmed= true;
                 }
                 if(myOutputType == OutputType.ContinuousState) {
-                    if(trigger == false) {
+                    if(startTrigger == false) {
                         myIsArmed= false;
                     }
                 }
-                myState= trigger;
+                myState= startTrigger;
                 if(myIsArmed == true && Time.time >= myElapseTime) {
                     if(myOutputType == OutputType.ContinuousState) {
                         return true;
@@ -90,19 +90,19 @@ public class iCS_TimeDelay {
                 return false;
             }
             case TriggerType.TriggerOnTrueToFalseEdge: {
-                trigger ^= true;
+                startTrigger ^= true;
                 myState ^= true;
                 // Restart delay.
-                if(trigger == true && myState == false) {
+                if(startTrigger == true && myState == false) {
                     myElapseTime= Time.time+delayTime;
                     myIsArmed= true;
                 }
                 if(myOutputType == OutputType.ContinuousState) {
-                    if(trigger == false) {
+                    if(startTrigger == false) {
                         myIsArmed= false;
                     }
                 }
-                myState= trigger ^ true;
+                myState= startTrigger ^ true;
                 if(myIsArmed == true && Time.time >= myElapseTime) {
                     if(myOutputType == OutputType.ContinuousState) {
                         return true;
