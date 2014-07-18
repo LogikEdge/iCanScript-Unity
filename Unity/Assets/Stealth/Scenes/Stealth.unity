@@ -1059,7 +1059,7 @@ MeshFilter:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 30552873}
@@ -1076,7 +1076,7 @@ GameObject:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 30552872}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -1.62920685e-07}
   m_LocalPosition: {x: -23, y: 1.79999995, z: 24}
@@ -1090,7 +1090,7 @@ Renderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 2300004, guid: 7f0fcc815486a4308bc1473eef94d2de,
     type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 30552872}
   m_Enabled: 1
   m_CastShadows: 1
@@ -1111,7 +1111,7 @@ MeshFilter:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 3300004, guid: 7f0fcc815486a4308bc1473eef94d2de,
     type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 30552872}
   m_Mesh: {fileID: 4300006, guid: 1cc01168159cbaa4bb0b2963c8e36da0, type: 3}
 --- !u!1 &32761101
@@ -6261,11 +6261,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: -1
+  SelectedObject: 63
   ShowDisplayRootNode: 1
-  GuiScale: 1
-  ScrollPosition: {x: 0, y: 0}
-  UndoRedoId: 0
+  GuiScale: 1.11086726
+  ScrollPosition: {x: 126.347519, y: 37.6359634}
+  UndoRedoId: 258
   EngineObjects:
   - RawName: fx_laserFence_lasers_001::Behaviour
     ObjectType: 0
@@ -6282,7 +6282,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 0
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -6302,7 +6302,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 1
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -6334,7 +6334,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00100000005}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -6354,7 +6354,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00200000009}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -6374,7 +6374,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 2, y: .569853306}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -6394,7 +6394,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 4, y: .377521515}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -6414,7 +6414,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00500000035}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -6434,7 +6434,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.BoxCollider, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00700000068}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -6453,7 +6453,7 @@ MonoBehaviour:
     ParentId: 1
     IsNameEditable: 0
     QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00900000054}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -6465,6 +6465,1143 @@ MonoBehaviour:
     SourceId: -1
     PortIndex: 6
     InitialValueArchive: '{12:InitialValue1:S8:Untagged}'
+    IsEntryState: 0
+  - RawName: Delay<TimeDelay>
+    ObjectType: 101
+    InstanceId: 10
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -50.3588562, y: 8.50001526}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: Delay
+    NbOfParams: 2
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 10
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: delayTime
+    ObjectType: 300
+    InstanceId: 11
+    ParentId: 10
+    IsNameEditable: 1
+    QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .00100000005}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 11
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:f1:1}'
+    IsEntryState: 0
+  - RawName: trigger
+    ObjectType: 300
+    InstanceId: 12
+    ParentId: 10
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 4, y: .532383442}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 12
+    LayoutPriority: 0
+    SourceId: 59
+    PortIndex: 1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: :bool
+    ObjectType: 301
+    InstanceId: 13
+    ParentId: 10
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 13
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: TimeDelay Instance
+    ObjectType: 300
+    InstanceId: 14
+    ParentId: 10
+    IsNameEditable: 1
+    QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .509371281}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 14
+    LayoutPriority: 0
+    SourceId: 66
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: InstanceBuilder<TimeDelay>
+    ObjectType: 100
+    InstanceId: 15
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -219.666016, y: -94.3470001}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: .ctor
+    NbOfParams: 2
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 15
+    LayoutPriority: 97
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: triggerType
+    ObjectType: 300
+    InstanceId: 16
+    ParentId: 15
+    IsNameEditable: 1
+    QualifiedType: TriggerType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 16
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue13:TriggerType!!55:{7:Numeric1:i1:2}{4:Name1:S24:TriggerOnFalseToTrueEdge}}'
+    IsEntryState: 0
+  - RawName: outputControl
+    ObjectType: 300
+    InstanceId: 17
+    ParentId: 15
+    IsNameEditable: 1
+    QualifiedType: OutputType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 17
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue12:OutputType!!42:{7:Numeric1:i1:0}{4:Name1:S11:SinglePulse}}'
+    IsEntryState: 0
+  - RawName: TimeDelay Instance
+    ObjectType: 301
+    InstanceId: 18
+    ParentId: 15
+    IsNameEditable: 1
+    QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .536596298}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 18
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: BeamOff
+    ObjectType: 1
+    InstanceId: 19
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 27.9544678, y: 127.241028}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 19
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: trigger
+    ObjectType: 309
+    InstanceId: 20
+    ParentId: 19
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 20
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 1000
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: enable
+    ObjectType: 308
+    InstanceId: 21
+    ParentId: 19
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .0933658034}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 21
+    LayoutPriority: 0
+    SourceId: 53
+    PortIndex: 1001
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: enabled<MeshRenderer>
+    ObjectType: 101
+    InstanceId: 22
+    ParentId: 19
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 226.785217, y: 18.8646622}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: set_enabled
+    NbOfParams: 1
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 22
+    LayoutPriority: -785
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: value
+    ObjectType: 300
+    InstanceId: 23
+    ParentId: 22
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 23
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:b1:F}'
+    IsEntryState: 0
+  - RawName: MeshRenderer Instance
+    ObjectType: 300
+    InstanceId: 24
+    ParentId: 22
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .40197134}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 24
+    LayoutPriority: 0
+    SourceId: 25
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: MeshRenderer Instance
+    ObjectType: 302
+    InstanceId: 25
+    ParentId: 19
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .250367701}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 25
+    LayoutPriority: 0
+    SourceId: 6
+    PortIndex: 0
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: enabled<Light>
+    ObjectType: 101
+    InstanceId: 26
+    ParentId: 19
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 391.295715, y: 23.6222076}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: set_enabled
+    NbOfParams: 1
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 26
+    LayoutPriority: -785
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: value
+    ObjectType: 300
+    InstanceId: 27
+    ParentId: 26
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .00100000005}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 27
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:b1:F}'
+    IsEntryState: 0
+  - RawName: Light Instance
+    ObjectType: 300
+    InstanceId: 28
+    ParentId: 26
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .493221253}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 28
+    LayoutPriority: 0
+    SourceId: 38
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: BeamOn
+    ObjectType: 1
+    InstanceId: 29
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 340.953217, y: -26.5164948}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 29
+    LayoutPriority: 97
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: trigger
+    ObjectType: 309
+    InstanceId: 30
+    ParentId: 29
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 4, y: .122027107}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 30
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 1000
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: enable
+    ObjectType: 308
+    InstanceId: 31
+    ParentId: 29
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .695772469}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 31
+    LayoutPriority: 0
+    SourceId: 13
+    PortIndex: 1001
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: MeshRenderer Instance
+    ObjectType: 302
+    InstanceId: 32
+    ParentId: 29
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .250367701}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 32
+    LayoutPriority: 0
+    SourceId: 6
+    PortIndex: 0
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: Light Instance
+    ObjectType: 302
+    InstanceId: 33
+    ParentId: 29
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 2, y: .502394378}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 33
+    LayoutPriority: 0
+    SourceId: 5
+    PortIndex: 1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: enabled<MeshRenderer>
+    ObjectType: 101
+    InstanceId: 34
+    ParentId: 29
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -82.2552185, y: -2.37878418}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: set_enabled
+    NbOfParams: 1
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 34
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: value
+    ObjectType: 300
+    InstanceId: 35
+    ParentId: 34
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 35
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:b1:T}'
+    IsEntryState: 0
+  - RawName: MeshRenderer Instance
+    ObjectType: 300
+    InstanceId: 36
+    ParentId: 34
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .40197134}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 36
+    LayoutPriority: 0
+    SourceId: 32
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: enabled<Light>
+    ObjectType: 101
+    InstanceId: 37
+    ParentId: 29
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 117.017929, y: -4.92719269}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: set_enabled
+    NbOfParams: 1
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 37
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: Light Instance
+    ObjectType: 302
+    InstanceId: 38
+    ParentId: 19
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 2, y: .43537879}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 38
+    LayoutPriority: 0
+    SourceId: 5
+    PortIndex: 1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: value
+    ObjectType: 300
+    InstanceId: 39
+    ParentId: 37
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .00100000005}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 39
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:b1:T}'
+    IsEntryState: 0
+  - RawName: Light Instance
+    ObjectType: 300
+    InstanceId: 40
+    ParentId: 37
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .500309527}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 40
+    LayoutPriority: 0
+    SourceId: 33
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: Start
+    ObjectType: 106
+    InstanceId: 41
+    ParentId: 0
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -484.444214, y: -280.807129}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 41
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: MonoBehaviour Instance
+    ObjectType: 300
+    InstanceId: 42
+    ParentId: 41
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 42
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: gameObject
+    ObjectType: 306
+    InstanceId: 43
+    ParentId: 41
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 43
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:O1:0}'
+    IsEntryState: 0
+  - RawName: transform
+    ObjectType: 306
+    InstanceId: 44
+    ParentId: 41
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 44
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue1:O1:1}'
+    IsEntryState: 0
+  - RawName: light
+    ObjectType: 306
+    InstanceId: 45
+    ParentId: 41
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 45
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 2
+    InitialValueArchive: '{12:InitialValue1:O1:2}'
+    IsEntryState: 0
+  - RawName: renderer
+    ObjectType: 306
+    InstanceId: 46
+    ParentId: 41
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 46
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 3
+    InitialValueArchive: '{12:InitialValue1:O1:3}'
+    IsEntryState: 0
+  - RawName: audio
+    ObjectType: 306
+    InstanceId: 47
+    ParentId: 41
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 47
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 4
+    InitialValueArchive: '{12:InitialValue1:O1:4}'
+    IsEntryState: 0
+  - RawName: collider
+    ObjectType: 306
+    InstanceId: 48
+    ParentId: 41
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.BoxCollider, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 48
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 5
+    InitialValueArchive: '{12:InitialValue1:O1:5}'
+    IsEntryState: 0
+  - RawName: tag
+    ObjectType: 306
+    InstanceId: 49
+    ParentId: 41
+    IsNameEditable: 0
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 49
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 6
+    InitialValueArchive: '{12:InitialValue1:S8:Untagged}'
+    IsEntryState: 0
+  - RawName: Delay<TimeDelay>
+    ObjectType: 101
+    InstanceId: 50
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -201.310211, y: 185.916611}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: Delay
+    NbOfParams: 2
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 50
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: delayTime
+    ObjectType: 300
+    InstanceId: 51
+    ParentId: 50
+    IsNameEditable: 1
+    QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 51
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:f1:3}'
+    IsEntryState: 0
+  - RawName: trigger
+    ObjectType: 300
+    InstanceId: 52
+    ParentId: 50
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 3, y: .707670271}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 52
+    LayoutPriority: 0
+    SourceId: 30
+    PortIndex: 1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: :bool
+    ObjectType: 301
+    InstanceId: 53
+    ParentId: 50
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: .0877151489}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 53
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: TimeDelay Instance
+    ObjectType: 300
+    InstanceId: 54
+    ParentId: 50
+    IsNameEditable: 1
+    QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .437862247}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 54
+    LayoutPriority: 0
+    SourceId: 18
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: Or<Boolean>
+    ObjectType: 102
+    InstanceId: 55
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -45.1478271, y: 83.7728119}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: Or
+    NbOfParams: 2
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 55
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: a
+    ObjectType: 503
+    InstanceId: 56
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .548221827}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 56
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 7
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: a
+    ObjectType: 300
+    InstanceId: 57
+    ParentId: 55
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 57
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:b1:F}'
+    IsEntryState: 0
+  - RawName: b
+    ObjectType: 300
+    InstanceId: 58
+    ParentId: 55
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: 1}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 58
+    LayoutPriority: 0
+    SourceId: 20
+    PortIndex: 1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: :bool
+    ObjectType: 301
+    InstanceId: 59
+    ParentId: 55
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 3, y: .772653937}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 59
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: trigger
+    ObjectType: 309
+    InstanceId: 60
+    ParentId: 41
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: 1}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 60
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 1000
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: a
+    ObjectType: 502
+    InstanceId: 61
+    ParentId: 56
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 61
+    LayoutPriority: 0
+    SourceId: 60
+    PortIndex: 0
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: a
+    ObjectType: 502
+    InstanceId: 62
+    ParentId: 56
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 62
+    LayoutPriority: 0
+    SourceId: 56
+    PortIndex: 1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: InstanceBuilder<TimeDelay>
+    ObjectType: 100
+    InstanceId: 63
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -41.374054, y: -112.020035}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: .ctor
+    NbOfParams: 2
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 63
+    LayoutPriority: -6
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: triggerType
+    ObjectType: 300
+    InstanceId: 64
+    ParentId: 63
+    IsNameEditable: 1
+    QualifiedType: TriggerType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 64
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue13:TriggerType!!55:{7:Numeric1:i1:2}{4:Name1:S24:TriggerOnFalseToTrueEdge}}'
+    IsEntryState: 0
+  - RawName: outputControl
+    ObjectType: 300
+    InstanceId: 65
+    ParentId: 63
+    IsNameEditable: 1
+    QualifiedType: OutputType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 65
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue12:OutputType!!42:{7:Numeric1:i1:0}{4:Name1:S11:SinglePulse}}'
+    IsEntryState: 0
+  - RawName: TimeDelay Instance
+    ObjectType: 301
+    InstanceId: 66
+    ParentId: 63
+    IsNameEditable: 1
+    QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .491302341}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 66
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 0
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
     IsEntryState: 0
   UnityObjects:
   - {fileID: 209042137}
@@ -7140,54 +8277,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 1734261788}
   m_GameObject: {fileID: 241841761}
   m_Mesh: {fileID: 4300890, guid: 8a2d23da643cb0d4a9ca6c6f1fffa66b, type: 3}
---- !u!1001 &242194824
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-      propertyPath: m_RootMapOrder
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-      propertyPath: m_RootOrder
-      value: 13
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-  m_RootGameObject: {fileID: 1471482060}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &243318350
 GameObject:
   m_ObjectHideFlags: 0
@@ -11136,11 +12225,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 0
+  SelectedObject: 157
   ShowDisplayRootNode: 1
-  GuiScale: .82412684
-  ScrollPosition: {x: -150.475677, y: 337.36322}
-  UndoRedoId: 1537
+  GuiScale: 1.70641744
+  ScrollPosition: {x: -14.4259157, y: -110.837982}
+  UndoRedoId: 1539
   EngineObjects:
   - RawName: GameController::Behaviour
     ObjectType: 0
@@ -11475,7 +12564,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 16
-    LayoutPriority: 17
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -13524,7 +14613,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 121
-    LayoutPriority: 94
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -14227,7 +15316,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 157
-    LayoutPriority: 17
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -14384,7 +15473,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 165
-    LayoutPriority: 97
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -14443,7 +15532,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 168
-    LayoutPriority: 97
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -15200,7 +16289,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 207
-    LayoutPriority: 97
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -15239,7 +16328,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 209
-    LayoutPriority: 97
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -15278,7 +16367,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 211
-    LayoutPriority: 82
+    LayoutPriority: 80
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -15458,7 +16547,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 220
-    LayoutPriority: 61
+    LayoutPriority: 57
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -15618,7 +16707,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 228
-    LayoutPriority: 55
+    LayoutPriority: 51
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -15814,7 +16903,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 238
-    LayoutPriority: 56
+    LayoutPriority: 52
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -15952,7 +17041,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 245
-    LayoutPriority: 78
+    LayoutPriority: 76
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -15992,7 +17081,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 247
-    LayoutPriority: 78
+    LayoutPriority: 76
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -16368,7 +17457,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 266
-    LayoutPriority: 78
+    LayoutPriority: 76
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32477,7 +33566,7 @@ MeshFilter:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100004, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 908934189}
@@ -32494,7 +33583,7 @@ GameObject:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400004, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 908934188}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 9.61303726e-07, y: .0389810689, z: .228045136}
@@ -32508,7 +33597,7 @@ Renderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 2300002, guid: 7f0fcc815486a4308bc1473eef94d2de,
     type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 908934188}
   m_Enabled: 1
   m_CastShadows: 1
@@ -32529,7 +33618,7 @@ MeshFilter:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 3300002, guid: 7f0fcc815486a4308bc1473eef94d2de,
     type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 908934188}
   m_Mesh: {fileID: 4300008, guid: 1cc01168159cbaa4bb0b2963c8e36da0, type: 3}
 --- !u!1 &912490566
@@ -34634,365 +35723,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 1734261788}
   m_GameObject: {fileID: 1017294877}
   m_Mesh: {fileID: 4300614, guid: 8a2d23da643cb0d4a9ca6c6f1fffa66b, type: 3}
---- !u!1001 &1023595678
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: UnityObjects.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -23
-      objectReference: {fileID: 0}
-    - target: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1.79999995
-      objectReference: {fileID: 0}
-    - target: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: -1.62920685e-07
-      objectReference: {fileID: 0}
-    - target: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_RootMapOrder
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 400006, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: .258819073
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: .965925813
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 1.79999995
-      objectReference: {fileID: 0}
-    - target: {fileID: 10800000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_Intensity
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 10800000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: GuiScale
-      value: 1.78038836
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: ScrollPosition.x
-      value: 231.911682
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: ScrollPosition.y
-      value: 219.598511
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: UndoRedoId
-      value: 426
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[55].DisplayOption
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: SelectedObject
-      value: 55
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[39].LayoutPriority
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].RawName
-      value: <GameObject>
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].ObjectType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].InstanceId
-      value: 48
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].ParentId
-      value: 55
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].IsNameEditable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].QualifiedType
-      value: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].LocalAnchorPosition.x
-      value: 5.36100769
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].LocalAnchorPosition.y
-      value: -46.621109
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].DisplayOption
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].IconGUID
-      value: 57f8552ca6192465588f9cfc7a32a4ff
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[48].LayoutPriority
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[54].RawName
-      value: GameObject Instance
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[54].ObjectType
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[54].InstanceId
-      value: 54
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[54].ParentId
-      value: 48
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[54].IsNameEditable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[54].QualifiedType
-      value: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[54].LocalAnchorPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[54].PortIndex
-      value: 401
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[55].LayoutPriority
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[57].RawName
-      value: transform<GameObject>
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[57].ObjectType
-      value: 101
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[57].InstanceId
-      value: 57
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[57].ParentId
-      value: 48
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[57].QualifiedType
-      value: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[57].DisplayOption
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[57].MethodName
-      value: get_transform
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[58].RawName
-      value: transform
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[58].ObjectType
-      value: 301
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[58].InstanceId
-      value: 58
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[58].ParentId
-      value: 57
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[58].QualifiedType
-      value: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[58].LocalAnchorPosition.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[58].PortIndex
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[59].RawName
-      value: GameObject Instance
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[59].ObjectType
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[59].InstanceId
-      value: 59
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[59].ParentId
-      value: 57
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[59].QualifiedType
-      value: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[59].LocalAnchorPosition.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[59].SourceId
-      value: 54
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[59].PortIndex
-      value: 401
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].RawName
-      value: transform
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].ObjectType
-      value: 303
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].InstanceId
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].ParentId
-      value: 48
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].IsNameEditable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].QualifiedType
-      value: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].LocalAnchorPosition.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].LocalAnchorPosition.y
-      value: .48405692
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].SourceId
-      value: 58
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[60].PortIndex
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[63].SourceId
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[70].LayoutPriority
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[76].LayoutPriority
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[20].LayoutPriority
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[54].InitialValueArchive
-      value: '{12:InitialValue1:O1:4}'
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[61].LayoutPriority
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[66].LayoutPriority
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: UnityObjects.Array.data[4]
-      value: 
-      objectReference: {fileID: 2085748516}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[63].LocalAnchorPosition.y
-      value: .512909532
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[61].LocalAnchorPosition.x
-      value: -5.36100769
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-      propertyPath: EngineObjects.Array.data[61].LocalAnchorPosition.y
-      value: 46.621109
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 11100000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_ParentPrefab: {fileID: 100100000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_RootGameObject: {fileID: 30552872}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &1026243283
 GameObject:
   m_ObjectHideFlags: 0
@@ -36964,8 +37694,8 @@ MeshFilter:
 --- !u!1 &1092477886
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1318504437}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1092477887}
@@ -36983,8 +37713,8 @@ GameObject:
 --- !u!4 &1092477887
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400000, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1318504437}
   m_GameObject: {fileID: 1092477886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: .150000006, z: .349999994}
@@ -36995,9 +37725,8 @@ Transform:
 --- !u!114 &1092477888
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400000, guid: 7f0fcc815486a4308bc1473eef94d2de,
-    type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1318504437}
   m_GameObject: {fileID: 1092477886}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -37007,9 +37736,9 @@ MonoBehaviour:
   DisplayRoot: 0
   SelectedObject: 55
   ShowDisplayRootNode: 1
-  GuiScale: 1.78038836
-  ScrollPosition: {x: 231.911682, y: 219.598511}
-  UndoRedoId: 426
+  GuiScale: 1.34977162
+  ScrollPosition: {x: 479.016296, y: 147.17804}
+  UndoRedoId: 443
   EngineObjects:
   - RawName: prop_cctvCam_collision::Behaviour
     ObjectType: 0
@@ -37420,7 +38149,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 20
-    LayoutPriority: 100
+    LayoutPriority: 88
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -37797,7 +38526,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 39
-    LayoutPriority: 100
+    LayoutPriority: 96
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -37967,7 +38696,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 5.36100769, y: -46.621109}
+    LocalAnchorPosition: {x: 104.812943, y: -62.026741}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -38083,7 +38812,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .238986135}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -38104,14 +38833,14 @@ MonoBehaviour:
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     LocalAnchorPosition: {x: 193.579163, y: -27.4721375}
-    DisplayOption: 1
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 55
-    LayoutPriority: 100
+    LayoutPriority: 96
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -38202,7 +38931,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .48405692}
+    LocalAnchorPosition: {x: 4, y: .405872226}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -38262,7 +38991,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .512909532}
+    LocalAnchorPosition: {x: 3, y: .613841712}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -38330,7 +39059,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 66
-    LayoutPriority: 100
+    LayoutPriority: 88
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -38409,7 +39138,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 70
-    LayoutPriority: 100
+    LayoutPriority: 96
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -38528,7 +39257,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 76
-    LayoutPriority: 100
+    LayoutPriority: 96
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -38622,9 +39351,8 @@ MonoBehaviour:
 --- !u!114 &1092477889
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400002, guid: 7f0fcc815486a4308bc1473eef94d2de,
-    type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1318504437}
   m_GameObject: {fileID: 1092477886}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -38634,9 +39362,8 @@ MonoBehaviour:
 --- !u!108 &1092477890
 Light:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 10800000, guid: 7f0fcc815486a4308bc1473eef94d2de,
-    type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1318504437}
   m_GameObject: {fileID: 1092477886}
   m_Enabled: 1
   serializedVersion: 3
@@ -38670,9 +39397,8 @@ Light:
 --- !u!64 &1092477891
 MeshCollider:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 6400000, guid: 7f0fcc815486a4308bc1473eef94d2de,
-    type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1318504437}
   m_GameObject: {fileID: 1092477886}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -40046,7 +40772,7 @@ MeshFilter:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100002, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1208947469}
@@ -40064,7 +40790,7 @@ Renderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 2300000, guid: 7f0fcc815486a4308bc1473eef94d2de,
     type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1208947466}
   m_Enabled: 1
   m_CastShadows: 1
@@ -40088,14 +40814,14 @@ MeshFilter:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 3300000, guid: 7f0fcc815486a4308bc1473eef94d2de,
     type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1208947466}
   m_Mesh: {fileID: 4300010, guid: 1cc01168159cbaa4bb0b2963c8e36da0, type: 3}
 --- !u!4 &1208947469
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400002, guid: 7f0fcc815486a4308bc1473eef94d2de, type: 2}
-  m_PrefabInternal: {fileID: 1023595678}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1208947466}
   m_LocalRotation: {x: .258819073, y: 0, z: 0, w: .965925813}
   m_LocalPosition: {x: .00266651926, y: .0495522209, z: 1.09863277e-06}
@@ -41947,6 +42673,54 @@ MeshFilter:
   m_PrefabInternal: {fileID: 1734261788}
   m_GameObject: {fileID: 1317493957}
   m_Mesh: {fileID: 4300866, guid: 8a2d23da643cb0d4a9ca6c6f1fffa66b, type: 3}
+--- !u!1001 &1318504437
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1208947469}
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
+      value: .150000006
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.z
+      value: .349999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_RootMapOrder
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: UnityObjects.Array.data[4]
+      value: 
+      objectReference: {fileID: 2085748516}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1092477886}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &1320039442
 GameObject:
   m_ObjectHideFlags: 0
@@ -44722,1764 +45496,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 1734261788}
   m_GameObject: {fileID: 1466156848}
   m_Mesh: {fileID: 4301072, guid: 8a2d23da643cb0d4a9ca6c6f1fffa66b, type: 3}
---- !u!1 &1471482060
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-  m_PrefabInternal: {fileID: 242194824}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1471482065}
-  - 64: {fileID: 1471482064}
-  - 108: {fileID: 1471482063}
-  - 114: {fileID: 1471482062}
-  - 114: {fileID: 1471482061}
-  m_Layer: 0
-  m_Name: prop_cctvCam_collision
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1471482061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400000, guid: 112675f4232b248199aa04d02d2b4065,
-    type: 2}
-  m_PrefabInternal: {fileID: 242194824}
-  m_GameObject: {fileID: 1471482060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a92a731f5194ed3bb6adfc09234bc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DisplayRoot: 0
-  SelectedObject: -1
-  ShowDisplayRootNode: 1
-  GuiScale: 1.31610429
-  ScrollPosition: {x: 818.596069, y: 141.426025}
-  UndoRedoId: 442
-  EngineObjects:
-  - RawName: prop_cctvCam_collision::Behaviour
-    ObjectType: 0
-    InstanceId: 0
-    ParentId: -1
-    IsNameEditable: 0
-    QualifiedType: iCS_VisualScriptImp, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 527.5, y: 303.5}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 0
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: OnTriggerStay
-    ObjectType: 106
-    InstanceId: 1
-    ParentId: 0
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -283.5, y: -116.5}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 1
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: colliderInfo
-    ObjectType: 300
-    InstanceId: 2
-    ParentId: 1
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00200000009}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 2
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: MonoBehaviour Instance
-    ObjectType: 300
-    InstanceId: 3
-    ParentId: 1
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00100000005}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 3
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: gameObject
-    ObjectType: 306
-    InstanceId: 4
-    ParentId: 1
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00300000003}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 4
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 1
-    InitialValueArchive: '{12:InitialValue1:O1:0}'
-    IsEntryState: 0
-  - RawName: transform
-    ObjectType: 306
-    InstanceId: 5
-    ParentId: 1
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00400000019}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 5
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 2
-    InitialValueArchive: '{12:InitialValue1:O1:1}'
-    IsEntryState: 0
-  - RawName: light
-    ObjectType: 306
-    InstanceId: 6
-    ParentId: 1
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00500000035}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 6
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 3
-    InitialValueArchive: '{12:InitialValue1:O1:2}'
-    IsEntryState: 0
-  - RawName: collider
-    ObjectType: 306
-    InstanceId: 7
-    ParentId: 1
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.MeshCollider, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00600000052}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 7
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 4
-    InitialValueArchive: '{12:InitialValue1:O1:3}'
-    IsEntryState: 0
-  - RawName: tag
-    ObjectType: 306
-    InstanceId: 8
-    ParentId: 1
-    IsNameEditable: 0
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .00700000068}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 8
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 5
-    InitialValueArchive: '{12:InitialValue1:S8:Untagged}'
-    IsEntryState: 0
-  - RawName: gameObject<Collider>
-    ObjectType: 101
-    InstanceId: 9
-    ParentId: 66
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -145.433746, y: -16.7055359}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: get_gameObject
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 9
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: gameObject
-    ObjectType: 301
-    InstanceId: 10
-    ParentId: 9
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .827105343}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 10
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Collider Instance
-    ObjectType: 300
-    InstanceId: 11
-    ParentId: 9
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 11
-    LayoutPriority: 0
-    SourceId: 69
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: tag<GameObject>
-    ObjectType: 101
-    InstanceId: 12
-    ParentId: 66
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 145.433746, y: -42.2375183}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: get_tag
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 12
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: tag
-    ObjectType: 301
-    InstanceId: 13
-    ParentId: 12
-    IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .39471966}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 13
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 14
-    ParentId: 12
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 14
-    LayoutPriority: 0
-    SourceId: 10
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: IsEqual<Conditions>
-    ObjectType: 102
-    InstanceId: 15
-    ParentId: 66
-    IsNameEditable: 1
-    QualifiedType: iCS_Conditions, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 135.99704, y: 42.2375183}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: IsEqual
-    NbOfParams: 3
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 15
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: value
-    ObjectType: 300
-    InstanceId: 16
-    ParentId: 15
-    IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .49032259}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 16
-    LayoutPriority: 0
-    SourceId: 13
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: bias
-    ObjectType: 300
-    InstanceId: 17
-    ParentId: 15
-    IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .00100000005}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 17
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 1
-    InitialValueArchive: '{12:InitialValue1:S6:Player}'
-    IsEntryState: 0
-  - RawName: Else
-    ObjectType: 301
-    InstanceId: 18
-    ParentId: 15
-    IsNameEditable: 1
-    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 18
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 2
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: If
-    ObjectType: 301
-    InstanceId: 19
-    ParentId: 15
-    IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .523174822}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 19
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: CheckRayCast
-    ObjectType: 1
-    InstanceId: 20
-    ParentId: 1
-    IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 100.717102, y: 251.189575}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 20
-    LayoutPriority: 82
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: enable
-    ObjectType: 308
-    InstanceId: 21
-    ParentId: 20
-    IsNameEditable: 0
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .221633509}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 21
-    LayoutPriority: 0
-    SourceId: 68
-    PortIndex: 1001
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Sub<Math>
-    ObjectType: 102
-    InstanceId: 22
-    ParentId: 70
-    IsNameEditable: 1
-    QualifiedType: iCS_Math, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 124.849991, y: -9.8374939}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: Sub
-    NbOfParams: 2
-    IconGUID: c061ea74f1fbc4712858574c63694748
-    Tooltip: 
-    ExecutionPriority: 22
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: a
-    ObjectType: 300
-    InstanceId: 23
-    ParentId: 22
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00100000005}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 23
-    LayoutPriority: 0
-    SourceId: 27
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: b
-    ObjectType: 300
-    InstanceId: 24
-    ParentId: 22
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .346153855}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 24
-    LayoutPriority: 0
-    SourceId: 32
-    PortIndex: 1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: :Vector3
-    ObjectType: 301
-    InstanceId: 25
-    ParentId: 22
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .357254922}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 25
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: position<Transform>
-    ObjectType: 101
-    InstanceId: 26
-    ParentId: 70
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -124.849976, y: -32.8572693}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: get_position
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 26
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: position
-    ObjectType: 301
-    InstanceId: 27
-    ParentId: 26
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: 1}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 27
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Transform Instance
-    ObjectType: 300
-    InstanceId: 28
-    ParentId: 26
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 28
-    LayoutPriority: 0
-    SourceId: 72
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Transform Instance
-    ObjectType: 302
-    InstanceId: 29
-    ParentId: 20
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .251193345}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 29
-    LayoutPriority: 0
-    SourceId: 5
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: GetPosition<GameObject>
-    ObjectType: 102
-    InstanceId: 30
-    ParentId: 70
-    IsNameEditable: 1
-    QualifiedType: iCS_GameObject, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 84.8500061, y: -89.3752441}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: GetPosition
-    NbOfParams: 1
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 30
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: gameObject
-    ObjectType: 300
-    InstanceId: 31
-    ParentId: 30
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 31
-    LayoutPriority: 0
-    SourceId: 73
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 301
-    InstanceId: 32
-    ParentId: 30
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .924627721}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 32
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: gameObject
-    ObjectType: 302
-    InstanceId: 33
-    ParentId: 20
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .287707895}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 33
-    LayoutPriority: 0
-    SourceId: 67
-    PortIndex: 1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Raycast<Physics>
-    ObjectType: 102
-    InstanceId: 34
-    ParentId: 70
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Physics, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 107.349991, y: 89.3752441}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: Raycast
-    NbOfParams: 3
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 34
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: origin
-    ObjectType: 300
-    InstanceId: 35
-    ParentId: 34
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00100000005}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 35
-    LayoutPriority: 0
-    SourceId: 27
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: direction
-    ObjectType: 300
-    InstanceId: 36
-    ParentId: 34
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .402877688}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 36
-    LayoutPriority: 0
-    SourceId: 25
-    PortIndex: 1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: hitInfo
-    ObjectType: 301
-    InstanceId: 37
-    ParentId: 34
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.RaycastHit&, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: 1}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 37
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 2
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: :bool
-    ObjectType: 301
-    InstanceId: 38
-    ParentId: 34
-    IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .516125083}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 38
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 1
-    InstanceId: 39
-    ParentId: 20
-    IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 150.363525, y: -25.1865692}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 39
-    LayoutPriority: 97
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: enable
-    ObjectType: 308
-    InstanceId: 40
-    ParentId: 39
-    IsNameEditable: 0
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .547834396}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 40
-    LayoutPriority: 0
-    SourceId: 75
-    PortIndex: 1001
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: collider<RaycastHit>
-    ObjectType: 101
-    InstanceId: 41
-    ParentId: 76
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.RaycastHit, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -98.4747314, y: -41.1366577}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: get_collider
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 41
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: collider
-    ObjectType: 301
-    InstanceId: 42
-    ParentId: 41
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .616883099}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 42
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: RaycastHit Instance
-    ObjectType: 300
-    InstanceId: 43
-    ParentId: 41
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.RaycastHit, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 43
-    LayoutPriority: 0
-    SourceId: 77
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: RaycastHit Instance
-    ObjectType: 302
-    InstanceId: 44
-    ParentId: 39
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.RaycastHit&, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .72538656}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 44
-    LayoutPriority: 0
-    SourceId: 71
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: tag<Collider>
-    ObjectType: 101
-    InstanceId: 45
-    ParentId: 76
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -81.4747314, y: 38.6383667}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: get_tag
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 45
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: tag
-    ObjectType: 301
-    InstanceId: 46
-    ParentId: 45
-    IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 46
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Collider Instance
-    ObjectType: 300
-    InstanceId: 47
-    ParentId: 45
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .470085472}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 47
-    LayoutPriority: 0
-    SourceId: 42
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: <GameObject>
-    ObjectType: 1
-    InstanceId: 48
-    ParentId: 55
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 27.7349243, y: -28.1798096}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
-    Tooltip: 
-    ExecutionPriority: 48
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: IsEqual<Conditions>
-    ObjectType: 102
-    InstanceId: 49
-    ParentId: 76
-    IsNameEditable: 1
-    QualifiedType: iCS_Conditions, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 98.4747314, y: 41.1366577}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: IsEqual
-    NbOfParams: 3
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 49
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: value
-    ObjectType: 300
-    InstanceId: 50
-    ParentId: 49
-    IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 50
-    LayoutPriority: 0
-    SourceId: 46
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: bias
-    ObjectType: 300
-    InstanceId: 51
-    ParentId: 49
-    IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 51
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 1
-    InitialValueArchive: '{12:InitialValue1:S6:Player}'
-    IsEntryState: 0
-  - RawName: Else
-    ObjectType: 301
-    InstanceId: 52
-    ParentId: 49
-    IsNameEditable: 1
-    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .00100000005}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 52
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 2
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: If
-    ObjectType: 301
-    InstanceId: 53
-    ParentId: 49
-    IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 53
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 54
-    ParentId: 48
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 54
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 401
-    InitialValueArchive: '{12:InitialValue1:O1:4}'
-    IsEntryState: 0
-  - RawName: set sighting
-    ObjectType: 1
-    InstanceId: 55
-    ParentId: 39
-    IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 193.579163, y: -27.4721375}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 55
-    LayoutPriority: 97
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: enable
-    ObjectType: 308
-    InstanceId: 56
-    ParentId: 55
-    IsNameEditable: 0
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .124668129}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 56
-    LayoutPriority: 0
-    SourceId: 78
-    PortIndex: 1001
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: transform<GameObject>
-    ObjectType: 101
-    InstanceId: 57
-    ParentId: 48
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 2
-    Scale: 1
-    MethodName: get_transform
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 57
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: transform
-    ObjectType: 301
-    InstanceId: 58
-    ParentId: 57
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 58
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: GameObject Instance
-    ObjectType: 300
-    InstanceId: 59
-    ParentId: 57
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 59
-    LayoutPriority: 0
-    SourceId: 54
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: transform
-    ObjectType: 303
-    InstanceId: 60
-    ParentId: 48
-    IsNameEditable: 0
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .456672341}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 60
-    LayoutPriority: 0
-    SourceId: 58
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: position<Transform>
-    ObjectType: 101
-    InstanceId: 61
-    ParentId: 55
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -16.1167679, y: 65.7657013}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: set_position
-    NbOfParams: 1
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 61
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: value
-    ObjectType: 300
-    InstanceId: 62
-    ParentId: 61
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .00974681508}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 62
-    LayoutPriority: 0
-    SourceId: 64
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Transform Instance
-    ObjectType: 300
-    InstanceId: 63
-    ParentId: 61
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .552402735}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 63
-    LayoutPriority: 0
-    SourceId: 60
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: value
-    ObjectType: 302
-    InstanceId: 64
-    ParentId: 55
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 64
-    LayoutPriority: 0
-    SourceId: 65
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: value
-    ObjectType: 302
-    InstanceId: 65
-    ParentId: 39
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .397192329}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 65
-    LayoutPriority: 0
-    SourceId: 74
-    PortIndex: 1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: isPlayer
-    ObjectType: 1
-    InstanceId: 66
-    ParentId: 1
-    IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -158.945679, y: 6.65985107}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 66
-    LayoutPriority: 82
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Player Instance
-    ObjectType: 302
-    InstanceId: 67
-    ParentId: 66
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .720627427}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 67
-    LayoutPriority: 0
-    SourceId: 10
-    PortIndex: 1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: enable
-    ObjectType: 303
-    InstanceId: 68
-    ParentId: 66
-    IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .124844745}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 68
-    LayoutPriority: 0
-    SourceId: 19
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Collider Instance
-    ObjectType: 302
-    InstanceId: 69
-    ParentId: 66
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 69
-    LayoutPriority: 0
-    SourceId: 2
-    PortIndex: 2
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Raycast Camera to Player
-    ObjectType: 1
-    InstanceId: 70
-    ParentId: 20
-    IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -252.928802, y: -42.7249069}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 70
-    LayoutPriority: 97
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: RaycastHit Instance
-    ObjectType: 303
-    InstanceId: 71
-    ParentId: 70
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.RaycastHit&, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .9052701}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 71
-    LayoutPriority: 0
-    SourceId: 37
-    PortIndex: 3
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Transform Instance
-    ObjectType: 302
-    InstanceId: 72
-    ParentId: 70
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 72
-    LayoutPriority: 0
-    SourceId: 29
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: gameObject
-    ObjectType: 302
-    InstanceId: 73
-    ParentId: 70
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .553544819}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 73
-    LayoutPriority: 0
-    SourceId: 33
-    PortIndex: 1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Player Position
-    ObjectType: 303
-    InstanceId: 74
-    ParentId: 70
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .408631116}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 74
-    LayoutPriority: 0
-    SourceId: 32
-    PortIndex: 2
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: enable
-    ObjectType: 303
-    InstanceId: 75
-    ParentId: 70
-    IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .833400011}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 75
-    LayoutPriority: 0
-    SourceId: 38
-    PortIndex: 4
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Is Player Line of Sight
-    ObjectType: 1
-    InstanceId: 76
-    ParentId: 39
-    IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 76
-    LayoutPriority: 97
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: RaycastHit Instance
-    ObjectType: 302
-    InstanceId: 77
-    ParentId: 76
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.RaycastHit, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 77
-    LayoutPriority: 0
-    SourceId: 44
-    PortIndex: 1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: enable
-    ObjectType: 303
-    InstanceId: 78
-    ParentId: 76
-    IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 78
-    LayoutPriority: 0
-    SourceId: 53
-    PortIndex: 0
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 0
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 80
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 0
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  UnityObjects:
-  - {fileID: 1471482060}
-  - {fileID: 1471482065}
-  - {fileID: 1471482063}
-  - {fileID: 1471482064}
-  - {fileID: 2085748516}
-  EngineObject:
-    RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 0
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  myStorage: {fileID: 0}
-  IsTraceEnabled: 0
---- !u!114 &1471482062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400002, guid: 112675f4232b248199aa04d02d2b4065,
-    type: 2}
-  m_PrefabInternal: {fileID: 242194824}
-  m_GameObject: {fileID: 1471482060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ab935dd31cd8458ebbccaf80c1c0917, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!108 &1471482063
-Light:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 10800000, guid: 112675f4232b248199aa04d02d2b4065,
-    type: 2}
-  m_PrefabInternal: {fileID: 242194824}
-  m_GameObject: {fileID: 1471482060}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Type: 0
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Intensity: 4
-  m_Range: 9.5
-  m_SpotAngle: 90
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 1
-    m_Resolution: -1
-    m_Strength: 1
-    m_Bias: .0500000007
-    m_Softness: 4
-    m_SoftnessFade: 1
-  m_Cookie: {fileID: 2800000, guid: f9833ba650dc4e04b8c38db3ca92396d, type: 3}
-  m_DrawHalo: 0
-  m_ActuallyLightmapped: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 0
-  m_ShadowSamples: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
-  m_IndirectIntensity: 1
-  m_AreaSize: {x: 1, y: 1}
---- !u!64 &1471482064
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 6400000, guid: 112675f4232b248199aa04d02d2b4065,
-    type: 2}
-  m_PrefabInternal: {fileID: 242194824}
-  m_GameObject: {fileID: 1471482060}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
-  m_Mesh: {fileID: 4300000, guid: bec7d2e42f9fe3547a5298f21c76bb15, type: 3}
---- !u!4 &1471482065
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400000, guid: 112675f4232b248199aa04d02d2b4065, type: 2}
-  m_PrefabInternal: {fileID: 242194824}
-  m_GameObject: {fileID: 1471482060}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
 --- !u!1 &1471731318
 GameObject:
   m_ObjectHideFlags: 0
