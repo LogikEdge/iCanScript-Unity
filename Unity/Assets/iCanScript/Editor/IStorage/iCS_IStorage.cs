@@ -26,6 +26,9 @@ public partial class iCS_IStorage {
     public iCS_IVisualScriptData PersistentStorage {
         get { return iCSMonoBehaviour; }
     }
+    public GameObject HostGameObject {
+        get { return iCSMonoBehaviour.gameObject; }
+    }
     public iCS_VisualScriptImp VisualScript {
         get {
             return iCSMonoBehaviour as iCS_VisualScriptImp;

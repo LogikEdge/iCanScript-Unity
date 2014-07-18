@@ -81,6 +81,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	        if(eObj.IsInputPort) {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
+                if(iCS_Types.IsA<GameObject>(dragObjType) && PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
+                    ShowNotification(new GUIContent("Unity does not allow bindings of a GameObject to a Prefab.\nPlease bind your GameObject in the specific Prefab instance."));
+                    return;
+                }
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
                     iCS_UserCommands.DragAndDropSetPortValue(eObj, draggedObject);
 					// Remove data so that we don't get called multiple times (Unity bug !!!).

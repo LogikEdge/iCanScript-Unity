@@ -46,7 +46,7 @@ public static class iCS_GuiUtilities {
         string foldoutName= (port.IsInputPort ? "in" : "out")+"."+parent.Name;
         // Display primitives.
         bool isDirty= false;
-        object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
+        object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty, iStorage);
         if(!isReadOnly && isDirty) {
             iCS_UserCommands.OpenTransaction(iStorage);
 			port.PortValue= newPortValue;
@@ -58,7 +58,8 @@ public static class iCS_GuiUtilities {
     // -----------------------------------------------------------------------
     public static object ShowInInspector(string name, bool isReadOnly, bool hasSource, string compositeParent,
                                          Type baseType, object currentValue,
-                                         int indentLevel, Dictionary<string,object> foldoutDB, ref bool isDirty) {
+                                         int indentLevel, Dictionary<string,object> foldoutDB, ref bool isDirty,
+                                         iCS_IStorage iStorage) {
 		// Extract type information.
         Type valueType= currentValue != null ? currentValue.GetType() : baseType;
         Type baseElementType= iCS_Types.GetElementType(baseType);
@@ -70,6 +71,10 @@ public static class iCS_GuiUtilities {
         // Special case for readonly & null value.
         if(isReadOnly && currentValue == null) {
             EditorGUILayout.LabelField(niceName, hasSource ? "(see connection)":"(not available)");
+            return currentValue;
+        }
+        // Do not allow GameObject binding in Prefabs.
+        if(iCS_Types.IsA<GameObject>(baseElementType) && PrefabUtility.GetPrefabType(iStorage.HostGameObject) == PrefabType.Prefab) {
             return currentValue;
         }
         // Special case for arrays
@@ -101,7 +106,7 @@ public static class iCS_GuiUtilities {
 			} 
             for(int i= 0; i < array.Length; ++i) {
 				bool elemDirty= false;
-                object newValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, baseElementType, array.GetValue(i), indentLevel+1, foldoutDB, ref elemDirty);
+                object newValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, baseElementType, array.GetValue(i), indentLevel+1, foldoutDB, ref elemDirty, iStorage);
 				isDirty |= elemDirty;
 				if(elemDirty) array.SetValue(newValue, i);
             }
@@ -376,7 +381,7 @@ public static class iCS_GuiUtilities {
                 if(shouldInspect) {
                     object currentFieldValue= field.GetValue(currentValue);
                     bool isFieldDirty= false;
-                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, field.FieldType, currentFieldValue, indentLevel+1, foldoutDB, ref isFieldDirty);
+                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, field.FieldType, currentFieldValue, indentLevel+1, foldoutDB, ref isFieldDirty, iStorage);
                     isDirty |= isFieldDirty;
                     if(!isReadOnly && isFieldDirty) {
                         field.SetValue(currentValue, newFieldValue);
