@@ -539,10 +539,10 @@ public class iCS_ContextualMenu {
 			if(desc.IsInstanceFunction || desc.IsInstanceField) {
 				if(desc.ClassType != port.RuntimeType) {
 					int sel= EditorUtility.DisplayDialogComplex("Missing the Instance Node",
-																"The function you selected requires an instance.\nPlease select one of the following:\n1) automatically create the Instance Builder and Instance Wizard;\n2) automatically create the Instance Wizard (I will provide the instance);\n3) just create the function. (I will provide the instance).",
+																"The function you selected requires an instance.\nPlease select one of the following:\n1) create the Instance Builder and Instance Node;\n2) create the Instance Node (binding of the instance will be needed);\n3) create the Function. (binding of the instance will be needed).",
 																"Function",
 																"Build Instance",
-																"Instance Wizard");
+																"Instance Node");
 					switch(sel) {
 					case 0:
 						break;

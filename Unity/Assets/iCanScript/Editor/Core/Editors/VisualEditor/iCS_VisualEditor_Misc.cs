@@ -484,7 +484,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(validParent == null) {
 			var node= IStorage.GetNodeAt(point);
 			if(node == null && IStorage.IsEmptyBehaviour) {
-				int option= EditorUtility.DisplayDialogComplex("Behaviour message required !", "Unity behaviour requires that nodes be added to a predefined message.  Use the buttons below to create the desired message type for your node.","Create Update", "More events...","Create OnGUI");
+				int option= EditorUtility.DisplayDialogComplex("Message Handler required !", "Unity behaviour requires that nodes be added to a predefined message.  Use the buttons below to create the desired message type for your node.","Create Update", "More events...","Create OnGUI");
 				switch(option) {
 					case 0:
 						validParent= AutoCreateBehaviourMessage(iCS_Strings.Update, point);
