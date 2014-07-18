@@ -31,6 +31,11 @@ public partial class iCS_Graphics {
                 return obj.name;
             }
         }
+        var valueType= iCS_Types.GetElementType(value.GetType());
+        if(valueType.IsEnum) {
+            System.Enum valueAsEnum= value as System.Enum;
+            return valueAsEnum.ToString();
+        }
         return null;
     }
 
