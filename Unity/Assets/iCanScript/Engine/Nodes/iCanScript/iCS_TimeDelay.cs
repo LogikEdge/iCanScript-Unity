@@ -66,6 +66,7 @@ public class iCS_TimeDelay {
                 myState= startTrigger ^ true;
                 return false;
             }
+            // FIXME: Reset output on edge instead of state for edge triggers.
             case TriggerType.TriggerOnFalseToTrueEdge: {
                 // Restart delay.
                 if(startTrigger == true && myState == false) {
