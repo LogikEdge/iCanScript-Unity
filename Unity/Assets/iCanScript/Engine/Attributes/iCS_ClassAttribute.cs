@@ -1,6 +1,6 @@
 using System;
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class iCS_ClassAttribute : Attribute {
     // ======================================================================
     // Optional Parameters
