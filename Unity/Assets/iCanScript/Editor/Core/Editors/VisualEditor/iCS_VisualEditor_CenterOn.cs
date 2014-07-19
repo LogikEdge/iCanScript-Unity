@@ -101,54 +101,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Scale= newScale;
     }
 	// ----------------------------------------------------------------------
-    public void ReframeOn(iCS_EditorObject target, Vector2 targetPos) {
-//        var initialScrollPosition= ScrollPosition;
-//        var initialScale= Scale;
-//        float deltaTime= Prefs.AnimationTime;
-//        Vector2 pivot= Vector2.zero;
-        // Reposition Target.
-        var newPos= target.GlobalPosition;
-        if(Math3D.IsNotEqual(targetPos, newPos)){
-            ScrollPosition+= newPos-targetPos;
-        }   
-        // Display entire graph if it easily fits in viewport.
-        var displayRootScale= ProposeViewportScalingFor(IStorage.DisplayRoot, 0f, 2f);
-        if(Math3D.IsWithin(displayRootScale, 0.75f, 2f)) {
-            CenterAndScaleOn(IStorage.DisplayRoot);
-//            Scale= displayRootScale;
-//            pivot= IStorage.DisplayRoot.LayoutPosition;
-//            initialScrollPosition= ScrollPosition + (Scale-initialScale)*pivot;
-//            ScrollPosition= initialScrollPosition;
-//            RepositionInViewport(IStorage.DisplayRoot);
-//            myAnimatedScrollPosition.Start(initialScrollPosition, ScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
-            return;
-        }
-        // Move the focus node to the parent if it is the only child node.
-        var focusNode= target.ParentNode;
-        if(focusNode == null) focusNode= target;
-        var focusParent= focusNode.ParentNode;
-        while(focusNode != IStorage.DisplayRoot && focusParent != null &&
-              focusParent.NumberOfChildNodes() == 1 && !focusParent.IsBehaviour) {
-            focusNode= focusParent;
-            focusParent= focusNode.ParentNode;
-        }
-        // Determine if we should rescale to fit the focus node.
-        var newScale= ProposeViewportScalingFor(focusNode, 0.5f, 2f);
-        if(Math3D.IsWithin(newScale, 0.5f, 2f)) {
-            CenterAndScaleOn(focusNode);
-//            ScaleOnPivot(focusNode.GlobalPosition, newScale);
-//            RepositionInViewport(focusNode);
-            return;
-        }
-//        pivot= IStorage.DisplayRoot.LayoutPosition;
-//        initialScrollPosition= ScrollPosition + (Scale-initialScale)*pivot;
-        Scale= newScale;
-//        pivot= IStorage.DisplayRoot.LayoutPosition;
-//        initialScrollPosition= ScrollPosition + (Scale-initialScale)*pivot;
-//        ScrollPosition= initialScrollPosition;
-        RepositionInViewport(focusNode);
-    }
-	// ----------------------------------------------------------------------
     public bool IsNodeFullyVisibleInViewport(iCS_EditorObject node) {
         var r= node.GlobalRect;
         var clipArea= VisibleGraphRect;
@@ -170,60 +122,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var xScale= Scale * viewportRect.width / nodeSize.x;
         var yScale= Scale * viewportRect.height / nodeSize.y;
         return Mathf.Min(xScale, yScale);
-    }
-	// ----------------------------------------------------------------------
-    public void RepositionInViewport(iCS_EditorObject node) {
-        var nodeRect  = node.GlobalRect;
-        var nodeCenter= Math3D.Middle(nodeRect);
-        var viewportRect  = VisibleGraphRectWithPadding;
-        var viewportCenter= Math3D.Middle(viewportRect);
-        // Should center vertically
-        if(nodeRect.width < viewportRect.width) {
-            ScrollPosition+= new Vector2(nodeCenter.x - viewportCenter.x, 0);
-            viewportRect  = VisibleGraphRectWithPadding;
-            viewportCenter= Math3D.Middle(viewportRect);
-        }
-        // Should move left
-        if(nodeRect.x > viewportRect.x && nodeRect.xMax > viewportRect.xMax) {
-            var leftOffset= nodeRect.x-viewportRect.x;
-            var rightOffset= nodeRect.xMax-viewportRect.xMax;
-            var xOffset= Mathf.Min(leftOffset, rightOffset);
-            ScrollPosition+= new Vector2(xOffset, 0);
-            viewportRect  = VisibleGraphRectWithPadding;
-            viewportCenter= Math3D.Middle(viewportRect);
-        }
-        // Should move right
-        if(nodeRect.xMax < viewportRect.xMax && nodeRect.x < viewportRect.x) {
-            var leftOffset= viewportRect.x-nodeRect.x;
-            var rightOffset= viewportRect.xMax-nodeRect.xMax;
-            var xOffset= Mathf.Min(leftOffset, rightOffset);
-            ScrollPosition+= new Vector2(-xOffset, 0);
-            viewportRect  = VisibleGraphRectWithPadding;
-            viewportCenter= Math3D.Middle(viewportRect);
-        }
-        // Should center horizontally
-        if(nodeRect.height < viewportRect.height) {
-            ScrollPosition+= new Vector2(0, nodeCenter.y - viewportCenter.y);
-            viewportRect  = VisibleGraphRectWithPadding;
-            viewportCenter= Math3D.Middle(viewportRect);
-        }
-        // Should move top
-        if(nodeRect.y > viewportRect.y && nodeRect.yMax > viewportRect.yMax) {
-            var upOffset= nodeRect.y-viewportRect.y;
-            var downOffset= nodeRect.yMax-viewportRect.yMax;
-            var yOffset= Mathf.Min(upOffset, downOffset);
-            ScrollPosition+= new Vector2(0, yOffset);
-            viewportRect  = VisibleGraphRectWithPadding;
-            viewportCenter= Math3D.Middle(viewportRect);
-        }
-        // Should move bottom
-        if(nodeRect.yMax < viewportRect.yMax && nodeRect.y < viewportRect.y) {
-            var upOffset= viewportRect.y-nodeRect.y;
-            var downOffset= viewportRect.yMax-nodeRect.yMax;
-            var yOffset= Mathf.Min(upOffset, downOffset);
-            ScrollPosition+= new Vector2(0, -yOffset);
-            viewportRect  = VisibleGraphRectWithPadding;
-            viewportCenter= Math3D.Middle(viewportRect);
-        }
     }
 }
