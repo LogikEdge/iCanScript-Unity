@@ -1,3 +1,4 @@
+// FIXME: Need to understand why new collision priority is not working.
 //#define NEW_COLLISION
 using UnityEngine;
 using System.Collections;
