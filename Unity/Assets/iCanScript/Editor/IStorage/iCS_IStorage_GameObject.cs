@@ -90,69 +90,13 @@ public partial class iCS_IStorage {
         if(portInfos == null) {
             portInfos= new List<PortInfo>();
         }
-        var transform= gameObject.transform;
-        portInfos.Add(new PortInfo("transform", transform.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, transform));
-        var rigidbody= gameObject.rigidbody;
-        if(rigidbody != null) {
-            portInfos.Add(new PortInfo("rigidbody", rigidbody.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, rigidbody));
+        foreach(var component in gameObject.GetComponents<Component>()) {
+            if(component == null || component is iCS_VisualScriptImp || component is iCS_Behaviour) {
+                continue;
+            }
+            var componentType= component.GetType();
+            portInfos.Add(new PortInfo(componentType.Name, componentType, iCS_ObjectTypeEnum.InProposedDataPort, component));                
         }
-        var camera= gameObject.camera;
-        if(camera != null) {
-            portInfos.Add(new PortInfo("camera", camera.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, camera));
-        }
-        var light= gameObject.light;
-        if(light != null) {
-            portInfos.Add(new PortInfo("light", light.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, light));            
-        }
-        var animation= gameObject.animation;
-        if(animation != null) {
-            portInfos.Add(new PortInfo("animation", animation.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, animation));            
-        }
-        var constantForce= gameObject.constantForce;
-        if(constantForce != null) {
-            portInfos.Add(new PortInfo("constantForce", constantForce.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, constantForce));            
-        }
-        var renderer= gameObject.renderer;
-        if(renderer != null) {
-            portInfos.Add(new PortInfo("renderer", renderer.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, renderer));            
-        }
-        var audio= gameObject.audio;
-        if(audio != null) {
-            portInfos.Add(new PortInfo("audio", audio.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, audio));            
-        }
-        var guiText= gameObject.guiText;
-        if(guiText != null) {
-            portInfos.Add(new PortInfo("guiText", guiText.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, guiText));            
-        }
-        var networkView= gameObject.networkView;
-        if(networkView != null) {
-            portInfos.Add(new PortInfo("networkView", networkView.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, networkView));            
-        }
-        var guiTexture= gameObject.guiTexture;
-        if(guiTexture != null) {
-            portInfos.Add(new PortInfo("guiTexture", guiTexture.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, guiTexture));            
-        }
-        var collider= gameObject.collider;
-        if(collider != null) {
-            portInfos.Add(new PortInfo("collider", collider.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, collider));            
-        }
-        var hingeJoint= gameObject.hingeJoint;
-        if(hingeJoint != null) {
-            portInfos.Add(new PortInfo("hingeJoint", hingeJoint.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, hingeJoint));            
-        }
-        var particleEmitter= gameObject.particleEmitter;
-        if(particleEmitter != null) {
-            portInfos.Add(new PortInfo("particleEmitter", particleEmitter.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, particleEmitter));            
-        }
-        var particleSystem= gameObject.particleSystem;
-        if(particleSystem != null) {
-            portInfos.Add(new PortInfo("particleSystem", particleSystem.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, particleSystem));            
-        }
-        var tag= gameObject.tag;
-        if(tag != null) {
-            portInfos.Add(new PortInfo("tag", tag.GetType(), iCS_ObjectTypeEnum.InProposedDataPort, tag));            
-        }
-
         return portInfos.ToArray();
     }
 }
