@@ -151,15 +151,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!StartDrag()) return;
 
         // Compute new object position.
-        Vector2 delta= ViewportMousePosition - MouseDragStartPosition;
-        var newPosition= DragStartDisplayPosition + delta;
+        Vector2 deltaMouse= ViewportMousePosition - MouseDragStartPosition;
+        var newPosition= DragStartDisplayPosition + deltaMouse;
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
                 DragObject.NodeDragTo(newPosition);
                 break;
             case DragTypeEnum.MultiSelectionNodeDrag:
-                IStorage.MoveMultiSelectedNodesBy(delta);
+                IStorage.MoveMultiSelectedNodesBy(deltaMouse);
                 break;
             case DragTypeEnum.NodeRelocation:
                 DragObject.NodeRelocateTo(newPosition);

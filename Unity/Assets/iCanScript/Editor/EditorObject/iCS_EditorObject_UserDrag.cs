@@ -9,22 +9,12 @@ public partial class iCS_EditorObject {
         IsFloating= false;
 		IsSticky= true;
 		SetAsHighestLayoutPriority();
-		ForEachParentNode(
-			p=> {
-				p.IsSticky= true;
-			}
-		);
 	}
     // ----------------------------------------------------------------------
 	public void EndNodeDrag() {
 		myIStorage.ForcedRelayoutOfTree();
         IsFloating= false;
         IsSticky= false;
-		ForEachParentNode(
-			p=> {
-				p.IsSticky= false;
-			}
-		);
         ClearLayoutPriority();
 	}
     // ----------------------------------------------------------------------

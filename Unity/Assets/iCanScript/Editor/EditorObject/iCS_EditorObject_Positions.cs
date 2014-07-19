@@ -221,16 +221,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 LocalAnchorFromGlobalPosition {
         set {
-//            var parent= ParentNode;
-//            if(/*IsDisplayRoot ||*/ parent == null) {
-//                LocalAnchorPosition= value;
-//                CollisionOffset= Vector2.zero;
-//                WrappingOffset= Vector2.zero;          
-//                return;
-//            }
-//            LocalAnchorPosition= value-parent.GlobalPosition;
-//            CollisionOffset= Vector2.zero;
-//            WrappingOffset= Vector2.zero;          
             var parent= ParentNode;
             if(parent == null) {
                 LocalAnchorPosition= value-WrappingOffset;
@@ -242,7 +232,7 @@ public partial class iCS_EditorObject {
 				return;
 			}
             LocalAnchorPosition= value-WrappingOffset-parent.GlobalPosition+parent.WrappingOffset;
-            CollisionOffset-= parent.WrappingOffset;
+//            CollisionOffset-= parent.WrappingOffset;
         }
     }
     // ----------------------------------------------------------------------

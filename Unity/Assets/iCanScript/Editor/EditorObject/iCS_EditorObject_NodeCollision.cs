@@ -1,4 +1,4 @@
-#define NEW_COLLISION
+//#define NEW_COLLISION
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,9 +39,18 @@ public partial class iCS_EditorObject {
 	                if(c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i],
 															  ref childRect[j])) {
 					    didCollide= true;
+#if NEW_COLLISION
+                        if(c1.LayoutPriority < c2.LayoutPriority) {
+                            c2.LayoutPriority= c1.LayoutPriority+1;
+                        }
+                        if(c2.LayoutPriority < c1.LayoutPriority) {
+                            c1.LayoutPriority= c2.LayoutPriority+1;
+                        }
+#else
                         --c1.LayoutPriority;
                         --c2.LayoutPriority;	
-					}
+#endif
+                    }
 					if(c1.LayoutPriority > c2.LayoutPriority) {
 						lowest= c1;
 					} else if(c2.LayoutPriority > c1.LayoutPriority) {
@@ -116,28 +125,12 @@ public partial class iCS_EditorObject {
 		// must also respect the anchor position relationship
 		// between the two overalpping nodes.
 		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
-#if NEW_COLLISION
         if(Mathf.Abs(anchorSepDir.x) > Mathf.Abs(anchorSepDir.y)) {
             return new Vector2(intersection.width*Mathf.Sign(anchorSepDir.x), 0f);            
         }
         else {
             return new Vector2(0f, intersection.height*Mathf.Sign(anchorSepDir.y));            
         }
-#else
-        var normalizedAnchorSep= anchorSepDir.normalized;
-        // Assume vertical relation if anchor diff vector under 12 degrees
-        if(Math3D.IsSmaller(Mathf.Abs(normalizedAnchorSep.x), 0.25f)) {
-            return new Vector2(0f, intersection.height*Mathf.Sign(normalizedAnchorSep.y));
-        }
-        // Assume horizontal relation if anchor diff vector under 12 degrees
-        if(Math3D.IsSmaller(Mathf.Abs(normalizedAnchorSep.y), 0.25f)) {
-            return new Vector2(intersection.width*Mathf.Sign(normalizedAnchorSep.x), 0f);
-        }
-        var scaleX= Mathf.Abs(intersection.width / normalizedAnchorSep.x);
-        var scaleY= Mathf.Abs(intersection.height / normalizedAnchorSep.y);
-        var scale= Mathf.Min(scaleX, scaleY);
-        return scale*normalizedAnchorSep;
-#endif
 	}
 
 	// ======================================================================
@@ -145,12 +138,16 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Clear the layout priority on all children
     public void ClearLayoutPriority() {
+#if NEW_COLLISION
+        // TODO: Remove all references to ClearLayoutPriority()
+#else
 		var parent= ParentNode;
 		if(parent != null) {
             parent.ForEachChildNode(n=> { n.LayoutPriority= n.IsSticky ? 0 : 100; });
             parent.ClearLayoutPriority();
         }
         LayoutPriority= IsSticky ? 0 : 100;
+#endif
     }
     // ----------------------------------------------------------------------
 	// Sets the current object as the highest layout priority.
@@ -158,7 +155,7 @@ public partial class iCS_EditorObject {
         // Set all sibling node priority to 10
 		var parent= ParentNode;
 		if(parent != null) {
-            parent.ForEachChildNode(n=> { n.LayoutPriority= n.IsSticky ? 0 : 100; });
+            parent.ForEachChildNode(n=> { n.LayoutPriority= n.IsSticky ? 0 : n.LayoutPriority+100; });
             parent.SetAsHighestLayoutPriority();
         }        
 		LayoutPriority= 0;
