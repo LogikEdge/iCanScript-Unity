@@ -81,4 +81,16 @@ public static partial class iCS_UserCommands {
         // Save result.
         CloseTransaction(iStorage, "AutoLayout Ports on=> "+node.Name);
     }
+    // ----------------------------------------------------------------------
+    public static void UpdateMessageHandlerPorts(iCS_EditorObject messageHandler) {
+        if(messageHandler == null) return;
+        var iStorage= messageHandler.IStorage;
+        iStorage.AnimateGraph(null,
+            _=> {
+                iStorage.UpdateBehaviourMessagePorts(messageHandler);
+                iStorage.ForcedRelayoutOfTree();
+            }
+        );
+        CloseTransaction(iStorage, "Update Ports=> "+messageHandler.Name);
+    }
 }

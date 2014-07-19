@@ -39,6 +39,7 @@ public class iCS_ContextualMenu {
     const string MultiSelectionWrapInPackageStr= "+ Wrap Multi-Selection in Package";
     const string MultiSelectionDeleteStr       = "- Delete Multi-Selection";
     const string DeleteKeepChildrenStr         = "- Delete Keep Children";
+    const string UpdateMessageHandlerPorts     = "Update Message Ports";
     const string SeparatorStr                  = "";
 
     // ======================================================================
@@ -76,7 +77,7 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.Behaviour:         BehaviourMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.StateChart:        StateChartMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.State:             StateMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.InstanceMessage:   PackageMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceMessage:   MessageHandlerMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassMessage:      PackageMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionPackage: PackageMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.Constructor:       FunctionMenu(selectedObject, storage); break;
@@ -120,9 +121,23 @@ public class iCS_ContextualMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
+    void MessageHandlerMenu(iCS_EditorObject messageHandler, iCS_IStorage storage) {
+        iCS_MenuContext[] menu= StartWithFocusMenu(messageHandler);
+        var idx= GrowMenuBy(ref menu, 2);
+        menu[idx]= new iCS_MenuContext(UpdateMessageHandlerPorts);
+        menu[idx+1]= new iCS_MenuContext(SeparatorStr);
+        CommonPackageMenu(messageHandler, storage, ref menu);
+		ShowMenu(menu, messageHandler, storage);
+    }
+	// ----------------------------------------------------------------------
     void PackageMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        int idx;
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
+        CommonPackageMenu(selectedObject, storage, ref menu);
+		ShowMenu(menu, selectedObject, storage);
+    }
+	// ----------------------------------------------------------------------
+    void CommonPackageMenu(iCS_EditorObject selectedObject, iCS_IStorage storage, ref iCS_MenuContext[] menu) {
+        int idx;
         if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             // Base menu items
             idx= GrowMenuBy(ref menu, 3);
@@ -146,7 +161,6 @@ public class iCS_ContextualMenu {
                 menu[idx]= new iCS_MenuContext(DeleteKeepChildrenStr);                
             }
         }
-		ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void OnStatePackageMenu(iCS_EditorObject targetObject) {
@@ -479,6 +493,7 @@ public class iCS_ContextualMenu {
             case TriggerPortStr:            iCS_UserCommands.CreateTriggerPort(targetObject); break;
             case OutputInstancePortStr:     iCS_UserCommands.CreateOutInstancePort(targetObject); break;
 			case WrapInPackageStr:          iCS_UserCommands.WrapInPackage(targetObject); break;
+            case UpdateMessageHandlerPorts: iCS_UserCommands.UpdateMessageHandlerPorts(targetObject); break;
             case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
             case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
             case DeleteKeepChildrenStr:          iCS_UserCommands.DeleteKeepChildren(targetObject); break;
