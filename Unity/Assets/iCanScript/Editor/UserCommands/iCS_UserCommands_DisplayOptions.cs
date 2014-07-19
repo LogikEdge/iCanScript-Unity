@@ -1,4 +1,4 @@
-﻿//
+//
 // File: iCS_UserCommands_DisplayOptions
 //
 //#define DEBUG
@@ -24,7 +24,7 @@ public static partial class iCS_UserCommands {
                 var oldNodePos= node.GlobalPosition;
                 node.Unfold();
                 node.SetAsHighestLayoutPriority();
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
@@ -51,7 +51,7 @@ public static partial class iCS_UserCommands {
                 var oldNodePos= node.GlobalPosition;
                 node.Fold();
                 node.SetAsHighestLayoutPriority();
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
@@ -78,7 +78,7 @@ public static partial class iCS_UserCommands {
                 var oldNodePos= node.GlobalPosition;
                 node.Iconize();
                 node.SetAsHighestLayoutPriority();
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {

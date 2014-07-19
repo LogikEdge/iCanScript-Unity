@@ -62,7 +62,7 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
 				iStorage.AutoLayoutPort(port);
-				iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+				iStorage.ForcedRelayoutOfTree();
 		    }
 		);
         // Save result.
@@ -75,7 +75,7 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
 				iStorage.AutoLayoutPortOnNode(node);
-				iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+				iStorage.ForcedRelayoutOfTree();
 		    }
 		);
         // Save result.

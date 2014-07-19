@@ -1,4 +1,4 @@
-﻿//
+//
 // File: iCS_UserCommands_Create
 //
 //#define DEBUG
@@ -39,7 +39,7 @@ public static partial class iCS_UserCommands {
                 var entryState= iStorage.CreateState(stateChart.InstanceId, "EntryState");
                 entryState.IsEntryState= true;
                 entryState.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iStorage.SaveStorage("Create StateChart");
@@ -59,7 +59,7 @@ public static partial class iCS_UserCommands {
             _=> {
                 state= iStorage.CreateState(parent.InstanceId, name);
                 state.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iStorage.SaveStorage("Create State");
@@ -84,7 +84,7 @@ public static partial class iCS_UserCommands {
                 msgHandler= iStorage.CreateMessageHandler(parent.InstanceId, desc);
                 msgHandler.SetInitialPosition(globalPos);
                 msgHandler.ForEachChildPort(p=> {p.AnimationStartRect= BuildRect(globalPos, Vector2.zero);});
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iStorage.SaveStorage("Create "+name);
@@ -135,7 +135,7 @@ public static partial class iCS_UserCommands {
             _=> {
                 function= iStorage.CreateFunction(parent.InstanceId, desc);
                 function.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iStorage.SaveStorage("Create "+name);
@@ -200,7 +200,7 @@ public static partial class iCS_UserCommands {
         inTransitionPort.PortPositionRatio= 0.5f;
         outTransitionPort.PortPositionRatio= 0.5f;
         // Layout the graph
-        iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+        iStorage.ForcedRelayoutOfTree();
         if(!iStorage.IsTransactionOpened) {
             CloseTransaction(iStorage, "Create Transition");            
         }
@@ -264,7 +264,7 @@ public static partial class iCS_UserCommands {
             _=> {
                 instance= iStorage.CreateObjectInstance(parent.InstanceId, name, instanceType);
                 instance.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         if(!iStorage.IsTransactionOpened) {
@@ -285,7 +285,7 @@ public static partial class iCS_UserCommands {
         iStorage.AnimateGraph(null,
             _=> {
                 package= iStorage.WrapInPackage(obj);
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iStorage.SaveStorage("Wrap : "+obj.Name);
@@ -303,7 +303,7 @@ public static partial class iCS_UserCommands {
             _=> {
                 package= iStorage.WrapInPackage(selectedObjects);
                 if(package != null) {
-                    iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                    iStorage.ForcedRelayoutOfTree();
                     var r= Math3D.Union(P.map(n => n.GlobalRect, selectedObjects));
                     package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);                    
                 }
@@ -336,7 +336,7 @@ public static partial class iCS_UserCommands {
                     thisPort.PortValue= go;
                 }
                 instance.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iStorage.SaveStorage("Create "+go.name);
@@ -359,7 +359,7 @@ public static partial class iCS_UserCommands {
             _=> {
                 package= iStorage.CreatePackage(parent.InstanceId, name, objectType, runtimeType);
                 package.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         return package;

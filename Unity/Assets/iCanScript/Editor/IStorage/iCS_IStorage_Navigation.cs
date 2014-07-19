@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public partial class iCS_IStorage {
@@ -12,13 +12,13 @@ public partial class iCS_IStorage {
         DisplayRoot.ReduceChildrenAnchorPosition();
         NavigationHistory.ReloadFromBackwardHistory(Storage);
 		DisplayRoot.WrappingOffset= Vector2.zero;
-        ForcedRelayoutOfTree(DisplayRoot);
+        ForcedRelayoutOfTree();
     }
     public void ReloadFromForwardNavigationHistory() {
 		DisplayRoot.WrappingOffset= Vector2.zero;
         NavigationHistory.ReloadFromForwardHistory(Storage);
 		DisplayRoot.WrappingOffset= Vector2.zero;
-        ForcedRelayoutOfTree(DisplayRoot);
+        ForcedRelayoutOfTree();
     }
     public bool HasBackwardNavigationHistory {
         get { return NavigationHistory.HasBackwardHistory; }
@@ -31,7 +31,7 @@ public partial class iCS_IStorage {
         NavigationHistory.Clear();
         DisplayRoot= EditorObjects[0];
 		DisplayRoot.WrappingOffset= Vector2.zero;
-        ForcedRelayoutOfTree(DisplayRoot);
+        ForcedRelayoutOfTree();
     }
 }
 

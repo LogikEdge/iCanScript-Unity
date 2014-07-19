@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using P=Prelude;
 
@@ -32,7 +32,7 @@ public partial class iCS_IStorage {
 				}
 			}
 		);
-        ForcedRelayoutOfTree(DisplayRoot);
+        ForcedRelayoutOfTree();
 		return package;
 	}
 	// -------------------------------------------------------------------------
@@ -68,7 +68,7 @@ public partial class iCS_IStorage {
     			}
     		);            
         }
-        ForcedRelayoutOfTree(DisplayRoot);
+        ForcedRelayoutOfTree();
         return package;
     }
 }

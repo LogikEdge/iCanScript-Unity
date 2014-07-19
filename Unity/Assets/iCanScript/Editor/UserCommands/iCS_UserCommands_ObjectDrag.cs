@@ -1,4 +1,4 @@
-﻿//
+//
 // File: iCS_UserCommands_ObjectDrag
 //
 using UnityEngine;
@@ -29,7 +29,7 @@ public static partial class iCS_UserCommands {
                 if(oldParent != newParent) {
                     iStorage.ChangeParent(node, newParent); 
                 }
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
 				iStorage.AutoLayoutPortOnNode(node);
             }
         );
@@ -48,13 +48,13 @@ public static partial class iCS_UserCommands {
     }
     public static void EndPortConnection(iCS_EditorObject port) {
         var iStorage= port.IStorage;
-        iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+        iStorage.ForcedRelayoutOfTree();
         iStorage.StartToAnimate();
         iStorage.SaveStorage("Port Connection=> "+port.Name);
     }
     public static void EndPortPublishing(iCS_EditorObject port) {
         var iStorage= port.IStorage;
-        iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+        iStorage.ForcedRelayoutOfTree();
         iStorage.SaveStorage("Port Publishing=> "+port.Name);
     }
 
@@ -63,7 +63,7 @@ public static partial class iCS_UserCommands {
         var iStorage= port.IStorage;
         iStorage.AnimateGraph(null,
             _=> {
-                iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iStorage.SaveStorage("Port Drag");

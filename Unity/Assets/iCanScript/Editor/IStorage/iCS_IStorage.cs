@@ -193,7 +193,7 @@ public partial class iCS_IStorage {
         // Force a relayout if it is requested
         if(myForceRelayout) {
             myForceRelayout= false;
-            ForcedRelayoutOfTree(DisplayRoot);    			
+            ForcedRelayoutOfTree();    			
         }
 		
         // Update object animations.

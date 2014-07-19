@@ -4,9 +4,9 @@ using System.Collections;
 public partial class iCS_IStorage {
 	// ======================================================================
     // ----------------------------------------------------------------------
-	public void ForcedRelayoutOfTree(iCS_EditorObject root) {
+	public void ForcedRelayoutOfTree() {
         SendStartRelayoutOfTree();
-        ForEachRecursiveDepthFirst(root,
+        ForEachRecursiveDepthFirst(DisplayRoot,
             obj=> {
                 // Nothing to do if not visible in layout.
             	if(!obj.IsVisibleInLayout) {

@@ -593,7 +593,7 @@ public class iCS_ContextualMenu {
 				}
 			}
         }
-        iStorage.ForcedRelayoutOfTree(iStorage.DisplayRoot);
+        iStorage.ForcedRelayoutOfTree();
         iCS_UserCommands.CloseTransaction(iStorage, "Create => "+desc.DisplayName);
         return method;
     }

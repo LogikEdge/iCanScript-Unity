@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public static partial class iCS_UserCommands {
@@ -16,7 +16,7 @@ public static partial class iCS_UserCommands {
 		if(newDisplayRoot == null) return;
         iStorage.SaveNavigationState();
         iStorage.DisplayRoot= newDisplayRoot;
-        iStorage.ForcedRelayoutOfTree(newDisplayRoot);
+        iStorage.ForcedRelayoutOfTree();
         iStorage.ResetAllAnimationPositions();
         SendDisplayRootChange(iStorage);
         iStorage.SaveStorage();

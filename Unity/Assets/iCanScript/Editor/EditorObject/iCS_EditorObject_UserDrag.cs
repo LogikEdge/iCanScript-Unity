@@ -17,7 +17,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	public void EndNodeDrag() {
-		myIStorage.ForcedRelayoutOfTree(myIStorage.DisplayRoot);
+		myIStorage.ForcedRelayoutOfTree();
         IsFloating= false;
         IsSticky= false;
 		ForEachParentNode(
@@ -34,7 +34,7 @@ public partial class iCS_EditorObject {
             IStorage.StopAllAnimations();
     		SetAsHighestLayoutPriority();
     		LocalAnchorFromGlobalPosition= newPosition;
-			IStorage.ForcedRelayoutOfTree(myIStorage.DisplayRoot);
+			IStorage.ForcedRelayoutOfTree();
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}
