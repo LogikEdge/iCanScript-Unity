@@ -21,6 +21,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 focusNode= parent;
             }
         }
+        // Move to higher parent if scale is too large.
+        if(focusNode != IStorage.DisplayRoot) {
+            var focusNodeParent= focusNode.ParentNode;
+            if(focusNodeParent != null) {
+                var scale= ProposeViewportScalingFor(focusNodeParent);            
+                while(scale > 0.75f) {
+                    focusNode= focusNodeParent;
+                    focusNodeParent= focusNode.ParentNode;
+                    if(focusNode == IStorage.DisplayRoot || focusNodeParent == null) break;
+                    scale= ProposeViewportScalingFor(focusNodeParent);            
+                }                
+            }
+        }
+        // Center on focus node
         iCS_EditorUtility.SafeCenterOn(focusNode, IStorage);                        
     }
 	// ----------------------------------------------------------------------
@@ -143,15 +157,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return Math3D.IsEqual(r, intersection);
     }
 	// ----------------------------------------------------------------------
-    public float ProposeViewportScalingFor(iCS_EditorObject node, float minScale= 0.50f, float maxScale= 1.5f) {
+    public float ProposeViewportScalingFor(iCS_EditorObject node, float minScale, float maxScale) {
+        var newScale= ProposeViewportScalingFor(node);
+        if(newScale < minScale) newScale= minScale;
+        if(newScale > maxScale) newScale= maxScale;
+        return newScale;
+    }
+	// ----------------------------------------------------------------------
+    public float ProposeViewportScalingFor(iCS_EditorObject node) {
         var viewportRect= VisibleGraphRectWithPadding;
         var nodeSize= node.LocalSize;
         var xScale= Scale * viewportRect.width / nodeSize.x;
         var yScale= Scale * viewportRect.height / nodeSize.y;
-        var newScale= Mathf.Min(xScale, yScale);
-        if(newScale < minScale) newScale= minScale;
-        if(newScale > maxScale) newScale= maxScale;
-        return newScale;
+        return Mathf.Min(xScale, yScale);
     }
 	// ----------------------------------------------------------------------
     public void RepositionInViewport(iCS_EditorObject node) {

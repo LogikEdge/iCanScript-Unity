@@ -44,6 +44,7 @@ public partial class iCS_Graphics {
     public bool IsFoldIconPicked(iCS_EditorObject node, Vector2 pick) {
         if(!ShouldDisplayFoldIcon(node)) return false;
         Rect foldIconPos= GetFoldIconPosition(node);
+        foldIconPos.x-=3; foldIconPos.y-=3; foldIconPos.width+=6; foldIconPos.height+=6;
         return foldIconPos.Contains(pick);
     }
     bool ShouldDisplayFoldIcon(iCS_EditorObject obj) {

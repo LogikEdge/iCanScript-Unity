@@ -28,7 +28,8 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    visualEditor.ReframeOn(node, oldNodePos);
+                    visualEditor.SmartFocusOn(node);
+//                    visualEditor.ReframeOn(node, oldNodePos);
                 }
             }
         );
@@ -55,7 +56,8 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    visualEditor.ReframeOn(node, oldNodePos);
+                    visualEditor.SmartFocusOn(node);
+//                    visualEditor.ReframeOn(node, oldNodePos);
                 }
             }
         );
@@ -82,7 +84,8 @@ public static partial class iCS_UserCommands {
                 node.ClearLayoutPriority();
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
-                    visualEditor.ReframeOn(node, oldNodePos);
+                    visualEditor.SmartFocusOn(node);
+//                    visualEditor.ReframeOn(node, oldNodePos);
                 }
             }
         );
