@@ -74,10 +74,27 @@ public static class iCS_UnityClasses {
     // ----------------------------------------------------------------------
     public static void PopulateDataBase() {
         DecodeUnityClassInfo(typeof(AccelerationEvent));
+        DecodeUnityClassInfo(typeof(ADBannerView));
+        DecodeUnityClassInfo(typeof(AddComponentMenu));
+        DecodeUnityClassInfo(typeof(ADInterstitialAd));
+        DecodeUnityClassInfo(typeof(AnchoredJoint2D));
+        DecodeUnityClassInfo(typeof(AndroidInput));
+        DecodeUnityClassInfo(typeof(AndroidJavaClass));
+        DecodeUnityClassInfo(typeof(AndroidJavaException));
+        DecodeUnityClassInfo(typeof(AndroidJavaObject));
+        DecodeUnityClassInfo(typeof(AndroidJavaProxy));
+        DecodeUnityClassInfo(typeof(AndroidJNI));
+        DecodeUnityClassInfo(typeof(AndroidJNIHelper));
         
         DecodeUnityClassInfo(typeof(AnimationCurve));
         DecodeUnityClassInfo(typeof(AnimationEvent));
         DecodeUnityClassInfo(typeof(AnimationState));
+        
+        DecodeUnityClassInfo(typeof(Animator));
+        DecodeUnityClassInfo(typeof(AnimatorOverrideController));
+        DecodeUnityClassInfo(typeof(AnimatorStateInfo));
+        DecodeUnityClassInfo(typeof(AnimatorTransitionInfo));
+        
         DecodeUnityClassInfo(typeof(Application));
         DecodeUnityClassInfo(typeof(Array));
         DecodeUnityClassInfo(typeof(AudioSettings));
