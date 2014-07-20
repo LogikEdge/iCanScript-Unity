@@ -28337,10 +28337,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: -1
+  SelectedObject: 1
   ShowDisplayRootNode: 1
   GuiScale: 1.14873838
-  ScrollPosition: {x: -97.7548904, y: 118.480988}
+  ScrollPosition: {x: -124.133263, y: 118.480988}
   UndoRedoId: 142
   EngineObjects:
   - RawName: char_ethan::Behaviour
