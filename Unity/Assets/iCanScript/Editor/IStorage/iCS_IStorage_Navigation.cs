@@ -8,15 +8,17 @@ public partial class iCS_IStorage {
         NavigationHistory.Save(Storage, SelectedObject.GlobalPosition);
     }
     public void ReloadFromBackwardNavigationHistory() {
+        var selObjGlobalPosition= SelectedObject.GlobalPosition;
 		DisplayRoot.WrappingOffset= Vector2.zero;
         DisplayRoot.ReduceChildrenAnchorPosition();
-        var selObjGlobalPosition= NavigationHistory.ReloadFromBackwardHistory(Storage, SelectedObject.GlobalPosition);
+        selObjGlobalPosition= NavigationHistory.ReloadFromBackwardHistory(Storage, selObjGlobalPosition);
 		DisplayRoot.WrappingOffset= Vector2.zero;
         ForcedRelayoutOfTree(SelectedObject, selObjGlobalPosition);
     }
     public void ReloadFromForwardNavigationHistory() {
+        var selObjGlobalPosition= SelectedObject.GlobalPosition;
 		DisplayRoot.WrappingOffset= Vector2.zero;
-        var selObjGlobalPosition= NavigationHistory.ReloadFromForwardHistory(Storage, SelectedObject.GlobalPosition);
+        selObjGlobalPosition= NavigationHistory.ReloadFromForwardHistory(Storage, selObjGlobalPosition);
 		DisplayRoot.WrappingOffset= Vector2.zero;
         ForcedRelayoutOfTree(SelectedObject, selObjGlobalPosition);
     }
