@@ -17,14 +17,16 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         iCS_EditorObject instance= null;
+        SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 instance= iStorage.InstanceWizardCreate(parent, desc);
                 instance.SetInitialPosition(parent.GlobalPosition);
                 instance.Iconize();
-                parent.LayoutNodeAndParents();                
+                iStorage.ForcedRelayoutOfTree();
             }
         );
+        SendEndRelayoutOfTree(iStorage);
         if(!iStorage.IsTransactionOpened) {
             CloseTransaction(iStorage, "Create "+desc.DisplayName);            
         }
@@ -37,12 +39,14 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null || desc == null) return;
         var iStorage= parent.IStorage;
+        SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 iStorage.InstanceWizardDestroy(parent, desc);
-                parent.LayoutNodeAndParents();                
+                iStorage.ForcedRelayoutOfTree();
             }
         );
+        SendEndRelayoutOfTree(iStorage);
         if(!iStorage.IsTransactionOpened) {
             CloseTransaction(iStorage, "Delete "+desc.DisplayName);            
         }
@@ -58,6 +62,7 @@ public static partial class iCS_UserCommands {
         if(parent == null || instanceType == null || desc == null) return null;
         var iStorage= parent.IStorage;
         iCS_EditorObject element= null;
+        SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 var instance= iStorage.CreateObjectInstance(parent.InstanceId, instanceType.Name, instanceType);
@@ -65,9 +70,10 @@ public static partial class iCS_UserCommands {
                 element= iStorage.InstanceWizardCreate(instance, desc);
                 element.SetInitialPosition(globalPos);
                 element.Iconize();
-                instance.LayoutNodeAndParents();
+                iStorage.ForcedRelayoutOfTree();
             }
         );
+        SendEndRelayoutOfTree(iStorage);
         if(!iStorage.IsTransactionOpened) {
             CloseTransaction(iStorage, "Delete "+desc.DisplayName);            
         }
@@ -115,7 +121,7 @@ public static partial class iCS_UserCommands {
 					
 				}         
                 // Layout
-                instance.LayoutNodeAndParents();
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         if(!iStorage.IsTransactionOpened) {

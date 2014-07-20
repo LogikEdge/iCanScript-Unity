@@ -21,7 +21,6 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
-                var oldNodePos= node.GlobalPosition;
                 node.Unfold();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree();
@@ -29,7 +28,6 @@ public static partial class iCS_UserCommands {
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
                     visualEditor.SmartFocusOn(node);
-//                    visualEditor.ReframeOn(node, oldNodePos);
                 }
             }
         );
@@ -49,7 +47,6 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
-                var oldNodePos= node.GlobalPosition;
                 node.Fold();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree();
@@ -57,7 +54,6 @@ public static partial class iCS_UserCommands {
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
                     visualEditor.SmartFocusOn(node);
-//                    visualEditor.ReframeOn(node, oldNodePos);
                 }
             }
         );
@@ -77,7 +73,6 @@ public static partial class iCS_UserCommands {
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
-                var oldNodePos= node.GlobalPosition;
                 node.Iconize();
                 node.SetAsHighestLayoutPriority();
                 iStorage.ForcedRelayoutOfTree();
@@ -85,7 +80,6 @@ public static partial class iCS_UserCommands {
                 var visualEditor= iCS_EditorController.FindVisualEditor();
                 if(visualEditor != null) {
                     visualEditor.SmartFocusOn(node);
-//                    visualEditor.ReframeOn(node, oldNodePos);
                 }
             }
         );
