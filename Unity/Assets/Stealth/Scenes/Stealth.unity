@@ -21528,7 +21528,7 @@ MonoBehaviour:
     InitialValueArchive: 
     IsEntryState: 0
   myStorage: {fileID: 0}
-  IsTraceEnabled: 1
+  IsTraceEnabled: 0
 --- !u!114 &442619044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28340,7 +28340,7 @@ MonoBehaviour:
   SelectedObject: 68
   ShowDisplayRootNode: 1
   GuiScale: 1.22416425
-  ScrollPosition: {x: 426.840576, y: 595.91571}
+  ScrollPosition: {x: 135.195465, y: 632.432739}
   UndoRedoId: 736
   EngineObjects:
   - RawName: char_ethan::Behaviour
