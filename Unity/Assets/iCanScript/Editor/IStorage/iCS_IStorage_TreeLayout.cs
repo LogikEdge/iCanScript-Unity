@@ -9,13 +9,17 @@ public partial class iCS_IStorage {
 	// ======================================================================
     // ----------------------------------------------------------------------
 	public void ForcedRelayoutOfTree() {
-        // Advise of the start of a new layout
-        SendStartRelayoutOfTree();
-
         // Get a copy of the sticky position to maintain.
         var stickyObject= SelectedObject ?? DisplayRoot;
         var stickyPosition= stickyObject.GlobalPosition;
-        
+        ForcedRelayoutOfTree(stickyObject, stickyPosition);
+	}
+    // ----------------------------------------------------------------------
+	public void ForcedRelayoutOfTree(iCS_EditorObject stickyObject, Vector2 stickyPosition) {
+        // Advise of the start of a new layout
+        SendStartRelayoutOfTree();
+
+        // Recalculate the layout
         ForEachRecursiveDepthFirst(DisplayRoot,
             obj=> {
                 // Nothing to do if not visible in layout.

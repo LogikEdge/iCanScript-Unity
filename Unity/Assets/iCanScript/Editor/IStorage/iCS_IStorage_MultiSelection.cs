@@ -26,14 +26,14 @@ public partial class iCS_IStorage {
     public iCS_EditorObject SelectedObject {
         get {
             int id= SelectedObjectId;
-            return id == -1 ? null : this[id];
+            return id == -1 ? DisplayRoot : this[id];
         }
         set {
             mySelectedObjects.Clear();
             if(value != null) {
                 mySelectedObjects.Add(value);
             }
-            SelectedObjectId= value != null ? value.InstanceId : -1;
+            SelectedObjectId= value != null ? value.InstanceId : DisplayRootId;
         }
     }
     // -------------------------------------------------------------------------
