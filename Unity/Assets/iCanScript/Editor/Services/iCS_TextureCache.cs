@@ -11,6 +11,22 @@ public static class iCS_TextureCache {
     static Dictionary<string, bool>         OurErrorAlreadySeen= new Dictionary<string, bool>();
 
     // ======================================================================
+    // Release Used textures
+    // ----------------------------------------------------------------------
+    public static void FlushAndClear() {
+        // Remove reference to cache textures.
+        foreach(var pair in OurCachedTextures) {
+            Resources.UnloadAsset(pair.Value);
+        }
+        OurCachedTextures  = new Dictionary<string, Texture2D>();
+        OurErrorAlreadySeen= new Dictionary<string, bool>();
+    }
+    [MenuItem("Edit/iCanScript/Release Editor Textures",false,1000)]
+    public static void ReleaseEditorTextures() {
+        iCS_TextureCache.FlushAndClear();
+    }
+    
+    // ======================================================================
     // Texture access
     // ----------------------------------------------------------------------
     public static Texture2D GetTextureFromGUID(string guid) {
