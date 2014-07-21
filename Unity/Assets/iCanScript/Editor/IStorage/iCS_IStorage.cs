@@ -47,6 +47,9 @@ public partial class iCS_IStorage {
     }
     public iCS_EditorObject DisplayRoot {
         get {
+            if(myEditorObjects == null || myEditorObjects.Count == 0) {
+                return null;
+            }
             int id= Storage.DisplayRoot;
             if(!IsIdValid(id)) {
                 Storage.DisplayRoot= 0;
