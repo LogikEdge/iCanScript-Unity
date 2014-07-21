@@ -20,6 +20,7 @@ public static class iCS_TextureCache {
         }
         OurCachedTextures  = new Dictionary<string, Texture2D>();
         OurErrorAlreadySeen= new Dictionary<string, bool>();
+        Resources.UnloadUnusedAssets();
     }
     [MenuItem("Edit/iCanScript/Release Editor Textures",false,1000)]
     public static void ReleaseEditorTextures() {
@@ -40,8 +41,13 @@ public static class iCS_TextureCache {
             if(texture != null) return texture;
             OurCachedTextures.Remove(fileName);
         }
-        texture= AssetDatabase.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
+        texture= Resources.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
         if(texture != null) {
+//            var clone= iCS_TextureUtil.Clone(texture);
+//            OurCachedTextures.Add(fileName, clone);
+//            clone.hideFlags= HideFlags.DontSave;
+//            Resources.UnloadAsset(texture);
+//            return clone;
             OurCachedTextures.Add(fileName, texture);
             texture.hideFlags= HideFlags.DontSave;
         }

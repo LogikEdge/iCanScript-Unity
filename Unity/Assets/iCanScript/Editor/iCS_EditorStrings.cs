@@ -13,10 +13,10 @@ public class iCS_EditorStrings {
 	public const string MaximizeIcon         = "iCS_MaximizeIcon.psd";
 	public const string JoystickIcon         = "iCS_JoystickIcon.psd";
 	public const string ClockIcon            = "iCS_ClockIcon.psd";
-	public const string UpArrowHeadIcon      = "iCS_UpArrowHeadIcon.psd";
-	public const string DownArrowHeadIcon    = "iCS_DownArrowHeadIcon.psd";
-	public const string LeftArrowHeadIcon    = "iCS_LeftArrowHeadIcon.psd";
-	public const string RightArrowHeadIcon   = "iCS_RightArrowHeadIcon.psd";
+	public const string UpArrowHeadIcon      = "iCS_UpArrowHeadIcon.png";
+	public const string DownArrowHeadIcon    = "iCS_DownArrowHeadIcon.png";
+	public const string LeftArrowHeadIcon    = "iCS_LeftArrowHeadIcon.png";
+	public const string RightArrowHeadIcon   = "iCS_RightArrowHeadIcon.png";
 	public const string ModuleIcon           = "iCS_PackageIcon_32x32.png";
 	public const string FunctionIcon         = "iCS_FunctionIcon_32x32.png";
     public const string TransitionPackageIcon = "iCS_TransitionPackageIcon.png";
