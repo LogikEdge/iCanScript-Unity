@@ -6,19 +6,20 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // Storage
     // ----------------------------------------------------------------------
-    [HideInInspector] public uint			          MajorVersion       = iCS_Config.MajorVersion;
-    [HideInInspector] public uint    		          MinorVersion       = iCS_Config.MinorVersion;
-    [HideInInspector] public uint    		          BugFixVersion      = iCS_Config.BugFixVersion;
-    [HideInInspector] public int                      DisplayRoot        = -1;	
-	[HideInInspector] public int    		          SelectedObject     = -1;
-	[HideInInspector] public bool                     ShowDisplayRootNode= true;
-	[HideInInspector] public float  		          GuiScale           = 1f;	
-	[HideInInspector] public Vector2		          ScrollPosition     = Vector2.zero;
-    [HideInInspector] public int                      UndoRedoId         = 0;
-    [HideInInspector] public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
-    [HideInInspector] public List<Object>             UnityObjects       = new List<Object>();
-    [HideInInspector] public iCS_NavigationHistory    NavigationHistory  = new iCS_NavigationHistory();
-    [HideInInspector] public iCS_EngineObject         EngineObject       = null;
+    [HideInInspector] public uint			          MajorVersion          = iCS_Config.MajorVersion;
+    [HideInInspector] public uint    		          MinorVersion          = iCS_Config.MinorVersion;
+    [HideInInspector] public uint    		          BugFixVersion         = iCS_Config.BugFixVersion;
+    [HideInInspector] public int                      DisplayRoot           = -1;	
+	[HideInInspector] public int    		          SelectedObject        = -1;
+    [HideInInspector] public Vector2                  SelectedObjectPosition= Vector2.zero;
+	[HideInInspector] public bool                     ShowDisplayRootNode   = true;
+	[HideInInspector] public float  		          GuiScale              = 1f;	
+	[HideInInspector] public Vector2		          ScrollPosition        = Vector2.zero;
+    [HideInInspector] public int                      UndoRedoId            = 0;
+    [HideInInspector] public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
+    [HideInInspector] public List<Object>             UnityObjects          = new List<Object>();
+    [HideInInspector] public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
+    [HideInInspector] public iCS_EngineObject         EngineObject          = null;
 
     // ======================================================================
     // Visual Script Data Interface Implementation
@@ -61,6 +62,10 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     int iCS_IVisualScriptData.SelectedObject {
         get { return SelectedObject; }
         set { SelectedObject= value; }
+    }
+    Vector2 iCS_IVisualScriptData.SelectedObjectPosition {
+        get { return SelectedObjectPosition; }
+        set { SelectedObjectPosition= value; }
     }
     bool iCS_IVisualScriptData.ShowDisplayRootNode {
         get { return ShowDisplayRootNode; }

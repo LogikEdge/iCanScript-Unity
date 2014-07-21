@@ -20,18 +20,19 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     // Fields
     // ----------------------------------------------------------------------
 //    public UnityEngine.Object       HostObject         = null;
-    public uint			            MajorVersion       = iCS_Config.MajorVersion;
-    public uint    		            MinorVersion       = iCS_Config.MinorVersion;
-    public uint    		            BugFixVersion      = iCS_Config.BugFixVersion;
-    public int                      DisplayRoot        = -1;	
-	public int    		            SelectedObject     = -1;
-	public bool                     ShowDisplayRootNode= true;
-	public float  		            GuiScale           = 1f;	
-	public Vector2		            ScrollPosition     = Vector2.zero;
-    public int                      UndoRedoId         = 0;
-    public List<iCS_EngineObject>   EngineObjects      = new List<iCS_EngineObject>();
-    public List<Object>             UnityObjects       = new List<Object>();
-    public iCS_NavigationHistory    NavigationHistory  = new iCS_NavigationHistory();
+    public uint			            MajorVersion          = iCS_Config.MajorVersion;
+    public uint    		            MinorVersion          = iCS_Config.MinorVersion;
+    public uint    		            BugFixVersion         = iCS_Config.BugFixVersion;
+    public int                      DisplayRoot           = -1;	
+	public int    		            SelectedObject        = -1;
+    public Vector2                  SelectedObjectPosition= Vector2.zero;
+	public bool                     ShowDisplayRootNode   = true;
+	public float  		            GuiScale              = 1f;	
+	public Vector2		            ScrollPosition        = Vector2.zero;
+    public int                      UndoRedoId            = 0;
+    public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
+    public List<Object>             UnityObjects          = new List<Object>();
+    public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
     
 
     // ======================================================================
@@ -74,6 +75,10 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     int iCS_IVisualScriptData.SelectedObject {
         get { return SelectedObject; }
         set { SelectedObject= value; }
+    }
+    Vector2 iCS_IVisualScriptData.SelectedObjectPosition {
+        get { return SelectedObjectPosition; }
+        set { SelectedObjectPosition= value; }
     }
     bool iCS_IVisualScriptData.ShowDisplayRootNode {
         get { return ShowDisplayRootNode; }
@@ -281,11 +286,12 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     public static void CopyEditorDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
-        to.ShowDisplayRootNode= from.ShowDisplayRootNode;
-        to.ScrollPosition     = from.ScrollPosition;
-        to.GuiScale           = from.GuiScale;
-        to.SelectedObject     = from.SelectedObject;
-        to.DisplayRoot        = from.DisplayRoot;
+        to.ShowDisplayRootNode   = from.ShowDisplayRootNode;
+        to.ScrollPosition        = from.ScrollPosition;
+        to.GuiScale              = from.GuiScale;
+        to.SelectedObject        = from.SelectedObject;
+        to.SelectedObjectPosition= from.SelectedObjectPosition;
+        to.DisplayRoot           = from.DisplayRoot;
         // Copy navigation history
         to.NavigationHistory.CopyFrom(from.NavigationHistory);                    
     }

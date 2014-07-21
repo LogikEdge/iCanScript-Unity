@@ -25,23 +25,25 @@ public static partial class iCS_UserCommands {
                 // Keep a copy of the animation start Rect.
                 // Rebuild editor data.
                 try {
-                    var navigationHistory= new iCS_NavigationHistory();
-                    navigationHistory.CopyFrom(iStorage.Storage.NavigationHistory);
-                    var displayRoot= iStorage.Storage.DisplayRoot;
-                    var scrollPosition= iStorage.Storage.ScrollPosition;
+                    iCS_StorageImp.CopyFromTo(iStorage.PersistentStorage, iStorage.Storage);
                     iStorage.GenerateEditorData();
-                    if(displayRoot != iStorage.Storage.DisplayRoot ||
-                       !navigationHistory.IsEquivalentTo(iStorage.Storage.NavigationHistory)) {
-                         iStorage.Storage.ScrollPosition= scrollPosition;   
-                    }
-                    iStorage.Storage.NavigationHistory.CopyFrom(navigationHistory);
-                    iStorage.Storage.DisplayRoot= displayRoot;
+//                    var navigationHistory= new iCS_NavigationHistory();
+//                    navigationHistory.CopyFrom(iStorage.Storage.NavigationHistory);
+//                    var displayRoot= iStorage.Storage.DisplayRoot;
+//                    var scrollPosition= iStorage.Storage.ScrollPosition;
+//                    iStorage.GenerateEditorData();
+//                    if(displayRoot != iStorage.Storage.DisplayRoot ||
+//                       !navigationHistory.IsEquivalentTo(iStorage.Storage.NavigationHistory)) {
+//                         iStorage.Storage.ScrollPosition= scrollPosition;   
+//                    }
+//                    iStorage.Storage.NavigationHistory.CopyFrom(navigationHistory);
+//                    iStorage.Storage.DisplayRoot= displayRoot;
                 }
                 catch(System.Exception e) {
                     Debug.LogWarning("iCanScript: Problem found regenerating data: "+e.Message);
                 }
                 // Rebuild layout
-                iStorage.ForcedRelayoutOfTree();
+                iStorage.ForcedRelayoutOfTree(iStorage.SelectedObject, iStorage.Storage.SelectedObjectPosition);
                 // Put back the animation start Rect.
                 int len= animationStarts.Length;
                 for(int id= 0; id < len; ++id) {
