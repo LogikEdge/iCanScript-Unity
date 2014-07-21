@@ -15462,10 +15462,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: -1
+  SelectedObject: 0
   ShowDisplayRootNode: 1
   GuiScale: 1.58590579
-  ScrollPosition: {x: -135.507843, y: 649.827881}
+  ScrollPosition: {x: -135.507843, y: 639.801697}
   UndoRedoId: 1551
   EngineObjects:
   - RawName: GameController::Behaviour
@@ -28337,11 +28337,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 68
+  SelectedObject: 59
   ShowDisplayRootNode: 1
-  GuiScale: 1.22416425
-  ScrollPosition: {x: 135.195465, y: 632.432739}
-  UndoRedoId: 736
+  GuiScale: 1.06236804
+  ScrollPosition: {x: 6.34373188, y: -182.775269}
+  UndoRedoId: 779
   EngineObjects:
   - RawName: char_ethan::Behaviour
     ObjectType: 0
@@ -28378,7 +28378,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 1
-    LayoutPriority: 95
+    LayoutPriority: 84
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -28490,7 +28490,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.Rigidbody, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .728108168}
+    LocalAnchorPosition: {x: 2, y: .922702909}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -28538,7 +28538,7 @@ MonoBehaviour:
     IconGUID: 50e891225b99a4bcba83e10d62e6883d
     Tooltip: 
     ExecutionPriority: 9
-    LayoutPriority: -1256
+    LayoutPriority: 84
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -28870,7 +28870,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 26
-    LayoutPriority: -1256
+    LayoutPriority: 70
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -29160,7 +29160,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 41
-    LayoutPriority: 100
+    LayoutPriority: 97
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -29334,7 +29334,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 50
-    LayoutPriority: 95
+    LayoutPriority: 84
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -29882,14 +29882,14 @@ MonoBehaviour:
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     LocalAnchorPosition: {x: 177.915344, y: 163.366638}
-    DisplayOption: 1
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 78
-    LayoutPriority: 100
+    LayoutPriority: 94
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -29901,7 +29901,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector2, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .254291445}
+    LocalAnchorPosition: {x: 1, y: .335108608}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -30045,7 +30045,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 86
-    LayoutPriority: 100
+    LayoutPriority: 97
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -30133,7 +30133,7 @@ MonoBehaviour:
     ParentId: 26
     IsNameEditable: 1
     QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .818844974}
+    LocalAnchorPosition: {x: 2, y: .851721644}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -30394,7 +30394,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 104
-    LayoutPriority: 86
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -30467,14 +30467,14 @@ MonoBehaviour:
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     LocalAnchorPosition: {x: -487.773376, y: -.580444336}
-    DisplayOption: 0
+    DisplayOption: 1
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 108
-    LayoutPriority: 89
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -30708,7 +30708,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 120
-    LayoutPriority: 82
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -30748,7 +30748,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 122
-    LayoutPriority: 93
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -30838,7 +30838,7 @@ MonoBehaviour:
     ParentId: 26
     IsNameEditable: 1
     QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .890386581}
+    LocalAnchorPosition: {x: 2, y: .908089399}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -30857,7 +30857,7 @@ MonoBehaviour:
     ParentId: 78
     IsNameEditable: 1
     QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .488296479}
+    LocalAnchorPosition: {x: 2, y: .765055358}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -30961,7 +30961,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 133
-    LayoutPriority: 93
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31000,7 +31000,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 135
-    LayoutPriority: 93
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31052,7 +31052,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Rigidbody, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .378248394}
+    LocalAnchorPosition: {x: 2, y: .920167029}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -31072,7 +31072,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Rigidbody, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .682693541}
+    LocalAnchorPosition: {x: 2, y: .946967721}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -31160,7 +31160,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 143
-    LayoutPriority: 100
+    LayoutPriority: 97
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31180,7 +31180,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 144
-    LayoutPriority: 100
+    LayoutPriority: 97
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31249,7 +31249,7 @@ MonoBehaviour:
     ParentId: 144
     IsNameEditable: 1
     QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .967566133}
+    LocalAnchorPosition: {x: 2, y: .629945397}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -31269,7 +31269,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Rigidbody, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .282001555}
+    LocalAnchorPosition: {x: 2, y: .65171814}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -31452,7 +31452,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 158
-    LayoutPriority: 94
+    LayoutPriority: 83
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31530,7 +31530,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 162
-    LayoutPriority: 95
+    LayoutPriority: 84
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32057,7 +32057,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 189
-    LayoutPriority: 90
+    LayoutPriority: 68
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32116,7 +32116,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 192
-    LayoutPriority: 95
+    LayoutPriority: 84
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32174,7 +32174,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 195
-    LayoutPriority: 95
+    LayoutPriority: 84
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32292,7 +32292,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 201
-    LayoutPriority: 96
+    LayoutPriority: 95
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32335,7 +32335,7 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: 207
     PortIndex: 1
-    InitialValueArchive: '{12:InitialValue2:v35:0,0,0}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: AudioSource Instance
     ObjectType: 502
@@ -32392,7 +32392,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 206
-    LayoutPriority: -4
+    LayoutPriority: -5
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32457,21 +32457,22 @@ MonoBehaviour:
     PortIndex: 2
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: Player Health
+    ObjectType: 1
+    InstanceId: 210
+    ParentId: 1
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 238.812195, y: 274.816406}
     DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 0
-    LayoutPriority: 0
+    ExecutionPriority: 210
+    LayoutPriority: -14
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
