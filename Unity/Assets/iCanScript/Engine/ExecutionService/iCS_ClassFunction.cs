@@ -26,9 +26,9 @@ public class iCS_ClassFunction : iCS_FunctionBase {
     }
     // ----------------------------------------------------------------------
     protected override void DoForceExecute(int frameId) {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         try {
-#endif
+//#endif
             // Fetch all parameters.
             var end= ParametersEnd;
             for(int i= ParametersStart; i <= end; ++i) {
@@ -38,7 +38,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             // Execute function
             ReturnValue= myMethodBase.Invoke(InInstance, Parameters);            
             MarkAsExecuted(frameId);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
@@ -56,6 +56,6 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             Debug.LogWarning("iCanScript: while invoking => "+thisName+"."+Name+"("+parametersAsStr+")");
             MarkAsCurrent(frameId);
         }
-#endif        
+//#endif        
     }
 }

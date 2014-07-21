@@ -103,3 +103,5 @@ user.lock
 
 
 shadercompiler-1.log
+
+/bin/staging/engineFilesToExclude

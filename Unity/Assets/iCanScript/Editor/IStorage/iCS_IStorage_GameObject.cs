@@ -90,7 +90,7 @@ public partial class iCS_IStorage {
             portInfos= new List<PortInfo>();
         }
         foreach(var component in gameObject.GetComponents<Component>()) {
-            if(component == null || component is iCS_VisualScriptImp || component is iCS_Behaviour) {
+            if(component == null || component is iCS_VisualScriptImp || component is iCS_MonoBehaviourImp) {
                 continue;
             }
             var componentType= component.GetType();
