@@ -18,8 +18,7 @@ public static class iCS_Config {
 	public const string EnginePath               = AssetsPath+"/"+ProductName+"/Engine";
     public const string GizmosFolder             = "Gizmos";
     public const string GizmosPath               = AssetsPath+"/"+GizmosFolder;
-	public const string ResourcePath             = EditorPath+"/Resources";
-	public const string GuiAssetPath             = ResourcePath;
+	public const string ImagePath                = EditorPath+"/Images";
 	public const string CodeGenerationFolder     = ProductName+"_GeneratedCode";
     public const string CodeGenerationPath       = AssetsPath+"/"+CodeGenerationFolder;
     public const string BehaviourGenerationFolder= "Behaviours";

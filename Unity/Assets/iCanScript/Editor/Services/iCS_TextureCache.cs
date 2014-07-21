@@ -11,27 +11,19 @@ public static class iCS_TextureCache {
     static Dictionary<string, bool>         OurErrorAlreadySeen= new Dictionary<string, bool>();
 
     // ======================================================================
-    // Release Used textures
-    // ----------------------------------------------------------------------
-    public static void FlushAndClear() {
-        // Remove reference to cache textures.
-        foreach(var pair in OurCachedTextures) {
-            Resources.UnloadAsset(pair.Value);
-        }
-        OurCachedTextures  = new Dictionary<string, Texture2D>();
-        OurErrorAlreadySeen= new Dictionary<string, bool>();
-        Resources.UnloadUnusedAssets();
-    }
-    [MenuItem("Edit/iCanScript/Release Editor Textures",false,1000)]
-    public static void ReleaseEditorTextures() {
-        iCS_TextureCache.FlushAndClear();
-    }
-    
-    // ======================================================================
     // Texture access
     // ----------------------------------------------------------------------
     public static Texture2D GetTextureFromGUID(string guid) {
         return guid != null ? GetTexture(AssetDatabase.GUIDToAssetPath(guid)) : null;
+    }
+    // ----------------------------------------------------------------------
+    [MenuItem("DevTools/Print Cached Textures",false,1100)]
+    public static void PrintCachedTextures() {
+        int i= 0;
+        foreach(var pair in OurCachedTextures) {
+            Debug.Log("["+i+"]=> "+pair.Key);
+            ++i;
+        }        
     }
     // ----------------------------------------------------------------------
     public static Texture2D GetTexture(string fileName) {
@@ -43,11 +35,6 @@ public static class iCS_TextureCache {
         }
         texture= Resources.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
         if(texture != null) {
-//            var clone= iCS_TextureUtil.Clone(texture);
-//            OurCachedTextures.Add(fileName, clone);
-//            clone.hideFlags= HideFlags.DontSave;
-//            Resources.UnloadAsset(texture);
-//            return clone;
             OurCachedTextures.Add(fileName, texture);
             texture.hideFlags= HideFlags.DontSave;
         }
@@ -55,7 +42,7 @@ public static class iCS_TextureCache {
     }
     // ----------------------------------------------------------------------
     public static bool GetTexture(string fileName, out Texture2D texture) {
-        string texturePath= iCS_Config.GuiAssetPath+"/"+fileName;
+        string texturePath= iCS_Config.ImagePath+"/"+fileName;
         texture= GetTexture(texturePath);
         if(texture == null) {
             ResourceMissingError(texturePath);
@@ -70,7 +57,7 @@ public static class iCS_TextureCache {
     // ----------------------------------------------------------------------
     public static Texture2D GetIcon(string fileName) {
         // Try with the WarpDrice Icon prefix.
-        string iconPath= iCS_Config.ResourcePath+"/"+fileName;
+        string iconPath= iCS_Config.ImagePath+"/"+fileName;
         Texture2D icon= GetTexture(iconPath);
         if(icon == null) {
             // Try without any prefix.

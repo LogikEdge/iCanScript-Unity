@@ -1,4 +1,4 @@
-﻿// ==> UNCOMMENT THE FOLLOWING DEFINE TO CREATE YOUR OWN CUSTOM NODE INSTALLER <==
+// ==> UNCOMMENT THE FOLLOWING DEFINE TO CREATE YOUR OWN CUSTOM NODE INSTALLER <==
 //#define _iCS_USE_CUSTOM_INSTALLER_
 #if _iCS_USE_CUSTOM_INSTALLER_
 
@@ -36,7 +36,7 @@ public static class iCS_CustomInstaller {
     // ----------------------------------------------------------------------
     const string kDefaultCompanyName= "YourCompany";   // First level in library tree
     const string kDefaultPackageName= "YourPackage";   // Second level in library tree
-    const string kDefaultIcon       = iCS_Config.ResourcePath+"/iCS_Logo_32x32.png";
+    const string kDefaultIcon       = iCS_Config.ImagePath+"/iCS_Logo_32x32.png";
 
     // ========================================================================
     // Add types from existing assemblies into the iCanScript library.

@@ -32,7 +32,7 @@ public static class iCS_GizmoController {
         if(!Directory.Exists(systemGizmosFolder)) {
             AssetDatabase.CreateFolder("Assets",GizmosFolder);            
         }
-        string gizmoSrc= iCS_Config.ResourcePath+"/"+SourceGizmoIcon;
+        string gizmoSrc= iCS_Config.ImagePath+"/"+SourceGizmoIcon;
         string gizmoDest= unityGizmosFolder+"/"+GizmoIcon;
         if(iCS_Strings.IsEmpty(AssetDatabase.ValidateMoveAsset(gizmoSrc, gizmoDest))) {
             AssetDatabase.CopyAsset(gizmoSrc,gizmoDest);
