@@ -31,11 +31,11 @@ public partial class iCS_IStorage {
         ++UserTransactionCount;
     }
     public void DecUserTransaction(string undoMessage= "") {
+        if(UserTransactionCount == 1) {
+            SaveStorage(undoMessage);
+        }
         if(UserTransactionCount > 0) {
             --UserTransactionCount;
-        }
-        if(UserTransactionCount == 0) {
-            SaveStorage(undoMessage);
         }
     }
     
