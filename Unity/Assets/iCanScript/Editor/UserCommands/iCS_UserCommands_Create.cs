@@ -16,9 +16,11 @@ public static partial class iCS_UserCommands {
 #if DEBUG
         Debug.Log("iCanScript: CreatePackage => "+name);
 #endif
+        var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         iCS_EditorObject package= _CreatePackage(parent, globalPos, name, objectType, runtimeType);
         if(package == null) return null;
-        package.IStorage.SaveStorage("Create "+name);
+        CloseTransaction(iStorage, "Create "+name);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -30,6 +32,7 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         iCS_EditorObject stateChart= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -42,7 +45,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        iStorage.SaveStorage("Create StateChart");
+        CloseTransaction(iStorage, "Create StateChart");
         return stateChart;        
     }
 	// ----------------------------------------------------------------------
@@ -54,6 +57,7 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         iCS_EditorObject state= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -62,7 +66,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        iStorage.SaveStorage("Create State");
+        CloseTransaction(iStorage, "Create State");
         return state;        
     }
 	// ----------------------------------------------------------------------
@@ -78,6 +82,7 @@ public static partial class iCS_UserCommands {
         if(!iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.InstanceMessage, parent, iStorage)) {
             return null;
         }
+        OpenTransaction(iStorage);
         iCS_EditorObject msgHandler= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -87,37 +92,55 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        iStorage.SaveStorage("Create "+name);
+        CloseTransaction(iStorage, "Create "+name);
         return msgHandler;
     }
 	// ----------------------------------------------------------------------
 	// OK
     public static iCS_EditorObject CreateOnEntryPackage(iCS_EditorObject parent, Vector2 globalPos) {
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         var package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
-        if(package == null) return null;
+        if(package == null) {
+            CloseTransaction(iStorage, "Create "+package.Name);
+            return null;
+        }
         package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnEntry;            
-        package.IStorage.SaveStorage("Create "+package.Name);
+        CloseTransaction(iStorage, "Create "+package.Name);
         return package;
     }
 	// ----------------------------------------------------------------------
 	// OK
 	public static iCS_EditorObject CreateOnUpdatePackage(iCS_EditorObject parent, Vector2 globalPos) {
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         var package= _CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
-        if(package == null) return null;
+        if(package == null) {
+            CloseTransaction(iStorage, "Create "+package.Name);
+            return null;
+        }
         package.IsNameEditable= false;            
         package.Tooltip= iCS_ObjectTooltips.OnUpdate;            
-        package.IStorage.SaveStorage("Create "+package.Name);
+        CloseTransaction(iStorage, "Create "+package.Name);
         return package;
     }
 	// ----------------------------------------------------------------------
     // OK
 	public static iCS_EditorObject CreateOnExitPackage(iCS_EditorObject parent, Vector2 globalPos) {
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         var package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
-        if(package == null) return null;
+        if(package == null) {
+            CloseTransaction(iStorage, "Create "+package.Name);
+            return null;
+        }
         package.IsNameEditable= false;            
         package.Tooltip= iCS_ObjectTooltips.OnExit;            
-        package.IStorage.SaveStorage("Create "+package.Name);
+        CloseTransaction(iStorage, "Create "+package.Name);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -128,8 +151,9 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null || desc == null) return null;
         if(!IsCreationAllowed()) return null;
-		var name= desc.DisplayName;
 		var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
+		var name= desc.DisplayName;
         iCS_EditorObject function= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -138,7 +162,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        iStorage.SaveStorage("Create "+name);
+        CloseTransaction(iStorage, "Create "+name);
         return function;        
     }
 
@@ -150,6 +174,7 @@ public static partial class iCS_UserCommands {
         if(fromStatePort == null || toState == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= toState.IStorage;
+        OpenTransaction(iStorage);
         // Create toStatePort
         iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         // Update port positions
@@ -201,9 +226,7 @@ public static partial class iCS_UserCommands {
         outTransitionPort.PortPositionRatio= 0.5f;
         // Layout the graph
         iStorage.ForcedRelayoutOfTree();
-        if(!iStorage.IsTransactionOpened) {
-            CloseTransaction(iStorage, "Create Transition");            
-        }
+        CloseTransaction(iStorage, "Create Transition");            
         return transitionPackage;
     }
     // -------------------------------------------------------------------------
@@ -212,11 +235,12 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
 		var port= iStorage.CreateEnablePort(parent.InstanceId);
         var pRect= parent.GlobalRect;
         port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
         parent.LayoutPorts();
-        iStorage.SaveStorage("Create Enable Port");
+        CloseTransaction(iStorage, "Create Enable Port");
         return port;
     }
     // -------------------------------------------------------------------------
@@ -225,11 +249,12 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
 		var port= iStorage.CreateTriggerPort(parent.InstanceId);        
         var pRect= parent.GlobalRect;
         port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
         parent.LayoutPorts();
-        iStorage.SaveStorage("Create Trigger Port");
+        CloseTransaction(iStorage, "Create Trigger Port");
         return port;
     }
     // -------------------------------------------------------------------------
@@ -238,9 +263,10 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
 		var port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
         parent.LayoutPorts();
-        iStorage.SaveStorage("Create 'this' Port");
+        CloseTransaction(iStorage, "Create 'this' Port");
         return port;
     }
     
@@ -258,6 +284,7 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         var name= instanceType.Name;
         iCS_EditorObject instance= null;
         iStorage.AnimateGraph(null,
@@ -267,9 +294,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        if(!iStorage.IsTransactionOpened) {
-            CloseTransaction(iStorage, "Create "+name);            
-        }
+        CloseTransaction(iStorage, "Create "+name);            
         return instance;
     }
 
@@ -281,6 +306,7 @@ public static partial class iCS_UserCommands {
         if(obj == null || !obj.CanHavePackageAsParent()) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= obj.IStorage;
+        OpenTransaction(iStorage);
         iCS_EditorObject package= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -288,7 +314,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        iStorage.SaveStorage("Wrap : "+obj.Name);
+        CloseTransaction(iStorage, "Wrap : "+obj.Name);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -298,6 +324,7 @@ public static partial class iCS_UserCommands {
         if(!IsCreationAllowed()) return null;
         var selectedObjects= iStorage.FilterMultiSelectionForWrapInPackage();
         if(selectedObjects == null || selectedObjects.Length == 0) return null;
+        OpenTransaction(iStorage);
         iCS_EditorObject package= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -312,7 +339,7 @@ public static partial class iCS_UserCommands {
                 }
             }
         );
-        iStorage.SaveStorage("Wrap Selection");
+        CloseTransaction(iStorage, "Wrap Selection");
         return package;
     }
 
@@ -327,6 +354,7 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         iCS_EditorObject instance= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -339,7 +367,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        iStorage.SaveStorage("Create "+go.name);
+        CloseTransaction(iStorage, "Create "+go.name);
         return instance;
     }
     
@@ -354,6 +382,7 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         iCS_EditorObject package= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -362,6 +391,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
+        CloseTransaction(iStorage, "Create "+name);
         return package;
     }
 }

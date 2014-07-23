@@ -22,6 +22,7 @@ public static partial class iCS_UserCommands {
             return;
         }
         var iStorage= obj.IStorage;
+        OpenTransaction(iStorage);
         if(obj.IsInstanceNodePort) {
     		iStorage.AnimateGraph(null,
                 _=> {
@@ -29,19 +30,21 @@ public static partial class iCS_UserCommands {
                     iStorage.ForcedRelayoutOfTree();
                 }
     		);
+            CloseTransaction(iStorage, "Delete "+name);
             return;
         }
         // TODO: Should animate parent node on node delete.
 		iStorage.AnimateGraph(null,
             _=> {
-                iStorage.FlushSelectedObject();
+                // Move the selection to the parent node
                 var parent= obj.ParentNode;
                 iStorage.SelectedObject= parent;
+
                 iStorage.DestroyInstance(obj.InstanceId);
                 iStorage.ForcedRelayoutOfTree();
             }
 		);
-        iStorage.SaveStorage("Delete "+name);
+        CloseTransaction(iStorage, "Delete "+name);
 	}
 	// ----------------------------------------------------------------------
     public static bool DeleteMultiSelectedObjects(iCS_IStorage iStorage) {
@@ -56,6 +59,7 @@ public static partial class iCS_UserCommands {
             DeleteObject(selectedObjects[0]);
             return true;
         }
+        OpenTransaction(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 foreach(var obj in selectedObjects) {
@@ -63,9 +67,10 @@ public static partial class iCS_UserCommands {
                         ShowNotification("Fix port=> \""+obj.Name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
                         continue;
                     }
-                    iStorage.FlushSelectedObject();
+                    // Move the selection to the parent node
                     var parent= obj.ParentNode;
                     iStorage.SelectedObject= parent;
+
                     if(obj.IsInstanceNodePort) {
                 		iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);                        
                     }
@@ -76,25 +81,30 @@ public static partial class iCS_UserCommands {
                 }                
             }
         );
-        iStorage.SaveStorage("Delete Selection");
+        CloseTransaction(iStorage, "Delete Selection");
         return true;
     }
 	// ----------------------------------------------------------------------
     public static void DeleteKeepChildren(iCS_EditorObject obj) {
         if(!IsDeletionAllowed()) return;
         var iStorage= obj.IStorage;
+        OpenTransaction(iStorage);
         var newParent= obj.ParentNode;
         var childNodes= obj.BuildListOfChildNodes(_ => true);
         var childPos= P.map(n => n.GlobalPosition, childNodes);
         iStorage.AnimateGraph(obj,
             _=> {
+                // Move the selection to the parent node
+                var parent= obj.ParentNode;
+                iStorage.SelectedObject= parent;
+                
                 P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
                 iStorage.DestroyInstance(obj.InstanceId);
                 P.zipWith((n,p) => { n.LocalAnchorFromGlobalPosition= p; }, childNodes, childPos);
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        iStorage.SaveStorage("Delete "+obj.Name);
+        CloseTransaction(iStorage, "Delete "+obj.Name);
     }
 
 }

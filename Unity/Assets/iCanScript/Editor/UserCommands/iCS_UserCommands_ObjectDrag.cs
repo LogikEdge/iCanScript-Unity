@@ -12,12 +12,14 @@ public static partial class iCS_UserCommands {
     public static void StartNodeDrag(iCS_EditorObject node) {
     }
     public static void EndNodeDrag(iCS_EditorObject node) {
-        node.IStorage.SaveStorage("Node Drag");
+        OpenTransaction(node.IStorage);
+        CloseTransaction(node.IStorage, "Node Drag");
     }
     public static void StartMultiSelectionNodeDrag(iCS_IStorage iStorage) {
     }
     public static void EndMultiSelectionDrag(iCS_IStorage iStorage) {
-        iStorage.SaveStorage("Multi-Selection Node Drag");
+        OpenTransaction(iStorage);
+        CloseTransaction(iStorage, "Multi-Selection Node Drag");
     }
     public static void StartNodeRelocation(iCS_EditorObject node) {
     }
@@ -48,24 +50,27 @@ public static partial class iCS_UserCommands {
     }
     public static void EndPortConnection(iCS_EditorObject port) {
         var iStorage= port.IStorage;
+        OpenTransaction(iStorage);
         iStorage.ForcedRelayoutOfTree();
         iStorage.StartToAnimate();
-        iStorage.SaveStorage("Port Connection=> "+port.Name);
+        CloseTransaction(iStorage, "Port Connection=> "+port.Name);
     }
     public static void EndPortPublishing(iCS_EditorObject port) {
         var iStorage= port.IStorage;
+        OpenTransaction(iStorage);
         iStorage.ForcedRelayoutOfTree();
-        iStorage.SaveStorage("Port Publishing=> "+port.Name);
+        CloseTransaction(iStorage, "Port Publishing=> "+port.Name);
     }
 
 
     public static void EndPortDrag(iCS_EditorObject port) {
         var iStorage= port.IStorage;
+        OpenTransaction(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        iStorage.SaveStorage("Port Drag");
+        CloseTransaction(iStorage, "Port Drag");
     }
 }

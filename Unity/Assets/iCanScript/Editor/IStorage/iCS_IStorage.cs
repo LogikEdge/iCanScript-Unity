@@ -11,7 +11,6 @@ public partial class iCS_IStorage {
     // Fields
     // ----------------------------------------------------------------------
             bool                    myForceRelayout     = true;
-    public  bool                    IsTransactionOpened = false;
     public  iCS_MonoBehaviourImp    iCSMonoBehaviour    = null;
     public  iCS_VisualScriptData    Storage             = null;
     List<iCS_EditorObject>          myEditorObjects     = null;
@@ -43,6 +42,9 @@ public partial class iCS_IStorage {
         }
         set {
             Storage.DisplayRoot= value;
+            if(!IsUserTransactionActive) {
+                PersistentStorage.DisplayRoot= value;
+            }
         }
     }
     public iCS_EditorObject DisplayRoot {
@@ -66,10 +68,16 @@ public partial class iCS_IStorage {
             // Keep PersistentStorage & Storage in sync since DisplayRoot is not comprised in the Undo.
             if(value == null || !IsIdValid(value.InstanceId)) {
                 Storage.DisplayRoot= 0;
+                if(!IsUserTransactionActive) {
+                    PersistentStorage.DisplayRoot= 0;                    
+                }
                 return;
             }
             if(!value.IsNode) return;
             Storage.DisplayRoot= value.InstanceId;
+            if(!IsUserTransactionActive) {
+                PersistentStorage.DisplayRoot= value.InstanceId;
+            }
         }
     } 
 	public bool ShowDisplayRootNode {
@@ -84,11 +92,21 @@ public partial class iCS_IStorage {
     }
 	public Vector2 ScrollPosition {
 	    get { return Storage.ScrollPosition; }
-	    set { Storage.ScrollPosition= value; }
+	    set {
+            Storage.ScrollPosition= value;
+            if(!IsUserTransactionActive) {
+                PersistentStorage.ScrollPosition= value;
+            }
+        }
 	}
     public float GuiScale {
         get { return Storage.GuiScale; }
-        set { Storage.GuiScale= value; }
+        set {
+            Storage.GuiScale= value;
+            if(!IsUserTransactionActive) {
+                PersistentStorage.GuiScale= value;
+            }
+        }
     }
     public int UndoRedoId {
         get { return Storage.UndoRedoId; }
@@ -318,7 +336,8 @@ public partial class iCS_IStorage {
 					}                    
 				}
             }
-        );        
+        );
+        ClearUserTransactions();        
         return modified;
     }
     

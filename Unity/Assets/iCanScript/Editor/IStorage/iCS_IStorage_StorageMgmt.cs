@@ -11,6 +11,37 @@ public partial class iCS_IStorage {
     // Fields
     // ----------------------------------------------------------------------
     private string myUndoMessage    = "";
+    public  int    UserTransactionCount= 0;
+    
+    
+    // ======================================================================
+    // User transaction management
+    // ----------------------------------------------------------------------
+    public bool IsUserTransactionActive {
+        get { return UserTransactionCount != 0; }
+    }
+    public void ClearUserTransactions() {
+        if(UserTransactionCount != 0) {
+            SaveStorage();
+            UserTransactionCount= 0;
+            Debug.LogWarning("iCanScript: Internal Error: User transaction was forced closed.");            
+        }
+    }
+    public void IncUserTransaction() {
+        ++UserTransactionCount;
+    }
+    public void DecUserTransaction(string undoMessage= "") {
+        if(UserTransactionCount <= 0) {
+            Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
+        }
+        if(UserTransactionCount > 0) {
+            --UserTransactionCount;
+        }
+        if(UserTransactionCount == 0) {
+            SaveStorage(undoMessage);
+        }
+    }
+    
     
     // ======================================================================
     // Undo/Redo support
@@ -34,7 +65,7 @@ public partial class iCS_IStorage {
         SaveStorage();
     }
     // ----------------------------------------------------------------------
-    public void SaveStorage(string undoMessage) {
+    private void SaveStorage(string undoMessage) {
         // Start recording changes for Undo.
 //        Debug.Log("Saving visual script");
         ++Storage.UndoRedoId;
@@ -52,7 +83,7 @@ public partial class iCS_IStorage {
         iCS_StorageImp.CopyFromTo(Storage, PersistentStorage);
         // Commit Undo transaction and forces redraw of inspector window.
         EditorUtility.SetDirty(iCSMonoBehaviour);
-        IsTransactionOpened= false;
+        ClearUserTransactions();
         ++ModificationId;
         iCS_EditorController.RepaintAllEditors();
     }
@@ -89,6 +120,16 @@ public partial class iCS_IStorage {
         // Re-initialize multi-selection list.
         var selectedObject= SelectedObject;
         SelectedObject= selectedObject;
+    }
+    // ----------------------------------------------------------------------
+    public void FlushLayoutData() {
+        FlushSelectedObject();
+        FlushScrollpositionAndGuiScale();
+        FlushDisplayRoot();
+    }
+    // ----------------------------------------------------------------------
+    public void FlushSelectedObject() {
+        PersistentStorage.SelectedObject= Storage.SelectedObject;
     }
     // ----------------------------------------------------------------------
     public void FlushScrollpositionAndGuiScale() {

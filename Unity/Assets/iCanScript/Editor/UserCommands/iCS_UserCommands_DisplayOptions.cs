@@ -18,6 +18,7 @@ public static partial class iCS_UserCommands {
             return;
         }
         var iStorage= node.IStorage;
+        OpenTransaction(iStorage);
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
@@ -32,7 +33,7 @@ public static partial class iCS_UserCommands {
             }
         );
         SendEndRelayoutOfTree(iStorage);
-        iStorage.SaveStorage("Unfold "+node.Name);
+        CloseTransaction(iStorage, "Unfold "+node.Name);
     }
 	// ----------------------------------------------------------------------
     // OK
@@ -43,7 +44,8 @@ public static partial class iCS_UserCommands {
         if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Folded) {
             return;
         }
-        var iStorage= node.IStorage;        
+        var iStorage= node.IStorage;
+        OpenTransaction(iStorage);        
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
@@ -58,7 +60,7 @@ public static partial class iCS_UserCommands {
             }
         );
         SendEndRelayoutOfTree(iStorage);
-        iStorage.SaveStorage("Fold "+node.Name);
+        CloseTransaction(iStorage, "Fold "+node.Name);
     }
 	// ----------------------------------------------------------------------
     // OK
@@ -70,6 +72,7 @@ public static partial class iCS_UserCommands {
             return;
         }
         var iStorage= node.IStorage;
+        OpenTransaction(iStorage);
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
@@ -84,7 +87,7 @@ public static partial class iCS_UserCommands {
             }
         );
         SendEndRelayoutOfTree(iStorage);       
-        iStorage.SaveStorage("Iconize "+node.Name);
+        CloseTransaction(iStorage, "Iconize "+node.Name);
     }
 
 }
