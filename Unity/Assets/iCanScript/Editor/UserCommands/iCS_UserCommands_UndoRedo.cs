@@ -25,17 +25,17 @@ public static partial class iCS_UserCommands {
                 // Keep a copy of the animation start Rect.
                 // Rebuild editor data.
                 try {
-                    var navigationHistory= new iCS_NavigationHistory();
-                    navigationHistory.CopyFrom(iStorage.Storage.NavigationHistory);
-                    var displayRoot= iStorage.Storage.DisplayRoot;
-                    var scrollPosition= iStorage.Storage.ScrollPosition;
+//                    var navigationHistory= new iCS_NavigationHistory();
+//                    navigationHistory.CopyFrom(iStorage.Storage.NavigationHistory);
+//                    var displayRoot= iStorage.Storage.DisplayRoot;
+//                    var scrollPosition= iStorage.Storage.ScrollPosition;
                     iStorage.GenerateEditorData();
-                    if(displayRoot != iStorage.Storage.DisplayRoot ||
-                       !navigationHistory.IsEquivalentTo(iStorage.Storage.NavigationHistory)) {
-                         iStorage.Storage.ScrollPosition= scrollPosition;   
-                    }
-                    iStorage.Storage.NavigationHistory.CopyFrom(navigationHistory);
-                    iStorage.Storage.DisplayRoot= displayRoot;
+//                    if(displayRoot != iStorage.Storage.DisplayRoot ||
+//                       !navigationHistory.IsEquivalentTo(iStorage.Storage.NavigationHistory)) {
+//                         iStorage.Storage.ScrollPosition= scrollPosition;   
+//                    }
+//                    iStorage.Storage.NavigationHistory.CopyFrom(navigationHistory);
+//                    iStorage.Storage.DisplayRoot= displayRoot;
                 }
                 catch(System.Exception e) {
                     Debug.LogWarning("iCanScript: Problem found regenerating data: "+e.Message);

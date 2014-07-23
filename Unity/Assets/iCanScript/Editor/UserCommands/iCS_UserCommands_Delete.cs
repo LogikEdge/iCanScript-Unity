@@ -14,7 +14,7 @@ public static partial class iCS_UserCommands {
 #if DEBUG
 		Debug.Log("iCanScript: Deleting => "+obj.Name);
 #endif
-        if(obj == null) return;
+        if(obj == null || obj == obj.IStorage.DisplayRoot) return;
         if(!IsDeletionAllowed()) return;
         var name= obj.Name;
         if(!obj.CanBeDeleted()) {
