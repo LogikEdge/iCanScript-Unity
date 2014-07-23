@@ -10,15 +10,15 @@ public static partial class iCS_UserCommands {
     // Node drag
 	// ----------------------------------------------------------------------
     public static void StartNodeDrag(iCS_EditorObject node) {
+        OpenTransaction(node.IStorage);
     }
     public static void EndNodeDrag(iCS_EditorObject node) {
-        OpenTransaction(node.IStorage);
         CloseTransaction(node.IStorage, "Node Drag");
     }
     public static void StartMultiSelectionNodeDrag(iCS_IStorage iStorage) {
+        OpenTransaction(iStorage);
     }
     public static void EndMultiSelectionDrag(iCS_IStorage iStorage) {
-        OpenTransaction(iStorage);
         CloseTransaction(iStorage, "Multi-Selection Node Drag");
     }
     public static void StartNodeRelocation(iCS_EditorObject node) {

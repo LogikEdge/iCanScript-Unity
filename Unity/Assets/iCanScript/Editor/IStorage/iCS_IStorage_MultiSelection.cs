@@ -35,13 +35,13 @@ public partial class iCS_IStorage {
             if(value != null) {
                 mySelectedObjects.Add(value);
             }
-            SelectedObjectId= value != null ? value.InstanceId : DisplayRootId;
+            var selectedId= value != null ? value.InstanceId : DisplayRootId;
+            if(selectedId != SelectedObjectId) {
+                SelectedObjectId= selectedId;
+                SaveSelectedObjectPosition();                
+            }
         }
     }
-//    // -------------------------------------------------------------------------
-//    public void FlushSelectedObject() {
-//        PersistentStorage.SelectedObject= SelectedObject.InstanceId;
-//    }
     // -------------------------------------------------------------------------
     public bool IsMultiSelectionActive {
         get { return mySelectedObjects.Count > 1; }

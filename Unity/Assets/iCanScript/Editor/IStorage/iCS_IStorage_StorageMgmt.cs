@@ -122,6 +122,13 @@ public partial class iCS_IStorage {
         SelectedObject= selectedObject;
     }
     // ----------------------------------------------------------------------
+    public void SaveSelectedObjectPosition() {
+//        var selectedObject= SelectedObject.IsNode ? SelectedObject : SelectedObject.ParentNode;
+        var selectedPos= SelectedObject.GlobalPosition;
+        Storage.SelectedObjectPosition= selectedPos;
+        PersistentStorage.SelectedObjectPosition= selectedPos;
+    }
+    // ----------------------------------------------------------------------
     public void FlushLayoutData() {
         FlushSelectedObject();
         FlushScrollpositionAndGuiScale();
