@@ -24,7 +24,10 @@ public static partial class iCS_UserCommands {
         var iStorage= obj.IStorage;
         if(obj.IsInstanceNodePort) {
     		iStorage.AnimateGraph(null,
-    			_=> iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj)                        
+                _=> {
+                    iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);
+                    iStorage.ForcedRelayoutOfTree();
+                }
     		);
             return;
         }
@@ -32,8 +35,9 @@ public static partial class iCS_UserCommands {
 		iStorage.AnimateGraph(null,
             _=> {
                 var parent= obj.ParentNode;
+                iStorage.SelectedObject= parent;
                 iStorage.DestroyInstance(obj.InstanceId);
-                parent.LayoutNodeAndParents();
+                iStorage.ForcedRelayoutOfTree();
             }
 		);
         iStorage.SaveStorage("Delete "+name);
@@ -59,13 +63,14 @@ public static partial class iCS_UserCommands {
                         continue;
                     }
                     var parent= obj.ParentNode;
+                    iStorage.SelectedObject= parent;
                     if(obj.IsInstanceNodePort) {
                 		iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);                        
                     }
                     else {
                 		iStorage.DestroyInstance(obj.InstanceId);                        
                     }
-                    parent.LayoutNodeAndParents();
+                    iStorage.ForcedRelayoutOfTree();
                 }                
             }
         );
