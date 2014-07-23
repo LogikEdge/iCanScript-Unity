@@ -37,7 +37,7 @@ public static partial class iCS_UserCommands {
                 if(pasted.IsUnfoldedInLayout) {
                     pasted.Fold();            
                 }
-                pasted.LayoutNodeAndParents();                
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iStorage.SaveStorage("Add Prefab "+sourceRoot.Name);

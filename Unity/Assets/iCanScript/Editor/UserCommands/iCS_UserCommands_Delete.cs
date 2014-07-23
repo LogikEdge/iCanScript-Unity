@@ -89,7 +89,7 @@ public static partial class iCS_UserCommands {
                 P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
                 iStorage.DestroyInstance(obj.InstanceId);
                 P.zipWith((n,p) => { n.LocalAnchorFromGlobalPosition= p; }, childNodes, childPos);
-                newParent.LayoutNodeAndParents();
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iStorage.SaveStorage("Delete "+obj.Name);
