@@ -15,11 +15,6 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Undo/Redo support
     // ----------------------------------------------------------------------
-//    public void RegisterUndo(string message= "iCanScript") {
-//        Debug.Log("Registering Undo");
-//        myUndoMessage= message;
-//    }
-    // ----------------------------------------------------------------------
     void DetectUndoRedo() {
 //        // Regenerate internal structures if undo/redo was performed.
 //        if(PersistentStorage.UndoRedoId != Storage.UndoRedoId) {
@@ -57,7 +52,6 @@ public partial class iCS_IStorage {
         EditorUtility.SetDirty(iCSMonoBehaviour);
         IsTransactionOpened= false;
         ++ModificationId;
-//        iCS_EditorController.Update();
         iCS_EditorController.RepaintAllEditors();
     }
     // ----------------------------------------------------------------------
