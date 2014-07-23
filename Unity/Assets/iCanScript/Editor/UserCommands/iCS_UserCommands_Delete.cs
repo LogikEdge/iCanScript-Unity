@@ -34,6 +34,7 @@ public static partial class iCS_UserCommands {
         // TODO: Should animate parent node on node delete.
 		iStorage.AnimateGraph(null,
             _=> {
+                iStorage.FlushSelectedObject();
                 var parent= obj.ParentNode;
                 iStorage.SelectedObject= parent;
                 iStorage.DestroyInstance(obj.InstanceId);
@@ -62,6 +63,7 @@ public static partial class iCS_UserCommands {
                         ShowNotification("Fix port=> \""+obj.Name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
                         continue;
                     }
+                    iStorage.FlushSelectedObject();
                     var parent= obj.ParentNode;
                     iStorage.SelectedObject= parent;
                     if(obj.IsInstanceNodePort) {

@@ -55,9 +55,7 @@ public static partial class iCS_UserCommands {
         // Update central visual script data
         iCS_VisualScriptDataController.Update();
         // Repaint all windows that could have changed.
-        iCS_EditorController.RepaintVisualEditor();
-        iCS_EditorController.RepaintTreeViewEditor();
-        iCS_EditorController.RepaintInstanceEditor();
+        iCS_EditorController.RepaintAllEditors();
         // Force redraw of Inspector Window.
         EditorUtility.SetDirty(iStorage.iCSMonoBehaviour);
     }

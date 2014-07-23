@@ -88,4 +88,22 @@ public partial class iCS_IStorage {
         var selectedObject= SelectedObject;
         SelectedObject= selectedObject;
     }
+    // ----------------------------------------------------------------------
+    public void FlushScrollpositionAndGuiScale() {
+        FlushScrollposition();
+        FlushGuiScale();
+    }
+    // ----------------------------------------------------------------------
+    public void FlushScrollposition() {
+        PersistentStorage.ScrollPosition= Storage.ScrollPosition;
+    }
+    // ----------------------------------------------------------------------
+    public void FlushGuiScale() {
+        PersistentStorage.GuiScale= Storage.GuiScale;
+    }
+    // ----------------------------------------------------------------------
+    public void FlushDisplayRoot() {
+        PersistentStorage.DisplayRoot= Storage.DisplayRoot;
+        PersistentStorage.ShowDisplayRootNode= Storage.ShowDisplayRootNode;
+    }
 }
