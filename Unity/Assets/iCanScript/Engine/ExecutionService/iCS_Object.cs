@@ -60,7 +60,7 @@ public class iCS_Object {
     public string           TypeName        { get { return GetType().Name; }}
     public int              Priority        { get; set; }
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
     public iCS_EngineObject GetPortWithIndex(int idx) {
         var ourId= InstanceId;
         for(int i= 0; i < VisualScript.EngineObjects.Count; ++i) {
@@ -73,7 +73,7 @@ public class iCS_Object {
         }
         return null;
     }
-#endif
+//#endif
     
     // ======================================================================
     // Creation/Destruction
@@ -84,10 +84,10 @@ public class iCS_Object {
     }
 
     public override string ToString() {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         return Name;
-#else
-        return TypeName;
-#endif
+//#else
+//        return TypeName;
+//#endif
     }
 }

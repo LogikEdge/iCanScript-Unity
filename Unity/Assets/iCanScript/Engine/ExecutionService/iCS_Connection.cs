@@ -8,7 +8,6 @@ public class iCS_Connection {
     iCS_ISignature  mySignature    = null;
     int             myPortIndex    = -1;
     bool            myIsAlwaysReady= false;
-//    bool            myIsControlFlow= false;
 
     // ======================================================================
     // Accessors
@@ -22,7 +21,7 @@ public class iCS_Connection {
     public int PortIndex {
         get { return myPortIndex; }
     }
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
     public string PortFullName {
         get {
             var nodeName= Action.FullName;
@@ -31,7 +30,7 @@ public class iCS_Connection {
             return nodeName+"."+portName;            
         }
     }
-#endif
+//#endif
     
     // ======================================================================
     // Creation/Destruction
@@ -41,7 +40,6 @@ public class iCS_Connection {
         mySignature    = signature;
         myPortIndex    = portIndex;
         myIsAlwaysReady= isAlwaysReady;
-//        myIsControlFlow= isControlFlow;
     }
 
     public bool IsConnected             { get{ return mySignature != null; }}

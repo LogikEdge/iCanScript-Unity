@@ -25,13 +25,11 @@ public static partial class iCS_UserCommands {
                 // Keep a copy of the animation start Rect.
                 // Rebuild editor data.
                 try {
-                    iCS_StorageImp.CopyFromTo(iStorage.PersistentStorage, iStorage.Storage);
-                    iStorage.GenerateEditorData();
 //                    var navigationHistory= new iCS_NavigationHistory();
 //                    navigationHistory.CopyFrom(iStorage.Storage.NavigationHistory);
 //                    var displayRoot= iStorage.Storage.DisplayRoot;
 //                    var scrollPosition= iStorage.Storage.ScrollPosition;
-//                    iStorage.GenerateEditorData();
+                    iStorage.GenerateEditorData();
 //                    if(displayRoot != iStorage.Storage.DisplayRoot ||
 //                       !navigationHistory.IsEquivalentTo(iStorage.Storage.NavigationHistory)) {
 //                         iStorage.Storage.ScrollPosition= scrollPosition;   
@@ -57,9 +55,7 @@ public static partial class iCS_UserCommands {
         // Update central visual script data
         iCS_VisualScriptDataController.Update();
         // Repaint all windows that could have changed.
-        iCS_EditorController.RepaintVisualEditor();
-        iCS_EditorController.RepaintTreeViewEditor();
-        iCS_EditorController.RepaintInstanceEditor();
+        iCS_EditorController.RepaintAllEditors();
         // Force redraw of Inspector Window.
         EditorUtility.SetDirty(iStorage.iCSMonoBehaviour);
     }

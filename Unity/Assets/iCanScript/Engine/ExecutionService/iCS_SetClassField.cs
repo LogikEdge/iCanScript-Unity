@@ -24,17 +24,17 @@ public class iCS_SetClassField : iCS_FieldBase {
     protected override void DoForceExecute(int frameId) {
         // Execute function
         UpdateParameter(0);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         try {
-#endif
+//#endif
             myFieldInfo.SetValue(null, Parameters[0]);
             MarkAsExecuted(frameId);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
             MarkAsCurrent(frameId);
         }
-#endif        
+//#endif        
     }
 }

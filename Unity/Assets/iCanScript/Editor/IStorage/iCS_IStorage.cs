@@ -66,19 +66,16 @@ public partial class iCS_IStorage {
             // Keep PersistentStorage & Storage in sync since DisplayRoot is not comprised in the Undo.
             if(value == null || !IsIdValid(value.InstanceId)) {
                 Storage.DisplayRoot= 0;
-                PersistentStorage.DisplayRoot= 0;
                 return;
             }
             if(!value.IsNode) return;
             Storage.DisplayRoot= value.InstanceId;
-            PersistentStorage.DisplayRoot= value.InstanceId;
         }
     } 
 	public bool ShowDisplayRootNode {
 		get { return Storage.ShowDisplayRootNode; }
 		set {
             Storage.ShowDisplayRootNode= value;
-            PersistentStorage.ShowDisplayRootNode= value;
         }
 	}
     public bool ForceRelayout {
@@ -87,7 +84,7 @@ public partial class iCS_IStorage {
     }
 	public Vector2 ScrollPosition {
 	    get { return Storage.ScrollPosition; }
-	    set { Storage.ScrollPosition= value; PersistentStorage.ScrollPosition= value; }
+	    set { Storage.ScrollPosition= value; }
 	}
     public float GuiScale {
         get { return Storage.GuiScale; }
@@ -109,6 +106,7 @@ public partial class iCS_IStorage {
     public iCS_NavigationHistory NavigationHistory {
         get { return Storage.NavigationHistory; }
     }
+
     
 
     // ======================================================================

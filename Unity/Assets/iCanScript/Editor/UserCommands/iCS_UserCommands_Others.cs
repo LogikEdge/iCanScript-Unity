@@ -45,10 +45,10 @@ public static partial class iCS_UserCommands {
             _=> {
                 obj.Name= name;
                 if(obj.IsNode) {
-                    obj.LayoutNodeAndParents();
+                    iStorage.ForcedRelayoutOfTree();
                 }
                 else if(obj.IsDataOrControlPort) {
-                    obj.ParentNode.LayoutNodeAndParents();
+                    iStorage.ForcedRelayoutOfTree();
                 }
             }
         );

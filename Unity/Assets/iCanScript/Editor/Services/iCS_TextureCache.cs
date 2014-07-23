@@ -17,6 +17,15 @@ public static class iCS_TextureCache {
         return guid != null ? GetTexture(AssetDatabase.GUIDToAssetPath(guid)) : null;
     }
     // ----------------------------------------------------------------------
+    [MenuItem("DevTools/Print Cached Textures",false,1100)]
+    public static void PrintCachedTextures() {
+        int i= 0;
+        foreach(var pair in OurCachedTextures) {
+            Debug.Log("["+i+"]=> "+pair.Key);
+            ++i;
+        }        
+    }
+    // ----------------------------------------------------------------------
     public static Texture2D GetTexture(string fileName) {
         Texture2D texture= null;
         if(OurCachedTextures.ContainsKey(fileName)) {
@@ -24,7 +33,7 @@ public static class iCS_TextureCache {
             if(texture != null) return texture;
             OurCachedTextures.Remove(fileName);
         }
-        texture= AssetDatabase.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
+        texture= Resources.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
         if(texture != null) {
             OurCachedTextures.Add(fileName, texture);
             texture.hideFlags= HideFlags.DontSave;
@@ -33,7 +42,7 @@ public static class iCS_TextureCache {
     }
     // ----------------------------------------------------------------------
     public static bool GetTexture(string fileName, out Texture2D texture) {
-        string texturePath= iCS_Config.GuiAssetPath+"/"+fileName;
+        string texturePath= iCS_Config.ImagePath+"/"+fileName;
         texture= GetTexture(texturePath);
         if(texture == null) {
             ResourceMissingError(texturePath);
@@ -48,7 +57,7 @@ public static class iCS_TextureCache {
     // ----------------------------------------------------------------------
     public static Texture2D GetIcon(string fileName) {
         // Try with the WarpDrice Icon prefix.
-        string iconPath= iCS_Config.ResourcePath+"/"+fileName;
+        string iconPath= iCS_Config.ImagePath+"/"+fileName;
         Texture2D icon= GetTexture(iconPath);
         if(icon == null) {
             // Try without any prefix.

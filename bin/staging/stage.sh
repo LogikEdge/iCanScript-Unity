@@ -136,7 +136,7 @@ function build_edition {
 
     # ========================================================================
     # Install visible source files.
-    cp -r $EDITOR_DIR/Resources $STAGING_EDITOR_DIR
+    cp -r $EDITOR_DIR/Images $STAGING_EDITOR_DIR
     rsync -av $EDITOR_PUBLIC_NODE_INSTALLER_DIR $STAGING_EDITOR_DIR >/dev/null
     rsync -av $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR $STAGING_EDITOR_DIR >/dev/null
     rsync -av $ENGINE_PUBLIC_COMPONENTS_DIR $STAGING_ENGINE_DIR >/dev/null

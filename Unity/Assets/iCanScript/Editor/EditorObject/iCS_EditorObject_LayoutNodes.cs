@@ -39,11 +39,6 @@ public partial class iCS_EditorObject {
     }
 
     // ----------------------------------------------------------------------
-    public void LayoutNodeAndParents() {
-        LayoutNode();
-        LayoutParentNodesUntilTop();
-    }
-    // ----------------------------------------------------------------------
     // Revised: feb 10, 2014
 	public void LayoutNode() {
         // Clear information created in previous layout

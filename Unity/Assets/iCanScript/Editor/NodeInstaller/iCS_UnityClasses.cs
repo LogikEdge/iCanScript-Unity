@@ -16,7 +16,7 @@ public static class iCS_UnityClasses {
     // Constants
     // ----------------------------------------------------------------------
     const string kUnityEnginePackage= "UnityEngine";
-    const string kResourcesPath     = iCS_Config.ResourcePath;
+    const string kResourcesPath     = iCS_Config.ImagePath;
     const string kJoystickIcon      = kResourcesPath+"/iCS_JoystickIcon.psd";
     const string kUnityIcon         = kResourcesPath+"/iCS_UnityLogo_32x32.png";
     const string kOutMailIcon       = kResourcesPath+"/iCS_OutMail_32x32.png";

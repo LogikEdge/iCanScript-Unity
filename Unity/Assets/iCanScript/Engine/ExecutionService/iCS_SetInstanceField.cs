@@ -25,18 +25,18 @@ public class iCS_SetInstanceField : iCS_FieldBase {
     protected override void DoForceExecute(int frameId) {
         // Execute function
         UpdateParameter(0);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         try {
-#endif
+//#endif
             myFieldInfo.SetValue(InInstance, Parameters[0]);
             OutInstance= InInstance;
             MarkAsExecuted(frameId);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
             MarkAsCurrent(frameId);
         }
-#endif
+//#endif
     }
 }

@@ -49,11 +49,11 @@ public class iCS_RunContext {
     void ResolveDeadLock(int attempts) {
         // Force execution if to many nested attempts to resolve deadlock
         if(attempts > 10) {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
             if(myAction.VisualScript.IsTraceEnabled) {
                 Debug.LogWarning("TOO MANY ATTEMPTS TO RESOLVE DEADLOCKS...FORCING EXECUTION");
             }
-#endif
+//#endif
             myAction.ForceExecute(myFrameId);
             return;
         }
@@ -61,29 +61,29 @@ public class iCS_RunContext {
         var stalledProducerPort= myAction.GetStalledProducerPort(myFrameId);
         if(stalledProducerPort != null) {
             var node= stalledProducerPort.Action;
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
             if(myAction.VisualScript.IsTraceEnabled) {
                 Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+")");
             }
-#endif
+//#endif
             node.IsActive= false;
             myAction.Execute(myFrameId);
             if(myAction.IsStalled) {
                 ResolveDeadLock(attempts+1);
             }
             node.IsActive= true;
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
             if(myAction.VisualScript.IsTraceEnabled) {
                 Debug.LogWarning("Activating=> "+node.FullName+" ("+myFrameId+")");
             }
-#endif
+//#endif
         }                    
         else {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
             if(myAction.VisualScript.IsTraceEnabled) {
                 Debug.LogWarning("DID NOT FIND STALLED PORT BUT MESSAGE HANDLER IS STALLED !!!");
             }
-#endif
+//#endif
             myAction.ForceExecute(myFrameId);                    
         }
     }

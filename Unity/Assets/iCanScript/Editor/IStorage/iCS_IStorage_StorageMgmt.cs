@@ -15,11 +15,6 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Undo/Redo support
     // ----------------------------------------------------------------------
-//    public void RegisterUndo(string message= "iCanScript") {
-//        Debug.Log("Registering Undo");
-//        myUndoMessage= message;
-//    }
-    // ----------------------------------------------------------------------
     void DetectUndoRedo() {
 //        // Regenerate internal structures if undo/redo was performed.
 //        if(PersistentStorage.UndoRedoId != Storage.UndoRedoId) {
@@ -59,7 +54,6 @@ public partial class iCS_IStorage {
         EditorUtility.SetDirty(iCSMonoBehaviour);
         IsTransactionOpened= false;
         ++ModificationId;
-//        iCS_EditorController.Update();
         iCS_EditorController.RepaintAllEditors();
     }
     // ----------------------------------------------------------------------
@@ -95,5 +89,23 @@ public partial class iCS_IStorage {
         // Re-initialize multi-selection list.
         var selectedObject= SelectedObject;
         SelectedObject= selectedObject;
+    }
+    // ----------------------------------------------------------------------
+    public void FlushScrollpositionAndGuiScale() {
+        FlushScrollposition();
+        FlushGuiScale();
+    }
+    // ----------------------------------------------------------------------
+    public void FlushScrollposition() {
+        PersistentStorage.ScrollPosition= Storage.ScrollPosition;
+    }
+    // ----------------------------------------------------------------------
+    public void FlushGuiScale() {
+        PersistentStorage.GuiScale= Storage.GuiScale;
+    }
+    // ----------------------------------------------------------------------
+    public void FlushDisplayRoot() {
+        PersistentStorage.DisplayRoot= Storage.DisplayRoot;
+        PersistentStorage.ShowDisplayRootNode= Storage.ShowDisplayRootNode;
     }
 }

@@ -18,18 +18,18 @@ public class iCS_GetClassField : iCS_FieldBase {
     }
     // ----------------------------------------------------------------------
     protected override void DoForceExecute(int frameId) {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         try {
-#endif
+//#endif
             // Execute function
             ReturnValue= myFieldInfo.GetValue(InInstance);
             MarkAsExecuted(frameId);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception thrown in  "+FullName+" => "+e.Message);
             MarkAsCurrent(frameId);
         }
-#endif        
+//#endif        
     }
 }

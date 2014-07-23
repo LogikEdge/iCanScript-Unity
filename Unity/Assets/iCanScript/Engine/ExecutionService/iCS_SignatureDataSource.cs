@@ -7,7 +7,9 @@ public class iCS_SignatureDataSource {
     // Properties
     // ----------------------------------------------------------------------
     // .NET Signature
+//#if UNITY_EDITOR
     iCS_Object          myObjectWithSignature   = null;
+//#endif
     object              myInInstance            = null;  
     iCS_Connection      myInInstanceConnection  = null;
     object[]            myParameters            = null;
@@ -55,7 +57,7 @@ public class iCS_SignatureDataSource {
     public iCS_Connection[] ParameterConnections {
         get { return myParameterConnections; }
     }
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
     public string GetAssociatedNodeName() {
         return myObjectWithSignature == null ? "" : myObjectWithSignature.FullName;
     }
@@ -65,7 +67,7 @@ public class iCS_SignatureDataSource {
         var portName= port == null ? "["+idx+"]" : port.Name;
         return nodeName+"."+portName;
     }
-#endif
+//#endif
         
     // ======================================================================
     // Initialization
@@ -88,7 +90,9 @@ public class iCS_SignatureDataSource {
                 myEnableConnections[i]= null;
             }
         }
+//#if UNITY_EDITOR
         myObjectWithSignature= obj;
+//#endif
     }
 
     // ======================================================================
@@ -109,11 +113,11 @@ public class iCS_SignatureDataSource {
                 return connection == null ? myEnables[i] : myEnableConnections[i].Value;
             }
 		}
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 		throw new System.Exception("Invalid signature access: ["+idx+"]");
-#else
-        return null;		
-#endif
+//#else
+//        return null;		
+//#endif
 	}
 	// -------------------------------------------------------------------------
     // Sets the value of the object in the signature.  This should be called
@@ -143,29 +147,29 @@ public class iCS_SignatureDataSource {
 			SetEnable(idx, (bool)value);
 			return;
 		}
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 		throw new System.Exception("Invalid signature access: "+GetPortFullName(idx));
-#endif
+//#endif
 	}
 	// -------------------------------------------------------------------------
     public void SetParameter(int idx, object value) {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         if(idx >= myParameters.Length) {
 			Debug.LogWarning("iCanScript: Invalid signature access: ["+idx+"]");
 			throw new System.Exception("Invalid signature access: ["+idx+"]");
         }
-#endif        
+//#endif        
         myParameters[idx]= value;
     }
 	// -------------------------------------------------------------------------
 	public void SetEnable(int idx, bool value) {
 		var i= idx-(int)iCS_PortIndex.EnablesStart;
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 		if(i >= myEnables.Length) {
 			Debug.LogWarning("iCanScript: Invalid signature access: ["+idx+"]");
 			throw new System.Exception("Invalid signature access: ["+idx+"]");
 	    }
-#endif
+//#endif
 		myEnables[i]= value;
 	}
     // -------------------------------------------------------------------------
@@ -185,9 +189,9 @@ public class iCS_SignatureDataSource {
 			}
 			return;
 		}
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         Debug.LogWarning("iCanScript: Trying to set a signature connection with wrong index: "+idx);
-#endif
+//#endif
 	}
 
     // =========================================================================
@@ -259,12 +263,12 @@ public class iCS_SignatureDataSource {
     
 	// -------------------------------------------------------------------------
     public bool IsParameterReady(int idx, int frameId) {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         if(idx >= myParameters.Length) {
             Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
             return false;
         }
-#endif
+//#endif
         var connection= myParameterConnections[idx];
         if(connection == null) return true;
         return connection.IsReady(frameId);
@@ -272,12 +276,12 @@ public class iCS_SignatureDataSource {
     // ----------------------------------------------------------------------
     // Forces the update of the given parameter.
     public object UpdateParameter(int idx) {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         if(idx >= myParameters.Length) {
             Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
             return null;
         }
-#endif
+//#endif
         var connection= myParameterConnections[idx];
         if(connection != null) {
             myParameters[idx]= connection.Value;
@@ -286,12 +290,12 @@ public class iCS_SignatureDataSource {
     }
 	// -------------------------------------------------------------------------
     public object GetParameter(int idx) {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         if(idx >= myParameters.Length) {
             Debug.LogWarning("iCanScript: Trying to get a signature value with wrong index: "+idx);
             return null;		                    
         }
-#endif
+//#endif
         return myParameters[idx];
     }
 	// -------------------------------------------------------------------------

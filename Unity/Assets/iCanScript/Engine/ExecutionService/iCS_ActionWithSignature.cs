@@ -82,38 +82,38 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
         if(!IsActive) {
             return;
         }
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         if(VisualScript.IsTraceEnabled) {
 //            Debug.Log("Executing=> "+FullName+" ("+frameId+")");            
         }        
-#endif
+//#endif
         // Clear the output trigger flag.
         mySignature.Trigger= false;
         // Wait until the enables can be resolved.
         bool isEnabled;
         if(!mySignature.GetIsEnabledIfReady(frameId, out isEnabled)) {
 			IsStalled= true;
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
             if(VisualScript.IsTraceEnabled) {
 //                Debug.Log("Executing=> "+FullName+" is waiting on the enables");
             }
-#endif
+//#endif
 			return;
 		}
 		// Skip execution if this action is disabled.
         if(isEnabled == false) {
             MarkAsCurrent(frameId);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
             if(VisualScript.IsTraceEnabled) {
                 Debug.Log("Executing=> "+FullName+" is disabled"+" ("+frameId+")");
             }
-#endif
+//#endif
             return;
         }
         // Invoke derived class to execute normally.
         IsStalled= true;
         DoExecute(frameId);
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         if(VisualScript.IsTraceEnabled) {    
             if(DidExecute(frameId)) {
                 Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+frameId+")");
@@ -125,7 +125,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
 //                Debug.Log("Executing=> "+FullName+" is waiting for an input");
             }
         }
-#endif
+//#endif
     }
     // ----------------------------------------------------------------------
     public override iCS_Connection GetStalledProducerPort(int frameId) {
@@ -136,7 +136,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     }
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         if(VisualScript.IsTraceEnabled) {
             var stalledPort= GetStalledProducerPort(frameId);
             var stalledPortName= stalledPort == null ? "" : stalledPort.PortFullName;
@@ -154,7 +154,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
             Debug.LogWarning("Force Execute=> "+FullName);
 //            Debug.Break();
         }
-#endif
+//#endif
         // Force verify enables.
         if(mySignature.GetIsEnabled() == false) {
             MarkAsCurrent(frameId);
