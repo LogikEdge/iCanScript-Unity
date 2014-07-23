@@ -18,7 +18,9 @@ public partial class iCS_IStorage {
         get { return Storage.SelectedObject; }
         set {
             Storage.SelectedObject= value;
-            PersistentStorage.SelectedObject= value;
+            if(!IsUserTransactionActive) {
+                PersistentStorage.SelectedObject= value;                
+            }
             EditorUtility.SetDirty(iCSMonoBehaviour);
             ++ModificationId;
         }

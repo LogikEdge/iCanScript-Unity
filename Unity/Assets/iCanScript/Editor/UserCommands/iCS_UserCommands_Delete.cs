@@ -36,11 +36,10 @@ public static partial class iCS_UserCommands {
         // TODO: Should animate parent node on node delete.
 		iStorage.AnimateGraph(null,
             _=> {
-                // Change selected object without changing the persistent image.
-                var currentSelectedId= iStorage.SelectedObject.InstanceId;
+                // Move the selection to the parent node
                 var parent= obj.ParentNode;
                 iStorage.SelectedObject= parent;
-                iStorage.PersistentStorage.SelectedObject= currentSelectedId;
+
                 iStorage.DestroyInstance(obj.InstanceId);
                 iStorage.ForcedRelayoutOfTree();
             }
@@ -68,11 +67,10 @@ public static partial class iCS_UserCommands {
                         ShowNotification("Fix port=> \""+obj.Name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
                         continue;
                     }
-                    // Change selected object without changing the persistent image.
-                    var currentSelectedId= iStorage.SelectedObject.InstanceId;
+                    // Move the selection to the parent node
                     var parent= obj.ParentNode;
                     iStorage.SelectedObject= parent;
-                    iStorage.PersistentStorage.SelectedObject= currentSelectedId;
+
                     if(obj.IsInstanceNodePort) {
                 		iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);                        
                     }
@@ -96,11 +94,9 @@ public static partial class iCS_UserCommands {
         var childPos= P.map(n => n.GlobalPosition, childNodes);
         iStorage.AnimateGraph(obj,
             _=> {
-                // Change selected object without changing the persistent image.
-                var currentSelectedId= iStorage.SelectedObject.InstanceId;
+                // Move the selection to the parent node
                 var parent= obj.ParentNode;
                 iStorage.SelectedObject= parent;
-                iStorage.PersistentStorage.SelectedObject= currentSelectedId;
                 
                 P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
                 iStorage.DestroyInstance(obj.InstanceId);
