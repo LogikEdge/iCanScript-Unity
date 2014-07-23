@@ -18,6 +18,7 @@ public partial class iCS_IStorage {
         get { return Storage.SelectedObject; }
         set {
             Storage.SelectedObject= value;
+            PersistentStorage.SelectedObject= value;
             EditorUtility.SetDirty(iCSMonoBehaviour);
             ++ModificationId;
         }
@@ -35,10 +36,10 @@ public partial class iCS_IStorage {
             SelectedObjectId= value != null ? value.InstanceId : DisplayRootId;
         }
     }
-    // -------------------------------------------------------------------------
-    public void FlushSelectedObject() {
-        PersistentStorage.SelectedObject= SelectedObject.InstanceId;
-    }
+//    // -------------------------------------------------------------------------
+//    public void FlushSelectedObject() {
+//        PersistentStorage.SelectedObject= SelectedObject.InstanceId;
+//    }
     // -------------------------------------------------------------------------
     public bool IsMultiSelectionActive {
         get { return mySelectedObjects.Count > 1; }

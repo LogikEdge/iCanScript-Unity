@@ -16,6 +16,7 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         iCS_EditorObject instance= null;
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
@@ -27,9 +28,7 @@ public static partial class iCS_UserCommands {
             }
         );
         SendEndRelayoutOfTree(iStorage);
-        if(!iStorage.IsTransactionOpened) {
-            CloseTransaction(iStorage, "Create "+desc.DisplayName);            
-        }
+        CloseTransaction(iStorage, "Create "+desc.DisplayName);            
         return instance;
     }
 	// ----------------------------------------------------------------------
@@ -39,6 +38,7 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null || desc == null) return;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
@@ -47,9 +47,7 @@ public static partial class iCS_UserCommands {
             }
         );
         SendEndRelayoutOfTree(iStorage);
-        if(!iStorage.IsTransactionOpened) {
-            CloseTransaction(iStorage, "Delete "+desc.DisplayName);            
-        }
+        CloseTransaction(iStorage, "Delete "+desc.DisplayName);            
     }
  	// ----------------------------------------------------------------------
     // OK
@@ -61,6 +59,7 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null || instanceType == null || desc == null) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         iCS_EditorObject element= null;
         SendStartRelayoutOfTree(iStorage);
         iStorage.AnimateGraph(null,
@@ -74,9 +73,7 @@ public static partial class iCS_UserCommands {
             }
         );
         SendEndRelayoutOfTree(iStorage);
-        if(!iStorage.IsTransactionOpened) {
-            CloseTransaction(iStorage, "Delete "+desc.DisplayName);            
-        }
+        CloseTransaction(iStorage, "Create "+desc.DisplayName);            
         return element;
     }
 	// ----------------------------------------------------------------------
@@ -89,6 +86,7 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null || instanceType == null || desc == null) return null;
         var iStorage= parent.IStorage;
+        OpenTransaction(iStorage);
         iCS_EditorObject element= null;
         iStorage.AnimateGraph(null,
             _=> {
@@ -124,9 +122,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        if(!iStorage.IsTransactionOpened) {
-            CloseTransaction(iStorage, "Delete "+desc.DisplayName);            
-        }
+        CloseTransaction(iStorage, "Create "+desc.DisplayName);            
         return element;
     }
 }

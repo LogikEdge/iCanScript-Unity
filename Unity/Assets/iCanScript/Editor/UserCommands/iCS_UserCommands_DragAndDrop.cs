@@ -18,10 +18,11 @@ public static partial class iCS_UserCommands {
 #endif
         if(!IsCreationAllowed()) return false;
         var iStorage= node.IStorage;
+        OpenTransaction(iStorage);
         string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
         node.IconGUID= iconGUID;                    
         node.LayoutNode();
-	    iStorage.SaveStorage("Change Icon");
+	    CloseTransaction(iStorage, "Change Icon");
         iCS_EditorController.RepaintEditorsWithLabels();			
         return true;
     }
@@ -29,6 +30,7 @@ public static partial class iCS_UserCommands {
     public static void PasteIntoGraph(iCS_MonoBehaviourImp sourceMonoBehaviour, iCS_EngineObject sourceRoot,
                                       iCS_IStorage iStorage, iCS_EditorObject parent, Vector2 globalPos) {
         if(!IsCreationAllowed()) return;
+        OpenTransaction(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 iCS_IStorage srcIStorage= new iCS_IStorage(sourceMonoBehaviour);
@@ -40,13 +42,14 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        iStorage.SaveStorage("Add Prefab "+sourceRoot.Name);
+        CloseTransaction(iStorage, "Add Prefab "+sourceRoot.Name);
     }
 	// ----------------------------------------------------------------------
     public static void DragAndDropSetPortValue(iCS_EditorObject port, UnityEngine.Object value) {
         var iStorage= port.IStorage;
+        OpenTransaction(iStorage);
         port.PortValue= value;
-        iStorage.SaveStorage("Set port "+port.Name);
+        CloseTransaction(iStorage, "Set port "+port.Name);
     }
 
 }

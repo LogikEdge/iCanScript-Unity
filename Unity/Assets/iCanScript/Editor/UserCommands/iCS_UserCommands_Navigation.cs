@@ -14,7 +14,6 @@ public static partial class iCS_UserCommands {
 			newDisplayRoot= newDisplayRoot.ParentNode;
 		}
 		if(newDisplayRoot == null) return;
-        iStorage.FlushDisplayRoot();
         iStorage.SaveNavigationState();
         iStorage.DisplayRoot= newDisplayRoot;
         iStorage.ForcedRelayoutOfTree();
@@ -26,33 +25,27 @@ public static partial class iCS_UserCommands {
     // Change the display root to the parent of the selected object.
     public static void ResetDisplayRoot(iCS_IStorage iStorage) {
         if(iStorage == null) return;
-        iStorage.FlushDisplayRoot();
         iStorage.ClearNavigationHistory();
         SendDisplayRootChange(iStorage);
         iStorage.SaveStorage();
     }
     // ----------------------------------------------------------------------
 	public static void ToggleShowDisplayRootNode(iCS_IStorage iStorage) {
-        iStorage.FlushDisplayRoot();
 		iStorage.ShowDisplayRootNode= !iStorage.ShowDisplayRootNode;
-        iStorage.SaveStorage("Toggle Show Display Root");
         iStorage.SaveStorage();
 	}
     // ----------------------------------------------------------------------
     public static void ReloadFromBackwardNavigationHistory(iCS_IStorage iStorage) {
-        iStorage.FlushDisplayRoot();
         iStorage.ReloadFromBackwardNavigationHistory();
         iStorage.SaveStorage();
     }
     // ----------------------------------------------------------------------
     public static void ReloadFromForwardNavigationHistory(iCS_IStorage iStorage) {
-        iStorage.FlushDisplayRoot();
         iStorage.ReloadFromForwardNavigationHistory();
         iStorage.SaveStorage();
     }
     // ----------------------------------------------------------------------
     public static void ClearNavigationHistory(iCS_IStorage iStorage) {
-        iStorage.FlushDisplayRoot();
         iStorage.ClearNavigationHistory();
         iStorage.SaveStorage();
     }
