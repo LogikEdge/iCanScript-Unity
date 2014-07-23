@@ -42,7 +42,9 @@ public partial class iCS_IStorage {
         }
         set {
             Storage.DisplayRoot= value;
-            PersistentStorage.DisplayRoot= value;
+            if(!IsUserTransactionActive) {
+                PersistentStorage.DisplayRoot= value;
+            }
         }
     }
     public iCS_EditorObject DisplayRoot {

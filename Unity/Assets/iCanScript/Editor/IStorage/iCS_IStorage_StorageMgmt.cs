@@ -24,18 +24,21 @@ public partial class iCS_IStorage {
         if(UserTransactionCount != 0) {
             SaveStorage();
             UserTransactionCount= 0;
-            Debug.LogWarning("iCanScript: Undo/Redo desynchronized !!!");            
+            Debug.LogWarning("iCanScript: Internal Error: User transaction was forced closed.");            
         }
     }
     public void IncUserTransaction() {
         ++UserTransactionCount;
     }
     public void DecUserTransaction(string undoMessage= "") {
-        if(UserTransactionCount == 1) {
-            SaveStorage(undoMessage);
+        if(UserTransactionCount <= 0) {
+            Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
         }
         if(UserTransactionCount > 0) {
             --UserTransactionCount;
+        }
+        if(UserTransactionCount == 0) {
+            SaveStorage(undoMessage);
         }
     }
     
