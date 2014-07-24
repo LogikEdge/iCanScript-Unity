@@ -20,6 +20,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool    IsIconizeKeyDown     { get { return IsAltKeyDown && IsShiftKeyDown; }}
 	bool    IsDisplayRootKeyDown { get { return IsControlKeyDown; }}
     bool    IsHistoryKeyDown     { get { return IsCommandKeyDown; }}
+    bool    IsMuxPortKeyDown     { get { return IsControlKeyDown; }}
 	bool	IsMultiSelectKeyDown {
         get {
             if(Application.platform == RuntimePlatform.OSXEditor) {

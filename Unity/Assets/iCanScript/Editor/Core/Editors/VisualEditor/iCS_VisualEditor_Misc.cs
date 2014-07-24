@@ -136,7 +136,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Verify for output Mux port creation
         iCS_EditorObject portParent= fixPort.Parent;
         iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
-        if(overlappingPort.ProviderPort != null) {
+        if(IsMuxPortKeyDown && overlappingPort.ProviderPort != null) {
             // Mux output port creation
             if(overlappingPort.IsOutputPort && 
     		   overlappingPort.IsDynamicDataPort &&
