@@ -264,6 +264,7 @@ public static class iCS_PreferencesController {
     static Color   kConstructorNodeColor;
     static Color   kFunctionNodeColor;
     static Color   kMessageNodeColor;
+    static Color   kUserFunctionNodeColor;
     static Color   kBackgroundColor;
     static Color   kSelectedBackgroundColor;            
 
@@ -280,6 +281,7 @@ public static class iCS_PreferencesController {
     const string   kStateNodeColorKey             = "iCS_StateNodeColor";
     const string   kEntryStateNodeColorKey        = "iCS_EntryStateNodeColor";
     const string   kMessageNodeColorKey           = "iCS_MessageNodeColor";
+    const string   kUserFunctionNodeColorKey      = "iCS_UserFunctionNodeColor";
     const string   kBackgroundColorKey            = "iCS_BackgroundColor";         
     const string   kSelectedBackgroundColorKey    = "iCS_SelectedBackgroundColor";         
 
@@ -309,6 +311,9 @@ public static class iCS_PreferencesController {
     }
     public static void ResetMessageNodeColor() {
 		MessageNodeColor= kMessageNodeColor;
+    }
+    public static void ResetUserFunctionNodeColor() {
+		UserFunctionNodeColor= kUserFunctionNodeColor;
     }
     public static void ResetStateNodeColor() {
 		StateNodeColor= kStateNodeColor;
@@ -357,6 +362,10 @@ public static class iCS_PreferencesController {
     public static Color MessageNodeColor {
         get { return LoadColor(kMessageNodeColorKey, kMessageNodeColor); }
         set { SaveColor(kMessageNodeColorKey, value); }        
+    }
+    public static Color UserFunctionNodeColor {
+        get { return LoadColor(kUserFunctionNodeColorKey, kUserFunctionNodeColor); }
+        set { SaveColor(kUserFunctionNodeColorKey, value); }        
     }
     public static Color StateNodeColor {
         get { return LoadColor(kStateNodeColorKey, kStateNodeColor); }
@@ -684,6 +693,7 @@ public static class iCS_PreferencesController {
         kConstructorNodeColor       = new Color(1f, 0.25f, 0.5f);
         kFunctionNodeColor          = Color.green;
         kMessageNodeColor           = new Color(c(0x36), c(0x8a), c(0xff));
+        kUserFunctionNodeColor      = new Color(c(0x80), c(0xff), c(0x80));
         kBackgroundColor            = new Color(c(41), c(41), c(41));
         kSelectedBackgroundColor    = new Color(c(116), c(116), c(116));
         

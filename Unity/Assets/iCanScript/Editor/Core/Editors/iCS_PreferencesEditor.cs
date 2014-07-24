@@ -294,7 +294,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     void NodeColors() {
         // Column 2
-        Rect[] pos= new Rect[12];
+        Rect[] pos= new Rect[13];
         pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
         for(int i= 1; i < pos.Length; ++i) {
             pos[i]= pos[i-1];
@@ -309,9 +309,10 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUI.Label(pos[6],  "Object Instance");
         GUI.Label(pos[7],  "State");
         GUI.Label(pos[8],  "Entry State");
-        GUI.Label(pos[9], "Message Handler");
-        GUI.Label(pos[10], "Background");
-        GUI.Label(pos[11], "Selected Background");
+        GUI.Label(pos[9],  "Message Handler");
+        GUI.Label(pos[10],  "User Function");
+        GUI.Label(pos[11], "Background");
+        GUI.Label(pos[12], "Selected Background");
 
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
@@ -328,8 +329,9 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         Prefs.StateNodeColor= EditorGUI.ColorField(pos[7], Prefs.StateNodeColor);
         Prefs.EntryStateNodeColor= EditorGUI.ColorField(pos[8], Prefs.EntryStateNodeColor);
         Prefs.MessageNodeColor= EditorGUI.ColorField(pos[9], Prefs.MessageNodeColor);
-        Prefs.BackgroundColor= EditorGUI.ColorField(pos[10], Prefs.BackgroundColor);
-        Prefs.SelectedBackgroundColor= EditorGUI.ColorField(pos[11], Prefs.SelectedBackgroundColor);
+        Prefs.UserFunctionNodeColor= EditorGUI.ColorField(pos[10], Prefs.UserFunctionNodeColor);
+        Prefs.BackgroundColor= EditorGUI.ColorField(pos[11], Prefs.BackgroundColor);
+        Prefs.SelectedBackgroundColor= EditorGUI.ColorField(pos[12], Prefs.SelectedBackgroundColor);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
@@ -343,6 +345,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             Prefs.ResetStateNodeColor();
             Prefs.ResetEntryStateNodeColor();
             Prefs.ResetMessageNodeColor();
+            Prefs.ResetUserFunctionNodeColor();
             Prefs.ResetBackgroundColor();
             Prefs.ResetSelectedBackgroundColor();
         }        
