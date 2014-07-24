@@ -95,6 +95,10 @@ public static partial class iCS_UserCommands {
         CloseTransaction(iStorage, "Create "+name);
         return msgHandler;
     }
+    // ----------------------------------------------------------------------
+    public static iCS_EditorObject CreateUserMessageHandler(iCS_EditorObject parent, Vector2 globalPos) {
+        return CreatePackage(parent, globalPos, "UserFunction");    
+    }
 	// ----------------------------------------------------------------------
 	// OK
     public static iCS_EditorObject CreateOnEntryPackage(iCS_EditorObject parent, Vector2 globalPos) {

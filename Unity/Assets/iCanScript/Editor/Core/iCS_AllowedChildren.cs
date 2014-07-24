@@ -51,6 +51,9 @@ public static class iCS_AllowedChildren {
 				Debug.LogWarning("iCanScript: Unable to find type information for: "+parent.Name);
 				return false;
 			}
+            if(parent.IsBehaviour && childType == iCS_ObjectTypeEnum.Package) {
+                return true;
+            }
 			foreach(var m in typeInfo.Members) {
 				if(m.DisplayName == childName) {
                     // Special case for Behaviour.  Only messages are allowed.

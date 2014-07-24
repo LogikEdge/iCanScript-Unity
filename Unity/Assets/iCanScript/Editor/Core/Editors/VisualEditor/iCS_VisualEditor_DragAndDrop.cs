@@ -22,9 +22,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }                
             }
 			if(objectUnderMouse.IsNode) {
+                var draggedLibrary= GetDraggedLibrary(draggedObject);
+                var draggedEngineObject= draggedLibrary != null ? draggedLibrary.EngineObjects[0] : null;
                 // Don't accept to drag an object dirctly under Behaviour.
                 if(objectUnderMouse.IsBehaviour) {
-                    DragAndDrop.visualMode= DragAndDropVisualMode.Rejected;
+                    if( draggedEngineObject != null &&
+                       (draggedEngineObject.IsPackage || draggedEngineObject.IsMessage)) {
+       		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;                        
+                    }
+                    else {
+                        DragAndDrop.visualMode= DragAndDropVisualMode.Rejected;                        
+                    }
                     return;
                 }
                 // Don't accept to drag object outside the root node.
