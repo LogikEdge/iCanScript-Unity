@@ -36,10 +36,7 @@ public partial class iCS_IStorage {
                 mySelectedObjects.Add(value);
             }
             var selectedId= value != null ? value.InstanceId : DisplayRootId;
-            if(selectedId != SelectedObjectId) {
-                SelectedObjectId= selectedId;
-                SaveSelectedObjectPosition();                
-            }
+            SelectedObjectId= selectedId;
         }
     }
     // -------------------------------------------------------------------------

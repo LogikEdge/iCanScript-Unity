@@ -28,6 +28,9 @@ public partial class iCS_IStorage {
         }
     }
     public void IncUserTransaction() {
+        if(UserTransactionCount == 0) {
+            SaveSelectedObjectPosition();
+        }
         ++UserTransactionCount;
     }
     public void DecUserTransaction(string undoMessage= "") {

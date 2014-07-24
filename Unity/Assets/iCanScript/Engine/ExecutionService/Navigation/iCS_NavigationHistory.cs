@@ -96,4 +96,11 @@ public class iCS_NavigationHistory {
         }
         return true;
     }
+    // ----------------------------------------------------------------------
+    public void RemoveDisplayRoot(int displayRootId) {
+        myMementos.RemoveAll(m=> m.IsDisplayRoot(displayRootId));
+        if(myCursor > myMementos.Count) {
+            myCursor= myMementos.Count;
+        }
+    }
 }

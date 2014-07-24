@@ -70,4 +70,8 @@ public class iCS_NavigationMemento {
         if(DisplayRoot != other.DisplayRoot) return false;
         return true;
     }
+    // ----------------------------------------------------------------------
+    public bool IsDisplayRoot(int displayRootId) {
+        return DisplayRoot == displayRootId;
+    }
 }
