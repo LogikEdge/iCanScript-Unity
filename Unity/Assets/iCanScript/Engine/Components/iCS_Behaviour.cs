@@ -1,4 +1,4 @@
-//{"ContentHash" : "D630DBB4B8554365D1614762B48DF49B"}
+//{"ContentHash" : "3F2C24CFDA362091AE89F447079CCF82"}
 /////////////////////////////////////////////////////////////////
 //  iCS_Behaviour.cs
 //
@@ -277,16 +277,6 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
-	void OnAnimatorMove()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnAnimatorMove");
-			}
-		}
-	}
-
-
 	void OnApplicationQuit()
 	{
 		if(allVisualScripts != null) {
@@ -492,16 +482,6 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
 				vs.RunMessage("OnSerializeNetworkView", stream, info);
-			}
-		}
-	}
-
-
-	void OnAnimatorIK(int layerIndex)
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnAnimatorIK", layerIndex);
 			}
 		}
 	}

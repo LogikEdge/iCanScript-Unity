@@ -299,7 +299,7 @@ public static class iCS_UnityClasses {
             InstallMonoBehaviourMessage("OnDrawGizmos"        , noParameters, kInMailIcon);         
             InstallMonoBehaviourMessage("OnServerInitialized" , noParameters, kInMailIcon);         
             InstallMonoBehaviourMessage("OnConnectedToServer" , noParameters, kInMailIcon);         
-            InstallMonoBehaviourMessage("OnAnimatorMove"      , noParameters, kInMailIcon);         
+            //InstallMonoBehaviourMessage("OnAnimatorMove"      , noParameters, kInMailIcon);         
             InstallMonoBehaviourMessage("OnApplicationQuit"   , noParameters, kInMailIcon);         
 
             // Trigger messages
@@ -355,8 +355,8 @@ public static class iCS_UnityClasses {
             };
             InstallMonoBehaviourMessage("OnSerializeNetworkView", serializeViewParameters, kInMailIcon);         
 
-            var animatorIKParameters= new iCS_Parameter[1]{new iCS_Parameter("layerIndex", typeof(int), 0)};
-            InstallMonoBehaviourMessage("OnAnimatorIK", animatorIKParameters, kInMailIcon);         
+            //var animatorIKParameters= new iCS_Parameter[1]{new iCS_Parameter("layerIndex", typeof(int), 0)};
+            //InstallMonoBehaviourMessage("OnAnimatorIK", animatorIKParameters, kInMailIcon);         
 
             var renderImageParameters= new iCS_Parameter[2]{
                 new iCS_Parameter("source", typeof(RenderTexture)),
