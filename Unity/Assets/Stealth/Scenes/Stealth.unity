@@ -28337,12 +28337,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 144
-  SelectedObjectPosition: {x: 823.03418, y: -66.1891251}
+  SelectedObject: 162
+  SelectedObjectPosition: {x: 1699.01562, y: 816.625183}
   ShowDisplayRootNode: 1
-  GuiScale: .91467011
-  ScrollPosition: {x: -512.72937, y: -850.760498}
-  UndoRedoId: 1298
+  GuiScale: 1.07061493
+  ScrollPosition: {x: 1037.14587, y: 873.621216}
+  UndoRedoId: 1300
   EngineObjects:
   - RawName: char_ethan::Behaviour
     ObjectType: 0
@@ -28539,7 +28539,7 @@ MonoBehaviour:
     IconGUID: 50e891225b99a4bcba83e10d62e6883d
     Tooltip: 
     ExecutionPriority: 9
-    LayoutPriority: 100
+    LayoutPriority: 99
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -28871,7 +28871,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 26
-    LayoutPriority: 100
+    LayoutPriority: 95
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -29161,7 +29161,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 41
-    LayoutPriority: 100
+    LayoutPriority: 99
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -29515,7 +29515,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 59
-    LayoutPriority: -82
+    LayoutPriority: -84
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -29890,7 +29890,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 78
-    LayoutPriority: 100
+    LayoutPriority: 98
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -30046,7 +30046,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 86
-    LayoutPriority: 100
+    LayoutPriority: 99
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31161,7 +31161,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 143
-    LayoutPriority: 100
+    LayoutPriority: 99
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31181,7 +31181,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 144
-    LayoutPriority: 100
+    LayoutPriority: 99
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31298,7 +31298,7 @@ MonoBehaviour:
     IconGUID: 50e891225b99a4bcba83e10d62e6883d
     Tooltip: 
     ExecutionPriority: 150
-    LayoutPriority: 71
+    LayoutPriority: 66
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31453,7 +31453,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 158
-    LayoutPriority: 72
+    LayoutPriority: 67
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -31531,7 +31531,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 162
-    LayoutPriority: 77
+    LayoutPriority: 73
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32352,7 +32352,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 204
-    LayoutPriority: -82
+    LayoutPriority: -84
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32391,7 +32391,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 206
-    LayoutPriority: 96
+    LayoutPriority: 95
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32471,7 +32471,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 210
-    LayoutPriority: 72
+    LayoutPriority: 67
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32567,7 +32567,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 215
-    LayoutPriority: 84
+    LayoutPriority: 81
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32662,7 +32662,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 220
-    LayoutPriority: 95
+    LayoutPriority: 94
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32777,7 +32777,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 226
-    LayoutPriority: 89
+    LayoutPriority: 87
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32815,7 +32815,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 228
-    LayoutPriority: 85
+    LayoutPriority: 82
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -32930,7 +32930,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 234
-    LayoutPriority: 83
+    LayoutPriority: 80
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -33614,7 +33614,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 269
-    LayoutPriority: 100
+    LayoutPriority: 96
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -88543,11 +88543,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayRoot: 0
   SelectedObject: 0
-  SelectedObjectPosition: {x: 400.636353, y: 385.822449}
+  SelectedObjectPosition: {x: 586.272095, y: 313.957642}
   ShowDisplayRootNode: 1
   GuiScale: .853869677
-  ScrollPosition: {x: -67.2955704, y: 228.846436}
-  UndoRedoId: 416
+  ScrollPosition: {x: 53.5733376, y: 112.896568}
+  UndoRedoId: 427
   EngineObjects:
   - RawName: Camera_main::Behaviour
     ObjectType: 0
@@ -88764,7 +88764,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 10
-    LayoutPriority: 94
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -90802,7 +90802,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .592571855}
+    LocalAnchorPosition: {x: 4, y: .470993966}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -90850,7 +90850,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 116
-    LayoutPriority: 88
+    LayoutPriority: 86
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -90862,7 +90862,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .331356794}
+    LocalAnchorPosition: {x: 3, y: .324357361}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -90889,7 +90889,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 118
-    LayoutPriority: 94
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -90958,7 +90958,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .690728486}
+    LocalAnchorPosition: {x: 1, y: .659509182}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -90967,7 +90967,7 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 122
     LayoutPriority: 0
-    SourceId: 206
+    SourceId: 207
     PortIndex: 1
     InitialValueArchive: 
     IsEntryState: 0
@@ -91185,7 +91185,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 133
-    LayoutPriority: 97
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -91284,7 +91284,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 138
-    LayoutPriority: 91
+    LayoutPriority: 86
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -91987,7 +91987,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 182.897995, y: 77.0231934}
+    LocalAnchorPosition: {x: 244.968414, y: 173.056534}
     DisplayOption: 1
     Scale: 1
     MethodName: And
@@ -91995,7 +91995,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 174
-    LayoutPriority: 100
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -92114,7 +92114,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 180
-    LayoutPriority: 94
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -92253,7 +92253,7 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: 202
     PortIndex: 1
-    InitialValueArchive: '{12:InitialValue1:b1:F}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: :bool
     ObjectType: 301
@@ -92261,7 +92261,7 @@ MonoBehaviour:
     ParentId: 174
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
+    LocalAnchorPosition: {x: 4, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -92409,7 +92409,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 195
-    LayoutPriority: 91
+    LayoutPriority: 93
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -92468,7 +92468,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 198
-    LayoutPriority: 94
+    LayoutPriority: 86
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -92517,7 +92517,7 @@ MonoBehaviour:
     ParentId: 198
     IsNameEditable: 1
     QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .00100000005}
+    LocalAnchorPosition: {x: 2, y: .756574035}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -92536,7 +92536,7 @@ MonoBehaviour:
     ParentId: 198
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .543421566}
+    LocalAnchorPosition: {x: 2, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -92549,33 +92549,32 @@ MonoBehaviour:
     PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: op_Multiply<Vector3>
+  - RawName: Choice<Choice>
     ObjectType: 102
     InstanceId: 203
     ParentId: 116
     IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
+    QualifiedType: iCS_Choice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -61.1086578, y: 209.722702}
+    LocalAnchorPosition: {x: -98.3356628, y: 273.054321}
     DisplayOption: 1
     Scale: 1
-    MethodName: op_Multiply
-    NbOfParams: 2
+    MethodName: Choice
+    NbOfParams: 3
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 203
-    LayoutPriority: -3
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: a
+  - RawName: trueValue
     ObjectType: 300
     InstanceId: 204
     ParentId: 203
     IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    QualifiedType: System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
     LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
@@ -92587,15 +92586,15 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: 117
     PortIndex: 0
-    InitialValueArchive: '{12:InitialValue2:v35:0,0,0}'
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: d
+  - RawName: falseValue
     ObjectType: 300
     InstanceId: 205
     ParentId: 203
     IsNameEditable: 1
-    QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 3, y: .532207131}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -92604,18 +92603,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 205
     LayoutPriority: 0
-    SourceId: -1
+    SourceId: 208
     PortIndex: 1
-    InitialValueArchive: '{12:InitialValue1:f1:1}'
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: :Vector3
-    ObjectType: 301
+  - RawName: sel
+    ObjectType: 300
     InstanceId: 206
     ParentId: 203
     IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .231777996}
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -92624,8 +92622,47 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 206
     LayoutPriority: 0
+    SourceId: 188
+    PortIndex: 2
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: out
+    ObjectType: 301
+    InstanceId: 207
+    ParentId: 203
+    IsNameEditable: 1
+    QualifiedType: System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 3, y: .236528799}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 207
+    LayoutPriority: 0
     SourceId: -1
     PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: falseValue
+    ObjectType: 302
+    InstanceId: 208
+    ParentId: 116
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .37667799}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 208
+    LayoutPriority: 0
+    SourceId: 114
+    PortIndex: 4
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: 
