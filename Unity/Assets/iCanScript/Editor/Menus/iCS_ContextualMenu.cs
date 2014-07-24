@@ -40,7 +40,7 @@ public class iCS_ContextualMenu {
     const string MultiSelectionDeleteStr       = "- Delete Multi-Selection";
     const string DeleteKeepChildrenStr         = "- Delete Keep Children";
     const string UpdateMessageHandlerPortsStr  = "Update Message Ports";
-    const string UserMessageHandlerStr         = "+ User Message Handler";  
+    const string UserMessageHandlerStr         = "+ User Function";  
     const string SeparatorStr                  = "";
 
     // ======================================================================

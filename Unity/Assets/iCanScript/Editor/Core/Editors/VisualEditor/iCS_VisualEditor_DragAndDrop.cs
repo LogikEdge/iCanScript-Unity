@@ -26,8 +26,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 var draggedEngineObject= draggedLibrary != null ? draggedLibrary.EngineObjects[0] : null;
                 // Don't accept to drag an object dirctly under Behaviour.
                 if(objectUnderMouse.IsBehaviour) {
-                    if( draggedEngineObject != null &&
-                       (draggedEngineObject.IsPackage || draggedEngineObject.IsMessage)) {
+                    if(draggedEngineObject != null &&
+                       iCS_AllowedChildren.CanAddChildNode(draggedEngineObject.Name, draggedEngineObject, objectUnderMouse, IStorage)) {
        		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;                        
                     }
                     else {

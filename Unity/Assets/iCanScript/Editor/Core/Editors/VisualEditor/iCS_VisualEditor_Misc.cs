@@ -259,8 +259,24 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_EditorObject GetValidParentNodeUnder(Vector2 graphPos, iCS_EditorObject node) {
         if(!node.IsNode) return null;
         iCS_EditorObject newParent= IStorage.GetNodeAt(graphPos, node);
+        if(newParent == null) {
+            newParent= IStorage.DisplayRoot;
+        }
         if(newParent == node.Parent) return newParent;
-        if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(node.Name, node.ObjectType, newParent, IStorage)) {
+        if(!iCS_AllowedChildren.CanAddChildNode(node.Name, node.EngineObject, newParent, IStorage)) {
+            newParent= null;
+        }
+        return newParent;
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject GetValidParentNodeUnder(Vector2 graphPos, iCS_EngineObject node) {
+        if(!node.IsNode) return null;
+        iCS_EditorObject newParent= IStorage.GetNodeAt(graphPos);
+        if(newParent == null) {
+            newParent= IStorage.DisplayRoot;
+        }
+        if(newParent.InstanceId == node.ParentId) return newParent;
+        if(!iCS_AllowedChildren.CanAddChildNode(node.Name, node, newParent, IStorage)) {
             newParent= null;
         }
         return newParent;
@@ -480,7 +496,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void PasteIntoGraph(Vector2 point, iCS_MonoBehaviourImp sourceMonoBehaviour, iCS_EngineObject sourceRoot) {
         if(sourceRoot == null) return;
-        iCS_EditorObject validParent= GetValidParentNodeUnder(point, sourceRoot.ObjectType, sourceRoot.Name);
+        iCS_EditorObject validParent= GetValidParentNodeUnder(point, sourceRoot);
         if(validParent == null) {
 			var node= IStorage.GetNodeAt(point);
 			if(node == null && IStorage.IsEmptyBehaviour) {

@@ -151,4 +151,13 @@ public static class iCS_EditorController {
     public static void RepaintEditorsWithValues() {
         RepaintVisualEditor();
     }
+    // ======================================================================
+    public static void ShowNotificationOnVisualEditor(string message) {
+        ShowNotificationOnVisualEditor(new GUIContent(message));
+    }
+    public static void ShowNotificationOnVisualEditor(GUIContent content) {
+        var visualEditor= FindVisualEditor();
+        if(visualEditor == null) return;
+        visualEditor.ShowNotification(content);
+    }
 }
