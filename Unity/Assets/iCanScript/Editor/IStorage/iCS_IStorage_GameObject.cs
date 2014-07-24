@@ -86,7 +86,6 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public PortInfo[] BuildListOfPortInfoForGameObject(GameObject gameObject, List<PortInfo> portInfos= null) {
-        Debug.Log("Rebuilding message ports");
         if(portInfos == null) {
             portInfos= new List<PortInfo>();
         }
