@@ -4,25 +4,11 @@ Temp/
 
 WebSite/
 
-Unity/Library/assetDatabase3
-Unity/Library/AssetImportState
-Unity/Library/AssetServerCacheV3
-Unity/Library/assetservercachev3
-Unity/Library/AssetVersioning.db
-Unity/Library/BuildPlayer.prefs
-Unity/Library/cache
-Unity/Library/expandedItems
-Unity/Library/FailedAssetImports.txt
-Unity/Library/guidmapper
-Unity/Library/metadata
-Unity/Library/previews
-Unity/Library/ScriptAssemblies
-Unity/Library/ScriptMapper
+Unity/Library/
 Unity/iOS/
 Unity/OSX/
 Unity/Windows/
 Unity/builds/
-Unity/Library/InspectorExpandedItems.asset
 
 *.tmproj
 *.pidb
@@ -93,15 +79,11 @@ user.lock
 
 /bin/staging/unityStoreFilesToInclude
 
-/Unity/Library/ShaderCache.db
-
-/Unity/Library/AnnotationManager
 
 /bin/staging/iCanScriptEditorTrial.dll
 
 /bin/staging/iCanScriptEditorTrial.rsp
 
 
-shadercompiler-1.log
-
 /bin/staging/engineFilesToExclude
+
