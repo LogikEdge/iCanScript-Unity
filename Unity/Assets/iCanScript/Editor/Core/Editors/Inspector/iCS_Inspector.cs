@@ -175,7 +175,9 @@ public class iCS_Inspector : Editor {
             EditorGUILayout.LabelField("Name", name);                    
         }
         // Display slected object initial name.
-        EditorGUILayout.LabelField("Initial Name", mySelectedObject.DefaultName);        
+        if(SelectedObject.IsNode) {
+            EditorGUILayout.LabelField("Initial Name", mySelectedObject.DefaultName);
+        }
         // Display object id.
         EditorGUILayout.LabelField("id", SelectedObject.InstanceId.ToString());
         // Display object type.
