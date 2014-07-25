@@ -29,10 +29,12 @@ public static partial class iCS_UserCommands {
         var iStorage= node.IStorage;
         iStorage.AnimateGraph(null,
             _=> {
+                var globalPosition= node.GlobalPosition;
                 if(oldParent != newParent) {
                     iStorage.ChangeParent(node, newParent); 
                 }
-                iStorage.ForcedRelayoutOfTree();
+                node.LocalAnchorFromGlobalPosition= globalPosition;
+                iStorage.ForcedRelayoutOfTree(node, globalPosition);
 				iStorage.AutoLayoutPortOnNode(node);
             }
         );

@@ -137,7 +137,6 @@ public partial class iCS_IStorage {
         var selectedPos= SelectedObject.GlobalPosition;
         Storage.SelectedObjectPosition= selectedPos;
         PersistentStorage.SelectedObjectPosition= selectedPos;
-        Debug.Log("Saving position for=> "+SelectedObject.Name+" "+selectedPos);
     }
     // ----------------------------------------------------------------------
     public void FlushLayoutData() {
