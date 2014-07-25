@@ -15,7 +15,6 @@ public partial class iCS_EditorObject {
 			var engineObject= EngineObject;
             if(engineObject.MethodName == value) return;
 		    engineObject.MethodName= value;
-//            IsDirty= true;
 		}
 	}
     public int NbOfParams {
@@ -24,7 +23,6 @@ public partial class iCS_EditorObject {
 			var engineObject= EngineObject;
             if(engineObject.NbOfParams == value) return;
 		    engineObject.NbOfParams= value;
-//            IsDirty= true;
 		}
 	}
 	public string IconPath {
@@ -50,7 +48,6 @@ public partial class iCS_EditorObject {
 			var engineObject= EngineObject;
 			if(engineObject.IconGUID == value) return;
 			engineObject.IconGUID= value;
-//			IsDirty= true;
 		}
 	}
 	public int ExecutionPriority {
@@ -59,7 +56,6 @@ public partial class iCS_EditorObject {
 			var engineObject= EngineObject;
             if(engineObject.ExecutionPriority == value) return;
 	        engineObject.ExecutionPriority= value;
-//			IsDirty= true;
 	    }
 	}
     public MethodBase GetMethodBase(List<iCS_EditorObject> editorObjects) {
