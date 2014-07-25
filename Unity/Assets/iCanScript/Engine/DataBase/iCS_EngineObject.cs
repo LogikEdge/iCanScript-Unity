@@ -287,17 +287,17 @@ public class iCS_EngineObject {
 	}
 
     // ----------------------------------------------------------------------
-	public MethodBase GetMethodBase(List<iCS_EngineObject> engineObjects) {
+	public MethodBase GetMethodBase(List<iCS_EngineObject> parameters) {
         // Extract MethodBase for constructor.
 		Type classType= RuntimeType;
         if(classType == null) return null;
         MethodBase method= null;
         if(ObjectType == iCS_ObjectTypeEnum.Constructor) {
-            method= classType.GetConstructor(GetParamTypes(engineObjects));
+            method= classType.GetConstructor(GetParamTypes(parameters));
             if(method == null) {
                 string signature="(";
                 bool first= true;
-                foreach(var param in GetParamTypes(engineObjects)) {
+                foreach(var param in GetParamTypes(parameters)) {
                     if(first) { first= false; } else { signature+=", "; }
                     signature+= param.Name;
                 }
@@ -308,7 +308,7 @@ public class iCS_EngineObject {
         }
         // Extract MethodBase for class methods.
         if(MethodName == null) return null;
-		Type[] paramTypes= GetParamTypes(engineObjects);
+		Type[] paramTypes= GetParamTypes(parameters);
         method= classType.GetMethod(MethodName, paramTypes);            
         if(method == null) {
             string signature="(";

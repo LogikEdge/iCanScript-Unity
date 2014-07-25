@@ -21,7 +21,6 @@ public class iCS_Inspector : Editor {
 	
 	// ----------------------------------------------------------------------
     // Display state properties.
-	private bool    mySelectedObjectFold= true;
     private bool    myShowInputs        = false;
     private bool    myShowOutputs       = false;
     
@@ -148,61 +147,59 @@ public class iCS_Inspector : Editor {
             return;
         }
 
-        EditorGUILayout.LabelField("Name", mySelectedObject.Name);
-        EditorGUILayout.Toggle("IsSticky", mySelectedObject.IsSticky);
-        EditorGUILayout.IntField("LayoutPriority", mySelectedObject.LayoutPriority);
-        EditorGUILayout.Vector2Field("GlobalPosition", mySelectedObject.GlobalPosition);
-        EditorGUILayout.Vector2Field("LocalAnchor", mySelectedObject.LocalAnchorPosition);
-        EditorGUILayout.Vector2Field("WrappingOffset", mySelectedObject.WrappingOffset);
-        EditorGUILayout.Vector2Field("CollisionOffset", mySelectedObject.CollisionOffset);
+//        EditorGUILayout.Toggle("IsSticky", mySelectedObject.IsSticky);
+//        EditorGUILayout.IntField("LayoutPriority", mySelectedObject.LayoutPriority);
+//        EditorGUILayout.Vector2Field("GlobalPosition", mySelectedObject.GlobalPosition);
+//        EditorGUILayout.Vector2Field("LocalAnchor", mySelectedObject.LocalAnchorPosition);
+//        EditorGUILayout.Vector2Field("WrappingOffset", mySelectedObject.WrappingOffset);
+//        EditorGUILayout.Vector2Field("CollisionOffset", mySelectedObject.CollisionOffset);
 
-        mySelectedObjectFold= EditorGUILayout.Foldout(mySelectedObjectFold, "Selected Object");
-        if(mySelectedObjectFold) {
-            EditorGUI.indentLevel= 1;
-            // Display object id.
-            EditorGUILayout.LabelField("id", SelectedObject.InstanceId.ToString());
-            // Display object type.
-            var typeName= ObjectNames.NicifyVariableName(SelectedObject.ObjectType.ToString());
-            EditorGUILayout.LabelField("Type", typeName);
-            // Display object name.
-            string name= SelectedObject.RawName;
-            if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).RawName;
-            if(name == null || name == "") name= EmptyStr;
-            if(mySelectedObject.IsNameEditable) {
+        EditorGUI.indentLevel= 0;
+        // Display slected object name.
+        string name= SelectedObject.RawName;
+        if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).RawName;
+        if(name == null || name == "") name= EmptyStr;
+        if(mySelectedObject.IsNameEditable) {
 #if BUFFERED_INPUT
-                myNameEditor.Update("Name", SelectedObject.RawName,
-                    newName=> iCS_UserCommands.ChangeName(SelectedObject, newName)
-                );
-#else
-                GUI.changed= false;
-                var newName= EditorGUILayout.TextField("Name", SelectedObject.RawName);
-                if(GUI.changed) {
-                    iCS_UserCommands.ChangeName(SelectedObject, newName);
-                }
-#endif
-            } else {
-                EditorGUILayout.LabelField("Name", name);                    
-            }
-            // Show object tooltip.
-            string toolTip= SelectedObject.Tooltip;
-            if(mySelectedObject.IsOutStatePort) toolTip= myIStorage.FindAConnectedPort(SelectedObject).Tooltip;
-            if(toolTip == null || toolTip == "") toolTip= EmptyStr;
-			GUI.SetNextControlName("tooltip");
-            myTooltipEditor.Update("Tooltip", toolTip,
-                newTooltip=> {
-                    iCS_UserCommands.OpenTransaction(myIStorage);
-                    SelectedObject.Tooltip= newTooltip;
-                    if(SelectedObject.IsStatePort) {
-                        if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
-                        else SelectedObject.ProviderPort.Tooltip= toolTip;
-                    }
-                    iCS_UserCommands.CloseTransaction(myIStorage, "Change tooltip");
-                }
+            myNameEditor.Update("Name", SelectedObject.RawName,
+                newName=> iCS_UserCommands.ChangeName(SelectedObject, newName)
             );
-            // Show inspector specific for each type of component.
-            if(SelectedObject.IsNode)      InspectNode(SelectedObject);
-            else if(SelectedObject.IsPort) InspectPort(SelectedObject);
-        }            
+#else
+            GUI.changed= false;
+            var newName= EditorGUILayout.TextField("Name", SelectedObject.RawName);
+            if(GUI.changed) {
+                iCS_UserCommands.ChangeName(SelectedObject, newName);
+            }
+#endif
+        } else {
+            EditorGUILayout.LabelField("Name", name);                    
+        }
+        // Display slected object initial name.
+        EditorGUILayout.LabelField("Initial Name", mySelectedObject.DefaultName);        
+        // Display object id.
+        EditorGUILayout.LabelField("id", SelectedObject.InstanceId.ToString());
+        // Display object type.
+        var typeName= ObjectNames.NicifyVariableName(SelectedObject.ObjectType.ToString());
+        EditorGUILayout.LabelField("Type", typeName);
+        // Show object tooltip.
+        string toolTip= SelectedObject.Tooltip;
+        if(mySelectedObject.IsOutStatePort) toolTip= myIStorage.FindAConnectedPort(SelectedObject).Tooltip;
+        if(toolTip == null || toolTip == "") toolTip= EmptyStr;
+		GUI.SetNextControlName("tooltip");
+        myTooltipEditor.Update("Tooltip", toolTip,
+            newTooltip=> {
+                iCS_UserCommands.OpenTransaction(myIStorage);
+                SelectedObject.Tooltip= newTooltip;
+                if(SelectedObject.IsStatePort) {
+                    if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
+                    else SelectedObject.ProviderPort.Tooltip= toolTip;
+                }
+                iCS_UserCommands.CloseTransaction(myIStorage, "Change tooltip");
+            }
+        );
+        // Show inspector specific for each type of component.
+        if(SelectedObject.IsNode)      InspectNode(SelectedObject);
+        else if(SelectedObject.IsPort) InspectPort(SelectedObject);
 
         // Allow repaint for modifications done by the user.
         myPreviousModificationId= myIStorage.ModificationId;		

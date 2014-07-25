@@ -618,7 +618,7 @@ public partial class iCS_IStorage {
             displayName= displayName.Substring(4);
         }
         if(desc.IsConstructor) {
-            displayName= "InstanceBuilder";
+            displayName= "Variable";
         }
         var defaultName= displayName+"<"+iCS_Types.TypeName(desc.ClassType)+">";
         return defaultName;

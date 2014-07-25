@@ -295,6 +295,36 @@ public class iCS_LibraryDatabase {
         return null;
     }
     // ----------------------------------------------------------------------
+    // Returns the descriptor associated with the given editor object.
+    public static iCS_MemberInfo GetAssociatedDescriptor(iCS_EditorObject edObj) {
+        if(edObj.IsPort || edObj.IsPackage) {
+            return null;
+        }
+        var runtimeType= edObj.RuntimeType;
+        var engineObject= edObj.EngineObject;
+        foreach(var t in types) {
+            if(t.CompilerType == runtimeType) {
+                foreach(var member in t.Members) {
+                    if(member is iCS_MethodInfo) {
+                        var methodInfo= member as iCS_MethodInfo;
+                        if(engineObject.MethodName == methodInfo.MethodName) {
+                            Debug.Log("Found method=> "+member.DisplayName);
+                            return member;
+                        }
+                    }
+                    if(member is iCS_FieldInfo) {
+                        var fieldInfo= member as iCS_FieldInfo;
+                        if(engineObject.GetFieldInfo() == fieldInfo.Field) {
+                            Debug.Log("Found field=> "+member.DisplayName);
+                            return member;                            
+                        }
+                    }
+                }
+            }
+        }
+        return null;        
+    }
+    // ----------------------------------------------------------------------
     // Returns the class type associated with the given company/package.
     public static Type GetClassType(string classPath) {
         foreach(var desc in Functions) {

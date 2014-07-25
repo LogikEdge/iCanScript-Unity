@@ -50,7 +50,6 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.ObjectType == value) return;
 		    engineObject.ObjectType= value;
-//		    IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -104,6 +103,36 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public string FullName {
         get { return Storage.GetFullName(iCSMonoBehaviour, EngineObject); }
+    }
+    // ----------------------------------------------------------------------
+    public string DefaultName {
+        get {
+            var defaultName= Name;
+            if(IsPackage) {
+                defaultName= "";                
+            }
+            else if(IsConstructor) {
+                defaultName= "Variable";
+            }
+            else {
+                if(IsNode) {
+                    var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+                    if(desc != null) {
+                        defaultName= desc.DisplayName;
+                    }
+                    else {
+                        defaultName= EngineObject.MethodName;                        
+                    }
+                    if(defaultName.StartsWith("get_") || defaultName.StartsWith("set_")) {
+                        defaultName= defaultName.Substring(4);
+                    }                    
+                }
+                else {
+                    // TODO: Support retreiving the initial port name.
+                }
+            }
+            return defaultName+"<"+iCS_Types.TypeName(iCS_Types.RemoveRefOrPointer(RuntimeType))+">";            
+        }
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
