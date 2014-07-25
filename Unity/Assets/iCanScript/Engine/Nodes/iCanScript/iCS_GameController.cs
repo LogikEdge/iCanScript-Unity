@@ -18,6 +18,8 @@ public static class iCS_GameController {
         return cdt*rawAnalog1;
     }
     
+    [iCS_Function(Return="analog1", Icon="iCS_JoystickIcon.psd",
+                 Tooltip="Game Controller with configurable names.  Analog1 & 2 are time compensated and ajusted with the input associated speed.")]
     public static Vector2 GameControllerExt(out Vector2 rawAnalog1, out Vector2 rawAnalog2, out Vector2 analog2,
                                          out bool b1, out bool b2, out bool b3, out bool b4,
                                          out bool b5, out bool b6, out bool b7, out bool b8,
