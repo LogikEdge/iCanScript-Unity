@@ -34,8 +34,8 @@ public static partial class iCS_UserCommands {
                     iStorage.ChangeParent(node, newParent); 
                 }
                 node.LocalAnchorFromGlobalPosition= globalPosition;
-                iStorage.ForcedRelayoutOfTree(node, globalPosition);
 				iStorage.AutoLayoutPortOnNode(node);
+                iStorage.ForcedRelayoutOfTree(node, globalPosition);
             }
         );
         CloseTransaction(iStorage, "Node Relocation");
