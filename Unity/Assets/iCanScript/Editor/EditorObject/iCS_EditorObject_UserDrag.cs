@@ -6,6 +6,7 @@ public partial class iCS_EditorObject {
 	// Node Drag
     // ----------------------------------------------------------------------
 	public void StartNodeDrag() {
+        IStorage.StopAllAnimations();
         IsFloating= false;
 		IsSticky= true;
 		SetAsHighestLayoutPriority();
@@ -21,7 +22,6 @@ public partial class iCS_EditorObject {
     // Forces a new position on the object being dragged by the uesr.
     public void NodeDragTo(Vector2 newPosition) {
 		if(IsNode) {
-            IStorage.StopAllAnimations();
     		SetAsHighestLayoutPriority();
     		LocalAnchorFromGlobalPosition= newPosition;
 			IStorage.ForcedRelayoutOfTree();
@@ -34,6 +34,7 @@ public partial class iCS_EditorObject {
 	// Node Relocate
     // ----------------------------------------------------------------------
 	public void StartNodeRelocate() {
+        IStorage.StopAllAnimations();
 		IsFloating= true;
 		IsSticky= true;
 		SetAsHighestLayoutPriority();
@@ -48,7 +49,6 @@ public partial class iCS_EditorObject {
     // Forces a new position on the object being dragged by the uesr.
     public void NodeRelocateTo(Vector2 newPosition) {
 		if(IsNode) {
-            IStorage.StopAllAnimations();
             GlobalAnchorPosition= newPosition-CollisionOffset;
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");

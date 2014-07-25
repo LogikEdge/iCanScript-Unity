@@ -78,7 +78,7 @@ public partial class iCS_EditorObject {
     		LocalSize= new Vector2(r.width, r.height);
             return;
         }
-        var childNodes= BuildListOfChildNodes(_ => true);
+        var childNodes= BuildListOfChildNodes(n => !n.IsFloating);
         var childRects= P.map(n => BuildRect(n.LocalPosition, n.LocalSize), childNodes);
         // WrapAroundChildRects(childRects);
         var totalChildRect= GetRectWithMargins(childRects);

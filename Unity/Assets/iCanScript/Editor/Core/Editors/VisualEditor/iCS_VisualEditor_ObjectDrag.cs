@@ -282,6 +282,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             node.IsFloating= true;
                         }
                     }
+                    iCS_UserCommands.CancelNodeRelocation(node);
                     // Remove sticky on parent nodes.
                     DragObject.EndNodeRelocate();
                     break;

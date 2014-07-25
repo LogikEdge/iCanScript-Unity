@@ -22,10 +22,11 @@ public static partial class iCS_UserCommands {
         CloseTransaction(iStorage, "Multi-Selection Node Drag");
     }
     public static void StartNodeRelocation(iCS_EditorObject node) {
+        var iStorage= node.IStorage;
+        OpenTransaction(iStorage);
     }
     public static void EndNodeRelocation(iCS_EditorObject node, iCS_EditorObject oldParent, iCS_EditorObject newParent) {
         var iStorage= node.IStorage;
-        OpenTransaction(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 if(oldParent != newParent) {
@@ -37,7 +38,9 @@ public static partial class iCS_UserCommands {
         );
         CloseTransaction(iStorage, "Node Relocation");
     }
-
+    public static void CancelNodeRelocation(iCS_EditorObject node) {
+        CancelTransaction(node.IStorage);
+    }
 
 	// ----------------------------------------------------------------------
 	// We are not certain if we shoud be animating or not..
