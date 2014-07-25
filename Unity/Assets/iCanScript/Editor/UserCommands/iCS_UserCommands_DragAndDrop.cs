@@ -36,10 +36,13 @@ public static partial class iCS_UserCommands {
                 iCS_IStorage srcIStorage= new iCS_IStorage(sourceMonoBehaviour);
                 iCS_EditorObject srcRoot= srcIStorage.EditorObjects[sourceRoot.InstanceId];
                 iCS_EditorObject pasted= iStorage.Copy(srcRoot, srcIStorage, parent, globalPos, iStorage);
-                if(pasted.IsUnfoldedInLayout) {
-                    pasted.Fold();            
+                if(pasted != null) {
+                    if(pasted.IsUnfoldedInLayout) {
+                        pasted.Fold();            
+                    }
+                    iStorage.SelectedObject= pasted;
+                    iStorage.ForcedRelayoutOfTree(pasted, globalPos);                    
                 }
-                iStorage.ForcedRelayoutOfTree();
             }
         );
         CloseTransaction(iStorage, "Add Prefab "+sourceRoot.Name);
