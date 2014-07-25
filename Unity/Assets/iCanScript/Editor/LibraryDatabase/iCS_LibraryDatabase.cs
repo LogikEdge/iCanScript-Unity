@@ -308,14 +308,12 @@ public class iCS_LibraryDatabase {
                     if(member is iCS_MethodInfo) {
                         var methodInfo= member as iCS_MethodInfo;
                         if(engineObject.MethodName == methodInfo.MethodName) {
-                            Debug.Log("Found method=> "+member.DisplayName);
                             return member;
                         }
                     }
                     if(member is iCS_FieldInfo) {
                         var fieldInfo= member as iCS_FieldInfo;
-                        if(engineObject.GetFieldInfo() == fieldInfo.Field) {
-                            Debug.Log("Found field=> "+member.DisplayName);
+                        if(engineObject.GetFieldInfoNoWarning() == fieldInfo.Field) {
                             return member;                            
                         }
                     }

@@ -276,15 +276,18 @@ public class iCS_EngineObject {
     
     // ----------------------------------------------------------------------
 	public FieldInfo GetFieldInfo() {
-        if(MethodName == null) return null;
-		Type classType= RuntimeType;
-        if( classType == null ) return null;
-        FieldInfo field= classType.GetField(MethodName);
+        FieldInfo field= GetFieldInfoNoWarning();
         if(field == null) {
             Debug.LogWarning("iCanScript: Unable to extract FieldInfo from RuntimeDesc: "+MethodName);                
         }
         return field;		            
 	}
+    public FieldInfo GetFieldInfoNoWarning() {
+        if(MethodName == null) return null;
+		Type classType= RuntimeType;
+        if( classType == null ) return null;
+        return classType.GetField(MethodName);
+    }
 
     // ----------------------------------------------------------------------
 	public MethodBase GetMethodBase(List<iCS_EngineObject> parameters) {
