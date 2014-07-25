@@ -12,12 +12,17 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // Opens a transaction that requires several steps.
     public static void OpenTransaction(iCS_IStorage iStorage) {
-        iStorage.IncUserTransaction();
+        iStorage.OpenUserTransaction();
     }
 	// ----------------------------------------------------------------------
     // Saves the storage and prepare for a possible Undo operation.
     public static void CloseTransaction(iCS_IStorage iStorage, string undoMessage) {
-        iStorage.DecUserTransaction(undoMessage);
+        iStorage.CloseUserTransaction(undoMessage);
+    }
+	// ----------------------------------------------------------------------
+    // Cancels the currently active user transaction.
+    public static void CancelTransaction(iCS_IStorage iStorage) {
+        iStorage.CancelUserTransaction();
     }
     
     // ======================================================================

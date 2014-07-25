@@ -27,13 +27,13 @@ public partial class iCS_IStorage {
             Debug.LogWarning("iCanScript: Internal Error: User transaction was forced closed.");            
         }
     }
-    public void IncUserTransaction() {
+    public void OpenUserTransaction() {
         if(UserTransactionCount == 0) {
             SaveSelectedObjectPosition();
         }
         ++UserTransactionCount;
     }
-    public void DecUserTransaction(string undoMessage= "") {
+    public void CloseUserTransaction(string undoMessage= "") {
         if(UserTransactionCount <= 0) {
             Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
         }
@@ -44,7 +44,14 @@ public partial class iCS_IStorage {
             SaveStorage(undoMessage);
         }
     }
-    
+    public void CancelUserTransaction() {
+        if(UserTransactionCount <= 0) {
+            Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
+        }
+        if(UserTransactionCount > 0) {
+            --UserTransactionCount;
+        }        
+    }
     
     // ======================================================================
     // Undo/Redo support
