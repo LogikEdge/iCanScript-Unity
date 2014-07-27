@@ -123,9 +123,11 @@ public partial class iCS_EditorObject {
                     else {
                         defaultName= EngineObject.MethodName;                        
                     }
-                    if(defaultName.StartsWith("get_") || defaultName.StartsWith("set_")) {
-                        defaultName= defaultName.Substring(4);
-                    }                    
+                    if(defaultName != null) {
+                        if(defaultName.StartsWith("get_") || defaultName.StartsWith("set_")) {
+                            defaultName= defaultName.Substring(4);
+                        }                                            
+                    }
                 }
                 else {
                     // TODO: Support retreiving the initial port name.
