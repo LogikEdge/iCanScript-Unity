@@ -35,4 +35,14 @@ public static class iCS_Time {
     public static Vector4 LerpUsingDeltaTime(Vector4 v1, Vector4 v2, float ratio) {
         return Math3D.Lerp(v1,v2,ratio*Time.deltaTime);
     }
+    [iCS_Function(Return="elapseTime")]
+    public static float ComputeElapseTime(float time) {
+        return Time.time+time;
+    }
+    [iCS_Function(Return="isElapsed")]
+    public static bool IsTimeElapsed(float elapseTime, out bool isNotElapsed) {
+        bool isElapsed= Time.time >= elapseTime;
+        isNotElapsed= !isElapsed;
+        return isElapsed;
+    }
 }
