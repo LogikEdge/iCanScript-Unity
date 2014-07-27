@@ -124,8 +124,11 @@ public partial class iCS_EditorObject {
                         defaultName= EngineObject.MethodName;                        
                     }
                     if(defaultName != null) {
-                        if(defaultName.StartsWith("get_") || defaultName.StartsWith("set_")) {
-                            defaultName= defaultName.Substring(4);
+                        if(defaultName.StartsWith("get_")) {
+                            defaultName= "Get"+defaultName.Substring(4);
+                        }                                            
+                        if(defaultName.StartsWith("set_")) {
+                            defaultName= "Set"+defaultName.Substring(4);
                         }                                            
                     }
                 }

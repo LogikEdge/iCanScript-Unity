@@ -22,9 +22,9 @@ public struct Bool {
     }
     
     [iCS_Function] public Bool(bool init= false) { myValue= init; }
-    [iCS_Function] public bool And(bool v) { return myValue & v; }
-    [iCS_Function] public bool Or(bool v)  { return myValue | v; }
-    [iCS_Function] public bool Xor(bool v) { return myValue ^ v; }
+    [iCS_Function] public bool And(bool b) { return myValue & b; }
+    [iCS_Function] public bool Or(bool b)  { return myValue | b; }
+    [iCS_Function] public bool Xor(bool b) { return myValue ^ b; }
 }
 
 [iCS_Class(Company="iCanScript",Library="Variables")]
@@ -46,10 +46,20 @@ public struct Int {
     }
     
     [iCS_Function] public Int(int init= 0) { myValue= init; }
-    [iCS_Function(Return="a+b")] public int Add(int b) { return myValue+b; }
-    [iCS_Function(Return="a-b")] public int Sub(int b) { return myValue-b; }
-    [iCS_Function(Return="a*b")] public int Mul(int b) { return myValue*b; }
-    [iCS_Function(Return="a/b")] public int Div(int b) { return myValue/b; }
+    [iCS_Function(Name="value+b",Return="value+b")] public int Add(int b) { return myValue+b; }
+    [iCS_Function(Name="value-b",Return="value-b")] public int Sub(int b) { return myValue-b; }
+    [iCS_Function(Name="value*b",Return="value*b")] public int Mul(int b) { return myValue*b; }
+    [iCS_Function(Name="value/b",Return="value/b")] public int Div(int b) { return myValue/b; }
+    [iCS_Function(Name="value= value+b",Return="value+b")] public int AddAndUpdate(int b) { return myValue= myValue+b; }
+    [iCS_Function(Name="value= value-b",Return="value-b")] public int SubAndUpdate(int b) { return myValue= myValue-b; }
+    [iCS_Function(Name="value= value*b",Return="value*b")] public int MulAndUpdate(int b) { return myValue= myValue*b; }
+    [iCS_Function(Name="value= value/b",Return="value/b")] public int DivAndUpdate(int b) { return myValue= myValue/b; }
+    [iCS_Function(Name="value == b",Return="value == b")]  public bool IsEqual(int b)            { return myValue==b; }
+    [iCS_Function(Name="value != b",Return="value != b")]  public bool IsNotEqual(int b)         { return myValue!=b; }
+    [iCS_Function(Name="value > b",Return="value > b")]    public bool IsGreaterThen(int b)      { return myValue > b; }
+    [iCS_Function(Name="value < b",Return="value < b")]    public bool IsSmallerThen(int b)      { return myValue < b; }
+    [iCS_Function(Name="value >= b",Return="value >= b")]  public bool IsGreaterOrEqualTo(int b) { return myValue >= b; }
+    [iCS_Function(Name="value <= b",Return="value <= b")]  public bool IsSmallerOrEqualTo(int b) { return myValue <= b; }    
 }
 
 [iCS_Class(Company="iCanScript",Library="Variables")]
@@ -71,9 +81,19 @@ public struct Float {
     }
     
     [iCS_Function] public Float(float init= 0f) { myValue= init; }
-    [iCS_Function(Return="a+b")] public float Add(float b) { return myValue+b; }
-    [iCS_Function(Return="a-b")] public float Sub(float b) { return myValue-b; }
-    [iCS_Function(Return="a*b")] public float Mul(float b) { return myValue*b; }
-    [iCS_Function(Return="a/b")] public float Div(float b) { return myValue/b; }
+    [iCS_Function(Name="value+b",Return="value+b")] public float Add(float b) { return myValue+b; }
+    [iCS_Function(Name="value-b",Return="value-b")] public float Sub(float b) { return myValue-b; }
+    [iCS_Function(Name="value*b",Return="value*b")] public float Mul(float b) { return myValue*b; }
+    [iCS_Function(Name="value/b",Return="value/b")] public float Div(float b) { return myValue/b; }
+    [iCS_Function(Name="value= value+b",Return="value+b")] public float AddAndUpdate(float b) { return myValue= myValue+b; }
+    [iCS_Function(Name="value= value-b",Return="value-b")] public float SubAndUpdate(float b) { return myValue= myValue-b; }
+    [iCS_Function(Name="value= value*b",Return="value*b")] public float MulAndUpdate(float b) { return myValue= myValue*b; }
+    [iCS_Function(Name="value= value/b",Return="value/b")] public float DivAndUpdate(float b) { return myValue= myValue/b; }
+    [iCS_Function(Name="value == b",Return="value == b")]  public bool IsEqual(float b)            { return Math3D.IsEqual(myValue, b); }
+    [iCS_Function(Name="value != b",Return="value != b")]  public bool IsNotEqual(float b)         { return Math3D.IsNotEqual(myValue, b); }
+    [iCS_Function(Name="value > b",Return="value > b")]   public bool IsGreaterThen(float b)      { return Math3D.IsGreater(myValue, b); }
+    [iCS_Function(Name="value < b",Return="value < b")]   public bool IsSmallerThen(float b)      { return Math3D.IsSmaller(myValue, b); }
+    [iCS_Function(Name="value >= b",Return="value >= b")]  public bool IsGreaterOrEqualTo(float b) { return Math3D.IsGreaterOrEqual(myValue, b); }
+    [iCS_Function(Name="value <= b",Return="value <= b")]  public bool IsSmallerOrEqualTo(float b) { return Math3D.IsSmallerOrEqual(myValue, b); }    
 }
 

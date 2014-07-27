@@ -614,8 +614,11 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public string GetDefaultNodeName(iCS_MethodBaseInfo desc) {
         var displayName= desc.DisplayName;
-        if(displayName.StartsWith("get_") || displayName.StartsWith("set_")) {
-            displayName= displayName.Substring(4);
+        if(displayName.StartsWith("get_")) {
+            displayName= "Get"+displayName.Substring(4);
+        }
+        if(displayName.StartsWith("set_")) {
+            displayName= "Set"+displayName.Substring(4);
         }
         if(desc.IsConstructor) {
             displayName= "Variable";
