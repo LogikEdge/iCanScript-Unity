@@ -44,7 +44,7 @@ public static class iCS_NodeTextures {
 			Texture2D nodeTexture= backDir[shadowColor];
 			if(nodeTexture != null) return nodeTexture;
 		}
-		Texture2D texture= new Texture2D(myNodeTemplate.width, myNodeTemplate.height);
+		Texture2D texture= new Texture2D(myNodeTemplate.width, myNodeTemplate.height, TextureFormat.ARGB32);
 		for(int x= 0; x < myNodeTemplate.width; ++x) {
 			for(int y= 0; y < myNodeTemplate.height; ++y) {
 				Color pixel= myNodeTemplate.GetPixel(x,y);
@@ -91,7 +91,7 @@ public static class iCS_NodeTextures {
 		int cornerOffset= shadowSizeInt+radiusInt;
 		int tileSize= radiusInt+extraTitleheightInt+shadowSizeInt;
 		int textureSize= 3*tileSize;
-		myNodeTemplate= new Texture2D(textureSize,textureSize);
+		myNodeTemplate= new Texture2D(textureSize,textureSize, TextureFormat.ARGB32);
         iCS_TextureUtil.Clear(ref myNodeTemplate);
 		// Draw shadow
 		int farCornerOffset= textureSize-cornerOffset-1;
