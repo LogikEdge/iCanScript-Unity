@@ -33,6 +33,9 @@ public static partial class iCS_UserCommands {
         OpenTransaction(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
+                if(parent.IsFoldedInLayout || parent.IsIconizedInLayout) {
+                    parent.Unfold();
+                }
                 iCS_IStorage srcIStorage= new iCS_IStorage(sourceMonoBehaviour);
                 iCS_EditorObject srcRoot= srcIStorage.EditorObjects[sourceRoot.InstanceId];
                 iCS_EditorObject pasted= iStorage.Copy(srcRoot, srcIStorage, parent, globalPos, iStorage);

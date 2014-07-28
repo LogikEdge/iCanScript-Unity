@@ -362,6 +362,7 @@ public static partial class iCS_UserCommands {
         iCS_EditorObject instance= null;
         iStorage.AnimateGraph(null,
             _=> {
+                parent.Unfold();
                 instance= iStorage.CreatePackage(parent.InstanceId, go.name, iCS_ObjectTypeEnum.Package, go.GetType());
                 var thisPort= iStorage.InstanceWizardGetInputThisPort(instance);
                 if(thisPort != null) {
