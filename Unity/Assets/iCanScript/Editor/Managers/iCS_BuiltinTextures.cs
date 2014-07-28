@@ -141,16 +141,16 @@ public static class iCS_BuiltinTextures {
     }
     // ---------------------------------------------------------------------------------
 	static void BuildEndPortIcons(Color typeColor) {
-		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
-		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
+		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
+		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
 		float radius= 0.5f*(kPortIconHeight-3f);
         iCS_PortIcons.BuildInEndPortTemplateImp(radius, radius-2, ref inPortTemplate);
         iCS_PortIcons.BuildOutEndPortTemplateImp(radius, radius-2, ref outPortTemplate);
         Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(typeColor, inPortTemplate);
         Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(typeColor, outPortTemplate);
 
-        myInEndPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
-        myOutEndPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
+        myInEndPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight, TextureFormat.ARGB32, false);
+        myOutEndPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight, TextureFormat.ARGB32, false);
         iCS_TextureUtil.Clear(ref myInEndPortIcon);
         iCS_TextureUtil.Clear(ref myOutEndPortIcon);
         int xOffset= (kPortIconWidth-kPortIconHeight)>>1;
@@ -171,16 +171,16 @@ public static class iCS_BuiltinTextures {
 
     // ---------------------------------------------------------------------------------
 	static void BuildRelayPortIcons(Color typeColor) {
-		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
-		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
+		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
+		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
 		float len= kPortIconHeight-2f;
         iCS_PortIcons.BuildInRelayPortTemplate (len, ref inPortTemplate);
         iCS_PortIcons.BuildOutRelayPortTemplate(len, ref outPortTemplate);
         Texture2D inPortIcon = iCS_PortIcons.BuildPortIcon(typeColor, inPortTemplate);
         Texture2D outPortIcon= iCS_PortIcons.BuildPortIcon(typeColor, outPortTemplate);
 
-        myInRelayPortIcon = new Texture2D(kPortIconWidth, kPortIconHeight);
-        myOutRelayPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
+        myInRelayPortIcon = new Texture2D(kPortIconWidth, kPortIconHeight, TextureFormat.ARGB32, false);
+        myOutRelayPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight, TextureFormat.ARGB32, false);
         iCS_TextureUtil.Clear(ref myInRelayPortIcon);
         iCS_TextureUtil.Clear(ref myOutRelayPortIcon);
         int xOffset= (kPortIconWidth-kPortIconHeight)>>1;
@@ -200,16 +200,16 @@ public static class iCS_BuiltinTextures {
 	}
     // ---------------------------------------------------------------------------------
     static void BuildControlPortIcons() {
-		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
-		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
+		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
+		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
         float scale= 0.8f*kPortIconHeight/(iCS_EditorConfig.PortDiameter*1.4f);
         iCS_PortIcons.BuildInTriggerPortTemplate(scale, ref inPortTemplate);
         iCS_PortIcons.BuildOutTriggerPortTemplate(scale, ref outPortTemplate);
         Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(Prefs.BoolTypeColor, inPortTemplate);
         Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(Prefs.BoolTypeColor, outPortTemplate);
 
-        myInTriggerPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
-        myOutTriggerPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
+        myInTriggerPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight, TextureFormat.ARGB32, false);
+        myOutTriggerPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight, TextureFormat.ARGB32, false);
         iCS_TextureUtil.Clear(ref myInTriggerPortIcon);
         iCS_TextureUtil.Clear(ref myOutTriggerPortIcon);
         iCS_AlphaBlend.NormalBlend(0, 0, portInIcon , 0, 0, ref myInTriggerPortIcon,  portInIcon.width, portInIcon.height);
@@ -229,8 +229,8 @@ public static class iCS_BuiltinTextures {
     // ---------------------------------------------------------------------------------
     static void BuildTransitionPortIcons() {
         // Create textures.
-        myInTransitionPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
-        myOutTransitionPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
+        myInTransitionPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight, TextureFormat.ARGB32, false);
+        myOutTransitionPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight, TextureFormat.ARGB32, false);
         iCS_TextureUtil.Clear(ref myInTransitionPortIcon);
         iCS_TextureUtil.Clear(ref myOutTransitionPortIcon);
         
@@ -260,7 +260,7 @@ public static class iCS_BuiltinTextures {
         int sizeInt= ((int)size)+1;
         float offset= 0.5f*((float)sizeInt-size);
 //        if(myMaximizeIcon != null) Texture2D.DestroyImmediate(myMaximizeIcon);
-        myMaximizeIcon= new Texture2D(sizeInt, sizeInt);
+        myMaximizeIcon= new Texture2D(sizeInt, sizeInt, TextureFormat.ARGB32, false);
         iCS_TextureUtil.Clear(ref myMaximizeIcon);
         // Draw minimize icon.
         float halfSize= 0.5f*size;
@@ -306,7 +306,7 @@ public static class iCS_BuiltinTextures {
         int sizeInt= ((int)size)+1;
         float offset= 0.5f*((float)sizeInt-size);
         if(myMinimizeIcon != null) Texture2D.DestroyImmediate(myMinimizeIcon);
-        myMinimizeIcon= new Texture2D(sizeInt, sizeInt);
+        myMinimizeIcon= new Texture2D(sizeInt, sizeInt, TextureFormat.ARGB32, false);
         iCS_TextureUtil.Clear(ref myMinimizeIcon);
         // Draw minimize icon.
         float halfSize= 0.5f*size;
@@ -339,7 +339,7 @@ public static class iCS_BuiltinTextures {
         var polygon= Math3D.ScaleAndTranslatePolygon(myFoldIconPolygon, scale, center);
         // Build texture
         if(myFoldIcon != null) Texture2D.DestroyImmediate(myFoldIcon);
-		myFoldIcon= new Texture2D(textureSize, textureSize);
+		myFoldIcon= new Texture2D(textureSize, textureSize, TextureFormat.ARGB32, false);
 		iCS_TextureUtil.Clear(ref myFoldIcon);
         Color c= new Color(0,0,0,0.5f);
 	    iCS_TextureUtil.DrawFilledPolygon(ref myFoldIcon, polygon, c);
@@ -360,7 +360,7 @@ public static class iCS_BuiltinTextures {
         var polygon= Math3D.ScaleAndTranslatePolygon(myUnfoldIconPolygon, scale, center);
         // Build texture
         if(myUnfoldIcon != null) Texture2D.DestroyImmediate(myUnfoldIcon);
-		myUnfoldIcon= new Texture2D(textureSize, textureSize);
+		myUnfoldIcon= new Texture2D(textureSize, textureSize, TextureFormat.ARGB32, false);
 		iCS_TextureUtil.Clear(ref myUnfoldIcon);
         Color c= new Color(0,0,0,0.5f);
 	    iCS_TextureUtil.DrawFilledPolygon(ref myUnfoldIcon, polygon, c);
@@ -390,8 +390,8 @@ public static class iCS_BuiltinTextures {
         var backwardPolygon= Math3D.ScaleAndTranslatePolygon(myBackwardNavigationHistoryPolygon, scale, center);
         var forwardPolygon= Math3D.ScaleAndTranslatePolygon(myForwardNavigationHistoryPolygon, scale, center);
         // Allocate & Clear textures
-		myForwardNavigationHistoryIcon= new Texture2D(textureSize, textureSize);
-		myBackwardNavigationHistoryIcon= new Texture2D(textureSize, textureSize);
+		myForwardNavigationHistoryIcon= new Texture2D(textureSize, textureSize, TextureFormat.ARGB32, false);
+		myBackwardNavigationHistoryIcon= new Texture2D(textureSize, textureSize, TextureFormat.ARGB32, false);
 		iCS_TextureUtil.Clear(ref myForwardNavigationHistoryIcon);
 		iCS_TextureUtil.Clear(ref myBackwardNavigationHistoryIcon);
         // Build texture
