@@ -143,7 +143,7 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
-  Mute: 1
+  Mute: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -200,11 +200,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 18
+  SelectedObject: 0
+  SelectedObjectPosition: {x: 489.130005, y: 265.462738}
   ShowDisplayRootNode: 1
-  GuiScale: 1
-  ScrollPosition: {x: -107.9422, y: 227.143463}
-  UndoRedoId: 137
+  GuiScale: .836547196
+  ScrollPosition: {x: -220.058502, y: -35.3683357}
+  UndoRedoId: 167
   EngineObjects:
   - RawName: prop_switchUnit::Behaviour
     ObjectType: 0
@@ -233,7 +234,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -292.475006, y: 4.00003052}
+    LocalAnchorPosition: {x: -239.065338, y: -86.2887878}
     DisplayOption: 0
     Scale: 1
     MethodName: get_tag
@@ -241,7 +242,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 1
-    LayoutPriority: 100
+    LayoutPriority: 87
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -292,7 +293,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Conditions, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -61.1374512, y: 7.19992065}
+    LocalAnchorPosition: {x: 11.3529358, y: -79.5112915}
     DisplayOption: 1
     Scale: 1
     MethodName: IsEqual
@@ -567,7 +568,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 104.199982, y: 154}
+    LocalAnchorPosition: {x: 239.065338, y: 86.2887878}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -575,7 +576,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 18
-    LayoutPriority: 92
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -587,7 +588,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 136.562561, y: 18.3999634}
+    LocalAnchorPosition: {x: 209.052948, y: -68.3112488}
     DisplayOption: 1
     Scale: 1
     MethodName: And
@@ -625,7 +626,7 @@ MonoBehaviour:
     ParentId: 19
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .600821197}
+    LocalAnchorPosition: {x: 1, y: 1}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -634,7 +635,7 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 21
     LayoutPriority: 0
-    SourceId: 26
+    SourceId: 29
     PortIndex: 1
     InitialValueArchive: 
     IsEntryState: 0
@@ -657,22 +658,22 @@ MonoBehaviour:
     PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GameController<GameController>
+  - RawName: GameControllerExt<GameController>
     ObjectType: 102
     InstanceId: 23
     ParentId: 9
     IsNameEditable: 1
     QualifiedType: iCS_GameController, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -170.000031, y: 101.999992}
+    LocalAnchorPosition: {x: -294.455444, y: 60.9366302}
     DisplayOption: 1
     Scale: 1
-    MethodName: GameController
-    NbOfParams: 5
+    MethodName: GameControllerExt
+    NbOfParams: 25
     IconGUID: 50e891225b99a4bcba83e10d62e6883d
     Tooltip: 
     ExecutionPriority: 23
-    LayoutPriority: 92
+    LayoutPriority: -2
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -684,7 +685,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector2&, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .00600000052}
+    LocalAnchorPosition: {x: 2, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -697,13 +698,14 @@ MonoBehaviour:
     PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: b1
+  - RawName: rawAnalog2
     ObjectType: 301
     InstanceId: 25
     ParentId: 23
     IsNameEditable: 1
-    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
+    QualifiedType: UnityEngine.Vector2&, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 2, y: .00100000005}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -716,13 +718,14 @@ MonoBehaviour:
     PortIndex: 1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: b2
+  - RawName: analog2
     ObjectType: 301
     InstanceId: 26
     ParentId: 23
     IsNameEditable: 1
-    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .00100000005}
+    QualifiedType: UnityEngine.Vector2&, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 2, y: .00200000009}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -735,13 +738,13 @@ MonoBehaviour:
     PortIndex: 2
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: b3
+  - RawName: b1
     ObjectType: 301
     InstanceId: 27
     ParentId: 23
     IsNameEditable: 1
     QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .00400000019}
+    LocalAnchorPosition: {x: 2, y: .00300000003}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -754,13 +757,13 @@ MonoBehaviour:
     PortIndex: 3
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: speed
-    ObjectType: 300
+  - RawName: b2
+    ObjectType: 301
     InstanceId: 28
     ParentId: 23
     IsNameEditable: 1
-    QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: .00400000019}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -771,16 +774,15 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: -1
     PortIndex: 4
-    InitialValueArchive: '{12:InitialValue1:f1:1}'
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: analog1
+  - RawName: b3
     ObjectType: 301
     InstanceId: 29
     ParentId: 23
     IsNameEditable: 1
-    QualifiedType: UnityEngine.Vector2, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .00700000068}
+    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: .306496888}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -790,7 +792,7 @@ MonoBehaviour:
     ExecutionPriority: 29
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: 5
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: enable
@@ -1209,6 +1211,387 @@ MonoBehaviour:
     PortIndex: 1
     InitialValueArchive: 
     IsEntryState: 0
+  - RawName: b4
+    ObjectType: 301
+    InstanceId: 51
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: .00600000052}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 51
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 6
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: b5
+    ObjectType: 301
+    InstanceId: 52
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: .00700000068}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 52
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 7
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: b6
+    ObjectType: 301
+    InstanceId: 53
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: .00800000038}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 53
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 8
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: b7
+    ObjectType: 301
+    InstanceId: 54
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: .00900000054}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 54
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 9
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: b8
+    ObjectType: 301
+    InstanceId: 55
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 2, y: .0100000007}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 55
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 10
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: analog1_x_name
+    ObjectType: 300
+    InstanceId: 56
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 56
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 11
+    InitialValueArchive: '{12:InitialValue1:S10:Horizontal}'
+    IsEntryState: 0
+  - RawName: analog1_y_name
+    ObjectType: 300
+    InstanceId: 57
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 57
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 12
+    InitialValueArchive: '{12:InitialValue1:S8:Vertical}'
+    IsEntryState: 0
+  - RawName: analog1_speed
+    ObjectType: 300
+    InstanceId: 58
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 58
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 13
+    InitialValueArchive: '{12:InitialValue1:f1:1}'
+    IsEntryState: 0
+  - RawName: analog2_x_name
+    ObjectType: 300
+    InstanceId: 59
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 59
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 14
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: analog2_y_name
+    ObjectType: 300
+    InstanceId: 60
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 60
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 15
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: analog2_speed
+    ObjectType: 300
+    InstanceId: 61
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 61
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 16
+    InitialValueArchive: '{12:InitialValue1:f1:1}'
+    IsEntryState: 0
+  - RawName: b1_name
+    ObjectType: 300
+    InstanceId: 62
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 62
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 17
+    InitialValueArchive: '{12:InitialValue1:S5:Sneak}'
+    IsEntryState: 0
+  - RawName: b2_name
+    ObjectType: 300
+    InstanceId: 63
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 63
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 18
+    InitialValueArchive: '{12:InitialValue1:S7:Attract}'
+    IsEntryState: 0
+  - RawName: b3_name
+    ObjectType: 300
+    InstanceId: 64
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 64
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 19
+    InitialValueArchive: '{12:InitialValue1:S6:Switch}'
+    IsEntryState: 0
+  - RawName: b4_name
+    ObjectType: 300
+    InstanceId: 65
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 65
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 20
+    InitialValueArchive: '{12:InitialValue1:S0:}'
+    IsEntryState: 0
+  - RawName: b5_name
+    ObjectType: 300
+    InstanceId: 66
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 66
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 21
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: b6_name
+    ObjectType: 300
+    InstanceId: 67
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 67
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 22
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: b7_name
+    ObjectType: 300
+    InstanceId: 68
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 68
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 23
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: b8_name
+    ObjectType: 300
+    InstanceId: 69
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 69
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 24
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: analog1
+    ObjectType: 301
+    InstanceId: 70
+    ParentId: 23
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Vector2, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 2, y: .0110000009}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 70
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
   - RawName: 
     ObjectType: 10000
     InstanceId: -1
@@ -1257,7 +1640,6 @@ MonoBehaviour:
     InitialValueArchive: 
     IsEntryState: 0
   myStorage: {fileID: 0}
-  IsTraceEnabled: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1276,7 +1658,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1.5

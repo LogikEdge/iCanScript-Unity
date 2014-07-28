@@ -2,18 +2,16 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &100000
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  - 64: {fileID: 6400000}
-  - 108: {fileID: 10800000}
-  - 114: {fileID: 11400002}
-  - 114: {fileID: 11400000}
+  - 33: {fileID: 3300000}
+  - 23: {fileID: 2300000}
   m_Layer: 0
-  m_Name: prop_cctvCam_collision
+  m_Name: prop_cctvCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,10 +25,12 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400002}
-  - 33: {fileID: 3300000}
-  - 23: {fileID: 2300000}
+  - 64: {fileID: 6400000}
+  - 108: {fileID: 10800000}
+  - 114: {fileID: 11400002}
+  - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: prop_cctvCam_body
+  m_Name: prop_cctvCam_collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,7 +38,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &100004
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -46,9 +46,8 @@ GameObject:
   - 4: {fileID: 400004}
   - 33: {fileID: 3300002}
   - 23: {fileID: 2300002}
-  - 111: {fileID: 11100000}
   m_Layer: 0
-  m_Name: prop_cctvCam_joint
+  m_Name: prop_cctvCam_body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +64,7 @@ GameObject:
   - 33: {fileID: 3300004}
   - 23: {fileID: 2300004}
   m_Layer: 0
-  m_Name: prop_cctvCam
+  m_Name: prop_cctvCam_joint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,11 +76,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .150000006, z: .349999994}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -1.62920685e-07}
+  m_LocalPosition: {x: -21, y: 2.20000005, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 400002}
+  m_Children:
+  - {fileID: 400006}
+  m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &400002
 Transform:
@@ -89,11 +89,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: .50000006, y: 0, z: 0, w: .866025388}
-  m_LocalPosition: {x: .00266651926, y: .0495522209, z: 1.09863277e-06}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: .150000006, z: .349999994}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 400000}
+  m_Children: []
   m_Father: {fileID: 400004}
   m_RootOrder: 0
 --- !u!4 &400004
@@ -102,8 +101,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.61303726e-07, y: .0389810689, z: .228045136}
+  m_LocalRotation: {x: .50000006, y: 0, z: 0, w: .866025388}
+  m_LocalPosition: {x: .00266651926, y: .0495522209, z: 1.09863277e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -115,29 +114,26 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: -1.62920685e-07}
-  m_LocalPosition: {x: -8, y: 3, z: 16.1000004}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9.61303726e-07, y: .0389810689, z: .228045136}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400004}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 400000}
   m_RootOrder: 0
 --- !u!23 &2300000
 Renderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
+  m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: f17d20fdbf422c645b336890daf7f376, type: 2}
   - {fileID: 2100000, guid: 4ec72861dfce47048ba385b46f8e6b98, type: 2}
-  - {fileID: 2100000, guid: 65b2a3b42422275448840b089680dc5e, type: 2}
-  - {fileID: 2100000, guid: 110a1e4ac5bbfd34f9b8f98c4ddc1cd6, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -157,7 +153,10 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
+  - {fileID: 2100000, guid: f17d20fdbf422c645b336890daf7f376, type: 2}
   - {fileID: 2100000, guid: 4ec72861dfce47048ba385b46f8e6b98, type: 2}
+  - {fileID: 2100000, guid: 65b2a3b42422275448840b089680dc5e, type: 2}
+  - {fileID: 2100000, guid: 110a1e4ac5bbfd34f9b8f98c4ddc1cd6, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -190,28 +189,28 @@ MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_Mesh: {fileID: 4300010, guid: 1cc01168159cbaa4bb0b2963c8e36da0, type: 3}
+  m_GameObject: {fileID: 100000}
+  m_Mesh: {fileID: 4300006, guid: 1cc01168159cbaa4bb0b2963c8e36da0, type: 3}
 --- !u!33 &3300002
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_Mesh: {fileID: 4300008, guid: 1cc01168159cbaa4bb0b2963c8e36da0, type: 3}
+  m_Mesh: {fileID: 4300010, guid: 1cc01168159cbaa4bb0b2963c8e36da0, type: 3}
 --- !u!33 &3300004
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_Mesh: {fileID: 4300006, guid: 1cc01168159cbaa4bb0b2963c8e36da0, type: 3}
+  m_Mesh: {fileID: 4300008, guid: 1cc01168159cbaa4bb0b2963c8e36da0, type: 3}
 --- !u!64 &6400000
 MeshCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
+  m_GameObject: {fileID: 100002}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
@@ -224,7 +223,7 @@ Light:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
+  m_GameObject: {fileID: 100002}
   m_Enabled: 1
   serializedVersion: 3
   m_Type: 0
@@ -254,38 +253,24 @@ Light:
   m_ShadowAngle: 0
   m_IndirectIntensity: 1
   m_AreaSize: {x: 1, y: 1}
---- !u!111 &11100000
-Animation:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: e2ecaf1c53c474efa960090257ab83c1, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: e2ecaf1c53c474efa960090257ab83c1, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
+  m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11a92a731f5194ed3bb6adfc09234bc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 55
+  SelectedObject: 71
+  SelectedObjectPosition: {x: 806.075256, y: 338.756317}
   ShowDisplayRootNode: 1
-  GuiScale: 1.33316684
-  ScrollPosition: {x: 193.187912, y: 142.352097}
-  UndoRedoId: 419
+  GuiScale: 1.48208499
+  ScrollPosition: {x: -415.115936, y: 56.1383934}
+  UndoRedoId: 443
   EngineObjects:
   - RawName: prop_cctvCam_collision::Behaviour
     ObjectType: 0
@@ -696,7 +681,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 20
-    LayoutPriority: 100
+    LayoutPriority: 76
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -746,7 +731,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00100000005}
+    LocalAnchorPosition: {x: 3, y: .435608506}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -755,7 +740,7 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 23
     LayoutPriority: 0
-    SourceId: 27
+    SourceId: 32
     PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
@@ -766,7 +751,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .346153855}
+    LocalAnchorPosition: {x: 1, y: 1}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -775,7 +760,7 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 24
     LayoutPriority: 0
-    SourceId: 32
+    SourceId: 27
     PortIndex: 1
     InitialValueArchive: 
     IsEntryState: 0
@@ -814,7 +799,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 26
-    LayoutPriority: 100
+    LayoutPriority: 90
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -826,7 +811,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: 1}
+    LocalAnchorPosition: {x: 2, y: 1}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -894,7 +879,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 30
-    LayoutPriority: 100
+    LayoutPriority: 90
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -926,7 +911,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .924627721}
+    LocalAnchorPosition: {x: 4, y: .961298048}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1073,7 +1058,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 39
-    LayoutPriority: 100
+    LayoutPriority: 88
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1243,7 +1228,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 11.7274933, y: -34.3250122}
+    LocalAnchorPosition: {x: 15.867691, y: -42.6243896}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -1370,7 +1355,7 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: -1
     PortIndex: 401
-    InitialValueArchive: 
+    InitialValueArchive: '{12:InitialValue1:O1:4}'
     IsEntryState: 0
   - RawName: set sighting
     ObjectType: 1
@@ -1380,7 +1365,7 @@ MonoBehaviour:
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     LocalAnchorPosition: {x: 193.579163, y: -27.4721375}
-    DisplayOption: 0
+    DisplayOption: 1
     Scale: 1
     MethodName: 
     NbOfParams: 0
@@ -1478,7 +1463,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .537181616}
+    LocalAnchorPosition: {x: 4, y: .448387712}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1498,7 +1483,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -11.7274933, y: 34.3250122}
+    LocalAnchorPosition: {x: -15.867691, y: 42.6243896}
     DisplayOption: 0
     Scale: 1
     MethodName: set_position
@@ -1538,7 +1523,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .679245234}
+    LocalAnchorPosition: {x: 3, y: .541792214}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1599,14 +1584,14 @@ MonoBehaviour:
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     LocalAnchorPosition: {x: -158.945679, y: 6.65985107}
-    DisplayOption: 1
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 66
-    LayoutPriority: 100
+    LayoutPriority: 76
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1637,7 +1622,7 @@ MonoBehaviour:
     ParentId: 66
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .124844745}
+    LocalAnchorPosition: {x: 4, y: .88444972}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1678,14 +1663,14 @@ MonoBehaviour:
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     LocalAnchorPosition: {x: -252.928802, y: -42.7249069}
-    DisplayOption: 1
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 70
-    LayoutPriority: 100
+    LayoutPriority: 88
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1697,7 +1682,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.RaycastHit&, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .9052701}
+    LocalAnchorPosition: {x: 2, y: .665323794}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1776,7 +1761,7 @@ MonoBehaviour:
     ParentId: 70
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .833400011}
+    LocalAnchorPosition: {x: 2, y: .588454783}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1868,10 +1853,11 @@ MonoBehaviour:
     InitialValueArchive: 
     IsEntryState: 0
   UnityObjects:
-  - {fileID: 100000}
-  - {fileID: 400000}
+  - {fileID: 100002}
+  - {fileID: 400002}
   - {fileID: 10800000}
   - {fileID: 6400000}
+  - {fileID: 0}
   EngineObject:
     RawName: 
     ObjectType: 10000
@@ -1893,13 +1879,12 @@ MonoBehaviour:
     InitialValueArchive: 
     IsEntryState: 0
   myStorage: {fileID: 0}
-  IsTraceEnabled: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
+  m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ab935dd31cd8458ebbccaf80c1c0917, type: 3}
@@ -1914,6 +1899,6 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 100006}
+  m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
   m_IsExploded: 1

@@ -178,11 +178,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 22
+  SelectedObject: 49
+  SelectedObjectPosition: {x: 586.508728, y: 778.532104}
   ShowDisplayRootNode: 1
-  GuiScale: .860769212
-  ScrollPosition: {x: -69.3768234, y: -305.00119}
-  UndoRedoId: 530
+  GuiScale: .789615333
+  ScrollPosition: {x: -137.078293, y: -318.698425}
+  UndoRedoId: 546
   EngineObjects:
   - RawName: fx_laserFence_lasers_001::Behaviour
     ObjectType: 0
@@ -558,16 +559,17 @@ MonoBehaviour:
     PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: <Float>
-    ObjectType: 1
+  - RawName: Getenabled<MeshRenderer>
+    ObjectType: 101
     InstanceId: 19
-    ParentId: 92
-    IsNameEditable: 0
-    QualifiedType: Float, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 649.872681, y: -198.192093}
-    DisplayOption: 1
+    ParentId: 22
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -84.0064697, y: -123.321442}
+    DisplayOption: 0
     Scale: 1
-    MethodName: 
+    MethodName: get_enabled
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
@@ -577,13 +579,13 @@ MonoBehaviour:
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Float Instance
-    ObjectType: 300
+  - RawName: enabled
+    ObjectType: 301
     InstanceId: 20
     ParentId: 19
-    IsNameEditable: 0
-    QualifiedType: Float, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 4, y: .516698897}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -593,7 +595,7 @@ MonoBehaviour:
     ExecutionPriority: 20
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 401
+    PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: Laser Player Detection
@@ -603,7 +605,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 58.8843994, y: 8.1322937}
+    LocalAnchorPosition: {x: 43.7816772, y: 108.042847}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -743,7 +745,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .00500000035}
+    LocalAnchorPosition: {x: 3, y: .49913463}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1105,7 +1107,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 46
-    LayoutPriority: 48
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1157,7 +1159,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -42.0175476, y: 161.422668}
+    LocalAnchorPosition: {x: -48.3094482, y: 162.122009}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -1165,7 +1167,7 @@ MonoBehaviour:
     IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 49
-    LayoutPriority: 48
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1285,7 +1287,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 55
-    LayoutPriority: 48
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1308,7 +1310,7 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: 47
     PortIndex: 0
-    InitialValueArchive: '{12:InitialValue2:v35:0,0,0}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: Transform Instance
     ObjectType: 300
@@ -1347,6 +1349,45 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: 40
     PortIndex: 1001
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: MeshRenderer Instance
+    ObjectType: 300
+    InstanceId: 59
+    ParentId: 19
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.MeshRenderer, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .485073}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 59
+    LayoutPriority: 0
+    SourceId: 28
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: enable
+    ObjectType: 308
+    InstanceId: 60
+    ParentId: 21
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 3, y: .425218254}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 60
+    LayoutPriority: 0
+    SourceId: 20
+    PortIndex: 1001
     InitialValueArchive: '{12:InitialValue1:b1:T}'
     IsEntryState: 0
   - RawName: 
@@ -1363,44 +1404,6 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 0
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 60
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: 
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 61
     LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
@@ -2430,7 +2433,6 @@ MonoBehaviour:
     InitialValueArchive: 
     IsEntryState: 0
   myStorage: {fileID: 0}
-  IsTraceEnabled: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
