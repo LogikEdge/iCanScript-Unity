@@ -201,11 +201,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayRoot: 0
   SelectedObject: 0
-  SelectedObjectPosition: {x: 489.130005, y: 265.462738}
+  SelectedObjectPosition: {x: 543.5, y: 311.5}
   ShowDisplayRootNode: 1
   GuiScale: .836547196
   ScrollPosition: {x: -220.058502, y: -35.3683357}
-  UndoRedoId: 167
+  UndoRedoId: 172
   EngineObjects:
   - RawName: prop_switchUnit::Behaviour
     ObjectType: 0
@@ -242,7 +242,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 1
-    LayoutPriority: 87
+    LayoutPriority: 80
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -637,7 +637,7 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: 29
     PortIndex: 1
-    InitialValueArchive: 
+    InitialValueArchive: '{12:InitialValue1:b1:F}'
     IsEntryState: 0
   - RawName: :bool
     ObjectType: 301
@@ -673,7 +673,7 @@ MonoBehaviour:
     IconGUID: 50e891225b99a4bcba83e10d62e6883d
     Tooltip: 
     ExecutionPriority: 23
-    LayoutPriority: -2
+    LayoutPriority: -9
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -782,7 +782,7 @@ MonoBehaviour:
     ParentId: 23
     IsNameEditable: 1
     QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .306496888}
+    LocalAnchorPosition: {x: 2, y: .306496829}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1293,7 +1293,7 @@ MonoBehaviour:
     ParentId: 23
     IsNameEditable: 1
     QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: .0100000007}
+    LocalAnchorPosition: {x: 2, y: .306496978}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1579,7 +1579,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector2, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 2, y: .0110000009}
+    LocalAnchorPosition: {x: 2, y: .012000001}
     DisplayOption: 0
     Scale: 1
     MethodName: 
