@@ -142,6 +142,7 @@ public partial class iCS_Graphics {
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if((port.IsInputPort || port.IsKindOfPackagePort) && port.ProviderPortId != -1) {
             var sourcePort= port.ProviderPort;
+            if(sourcePort == null) return true;
             var sourceCenter= sourcePort.AnimatedPosition;
             var portCenter= port.AnimatedPosition;
             var distance= Vector2.Distance(portCenter, sourceCenter);

@@ -17,7 +17,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     Vector2     ScrollPosition {
         get { return IStorage != null ? IStorage.ScrollPosition : Vector2.zero; }
-        set { if(IStorage != null) IStorage.ScrollPosition= value; }
+        set {
+            if(IStorage != null) {
+                IStorage.ScrollPosition= value;
+                BoundOnDisplayRoot();
+            }
+        }
     }
     float       Scale {
         get { return IStorage != null ? IStorage.GuiScale : 1.0f; }
@@ -42,6 +47,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	    DrawGrid();			
         
         // Draw nodes and their connections.
+        BoundOnDisplayRoot();
         DisplayGraphNodes();
 
         myGraphics.End(IStorage);

@@ -123,4 +123,37 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var yScale= Scale * viewportRect.height / nodeSize.y;
         return Mathf.Min(xScale, yScale);
     }
+	// ----------------------------------------------------------------------
+    public void BoundOnDisplayRoot() {
+        var displayRoot= IStorage.DisplayRoot;
+        var displayRootRect= displayRoot.GlobalRect;
+        var viewportRect= VisibleGraphRectWithPadding;
+        var vxMin= viewportRect.x;
+        var vxMax= viewportRect.xMax;
+        var vyMin= viewportRect.y;
+        var vyMax= viewportRect.yMax;
+        var drxMin= displayRootRect.x;
+        var drxMax= displayRootRect.xMax;
+        var dryMin= displayRootRect.y;
+        var dryMax= displayRootRect.yMax;
+        
+        Vector2 adjustment= Vector2.zero;
+        if(drxMin > vxMin && drxMax > vxMax) {
+            var scrollDistance= Mathf.Min(drxMin-vxMin, drxMax-vxMax);
+            adjustment.x+= scrollDistance;
+        }
+        if(drxMin < vxMin && drxMax < vxMax) {
+            var scrollDistance= Mathf.Min(vxMin-drxMin, vxMax-drxMax);
+            adjustment.x-= scrollDistance;
+        }
+        if(dryMin > vyMin && dryMax > vyMax) {
+            var scrollDistance= Mathf.Min(dryMin-vyMin, dryMax-vyMax);
+            adjustment.y+= scrollDistance;
+        }
+        if(dryMin < vyMin && dryMax < vyMax) {
+            var scrollDistance= Mathf.Min(vyMin-dryMin, vyMax-dryMax);
+            adjustment.y-= scrollDistance;
+        }
+        IStorage.ScrollPosition+= adjustment;
+    }
 }
