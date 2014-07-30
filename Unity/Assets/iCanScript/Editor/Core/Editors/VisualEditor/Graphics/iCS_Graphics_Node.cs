@@ -1,3 +1,4 @@
+#define SHOW_POSITION
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -17,7 +18,11 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the scaled node name size.
 	string GetNodeName(iCS_EditorObject node) {
+#if SHOW_POSITION
+        return node.NodeTitle+" GP:"+node.GlobalPosition+" CO:"+node.CollisionOffset+" WO:"+node.WrappingOffset;
+#else
         return node.NodeTitle;
+#endif
 	}
     // ----------------------------------------------------------------------
     // Returns the scaled node name size.
