@@ -47,30 +47,36 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
 	// We are not certain if we shoud be animating or not..
     public static void StartPortDrag(iCS_EditorObject port) {
+        var iStorage= port.IStorage;
+        OpenTransaction(iStorage);
     }
 
     public static void StartPortConnection(iCS_EditorObject port) {
-        var iStorage= port.IStorage;
-        iStorage.PrepareToAnimate();
+//        var iStorage= port.IStorage;
+//        iStorage.PrepareToAnimate();
     }
     public static void EndPortConnection(iCS_EditorObject port) {
         var iStorage= port.IStorage;
-        OpenTransaction(iStorage);
-        iStorage.ForcedRelayoutOfTree();
-        iStorage.StartToAnimate();
+        iStorage.AnimateGraph(null,
+            _=> {
+                iStorage.ForcedRelayoutOfTree();
+            }
+        );
         CloseTransaction(iStorage, "Port Connection=> "+port.Name);
     }
     public static void EndPortPublishing(iCS_EditorObject port) {
         var iStorage= port.IStorage;
-        OpenTransaction(iStorage);
-        iStorage.ForcedRelayoutOfTree();
+        iStorage.AnimateGraph(null,
+            _=> {
+                iStorage.ForcedRelayoutOfTree();
+            }
+        );
         CloseTransaction(iStorage, "Port Publishing=> "+port.Name);
     }
 
 
     public static void EndPortDrag(iCS_EditorObject port) {
         var iStorage= port.IStorage;
-        OpenTransaction(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 iStorage.ForcedRelayoutOfTree();
