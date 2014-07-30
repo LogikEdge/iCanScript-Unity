@@ -184,12 +184,12 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void InstanceMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
-        if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
+        if(!selectedObject.IsIconizedInLayout) {
             // Determine if we should support output 'this' port.
             Type classType= selectedObject.RuntimeType;
             bool shouldSupportThis= !iCS_Types.IsStaticClass(classType);
             // Base menu items
-            menu= new iCS_MenuContext[shouldSupportThis ? 3 : 2];
+            menu= new iCS_MenuContext[shouldSupportThis ? 4 : 3];
             menu[0]= new iCS_MenuContext(EnablePortStr);
             if(storage.HasTriggerPort(selectedObject)) {
                 menu[1]= new iCS_MenuContext("#"+TriggerPortStr);
@@ -203,6 +203,7 @@ public class iCS_ContextualMenu {
                     menu[2]= new iCS_MenuContext(OutputInstancePortStr);                
                 }                
             }
+            menu[3]= new iCS_MenuContext(SeparatorStr);
         }
 		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         AddShowInHierarchyMenuItem(ref menu);
