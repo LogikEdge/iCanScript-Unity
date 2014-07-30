@@ -57,4 +57,26 @@ public partial class iCS_IStorage {
             visualEditor.OnEndRelayoutOfTree();
         }
     }
+    
+	// ======================================================================
+    // ----------------------------------------------------------------------
+    public void ReduceCollisionOffset() {
+        ForEachRecursiveDepthFirst(DisplayRoot,
+            obj=> {
+                // Nothing to do if not visible in layout.
+            	if(!obj.IsVisibleInLayout) {
+            	    return;
+        	    }
+                // Nothing to do if not a node.
+                if(!obj.IsNode || obj == DisplayRoot) {
+                    return;
+                }
+                var parent= obj.ParentNode;
+                var parentWrappingOffset= parent.WrappingOffset;
+                obj.LocalAnchorPosition+= obj.CollisionOffset+parentWrappingOffset;
+                obj.CollisionOffset= -parentWrappingOffset;
+            }
+        );
+        
+    }
 }

@@ -14,6 +14,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public void EndNodeDrag() {
 		myIStorage.ForcedRelayoutOfTree();
+        myIStorage.ReduceCollisionOffset();
         IsFloating= false;
         IsSticky= false;
         ClearLayoutPriority();
