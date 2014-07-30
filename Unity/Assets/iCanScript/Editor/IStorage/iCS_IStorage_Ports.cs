@@ -202,7 +202,9 @@ public partial class iCS_IStorage {
 		// Re-index dynamic and proposed ports
         for(int i= 0; i < result.Length; ++i) {
             if(result[i].IsDynamicDataPort || result[i].IsProposedDataPort) {
-                result[i].PortIndex= firstDynamicIdx++;                
+                if(result[i].PortIndex <= (int)iCS_PortIndex.ParametersEnd) {
+                    result[i].PortIndex= firstDynamicIdx++; 
+                }
             }
         }
 		return result;

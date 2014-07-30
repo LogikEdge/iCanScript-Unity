@@ -177,6 +177,5 @@ public static class iCS_ObjectType {
 	public static bool IsInstancePort		  (iCS_EngineObject obj) { return IsInInstancePort(obj) || IsOutInstancePort(obj); }
 	public static bool IsInInstancePort		  (iCS_EngineObject obj) { return IsInFixDataPort(obj) &&
 	                                                                          obj.PortIndex == (int)iCS_PortIndex.InInstance; }
-	public static bool IsOutInstancePort	  (iCS_EngineObject obj) { return IsOutProposedDataPort(obj) &&
-	                                                                          obj.PortIndex == (int)iCS_PortIndex.OutInstance; }
+	public static bool IsOutInstancePort	  (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.OutInstance; }
 }
