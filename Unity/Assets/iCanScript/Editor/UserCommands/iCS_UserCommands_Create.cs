@@ -240,10 +240,15 @@ public static partial class iCS_UserCommands {
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
-		var port= iStorage.CreateEnablePort(parent.InstanceId);
-        var pRect= parent.GlobalRect;
-        port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
-        parent.LayoutPorts();
+        iCS_EditorObject port= null;
+        iStorage.AnimateGraph(null,
+            _=> {
+        		port= iStorage.CreateEnablePort(parent.InstanceId);
+                var pRect= parent.GlobalRect;
+                port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
+                iStorage.ForcedRelayoutOfTree();
+            }
+        );
         CloseTransaction(iStorage, "Create Enable Port");
         return port;
     }
@@ -254,10 +259,15 @@ public static partial class iCS_UserCommands {
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
-		var port= iStorage.CreateTriggerPort(parent.InstanceId);        
-        var pRect= parent.GlobalRect;
-        port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
-        parent.LayoutPorts();
+        iCS_EditorObject port= null;
+        iStorage.AnimateGraph(null,
+            _=> {
+        		port= iStorage.CreateTriggerPort(parent.InstanceId);        
+                var pRect= parent.GlobalRect;
+                port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
+                iStorage.ForcedRelayoutOfTree();
+            }
+        );
         CloseTransaction(iStorage, "Create Trigger Port");
         return port;
     }
@@ -268,8 +278,13 @@ public static partial class iCS_UserCommands {
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
-		var port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
-        parent.LayoutPorts();
+        iCS_EditorObject port= null;
+        iStorage.AnimateGraph(null,
+            _=> {
+        		port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
+                iStorage.ForcedRelayoutOfTree();
+            }
+        );
         CloseTransaction(iStorage, "Create 'this' Port");
         return port;
     }
