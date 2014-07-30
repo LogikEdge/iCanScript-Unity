@@ -80,7 +80,7 @@ public partial class iCS_EditorObject {
         
         // Compute penetration.
         Vector2 penetration;
-        penetration= GetSeperationVector2(theOtherNode, myRect, theOtherRect);
+        penetration= GetSeperationVector(theOtherNode, myRect, theOtherRect);
         if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) {
 			return false;
 		}
@@ -113,7 +113,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	// Returns the seperation vector of two colliding nodes.  The vector
 	// returned is the smallest distance to remove the overlap.
-	Vector2 GetSeperationVector2(iCS_EditorObject theOther, Rect myRect, Rect otherRect) {
+	Vector2 GetSeperationVector(iCS_EditorObject theOther, Rect myRect, Rect otherRect) {
         myRect= AddMargins(myRect);
 		// No collision if X & Y distance of the enclosing rect is either
 		// larger or higher then the total width/height.
@@ -125,12 +125,14 @@ public partial class iCS_EditorObject {
 		// smallest distance to remove the overlap.  The separtion
 		// must also respect the anchor position relationship
 		// between the two overalpping nodes.
-		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
-        if(Mathf.Abs(anchorSepDir.x) > Mathf.Abs(anchorSepDir.y)) {
-            return new Vector2(intersection.width*Mathf.Sign(anchorSepDir.x), 0f);            
+        var theOtherPivot= theOther.LocalAnchorPosition+theOther.WrappingOffset;
+        var myPivot= LocalAnchorPosition+WrappingOffset;
+		var pivotSepDir= theOtherPivot-myPivot;
+        if(Mathf.Abs(pivotSepDir.x) > Mathf.Abs(pivotSepDir.y)) {
+            return new Vector2(intersection.width*Mathf.Sign(pivotSepDir.x), 0f);            
         }
         else {
-            return new Vector2(0f, intersection.height*Mathf.Sign(anchorSepDir.y));            
+            return new Vector2(0f, intersection.height*Mathf.Sign(pivotSepDir.y));            
         }
 	}
 
