@@ -37,6 +37,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     float myDeltaTime          = 0;
     bool  myNeedRepaint        = true;
     bool  myNotificationShown  = false;
+	bool  myFirstDisplay       = true;
 	
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
@@ -91,20 +92,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Repaint();        
     }
     public void OnStartRelayoutOfTree() {
-//        // Keep a copy of the display root anchor position.
-//        SavedDisplayRootAnchorPosition= DisplayRoot.GlobalAnchorPosition;
     }
     public void OnEndRelayoutOfTree() {
-//        // Reset anchor position of display root to avoid movement in parent node.
-//        if(DisplayRoot != StorageRoot) {
-//            var anchorPosition= DisplayRoot.GlobalAnchorPosition;
-//            var deltaAnchor= anchorPosition-SavedDisplayRootAnchorPosition;
-//            if(Math3D.IsNotZero(deltaAnchor)) {
-//                DisplayRoot.GlobalAnchorPosition= SavedDisplayRootAnchorPosition;
-//                ScrollPosition-= deltaAnchor;
-//                GridOffset+= deltaAnchor;                            
-//            }
-//        }  
+		// Center on display root the first time we display the graph
+		if(myFirstDisplay) {
+			myFirstDisplay= false;
+			CenterAndScaleOnRoot();
+		}
     }
     
     // ======================================================================
@@ -250,7 +244,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             myNotificationShown= true;
             return;            
         }
-
         // Remove any previously shown notification.
         if(myNotificationShown) {
             RemoveNotification();

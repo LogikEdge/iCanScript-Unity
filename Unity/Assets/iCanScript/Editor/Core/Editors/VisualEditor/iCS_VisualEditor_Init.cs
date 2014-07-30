@@ -74,6 +74,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragType= DragTypeEnum.None;
             mySubEditor= null;
             IStorage.ForceRelayout= true;
+			myFirstDisplay= true;
         }
         
 		// Don't run if graphic sub-system did not initialise.
