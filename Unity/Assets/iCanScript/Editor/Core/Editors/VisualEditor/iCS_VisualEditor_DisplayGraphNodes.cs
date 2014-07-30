@@ -20,7 +20,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         set {
             if(IStorage != null) {
                 IStorage.ScrollPosition= value;
-                BoundOnDisplayRoot();
             }
         }
     }
@@ -47,7 +46,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	    DrawGrid();			
         
         // Draw nodes and their connections.
-        BoundOnDisplayRoot();
+//        BoundOnDisplayRoot();
         DisplayGraphNodes();
 
         myGraphics.End(IStorage);

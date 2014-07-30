@@ -73,7 +73,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             myBookmark= null;
             DragType= DragTypeEnum.None;
             mySubEditor= null;
-            IStorage.ForceRelayout= true;
+			IStorage.ForcedRelayoutOfTree();
+			BoundOnDisplayRoot();
         }
         
 		// Don't run if graphic sub-system did not initialise.
