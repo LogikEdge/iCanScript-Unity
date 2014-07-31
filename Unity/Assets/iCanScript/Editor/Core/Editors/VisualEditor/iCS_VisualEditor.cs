@@ -37,7 +37,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     float myDeltaTime          = 0;
     bool  myNeedRepaint        = true;
     bool  myNotificationShown  = false;
-	bool  myFirstDisplay       = true;
 	
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
@@ -94,11 +93,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public void OnStartRelayoutOfTree() {
     }
     public void OnEndRelayoutOfTree() {
-		// Center on display root the first time we display the graph
-		if(myFirstDisplay) {
-			myFirstDisplay= false;
-			CenterAndScaleOnRoot();
-		}
     }
     
     // ======================================================================
