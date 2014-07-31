@@ -11149,12 +11149,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 250
-  SelectedObjectPosition: {x: 2175.23389, y: 1209.70435}
+  SelectedObject: 121
+  SelectedObjectPosition: {x: 1624.26746, y: 713.955261}
   ShowDisplayRootNode: 1
   GuiScale: .377088875
-  ScrollPosition: {x: 166.671219, y: -164.381348}
-  UndoRedoId: 1230
+  ScrollPosition: {x: -175.443604, y: -164.381348}
+  UndoRedoId: 1260
   EngineObjects:
   - RawName: prop_lift_exit::Behaviour
     ObjectType: 0
