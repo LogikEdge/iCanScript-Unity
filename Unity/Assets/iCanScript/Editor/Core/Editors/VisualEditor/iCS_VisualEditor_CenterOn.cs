@@ -11,31 +11,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(obj.IsPort) {
             focusNode= obj.ParentNode;
         }
-        // Focus on parent:
-        //   - if display option is iconized or folded;
-        //   - node does not contain visual script
-        if(focusNode.IsIconizedInLayout || focusNode.IsFoldedInLayout ||
-           focusNode.IsInstanceNode || focusNode.IsKindOfFunction) {
-            var parent= focusNode.ParentNode;
-            if(parent != null) {
-                focusNode= parent;
-            }
-        }
         // Move to higher parent if scale is too large.
+        float scale= ProposeViewportScalingFor(focusNode, 0.75f, 1f);
         if(focusNode != IStorage.DisplayRoot) {
             var focusNodeParent= focusNode.ParentNode;
             if(focusNodeParent != null) {
-                var scale= ProposeViewportScalingFor(focusNodeParent);            
-                while(scale > 0.75f) {
+                var parentScale= ProposeViewportScalingFor(focusNodeParent, 0.75f, 1f);
+                while(parentScale > 0.75f) {
+                    scale= parentScale;
                     focusNode= focusNodeParent;
                     focusNodeParent= focusNode.ParentNode;
                     if(focusNode == IStorage.DisplayRoot || focusNodeParent == null) break;
-                    scale= ProposeViewportScalingFor(focusNodeParent);            
+                    parentScale= ProposeViewportScalingFor(focusNodeParent, 0.75f, 1f);            
                 }                
             }
         }
         // Center on focus node
-        iCS_EditorUtility.SafeCenterOn(focusNode, IStorage);                        
+        CenterAtWithScale(focusNode.GlobalPosition, scale);
     }
 	// ----------------------------------------------------------------------
     public void CenterOnRoot() {
