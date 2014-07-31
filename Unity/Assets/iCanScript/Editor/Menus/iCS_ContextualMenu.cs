@@ -274,7 +274,7 @@ public class iCS_ContextualMenu {
                     menu[2]= new iCS_MenuContext(OutputInstancePortStr);                
                 }                
             }
-            menu[3]= new iCS_MenuContext(SeparatorStr);
+            menu[menu.Length-1]= new iCS_MenuContext(SeparatorStr);
         } else {
             menu= new iCS_MenuContext[0];
         }
