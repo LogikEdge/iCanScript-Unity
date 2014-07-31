@@ -12,11 +12,11 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    private string myUndoMessage    = "";
-    public  int    UserTransactionCount= 0;
-    public  bool   myIsLastTransactionANavigation= false;
-    public  int    myLastNavigationUndoGroupId= 0;
-    
+    private string          myUndoMessage               = "";
+    public  int             UserTransactionCount        = 0;
+    public  TransactionType myLastTransactionType       = TransactionType.Graph;
+    public  int             myFirstNavigationUndoGroupId= 0;
+    public  int             myFirstFieldUndoGroupId     = 0;
     
     // ======================================================================
     // User transaction management
@@ -82,13 +82,25 @@ public partial class iCS_IStorage {
         ++Storage.UndoRedoId;
         Undo.RecordObject(iCSMonoBehaviour, undoMessage);
         SaveStorage();        
-        if(myIsLastTransactionANavigation) {
-            Undo.CollapseUndoOperations(myLastNavigationUndoGroupId);
+        if(transactionType == myLastTransactionType) {
+            if(myLastTransactionType == TransactionType.Navigation) {
+                Undo.CollapseUndoOperations(myFirstNavigationUndoGroupId);
+            }
+            if(myLastTransactionType == TransactionType.Field) {
+                Undo.CollapseUndoOperations(myFirstFieldUndoGroupId);                
+            }            
         }
-        if(transactionType == TransactionType.Navigation && myIsLastTransactionANavigation == false) {
-            myLastNavigationUndoGroupId= Undo.GetCurrentGroup();
-        } 
-        myIsLastTransactionANavigation= transactionType == TransactionType.Navigation;
+        else {
+            // Take a snapshot of the first navigation transaction.
+            if(transactionType == TransactionType.Navigation) {
+                myFirstNavigationUndoGroupId= Undo.GetCurrentGroup();
+            } 
+            // Take a snapshot of the first field transaction.
+            if(transactionType == TransactionType.Field) {
+                myFirstFieldUndoGroupId= Undo.GetCurrentGroup();
+            }             
+        }
+        myLastTransactionType= transactionType;
     }
     // ----------------------------------------------------------------------
     public void SaveStorage() {
@@ -138,7 +150,7 @@ public partial class iCS_IStorage {
         // Re-initialize multi-selection list.
         var selectedObject= SelectedObject;
         SelectedObject= selectedObject;
-        myIsLastTransactionANavigation= false;
+        myLastTransactionType= TransactionType.Graph;
     }
     // ----------------------------------------------------------------------
     public void FlushLayoutData() {

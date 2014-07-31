@@ -42,7 +42,7 @@ public static partial class iCS_UserCommands {
     public static void ChangeName(iCS_EditorObject obj, string name) {
         if(string.Compare(obj.RawName, name) == 0) return;
         var iStorage= obj.IStorage;
-//        OpenTransaction(iStorage);
+        OpenTransaction(iStorage);
         iStorage.AnimateGraph(null,
             _=> {
                 obj.Name= name;
@@ -54,7 +54,7 @@ public static partial class iCS_UserCommands {
                 }
             }
         );
-//        CloseTransaction(iStorage, "Change name => "+name);
+        CloseTransaction(iStorage, "Change name => "+name, TransactionType.Field);
         iCS_EditorController.RepaintEditorsWithLabels();
     }
     // ----------------------------------------------------------------------
