@@ -16,8 +16,9 @@ public static partial class iCS_UserCommands {
     }
 	// ----------------------------------------------------------------------
     // Saves the storage and prepare for a possible Undo operation.
-    public static void CloseTransaction(iCS_IStorage iStorage, string undoMessage, bool isNavigation= false) {
-        iStorage.CloseUserTransaction(undoMessage, isNavigation);
+    public static void CloseTransaction(iCS_IStorage iStorage, string undoMessage,
+                                        TransactionType transactionType= TransactionType.Graph) {
+        iStorage.CloseUserTransaction(undoMessage, transactionType);
     }
 	// ----------------------------------------------------------------------
     // Cancels the currently active user transaction.

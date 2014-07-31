@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
 
+public enum TransactionType { Graph, Navigation, Field };
+
 public partial class iCS_IStorage {
     // ======================================================================
     // Fields
@@ -32,7 +34,7 @@ public partial class iCS_IStorage {
     public void OpenUserTransaction() {
         ++UserTransactionCount;
     }
-    public void CloseUserTransaction(string undoMessage= "", bool isNavigation= false) {
+    public void CloseUserTransaction(string undoMessage= "", TransactionType transactionType= TransactionType.Graph) {
         if(UserTransactionCount <= 0) {
             Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
         }
@@ -40,7 +42,7 @@ public partial class iCS_IStorage {
             --UserTransactionCount;
         }
         if(UserTransactionCount == 0) {
-            SaveStorage(undoMessage, isNavigation);
+            SaveStorage(undoMessage, transactionType);
         }
     }
     public void CancelUserTransaction() {
@@ -74,7 +76,7 @@ public partial class iCS_IStorage {
         SaveStorage();
     }
     // ----------------------------------------------------------------------
-    private void SaveStorage(string undoMessage, bool isNavigation) {
+    private void SaveStorage(string undoMessage, TransactionType transactionType) {
         // Start recording changes for Undo.
 //        Debug.Log("Saving visual script");
         ++Storage.UndoRedoId;
@@ -83,10 +85,10 @@ public partial class iCS_IStorage {
         if(myIsLastTransactionANavigation) {
             Undo.CollapseUndoOperations(myLastNavigationUndoGroupId);
         }
-        if(isNavigation && myIsLastTransactionANavigation == false) {
+        if(transactionType == TransactionType.Navigation && myIsLastTransactionANavigation == false) {
             myLastNavigationUndoGroupId= Undo.GetCurrentGroup();
         } 
-        myIsLastTransactionANavigation= isNavigation;
+        myIsLastTransactionANavigation= transactionType == TransactionType.Navigation;
     }
     // ----------------------------------------------------------------------
     public void SaveStorage() {
