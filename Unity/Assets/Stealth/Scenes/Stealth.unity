@@ -11149,12 +11149,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 46
-  SelectedObjectPosition: {x: 602.021729, y: 878.39679}
+  SelectedObject: 98
+  SelectedObjectPosition: {x: -47.6490479, y: 446.291626}
   ShowDisplayRootNode: 1
-  GuiScale: .822115362
-  ScrollPosition: {x: -32.2130814, y: 188.498932}
-  UndoRedoId: 154
+  GuiScale: .891580284
+  ScrollPosition: {x: -531.620178, y: 87.405632}
+  UndoRedoId: 173
   EngineObjects:
   - RawName: prop_lift_exit::Behaviour
     ObjectType: 0
@@ -11276,21 +11276,22 @@ MonoBehaviour:
     PortIndex: 2
     InitialValueArchive: '{12:InitialValue1:O1:2}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
+  - RawName: <GameObject>
+    ObjectType: 1
+    InstanceId: 6
+    ParentId: 57
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -606.381531, y: 92.866272}
+    DisplayOption: 1
     Scale: 1
     MethodName: 
     NbOfParams: 0
-    IconGUID: 
+    IconGUID: 57f8552ca6192465588f9cfc7a32a4ff
     Tooltip: 
     ExecutionPriority: 6
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -11492,13 +11493,14 @@ MonoBehaviour:
     PortIndex: 3
     InitialValueArchive: '{12:InitialValue1:O1:2}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+  - RawName: GameObject Instance
+    ObjectType: 300
+    InstanceId: 17
+    ParentId: 6
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -11508,8 +11510,8 @@ MonoBehaviour:
     ExecutionPriority: 17
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 401
+    InitialValueArchive: '{12:InitialValue1:O1:4}'
     IsEntryState: 0
   - RawName: AudioSource
     ObjectType: 306
@@ -11843,16 +11845,17 @@ MonoBehaviour:
     PortIndex: 3
     InitialValueArchive: '{12:InitialValue1:O1:2}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: Gettransform<GameObject>
+    ObjectType: 101
+    InstanceId: 35
+    ParentId: 6
     IsNameEditable: 1
-    QualifiedType: 
+    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
+    DisplayOption: 2
     Scale: 1
-    MethodName: 
+    MethodName: get_transform
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
@@ -12155,13 +12158,14 @@ MonoBehaviour:
     PortIndex: 2
     InitialValueArchive: '{12:InitialValue1:O1:2}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: transform
+    ObjectType: 301
+    InstanceId: 51
+    ParentId: 35
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 2, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -12171,7 +12175,7 @@ MonoBehaviour:
     ExecutionPriority: 51
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
+    PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: AudioSource
@@ -12277,7 +12281,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 46.4001312, y: 59.0138855}
+    LocalAnchorPosition: {x: 46.4001465, y: 57.0148773}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -12672,7 +12676,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 123.623428, y: 178.481995}
+    LocalAnchorPosition: {x: 123.623428, y: 174.872925}
     DisplayOption: 1
     Scale: 1
     MethodName: op_Multiply
@@ -12680,7 +12684,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 77
-    LayoutPriority: 72
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -12783,32 +12787,34 @@ MonoBehaviour:
     PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: GameObject Instance
+    ObjectType: 300
+    InstanceId: 83
+    ParentId: 35
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 0
+    ExecutionPriority: 83
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 17
+    PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+  - RawName: transform
+    ObjectType: 303
+    InstanceId: 84
+    ParentId: 6
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 2, y: .662186146}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -12817,8 +12823,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 84
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 51
+    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: Play<AudioSource>
@@ -12888,7 +12894,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 157.156464, y: 234.063843}
+    LocalAnchorPosition: {x: 157.156464, y: 237.672928}
     DisplayOption: 0
     Scale: 1
     MethodName: get_isPlaying
@@ -12896,7 +12902,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 88
-    LayoutPriority: 72
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -13017,32 +13023,34 @@ MonoBehaviour:
     PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: Setparent<Transform>
+    ObjectType: 101
+    InstanceId: 95
+    ParentId: 57
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -360.991455, y: 94.7550659}
     DisplayOption: 0
     Scale: 1
-    MethodName: 
-    NbOfParams: 0
+    MethodName: set_parent
+    NbOfParams: 1
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 95
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: value
+    ObjectType: 300
+    InstanceId: 96
+    ParentId: 95
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .386986613}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13051,17 +13059,18 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 96
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 98
+    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: Transform Instance
+    ObjectType: 300
+    InstanceId: 97
+    ParentId: 95
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13070,17 +13079,18 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 97
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 84
+    PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: value
+    ObjectType: 302
+    InstanceId: 98
+    ParentId: 57
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .190778822}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13089,8 +13099,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 98
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 49
+    PortIndex: 3
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: 
@@ -13106,7 +13116,7 @@ MonoBehaviour:
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 99
+    ExecutionPriority: 0
     LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
@@ -13137,6 +13147,7 @@ MonoBehaviour:
   - {fileID: 274747734}
   - {fileID: 274747735}
   - {fileID: 274747736}
+  - {fileID: 514804782}
   EngineObject:
     RawName: 
     ObjectType: 10000
