@@ -12,6 +12,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     private string myUndoMessage    = "";
     public  int    UserTransactionCount= 0;
+    public  bool   myIsLastTransactionANavigation= false;
+    public  int    myLastNavigationUndoGroupId= 0;
     
     
     // ======================================================================
@@ -28,12 +30,9 @@ public partial class iCS_IStorage {
         }
     }
     public void OpenUserTransaction() {
-        if(UserTransactionCount == 0) {
-            SaveSelectedObjectPosition();
-        }
         ++UserTransactionCount;
     }
-    public void CloseUserTransaction(string undoMessage= "") {
+    public void CloseUserTransaction(string undoMessage= "", bool isNavigation= false) {
         if(UserTransactionCount <= 0) {
             Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
         }
@@ -41,7 +40,7 @@ public partial class iCS_IStorage {
             --UserTransactionCount;
         }
         if(UserTransactionCount == 0) {
-            SaveStorage(undoMessage);
+            SaveStorage(undoMessage, isNavigation);
         }
     }
     public void CancelUserTransaction() {
@@ -75,12 +74,19 @@ public partial class iCS_IStorage {
         SaveStorage();
     }
     // ----------------------------------------------------------------------
-    private void SaveStorage(string undoMessage) {
+    private void SaveStorage(string undoMessage, bool isNavigation) {
         // Start recording changes for Undo.
 //        Debug.Log("Saving visual script");
         ++Storage.UndoRedoId;
         Undo.RecordObject(iCSMonoBehaviour, undoMessage);
         SaveStorage();        
+        if(myIsLastTransactionANavigation) {
+            Undo.CollapseUndoOperations(myLastNavigationUndoGroupId);
+        }
+        if(isNavigation && myIsLastTransactionANavigation == false) {
+            myLastNavigationUndoGroupId= Undo.GetCurrentGroup();
+        } 
+        myIsLastTransactionANavigation= isNavigation;
     }
     // ----------------------------------------------------------------------
     public void SaveStorage() {
@@ -130,13 +136,7 @@ public partial class iCS_IStorage {
         // Re-initialize multi-selection list.
         var selectedObject= SelectedObject;
         SelectedObject= selectedObject;
-    }
-    // ----------------------------------------------------------------------
-    public void SaveSelectedObjectPosition() {
-//        var selectedObject= SelectedObject.IsNode ? SelectedObject : SelectedObject.ParentNode;
-        var selectedPos= SelectedObject.GlobalPosition;
-        Storage.SelectedObjectPosition= selectedPos;
-        PersistentStorage.SelectedObjectPosition= selectedPos;
+        myIsLastTransactionANavigation= false;
     }
     // ----------------------------------------------------------------------
     public void FlushLayoutData() {
