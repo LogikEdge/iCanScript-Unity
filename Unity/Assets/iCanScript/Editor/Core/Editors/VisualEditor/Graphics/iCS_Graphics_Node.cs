@@ -1,4 +1,4 @@
-#define SHOW_POSITION
+//#define SHOW_POSITION
 using UnityEngine;
 using UnityEditor;
 using System;

@@ -696,26 +696,53 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				break;
 			}
 		}
-        // FIXME: Ratio with many overlapping ports is not good when drag port is not overlapping.
-		// Determine proper anchor ratio for drag port.
-		float rangeRatioStart, rangeRatioEnd;
-		float rangePosStart,   rangePosEnd;
-		if(index == 0) {
-			rangeRatioStart= 0f;
-			rangeRatioEnd  = portRatios[index];
-			rangePosStart  = edgePosStart;
-			rangePosEnd    = portPositionsOnEdge[index];
-		} else if(index == nbOfPortsOnEdge) {
-			rangeRatioStart= portRatios[index-1];
-			rangeRatioEnd  = 1f;
-			rangePosStart  = portPositionsOnEdge[index-1];
-			rangePosEnd    = edgePosEnd;			
-		} else {
-			rangeRatioStart= portRatios[index-1];
-			rangeRatioEnd  = portRatios[index];
-			rangePosStart  = portPositionsOnEdge[index-1];
-			rangePosEnd    = portPositionsOnEdge[index];			
-		}
+
+        // Use full node range if no collision exists.
+        float minSeparation= iCS_EditorConfig.MinimumPortSeparation;
+		float rangeRatioStart= 0f;
+        float rangeRatioEnd= 1f;
+		float rangePosStart= edgePosStart;
+        float rangePosEnd= edgePosEnd;
+        bool isColliding= false;
+        if(index == 0) {
+            if(Mathf.Abs(portPositionsOnEdge[0]-newPositionOnEdge) < minSeparation) {
+                isColliding= true;
+            }
+        }
+        else if(index == nbOfPortsOnEdge) {
+            if(Mathf.Abs(portPositionsOnEdge[index-1]-newPositionOnEdge) < minSeparation) {
+                isColliding= true;
+            }
+        }
+        else {
+            if(Mathf.Abs(portPositionsOnEdge[index-1]-newPositionOnEdge) < minSeparation) {
+                isColliding= true;
+            }
+            if(Mathf.Abs(portPositionsOnEdge[index]-newPositionOnEdge) < minSeparation) {
+                isColliding= true;
+            }            
+        }
+
+		// Determine proper anchor ratio when collision is present.
+        if(isColliding) {
+    		if(index == 0) {
+    			rangeRatioStart= 0f;
+    			rangeRatioEnd  = portRatios[index];
+    			rangePosStart  = edgePosStart;
+    			rangePosEnd    = portPositionsOnEdge[index];
+    		} else if(index == nbOfPortsOnEdge) {
+    			rangeRatioStart= portRatios[index-1];
+    			rangeRatioEnd  = 1f;
+    			rangePosStart  = portPositionsOnEdge[index-1];
+    			rangePosEnd    = edgePosEnd;			
+    		} else {
+    			rangeRatioStart= portRatios[index-1];
+    			rangeRatioEnd  = portRatios[index];
+    			rangePosStart  = portPositionsOnEdge[index-1];
+    			rangePosEnd    = portPositionsOnEdge[index];			
+    		}            
+        }
+
 		var rangePos   = rangePosEnd-rangePosStart;
         float ratio;
 		if(Math3D.IsZero(rangePos)) {
@@ -779,7 +806,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Rearrange layout position to give priority to the drag port.
         newPosition= CleanupPortGlobalPositionOnEdge(port, newPosition, parent, parentGlobalPos, parentRect);
 		portPositionsOnEdge[index]= port.IsOnHorizontalEdge ? newPosition.x : newPosition.y;
-        float minSeparation= iCS_EditorConfig.MinimumPortSeparation;
         for(int i= index; i < nbOfPortsOnEdge-1; ++i) {
             var posDiff= portPositionsOnEdge[i+1]-portPositionsOnEdge[i];
             if(posDiff < minSeparation) {
