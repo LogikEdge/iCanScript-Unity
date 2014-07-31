@@ -101,4 +101,18 @@ public static partial class iCS_UserCommands {
         );
         CloseTransaction(iStorage, "Update Ports=> "+messageHandler.Name);
     }
+    // ----------------------------------------------------------------------
+    public static void SetScrollPosition(iCS_IStorage iStorage, Vector2 newPosition) {
+        OpenTransaction(iStorage);
+        iStorage.ScrollPosition= newPosition;
+        CloseTransaction(iStorage, "Scroll", TransactionType.Navigation);
+    }
+    // ----------------------------------------------------------------------
+    public static void SetZoom(iCS_IStorage iStorage, float newZoom) {
+        OpenTransaction(iStorage);
+        if(newZoom > 2f) newZoom= 2f;
+        if(newZoom < 0.15f) newZoom= 0.15f;
+        iStorage.GuiScale= newZoom;
+        CloseTransaction(iStorage, "Zoom", TransactionType.Navigation);
+    }
 }

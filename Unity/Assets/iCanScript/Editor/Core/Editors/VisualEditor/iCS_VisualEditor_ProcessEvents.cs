@@ -133,12 +133,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             Vector2 pivot= GraphMousePosition;
 			float zoomDirection= Prefs.InverseZoom ? -1f : 1f;
 			float scaleDelta= Scale*0.09f*Prefs.ZoomSpeed;
-            Scale= Scale+(delta.y > 0 ? -scaleDelta : scaleDelta)*zoomDirection;
+            var newScale= Scale+(delta.y > 0 ? -scaleDelta : scaleDelta)*zoomDirection;
+            iCS_UserCommands.SetZoom(IStorage, newScale);
             Vector2 offset= pivot-GraphMousePosition;
-            ScrollPosition+= offset;
+            var newScrollPosition= ScrollPosition+offset;
+            iCS_UserCommands.SetScrollPosition(IStorage, newScrollPosition);
         } else {
             delta*= Prefs.ScrollSpeed*(1f/Scale); 
-            ScrollPosition+= delta;                    
+            var newPosition= ScrollPosition+ delta;
+            iCS_UserCommands.SetScrollPosition(IStorage, newPosition);                    
         }        
     }
     // ======================================================================
@@ -201,7 +204,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void UpdateViewportPanning() {
         Vector2 diff= ViewportMousePosition-MouseDragStartPosition;
-        ScrollPosition= DragStartDisplayPosition-diff;        
+        var newPosition= DragStartDisplayPosition-diff;        
+        iCS_UserCommands.SetScrollPosition(IStorage, newPosition);
     }
 	// ----------------------------------------------------------------------
     public void PanViewportBy(Vector2 additionalPan) {

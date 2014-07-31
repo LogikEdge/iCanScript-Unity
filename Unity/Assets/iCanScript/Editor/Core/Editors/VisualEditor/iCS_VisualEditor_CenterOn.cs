@@ -79,7 +79,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Vector2 newScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
         float deltaTime= Prefs.AnimationTime;
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
-        ScrollPosition= newScrollPosition;
+        iCS_UserCommands.SetScrollPosition(IStorage, newScrollPosition);
     }
 	// ----------------------------------------------------------------------
     public void CenterAtWithScale(Vector2 point, float newScale) {
@@ -87,9 +87,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Vector2 newScrollPosition= point-0.5f/newScale*new Vector2(position.width, position.height);
         float deltaTime= Prefs.AnimationTime;
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
-        ScrollPosition= newScrollPosition;
+        iCS_UserCommands.SetScrollPosition(IStorage, newScrollPosition);
         myAnimatedScale.Start(Scale, newScale, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
-        Scale= newScale;
+        iCS_UserCommands.SetZoom(IStorage, newScale);
     }
 	// ----------------------------------------------------------------------
     public void ScaleOnPivot(Vector2 pivot, float newScale) {
@@ -97,8 +97,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var newScrollPosition= pivot + (ScrollPosition - pivot) * Scale / newScale;
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         myAnimatedScale.Start(Scale, newScale, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
-        ScrollPosition= newScrollPosition;
-        Scale= newScale;
+        iCS_UserCommands.SetScrollPosition(IStorage, newScrollPosition);
+        iCS_UserCommands.SetZoom(IStorage, newScale);
     }
 	// ----------------------------------------------------------------------
     public bool IsNodeFullyVisibleInViewport(iCS_EditorObject node) {
