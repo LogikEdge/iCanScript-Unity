@@ -696,6 +696,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				break;
 			}
 		}
+        // FIXME: Ratio with many overlapping ports is not good when drag port is not overlapping.
 		// Determine proper anchor ratio for drag port.
 		float rangeRatioStart, rangeRatioEnd;
 		float rangePosStart,   rangePosEnd;
