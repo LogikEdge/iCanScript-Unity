@@ -551,6 +551,7 @@ public class iCS_ContextualMenu {
         iCS_EditorObject newNodeParent= iStorage.GetNodeAt(globalPos);
 		if(newNodeParent == null) return null;
         if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;
+        // FIXME: Animation & force layout sometime conflict.
         // Open a transaction for multi-operations
         iCS_UserCommands.OpenTransaction(iStorage);
 		iCS_EditorObject method= null;

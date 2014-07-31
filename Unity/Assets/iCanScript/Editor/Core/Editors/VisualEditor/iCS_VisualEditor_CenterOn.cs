@@ -27,7 +27,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         }
         // Center on focus node
-        CenterAtWithScale(focusNode.GlobalPosition, scale);
+        if(focusNode == IStorage.DisplayRoot) {
+            CenterAndScaleOnRoot();
+        }
+        else {
+            CenterAtWithScale(focusNode.GlobalPosition, scale);            
+        }
     }
 	// ----------------------------------------------------------------------
     public void CenterOnRoot() {
