@@ -26,8 +26,8 @@ public partial class iCS_IStorage {
     }
     public void ClearUserTransactions() {
         if(UserTransactionCount != 0) {
-            SaveStorage();
             UserTransactionCount= 0;
+            SaveStorage();
             Debug.LogWarning("iCanScript: Internal Error: User transaction was forced closed.");            
         }
     }
@@ -37,6 +37,8 @@ public partial class iCS_IStorage {
     public void CloseUserTransaction(string undoMessage= "", TransactionType transactionType= TransactionType.Graph) {
         if(UserTransactionCount <= 0) {
             Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
+            UserTransactionCount= 0;
+            return;
         }
         if(UserTransactionCount > 0) {
             --UserTransactionCount;
@@ -48,6 +50,7 @@ public partial class iCS_IStorage {
     public void CancelUserTransaction() {
         if(UserTransactionCount <= 0) {
             Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
+            return;
         }
         if(UserTransactionCount > 0) {
             --UserTransactionCount;
