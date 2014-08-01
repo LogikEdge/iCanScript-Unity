@@ -18,8 +18,18 @@ public static partial class iCS_UserCommands {
 #endif
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
-        iCS_EditorObject package= _CreatePackage(parent, globalPos, name, objectType, runtimeType);
-        if(package == null) return null;
+        iCS_EditorObject package= null;
+        try {
+            package= _CreatePackage(parent, globalPos, name, objectType, runtimeType);            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(package == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Create "+name);
         return package;
     }
@@ -34,17 +44,27 @@ public static partial class iCS_UserCommands {
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
         iCS_EditorObject stateChart= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                stateChart= iStorage.CreateStateChart(parent.InstanceId, name);
-                stateChart.SetInitialPosition(globalPos);
-                // Automatically create entry state.
-                var entryState= iStorage.CreateState(stateChart.InstanceId, "EntryState");
-                entryState.IsEntryState= true;
-                entryState.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    stateChart= iStorage.CreateStateChart(parent.InstanceId, name);
+                    stateChart.SetInitialPosition(globalPos);
+                    // Automatically create entry state.
+                    var entryState= iStorage.CreateState(stateChart.InstanceId, "EntryState");
+                    entryState.IsEntryState= true;
+                    entryState.SetInitialPosition(globalPos);
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(stateChart == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Create StateChart");
         return stateChart;        
     }
@@ -59,13 +79,23 @@ public static partial class iCS_UserCommands {
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
         iCS_EditorObject state= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                state= iStorage.CreateState(parent.InstanceId, name);
-                state.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    state= iStorage.CreateState(parent.InstanceId, name);
+                    state.SetInitialPosition(globalPos);
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(state == null) {
+            CancelTransaction(iStorage);
+            return null;            
+        }
         CloseTransaction(iStorage, "Create State");
         return state;        
     }
@@ -84,14 +114,24 @@ public static partial class iCS_UserCommands {
         }
         OpenTransaction(iStorage);
         iCS_EditorObject msgHandler= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                msgHandler= iStorage.CreateMessageHandler(parent.InstanceId, desc);
-                msgHandler.SetInitialPosition(globalPos);
-                msgHandler.ForEachChildPort(p=> {p.AnimationStartRect= BuildRect(globalPos, Vector2.zero);});
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    msgHandler= iStorage.CreateMessageHandler(parent.InstanceId, desc);
+                    msgHandler.SetInitialPosition(globalPos);
+                    msgHandler.ForEachChildPort(p=> {p.AnimationStartRect= BuildRect(globalPos, Vector2.zero);});
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(msgHandler == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Create "+name);
         return msgHandler;
     }
@@ -105,9 +145,16 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
-        var package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
+        iCS_EditorObject package= null;
+        try {
+            package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         if(package == null) {
-            CloseTransaction(iStorage, "Create "+package.Name);
+            CancelTransaction(iStorage);
             return null;
         }
         package.IsNameEditable= false;
@@ -121,13 +168,20 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
-        var package= _CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
+        iCS_EditorObject package= null;
+        try {
+            package= _CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;                
+        }
         if(package == null) {
-            CloseTransaction(iStorage, "Create "+package.Name);
+            CancelTransaction(iStorage);
             return null;
         }
         package.IsNameEditable= false;            
-        package.Tooltip= iCS_ObjectTooltips.OnUpdate;            
+        package.Tooltip= iCS_ObjectTooltips.OnUpdate;                        
         CloseTransaction(iStorage, "Create "+package.Name);
         return package;
     }
@@ -137,9 +191,16 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
-        var package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
+        iCS_EditorObject package= null;
+        try {
+            package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;            
+        }
         if(package == null) {
-            CloseTransaction(iStorage, "Create "+package.Name);
+            CancelTransaction(iStorage);
             return null;
         }
         package.IsNameEditable= false;            
@@ -156,16 +217,26 @@ public static partial class iCS_UserCommands {
         if(parent == null || desc == null) return null;
         if(!IsCreationAllowed()) return null;
 		var iStorage= parent.IStorage;
-        OpenTransaction(iStorage);
 		var name= desc.DisplayName;
+        OpenTransaction(iStorage);
         iCS_EditorObject function= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                function= iStorage.CreateFunction(parent.InstanceId, desc);
-                function.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    function= iStorage.CreateFunction(parent.InstanceId, desc);
+                    function.SetInitialPosition(globalPos);
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(function == null) {
+            CancelTransaction(iStorage);
+            return null;            
+        }
         CloseTransaction(iStorage, "Create "+name);
         return function;        
     }
@@ -179,57 +250,68 @@ public static partial class iCS_UserCommands {
         if(!IsCreationAllowed()) return null;
         var iStorage= toState.IStorage;
         OpenTransaction(iStorage);
-        // Create toStatePort
-        iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-        // Update port positions
-        toStatePort.SetInitialPosition(toStatePortPos);
-        toStatePort.UpdatePortEdge();        
-        fromStatePort.UpdatePortEdge();
-        // Temporally connect state ports together.
-        iStorage.SetSource(toStatePort, fromStatePort);
-        // Create transition package
-        var transitionPackage= iStorage.CreateTransition(fromStatePort, toStatePort);
-        // Try to position the transition in the middle
-        var fromStatePortPos= fromStatePort.GlobalPosition;
-        var globalPos= 0.5f*(fromStatePortPos+toStatePortPos);
-        transitionPackage.SetInitialPosition(globalPos);
-        transitionPackage.Iconize();
-        // Attempt to proper edge for transition ports.
-        var outTransitionPort= toStatePort.ProviderPort;
-        var inTransitionPort= iStorage.GetInTransitionPort(transitionPackage);
-        var diff= toStatePortPos-fromStatePortPos;
-        if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y)) {
-            if(Vector2.Dot(diff, Vector2.right) > 0) {
-                inTransitionPort.Edge= iCS_EdgeEnum.Left;
-                toStatePort.Edge= iCS_EdgeEnum.Left;
-                outTransitionPort.Edge= iCS_EdgeEnum.Right;
-                fromStatePort.Edge= iCS_EdgeEnum.Right;
+        iCS_EditorObject transitionPackage= null;
+        try {
+            // Create toStatePort
+            iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
+            // Update port positions
+            toStatePort.SetInitialPosition(toStatePortPos);
+            toStatePort.UpdatePortEdge();        
+            fromStatePort.UpdatePortEdge();
+            // Temporally connect state ports together.
+            iStorage.SetSource(toStatePort, fromStatePort);
+            // Create transition package
+            transitionPackage= iStorage.CreateTransition(fromStatePort, toStatePort);
+            // Try to position the transition in the middle
+            var fromStatePortPos= fromStatePort.GlobalPosition;
+            var globalPos= 0.5f*(fromStatePortPos+toStatePortPos);
+            transitionPackage.SetInitialPosition(globalPos);
+            transitionPackage.Iconize();
+            // Attempt to proper edge for transition ports.
+            var outTransitionPort= toStatePort.ProviderPort;
+            var inTransitionPort= iStorage.GetInTransitionPort(transitionPackage);
+            var diff= toStatePortPos-fromStatePortPos;
+            if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y)) {
+                if(Vector2.Dot(diff, Vector2.right) > 0) {
+                    inTransitionPort.Edge= iCS_EdgeEnum.Left;
+                    toStatePort.Edge= iCS_EdgeEnum.Left;
+                    outTransitionPort.Edge= iCS_EdgeEnum.Right;
+                    fromStatePort.Edge= iCS_EdgeEnum.Right;
+                }
+                else {
+                    inTransitionPort.Edge= iCS_EdgeEnum.Right;
+                    toStatePort.Edge= iCS_EdgeEnum.Right;
+                    outTransitionPort.Edge= iCS_EdgeEnum.Left;
+                    fromStatePort.Edge= iCS_EdgeEnum.Left;
+                }
             }
             else {
-                inTransitionPort.Edge= iCS_EdgeEnum.Right;
-                toStatePort.Edge= iCS_EdgeEnum.Right;
-                outTransitionPort.Edge= iCS_EdgeEnum.Left;
-                fromStatePort.Edge= iCS_EdgeEnum.Left;
+                if(Vector2.Dot(diff, Vector2.up) > 0) {
+                    inTransitionPort.Edge= iCS_EdgeEnum.Top;
+                    toStatePort.Edge= iCS_EdgeEnum.Top;
+                    outTransitionPort.Edge= iCS_EdgeEnum.Bottom; 
+                    fromStatePort.Edge= iCS_EdgeEnum.Bottom;
+                }
+                else {
+                    inTransitionPort.Edge= iCS_EdgeEnum.Bottom;
+                    toStatePort.Edge= iCS_EdgeEnum.Bottom;
+                    outTransitionPort.Edge= iCS_EdgeEnum.Top; 
+                    fromStatePort.Edge= iCS_EdgeEnum.Top;
+                }            
             }
+            inTransitionPort.PortPositionRatio= 0.5f;
+            outTransitionPort.PortPositionRatio= 0.5f;
+            // Layout the graph
+            iStorage.ForcedRelayoutOfTree();            
         }
-        else {
-            if(Vector2.Dot(diff, Vector2.up) > 0) {
-                inTransitionPort.Edge= iCS_EdgeEnum.Top;
-                toStatePort.Edge= iCS_EdgeEnum.Top;
-                outTransitionPort.Edge= iCS_EdgeEnum.Bottom; 
-                fromStatePort.Edge= iCS_EdgeEnum.Bottom;
-            }
-            else {
-                inTransitionPort.Edge= iCS_EdgeEnum.Bottom;
-                toStatePort.Edge= iCS_EdgeEnum.Bottom;
-                outTransitionPort.Edge= iCS_EdgeEnum.Top; 
-                fromStatePort.Edge= iCS_EdgeEnum.Top;
-            }            
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
         }
-        inTransitionPort.PortPositionRatio= 0.5f;
-        outTransitionPort.PortPositionRatio= 0.5f;
-        // Layout the graph
-        iStorage.ForcedRelayoutOfTree();
+        if(transitionPackage == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Create Transition");            
         return transitionPackage;
     }
@@ -241,14 +323,24 @@ public static partial class iCS_UserCommands {
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
         iCS_EditorObject port= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-        		port= iStorage.CreateEnablePort(parent.InstanceId);
-                var pRect= parent.GlobalRect;
-                port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+            		port= iStorage.CreateEnablePort(parent.InstanceId);
+                    var pRect= parent.GlobalRect;
+                    port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(port == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Create Enable Port");
         return port;
     }
@@ -260,14 +352,24 @@ public static partial class iCS_UserCommands {
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
         iCS_EditorObject port= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-        		port= iStorage.CreateTriggerPort(parent.InstanceId);        
-                var pRect= parent.GlobalRect;
-                port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+            		port= iStorage.CreateTriggerPort(parent.InstanceId);        
+                    var pRect= parent.GlobalRect;
+                    port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(port == null) {
+            CancelTransaction(iStorage);
+            return null;            
+        }
         CloseTransaction(iStorage, "Create Trigger Port");
         return port;
     }
@@ -279,12 +381,22 @@ public static partial class iCS_UserCommands {
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
         iCS_EditorObject port= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-        		port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+            		port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(port == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Create 'this' Port");
         return port;
     }
@@ -303,16 +415,26 @@ public static partial class iCS_UserCommands {
 #endif
         if(parent == null) return null;
         var iStorage= parent.IStorage;
-        OpenTransaction(iStorage);
         var name= instanceType.Name;
+        OpenTransaction(iStorage);
         iCS_EditorObject instance= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                instance= iStorage.CreateObjectInstance(parent.InstanceId, name, instanceType);
-                instance.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    instance= iStorage.CreateObjectInstance(parent.InstanceId, name, instanceType);
+                    instance.SetInitialPosition(globalPos);
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(instance == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Create "+name);            
         return instance;
     }
@@ -327,12 +449,22 @@ public static partial class iCS_UserCommands {
         var iStorage= obj.IStorage;
         OpenTransaction(iStorage);
         iCS_EditorObject package= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                package= iStorage.WrapInPackage(obj);
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    package= iStorage.WrapInPackage(obj);
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(package == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Wrap : "+obj.Name);
         return package;
     }
@@ -343,21 +475,32 @@ public static partial class iCS_UserCommands {
         if(!IsCreationAllowed()) return null;
         var selectedObjects= iStorage.FilterMultiSelectionForWrapInPackage();
         if(selectedObjects == null || selectedObjects.Length == 0) return null;
-        OpenTransaction(iStorage);
+
         iCS_EditorObject package= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                package= iStorage.WrapInPackage(selectedObjects);
-                if(package != null) {
-                    iStorage.ForcedRelayoutOfTree();
-                    var r= Math3D.Union(P.map(n => n.GlobalRect, selectedObjects));
-                    package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);                    
+        OpenTransaction(iStorage);
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    package= iStorage.WrapInPackage(selectedObjects);
+                    if(package != null) {
+                        iStorage.ForcedRelayoutOfTree();
+                        var r= Math3D.Union(P.map(n => n.GlobalRect, selectedObjects));
+                        package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);                    
+                    }
+                    else {
+                        Debug.LogWarning("iCanScript: Unable to create package.  Please report problem.");
+                    }
                 }
-                else {
-                    Debug.LogWarning("iCanScript: Unable to create package.  Please report problem.");
-                }
-            }
-        );
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(package == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Wrap Selection");
         return package;
     }
@@ -373,20 +516,31 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
-        OpenTransaction(iStorage);
+
         iCS_EditorObject instance= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                parent.Unfold();
-                instance= iStorage.CreatePackage(parent.InstanceId, go.name, iCS_ObjectTypeEnum.Package, go.GetType());
-                var thisPort= iStorage.InstanceWizardGetInputThisPort(instance);
-                if(thisPort != null) {
-                    thisPort.PortValue= go;
+        OpenTransaction(iStorage);
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    parent.Unfold();
+                    instance= iStorage.CreatePackage(parent.InstanceId, go.name, iCS_ObjectTypeEnum.Package, go.GetType());
+                    var thisPort= iStorage.InstanceWizardGetInputThisPort(instance);
+                    if(thisPort != null) {
+                        thisPort.PortValue= go;
+                    }
+                    instance.SetInitialPosition(globalPos);
+                    iStorage.ForcedRelayoutOfTree();
                 }
-                instance.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(instance == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Create "+go.name);
         return instance;
     }
@@ -402,15 +556,26 @@ public static partial class iCS_UserCommands {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
         var iStorage= parent.IStorage;
-        OpenTransaction(iStorage);
+
         iCS_EditorObject package= null;
-        iStorage.AnimateGraph(null,
-            _=> {
-                package= iStorage.CreatePackage(parent.InstanceId, name, objectType, runtimeType);
-                package.SetInitialPosition(globalPos);
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        OpenTransaction(iStorage);
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    package= iStorage.CreatePackage(parent.InstanceId, name, objectType, runtimeType);
+                    package.SetInitialPosition(globalPos);
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(package == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
         CloseTransaction(iStorage, "Create "+name);
         return package;
     }
