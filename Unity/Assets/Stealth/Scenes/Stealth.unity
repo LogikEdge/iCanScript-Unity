@@ -11149,12 +11149,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 240
-  SelectedObjectPosition: {x: 1005.36163, y: 1109.69556}
+  SelectedObject: 46
+  SelectedObjectPosition: {x: 951.017456, y: 971.443665}
   ShowDisplayRootNode: 1
   GuiScale: .779482782
-  ScrollPosition: {x: 220.676193, y: 417.013885}
-  UndoRedoId: 4580
+  ScrollPosition: {x: 225.67981, y: 388.916626}
+  UndoRedoId: 4590
   EngineObjects:
   - RawName: prop_lift_exit::Behaviour
     ObjectType: 0
@@ -13570,7 +13570,7 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: -1
     PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:f1:6}'
+    InitialValueArchive: '{12:InitialValue1:f1:2}'
     IsEntryState: 0
   - RawName: startTrigger
     ObjectType: 300
