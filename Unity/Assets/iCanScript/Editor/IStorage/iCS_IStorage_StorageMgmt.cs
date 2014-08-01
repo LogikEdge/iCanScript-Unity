@@ -32,7 +32,7 @@ public partial class iCS_IStorage {
     }
     public void OpenUserTransaction() {
         ++UserTransactionCount;
-        Debug.Log("Open: User Transaction Count=> "+UserTransactionCount);
+//        Debug.Log("Open: User Transaction Count=> "+UserTransactionCount);
     }
     public void CloseUserTransaction(string undoMessage= "", TransactionType transactionType= TransactionType.Graph) {
         if(UserTransactionCount <= 0) {
@@ -46,7 +46,7 @@ public partial class iCS_IStorage {
         if(UserTransactionCount == 0) {
             SaveStorage(undoMessage, transactionType);
         }
-        Debug.Log("Close: User Transaction Count=> "+UserTransactionCount);
+//        Debug.Log("Close: User Transaction Count=> "+UserTransactionCount);
     }
     public void CancelUserTransaction() {
         if(UserTransactionCount <= 0) {
@@ -56,7 +56,7 @@ public partial class iCS_IStorage {
         if(UserTransactionCount > 0) {
             --UserTransactionCount;
         }        
-        Debug.Log("Cancel: User Transaction Count=> "+UserTransactionCount);
+//        Debug.Log("Cancel: User Transaction Count=> "+UserTransactionCount);
     }
     
     // ======================================================================

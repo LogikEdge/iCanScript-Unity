@@ -30,5 +30,4 @@ public static partial class iCS_UserCommands {
         var iStorage= obj.IStorage;
 		iStorage.ToggleMultiSelection(obj);
 	}
-
 }

@@ -87,6 +87,10 @@ public partial class iCS_Graphics {
             icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
             if(icon != null) return new Vector2(icon.width, icon.height);
         }
+        // Avoid null exception of first layout.
+        if(maximizeIcon == null) {
+            Init(node.IStorage);
+        }
         return new Vector2(maximizeIcon.width, maximizeIcon.height);        
     }
     // ----------------------------------------------------------------------

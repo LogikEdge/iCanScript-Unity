@@ -14,39 +14,45 @@ public static partial class iCS_UserCommands {
 			newDisplayRoot= newDisplayRoot.ParentNode;
 		}
 		if(newDisplayRoot == null) return;
+        OpenTransaction(iStorage);
         iStorage.SaveNavigationState();
         iStorage.DisplayRoot= newDisplayRoot;
         iStorage.ForcedRelayoutOfTree();
         iStorage.ResetAllAnimationPositions();
         SendDisplayRootChange(iStorage);
-        iStorage.SaveStorage();
+        CloseTransaction(iStorage, "Set Display Root=> "+obj.Name);
     }
     // ----------------------------------------------------------------------
     // Change the display root to the parent of the selected object.
     public static void ResetDisplayRoot(iCS_IStorage iStorage) {
         if(iStorage == null) return;
+        OpenTransaction(iStorage);
         iStorage.ClearNavigationHistory();
         SendDisplayRootChange(iStorage);
-        iStorage.SaveStorage();
+        CloseTransaction(iStorage, "Reset Display Root");
     }
     // ----------------------------------------------------------------------
 	public static void ToggleShowDisplayRootNode(iCS_IStorage iStorage) {
+        OpenTransaction(iStorage);
 		iStorage.ShowDisplayRootNode= !iStorage.ShowDisplayRootNode;
-        iStorage.SaveStorage();
+        CloseTransaction(iStorage, "Toggle Show Display Root");
 	}
     // ----------------------------------------------------------------------
     public static void ReloadFromBackwardNavigationHistory(iCS_IStorage iStorage) {
+        OpenTransaction(iStorage);
         iStorage.ReloadFromBackwardNavigationHistory();
-        iStorage.SaveStorage();
+        CloseTransaction(iStorage, "Previous Display Root");
     }
     // ----------------------------------------------------------------------
     public static void ReloadFromForwardNavigationHistory(iCS_IStorage iStorage) {
+        OpenTransaction(iStorage);
         iStorage.ReloadFromForwardNavigationHistory();
-        iStorage.SaveStorage();
+        CloseTransaction(iStorage, "Next Display Root");
     }
     // ----------------------------------------------------------------------
     public static void ClearNavigationHistory(iCS_IStorage iStorage) {
+        OpenTransaction(iStorage);
         iStorage.ClearNavigationHistory();
-        iStorage.SaveStorage();
+        CloseTransaction(iStorage, "Clear Display Root");
     }
 }
