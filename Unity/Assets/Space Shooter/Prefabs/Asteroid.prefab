@@ -115,12 +115,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 0
-  SelectedObjectPosition: {x: 302.306274, y: -789.342407}
+  SelectedObject: 138
+  SelectedObjectPosition: {x: 920.135986, y: 224.112122}
   ShowDisplayRootNode: 1
-  GuiScale: .882137299
-  ScrollPosition: {x: -376.159546, y: -1182.13843}
-  UndoRedoId: 2557
+  GuiScale: .819763958
+  ScrollPosition: {x: 191.173813, y: 202.034256}
+  UndoRedoId: 2648
   EngineObjects:
   - RawName: Asteroid::Behaviour
     ObjectType: 0
@@ -1440,7 +1440,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 66
-    LayoutPriority: 99
+    LayoutPriority: 98
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1779,7 +1779,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 83
-    LayoutPriority: 99
+    LayoutPriority: 98
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1994,7 +1994,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 94
-    LayoutPriority: 28
+    LayoutPriority: 27
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2873,7 +2873,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 139
-    LayoutPriority: 29
+    LayoutPriority: 28
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 

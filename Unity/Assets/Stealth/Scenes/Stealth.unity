@@ -11150,11 +11150,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayRoot: 0
   SelectedObject: 0
-  SelectedObjectPosition: {x: 586.956787, y: 410.803284}
+  SelectedObjectPosition: {x: 420.362183, y: 633.891479}
   ShowDisplayRootNode: 1
-  GuiScale: .779482782
-  ScrollPosition: {x: -303.54953, y: -378.947876}
-  UndoRedoId: 4749
+  GuiScale: 1
+  ScrollPosition: {x: 185.557587, y: 443.710419}
+  UndoRedoId: 6599
   EngineObjects:
   - RawName: prop_lift_exit::Behaviour
     ObjectType: 0
@@ -11183,7 +11183,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 387.590637, y: -373.687439}
+    LocalAnchorPosition: {x: 345.590637, y: -365.687592}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -11322,7 +11322,7 @@ MonoBehaviour:
     ParentId: 1
     IsNameEditable: 1
     QualifiedType: Bool, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: -346.468872, y: 61.4401321}
+    LocalAnchorPosition: {x: -544.762817, y: 57.4401245}
     DisplayOption: 1
     Scale: 1
     MethodName: .ctor
@@ -12282,7 +12282,7 @@ MonoBehaviour:
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     LocalAnchorPosition: {x: -415.215881, y: 338.811157}
-    DisplayOption: 1
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
@@ -12636,7 +12636,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -9.2588501, y: -95.8455963}
+    LocalAnchorPosition: {x: -9.25891113, y: -95.8455811}
     DisplayOption: 1
     Scale: 1
     MethodName: get_up
@@ -13090,7 +13090,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Choice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 424.182617, y: 101.352524}
+    LocalAnchorPosition: {x: 616.526306, y: 101.352524}
     DisplayOption: 1
     Scale: 1
     MethodName: Choice
@@ -13106,11 +13106,11 @@ MonoBehaviour:
   - RawName: SendMessage<RemoteCall>
     ObjectType: 102
     InstanceId: 99
-    ParentId: 57
+    ParentId: 46
     IsNameEditable: 1
     QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -570.424438, y: -24.477417}
+    LocalAnchorPosition: {x: 389.807556, y: 27.6608734}
     DisplayOption: 1
     Scale: 1
     MethodName: SendMessage
@@ -13118,7 +13118,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 99
-    LayoutPriority: 100
+    LayoutPriority: -29
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -13143,12 +13143,13 @@ MonoBehaviour:
     PortIndex: 0
     InitialValueArchive: '{12:InitialValue13:TriggerType!!49:{7:Numeric1:i1:0}{4:Name1:S18:TriggerOnTrueState}}'
     IsEntryState: 0
-  - RawName: 
+  - RawName: targetVisualScript
     ObjectType: 300
     InstanceId: 101
     ParentId: 99
     IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    QualifiedType: iCS_VisualScriptImp, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
@@ -13158,9 +13159,9 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 101
     LayoutPriority: 0
-    SourceId: -1
+    SourceId: 115
     PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:S10:MainCamera}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: messageName
     ObjectType: 300
@@ -13168,7 +13169,7 @@ MonoBehaviour:
     ParentId: 99
     IsNameEditable: 1
     QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00200000009}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13179,51 +13180,51 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: -1
     PortIndex: 1
-    InitialValueArchive: '{12:InitialValue1:S10:StopCamera}'
+    InitialValueArchive: '{12:InitialValue1:S8:EndScene}'
     IsEntryState: 0
-  - RawName: SendMessage<RemoteCall>
-    ObjectType: 102
+  - RawName: enable
+    ObjectType: 308
     InstanceId: 103
-    ParentId: 57
-    IsNameEditable: 1
-    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -578.041992, y: 73.694397}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: SendMessage
-    NbOfParams: 2
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 103
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Player
-    ObjectType: 300
-    InstanceId: 104
-    ParentId: 103
-    IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    ParentId: 99
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .00100000005}
     DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 104
+    ExecutionPriority: 103
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:S6:Player}'
+    SourceId: 109
+    PortIndex: 1001
+    InitialValueArchive: '{12:InitialValue1:b1:T}'
     IsEntryState: 0
-  - RawName: messageName
+  - RawName: FindWithTag<RemoteCall>
+    ObjectType: 102
+    InstanceId: 104
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -278.347717, y: 119.828522}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: FindWithTag
+    NbOfParams: 2
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 104
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: tag
     ObjectType: 300
     InstanceId: 105
-    ParentId: 103
+    ParentId: 104
     IsNameEditable: 1
     QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
     LocalAnchorPosition: {x: 1, y: 0}
@@ -13236,8 +13237,8 @@ MonoBehaviour:
     ExecutionPriority: 105
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 1
-    InitialValueArchive: '{12:InitialValue1:S10:StopPlayer}'
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:S5:Fader}'
     IsEntryState: 0
   - RawName: Delay<TimeDelay>
     ObjectType: 101
@@ -13303,7 +13304,7 @@ MonoBehaviour:
     ParentId: 106
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .539072812}
+    LocalAnchorPosition: {x: 2, y: .999595642}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13376,33 +13377,33 @@ MonoBehaviour:
     PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: SendMessage<RemoteCall>
-    ObjectType: 102
+  - RawName: componentType
+    ObjectType: 300
     InstanceId: 113
-    ParentId: 46
+    ParentId: 104
     IsNameEditable: 1
-    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 159.302856, y: 97.5913086}
-    DisplayOption: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
     Scale: 1
-    MethodName: SendMessage
-    NbOfParams: 2
+    MethodName: 
+    NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 113
-    LayoutPriority: 100
+    LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue1:S16:iCS_VisualScript}'
     IsEntryState: 0
-  - RawName: tag
-    ObjectType: 300
+  - RawName: :Component
+    ObjectType: 301
     InstanceId: 114
-    ParentId: 113
+    ParentId: 104
     IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .00100000005}
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .585485041}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13412,16 +13413,17 @@ MonoBehaviour:
     ExecutionPriority: 114
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:S5:Fader}'
+    PortIndex: 400
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: messageName
-    ObjectType: 300
+  - RawName: targetVisualScript
+    ObjectType: 302
     InstanceId: 115
-    ParentId: 113
+    ParentId: 46
     IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: .00300000003}
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .684622169}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13430,17 +13432,18 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 115
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 1
-    InitialValueArchive: '{12:InitialValue1:S8:EndScene}'
+    SourceId: 116
+    PortIndex: 9
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: enable
-    ObjectType: 308
+  - RawName: :Component
+    ObjectType: 303
     InstanceId: 116
-    ParentId: 113
-    IsNameEditable: 0
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .399709284}
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .547657311}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -13449,8 +13452,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 116
     LayoutPriority: 0
-    SourceId: 109
-    PortIndex: 1001
+    SourceId: 114
+    PortIndex: 9
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: timeToDoorsClose
@@ -13540,7 +13543,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 549.423218, y: -28.8694763}
+    LocalAnchorPosition: {x: 594.007568, y: -28.8694763}
     DisplayOption: 1
     Scale: 1
     MethodName: Delay
@@ -13548,7 +13551,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 121
-    LayoutPriority: 100
+    LayoutPriority: 73
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -13790,7 +13793,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 672.149414, y: 446.149536}
+    LocalAnchorPosition: {x: 753.246704, y: 446.149536}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -14461,7 +14464,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -188.701233, y: 63.2534943}
+    LocalAnchorPosition: {x: -63.1477051, y: 63.2534943}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -14501,7 +14504,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -1.03393555, y: 64.1044006}
+    LocalAnchorPosition: {x: 99.5522766, y: 64.1044006}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -14720,7 +14723,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 124.05896, y: 357.62146}
+    LocalAnchorPosition: {x: 391.326294, y: 357.62146}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -14760,7 +14763,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 123.089966, y: 545.338623}
+    LocalAnchorPosition: {x: 395.326294, y: 545.338623}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -15850,7 +15853,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 121.194336, y: 433.674561}
+    LocalAnchorPosition: {x: 383.826294, y: 433.674561}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -16346,7 +16349,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 125.40863, y: 188.069397}
+    LocalAnchorPosition: {x: 392.826294, y: 188.069397}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -16624,7 +16627,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 126.763123, y: 247.252319}
+    LocalAnchorPosition: {x: 397.326294, y: 247.252319}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -17401,32 +17404,33 @@ MonoBehaviour:
     PortIndex: 2
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: FindWithTag<RemoteCall>
+    ObjectType: 102
+    InstanceId: 319
+    ParentId: 1
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
+    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -275.562805, y: 50.1285172}
+    DisplayOption: 1
     Scale: 1
-    MethodName: 
-    NbOfParams: 0
+    MethodName: FindWithTag
+    NbOfParams: 2
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 319
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: tag
+    ObjectType: 300
+    InstanceId: 320
+    ParentId: 319
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17436,16 +17440,16 @@ MonoBehaviour:
     ExecutionPriority: 320
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:S6:Player}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: componentType
+    ObjectType: 300
+    InstanceId: 321
+    ParentId: 319
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17455,16 +17459,17 @@ MonoBehaviour:
     ExecutionPriority: 321
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue1:S16:iCS_VisualScript}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: :Component
+    ObjectType: 301
+    InstanceId: 322
+    ParentId: 319
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .41491732}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17474,35 +17479,36 @@ MonoBehaviour:
     ExecutionPriority: 322
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
+    PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: FindWithTag<RemoteCall>
+    ObjectType: 102
+    InstanceId: 323
+    ParentId: 1
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
+    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -273.895569, y: -17.5714836}
+    DisplayOption: 1
     Scale: 1
-    MethodName: 
-    NbOfParams: 0
+    MethodName: FindWithTag
+    NbOfParams: 2
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 323
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: tag
+    ObjectType: 300
+    InstanceId: 324
+    ParentId: 323
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17512,16 +17518,16 @@ MonoBehaviour:
     ExecutionPriority: 324
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:S10:MainCamera}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: componentType
+    ObjectType: 300
+    InstanceId: 325
+    ParentId: 323
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17531,16 +17537,17 @@ MonoBehaviour:
     ExecutionPriority: 325
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue1:S16:iCS_VisualScript}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: :Component
+    ObjectType: 301
+    InstanceId: 326
+    ParentId: 323
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .407283276}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17550,35 +17557,37 @@ MonoBehaviour:
     ExecutionPriority: 326
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
+    PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: SendMessage<RemoteCall>
+    ObjectType: 102
+    InstanceId: 327
+    ParentId: 57
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
+    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -377.044556, y: -22.624176}
+    DisplayOption: 1
     Scale: 1
-    MethodName: 
-    NbOfParams: 0
+    MethodName: SendMessage
+    NbOfParams: 2
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 327
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: targetVisualScript
+    ObjectType: 300
+    InstanceId: 328
+    ParentId: 327
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: iCS_VisualScriptImp, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .589788914}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17587,17 +17596,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 328
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 330
+    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: messageName
+    ObjectType: 300
+    InstanceId: 329
+    ParentId: 327
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .00100000005}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17607,16 +17616,17 @@ MonoBehaviour:
     ExecutionPriority: 329
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue1:S10:StopCamera}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: targetVisualScript
+    ObjectType: 302
+    InstanceId: 330
+    ParentId: 57
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .416284412}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17625,17 +17635,18 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 330
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 331
+    PortIndex: 3
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: targetVisualScript
+    ObjectType: 302
+    InstanceId: 331
+    ParentId: 46
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .430935085}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17644,17 +17655,18 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 331
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 332
+    PortIndex: 7
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: :Component
+    ObjectType: 303
+    InstanceId: 332
+    ParentId: 1
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .40584901}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17663,36 +17675,38 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 332
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 326
+    PortIndex: 7
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: SendMessage<RemoteCall>
+    ObjectType: 102
+    InstanceId: 333
+    ParentId: 57
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
+    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -327.044922, y: 81.3135681}
+    DisplayOption: 1
     Scale: 1
-    MethodName: 
-    NbOfParams: 0
+    MethodName: SendMessage
+    NbOfParams: 2
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 333
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: targetVisualScript
+    ObjectType: 300
+    InstanceId: 334
+    ParentId: 333
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: iCS_VisualScriptImp, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .563993216}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17701,17 +17715,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 334
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 336
+    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: messageName
+    ObjectType: 300
+    InstanceId: 335
+    ParentId: 333
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .00100000005}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17721,16 +17735,17 @@ MonoBehaviour:
     ExecutionPriority: 335
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue1:S10:StopPlayer}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: targetVisualScript
+    ObjectType: 302
+    InstanceId: 336
+    ParentId: 57
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .432240546}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17739,17 +17754,18 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 336
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 337
+    PortIndex: 4
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: targetVisualScript
+    ObjectType: 302
+    InstanceId: 337
+    ParentId: 46
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .433254838}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -17758,8 +17774,28 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 337
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 338
+    PortIndex: 8
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: :Component
+    ObjectType: 303
+    InstanceId: 338
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .467995673}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 338
+    LayoutPriority: 0
+    SourceId: 322
+    PortIndex: 8
     InitialValueArchive: 
     IsEntryState: 0
   UnityObjects:
@@ -17772,7 +17808,6 @@ MonoBehaviour:
   - {fileID: 1801704259}
   - {fileID: 1449314701}
   - {fileID: 1807870667}
-  - {fileID: 274747737}
   EngineObject:
     RawName: 
     ObjectType: 10000
@@ -25712,27 +25747,27 @@ Prefab:
       objectReference: {fileID: 8300000, guid: 88f31fb977a578147854124d826dabb7, type: 3}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: SelectedObject
-      value: 53
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: ScrollPosition.x
-      value: -522.65741
+      value: -812.486816
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: ScrollPosition.y
-      value: -134.067307
+      value: -547.818115
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: SelectedObjectPosition.x
-      value: 55.811142
+      value: 396.503418
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: SelectedObjectPosition.y
-      value: 460.177063
+      value: 40.7154541
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: UndoRedoId
-      value: 5676
+      value: 5934
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: EngineObjects.Array.data[4].InitialValueArchive
@@ -26028,7 +26063,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: EngineObjects.Array.data[38].LocalAnchorPosition.y
-      value: .611315191
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: EngineObjects.Array.data[111].ExecutionPriority
@@ -26556,7 +26591,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: EngineObjects.Array.data[43].LocalAnchorPosition.y
-      value: .881667554
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: EngineObjects.Array.data[9].LocalAnchorPosition.x
@@ -28467,6 +28502,78 @@ Prefab:
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: EngineObjects.Array.data[31].SourceId
       value: 154
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[38].SourceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[38].RawName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[38].ObjectType
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[38].InstanceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[38].ParentId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[38].QualifiedType
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[38].LocalAnchorPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[38].PortIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[43].PortIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[56].PortIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[38].ExecutionPriority
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[43].SourceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[43].RawName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[43].ObjectType
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[43].InstanceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[43].ParentId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[43].QualifiedType
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
+      propertyPath: EngineObjects.Array.data[43].LocalAnchorPosition.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
@@ -41624,11 +41731,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayRoot: 0
   SelectedObject: 0
-  SelectedObjectPosition: {x: 131.777252, y: -384.58017}
+  SelectedObjectPosition: {x: 519, y: 263.500031}
   ShowDisplayRootNode: 1
   GuiScale: .716860116
-  ScrollPosition: {x: -478.275238, y: -761.980835}
-  UndoRedoId: 1396
+  ScrollPosition: {x: -695.067261, y: -653.166321}
+  UndoRedoId: 1415
   EngineObjects:
   - RawName: char_ethan::Behaviour
     ObjectType: 0
@@ -88686,12 +88793,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 53
-  SelectedObjectPosition: {x: 55.811142, y: 460.177063}
+  SelectedObject: 0
+  SelectedObjectPosition: {x: 396.503418, y: 40.7154541}
   ShowDisplayRootNode: 1
   GuiScale: .886091232
-  ScrollPosition: {x: -522.65741, y: -134.067307}
-  UndoRedoId: 5676
+  ScrollPosition: {x: -812.486816, y: -547.818115}
+  UndoRedoId: 5934
   EngineObjects:
   - RawName: door_generic_slide::Behaviour
     ObjectType: 0
@@ -89438,23 +89545,23 @@ MonoBehaviour:
     PortIndex: 1001
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Bool Instance
-    ObjectType: 302
-    InstanceId: 38
-    ParentId: 36
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: Bool, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .611315191}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 38
+    ExecutionPriority: 0
     LayoutPriority: 0
-    SourceId: 22
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: :bool
@@ -89533,13 +89640,13 @@ MonoBehaviour:
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Int Instance
-    ObjectType: 302
-    InstanceId: 43
-    ParentId: 36
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .881667554}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -89548,8 +89655,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 43
     LayoutPriority: 0
-    SourceId: 44
-    PortIndex: 1
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: Int Instance
@@ -89800,7 +89907,7 @@ MonoBehaviour:
     ExecutionPriority: 56
     LayoutPriority: 0
     SourceId: 25
-    PortIndex: 2
+    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: 
@@ -105932,12 +106039,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 25
-  SelectedObjectPosition: {x: -89.2397766, y: 425.488647}
+  SelectedObject: 0
+  SelectedObjectPosition: {x: -383.465332, y: 116.470947}
   ShowDisplayRootNode: 1
   GuiScale: 1.13447046
-  ScrollPosition: {x: -908.069458, y: -75.4317551}
-  UndoRedoId: 465
+  ScrollPosition: {x: -846.452087, y: -248.691574}
+  UndoRedoId: 1377
   EngineObjects:
   - RawName: prop_keycard::Behaviour
     ObjectType: 0
@@ -106126,7 +106233,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -62.9655685, y: -120.007713}
+    LocalAnchorPosition: {x: -62.9655762, y: -125.551544}
     DisplayOption: 0
     Scale: 1
     MethodName: CompareTag
@@ -106224,7 +106331,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -153.644272, y: -74.633049}
+    LocalAnchorPosition: {x: -153.644272, y: -57.3157425}
     DisplayOption: 0
     Scale: 1
     MethodName: get_position
@@ -106284,7 +106391,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 162.094772, y: -78.018364}
+    LocalAnchorPosition: {x: 162.094772, y: -73.1592636}
     DisplayOption: 0
     Scale: 1
     MethodName: PlayClipAtPoint
@@ -106364,7 +106471,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Object, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -174.069809, y: 4.43965149}
+    LocalAnchorPosition: {x: -174.069809, y: .584266663}
     DisplayOption: 1
     Scale: 1
     MethodName: Destroy
@@ -106443,7 +106550,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 164.517822, y: 86.0830688}
+    LocalAnchorPosition: {x: 144.633301, y: -135.959259}
     DisplayOption: 1
     Scale: 1
     MethodName: SendMessage
@@ -106456,13 +106563,14 @@ MonoBehaviour:
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: tag
+  - RawName: targetVisualScript
     ObjectType: 300
     InstanceId: 26
     ParentId: 25
     IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: iCS_VisualScriptImp, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .499515146}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -106471,9 +106579,9 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 26
     LayoutPriority: 0
-    SourceId: -1
+    SourceId: 49
     PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:S12:ElevatorDoor}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: messageName
     ObjectType: 300
@@ -106494,32 +106602,34 @@ MonoBehaviour:
     PortIndex: 1
     InitialValueArchive: '{12:InitialValue1:S12:PlayerHasKey}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: SendMessage<RemoteCall>
+    ObjectType: 102
+    InstanceId: 28
+    ParentId: 13
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 0
+    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -175.410309, y: -132.845093}
+    DisplayOption: 1
     Scale: 1
-    MethodName: 
-    NbOfParams: 0
+    MethodName: SendMessage
+    NbOfParams: 2
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 28
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: targetVisualScript
+    ObjectType: 300
+    InstanceId: 29
+    ParentId: 28
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: iCS_VisualScriptImp, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .494066268}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -106528,17 +106638,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 29
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
+    SourceId: 46
+    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: messageName
+    ObjectType: 300
+    InstanceId: 30
+    ParentId: 28
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -106548,16 +106658,17 @@ MonoBehaviour:
     ExecutionPriority: 30
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue1:S6:HasKey}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+  - RawName: Start
+    ObjectType: 106
+    InstanceId: 31
+    ParentId: 0
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -330.11145, y: -360.324738}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -106565,37 +106676,38 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 31
-    LayoutPriority: 0
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: SendMessage<RemoteCall>
-    ObjectType: 102
-    InstanceId: 32
-    ParentId: 13
-    IsNameEditable: 1
-    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -162.301559, y: 81.4489746}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: SendMessage
-    NbOfParams: 2
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 32
     LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: tag
+  - RawName: MonoBehaviour Instance
     ObjectType: 300
+    InstanceId: 32
+    ParentId: 31
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 32
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 401
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: gameObject
+    ObjectType: 306
     InstanceId: 33
-    ParentId: 32
-    IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    ParentId: 31
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
@@ -106607,14 +106719,15 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: -1
     PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:S6:Player}'
+    InitialValueArchive: '{12:InitialValue1:O1:0}'
     IsEntryState: 0
-  - RawName: messageName
-    ObjectType: 300
+  - RawName: Transform
+    ObjectType: 306
     InstanceId: 34
-    ParentId: 32
-    IsNameEditable: 1
-    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    ParentId: 31
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
@@ -106626,15 +106739,16 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: -1
     PortIndex: 1
-    InitialValueArchive: '{12:InitialValue1:S6:HasKey}'
+    InitialValueArchive: '{12:InitialValue1:O1:1}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+  - RawName: Animator
+    ObjectType: 306
+    InstanceId: 35
+    ParentId: 31
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.Animator, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -106644,16 +106758,17 @@ MonoBehaviour:
     ExecutionPriority: 35
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 2
+    InitialValueArchive: '{12:InitialValue1:O1:2}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+  - RawName: SphereCollider
+    ObjectType: 306
+    InstanceId: 36
+    ParentId: 31
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.SphereCollider, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -106663,16 +106778,17 @@ MonoBehaviour:
     ExecutionPriority: 36
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 3
+    InitialValueArchive: '{12:InitialValue1:O1:3}'
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
-    IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+  - RawName: Light
+    ObjectType: 306
+    InstanceId: 37
+    ParentId: 31
+    IsNameEditable: 0
+    QualifiedType: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -106682,26 +106798,283 @@ MonoBehaviour:
     ExecutionPriority: 37
     LayoutPriority: 0
     SourceId: -1
+    PortIndex: 4
+    InitialValueArchive: '{12:InitialValue1:O1:4}'
+    IsEntryState: 0
+  - RawName: FindWithTag<RemoteCall>
+    ObjectType: 102
+    InstanceId: 38
+    ParentId: 31
+    IsNameEditable: 1
+    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 116.35379, y: -19.9787521}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: FindWithTag
+    NbOfParams: 2
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 38
+    LayoutPriority: 100
+    SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: 
-    ObjectType: 10000
-    InstanceId: -1
-    ParentId: -1
+  - RawName: tag
+    ObjectType: 300
+    InstanceId: 39
+    ParentId: 38
     IsNameEditable: 1
-    QualifiedType: 
-    LocalAnchorPosition: {x: 0, y: 0}
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 38
+    ExecutionPriority: 39
     LayoutPriority: 0
     SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:S6:Player}'
+    IsEntryState: 0
+  - RawName: componentType
+    ObjectType: 300
+    InstanceId: 40
+    ParentId: 38
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 40
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue1:S16:iCS_VisualScript}'
+    IsEntryState: 0
+  - RawName: :Component
+    ObjectType: 301
+    InstanceId: 41
+    ParentId: 38
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .506127417}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 41
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: FindWithTag<RemoteCall>
+    ObjectType: 102
+    InstanceId: 42
+    ParentId: 31
+    IsNameEditable: 1
+    QualifiedType: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 442.49707, y: -24.3861237}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: FindWithTag
+    NbOfParams: 2
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 42
+    LayoutPriority: 100
+    SourceId: -1
     PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: tag
+    ObjectType: 300
+    InstanceId: 43
+    ParentId: 42
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 43
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:S12:ElevatorDoor}'
+    IsEntryState: 0
+  - RawName: componentType
+    ObjectType: 300
+    InstanceId: 44
+    ParentId: 42
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 44
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 1
+    InitialValueArchive: '{12:InitialValue1:S16:iCS_VisualScript}'
+    IsEntryState: 0
+  - RawName: :Component
+    ObjectType: 301
+    InstanceId: 45
+    ParentId: 42
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .500638068}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 45
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: 400
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: targetVisualScript
+    ObjectType: 302
+    InstanceId: 46
+    ParentId: 13
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .316871524}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 46
+    LayoutPriority: 0
+    SourceId: 47
+    PortIndex: 2
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: targetVisualScript
+    ObjectType: 302
+    InstanceId: 47
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .423172832}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 47
+    LayoutPriority: 0
+    SourceId: 48
+    PortIndex: 6
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: :Component
+    ObjectType: 303
+    InstanceId: 48
+    ParentId: 31
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .374501824}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 48
+    LayoutPriority: 0
+    SourceId: 41
+    PortIndex: 5
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: targetVisualScript
+    ObjectType: 302
+    InstanceId: 49
+    ParentId: 13
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .742598295}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 49
+    LayoutPriority: 0
+    SourceId: 50
+    PortIndex: 3
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: targetVisualScript
+    ObjectType: 302
+    InstanceId: 50
+    ParentId: 1
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .762954831}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 50
+    LayoutPriority: 0
+    SourceId: 51
+    PortIndex: 7
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: :Component
+    ObjectType: 303
+    InstanceId: 51
+    ParentId: 31
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 4, y: .82575047}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 51
+    LayoutPriority: 0
+    SourceId: 45
+    PortIndex: 6
     InitialValueArchive: 
     IsEntryState: 0
   UnityObjects:
@@ -124794,6 +125167,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.size
+      value: 52
+      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: m_LocalPosition.x
       value: -22
@@ -124832,27 +125209,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: SelectedObjectPosition.x
-      value: -89.2397766
+      value: -383.465332
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: SelectedObjectPosition.y
-      value: 425.488647
+      value: 116.470947
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: ScrollPosition.x
-      value: -908.069458
+      value: -846.452087
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: UndoRedoId
-      value: 465
+      value: 1377
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: ScrollPosition.y
-      value: -75.4317551
+      value: -248.691574
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: SelectedObject
-      value: 25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[17].LayoutPriority
@@ -124864,11 +125241,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[32].LocalAnchorPosition.y
-      value: 81.4489746
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[32].LayoutPriority
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[25].RawName
@@ -124892,11 +125269,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[25].LocalAnchorPosition.x
-      value: 164.517822
+      value: 144.633301
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[25].LocalAnchorPosition.y
-      value: 86.0830688
+      value: -135.959259
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[25].DisplayOption
@@ -124916,7 +125293,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[26].RawName
-      value: tag
+      value: targetVisualScript
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[26].ObjectType
@@ -124932,11 +125309,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[26].QualifiedType
-      value: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      value: iCS_VisualScriptImp, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[26].LocalAnchorPosition.x
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[26].PortIndex
@@ -124944,7 +125322,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[26].InitialValueArchive
-      value: '{12:InitialValue1:S12:ElevatorDoor}'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[27].RawName
@@ -124981,6 +125359,1097 @@ Prefab:
     - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
       propertyPath: EngineObjects.Array.data[25].LayoutPriority
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].RawName
+      value: SendMessage<RemoteCall>
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].ObjectType
+      value: 102
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].InstanceId
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].ParentId
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].QualifiedType
+      value: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].LocalAnchorPosition.x
+      value: -175.410309
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].LocalAnchorPosition.y
+      value: -132.845093
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].DisplayOption
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].MethodName
+      value: SendMessage
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].NbOfParams
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[28].LayoutPriority
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[29].RawName
+      value: targetVisualScript
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[29].ObjectType
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[29].InstanceId
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[29].ParentId
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[29].QualifiedType
+      value: iCS_VisualScriptImp, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[29].LocalAnchorPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[29].PortIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[30].RawName
+      value: messageName
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[30].ObjectType
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[30].InstanceId
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[30].ParentId
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[30].QualifiedType
+      value: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[30].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[30].PortIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[30].InitialValueArchive
+      value: '{12:InitialValue1:S6:HasKey}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].RawName
+      value: MonoBehaviour Instance
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].ObjectType
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].InstanceId
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].QualifiedType
+      value: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].DisplayOption
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].NbOfParams
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[33].RawName
+      value: gameObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[33].ObjectType
+      value: 306
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[33].InstanceId
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[33].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[33].QualifiedType
+      value: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[33].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[33].PortIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[33].InitialValueArchive
+      value: '{12:InitialValue1:O1:0}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[34].RawName
+      value: Transform
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[34].ObjectType
+      value: 306
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[34].InstanceId
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[34].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[34].QualifiedType
+      value: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[34].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[34].PortIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[34].InitialValueArchive
+      value: '{12:InitialValue1:O1:1}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[31].RawName
+      value: Start
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[31].ObjectType
+      value: 106
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[31].InstanceId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[31].ParentId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[31].IsNameEditable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[31].QualifiedType
+      value: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[31].LocalAnchorPosition.x
+      value: -330.11145
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[31].LocalAnchorPosition.y
+      value: -360.324738
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].IsNameEditable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[32].PortIndex
+      value: 401
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[33].IsNameEditable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[34].IsNameEditable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[35].RawName
+      value: Animator
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[35].ObjectType
+      value: 306
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[35].InstanceId
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[35].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[35].IsNameEditable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[35].QualifiedType
+      value: UnityEngine.Animator, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[35].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[35].PortIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[35].InitialValueArchive
+      value: '{12:InitialValue1:O1:2}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[36].RawName
+      value: SphereCollider
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[36].ObjectType
+      value: 306
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[36].InstanceId
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[36].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[36].IsNameEditable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[36].QualifiedType
+      value: UnityEngine.SphereCollider, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[36].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[36].PortIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[36].InitialValueArchive
+      value: '{12:InitialValue1:O1:3}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[37].RawName
+      value: Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[37].ObjectType
+      value: 306
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[37].InstanceId
+      value: 37
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[37].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[37].IsNameEditable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[37].QualifiedType
+      value: UnityEngine.Light, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[37].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[37].PortIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[37].InitialValueArchive
+      value: '{12:InitialValue1:O1:4}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].RawName
+      value: FindWithTag<RemoteCall>
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].ObjectType
+      value: 102
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].InstanceId
+      value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].QualifiedType
+      value: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].LocalAnchorPosition.x
+      value: 116.35379
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].LocalAnchorPosition.y
+      value: -19.9787521
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].DisplayOption
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].MethodName
+      value: FindWithTag
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].NbOfParams
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].RawName
+      value: tag
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].ObjectType
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].InstanceId
+      value: 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].ParentId
+      value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].QualifiedType
+      value: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].ExecutionPriority
+      value: 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].SourceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].RawName
+      value: componentType
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].ObjectType
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].InstanceId
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].ParentId
+      value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].QualifiedType
+      value: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].ExecutionPriority
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].SourceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].PortIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].RawName
+      value: :Component
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].ObjectType
+      value: 301
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].InstanceId
+      value: 41
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].ParentId
+      value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].QualifiedType
+      value: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].LocalAnchorPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].ExecutionPriority
+      value: 41
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].SourceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].PortIndex
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[39].InitialValueArchive
+      value: '{12:InitialValue1:S6:Player}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[40].InitialValueArchive
+      value: '{12:InitialValue1:S16:iCS_VisualScript}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[21].LocalAnchorPosition.y
+      value: .584266663
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[31].LayoutPriority
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[38].LayoutPriority
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].RawName
+      value: FindWithTag<RemoteCall>
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].ObjectType
+      value: 102
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].InstanceId
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].QualifiedType
+      value: iCS_RemoteCall, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].LocalAnchorPosition.x
+      value: 442.49707
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].LocalAnchorPosition.y
+      value: -24.3861237
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].DisplayOption
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].MethodName
+      value: FindWithTag
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].NbOfParams
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].ExecutionPriority
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].LayoutPriority
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].SourceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[42].PortIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].RawName
+      value: tag
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].ObjectType
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].InstanceId
+      value: 43
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].ParentId
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].QualifiedType
+      value: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].ExecutionPriority
+      value: 43
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].SourceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[43].InitialValueArchive
+      value: '{12:InitialValue1:S12:ElevatorDoor}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].RawName
+      value: componentType
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].ObjectType
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].InstanceId
+      value: 44
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].ParentId
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].QualifiedType
+      value: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].LocalAnchorPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].ExecutionPriority
+      value: 44
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].SourceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].PortIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[44].InitialValueArchive
+      value: '{12:InitialValue1:S16:iCS_VisualScript}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].RawName
+      value: :Component
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].ObjectType
+      value: 301
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].InstanceId
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].ParentId
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].QualifiedType
+      value: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].LocalAnchorPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].ExecutionPriority
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].SourceId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].PortIndex
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[41].LocalAnchorPosition.y
+      value: .506127417
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].ObjectType
+      value: 302
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].InstanceId
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].ParentId
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].SourceId
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].PortIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[29].LocalAnchorPosition.y
+      value: .494066268
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[29].SourceId
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].RawName
+      value: targetVisualScript
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].QualifiedType
+      value: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].LocalAnchorPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].LocalAnchorPosition.y
+      value: .316871524
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[46].ExecutionPriority
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].RawName
+      value: targetVisualScript
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].ObjectType
+      value: 302
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].InstanceId
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].ParentId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].QualifiedType
+      value: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].LocalAnchorPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].LocalAnchorPosition.y
+      value: .423172832
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].ExecutionPriority
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].SourceId
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[47].PortIndex
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].RawName
+      value: :Component
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].ObjectType
+      value: 303
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].InstanceId
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].QualifiedType
+      value: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].LocalAnchorPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].LocalAnchorPosition.y
+      value: .374501824
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].ExecutionPriority
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].SourceId
+      value: 41
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[48].PortIndex
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[26].LocalAnchorPosition.y
+      value: .499515146
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[26].SourceId
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[45].LocalAnchorPosition.y
+      value: .500638068
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].RawName
+      value: targetVisualScript
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].ObjectType
+      value: 302
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].InstanceId
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].ParentId
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].QualifiedType
+      value: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].LocalAnchorPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].LocalAnchorPosition.y
+      value: .742598295
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].ExecutionPriority
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].SourceId
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[49].PortIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].RawName
+      value: targetVisualScript
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].ObjectType
+      value: 302
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].InstanceId
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].ParentId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].QualifiedType
+      value: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].LocalAnchorPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].LocalAnchorPosition.y
+      value: .762954831
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].ExecutionPriority
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].SourceId
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[50].PortIndex
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].RawName
+      value: :Component
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].ObjectType
+      value: 303
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].InstanceId
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].ParentId
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].IsNameEditable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].QualifiedType
+      value: UnityEngine.Component, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].LocalAnchorPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].LocalAnchorPosition.y
+      value: .82575047
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].Scale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].ExecutionPriority
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].SourceId
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[51].PortIndex
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[14].LocalAnchorPosition.y
+      value: -57.3157425
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[9].LocalAnchorPosition.x
+      value: -62.9655762
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[9].LocalAnchorPosition.y
+      value: -125.551544
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
+      propertyPath: EngineObjects.Array.data[17].LocalAnchorPosition.y
+      value: -73.1592636
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 84d75b64f4e3040fe8cd2bea4d52bd7c, type: 2}
