@@ -127,7 +127,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 3
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -203,12 +203,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 105
-  SelectedObjectPosition: {x: 621.708496, y: 185.090332}
+  SelectedObject: 37
+  SelectedObjectPosition: {x: 464.682709, y: -166.508118}
   ShowDisplayRootNode: 1
-  GuiScale: 1.01058674
-  ScrollPosition: {x: 21.0719109, y: -121.294365}
-  UndoRedoId: 296
+  GuiScale: .983418405
+  ScrollPosition: {x: 138.789993, y: -391.034973}
+  UndoRedoId: 745
   EngineObjects:
   - RawName: door_generic_slide::Behaviour
     ObjectType: 0
@@ -237,7 +237,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -165, y: -24.75}
+    LocalAnchorPosition: {x: -526.263306, y: -79.291748}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -245,7 +245,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 1
-    LayoutPriority: 85
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -397,7 +397,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -773.250244, y: -621.924927}
+    LocalAnchorPosition: {x: -576.813232, y: -764.10376}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -530,17 +530,18 @@ MonoBehaviour:
     PortIndex: 4
     InitialValueArchive: '{12:InitialValue1:O1:4}'
     IsEntryState: 0
-  - RawName: requireKey
-    ObjectType: 100
+  - RawName: Or<Boolean>
+    ObjectType: 102
     InstanceId: 16
-    ParentId: 9
+    ParentId: 1
     IsNameEditable: 1
-    QualifiedType: Bool, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 57, y: 10.1249847}
-    DisplayOption: 1
+    QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -250.171997, y: -306.057068}
+    DisplayOption: 0
     Scale: 1
-    MethodName: .ctor
-    NbOfParams: 1
+    MethodName: Or
+    NbOfParams: 2
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 16
@@ -549,13 +550,13 @@ MonoBehaviour:
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: init
+  - RawName: a
     ObjectType: 300
     InstanceId: 17
     ParentId: 16
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 3, y: .182896659}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -564,17 +565,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 17
     LayoutPriority: 0
-    SourceId: -1
+    SourceId: 34
     PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:b1:F}'
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Bool Instance
-    ObjectType: 301
+  - RawName: b
+    ObjectType: 300
     InstanceId: 18
     ParentId: 16
     IsNameEditable: 1
-    QualifiedType: Bool, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .569410682}
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 3, y: .898139238}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -583,36 +584,37 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 18
     LayoutPriority: 0
-    SourceId: -1
-    PortIndex: 400
+    SourceId: 69
+    PortIndex: 1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: GetValue<Bool>
-    ObjectType: 101
+  - RawName: 
+    ObjectType: 301
     InstanceId: 19
-    ParentId: 36
+    ParentId: 16
     IsNameEditable: 1
-    QualifiedType: Bool, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: -295.169586, y: -128.572952}
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 4, y: .502850056}
     DisplayOption: 0
     Scale: 1
-    MethodName: get_Value
+    MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 19
-    LayoutPriority: 100
+    LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
+    PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Value
-    ObjectType: 301
+  - RawName: 
+    ObjectType: 1
     InstanceId: 20
-    ParentId: 19
+    ParentId: 77
     IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .813840866}
+    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -35.5900574, y: 178.96756}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -620,18 +622,18 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 20
-    LayoutPriority: 0
+    LayoutPriority: 100
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Bool Instance
-    ObjectType: 300
+  - RawName: enable
+    ObjectType: 308
     InstanceId: 21
-    ParentId: 19
-    IsNameEditable: 1
-    QualifiedType: Bool, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .446856976}
+    ParentId: 20
+    IsNameEditable: 0
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 3, y: .489401668}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -640,36 +642,37 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 21
     LayoutPriority: 0
-    SourceId: 38
-    PortIndex: 401
+    SourceId: 48
+    PortIndex: 1001
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Bool Instance
-    ObjectType: 302
+  - RawName: CompareTag<Collider>
+    ObjectType: 101
     InstanceId: 22
-    ParentId: 1
+    ParentId: 77
     IsNameEditable: 1
-    QualifiedType: Bool, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .549040854}
-    DisplayOption: 0
+    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 144.096802, y: -122.526215}
+    DisplayOption: 1
     Scale: 1
-    MethodName: 
-    NbOfParams: 0
+    MethodName: CompareTag
+    NbOfParams: 1
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 22
-    LayoutPriority: 0
-    SourceId: 23
-    PortIndex: 6
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Bool Instance
-    ObjectType: 303
+  - RawName: Int Instance
+    ObjectType: 302
     InstanceId: 23
-    ParentId: 9
+    ParentId: 20
     IsNameEditable: 1
-    QualifiedType: Bool, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .429207176}
+    QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .432107896}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -678,18 +681,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 23
     LayoutPriority: 0
-    SourceId: 18
-    PortIndex: 5
+    SourceId: 90
+    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: checkIfPlayerHasKey
-    ObjectType: 1
+  - RawName: tag
+    ObjectType: 300
     InstanceId: 24
-    ParentId: 36
+    ParentId: 22
     IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 99.3677063, y: 128.572952}
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .00100000005}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -697,18 +699,18 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 24
-    LayoutPriority: 100
+    LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:S5:Enemy}'
     IsEntryState: 0
-  - RawName: enable
-    ObjectType: 308
+  - RawName: :bool
+    ObjectType: 301
     InstanceId: 25
-    ParentId: 24
-    IsNameEditable: 0
+    ParentId: 22
+    IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .494052619}
+    LocalAnchorPosition: {x: 4, y: .34461388}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -717,8 +719,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 25
     LayoutPriority: 0
-    SourceId: 20
-    PortIndex: 1001
+    SourceId: -1
+    PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: count
@@ -778,52 +780,53 @@ MonoBehaviour:
     PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Not<Boolean>
-    ObjectType: 102
-    InstanceId: 29
-    ParentId: 36
-    IsNameEditable: 1
-    QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 276.288239, y: 8.31813049}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: Not
-    NbOfParams: 1
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 29
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: a
+  - RawName: Collider Instance
     ObjectType: 300
-    InstanceId: 30
-    ParentId: 29
+    InstanceId: 29
+    ParentId: 22
     IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .077410996}
     DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 30
+    ExecutionPriority: 29
     LayoutPriority: 0
-    SourceId: 20
-    PortIndex: 0
+    SourceId: 78
+    PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: :bool
-    ObjectType: 301
-    InstanceId: 31
-    ParentId: 29
+  - RawName: CompareTag<Collider>
+    ObjectType: 101
+    InstanceId: 30
+    ParentId: 77
     IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .553360105}
+    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: -111.912476, y: -124.529465}
+    DisplayOption: 1
+    Scale: 1
+    MethodName: CompareTag
+    NbOfParams: 1
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 30
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: tag
+    ObjectType: 300
+    InstanceId: 31
+    ParentId: 30
+    IsNameEditable: 1
+    QualifiedType: System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 1, y: .00100000005}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -833,8 +836,8 @@ MonoBehaviour:
     ExecutionPriority: 31
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
-    InitialValueArchive: 
+    PortIndex: 0
+    InitialValueArchive: '{12:InitialValue1:S6:Player}'
     IsEntryState: 0
   - RawName: CompareTag<Collider>
     ObjectType: 101
@@ -843,7 +846,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -475.790527, y: -366.615173}
+    LocalAnchorPosition: {x: -369.020081, y: -380.851257}
     DisplayOption: 0
     Scale: 1
     MethodName: CompareTag
@@ -881,7 +884,7 @@ MonoBehaviour:
     ParentId: 32
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .665816963}
+    LocalAnchorPosition: {x: 4, y: .667832673}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -914,33 +917,33 @@ MonoBehaviour:
     PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: PlayerAtDoor
-    ObjectType: 1
+  - RawName: :bool
+    ObjectType: 301
     InstanceId: 36
-    ParentId: 1
+    ParentId: 30
     IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -417.667603, y: -238.402588}
-    DisplayOption: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 4, y: .689722896}
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 36
-    LayoutPriority: 100
+    LayoutPriority: 0
     SourceId: -1
-    PortIndex: -1
+    PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: enable
-    ObjectType: 308
+  - RawName: Collider Instance
+    ObjectType: 300
     InstanceId: 37
-    ParentId: 36
-    IsNameEditable: 0
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .304517299}
+    ParentId: 30
+    IsNameEditable: 1
+    QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 3, y: .560416877}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -949,36 +952,37 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 37
     LayoutPriority: 0
-    SourceId: 34
-    PortIndex: 1001
+    SourceId: 78
+    PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Bool Instance
-    ObjectType: 302
+  - RawName: Or<Boolean>
+    ObjectType: 102
     InstanceId: 38
-    ParentId: 36
+    ParentId: 77
     IsNameEditable: 1
-    QualifiedType: Bool, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .446856976}
-    DisplayOption: 0
+    QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    LocalAnchorPosition: {x: 30.4481506, y: -45.2754364}
+    DisplayOption: 1
     Scale: 1
-    MethodName: 
-    NbOfParams: 0
+    MethodName: Or
+    NbOfParams: 2
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 38
-    LayoutPriority: 0
-    SourceId: 22
-    PortIndex: 0
+    LayoutPriority: 100
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: value= value+b<Int>
     ObjectType: 101
     InstanceId: 39
-    ParentId: 36
+    ParentId: 1
     IsNameEditable: 1
     QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 295.169586, y: 121.034042}
+    LocalAnchorPosition: {x: -238.320282, y: -193.252441}
     DisplayOption: 0
     Scale: 1
     MethodName: AddAndUpdate
@@ -1044,17 +1048,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 42
     LayoutPriority: 0
-    SourceId: 43
+    SourceId: 44
     PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Int Instance
-    ObjectType: 302
+  - RawName: a
+    ObjectType: 300
     InstanceId: 43
-    ParentId: 36
+    ParentId: 38
     IsNameEditable: 1
-    QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .819362342}
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 3, y: .218744114}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1063,8 +1067,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 43
     LayoutPriority: 0
-    SourceId: 44
-    PortIndex: 1
+    SourceId: 36
+    PortIndex: 0
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: Int Instance
@@ -1083,7 +1087,7 @@ MonoBehaviour:
     ExecutionPriority: 44
     LayoutPriority: 0
     SourceId: 45
-    PortIndex: 7
+    PortIndex: 6
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: Int Instance
@@ -1092,7 +1096,7 @@ MonoBehaviour:
     ParentId: 9
     IsNameEditable: 1
     QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 4, y: .949694693}
+    LocalAnchorPosition: {x: 4, y: .760254145}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1102,7 +1106,7 @@ MonoBehaviour:
     ExecutionPriority: 45
     LayoutPriority: 0
     SourceId: 28
-    PortIndex: 6
+    PortIndex: 5
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: enable
@@ -1111,7 +1115,7 @@ MonoBehaviour:
     ParentId: 39
     IsNameEditable: 0
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .404052734}
+    LocalAnchorPosition: {x: 3, y: .497917175}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1120,75 +1124,74 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 46
     LayoutPriority: 0
-    SourceId: 31
+    SourceId: 19
     PortIndex: 1001
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Play<AudioSource>
-    ObjectType: 101
-    InstanceId: 47
-    ParentId: 60
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -194.033356, y: 52.203064}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: Play
-    NbOfParams: 0
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 47
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: value= value+b<Int>
-    ObjectType: 101
-    InstanceId: 48
-    ParentId: 24
-    IsNameEditable: 1
-    QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: -111.626587, y: .897079468}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: AddAndUpdate
-    NbOfParams: 1
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 48
-    LayoutPriority: 100
-    SourceId: -1
-    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: b
     ObjectType: 300
-    InstanceId: 49
-    ParentId: 48
+    InstanceId: 47
+    ParentId: 38
     IsNameEditable: 1
-    QualifiedType: System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 3, y: .730353653}
     DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
-    ExecutionPriority: 49
+    ExecutionPriority: 47
+    LayoutPriority: 0
+    SourceId: 25
+    PortIndex: 1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: :bool
+    ObjectType: 301
+    InstanceId: 48
+    ParentId: 38
+    IsNameEditable: 1
+    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    LocalAnchorPosition: {x: 4, y: .502958059}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 48
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:i1:1}'
+    PortIndex: 400
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: value+b
-    ObjectType: 301
-    InstanceId: 50
-    ParentId: 48
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 0
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1198,16 +1201,16 @@ MonoBehaviour:
     ExecutionPriority: 50
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Int Instance
-    ObjectType: 300
-    InstanceId: 51
-    ParentId: 48
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .604320407}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1216,18 +1219,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 51
     LayoutPriority: 0
-    SourceId: 54
-    PortIndex: 401
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: AudioSource Instance
-    ObjectType: 300
-    InstanceId: 52
-    ParentId: 47
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1236,37 +1238,36 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 52
     LayoutPriority: 0
-    SourceId: 61
-    PortIndex: 401
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: Setclip<AudioSource>
-    ObjectType: 101
-    InstanceId: 53
-    ParentId: 60
-    IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -180.518463, y: -10.5969238}
-    DisplayOption: 0
-    Scale: 1
-    MethodName: set_clip
-    NbOfParams: 1
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 53
-    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Int Instance
-    ObjectType: 302
-    InstanceId: 54
-    ParentId: 24
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .937028348}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 53
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1275,18 +1276,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 54
     LayoutPriority: 0
-    SourceId: 43
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: AudioSource Instance
-    ObjectType: 302
-    InstanceId: 55
-    ParentId: 24
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .184450701}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1295,18 +1295,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 55
     LayoutPriority: 0
-    SourceId: 56
-    PortIndex: 1
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: AudioSource Instance
-    ObjectType: 302
-    InstanceId: 56
-    ParentId: 36
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: .0404186659}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1315,17 +1314,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 56
     LayoutPriority: 0
-    SourceId: 8
-    PortIndex: 2
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: enable
-    ObjectType: 308
-    InstanceId: 57
-    ParentId: 48
-    IsNameEditable: 0
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .25106889}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1334,18 +1333,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 57
     LayoutPriority: 0
-    SourceId: 65
-    PortIndex: 1001
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: value
-    ObjectType: 300
-    InstanceId: 58
-    ParentId: 53
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioClip, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1355,17 +1353,16 @@ MonoBehaviour:
     ExecutionPriority: 58
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:O1:5}'
+    PortIndex: -1
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: AudioSource Instance
-    ObjectType: 300
-    InstanceId: 59
-    ParentId: 53
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1374,18 +1371,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 59
     LayoutPriority: 0
-    SourceId: 61
-    PortIndex: 401
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: missingKey
-    ObjectType: 1
-    InstanceId: 60
-    ParentId: 24
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -236.477112, y: 47.9081802}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1393,19 +1389,18 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 60
-    LayoutPriority: 100
+    LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: AudioSource Instance
-    ObjectType: 302
-    InstanceId: 61
-    ParentId: 60
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1414,17 +1409,17 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 61
     LayoutPriority: 0
-    SourceId: 55
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: enable
-    ObjectType: 308
-    InstanceId: 62
-    ParentId: 60
-    IsNameEditable: 0
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .653031707}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1433,37 +1428,36 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 62
     LayoutPriority: 0
-    SourceId: 66
-    PortIndex: 1001
-    InitialValueArchive: 
-    IsEntryState: 0
-  - RawName: IsZero<Conditions>
-    ObjectType: 102
-    InstanceId: 63
-    ParentId: 24
-    IsNameEditable: 1
-    QualifiedType: iCS_Conditions, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: -367.950653, y: -132.086746}
-    DisplayOption: 1
-    Scale: 1
-    MethodName: IsZero
-    NbOfParams: 2
-    IconGUID: 
-    Tooltip: 
-    ExecutionPriority: 63
-    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: a
-    ObjectType: 300
-    InstanceId: 64
-    ParentId: 63
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
+    Scale: 1
+    MethodName: 
+    NbOfParams: 0
+    IconGUID: 
+    Tooltip: 
+    ExecutionPriority: 63
+    LayoutPriority: 0
+    SourceId: -1
+    PortIndex: -1
+    InitialValueArchive: 
+    IsEntryState: 0
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1473,16 +1467,16 @@ MonoBehaviour:
     ExecutionPriority: 64
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:f1:0}'
+    PortIndex: -1
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Else
-    ObjectType: 301
-    InstanceId: 65
-    ParentId: 63
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Boolean&, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .723305404}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1492,16 +1486,16 @@ MonoBehaviour:
     ExecutionPriority: 65
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: If
-    ObjectType: 301
-    InstanceId: 66
-    ParentId: 63
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .409116238}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1511,7 +1505,7 @@ MonoBehaviour:
     ExecutionPriority: 66
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: CompareTag<Collider>
@@ -1521,7 +1515,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Collider, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 146.771484, y: -357.882019}
+    LocalAnchorPosition: {x: -71.8536987, y: -376.185486}
     DisplayOption: 1
     Scale: 1
     MethodName: CompareTag
@@ -1559,7 +1553,7 @@ MonoBehaviour:
     ParentId: 67
     IsNameEditable: 1
     QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 4, y: .517707765}
+    LocalAnchorPosition: {x: 4, y: .231432259}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1592,33 +1586,32 @@ MonoBehaviour:
     PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: enemyAtDoor
-    ObjectType: 1
-    InstanceId: 71
-    ParentId: 1
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: iCS_Package, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    LocalAnchorPosition: {x: 148.004333, y: -243.922028}
-    DisplayOption: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
+    DisplayOption: 0
     Scale: 1
     MethodName: 
     NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 71
-    LayoutPriority: 100
+    LayoutPriority: 0
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: enable
-    ObjectType: 308
-    InstanceId: 72
-    ParentId: 71
-    IsNameEditable: 0
-    QualifiedType: System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 3, y: .465202868}
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
+    IsNameEditable: 1
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1627,21 +1620,21 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 72
     LayoutPriority: 0
-    SourceId: 69
-    PortIndex: 1001
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: value= value+b<Int>
-    ObjectType: 101
-    InstanceId: 73
-    ParentId: 71
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    QualifiedType: 
     LocalAnchorPosition: {x: 0, y: 0}
-    DisplayOption: 1
+    DisplayOption: 0
     Scale: 1
-    MethodName: AddAndUpdate
-    NbOfParams: 1
+    MethodName: 
+    NbOfParams: 0
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 73
@@ -1650,13 +1643,13 @@ MonoBehaviour:
     PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: b
-    ObjectType: 300
-    InstanceId: 74
-    ParentId: 73
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 1, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1666,16 +1659,16 @@ MonoBehaviour:
     ExecutionPriority: 74
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:i1:1}'
+    PortIndex: -1
+    InitialValueArchive: 
     IsEntryState: 0
-  - RawName: value+b
-    ObjectType: 301
-    InstanceId: 75
-    ParentId: 73
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-    LocalAnchorPosition: {x: 2, y: 0}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1685,16 +1678,16 @@ MonoBehaviour:
     ExecutionPriority: 75
     LayoutPriority: 0
     SourceId: -1
-    PortIndex: 400
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Int Instance
-    ObjectType: 300
-    InstanceId: 76
-    ParentId: 73
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .177947208}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1703,8 +1696,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 76
     LayoutPriority: 0
-    SourceId: 89
-    PortIndex: 401
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: OnTriggerExit
@@ -1714,7 +1707,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 529.391357, y: -426.516693}
+    LocalAnchorPosition: {x: 13.5618896, y: -371.978638}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1722,7 +1715,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 77
-    LayoutPriority: 97
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -1754,7 +1747,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00100000005}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1774,7 +1767,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00200000009}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1794,7 +1787,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.Transform, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00300000003}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1814,7 +1807,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.Animator, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00400000019}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1834,7 +1827,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.SphereCollider, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00500000035}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1854,7 +1847,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 1, y: 0}
+    LocalAnchorPosition: {x: 1, y: .00600000052}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1870,10 +1863,10 @@ MonoBehaviour:
   - RawName: <Int>
     ObjectType: 1
     InstanceId: 85
-    ParentId: 77
+    ParentId: 20
     IsNameEditable: 0
     QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: -40.1694489, y: 33.8144531}
+    LocalAnchorPosition: {x: 97.7241211, y: -65.247139}
     DisplayOption: 1
     Scale: 1
     MethodName: 
@@ -1892,7 +1885,7 @@ MonoBehaviour:
     ParentId: 85
     IsNameEditable: 0
     QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .510905445}
+    LocalAnchorPosition: {x: 3, y: .356908113}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1901,7 +1894,7 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 86
     LayoutPriority: 0
-    SourceId: 90
+    SourceId: 23
     PortIndex: 401
     InitialValueArchive: 
     IsEntryState: 0
@@ -1943,13 +1936,13 @@ MonoBehaviour:
     PortIndex: 400
     InitialValueArchive: 
     IsEntryState: 0
-  - RawName: Int Instance
-    ObjectType: 302
-    InstanceId: 89
-    ParentId: 71
+  - RawName: 
+    ObjectType: 10000
+    InstanceId: -1
+    ParentId: -1
     IsNameEditable: 1
-    QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .0994291529}
+    QualifiedType: 
+    LocalAnchorPosition: {x: 0, y: 0}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -1958,8 +1951,8 @@ MonoBehaviour:
     Tooltip: 
     ExecutionPriority: 89
     LayoutPriority: 0
-    SourceId: 44
-    PortIndex: 0
+    SourceId: -1
+    PortIndex: -1
     InitialValueArchive: 
     IsEntryState: 0
   - RawName: Int Instance
@@ -2098,10 +2091,10 @@ MonoBehaviour:
   - RawName: Sub<Math>
     ObjectType: 102
     InstanceId: 97
-    ParentId: 77
+    ParentId: 20
     IsNameEditable: 1
     QualifiedType: iCS_Math, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: -98.102005, y: 100.318977}
+    LocalAnchorPosition: {x: 39.7915649, y: 1.25738525}
     DisplayOption: 0
     Scale: 1
     MethodName: Sub
@@ -2174,11 +2167,11 @@ MonoBehaviour:
   - RawName: Max<Mathf>
     ObjectType: 102
     InstanceId: 101
-    ParentId: 77
+    ParentId: 20
     IsNameEditable: 1
     QualifiedType: UnityEngine.Mathf, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -40.1351471, y: 177.808716}
+    LocalAnchorPosition: {x: 97.7584229, y: 78.7471313}
     DisplayOption: 1
     Scale: 1
     MethodName: Max
@@ -2255,7 +2248,7 @@ MonoBehaviour:
     IsNameEditable: 0
     QualifiedType: UnityEngine.MonoBehaviour, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -147.450073, y: -77.7160034}
+    LocalAnchorPosition: {x: -116.762085, y: 160.814865}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2263,7 +2256,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 105
-    LayoutPriority: 82
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2395,7 +2388,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Animator, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -377.242859, y: 17.7192917}
+    LocalAnchorPosition: {x: -377.242859, y: 12.5547485}
     DisplayOption: 0
     Scale: 1
     MethodName: SetBool
@@ -2403,7 +2396,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 112
-    LayoutPriority: 97
+    LayoutPriority: -610
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2550,7 +2543,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.Animator, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -424.421051, y: 83.09021}
+    LocalAnchorPosition: {x: -424.421021, y: 88.2547531}
     DisplayOption: 1
     Scale: 1
     MethodName: IsInTransition
@@ -2558,7 +2551,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 120
-    LayoutPriority: 97
+    LayoutPriority: -610
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2626,7 +2619,7 @@ MonoBehaviour:
     ParentId: 105
     IsNameEditable: 1
     QualifiedType: Int, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    LocalAnchorPosition: {x: 3, y: .339151412}
+    LocalAnchorPosition: {x: 3, y: .52750808}
     DisplayOption: 0
     Scale: 1
     MethodName: 
@@ -2704,7 +2697,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: UnityEngine.AudioSource, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -484.523468, y: 179.295197}
+    LocalAnchorPosition: {x: -507.603882, y: 179.295197}
     DisplayOption: 0
     Scale: 1
     MethodName: get_isPlaying
@@ -2712,7 +2705,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 128
-    LayoutPriority: 97
+    LayoutPriority: -610
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -2763,7 +2756,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_Boolean, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: -336.984375, y: 178.987061}
+    LocalAnchorPosition: {x: -313.903931, y: 178.987061}
     DisplayOption: 0
     Scale: 1
     MethodName: Not
@@ -2771,7 +2764,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 131
-    LayoutPriority: 97
+    LayoutPriority: -610
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -3028,7 +3021,7 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: -1
     PortIndex: 0
-    InitialValueArchive: '{12:InitialValue1:O1:6}'
+    InitialValueArchive: '{12:InitialValue1:O1:5}'
     IsEntryState: 0
   - RawName: AudioSource Instance
     ObjectType: 300
@@ -3086,7 +3079,7 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: 146
     PortIndex: 1001
-    InitialValueArchive: '{12:InitialValue1:b1:T}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: 
     ObjectType: 10000
@@ -3208,7 +3201,6 @@ MonoBehaviour:
   - {fileID: 9500000}
   - {fileID: 13500000}
   - {fileID: 8200000}
-  - {fileID: 8300000, guid: 88f31fb977a578147854124d826dabb7, type: 3}
   - {fileID: 8300000, guid: 6be6df9c39e4b7f448d382605b849a08, type: 3}
   EngineObject:
     RawName: 
