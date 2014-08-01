@@ -20,6 +20,8 @@ public static partial class iCS_UserCommands {
 
         var animationStarts= new Rect[iStorage.EditorObjects.Count];
         iStorage.ForEach(obj=> { animationStarts[obj.InstanceId]= obj.AnimationTargetRect;});
+		var previousScrollPosition= iStorage.ScrollPosition;
+		var previousScale= iStorage.GuiScale;
         iStorage.AnimateGraph(null,
             _=> {
                 // Keep a copy of the animation start Rect.
@@ -50,6 +52,16 @@ public static partial class iCS_UserCommands {
                         obj.ResetAnimationRect(animationStarts[id]);
                     }
                 }
+				var visualEditor= iCS_EditorController.FindVisualEditor();
+				if(visualEditor != null) {
+					var animationTime= iCS_PreferencesController.AnimationTime;
+					visualEditor.AnimateScrollPosition(previousScrollPosition,
+													   iStorage.ScrollPosition,
+													   animationTime);
+					visualEditor.AnimateScale(previousScale,
+											  iStorage.GuiScale,
+											  animationTime);
+				}
             }
         );
         // Update central visual script data

@@ -75,7 +75,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(IStorage == null) return;
         Vector2 newScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
         float deltaTime= Prefs.AnimationTime;
-        myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        AnimateScrollPosition(ScrollPosition, newScrollPosition, deltaTime);
         iCS_UserCommands.SetScrollPosition(IStorage, newScrollPosition);
     }
 	// ----------------------------------------------------------------------
@@ -83,17 +83,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(IStorage == null) return;
         Vector2 newScrollPosition= point-0.5f/newScale*new Vector2(position.width, position.height);
         float deltaTime= Prefs.AnimationTime;
-        myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        AnimateScrollPosition(ScrollPosition, newScrollPosition, deltaTime);
         iCS_UserCommands.SetScrollPosition(IStorage, newScrollPosition);
-        myAnimatedScale.Start(Scale, newScale, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        AnimateScale(Scale, newScale, deltaTime);
         iCS_UserCommands.SetZoom(IStorage, newScale);
     }
 	// ----------------------------------------------------------------------
     public void ScaleOnPivot(Vector2 pivot, float newScale) {
         float deltaTime= Prefs.AnimationTime;
         var newScrollPosition= pivot + (ScrollPosition - pivot) * Scale / newScale;
-        myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
-        myAnimatedScale.Start(Scale, newScale, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        AnimateScrollPosition(ScrollPosition, newScrollPosition, deltaTime);
+        AnimateScale(Scale, newScale, deltaTime);
         iCS_UserCommands.SetScrollPosition(IStorage, newScrollPosition);
         iCS_UserCommands.SetZoom(IStorage, newScale);
     }
@@ -153,4 +153,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         IStorage.ScrollPosition+= adjustment;
     }
+
+	// ======================================================================
+	// Utilities
+	// ----------------------------------------------------------------------
+	public void AnimateScrollPosition(Vector2 startPos, Vector2 targetPos, float deltaTime) {
+        myAnimatedScrollPosition.Start(startPos, targetPos, deltaTime,
+									   (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+	}
+	// ----------------------------------------------------------------------
+	public void AnimateScale(float startScale, float targetScale, float deltaTime) {
+        myAnimatedScale.Start(startScale, targetScale, deltaTime,
+							  (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+	}
 }
