@@ -46,17 +46,23 @@ public static partial class iCS_UserCommands {
             name= obj.DefaultName;
         }
         OpenTransaction(iStorage);
-        iStorage.AnimateGraph(null,
-            _=> {
-                obj.Name= name;
-                if(obj.IsNode) {
-                    iStorage.ForcedRelayoutOfTree();
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    obj.Name= name;
+                    if(obj.IsNode) {
+                        iStorage.ForcedRelayoutOfTree();
+                    }
+                    else if(obj.IsDataOrControlPort) {
+                        iStorage.ForcedRelayoutOfTree();
+                    }
                 }
-                else if(obj.IsDataOrControlPort) {
-                    iStorage.ForcedRelayoutOfTree();
-                }
-            }
-        );
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
         CloseTransaction(iStorage, "Change name => "+name, TransactionType.Field);
         iCS_EditorController.RepaintEditorsWithLabels();
     }
@@ -65,12 +71,18 @@ public static partial class iCS_UserCommands {
         if(port == null) return;
         var iStorage= port.IStorage;
         OpenTransaction(iStorage);
-        iStorage.AnimateGraph(null,
-            _=> {
-				iStorage.AutoLayoutPort(port);
-				iStorage.ForcedRelayoutOfTree();
-		    }
-		);
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+    				iStorage.AutoLayoutPort(port);
+    				iStorage.ForcedRelayoutOfTree();
+    		    }
+    		);            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
         // Save result.
         CloseTransaction(iStorage, "AutoLayout Port => "+port.Name);
     }
@@ -79,12 +91,18 @@ public static partial class iCS_UserCommands {
         if(node == null || !node.IsNode) return;
         var iStorage= node.IStorage;
         OpenTransaction(iStorage);
-        iStorage.AnimateGraph(null,
-            _=> {
-				iStorage.AutoLayoutPortOnNode(node);
-				iStorage.ForcedRelayoutOfTree();
-		    }
-		);
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+    				iStorage.AutoLayoutPortOnNode(node);
+    				iStorage.ForcedRelayoutOfTree();
+    		    }
+    		);            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
         // Save result.
         CloseTransaction(iStorage, "AutoLayout Ports on=> "+node.Name);
     }
@@ -93,12 +111,18 @@ public static partial class iCS_UserCommands {
         if(messageHandler == null) return;
         var iStorage= messageHandler.IStorage;
         OpenTransaction(iStorage);
-        iStorage.AnimateGraph(null,
-            _=> {
-                iStorage.UpdateBehaviourMessagePorts(messageHandler);
-                iStorage.ForcedRelayoutOfTree();
-            }
-        );
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    iStorage.UpdateBehaviourMessagePorts(messageHandler);
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
         CloseTransaction(iStorage, "Update Ports=> "+messageHandler.Name);
     }
     // ----------------------------------------------------------------------

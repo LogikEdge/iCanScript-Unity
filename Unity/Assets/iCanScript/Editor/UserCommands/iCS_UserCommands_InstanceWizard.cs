@@ -92,7 +92,7 @@ public static partial class iCS_UserCommands {
             );
             SendEndRelayoutOfTree(iStorage);            
         }
-        catch(System.Element) {
+        catch(System.Exception) {
             element= null;
         }
         if(element == null) {
