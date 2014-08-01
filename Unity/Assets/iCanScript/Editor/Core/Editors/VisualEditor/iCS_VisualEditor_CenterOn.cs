@@ -13,6 +13,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         // Move to higher parent if scale is too large.
         float scale= ProposeViewportScalingFor(focusNode, 0.75f, 1f);
+        if(Math3D.IsSmallerOrEqual(scale, 0.75f)) {
+            CenterAndScaleOn(focusNode);
+            return;
+        }
         if(focusNode != IStorage.DisplayRoot) {
             var focusNodeParent= focusNode.ParentNode;
             if(focusNodeParent != null) {
