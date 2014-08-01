@@ -19,9 +19,15 @@ public static partial class iCS_UserCommands {
         if(!IsCreationAllowed()) return false;
         var iStorage= node.IStorage;
         OpenTransaction(iStorage);
-        string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
-        node.IconGUID= iconGUID;                    
-        node.LayoutNode();
+        try {
+            string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
+            node.IconGUID= iconGUID;                    
+            node.LayoutNode();            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return false;
+        }
 	    CloseTransaction(iStorage, "Change Icon");
         iCS_EditorController.RepaintEditorsWithLabels();			
         return true;
@@ -31,30 +37,42 @@ public static partial class iCS_UserCommands {
                                       iCS_IStorage iStorage, iCS_EditorObject parent, Vector2 globalPos) {
         if(!IsCreationAllowed()) return;
         OpenTransaction(iStorage);
-        iStorage.AnimateGraph(null,
-            _=> {
-                if(parent.IsFoldedInLayout || parent.IsIconizedInLayout) {
-                    parent.Unfold();
-                }
-                iCS_IStorage srcIStorage= new iCS_IStorage(sourceMonoBehaviour);
-                iCS_EditorObject srcRoot= srcIStorage.EditorObjects[sourceRoot.InstanceId];
-                iCS_EditorObject pasted= iStorage.Copy(srcRoot, srcIStorage, parent, globalPos, iStorage);
-                if(pasted != null) {
-                    if(pasted.IsUnfoldedInLayout) {
-                        pasted.Fold();            
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    if(parent.IsFoldedInLayout || parent.IsIconizedInLayout) {
+                        parent.Unfold();
                     }
-                    iStorage.SelectedObject= pasted;
-                    iStorage.ForcedRelayoutOfTree(pasted, globalPos);                    
+                    iCS_IStorage srcIStorage= new iCS_IStorage(sourceMonoBehaviour);
+                    iCS_EditorObject srcRoot= srcIStorage.EditorObjects[sourceRoot.InstanceId];
+                    iCS_EditorObject pasted= iStorage.Copy(srcRoot, srcIStorage, parent, globalPos, iStorage);
+                    if(pasted != null) {
+                        if(pasted.IsUnfoldedInLayout) {
+                            pasted.Fold();            
+                        }
+                        iStorage.SelectedObject= pasted;
+                        iStorage.ForcedRelayoutOfTree(pasted, globalPos);                    
+                    }
                 }
-            }
-        );
+            );            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
         CloseTransaction(iStorage, "Add Prefab "+sourceRoot.Name);
     }
 	// ----------------------------------------------------------------------
     public static void DragAndDropSetPortValue(iCS_EditorObject port, UnityEngine.Object value) {
         var iStorage= port.IStorage;
         OpenTransaction(iStorage);
-        port.PortValue= value;
+        try {
+            port.PortValue= value;            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
         CloseTransaction(iStorage, "Set port "+port.Name);
     }
 

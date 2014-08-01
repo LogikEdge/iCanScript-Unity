@@ -19,20 +19,26 @@ public static partial class iCS_UserCommands {
         }
         var iStorage= node.IStorage;
         OpenTransaction(iStorage);
-        SendStartRelayoutOfTree(iStorage);
-        iStorage.AnimateGraph(null,
-            _=> {
-                node.Unfold();
-                node.SetAsHighestLayoutPriority();
-                iStorage.ForcedRelayoutOfTree();
-                node.ClearLayoutPriority();
-                var visualEditor= iCS_EditorController.FindVisualEditor();
-                if(visualEditor != null) {
-                    visualEditor.SmartFocusOn(node);
+        try {
+            SendStartRelayoutOfTree(iStorage);
+            iStorage.AnimateGraph(null,
+                _=> {
+                    node.Unfold();
+                    node.SetAsHighestLayoutPriority();
+                    iStorage.ForcedRelayoutOfTree();
+                    node.ClearLayoutPriority();
+                    var visualEditor= iCS_EditorController.FindVisualEditor();
+                    if(visualEditor != null) {
+                        visualEditor.SmartFocusOn(node);
+                    }
                 }
-            }
-        );
-        SendEndRelayoutOfTree(iStorage);
+            );
+            SendEndRelayoutOfTree(iStorage);            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
         CloseTransaction(iStorage, "Unfold "+node.Name);
     }
 	// ----------------------------------------------------------------------
@@ -45,21 +51,27 @@ public static partial class iCS_UserCommands {
             return;
         }
         var iStorage= node.IStorage;
-        OpenTransaction(iStorage);        
-        SendStartRelayoutOfTree(iStorage);
-        iStorage.AnimateGraph(null,
-            _=> {
-                node.Fold();
-                node.SetAsHighestLayoutPriority();
-                iStorage.ForcedRelayoutOfTree();
-                node.ClearLayoutPriority();
-                var visualEditor= iCS_EditorController.FindVisualEditor();
-                if(visualEditor != null) {
-                    visualEditor.SmartFocusOn(node);
+        OpenTransaction(iStorage);
+        try {
+            SendStartRelayoutOfTree(iStorage);
+            iStorage.AnimateGraph(null,
+                _=> {
+                    node.Fold();
+                    node.SetAsHighestLayoutPriority();
+                    iStorage.ForcedRelayoutOfTree();
+                    node.ClearLayoutPriority();
+                    var visualEditor= iCS_EditorController.FindVisualEditor();
+                    if(visualEditor != null) {
+                        visualEditor.SmartFocusOn(node);
+                    }
                 }
-            }
-        );
-        SendEndRelayoutOfTree(iStorage);
+            );
+            SendEndRelayoutOfTree(iStorage);            
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
         CloseTransaction(iStorage, "Fold "+node.Name);
     }
 	// ----------------------------------------------------------------------
@@ -73,20 +85,26 @@ public static partial class iCS_UserCommands {
         }
         var iStorage= node.IStorage;
         OpenTransaction(iStorage);
-        SendStartRelayoutOfTree(iStorage);
-        iStorage.AnimateGraph(null,
-            _=> {
-                node.Iconize();
-                node.SetAsHighestLayoutPriority();
-                iStorage.ForcedRelayoutOfTree();
-                node.ClearLayoutPriority();
-                var visualEditor= iCS_EditorController.FindVisualEditor();
-                if(visualEditor != null) {
-                    visualEditor.SmartFocusOn(node);
+        try {
+            SendStartRelayoutOfTree(iStorage);
+            iStorage.AnimateGraph(null,
+                _=> {
+                    node.Iconize();
+                    node.SetAsHighestLayoutPriority();
+                    iStorage.ForcedRelayoutOfTree();
+                    node.ClearLayoutPriority();
+                    var visualEditor= iCS_EditorController.FindVisualEditor();
+                    if(visualEditor != null) {
+                        visualEditor.SmartFocusOn(node);
+                    }
                 }
-            }
-        );
-        SendEndRelayoutOfTree(iStorage);       
+            );
+            SendEndRelayoutOfTree(iStorage);                   
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
         CloseTransaction(iStorage, "Iconize "+node.Name);
     }
 
