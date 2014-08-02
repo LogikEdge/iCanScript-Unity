@@ -17,15 +17,6 @@ public static class iCS_TextureCache {
         return guid != null ? GetTexture(AssetDatabase.GUIDToAssetPath(guid)) : null;
     }
     // ----------------------------------------------------------------------
-    [MenuItem("DevTools/Print Cached Textures",false,1100)]
-    public static void PrintCachedTextures() {
-        int i= 0;
-        foreach(var pair in OurCachedTextures) {
-            Debug.Log("["+i+"]=> "+pair.Key);
-            ++i;
-        }        
-    }
-    // ----------------------------------------------------------------------
     public static Texture2D GetTexture(string fileName) {
         Texture2D texture= null;
         if(OurCachedTextures.ContainsKey(fileName)) {
