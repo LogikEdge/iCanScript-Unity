@@ -50,11 +50,6 @@ public static partial class iCS_UserCommands {
         var iStorage= port.IStorage;
         OpenTransaction(iStorage);
     }
-
-    public static void StartPortConnection(iCS_EditorObject port) {
-//        var iStorage= port.IStorage;
-//        iStorage.PrepareToAnimate();
-    }
     public static void EndPortConnection(iCS_EditorObject port) {
         var iStorage= port.IStorage;
         iStorage.AnimateGraph(null,
