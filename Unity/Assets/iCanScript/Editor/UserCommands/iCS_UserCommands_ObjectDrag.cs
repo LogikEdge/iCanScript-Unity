@@ -13,7 +13,7 @@ public static partial class iCS_UserCommands {
         OpenTransaction(node.IStorage);
     }
     public static void EndNodeDrag(iCS_EditorObject node) {
-        CloseTransaction(node.IStorage, "Node Drag");
+        CloseTransaction(node.IStorage, "Drag "+node.Name);
     }
     public static void StartMultiSelectionNodeDrag(iCS_IStorage iStorage) {
         OpenTransaction(iStorage);
@@ -38,7 +38,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree(node, globalPosition);
             }
         );
-        CloseTransaction(iStorage, "Node Relocation");
+        CloseTransaction(iStorage, "Relocate "+node.Name);
     }
     public static void CancelNodeRelocation(iCS_EditorObject node) {
         CancelTransaction(node.IStorage);
@@ -82,6 +82,6 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        CloseTransaction(iStorage, "Port Drag");
+        CloseTransaction(iStorage, "Drag "+port.Name);
     }
 }
