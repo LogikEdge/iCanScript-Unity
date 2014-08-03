@@ -154,32 +154,4 @@ public partial class iCS_IStorage {
         SelectedObject= selectedObject;
         myLastTransactionType= TransactionType.Graph;
     }
-    // ----------------------------------------------------------------------
-    public void FlushLayoutData() {
-        FlushSelectedObject();
-        FlushScrollpositionAndGuiScale();
-        FlushDisplayRoot();
-    }
-    // ----------------------------------------------------------------------
-    public void FlushSelectedObject() {
-        PersistentStorage.SelectedObject= Storage.SelectedObject;
-    }
-    // ----------------------------------------------------------------------
-    public void FlushScrollpositionAndGuiScale() {
-        FlushScrollposition();
-        FlushGuiScale();
-    }
-    // ----------------------------------------------------------------------
-    public void FlushScrollposition() {
-        PersistentStorage.ScrollPosition= Storage.ScrollPosition;
-    }
-    // ----------------------------------------------------------------------
-    public void FlushGuiScale() {
-        PersistentStorage.GuiScale= Storage.GuiScale;
-    }
-    // ----------------------------------------------------------------------
-    public void FlushDisplayRoot() {
-        PersistentStorage.DisplayRoot= Storage.DisplayRoot;
-        PersistentStorage.ShowDisplayRootNode= Storage.ShowDisplayRootNode;
-    }
 }
