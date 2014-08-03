@@ -139,7 +139,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.F: {
                 if(IsControlKeyDown) {
-                    iCS_EditorUtility.SafeCenterOn(DisplayRoot, IStorage);                        
+                    iCS_UserCommands.FocusOn(DisplayRoot);                        
                 }
                 else {
                     var focusNode= SelectedObject;
@@ -150,7 +150,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 focusNode= parent;
                             }
                         }
-                        SmartFocusOn(focusNode);
+                        iCS_UserCommands.SmartFocusOn(focusNode);
                     }
                 }
                 Event.current.Use();

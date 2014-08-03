@@ -107,5 +107,24 @@ public static partial class iCS_UserCommands {
         }
         CloseTransaction(iStorage, "Iconize "+node.Name);
     }
-
+	// ----------------------------------------------------------------------
+    public static void FocusOn(iCS_EditorObject obj) {
+        var visualEditor= iCS_EditorController.FindVisualEditor();
+        if(visualEditor != null) {
+            var iStorage= obj.IStorage;
+            OpenTransaction(iStorage);
+            visualEditor.CenterAndScaleOn(obj);
+            CloseTransaction(iStorage, "Focus on "+obj.Name);
+        }
+    }
+	// ----------------------------------------------------------------------
+    public static void SmartFocusOn(iCS_EditorObject obj) {
+        var visualEditor= iCS_EditorController.FindVisualEditor();
+        if(visualEditor != null) {
+            var iStorage= obj.IStorage;
+            OpenTransaction(iStorage);
+            visualEditor.SmartFocusOn(obj);
+            CloseTransaction(iStorage, "Focus on "+obj.Name);
+        }
+    }
 }

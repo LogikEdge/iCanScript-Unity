@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
 
-public enum TransactionType { Graph, Navigation, Field };
+public enum TransactionType { None, Graph, Navigation, Field };
 
 public partial class iCS_IStorage {
     // ======================================================================
@@ -14,7 +14,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public bool             ShowUserTransaction         = false;
     public int              UserTransactionCount        = 0;
-    public TransactionType  myLastTransactionType       = TransactionType.Graph;
+    public TransactionType  myLastTransactionType       = TransactionType.None;
     public int              myFirstNavigationUndoGroupId= 0;
     public int              myFirstFieldUndoGroupId     = 0;
     
@@ -152,6 +152,6 @@ public partial class iCS_IStorage {
         // Re-initialize multi-selection list.
         var selectedObject= SelectedObject;
         SelectedObject= selectedObject;
-        myLastTransactionType= TransactionType.Graph;
+        myLastTransactionType= TransactionType.None;
     }
 }
