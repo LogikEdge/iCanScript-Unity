@@ -17,6 +17,7 @@ public partial class iCS_IStorage {
     public TransactionType  myLastTransactionType       = TransactionType.None;
     public int              myFirstNavigationUndoGroupId= 0;
     public int              myFirstFieldUndoGroupId     = 0;
+           int              myCurrentTransactionGroupId = 0;
     
     // ======================================================================
     // User transaction management
@@ -31,6 +32,10 @@ public partial class iCS_IStorage {
         }
     }
     public void OpenUserTransaction() {
+        if(UserTransactionCount == 0) {
+            Undo.IncrementCurrentGroup();
+            myCurrentTransactionGroupId= Undo.GetCurrentGroup();
+        }
         ++UserTransactionCount;
 //        Debug.Log("Open: User Transaction Count=> "+UserTransactionCount);
     }
@@ -80,10 +85,12 @@ public partial class iCS_IStorage {
             Debug.Log("iCanScript: Saving=> "+undoMessage);            
         }
         ++Storage.UndoRedoId;
-        // Increment undo group if the command is of a new type.
-        if(transactionType != myLastTransactionType || transactionType == TransactionType.Graph) {
-            Undo.IncrementCurrentGroup();
+        // Collapse undo group for same transaction.
+        var currentGroupId= Undo.GetCurrentGroup();
+        if(currentGroupId != myCurrentTransactionGroupId) {
+            Undo.CollapseUndoOperations(myCurrentTransactionGroupId);
         }
+        // Prepare to record modification to group.
         Undo.RecordObject(iCSMonoBehaviour, undoMessage);
         SaveStorage();        
         // Save type of user operation
