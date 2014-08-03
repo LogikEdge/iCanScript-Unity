@@ -12,10 +12,11 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public  int             UserTransactionCount        = 0;
-    public  TransactionType myLastTransactionType       = TransactionType.Graph;
-    public  int             myFirstNavigationUndoGroupId= 0;
-    public  int             myFirstFieldUndoGroupId     = 0;
+    public bool             ShowUserTransaction         = false;
+    public int              UserTransactionCount        = 0;
+    public TransactionType  myLastTransactionType       = TransactionType.Graph;
+    public int              myFirstNavigationUndoGroupId= 0;
+    public int              myFirstFieldUndoGroupId     = 0;
     
     // ======================================================================
     // User transaction management
@@ -75,10 +76,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     private void SaveStorage(string undoMessage, TransactionType transactionType) {
         // Start recording changes for Undo.
-//        Debug.Log("Saving visual script");
+        if(ShowUserTransaction) {
+            Debug.Log("iCanScript: Saving=> "+undoMessage);            
+        }
         ++Storage.UndoRedoId;
         Undo.RecordObject(iCSMonoBehaviour, undoMessage);
         SaveStorage();        
+        // Save type of user operation
         if(transactionType == myLastTransactionType) {
             if(myLastTransactionType == TransactionType.Navigation) {
                 Undo.CollapseUndoOperations(myFirstNavigationUndoGroupId);
@@ -87,6 +91,7 @@ public partial class iCS_IStorage {
                 Undo.CollapseUndoOperations(myFirstFieldUndoGroupId);                
             }            
         }
+        // New user operation type
         else {
             // Take a snapshot of the first navigation transaction.
             if(transactionType == TransactionType.Navigation) {

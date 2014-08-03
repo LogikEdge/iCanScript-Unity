@@ -145,10 +145,10 @@ public static class iCS_DevMenus {
         Debug.Log("Machine Name=> "+System.Environment.MachineName);
         Debug.Log("User Name=> "+System.Environment.UserName);
     }    
-    [MenuItem("DevTools/Show Transaction Count", false, 1051)]
-    public static void ShowTransactionCount() {
+    [MenuItem("DevTools/Toggle Show User Transactions", false, 1051)]
+    public static void ToggleShowUserTransactions() {
 		iCS_IStorage iStorage= iCS_VisualScriptDataController.IStorage;
 		if(iStorage == null) return;
-        Debug.Log("User Transaction Count=> "+iStorage.UserTransactionCount);
+        iStorage.ShowUserTransaction= iStorage.ShowUserTransaction ^ true;
     }    
 }
