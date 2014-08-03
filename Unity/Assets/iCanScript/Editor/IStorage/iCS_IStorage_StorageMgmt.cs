@@ -12,7 +12,6 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    private string          myUndoMessage               = "";
     public  int             UserTransactionCount        = 0;
     public  TransactionType myLastTransactionType       = TransactionType.Graph;
     public  int             myFirstNavigationUndoGroupId= 0;
@@ -72,13 +71,6 @@ public partial class iCS_IStorage {
     public void SynchronizeAfterUndoRedo() {
         iCS_UserCommands.UndoRedo(this);
 		iCS_EditorController.RepaintVisualEditor();
-    }
-    // ----------------------------------------------------------------------
-    void SaveStorageWithUndoRedoSupport() {
-        // Start recording changes for Undo.
-        ++Storage.UndoRedoId;
-        Undo.RecordObject(iCSMonoBehaviour, myUndoMessage);
-        SaveStorage();
     }
     // ----------------------------------------------------------------------
     private void SaveStorage(string undoMessage, TransactionType transactionType) {
