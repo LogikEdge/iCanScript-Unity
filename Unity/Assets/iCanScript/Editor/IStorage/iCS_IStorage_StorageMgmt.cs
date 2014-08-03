@@ -80,6 +80,10 @@ public partial class iCS_IStorage {
             Debug.Log("iCanScript: Saving=> "+undoMessage);            
         }
         ++Storage.UndoRedoId;
+        // Increment undo group if the command is of a new type.
+        if(transactionType != myLastTransactionType || transactionType == TransactionType.Graph) {
+            Undo.IncrementCurrentGroup();
+        }
         Undo.RecordObject(iCSMonoBehaviour, undoMessage);
         SaveStorage();        
         // Save type of user operation
