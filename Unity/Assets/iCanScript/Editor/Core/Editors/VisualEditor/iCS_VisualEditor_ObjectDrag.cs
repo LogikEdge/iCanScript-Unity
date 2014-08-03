@@ -351,7 +351,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     break;
                 case DragTypeEnum.PortConnection:                
-//                	iCS_UserCommands.StartPortConnection(DragOriginalPort);
                     // Attempt new port binding.
                     if(VerifyNewDragConnection()) {
                         iCS_UserCommands.EndPortConnection(DragOriginalPort);
@@ -474,6 +473,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
 
         finally {
+            // Validate end drag operations.
+            IStorage.ClearUserTransactions();
             // Reset dragging state.
             ResetDrag();
         }
