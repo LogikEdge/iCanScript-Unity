@@ -44,7 +44,7 @@ public partial class iCS_IStorage {
             --UserTransactionCount;
         }
         if(UserTransactionCount == 0) {
-            SaveStorage(undoMessage, transactionType);
+            SaveStorageWithUndo(undoMessage, transactionType);
         }
 //        Debug.Log("Close: User Transaction Count=> "+UserTransactionCount);
     }
@@ -74,7 +74,7 @@ public partial class iCS_IStorage {
 		iCS_EditorController.RepaintVisualEditor();
     }
     // ----------------------------------------------------------------------
-    private void SaveStorage(string undoMessage, TransactionType transactionType) {
+    private void SaveStorageWithUndo(string undoMessage, TransactionType transactionType) {
         // Start recording changes for Undo.
         if(ShowUserTransaction) {
             Debug.Log("iCanScript: Saving=> "+undoMessage);            
