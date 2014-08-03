@@ -307,7 +307,8 @@ public static class iCS_GuiUtilities {
             string value= ((string)currentValue) ?? "";
             string newValue= value;
             if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB, true)) {
-                if(value != newValue) {
+                newValue= newValue ?? "";
+                if(string.Compare(value, newValue) != 0) {
                     isDirty= true;                    
                 }
             }
