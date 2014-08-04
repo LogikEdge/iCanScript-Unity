@@ -4,14 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static partial class Prelude {
-    // ======================================================================
-    // Base Time Utilities
-    // ----------------------------------------------------------------------
-    // Return a time stamp in seconds.
-    public static float CurrentTime() {
-        return Time.realtimeSinceStartup;    
-    }
-
     // ----------------------------------------------------------------------
     // Class used to track a ratio between a start and ent time.
     public class TimeRatio {

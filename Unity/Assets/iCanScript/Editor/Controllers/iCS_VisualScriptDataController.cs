@@ -30,7 +30,7 @@ public static class iCS_VisualScriptDataController {
     // Install
     // ---------------------------------------------------------------------------------
     static iCS_VisualScriptDataController() {
-        EditorApplication.update+= PeriodicUpdate;
+        mySaveTimer= iCS_TimerService.CreateTimedAction(0.5f, PerformSaveWithUndo);
     }
     public static void Start() {}
     public static void Shutdown() {}
@@ -71,8 +71,24 @@ public static class iCS_VisualScriptDataController {
 	}
 
     // =================================================================================
-    // Periodic update called 100 times per seconds.
+    // Save & Undo
     // ---------------------------------------------------------------------------------
-    public static void PeriodicUpdate() {
+    static iCS_TimerService.TimedAction     mySaveTimer= null;
+    static iCS_IStorage                     mySaveIStorage= null;
+    static string                           mySaveUndoMessage= null;
+    static TransactionType                  mySaveTransactionType= TransactionType.None;
+    
+    public static void SaveWithUndo(iCS_IStorage iStorage, string undoMessage, TransactionType transactionType) {
+        if(mySaveIStorage != null && mySaveIStorage != iStorage) {
+            PerformSaveWithUndo();
+        }
+        mySaveIStorage= iStorage;
+        mySaveUndoMessage= undoMessage;
+        mySaveTransactionType= transactionType;
+        mySaveTimer.Restart();
+    }
+    
+    static void PerformSaveWithUndo() {
+        mySaveIStorage.SaveWithUndo(mySaveUndoMessage, mySaveTransactionType);
     }
 }
