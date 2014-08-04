@@ -50,8 +50,9 @@ public static class iCS_SystemEvents {
         CheckCompileState();
     }
     // ----------------------------------------------------------------------
-    // Used to start the system events services.
+    // Used to start & shutdown the system events services.
     public static void Start() {}
+    public static void Shutdown() {}
     
     // ----------------------------------------------------------------------
     // This method attempts to determine what has changed in the hierarchy.

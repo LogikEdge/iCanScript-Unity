@@ -12,6 +12,7 @@ public static class iCS_CodeGenerator {
         iCS_SystemEvents.OnEditorStarted   += OnEditorStarted;				
 	}
 	public static void Start() {}
+    public static void Shutdown() {}
 
     // ----------------------------------------------------------------------
     // Generate code according to created node.

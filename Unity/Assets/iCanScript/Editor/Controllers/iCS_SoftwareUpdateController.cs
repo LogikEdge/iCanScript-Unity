@@ -16,6 +16,12 @@ public static class iCS_SoftwareUpdateController {
 	const string URL_DownloadPage= "http://"+iCS_WebConfig.DownloadsPage;
 	
 		
+    static iCS_SoftwareUpdateController() {
+        PeriodicUpdateVerification();
+    }
+    public static void Start() {}
+    public static void Shutdown() {}
+    
 	// =================================================================================
     // Manual & Periodic Software Update Verification functions.
     // ---------------------------------------------------------------------------------

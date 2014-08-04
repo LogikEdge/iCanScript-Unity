@@ -27,7 +27,29 @@ public static class iCS_VisualScriptDataController {
     }
 	
     // =================================================================================
-    // Storage & Selected object Update.
+    // Install
+    // ---------------------------------------------------------------------------------
+    static iCS_VisualScriptDataController() {
+        EditorApplication.update+= PeriodicUpdate;
+    }
+    public static void Start() {}
+    public static void Shutdown() {}
+    
+    // ---------------------------------------------------------------------------------
+    public static bool IsSameVisualScript(iCS_IStorage iStorage, iCS_VisualScriptData storage) {
+        if(iStorage == null || storage == null) return false;
+        if(iStorage.Storage == storage) return true;
+        return false;
+    }
+    // ---------------------------------------------------------------------------------
+    public static bool IsSameVisualScript(iCS_MonoBehaviourImp monoBehaviour, iCS_IStorage iStorage) {
+        if(monoBehaviour == null || iStorage == null) return false;
+        if(iStorage.iCSMonoBehaviour == monoBehaviour) return true;
+        return false;
+    }
+
+    // =================================================================================
+    // Storage & Selected object Update.  This update is called by the Editors.
     // ---------------------------------------------------------------------------------
 	public static void Update() {
         // Use previous game object if new selection does not include a visual script.
@@ -47,17 +69,10 @@ public static class iCS_VisualScriptDataController {
 			return;
 		}
 	}
-    
+
+    // =================================================================================
+    // Periodic update called 100 times per seconds.
     // ---------------------------------------------------------------------------------
-    public static bool IsSameVisualScript(iCS_IStorage iStorage, iCS_VisualScriptData storage) {
-        if(iStorage == null || storage == null) return false;
-        if(iStorage.Storage == storage) return true;
-        return false;
-    }
-    // ---------------------------------------------------------------------------------
-    public static bool IsSameVisualScript(iCS_MonoBehaviourImp monoBehaviour, iCS_IStorage iStorage) {
-        if(monoBehaviour == null || iStorage == null) return false;
-        if(iStorage.iCSMonoBehaviour == monoBehaviour) return true;
-        return false;
+    public static void PeriodicUpdate() {
     }
 }
