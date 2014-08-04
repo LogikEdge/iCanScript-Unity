@@ -49,6 +49,10 @@ public partial class iCS_IStorage {
             --UserTransactionCount;
         }
         if(UserTransactionCount == 0) {
+            // Perform graph cleanup once objects & layout are stable.
+            UpdateExecutionPriority();
+            for(int retries= 0; retries < 10 && Cleanup(); ++retries);
+            // Schedule saving this copy of the visual script.
             iCS_VisualScriptDataController.SaveWithUndo(this, undoMessage, transactionType);
         }
 //        Debug.Log("Close: User Transaction Count=> "+UserTransactionCount);
@@ -117,16 +121,12 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void SaveStorage() {
-        // Perform graph cleanup once objects & layout are stable.
-        UpdateExecutionPriority();
-        for(int retries= 0; retries < 10 && Cleanup(); ++retries);
         // Keep a copy of the selected object global position.
         Storage.SelectedObjectPosition= SelectedObject.GlobalPosition;
         // Tell Unity that our storage has changed.
         iCS_StorageImp.CopyFromTo(Storage, PersistentStorage);
         // Commit Undo transaction and forces redraw of inspector window.
         EditorUtility.SetDirty(iCSMonoBehaviour);
-        ClearUserTransactions();
         ++ModificationId;
         iCS_EditorController.RepaintAllEditors();
     }
