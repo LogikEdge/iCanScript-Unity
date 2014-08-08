@@ -21,7 +21,9 @@ public static class iCS_LicenseController {
     static bool     isStandardMode= false;
     static bool     isCommunityMode= true;
     
-    // ----------------------------------------------------------------------
+    // =================================================================================
+    // Installation
+    // ---------------------------------------------------------------------------------
     static iCS_LicenseController() {
         Initialize();
     }
@@ -32,6 +34,13 @@ public static class iCS_LicenseController {
         isCommunityMode   = HasCommunityLicense;
         ourReinitializeCnt= 0;
     }
+
+    public static void Start() {}
+    public static void Shutdown() {}
+    
+    
+    // ======================================================================
+    // ----------------------------------------------------------------------
     public static byte[] FingerPrint {
         get { return ourFingerPrint; }
     }

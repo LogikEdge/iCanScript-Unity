@@ -9,6 +9,8 @@ public static class iCS_AppController {
 	static iCS_AppController() {
         // Start all sub-systems.
         iCS_TimerService.Start();
+        iCS_EditionController.Start();
+        iCS_LicenseController.Start();
 		iCS_SoftwareUpdateController.Start();
 		iCS_SystemEvents.Start();
         iCS_GizmoController.Start();
@@ -28,6 +30,8 @@ public static class iCS_AppController {
         iCS_GizmoController.Shutdown();
         iCS_SystemEvents.Shutdown();
         iCS_SoftwareUpdateController.Shutdown();
+        iCS_LicenseController.Shutdown();
+        iCS_EditionController.Shutdown();
         iCS_TimerService.Shutdown();
     }
 

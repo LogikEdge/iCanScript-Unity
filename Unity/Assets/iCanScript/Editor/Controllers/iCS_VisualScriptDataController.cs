@@ -27,7 +27,7 @@ public static class iCS_VisualScriptDataController {
     }
 	
     // =================================================================================
-    // Install
+    // Installation
     // ---------------------------------------------------------------------------------
     static iCS_VisualScriptDataController() {
         mySaveTimer= iCS_TimerService.CreateTimedAction(0.5f, PerformSaveWithUndo);
