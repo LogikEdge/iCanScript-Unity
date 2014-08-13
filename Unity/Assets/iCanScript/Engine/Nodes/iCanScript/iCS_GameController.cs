@@ -10,7 +10,7 @@ public static class iCS_GameController {
                                          out bool b1, out bool b2, out bool b3,
                                          float scale= 1.0f) {
         float dt= iCS_Time.intervalTime;
-        float cdt= dt*speed;
+        float cdt= dt*scale;
         rawAnalog1= new Vector2(Input.GetAxis("Horizontal"), Input.GetAxisRaw("Vertical"));
         b1= Input.GetButton("Fire1");
         b2= Input.GetButton("Fire2");
@@ -46,7 +46,7 @@ public static class iCS_GameController {
             string.IsNullOrEmpty(analog2_x_name) ? 0f : Input.GetAxis(analog2_x_name),
             string.IsNullOrEmpty(analog2_y_name) ? 0f : Input.GetAxisRaw(analog2_y_name)
         );
-        analog2= dt*analog2_speed*rawAnalog2;
+        analog2= dt*analog2_scale*rawAnalog2;
         b1= string.IsNullOrEmpty(b1_name) ? false : Input.GetButton(b1_name);
         b2= string.IsNullOrEmpty(b2_name) ? false : Input.GetButton(b2_name);
         b3= string.IsNullOrEmpty(b3_name) ? false : Input.GetButton(b3_name);
@@ -55,7 +55,7 @@ public static class iCS_GameController {
         b6= string.IsNullOrEmpty(b6_name) ? false : Input.GetButton(b6_name);
         b7= string.IsNullOrEmpty(b7_name) ? false : Input.GetButton(b7_name);
         b8= string.IsNullOrEmpty(b8_name) ? false : Input.GetButton(b8_name);
-        return dt*analog1_speed*rawAnalog1;
+        return dt*analog1_scale*rawAnalog1;
     }
     
 }
