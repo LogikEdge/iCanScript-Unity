@@ -61,7 +61,7 @@ public static class iCS_Time {
                 float interval= time-ourLastFrameTime;
                 ourLastFrameTime= time;
                 if(interval > deltaTime*4f) {
-                    ourSmoothIntervalTime= deltaTime;
+                    ourSmoothIntervalTime= Mathf.Lerp(ourSmoothIntervalTime, deltaTime, 0.1f);
                 }
                 else {
                     ourSmoothIntervalTime= Mathf.Lerp(ourSmoothIntervalTime, interval, 0.1f);
