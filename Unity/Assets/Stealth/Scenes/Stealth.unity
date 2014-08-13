@@ -11149,12 +11149,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayRoot: 0
-  SelectedObject: 0
-  SelectedObjectPosition: {x: 420.362183, y: 633.891479}
+  SelectedObject: 117
+  SelectedObjectPosition: {x: 1239.15271, y: 263.071838}
   ShowDisplayRootNode: 1
   GuiScale: 1
-  ScrollPosition: {x: 185.557587, y: 443.710419}
-  UndoRedoId: 6599
+  ScrollPosition: {x: 329.267731, y: -184.827972}
+  UndoRedoId: 6612
   EngineObjects:
   - RawName: prop_lift_exit::Behaviour
     ObjectType: 0
@@ -13118,7 +13118,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 99
-    LayoutPriority: -29
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -13199,7 +13199,7 @@ MonoBehaviour:
     LayoutPriority: 0
     SourceId: 109
     PortIndex: 1001
-    InitialValueArchive: '{12:InitialValue1:b1:T}'
+    InitialValueArchive: 
     IsEntryState: 0
   - RawName: FindWithTag<RemoteCall>
     ObjectType: 102
@@ -13247,7 +13247,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 147.414368, y: -17.5760498}
+    LocalAnchorPosition: {x: 150.414368, y: -1.57606506}
     DisplayOption: 1
     Scale: 1
     MethodName: Delay
@@ -13463,7 +13463,7 @@ MonoBehaviour:
     IsNameEditable: 1
     QualifiedType: iCS_TimeDelay, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    LocalAnchorPosition: {x: 548.267578, y: -115.380539}
+    LocalAnchorPosition: {x: 592.267578, y: -141.381073}
     DisplayOption: 1
     Scale: 1
     MethodName: .ctor
@@ -13551,7 +13551,7 @@ MonoBehaviour:
     IconGUID: 
     Tooltip: 
     ExecutionPriority: 121
-    LayoutPriority: 73
+    LayoutPriority: 100
     SourceId: -1
     PortIndex: -1
     InitialValueArchive: 
@@ -25751,23 +25751,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: ScrollPosition.x
-      value: -812.486816
+      value: -300.543915
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: ScrollPosition.y
-      value: -547.818115
+      value: -97.498436
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: SelectedObjectPosition.x
-      value: 396.503418
+      value: 564
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: SelectedObjectPosition.y
-      value: 40.7154541
+      value: 330
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: UndoRedoId
-      value: 5934
+      value: 5936
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 9833c211526214f8f842276cd92f5557, type: 2}
       propertyPath: EngineObjects.Array.data[4].InitialValueArchive
@@ -88794,11 +88794,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayRoot: 0
   SelectedObject: 0
-  SelectedObjectPosition: {x: 396.503418, y: 40.7154541}
+  SelectedObjectPosition: {x: 564, y: 330}
   ShowDisplayRootNode: 1
   GuiScale: .886091232
-  ScrollPosition: {x: -812.486816, y: -547.818115}
-  UndoRedoId: 5934
+  ScrollPosition: {x: -300.543915, y: -97.498436}
+  UndoRedoId: 5936
   EngineObjects:
   - RawName: door_generic_slide::Behaviour
     ObjectType: 0

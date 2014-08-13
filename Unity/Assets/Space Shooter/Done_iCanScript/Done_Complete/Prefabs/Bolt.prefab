@@ -116,11 +116,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayRoot: 0
   SelectedObject: 0
-  SelectedObjectPosition: {x: -20.704483, y: -246.248444}
+  SelectedObjectPosition: {x: 12.5692749, y: 52.5854797}
   ShowDisplayRootNode: 1
   GuiScale: 2
-  ScrollPosition: {x: -319.954468, y: -419.498444}
-  UndoRedoId: 102
+  ScrollPosition: {x: -270.680725, y: -97.9145203}
+  UndoRedoId: 104
   EngineObjects:
   - RawName: Bolt::Behaviour
     ObjectType: 0
