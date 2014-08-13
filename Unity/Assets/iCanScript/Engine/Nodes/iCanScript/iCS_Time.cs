@@ -49,25 +49,25 @@ public static class iCS_Time {
     // =======================================================================
     static float ourLastFrameTime= 0f;
     static int   ourFrameCount= -1000;
-    static float ourIntervalTime= 0;
-    public static float intervalTime {
+    static float ourSmoothIntervalTime= 0;
+    public static float smoothIntervalTime {
         [iCS_Function]
         get {
             int frameCount= Time.frameCount;
             if(ourFrameCount != frameCount) {
                 ourFrameCount= frameCount;
                 float time= Time.time;
-                float deltaTime= Time.deltaTime;
+                float deltaTime= Time.smoothDeltaTime;
                 float interval= time-ourLastFrameTime;
                 ourLastFrameTime= time;
                 if(interval > deltaTime*4f) {
-                    ourIntervalTime= deltaTime;
+                    ourSmoothIntervalTime= deltaTime;
                 }
                 else {
-                    ourIntervalTime= interval;
+                    ourSmoothIntervalTime= Mathf.Lerp(ourSmoothIntervalTime, interval, 0.1f);
                 }
             }
-            return ourIntervalTime;
+            return ourSmoothIntervalTime;
         }
     }
 }
