@@ -8,7 +8,7 @@ public static class iCS_GameController {
 
     public static Vector2 GameController(out Vector2 rawAnalog1,
                                          out bool b1, out bool b2, out bool b3,
-                                         float speed= 1.0f) {
+                                         float scale= 1.0f) {
         float dt= iCS_Time.intervalTime;
         float cdt= dt*speed;
         rawAnalog1= new Vector2(Input.GetAxis("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -25,10 +25,10 @@ public static class iCS_GameController {
                                          out bool b5, out bool b6, out bool b7, out bool b8,
                                          string analog1_x_name= "Horizontal",
                                          string analog1_y_name= "Vertical",
-                                         float  analog1_speed= 1.0f,
+                                         float  analog1_scale= 1.0f,
                                          string analog2_x_name= null,
                                          string analog2_y_name= null,
-                                         float  analog2_speed= 1.0f,
+                                         float  analog2_scale= 1.0f,
                                          string b1_name= "Fire1",
                                          string b2_name= "Fire2",
                                          string b3_name= "Fire3",
