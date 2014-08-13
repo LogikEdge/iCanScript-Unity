@@ -6,6 +6,7 @@ using Prefs=iCS_PreferencesController;
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void SmartFocusOn(iCS_EditorObject obj) {
+        if(IStorage == null) return;
         var focusNode= obj;
         // Focus on port parent.
         if(obj.IsPort) {
