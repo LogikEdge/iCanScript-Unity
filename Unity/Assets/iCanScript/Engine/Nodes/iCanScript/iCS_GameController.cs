@@ -9,7 +9,7 @@ public static class iCS_GameController {
     public static Vector2 GameController(out Vector2 rawAnalog1,
                                          out bool b1, out bool b2, out bool b3,
                                          float speed= 1.0f) {
-        float dt= Time.deltaTime;
+        float dt= iCS_Time.intervalTime;
         float cdt= dt*speed;
         rawAnalog1= new Vector2(Input.GetAxis("Horizontal"), Input.GetAxisRaw("Vertical"));
         b1= Input.GetButton("Fire1");
@@ -37,7 +37,7 @@ public static class iCS_GameController {
                                          string b6_name= null,
                                          string b7_name= null,
                                          string b8_name= null) {
-        float dt= Time.deltaTime;
+        float dt= iCS_Time.intervalTime;
         rawAnalog1= new Vector2(
             string.IsNullOrEmpty(analog1_x_name) ? 0f : Input.GetAxis(analog1_x_name),
             string.IsNullOrEmpty(analog1_y_name) ? 0f : Input.GetAxisRaw(analog1_y_name)

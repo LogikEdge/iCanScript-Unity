@@ -45,4 +45,29 @@ public static class iCS_Time {
         isNotElapsed= !isElapsed;
         return isElapsed;
     }
+    
+    // =======================================================================
+    static float ourLastFrameTime= 0f;
+    static int   ourFrameCount= -1000;
+    static float ourIntervalTime= 0;
+    public static float intervalTime {
+        [iCS_Function]
+        get {
+            int frameCount= Time.frameCount;
+            if(ourFrameCount != frameCount) {
+                ourFrameCount= frameCount;
+                float time= Time.time;
+                float deltaTime= Time.deltaTime;
+                float interval= time-ourLastFrameTime;
+                ourLastFrameTime= time;
+                if(interval > deltaTime*4f) {
+                    ourIntervalTime= deltaTime;
+                }
+                else {
+                    ourIntervalTime= interval;
+                }
+            }
+            return ourIntervalTime;
+        }
+    }
 }

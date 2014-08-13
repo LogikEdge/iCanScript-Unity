@@ -34,5 +34,4 @@ public static class iCS_AppController {
         iCS_EditionController.Shutdown();
         iCS_TimerService.Shutdown();
     }
-
 }
