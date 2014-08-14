@@ -222,7 +222,18 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
             return FunctionPath+"/"+DisplayName;
         }
     }
-
+    // ----------------------------------------------------------------------
+    // Returns the function name in the form of "company/package/class/displayName".
+    public string ToMenu() {
+        string path= "";
+		if(!String.IsNullOrEmpty(Company)) path= Company+"/";
+		if(!String.IsNullOrEmpty(Library)) path+= Library+"/";
+        if(ParentTypeInfo.HideFromLibrary == false) {
+            path+= iCS_Types.TypeName(ClassType)+memberSeparator;
+        }
+        return path+FunctionSignature;
+    }
+    
     // ======================================================================
     // Common method override
     // ----------------------------------------------------------------------

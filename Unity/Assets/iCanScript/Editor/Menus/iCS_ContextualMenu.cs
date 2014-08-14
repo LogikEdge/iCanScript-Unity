@@ -355,7 +355,7 @@ public class iCS_ContextualMenu {
                 }
                 menu= tmp;                
                 for(int i= 0; i < functionMenu.Count; ++i) {
-                    menu[len+i]= new iCS_MenuContext(functionMenu[i].ToString(), functionMenu[i]);
+                    menu[len+i]= new iCS_MenuContext(functionMenu[i].ToMenu(), functionMenu[i]);
                 }
             }
         }
