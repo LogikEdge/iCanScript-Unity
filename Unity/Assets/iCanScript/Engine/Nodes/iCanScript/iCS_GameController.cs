@@ -3,24 +3,22 @@ using System.Collections;
 
 [iCS_Class(Company="iCanScript", Library="Input", Icon="iCS_JoystickIcon.psd")]
 public static class iCS_GameController {
-    [iCS_Function(Return="timeAndScaledAnalog1", Icon="iCS_JoystickIcon.psd",
+    [iCS_Function(Return="scaledAnalog1", Icon="iCS_JoystickIcon.psd",
                  Tooltip="RawAnalog returns the raw joystick value while Analog returns the time compensated joystick value ajusted with the input speed.")]
 
     public static Vector2 GameController(out Vector2 analog1,
                                          out bool b1, out bool b2, out bool b3,
                                          float scale= 1.0f) {
-        float dt= iCS_Time.smoothIntervalTime;
-        float cdt= dt*scale;
         analog1= new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         b1= Input.GetButton("Fire1");
         b2= Input.GetButton("Fire2");
         b3= Input.GetButton("Fire3");
-        return cdt*analog1;
+        return scale*analog1;
     }
     
-    [iCS_Function(Return="analog1", Icon="iCS_JoystickIcon.psd",
+    [iCS_Function(Return="scaledAnalog1", Icon="iCS_JoystickIcon.psd",
                  Tooltip="Game Controller with configurable names.  Analog1 & 2 are time compensated and ajusted with the input associated speed.")]
-    public static Vector2 GameControllerExt(out Vector2 rawAnalog1, out Vector2 rawAnalog2, out Vector2 analog2,
+    public static Vector2 GameControllerExt(out Vector2 scaledAnalog2,
                                          out bool b1, out bool b2, out bool b3, out bool b4,
                                          out bool b5, out bool b6, out bool b7, out bool b8,
                                          string analog1_x_name= "Horizontal",
@@ -37,29 +35,6 @@ public static class iCS_GameController {
                                          string b6_name= null,
                                          string b7_name= null,
                                          string b8_name= null) {
-        float dt= iCS_Time.smoothIntervalTime;
-        bool isAnalog1XNameEmpty= string.IsNullOrEmpty(analog1_x_name);
-        bool isAnalog1YNameEmpty= string.IsNullOrEmpty(analog1_y_name);
-        rawAnalog1= new Vector2(
-            isAnalog1XNameEmpty ? 0f : Input.GetAxisRaw(analog1_x_name),
-            isAnalog1YNameEmpty ? 0f : Input.GetAxisRaw(analog1_y_name)
-        );
-        var analog1= new Vector2(
-            isAnalog1XNameEmpty ? 0f : Input.GetAxis(analog1_x_name),
-            isAnalog1YNameEmpty ? 0f : Input.GetAxis(analog1_y_name)            
-        );
-        bool isAnalog2XNameEmpty= string.IsNullOrEmpty(analog2_x_name);
-        bool isAnalog2YNameEmpty= string.IsNullOrEmpty(analog2_y_name);
-        rawAnalog2= new Vector2(
-            isAnalog2XNameEmpty ? 0f : Input.GetAxisRaw(analog2_x_name),
-            isAnalog2YNameEmpty ? 0f : Input.GetAxisRaw(analog2_y_name)
-        );
-        analog2= new Vector2(
-            isAnalog2XNameEmpty ? 0f : Input.GetAxis(analog2_x_name),
-            isAnalog2YNameEmpty ? 0f : Input.GetAxis(analog2_y_name)            
-        );
-        var scaledAnalog2= analog2*analog2_scale;
-        analog2= dt*scaledAnalog2;
         b1= string.IsNullOrEmpty(b1_name) ? false : Input.GetButton(b1_name);
         b2= string.IsNullOrEmpty(b2_name) ? false : Input.GetButton(b2_name);
         b3= string.IsNullOrEmpty(b3_name) ? false : Input.GetButton(b3_name);
@@ -68,8 +43,20 @@ public static class iCS_GameController {
         b6= string.IsNullOrEmpty(b6_name) ? false : Input.GetButton(b6_name);
         b7= string.IsNullOrEmpty(b7_name) ? false : Input.GetButton(b7_name);
         b8= string.IsNullOrEmpty(b8_name) ? false : Input.GetButton(b8_name);
-        var scaledAnalog1= analog1*analog1_scale;
-        return dt*scaledAnalog1;
+        bool isAnalog1XNameEmpty= string.IsNullOrEmpty(analog1_x_name);
+        bool isAnalog1YNameEmpty= string.IsNullOrEmpty(analog1_y_name);
+        var analog1= new Vector2(
+            isAnalog1XNameEmpty ? 0f : Input.GetAxis(analog1_x_name),
+            isAnalog1YNameEmpty ? 0f : Input.GetAxis(analog1_y_name)            
+        );
+        bool isAnalog2XNameEmpty= string.IsNullOrEmpty(analog2_x_name);
+        bool isAnalog2YNameEmpty= string.IsNullOrEmpty(analog2_y_name);
+        var analog2= new Vector2(
+            isAnalog2XNameEmpty ? 0f : Input.GetAxis(analog2_x_name),
+            isAnalog2YNameEmpty ? 0f : Input.GetAxis(analog2_y_name)            
+        );
+        scaledAnalog2= analog2*analog2_scale;
+        return analog1*analog1_scale;
     }
     
 }
