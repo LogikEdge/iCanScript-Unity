@@ -215,7 +215,7 @@ public partial class iCS_IStorage {
     public void SetAndAutoLayoutNewDataConnection(iCS_EditorObject consumerPort, iCS_EditorObject providerPort, iCS_TypeCastInfo conversion= null) {
         SetNewDataConnection(consumerPort, providerPort, conversion);
         var autoLayoutProviderPort= GetPointToPointProviderPortForConsumerPort(consumerPort);
-        AutoLayoutOfPointToPointBinding(autoLayoutProviderPort, consumerPort);
+        AutoLayoutOfPointToPointBindingExclusive(autoLayoutProviderPort, consumerPort);
     }
 	// ----------------------------------------------------------------------
     public void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_TypeCastInfo conversion= null) {
