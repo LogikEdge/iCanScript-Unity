@@ -413,12 +413,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, newPortType);
                             newPort.LocalAnchorFromGlobalPosition= dragPortPos;
                             newPort.PortValue= DragFixPort.PortValue;
+                            iCS_EditorObject providerPort= null;
+                            iCS_EditorObject consumerPort= null;
 							if(fixPortIsBindingTo) {
-                                IStorage.SetNewDataConnection(DragFixPort, newPort);
+                                consumerPort= DragFixPort;
+                                providerPort= newPort;
 							}
-							else {									
-                                IStorage.SetNewDataConnection(newPort, DragFixPort);
+							else {
+                                consumerPort= newPort;
+                                providerPort= DragFixPort;				
 							}
+                            IStorage.SetNewDataConnection(consumerPort, providerPort);
+                            IStorage.AutoLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
                             iCS_UserCommands.EndPortPublishing(DragOriginalPort);
                             break;
 						}
