@@ -27,9 +27,19 @@ public static class iCS_LicenseController {
         Initialize();
     }
     public static void Initialize() {
-        ourFingerPrint    = GetMD5Hash(System.Environment.MachineName);
+        ourFingerPrint          = GetMD5Hash(System.Environment.MachineName);
         isProOperatingMode      = HasProLicense || HasTrialLicense;
         isCommunityOperatingMode= !isProOperatingMode;
+
+        // Restart the trial if the version changed.
+        var communityVersion= iCS_PreferencesController.TrialVersion;
+        if(communityVersion.IsEqual(iCS_Version.Current) == false) {
+            var remainingTrialDays= RemainingTrialDays;
+            if(remainingTrialDays < 7) {
+                remainingTrialDays= 7;
+            }
+            RestartTrial(remainingTrialDays);                
+        }
         ourReinitializeCnt= 0;
     }
 
