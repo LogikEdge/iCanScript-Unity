@@ -25,11 +25,11 @@ public static class iCS_InstallationController {
 #if TRIAL_EDITION
         // Warning customer of trial period.
         var today= DateTime.Today;
-        if(iCS_LicenseController.HasDemoLicense) {
+        if(iCS_LicenseController.HasTrialLicense) {
             var lastWarningDate= iCS_PreferencesController.TrialLastWarningDate;
             if(today != lastWarningDate) {
                 iCS_PreferencesController.TrialLastWarningDate= today;
-                if(iCS_EditionController.IsDemoEdition) {
+                if(iCS_EditionController.IsTrialEdition) {
                     iCS_TrialDialogs.PurchaseDialog();
                 }
             }
@@ -40,7 +40,7 @@ public static class iCS_InstallationController {
         }
 #else
 #if UNITY_STORE_EDITION
-        if(iCS_LicenseController.HasDemoLicense) {
+        if(iCS_LicenseController.HasTrialLicense) {
             var lastWarningDate= iCS_PreferencesController.TrialLastWarningDate;
             var today= DateTime.Today;
             if(today != lastWarningDate) {
@@ -58,7 +58,7 @@ public static class iCS_InstallationController {
             }
         }
 #else
-        if(iCS_LicenseController.HasDemoLicense) {
+        if(iCS_LicenseController.HasTrialLicense) {
 			if(iCS_EditionController.IsDevEdition) {
 				var fingerPrint= iCS_LicenseController.FingerPrint;
 				var licenseType= iCS_LicenseType.Pro;

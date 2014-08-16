@@ -29,7 +29,7 @@ public static class iCS_LicenseController {
     }
     public static void Initialize() {
         ourFingerPrint    = GetMD5Hash(System.Environment.MachineName);
-        isProMode         = HasProLicense || HasDemoLicense || HasWaitingForActivationLicense;
+        isProMode         = HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;
         isStandardMode    = HasStandardLicense;
         isCommunityMode   = HasCommunityLicense;
         ourReinitializeCnt= 0;
@@ -147,7 +147,7 @@ public static class iCS_LicenseController {
             return license == (int)iCS_LicenseType.WaitingForActivation;
         }
     }
-    public static bool HasDemoLicense {
+    public static bool HasTrialLicense {
         get {
             if(IsLicensed) {
                 return false;
@@ -173,7 +173,7 @@ public static class iCS_LicenseController {
         if(HasStandardLicense)             return "Standard";
         if(HasWaitingForActivationLicense) return "Waiting for License";
         if(HasCommunityLicense)            return "Community";
-        if(HasDemoLicense)                 return "Trial";
+        if(HasTrialLicense)                 return "Trial";
         return "Unknown";
     }
 	public static string LicenseAsString() {
