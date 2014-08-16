@@ -105,31 +105,21 @@ public static class iCS_DevMenus {
     public static void MenuGenerateUserLicenses() {
         var fingerPrint= iCS_LicenseController.FingerPrint;
         var proLicense     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, (int)iCS_Config.MajorVersion);
-        var standardLicense= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Standard, (int)iCS_Config.MajorVersion);
         Debug.Log("Finger Print=> "+iCS_LicenseController.ToString(iCS_LicenseController.FingerPrint));
         Debug.Log("Pro license=> "+iCS_LicenseController.ToString(proLicense));
-        Debug.Log("Standard license=> "+iCS_LicenseController.ToString(standardLicense));            
     }
     [MenuItem("DevTools/Set Activation Keys",false,1044)]
     public static void MenuSetActivationKeys() {
         var fingerPrint= iCS_LicenseController.FingerPrint;
         var proActivationKey     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, (int)iCS_Config.MajorVersion);
-        var standardActivationKey= iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Standard, (int)iCS_Config.MajorVersion);
         
         var proDecode= iCS_LicenseController.Xor(fingerPrint, proActivationKey);
-        var standardDecode= iCS_LicenseController.Xor(fingerPrint, standardActivationKey);
         int license, version;
         if(iCS_LicenseController.GetSignature(proDecode, out license, out version)) {
             Debug.Log("Pro License for version=> "+version+".x");
         }
         else {
             Debug.Log("Unable to decode Pro Activation Key=> "+iCS_LicenseController.ToString(proDecode));
-        }
-        if(iCS_LicenseController.GetSignature(standardDecode, out license, out version)) {
-            Debug.Log("Standard License for version=> "+version+".x");
-        }
-        else {
-            Debug.Log("Unable to decode standard Activation Key=> "+iCS_LicenseController.ToString(standardDecode));
         }
         
         var activationForm= new iCS_ActivationForm();

@@ -7,7 +7,7 @@ using System.Text;
 
 
 public enum iCS_LicenseType {
-    Trial= 0, Community= 1, WaitingForActivation= 0x1234, Standard= 0x5f23, Pro= 0xdc45
+    Trial= 0, Community= 1, WaitingForActivation= 0x1234, Pro= 0xdc45
 }
 
 public static class iCS_LicenseController {
@@ -18,7 +18,6 @@ public static class iCS_LicenseController {
     static byte[]   ourSignature;
     static int      ourReinitializeCnt= 0;
     static bool     isProMode= false;
-    static bool     isStandardMode= false;
     static bool     isCommunityMode= true;
     
     // =================================================================================
@@ -30,7 +29,6 @@ public static class iCS_LicenseController {
     public static void Initialize() {
         ourFingerPrint    = GetMD5Hash(System.Environment.MachineName);
         isProMode         = HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;
-        isStandardMode    = HasStandardLicense;
         isCommunityMode   = HasCommunityLicense;
         ourReinitializeCnt= 0;
     }
@@ -52,7 +50,7 @@ public static class iCS_LicenseController {
     }
     public static bool IsActivated {
         get {
-            return HasStandardLicense || HasProLicense;
+            return HasProLicense;
         }
     }
     
@@ -61,9 +59,6 @@ public static class iCS_LicenseController {
     // ----------------------------------------------------------------------
     public static bool IsProMode {
         get { Refresh(); return isProMode; /*HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;*/ }
-    }
-    public static bool IsStandardMode {
-        get { Refresh(); return isStandardMode; /*HasStandardLicense;*/ }
     }
     public static bool IsCommunityMode {
         get { Refresh(); return isCommunityMode; /*HasCommunityLicense;*/ }
@@ -75,7 +70,6 @@ public static class iCS_LicenseController {
     }
     public static string OperatingModeAsString() {
         if(IsProMode)       return "Pro";
-        if(IsStandardMode)  return "Standard";
         if(IsCommunityMode) return "Community";
         return "Unknown";
     }
@@ -96,25 +90,9 @@ public static class iCS_LicenseController {
             return false;
         }
     }
-    public static bool HasStandardLicense {
-        get {
-            int license;
-            int version;
-            if(!GetSignature(Signature, out license, out version)) {
-                return false;
-            }
-            if(license == (int)iCS_LicenseType.Standard) {
-                if(version == (int)iCS_Config.MajorVersion) {
-                    return true;
-                }
-                RestartTrial(15);
-            }
-            return false;
-        }
-    }
     public static bool IsLicensed {
         get {
-            return HasProLicense || HasStandardLicense;
+            return HasProLicense;
         }
     }
     public static bool HasCommunityLicense {
@@ -170,7 +148,6 @@ public static class iCS_LicenseController {
     }
     public static string LicenseTypeAsString() {
         if(HasProLicense)                  return "Pro";
-        if(HasStandardLicense)             return "Standard";
         if(HasWaitingForActivationLicense) return "Waiting for License";
         if(HasCommunityLicense)            return "Community";
         if(HasTrialLicense)                 return "Trial";
@@ -320,7 +297,7 @@ public static class iCS_LicenseController {
         }
         licenseType= (iCS_LicenseType)key1;
         version= (uint)key2;
-        if(licenseType != iCS_LicenseType.Standard && licenseType != iCS_LicenseType.Pro) {
+        if(licenseType != iCS_LicenseType.Pro) {
             errorMessage= "Invalid license type.";
             return false;
         }
