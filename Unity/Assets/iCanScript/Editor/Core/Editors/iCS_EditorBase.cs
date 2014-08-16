@@ -34,7 +34,7 @@ public class iCS_EditorBase : EditorWindow {
     // ---------------------------------------------------------------------------------
     public void OnGUI() {
         // Stop all processing if not registered & trial period is over
-        if(iCS_LicenseController.IsCommunityMode) {
+        if(iCS_LicenseController.IsCommunityOperatingMode) {
             string message= "Your trial period is over !!!";
             ShowNotification(new GUIContent(message));
             return;

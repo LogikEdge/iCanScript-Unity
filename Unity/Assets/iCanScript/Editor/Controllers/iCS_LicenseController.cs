@@ -17,8 +17,8 @@ public static class iCS_LicenseController {
     static byte[]   ourFingerPrint;
     static byte[]   ourSignature;
     static int      ourReinitializeCnt= 0;
-    static bool     isProMode= false;
-    static bool     isCommunityMode= true;
+    static bool     isProOperatingMode= false;
+    static bool     isCommunityOperatingMode= true;
     
     // =================================================================================
     // Installation
@@ -28,8 +28,8 @@ public static class iCS_LicenseController {
     }
     public static void Initialize() {
         ourFingerPrint    = GetMD5Hash(System.Environment.MachineName);
-        isProMode         = HasProLicense || HasTrialLicense;
-        isCommunityMode   = HasCommunityLicense;
+        isProOperatingMode      = HasProLicense || HasTrialLicense;
+        isCommunityOperatingMode= !isProOperatingMode;
         ourReinitializeCnt= 0;
     }
 
@@ -57,11 +57,11 @@ public static class iCS_LicenseController {
     // ======================================================================
     // License Type
     // ----------------------------------------------------------------------
-    public static bool IsProMode {
-        get { Refresh(); return isProMode; }
+    public static bool IsProOperatingMode {
+        get { Refresh(); return isProOperatingMode; }
     }
-    public static bool IsCommunityMode {
-        get { Refresh(); return isCommunityMode; }
+    public static bool IsCommunityOperatingMode {
+        get { Refresh(); return isCommunityOperatingMode; }
     }
     static void Refresh() {
         if(++ourReinitializeCnt > 1000) {
@@ -69,11 +69,21 @@ public static class iCS_LicenseController {
         }
     }
     public static string OperatingModeAsString() {
-        if(IsProMode)       return "Pro";
-        if(IsCommunityMode) return "Community";
+        if(IsProOperatingMode)       return "Pro";
+        if(IsCommunityOperatingMode) return "Community";
         return "Unknown";
     }
     // ----------------------------------------------------------------------
+    public static bool HasTrialLicense {
+        get {
+            return iCS_EditionController.IsTrialEdition && RemainingTrialDays >= 0;
+        }
+    }
+    public static bool HasCommunityLicense {
+        get {
+            return iCS_EditionController.IsTrialEdition && RemainingTrialDays < 0;
+        }
+    }
     public static bool HasProLicense {
         get {
             return iCS_EditionController.IsDevEdition || iCS_EditionController.IsStoreEdition;
@@ -84,20 +94,10 @@ public static class iCS_LicenseController {
             return HasProLicense;
         }
     }
-    public static bool HasCommunityLicense {
-        get {
-            return iCS_EditionController.IsTrialEdition && RemainingTrialDays < 0;
-        }
-    }
-    public static bool HasTrialLicense {
-        get {
-            return iCS_EditionController.IsTrialEdition && RemainingTrialDays >= 0;
-        }
-    }
     public static string LicenseTypeAsString() {
-        if(HasProLicense)                  return "Pro";
-        if(HasCommunityLicense)            return "Community";
-        if(HasTrialLicense)                 return "Trial";
+        if(HasTrialLicense)     return "Trial";
+        if(HasCommunityLicense) return "Community";
+        if(HasProLicense)       return "Pro";
         return "Unknown";
     }
 	public static string LicenseAsString() {
