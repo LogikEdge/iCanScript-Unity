@@ -39,7 +39,8 @@ public class iCS_ContextualMenu {
     const string MultiSelectionWrapInPackageStr= "+ Wrap Multi-Selection in Package";
     const string MultiSelectionDeleteStr       = "- Delete Multi-Selection";
     const string DeleteKeepChildrenStr         = "- Delete Keep Children";
-    const string UpdateMessageHandlerPortsStr  = "Update Message Ports";
+    const string UpdateMessageHandlerPortsStr  = "+ Update Message Ports";
+	const string RemoveUnusedPortsStr          = "- Remove Unused Ports";
     const string UserMessageHandlerStr         = "+ User Function";  
     const string SeparatorStr                  = "";
 
@@ -128,9 +129,10 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void MessageHandlerMenu(iCS_EditorObject messageHandler, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(messageHandler);
-        var idx= GrowMenuBy(ref menu, 2);
+        var idx= GrowMenuBy(ref menu, 3);
         menu[idx]= new iCS_MenuContext(UpdateMessageHandlerPortsStr);
-        menu[idx+1]= new iCS_MenuContext(SeparatorStr);
+		menu[idx+1]= new iCS_MenuContext(RemoveUnusedPortsStr);
+        menu[idx+2]= new iCS_MenuContext(SeparatorStr);
         CommonPackageMenu(messageHandler, storage, ref menu);
 		ShowMenu(menu, messageHandler, storage);
     }
@@ -501,6 +503,7 @@ public class iCS_ContextualMenu {
             case OutputInstancePortStr:     iCS_UserCommands.CreateOutInstancePort(targetObject); break;
 			case WrapInPackageStr:          iCS_UserCommands.WrapInPackage(targetObject); break;
             case UpdateMessageHandlerPortsStr:   iCS_UserCommands.UpdateMessageHandlerPorts(targetObject); break;
+			case RemoveUnusedPortsStr: iCS_UserCommands.RemoveUnusedPorts(targetObject); break;
             case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
             case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
             case DeleteKeepChildrenStr:          iCS_UserCommands.DeleteKeepChildren(targetObject); break;

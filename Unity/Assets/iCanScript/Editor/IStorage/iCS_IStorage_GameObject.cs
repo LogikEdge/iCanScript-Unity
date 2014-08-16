@@ -28,7 +28,17 @@ public partial class iCS_IStorage {
         var changed= CleanupExistingProposedPorts(node, neededPorts);
         changed |= BuildMissingPorts(node, neededPorts);
     }
-
+    // ----------------------------------------------------------------------
+	// Deletes all dynamic message handler ports that are not connected.
+	public void RemoveUnusedPorts(iCS_EditorObject node) {
+		var ports= node.BuildListOfChildPorts(p=> p.IsProposedDataPort || p.IsDynamicDataPort);
+		for(int i= 0; i < ports.Length; ++i) {
+			var p = ports[i];
+			if(!IsPortConnected(p)) {
+				DestroyInstance(p);						
+			}					
+		}
+	}
     // ----------------------------------------------------------------------
     // Creates the missing fix ports
     public bool BuildMissingPorts(iCS_EditorObject node, PortInfo[] neededPorts) {

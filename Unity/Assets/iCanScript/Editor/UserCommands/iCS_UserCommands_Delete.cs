@@ -130,5 +130,24 @@ public static partial class iCS_UserCommands {
         }
         CloseTransaction(iStorage, "Delete "+obj.Name);
     }
+    // ----------------------------------------------------------------------
+    public static void RemoveUnusedPorts(iCS_EditorObject messageHandler) {
+        if(messageHandler == null) return;
+        var iStorage= messageHandler.IStorage;
+        OpenTransaction(iStorage);
+		try {
+			iStorage.AnimateGraph(null,
+				_=> {
+					iStorage.RemoveUnusedPorts(messageHandler);
+					iStorage.ForcedRelayoutOfTree();
+				}
+			);
+		}
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return;
+        }
+        CloseTransaction(iStorage, "Remove Unused Ports=> "+messageHandler.Name);
+	}
 
 }
