@@ -132,16 +132,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!iCS_LicenseController.IsActivated) {
             GUIStyle style= EditorStyles.toolbarTextField;
             var remainingTimeMessageSize= style.CalcSize(myCached_RemainingTrialDaysMessage);
-            var x= r.x+0.5f*(r.width-remainingTimeMessageSize.x);
+            var x= 0.5f*(position.width-remainingTimeMessageSize.x);
             GUI.Label(new Rect(x,r.yMax,remainingTimeMessageSize.x, remainingTimeMessageSize.y), myCached_RemainingTrialDaysMessage, style);
-        }
 
-		// Show scroll position
-		var scrollPositionAsStr= ScrollPosition.ToString();
-		var scrollPositionAsGUIContent= new GUIContent(scrollPositionAsStr);
-		var scrollPositionSize= EditorStyles.label.CalcSize(scrollPositionAsGUIContent);
-		r= new Rect(position.width-scrollPositionSize.x, position.height-scrollPositionSize.y,
-			        scrollPositionSize.x, scrollPositionSize.y);
-		GUI.Label(r, scrollPositionAsGUIContent);
+    		// Show scroll position
+    		var scrollPositionAsStr= ScrollPosition.ToString();
+    		var scrollPositionAsGUIContent= new GUIContent(scrollPositionAsStr);
+    		var scrollPositionSize= EditorStyles.label.CalcSize(scrollPositionAsGUIContent);
+    		r= new Rect(position.width-scrollPositionSize.x, position.height-scrollPositionSize.y,
+    			        scrollPositionSize.x, scrollPositionSize.y);
+    		GUI.Label(r, scrollPositionAsGUIContent);
+        }
 	}
 }

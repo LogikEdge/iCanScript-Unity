@@ -7,7 +7,7 @@ using System.Text;
 
 
 public enum iCS_LicenseType {
-    Trial= 0, Community= 1, WaitingForActivation= 0x1234, Pro= 0xdc45
+    Trial= 0, Community= 1, Pro= 0xdc45
 }
 
 public static class iCS_LicenseController {
@@ -28,7 +28,7 @@ public static class iCS_LicenseController {
     }
     public static void Initialize() {
         ourFingerPrint    = GetMD5Hash(System.Environment.MachineName);
-        isProMode         = HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;
+        isProMode         = HasProLicense || HasTrialLicense;
         isCommunityMode   = HasCommunityLicense;
         ourReinitializeCnt= 0;
     }
@@ -58,10 +58,10 @@ public static class iCS_LicenseController {
     // License Type
     // ----------------------------------------------------------------------
     public static bool IsProMode {
-        get { Refresh(); return isProMode; /*HasProLicense || HasTrialLicense || HasWaitingForActivationLicense;*/ }
+        get { Refresh(); return isProMode; }
     }
     public static bool IsCommunityMode {
-        get { Refresh(); return isCommunityMode; /*HasCommunityLicense;*/ }
+        get { Refresh(); return isCommunityMode; }
     }
     static void Refresh() {
         if(++ourReinitializeCnt > 1000) {
@@ -76,18 +76,7 @@ public static class iCS_LicenseController {
     // ----------------------------------------------------------------------
     public static bool HasProLicense {
         get {
-            int license;
-            int version;
-            if(!GetSignature(Signature, out license, out version)) {
-                return false;
-            }
-            if(license == (int)iCS_LicenseType.Pro) {
-                if(version == (int)iCS_Config.MajorVersion) {
-                    return true;
-                }
-                RestartTrial(15);                
-            }
-            return false;
+            return iCS_EditionController.IsDevEdition || iCS_EditionController.IsStoreEdition;
         }
     }
     public static bool IsLicensed {
@@ -97,58 +86,16 @@ public static class iCS_LicenseController {
     }
     public static bool HasCommunityLicense {
         get {
-            if(RemainingTrialDays < 0 && IsLicensed == false) {
-                ResetUserLicense();
-                var trialVersion= iCS_PreferencesController.TrialVersion;
-                if(iCS_Version.Current.IsNewerThen(trialVersion)) {
-                    RestartTrial(7);
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
-    }
-    public static bool HasWaitingForActivationLicense {
-        get {
-            if(IsLicensed) {
-                return false;
-            }
-            if(RemainingTrialDays < 0) {
-                return false;
-            }
-            int license;
-            int version;
-            if(!GetSignature(Signature, out license, out version)) {
-                return false;
-            }
-            return license == (int)iCS_LicenseType.WaitingForActivation;
+            return iCS_EditionController.IsTrialEdition && RemainingTrialDays < 0;
         }
     }
     public static bool HasTrialLicense {
         get {
-            if(IsLicensed) {
-                return false;
-            }
-            if(RemainingTrialDays < 0) {
-                var trialVersion= iCS_PreferencesController.TrialVersion;
-                if(iCS_Version.Current.IsNewerThen(trialVersion)) {
-                    RestartTrial(7);
-                    return true;
-                }
-                return false;    
-            }
-            int license;
-            int version;
-            if(!GetSignature(Signature, out license, out version)) {
-                return true;
-            }
-            return license != (int)iCS_LicenseType.WaitingForActivation;
+            return iCS_EditionController.IsTrialEdition && RemainingTrialDays >= 0;
         }
     }
     public static string LicenseTypeAsString() {
         if(HasProLicense)                  return "Pro";
-        if(HasWaitingForActivationLicense) return "Waiting for License";
         if(HasCommunityLicense)            return "Community";
         if(HasTrialLicense)                 return "Trial";
         return "Unknown";

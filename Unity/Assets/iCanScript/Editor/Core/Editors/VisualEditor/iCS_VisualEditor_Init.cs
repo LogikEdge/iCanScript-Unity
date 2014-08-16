@@ -90,7 +90,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     // System level cache update.
     void UpdateVisualEditorCache() {
-        string remainingTimeMessage= iCS_LicenseController.HasWaitingForActivationLicense ? "Activation: " : "Demo: ";
+        string remainingTimeMessage= "Trial: ";
         remainingTimeMessage+= " ("+iCS_LicenseController.RemainingTrialDays.ToString()+" days remaining) ";
         myCached_RemainingTrialDaysMessage= new GUIContent(remainingTimeMessage);        
     }
