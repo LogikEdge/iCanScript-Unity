@@ -52,32 +52,29 @@ public class iCS_AboutDialog : EditorWindow {
 		// Column info
 		float column1X= kSpacer;
 		var editionTitle= new GUIContent("Edition: ");
-		var licenseTypeTitle= new GUIContent("License Type: ");
 		var operatingModeTitle= new GUIContent("Operating Mode: ");
 		var buildDateTitle= new GUIContent("Build Date: ");
 		var userLicenseTitle= new GUIContent("User License: ");
-		var licenseTypeTitleSize= GUI.skin.label.CalcSize(licenseTypeTitle);
 		var operatingModeTitleSize= GUI.skin.label.CalcSize(operatingModeTitle);
 		var buildDateTitleSize= GUI.skin.label.CalcSize(buildDateTitle);
 		var userLicenseTitleSize= GUI.skin.label.CalcSize(userLicenseTitle);
-		float column1Width= Math3D.Max(licenseTypeTitleSize.x,
-									   operatingModeTitleSize.x,
+		float column1Width= Math3D.Max(operatingModeTitleSize.x,
 									   buildDateTitleSize.x,
 									   userLicenseTitleSize.x);
-		var labelHeight= licenseTypeTitleSize.y;
+		var labelHeight= operatingModeTitleSize.y;
 		
 		float column2X= column1X+column1Width+kSpacer;
 		float column2Width= position.width-column2X-kSpacer;
 		
-		// License Type
-		var rLicenseType= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
-		GUI.Label(rLicenseType, licenseTypeTitle);
-		GUIContent licenseType= new GUIContent(iCS_LicenseController.LicenseTypeAsString());
-		rLicenseType.x= column2X; rLicenseType.width= column2Width;
-		GUI.Label(rLicenseType, licenseType);
+//		// License Type
+//		var rLicenseType= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
+//		GUI.Label(rLicenseType, licenseTypeTitle);
+//		GUIContent licenseType= new GUIContent(iCS_LicenseController.LicenseTypeAsString());
+//		rLicenseType.x= column2X; rLicenseType.width= column2Width;
+//		GUI.Label(rLicenseType, licenseType);
 		
 		// Operating Mode
-		var rOperatingMode= new Rect(column1X, rLicenseType.yMax, column2Width, labelHeight);
+		var rOperatingMode= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
 		GUI.Label(rOperatingMode, operatingModeTitle);
 		GUIContent operatingMode= new GUIContent(iCS_LicenseController.OperatingModeAsString());
 		rOperatingMode.x= column2X; rOperatingMode.width= column2Width;
