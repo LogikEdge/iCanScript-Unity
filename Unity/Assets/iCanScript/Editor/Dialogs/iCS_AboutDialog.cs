@@ -66,13 +66,6 @@ public class iCS_AboutDialog : EditorWindow {
 		float column2X= column1X+column1Width+kSpacer;
 		float column2Width= position.width-column2X-kSpacer;
 		
-//		// License Type
-//		var rLicenseType= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
-//		GUI.Label(rLicenseType, licenseTypeTitle);
-//		GUIContent licenseType= new GUIContent(iCS_LicenseController.LicenseTypeAsString());
-//		rLicenseType.x= column2X; rLicenseType.width= column2Width;
-//		GUI.Label(rLicenseType, licenseType);
-		
 		// Operating Mode
 		var rOperatingMode= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
 		GUI.Label(rOperatingMode, operatingModeTitle);
