@@ -33,12 +33,12 @@ public partial class iCS_IStorage {
             }
         );
         
-        // Move the entire graph to maintain the sticky object position
-        var newStickyPosition= stickyObject.GlobalPosition;
-        if(Math3D.IsNotEqual(newStickyPosition, stickyPosition)) {
-            var stickyOffset= stickyPosition-newStickyPosition;
-            DisplayRoot.CollisionOffset+= stickyOffset;
-        }
+//        // Move the entire graph to maintain the sticky object position
+//        var newStickyPosition= stickyObject.GlobalPosition;
+//        if(Math3D.IsNotEqual(newStickyPosition, stickyPosition)) {
+//            var stickyOffset= stickyPosition-newStickyPosition;
+//            DisplayRoot.CollisionOffset+= stickyOffset;
+//        }
         
         // Advise that the layout has completed.
         SendEndRelayoutOfTree();
