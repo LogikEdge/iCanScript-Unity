@@ -57,13 +57,15 @@ public static class iCS_VisualScriptDataController {
         var monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviourImp>() : null;
         if(monoBehaviour == null) {
             // Clear if previous game object is not valid.
-                myIStorage= null;
-                myIsPlaying= Application.isPlaying;
-                return;                
+            ImmediateSaveWithUndo();
+            myIStorage= null;
+            myIsPlaying= Application.isPlaying;
+            return;                
         }
 		// Verify for storage change.
         bool isPlaying= Application.isPlaying;
 		if(myIStorage == null || myIStorage.iCSMonoBehaviour != monoBehaviour || myIsPlaying != isPlaying) {
+            ImmediateSaveWithUndo();
             myIsPlaying= isPlaying;
 			myIStorage= new iCS_IStorage(monoBehaviour);
 			return;
@@ -90,9 +92,13 @@ public static class iCS_VisualScriptDataController {
     
     static void ImmediateSaveWithUndo() {
         if(mySaveTimer.IsElapsed) return;
-        mySaveIStorage.SaveWithUndo(mySaveUndoMessage, mySaveTransactionType);        
+        mySaveTimer.Stop();
+        PerformSaveWithUndo();
     }
     static void PerformSaveWithUndo() {
-        mySaveIStorage.SaveWithUndo(mySaveUndoMessage, mySaveTransactionType);
+        if(mySaveIStorage == null) return;
+        var iStorageToSave= mySaveIStorage;
+        mySaveIStorage= null;
+        iStorageToSave.SaveWithUndo(mySaveUndoMessage, mySaveTransactionType);
     }
 }
