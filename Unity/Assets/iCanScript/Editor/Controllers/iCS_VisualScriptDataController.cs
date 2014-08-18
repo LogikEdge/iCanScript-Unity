@@ -80,7 +80,7 @@ public static class iCS_VisualScriptDataController {
     
     public static void SaveWithUndo(iCS_IStorage iStorage, string undoMessage, TransactionType transactionType) {
         if(mySaveIStorage != null && mySaveIStorage != iStorage) {
-            PerformSaveWithUndo();
+            ImmediateSaveWithUndo();
         }
         mySaveIStorage= iStorage;
         mySaveUndoMessage= undoMessage;
@@ -88,6 +88,10 @@ public static class iCS_VisualScriptDataController {
         mySaveTimer.Restart();
     }
     
+    static void ImmediateSaveWithUndo() {
+        if(mySaveTimer.IsElapsed) return;
+        mySaveIStorage.SaveWithUndo(mySaveUndoMessage, mySaveTransactionType);        
+    }
     static void PerformSaveWithUndo() {
         mySaveIStorage.SaveWithUndo(mySaveUndoMessage, mySaveTransactionType);
     }
