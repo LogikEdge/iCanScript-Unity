@@ -68,7 +68,6 @@ public partial class iCS_IStorage {
     			}
     		);            
         }
-        ForcedRelayoutOfTree();
         return package;
     }
 }
