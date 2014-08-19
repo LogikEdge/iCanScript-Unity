@@ -634,8 +634,7 @@ public class iCS_ContextualMenu {
         // Position attached port and layout binding.
         if(attachedPort != null && consumerPort != null && providerPort != null) {
             iStorage.AutoLayoutPort(attachedPort, port.GlobalPosition, attachedPort.ParentNode.GlobalPosition);
-            iStorage.SetNewDataConnection(consumerPort, providerPort);
-            iStorage.AutoLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
+            iStorage.SetAndAutoLayoutNewDataConnection(consumerPort, providerPort);
         }
         iCS_UserCommands.CloseTransaction(iStorage, "Create => "+desc.DisplayName);
         return method;

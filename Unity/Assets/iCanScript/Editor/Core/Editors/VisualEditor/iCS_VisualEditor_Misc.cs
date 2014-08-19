@@ -192,7 +192,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(inPort != outPort) {
             iCS_TypeCastInfo conversion= null;
             if(VerifyConnectionTypes(inPort, outPort, out conversion)) {
-                IStorage.SetAndAutoLayoutNewDataConnection(inPort, outPort, conversion);                
+                IStorage.SetAndAutoLayoutNewDataConnection(inPort, outPort, conversion);
             }
         } else {
             string direction= inPort.IsInputPort ? "input" : "output";
