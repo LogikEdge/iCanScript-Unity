@@ -302,6 +302,7 @@ public class iCS_LibraryDatabase {
         }
         var runtimeType= edObj.RuntimeType;
         var engineObject= edObj.EngineObject;
+        int numberOfOutputPorts= edObj.NumberOfChildOutputPorts();
         foreach(var t in types) {
             if(t.CompilerType == runtimeType) {
                 foreach(var member in t.Members) {
@@ -314,7 +315,12 @@ public class iCS_LibraryDatabase {
                     if(member is iCS_FieldInfo) {
                         var fieldInfo= member as iCS_FieldInfo;
                         if(engineObject.GetFieldInfoNoWarning() == fieldInfo.Field) {
-                            return member;                            
+                            if(numberOfOutputPorts == 0 && fieldInfo.IsSet) {
+                                return member;                                                            
+                            }
+                            if(numberOfOutputPorts == 1 && fieldInfo.IsGet) {
+                                return member;
+                            }
                         }
                     }
                 }

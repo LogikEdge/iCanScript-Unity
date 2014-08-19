@@ -70,6 +70,22 @@ public partial class iCS_EditorObject {
 		return count;        
     }
     // ---------------------------------------------------------------------------------
+    public int NumberOfChildInputPorts() {
+        int count= 0;
+        foreach(var childId in Children) {
+            if(IsIdValid(childId) && EditorObjects[childId].IsInputPort) ++count;
+        }
+		return count;        
+    }
+    // ---------------------------------------------------------------------------------
+    public int NumberOfChildOutputPorts() {
+        int count= 0;
+        foreach(var childId in Children) {
+            if(IsIdValid(childId) && EditorObjects[childId].IsOutputPort) ++count;
+        }
+		return count;                
+    }
+    // ---------------------------------------------------------------------------------
     public iCS_EditorObject TopObjectInstanceNode() {
         iCS_EditorObject objInstance= null;
         ForEachParentNode(p=> { if(p.IsInstanceNode) objInstance= p; });
