@@ -16,7 +16,6 @@ public partial class iCS_IStorage {
 			SaveCurrentScene();            
         }
 		iCS_Version storageVersion= new iCS_Version(PersistentStorage.MajorVersion, PersistentStorage.MinorVersion, PersistentStorage.BugFixVersion);
-        Debug.Log("Storage Version=> "+storageVersion);
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
         // POST-PROCESING ====================================================
@@ -31,7 +30,6 @@ public partial class iCS_IStorage {
         }
         // v1.2.1: Convert GameController scale without deltaTime
 		if(storageVersion.IsOlderThen(1,2,1)) {
-            Debug.Log("Version is older then v1.2.1");
             foreach(var obj in PersistentStorage.EngineObjects) {
                 if(obj.IsClassFunction) {
                     var runtimeType= obj.RuntimeType;
