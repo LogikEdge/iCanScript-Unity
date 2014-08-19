@@ -594,33 +594,49 @@ public class iCS_ContextualMenu {
 		bool isConsumerPort= port.IsInputPort;
 		var portParent= port.ParentNode;
 		if(portParent.IsParentOf(method)) isConsumerPort= !isConsumerPort;
+        iCS_EditorObject attachedPort= null;
+        iCS_EditorObject providerPort= null;
+        iCS_EditorObject consumerPort= null;
         if(isConsumerPort) {
 			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), iStorage.GetChildOutputDataPorts(method)); 
 			// Connect if only one possibility.
 			if(outputPorts.Length == 1) {
-				iStorage.SetAndAutoLayoutNewDataConnection(port, outputPorts[0]);
+                attachedPort= outputPorts[0];
+                consumerPort= port;
+                providerPort= attachedPort;
 			}
 			else {
 				var bestPort= GetClosestMatch(port, outputPorts);
 				if(bestPort != null) {
-					iStorage.SetAndAutoLayoutNewDataConnection(port, bestPort);						
+                    attachedPort= bestPort;
+                    consumerPort= port;
+                    providerPort= bestPort;
 				}
 			}
         } else {
 			iCS_EditorObject[] inputPorts= Prelude.filter(x=> iCS_Types.IsA(x.RuntimeType, port.RuntimeType), iStorage.GetChildInputDataPorts(method));
 			// Connect if only one posiibility
 			if(inputPorts.Length == 1) {
-				iStorage.SetAndAutoLayoutNewDataConnection(inputPorts[0], port);
+                attachedPort= inputPorts[0];
+                consumerPort= attachedPort;
+                providerPort= port;
 			}
 			// Multiple choices exist so try the one with the closest name.
 			else {
 				var bestPort= GetClosestMatch(port, inputPorts);
 				if(bestPort != null) {
-					iStorage.SetAndAutoLayoutNewDataConnection(bestPort, port);											
+                    attachedPort= bestPort;
+                    consumerPort= bestPort;
+                    providerPort= port;
 				}
 			}
         }
-        iStorage.ForcedRelayoutOfTree();
+        // Position attached port and layout binding.
+        if(attachedPort != null && consumerPort != null && providerPort != null) {
+            iStorage.AutoLayoutPort(attachedPort, port.GlobalPosition, attachedPort.ParentNode.GlobalPosition);
+            iStorage.SetNewDataConnection(consumerPort, providerPort);
+            iStorage.AutoLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
+        }
         iCS_UserCommands.CloseTransaction(iStorage, "Create => "+desc.DisplayName);
         return method;
     }

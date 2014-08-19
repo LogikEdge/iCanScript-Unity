@@ -102,7 +102,7 @@ public partial class iCS_EditorObject {
 		// Don't change edge if parent is iconized.
 		var parent= ParentNode;
 		if(parent.IsIconizedOnDisplay) return Edge;
-        var parentSize= parent.AnimatedSize;
+        var parentSize= parent.LocalSize;
         float leftX  = -0.5f*parentSize.x;
         float rightX =  0.5f*parentSize.x;
         float topY   = -0.5f*parentSize.y;
