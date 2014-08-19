@@ -28,13 +28,13 @@ public class iCS_NavigationHistory {
     public bool HasForwardHistory { get { return myMementos.Count > myCursor; }}
     // ----------------------------------------------------------------------
     // Saves the navigation state of the given IStorage.
-    public void Save(iCS_IVisualScriptData storage, Vector2 selectedObjectGlobalPosition) {
+    public void Save(iCS_IVisualScriptData storage) {
         // Erase previous forward history.
         if(HasForwardHistory) {
             myMementos.RemoveRange(myCursor, myMementos.Count-myCursor);
         }
         // Save new memento.
-        myMementos.Add(new iCS_NavigationMemento(storage, selectedObjectGlobalPosition));
+        myMementos.Add(new iCS_NavigationMemento(storage));
         // Limit the size the the navigation history
         if(myMementos.Count > kMaxHistory) {
             myMementos.RemoveRange(0, myMementos.Count-kMaxHistory);
@@ -44,24 +44,22 @@ public class iCS_NavigationHistory {
     // ----------------------------------------------------------------------
     // Reloads the navigation state of the given IStorage from the backward
     // history.
-    public Vector2 ReloadFromBackwardHistory(iCS_IVisualScriptData storage, Vector2 selectedObjectGlobalPosition) {
-        if(!HasBackwardHistory) return selectedObjectGlobalPosition;
-        var forwardMemento= new iCS_NavigationMemento(storage, selectedObjectGlobalPosition);
+    public void ReloadFromBackwardHistory(iCS_IVisualScriptData storage) {
+        if(!HasBackwardHistory) return;
+        var forwardMemento= new iCS_NavigationMemento(storage);
         --myCursor;
-        selectedObjectGlobalPosition= myMementos[myCursor].RestoreState(storage, selectedObjectGlobalPosition);
+        myMementos[myCursor].RestoreState(storage);
         myMementos[myCursor]= forwardMemento;
-        return selectedObjectGlobalPosition;
     }
     // ----------------------------------------------------------------------
     // Reloads the navigation state of the given IStorage from the forward
     // history.
-    public Vector2 ReloadFromForwardHistory(iCS_IVisualScriptData storage, Vector2 selectedObjectGlobalPosition) {
-        if(!HasForwardHistory) return selectedObjectGlobalPosition;
-        var backwardMemento= new iCS_NavigationMemento(storage, selectedObjectGlobalPosition);
-        selectedObjectGlobalPosition= myMementos[myCursor].RestoreState(storage, selectedObjectGlobalPosition);
+    public void ReloadFromForwardHistory(iCS_IVisualScriptData storage) {
+        if(!HasForwardHistory) return;
+        var backwardMemento= new iCS_NavigationMemento(storage);
+        myMementos[myCursor].RestoreState(storage);
         myMementos[myCursor]= backwardMemento;
         ++myCursor;
-        return selectedObjectGlobalPosition;
     }
     // ----------------------------------------------------------------------
     // Copy history

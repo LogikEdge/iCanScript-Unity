@@ -51,7 +51,7 @@ public static partial class iCS_UserCommands {
                             pasted.Fold();            
                         }
                         iStorage.SelectedObject= pasted;
-                        iStorage.ForcedRelayoutOfTree(pasted, globalPos);                    
+                        iStorage.ForcedRelayoutOfTree();
                     }
                 }
             );            

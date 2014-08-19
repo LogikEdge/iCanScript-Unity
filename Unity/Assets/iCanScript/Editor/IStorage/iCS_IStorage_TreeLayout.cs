@@ -9,13 +9,6 @@ public partial class iCS_IStorage {
 	// ======================================================================
     // ----------------------------------------------------------------------
 	public void ForcedRelayoutOfTree() {
-        // Get a copy of the sticky position to maintain.
-        var stickyObject= SelectedObject ?? DisplayRoot;
-        var stickyPosition= stickyObject.GlobalPosition;
-        ForcedRelayoutOfTree(stickyObject, stickyPosition);
-	}
-    // ----------------------------------------------------------------------
-	public void ForcedRelayoutOfTree(iCS_EditorObject stickyObject, Vector2 stickyPosition) {
         // Advise of the start of a new layout
         SendStartRelayoutOfTree();
 
@@ -32,13 +25,6 @@ public partial class iCS_IStorage {
 				}
             }
         );
-        
-//        // Move the entire graph to maintain the sticky object position
-//        var newStickyPosition= stickyObject.GlobalPosition;
-//        if(Math3D.IsNotEqual(newStickyPosition, stickyPosition)) {
-//            var stickyOffset= stickyPosition-newStickyPosition;
-//            DisplayRoot.CollisionOffset+= stickyOffset;
-//        }
         
         // Advise that the layout has completed.
         SendEndRelayoutOfTree();

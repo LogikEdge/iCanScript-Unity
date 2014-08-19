@@ -638,6 +638,7 @@ public class iCS_ContextualMenu {
                     iStorage.AutoLayoutPort(attachedPort, port.GlobalPosition, attachedPort.ParentNode.GlobalPosition);
                     iStorage.SetAndAutoLayoutNewDataConnection(consumerPort, providerPort);
                 }                
+                iStorage.ForcedRelayoutOfTree();
             }
         );
         iCS_UserCommands.CloseTransaction(iStorage, "Create => "+desc.DisplayName);

@@ -5,22 +5,20 @@ public partial class iCS_IStorage {
     // ======================================================================
     // ----------------------------------------------------------------------
     public void SaveNavigationState() {
-        NavigationHistory.Save(Storage, SelectedObject.GlobalPosition);
+        NavigationHistory.Save(Storage);
     }
     public void ReloadFromBackwardNavigationHistory() {
-        var selObjGlobalPosition= SelectedObject.GlobalPosition;
 		DisplayRoot.WrappingOffset= Vector2.zero;
         DisplayRoot.ReduceChildrenAnchorPosition();
-        selObjGlobalPosition= NavigationHistory.ReloadFromBackwardHistory(Storage, selObjGlobalPosition);
+        NavigationHistory.ReloadFromBackwardHistory(Storage);
 		DisplayRoot.WrappingOffset= Vector2.zero;
-        ForcedRelayoutOfTree(SelectedObject, selObjGlobalPosition);
+        ForcedRelayoutOfTree();
     }
     public void ReloadFromForwardNavigationHistory() {
-        var selObjGlobalPosition= SelectedObject.GlobalPosition;
 		DisplayRoot.WrappingOffset= Vector2.zero;
-        selObjGlobalPosition= NavigationHistory.ReloadFromForwardHistory(Storage, selObjGlobalPosition);
+        NavigationHistory.ReloadFromForwardHistory(Storage);
 		DisplayRoot.WrappingOffset= Vector2.zero;
-        ForcedRelayoutOfTree(SelectedObject, selObjGlobalPosition);
+        ForcedRelayoutOfTree();
     }
     public bool HasBackwardNavigationHistory {
         get { return NavigationHistory.HasBackwardHistory; }

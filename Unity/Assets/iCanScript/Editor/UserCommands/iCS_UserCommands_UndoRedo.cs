@@ -33,7 +33,7 @@ public static partial class iCS_UserCommands {
                     Debug.LogWarning("iCanScript: Problem found regenerating data: "+e.Message);
                 }
                 // Rebuild layout
-                iStorage.ForcedRelayoutOfTree(iStorage.SelectedObject, iStorage.Storage.SelectedObjectPosition);
+                iStorage.ForcedRelayoutOfTree();
                 // Put back the animation start Rect.
                 int len= animationStarts.Length;
                 for(int id= 0; id < len; ++id) {
