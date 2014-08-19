@@ -166,7 +166,7 @@ public static class iCS_SoftwareUpdateController {
         catch(System.Exception) {}
 #endif        	
 		if(jMajor == null || jMinor == null || jBugFix == null) return null;
-		return new iCS_Version((uint)jMajor.value, (uint)jMinor.value, (uint)jBugFix.value);
+		return new iCS_Version((int)jMajor.value, (int)jMinor.value, (int)jBugFix.value);
     }
 
     // ----------------------------------------------------------------------

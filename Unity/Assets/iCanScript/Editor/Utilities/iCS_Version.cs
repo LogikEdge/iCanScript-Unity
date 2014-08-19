@@ -6,9 +6,9 @@ public class iCS_Version {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	public uint MajorVersion;
-	public uint MinorVersion;
-	public uint BugFixVersion;
+	public int MajorVersion;
+	public int MinorVersion;
+	public int BugFixVersion;
 	
 	public static iCS_Version Current=
 		new iCS_Version(iCS_Config.MajorVersion,
@@ -19,7 +19,7 @@ public class iCS_Version {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-	public iCS_Version(uint major, uint minor, uint bugFix) {
+	public iCS_Version(int major, int minor, int bugFix) {
 		MajorVersion = major;
 		MinorVersion = minor;
 		BugFixVersion= bugFix;
@@ -31,7 +31,7 @@ public class iCS_Version {
 	public bool IsEqual(iCS_Version other) {
 		return IsEqual(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
 	}
-	public bool IsEqual(uint major, uint minor, uint bugFix) {
+	public bool IsEqual(int major, int minor, int bugFix) {
 		return MajorVersion  == major &&
 		       MinorVersion  == minor &&
 			   BugFixVersion == bugFix;
@@ -41,7 +41,7 @@ public class iCS_Version {
 	public bool IsNewerThen(iCS_Version other) {
 		return IsNewerThen(other.MajorVersion, other.MinorVersion, other.BugFixVersion);		
 	}
-	public bool IsNewerThen(uint major, uint minor, uint bugFix) {
+	public bool IsNewerThen(int major, int minor, int bugFix) {
 		if(MajorVersion > major) return true;
 		if(MajorVersion < major) return false;
 		if(MinorVersion > minor) return true;
@@ -53,7 +53,7 @@ public class iCS_Version {
 	public bool IsNewerOrEqualTo(iCS_Version other) {
 		return IsNewerOrEqualTo(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
 	}
-	public bool IsNewerOrEqualTo(uint major, uint minor, uint bugFix) {
+	public bool IsNewerOrEqualTo(int major, int minor, int bugFix) {
 		if(MajorVersion > major) return true;
 		if(MajorVersion < major) return false;
 		if(MinorVersion > minor) return true;
@@ -65,7 +65,7 @@ public class iCS_Version {
 	public bool IsOlderThen(iCS_Version other) {
 		return IsOlderThen(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
 	}
-	public bool IsOlderThen(uint major, uint minor, uint bugFix) {
+	public bool IsOlderThen(int major, int minor, int bugFix) {
 		if(MajorVersion < major) return true;
 		if(MajorVersion > major) return false;
 		if(MinorVersion < minor) return true;
@@ -76,7 +76,7 @@ public class iCS_Version {
 	public bool IsOlderOrEqualTo(iCS_Version other) {
 		return IsOlderOrEqualTo(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
 	}
-	public bool IsOlderOrEqualTo(uint major, uint minor, uint bugFix) {
+	public bool IsOlderOrEqualTo(int major, int minor, int bugFix) {
 		if(MajorVersion < major) return true;
 		if(MajorVersion > major) return false;
 		if(MinorVersion < minor) return true;
@@ -94,21 +94,21 @@ public class iCS_Version {
     // ----------------------------------------------------------------------
 	// Deserializes a version string.
 	public static iCS_Version FromString(string versionStr) {
-		uint major = 0;
-		uint minor = 0;
-		uint bugFix= 0;
+		int major = 0;
+		int minor = 0;
+		int bugFix= 0;
 		int idx= versionStr.IndexOf('.');
 		if(idx >= 1) {
 			string majorStr= versionStr.Substring(0, idx);
 			versionStr= versionStr.Substring(idx+1);		
-			major = (uint)Convert.ChangeType(majorStr, typeof(uint));
+			major = (int)Convert.ChangeType(majorStr, typeof(int));
 			idx= versionStr.IndexOf('.');
 			if(idx >= 1) {
 				string minorStr= versionStr.Substring(0, idx);
-				minor = (uint)Convert.ChangeType(minorStr, typeof(uint));
+				minor = (int)Convert.ChangeType(minorStr, typeof(int));
 				versionStr= versionStr.Substring(idx+1);		
 				if(versionStr.Length > 0) {
-					bugFix= (uint)Convert.ChangeType(versionStr, typeof(uint));												
+					bugFix= (int)Convert.ChangeType(versionStr, typeof(int));												
 				}
 			}
 		}

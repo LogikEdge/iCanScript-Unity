@@ -10,9 +10,9 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    [HideInInspector] public uint			          MajorVersion          = iCS_Config.MajorVersion;
-    [HideInInspector] public uint    		          MinorVersion          = iCS_Config.MinorVersion;
-    [HideInInspector] public uint    		          BugFixVersion         = iCS_Config.BugFixVersion;
+    [HideInInspector] public int			          MajorVersion          = iCS_Config.MajorVersion;
+    [HideInInspector] public int    		          MinorVersion          = iCS_Config.MinorVersion;
+    [HideInInspector] public int    		          BugFixVersion         = iCS_Config.BugFixVersion;
     [HideInInspector] public int                      DisplayRoot           = -1;	
 	[HideInInspector] public int    		          SelectedObject        = -1;
     [HideInInspector] public Vector2                  SelectedObjectPosition= Vector2.zero;
@@ -33,15 +33,15 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
 //        get { return name; }
 //        set { name= value; }
 //    }
-    uint iCS_IVisualScriptData.MajorVersion {
+    int iCS_IVisualScriptData.MajorVersion {
         get { return MajorVersion; }
         set { MajorVersion= value; }
     }
-    uint iCS_IVisualScriptData.MinorVersion {
+    int iCS_IVisualScriptData.MinorVersion {
         get { return MinorVersion; }
         set { MinorVersion= value; }
     }
-    uint iCS_IVisualScriptData.BugFixVersion {
+    int iCS_IVisualScriptData.BugFixVersion {
         get { return BugFixVersion; }
         set { BugFixVersion= value; }
     }

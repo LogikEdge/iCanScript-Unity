@@ -13,10 +13,9 @@ public interface iCS_IVisualScriptData {
     iCS_NavigationHistory   NavigationHistory      { get; }
 
     // Engine Interface
-//    string                  HostName            { get; set; }
-    uint                    MajorVersion        { get; set; }
-    uint                    MinorVersion        { get; set; }
-    uint                    BugFixVersion       { get; set; }
+    int                     MajorVersion        { get; set; }
+    int                     MinorVersion        { get; set; }
+    int                     BugFixVersion       { get; set; }
     List<iCS_EngineObject>  EngineObjects       { get; }
     List<Object>            UnityObjects        { get; }
     int                     UndoRedoId          { get; set; } 

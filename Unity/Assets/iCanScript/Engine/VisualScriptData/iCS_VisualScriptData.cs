@@ -20,9 +20,9 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     // Fields
     // ----------------------------------------------------------------------
 //    public UnityEngine.Object       HostObject         = null;
-    public uint			            MajorVersion          = iCS_Config.MajorVersion;
-    public uint    		            MinorVersion          = iCS_Config.MinorVersion;
-    public uint    		            BugFixVersion         = iCS_Config.BugFixVersion;
+    public int			            MajorVersion          = iCS_Config.MajorVersion;
+    public int    		            MinorVersion          = iCS_Config.MinorVersion;
+    public int    		            BugFixVersion         = iCS_Config.BugFixVersion;
     public int                      DisplayRoot           = -1;	
 	public int    		            SelectedObject        = -1;
     public Vector2                  SelectedObjectPosition= Vector2.zero;
@@ -42,15 +42,15 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
  //       get { return HostObject != null ? HostObject.name : ""; }
  //       set { if(HostObject != null) HostObject.name= value; }
  //   }
-    uint iCS_IVisualScriptData.MajorVersion {
+    int iCS_IVisualScriptData.MajorVersion {
         get { return MajorVersion; }
         set { MajorVersion= value; }
     }
-    uint iCS_IVisualScriptData.MinorVersion {
+    int iCS_IVisualScriptData.MinorVersion {
         get { return MinorVersion; }
         set { MinorVersion= value; }
     }
-    uint iCS_IVisualScriptData.BugFixVersion {
+    int iCS_IVisualScriptData.BugFixVersion {
         get { return BugFixVersion; }
         set { BugFixVersion= value; }
     }

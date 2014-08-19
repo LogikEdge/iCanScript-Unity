@@ -7,8 +7,8 @@ public partial class iCS_IStorage {
 	void PerformEngineDataUpgrade() {
         bool isUpgraded= false;
         
-        // Special case for v1.1.2 that used a seperate ScriptableObject as
-        // visual script data storage
+        // PRE-PROCESSING ====================================================
+        // v1.1.2: used a seperate ScriptableObject for storage
 		iCS_Version softwareVersion= iCS_Version.Current;
         if(iCSMonoBehaviour.myStorage != null) {
 			ShowUpgradeDialog(softwareVersion); 
@@ -16,12 +16,10 @@ public partial class iCS_IStorage {
 			SaveCurrentScene();            
         }
 		iCS_Version storageVersion= new iCS_Version(PersistentStorage.MajorVersion, PersistentStorage.MinorVersion, PersistentStorage.BugFixVersion);
+        Debug.Log("Storage Version=> "+storageVersion);
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
-		// v1.1.2: Need to convert behaviour module to message 
-		if(storageVersion.IsOlderThen(1,1,2)) {
-            // Already done...
-		}
+        // POST-PROCESING ====================================================
         // v1.2.0 Needs to convert "this" port name to "type instance"
 		if(storageVersion.IsOlderThen(1,2,0)) {
             foreach(var obj in PersistentStorage.EngineObjects) {
@@ -29,6 +27,20 @@ public partial class iCS_IStorage {
                     obj.RawName= GetInstancePortName(obj.RuntimeType);
                     isUpgraded= true;
                 }         
+            }
+        }
+        // v1.2.1: Convert GameController scale without deltaTime
+		if(storageVersion.IsOlderThen(1,2,1)) {
+            Debug.Log("Version is older then v1.2.1");
+            foreach(var obj in PersistentStorage.EngineObjects) {
+                if(obj.IsClassFunction) {
+                    var runtimeType= obj.RuntimeType;
+                    if(runtimeType != null && runtimeType.Name == "iCS_GameController") {
+                        if(obj.MethodName == "GameController") {
+                            Debug.Log("Found a GameController function");                            
+                        }
+                    }
+                }
             }
         }
         // Warn the user that an upgrade toke place.
