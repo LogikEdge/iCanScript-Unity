@@ -28,19 +28,6 @@ public partial class iCS_IStorage {
                 }         
             }
         }
-        // v1.2.1: Convert GameController scale without deltaTime
-		if(storageVersion.IsOlderThen(1,2,1)) {
-            foreach(var obj in PersistentStorage.EngineObjects) {
-                if(obj.IsClassFunction) {
-                    var runtimeType= obj.RuntimeType;
-                    if(runtimeType != null && runtimeType.Name == "iCS_GameController") {
-                        if(obj.MethodName == "GameController") {
-                            Debug.Log("Found a GameController function");                            
-                        }
-                    }
-                }
-            }
-        }
         // Warn the user that an upgrade toke place.
         if(isUpgraded) {
 			ShowUpgradeDialog(softwareVersion);
