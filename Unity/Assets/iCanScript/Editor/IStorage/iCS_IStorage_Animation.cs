@@ -17,10 +17,23 @@ public partial class iCS_IStorage {
     // ======================================================================
 	// Animation Control
     // ----------------------------------------------------------------------
+    private bool isAnimateGraphReentered= false;
     public void AnimateGraph(iCS_EditorObject obj, Action<iCS_EditorObject> fnc) {
-        PrepareToAnimate();
-        fnc(obj);
-        StartToAnimate();
+        // Execute user action and return if we are already animating.
+        if(isAnimateGraphReentered) {
+            fnc(obj);
+            return;
+        }
+        // Animate graph.
+        isAnimateGraphReentered= true;
+        try {
+            PrepareToAnimate();
+            fnc(obj);
+            StartToAnimate();            
+        }
+        finally {
+            isAnimateGraphReentered= false;            
+        }
     }
     // ----------------------------------------------------------------------
     public void PrepareToAnimate() {

@@ -558,84 +558,88 @@ public class iCS_ContextualMenu {
         // Open a transaction for multi-operations
         iCS_UserCommands.OpenTransaction(iStorage);
 		iCS_EditorObject method= null;
-		if(newNodeParent.IsInstanceNode) {
-			method= iCS_UserCommands.CreateInstanceWizardElement(newNodeParent, desc);
-		}
-		else {
-			bool createMethod= true;
-			if(desc.IsInstanceFunction || desc.IsInstanceField) {
-				if(desc.ClassType != port.RuntimeType) {
-					int sel= EditorUtility.DisplayDialogComplex("Missing the Instance Node",
-																"The function you selected requires an instance.\nPlease select one of the following:\n1) create the Instance Builder and Instance Node;\n2) create the Instance Node (binding of the instance will be needed);\n3) create the Function. (binding of the instance will be needed).",
-																"Function",
-																"Build Instance",
-																"Instance Node");
-					switch(sel) {
-					case 0:
-						break;
-					case 1: {
-						method= iCS_UserCommands.CreateInstanceBuilderAndObjectAndElement(newNodeParent, globalPos, desc.ClassType, desc);
-						createMethod= false;
-						break;
-					}
-					case 2: {
-						method= iCS_UserCommands.CreateInstanceObjectAndElement(newNodeParent, globalPos, desc.ClassType, desc);
-						createMethod= false;
-						break;
-					}}
-				}
-			}
-			if(createMethod) {
-                method= iCS_UserCommands.CreateFunction(newNodeParent, globalPos, desc);							
-			}
-		}
+        iStorage.AnimateGraph(null,
+            _=> {
+        		if(newNodeParent.IsInstanceNode) {
+        			method= iCS_UserCommands.CreateInstanceWizardElement(newNodeParent, desc);
+        		}
+        		else {
+        			bool createMethod= true;
+        			if(desc.IsInstanceFunction || desc.IsInstanceField) {
+        				if(desc.ClassType != port.RuntimeType) {
+        					int sel= EditorUtility.DisplayDialogComplex("Missing the Instance Node",
+        																"The function you selected requires an instance.\nPlease select one of the following:\n1) create the Instance Builder and Instance Node;\n2) create the Instance Node (binding of the instance will be needed);\n3) create the Function. (binding of the instance will be needed).",
+        																"Function",
+        																"Build Instance",
+        																"Instance Node");
+        					switch(sel) {
+        					case 0:
+        						break;
+        					case 1: {
+        						method= iCS_UserCommands.CreateInstanceBuilderAndObjectAndElement(newNodeParent, globalPos, desc.ClassType, desc);
+        						createMethod= false;
+        						break;
+        					}
+        					case 2: {
+        						method= iCS_UserCommands.CreateInstanceObjectAndElement(newNodeParent, globalPos, desc.ClassType, desc);
+        						createMethod= false;
+        						break;
+        					}}
+        				}
+        			}
+        			if(createMethod) {
+                        method= iCS_UserCommands.CreateFunction(newNodeParent, globalPos, desc);							
+        			}
+        		}
 
-		// Inverse effective data flow if new node is inside port parent.
-		bool isConsumerPort= port.IsInputPort;
-		var portParent= port.ParentNode;
-		if(portParent.IsParentOf(method)) isConsumerPort= !isConsumerPort;
-        iCS_EditorObject attachedPort= null;
-        iCS_EditorObject providerPort= null;
-        iCS_EditorObject consumerPort= null;
-        if(isConsumerPort) {
-			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), iStorage.GetChildOutputDataPorts(method)); 
-			// Connect if only one possibility.
-			if(outputPorts.Length == 1) {
-                attachedPort= outputPorts[0];
-                consumerPort= port;
-                providerPort= attachedPort;
-			}
-			else {
-				var bestPort= GetClosestMatch(port, outputPorts);
-				if(bestPort != null) {
-                    attachedPort= bestPort;
-                    consumerPort= port;
-                    providerPort= bestPort;
-				}
-			}
-        } else {
-			iCS_EditorObject[] inputPorts= Prelude.filter(x=> iCS_Types.IsA(x.RuntimeType, port.RuntimeType), iStorage.GetChildInputDataPorts(method));
-			// Connect if only one posiibility
-			if(inputPorts.Length == 1) {
-                attachedPort= inputPorts[0];
-                consumerPort= attachedPort;
-                providerPort= port;
-			}
-			// Multiple choices exist so try the one with the closest name.
-			else {
-				var bestPort= GetClosestMatch(port, inputPorts);
-				if(bestPort != null) {
-                    attachedPort= bestPort;
-                    consumerPort= bestPort;
-                    providerPort= port;
-				}
-			}
-        }
-        // Position attached port and layout binding.
-        if(attachedPort != null && consumerPort != null && providerPort != null) {
-            iStorage.AutoLayoutPort(attachedPort, port.GlobalPosition, attachedPort.ParentNode.GlobalPosition);
-            iStorage.SetAndAutoLayoutNewDataConnection(consumerPort, providerPort);
-        }
+        		// Inverse effective data flow if new node is inside port parent.
+        		bool isConsumerPort= port.IsInputPort;
+        		var portParent= port.ParentNode;
+        		if(portParent.IsParentOf(method)) isConsumerPort= !isConsumerPort;
+                iCS_EditorObject attachedPort= null;
+                iCS_EditorObject providerPort= null;
+                iCS_EditorObject consumerPort= null;
+                if(isConsumerPort) {
+        			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), iStorage.GetChildOutputDataPorts(method)); 
+        			// Connect if only one possibility.
+        			if(outputPorts.Length == 1) {
+                        attachedPort= outputPorts[0];
+                        consumerPort= port;
+                        providerPort= attachedPort;
+        			}
+        			else {
+        				var bestPort= GetClosestMatch(port, outputPorts);
+        				if(bestPort != null) {
+                            attachedPort= bestPort;
+                            consumerPort= port;
+                            providerPort= bestPort;
+        				}
+        			}
+                } else {
+        			iCS_EditorObject[] inputPorts= Prelude.filter(x=> iCS_Types.IsA(x.RuntimeType, port.RuntimeType), iStorage.GetChildInputDataPorts(method));
+        			// Connect if only one posiibility
+        			if(inputPorts.Length == 1) {
+                        attachedPort= inputPorts[0];
+                        consumerPort= attachedPort;
+                        providerPort= port;
+        			}
+        			// Multiple choices exist so try the one with the closest name.
+        			else {
+        				var bestPort= GetClosestMatch(port, inputPorts);
+        				if(bestPort != null) {
+                            attachedPort= bestPort;
+                            consumerPort= bestPort;
+                            providerPort= port;
+        				}
+        			}
+                }
+                // Position attached port and layout binding.
+                if(attachedPort != null && consumerPort != null && providerPort != null) {
+                    iStorage.AutoLayoutPort(attachedPort, port.GlobalPosition, attachedPort.ParentNode.GlobalPosition);
+                    iStorage.SetAndAutoLayoutNewDataConnection(consumerPort, providerPort);
+                }                
+            }
+        );
         iCS_UserCommands.CloseTransaction(iStorage, "Create => "+desc.DisplayName);
         return method;
     }
