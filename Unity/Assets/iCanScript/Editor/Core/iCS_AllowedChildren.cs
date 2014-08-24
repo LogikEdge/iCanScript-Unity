@@ -2,29 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 public static class iCS_AllowedChildren {
-    public static readonly string[]    BehaviourChildNames= null;
     public static readonly string[]    StateChildNames= null;
-    
-    public static readonly string[]     BehaviourChildTooltips= null;
     public static readonly string[]     StateChildTooltips= null;
-    
+
     static iCS_AllowedChildren() {
-        BehaviourChildNames= new string[]{
-            iCS_Strings.Start,
-            iCS_Strings.Update,
-            iCS_Strings.LateUpdate,
-            iCS_Strings.FixedUpdate,
-            iCS_Strings.OnGUI,
-            iCS_Strings.OnDrawGizmos
-        };
-        BehaviourChildTooltips= new string[]{
-            "Start is called just before any of the Update methods is called the first time.",
-            "Update is called every frame, if the MonoBehaviour is enabled.",
-            "LateUpdate is called every frame, if the Behaviour is enabled.",
-            "This function is called every fixed framerate frame, if the MonoBehaviour is enabled.",
-            "OnGUI is called for rendering and handling GUI events.",
-            "Implement this OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn."
-        };
         StateChildNames= new string[]{
             iCS_Strings.OnEntry,
             iCS_Strings.OnUpdate,
@@ -132,14 +113,4 @@ public static class iCS_AllowedChildren {
         }
         return false;
     }
-
-    // ----------------------------------------------------------------------
-	public static string TooltipForBehaviourChild(string name) {
-		for(int i= 0; i < BehaviourChildNames.Length; ++i) {
-			if(name == BehaviourChildNames[i]) {
-				return BehaviourChildTooltips[i];
-			}
-		}
-		return null;
-	}
 }
