@@ -19,6 +19,18 @@ public static class iCS_RemoteCall {
             targetVisualScript.RunMessage(messageName);
         }
     }
+    [iCS_Function]
+    public static void SendMessage(iCS_VisualScriptImp targetVisualScript, string messageName, object p1) {
+        if(targetVisualScript != null) {
+            targetVisualScript.RunMessage(messageName, p1);
+        }
+    }
+    [iCS_Function]
+    public static void SendMessage(iCS_VisualScriptImp targetVisualScript, string messageName, object p1, object p2) {
+        if(targetVisualScript != null) {
+            targetVisualScript.RunMessage(messageName, p1, p2);
+        }
+    }
     
 //    // ------------------------------------------------------------------------
 //    // Build a dictionary of all the visual script we are communicating with.

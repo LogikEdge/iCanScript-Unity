@@ -27,6 +27,7 @@ public static partial class iCS_UserCommands {
             try {
         		iStorage.AnimateGraph(null,
                     _=> {
+                        iStorage.SelectedObject= obj.ParentNode;
                         iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);
                         iStorage.ForcedRelayoutOfTree();
                     }
@@ -36,6 +37,7 @@ public static partial class iCS_UserCommands {
                 CancelTransaction(iStorage);
                 return;
             }
+            iCS_EditorController.RepaintInstanceEditor();
             CloseTransaction(iStorage, "Delete "+name);
             return;
         }

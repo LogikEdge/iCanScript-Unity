@@ -26,15 +26,20 @@ public class iCS_InstanceEditor : iCS_EditorBase {
         myController= null;
     }
     bool IsInitialized() {
-		if(IStorage == null || SelectedObject == null || !(SelectedObject.IsInstanceNode || SelectedObject.IsBehaviour)) {
+        var targetObject= SelectedObject;
+        // Move to the parent node if selected is a port.
+        if(targetObject != null && targetObject.IsPort) {
+            targetObject= targetObject.ParentNode;
+        }
+		if(IStorage == null || targetObject == null || !(targetObject.IsInstanceNode || targetObject.IsBehaviour)) {
 			myMainView= null;
 			myController= null;
 			return false;
 		}
 		// Update main view if selection has changed.
         if(myMainView == null || myController == null ||
-           (myController != null && (myController.Target != SelectedObject || myController.IStorage != IStorage))) {
-               myController= new iCS_InstanceController(SelectedObject, IStorage);            
+           (myController != null && (myController.Target != targetObject || myController.IStorage != IStorage))) {
+               myController= new iCS_InstanceController(targetObject, IStorage);            
                myMainView  = new DSCellView(new RectOffset(0,0,kSpacer,0), true, myController.View);
         }		
         return true;
