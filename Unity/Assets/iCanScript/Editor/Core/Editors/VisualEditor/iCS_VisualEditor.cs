@@ -298,15 +298,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case EventType.Repaint: {
                 // Draw Graph.
                 DrawGraph();
-                // Show iCS inspector if window is maximized.
-                if(maximized && SelectedObject != null) {
-                    if(myObjectInspector == null) {
-                        myObjectInspector= iCS_ObjectInspector.CreateInstance(SelectedObject, Vector2.zero);
-                    }
-                    else if(myObjectInspector.InspectedObject != SelectedObject) {
-                        myObjectInspector.Init(SelectedObject, Vector2.zero);
-                    }
-                }
                 break;                
             }
             case EventType.Layout: {
