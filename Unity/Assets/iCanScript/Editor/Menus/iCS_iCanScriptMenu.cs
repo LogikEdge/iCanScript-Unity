@@ -23,15 +23,29 @@ public static class iCS_iCanScriptMenu {
 
     // ======================================================================
     // Navigation
-    [MenuItem("Edit/iCanScript/Center Visual Script #f",false,121)]
+    [MenuItem("Edit/iCanScript/Center Visual Script",false,121)]
     public static void FocusOnVisualScript() {
         iCS_VisualEditor visualEditor= iCS_EditorController.FindVisualEditor();
         if(visualEditor != null) visualEditor.CenterAndScaleOnRoot();
     }
-    [MenuItem("Edit/iCanScript/Center Selected _f",false,122)]
+    [MenuItem("Edit/iCanScript/Center Visual Script",true,121)]
+    public static bool ValidateFocusOnVisualScript() {
+        var focusedWindow= EditorWindow.focusedWindow;
+        if(focusedWindow == null) return false;
+        if((focusedWindow as iCS_VisualEditor) == null) return false;
+        return true;
+    }
+    [MenuItem("Edit/iCanScript/Center Selected",false,122)]
     public static void FocusOnSelected() {
         iCS_VisualEditor graphEditor= iCS_EditorController.FindVisualEditor();
         if(graphEditor != null) graphEditor.CenterAndScaleOnSelected();
+    }
+    [MenuItem("Edit/iCanScript/Center Selected",true,122)]
+    public static bool ValidateFocusOnSelected() {
+        var focusedWindow= EditorWindow.focusedWindow;
+        if(focusedWindow == null) return false;
+        if((focusedWindow as iCS_VisualEditor) == null) return false;
+        return true;
     }
     // ======================================================================
     // Export Storage
