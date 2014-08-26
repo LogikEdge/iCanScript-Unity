@@ -258,11 +258,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Update pending menu commands
 		myContextualMenu.OnGUI();
 		
-		// Update sub editor if active.
-		if(mySubEditor != null) {
-			mySubEditor.Update();
-		}
-
        // Process all visual editor events including Repaint.
        if(IsMouseInToolbar && Event.current.type != EventType.Repaint) {
            Toolbar();
@@ -273,6 +268,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Process scroll zone.
 		ProcessScrollZone();
         
+		// Update sub editor if active.
+		if(mySubEditor != null) {
+			mySubEditor.Update();
+		}
+
         // Debug information.
 #if SHOW_FRAME_RATE || SHOW_FRAME_TIME
         FrameRateDebugInfo();

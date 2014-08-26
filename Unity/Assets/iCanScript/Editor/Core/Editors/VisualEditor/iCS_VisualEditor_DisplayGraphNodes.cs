@@ -46,7 +46,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	    DrawGrid();			
         
         // Draw nodes and their connections.
-//        BoundOnDisplayRoot();
         DisplayGraphNodes();
 
         myGraphics.End(IStorage);
