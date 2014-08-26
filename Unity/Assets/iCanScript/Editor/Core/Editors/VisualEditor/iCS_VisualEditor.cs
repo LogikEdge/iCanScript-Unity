@@ -258,20 +258,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Update pending menu commands
 		myContextualMenu.OnGUI();
 		
-       // Process all visual editor events including Repaint.
-       if(IsMouseInToolbar && Event.current.type != EventType.Repaint) {
-           Toolbar();
-       } else {
-           ProcessEvents();           
-       }
-
-		// Process scroll zone.
-		ProcessScrollZone();
+        // Process all visual editor events including Repaint.
+        if(IsMouseInToolbar && Event.current.type != EventType.Repaint) {
+            Toolbar();
+        } else {
+             ProcessEvents();            
+        }
         
-		// Update sub editor if active.
-		if(mySubEditor != null) {
-			mySubEditor.Update();
-		}
+        // Process scroll zone.
+        ProcessScrollZone();
+        
+        // Update sub editor if active.
+        if(mySubEditor != null) {
+        	mySubEditor.Update();
+        }
 
         // Debug information.
 #if SHOW_FRAME_RATE || SHOW_FRAME_TIME
@@ -287,13 +287,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //    static int ourButton= -1;
     void ProcessEvents() {
 		var ev= Event.current;
-		// TODO: Should use undo/redo event to rebuild editor objects.
-		//if(ev.commandName == "UndoRedoPerformed") {
-        //    Debug.Log("EventType: "+ev.type);
-		//	IStorage.SynchronizeAfterUndoRedo();
-		//	Debug.Log("UndoRedo detected");
-	    //}
-
         switch(ev.type) {
             case EventType.Repaint: {
                 // Draw Graph.
@@ -352,8 +345,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
 			case EventType.KeyDown: {
-                KeyDownEvent();
-                myNeedRepaint= true;
+                if(mySubEditor == null) {
+                    KeyDownEvent();                    
+                    myNeedRepaint= true;
+                }
     			break;
 			}
 			case EventType.ValidateCommand: {

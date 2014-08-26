@@ -54,7 +54,7 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     public bool Update() {
         Rect boxPos= new Rect(myPosition.x-2.0f, myPosition.y, myPosition.width+4.0f, myPosition.height+1f);
         Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
-        iCS_Graphics.DrawBox(boxPos, selectionColor, Color.white, new Color(1.0f,1.0f,1.0f,1.0f));
+        iCS_Graphics.DrawBox(boxPos, selectionColor, Color.white, new Color(1.0f,1.0f,1.0f,0.35f));
         GUI.changed= false;
         string newValue= GUI.TextField(myPosition, myValue, myStyle);
         if(GUI.changed) {
