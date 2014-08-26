@@ -22,8 +22,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    iCS_ContextualMenu  myContextualMenu= null;
-    iCS_Graphics        myGraphics      = null;
+    iCS_ContextualMenu  myContextualMenu = null;
+    iCS_Graphics        myGraphics       = null;
+    iCS_ObjectInspector myObjectInspector= null;
 
     // ----------------------------------------------------------------------
     Vector2 GridOffset= Vector2.zero;
@@ -270,8 +271,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
        }
 
 		// Process scroll zone.
-		ProcessScrollZone();                        
-	
+		ProcessScrollZone();
+        
         // Debug information.
 #if SHOW_FRAME_RATE || SHOW_FRAME_TIME
         FrameRateDebugInfo();
@@ -297,6 +298,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case EventType.Repaint: {
                 // Draw Graph.
                 DrawGraph();
+                // Show iCS inspector if window is maximized.
+                if(maximized && SelectedObject != null) {
+                    if(myObjectInspector == null) {
+                        myObjectInspector= iCS_ObjectInspector.CreateInstance(SelectedObject, Vector2.zero);
+                    }
+                    else if(myObjectInspector.InspectedObject != SelectedObject) {
+                        myObjectInspector.Init(SelectedObject, Vector2.zero);
+                    }
+                }
                 break;                
             }
             case EventType.Layout: {
