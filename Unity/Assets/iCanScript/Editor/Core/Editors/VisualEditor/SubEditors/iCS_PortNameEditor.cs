@@ -6,7 +6,6 @@ public class iCS_PortNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Field.
 	// ----------------------------------------------------------------------
-    iCS_IStorage        myIStorage= null;
     iCS_EditorObject    myTarget  = null;
 	iCS_FieldEditor	    myEditor  = null;
 	iCS_Graphics		myGraphics= null;
@@ -14,14 +13,13 @@ public class iCS_PortNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Property.
 	// ----------------------------------------------------------------------
-	Rect 	 Position { get { return myGraphics.GetPortNameGUIPosition(myTarget, myIStorage); }}
+	Rect 	 Position { get { return myGraphics.GetPortNameGUIPosition(myTarget, myTarget.IStorage); }}
 	GUIStyle GuiStyle { get { return myGraphics.LabelStyle; }}
 
     // ======================================================================
     // Initialization.
 	// ----------------------------------------------------------------------
-    public iCS_PortNameEditor(iCS_EditorObject target, iCS_IStorage iStorage, iCS_Graphics graphics) {
-        myIStorage= iStorage;
+    public iCS_PortNameEditor(iCS_EditorObject target, iCS_Graphics graphics) {
         myTarget= target;
 		myGraphics= graphics;
 		myEditor= new iCS_FieldEditor(Position, myTarget.RawName, iCS_FieldTypeEnum.String, GuiStyle);
