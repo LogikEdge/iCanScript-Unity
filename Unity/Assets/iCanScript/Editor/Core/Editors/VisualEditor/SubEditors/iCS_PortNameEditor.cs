@@ -31,7 +31,7 @@ public class iCS_PortNameEditor : iCS_ISubEditor {
     public bool Update() {
 		myEditor.Position= Position;
 		if(myEditor.Update()) {
-			myTarget.Name= myEditor.ValueAsString;
+			iCS_UserCommands.ChangeName(myTarget, myEditor.ValueAsString);
 			return true;
 		}
 		return false;

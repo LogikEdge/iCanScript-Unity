@@ -265,14 +265,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
              ProcessEvents();            
         }
         
-        // Process scroll zone.
-        ProcessScrollZone();
-        
         // Update sub editor if active.
-        if(mySubEditor != null) {
+        if(mySubEditor != null && Event.current.type == EventType.Repaint) {
+            EditorGUI.FocusTextInControl("SubEditor");
         	mySubEditor.Update();
         }
 
+        // Process scroll zone.
+        ProcessScrollZone();
+        
         // Debug information.
 #if SHOW_FRAME_RATE || SHOW_FRAME_TIME
         FrameRateDebugInfo();
@@ -348,6 +349,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(mySubEditor == null) {
                     KeyDownEvent();                    
                     myNeedRepaint= true;
+                }
+                else {
+                    EditorGUI.FocusTextInControl("SubEditor");
                 }
     			break;
 			}

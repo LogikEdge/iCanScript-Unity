@@ -36,7 +36,7 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
 		myEditor.Position= Position;
 		myEditor.GuiStyle= GuiStyle;
 		if(myEditor.Update()) {
-			myTarget.Name= myEditor.ValueAsString;
+			iCS_UserCommands.ChangeName(myTarget, myEditor.ValueAsString);
 			return true;
 		}
 		return false;
