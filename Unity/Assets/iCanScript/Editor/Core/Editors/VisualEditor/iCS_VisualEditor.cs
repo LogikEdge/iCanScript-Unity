@@ -191,7 +191,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }            
             
             // Repaint visual editor if it has changed
-            if(IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
+            if(IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive || mySubEditor != null) {
                 Repaint();
                 myNeedRepaint= true;
             }
@@ -266,7 +266,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         
         // Update sub editor if active.
-        if(mySubEditor != null && Event.current.type == EventType.Repaint) {
+        if(mySubEditor != null) {
             EditorGUI.FocusTextInControl("SubEditor");
         	mySubEditor.Update();
         }
