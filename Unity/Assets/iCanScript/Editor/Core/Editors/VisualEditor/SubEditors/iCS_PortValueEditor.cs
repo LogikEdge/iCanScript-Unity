@@ -6,25 +6,23 @@ public class iCS_PortValueEditor : iCS_ISubEditor {
     // ======================================================================
     // Field.
 	// ----------------------------------------------------------------------
-    iCS_IStorage        myIStorage= null;
-    iCS_EditorObject    myTarget  = null;
+    iCS_EditorObject    myPort    = null;
 	iCS_FieldEditor	    myEditor  = null;
 	iCS_Graphics		myGraphics= null;
 	
     // ======================================================================
     // Property.
 	// ----------------------------------------------------------------------
-	Rect 	 Position { get { return myGraphics.GetPortNameGUIPosition(myTarget, myIStorage); }}
+	Rect 	 Position { get { return myGraphics.GetPortNameGUIPosition(myPort, myPort.IStorage); }}
 	GUIStyle GuiStyle { get { return myGraphics.ValueStyle; }}
 
     // ======================================================================
     // Initialization.
 	// ----------------------------------------------------------------------
-    public iCS_PortValueEditor(iCS_EditorObject target, iCS_IStorage iStorage, iCS_Graphics graphics, Vector2 pickPoint) {
-        myIStorage= iStorage;
-        myTarget= target;
+    public iCS_PortValueEditor(iCS_EditorObject port, iCS_Graphics graphics, Vector2 pickPoint) {
+        myPort= port;
 		myGraphics= graphics;
-		myEditor= new iCS_FieldEditor(Position, myTarget.RawName, iCS_FieldTypeEnum.String, GuiStyle, pickPoint);
+		myEditor= new iCS_FieldEditor(Position, myPort.RawName, iCS_FieldTypeEnum.String, GuiStyle, pickPoint);
     }
     
     // ======================================================================
@@ -33,7 +31,7 @@ public class iCS_PortValueEditor : iCS_ISubEditor {
     public bool Update() {
 		myEditor.Position= Position;
 		if(myEditor.Update()) {
-			myTarget.Name= myEditor.ValueAsString;
+			iCS_UserCommands.ChangePortValue(myPort, myEditor.ValueAs(myPort.RuntimeType));
 			return true;
 		}
 		return false;

@@ -38,6 +38,9 @@ public class iCS_FieldEditor : iCS_ISubEditor {
             return myValue;
         }
     }
+	public object ValueAs(Type type) {
+		return Convert.ChangeType(myValue, type);
+	}
     
     // =================================================================================
     // Initialization
