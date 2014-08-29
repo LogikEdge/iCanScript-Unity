@@ -74,15 +74,21 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 //        string newValue= GUI.TextField(boxPos/*myPosition*/, myValue, guiStyle);
 		ShowCursor(myPosition, myValue, myCursor, Color.red, 0.5f, myStyle);
         var oldValue= myValue;
-        ProcessKeys(ref myValue, ref myCursor);
-		ShowCursor(myPosition, myValue, myCursor, Color.red, 0.5f, myStyle);
+        if(ProcessKeys(ref myValue, ref myCursor, (ch,_,__)=> !char.IsControl(ch))) {
+            RestartCursorBlink();
+        }
         return oldValue != myValue;
+    }
+    // ---------------------------------------------------------------------------------
+    static float ourCursorBlinkStartTime= 0f;
+    static void RestartCursorBlink() {
+        ourCursorBlinkStartTime= Time.realtimeSinceStartup;
     }
     // ---------------------------------------------------------------------------------
 	static void ShowCursor(Rect r, string value, int cursor, Color cursorColor, float blinkSpeed, GUIStyle style) {
 		if(Math3D.IsNotZero(blinkSpeed)) {
-			int step= (int)(Time.realtimeSinceStartup/blinkSpeed);
-			if((step & 1) == 0) {
+			int step= (int)((Time.realtimeSinceStartup-ourCursorBlinkStartTime)/blinkSpeed);
+			if((step & 1) == 1) {
 				return;
 			}
 		}
@@ -95,15 +101,17 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 			if(cursor > value.Length) {
 				cursor= value.Length;
 			}
-			var beforeCursor= value.Substring(0, cursor);
+            // Avoid end-of-string space removal by appending "A".
+			var beforeCursor= value.Substring(0, cursor)+"A";
 			var size= style.CalcSize(new GUIContent(beforeCursor));
-			x+= size.x;
+            var toTrim= style.CalcSize(new GUIContent("A"));
+			x+= size.x-toTrim.x;
 		}
 		Handles.DrawLine(new Vector3(x,y,0), new Vector3(x,yMax,0));
 		Handles.DrawLine(new Vector3(x+1,y,0), new Vector3(x+1,yMax,0));
 	}
     // ---------------------------------------------------------------------------------
-    static bool ProcessKeys(ref string value, ref int cursor) {
+    static bool ProcessKeys(ref string value, ref int cursor, Func<char,string,int,bool> filter) {
         // Nothing to do if not a keyboard event
         var ev= Event.current;
         if(ev.type == EventType.KeyDown) {
@@ -115,7 +123,7 @@ public class iCS_FieldEditor : iCS_ISubEditor {
                         cursor= len;
                     }
                     Event.current.Use();
-                    break;
+                    return true;
                 }
                 case KeyCode.LeftArrow: {
                     cursor= cursor-1;
@@ -123,7 +131,7 @@ public class iCS_FieldEditor : iCS_ISubEditor {
                         cursor= 0;
                     }
                     Event.current.Use();
-                    break;
+                    return true;;
                 }
                 case KeyCode.Delete:
                 case KeyCode.Backspace: {
@@ -132,16 +140,17 @@ public class iCS_FieldEditor : iCS_ISubEditor {
                         --cursor;
                     }
                     Event.current.Use();
-                    break;
+                    return true;
                 }
                 default: {
                     if(ev.isKey) {
                         char c= ev.character;
-                        if(!char.IsControl(c)) {
+                        if(filter(c, value, cursor)) {
                             value= value.Substring(0, cursor)+c+value.Substring(cursor, len-cursor);
                             ++cursor;                            
+                            Event.current.Use();
+                            return true;
                         }
-                        Event.current.Use();
                     }
                     break;                    
                 }
