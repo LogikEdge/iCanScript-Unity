@@ -48,10 +48,7 @@ public static class iCS_GuiUtilities {
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty, iStorage);
         if(!isReadOnly && isDirty && !newPortValue.Equals(portValue)) {
-            iCS_UserCommands.OpenTransaction(iStorage);
-			port.PortValue= newPortValue;
-            iCS_UserCommands.CloseTransaction(iStorage, "Change port value => "+port.Name, TransactionType.Field);
-            iCS_EditorController.RepaintEditorsWithValues();
+			iCS_UserCommands.ChangePortValue(port, newPortValue);
         }
     }
 

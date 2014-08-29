@@ -69,6 +69,20 @@ public static partial class iCS_UserCommands {
         iCS_EditorController.RepaintEditorsWithLabels();
     }
     // ----------------------------------------------------------------------
+	public static void ChangePortValue(iCS_EditorObject port, object newValue) {
+		if(port == null) return;
+		var iStorage= port.IStorage;
+        OpenTransaction(iStorage);
+		try {
+			port.PortValue= newValue;
+		}
+		catch(System.Exception) {
+			CancelTransaction(iStorage);
+		}
+        iCS_UserCommands.CloseTransaction(iStorage, "Change port value => "+port.Name, TransactionType.Field);
+        iCS_EditorController.RepaintEditorsWithValues();
+	}
+    // ----------------------------------------------------------------------
     public static void AutoLayoutPort(iCS_EditorObject port) {
         if(port == null) return;
         var iStorage= port.IStorage;
