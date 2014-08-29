@@ -63,16 +63,6 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 		boxPos.height-= 2f;
         iCS_Graphics.DrawBox(boxPos, Color.clear, selectionColor, Color.white);
 		GUI.Label(myPosition, myValue, myStyle);
-        GUI.changed= false;
-//        GUI.SetNextControlName("SubEditor");
-//        string newValue= GUI.TextField(myPosition, myValue, myStyle);
-//		var guiStyle= new GUIStyle(EditorStyles.textField);
-//		guiStyle.fontSize= myStyle.fontSize;
-//		guiStyle.fontStyle= myStyle.fontStyle;
-//		GUI.skin.settings.cursorColor= Color.red;
-//		GUI.skin.settings.cursorFlashSpeed= 1;
-//		GUI.backgroundColor= Color.clear;
-//        string newValue= GUI.TextField(boxPos/*myPosition*/, myValue, guiStyle);
 		ShowCursor(myPosition, myValue, myCursor, Color.red, 0.5f, myStyle);
         var oldValue= myValue;
         if(ProcessKeys(ref myValue, ref myCursor, (ch,_,__)=> !char.IsControl(ch))) {
@@ -80,6 +70,9 @@ public class iCS_FieldEditor : iCS_ISubEditor {
         }
         return oldValue != myValue;
     }
+
+    // =================================================================================
+    // Cursor Management
     // ---------------------------------------------------------------------------------
     static float ourCursorBlinkStartTime= 0f;
     static void RestartCursorBlink() {
@@ -153,6 +146,22 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 		}
         return x;        
     }
+
+    // =================================================================================
+    // Input Validation
+    // ---------------------------------------------------------------------------------
+    static bool ValidateStringInput(char newChar, string value, int cursor) {
+        return !char.IsControl(newChar);
+    }
+    static bool ValidateIntInput(char newChar, string value, int cursor) {
+        return char.IsDigit(newChar);
+    }
+    static bool ValidateFloatInput(char newChar, string value, int cursor) {
+        return char.IsDigit(newChar);        
+    }
+    
+    // =================================================================================
+    // Keyboard processing
     // ---------------------------------------------------------------------------------
     static bool ProcessKeys(ref string value, ref int cursor, Func<char,string,int,bool> filter) {
         // Nothing to do if not a keyboard event

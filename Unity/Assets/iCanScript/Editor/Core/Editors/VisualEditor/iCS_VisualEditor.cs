@@ -24,11 +24,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     iCS_ContextualMenu  myContextualMenu = null;
     iCS_Graphics        myGraphics       = null;
-    iCS_ObjectInspector myObjectInspector= null;
+//    iCS_ObjectInspector myObjectInspector= null;
 
     // ----------------------------------------------------------------------
     Vector2 GridOffset= Vector2.zero;
-//    Vector2 SavedDisplayRootAnchorPosition= Vector2.zero;
     
     // ----------------------------------------------------------------------
     bool  myShowDynamicMenu    = false;
@@ -109,16 +108,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public new void OnHierarchyChange() {
         base.OnHierarchyChange();
-//		if(IStorage == null || IStorage.EditorObjects.Count == 0) return;
-//		iCS_EditorObject behaviour= IStorage.EditorObjects[0];
-//		if(behaviour == null || !behaviour.IsBehaviour) return;
-//		behaviour.ForEachChildNode(
-//			n=> {
-//				if(n.IsMessage) {
-//					IStorage.UpdateBehaviourMessagePorts(n);
-//				}
-//			}
-//		);
     }
     // ======================================================================
     // Update all message ports when hierarchy has changed
