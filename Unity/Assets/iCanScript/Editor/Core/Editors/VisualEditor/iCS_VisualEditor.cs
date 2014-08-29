@@ -267,7 +267,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         
         // Update sub editor if active.
         if(mySubEditor != null) {
-            EditorGUI.FocusTextInControl("SubEditor");
+//            EditorGUI.FocusTextInControl("SubEditor");
         	mySubEditor.Update();
         }
 
@@ -351,7 +351,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     myNeedRepaint= true;
                 }
                 else {
-                    EditorGUI.FocusTextInControl("SubEditor");
+//                    EditorGUI.FocusTextInControl("SubEditor");
                 }
     			break;
 			}

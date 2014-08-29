@@ -55,7 +55,7 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     public bool Update() {
         Rect boxPos= new Rect(myPosition.x-2.0f, myPosition.y-1f, myPosition.width+4.0f, myPosition.height+2f);
         Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
-        iCS_Graphics.DrawBox(boxPos, new Color(0.5f,0.5f,0.5f,0.5f), selectionColor, Color.white);
+        iCS_Graphics.DrawBox(boxPos, new Color(0f,0f,0f,0.25f), selectionColor, Color.white);
 		boxPos.x+= 1f;
 		boxPos.width-= 2f;
 		boxPos.y+= 1f;
@@ -63,7 +63,7 @@ public class iCS_FieldEditor : iCS_ISubEditor {
         iCS_Graphics.DrawBox(boxPos, Color.clear, selectionColor, Color.white);
 		GUI.Label(myPosition, myValue, myStyle);
         GUI.changed= false;
-        GUI.SetNextControlName("SubEditor");
+//        GUI.SetNextControlName("SubEditor");
 //        string newValue= GUI.TextField(myPosition, myValue, myStyle);
 //		var guiStyle= new GUIStyle(EditorStyles.textField);
 //		guiStyle.fontSize= myStyle.fontSize;
@@ -72,15 +72,14 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 //		GUI.skin.settings.cursorFlashSpeed= 1;
 //		GUI.backgroundColor= Color.clear;
 //        string newValue= GUI.TextField(boxPos/*myPosition*/, myValue, guiStyle);
-		ShowCursor(4, Color.red, 0.5f);
-		var newValue= myValue;
-        if(GUI.changed) {
-            myValue= newValue;
-        }
-        return GUI.changed;
+		ShowCursor(myPosition, myValue, myCursor, Color.red, 0.5f, myStyle);
+        var oldValue= myValue;
+        ProcessKeys(ref myValue, ref myCursor);
+		ShowCursor(myPosition, myValue, myCursor, Color.red, 0.5f, myStyle);
+        return oldValue != myValue;
     }
     // ---------------------------------------------------------------------------------
-	void ShowCursor(int cursor, Color cursorColor, float blinkSpeed) {
+	static void ShowCursor(Rect r, string value, int cursor, Color cursorColor, float blinkSpeed, GUIStyle style) {
 		if(Math3D.IsNotZero(blinkSpeed)) {
 			int step= (int)(Time.realtimeSinceStartup/blinkSpeed);
 			if((step & 1) == 0) {
@@ -88,19 +87,66 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 			}
 		}
 		Handles.color= cursorColor;
-		var x= myPosition.x;
-		var y= myPosition.y;
-		var yMax= myPosition.yMax;
+		var x= r.x;
+		var y= r.y-2f;
+		var yMax= r.yMax+2f;
 		if(cursor != 0) {
 			// Limit the cursor movement within the value string
-			if(cursor > myValue.Length) {
-				cursor= myValue.Length;
+			if(cursor > value.Length) {
+				cursor= value.Length;
 			}
-			var beforeCursor= myValue.Substring(0, cursor);
-			var size= myStyle.CalcSize(new GUIContent(beforeCursor));
+			var beforeCursor= value.Substring(0, cursor);
+			var size= style.CalcSize(new GUIContent(beforeCursor));
 			x+= size.x;
 		}
 		Handles.DrawLine(new Vector3(x,y,0), new Vector3(x,yMax,0));
 		Handles.DrawLine(new Vector3(x+1,y,0), new Vector3(x+1,yMax,0));
 	}
+    // ---------------------------------------------------------------------------------
+    static bool ProcessKeys(ref string value, ref int cursor) {
+        // Nothing to do if not a keyboard event
+        var ev= Event.current;
+        if(ev.type == EventType.KeyDown) {
+            var len= value.Length;
+            switch(ev.keyCode) {
+                case KeyCode.RightArrow: {
+                    cursor= cursor+1;
+                    if(cursor > len) {
+                        cursor= len;
+                    }
+                    Event.current.Use();
+                    break;
+                }
+                case KeyCode.LeftArrow: {
+                    cursor= cursor-1;
+                    if(cursor < 0) {
+                        cursor= 0;
+                    }
+                    Event.current.Use();
+                    break;
+                }
+                case KeyCode.Delete:
+                case KeyCode.Backspace: {
+                    if(cursor > 0) {
+                        value= value.Substring(0, cursor-1)+value.Substring(cursor, len-cursor);
+                        --cursor;
+                    }
+                    Event.current.Use();
+                    break;
+                }
+                default: {
+                    if(ev.isKey) {
+                        char c= ev.character;
+                        if(!char.IsControl(c)) {
+                            value= value.Substring(0, cursor)+c+value.Substring(cursor, len-cursor);
+                            ++cursor;                            
+                        }
+                        Event.current.Use();
+                    }
+                    break;                    
+                }
+            }            
+        }
+        return false;
+    }
 }
