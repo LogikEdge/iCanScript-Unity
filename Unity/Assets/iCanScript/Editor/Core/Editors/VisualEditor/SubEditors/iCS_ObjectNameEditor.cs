@@ -13,7 +13,14 @@ public class iCS_ObjectNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Property.
 	// ----------------------------------------------------------------------
-	Rect 	 Position { get { return myGraphics.GetNodeNameGUIPosition(myTarget); }}
+	Rect 	 Position {
+		get {
+			if(myTarget.IsPort) {
+				return myGraphics.GetPortNameGUIPosition(myTarget, myTarget.IStorage);
+			}
+			return myGraphics.GetNodeNameGUIPosition(myTarget);
+		}
+	}
 	GUIStyle GuiStyle {
         get {
             return myTarget.IsPort || myTarget.IsIconizedOnDisplay ?

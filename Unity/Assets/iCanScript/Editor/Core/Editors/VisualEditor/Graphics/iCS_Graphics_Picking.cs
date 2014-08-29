@@ -189,7 +189,6 @@ public partial class iCS_Graphics {
                 c=> {
                     if(c.IsIconizedOnDisplay) {
                         if(IsNodeNamePicked(c, pick)) {
-//                            Debug.Log("Node name: "+c.Name+" is being picked");
                             pickInfo.PickedObject= c;
                             pickInfo.PickedPart= iCS_PickPartEnum.Name;
                             Rect namePos= GetNodeNamePosition(c);
@@ -208,7 +207,6 @@ public partial class iCS_Graphics {
         var closestPort= iStorage.GetClosestPortAt(pick);
         if(closestPort != null) {
             if(IsPortNamePicked(closestPort, pick, iStorage)) {
-//                Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port name: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 pickInfo.PickedObject= closestPort;
                 pickInfo.PickedPart= iCS_PickPartEnum.Name;
                 Rect namePos= GetPortNamePosition(closestPort, iStorage);
@@ -219,7 +217,6 @@ public partial class iCS_Graphics {
                 return pickInfo;
             }
             if(IsPortValuePicked(closestPort, pick)) {
-//                Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port value: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 pickInfo.PickedObject= closestPort;
                 pickInfo.PickedPart= iCS_PickPartEnum.Value;
                 Rect namePos= GetPortValuePosition(closestPort);
