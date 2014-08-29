@@ -1,8 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_PortNameEditor : iCS_ISubEditor {
+public class iCS_ObjectNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Field.
 	// ----------------------------------------------------------------------
@@ -13,23 +13,34 @@ public class iCS_PortNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Property.
 	// ----------------------------------------------------------------------
-	Rect 	 Position { get { return myGraphics.GetPortNameGUIPosition(myTarget, myTarget.IStorage); }}
-	GUIStyle GuiStyle { get { return myGraphics.LabelStyle; }}
-
+	Rect 	 Position { get { return myGraphics.GetNodeNameGUIPosition(myTarget); }}
+	GUIStyle GuiStyle {
+        get {
+            return myTarget.IsPort || myTarget.IsIconizedOnDisplay ?
+                        myGraphics.LabelStyle :
+                        myGraphics.TitleStyle;
+        }
+    }
+	
     // ======================================================================
     // Initialization.
 	// ----------------------------------------------------------------------
-    public iCS_PortNameEditor(iCS_EditorObject target, iCS_Graphics graphics, Vector2 pickPoint) {
+    public iCS_ObjectNameEditor(iCS_EditorObject target, iCS_Graphics graphics, Vector2 pickPoint) {
         myTarget= target;
 		myGraphics= graphics;
-		myEditor= new iCS_FieldEditor(Position, myTarget.RawName, iCS_FieldTypeEnum.String, GuiStyle, pickPoint);
+		myEditor= new iCS_FieldEditor(Position, iCS_PreferencesEditor.RemoveProductPrefix(target.RawName), iCS_FieldTypeEnum.String, GuiStyle, pickPoint);
     }
     
     // ======================================================================
     // Update.
 	// ----------------------------------------------------------------------
     public bool Update() {
+        // Abort if target is invalid.
+        if(myTarget == null) {
+            return false;
+        }
 		myEditor.Position= Position;
+		myEditor.GuiStyle= GuiStyle;
 		if(myEditor.Update()) {
 			iCS_UserCommands.ChangeName(myTarget, myEditor.ValueAsString);
 			return true;
