@@ -40,6 +40,8 @@ public static partial class iCS_UserCommands {
     }
     // ----------------------------------------------------------------------
     public static void ChangeName(iCS_EditorObject obj, string name) {
+        if(name == null) return;
+        name.Trim();
         if(string.Compare(obj.RawName, name) == 0) return;
         var iStorage= obj.IStorage;
         if(obj.IsNode && string.IsNullOrEmpty(name)) {
