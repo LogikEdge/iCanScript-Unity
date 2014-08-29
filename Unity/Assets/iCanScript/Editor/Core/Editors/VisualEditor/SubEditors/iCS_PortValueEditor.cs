@@ -20,11 +20,11 @@ public class iCS_PortValueEditor : iCS_ISubEditor {
     // ======================================================================
     // Initialization.
 	// ----------------------------------------------------------------------
-    public iCS_PortValueEditor(iCS_EditorObject target, iCS_IStorage iStorage, iCS_Graphics graphics) {
+    public iCS_PortValueEditor(iCS_EditorObject target, iCS_IStorage iStorage, iCS_Graphics graphics, Vector2 pickPoint) {
         myIStorage= iStorage;
         myTarget= target;
 		myGraphics= graphics;
-		myEditor= new iCS_FieldEditor(Position, myTarget.RawName, iCS_FieldTypeEnum.String, GuiStyle);
+		myEditor= new iCS_FieldEditor(Position, myTarget.RawName, iCS_FieldTypeEnum.String, GuiStyle, pickPoint);
     }
     
     // ======================================================================

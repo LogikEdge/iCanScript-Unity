@@ -185,10 +185,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case iCS_PickPartEnum.Name: {
                 if(pickedObject.IsNameEditable) {
     				if(pickedObject.IsPort) {
-    					mySubEditor= new iCS_PortNameEditor(pickedObject, myGraphics);											
+    					mySubEditor= new iCS_PortNameEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);											
     				}
     				if(pickedObject.IsNode) {
-    					mySubEditor= new iCS_NodeNameEditor(pickedObject, myGraphics);
+    					mySubEditor= new iCS_NodeNameEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);
     				}                                            
                 } else {
                     ShowNotification(new GUIContent("The selected name cannot be changed !!!"));

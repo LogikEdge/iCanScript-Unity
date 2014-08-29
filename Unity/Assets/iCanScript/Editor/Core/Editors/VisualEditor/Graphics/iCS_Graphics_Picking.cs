@@ -146,6 +146,7 @@ public partial class iCS_Graphics {
     public iCS_PickInfo GetPickInfo(Vector2 pick, iCS_IStorage iStorage) {
         iCS_PickInfo pickInfo= new iCS_PickInfo(iStorage);
         pickInfo.PickedPoint= pick;
+        pickInfo.PickedPointInGUISpace= TranslateAndScale(pick);
         var port= iStorage.GetPortAt(pick);
         if(port != null) {
 //            Debug.Log("Port: "+port.Name+" is being picked");

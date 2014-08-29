@@ -19,10 +19,10 @@ public class iCS_PortNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Initialization.
 	// ----------------------------------------------------------------------
-    public iCS_PortNameEditor(iCS_EditorObject target, iCS_Graphics graphics) {
+    public iCS_PortNameEditor(iCS_EditorObject target, iCS_Graphics graphics, Vector2 pickPoint) {
         myTarget= target;
 		myGraphics= graphics;
-		myEditor= new iCS_FieldEditor(Position, myTarget.RawName, iCS_FieldTypeEnum.String, GuiStyle);
+		myEditor= new iCS_FieldEditor(Position, myTarget.RawName, iCS_FieldTypeEnum.String, GuiStyle, pickPoint);
     }
     
     // ======================================================================

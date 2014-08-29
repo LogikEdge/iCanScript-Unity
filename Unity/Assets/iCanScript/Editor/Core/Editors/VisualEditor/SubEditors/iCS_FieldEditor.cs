@@ -42,11 +42,12 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-    public iCS_FieldEditor(Rect position, object initialValue, iCS_FieldTypeEnum fieldType, GUIStyle guiStyle) {
+    public iCS_FieldEditor(Rect position, object initialValue, iCS_FieldTypeEnum fieldType, GUIStyle guiStyle, Vector2 pickPoint) {
         myValue    = (string)Convert.ChangeType(initialValue, typeof(string));
         myPosition = position;
         myFieldType= fieldType;
         myStyle    = guiStyle;
+        myCursor   = GetCursorIndexFromPosition(myPosition, pickPoint, myValue, myStyle);
     }
 
     // =================================================================================
@@ -92,10 +93,53 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 				return;
 			}
 		}
-		Handles.color= cursorColor;
-		var x= r.x;
+        var x= r.x+GetCursorGUIOffset(value, cursor, style);
 		var y= r.y-2f;
 		var yMax= r.yMax+2f;
+		Handles.color= cursorColor;
+		Handles.DrawLine(new Vector3(x,y,0), new Vector3(x,yMax,0));
+		Handles.DrawLine(new Vector3(x+1,y,0), new Vector3(x+1,yMax,0));
+	}
+    // ---------------------------------------------------------------------------------
+    static int GetCursorIndexFromPosition(Rect r, Vector2 pickPoint, string value, GUIStyle style) {
+        if(value == null) return 0;
+        var len= value.Length;
+        if(len == 0) return 0;
+        var x= pickPoint.x - r.x;
+        var size= style.CalcSize(new GUIContent(value));
+        // Determine rough estimate of cursor.
+        var step= size.x/len;
+        int cursor= (int)((x/step)+0.5f);
+        if(cursor < 0) cursor= 0;
+        if(cursor > len) cursor= len;
+        // Fine tune cursor.
+        var offset= GetCursorGUIOffset(value, cursor, style);
+        var diff= Mathf.Abs(offset-x);
+        while(cursor > 0 && offset > x) {
+            --cursor;
+            offset= GetCursorGUIOffset(value, cursor, style);
+            var newDiff= Mathf.Abs(offset-x);
+            if(newDiff > diff) {
+                ++cursor;
+                break;
+            }
+            diff= newDiff;
+        }
+        while(cursor < len && offset < x) {
+            ++cursor;
+            offset= GetCursorGUIOffset(value, cursor, style);
+            var newDiff= Mathf.Abs(offset-x);
+            if(newDiff > diff) {
+                --cursor;
+                break;
+            }
+            diff= newDiff;
+        }
+        return cursor;
+    }
+    // ---------------------------------------------------------------------------------
+    static float GetCursorGUIOffset(string value, int cursor, GUIStyle style) {
+        float x= 0f;
 		if(cursor != 0) {
 			// Limit the cursor movement within the value string
 			if(cursor > value.Length) {
@@ -105,11 +149,10 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 			var beforeCursor= value.Substring(0, cursor)+"A";
 			var size= style.CalcSize(new GUIContent(beforeCursor));
             var toTrim= style.CalcSize(new GUIContent("A"));
-			x+= size.x-toTrim.x;
+			x= size.x-toTrim.x;
 		}
-		Handles.DrawLine(new Vector3(x,y,0), new Vector3(x,yMax,0));
-		Handles.DrawLine(new Vector3(x+1,y,0), new Vector3(x+1,yMax,0));
-	}
+        return x;        
+    }
     // ---------------------------------------------------------------------------------
     static bool ProcessKeys(ref string value, ref int cursor, Func<char,string,int,bool> filter) {
         // Nothing to do if not a keyboard event
