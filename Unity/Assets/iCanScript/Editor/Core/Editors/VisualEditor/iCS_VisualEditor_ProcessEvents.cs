@@ -192,6 +192,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case iCS_PickPartEnum.Value: {
                 if(!pickedObject.IsInDataOrControlPort || pickedObject.ProviderPortId != -1) break;
+                Debug.Log("Trying to edit a port value!!!");
                 break;
             }
         }

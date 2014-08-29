@@ -15,7 +15,7 @@ public class iCS_PortValueEditor : iCS_ISubEditor {
     // Property.
 	// ----------------------------------------------------------------------
 	Rect 	 Position { get { return myGraphics.GetPortNameGUIPosition(myTarget, myIStorage); }}
-	GUIStyle GuiStyle { get { return myGraphics.LabelStyle; }}
+	GUIStyle GuiStyle { get { return myGraphics.ValueStyle; }}
 
     // ======================================================================
     // Initialization.
