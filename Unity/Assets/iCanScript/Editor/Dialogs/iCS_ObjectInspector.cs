@@ -12,13 +12,13 @@ public class iCS_ObjectInspector : EditorWindow {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-    private iCS_EditorObject          myObject= null;
-	private Dictionary<string,object> myFoldoutDB           = new Dictionary<string,object>();
+    private iCS_EditorObject          myObject   = null;
+	private Dictionary<string,object> myFoldoutDB= new Dictionary<string,object>();
 	
 	// ----------------------------------------------------------------------
     // Display state properties.
-    private bool    myShowInputs        = false;
-    private bool    myShowOutputs       = false;
+    private bool    myShowInputs = false;
+    private bool    myShowOutputs= false;
         
     // ======================================================================
     // Properties
