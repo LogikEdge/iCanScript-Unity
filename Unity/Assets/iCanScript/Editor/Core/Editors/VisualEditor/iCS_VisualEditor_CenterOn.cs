@@ -21,13 +21,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(focusNode != IStorage.DisplayRoot) {
             var focusNodeParent= focusNode.ParentNode;
             if(focusNodeParent != null) {
-                var parentScale= ProposeViewportScalingFor(focusNodeParent, 0.75f, 1f);
-                while(parentScale > 0.75f) {
+                var parentScale= ProposeViewportScalingFor(focusNodeParent, 0.80f, 1f);
+                while(parentScale > 0.80f) {
                     scale= parentScale;
                     focusNode= focusNodeParent;
                     focusNodeParent= focusNode.ParentNode;
                     if(focusNode == IStorage.DisplayRoot || focusNodeParent == null) break;
-                    parentScale= ProposeViewportScalingFor(focusNodeParent, 0.75f, 1f);            
+                    parentScale= ProposeViewportScalingFor(focusNodeParent, 0.80f, 1f);            
                 }                
             }
         }
