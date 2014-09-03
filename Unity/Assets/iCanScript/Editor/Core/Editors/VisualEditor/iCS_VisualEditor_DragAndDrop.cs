@@ -90,8 +90,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
                 if(iCS_Types.IsA<GameObject>(dragObjType) && PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
-                    ShowNotification(new GUIContent("Unity does not allow binding a GameObject to a Prefab.\nPlease bind your GameObject in the specific Prefab instance."));
-                    return;
+                    var activeObjects= GameObject.FindObjectsOfType(dragObjType);
+                    bool isSceneObject= false;
+                    for(int i= 0; i < activeObjects.Length && isSceneObject == false; ++i) {
+                        if(activeObjects[i] == draggedObject) {
+                            isSceneObject= true;
+                        }
+                    }
+                    if(isSceneObject == true) {
+                        ShowNotification(new GUIContent("Unity does not allow binding a GameObject to a Prefab.\nPlease bind your GameObject in the specific Prefab instance."));
+                        return;                        
+                    }
                 }
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
                     iCS_UserCommands.DragAndDropSetPortValue(eObj, draggedObject);
