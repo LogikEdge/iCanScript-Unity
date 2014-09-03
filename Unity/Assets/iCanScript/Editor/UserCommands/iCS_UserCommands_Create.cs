@@ -488,7 +488,7 @@ public static partial class iCS_UserCommands {
                         package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);                    
                     }
                     else {
-                        Debug.LogWarning("iCanScript: Unable to create package.  Please report problem.");
+                        Debug.LogWarning("iCanScript: Unable to create a suitable package.");
                     }
                 }
             );            

@@ -156,6 +156,7 @@ public partial class iCS_IStorage {
     iCS_EditorObject[] FilterMultiSelectionUnderSameParent() {
         var multiSelectedObjects= GetMultiSelectedObjects();
         if(multiSelectedObjects == null || multiSelectedObjects.Length == 0) {
+            Debug.LogWarning("No selected object found!!!");
             return null;
         }
         // Find common parent.

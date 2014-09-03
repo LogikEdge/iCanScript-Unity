@@ -37,8 +37,14 @@ public partial class iCS_IStorage {
 	}
 	// -------------------------------------------------------------------------
 	public iCS_EditorObject WrapInPackage(iCS_EditorObject[] objects) {
-        if(objects == null || objects.Length == 0) return null;
+        if(objects == null || objects.Length == 0) {
+            Debug.LogWarning("iCanScript: No objects selected!!!");
+            return null;
+        }
         if(objects.Length == 1) {
+            if(objects[0] == null) {
+                Debug.LogWarning("iCanScript: ony one NULL object is selected");
+            }
             return WrapInPackage(objects[0]);
         }
         var parent= objects[0].ParentNode;
