@@ -98,7 +98,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                     }
                     if(isSceneObject == true) {
-                        ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab.\nPlease bind your GameObject in the Prefab instance."));
+                        ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
                         return;                        
                     }
                 }
