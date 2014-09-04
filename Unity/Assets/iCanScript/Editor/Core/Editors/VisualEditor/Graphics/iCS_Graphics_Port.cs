@@ -114,7 +114,8 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     // Returns port name in GUI coordinates and scale.
-    public Rect GetPortNameGUIPosition(iCS_EditorObject port, iCS_IStorage iStorage) {
+    public Rect GetPortNameGUIPosition(iCS_EditorObject port) {
+		var iStorage= port.IStorage;
         Rect graphRect= GetPortNamePosition(port, iStorage);
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
@@ -183,7 +184,7 @@ public partial class iCS_Graphics {
 	}
     // ----------------------------------------------------------------------
     // Returns the port value position in GUI coordinates and size.
-    Rect GetPortValueGUIPosition(iCS_EditorObject port) {
+    public Rect GetPortValueGUIPosition(iCS_EditorObject port) {
         Rect graphRect= GetPortValuePosition(port);
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    

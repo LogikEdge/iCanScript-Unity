@@ -70,10 +70,6 @@ public static class iCS_GuiUtilities {
             EditorGUILayout.LabelField(niceName, hasSource ? "(see connection)":"(not available)");
             return currentValue;
         }
-        // Do not allow GameObject binding in Prefabs.
-        if(iCS_Types.IsA<GameObject>(baseElementType) && PrefabUtility.GetPrefabType(iStorage.HostGameObject) == PrefabType.Prefab) {
-            return currentValue;
-        }
         // Special case for arrays
 		if(baseType.IsArray) {
 			if(currentValue == null) {
@@ -114,7 +110,20 @@ public static class iCS_GuiUtilities {
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
             UnityEngine.Object newValue= EditorGUILayout.ObjectField(niceName, value, baseElementType, true);
 			if(value == null && newValue == null) return newValue;
-			if(value != newValue ) isDirty= true;
+			if(value != newValue ) {
+				// Do not allow GameObject binding in Prefabs.
+                if(PrefabUtility.GetPrefabType(iStorage.HostGameObject) == PrefabType.Prefab) {
+                    if(newValue != null && iCS_Types.IsA<GameObject>(newValue.GetType())) {
+                        var isSceneObject= iCS_UnityUtility.IsSceneGameObject(newValue as GameObject);
+                        if(isSceneObject == true) {
+                            iCS_EditorController.ShowNotificationOnVisualEditor(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
+							iCS_EditorController.RepaintVisualEditor();
+                            return currentValue;
+                        }                    
+                    }
+                }
+                isDirty= true;
+            }
 			return newValue;
         }        
         // Support Type type.
