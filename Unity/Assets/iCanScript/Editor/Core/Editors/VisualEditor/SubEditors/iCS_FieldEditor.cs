@@ -7,12 +7,13 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    string      myValueAsString;
-    Rect        myPosition;
-    Type   		myValueType;
-    GUIStyle    myStyle;
-	int			myCursor= 0;
-    float		myBackgroundAlpha= 0.25f;
+    string      				myValueAsString;
+    Rect        				myPosition;
+    Type   						myValueType;
+    GUIStyle    				myStyle;
+	int							myCursor= 0;
+    float						myBackgroundAlpha= 0.25f;
+	Func<char,string,int,bool>	myInputValidator= null;
 	
     // =================================================================================
     // Properties
@@ -21,7 +22,20 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     public GUIStyle GuiStyle        { get { return myStyle; }    set { myStyle= value; }}
     public object   Value       {
         get {
-			return Convert.ChangeType(myValueAsString, myValueType);
+			var theValueAsString= myValueAsString;
+			// Return default value for incomplete entries
+			if(myValueType == typeof(float) || myValueType == typeof(int)) {
+				bool containsDigit= false;
+				foreach(char c in myValueAsString) {
+					if(char.IsDigit(c)) {
+						containsDigit= true;
+					}
+				}
+				if(!containsDigit) {
+					theValueAsString= "0";
+				}
+			}
+			return Convert.ChangeType(theValueAsString, myValueType);
         }
     }
 	static T ValueAs<T>(object value) {
@@ -32,11 +46,12 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // Initialization
     // ---------------------------------------------------------------------------------
     public iCS_FieldEditor(Rect position, object initialValue, Type valueType, GUIStyle guiStyle, Vector2 pickPoint) {
-        myValueAsString= ValueAs<string>(initialValue);
-        myPosition 	   = position;
-        myValueType	   = valueType;
-        myStyle    	   = guiStyle;
-        myCursor   	   = GetCursorIndexFromPosition(myPosition, pickPoint, myValueAsString, myStyle);
+        myValueAsString = ValueAs<string>(initialValue);
+        myPosition 	    = position;
+        myValueType	    = valueType;
+        myStyle    	    = guiStyle;
+        myCursor   	    = GetCursorIndexFromPosition(myPosition, pickPoint, myValueAsString, myStyle);
+		myInputValidator= GetInputValidator(valueType);
     }
 	public void SetBackgroundAlpha(float alpha) {
 		myBackgroundAlpha= alpha;
@@ -46,6 +61,12 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // Update
     // ---------------------------------------------------------------------------------
     public bool Update() {
+		// An input validator is required.
+		if(myInputValidator == null) {
+			Debug.Log("iCanScript: No input validator defined to edit type=> "+myValueType);
+			return false;
+		}
+		
         Rect boxPos= new Rect(myPosition.x-2.0f, myPosition.y-1f, myPosition.width+4.0f, myPosition.height+2f);
         Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
         iCS_Graphics.DrawBox(boxPos, new Color(0f,0f,0f,myBackgroundAlpha), selectionColor, Color.white);
@@ -57,7 +78,7 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 		GUI.Label(myPosition, myValueAsString, myStyle);
 		ShowCursor(myPosition, myValueAsString, myCursor, Color.red, 0.5f, myStyle);
         var oldValue= myValueAsString;
-        if(ProcessKeys(ref myValueAsString, ref myCursor, (ch,_,__)=> !char.IsControl(ch))) {
+        if(ProcessKeys(ref myValueAsString, ref myCursor, myInputValidator)) {
             RestartCursorBlink();
         }
         return oldValue != myValueAsString;
@@ -142,14 +163,43 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // =================================================================================
     // Input Validation
     // ---------------------------------------------------------------------------------
+	public static Func<char,string,int,bool> GetInputValidator(Type type) {
+		if(type == typeof(string)) return ValidateStringInput;
+		if(type == typeof(int)) return ValidateIntInput;
+		if(type == typeof(float)) return ValidateFloatInput;
+		return null;
+	}
     static bool ValidateStringInput(char newChar, string value, int cursor) {
         return !char.IsControl(newChar);
     }
     static bool ValidateIntInput(char newChar, string value, int cursor) {
-        return char.IsDigit(newChar);
+        if(char.IsDigit(newChar)) return true;
+		if(newChar == '-') {
+			if(cursor != 0) return false;
+			if(value.Length == 0) return true;
+			if(value[0] != '-') return true;
+		}
+		return false;
     }
     static bool ValidateFloatInput(char newChar, string value, int cursor) {
-        return char.IsDigit(newChar);        
+        if(char.IsDigit(newChar)) return true;
+		var len= value.Length;
+		if(newChar == '-') {
+			if(cursor != 0) return false;
+			if(len == 0) return true;
+			if(value[0] != '-') return true;			
+		}
+		if(newChar == '.') {
+			if(cursor == 0 && len != 0 && value[0] == '-') return false;
+			bool isDecimalAlreadyPresent= false;
+			foreach(char c in value) {
+				if(c == '.') {
+					isDecimalAlreadyPresent= true;
+				}
+			}
+			return !isDecimalAlreadyPresent;
+		}
+		return false;
     }
     
     // =================================================================================

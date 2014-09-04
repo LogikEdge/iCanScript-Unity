@@ -21,7 +21,7 @@ public class iCS_PortValueEditor : iCS_ISubEditor {
 	// Use to determine which value type is supported.
 	// ----------------------------------------------------------------------
 	public static bool IsValueEditionSupported(Type type) {
-		if(type == typeof(string)) return true;
+		if(iCS_FieldEditor.GetInputValidator(type) != null) return true;
 		return false;
 	}
 	
