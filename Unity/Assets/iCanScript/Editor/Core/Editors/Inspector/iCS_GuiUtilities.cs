@@ -114,7 +114,9 @@ public static class iCS_GuiUtilities {
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
             UnityEngine.Object newValue= EditorGUILayout.ObjectField(niceName, value, baseElementType, true);
 			if(value == null && newValue == null) return newValue;
-			if(value != newValue ) isDirty= true;
+			if(value != newValue ) {
+                isDirty= true;
+            }
 			return newValue;
         }        
         // Support Type type.

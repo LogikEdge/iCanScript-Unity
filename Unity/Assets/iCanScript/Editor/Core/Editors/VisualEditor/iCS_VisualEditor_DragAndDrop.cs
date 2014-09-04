@@ -90,13 +90,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
                 if(iCS_Types.IsA<GameObject>(dragObjType) && PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
-                    var activeObjects= GameObject.FindObjectsOfType(dragObjType);
-                    bool isSceneObject= false;
-                    for(int i= 0; i < activeObjects.Length && isSceneObject == false; ++i) {
-                        if(activeObjects[i] == draggedObject) {
-                            isSceneObject= true;
-                        }
-                    }
+                    var isSceneObject= iCS_UnityUtility.IsSceneGameObject(draggedObject as GameObject);
                     if(isSceneObject == true) {
                         ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
                         return;                        
