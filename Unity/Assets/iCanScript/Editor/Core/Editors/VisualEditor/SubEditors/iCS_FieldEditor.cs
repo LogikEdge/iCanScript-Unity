@@ -3,54 +3,39 @@ using UnityEditor;
 using System;
 using System.Collections;
 
-public enum iCS_FieldTypeEnum { String, Integer, Float };
 public class iCS_FieldEditor : iCS_ISubEditor {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    string              myValue;
-    Rect                myPosition;
-    iCS_FieldTypeEnum   myFieldType;
-    GUIStyle            myStyle;
-	int					myCursor= 0;
+    string      myValueAsString;
+    Rect        myPosition;
+    Type   		myValueType;
+    GUIStyle    myStyle;
+	int			myCursor= 0;
     
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
     public Rect     Position        { get { return myPosition; } set { myPosition= value; }}
     public GUIStyle GuiStyle        { get { return myStyle; }    set { myStyle= value; }}
-    public string   ValueAsString   { get { return myValue; }}
-    public long     ValueAsInteger  { get { return (long)Convert.ChangeType(myValue, typeof(long)); }}
-    public float    ValueAsFloat    { get { return (float)Convert.ChangeType(myValue, typeof(float)); }}
     public object   Value       {
         get {
-            switch(myFieldType) {
-                case iCS_FieldTypeEnum.String: {
-                    return ValueAsString;
-                }
-                case iCS_FieldTypeEnum.Integer: {
-                    return ValueAsInteger;
-                }
-                case iCS_FieldTypeEnum.Float: {
-                    return ValueAsFloat;
-                }
-            }
-            return myValue;
+			return Convert.ChangeType(myValueAsString, myValueType);
         }
     }
-	public object ValueAs(Type type) {
-		return Convert.ChangeType(myValue, type);
+	static T ValueAs<T>(object value) {
+		return (T)Convert.ChangeType(value, typeof(T));
 	}
-    
+	
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-    public iCS_FieldEditor(Rect position, object initialValue, iCS_FieldTypeEnum fieldType, GUIStyle guiStyle, Vector2 pickPoint) {
-        myValue    = (string)Convert.ChangeType(initialValue, typeof(string));
-        myPosition = position;
-        myFieldType= fieldType;
-        myStyle    = guiStyle;
-        myCursor   = GetCursorIndexFromPosition(myPosition, pickPoint, myValue, myStyle);
+    public iCS_FieldEditor(Rect position, object initialValue, Type valueType, GUIStyle guiStyle, Vector2 pickPoint) {
+        myValueAsString= ValueAs<string>(initialValue);
+        myPosition 	   = position;
+        myValueType	   = valueType;
+        myStyle    	   = guiStyle;
+        myCursor   	   = GetCursorIndexFromPosition(myPosition, pickPoint, myValueAsString, myStyle);
     }
 
     // =================================================================================
@@ -65,13 +50,13 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 		boxPos.y+= 1f;
 		boxPos.height-= 2f;
         iCS_Graphics.DrawBox(boxPos, Color.clear, selectionColor, Color.white);
-		GUI.Label(myPosition, myValue, myStyle);
-		ShowCursor(myPosition, myValue, myCursor, Color.red, 0.5f, myStyle);
-        var oldValue= myValue;
-        if(ProcessKeys(ref myValue, ref myCursor, (ch,_,__)=> !char.IsControl(ch))) {
+		GUI.Label(myPosition, myValueAsString, myStyle);
+		ShowCursor(myPosition, myValueAsString, myCursor, Color.red, 0.5f, myStyle);
+        var oldValue= myValueAsString;
+        if(ProcessKeys(ref myValueAsString, ref myCursor, (ch,_,__)=> !char.IsControl(ch))) {
             RestartCursorBlink();
         }
-        return oldValue != myValue;
+        return oldValue != myValueAsString;
     }
 
     // =================================================================================

@@ -35,7 +35,7 @@ public class iCS_ObjectNameEditor : iCS_ISubEditor {
     public iCS_ObjectNameEditor(iCS_EditorObject target, iCS_Graphics graphics, Vector2 pickPoint) {
         myTarget= target;
 		myGraphics= graphics;
-		myEditor= new iCS_FieldEditor(Position, iCS_PreferencesEditor.RemoveProductPrefix(target.RawName), iCS_FieldTypeEnum.String, GuiStyle, pickPoint);
+		myEditor= new iCS_FieldEditor(Position, iCS_PreferencesEditor.RemoveProductPrefix(target.RawName), typeof(string), GuiStyle, pickPoint);
     }
     
     // ======================================================================
@@ -49,7 +49,7 @@ public class iCS_ObjectNameEditor : iCS_ISubEditor {
 		myEditor.Position= Position;
 		myEditor.GuiStyle= GuiStyle;
 		if(myEditor.Update()) {
-			iCS_UserCommands.ChangeName(myTarget, myEditor.ValueAsString);
+			iCS_UserCommands.ChangeName(myTarget, myEditor.Value as string);
 			return true;
 		}
 		return false;

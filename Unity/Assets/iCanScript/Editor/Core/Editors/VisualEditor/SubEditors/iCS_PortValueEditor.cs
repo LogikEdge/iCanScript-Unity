@@ -22,7 +22,7 @@ public class iCS_PortValueEditor : iCS_ISubEditor {
     public iCS_PortValueEditor(iCS_EditorObject port, iCS_Graphics graphics, Vector2 pickPoint) {
         myPort= port;
 		myGraphics= graphics;
-		myEditor= new iCS_FieldEditor(Position, myPort.RawName, iCS_FieldTypeEnum.String, GuiStyle, pickPoint);
+		myEditor= new iCS_FieldEditor(Position, myPort.RawName, myPort.RuntimeType, GuiStyle, pickPoint);
     }
     
     // ======================================================================
@@ -31,7 +31,7 @@ public class iCS_PortValueEditor : iCS_ISubEditor {
     public bool Update() {
 		myEditor.Position= Position;
 		if(myEditor.Update()) {
-			iCS_UserCommands.ChangePortValue(myPort, myEditor.ValueAs(myPort.RuntimeType));
+			iCS_UserCommands.ChangePortValue(myPort, myEditor.Value);
 			return true;
 		}
 		return false;
