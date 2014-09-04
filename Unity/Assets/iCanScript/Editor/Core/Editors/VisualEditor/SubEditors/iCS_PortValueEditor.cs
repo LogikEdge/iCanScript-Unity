@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 
 public class iCS_PortValueEditor : iCS_ISubEditor {
@@ -13,16 +14,25 @@ public class iCS_PortValueEditor : iCS_ISubEditor {
     // ======================================================================
     // Property.
 	// ----------------------------------------------------------------------
-	Rect 	 Position { get { return myGraphics.GetPortNameGUIPosition(myPort, myPort.IStorage); }}
+	Rect 	 Position { get { return myGraphics.GetPortValueGUIPosition(myPort); }}
 	GUIStyle GuiStyle { get { return myGraphics.ValueStyle; }}
 
+    // ======================================================================
+	// Use to determine which value type is supported.
+	// ----------------------------------------------------------------------
+	public static bool IsValueEditionSupported(Type type) {
+		if(type == typeof(string)) return true;
+		return false;
+	}
+	
     // ======================================================================
     // Initialization.
 	// ----------------------------------------------------------------------
     public iCS_PortValueEditor(iCS_EditorObject port, iCS_Graphics graphics, Vector2 pickPoint) {
         myPort= port;
 		myGraphics= graphics;
-		myEditor= new iCS_FieldEditor(Position, myPort.RawName, myPort.RuntimeType, GuiStyle, pickPoint);
+		myEditor= new iCS_FieldEditor(Position, myPort.PortValue, myPort.RuntimeType, GuiStyle, pickPoint);
+		myEditor.SetBackgroundAlpha(1f);
     }
     
     // ======================================================================

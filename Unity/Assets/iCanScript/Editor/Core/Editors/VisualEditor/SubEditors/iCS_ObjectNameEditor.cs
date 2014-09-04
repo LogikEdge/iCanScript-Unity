@@ -16,7 +16,7 @@ public class iCS_ObjectNameEditor : iCS_ISubEditor {
 	Rect 	 Position {
 		get {
 			if(myTarget.IsPort) {
-				return myGraphics.GetPortNameGUIPosition(myTarget, myTarget.IStorage);
+				return myGraphics.GetPortNameGUIPosition(myTarget);
 			}
 			return myGraphics.GetNodeNameGUIPosition(myTarget);
 		}

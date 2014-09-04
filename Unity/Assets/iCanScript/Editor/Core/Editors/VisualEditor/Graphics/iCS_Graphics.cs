@@ -678,7 +678,7 @@ public partial class iCS_Graphics {
 
         // Display port name.
         if(ShouldDisplayPortName(port)) {
-	        Rect portNamePos= GetPortNameGUIPosition(port, iStorage);
+	        Rect portNamePos= GetPortNameGUIPosition(port);
             var boxAlpha= 0.35f;
             var outlineColor= Color.black;
             if(isSelectedPort) {

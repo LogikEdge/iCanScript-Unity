@@ -12,7 +12,8 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     Type   		myValueType;
     GUIStyle    myStyle;
 	int			myCursor= 0;
-    
+    float		myBackgroundAlpha= 0.25f;
+	
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
@@ -37,14 +38,17 @@ public class iCS_FieldEditor : iCS_ISubEditor {
         myStyle    	   = guiStyle;
         myCursor   	   = GetCursorIndexFromPosition(myPosition, pickPoint, myValueAsString, myStyle);
     }
-
+	public void SetBackgroundAlpha(float alpha) {
+		myBackgroundAlpha= alpha;
+	}
+	
     // =================================================================================
     // Update
     // ---------------------------------------------------------------------------------
     public bool Update() {
         Rect boxPos= new Rect(myPosition.x-2.0f, myPosition.y-1f, myPosition.width+4.0f, myPosition.height+2f);
         Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
-        iCS_Graphics.DrawBox(boxPos, new Color(0f,0f,0f,0.25f), selectionColor, Color.white);
+        iCS_Graphics.DrawBox(boxPos, new Color(0f,0f,0f,myBackgroundAlpha), selectionColor, Color.white);
 		boxPos.x+= 1f;
 		boxPos.width-= 2f;
 		boxPos.y+= 1f;
