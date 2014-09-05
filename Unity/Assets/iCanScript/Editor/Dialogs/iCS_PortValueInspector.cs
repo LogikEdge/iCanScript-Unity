@@ -19,13 +19,32 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
         valueInspector.Init(thePort, pos);
         return valueInspector;
     }
+	static int bla= 0;
     public void Init(iCS_EditorObject thePort, Vector2 pos) {
         myPort= thePort;
         title= thePort.Name;
 		myInitialValue= thePort.PortValue;
         position= new Rect(pos.x, pos.y, 300, 200);
-//        ShowAuxWindow();
-		ShowPopup();
+		switch(bla) {
+			case 0: {
+				bla= 1;
+				Debug.Log("AuxWindow");
+		        ShowAuxWindow();
+				break;
+			}
+			case 1: {
+				bla= 2;
+				Debug.Log("Popup");
+				ShowPopup();
+				break;
+			}
+			case 2: {
+				bla= 0;
+				Debug.Log("Utility");
+				ShowUtility();
+				break;
+			}
+		}
     }
     
     public void OnEnable() {}
