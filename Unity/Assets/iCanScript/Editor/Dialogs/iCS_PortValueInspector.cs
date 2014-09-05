@@ -7,8 +7,9 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-    private iCS_EditorObject          myPort     = null;
-	private Dictionary<string,object> myFoldoutDB= new Dictionary<string,object>();
+    private iCS_EditorObject          myPort        = null;
+	private object					  myInitialValue= null;
+	private Dictionary<string,object> myFoldoutDB   = new Dictionary<string,object>();
 
     // ======================================================================
     // Initialization/Teardown
@@ -21,8 +22,10 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
     public void Init(iCS_EditorObject thePort, Vector2 pos) {
         myPort= thePort;
         title= thePort.Name;
+		myInitialValue= thePort.PortValue;
         position= new Rect(pos.x, pos.y, 300, 200);
-        ShowAuxWindow();
+//        ShowAuxWindow();
+		ShowPopup();
     }
     
     public void OnEnable() {}
@@ -32,9 +35,23 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
     // GUI Update
     // ----------------------------------------------------------------------
     public void OnGUI() {
-        iCS_GuiUtilities.OnInspectorDataPortGUI(myPort, myPort.IStorage, 1, myFoldoutDB);        
+		Rect r= EditorGUILayout.BeginVertical();
+        iCS_GuiUtilities.OnInspectorDataPortGUI(myPort, myPort.IStorage, 1, myFoldoutDB);
+		EditorGUILayout.EndVertical();
+		position= new Rect(position.x, position.y, position.width, r.height);
+		ProcessEvents();
+	}
+	void ProcessEvents() {
+		var ev= Event.current;
+        switch(ev.keyCode) {
+            // Reset to default
+            case KeyCode.Escape: {
+				Close();
+                break;
+            }
+		}
 	}
 	public bool Update() {
-		return true;
+		return false;
 	}
 }
