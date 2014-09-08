@@ -39,7 +39,7 @@ public static class iCS_RemoteCall {
     // ------------------------------------------------------------------------
     // Send a message to the visual script with the corresponding tag.
     [iCS_Function]        
-    public static void SendMessage(string tag, string messageName) {
+    public static void SendMessageUsingTag(string tag, string messageName) {
         iCS_VisualScriptImp vs= null;
         var isFound= myDictionary.TryGetValue(tag, out vs);
         if(vs == null) {
