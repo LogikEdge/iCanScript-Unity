@@ -86,7 +86,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 go.hideFlags = HideFlags.HideAndDontSave;
                 iCS_LibraryImp library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
                 iCS_IStorage iStorage= new iCS_IStorage(library);
-                iStorage.Copy(node, IStorage, null, Vector2.zero, iStorage);
+                var newNode= iStorage.Copy(node, IStorage, null, Vector2.zero, iStorage);
+                newNode.ReduceChildrenAnchorPosition();
                 iStorage.SaveStorage();
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};

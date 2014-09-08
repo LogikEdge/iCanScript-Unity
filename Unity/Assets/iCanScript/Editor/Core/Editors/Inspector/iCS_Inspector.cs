@@ -148,7 +148,7 @@ public class iCS_Inspector : Editor {
         }
 
         EditorGUI.indentLevel= 0;
-        // Display slected object name.
+        // Display selected object name.
         string name= SelectedObject.RawName;
         if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).RawName;
         if(name == null || name == "") name= EmptyStr;
@@ -167,7 +167,11 @@ public class iCS_Inspector : Editor {
         } else {
             EditorGUILayout.LabelField("Name", name);                    
         }
-        // Display slected object initial name.
+//        EditorGUILayout.Vector2Field("Global Position", mySelectedObject.GlobalPosition);
+//        EditorGUILayout.Vector2Field("Local Anchor Position", mySelectedObject.LocalAnchorPosition);
+//        EditorGUILayout.Vector2Field("Collision Offset", mySelectedObject.CollisionOffset);
+//        EditorGUILayout.Vector2Field("Wrapping Offset", mySelectedObject.WrappingOffset);
+        // Display selected object initial name.
         if(SelectedObject.IsNode) {
             EditorGUILayout.LabelField("Initial Name", mySelectedObject.DefaultName);
         }

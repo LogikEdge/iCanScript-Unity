@@ -27,8 +27,8 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
         position= new Rect(pos.x, pos.y, 300, 200);
 		switch(bla) {
 			case 0: {
-				bla= 1;
-				Debug.Log("AuxWindow");
+//				bla= 1;
+//				Debug.Log("AuxWindow");
 		        ShowAuxWindow();
 				break;
 			}
