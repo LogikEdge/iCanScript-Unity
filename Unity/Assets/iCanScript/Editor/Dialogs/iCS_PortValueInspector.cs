@@ -8,7 +8,7 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
     // Fields
 	// ----------------------------------------------------------------------
     private iCS_EditorObject          myPort        = null;
-	private object					  myInitialValue= null;
+//	private object					  myInitialValue= null;
 	private Dictionary<string,object> myFoldoutDB   = new Dictionary<string,object>();
 
     // ======================================================================
@@ -23,7 +23,7 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
     public void Init(iCS_EditorObject thePort, Vector2 pos) {
         myPort= thePort;
         title= thePort.Name;
-		myInitialValue= thePort.PortValue;
+//		myInitialValue= thePort.PortValue;
         position= new Rect(pos.x, pos.y, 300, 200);
 		switch(bla) {
 			case 0: {
