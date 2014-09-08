@@ -22,7 +22,7 @@ public static partial class iCS_UserCommands {
         try {
             string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
             node.IconGUID= iconGUID;                    
-            node.LayoutNode();            
+            iStorage.ForcedRelayoutOfTree();
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
