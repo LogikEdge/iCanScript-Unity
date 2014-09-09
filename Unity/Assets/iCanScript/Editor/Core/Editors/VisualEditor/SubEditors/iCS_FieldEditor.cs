@@ -11,9 +11,12 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     Rect        				myPosition;
     Type   						myValueType;
     GUIStyle    				myStyle;
-	int							myCursor= 0;
+	int							myCursor         = 0;
+	int							mySelectionStart = 0;
+	int							mySelectionLength= 0;
+	Color						mySelectionColor;
     float						myBackgroundAlpha= 0.25f;
-	Func<char,string,int,bool>	myInputValidator= null;
+	Func<char,string,int,bool>	myInputValidator = null;
 	
     // =================================================================================
     // Properties
@@ -52,12 +55,13 @@ public class iCS_FieldEditor : iCS_ISubEditor {
         myStyle    	    = guiStyle;
         myCursor   	    = GetCursorIndexFromPosition(myPosition, pickPoint, myValueAsString, myStyle);
 		myInputValidator= GetInputValidator(valueType);
+		mySelectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
     }
 	public void SetBackgroundAlpha(float alpha) {
 		myBackgroundAlpha= alpha;
 	}
 	
-    // =================================================================================
+     // =================================================================================
     // Update
     // ---------------------------------------------------------------------------------
     public bool Update() {
@@ -68,13 +72,18 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 		}
 		
         Rect boxPos= new Rect(myPosition.x-2.0f, myPosition.y-1f, myPosition.width+4.0f, myPosition.height+2f);
-        Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
-        iCS_Graphics.DrawBox(boxPos, new Color(0f,0f,0f,myBackgroundAlpha), selectionColor, Color.white);
+		// Draw the edit box
+        iCS_Graphics.DrawBox(boxPos, new Color(0f,0f,0f,myBackgroundAlpha), mySelectionColor, Color.white);
 		boxPos.x+= 1f;
 		boxPos.width-= 2f;
 		boxPos.y+= 1f;
 		boxPos.height-= 2f;
-        iCS_Graphics.DrawBox(boxPos, Color.clear, selectionColor, Color.white);
+        iCS_Graphics.DrawBox(boxPos, Color.clear, mySelectionColor, Color.white);
+		// Draw the selection box
+		if(mySelectionLength != 0) {
+			// TODO: Show the selection background.
+		}
+		// Display text
 		GUI.Label(myPosition, myValueAsString, myStyle);
 		ShowCursor(myPosition, myValueAsString, myCursor, Color.red, 0.5f, myStyle);
         var oldValue= myValueAsString;
