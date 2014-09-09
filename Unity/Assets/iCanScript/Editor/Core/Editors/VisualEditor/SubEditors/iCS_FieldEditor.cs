@@ -49,13 +49,16 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // Initialization
     // ---------------------------------------------------------------------------------
     public iCS_FieldEditor(Rect position, object initialValue, Type valueType, GUIStyle guiStyle, Vector2 pickPoint) {
-        myValueAsString = ValueAs<string>(initialValue);
-        myPosition 	    = position;
-        myValueType	    = valueType;
-        myStyle    	    = guiStyle;
-        myCursor   	    = GetCursorIndexFromPosition(myPosition, pickPoint, myValueAsString, myStyle);
-		myInputValidator= GetInputValidator(valueType);
-		mySelectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
+        myValueAsString  = ValueAs<string>(initialValue);
+        myPosition 	     = position;
+        myValueType	     = valueType;
+        myStyle    	     = guiStyle;
+//        myCursor   	     = GetCursorIndexFromPosition(myPosition, pickPoint, myValueAsString, myStyle);
+		myInputValidator = GetInputValidator(valueType);
+		mySelectionColor = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
+        mySelectionStart = 0;
+        mySelectionLength= myValueAsString.Length;
+        myCursor         = 0;
     }
 	public void SetBackgroundAlpha(float alpha) {
 		myBackgroundAlpha= alpha;
@@ -84,15 +87,68 @@ public class iCS_FieldEditor : iCS_ISubEditor {
 			// TODO: Show the selection background.
 		}
 		// Display text
+        ShowSelection(boxPos, myStyle);
 		GUI.Label(myPosition, myValueAsString, myStyle);
 		ShowCursor(myPosition, myValueAsString, myCursor, Color.red, 0.5f, myStyle);
         var oldValue= myValueAsString;
-        if(ProcessKeys(ref myValueAsString, ref myCursor, myInputValidator)) {
+        if(ProcessKeys(ref myCursor, myInputValidator)) {
             RestartCursorBlink();
         }
         return oldValue != myValueAsString;
     }
 
+
+    // =================================================================================
+    // Selection Management
+    // ---------------------------------------------------------------------------------
+    void ResetSelection() {
+        mySelectionStart= 0;
+        mySelectionLength= 0;
+    }
+    // ---------------------------------------------------------------------------------
+    void DeleteTextInSelection() {
+        CleanupSelectionVariables();
+        if(mySelectionLength == 0) return;
+        myValueAsString= myValueAsString.Remove(mySelectionStart, mySelectionLength);
+        mySelectionLength= 0;
+    }
+    // ---------------------------------------------------------------------------------
+    void CleanupSelectionVariables() {
+        if(mySelectionLength == 0) {
+            mySelectionStart= 0;
+            return;
+        }
+        var valueLength= myValueAsString.Length;
+        if(mySelectionStart >= valueLength) {
+            mySelectionStart= 0;
+            mySelectionLength= 0;
+            return;
+        }
+        if(mySelectionStart+mySelectionLength > valueLength) {
+            mySelectionLength= valueLength-mySelectionStart;
+        }        
+    }
+    // ---------------------------------------------------------------------------------
+    void ShowSelection(Rect r, GUIStyle style) {
+        // Fix selection if outside limits
+        CleanupSelectionVariables();
+        if(mySelectionLength == 0) return;
+        var startOffset= GetCursorGUIOffset(myValueAsString, mySelectionStart, style);
+        var endOffset= GetCursorGUIOffset(myValueAsString, mySelectionStart+mySelectionLength, style);
+        var selectionRect= new Rect(r.x+startOffset, r.y, endOffset-startOffset, r.height);
+        iCS_Graphics.DrawBox(selectionRect, mySelectionColor, mySelectionColor, Color.white);        
+    }
+    // ---------------------------------------------------------------------------------
+    bool IsAtEndOfSelection(int cursor) {
+        return mySelectionLength == 0 ? false : cursor == mySelectionStart+mySelectionLength;
+    }
+    // ---------------------------------------------------------------------------------
+    bool IsAtStartOfSelection(int cursor) {
+        return mySelectionLength == 0 ? false : cursor == mySelectionStart;
+    }
+    // ---------------------------------------------------------------------------------
+    bool IsSelectionActive { get { return mySelectionLength != 0; }}
+    
     // =================================================================================
     // Cursor Management
     // ---------------------------------------------------------------------------------
@@ -214,32 +270,66 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // =================================================================================
     // Keyboard processing
     // ---------------------------------------------------------------------------------
-    static bool ProcessKeys(ref string value, ref int cursor, Func<char,string,int,bool> filter) {
+    bool ProcessKeys(ref int cursor, Func<char,string,int,bool> filter) {
         // Nothing to do if not a keyboard event
         var ev= Event.current;
         if(ev.type == EventType.KeyDown) {
-            var len= value.Length;
+            var len= myValueAsString.Length;
             switch(ev.keyCode) {
                 case KeyCode.RightArrow: {
+                    bool isAtEndOfSelection= IsAtEndOfSelection(cursor);
+                    var previousCursor= cursor;
                     cursor= cursor+1;
                     if(cursor > len) {
                         cursor= len;
+                    }
+                    if(ev.shift) {
+                        if(isAtEndOfSelection) {
+                            mySelectionLength= cursor-mySelectionStart;
+                        }
+                        else {
+                            mySelectionStart= previousCursor;
+                            mySelectionLength= cursor-previousCursor;
+                        }
+                    }
+                    else {
+                        ResetSelection();                        
                     }
                     Event.current.Use();
                     return true;
                 }
                 case KeyCode.LeftArrow: {
+                    bool isAtStartOfSelection= IsAtStartOfSelection(cursor);
+                    var previousCursor= cursor;
                     cursor= cursor-1;
                     if(cursor < 0) {
                         cursor= 0;
+                    }
+                    if(ev.shift) {
+                        if(isAtStartOfSelection) {
+                            var end= mySelectionStart+mySelectionLength;
+                            mySelectionStart= cursor;
+                            mySelectionLength= end-mySelectionStart;
+                        }
+                        else {
+                            mySelectionStart= cursor;
+                            mySelectionLength= previousCursor-cursor;
+                        }
+                    }
+                    else {
+                        ResetSelection();                        
                     }
                     Event.current.Use();
                     return true;;
                 }
                 case KeyCode.Delete:
                 case KeyCode.Backspace: {
-                    if(cursor > 0) {
-                        value= value.Substring(0, cursor-1)+value.Substring(cursor, len-cursor);
+                    if(mySelectionLength != 0) {
+                        cursor= mySelectionStart;
+                        DeleteTextInSelection();
+                    }
+                    else if(cursor > 0) {
+                        myValueAsString= myValueAsString.Substring(0, cursor-1)+myValueAsString.Substring(cursor, len-cursor);
                         --cursor;
                     }
                     Event.current.Use();
@@ -248,8 +338,13 @@ public class iCS_FieldEditor : iCS_ISubEditor {
                 default: {
                     if(ev.isKey) {
                         char c= ev.character;
-                        if(filter(c, value, cursor)) {
-                            value= value.Substring(0, cursor)+c+value.Substring(cursor, len-cursor);
+                        if(filter(c, myValueAsString, cursor)) {
+                            if(IsSelectionActive) {
+                                cursor= mySelectionStart;
+                                DeleteTextInSelection();
+                                len= myValueAsString.Length;
+                            }
+                            myValueAsString= myValueAsString.Substring(0, cursor)+c+myValueAsString.Substring(cursor, len-cursor);
                             ++cursor;                            
                             Event.current.Use();
                             return true;
