@@ -7,6 +7,7 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
+    EditorWindow                myEditorWindow;
     string                      myInitialValueAsString;
     string      				myValueAsString;
     Rect        				myPosition;
@@ -50,6 +51,7 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // Initialization
     // ---------------------------------------------------------------------------------
     public iCS_FieldEditor(Rect position, object initialValue, Type valueType, GUIStyle guiStyle, Vector2 pickPoint) {
+        myEditorWindow        = EditorWindow.focusedWindow;
         myInitialValueAsString= ValueAs<string>(initialValue);
         myValueAsString       = myInitialValueAsString;
         myPosition 	          = position;
@@ -70,6 +72,10 @@ public class iCS_FieldEditor : iCS_ISubEditor {
     // Update
     // ---------------------------------------------------------------------------------
     public bool Update() {
+        // Nothing to do if we are not the focused window
+        if(EditorWindow.focusedWindow != myEditorWindow) {
+            return false;
+        }
 		// An input validator is required.
 		if(myInputValidator == null) {
 			Debug.Log("iCanScript: No input validator defined to edit type=> "+myValueType);
