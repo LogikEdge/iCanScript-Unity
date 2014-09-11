@@ -5,7 +5,6 @@ using System.Collections;
 [iCS_Class(Company="iCanScript")]
 public static class iCS_TypeCasts {
     // To Bool.
-    [iCS_TypeCast] public static bool   ToBool(object o)    { return o != null; }
     [iCS_TypeCast] public static bool   ToBool(int v)       { return v != 0; }
     [iCS_TypeCast] public static bool   ToBool(float v)     { return Math3D.IsNotZero(v); }
     [iCS_TypeCast] public static bool   ToBool(string s)    { return s != null && s != ""; }
