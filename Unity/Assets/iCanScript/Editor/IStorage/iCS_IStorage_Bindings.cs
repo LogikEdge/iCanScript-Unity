@@ -191,7 +191,7 @@ public partial class iCS_IStorage {
         bool hasChanged= false;
         var providerPos= providerPort.GlobalPosition;
         var consumerPos= consumerPort.GlobalPosition;
-        for(consumerPort= consumerPort.ProviderPort; consumerPort != providerPort; consumerPort= consumerPort.ProviderPort) {
+        for(consumerPort= consumerPort.ProviderPort; consumerPort != null && consumerPort != providerPort; consumerPort= consumerPort.ProviderPort) {
             hasChanged |= AutoLayoutPort(consumerPort, providerPos, consumerPos);
         }
         return hasChanged;
