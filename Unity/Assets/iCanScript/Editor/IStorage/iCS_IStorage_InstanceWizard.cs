@@ -36,6 +36,10 @@ public partial class iCS_IStorage {
         module.Fold();
     }
     // ----------------------------------------------------------------------
+    public iCS_EditorObject CreateInputInstancePort(Type classType, iCS_EditorObject instanceNode) {
+        return InstanceWizardCreatePortIfNonExisting(instanceNode, iCS_IStorage.GetInstancePortName(classType), classType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+    }
+    // ----------------------------------------------------------------------
     public void InstanceWizardCreateOutputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
@@ -238,14 +242,21 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardGetInputThisPort(iCS_EditorObject module) {
-        iCS_EditorObject thisPort= InstanceWizardGetPort(module, iCS_IStorage.GetInstancePortName(module.RuntimeType),
-                                                         iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
-        if(thisPort == null) {
-            iCS_EditorObject constructor= InstanceWizardGetConstructor(module);
+//        iCS_EditorObject thisPort= InstanceWizardGetPort(module, iCS_IStorage.GetInstancePortName(module.RuntimeType),
+//                                                         iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+//        if(thisPort == null) {
+//            iCS_EditorObject constructor= InstanceWizardGetConstructor(module);
+//            if(constructor == null) return null;
+//            thisPort= FindInChildren(constructor, port=> port.IsOutputPort && port.RuntimeType == module.RuntimeType);
+//        }
+//        return thisPort;
+        var instancePort= FindInputInstancePortOn(module);
+        if(instancePort == null) {
+            var constructor= FindInstanceNodeInternalConstructor(module);
             if(constructor == null) return null;
-            thisPort= FindInChildren(constructor, port=> port.IsOutputPort && port.RuntimeType == module.RuntimeType);
+            instancePort= FindInputInstancePortOn(constructor);
         }
-        return thisPort;
+        return instancePort;
     }
     // ----------------------------------------------------------------------
     void InstanceWizardDestroyPortIfNotConnected(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
@@ -377,6 +388,8 @@ public partial class iCS_IStorage {
         }
     }
     
+    // ======================================================================
+    // Constructor/Builder
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardCreateConstructor(iCS_EditorObject module, iCS_ConstructorInfo desc) {
         InstanceWizardDestroyConstructor(module);
@@ -392,18 +405,84 @@ public partial class iCS_IStorage {
         constructor.Iconize();
         return constructor;
     }
+    // ----------------------------------------------------------------------
     public void InstanceWizardDestroyConstructor(iCS_EditorObject module) {
         iCS_EditorObject constructor= InstanceWizardGetConstructor(module);
         if(constructor == null) return;
+        // Rebuild public instance port if internal constructor was used.
+        if(IsConstructorInternal(constructor, module)) {
+            var classType= constructor.RuntimeType;
+            if(classType != null) {
+                var instancePort= FindOutputInstancePortOn(constructor);
+                if(instancePort != null) {
+                    var connectedPorts= instancePort.ConsumerPorts;
+                    instancePort= CreateInputInstancePort(classType, module);
+                    foreach(var p in connectedPorts) {
+                        SetSource(p, instancePort);
+                    }
+                }                
+            }
+        }
+        // Destroy the constructor.
         DestroyInstance(constructor);
     }
+    // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardGetConstructor(iCS_EditorObject module) {
-        iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_IStorage.GetInstancePortName(module.RuntimeType),
-                                                               iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
-        if(moduleThisPort == null) return null;
-        iCS_EditorObject constructorThisPort= moduleThisPort.ProviderPort;
+        iCS_EditorObject instancePort= InstanceWizardGetInputThisPort(module);
+        if(instancePort == null) return null;
+        iCS_EditorObject constructorThisPort= instancePort.ProviderPort;
         if(constructorThisPort == null) return null;
-        iCS_EditorObject constructor= constructorThisPort.Parent;
+        iCS_EditorObject constructor= constructorThisPort.ParentNode;
         return constructor.IsConstructor ? constructor : null;
+    }
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject FindInstanceNodeInternalConstructor(iCS_EditorObject instanceNode) {
+        var runtimeType= instanceNode.RuntimeType;
+        iCS_EditorObject result= null;
+        UntilMatchingChildNode(instanceNode,
+            node=> {
+                if(node.IsConstructor && node.RuntimeType == runtimeType) {
+                    result= node;
+                    return true;
+                }
+                return false;
+            }
+        );
+        return result;
+    }
+    // ----------------------------------------------------------------------
+    bool IsConstructorInternal(iCS_EditorObject constructor, iCS_EditorObject instanceNode) {
+        return constructor.ParentNode == instanceNode;
+    }
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject FindInputInstancePortOn(iCS_EditorObject module) {
+        var portId= (int)iCS_PortIndex.InInstance;
+        iCS_EditorObject result= null;
+        UntilMatchingChildPort(module,
+            port=> {
+                if(port.PortIndex == portId) {
+                    result= port;
+                    return true;
+                }
+                return false;
+            }
+        );
+        return result;
+    }
+    // ----------------------------------------------------------------------
+    iCS_EditorObject FindOutputInstancePortOn(iCS_EditorObject module) {
+        var portId= (int)iCS_PortIndex.OutInstance;
+        iCS_EditorObject result= null;
+        UntilMatchingChildPort(module,
+            port=> {
+                if(port.PortIndex == portId) {
+                    result= port;
+                    return true;
+                }
+                return false;
+            }
+        );
+        return result;
+        
     }
 }
