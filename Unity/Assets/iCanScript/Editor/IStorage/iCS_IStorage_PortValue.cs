@@ -14,7 +14,10 @@ public partial class iCS_IStorage {
 			return;
 		}
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
-		port.InitialValue= coder.DecodeObjectForKey("InitialValue", Storage);
+        try {
+    		port.InitialValue= coder.DecodeObjectForKey("InitialValue", Storage);            
+        }
+        finally  {}
 	}
     // ----------------------------------------------------------------------
     public void StoreInitialPortValueInArchive(iCS_EditorObject port) {

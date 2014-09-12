@@ -520,6 +520,8 @@ public class iCS_Coder {
         if(!myDictionary.ContainsKey(key)) { return null; }
         Prelude.Tuple<string,string> tuple= myDictionary[key];
         Type valueType= DecodeType(tuple.Item1);
+        // Return "null" if type no longer available in assembly.
+        if(valueType == null) return null;
         string valueStr= tuple.Item2;
         // Special case for arrays.
 		if(valueType.IsArray) {
