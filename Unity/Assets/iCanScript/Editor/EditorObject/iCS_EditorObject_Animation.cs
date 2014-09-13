@@ -31,7 +31,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Returns true if the display size or position are being animated.
     public bool IsAnimated {
-        get { return myAnimatedRect.IsActive; }
+        get { return myAnimatedRect.IsActive && !myAnimatedRect.IsElapsed; }
     }
 
     // ======================================================================
