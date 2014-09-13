@@ -39,6 +39,10 @@ public static class iCS_Time {
     public static float ComputeElapseTime(float time) {
         return Time.time+time;
     }
+    [iCS_Function(Return="elapseTime")]
+    public static float StartTimer(float time) {
+        return Time.time+time;
+    }
     [iCS_Function(Return="isElapsed")]
     public static bool IsTimeElapsed(float elapseTime, out bool isNotElapsed) {
         bool isElapsed= Time.time >= elapseTime;
