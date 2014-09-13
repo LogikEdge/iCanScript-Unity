@@ -501,7 +501,16 @@ public partial class iCS_Graphics {
         GUI.color= alphaWhite;
         Texture icon= iCS_Icons.GetIconFor(node);
 		var position= Math3D.Middle(displayRect);
-        Rect textureRect= new Rect(position.x-0.5f*icon.width, position.y-0.5f*icon.height, icon.width, icon.height);                
+        var iconWidth= icon.width;
+        var iconHeight= icon.height;
+        // Limit icon to 64x64
+        if(iconWidth > 64 || iconHeight > 64) {
+            var maxLen= Mathf.Max(iconWidth, iconHeight);
+            var factor= 64f/maxLen;
+            iconWidth = (int)((iconWidth *factor)+0.1f);
+            iconHeight= (int)((iconHeight*factor)+0.1f);
+        }
+        Rect textureRect= new Rect(position.x-0.5f*iconWidth, position.y-0.5f*iconHeight, iconWidth, iconHeight);                
         if(node.IsTransitionPackage) {
             DrawMinimizedTransitionModule(iStorage.GetTransitionPackageVector(node), position, alphaWhite);
         } else {
