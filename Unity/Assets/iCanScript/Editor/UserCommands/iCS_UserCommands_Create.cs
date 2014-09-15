@@ -55,6 +55,7 @@ public static partial class iCS_UserCommands {
                     entryState.IsEntryState= true;
                     entryState.SetInitialPosition(globalPos);
                     iStorage.ForcedRelayoutOfTree();
+                    iStorage.ReduceCollisionOffset();
                 }
             );            
         }
@@ -86,6 +87,7 @@ public static partial class iCS_UserCommands {
                     state= iStorage.CreateState(parent.InstanceId, name);
                     state.SetInitialPosition(globalPos);
                     iStorage.ForcedRelayoutOfTree();
+                    iStorage.ReduceCollisionOffset();
                 }
             );            
         }
@@ -122,6 +124,7 @@ public static partial class iCS_UserCommands {
                     msgHandler.SetInitialPosition(globalPos);
                     msgHandler.ForEachChildPort(p=> {p.AnimationStartRect= BuildRect(globalPos, Vector2.zero);});
                     iStorage.ForcedRelayoutOfTree();
+                    iStorage.ReduceCollisionOffset();
                 }
             );            
         }
@@ -159,7 +162,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         package.IsNameEditable= false;
-        package.Tooltip= iCS_ObjectTooltips.OnEntry;            
+        package.Tooltip= iCS_ObjectTooltips.OnEntry;
         CloseTransaction(iStorage, "Create "+package.Name);
         return package;
     }
@@ -181,8 +184,8 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        package.IsNameEditable= false;            
-        package.Tooltip= iCS_ObjectTooltips.OnUpdate;                        
+        package.IsNameEditable= false;
+        package.Tooltip= iCS_ObjectTooltips.OnUpdate;
         CloseTransaction(iStorage, "Create "+package.Name);
         return package;
     }
@@ -205,7 +208,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         package.IsNameEditable= false;            
-        package.Tooltip= iCS_ObjectTooltips.OnExit;            
+        package.Tooltip= iCS_ObjectTooltips.OnExit;
         CloseTransaction(iStorage, "Create "+package.Name);
         return package;
     }
@@ -227,6 +230,7 @@ public static partial class iCS_UserCommands {
                     function= iStorage.CreateFunction(parent.InstanceId, desc);
                     function.SetInitialPosition(globalPos);
                     iStorage.ForcedRelayoutOfTree();
+                    iStorage.ReduceCollisionOffset();
                 }
             );            
         }
@@ -303,7 +307,8 @@ public static partial class iCS_UserCommands {
             inTransitionPort.PortPositionRatio= 0.5f;
             outTransitionPort.PortPositionRatio= 0.5f;
             // Layout the graph
-            iStorage.ForcedRelayoutOfTree();            
+            iStorage.ForcedRelayoutOfTree();
+            iStorage.ReduceCollisionOffset();            
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -425,6 +430,7 @@ public static partial class iCS_UserCommands {
                     instance= iStorage.CreateObjectInstance(parent.InstanceId, name, instanceType);
                     instance.SetInitialPosition(globalPos);
                     iStorage.ForcedRelayoutOfTree();
+                    iStorage.ReduceCollisionOffset();                    
                 }
             );            
         }
@@ -495,6 +501,7 @@ public static partial class iCS_UserCommands {
                             selectedObjects[i].LocalSize= iCS_EditorObject.SizeFrom(childrenRects[i]);
                         }
                         iStorage.ForcedRelayoutOfTree();
+                        iStorage.ReduceCollisionOffset();                        
                     }
                     else {
                         Debug.LogWarning("iCanScript: Unable to create a suitable package.");
@@ -574,6 +581,7 @@ public static partial class iCS_UserCommands {
                     package= iStorage.CreatePackage(parent.InstanceId, name, objectType, runtimeType);
                     package.SetInitialPosition(globalPos);
                     iStorage.ForcedRelayoutOfTree();
+                    iStorage.ReduceCollisionOffset();
                 }
             );            
         }
