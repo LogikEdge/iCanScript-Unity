@@ -482,11 +482,19 @@ public static partial class iCS_UserCommands {
         try {
             iStorage.AnimateGraph(null,
                 _=> {
+                    var childrenRects= P.map(n=> n.GlobalRect, selectedObjects);
                     package= iStorage.WrapInPackage(selectedObjects);
                     if(package != null) {
+                        var r= Math3D.Union(childrenRects);
+                        var pos= Math3D.Middle(r);
+                        package.SetInitialPosition(Math3D.Middle(r));
                         iStorage.ForcedRelayoutOfTree();
-                        var r= Math3D.Union(P.map(n => n.GlobalRect, selectedObjects));
-                        package.myAnimatedRect.StartValue= BuildRect(Math3D.Middle(r), Vector2.zero);                    
+                        package.myAnimatedRect.StartValue= BuildRect(pos, Vector2.zero);
+                        for(int i= 0; i < selectedObjects.Length; ++i) {
+                            selectedObjects[i].SetInitialPosition(iCS_EditorObject.PositionFrom(childrenRects[i]));
+                            selectedObjects[i].LocalSize= iCS_EditorObject.SizeFrom(childrenRects[i]);
+                        }
+                        iStorage.ForcedRelayoutOfTree();
                     }
                     else {
                         Debug.LogWarning("iCanScript: Unable to create a suitable package.");
