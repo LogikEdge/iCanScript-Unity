@@ -49,6 +49,7 @@ public static partial class iCS_UserCommands {
                 _=> {
                     stateChart= iStorage.CreateStateChart(parent.InstanceId, name);
                     stateChart.SetInitialPosition(globalPos);
+                    iStorage.ForcedRelayoutOfTree();
                     // Automatically create entry state.
                     var entryState= iStorage.CreateState(stateChart.InstanceId, "EntryState");
                     entryState.IsEntryState= true;
