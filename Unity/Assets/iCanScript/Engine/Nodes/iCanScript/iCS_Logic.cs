@@ -3,47 +3,107 @@ using Object=System.Object;
 
 [iCS_Class(Company="iCanScript", Library="Logic")]
 public static class iCS_Conditions {
-    // Float Comparaison operations.
-    [iCS_Function(Return="If")]
-    public static bool IsZero(float a, out bool Else)                           { bool result= Math3D.IsZero(a); Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsEqual(float a, float b, out bool Else)                 { bool result= Math3D.IsEqual(a,b); Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsGreater(float value, float bias, out bool Else)        { bool result= Math3D.IsGreater(value,bias); Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsSmaller(float value, float bias, out bool Else)        { bool result= Math3D.IsSmaller(value,bias); Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsGreaterOrEqual(float value, float bias, out bool Else) { bool result= Math3D.IsGreaterOrEqual(value,bias); Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsSmallerOrEqual(float value, float bias, out bool Else) { bool result= Math3D.IsSmallerOrEqual(value,bias); Else= !result; return result; }
+    // Object comparaison.
+    [iCS_Function(Return="isNull")]
+    public static bool IsNull(object obj, out bool isNotNull)
+        { isNotNull= obj != null; return !isNotNull; }
 
-    // Int Comparaison operations.
-    [iCS_Function(Return="If")]
-    public static bool IsZero(int a, out bool Else)                             { bool result= a == 0; Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsEqual(int a, int b, out bool Else)                     { bool result= a == b; Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsGreater(int value, int bias, out bool Else)            { bool result= value > bias; Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsSmaller(int value, int bias, out bool Else)            { bool result= value < bias; Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsGreaterOrEqual(int value, int bias, out bool Else)     { bool result= value >= bias; Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsSmallerOrEqual(int value, int bias, out bool Else)     { bool result= value <= bias; Else= !result; return result; }
+    // Float comparaison.
+    [iCS_Function(Return="isZero")]
+    public static bool IsZero(float a, out bool isNotZero)
+        { isNotZero= Math3D.IsNotZero(a); return !isNotZero; }
+    [iCS_Function(Return="isEqual")]
+    public static bool IsEqual(float a, float b, out bool isNotEqual)
+        { isNotEqual= Math3D.IsNotEqual(a,b); return !isNotEqual; }
+    [iCS_Function(Return="isGreater")]
+    public static bool IsGreater(float value, float bias, out bool isSmallerOrEqual)
+        { isSmallerOrEqual= Math3D.IsSmallerOrEqual(value,bias); return !isSmallerOrEqual; }
+    [iCS_Function(Return="isSmaller")]
+    public static bool IsSmaller(float value, float bias, out bool isGreaterOrEqual)
+        { isGreaterOrEqual= Math3D.IsGreaterOrEqual(value,bias); return !isGreaterOrEqual; }
+    [iCS_Function(Return="isGreaterOrEqual")]
+    public static bool IsGreaterOrEqual(float value, float bias, out bool isSmaller)
+        { isSmaller= Math3D.IsSmaller(value,bias); return !isSmaller; }
+    [iCS_Function(Return="isSmallerOrEqual")]
+    public static bool IsSmallerOrEqual(float value, float bias, out bool isGreater)
+        { isGreater= Math3D.IsGreater(value,bias); return !isGreater; }
+    [iCS_Function(Return="isEqual")]
+    public static bool Compare(float value, float bias, out bool isSmaller,
+                                                        out bool isGreater,
+                                                        out bool isSmallerOrEqual,
+                                                        out bool isGreaterOrEqual) {
+        bool isEqual= Math3D.IsEqual(value, bias);
+        isSmaller= Math3D.IsSmaller(value, bias);
+        isGreater= Math3D.IsGreater(value, bias);
+        isSmallerOrEqual= isSmaller || isEqual;
+        isGreaterOrEqual= isGreater || isEqual;
+        return isEqual;
+    }
 
-    // Int Comparaison operations.
-    [iCS_Function(Return="If")]
-    public static bool IsNullOrEmpty(string a, out bool Else)                       { bool result= string.IsNullOrEmpty(a); Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsEqual(string value, string bias, out bool Else)            { bool result= string.Compare(value,bias) == 0; Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsGreater(string value, string bias, out bool Else)          { bool result= string.Compare(value,bias) > 0; Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsSmaller(string value, string bias, out bool Else)          { bool result= string.Compare(value,bias) < 0; Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsGreaterOrEqual(string value, string bias, out bool Else)   { bool result= string.Compare(value,bias) >= 0; Else= !result; return result; }
-    [iCS_Function(Return="If")]
-    public static bool IsSmallerOrEqual(string value, string bias, out bool Else)   { bool result= string.Compare(value,bias) <= 0; Else= !result; return result; }
+    // Int comparaison.
+    [iCS_Function(Return="isZero")]
+    public static bool IsZero(int a, out bool isNotZero)
+        { isNotZero= a != 0; return !isNotZero; }
+    [iCS_Function(Return="isEqual")]
+    public static bool IsEqual(int a, int b, out bool isNotEqual)
+        { isNotEqual= a != b; return !isNotEqual; }
+    [iCS_Function(Return="isGreater")]
+    public static bool IsGreater(int value, int bias, out bool isSmallerOrEqual)
+        { isSmallerOrEqual= value <= bias; return !isSmallerOrEqual; }
+    [iCS_Function(Return="isSmaller")]
+    public static bool IsSmaller(int value, int bias, out bool isGreaterOrEqual)
+        { isGreaterOrEqual= value >= bias; return !isGreaterOrEqual; }
+    [iCS_Function(Return="isGreaterOrEqual")]
+    public static bool IsGreaterOrEqual(int value, int bias, out bool isSmaller)
+        { isSmaller= value < bias; return !isSmaller; }
+    [iCS_Function(Return="isSmallerOrEqual")]
+    public static bool IsSmallerOrEqual(int value, int bias, out bool isGreater)
+        { isGreater= value > bias; return !isGreater; }
+    [iCS_Function(Return="isEqual")]
+    public static bool Compare(int value, int bias, out bool isSmaller,
+                                                    out bool isGreater,
+                                                    out bool isSmallerOrEqual,
+                                                    out bool isGreaterOrEqual) {
+        bool isEqual  = value == bias;
+        isSmaller= value < bias;
+        isGreater= value > bias;
+        isSmallerOrEqual= isSmaller || isEqual;
+        isGreaterOrEqual= isGreater || isEqual;
+        return isEqual;
+    }
+
+    // String comparaison.
+    [iCS_Function(Return="isNullOrEmpty")]
+    public static bool IsNullOrEmpty(string a, out bool Else)
+        { bool isNullOrEmpty= string.IsNullOrEmpty(a); Else= !isNullOrEmpty; return isNullOrEmpty; }
+    [iCS_Function(Return="isEqual")]
+    public static bool IsEqual(string value, string bias, out bool isNotEqual)
+        { isNotEqual= string.Compare(value,bias) != 0; return !isNotEqual; }
+    [iCS_Function(Return="isGreater")]
+    public static bool IsGreater(string value, string bias, out bool isSmallerOrEqual)
+        { isSmallerOrEqual= string.Compare(value,bias) <= 0; return !isSmallerOrEqual; }
+    [iCS_Function(Return="isSmaller")]
+    public static bool IsSmaller(string value, string bias, out bool isGreaterOrEqual)
+        { isGreaterOrEqual= string.Compare(value,bias) >= 0; return !isGreaterOrEqual; }
+    [iCS_Function(Return="isGreaterOrEqual")]
+    public static bool IsGreaterOrEqual(string value, string bias, out bool isSmaller)
+        { isSmaller= string.Compare(value,bias) < 0; return !isSmaller; }
+    [iCS_Function(Return="isSmallerOrEqual")]
+    public static bool IsSmallerOrEqual(string value, string bias, out bool isGreater)
+        { isGreater= string.Compare(value,bias) > 0; return !isGreater; }
+    [iCS_Function(Return="isEqual")]
+    public static bool Compare(string value, string bias, out bool isSmaller,
+                                                          out bool isGreater,
+                                                          out bool isSmallerOrEqual,
+                                                          out bool isGreaterOrEqual) {
+        int result= string.Compare(value, bias);
+        bool isEqual= result == 0;
+        isSmaller= result < 0;
+        isGreater= result > 0;
+        isSmallerOrEqual= isSmaller || isEqual;
+        isGreaterOrEqual= isGreater || isEqual;
+        return isEqual;
+    }
 }
 
 [iCS_Class(Company="iCanScript", Library="Logic")]

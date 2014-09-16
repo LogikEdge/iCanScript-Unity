@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Icon= "iCS_ClockIcon.psd")]
+[iCS_Class(Company="iCanScript", Library= "Time", Icon= "iCS_ClockIcon.psd")]
 public class iCS_PulseGenerator {
     bool  myIsActive= false;
     float myElapseTime;

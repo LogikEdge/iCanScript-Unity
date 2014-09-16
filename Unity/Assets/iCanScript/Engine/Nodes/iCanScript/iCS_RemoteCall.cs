@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//#define FUTURE_RELEASES
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -19,6 +20,7 @@ public static class iCS_RemoteCall {
             targetVisualScript.RunMessage(messageName);
         }
     }
+#if FUTURE_RELEASES
     [iCS_Function]
     public static void SendMessage(iCS_VisualScriptImp targetVisualScript, string messageName, object p1) {
         if(targetVisualScript != null) {
@@ -31,7 +33,8 @@ public static class iCS_RemoteCall {
             targetVisualScript.RunMessage(messageName, p1, p2);
         }
     }
-    
+#endif
+        
     // ------------------------------------------------------------------------
     // Build a dictionary of all the visual script we are communicating with.
     static Dictionary<string, iCS_VisualScriptImp> myDictionary= new Dictionary<string, iCS_VisualScriptImp>();

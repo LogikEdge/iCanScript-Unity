@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//#define FUTURE_RELEASE
+using UnityEngine;
 using System.Collections;
 
 [iCS_Class(Company="iCanScript", Library="Math", HideClassFromLibrary=true)]
@@ -55,3 +56,46 @@ public static class iCS_Math {
     [iCS_Function(Tooltip="Returns the normalized cross product.")]
     public static Vector3 NormalizedCross(Vector3 v1, Vector3 v2) { return Vector3.Cross(v1,v2).normalized; }
 }
+
+#if FUTURE_RELEASE
+// ==========================================================================
+// Trigonometry
+// --------------------------------------------------------------------------
+[iCS_Class(Company="iCanScript", Library="Trigonometry", HideClassFromLibrary=true)]
+public sealed class iCS_SinWave {
+    // ======================================================================
+    // PROPERTIES
+    // ----------------------------------------------------------------------
+    float          elapseTime;
+    const float    twoPI= 2.0f*Mathf.PI;
+    
+    // ======================================================================
+    // EXECUTION
+    // ----------------------------------------------------------------------
+    [iCS_Function(Return="wave")]
+    public float SinWave(float freq, float amplitude) {
+        elapseTime+= Time.deltaTime;
+        return amplitude * Mathf.Sin(twoPI * freq * elapseTime);
+    }
+
+}
+
+[iCS_Class(Company="iCanScript", Library="Trigonometry", HideClassFromLibrary=true)]
+public sealed class iCS_CosWave {
+    // ======================================================================
+    // PROPERTIES
+    // ----------------------------------------------------------------------
+    float          elapseTime;
+    const float    twoPI= 2.0f*Mathf.PI;
+        
+    // ======================================================================
+    // EXECUTION
+    // ----------------------------------------------------------------------
+    [iCS_Function(Return="wave")]
+    public float CosWave(float freq, float amplitude) {
+        elapseTime+= Time.deltaTime;
+        return amplitude * Mathf.Cos(twoPI * freq * elapseTime);
+    }
+}
+#endif
+
