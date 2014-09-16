@@ -44,7 +44,7 @@ public static class iCS_Time {
         return Time.time+time;
     }
     [iCS_Function(Return="isElapsed")]
-    public static bool IsTimeElapsed(float endTime, out bool isNotElapsed) {
+    public static bool IsTimerElapsed(float endTime, out bool isNotElapsed) {
         bool isElapsed= Time.time >= endTime;
         isNotElapsed= !isElapsed;
         return isElapsed;
