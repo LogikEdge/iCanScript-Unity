@@ -150,7 +150,7 @@ public partial class iCS_IStorage {
             }
             // Reset display root if no navigation history present
             if(!NavigationHistory.HasBackwardHistory && EditorObjects.Count > 0) {
-                iCS_UserCommands.SetAsDisplayRoot(EditorObjects[0]);
+                DisplayRoot= EditorObjects[0];
             }
             // Force a relayout
             ForceRelayout= true;
