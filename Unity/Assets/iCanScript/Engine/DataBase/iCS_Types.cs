@@ -1,4 +1,4 @@
-#define DEBUG
+//#define DEBUG
 using UnityEngine;
 using System;
 using System.Collections;
@@ -155,9 +155,9 @@ public static class iCS_Types {
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             var newType= assembly.GetType(typeName);
             if(newType != null) {
+#if DEBUG
                 // Don't give warning for known conversions.
                 var newAssemblyName= newType.Assembly.FullName.Split(new char[]{','})[0];
-#if DEBUG
                 if(assemblyName != "iCanScriptEngine" && newAssemblyName != "iCanScriptEngine") {
                     Debug.LogWarning("iCanScript: Unable to locate type: "+typeName+" from assembly: "+assemblyName+" ... using assembly: "+newAssemblyName+" instead.");                        
                 }

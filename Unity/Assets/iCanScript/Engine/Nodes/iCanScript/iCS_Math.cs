@@ -55,3 +55,4 @@ public static class iCS_Math {
     [iCS_Function(Tooltip="Returns the normalized cross product.")]
     public static Vector3 NormalizedCross(Vector3 v1, Vector3 v2) { return Vector3.Cross(v1,v2).normalized; }
 }
+
