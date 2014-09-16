@@ -138,11 +138,16 @@ public partial class iCS_IStorage {
     }
 	// -------------------------------------------------------------------------
     void AddToSelectedObjects(iCS_EditorObject obj) {
+        // Ignore display root if selected
+        if(mySelectedObjects.Count == 1 && mySelectedObjects[0] == DisplayRoot) {
+            mySelectedObjects.Clear();
+        }
+        // Add new object to selection list.
         if(mySelectedObjects.Count == 0) {
             SelectedObject= obj;
         }
         else {
-            mySelectedObjects.Add(obj);            
+            mySelectedObjects.Add(obj);
         }
     }
 	// -------------------------------------------------------------------------

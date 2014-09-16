@@ -127,8 +127,14 @@ public static class iCS_iCanScriptMenu {
         Application.OpenURL("http://helpdesk.icanscript.com/support/tickets/new");
     }
     // ======================================================================
+    // Tutorials Access
+    [MenuItem("Help/iCanScript/Space Shooter Tutorial on YouTube",false,70)]
+    public static void SpaceShooterTutorialPlaylist() {        
+        Application.OpenURL("http://www.youtube.com/playlist?list=PLbRggLFpBWUQA7RgHO_eIZvl56W4A53Vj");
+    }
+    // ======================================================================
     // Purchase
-    [MenuItem("Help/iCanScript/Check for Updates...",false,72)]
+    [MenuItem("Help/iCanScript/Check for Updates...",false,91)]
     public static void CheckForUpdate() {
 		iCS_SoftwareUpdateController.ManualUpdateVerification();
     }

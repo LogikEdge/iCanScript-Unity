@@ -46,8 +46,11 @@ public partial class iCS_EditorObject {
 			}
             var area= Math3D.Area(AnimatedSize);
             if(Math3D.IsZero(area)) return false;
-            var iconArea= Math3D.Area(iCS_Graphics.GetMaximizeIconSize(this));
+            var iconSize= iCS_Graphics.GetMaximizeIconSize(this);
+            var iconArea= Math3D.Area(iconSize);
             return Math3D.IsSmallerOrEqual(area, iconArea) &&
+                   Math3D.IsSmallerOrEqual(AnimatedSize.x, iconSize.x) &&
+                   Math3D.IsSmallerOrEqual(AnimatedSize.y, iconSize.y) &&
                    Math3D.IsGreater(area, iCS_EditorConfig.kMinIconicArea);
 		}
 	}

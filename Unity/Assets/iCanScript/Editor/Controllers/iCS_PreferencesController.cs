@@ -703,9 +703,9 @@ public static class iCS_PreferencesController {
         kFloatTypeColor     = Color.cyan;
         kVector2TypeColor   = Color.yellow;
         kVector3TypeColor   = Color.green;
-        kVector4TypeColor   = Color.blue;
+        kVector4TypeColor   = new Color(c(64), c(160), c(255));
         kStringTypeColor    = Color.red;
-        kGameObjectTypeColor= Color.blue;
+        kGameObjectTypeColor= new Color(0, c(128), c(255));
         kDefaultTypeColor   = Color.white;		
 	}
 	

@@ -10,7 +10,7 @@ public static partial class iCS_UserCommands {
         if(iStorage.DisplayRoot == obj) return;
 		// The display root must be a package with visible children capabilities.
 		var newDisplayRoot= obj;
-		while(newDisplayRoot != null && (!newDisplayRoot.IsKindOfPackage || newDisplayRoot.IsInstanceNode)) {
+		while(newDisplayRoot != null && newDisplayRoot.IsInstanceNode) {
 			newDisplayRoot= newDisplayRoot.ParentNode;
 		}
 		if(newDisplayRoot == null) return;
