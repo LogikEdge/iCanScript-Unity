@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 // ==========================================================================
 // The iCS_VisualScriptData class is divided into an instance section and
@@ -356,7 +357,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
 		}
 		return host.name+"."+fullName;
 	}
-	
+    
     // ======================================================================
     // Connection Queries
     // ----------------------------------------------------------------------
@@ -428,4 +429,36 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
 		return parent != null && parent.IsKindOfPackage;
 	}
     
+    // ======================================================================
+    // Public Interfaces
+    // ----------------------------------------------------------------------
+    public static iCS_EngineObject[] GetPublicObjects(iCS_IVisualScriptData vsd) {
+        // No public interface if no objects in the visual script
+        var engineObjects= vsd.EngineObjects;
+        if(engineObjects.Count == 0) return null;
+        
+        // Public interfaces only exists on behaviour visual script
+        if(!engineObjects[0].IsBehaviour) {
+            return null;
+        }
+
+        // Gather all of the objects that as the behaviour as parent.
+        var publicObjects= P.filter(o=> o.ParentId == 0, engineObjects);
+        return publicObjects.ToArray();
+    }
+    // ----------------------------------------------------------------------
+    public static iCS_EngineObject[] GetPublicVariables(iCS_EngineObject[] publicObjects) {
+        if(publicObjects == null) return null;
+        return P.filter(po=> po.IsConstructor, publicObjects);
+    }
+    // ----------------------------------------------------------------------
+    public static iCS_EngineObject[] GetPublicUserFunctions(iCS_EngineObject[] publicObjects) {
+        if(publicObjects == null) return null;
+        return P.filter(po=> po.IsPackage, publicObjects);
+    }
+    // ----------------------------------------------------------------------
+    public static iCS_EngineObject[] GetPublicMessageHandlers(iCS_EngineObject[] publicObjects) {
+        if(publicObjects == null) return null;
+        return P.filter(po=> po.IsMessage, publicObjects);
+    }
 }

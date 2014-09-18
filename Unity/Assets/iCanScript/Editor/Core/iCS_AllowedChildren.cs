@@ -52,6 +52,9 @@ public static class iCS_AllowedChildren {
             if(parent.IsBehaviour && childType == iCS_ObjectTypeEnum.Package) {
                 return true;
             }
+            if(parent.IsBehaviour && childType == iCS_ObjectTypeEnum.Constructor) {
+                return true;
+            }
 			foreach(var m in typeInfo.Members) {
 				if(m.DisplayName == childName) {
                     // Special case for Behaviour.  Only messages are allowed.
