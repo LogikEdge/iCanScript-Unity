@@ -133,6 +133,22 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Allow dropping Unity object in modules.
                 if(eObj.IsKindOfPackage && draggedObject is GameObject) {
                     GameObject gameObject= draggedObject as GameObject;
+                    // Determine if game object contains a visual script.
+                    var vs= gameObject.GetComponent("iCS_VisualScript") as iCS_VisualScriptImp;
+                    if(vs != null) {
+                        Debug.Log("Dragged object contains a visual script");
+                        var publicObjects= iCS_VisualScriptData.GetPublicObjects(vs);
+                        if(publicObjects != null) {
+                            var publicVariables= iCS_VisualScriptData.GetPublicVariables(publicObjects);
+                            foreach(var pv in publicVariables) {
+                                Debug.Log("Public variable=> "+pv.Name);
+                            }
+                            var publicUserFunctions= iCS_VisualScriptData.GetPublicUserFunctions(publicObjects);
+                            foreach(var puf in publicUserFunctions) {
+                                Debug.Log("Public user function=> "+puf.Name);
+                            }
+                        }
+                    }
                     var instance= iCS_UserCommands.CreateGameObject(gameObject, eObj, GraphMousePosition);
                     if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
                         var isSceneObject= iCS_UnityUtility.IsSceneGameObject(draggedObject as GameObject);

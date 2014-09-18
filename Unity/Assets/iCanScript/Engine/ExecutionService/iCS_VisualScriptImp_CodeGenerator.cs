@@ -65,17 +65,6 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // Code Generation
     // ----------------------------------------------------------------------
     public bool GenerateCode() {
-        var publicObjects= iCS_VisualScriptData.GetPublicObjects(this);
-        if(publicObjects != null) {
-            var publicVariables= iCS_VisualScriptData.GetPublicVariables(publicObjects);
-            foreach(var pv in publicVariables) {
-                Debug.Log("Public variable=> "+pv.Name);
-            }
-            var publicUserFunctions= iCS_VisualScriptData.GetPublicUserFunctions(publicObjects);
-            foreach(var puf in publicUserFunctions) {
-                Debug.Log("Public user function=> "+puf.Name);
-            }
-        }
 //#if UNITY_EDITOR
 //        Debug.Log("iCanScript: Generating real-time code for "+gameObject.name+"...");            
 //#endif
