@@ -461,4 +461,23 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
         if(publicObjects == null) return null;
         return P.filter(po=> po.IsMessage, publicObjects);
     }
+    // ----------------------------------------------------------------------
+    public static bool IsPublicVariable(iCS_EngineObject obj) {
+        if(obj == null) return false;
+        if(obj.ParentId != 0) return false;
+        return obj.IsConstructor;
+    }
+    // ----------------------------------------------------------------------
+    public static bool IsPublicUserFunction(iCS_EngineObject obj) {
+        if(obj == null) return false;
+        if(obj.ParentId != 0) return false;
+        return obj.IsPackage;
+    }
+    // ----------------------------------------------------------------------
+    public static bool IsPublicMessageHandler(iCS_EngineObject obj) {
+        if(obj == null) return false;
+        if(obj.ParentId != 0) return false;
+        return obj.IsMessage;
+    }
+    
 }
