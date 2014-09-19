@@ -84,6 +84,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     // Awake is called when the script instance is being loaded.
     void Awake() {
+//        base.Awake();  // This generates an internal compiler error
         GenerateCode();        
         iCS_RunContext awakeContext= null;
         myMessageContexts.TryGetValue("Awake", out awakeContext);
@@ -125,6 +126,12 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         iCS_Package message= obj as iCS_Package;
         if(message == null) return;
         var messageName= message.Name;
+        AddChildWithName(obj, messageName);
+    }
+    // ----------------------------------------------------------------------
+    public void AddChildWithName(object obj, string messageName) {
+        iCS_Package message= obj as iCS_Package;
+        if(message == null) return;
         if(!myMessageContexts.ContainsKey(messageName)) {
             myMessageContexts.Add(messageName, new iCS_RunContext(message));
         }

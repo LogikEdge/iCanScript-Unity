@@ -258,6 +258,24 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
                                 iCS_Constructor func= new iCS_Constructor(methodBase, this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= func;
+                                // Special case for public variables.  They are created in the Awake message handler.
+                                if(iCS_VisualScriptData.IsPublicVariable(node)) {
+                                    // Create an awake message handler (if it does not exist)
+                                    if(!myMessageContexts.ContainsKey("Awake")) {
+                                        parent= new iCS_Message(this, priority, 0);
+                                        AddChildWithName(parent, "Awake");
+                                    }
+                                    else {
+                                        iCS_RunContext awakeContext= null;
+                                        myMessageContexts.TryGetValue("Awake", out awakeContext);
+                                        if(awakeContext != null) {
+                                            parent= awakeContext.Action;
+                                        }
+                                        else {
+                                            parent= null;
+                                        }
+                                    }
+                                }
                                 InvokeAddChildIfExists(parent, func);
                                 break;
                             }
