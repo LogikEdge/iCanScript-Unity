@@ -65,9 +65,13 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // Code Generation
     // ----------------------------------------------------------------------
     public bool GenerateCode() {
-//#if UNITY_EDITOR
-//        Debug.Log("iCanScript: Generating real-time code for "+gameObject.name+"...");            
-//#endif
+        if(!GenerateRuntimeObjects()) {
+            return false;
+        }
+        return ConnectRuntimeObjects();
+    }
+    // ----------------------------------------------------------------------
+    bool GenerateRuntimeObjects() {
 		// Verify for storage sanity.
 		if(SanityCheck()) {
 			Debug.LogWarning("iCanScript: storage corruption has been detected.  Attempting recovery...");
@@ -86,8 +90,13 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         if( compileWarnings.Count != 0 ) {
             ShowWarnings( ref compileWarnings );            
         }    
-        
+        return true;
+    }
+    // ----------------------------------------------------------------------
+    bool ConnectRuntimeObjects() {
         // Connect the runtime nodes.
+        var compileErrors= new List<CompileError>();
+        var compileWarnings= new List<CompileWarning>();
         ConnectRuntimeNodes(ref compileErrors, ref compileWarnings);
         if( compileErrors.Count != 0) {
             ClearGeneratedCode();
@@ -96,11 +105,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         }
         if( compileWarnings.Count != 0 ) {
             ShowWarnings( ref compileWarnings );
-        }    
-//#if UNITY_EDITOR
-//		Debug.Log("iCanScript: Completed code generation for "+gameObject.name);    
-//#endif
-        return true;
+        }
+        return true;        
     }
     // ----------------------------------------------------------------------
     private void ShowErrors(ref List<CompileError> compileErrors) {
