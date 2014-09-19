@@ -212,6 +212,7 @@ public class iCS_EngineObject {
     public bool IsOnStateEntryPackage      { get { return iCS_ObjectType.IsOnStateEntryPackage(this); }}
     public bool IsOnStateUpdatePackage     { get { return iCS_ObjectType.IsOnStateUpdatePackage(this); }}
     public bool IsOnStateExitPackage       { get { return iCS_ObjectType.IsOnStateExitPackage(this); }}
+    public bool IsProxyNode                { get { return iCS_ObjectType.IsProxyNode(this); }}
 
     // General Ports
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
