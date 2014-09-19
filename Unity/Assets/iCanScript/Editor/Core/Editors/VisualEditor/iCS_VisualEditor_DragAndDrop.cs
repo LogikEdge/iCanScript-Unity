@@ -136,18 +136,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     // Determine if game object contains a visual script.
                     var vs= gameObject.GetComponent("iCS_VisualScript") as iCS_VisualScriptImp;
                     if(vs != null) {
-                        Debug.Log("Dragged object contains a visual script");
-                        var publicObjects= iCS_VisualScriptData.GetPublicObjects(vs);
-                        if(publicObjects != null) {
-                            var publicVariables= iCS_VisualScriptData.GetPublicVariables(publicObjects);
-                            foreach(var pv in publicVariables) {
-                                Debug.Log("Public variable=> "+pv.Name);
-                            }
-                            var publicUserFunctions= iCS_VisualScriptData.GetPublicUserFunctions(publicObjects);
-                            foreach(var puf in publicUserFunctions) {
-                                Debug.Log("Public user function=> "+puf.Name);
-                            }
-                        }
+                        BuildPublicInterfaceMenu(vs);
                     }
                     var instance= iCS_UserCommands.CreateGameObject(gameObject, eObj, GraphMousePosition);
                     if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
@@ -208,5 +197,38 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         }
         return null;
+    }
+
+    // ======================================================================
+    // Public interface Utilities
+	// ----------------------------------------------------------------------
+    void BuildPublicInterfaceMenu(iCS_VisualScriptImp vs) {
+        var publicObjects= iCS_VisualScriptData.GetPublicObjects(vs);
+        if(publicObjects != null) {
+            GenericMenu gMenu= new GenericMenu();
+            var publicVariables= iCS_VisualScriptData.GetPublicVariables(publicObjects);
+            bool hasVariable= false;
+            foreach(var pv in publicVariables) {
+                if(hasVariable == false) {
+                    gMenu.AddSeparator("");
+                    gMenu.AddSeparator("Variables");
+                }
+                hasVariable= true;
+                gMenu.AddItem(new GUIContent(pv.Name), false,
+                              c=> {}, pv); 
+            }
+            bool hasUserFunction= false;
+            var publicUserFunctions= iCS_VisualScriptData.GetPublicUserFunctions(publicObjects);
+            foreach(var puf in publicUserFunctions) {
+                if(hasUserFunction == false) {
+                    gMenu.AddSeparator("");
+                    gMenu.AddSeparator("User Functions");
+                }
+                hasUserFunction= true;
+                gMenu.AddItem(new GUIContent(puf.Name), false,
+                              c=> {}, puf); 
+            }
+            gMenu.ShowAsContext();
+        }
     }
 }
