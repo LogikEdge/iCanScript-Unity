@@ -82,10 +82,14 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     }
     
     // ----------------------------------------------------------------------
+    // Awake is called when the script instance is being loaded.
+    void Awake() {
+        GenerateCode();        
+    }
+    // ----------------------------------------------------------------------
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
     void Start() {
-        GenerateCode();
         iCS_RunContext startContext= null;
         myMessageContexts.TryGetValue("Start", out startContext);
         if(startContext != null) {
