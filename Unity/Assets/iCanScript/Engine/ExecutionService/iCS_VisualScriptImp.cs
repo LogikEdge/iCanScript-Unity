@@ -85,6 +85,19 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // Awake is called when the script instance is being loaded.
     void Awake() {
         GenerateCode();        
+        iCS_RunContext awakeContext= null;
+        myMessageContexts.TryGetValue("Awake", out awakeContext);
+        if(awakeContext != null) {
+            awakeContext.Action.IsActive= true;
+            do {
+                awakeContext.Action.Execute(-2);
+                if(awakeContext.Action.IsStalled) {
+                    Debug.LogError("The Awake() of "+name+" is stalled. Please remove any dependent processing !!!");
+                    return;
+                }
+            } while(!awakeContext.Action.IsCurrent(-2));
+            awakeContext.Action.IsActive= false;
+        }
     }
     // ----------------------------------------------------------------------
     // This function should be used to pass information between objects.  It
@@ -112,9 +125,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         iCS_Package message= obj as iCS_Package;
         if(message == null) return;
         var messageName= message.Name;
-        if(myMessageContexts.ContainsKey(messageName)) {
-            myMessageContexts[messageName]= new iCS_RunContext(message);
-        } else {
+        if(!myMessageContexts.ContainsKey(messageName)) {
             myMessageContexts.Add(messageName, new iCS_RunContext(message));
         }
     }
