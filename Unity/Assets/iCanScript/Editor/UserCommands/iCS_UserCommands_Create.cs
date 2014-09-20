@@ -1,7 +1,7 @@
 //
 // File: iCS_UserCommands_Create
 //
-#define DEBUG
+//#define DEBUG
 using UnityEngine;
 using UnityEditor;
 using System;

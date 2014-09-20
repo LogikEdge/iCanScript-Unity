@@ -21,13 +21,7 @@ public partial class iCS_IStorage {
         	    }
                 // Layout all nodes (ports will also be updated).
 				if(obj.IsNode) {
-                    if(obj.IsProxyNode) {
-                        Debug.Log("Before LayoutNode");
-                    }
 					obj.LayoutNode();
-                    if(obj.IsProxyNode) {
-                        Debug.Log("After LayoutNode");
-                    }
 				}
             }
         );

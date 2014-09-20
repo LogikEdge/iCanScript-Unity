@@ -40,7 +40,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var globalPosition= GraphMousePosition;
         var parent= IStorage.GetNodeAt(globalPosition);
         if(parent != null) {
-            iCS_UserCommands.CreateVariableProxy(parent, globalPosition, engineObject.Name, vs, engineObject);
+            QueueOnGUICommand(()=> iCS_UserCommands.CreateVariableProxy(parent, globalPosition, engineObject.Name, vs, engineObject));
         }
     }
     void CreateUserFunctionProxy(iCS_VisualScriptImp vs, object _puf) {
