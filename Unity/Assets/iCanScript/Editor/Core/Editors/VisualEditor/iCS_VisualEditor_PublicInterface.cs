@@ -6,7 +6,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Public interface Utilities
 	// ----------------------------------------------------------------------
-    void BuildPublicInterfaceMenu(iCS_VisualScriptImp vs) {
+    void BuildPublicInterfaceMenu(iCS_VisualScriptImp vs, Vector2 mousePosition) {
         var publicObjects= iCS_VisualScriptData.GetPublicObjects(vs);
         if(publicObjects != null) {
             GenericMenu gMenu= new GenericMenu();
@@ -36,8 +36,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
     void CreateVariableProxy(iCS_VisualScriptImp vs, object _pv) {
-        var pv= _pv as iCS_EngineObject;
-        Debug.Log("Trying to create variable proxy=> "+pv.Name);
+        var engineObject= _pv as iCS_EngineObject;
+        var globalPosition= GraphMousePosition;
+        var parent= IStorage.GetNodeAt(globalPosition);
+        if(parent != null) {
+            iCS_UserCommands.CreateVariableProxy(parent, globalPosition, engineObject.Name, vs, engineObject);
+        }
     }
     void CreateUserFunctionProxy(iCS_VisualScriptImp vs, object _puf) {
         var puf= _puf as iCS_EngineObject;

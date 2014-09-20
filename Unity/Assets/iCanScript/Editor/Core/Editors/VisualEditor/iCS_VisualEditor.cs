@@ -233,7 +233,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             RemoveNotification();
             myNotificationShown= false;
         }
-       	
+       	// Update pending GUI commands
+        RunOnGUICommands();
+        
         // Update GUI time.
         myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
         myCurrentTime= Time.realtimeSinceStartup;
