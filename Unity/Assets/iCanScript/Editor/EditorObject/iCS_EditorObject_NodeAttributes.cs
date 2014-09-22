@@ -64,4 +64,20 @@ public partial class iCS_EditorObject {
     public FieldInfo GetFieldInfo() {
         return EngineObject.GetFieldInfo();
     }
+    
+    // =======================================================================
+    // Proxy Node
+    // -----------------------------------------------------------------------
+    public int ProxyOriginalNodeId {
+        get { return EngineObject.ProxyOriginalNodeId; }
+        set { EngineObject.ProxyOriginalNodeId= value; }
+    }
+    public string ProxyOriginalVisualScriptTag {
+        get { return EngineObject.ProxyOriginalVisualScriptTag; }
+        set { EngineObject.ProxyOriginalVisualScriptTag= value; }
+    }
+    public int ProxyOriginalVisualScriptIndex {
+        get { return EngineObject.ProxyOriginalVisualScriptIndex; }
+        set { EngineObject.ProxyOriginalVisualScriptIndex= value; }
+    }
 }

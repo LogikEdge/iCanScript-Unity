@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
@@ -32,7 +33,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
 	public Vector2		            ScrollPosition        = Vector2.zero;
     public int                      UndoRedoId            = 0;
     public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
-    public List<Object>             UnityObjects          = new List<Object>();
+    public List<UnityEngine.Object> UnityObjects          = new List<UnityEngine.Object>();
     public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
     
 
@@ -58,7 +59,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     List<iCS_EngineObject>  iCS_IVisualScriptData.EngineObjects {
         get { return EngineObjects; }
     }
-    List<Object> iCS_IVisualScriptData.UnityObjects {
+    List<UnityEngine.Object> iCS_IVisualScriptData.UnityObjects {
         get { return UnityObjects; }
     }
     int iCS_IVisualScriptData.UndoRedoId {
@@ -141,11 +142,11 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
         ClearUnityObjects(this);
     }
     // ----------------------------------------------------------------------
-    public int AddUnityObject(Object obj) {
+    public int AddUnityObject(UnityEngine.Object obj) {
         return AddUnityObject(this, obj);
     }
     // ----------------------------------------------------------------------
-    public Object GetUnityObject(int id) {
+    public UnityEngine.Object GetUnityObject(int id) {
         return GetUnityObject(this, id);
     }
 
@@ -304,7 +305,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
         vsd.UnityObjects.Clear();
     }
     // ----------------------------------------------------------------------
-    public static int AddUnityObject(iCS_IVisualScriptData vsd, Object obj) {
+    public static int AddUnityObject(iCS_IVisualScriptData vsd, UnityEngine.Object obj) {
         if(obj == null) return -1;
 		// Search for an existing entry.
         var unityObjects= vsd.UnityObjects;
@@ -321,7 +322,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
         return unityObjects.Count-1;
     }
     // ----------------------------------------------------------------------
-    public static Object GetUnityObject(iCS_IVisualScriptData vsd, int id) {
+    public static UnityEngine.Object GetUnityObject(iCS_IVisualScriptData vsd, int id) {
         var unityObjects= vsd.UnityObjects;
         return (id >= 0 && id < unityObjects.Count) ? unityObjects[id] : null;
     }
@@ -474,5 +475,28 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
         if(obj.ParentId != 0) return false;
         return obj.IsMessage;
     }
-    
+
+    // ======================================================================
+    // Iteration
+    // ----------------------------------------------------------------------
+    public static bool IsValid(iCS_EngineObject obj, iCS_IVisualScriptData vsd) {
+        int id= obj.InstanceId;
+        return id >= 0 && id < vsd.EngineObjects.Count;
+    }
+    public static void ForEach(Action<iCS_EngineObject> fnc, iCS_IVisualScriptData vsd) {
+        P.filterWith(o=> IsValid(o, vsd), fnc, vsd.EngineObjects);
+    }
+    public static void FilterWith(Func<iCS_EngineObject,bool> cond, Action<iCS_EngineObject> action, iCS_IVisualScriptData vsd) {
+        ForEach( o=> { if(cond(o)) action(o); }, vsd);
+    }
+
+    // ======================================================================
+    // General Queries
+    // ----------------------------------------------------------------------
+    public static iCS_EngineObject[] GetChildPorts(iCS_IVisualScriptData vsd, iCS_EngineObject node) {
+        List<iCS_EngineObject> childPorts= new List<iCS_EngineObject>();
+        FilterWith(p=> p.IsPort && p.ParentId == node.InstanceId, childPorts.Add, vsd);
+        return childPorts.ToArray();
+    }
+
 }

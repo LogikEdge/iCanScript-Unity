@@ -12,6 +12,42 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Object creation
 	// ----------------------------------------------------------------------
+    // FIXME: This should be changed to PortProxy
+    public static iCS_EditorObject CreateVariableProxy(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject realObject) {
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        iCS_IVisualScriptData vsd= vs;
+        OpenTransaction(iStorage);
+        iCS_EditorObject proxy= null;
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    proxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.ProxyNode, null);
+                    var ports= iCS_VisualScriptData.GetChildPorts(vsd, realObject);
+                    var proxyId= proxy.InstanceId;
+                    foreach(var p in ports) {
+                        iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, p.ObjectType, p.PortIndex);
+                    }
+                    proxy.ProxyOriginalNodeId= realObject.InstanceId;
+                    proxy.ProxyOriginalVisualScriptIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
+                    proxy.ProxyOriginalVisualScriptTag= vs.tag;
+                    Debug.Log("Proxy tag=> "+vs.tag);
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(proxy == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        CloseTransaction(iStorage, "Create Proxy "+name);
+        return proxy;
+    }
+	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
 #if DEBUG
         Debug.Log("iCanScript: CreatePackage => "+name);
@@ -322,7 +358,6 @@ public static partial class iCS_UserCommands {
         return transitionPackage;
     }
     // -------------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject CreateEnablePort(iCS_EditorObject parent) {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
@@ -351,7 +386,6 @@ public static partial class iCS_UserCommands {
         return port;
     }
     // -------------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject CreateTriggerPort(iCS_EditorObject parent) {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
@@ -411,7 +445,6 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Instance Object creation.
 	// ----------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject CreateObjectInstance(iCS_EditorObject parent, Vector2 globalPos, Type instanceType) {
         if(instanceType == null) return null;
         if(!IsCreationAllowed()) return null;
@@ -449,7 +482,6 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Node Wrapping in package.
 	// ----------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject WrapInPackage(iCS_EditorObject obj) {
         if(obj == null || !obj.CanHavePackageAsParent()) return null;
         if(!IsCreationAllowed()) return null;
@@ -476,7 +508,6 @@ public static partial class iCS_UserCommands {
         return package;
     }
 	// ----------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject WrapMultiSelectionInPackage(iCS_IStorage iStorage) {
         if(iStorage == null) return null;
         if(!IsCreationAllowed()) return null;
@@ -585,7 +616,8 @@ public static partial class iCS_UserCommands {
                 }
             );            
         }
-        catch(System.Exception) {
+        catch(System.Exception e) {
+            Debug.Log(e.Message);
             CancelTransaction(iStorage);
             return null;
         }
