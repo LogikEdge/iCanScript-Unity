@@ -986,7 +986,7 @@ public partial class iCS_Graphics {
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                    
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
         } else {
-            color.a= 0.6f*color.a;
+            color.a= 0.85f*color.a;
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                    
         }
         // Show transition name for state connections.
