@@ -138,17 +138,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(vs != null) {
                         BuildPublicInterfaceMenu(vs, GraphMousePosition);
                     }
-//                    var instance= iCS_UserCommands.CreateGameObject(gameObject, eObj, GraphMousePosition);
-//                    if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
-//                        var isSceneObject= iCS_UnityUtility.IsSceneGameObject(draggedObject as GameObject);
-//                        if(isSceneObject == true) {
-//                            ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
-//                            var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
-//                            if(thisPort != null) {
-//                                thisPort.PortValue= null;
-//                            }
-//                        }
-//                    }
+                    else {
+                        var instance= iCS_UserCommands.CreateGameObject(gameObject, eObj, GraphMousePosition);
+                        if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
+                            var isSceneObject= iCS_UnityUtility.IsSceneGameObject(draggedObject as GameObject);
+                            if(isSceneObject == true) {
+                                ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
+                                var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
+                                if(thisPort != null) {
+                                    thisPort.PortValue= null;
+                                }
+                            }
+                        }                        
+                    }
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.AcceptDrag();
                     return;

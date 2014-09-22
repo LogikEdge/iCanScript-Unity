@@ -13,17 +13,26 @@ public static partial class iCS_UserCommands {
     // Object creation
 	// ----------------------------------------------------------------------
     // FIXME: This should be changed to PortProxy
-    public static iCS_EditorObject CreateVariableProxy(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_IVisualScriptData vsd, iCS_EngineObject realObject) {
+    public static iCS_EditorObject CreateVariableProxy(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject realObject) {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
+        iCS_IVisualScriptData vsd= vs;
         OpenTransaction(iStorage);
         iCS_EditorObject proxy= null;
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    // FIXME: iCS_IStorage.ForceRealyout generates an execption
                     proxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.ProxyNode, null);
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, realObject);
+                    var proxyId= proxy.InstanceId;
+                    foreach(var p in ports) {
+                        iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, p.ObjectType, p.PortIndex);
+                    }
+                    proxy.ProxyOriginalNodeId= realObject.InstanceId;
+                    proxy.ProxyOriginalVisualScriptIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
+                    proxy.ProxyOriginalVisualScriptTag= vs.tag;
+                    Debug.Log("Proxy tag=> "+vs.tag);
+                    iStorage.ForcedRelayoutOfTree();
                 }
             );
         }

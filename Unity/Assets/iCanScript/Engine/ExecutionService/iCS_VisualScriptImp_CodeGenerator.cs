@@ -64,12 +64,12 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ======================================================================
     // Code Generation
     // ----------------------------------------------------------------------
-    public bool GenerateCode() {
-        if(!GenerateRuntimeObjects()) {
-            return false;
-        }
-        return ConnectRuntimeObjects();
-    }
+//    public bool GenerateCode() {
+//        if(!GenerateRuntimeObjects()) {
+//            return false;
+//        }
+//        return ConnectRuntimeObjects();
+//    }
     // ----------------------------------------------------------------------
     bool GenerateRuntimeObjects() {
 		// Verify for storage sanity.
@@ -195,6 +195,9 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             case iCS_ObjectTypeEnum.Behaviour: {
                                 break;
                             }
+                            case iCS_ObjectTypeEnum.ProxyNode: {
+                                break;
+                            }
                             case iCS_ObjectTypeEnum.StateChart: {
                                 iCS_StateChart stateChart= new iCS_StateChart(this, priority);
                                 myRuntimeNodes[node.InstanceId]= stateChart;
@@ -266,14 +269,15 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 myRuntimeNodes[node.InstanceId]= func;
                                 // Special case for public variables.  They are created in the Awake message handler.
                                 if(iCS_VisualScriptData.IsPublicVariable(node)) {
+                                    // TODO: Proxies should be initialized in Awake
                                     // Create an awake message handler (if it does not exist)
-                                    if(!myMessageContexts.ContainsKey("Awake")) {
+                                    if(!myMessageContexts.ContainsKey("Start")) {
                                         parent= new iCS_Message(this, priority, 0);
-                                        AddChildWithName(parent, "Awake");
+                                        AddChildWithName(parent, "Start");
                                     }
                                     else {
                                         iCS_RunContext awakeContext= null;
-                                        myMessageContexts.TryGetValue("Awake", out awakeContext);
+                                        myMessageContexts.TryGetValue("Start", out awakeContext);
                                         if(awakeContext != null) {
                                             parent= awakeContext.Action;
                                         }
@@ -401,11 +405,13 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 						case iCS_ObjectTypeEnum.OutProposedDataPort:
                         case iCS_ObjectTypeEnum.OutFixDataPort:
 						case iCS_ObjectTypeEnum.OutParentMuxPort: {
+                            // Don't generate any port data for ports on a proxy node
+                            var parentNode= GetParentNode(port);
+                            if(parentNode.IsProxyNode) {
+                                break;
+                            }
 							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
                             object parentObj= myRuntimeNodes[isMux ? port.InstanceId : port.ParentId];
-//							if(port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort) {
-//								Debug.Log("iCanScript: Setting default value for: "+(parentObj as iCS_Object).FullName+" port idx= "+port.PortIndex);
-//							}
                             Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Mux>(parentObj,
                                 instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 getInstanceField=> getInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
@@ -421,21 +427,33 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         case iCS_ObjectTypeEnum.InProposedDataPort:
                         case iCS_ObjectTypeEnum.InFixDataPort:
                         case iCS_ObjectTypeEnum.EnablePort: {
+                            // Don't generate any port data for ports on a proxy node
+                            var parentNode= GetParentNode(port);
+                            if(parentNode.IsProxyNode) {
+                                break;
+                            }
                             // Build connection.
                             iCS_EngineObject sourcePort= GetSourceEndPort(port);
-    						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
+                            // Special case for proxy ports.  The connection will be made on the original port.
+                            iCS_Connection connection= null;
+                            var sourceParent= GetParentNode(sourcePort);
+                            if(sourceParent.IsProxyNode) {
+                                connection= BuildProxyConnection(sourceParent, sourcePort, port);
+                            }
+    						else {
+                                connection= sourcePort != port ? BuildConnection(sourcePort) : null;
+                            }
                             // Build initial value.
     						object initValue= GetInitialValue(sourcePort);
 							// Automatically build instance object if not specified.
-							var parent= GetParentNode(port);
 							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.InInstance) {
-								if(!parent.IsMessage) {
+								if(!parentNode.IsMessage) {
                                     try {
     									initValue= System.Activator.CreateInstance(port.RuntimeType);                                        
-                                        compileWarnings.Add( new CompileWarning(parent.InstanceId, "No instance provided.  Generating a default builder.") );
+                                        compileWarnings.Add( new CompileWarning(parentNode.InstanceId, "No instance provided.  Generating a default builder.") );
                                     }
                                     catch(System.Exception) {
-                                        compileErrors.Add( new CompileError(parent.InstanceId, "No instance provided (this) and no default builder available.") );                                        
+                                        compileErrors.Add( new CompileError(parentNode.InstanceId, "No instance provided (this) and no default builder available.") );                                        
                                     }
 								} else {
 									// Messages 'This' port.
@@ -443,7 +461,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 								}
 							}
 							// Refresh the game object values for Message nodes
-							if(parent.IsMessage && port.IsInProposedDataPort) {
+							if(parentNode.IsMessage && port.IsInProposedDataPort) {
 								if(port.RuntimeType == typeof(GameObject)) {
 									initValue= gameObject;
 								}
@@ -471,7 +489,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                                 }
                                             }
                                             if(!found) {
-                                                compileErrors.Add( new CompileError(parent.InstanceId, "Unable to find Component: "+port.Name+" of: "+gameObject.name+" for Message Handler: "+parent.Name) );                                                
+                                                compileErrors.Add( new CompileError(parentNode.InstanceId, "Unable to find Component: "+port.Name+" of: "+gameObject.name+" for Message Handler: "+parentNode.Name) );                                                
                                             }
 										}
 									}
@@ -643,7 +661,40 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		}
 		return connection;
 	}
-	
+    // ----------------------------------------------------------------------
+    iCS_Connection BuildProxyConnection(iCS_EngineObject proxyNode, iCS_EngineObject proxyPort, iCS_EngineObject consumerPort) {
+//        Debug.Log("This is a proxy connection");
+        var tag= proxyNode.ProxyOriginalVisualScriptTag;
+        var originalNodeId= proxyNode.ProxyOriginalNodeId;
+        var unityObjectIndex= proxyNode.ProxyOriginalVisualScriptIndex;
+//        Debug.Log("tag=> "+(tag ?? "null")+" oid=> "+originalNodeId+" vsidx=> "+unityObjectIndex+" uoc=> "+UnityObjects.Count);
+        var vs= iCS_VisualScriptData.GetUnityObject(this, unityObjectIndex) as iCS_VisualScriptImp;
+        if(vs == null) {
+            var go= GameObject.FindWithTag(tag);
+            if(go != null) {
+                vs= go.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;   
+            }
+        }
+        if(vs != null) {
+            var originalRuntimeNode= vs.RuntimeNodes[originalNodeId];
+//            var originalObject= vs.EngineObjects[originalNodeId];
+//            Debug.Log("Original node =>"+ iCS_VisualScriptData.GetFullName(vs, vs, originalObject));
+    		iCS_Connection connection= null;
+//                var rtPortGroup= vs.RuntimeNodes[proxyPort.InstanceId] as iCS_ISignature;
+//        		if(rtPortGroup != null) {
+//        			connection= new iCS_Connection(rtPortGroup, (int)iCS_PortIndex.Return);	
+//        		} else {
+            bool isAlwaysReady= true;
+            bool isControlPort= proxyPort.IsControlPort;
+			connection= new iCS_Connection(originalRuntimeNode as iCS_ISignature, proxyPort.PortIndex, isAlwaysReady, isControlPort);
+            return connection;
+        }
+        else {
+            Debug.LogWarning("Unable to find proxy node=> "+proxyNode.Name);
+        }
+        return null;       
+    }
+    
     // ======================================================================
     // Child Management Utilities
     // ----------------------------------------------------------------------
