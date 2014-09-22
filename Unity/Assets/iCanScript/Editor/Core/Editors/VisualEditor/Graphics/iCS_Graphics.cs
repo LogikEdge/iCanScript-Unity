@@ -936,7 +936,7 @@ public partial class iCS_Graphics {
     public void DrawBinding(iCS_EditorObject port, iCS_IStorage iStorage, bool highlight= false, float lineWidth= 1.5f) {
         // No connection to draw if no valid source.
         if(!port.IsSourceValid) return;
-        iCS_EditorObject portParent= port.Parent;
+        iCS_EditorObject portParent= port.ParentNode;
 
         // No connection to draw if the port is not visible.
         if(!port.IsVisibleOnDisplay) return;
@@ -974,6 +974,12 @@ public partial class iCS_Graphics {
         }
         // Determine if this connection is part of a drag.
         iCS_BindingParams cp= new iCS_BindingParams(port, portPos, source, sourcePos, iStorage);
+        // Reposition the end to make space for the arrow
+        Vector2 normalizedEndTangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
+        normalizedEndTangent.Normalize();
+        if(!portParent.IsIconizedInLayout) {
+            cp.End= GetBindingEndPosition(port, cp.End, normalizedEndTangent);            
+        }
         Vector3 startPos= TranslateAndScale(cp.Start);
         Vector3 endPos= TranslateAndScale(cp.End);
         Vector3 startTangent= TranslateAndScale(cp.StartTangent);
@@ -989,20 +995,18 @@ public partial class iCS_Graphics {
             color.a= 0.85f*color.a;
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                   }
         // Show transition name for state connections.
-        Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
-        tangent.Normalize();
         if(port.IsInStatePort || port.IsInTransitionPort) {
             var arrowColor= new Color(1f,1f,1f,alpha);
             DirectionEnum dir= DirectionEnum.Up;
             // Show transition input port.
-            if(Mathf.Abs(tangent.x) > Mathf.Abs(tangent.y)) {
-                if(tangent.x > 0) {
+            if(Mathf.Abs(normalizedEndTangent.x) > Mathf.Abs(normalizedEndTangent.y)) {
+                if(normalizedEndTangent.x > 0) {
                     dir= DirectionEnum.Left;
                 } else {
                     dir= DirectionEnum.Right;
                 }
             } else {
-                if(tangent.y > 0) {
+                if(normalizedEndTangent.y > 0) {
                     dir= DirectionEnum.Up;
                 } else {
                     dir= DirectionEnum.Down;
@@ -1012,7 +1016,7 @@ public partial class iCS_Graphics {
         }
         else {
             // Show binding direction
-            ShowBindingArrow(port, cp.End, tangent, color);
+            ShowBindingArrow(port, cp.End, normalizedEndTangent, color);
         }
     }
     // ----------------------------------------------------------------------
@@ -1022,11 +1026,9 @@ public partial class iCS_Graphics {
             case iCS_EdgeEnum.Top:
             case iCS_EdgeEnum.Bottom: {
                 if(tangent.y < 0) {
-                    pos.y-= iCS_EditorConfig.PortDiameter;
                     dir= DirectionEnum.Down;                                        
                 }
                 else {
-                    pos.y+= iCS_EditorConfig.PortDiameter;
                     dir= DirectionEnum.Up;                    
                 }
                 break;
@@ -1034,17 +1036,41 @@ public partial class iCS_Graphics {
             case iCS_EdgeEnum.Left:
             case iCS_EdgeEnum.Right: {
                 if(tangent.x < 0) {
-                    pos.x-= iCS_EditorConfig.PortDiameter;
                     dir= DirectionEnum.Right;
                 }
                 else {
-                    pos.x+= iCS_EditorConfig.PortDiameter;
                     dir= DirectionEnum.Left;
                 }
                 break;
             }
         }
         ShowArrowCenterOn(pos, bindingColor, dir);
+    }
+    // ----------------------------------------------------------------------
+    public Vector2 GetBindingEndPosition(iCS_EditorObject port, Vector2 endPos, Vector2 tangent) {
+        switch(port.Edge) {
+            case iCS_EdgeEnum.Top:
+            case iCS_EdgeEnum.Bottom: {
+                if(tangent.y < 0) {
+                    endPos.y-= iCS_EditorConfig.PortDiameter;
+                }
+                else {
+                    endPos.y+= iCS_EditorConfig.PortDiameter;
+                }
+                break;
+            }
+            case iCS_EdgeEnum.Left:
+            case iCS_EdgeEnum.Right: {
+                if(tangent.x < 0) {
+                    endPos.x-= iCS_EditorConfig.PortDiameter;
+                }
+                else {
+                    endPos.x+= iCS_EditorConfig.PortDiameter;
+                }
+                break;
+            }
+        }
+        return endPos;
     }
     // ----------------------------------------------------------------------
     public void ShowArrowCenterOn(Vector2 graphPos, Color arrowColor, DirectionEnum dir) {
