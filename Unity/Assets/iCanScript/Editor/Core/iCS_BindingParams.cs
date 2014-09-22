@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
+public enum DirectionEnum { Left, Right, Up, Down };
+
 public class iCS_BindingParams {
     // ======================================================================
     // Properties

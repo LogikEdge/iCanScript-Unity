@@ -987,29 +987,75 @@ public partial class iCS_Graphics {
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
         } else {
             color.a= 0.85f*color.a;
-    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                    
-        }
+    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                   }
         // Show transition name for state connections.
-        GUI.color= new Color(1f,1f,1f,alpha);
+        Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
+        tangent.Normalize();
         if(port.IsInStatePort || port.IsInTransitionPort) {
+            var arrowColor= new Color(1f,1f,1f,alpha);
+            DirectionEnum dir= DirectionEnum.Up;
             // Show transition input port.
-            Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
-            tangent.Normalize();
             if(Mathf.Abs(tangent.x) > Mathf.Abs(tangent.y)) {
                 if(tangent.x > 0) {
-                    DrawIconCenteredAt(cp.End, leftArrowHeadIcon);                            
+                    dir= DirectionEnum.Left;
                 } else {
-                    DrawIconCenteredAt(cp.End, rightArrowHeadIcon);
+                    dir= DirectionEnum.Right;
                 }
             } else {
                 if(tangent.y > 0) {
-                    DrawIconCenteredAt(cp.End, upArrowHeadIcon);
+                    dir= DirectionEnum.Up;
                 } else {
-                    DrawIconCenteredAt(cp.End, downArrowHeadIcon);
+                    dir= DirectionEnum.Down;
                 }
             }                 
+            ShowArrowCenterOn(cp.End, arrowColor, dir);
+        }
+        else {
+            // Show binding direction
+            ShowBindingArrow(port, cp.End, tangent, color);
+        }
+    }
+    // ----------------------------------------------------------------------
+    public void ShowBindingArrow(iCS_EditorObject port, Vector2 pos, Vector2 tangent, Color bindingColor) {
+        DirectionEnum dir= DirectionEnum.Up;
+        switch(port.Edge) {
+            case iCS_EdgeEnum.Top:
+            case iCS_EdgeEnum.Bottom: {
+                if(tangent.y < 0) {
+                    pos.y-= iCS_EditorConfig.PortDiameter;
+                    dir= DirectionEnum.Down;                                        
+                }
+                else {
+                    pos.y+= iCS_EditorConfig.PortDiameter;
+                    dir= DirectionEnum.Up;                    
+                }
+                break;
+            }
+            case iCS_EdgeEnum.Left:
+            case iCS_EdgeEnum.Right: {
+                if(tangent.x < 0) {
+                    pos.x-= iCS_EditorConfig.PortDiameter;
+                    dir= DirectionEnum.Right;
+                }
+                else {
+                    pos.x+= iCS_EditorConfig.PortDiameter;
+                    dir= DirectionEnum.Left;
+                }
+                break;
+            }
+        }
+        ShowArrowCenterOn(pos, bindingColor, dir);
+    }
+    // ----------------------------------------------------------------------
+    public void ShowArrowCenterOn(Vector2 graphPos, Color arrowColor, DirectionEnum dir) {
+        GUI.color= arrowColor;
+        switch(dir) {
+            case DirectionEnum.Left:  DrawIconCenteredAt(graphPos, leftArrowHeadIcon); break;
+            case DirectionEnum.Right: DrawIconCenteredAt(graphPos, rightArrowHeadIcon); break;
+            case DirectionEnum.Up:    DrawIconCenteredAt(graphPos, upArrowHeadIcon); break;
+            case DirectionEnum.Down:  DrawIconCenteredAt(graphPos, downArrowHeadIcon); break;
         }
         // Reset GUI alpha.
-        GUI.color= Color.white;
+        GUI.color= Color.white;        
     }
 }
