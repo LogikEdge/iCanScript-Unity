@@ -205,7 +205,7 @@ public partial class iCS_Graphics {
         vectors[2]= center-0.6f*head;
         vectors[3]= center-head-bottom;
         Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0.25f, 0.25f, 0.25f));
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0f, 0f, 0f));
 	}
 
     // ======================================================================
@@ -1021,7 +1021,9 @@ public partial class iCS_Graphics {
         else {
             // Show binding direction
 //            ShowBindingArrow(port, cp.End, normalizedEndTangent, color);
-            DrawArrowMiddleBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color);
+            if(ShouldShowPort()) {
+                DrawArrowMiddleBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color);                
+            }
         }
     }
     // ----------------------------------------------------------------------
@@ -1094,6 +1096,6 @@ public partial class iCS_Graphics {
         var middle= iCS_BindingParams.BezierCenter(start, end, startTangent, endTangent);
 //        ShowArrowCenterOn(middle, Color.red, DirectionEnum.Up);
         var dir= (end-start).normalized;
-        DrawArrowHead(dir, middle, color, 7f);
+        DrawArrowHead(dir, middle, color, 6f);
     }
 }
