@@ -35,6 +35,12 @@ public sealed class iCS_StateChart : iCS_Action {
             return end == 0 ? null : myActiveStack[end-1];
         }
     }
+    public bool IsActiveState(iCS_State state) {
+        foreach(var s in myActiveStack) {
+            if(s == state) return true;
+        }
+        return false;
+    }
     
     // ======================================================================
     // Creation/Destruction
