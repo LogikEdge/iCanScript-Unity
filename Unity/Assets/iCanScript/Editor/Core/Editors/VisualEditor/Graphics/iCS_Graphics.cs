@@ -1096,6 +1096,7 @@ public partial class iCS_Graphics {
         var middle= iCS_BindingParams.BezierCenter(start, end, startTangent, endTangent);
 //        ShowArrowCenterOn(middle, Color.red, DirectionEnum.Up);
         var dir= (end-start).normalized;
+        color.a= 0.8f;
         DrawArrowHead(dir, middle, color, 4f, color);
     }
 }
