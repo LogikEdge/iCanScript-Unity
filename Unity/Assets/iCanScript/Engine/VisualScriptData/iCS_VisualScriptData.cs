@@ -308,23 +308,18 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     public static int AddUnityObject(iCS_IVisualScriptData vsd, UnityEngine.Object obj) {
         if(obj == null) return -1;
 		// Search for an existing entry.
-        int id= 0;
-		int availableSlot= -1;
         var unityObjects= vsd.UnityObjects;
-		for(id= 0; id < unityObjects.Count; ++id) {
+		for(int id= 0; id < unityObjects.Count; ++id) {
 			if(unityObjects[id] == obj) {
 				return id;
 			}
 			if(unityObjects[id] == null) {
-				availableSlot= id;
+    			unityObjects[id]= obj;
+                return id;
 			}
 		}
-		if(availableSlot != -1) {
-			unityObjects[availableSlot]= obj;
-			return availableSlot;
-		}
         unityObjects.Add(obj);
-        return id;
+        return unityObjects.Count-1;
     }
     // ----------------------------------------------------------------------
     public static UnityEngine.Object GetUnityObject(iCS_IVisualScriptData vsd, int id) {

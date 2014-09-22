@@ -393,4 +393,12 @@ public partial class iCS_EditorObject {
         }
         return commonParent;
     }
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject GetParentStateChart() {
+        var parent= ParentNode;
+        while(parent != null && !parent.IsStateChart) {
+            parent= parent.ParentNode;
+        }
+        return parent;
+    }
 }
