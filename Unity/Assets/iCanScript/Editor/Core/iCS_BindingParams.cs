@@ -92,7 +92,7 @@ public class iCS_BindingParams {
     public static Vector3 BezierCenter(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent) {
         // A simple linear interpolation suffices for facing tangents.
         Vector3 point= 0.5f*(start+end);
-        return ClosestPointBezier(point, start, end, startTangent, endTangent);
+        return ClosestPointBezier(point, start, end, startTangent, endTangent, 2);
     }
     // ----------------------------------------------------------------------
     public static Vector3 ClosestPointBezier(Vector3 point, Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent, int iteration= 1) {

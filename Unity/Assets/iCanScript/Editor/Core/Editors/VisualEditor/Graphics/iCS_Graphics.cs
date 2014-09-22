@@ -189,9 +189,13 @@ public partial class iCS_Graphics {
 
     // ----------------------------------------------------------------------
     void DrawMinimizedTransitionModule(Vector2 dir, Vector2 p, Color nodeColor) {
+        DrawArrowHead(dir, p, nodeColor, 9f, new Color(0,0,0));
+	}
+    // ----------------------------------------------------------------------
+    void DrawArrowHead(Vector2 dir, Vector2 p, Color nodeColor, float arrowSize, Color outlineColor) {
         Vector3 center= TranslateAndScale(p);
         Vector3 tangent= Vector3.Cross(dir, Vector3.forward);
-        float size= 9f*Scale;
+        float size= arrowSize*Scale;
         Vector3 head= size*dir;
         Vector3 bottom= size*tangent;
         
@@ -201,7 +205,7 @@ public partial class iCS_Graphics {
         vectors[2]= center-0.6f*head;
         vectors[3]= center-head-bottom;
         Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0.25f, 0.25f, 0.25f));
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, outlineColor);
 	}
 
     // ======================================================================
@@ -978,7 +982,7 @@ public partial class iCS_Graphics {
         Vector2 normalizedEndTangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
         normalizedEndTangent.Normalize();
         if(!portParent.IsIconizedInLayout) {
-            cp.End= GetBindingEndPosition(port, cp.End, normalizedEndTangent);            
+//            cp.End= GetBindingEndPosition(port, cp.End, normalizedEndTangent);            
         }
         Vector3 startPos= TranslateAndScale(cp.Start);
         Vector3 endPos= TranslateAndScale(cp.End);
@@ -1016,7 +1020,10 @@ public partial class iCS_Graphics {
         }
         else {
             // Show binding direction
-            ShowBindingArrow(port, cp.End, normalizedEndTangent, color);
+//            ShowBindingArrow(port, cp.End, normalizedEndTangent, color);
+            if(ShouldShowPort()) {
+                DrawArrowMiddleBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color);                
+            }
         }
     }
     // ----------------------------------------------------------------------
@@ -1083,5 +1090,13 @@ public partial class iCS_Graphics {
         }
         // Reset GUI alpha.
         GUI.color= Color.white;        
+    }
+    // ----------------------------------------------------------------------
+    public void DrawArrowMiddleBezier(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent, Color color) {
+        var middle= iCS_BindingParams.BezierCenter(start, end, startTangent, endTangent);
+//        ShowArrowCenterOn(middle, Color.red, DirectionEnum.Up);
+        var dir= (end-start).normalized;
+        color.a= 0.8f;
+        DrawArrowHead(dir, middle, color, 4f, color);
     }
 }
