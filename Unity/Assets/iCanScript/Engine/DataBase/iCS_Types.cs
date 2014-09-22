@@ -25,6 +25,11 @@ public static class iCS_Types {
         return t.IsAbstract && t.IsSealed;
     }
     // ----------------------------------------------------------------------
+    // Returns true if type is passed by reference
+    public static bool IsPassedByRef(Type type) {
+        return GetElementType(type).IsClass;
+    }
+    // ----------------------------------------------------------------------
     // Returns the coded name for the given type.
     public static string GetName(Type type) {
         string result= RemoveProductPrefix(type.Name);

@@ -776,17 +776,19 @@ public partial class iCS_Graphics {
     }
 	// ----------------------------------------------------------------------
     void DrawDataPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
+        Type runtimeType= port.RuntimeType;
+        bool isPassedByRef= iCS_Types.IsPassedByRef(runtimeType);
 		if(port.IsInputPort) {
-			if(port.IsVisualEndPort) {
-				DrawInEndPort(_center, _fillColor, isSelected);
+			if(isPassedByRef) {
+				DrawInReferencePort(_center, _fillColor, isSelected);
 			} else {
-				DrawInRelayPort(_center, _fillColor, isSelected);
+				DrawInValuePort(_center, _fillColor, isSelected);
 			}
 		} else {
-			if(port.IsVisualEndPort) {
-				DrawOutEndPort(_center, _fillColor, isSelected);
+			if(isPassedByRef) {
+				DrawOutReferencePort(_center, _fillColor, isSelected);
 			} else {
-				DrawOutRelayPort(_center, _fillColor, isSelected);
+				DrawOutValuePort(_center, _fillColor, isSelected);
 			}
 		}
     }
@@ -808,7 +810,7 @@ public partial class iCS_Graphics {
 		GUI.DrawTexture(pos, portIcon);
     }
 	// ----------------------------------------------------------------------
-    void DrawInEndPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawInValuePort(Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInEndPortIcon(_fillColor) :
 		                                 iCS_PortIcons.GetInEndPortIcon(_fillColor);
@@ -819,7 +821,7 @@ public partial class iCS_Graphics {
 		GUI.DrawTexture(pos, portIcon);
     }
 	// ----------------------------------------------------------------------
-    void DrawOutEndPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawOutValuePort(Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutEndPortIcon(_fillColor) :
 		                                 iCS_PortIcons.GetOutEndPortIcon(_fillColor);
@@ -830,7 +832,7 @@ public partial class iCS_Graphics {
 		GUI.DrawTexture(pos, portIcon);
     }
 	// ----------------------------------------------------------------------
-    void DrawInRelayPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawInReferencePort(Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInRelayPortIcon(_fillColor) :
 		                                 iCS_PortIcons.GetInRelayPortIcon(_fillColor);
@@ -841,7 +843,7 @@ public partial class iCS_Graphics {
 		GUI.DrawTexture(pos, portIcon);
     }
 	// ----------------------------------------------------------------------
-    void DrawOutRelayPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawOutReferencePort(Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutRelayPortIcon(_fillColor) :
 		                                 iCS_PortIcons.GetOutRelayPortIcon(_fillColor);
