@@ -189,10 +189,10 @@ public partial class iCS_Graphics {
 
     // ----------------------------------------------------------------------
     void DrawMinimizedTransitionModule(Vector2 dir, Vector2 p, Color nodeColor) {
-        DrawArrowHead(dir, p, nodeColor, 9f);
+        DrawArrowHead(dir, p, nodeColor, 9f, new Color(0,0,0));
 	}
     // ----------------------------------------------------------------------
-    void DrawArrowHead(Vector2 dir, Vector2 p, Color nodeColor, float arrowSize) {
+    void DrawArrowHead(Vector2 dir, Vector2 p, Color nodeColor, float arrowSize, Color outlineColor) {
         Vector3 center= TranslateAndScale(p);
         Vector3 tangent= Vector3.Cross(dir, Vector3.forward);
         float size= arrowSize*Scale;
@@ -205,7 +205,7 @@ public partial class iCS_Graphics {
         vectors[2]= center-0.6f*head;
         vectors[3]= center-head-bottom;
         Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0f, 0f, 0f));
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, outlineColor);
 	}
 
     // ======================================================================
@@ -1096,6 +1096,6 @@ public partial class iCS_Graphics {
         var middle= iCS_BindingParams.BezierCenter(start, end, startTangent, endTangent);
 //        ShowArrowCenterOn(middle, Color.red, DirectionEnum.Up);
         var dir= (end-start).normalized;
-        DrawArrowHead(dir, middle, color, 4f);
+        DrawArrowHead(dir, middle, color, 4f, color);
     }
 }
