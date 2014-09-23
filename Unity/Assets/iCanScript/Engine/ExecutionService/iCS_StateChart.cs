@@ -173,7 +173,9 @@ public sealed class iCS_StateChart : iCS_Action {
 	            myFiredTransition= transitions.TriggeredTransition;
 	            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
 					IsStalled= false;
-	                MoveToState(myFiredTransition.EndState, frameId);
+                    var newState= myFiredTransition.EndState;
+                    while(newState.EntryState != null) newState= newState.EntryState;
+	                MoveToState(newState, frameId);
 	                return;
 	            }
 				if(idx == myQueueIdx) {
