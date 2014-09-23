@@ -1020,9 +1020,8 @@ public partial class iCS_Graphics {
         }
         else {
             // Show binding direction
-//            ShowBindingArrow(port, cp.End, normalizedEndTangent, color);
             if(ShouldShowPort()) {
-                DrawArrowMiddleBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, highlight);
+                DrawArrowMiddleBezier(cp, color, highlight);
             }
         }
     }
@@ -1092,12 +1091,15 @@ public partial class iCS_Graphics {
         GUI.color= Color.white;        
     }
     // ----------------------------------------------------------------------
-    public void DrawArrowMiddleBezier(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent, Color color, bool highlight) {
-        var middle= iCS_BindingParams.BezierCenter(start, end, startTangent, endTangent);
-//        ShowArrowCenterOn(middle, Color.red, DirectionEnum.Up);
-        var dir= (end-start).normalized;
+    public void DrawArrowMiddleBezier(iCS_BindingParams cp, Color color, bool highlight) {
+        var segmentSize= (cp.End-cp.Start).magnitude;
+        var startTangent= (cp.EndTangent-cp.End).normalized;
+        var endTangent= (cp.StartTangent-cp.Start).normalized;
+        var endPoint= cp.End-0.1f*segmentSize*endTangent;
+        var startPoint= cp.Start-0.1f*segmentSize*startTangent;
+        var dir= (endPoint-startPoint).normalized;
         color.a= 0.8f;
         float size= highlight ? 6f : 4f;
-        DrawArrowHead(dir, middle, color, size, color);
+        DrawArrowHead(dir, cp.Center, color, size, color);
     }
 }
