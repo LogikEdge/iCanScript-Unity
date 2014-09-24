@@ -19,7 +19,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
                 hasVariable= true;
                 gMenu.AddItem(new GUIContent(pv.Name), false,
-                              o=> CreateVariableProxy(vs, o), pv); 
+                              o=> CreatePortProxy(vs, o), pv); 
             }
             bool hasUserFunction= false;
             var publicUserFunctions= iCS_VisualScriptData.GetPublicUserFunctions(publicObjects);
@@ -30,21 +30,27 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
                 hasUserFunction= true;
                 gMenu.AddItem(new GUIContent(puf.Name), false,
-                              o=> CreateUserFunctionProxy(vs, o), puf); 
+                              o=> CreateUserFunctionCall(vs, o), puf); 
             }
             gMenu.ShowAsContext();
         }
     }
-    void CreateVariableProxy(iCS_VisualScriptImp vs, object _pv) {
+	// ----------------------------------------------------------------------
+    void CreatePortProxy(iCS_VisualScriptImp vs, object _pv) {
         var engineObject= _pv as iCS_EngineObject;
         var globalPosition= GraphMousePosition;
         var parent= IStorage.GetNodeAt(globalPosition);
         if(parent != null) {
-            QueueOnGUICommand(()=> iCS_UserCommands.CreateVariableProxy(parent, globalPosition, engineObject.Name, vs, engineObject));
+            QueueOnGUICommand(()=> iCS_UserCommands.CreatePortProxy(parent, globalPosition, engineObject.Name, vs, engineObject));
         }
     }
-    void CreateUserFunctionProxy(iCS_VisualScriptImp vs, object _puf) {
-        var puf= _puf as iCS_EngineObject;
-        Debug.Log("trying to create user fucntion proxy=> "+puf.Name);
+	// ----------------------------------------------------------------------
+    void CreateUserFunctionCall(iCS_VisualScriptImp vs, object _puf) {
+        var engineObject= _puf as iCS_EngineObject;
+        var globalPosition= GraphMousePosition;
+        var parent= IStorage.GetNodeAt(globalPosition);
+        if(parent != null) {
+            QueueOnGUICommand(()=> iCS_UserCommands.CreateUserFunctionCall(parent, globalPosition, engineObject.Name, vs, engineObject));
+        }
     }
 }

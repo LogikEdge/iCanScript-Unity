@@ -195,8 +195,18 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             case iCS_ObjectTypeEnum.Behaviour: {
                                 break;
                             }
-                            case iCS_ObjectTypeEnum.ProxyNode: {
+                            case iCS_ObjectTypeEnum.ProxyPortNode: {
                                 break;
+                            }
+                            case iCS_ObjectTypeEnum.UserFunctionCall: {
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                                var userFunction= GetUserFunctionAction(node);
+                                var userFunctionCall= new iCS_UserFunctionCall(userFunction, this, priority, nbParams, nbEnables);                                
+                                myRuntimeNodes[node.InstanceId]= userFunctionCall;
+                                InvokeAddChildIfExists(parent, userFunctionCall);                                
+                                break;                                
                             }
                             case iCS_ObjectTypeEnum.StateChart: {
                                 iCS_StateChart stateChart= new iCS_StateChart(this, priority);
@@ -407,19 +417,23 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 						case iCS_ObjectTypeEnum.OutParentMuxPort: {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
-                            if(parentNode.IsProxyNode) {
+                            if(parentNode.IsProxyPortNode) {
                                 break;
                             }
 							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
                             object parentObj= myRuntimeNodes[isMux ? port.InstanceId : port.ParentId];
-                            Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Mux>(parentObj,
+                            Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Mux, iCS_UserFunctionCall>(parentObj,
                                 instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 getInstanceField=> getInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 getClassField   => getClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 setInstanceField=> setInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 setClassField   => setClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 classFunction   => classFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-								muxFunction		=> muxFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType)
+								muxFunction		=> muxFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                userFunctionCall=> {
+                                    var referenceNode= GetParentNode(port);
+                                    BuildUserFunctionOutputConnection(port, referenceNode, userFunctionCall);
+                                }
                             );
                             break;
                         }
@@ -429,7 +443,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         case iCS_ObjectTypeEnum.EnablePort: {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
-                            if(parentNode.IsProxyNode) {
+                            if(parentNode.IsProxyPortNode) {
                                 break;
                             }
                             // Build connection.
@@ -437,7 +451,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             // Special case for proxy ports.  The connection will be made on the original port.
                             iCS_Connection connection= null;
                             var sourceParent= GetParentNode(sourcePort);
-                            if(sourceParent.IsProxyNode) {
+                            if(sourceParent.IsProxyPortNode) {
                                 connection= BuildProxyConnection(sourceParent, sourcePort, port);
                             }
     						else {
@@ -497,7 +511,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 							}
                             // Set data port.
                             object parentObj= myRuntimeNodes[port.ParentId];
-                            Prelude.choice<iCS_Constructor, iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Package, iCS_Message>(parentObj,
+                            Prelude.choice<iCS_Constructor, iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Package, iCS_Message, iCS_UserFunctionCall>(parentObj,
                                 constructor=> {
                                     constructor[port.PortIndex]= initValue;
                                     constructor.SetConnection(port.PortIndex, connection);
@@ -532,6 +546,10 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 },
                                 message=> {
                                     message[port.PortIndex]= initValue;
+                                },
+                                userFunctionCall=> {
+                                    userFunctionCall[port.PortIndex]= initValue;        
+                                    userFunctionCall.SetConnection(port.PortIndex, connection);
                                 }
                             );
                             break;
@@ -663,11 +681,40 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 	}
     // ----------------------------------------------------------------------
     iCS_Connection BuildProxyConnection(iCS_EngineObject proxyNode, iCS_EngineObject proxyPort, iCS_EngineObject consumerPort) {
-//        Debug.Log("This is a proxy connection");
-        var tag= proxyNode.ProxyOriginalVisualScriptTag;
-        var originalNodeId= proxyNode.ProxyOriginalNodeId;
-        var unityObjectIndex= proxyNode.ProxyOriginalVisualScriptIndex;
-//        Debug.Log("tag=> "+(tag ?? "null")+" oid=> "+originalNodeId+" vsidx=> "+unityObjectIndex+" uoc=> "+UnityObjects.Count);
+        var runtimeNode= GetRuntimeNodeFromReferenceNode(proxyNode);
+        if(runtimeNode == null) {
+            Debug.LogWarning("Unable to find port proxy node=> "+proxyNode.Name);
+            return null;
+        }
+		iCS_Connection connection= null;
+        bool isAlwaysReady= true;
+        bool isControlPort= proxyPort.IsControlPort;
+		connection= new iCS_Connection(runtimeNode as iCS_ISignature, proxyPort.PortIndex, isAlwaysReady, isControlPort);
+        return connection;
+    }
+    // ----------------------------------------------------------------------
+    iCS_ActionWithSignature GetUserFunctionAction(iCS_EngineObject userFunctionCall) {
+        var runtimeNode= GetRuntimeNodeFromReferenceNode(userFunctionCall);
+        if(runtimeNode == null) {
+            Debug.LogWarning("Unable to find user function=> "+userFunctionCall.Name);
+            return null;                   
+        }
+        return runtimeNode as iCS_ActionWithSignature;
+    }
+    // ----------------------------------------------------------------------
+    object GetRuntimeNodeFromReferenceNode(iCS_EngineObject referenceNode) {
+        var vs= GetVisualScriptFromRefenceNode(referenceNode);
+        if(vs == null) {
+            Debug.LogWarning("Unable to find user function=> "+referenceNode.Name);
+            return null;
+        }
+        var runtimeNodeId  = referenceNode.ProxyOriginalNodeId;
+        return vs.RuntimeNodes[runtimeNodeId];
+    }
+    // ----------------------------------------------------------------------
+    iCS_VisualScriptImp GetVisualScriptFromRefenceNode(iCS_EngineObject referenceNode) {
+        var tag             = referenceNode.ProxyOriginalVisualScriptTag;
+        var unityObjectIndex= referenceNode.ProxyOriginalVisualScriptIndex;
         var vs= iCS_VisualScriptData.GetUnityObject(this, unityObjectIndex) as iCS_VisualScriptImp;
         if(vs == null) {
             var go= GameObject.FindWithTag(tag);
@@ -675,24 +722,27 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                 vs= go.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;   
             }
         }
-        if(vs != null) {
-            var originalRuntimeNode= vs.RuntimeNodes[originalNodeId];
-//            var originalObject= vs.EngineObjects[originalNodeId];
-//            Debug.Log("Original node =>"+ iCS_VisualScriptData.GetFullName(vs, vs, originalObject));
-    		iCS_Connection connection= null;
-//                var rtPortGroup= vs.RuntimeNodes[proxyPort.InstanceId] as iCS_ISignature;
-//        		if(rtPortGroup != null) {
-//        			connection= new iCS_Connection(rtPortGroup, (int)iCS_PortIndex.Return);	
-//        		} else {
-            bool isAlwaysReady= true;
-            bool isControlPort= proxyPort.IsControlPort;
-			connection= new iCS_Connection(originalRuntimeNode as iCS_ISignature, proxyPort.PortIndex, isAlwaysReady, isControlPort);
-            return connection;
+        return vs;
+    }
+    // ----------------------------------------------------------------------
+    iCS_Connection BuildUserFunctionOutputConnection(iCS_EngineObject port, iCS_EngineObject referenceNode, iCS_UserFunctionCall userFunctionCall) {
+        var vs= GetVisualScriptFromRefenceNode(referenceNode);
+        if(vs == null) {
+            return null;
         }
-        else {
-            Debug.LogWarning("Unable to find proxy node=> "+proxyNode.Name);
-        }
-        return null;       
+        var runtimeNodeId= referenceNode.ProxyOriginalNodeId;
+        var userFunction = vs.EngineObjects[runtimeNodeId];
+        var userFunctionPort= iCS_VisualScriptData.GetChildPortWithIndex(vs, userFunction, port.PortIndex);
+        if(userFunctionPort == null) return null;
+        var sourcePort= iCS_VisualScriptData.GetFirstProviderPort(vs, userFunctionPort);
+        var sourcePortParent= vs.GetParentNode(sourcePort);
+        var runtimeNode= vs.RuntimeNodes[sourcePortParent.InstanceId];
+		iCS_Connection connection= null;
+        bool isAlwaysReady= false;
+        bool isControlPort= false;
+		connection= new iCS_Connection(runtimeNode as iCS_ISignature, sourcePort.PortIndex, isAlwaysReady, isControlPort);
+        userFunctionCall.SetConnection(port.PortIndex, connection);
+        return connection;        
     }
     
     // ======================================================================

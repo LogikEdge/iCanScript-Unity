@@ -10,7 +10,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // Properties
     // ----------------------------------------------------------------------
     [System.NonSerialized]
-    public bool                         IsTraceEnabled= false;
+    public bool                         IsTraceEnabled   = false;
     object[]                            myRuntimeNodes   = new object[0];
     Dictionary<string,iCS_RunContext>   myMessageContexts= new Dictionary<string,iCS_RunContext>();
     

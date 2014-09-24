@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class iCS_UserFunctionProxy : iCS_ActionWithSignature {
+public class iCS_UserFunctionCall : iCS_ActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -11,8 +11,8 @@ public class iCS_UserFunctionProxy : iCS_ActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_UserFunctionProxy(iCS_ActionWithSignature userAction, iCS_VisualScriptImp visualScript, int priority,
-                                 int nbOfParameters, int nbOfEnables)
+    public iCS_UserFunctionCall(iCS_ActionWithSignature userAction, iCS_VisualScriptImp visualScript, int priority,
+                                int nbOfParameters, int nbOfEnables)
     : base(visualScript, priority, nbOfParameters, nbOfEnables) {
         myUserAction= userAction;
     }
@@ -39,16 +39,18 @@ public class iCS_UserFunctionProxy : iCS_ActionWithSignature {
             // Copy input ports
             var parameters= Parameters;
             var userActionParameters= myUserAction.Parameters;
-            for(int i= parameterStart; i < parameterEnd; ++i) {
+            for(int i= parameterStart; i <= parameterEnd; ++i) {
                 userActionParameters[i]= parameters[i];
             }
             // Execute associated function.
             // TODO: Should desynchronize frameid to force the execution.
+            myUserAction.IsActive= true;
             myUserAction.Execute(frameId);
+            myUserAction.IsActive= false;
             // Copy output ports
-            for(int i= parameterStart; i < parameterEnd; ++i) {
-                parameters[i]= userActionParameters[i];
-            }
+            for(int i= parameterStart; i <= parameterEnd; ++i) {
+				UpdateParameter(i);
+			}
             ReturnValue= myUserAction.ReturnValue;
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
@@ -99,15 +101,17 @@ public class iCS_UserFunctionProxy : iCS_ActionWithSignature {
             // Copy input ports
             var parameters= Parameters;
             var userActionParameters= myUserAction.Parameters;
-            for(int i= parameterStart; i < parameterEnd; ++i) {
+            for(int i= parameterStart; i <= parameterEnd; ++i) {
                 userActionParameters[i]= parameters[i];
             }
             // Execute associated function.
             // TODO: Should desynchronize frameid to force the execution.
+            myUserAction.IsActive= true;
             myUserAction.ForceExecute(frameId);
+            myUserAction.IsActive= false;
             // Copy output ports
-            for(int i= parameterStart; i < parameterEnd; ++i) {
-                parameters[i]= userActionParameters[i];
+            for(int i= parameterStart; i <= parameterEnd; ++i) {
+				UpdateParameter(i);
             }
             ReturnValue= myUserAction.ReturnValue;
             // Reflection the action run status.
