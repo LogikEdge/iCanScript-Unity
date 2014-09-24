@@ -51,7 +51,6 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             for(int i= parameterStart; i <= parameterEnd; ++i) {
 				UpdateParameter(i);
 			}
-            ReturnValue= myUserAction.ReturnValue;
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
             if(myUserAction.DidExecute(frameId)) {
