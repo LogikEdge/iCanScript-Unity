@@ -21,7 +21,7 @@ public static partial class iCS_UserCommands {
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    proxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.ProxyPortNode, null);
+                    proxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.PortProxyNode, null);
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, realObject);
                     var proxyId= proxy.InstanceId;
                     foreach(var p in ports) {
@@ -39,7 +39,7 @@ public static partial class iCS_UserCommands {
                         }
                     }
                     proxy.ProxyOriginalNodeId= realObject.InstanceId;
-                    proxy.ProxyOriginalVisualScriptIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
+                    proxy.UnityObjectIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
                     proxy.ProxyOriginalVisualScriptTag= vs.tag;
                     iStorage.ForcedRelayoutOfTree();
                 }
@@ -62,13 +62,13 @@ public static partial class iCS_UserCommands {
         var iStorage= parent.IStorage;
         iCS_IVisualScriptData vsd= vs;
         OpenTransaction(iStorage);
-        iCS_EditorObject proxy= null;
+        iCS_EditorObject userFunctionCall= null;
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    proxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.UserFunctionCall, null);
+                    userFunctionCall= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.UserFunctionCall, null);
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, userFunction);
-                    var proxyId= proxy.InstanceId;
+                    var usrFncCallId= userFunctionCall.InstanceId;
                     foreach(var p in ports) {
                         if(!p.IsControlPort) {
                             var objectType= p.ObjectType;
@@ -78,14 +78,14 @@ public static partial class iCS_UserCommands {
                             if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
                                 objectType= iCS_ObjectTypeEnum.OutFixDataPort;
                             }
-                            var newPort= iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, objectType, p.PortIndex);
+                            var newPort= iStorage.CreatePort(p.Name, usrFncCallId, p.RuntimeType, objectType, p.PortIndex);
                             newPort.InitialValueArchive= p.InitialValueArchive;
                             iStorage.LoadInitialPortValueFromArchive(newPort);
                         }
                     }
-                    proxy.ProxyOriginalNodeId= userFunction.InstanceId;
-                    proxy.ProxyOriginalVisualScriptIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
-                    proxy.ProxyOriginalVisualScriptTag= vs.tag;
+                    userFunctionCall.ProxyOriginalNodeId= userFunction.InstanceId;
+                    userFunctionCall.UnityObjectIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
+                    userFunctionCall.ProxyOriginalVisualScriptTag= vs.tag;
                     iStorage.ForcedRelayoutOfTree();
                 }
             );
@@ -94,12 +94,12 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        if(proxy == null) {
+        if(userFunctionCall == null) {
             CancelTransaction(iStorage);
             return null;
         }
         CloseTransaction(iStorage, "Create User Function Call: "+name);
-        return proxy;
+        return userFunctionCall;
     }
 	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {

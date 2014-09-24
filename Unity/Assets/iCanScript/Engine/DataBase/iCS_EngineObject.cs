@@ -66,7 +66,7 @@ public class iCS_EngineObject {
         get { return InitialValueArchive; }
         set { InitialValueArchive= value; }
     }
-    public int ProxyOriginalVisualScriptIndex {
+    public int UnityObjectIndex {
         get { return PortIndex; }
         set { PortIndex= value; }
     }
@@ -226,7 +226,7 @@ public class iCS_EngineObject {
     public bool IsOnStateEntryPackage      { get { return iCS_ObjectType.IsOnStateEntryPackage(this); }}
     public bool IsOnStateUpdatePackage     { get { return iCS_ObjectType.IsOnStateUpdatePackage(this); }}
     public bool IsOnStateExitPackage       { get { return iCS_ObjectType.IsOnStateExitPackage(this); }}
-    public bool IsProxyPortNode            { get { return iCS_ObjectType.IsProxyPortNode(this); }}
+    public bool IsPortProxyNode            { get { return iCS_ObjectType.IsPortProxyNode(this); }}
     public bool IsUserFunctionCall         { get { return iCS_ObjectType.IsUserFunctionCall(this); }}
     // General Ports
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}

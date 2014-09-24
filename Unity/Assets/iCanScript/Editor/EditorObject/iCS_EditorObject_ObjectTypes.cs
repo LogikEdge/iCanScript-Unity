@@ -27,7 +27,7 @@ public partial class iCS_EditorObject {
     public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}
     public bool IsOnStateUpdatePackage  	{ get { return EngineObject.IsOnStateUpdatePackage; }}
     public bool IsOnStateExitPackage    	{ get { return EngineObject.IsOnStateExitPackage; }}
-    public bool IsProxyPortNode             { get { return EngineObject.IsProxyPortNode; }}
+    public bool IsPortProxyNode             { get { return EngineObject.IsPortProxyNode; }}
     public bool IsUserFunctionCall          { get { return EngineObject.IsUserFunctionCall; }}
     
     // General Ports

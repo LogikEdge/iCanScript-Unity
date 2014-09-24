@@ -195,7 +195,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             case iCS_ObjectTypeEnum.Behaviour: {
                                 break;
                             }
-                            case iCS_ObjectTypeEnum.ProxyPortNode: {
+                            case iCS_ObjectTypeEnum.PortProxyNode: {
                                 break;
                             }
                             case iCS_ObjectTypeEnum.UserFunctionCall: {
@@ -417,7 +417,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 						case iCS_ObjectTypeEnum.OutParentMuxPort: {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
-                            if(parentNode.IsProxyPortNode) {
+                            if(parentNode.IsPortProxyNode) {
                                 break;
                             }
 							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
@@ -443,7 +443,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         case iCS_ObjectTypeEnum.EnablePort: {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
-                            if(parentNode.IsProxyPortNode) {
+                            if(parentNode.IsPortProxyNode) {
                                 break;
                             }
                             // Build connection.
@@ -451,7 +451,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             // Special case for proxy ports.  The connection will be made on the original port.
                             iCS_Connection connection= null;
                             var sourceParent= GetParentNode(sourcePort);
-                            if(sourceParent.IsProxyPortNode) {
+                            if(sourceParent.IsPortProxyNode) {
                                 connection= BuildProxyConnection(sourceParent, sourcePort, port);
                             }
     						else {
@@ -714,13 +714,16 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     iCS_VisualScriptImp GetVisualScriptFromRefenceNode(iCS_EngineObject referenceNode) {
         var tag             = referenceNode.ProxyOriginalVisualScriptTag;
-        var unityObjectIndex= referenceNode.ProxyOriginalVisualScriptIndex;
+        var unityObjectIndex= referenceNode.UnityObjectIndex;
         var vs= iCS_VisualScriptData.GetUnityObject(this, unityObjectIndex) as iCS_VisualScriptImp;
         if(vs == null) {
             var go= GameObject.FindWithTag(tag);
             if(go != null) {
                 vs= go.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;   
             }
+        }
+        if(vs == null) {
+            Debug.LogWarning("iCanScript: Can't locate game object with tag=> "+tag);
         }
         return vs;
     }
