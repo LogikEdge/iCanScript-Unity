@@ -136,20 +136,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     // Determine if game object contains a visual script.
                     var vs= gameObject.GetComponent("iCS_VisualScript") as iCS_VisualScriptImp;
                     if(vs != null) {
-                        BuildPublicInterfaceMenu(vs, GraphMousePosition);
+                        BuildPublicInterfaceMenu(gameObject, eObj, vs, GraphMousePosition);
                     }
                     else {
-                        var instance= iCS_UserCommands.CreateGameObject(gameObject, eObj, GraphMousePosition);
-                        if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
-                            var isSceneObject= iCS_UnityUtility.IsSceneGameObject(draggedObject as GameObject);
-                            if(isSceneObject == true) {
-                                ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
-                                var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
-                                if(thisPort != null) {
-                                    thisPort.PortValue= null;
-                                }
-                            }
-                        }                        
+                        CreateGameObjectNode(gameObject, eObj, GraphMousePosition);
                     }
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.AcceptDrag();
@@ -199,5 +189,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         return null;
     }
-
+	// ----------------------------------------------------------------------
+    void CreateGameObjectNode(GameObject go, iCS_EditorObject parent, Vector2 graphMousePosition) {
+        var instance= iCS_UserCommands.CreateGameObject(go, parent, graphMousePosition);
+        if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
+            var isSceneObject= iCS_UnityUtility.IsSceneGameObject(go);
+            if(isSceneObject == true) {
+                ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
+                var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
+                if(thisPort != null) {
+                    thisPort.PortValue= null;
+                }
+            }
+        }                                
+    }
 }

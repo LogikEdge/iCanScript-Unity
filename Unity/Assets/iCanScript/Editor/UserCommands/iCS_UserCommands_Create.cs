@@ -33,7 +33,9 @@ public static partial class iCS_UserCommands {
                             if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
                                 objectType= iCS_ObjectTypeEnum.OutFixDataPort;
                             }
-                            iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, objectType, p.PortIndex);
+                            var newPort= iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, objectType, p.PortIndex);
+                            newPort.InitialValueArchive= p.InitialValueArchive;
+                            iStorage.LoadInitialPortValueFromArchive(newPort);
                         }
                     }
                     proxy.ProxyOriginalNodeId= realObject.InstanceId;
@@ -76,7 +78,9 @@ public static partial class iCS_UserCommands {
                             if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
                                 objectType= iCS_ObjectTypeEnum.OutFixDataPort;
                             }
-                            iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, objectType, p.PortIndex);
+                            var newPort= iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, objectType, p.PortIndex);
+                            newPort.InitialValueArchive= p.InitialValueArchive;
+                            iStorage.LoadInitialPortValueFromArchive(newPort);
                         }
                     }
                     proxy.ProxyOriginalNodeId= userFunction.InstanceId;

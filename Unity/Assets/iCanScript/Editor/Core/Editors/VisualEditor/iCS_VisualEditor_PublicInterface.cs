@@ -6,10 +6,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Public interface Utilities
 	// ----------------------------------------------------------------------
-    void BuildPublicInterfaceMenu(iCS_VisualScriptImp vs, Vector2 mousePosition) {
+    void BuildPublicInterfaceMenu(GameObject gameObject, iCS_EditorObject parent, iCS_VisualScriptImp vs, Vector2 mousePosition) {
         var publicObjects= iCS_VisualScriptData.GetPublicObjects(vs);
         if(publicObjects != null) {
             GenericMenu gMenu= new GenericMenu();
+            gMenu.AddItem(new GUIContent("+ <GameObject>"), false,
+                o=> QueueOnGUICommand(()=> CreateGameObjectNode(gameObject, parent, mousePosition)), gameObject);
             var publicVariables= iCS_VisualScriptData.GetPublicVariables(publicObjects);
             bool hasVariable= false;
             foreach(var pv in publicVariables) {
@@ -18,7 +20,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     gMenu.AddSeparator("Variables");
                 }
                 hasVariable= true;
-                gMenu.AddItem(new GUIContent(pv.Name), false,
+                gMenu.AddItem(new GUIContent("+ "+pv.Name), false,
                               o=> CreatePortProxy(vs, o), pv); 
             }
             bool hasUserFunction= false;
@@ -29,7 +31,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     gMenu.AddSeparator("User Functions");
                 }
                 hasUserFunction= true;
-                gMenu.AddItem(new GUIContent(puf.Name), false,
+                gMenu.AddItem(new GUIContent("+ "+puf.Name), false,
                               o=> CreateUserFunctionCall(vs, o), puf); 
             }
             gMenu.ShowAsContext();
