@@ -196,7 +196,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             case iCS_ObjectTypeEnum.Behaviour: {
                                 break;
                             }
-                            case iCS_ObjectTypeEnum.PortProxyNode: {
+                            case iCS_ObjectTypeEnum.VariableProxy: {
                                 break;
                             }
                             case iCS_ObjectTypeEnum.UserFunctionCall: {
@@ -421,7 +421,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 						case iCS_ObjectTypeEnum.OutParentMuxPort: {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
-                            if(parentNode.IsPortProxyNode) {
+                            if(parentNode.IsVariableProxy) {
                                 break;
                             }
 							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
@@ -447,7 +447,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         case iCS_ObjectTypeEnum.EnablePort: {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
-                            if(parentNode.IsPortProxyNode) {
+                            if(parentNode.IsVariableProxy) {
                                 break;
                             }
                             // Build connection.
@@ -455,7 +455,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             // Special case for proxy ports.  The connection will be made on the original port.
                             iCS_Connection connection= null;
                             var sourceParent= GetParentNode(sourcePort);
-                            if(sourceParent.IsPortProxyNode) {
+                            if(sourceParent.IsVariableProxy) {
                                 connection= BuildProxyConnection(sourceParent, sourcePort, port);
                             }
     						else {

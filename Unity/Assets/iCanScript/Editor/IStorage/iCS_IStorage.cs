@@ -252,7 +252,7 @@ public partial class iCS_IStorage {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
-                    if(obj.IsUserFunctionCall || obj.IsPortProxyNode) {
+                    if(obj.IsUserFunctionCall || obj.IsVariableProxy) {
                         var idx= obj.UnityObjectIndex;
                         if(idx > 0 && idx < oldUnityObjects.Length) {
                             var unityObject= oldUnityObjects[idx];

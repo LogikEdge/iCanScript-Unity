@@ -19,7 +19,7 @@ public enum iCS_ObjectTypeEnum {
     InstanceProperty, ClassProperty,
 
     // Proxy nodes
-    PortProxyNode= 150, UserFunctionCall,
+    VariableProxy= 150, UserFunctionCall,
             
     // Transition nodes
     TransitionPackage=200,
@@ -107,7 +107,7 @@ public static class iCS_ObjectType {
     public static bool IsOnStateExitPackage   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateExit; }
 	
     // Proxy
-    public static bool IsPortProxyNode        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.PortProxyNode; }
+    public static bool IsVariableProxy        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.VariableProxy; }
     public static bool IsUserFunctionCall     (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.UserFunctionCall; }
 
     // General Ports

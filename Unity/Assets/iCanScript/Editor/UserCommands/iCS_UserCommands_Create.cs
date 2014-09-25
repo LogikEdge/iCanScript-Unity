@@ -21,7 +21,7 @@ public static partial class iCS_UserCommands {
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    variableProxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.PortProxyNode, null);
+                    variableProxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.VariableProxy, null);
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, realObject);
                     var proxyId= variableProxy.InstanceId;
                     // Copy all output ports.
@@ -73,6 +73,7 @@ public static partial class iCS_UserCommands {
                     userFunctionCall= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.UserFunctionCall, null);
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, userFunction);
                     var usrFncCallId= userFunctionCall.InstanceId;
+                    // Copy all output ports.
                     foreach(var p in ports) {
                         if(!p.IsControlPort) {
                             var objectType= p.ObjectType;
@@ -87,6 +88,9 @@ public static partial class iCS_UserCommands {
                             iStorage.LoadInitialPortValueFromArchive(newPort);
                         }
                     }
+                    // Instance visual script port to support dynamic connection
+                    var vsPort= iStorage.CreateInInstancePort(usrFncCallId, typeof(iCS_VisualScript));
+                    vsPort.InitialPortValue= vs;
                     userFunctionCall.ProxyOriginalNodeId= userFunction.InstanceId;
                     userFunctionCall.UnityObjectIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
                     userFunctionCall.ProxyOriginalVisualScriptTag= vs.tag;
