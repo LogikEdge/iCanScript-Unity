@@ -1017,8 +1017,8 @@ public partial class iCS_Graphics {
             color.a= 0.85f*color.a;
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                   }
         // Show transition name for state connections.
-		if(port.IsInTransitionPort) return;
-        if(port.IsInStatePort) {
+		if(port.IsInTransitionPort && portParent.IsIconizedInLayout) return;
+        if(port.IsInStatePort || port.IsInTransitionPort) {
             var arrowColor= new Color(1f,1f,1f,alpha);
             DirectionEnum dir= DirectionEnum.Up;
             // Show transition input port.
