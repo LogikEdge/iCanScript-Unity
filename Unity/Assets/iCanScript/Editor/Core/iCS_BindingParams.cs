@@ -8,11 +8,12 @@ public class iCS_BindingParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public Vector2 Start       = Vector2.zero;
-    public Vector2 End         = Vector2.zero;
-    public Vector2 StartTangent= Vector2.zero;
-    public Vector2 EndTangent  = Vector2.zero;
-    public Vector2 Center      = Vector2.zero;
+    public Vector2 Start       	  = Vector2.zero;
+    public Vector2 End         	  = Vector2.zero;
+    public Vector2 StartTangent	  = Vector2.zero;
+    public Vector2 EndTangent  	  = Vector2.zero;
+    public Vector2 Center      	  = Vector2.zero;
+	public Vector2 CenterDirection= Vector2.zero;
 
     // ======================================================================
 	// Constants
@@ -38,6 +39,7 @@ public class iCS_BindingParams {
 
         // Compute connection center point.
         Center= BezierCenter(Start, End, StartTangent, EndTangent);
+		CenterDirection= GetBezierCenterDirection(Start, End, StartTangent, EndTangent);
     }
     // ----------------------------------------------------------------------
     public iCS_BindingParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, port.AnimatedPosition, source, source.AnimatedPosition, storage) {}
@@ -127,5 +129,13 @@ public class iCS_BindingParams {
         point.y+= ySign*fy*distance;
         return ClosestPointBezier(point, start, end, startTangent, endTangent, iteration-1);        
     }
-
+    // ----------------------------------------------------------------------
+	public static Vector2 GetBezierCenterDirection(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent) {
+        var segmentSize= (end-start).magnitude;
+        var startTangentDir= (endTangent-end).normalized;
+        var endTangentDir= (startTangent-start).normalized;
+        var endPoint= end-0.1f*segmentSize*endTangentDir;
+        var startPoint= start-0.1f*segmentSize*startTangentDir;
+        return (endPoint-startPoint).normalized;
+	}
 }
