@@ -129,7 +129,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     public static void DecodeClassInfo(Type classType, string company, string library, string description, string classIconPath,
                                        bool acceptAllPublic= false,
-                                       bool baseVisibility= false,
+                                       bool baseVisibility = true,
 									   bool hideFromLibrary= false) {
         if(classType.IsGenericType) {
             Debug.LogWarning("iCanScript: Generic class not supported yet.  Skiping: "+classType.Name);
@@ -194,7 +194,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeClassFields(iCS_TypeInfo _classTypeInfo,
                                   bool acceptAllPublic= false,
-                                  bool baseVisibility= false) {
+                                  bool baseVisibility= true) {
         // Gather field information.
         var classType= _classTypeInfo.CompilerType;
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
@@ -219,12 +219,13 @@ public class iCS_Reflection {
                 }
             }
             if(registerField == false && field.IsPublic) {
-                if(acceptAllPublic) {
-                    registerField= true;
-                    direction= iCS_ParamDirection.InOut;
-                } else if(baseVisibility) {
-                    var declaringType= field.DeclaringType;
-                    if(declaringType != classType) {
+                var declaringType= field.DeclaringType;
+                bool isDefinedInBase= declaringType != classType;
+                if(baseVisibility == true || !isDefinedInBase) {
+                    if(acceptAllPublic) {
+                        registerField= true;
+                        direction= iCS_ParamDirection.InOut;
+                    } else if(isDefinedInBase) {
                         // Don't override iCS attributes
                         bool isTagged= false;
                         foreach(var baseAttr in declaringType.GetCustomAttributes(true)) {
@@ -238,8 +239,8 @@ public class iCS_Reflection {
                             registerField= true;
                             direction= iCS_ParamDirection.InOut;                            
                         }
-                    }
-                }                
+                    }                
+                }
             }
             if(registerField) {
                 if(field.IsStatic) {
@@ -297,7 +298,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeFunctionsAndMethods(iCS_TypeInfo _classTypeInfo,
                                           bool acceptAllPublic= false,
-                                          bool baseVisibility= false) {
+                                          bool baseVisibility= true) {
         var classType= _classTypeInfo.CompilerType;
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerMethod= false;
@@ -333,24 +334,27 @@ public class iCS_Reflection {
                 }
             }
             if(registerMethod == false && method.IsPublic) {
-                if(acceptAllPublic) {
-                    registerMethod= true;
-                } else if(baseVisibility) {
-                    var declaringType= method.DeclaringType;
-                    if(declaringType != classType) {
-                        // Don't override iCS attributes
-                        bool isTagged= false;
-                        foreach(var baseAttr in declaringType.GetCustomAttributes(true)) {
-                            if(baseAttr is iCS_ClassAttribute) {
-                                isTagged= true;
-                                break;
+                var declaringType= method.DeclaringType;
+                bool isDefinedInBase= declaringType != classType;
+                if(baseVisibility == true || !isDefinedInBase) {
+                    if(acceptAllPublic) {
+                        registerMethod= true;
+                    } else {
+                        if(isDefinedInBase) {
+                            // Don't override iCS attributes
+                            bool isTagged= false;
+                            foreach(var baseAttr in declaringType.GetCustomAttributes(true)) {
+                                if(baseAttr is iCS_ClassAttribute) {
+                                    isTagged= true;
+                                    break;
+                                }
+                            }
+                            // Add base fields if class is not using iCS attributes.
+                            if(isTagged == false) {
+                                registerMethod= true;
                             }
                         }
-                        // Add base fields if class is not using iCS attributes.
-                        if(isTagged == false) {
-                            registerMethod= true;
-                        }
-                    }
+                    }                    
                 }
             }
             if(registerMethod) {

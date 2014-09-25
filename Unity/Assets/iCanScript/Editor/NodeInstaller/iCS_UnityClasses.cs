@@ -37,7 +37,7 @@ public static class iCS_UnityClasses {
         if(package == null)     package               = kUnityEnginePackage;
         if(description == null) description           = "Unity class "+classType.Name;
         if(iconPath == null)    iconPath              = kUnityIcon;
-        iCS_Reflection.DecodeClassInfo(classType, company, package, description, iconPath, decodeAllPublicMembers);
+        iCS_Reflection.DecodeClassInfo(classType, company, package, description, iconPath, decodeAllPublicMembers,true);
     }
     // ----------------------------------------------------------------------
     // Use this function to register a Unity message on a class.

@@ -54,11 +54,11 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
 			// Build input string
 			string inputStr= "";
             if(IsInstanceFunctionBase) {
-                inputStr+= iCS_IStorage.GetInstancePortName(ClassType)+":"+iCS_Types.TypeName(ClassType)+", ";
+                inputStr+= iCS_IStorage.GetInstancePortName(ClassType)+", ";
             }
             foreach(var param in Parameters) {
 				if(!param.type.IsByRef) {
-	                inputStr+= param.name+":"+iCS_Types.TypeName(param.type)+", ";
+	                inputStr+= param.name+"<"+iCS_Types.TypeName(param.type)+">, ";
 				}
             }
 			// Add inputs to signature.
@@ -70,7 +70,7 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
 			string outputStr= "";
             foreach(var param in Parameters) {
 				if(param.type.IsByRef) {
-	                outputStr+= param.name+":"+iCS_Types.TypeName(param.type.GetElementType())+", ";
+	                outputStr+= param.name+"<"+iCS_Types.TypeName(param.type.GetElementType())+">, ";
 					++nbOfOutputs;
 				}
             }
@@ -79,7 +79,7 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
 				if(ReturnName != null && ReturnName != "" && ReturnName != iCS_Strings.DefaultFunctionReturnName) {
 					outputStr+= /*" "+*/ReturnName;
 				} else {
-					outputStr+= ":"+iCS_Types.TypeName(ReturnType);
+					outputStr+= "<"+iCS_Types.TypeName(ReturnType)+">";
 				}
 				outputStr+= ", ";
 			}
