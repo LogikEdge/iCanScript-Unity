@@ -66,15 +66,4 @@ public partial class iCS_Graphics {
 		if(iCS_Strings.IsNotEmpty(node.Tooltip)) tooltip+= node.Tooltip;
 		return tooltip;
 	}
-    // ----------------------------------------------------------------------
-    public static bool IsActiveState(iCS_EditorObject state) {
-        if(!state.IsState) return false;
-        if(!Application.isPlaying) return false;
-        var stateChart= state.GetParentStateChart();
-        if(stateChart == null) return false;
-        var runtimeNodes= state.IStorage.VisualScript.RuntimeNodes;
-        var rtStateChart= runtimeNodes[stateChart.InstanceId] as iCS_StateChart;
-        var rtState     = runtimeNodes[state.InstanceId] as iCS_State;
-        return rtStateChart.IsActiveState(rtState);
-    }
 }

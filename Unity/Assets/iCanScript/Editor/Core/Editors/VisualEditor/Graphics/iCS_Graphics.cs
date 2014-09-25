@@ -204,7 +204,7 @@ public partial class iCS_Graphics {
         vectors[1]= center-head+bottom;
         vectors[2]= center-0.6f*head;
         vectors[3]= center-head-bottom;
-        Handles.color= Color.white;
+        Handles.color= GUI.color;
         Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, outlineColor);
 	}
 
@@ -457,7 +457,11 @@ public partial class iCS_Graphics {
         if(!IsVisibleInViewport(position)) return;
 
         // Draw node since all draw conditions are valid.
-        GUI.color= new Color(1f, 1f, 1f, node.DisplayAlpha);
+		float alpha= node.DisplayAlpha;
+		if(IsDisable(node)) {
+			alpha*= 0.5f;
+		}
+        GUI.color= new Color(1f, 1f, 1f, alpha);
         string title= GetNodeName(node);
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
@@ -469,9 +473,6 @@ public partial class iCS_Graphics {
 #endif
         // Determine title style
         var shadowColor= isMouseOver || iStorage.IsSelectedOrMultiSelected(node) ? WhiteShadowColor : BlackShadowColor;
-        if(IsActiveState(node)) {
-            shadowColor= Color.green;
-        }
         GUI_Box(position, new GUIContent(title, tooltip), GetNodeColor(node), backgroundColor, shadowColor);
         if(isMouseOver) {
             EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
@@ -504,7 +505,11 @@ public partial class iCS_Graphics {
         Rect displayArea= new Rect(displayRect.x-100f, displayRect.y-16f, displayRect.width+200f, displayRect.height+16f);
         if(!IsVisibleInViewport(displayArea)) return;
 
-		Color alphaWhite= new Color(1f, 1f, 1f, node.DisplayAlpha);
+		float alpha= node.DisplayAlpha;
+		if(IsDisable(node)) {
+			alpha*= 0.5f;
+		}
+		Color alphaWhite= new Color(1f, 1f, 1f, alpha);
         GUI.color= alphaWhite;
         Texture icon= iCS_Icons.GetIconFor(node);
 		var position= Math3D.Middle(displayRect);
@@ -665,7 +670,11 @@ public partial class iCS_Graphics {
         var alpha= port.DisplayAlpha;
         if(parent.IsIconizedInLayout && parent.IsAnimated) {
             alpha= 1f-parent.AnimationTimeRatio;
-        } 
+        }
+		// Reduce alpha if port is disabled
+		if(IsDisable(port)) {
+			alpha*= 0.5f;
+		}
         GUI.color= new Color(1f,1f,1f,alpha);
         
 		// Determine port colors
@@ -688,7 +697,7 @@ public partial class iCS_Graphics {
 #endif
             }            
         }            
-        
+		
         // State transition name is handle by DrawConnection.
         if(port.IsStatePort || port.IsTransitionPort) return;         
 
@@ -763,13 +772,17 @@ public partial class iCS_Graphics {
         } else if(port.IsStatePort) {
             // State ports.
             if(port.IsOutStatePort) {
-                Handles.color= Color.white;
+				var color= GUI.color;
+				color.a*= 0.8f;
+                Handles.color= color;
                 Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);
             }
         } else if(port.IsTransitionPort) {
             // Transition ports.
             if(port.IsOutTransitionPort) {
-                Handles.color= Color.white;
+				var color= GUI.color;
+				color.a*= 0.8f;
+                Handles.color= color;
                 Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);                            
             }
         }
@@ -959,6 +972,11 @@ public partial class iCS_Graphics {
         // Set connection alpha according to port alpha.
         var alpha= port.DisplayAlpha*source.DisplayAlpha;
         
+		// Reduce alpha if consumer port is disable
+		if(IsDisable(port)) {
+			alpha*= 0.5f;
+		}
+		
         // Determine line color.
         Color color= Prefs.GetTypeColor(source.RuntimeType);
         color.a*= alpha;
@@ -999,7 +1017,8 @@ public partial class iCS_Graphics {
             color.a= 0.85f*color.a;
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                   }
         // Show transition name for state connections.
-        if(port.IsInStatePort || port.IsInTransitionPort) {
+		if(port.IsInTransitionPort) return;
+        if(port.IsInStatePort) {
             var arrowColor= new Color(1f,1f,1f,alpha);
             DirectionEnum dir= DirectionEnum.Up;
             // Show transition input port.
@@ -1080,6 +1099,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     public void ShowArrowCenterOn(Vector2 graphPos, Color arrowColor, DirectionEnum dir) {
+		var savedColor= GUI.color;
         GUI.color= arrowColor;
         switch(dir) {
             case DirectionEnum.Left:  DrawIconCenteredAt(graphPos, leftArrowHeadIcon); break;
@@ -1088,12 +1108,55 @@ public partial class iCS_Graphics {
             case DirectionEnum.Down:  DrawIconCenteredAt(graphPos, downArrowHeadIcon); break;
         }
         // Reset GUI alpha.
-        GUI.color= Color.white;        
+        GUI.color= savedColor;
     }
     // ----------------------------------------------------------------------
     public void DrawArrowMiddleBezier(iCS_BindingParams cp, Color color, bool highlight) {
-        color.a= 0.8f;
+        color.a*= 0.8f;
         float size= highlight ? 6f : 4f;
         DrawArrowHead(cp.CenterDirection, cp.Center, color, size, color);
+    }
+    // ----------------------------------------------------------------------
+	bool IsDisable(iCS_EditorObject obj) { return !IsEnable(obj); }
+	bool IsEnable(iCS_EditorObject obj) {
+		if(obj.IsBehaviour) return true;
+		if(iCS_UnityUtility.IsPrefab(obj.IStorage.VisualScript.gameObject)) return true;
+		if(obj.IsInStatePort) {
+			var transitionPackage= obj.IStorage.GetTransitionPackage(obj);
+			if(transitionPackage == null) {
+				return true;
+			}
+			return IsEnable(transitionPackage);
+		}
+		if(!IsEnable(obj.ParentNode)) return false;
+		if(obj.IsPort) return true;
+		bool isPlaying= Application.isPlaying;
+		if(obj.IsState) {
+			return isPlaying ? IsActiveState(obj) : true;
+		}
+		if(obj.IsTransitionPackage) {
+			var fromStatePort= obj.IStorage.GetFromStatePort(obj);
+			if(fromStatePort == null) return true;
+			var fromState= fromStatePort.ParentNode;
+			return IsEnable(fromState);
+		}
+		var enablePorts= obj.BuildListOfChildPorts(p=> p.IsEnablePort);
+		foreach(var ep in enablePorts) {
+			if(isPlaying || ep.ProviderPort == null) {
+				if((bool)(ep.PortValue) == false) {
+					return false;
+				}				
+			}
+		}
+		return true;
+	}
+    // ----------------------------------------------------------------------
+    public static bool IsActiveState(iCS_EditorObject state) {
+        var stateChart= state.GetParentStateChart();
+        if(stateChart == null) return false;
+        var runtimeNodes= state.IStorage.VisualScript.RuntimeNodes;
+        var rtStateChart= runtimeNodes[stateChart.InstanceId] as iCS_StateChart;
+        var rtState     = runtimeNodes[state.InstanceId] as iCS_State;
+        return rtStateChart.IsActiveState(rtState);
     }
 }
