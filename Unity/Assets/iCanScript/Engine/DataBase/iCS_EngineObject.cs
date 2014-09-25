@@ -54,7 +54,7 @@ public class iCS_EngineObject {
         }
     }
     public string Name {
-        get { return IsNameEmpty ? ":"+TypeName : RawName; }
+        get { return IsNameEmpty ? "<"+TypeName+">" : RawName; }
         set { RawName= value; }
     }
     // Node Specific accesors ------------------------------------------------
