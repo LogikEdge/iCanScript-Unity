@@ -505,33 +505,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
         return port;
     }
     // ----------------------------------------------------------------------
-    public static int GetIndexFromName(iCS_IVisualScriptData vsd, string fullName) {
-        var engineObjects= vsd.EngineObjects;
-        int nbOfEngineObjects= engineObjects.Count;
-        var path= fullName.Split(new char[]{'.','/'});
-        Array.Reverse(path);
-        int pathSize= path.Length;
-        if(pathSize == 0) return -1;
-        var leafName= path[0];
-        for(int i= 1; i < nbOfEngineObjects; ++i) {
-            var engineObject= engineObjects[i];
-            if(engineObject.Name == leafName) {
-                int j= 1;
-                var parentId= engineObject.ParentId;
-                for(; j < pathSize; ++j) {
-                    var parentObject= engineObjects[parentId];
-                    if(parentObject.Name != path[j]) {
-                        parentId= -1;
-                        break;
-                    }
-                    parentId= parentObject.ParentId;
-                }
-                if(parentId == 0) {
-                    return i;
-                }
-            }
-        }
-        return -1;
+    public static iCS_EngineObject GetInInstancePort(iCS_IVisualScriptData vsd, iCS_EngineObject node) {
+        return GetChildPortWithIndex(vsd, node, (int)iCS_PortIndex.InInstance);
     }
-    
 }

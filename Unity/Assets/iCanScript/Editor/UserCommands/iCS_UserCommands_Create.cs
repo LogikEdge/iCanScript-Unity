@@ -43,7 +43,6 @@ public static partial class iCS_UserCommands {
                     var vsPort= iStorage.CreateInInstancePort(proxyId, typeof(iCS_VisualScript));
                     vsPort.InitialPortValue= vs;
                     variableProxy.ProxyOriginalNodeId= realObject.InstanceId;
-                    variableProxy.UnityObjectIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
                     variableProxy.ProxyOriginalVisualScriptTag= vs.tag;
                     iStorage.ForcedRelayoutOfTree();
                 }
@@ -92,7 +91,6 @@ public static partial class iCS_UserCommands {
                     var vsPort= iStorage.CreateInInstancePort(usrFncCallId, typeof(iCS_VisualScript));
                     vsPort.InitialPortValue= vs;
                     userFunctionCall.ProxyOriginalNodeId= userFunction.InstanceId;
-                    userFunctionCall.UnityObjectIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
                     userFunctionCall.ProxyOriginalVisualScriptTag= vs.tag;
                     iStorage.ForcedRelayoutOfTree();
                 }

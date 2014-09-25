@@ -197,6 +197,9 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 break;
                             }
                             case iCS_ObjectTypeEnum.VariableProxy: {
+                                if(IsReferenceNodeUsingDynamicBinding(node)) {
+                                    Debug.LogWarning("iCanScript: Dynamic binding on vraiable proxy not supportyet !!!");                                    
+                                }
                                 break;
                             }
                             case iCS_ObjectTypeEnum.UserFunctionCall: {
@@ -456,7 +459,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             iCS_Connection connection= null;
                             var sourceParent= GetParentNode(sourcePort);
                             if(sourceParent.IsVariableProxy) {
-                                connection= BuildProxyConnection(sourceParent, sourcePort, port);
+                                connection= BuildVariableProxyConnection(sourceParent, sourcePort, port);
                             }
     						else {
                                 connection= sourcePort != port ? BuildConnection(sourcePort) : null;
@@ -683,74 +686,6 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		}
 		return connection;
 	}
-    // ----------------------------------------------------------------------
-    iCS_Connection BuildProxyConnection(iCS_EngineObject proxyNode, iCS_EngineObject proxyPort, iCS_EngineObject consumerPort) {
-        var runtimeNode= GetRuntimeNodeFromReferenceNode(proxyNode);
-        if(runtimeNode == null) {
-            Debug.LogWarning("Unable to find port proxy node=> "+proxyNode.Name);
-            return null;
-        }
-		iCS_Connection connection= null;
-        bool isAlwaysReady= true;
-        bool isControlPort= proxyPort.IsControlPort;
-		connection= new iCS_Connection(runtimeNode as iCS_ISignature, proxyPort.PortIndex, isAlwaysReady, isControlPort);
-        return connection;
-    }
-    // ----------------------------------------------------------------------
-    iCS_ActionWithSignature GetUserFunctionAction(iCS_EngineObject userFunctionCall) {
-        var runtimeNode= GetRuntimeNodeFromReferenceNode(userFunctionCall);
-        if(runtimeNode == null) {
-            Debug.LogWarning("Unable to find user function=> "+userFunctionCall.Name);
-            return null;                   
-        }
-        return runtimeNode as iCS_ActionWithSignature;
-    }
-    // ----------------------------------------------------------------------
-    object GetRuntimeNodeFromReferenceNode(iCS_EngineObject referenceNode) {
-        var vs= GetVisualScriptFromRefenceNode(referenceNode);
-        if(vs == null) {
-            Debug.LogWarning("Unable to find user function=> "+referenceNode.Name);
-            return null;
-        }
-        var runtimeNodeId  = referenceNode.ProxyOriginalNodeId;
-        return vs.RuntimeNodes[runtimeNodeId];
-    }
-    // ----------------------------------------------------------------------
-    iCS_VisualScriptImp GetVisualScriptFromRefenceNode(iCS_EngineObject referenceNode) {
-        var tag             = referenceNode.ProxyOriginalVisualScriptTag;
-        var unityObjectIndex= referenceNode.UnityObjectIndex;
-        var vs= iCS_VisualScriptData.GetUnityObject(this, unityObjectIndex) as iCS_VisualScriptImp;
-        if(vs == null) {
-            var go= GameObject.FindWithTag(tag);
-            if(go != null) {
-                vs= go.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;   
-            }
-        }
-        if(vs == null) {
-            Debug.LogWarning("iCanScript: Can't locate game object with tag=> "+tag);
-        }
-        return vs;
-    }
-    // ----------------------------------------------------------------------
-    iCS_Connection BuildUserFunctionOutputConnection(iCS_EngineObject port, iCS_EngineObject referenceNode, iCS_UserFunctionCall userFunctionCall) {
-        var vs= GetVisualScriptFromRefenceNode(referenceNode);
-        if(vs == null) {
-            return null;
-        }
-        var runtimeNodeId= referenceNode.ProxyOriginalNodeId;
-        var userFunction = vs.EngineObjects[runtimeNodeId];
-        var userFunctionPort= iCS_VisualScriptData.GetChildPortWithIndex(vs, userFunction, port.PortIndex);
-        if(userFunctionPort == null) return null;
-        var sourcePort= iCS_VisualScriptData.GetFirstProviderPort(vs, userFunctionPort);
-        var sourcePortParent= vs.GetParentNode(sourcePort);
-        var runtimeNode= vs.RuntimeNodes[sourcePortParent.InstanceId];
-		iCS_Connection connection= null;
-        bool isAlwaysReady= false;
-        bool isControlPort= false;
-		connection= new iCS_Connection(runtimeNode as iCS_ISignature, sourcePort.PortIndex, isAlwaysReady, isControlPort);
-        userFunctionCall.SetConnection(port.PortIndex, connection);
-        return connection;        
-    }
     
     // ======================================================================
     // Child Management Utilities

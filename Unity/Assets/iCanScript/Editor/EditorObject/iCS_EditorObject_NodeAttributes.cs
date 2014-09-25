@@ -76,8 +76,4 @@ public partial class iCS_EditorObject {
         get { return EngineObject.ProxyOriginalVisualScriptTag; }
         set { EngineObject.ProxyOriginalVisualScriptTag= value; }
     }
-    public int UnityObjectIndex {
-        get { return EngineObject.UnityObjectIndex; }
-        set { EngineObject.UnityObjectIndex= value; }
-    }
 }

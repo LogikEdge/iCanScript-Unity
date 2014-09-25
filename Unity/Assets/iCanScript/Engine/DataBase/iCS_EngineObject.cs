@@ -29,7 +29,7 @@ public class iCS_EngineObject {
 
     // Port specific attributes ---------------------------------------------
     public int                   SourceId           = -1;    // Proxy original node id
-    public int                   PortIndex          = -1;    // Proxy original visual script Unity object index
+    public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;  // Proxy original visual script tag
 
     // State specific attributes ---------------------------------------------
@@ -65,10 +65,6 @@ public class iCS_EngineObject {
     public string ProxyOriginalVisualScriptTag {
         get { return InitialValueArchive; }
         set { InitialValueArchive= value; }
-    }
-    public int UnityObjectIndex {
-        get { return PortIndex; }
-        set { PortIndex= value; }
     }
     
     // Port Specific accesors ------------------------------------------------

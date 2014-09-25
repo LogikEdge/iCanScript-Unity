@@ -244,7 +244,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void CleanupUnityObjects() {
         // Keep a copy to repopulate for long bindings
-        var oldUnityObjects= Storage.UnityObjects.ToArray();
         Storage.ClearUnityObjects();
         ForEach(
             obj=> {
@@ -252,19 +251,7 @@ public partial class iCS_IStorage {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
-                    if(obj.IsUserFunctionCall || obj.IsVariableProxy) {
-                        var idx= obj.UnityObjectIndex;
-                        if(idx > 0 && idx < oldUnityObjects.Length) {
-                            var unityObject= oldUnityObjects[idx];
-                            obj.UnityObjectIndex= Storage.AddUnityObject(unityObject);                            
-                        }
-                        else {
-                            obj.UnityObjectIndex= -1;
-                        }
-                    }
-                    else {
-                        obj.InitialValueArchive= null;
-                    }
+                    obj.InitialValueArchive= null;
                 }
             }
         );
