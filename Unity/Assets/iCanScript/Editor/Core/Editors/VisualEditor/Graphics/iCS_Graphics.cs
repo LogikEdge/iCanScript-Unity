@@ -1092,14 +1092,8 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     public void DrawArrowMiddleBezier(iCS_BindingParams cp, Color color, bool highlight) {
-        var segmentSize= (cp.End-cp.Start).magnitude;
-        var startTangent= (cp.EndTangent-cp.End).normalized;
-        var endTangent= (cp.StartTangent-cp.Start).normalized;
-        var endPoint= cp.End-0.1f*segmentSize*endTangent;
-        var startPoint= cp.Start-0.1f*segmentSize*startTangent;
-        var dir= (endPoint-startPoint).normalized;
         color.a= 0.8f;
         float size= highlight ? 6f : 4f;
-        DrawArrowHead(dir, cp.Center, color, size, color);
+        DrawArrowHead(cp.CenterDirection, cp.Center, color, size, color);
     }
 }
