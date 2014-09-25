@@ -623,7 +623,7 @@ public partial class iCS_IStorage {
         return GetInstancePortName(typeInfo.CompilerType);
     }
     public static string GetInstancePortName(Type type) {
-        return iCS_Types.GetName(type)+" Instance";
+        return "<"+iCS_Types.GetName(type)+">";
     }
     // ----------------------------------------------------------------------
     public string GetDefaultNodeName(iCS_MethodBaseInfo desc) {

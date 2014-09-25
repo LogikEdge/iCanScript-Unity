@@ -12,18 +12,19 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Object creation
 	// ----------------------------------------------------------------------
-    public static iCS_EditorObject CreatePortProxy(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject realObject) {
+    public static iCS_EditorObject CreateVariableProxy(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject realObject) {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         iCS_IVisualScriptData vsd= vs;
         OpenTransaction(iStorage);
-        iCS_EditorObject proxy= null;
+        iCS_EditorObject variableProxy= null;
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    proxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.PortProxyNode, null);
+                    variableProxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.PortProxyNode, null);
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, realObject);
-                    var proxyId= proxy.InstanceId;
+                    var proxyId= variableProxy.InstanceId;
+                    // Copy all output ports.
                     foreach(var p in ports) {
                         if(p.IsOutDataPort && !p.IsControlPort) {
                             var objectType= p.ObjectType;
@@ -38,9 +39,12 @@ public static partial class iCS_UserCommands {
                             iStorage.LoadInitialPortValueFromArchive(newPort);
                         }
                     }
-                    proxy.ProxyOriginalNodeId= realObject.InstanceId;
-                    proxy.UnityObjectIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
-                    proxy.ProxyOriginalVisualScriptTag= vs.tag;
+                    // Instance visual script port to support dynamic connection
+                    var vsPort= iStorage.CreateInInstancePort(proxyId, typeof(iCS_VisualScript));
+                    vsPort.InitialPortValue= vs;
+                    variableProxy.ProxyOriginalNodeId= realObject.InstanceId;
+                    variableProxy.UnityObjectIndex= iCS_VisualScriptData.AddUnityObject(iStorage.Storage, vs);
+                    variableProxy.ProxyOriginalVisualScriptTag= vs.tag;
                     iStorage.ForcedRelayoutOfTree();
                 }
             );
@@ -49,12 +53,12 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        if(proxy == null) {
+        if(variableProxy == null) {
             CancelTransaction(iStorage);
             return null;
         }
         CloseTransaction(iStorage, "Create Proxy Port: "+name);
-        return proxy;
+        return variableProxy;
     }
 	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreateUserFunctionCall(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject userFunction) {

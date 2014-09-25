@@ -101,6 +101,9 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     public bool IsOutPackagePort(iCS_EngineObject port) {
         return iCS_VisualScriptData.IsOutPackagePort(this, port);
     }
+    public int GetIndexFromName(string fullName) {
+        return iCS_VisualScriptData.GetIndexFromName(this, fullName);
+    }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // DATABASE CONVERSION

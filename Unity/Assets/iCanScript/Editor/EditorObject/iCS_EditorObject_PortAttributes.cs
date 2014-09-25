@@ -16,6 +16,11 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Port source related attributes.
 	// ----------------------------------------------------------------------
+    public bool IsPortDisabled { get { return DisplayOption == iCS_DisplayOptionEnum.Disabled; }}
+    
+    // ======================================================================
+	// Port source related attributes.
+	// ----------------------------------------------------------------------
     public int PortIndex {
 		get { return EngineObject.PortIndex; }
 		set {
@@ -86,6 +91,7 @@ public partial class iCS_EditorObject {
 	
     // ======================================================================
 	// Port value attributes.
+	// ----------------------------------------------------------------------
     public string InitialValueArchive {
 		get { return EngineObject.InitialValueArchive; }
 		set {

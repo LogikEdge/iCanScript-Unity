@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 [AddComponentMenu("")]
 public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
@@ -10,15 +11,19 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // Properties
     // ----------------------------------------------------------------------
     [System.NonSerialized]
-    public bool                         IsTraceEnabled   = false;
-    object[]                            myRuntimeNodes   = new object[0];
-    Dictionary<string,iCS_RunContext>   myMessageContexts= new Dictionary<string,iCS_RunContext>();
+    public bool                         IsTraceEnabled    = false;
+    object[]                            myRuntimeNodes    = new object[0];
+    List<int>                           myPublicInterfaces= new List<int>();
+    Dictionary<string,iCS_RunContext>   myMessageContexts = new Dictionary<string,iCS_RunContext>();
     
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public object[] RuntimeNodes { get { return myRuntimeNodes; }}
+    public object[]  RuntimeNodes     { get { return myRuntimeNodes; }}
+    public List<iCS_EngineObject> PublicInterfaces    { get { return P.map(id=> EngineObjects[id], myPublicInterfaces); }}
+    public List<iCS_EngineObject> PublicVariables     { get { return P.filter(pi=> pi.IsConstructor, PublicInterfaces); }}
+    public List<iCS_EngineObject> PublicUserFunctions { get { return P.filter(pi=> pi.IsPackage, PublicInterfaces); }}
     public int UpdateFrameId {
         get {
             iCS_RunContext updateContext= null;

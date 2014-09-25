@@ -135,6 +135,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     public void ClearGeneratedCode() {
         myRuntimeNodes= new object[0];
+        myPublicInterfaces.Clear();
         Reset();
     }
     // ----------------------------------------------------------------------
@@ -250,6 +251,9 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 var module= new iCS_Package(this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= module;
                                 InvokeAddChildIfExists(parent, module);                                
+                                if(iCS_VisualScriptData.IsPublicUserFunction(node)) {
+                                    myPublicInterfaces.Add(node.InstanceId);
+                                }
                                 break;
                             }
                             case iCS_ObjectTypeEnum.InstanceFunction: {
@@ -279,17 +283,17 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 myRuntimeNodes[node.InstanceId]= func;
                                 // Special case for public variables.  They are created in the Awake message handler.
                                 if(iCS_VisualScriptData.IsPublicVariable(node)) {
-                                    // TODO: Proxies should be initialized in Awake
-                                    // Create an awake message handler (if it does not exist)
+                                    myPublicInterfaces.Add(node.InstanceId);                                    
+                                    // Create a start message handler (if it does not exist)
                                     if(!myMessageContexts.ContainsKey("Start")) {
                                         parent= new iCS_Message(this, priority, 0);
                                         AddChildWithName(parent, "Start");
                                     }
                                     else {
-                                        iCS_RunContext awakeContext= null;
-                                        myMessageContexts.TryGetValue("Start", out awakeContext);
-                                        if(awakeContext != null) {
-                                            parent= awakeContext.Action;
+                                        iCS_RunContext startContext= null;
+                                        myMessageContexts.TryGetValue("Start", out startContext);
+                                        if(startContext != null) {
+                                            parent= startContext.Action;
                                         }
                                         else {
                                             parent= null;

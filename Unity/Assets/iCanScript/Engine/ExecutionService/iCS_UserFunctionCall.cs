@@ -24,6 +24,12 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
 //#if UNITY_EDITOR
         try {
 //#endif
+            // Skip all the processing if we don't have an target action to execute.
+            if(myUserAction == null) {
+                MarkAsCurrent(frameId);
+                return;
+            }
+            
             // Wait until all inputs are ready.
             var parameterStart= ParametersStart;
             var parameterEnd= ParametersEnd;

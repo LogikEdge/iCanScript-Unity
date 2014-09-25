@@ -1129,7 +1129,7 @@ public partial class iCS_Graphics {
 			return IsEnable(transitionPackage);
 		}
 		if(!IsEnable(obj.ParentNode)) return false;
-		if(obj.IsPort) return true;
+		if(obj.IsPort) return !obj.IsPortDisabled;
 		bool isPlaying= Application.isPlaying;
 		if(obj.IsState) {
 			return isPlaying ? IsActiveState(obj) : true;
