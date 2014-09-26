@@ -8,6 +8,7 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
     // ----------------------------------------------------------------------
     protected iCS_ActionWithSignature   myUserAction = null;
               bool                      isActionOwner= false;
+              int                       actionFrameId= 0;
 
     // ======================================================================
     // Creation/Destruction
@@ -55,22 +56,24 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
                 return;
             }
             // Execute associated function.
-            // TODO: Should desynchronize frameid to force the execution.
             myUserAction.IsActive= true;
-            isActionOwner= true;
-            myUserAction.Execute(frameId);
+            if(!isActionOwner) {
+                isActionOwner= true;
+                actionFrameId= myUserAction.FrameId+1;
+            }
+            myUserAction.Execute(actionFrameId);
             // Copy output ports
             for(int i= parameterStart; i <= parameterEnd; ++i) {
 				UpdateParameter(i);
 			}
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute(frameId)) {
+            if(myUserAction.DidExecute(actionFrameId)) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted(frameId);
             }
-            else if(myUserAction.IsCurrent(frameId)){
+            else if(myUserAction.IsCurrent(actionFrameId)){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsCurrent(frameId);
@@ -129,10 +132,12 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
                 return;
             }
             // Execute associated function.
-            // TODO: Should desynchronize frameid to force the execution.
             myUserAction.IsActive= true;
-            isActionOwner= true;
-            myUserAction.ForceExecute(frameId);
+            if(!isActionOwner) {
+                isActionOwner= true;
+                actionFrameId= myUserAction.FrameId+1;
+            }
+            myUserAction.ForceExecute(actionFrameId);
             // Copy output ports
             for(int i= parameterStart; i <= parameterEnd; ++i) {
 				UpdateParameter(i);
@@ -140,12 +145,12 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             ReturnValue= myUserAction.ReturnValue;
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute(frameId)) {
+            if(myUserAction.DidExecute(actionFrameId)) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted(frameId);
             }
-            else if(myUserAction.IsCurrent(frameId)){
+            else if(myUserAction.IsCurrent(actionFrameId)){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsCurrent(frameId);
