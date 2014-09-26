@@ -95,10 +95,8 @@ public partial class iCS_EditorObject {
     public string Name {
 		get {
             if(IsDataPort) {
-                if(PortIndex == (int)iCS_PortIndex.InInstance  ||
-                   PortIndex == (int)iCS_PortIndex.OutInstance ||
-                   (PortIndex == (int)iCS_PortIndex.Return && ParentNode.IsConstructor)) {
-                    return "<"+iCS_Types.TypeName(RuntimeType)+">";
+                if(IsProgrammaticInstancePort) {
+                    return "<"+iCS_Types.TypeName(RuntimeType)+" &>";
                 }                
             }
             return EngineObject.Name;

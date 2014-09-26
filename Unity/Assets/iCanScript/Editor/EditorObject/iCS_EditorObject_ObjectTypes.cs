@@ -91,4 +91,15 @@ public partial class iCS_EditorObject {
 	public bool IsInstancePort				{ get { return EngineObject.IsInstancePort; }}
 	public bool IsInInstancePort			{ get { return EngineObject.IsInInstancePort; }}
 	public bool IsOutInstancePort			{ get { return EngineObject.IsOutInstancePort; }}
+    // Special Cases
+    public bool IsProgrammaticInstancePort  {
+        get {
+            if(IsInInstancePort && (!ParentNode.IsVariableProxy && !ParentNode.IsUserFunctionCall) ||
+               IsOutInstancePort ||
+               (PortIndex == (int)iCS_PortIndex.Return && (ParentNode.IsConstructor || ParentNode.IsVariableProxy))) {
+                   return true;
+            }
+            return false;
+        }
+    }
 }

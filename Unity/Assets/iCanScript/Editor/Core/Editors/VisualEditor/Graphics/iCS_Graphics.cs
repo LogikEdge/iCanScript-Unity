@@ -793,16 +793,14 @@ public partial class iCS_Graphics {
     }
 	// ----------------------------------------------------------------------
     void DrawDataPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
-        Type runtimeType= port.RuntimeType;
-        bool isPassedByRef= iCS_Types.IsPassedByRef(runtimeType);
 		if(port.IsInputPort) {
-			if(isPassedByRef) {
+			if(port.IsProgrammaticInstancePort) {
 				DrawInReferencePort(_center, _fillColor, isSelected);
 			} else {
 				DrawInValuePort(_center, _fillColor, isSelected);
 			}
 		} else {
-			if(isPassedByRef) {
+			if(port.IsProgrammaticInstancePort) {
 				DrawOutReferencePort(_center, _fillColor, isSelected);
 			} else {
 				DrawOutValuePort(_center, _fillColor, isSelected);
