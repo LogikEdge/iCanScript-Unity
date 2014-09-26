@@ -152,12 +152,14 @@ public class iCS_ContextualMenu {
             menu[idx+1]= new iCS_MenuContext(StateChartStr);
             menu[idx+2]= new iCS_MenuContext(SeparatorStr);
         }
-        idx= GrowMenuBy(ref menu, 2);
-        menu[idx]= new iCS_MenuContext(EnablePortStr);
-        if(storage.HasTriggerPort(selectedObject)) {
-            menu[idx+1]= new iCS_MenuContext("#"+TriggerPortStr);
-        } else {
-            menu[idx+1]= new iCS_MenuContext(TriggerPortStr);                
+        if(!selectedObject.IsUserFunction) {
+            idx= GrowMenuBy(ref menu, 2);
+            menu[idx]= new iCS_MenuContext(EnablePortStr);
+            if(storage.HasTriggerPort(selectedObject)) {
+                menu[idx+1]= new iCS_MenuContext("#"+TriggerPortStr);
+            } else {
+                menu[idx+1]= new iCS_MenuContext(TriggerPortStr);                
+            }            
         }
 		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         if(selectedObject.ObjectType == iCS_ObjectTypeEnum.Package) {
