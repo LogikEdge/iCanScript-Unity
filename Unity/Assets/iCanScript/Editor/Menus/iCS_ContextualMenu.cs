@@ -90,6 +90,8 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.ClassField:        FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassProperty:     FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.UserFunctionCall:  FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.VariableProxy:     FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
@@ -268,23 +270,35 @@ public class iCS_ContextualMenu {
         if(!selectedObject.IsIconizedInLayout) {
             // Determine if we should support output 'this' port.
             Type classType= selectedObject.RuntimeType;
-            bool shouldSupportThis= !iCS_Types.IsStaticClass(classType);
-            // Base menu items
-            menu= new iCS_MenuContext[shouldSupportThis ? 4 : 3];
-            menu[0]= new iCS_MenuContext(EnablePortStr);
-            if(storage.HasTriggerPort(selectedObject)) {
-                menu[1]= new iCS_MenuContext("#"+TriggerPortStr);
-            } else {
-                menu[1]= new iCS_MenuContext(TriggerPortStr);                
+            bool isOutInstanceSupported= true;
+            if(iCS_Types.IsStaticClass(classType) || selectedObject.IsConstructor ||
+               selectedObject.IsUserFunctionCall || selectedObject.IsVariableProxy) {
+                isOutInstanceSupported= false;
             }
-            if(shouldSupportThis) {
+            bool isEnableSupported= !selectedObject.IsVariableProxy;
+            // Base menu items
+            menu= new iCS_MenuContext[0];
+            int idx= 0;
+            if(isEnableSupported) {
+                idx= GrowMenuBy(ref menu, 1);
+                menu[idx]= new iCS_MenuContext(EnablePortStr);
+            }
+            idx= GrowMenuBy(ref menu, 1);
+            if(storage.HasTriggerPort(selectedObject)) {
+                menu[idx]= new iCS_MenuContext("#"+TriggerPortStr);
+            } else {
+                menu[idx]= new iCS_MenuContext(TriggerPortStr);                
+            }
+            if(isOutInstanceSupported) {
+                idx= GrowMenuBy(ref menu, 1);
                 if(storage.HasOutInstancePort(selectedObject)) {
-                    menu[2]= new iCS_MenuContext("#"+OutputInstancePortStr);
+                    menu[idx]= new iCS_MenuContext("#"+OutputInstancePortStr);
                 } else {
-                    menu[2]= new iCS_MenuContext(OutputInstancePortStr);                
+                    menu[idx]= new iCS_MenuContext(OutputInstancePortStr);                
                 }                
             }
-            menu[menu.Length-1]= new iCS_MenuContext(SeparatorStr);
+            idx= GrowMenuBy(ref menu, 1);
+            menu[idx]= new iCS_MenuContext(SeparatorStr);
         } else {
             menu= new iCS_MenuContext[0];
         }
