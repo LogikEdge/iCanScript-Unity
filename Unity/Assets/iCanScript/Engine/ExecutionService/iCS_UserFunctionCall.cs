@@ -6,7 +6,8 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected iCS_ActionWithSignature   myUserAction= null;
+    protected iCS_ActionWithSignature   myUserAction = null;
+              bool                      isActionOwner= false;
 
     // ======================================================================
     // Creation/Destruction
@@ -48,11 +49,16 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             for(int i= parameterStart; i <= parameterEnd; ++i) {
                 userActionParameters[i]= parameters[i];
             }
+            // Wait unitil user function becomes available
+            if(!isActionOwner && myUserAction.IsActive == true) {
+                IsStalled= false;
+                return;
+            }
             // Execute associated function.
             // TODO: Should desynchronize frameid to force the execution.
             myUserAction.IsActive= true;
+            isActionOwner= true;
             myUserAction.Execute(frameId);
-            myUserAction.IsActive= false;
             // Copy output ports
             for(int i= parameterStart; i <= parameterEnd; ++i) {
 				UpdateParameter(i);
@@ -60,9 +66,13 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
             if(myUserAction.DidExecute(frameId)) {
+                isActionOwner= false;
+                myUserAction.IsActive= false;
                 MarkAsExecuted(frameId);
             }
             else if(myUserAction.IsCurrent(frameId)){
+                isActionOwner= false;
+                myUserAction.IsActive= false;
                 MarkAsCurrent(frameId);
             }            
 //#if UNITY_EDITOR
@@ -81,6 +91,10 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
                 }
             }
             Debug.LogWarning("iCanScript: while invoking => "+thisName+"."+Name+"("+parametersAsStr+")");
+            if(isActionOwner) {
+                isActionOwner= false;
+                myUserAction.IsActive= false;                
+            }
             MarkAsCurrent(frameId);
         }
 //#endif
@@ -108,6 +122,11 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             var userActionParameters= myUserAction.Parameters;
             for(int i= parameterStart; i <= parameterEnd; ++i) {
                 userActionParameters[i]= parameters[i];
+            }
+            // Wait unitil user function becomes available
+            if(myUserAction.IsActive == true) {
+                IsStalled= false;
+                return;
             }
             // Execute associated function.
             // TODO: Should desynchronize frameid to force the execution.
@@ -143,6 +162,10 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
                 }
             }
             Debug.LogWarning("iCanScript: while invoking => "+thisName+"."+Name+"("+parametersAsStr+")");
+            if(isActionOwner) {
+                isActionOwner= false;
+                myUserAction.IsActive= false;                
+            }
             MarkAsCurrent(frameId);
         }
 //#endif
