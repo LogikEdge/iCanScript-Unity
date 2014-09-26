@@ -7,12 +7,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Public interface Utilities
 	// ----------------------------------------------------------------------
     void BuildPublicInterfaceMenu(GameObject gameObject, iCS_EditorObject parent, iCS_VisualScriptImp vs, Vector2 mousePosition) {
-        var publicObjects= iCS_VisualScriptData.GetPublicObjects(vs);
-        if(publicObjects != null) {
+        var publicVariables= iCS_VisualScriptData.FindPublicVariables(vs);
+        var userFunctions= iCS_VisualScriptData.FindUserFunctions(vs);
+        if(publicVariables.Length != 0 || userFunctions.Length != 0) {
             GenericMenu gMenu= new GenericMenu();
             gMenu.AddItem(new GUIContent("+ <GameObject>"), false,
                 o=> QueueOnGUICommand(()=> CreateGameObjectNode(gameObject, parent, mousePosition)), gameObject);
-            var publicVariables= iCS_VisualScriptData.GetPublicVariables(publicObjects);
             bool hasVariable= false;
             foreach(var pv in publicVariables) {
                 if(hasVariable == false) {
@@ -24,8 +24,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                               o=> CreatePortProxy(vs, o), pv); 
             }
             bool hasUserFunction= false;
-            var publicUserFunctions= iCS_VisualScriptData.GetPublicUserFunctions(publicObjects);
-            foreach(var puf in publicUserFunctions) {
+            foreach(var puf in userFunctions) {
                 if(hasUserFunction == false) {
                     gMenu.AddSeparator("");
                     gMenu.AddSeparator("User Functions");

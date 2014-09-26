@@ -270,7 +270,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 var module= new iCS_Package(this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= module;
                                 InvokeAddChildIfExists(parent, module);                                
-                                if(iCS_VisualScriptData.IsPublicUserFunction(node)) {
+                                if(iCS_VisualScriptData.IsUserFunction(node)) {
                                     myPublicInterfaces.Add(node.InstanceId);
                                 }
                                 break;

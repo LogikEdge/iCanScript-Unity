@@ -14,7 +14,7 @@ using P=Prelude;
 // The Utility section consists of class function used to manipulate the
 // visual script data.
 //
-public class iCS_VisualScriptData : iCS_IVisualScriptData {
+public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     //               VISUAL SCRIPT DATA INSTANCE SECTION
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -425,71 +425,6 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
 		return parent != null && parent.IsKindOfPackage;
 	}
     
-    // ======================================================================
-    // Public Interfaces
-    // ----------------------------------------------------------------------
-    public static iCS_EngineObject[] GetPublicObjects(iCS_IVisualScriptData vsd) {
-        // No public interface if no objects in the visual script
-        var engineObjects= vsd.EngineObjects;
-        if(engineObjects.Count == 0) return null;
-        
-        // Public interfaces only exists on behaviour visual script
-        if(!engineObjects[0].IsBehaviour) {
-            return null;
-        }
-
-        // Gather all of the objects that as the behaviour as parent.
-        var publicObjects= P.filter(o=> o.ParentId == 0, engineObjects);
-        return publicObjects.ToArray();
-    }
-    // ----------------------------------------------------------------------
-    public static iCS_EngineObject[] GetPublicVariables(iCS_EngineObject[] publicObjects) {
-        if(publicObjects == null) return null;
-        return P.filter(po=> po.IsConstructor, publicObjects);
-    }
-    // ----------------------------------------------------------------------
-    public static iCS_EngineObject[] GetPublicUserFunctions(iCS_EngineObject[] publicObjects) {
-        if(publicObjects == null) return null;
-        return P.filter(po=> po.IsPackage, publicObjects);
-    }
-    // ----------------------------------------------------------------------
-    public static iCS_EngineObject[] GetPublicMessageHandlers(iCS_EngineObject[] publicObjects) {
-        if(publicObjects == null) return null;
-        return P.filter(po=> po.IsMessage, publicObjects);
-    }
-    // ----------------------------------------------------------------------
-    public static bool IsPublicVariable(iCS_EngineObject obj) {
-        if(obj == null) return false;
-        if(obj.ParentId != 0) return false;
-        return obj.IsConstructor;
-    }
-    // ----------------------------------------------------------------------
-    public static bool IsPublicUserFunction(iCS_EngineObject obj) {
-        if(obj == null) return false;
-        if(obj.ParentId != 0) return false;
-        return obj.IsPackage;
-    }
-    // ----------------------------------------------------------------------
-    public static bool IsPublicMessageHandler(iCS_EngineObject obj) {
-        if(obj == null) return false;
-        if(obj.ParentId != 0) return false;
-        return obj.IsMessage;
-    }
-
-    // ======================================================================
-    // Iteration
-    // ----------------------------------------------------------------------
-    public static bool IsValid(iCS_EngineObject obj, iCS_IVisualScriptData vsd) {
-        int id= obj.InstanceId;
-        return id >= 0 && id < vsd.EngineObjects.Count;
-    }
-    public static void ForEach(Action<iCS_EngineObject> fnc, iCS_IVisualScriptData vsd) {
-        P.filterWith(o=> IsValid(o, vsd), fnc, vsd.EngineObjects);
-    }
-    public static void FilterWith(Func<iCS_EngineObject,bool> cond, Action<iCS_EngineObject> action, iCS_IVisualScriptData vsd) {
-        ForEach( o=> { if(cond(o)) action(o); }, vsd);
-    }
-
     // ======================================================================
     // General Queries
     // ----------------------------------------------------------------------
