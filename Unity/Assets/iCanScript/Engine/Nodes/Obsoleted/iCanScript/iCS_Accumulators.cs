@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 
 //[iCS_Class(Company="iCanScript", Library="Accumulators", HideClassFromLibrary= true)]
+/// \deprecated
 public class iCS_AccumulatorInt {
 	public int acc= 0;
 	
@@ -23,6 +24,7 @@ public class iCS_AccumulatorInt {
 }
 
 //[iCS_Class(Company="iCanScript", Library="Accumulators", HideClassFromLibrary= true)]
+/// \deprecated
 public class iCS_AccumulatorFloat {
 	public float acc= 0;
 	
@@ -42,6 +44,7 @@ public class iCS_AccumulatorFloat {
 }
 
 //[iCS_Class(Company="iCanScript", Library="Accumulators", HideClassFromLibrary= true)]
+/// \deprecated
 public class iCS_AccumulatorVector2 {
 	public Vector2 acc= default(Vector2);
 	
@@ -61,6 +64,7 @@ public class iCS_AccumulatorVector2 {
 }
 
 //[iCS_Class(Company="iCanScript", Library="Accumulators", HideClassFromLibrary= true)]
+/// \deprecated
 public class iCS_AccumulatorVector3 {
 	public Vector3 acc= default(Vector3);
 	
@@ -80,6 +84,7 @@ public class iCS_AccumulatorVector3 {
 }
 
 //[iCS_Class(Company="iCanScript", Library="Accumulators", HideClassFromLibrary= true)]
+/// \deprecated
 public class iCS_AccumulatorVector4 {
 	public Vector4 acc= default(Vector4);
 	
