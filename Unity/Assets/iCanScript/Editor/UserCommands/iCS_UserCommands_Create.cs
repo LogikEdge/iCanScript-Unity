@@ -40,8 +40,8 @@ public static partial class iCS_UserCommands {
                         }
                     }
                     // Instance visual script port to support dynamic connection
-                    var vsPort= iStorage.CreateInInstancePort(proxyId, typeof(iCS_VisualScript));
-                    vsPort.InitialPortValue= vs;
+                    var gameObjectPort= iStorage.CreateInInstancePort(proxyId, typeof(GameObject));
+                    gameObjectPort.PortValue= vs.gameObject;
                     variableProxy.ProxyOriginalNodeId= realObject.InstanceId;
                     variableProxy.ProxyOriginalVisualScriptTag= vs.tag;
                     iStorage.ForcedRelayoutOfTree();
@@ -88,8 +88,8 @@ public static partial class iCS_UserCommands {
                         }
                     }
                     // Instance visual script port to support dynamic connection
-                    var vsPort= iStorage.CreateInInstancePort(usrFncCallId, typeof(iCS_VisualScript));
-                    vsPort.InitialPortValue= vs;
+                    var gameObjectPort= iStorage.CreateInInstancePort(usrFncCallId, typeof(GameObject));
+                    gameObjectPort.PortValue= vs.gameObject;
                     userFunctionCall.ProxyOriginalNodeId= userFunction.InstanceId;
                     userFunctionCall.ProxyOriginalVisualScriptTag= vs.tag;
                     iStorage.ForcedRelayoutOfTree();

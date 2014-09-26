@@ -197,8 +197,17 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 break;
                             }
                             case iCS_ObjectTypeEnum.VariableProxy: {
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
                                 if(IsReferenceNodeUsingDynamicBinding(node)) {
-                                    Debug.LogWarning("iCanScript: Dynamic binding on vraiable proxy not supportyet !!!");                                    
+                                    iCS_DynamicVariableProxy variableProxy= new iCS_DynamicVariableProxy(this, priority, nbParams, nbEnables);
+                                    myRuntimeNodes[node.InstanceId]= variableProxy;
+                                    InvokeAddChildIfExists(parent, variableProxy);                                
+                                }
+                                else {
+                                    iCS_VariableProxy variableProxy= new iCS_VariableProxy(this, priority, nbParams, nbEnables);
+                                    myRuntimeNodes[node.InstanceId]= variableProxy;
                                 }
                                 break;
                             }
@@ -207,10 +216,17 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
                                 var userFunction= GetUserFunctionAction(node);
-                                var userFunctionCall= new iCS_UserFunctionCall(userFunction, this, priority, nbParams, nbEnables);                                
-                                myRuntimeNodes[node.InstanceId]= userFunctionCall;
-                                InvokeAddChildIfExists(parent, userFunctionCall);                                
-                                break;                                
+                                if(IsReferenceNodeUsingDynamicBinding(node)) {
+                                    var userFunctionCall= new iCS_DynamicUserFunctionCall(this, priority, nbParams, nbEnables);
+                                    myRuntimeNodes[node.InstanceId]= userFunctionCall;
+                                    InvokeAddChildIfExists(parent, userFunctionCall);
+                                }
+                                else {
+                                    var userFunctionCall= new iCS_UserFunctionCall(userFunction, this, priority, nbParams, nbEnables);                                
+                                    myRuntimeNodes[node.InstanceId]= userFunctionCall;
+                                    InvokeAddChildIfExists(parent, userFunctionCall);            
+                                }
+                                break;
                             }
                             case iCS_ObjectTypeEnum.StateChart: {
                                 iCS_StateChart stateChart= new iCS_StateChart(this, priority);
@@ -450,9 +466,6 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         case iCS_ObjectTypeEnum.EnablePort: {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
-                            if(parentNode.IsVariableProxy) {
-                                break;
-                            }
                             // Build connection.
                             iCS_EngineObject sourcePort= GetSourceEndPort(port);
                             // Special case for proxy ports.  The connection will be made on the original port.
@@ -468,7 +481,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     						object initValue= GetInitialValue(sourcePort);
 							// Automatically build instance object if not specified.
 							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.InInstance) {
-								if(!parentNode.IsMessage) {
+								if(!parentNode.IsMessage && !parentNode.IsVariableProxy && !parentNode.IsUserFunctionCall) {
                                     try {
     									initValue= System.Activator.CreateInstance(port.RuntimeType);                                        
                                         compileWarnings.Add( new CompileWarning(parentNode.InstanceId, "No instance provided.  Generating a default builder.") );
@@ -517,48 +530,11 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 								}
 							}
                             // Set data port.
-                            object parentObj= myRuntimeNodes[port.ParentId];
-                            Prelude.choice<iCS_Constructor, iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Package, iCS_Message, iCS_UserFunctionCall>(parentObj,
-                                constructor=> {
-                                    constructor[port.PortIndex]= initValue;
-                                    constructor.SetConnection(port.PortIndex, connection);
-                                },
-                                instanceFunction=> {
-                                    instanceFunction[port.PortIndex]= initValue;
-                                    instanceFunction.SetConnection(port.PortIndex, connection);
-                                },
-                                getInstanceField=> {
-                                    getInstanceField[port.PortIndex]= initValue;
-                                    getInstanceField.SetConnection(port.PortIndex, connection);
-                                },
-                                getClassField=> {
-                                    getClassField[port.PortIndex]= initValue;
-                                    getClassField.SetConnection(port.PortIndex, connection);
-                                },
-                                setInstanceField=> {
-                                    setInstanceField[port.PortIndex]= initValue;
-                                    setInstanceField.SetConnection(port.PortIndex, connection);
-                                },
-                                setClassField=> {
-                                    setClassField[port.PortIndex]= initValue;
-                                    setClassField.SetConnection(port.PortIndex, connection);
-                                },
-                                classFunction=> {
-                                    classFunction[port.PortIndex]= initValue;
-                                    classFunction.SetConnection(port.PortIndex, connection);
-                                },
-                                package=> {
-                                    package[port.PortIndex]= initValue;
-                                    package.SetConnection(port.PortIndex, connection);
-                                },
-                                message=> {
-                                    message[port.PortIndex]= initValue;
-                                },
-                                userFunctionCall=> {
-                                    userFunctionCall[port.PortIndex]= initValue;        
-                                    userFunctionCall.SetConnection(port.PortIndex, connection);
-                                }
-                            );
+                            iCS_ActionWithSignature parentObj= myRuntimeNodes[port.ParentId] as iCS_ActionWithSignature;
+                            parentObj[port.PortIndex]= initValue;
+                            if(!(parentObj is iCS_Message)) {
+                                parentObj.SetConnection(port.PortIndex, connection);                                
+                            }
                             break;
                         }
                     }

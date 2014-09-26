@@ -244,14 +244,17 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void CleanupUnityObjects() {
         // Keep a copy to repopulate for long bindings
-        Storage.ClearUnityObjects();
         ForEach(
             obj=> {
                 if(obj.IsInDataOrControlPort && obj.ProviderPortId == -1 && obj.InitialValue != null) {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
-                    obj.InitialValueArchive= null;
+                    if(obj.IsUserFunctionCall || obj.IsVariableProxy) {
+                    }
+                    else {
+                        obj.InitialValueArchive= null;
+                    }
                 }
             }
         );

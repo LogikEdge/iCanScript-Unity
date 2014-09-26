@@ -42,24 +42,27 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     }
     // ----------------------------------------------------------------------
     bool IsReferenceNodeUsingDynamicBinding(iCS_EngineObject referenceNode) {
-        var visualScriptPort= iCS_VisualScriptData.GetInInstancePort(this, referenceNode);
-        if(visualScriptPort == null) return false;
-        var providerPort= iCS_VisualScriptData.GetFirstProviderPort(this, visualScriptPort);
-        return providerPort != null && providerPort != visualScriptPort;
+        var gameObjectPort= iCS_VisualScriptData.GetInInstancePort(this, referenceNode);
+        if(gameObjectPort == null) return false;
+        var providerPort= iCS_VisualScriptData.GetFirstProviderPort(this, gameObjectPort);
+        return providerPort != null && providerPort != gameObjectPort;
     }
     // ----------------------------------------------------------------------
     iCS_VisualScriptImp GetVisualScriptFromRefenceNode(iCS_EngineObject referenceNode) {
-        var visualScriptPort= iCS_VisualScriptData.GetInInstancePort(this, referenceNode);
+        var gameObjectPort= iCS_VisualScriptData.GetInInstancePort(this, referenceNode);
         iCS_VisualScriptImp vs= null;
-        if(visualScriptPort != null) {
-            vs= GetInitialValue(visualScriptPort) as iCS_VisualScriptImp;
+        if(gameObjectPort != null) {
+            var gameObject= GetInitialValue(gameObjectPort) as GameObject;
+            if(gameObject != null) {
+                vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
+            }
         }
         if(vs == null) {
             var tag= referenceNode.ProxyOriginalVisualScriptTag;
             var go= GameObject.FindWithTag(tag);
             if(go != null) {
                 vs= go.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;   
-            }
+            }                
         }
         if(vs == null) {
             Debug.LogWarning("iCanScript: Can't locate game object with tag=> "+tag);
@@ -86,5 +89,14 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         userFunctionCall.SetConnection(port.PortIndex, connection);
         return connection;        
     }
-
+    // ----------------------------------------------------------------------
+    public iCS_EngineObject GetPublicInterfaceFromName(string name) {
+        var publicInterfaces= PublicInterfaces;
+        foreach(var pi in publicInterfaces) {
+            if(pi.Name == name) {
+                return pi;
+            }
+        }
+        return null;
+    }
 }
