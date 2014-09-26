@@ -124,15 +124,15 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
                 userActionParameters[i]= parameters[i];
             }
             // Wait unitil user function becomes available
-            if(myUserAction.IsActive == true) {
+            if(!isActionOwner && myUserAction.IsActive == true) {
                 IsStalled= false;
                 return;
             }
             // Execute associated function.
             // TODO: Should desynchronize frameid to force the execution.
             myUserAction.IsActive= true;
+            isActionOwner= true;
             myUserAction.ForceExecute(frameId);
-            myUserAction.IsActive= false;
             // Copy output ports
             for(int i= parameterStart; i <= parameterEnd; ++i) {
 				UpdateParameter(i);
@@ -141,9 +141,13 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
             if(myUserAction.DidExecute(frameId)) {
+                isActionOwner= false;
+                myUserAction.IsActive= false;
                 MarkAsExecuted(frameId);
             }
             else if(myUserAction.IsCurrent(frameId)){
+                isActionOwner= false;
+                myUserAction.IsActive= false;
                 MarkAsCurrent(frameId);
             }            
 //#if UNITY_EDITOR
