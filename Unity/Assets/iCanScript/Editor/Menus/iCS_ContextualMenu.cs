@@ -225,16 +225,9 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
-        int idx= GrowMenuBy(ref menu, 3);
-        menu[idx]= new iCS_MenuContext(EnablePortStr);
-        if(storage.HasTriggerPort(selectedObject)) {
-            menu[idx+1]= new iCS_MenuContext("#"+TriggerPortStr);
-        } else {
-            menu[idx+1]= new iCS_MenuContext(TriggerPortStr);                
-        }
-        menu[idx+2]= new iCS_MenuContext(SeparatorStr);            
+        AddEnableAndTriggerMenuItem(ref menu, selectedObject);
         if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
-            idx= GrowMenuBy(ref menu, 1);
+            int idx= GrowMenuBy(ref menu, 1);
             menu[idx]= new iCS_MenuContext(StateStr); 
         }
 		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
@@ -437,6 +430,9 @@ public class iCS_ContextualMenu {
             menu[idx]= new iCS_MenuContext(SetAsDisplayRootStr);            
         }        
     }
+	
+    // ======================================================================
+    // Menu Creation Utilities
 	// ----------------------------------------------------------------------
 	int GrowMenuBy(ref iCS_MenuContext[] menu, int additionalSize) {
 		int sze= menu == null ? 0 : menu.Length;
@@ -446,7 +442,37 @@ public class iCS_ContextualMenu {
 		menu= newMenu;
 		return sze;
 	}
-	
+	// ----------------------------------------------------------------------
+    void AddSeparator(ref iCS_MenuContext[] menu) {
+        int idx= GrowMenuBy(ref menu, 1);
+        menu[idx]= new iCS_MenuContext(SeparatorStr);
+    }
+	// ----------------------------------------------------------------------
+    void AddDeleteMenuItem(ref iCS_MenuContext[] menu) {
+        int idx= GrowMenuBy(ref menu, 2);
+        menu[idx]= new iCS_MenuContext(SeparatorStr);
+        menu[idx+1]= new iCS_MenuContext(DeleteStr);
+    }
+	// ----------------------------------------------------------------------
+    void AddShowInHierarchyMenuItem(ref iCS_MenuContext[] menu) {
+        int idx= GrowMenuBy(ref menu, 2);
+        menu[idx]= new iCS_MenuContext(SeparatorStr);
+        menu[idx+1]= new iCS_MenuContext(ShowHierarchyStr);        
+    }
+	// ----------------------------------------------------------------------
+    void AddEnableAndTriggerMenuItem(ref iCS_MenuContext[] menu, iCS_EditorObject node) {
+        if(node.IsIconizedInLayout) return;
+        int idx= GrowMenuBy(ref menu, 3);
+        menu[idx]= new iCS_MenuContext(EnablePortStr);
+        var iStorage= node.IStorage;
+        if(iStorage.HasTriggerPort(node)) {
+            menu[idx+1]= new iCS_MenuContext("#"+TriggerPortStr);
+        } else {
+            menu[idx+1]= new iCS_MenuContext(TriggerPortStr);
+        }
+        menu[idx+2]= new iCS_MenuContext(SeparatorStr);
+    }
+    
     // ======================================================================
     // Menu Utilities
 	// ----------------------------------------------------------------------
@@ -473,27 +499,6 @@ public class iCS_ContextualMenu {
         }
         gMenu.ShowAsContext();
         Reset();
-    }
-	// ----------------------------------------------------------------------
-    void AddDeleteMenuItem(ref iCS_MenuContext[] existingMenu) {
-        int idx= ResizeMenu(ref existingMenu, existingMenu.Length+2);
-        existingMenu[idx]= new iCS_MenuContext(SeparatorStr);
-        existingMenu[idx+1]= new iCS_MenuContext(DeleteStr);
-    }
-	// ----------------------------------------------------------------------
-    void AddShowInHierarchyMenuItem(ref iCS_MenuContext[] existingMenu) {
-        int idx= ResizeMenu(ref existingMenu, existingMenu.Length+2);
-        existingMenu[idx]= new iCS_MenuContext(SeparatorStr);
-        existingMenu[idx+1]= new iCS_MenuContext(ShowHierarchyStr);        
-    }
-	// ----------------------------------------------------------------------
-    int ResizeMenu(ref iCS_MenuContext[] existingMenu, int newSize) {
-        int idx= existingMenu.Length;
-        if(idx > newSize) idx= newSize;
-        iCS_MenuContext[] newMenu= new iCS_MenuContext[newSize];
-        existingMenu.CopyTo(newMenu, 0);
-        existingMenu= newMenu;
-        return idx;
     }
 	// ----------------------------------------------------------------------
     iCS_MemberInfo GetReflectionDescFromMenuCommand(iCS_MenuContext menuContext) {
