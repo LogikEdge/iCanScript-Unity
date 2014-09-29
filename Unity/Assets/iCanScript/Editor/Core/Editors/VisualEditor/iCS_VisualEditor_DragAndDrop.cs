@@ -106,7 +106,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(iCS_Types.IsA<GameObject>(dragObjType) && iCS_Types.IsA<Component>(portType)) {
                     var go= draggedObject as GameObject;
                     foreach(var component in go.GetComponents<Component>()) {
-                        if(iCS_Types.IsA(component.GetType(), portType)) {
+                        if(iCS_Types.IsA(portType, component.GetType())) {
                             iCS_UserCommands.DragAndDropSetPortValue(eObj, component);
         					// Remove data so that we don't get called multiple times (Unity bug !!!).
         		            DragAndDrop.AcceptDrag();
@@ -182,7 +182,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(iCS_Types.IsA<GameObject>(dragObjType) && iCS_Types.IsA<Component>(portType)) {
             var go= draggedObject as GameObject;
             foreach(var component in go.GetComponents<Component>()) {
-                if(iCS_Types.IsA(component.GetType(), portType)) {
+                if(iCS_Types.IsA(portType, component.GetType())) {
                     return component;
                 }
             }
