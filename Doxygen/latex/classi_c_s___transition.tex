@@ -1,0 +1,123 @@
+\hypertarget{classi_c_s___transition}{\section{i\+C\+S\+\_\+\+Transition Class Reference}
+\label{classi_c_s___transition}\index{i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}}
+}
+Inheritance diagram for i\+C\+S\+\_\+\+Transition\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classi_c_s___transition}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classi_c_s___transition_a2919c557110b697ecf26ed0d19b12849}{i\+C\+S\+\_\+\+Transition} (\hyperlink{classi_c_s___visual_script_imp}{i\+C\+S\+\_\+\+Visual\+Script\+Imp} visual\+Script, \hyperlink{classi_c_s___state}{i\+C\+S\+\_\+\+State} end\+State, \hyperlink{classi_c_s___package}{i\+C\+S\+\_\+\+Package} transition\+Package, \hyperlink{classi_c_s___action_with_signature}{i\+C\+S\+\_\+\+Action\+With\+Signature} trigger\+Func, int port\+Idx, int priority)
+\item 
+override void \hyperlink{classi_c_s___transition_a72c58ac51652b3e6ed58e9a606497927}{Execute} (int frame\+Id)
+\item 
+override \hyperlink{classi_c_s___connection}{i\+C\+S\+\_\+\+Connection} \hyperlink{classi_c_s___transition_a0d91b871cd4c8b94b7c280b12468b1e7}{Get\+Stalled\+Producer\+Port} (int frame\+Id)
+\item 
+override void \hyperlink{classi_c_s___transition_ab4e62a2fc68c5091fa6cd724b9601744}{Force\+Execute} (int frame\+Id)
+\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classi_c_s___state}{i\+C\+S\+\_\+\+State} \hyperlink{classi_c_s___transition_aaa771f098e26641c45bd0251a720491f}{End\+State}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+bool \hyperlink{classi_c_s___transition_a24426d49439effbd9f7bbea9ea0615ab}{Did\+Trigger}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 4 of file i\+C\+S\+\_\+\+Transition.\+cs.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classi_c_s___transition_a2919c557110b697ecf26ed0d19b12849}{\index{i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}!i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}}
+\index{i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}!i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}}
+\subsubsection[{i\+C\+S\+\_\+\+Transition}]{\setlength{\rightskip}{0pt plus 5cm}i\+C\+S\+\_\+\+Transition.\+i\+C\+S\+\_\+\+Transition (
+\begin{DoxyParamCaption}
+\item[{{\bf i\+C\+S\+\_\+\+Visual\+Script\+Imp}}]{visual\+Script, }
+\item[{{\bf i\+C\+S\+\_\+\+State}}]{end\+State, }
+\item[{{\bf i\+C\+S\+\_\+\+Package}}]{transition\+Package, }
+\item[{{\bf i\+C\+S\+\_\+\+Action\+With\+Signature}}]{trigger\+Func, }
+\item[{int}]{port\+Idx, }
+\item[{int}]{priority}
+\end{DoxyParamCaption}
+)}}\label{classi_c_s___transition_a2919c557110b697ecf26ed0d19b12849}
+
+
+Definition at line 23 of file i\+C\+S\+\_\+\+Transition.\+cs.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classi_c_s___transition_a72c58ac51652b3e6ed58e9a606497927}{\index{i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}!Execute@{Execute}}
+\index{Execute@{Execute}!i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}}
+\subsubsection[{Execute}]{\setlength{\rightskip}{0pt plus 5cm}override void i\+C\+S\+\_\+\+Transition.\+Execute (
+\begin{DoxyParamCaption}
+\item[{int}]{frame\+Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classi_c_s___transition_a72c58ac51652b3e6ed58e9a606497927}
+
+
+Implements \hyperlink{classi_c_s___action_a4b463a51d32e0bd065e301ca553d9261}{i\+C\+S\+\_\+\+Action}.
+
+
+
+Definition at line 33 of file i\+C\+S\+\_\+\+Transition.\+cs.
+
+\hypertarget{classi_c_s___transition_ab4e62a2fc68c5091fa6cd724b9601744}{\index{i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}!Force\+Execute@{Force\+Execute}}
+\index{Force\+Execute@{Force\+Execute}!i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}}
+\subsubsection[{Force\+Execute}]{\setlength{\rightskip}{0pt plus 5cm}override void i\+C\+S\+\_\+\+Transition.\+Force\+Execute (
+\begin{DoxyParamCaption}
+\item[{int}]{frame\+Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classi_c_s___transition_ab4e62a2fc68c5091fa6cd724b9601744}
+
+
+Implements \hyperlink{classi_c_s___action_af1cb586e6433b6f1a7cb5fcfd18ca94e}{i\+C\+S\+\_\+\+Action}.
+
+
+
+Definition at line 52 of file i\+C\+S\+\_\+\+Transition.\+cs.
+
+\hypertarget{classi_c_s___transition_a0d91b871cd4c8b94b7c280b12468b1e7}{\index{i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}!Get\+Stalled\+Producer\+Port@{Get\+Stalled\+Producer\+Port}}
+\index{Get\+Stalled\+Producer\+Port@{Get\+Stalled\+Producer\+Port}!i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}}
+\subsubsection[{Get\+Stalled\+Producer\+Port}]{\setlength{\rightskip}{0pt plus 5cm}override {\bf i\+C\+S\+\_\+\+Connection} i\+C\+S\+\_\+\+Transition.\+Get\+Stalled\+Producer\+Port (
+\begin{DoxyParamCaption}
+\item[{int}]{frame\+Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classi_c_s___transition_a0d91b871cd4c8b94b7c280b12468b1e7}
+
+
+Implements \hyperlink{classi_c_s___action_a4b84305f3956aa96b45fa643f13e7195}{i\+C\+S\+\_\+\+Action}.
+
+
+
+Definition at line 47 of file i\+C\+S\+\_\+\+Transition.\+cs.
+
+
+
+\subsection{Property Documentation}
+\hypertarget{classi_c_s___transition_a24426d49439effbd9f7bbea9ea0615ab}{\index{i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}!Did\+Trigger@{Did\+Trigger}}
+\index{Did\+Trigger@{Did\+Trigger}!i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}}
+\subsubsection[{Did\+Trigger}]{\setlength{\rightskip}{0pt plus 5cm}bool i\+C\+S\+\_\+\+Transition.\+Did\+Trigger\hspace{0.3cm}{\ttfamily [get]}}}\label{classi_c_s___transition_a24426d49439effbd9f7bbea9ea0615ab}
+
+
+Definition at line 18 of file i\+C\+S\+\_\+\+Transition.\+cs.
+
+\hypertarget{classi_c_s___transition_aaa771f098e26641c45bd0251a720491f}{\index{i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}!End\+State@{End\+State}}
+\index{End\+State@{End\+State}!i\+C\+S\+\_\+\+Transition@{i\+C\+S\+\_\+\+Transition}}
+\subsubsection[{End\+State}]{\setlength{\rightskip}{0pt plus 5cm}{\bf i\+C\+S\+\_\+\+State} i\+C\+S\+\_\+\+Transition.\+End\+State\hspace{0.3cm}{\ttfamily [get]}}}\label{classi_c_s___transition_aaa771f098e26641c45bd0251a720491f}
+
+
+Definition at line 17 of file i\+C\+S\+\_\+\+Transition.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Engine/\+Execution\+Service/\hyperlink{i_c_s___transition_8cs}{i\+C\+S\+\_\+\+Transition.\+cs}\end{DoxyCompactItemize}

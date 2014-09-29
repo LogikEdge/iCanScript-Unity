@@ -1,0 +1,222 @@
+\hypertarget{classi_c_s___binding_params}{\section{i\+C\+S\+\_\+\+Binding\+Params Class Reference}
+\label{classi_c_s___binding_params}\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classi_c_s___binding_params_a28b79001f4bf89395798b3b116d33d0c}{i\+C\+S\+\_\+\+Binding\+Params} (\hyperlink{classi_c_s___editor_object}{i\+C\+S\+\_\+\+Editor\+Object} port, Vector2 port\+Pos, \hyperlink{classi_c_s___editor_object}{i\+C\+S\+\_\+\+Editor\+Object} source, Vector2 source\+Pos, \hyperlink{classi_c_s___i_storage}{i\+C\+S\+\_\+\+I\+Storage} storage)
+\item 
+\hyperlink{classi_c_s___binding_params_a2a5277c67893742a6d221f5d786662dd}{i\+C\+S\+\_\+\+Binding\+Params} (\hyperlink{classi_c_s___editor_object}{i\+C\+S\+\_\+\+Editor\+Object} port, \hyperlink{classi_c_s___editor_object}{i\+C\+S\+\_\+\+Editor\+Object} source, \hyperlink{classi_c_s___i_storage}{i\+C\+S\+\_\+\+I\+Storage} storage)
+\item 
+\hyperlink{classi_c_s___binding_params_ab934ef854e7a64d52bb6bca577387cdc}{i\+C\+S\+\_\+\+Binding\+Params} (\hyperlink{classi_c_s___editor_object}{i\+C\+S\+\_\+\+Editor\+Object} port, \hyperlink{classi_c_s___i_storage}{i\+C\+S\+\_\+\+I\+Storage} storage)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Vector3 \hyperlink{classi_c_s___binding_params_a2ac17939af1006a909dcf59d86290777}{Bezier\+Center} (Vector3 start, Vector3 end, Vector3 start\+Tangent, Vector3 end\+Tangent)
+\item 
+static Vector3 \hyperlink{classi_c_s___binding_params_a8846c4d870edf8957d4a828db483942e}{Closest\+Point\+Bezier} (Vector3 point, Vector3 start, Vector3 end, Vector3 start\+Tangent, Vector3 end\+Tangent, int iteration=1)
+\item 
+static Vector2 \hyperlink{classi_c_s___binding_params_ab006d8f4baa1368f25a9c16ce074986e}{Get\+Bezier\+Center\+Direction} (Vector3 start, Vector3 end, Vector3 start\+Tangent, Vector3 end\+Tangent)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Vector2 \hyperlink{classi_c_s___binding_params_af5f5d4614da797cf504d6e055533661b}{Start} = Vector2.\+zero
+\item 
+Vector2 \hyperlink{classi_c_s___binding_params_a5feaf7ce6486eb7ea0b4f49000b76ae4}{End} = Vector2.\+zero
+\item 
+Vector2 \hyperlink{classi_c_s___binding_params_ace424b62e2696361c73710aa71580aaf}{Start\+Tangent} = Vector2.\+zero
+\item 
+Vector2 \hyperlink{classi_c_s___binding_params_a7f8cb9188086e21863bf5016c33c13dc}{End\+Tangent} = Vector2.\+zero
+\item 
+Vector2 \hyperlink{classi_c_s___binding_params_ac16427404ded431ca3232465c22f8eb0}{Center} = Vector2.\+zero
+\item 
+Vector2 \hyperlink{classi_c_s___binding_params_ac9c70ab3dec6e0542e4df8043d813451}{Center\+Direction} = Vector2.\+zero
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static readonly Vector2 \hyperlink{classi_c_s___binding_params_a2d3bd58f85f2b0663e6c19b454ec63ca}{Up\+Direction} = new Vector2(0,-\/1)
+\item 
+static readonly Vector2 \hyperlink{classi_c_s___binding_params_a6c93711d002e26f0ad98c251f13094e2}{Down\+Direction} = new Vector2(0,1)
+\item 
+static readonly Vector2 \hyperlink{classi_c_s___binding_params_ad39efe83d365fcebb1447e37513a5ba7}{Right\+Direction} = new Vector2(1,0)
+\item 
+static readonly Vector2 \hyperlink{classi_c_s___binding_params_afbcc828dd861afeef1f1347894b81b90}{Left\+Direction} = new Vector2(-\/1,0)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 7 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classi_c_s___binding_params_a28b79001f4bf89395798b3b116d33d0c}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{i\+C\+S\+\_\+\+Binding\+Params}]{\setlength{\rightskip}{0pt plus 5cm}i\+C\+S\+\_\+\+Binding\+Params.\+i\+C\+S\+\_\+\+Binding\+Params (
+\begin{DoxyParamCaption}
+\item[{{\bf i\+C\+S\+\_\+\+Editor\+Object}}]{port, }
+\item[{Vector2}]{port\+Pos, }
+\item[{{\bf i\+C\+S\+\_\+\+Editor\+Object}}]{source, }
+\item[{Vector2}]{source\+Pos, }
+\item[{{\bf i\+C\+S\+\_\+\+I\+Storage}}]{storage}
+\end{DoxyParamCaption}
+)}}\label{classi_c_s___binding_params_a28b79001f4bf89395798b3b116d33d0c}
+
+
+Definition at line 29 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_a2a5277c67893742a6d221f5d786662dd}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{i\+C\+S\+\_\+\+Binding\+Params}]{\setlength{\rightskip}{0pt plus 5cm}i\+C\+S\+\_\+\+Binding\+Params.\+i\+C\+S\+\_\+\+Binding\+Params (
+\begin{DoxyParamCaption}
+\item[{{\bf i\+C\+S\+\_\+\+Editor\+Object}}]{port, }
+\item[{{\bf i\+C\+S\+\_\+\+Editor\+Object}}]{source, }
+\item[{{\bf i\+C\+S\+\_\+\+I\+Storage}}]{storage}
+\end{DoxyParamCaption}
+)}}\label{classi_c_s___binding_params_a2a5277c67893742a6d221f5d786662dd}
+
+
+Definition at line 45 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_ab934ef854e7a64d52bb6bca577387cdc}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{i\+C\+S\+\_\+\+Binding\+Params}]{\setlength{\rightskip}{0pt plus 5cm}i\+C\+S\+\_\+\+Binding\+Params.\+i\+C\+S\+\_\+\+Binding\+Params (
+\begin{DoxyParamCaption}
+\item[{{\bf i\+C\+S\+\_\+\+Editor\+Object}}]{port, }
+\item[{{\bf i\+C\+S\+\_\+\+I\+Storage}}]{storage}
+\end{DoxyParamCaption}
+)}}\label{classi_c_s___binding_params_ab934ef854e7a64d52bb6bca577387cdc}
+
+
+Definition at line 47 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classi_c_s___binding_params_a2ac17939af1006a909dcf59d86290777}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Bezier\+Center@{Bezier\+Center}}
+\index{Bezier\+Center@{Bezier\+Center}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Bezier\+Center}]{\setlength{\rightskip}{0pt plus 5cm}static Vector3 i\+C\+S\+\_\+\+Binding\+Params.\+Bezier\+Center (
+\begin{DoxyParamCaption}
+\item[{Vector3}]{start, }
+\item[{Vector3}]{end, }
+\item[{Vector3}]{start\+Tangent, }
+\item[{Vector3}]{end\+Tangent}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___binding_params_a2ac17939af1006a909dcf59d86290777}
+
+
+Definition at line 94 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_a8846c4d870edf8957d4a828db483942e}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Closest\+Point\+Bezier@{Closest\+Point\+Bezier}}
+\index{Closest\+Point\+Bezier@{Closest\+Point\+Bezier}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Closest\+Point\+Bezier}]{\setlength{\rightskip}{0pt plus 5cm}static Vector3 i\+C\+S\+\_\+\+Binding\+Params.\+Closest\+Point\+Bezier (
+\begin{DoxyParamCaption}
+\item[{Vector3}]{point, }
+\item[{Vector3}]{start, }
+\item[{Vector3}]{end, }
+\item[{Vector3}]{start\+Tangent, }
+\item[{Vector3}]{end\+Tangent, }
+\item[{int}]{iteration = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___binding_params_a8846c4d870edf8957d4a828db483942e}
+
+
+Definition at line 100 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_ab006d8f4baa1368f25a9c16ce074986e}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Get\+Bezier\+Center\+Direction@{Get\+Bezier\+Center\+Direction}}
+\index{Get\+Bezier\+Center\+Direction@{Get\+Bezier\+Center\+Direction}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Get\+Bezier\+Center\+Direction}]{\setlength{\rightskip}{0pt plus 5cm}static Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+Get\+Bezier\+Center\+Direction (
+\begin{DoxyParamCaption}
+\item[{Vector3}]{start, }
+\item[{Vector3}]{end, }
+\item[{Vector3}]{start\+Tangent, }
+\item[{Vector3}]{end\+Tangent}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___binding_params_ab006d8f4baa1368f25a9c16ce074986e}
+
+
+Definition at line 133 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classi_c_s___binding_params_ac16427404ded431ca3232465c22f8eb0}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Center@{Center}}
+\index{Center@{Center}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Center}]{\setlength{\rightskip}{0pt plus 5cm}Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+Center = Vector2.\+zero}}\label{classi_c_s___binding_params_ac16427404ded431ca3232465c22f8eb0}
+
+
+Definition at line 15 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_ac9c70ab3dec6e0542e4df8043d813451}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Center\+Direction@{Center\+Direction}}
+\index{Center\+Direction@{Center\+Direction}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Center\+Direction}]{\setlength{\rightskip}{0pt plus 5cm}Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+Center\+Direction = Vector2.\+zero}}\label{classi_c_s___binding_params_ac9c70ab3dec6e0542e4df8043d813451}
+
+
+Definition at line 16 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_a6c93711d002e26f0ad98c251f13094e2}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Down\+Direction@{Down\+Direction}}
+\index{Down\+Direction@{Down\+Direction}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Down\+Direction}]{\setlength{\rightskip}{0pt plus 5cm}readonly Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+Down\+Direction = new Vector2(0,1)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___binding_params_a6c93711d002e26f0ad98c251f13094e2}
+
+
+Definition at line 22 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_a5feaf7ce6486eb7ea0b4f49000b76ae4}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!End@{End}}
+\index{End@{End}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{End}]{\setlength{\rightskip}{0pt plus 5cm}Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+End = Vector2.\+zero}}\label{classi_c_s___binding_params_a5feaf7ce6486eb7ea0b4f49000b76ae4}
+
+
+Definition at line 12 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_a7f8cb9188086e21863bf5016c33c13dc}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!End\+Tangent@{End\+Tangent}}
+\index{End\+Tangent@{End\+Tangent}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{End\+Tangent}]{\setlength{\rightskip}{0pt plus 5cm}Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+End\+Tangent = Vector2.\+zero}}\label{classi_c_s___binding_params_a7f8cb9188086e21863bf5016c33c13dc}
+
+
+Definition at line 14 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_afbcc828dd861afeef1f1347894b81b90}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Left\+Direction@{Left\+Direction}}
+\index{Left\+Direction@{Left\+Direction}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Left\+Direction}]{\setlength{\rightskip}{0pt plus 5cm}readonly Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+Left\+Direction = new Vector2(-\/1,0)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___binding_params_afbcc828dd861afeef1f1347894b81b90}
+
+
+Definition at line 24 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_ad39efe83d365fcebb1447e37513a5ba7}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Right\+Direction@{Right\+Direction}}
+\index{Right\+Direction@{Right\+Direction}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Right\+Direction}]{\setlength{\rightskip}{0pt plus 5cm}readonly Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+Right\+Direction = new Vector2(1,0)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___binding_params_ad39efe83d365fcebb1447e37513a5ba7}
+
+
+Definition at line 23 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_af5f5d4614da797cf504d6e055533661b}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Start@{Start}}
+\index{Start@{Start}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Start}]{\setlength{\rightskip}{0pt plus 5cm}Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+Start = Vector2.\+zero}}\label{classi_c_s___binding_params_af5f5d4614da797cf504d6e055533661b}
+
+
+Definition at line 11 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_ace424b62e2696361c73710aa71580aaf}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Start\+Tangent@{Start\+Tangent}}
+\index{Start\+Tangent@{Start\+Tangent}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Start\+Tangent}]{\setlength{\rightskip}{0pt plus 5cm}Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+Start\+Tangent = Vector2.\+zero}}\label{classi_c_s___binding_params_ace424b62e2696361c73710aa71580aaf}
+
+
+Definition at line 13 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+\hypertarget{classi_c_s___binding_params_a2d3bd58f85f2b0663e6c19b454ec63ca}{\index{i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}!Up\+Direction@{Up\+Direction}}
+\index{Up\+Direction@{Up\+Direction}!i\+C\+S\+\_\+\+Binding\+Params@{i\+C\+S\+\_\+\+Binding\+Params}}
+\subsubsection[{Up\+Direction}]{\setlength{\rightskip}{0pt plus 5cm}readonly Vector2 i\+C\+S\+\_\+\+Binding\+Params.\+Up\+Direction = new Vector2(0,-\/1)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___binding_params_a2d3bd58f85f2b0663e6c19b454ec63ca}
+
+
+Definition at line 21 of file i\+C\+S\+\_\+\+Binding\+Params.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Editor/\+Core/\hyperlink{i_c_s___binding_params_8cs}{i\+C\+S\+\_\+\+Binding\+Params.\+cs}\end{DoxyCompactItemize}

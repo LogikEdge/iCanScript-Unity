@@ -1,0 +1,332 @@
+\hypertarget{classi_c_s___toolbar_utility}{\section{i\+C\+S\+\_\+\+Toolbar\+Utility Class Reference}
+\label{classi_c_s___toolbar_utility}\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Rect \hyperlink{classi_c_s___toolbar_utility_a62457a59c978819a82ec9f7fd60a1a95}{Build\+Toolbar} (float width, float y\+Offset=0)
+\item 
+static float \hyperlink{classi_c_s___toolbar_utility_addea9b3928e51a346ba29a70588981f1}{Get\+Height} ()
+\item 
+static Rect \hyperlink{classi_c_s___toolbar_utility_a674a89a7a80de041cec5da6b2fb8f17b}{Reserve\+Area} (ref Rect r, float width, float left\+Margin, float right\+Margin, bool is\+Right\+Justified)
+\item 
+static void \hyperlink{classi_c_s___toolbar_utility_a43922ba1c7669e5586d3c25d98856c8d}{Mini\+Label} (ref Rect toolbar\+Rect, string label, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static void \hyperlink{classi_c_s___toolbar_utility_a423407286ff3970f2d29e7bacc770452}{Mini\+Label} (ref Rect toolbar\+Rect, G\+U\+I\+Content content, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static void \hyperlink{classi_c_s___toolbar_utility_aa8a752db8e5546b004e44217aaf58bab}{Mini\+Label} (ref Rect toolbar\+Rect, float width, string label, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static void \hyperlink{classi_c_s___toolbar_utility_acf9c0cc392cda323f1e08bd46e71c251}{Mini\+Label} (ref Rect toolbar\+Rect, float width, G\+U\+I\+Content content, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static float \hyperlink{classi_c_s___toolbar_utility_aaa7e5431fa49419a7ca62a3d7f7d6c76}{Slider} (ref Rect toolbar\+Rect, float width, float value, float left\+Value, float right\+Value, float right\+Margin, float left\+Margin, bool is\+Right\+Justified=false)
+\item 
+static string \hyperlink{classi_c_s___toolbar_utility_a828d8ef03673fa9ca0ac975ea54c107c}{Text} (ref Rect toolbar\+Rect, float width, string value, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static void \hyperlink{classi_c_s___toolbar_utility_a27830d2afaa33f6ea20f2902aba76610}{Centered\+Title} (ref Rect toolbar\+Rect, string title)
+\item 
+static bool \hyperlink{classi_c_s___toolbar_utility_aa10b6772c9b08273ec8ab80703292d71}{Button} (ref Rect toolbar\+Rect, bool value, Texture texture, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static bool \hyperlink{classi_c_s___toolbar_utility_af9750ad44ed9e1962da00ee9c7672781}{Button} (ref Rect toolbar\+Rect, float width, bool value, Texture texture, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static int \hyperlink{classi_c_s___toolbar_utility_a6de127573fc0a3d8dfc30e1efbc7306e}{Toolbar} (ref Rect toolbar\+Rect, float width, int value, string\mbox{[}$\,$\mbox{]} options, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static string \hyperlink{classi_c_s___toolbar_utility_a0ed13ac54dcc3925a41913a212ee885e}{Search} (ref Rect toolbar\+Rect, float width, string value, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static int \hyperlink{classi_c_s___toolbar_utility_a348a67a3d7e431a261d2cf1baf67e297}{Popup} (ref Rect toolbar\+Rect, float width, string label, int index, string\mbox{[}$\,$\mbox{]} options, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static int \hyperlink{classi_c_s___toolbar_utility_a9fec07fdc80b26c4c592582c1f0efadd}{Popup} (ref Rect toolbar\+Rect, float width, G\+U\+I\+Content content, int index, G\+U\+I\+Content\mbox{[}$\,$\mbox{]} options, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static bool \hyperlink{classi_c_s___toolbar_utility_a4589401f4adb33d223c5ed1c661fde05}{Toggle} (ref Rect toolbar\+Rect, bool value, float left\+Margin, float right\+Margin, bool is\+Right\+Justified=false)
+\item 
+static void \hyperlink{classi_c_s___toolbar_utility_a1d966688d7ad1f6c47035b1932451c31}{Separator} (ref Rect toolbar\+Rect, bool is\+Right\+Justified=false)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 5 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classi_c_s___toolbar_utility_a62457a59c978819a82ec9f7fd60a1a95}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Build\+Toolbar@{Build\+Toolbar}}
+\index{Build\+Toolbar@{Build\+Toolbar}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Build\+Toolbar}]{\setlength{\rightskip}{0pt plus 5cm}static Rect i\+C\+S\+\_\+\+Toolbar\+Utility.\+Build\+Toolbar (
+\begin{DoxyParamCaption}
+\item[{float}]{width, }
+\item[{float}]{y\+Offset = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a62457a59c978819a82ec9f7fd60a1a95}
+
+
+Definition at line 24 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_aa10b6772c9b08273ec8ab80703292d71}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Button@{Button}}
+\index{Button@{Button}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Button}]{\setlength{\rightskip}{0pt plus 5cm}static bool i\+C\+S\+\_\+\+Toolbar\+Utility.\+Button (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{bool}]{value, }
+\item[{Texture}]{texture, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_aa10b6772c9b08273ec8ab80703292d71}
+
+
+Definition at line 125 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_af9750ad44ed9e1962da00ee9c7672781}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Button@{Button}}
+\index{Button@{Button}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Button}]{\setlength{\rightskip}{0pt plus 5cm}static bool i\+C\+S\+\_\+\+Toolbar\+Utility.\+Button (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{float}]{width, }
+\item[{bool}]{value, }
+\item[{Texture}]{texture, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_af9750ad44ed9e1962da00ee9c7672781}
+
+
+Definition at line 137 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a27830d2afaa33f6ea20f2902aba76610}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Centered\+Title@{Centered\+Title}}
+\index{Centered\+Title@{Centered\+Title}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Centered\+Title}]{\setlength{\rightskip}{0pt plus 5cm}static void i\+C\+S\+\_\+\+Toolbar\+Utility.\+Centered\+Title (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{string}]{title}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a27830d2afaa33f6ea20f2902aba76610}
+
+
+Definition at line 106 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_addea9b3928e51a346ba29a70588981f1}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Get\+Height@{Get\+Height}}
+\index{Get\+Height@{Get\+Height}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Get\+Height}]{\setlength{\rightskip}{0pt plus 5cm}static float i\+C\+S\+\_\+\+Toolbar\+Utility.\+Get\+Height (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_addea9b3928e51a346ba29a70588981f1}
+
+
+Definition at line 32 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a43922ba1c7669e5586d3c25d98856c8d}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Mini\+Label@{Mini\+Label}}
+\index{Mini\+Label@{Mini\+Label}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Mini\+Label}]{\setlength{\rightskip}{0pt plus 5cm}static void i\+C\+S\+\_\+\+Toolbar\+Utility.\+Mini\+Label (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{string}]{label, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a43922ba1c7669e5586d3c25d98856c8d}
+
+
+Definition at line 56 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a423407286ff3970f2d29e7bacc770452}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Mini\+Label@{Mini\+Label}}
+\index{Mini\+Label@{Mini\+Label}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Mini\+Label}]{\setlength{\rightskip}{0pt plus 5cm}static void i\+C\+S\+\_\+\+Toolbar\+Utility.\+Mini\+Label (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{G\+U\+I\+Content}]{content, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a423407286ff3970f2d29e7bacc770452}
+
+
+Definition at line 60 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_aa8a752db8e5546b004e44217aaf58bab}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Mini\+Label@{Mini\+Label}}
+\index{Mini\+Label@{Mini\+Label}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Mini\+Label}]{\setlength{\rightskip}{0pt plus 5cm}static void i\+C\+S\+\_\+\+Toolbar\+Utility.\+Mini\+Label (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{float}]{width, }
+\item[{string}]{label, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_aa8a752db8e5546b004e44217aaf58bab}
+
+
+Definition at line 70 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_acf9c0cc392cda323f1e08bd46e71c251}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Mini\+Label@{Mini\+Label}}
+\index{Mini\+Label@{Mini\+Label}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Mini\+Label}]{\setlength{\rightskip}{0pt plus 5cm}static void i\+C\+S\+\_\+\+Toolbar\+Utility.\+Mini\+Label (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{float}]{width, }
+\item[{G\+U\+I\+Content}]{content, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_acf9c0cc392cda323f1e08bd46e71c251}
+
+
+Definition at line 74 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a348a67a3d7e431a261d2cf1baf67e297}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Popup@{Popup}}
+\index{Popup@{Popup}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Popup}]{\setlength{\rightskip}{0pt plus 5cm}static int i\+C\+S\+\_\+\+Toolbar\+Utility.\+Popup (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{float}]{width, }
+\item[{string}]{label, }
+\item[{int}]{index, }
+\item[{string\mbox{[}$\,$\mbox{]}}]{options, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a348a67a3d7e431a261d2cf1baf67e297}
+
+
+Definition at line 185 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a9fec07fdc80b26c4c592582c1f0efadd}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Popup@{Popup}}
+\index{Popup@{Popup}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Popup}]{\setlength{\rightskip}{0pt plus 5cm}static int i\+C\+S\+\_\+\+Toolbar\+Utility.\+Popup (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{float}]{width, }
+\item[{G\+U\+I\+Content}]{content, }
+\item[{int}]{index, }
+\item[{G\+U\+I\+Content\mbox{[}$\,$\mbox{]}}]{options, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a9fec07fdc80b26c4c592582c1f0efadd}
+
+
+Definition at line 191 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a674a89a7a80de041cec5da6b2fb8f17b}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Reserve\+Area@{Reserve\+Area}}
+\index{Reserve\+Area@{Reserve\+Area}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Reserve\+Area}]{\setlength{\rightskip}{0pt plus 5cm}static Rect i\+C\+S\+\_\+\+Toolbar\+Utility.\+Reserve\+Area (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{r, }
+\item[{float}]{width, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a674a89a7a80de041cec5da6b2fb8f17b}
+
+
+Definition at line 35 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a0ed13ac54dcc3925a41913a212ee885e}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Search@{Search}}
+\index{Search@{Search}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Search}]{\setlength{\rightskip}{0pt plus 5cm}static string i\+C\+S\+\_\+\+Toolbar\+Utility.\+Search (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{float}]{width, }
+\item[{string}]{value, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a0ed13ac54dcc3925a41913a212ee885e}
+
+
+Definition at line 156 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a1d966688d7ad1f6c47035b1932451c31}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Separator@{Separator}}
+\index{Separator@{Separator}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Separator}]{\setlength{\rightskip}{0pt plus 5cm}static void i\+C\+S\+\_\+\+Toolbar\+Utility.\+Separator (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a1d966688d7ad1f6c47035b1932451c31}
+
+
+Definition at line 207 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_aaa7e5431fa49419a7ca62a3d7f7d6c76}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Slider@{Slider}}
+\index{Slider@{Slider}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Slider}]{\setlength{\rightskip}{0pt plus 5cm}static float i\+C\+S\+\_\+\+Toolbar\+Utility.\+Slider (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{float}]{width, }
+\item[{float}]{value, }
+\item[{float}]{left\+Value, }
+\item[{float}]{right\+Value, }
+\item[{float}]{right\+Margin, }
+\item[{float}]{left\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_aaa7e5431fa49419a7ca62a3d7f7d6c76}
+
+
+Definition at line 84 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a828d8ef03673fa9ca0ac975ea54c107c}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Text@{Text}}
+\index{Text@{Text}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Text}]{\setlength{\rightskip}{0pt plus 5cm}static string i\+C\+S\+\_\+\+Toolbar\+Utility.\+Text (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{float}]{width, }
+\item[{string}]{value, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a828d8ef03673fa9ca0ac975ea54c107c}
+
+
+Definition at line 94 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a4589401f4adb33d223c5ed1c661fde05}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Toggle@{Toggle}}
+\index{Toggle@{Toggle}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Toggle}]{\setlength{\rightskip}{0pt plus 5cm}static bool i\+C\+S\+\_\+\+Toolbar\+Utility.\+Toggle (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{bool}]{value, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a4589401f4adb33d223c5ed1c661fde05}
+
+
+Definition at line 197 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+\hypertarget{classi_c_s___toolbar_utility_a6de127573fc0a3d8dfc30e1efbc7306e}{\index{i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}!Toolbar@{Toolbar}}
+\index{Toolbar@{Toolbar}!i\+C\+S\+\_\+\+Toolbar\+Utility@{i\+C\+S\+\_\+\+Toolbar\+Utility}}
+\subsubsection[{Toolbar}]{\setlength{\rightskip}{0pt plus 5cm}static int i\+C\+S\+\_\+\+Toolbar\+Utility.\+Toolbar (
+\begin{DoxyParamCaption}
+\item[{ref Rect}]{toolbar\+Rect, }
+\item[{float}]{width, }
+\item[{int}]{value, }
+\item[{string\mbox{[}$\,$\mbox{]}}]{options, }
+\item[{float}]{left\+Margin, }
+\item[{float}]{right\+Margin, }
+\item[{bool}]{is\+Right\+Justified = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classi_c_s___toolbar_utility_a6de127573fc0a3d8dfc30e1efbc7306e}
+
+
+Definition at line 149 of file i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Editor/\+Core/\hyperlink{i_c_s___toolbar_utility_8cs}{i\+C\+S\+\_\+\+Toolbar\+Utility.\+cs}\end{DoxyCompactItemize}

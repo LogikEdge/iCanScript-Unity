@@ -1,0 +1,253 @@
+\hypertarget{class_d_s_scroll_view}{\section{D\+S\+Scroll\+View Class Reference}
+\label{class_d_s_scroll_view}\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+}
+Inheritance diagram for D\+S\+Scroll\+View\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_d_s_scroll_view}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_d_s_scroll_view_a77453524354c687b5c7721bf83c3c626}{D\+S\+Scroll\+View} (Rect\+Offset margins, bool should\+Display\+Frame, bool use\+Full\+Width=true, bool use\+Full\+Height=true, Action$<$ \hyperlink{class_d_s_scroll_view}{D\+S\+Scroll\+View}, Rect $>$ display\+Delegate=null, Func$<$ \hyperlink{class_d_s_scroll_view}{D\+S\+Scroll\+View}, Rect, Vector2 $>$ get\+Size\+To\+Display\+Delegate=null)
+\item 
+\hyperlink{class_d_s_scroll_view_a349bb0c4d77d5ff0f68c5ded91d068eb}{D\+S\+Scroll\+View} (Rect\+Offset margins, bool should\+Display\+Frame, bool use\+Full\+Width, bool use\+Full\+Height, \hyperlink{class_d_s_view}{D\+S\+View} subview)
+\item 
+override void \hyperlink{class_d_s_scroll_view_ae83ca094db6d76251049b64572fc0d92}{Display} (Rect frame\+Area)
+\item 
+override Vector2 \hyperlink{class_d_s_scroll_view_a0a832bc24a9037e5a265ca878637ed67}{Get\+Size\+To\+Display} (Rect frame\+Area)
+\item 
+override \hyperlink{class_d_s_view_a8b41b9ec1b18bd33872a37cbd3a2dbe1}{Anchor\+Enum} \hyperlink{class_d_s_scroll_view_aecc8f1894c7e33e0eb87eca84c6f1ddf}{Get\+Anchor} ()
+\item 
+override void \hyperlink{class_d_s_scroll_view_abc9552fe959cbe544fd9e6d8b729dc29}{Set\+Anchor} (\hyperlink{class_d_s_view_a8b41b9ec1b18bd33872a37cbd3a2dbe1}{Anchor\+Enum} anchor)
+\item 
+void \hyperlink{class_d_s_scroll_view_a409e5f6add0e9dd27fead4cc6e641f3c}{Make\+Visible} (Rect area, Rect display\+Area)
+\item 
+bool \hyperlink{class_d_s_scroll_view_ab8bbe00cce2d59f2390a4464de23acad}{Is\+Horizontal\+Scrollbar\+Visble} (Rect display\+Area)
+\item 
+bool \hyperlink{class_d_s_scroll_view_ac6e361f0bb9725ba5a3954966fe839df}{Is\+Vertical\+Scrollbar\+Visible} (Rect display\+Area)
+\item 
+void \hyperlink{class_d_s_scroll_view_a959769b37b3850798d54b1f338da8939}{Set\+Subview} (\hyperlink{class_d_s_view}{D\+S\+View} subview)
+\item 
+bool \hyperlink{class_d_s_scroll_view_aca9d039232d296c13a89d529e2fa3d8c}{Remove\+Subview} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_d_s_scroll_view_ac8b5fbd529a99ed5f4d504fc233206d3}{Invoke\+Display\+Delegate} (Rect display\+Area)
+\item 
+Vector2 \hyperlink{class_d_s_scroll_view_a67f0527a2ac687f10dde49ada2c045d4}{Invoke\+Get\+Size\+To\+Display\+Delegate} (Rect display\+Area)
+\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Action$<$ \hyperlink{class_d_s_scroll_view}{D\+S\+Scroll\+View}, Rect $>$ \hyperlink{class_d_s_scroll_view_a8ab2159844134c054149b399d98adc59}{Display\+Delegate}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+Func$<$ \hyperlink{class_d_s_scroll_view}{D\+S\+Scroll\+View}, Rect, Vector2 $>$ \hyperlink{class_d_s_scroll_view_ad373079c51845a6cf4fc9d0bc4db6abe}{Get\+Size\+To\+Display\+Delegate}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 5 of file D\+S\+Scroll\+View.\+cs.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_d_s_scroll_view_a77453524354c687b5c7721bf83c3c626}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{D\+S\+Scroll\+View}]{\setlength{\rightskip}{0pt plus 5cm}D\+S\+Scroll\+View.\+D\+S\+Scroll\+View (
+\begin{DoxyParamCaption}
+\item[{Rect\+Offset}]{margins, }
+\item[{bool}]{should\+Display\+Frame, }
+\item[{bool}]{use\+Full\+Width = {\ttfamily true}, }
+\item[{bool}]{use\+Full\+Height = {\ttfamily true}, }
+\item[{Action$<$ {\bf D\+S\+Scroll\+View}, Rect $>$}]{display\+Delegate = {\ttfamily null}, }
+\item[{Func$<$ {\bf D\+S\+Scroll\+View}, Rect, Vector2 $>$}]{get\+Size\+To\+Display\+Delegate = {\ttfamily null}}
+\end{DoxyParamCaption}
+)}}\label{class_d_s_scroll_view_a77453524354c687b5c7721bf83c3c626}
+
+
+Definition at line 37 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_a349bb0c4d77d5ff0f68c5ded91d068eb}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{D\+S\+Scroll\+View}]{\setlength{\rightskip}{0pt plus 5cm}D\+S\+Scroll\+View.\+D\+S\+Scroll\+View (
+\begin{DoxyParamCaption}
+\item[{Rect\+Offset}]{margins, }
+\item[{bool}]{should\+Display\+Frame, }
+\item[{bool}]{use\+Full\+Width, }
+\item[{bool}]{use\+Full\+Height, }
+\item[{{\bf D\+S\+View}}]{subview}
+\end{DoxyParamCaption}
+)}}\label{class_d_s_scroll_view_a349bb0c4d77d5ff0f68c5ded91d068eb}
+
+
+Definition at line 46 of file D\+S\+Scroll\+View.\+cs.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_d_s_scroll_view_ae83ca094db6d76251049b64572fc0d92}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Display@{Display}}
+\index{Display@{Display}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Display}]{\setlength{\rightskip}{0pt plus 5cm}override void D\+S\+Scroll\+View.\+Display (
+\begin{DoxyParamCaption}
+\item[{Rect}]{frame\+Area}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_d_s_scroll_view_ae83ca094db6d76251049b64572fc0d92}
+
+
+Implements \hyperlink{class_d_s_view_ad63755f64c4c2f6efc936956de0f12fc}{D\+S\+View}.
+
+
+
+Definition at line 52 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_aecc8f1894c7e33e0eb87eca84c6f1ddf}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Get\+Anchor@{Get\+Anchor}}
+\index{Get\+Anchor@{Get\+Anchor}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Get\+Anchor}]{\setlength{\rightskip}{0pt plus 5cm}override {\bf Anchor\+Enum} D\+S\+Scroll\+View.\+Get\+Anchor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_d_s_scroll_view_aecc8f1894c7e33e0eb87eca84c6f1ddf}
+
+
+Implements \hyperlink{class_d_s_view_a8c31c0683dc8fb64c0e9228f094f19ec}{D\+S\+View}.
+
+
+
+Definition at line 58 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_a0a832bc24a9037e5a265ca878637ed67}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Get\+Size\+To\+Display@{Get\+Size\+To\+Display}}
+\index{Get\+Size\+To\+Display@{Get\+Size\+To\+Display}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Get\+Size\+To\+Display}]{\setlength{\rightskip}{0pt plus 5cm}override Vector2 D\+S\+Scroll\+View.\+Get\+Size\+To\+Display (
+\begin{DoxyParamCaption}
+\item[{Rect}]{frame\+Area}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_d_s_scroll_view_a0a832bc24a9037e5a265ca878637ed67}
+
+
+Implements \hyperlink{class_d_s_view_a97c04733e33ccb7a0b115cef76e3e840}{D\+S\+View}.
+
+
+
+Definition at line 55 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_ac8b5fbd529a99ed5f4d504fc233206d3}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Invoke\+Display\+Delegate@{Invoke\+Display\+Delegate}}
+\index{Invoke\+Display\+Delegate@{Invoke\+Display\+Delegate}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Invoke\+Display\+Delegate}]{\setlength{\rightskip}{0pt plus 5cm}void D\+S\+Scroll\+View.\+Invoke\+Display\+Delegate (
+\begin{DoxyParamCaption}
+\item[{Rect}]{display\+Area}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_d_s_scroll_view_ac8b5fbd529a99ed5f4d504fc233206d3}
+
+
+Definition at line 144 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_a67f0527a2ac687f10dde49ada2c045d4}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Invoke\+Get\+Size\+To\+Display\+Delegate@{Invoke\+Get\+Size\+To\+Display\+Delegate}}
+\index{Invoke\+Get\+Size\+To\+Display\+Delegate@{Invoke\+Get\+Size\+To\+Display\+Delegate}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Invoke\+Get\+Size\+To\+Display\+Delegate}]{\setlength{\rightskip}{0pt plus 5cm}Vector2 D\+S\+Scroll\+View.\+Invoke\+Get\+Size\+To\+Display\+Delegate (
+\begin{DoxyParamCaption}
+\item[{Rect}]{display\+Area}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_d_s_scroll_view_a67f0527a2ac687f10dde49ada2c045d4}
+
+
+Definition at line 147 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_ab8bbe00cce2d59f2390a4464de23acad}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Is\+Horizontal\+Scrollbar\+Visble@{Is\+Horizontal\+Scrollbar\+Visble}}
+\index{Is\+Horizontal\+Scrollbar\+Visble@{Is\+Horizontal\+Scrollbar\+Visble}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Is\+Horizontal\+Scrollbar\+Visble}]{\setlength{\rightskip}{0pt plus 5cm}bool D\+S\+Scroll\+View.\+Is\+Horizontal\+Scrollbar\+Visble (
+\begin{DoxyParamCaption}
+\item[{Rect}]{display\+Area}
+\end{DoxyParamCaption}
+)}}\label{class_d_s_scroll_view_ab8bbe00cce2d59f2390a4464de23acad}
+
+
+Definition at line 92 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_ac6e361f0bb9725ba5a3954966fe839df}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Is\+Vertical\+Scrollbar\+Visible@{Is\+Vertical\+Scrollbar\+Visible}}
+\index{Is\+Vertical\+Scrollbar\+Visible@{Is\+Vertical\+Scrollbar\+Visible}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Is\+Vertical\+Scrollbar\+Visible}]{\setlength{\rightskip}{0pt plus 5cm}bool D\+S\+Scroll\+View.\+Is\+Vertical\+Scrollbar\+Visible (
+\begin{DoxyParamCaption}
+\item[{Rect}]{display\+Area}
+\end{DoxyParamCaption}
+)}}\label{class_d_s_scroll_view_ac6e361f0bb9725ba5a3954966fe839df}
+
+
+Definition at line 95 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_a409e5f6add0e9dd27fead4cc6e641f3c}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Make\+Visible@{Make\+Visible}}
+\index{Make\+Visible@{Make\+Visible}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Make\+Visible}]{\setlength{\rightskip}{0pt plus 5cm}void D\+S\+Scroll\+View.\+Make\+Visible (
+\begin{DoxyParamCaption}
+\item[{Rect}]{area, }
+\item[{Rect}]{display\+Area}
+\end{DoxyParamCaption}
+)}}\label{class_d_s_scroll_view_a409e5f6add0e9dd27fead4cc6e641f3c}
+
+
+Definition at line 68 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_aca9d039232d296c13a89d529e2fa3d8c}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Remove\+Subview@{Remove\+Subview}}
+\index{Remove\+Subview@{Remove\+Subview}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Remove\+Subview}]{\setlength{\rightskip}{0pt plus 5cm}bool D\+S\+Scroll\+View.\+Remove\+Subview (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_d_s_scroll_view_aca9d039232d296c13a89d529e2fa3d8c}
+
+
+Definition at line 158 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_abc9552fe959cbe544fd9e6d8b729dc29}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Set\+Anchor@{Set\+Anchor}}
+\index{Set\+Anchor@{Set\+Anchor}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Set\+Anchor}]{\setlength{\rightskip}{0pt plus 5cm}override void D\+S\+Scroll\+View.\+Set\+Anchor (
+\begin{DoxyParamCaption}
+\item[{{\bf Anchor\+Enum}}]{anchor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_d_s_scroll_view_abc9552fe959cbe544fd9e6d8b729dc29}
+
+
+Implements \hyperlink{class_d_s_view_a29230a74867dbbd01d5f79506f354fd9}{D\+S\+View}.
+
+
+
+Definition at line 61 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_a959769b37b3850798d54b1f338da8939}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Set\+Subview@{Set\+Subview}}
+\index{Set\+Subview@{Set\+Subview}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Set\+Subview}]{\setlength{\rightskip}{0pt plus 5cm}void D\+S\+Scroll\+View.\+Set\+Subview (
+\begin{DoxyParamCaption}
+\item[{{\bf D\+S\+View}}]{subview}
+\end{DoxyParamCaption}
+)}}\label{class_d_s_scroll_view_a959769b37b3850798d54b1f338da8939}
+
+
+Definition at line 154 of file D\+S\+Scroll\+View.\+cs.
+
+
+
+\subsection{Property Documentation}
+\hypertarget{class_d_s_scroll_view_a8ab2159844134c054149b399d98adc59}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Display\+Delegate@{Display\+Delegate}}
+\index{Display\+Delegate@{Display\+Delegate}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Display\+Delegate}]{\setlength{\rightskip}{0pt plus 5cm}Action$<${\bf D\+S\+Scroll\+View},Rect$>$ D\+S\+Scroll\+View.\+Display\+Delegate\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}}\label{class_d_s_scroll_view_a8ab2159844134c054149b399d98adc59}
+
+
+Definition at line 25 of file D\+S\+Scroll\+View.\+cs.
+
+\hypertarget{class_d_s_scroll_view_ad373079c51845a6cf4fc9d0bc4db6abe}{\index{D\+S\+Scroll\+View@{D\+S\+Scroll\+View}!Get\+Size\+To\+Display\+Delegate@{Get\+Size\+To\+Display\+Delegate}}
+\index{Get\+Size\+To\+Display\+Delegate@{Get\+Size\+To\+Display\+Delegate}!D\+S\+Scroll\+View@{D\+S\+Scroll\+View}}
+\subsubsection[{Get\+Size\+To\+Display\+Delegate}]{\setlength{\rightskip}{0pt plus 5cm}Func$<${\bf D\+S\+Scroll\+View},Rect,Vector2$>$ D\+S\+Scroll\+View.\+Get\+Size\+To\+Display\+Delegate\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}}\label{class_d_s_scroll_view_ad373079c51845a6cf4fc9d0bc4db6abe}
+
+
+Definition at line 29 of file D\+S\+Scroll\+View.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Editor/\+Disruptive\+Software/\hyperlink{_d_s_scroll_view_8cs}{D\+S\+Scroll\+View.\+cs}\end{DoxyCompactItemize}
