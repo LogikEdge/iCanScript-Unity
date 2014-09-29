@@ -1,4 +1,4 @@
-//{"ContentHash" : "EB01A1A897E939F2F94F2EEEA87475D0"}
+//{"ContentHash" : "B53821A90BFD70A402963B9653F06285"}
 /////////////////////////////////////////////////////////////////
 //  iCS_Behaviour.cs
 //
@@ -16,11 +16,11 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 		allVisualScripts= gameObject.GetComponents<iCS_VisualScript>();
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("Update");
+				vs.RunMessage("FixedUpdate");
 			}
 		}
 	}
@@ -36,242 +36,21 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
-	void FixedUpdate()
+	void OnApplicationFocus(bool focus)
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("FixedUpdate");
+				vs.RunMessage("OnApplicationFocus", focus);
 			}
 		}
 	}
 
 
-
-	void Reset()
+	void OnApplicationPause(bool pause)
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("Reset");
-			}
-		}
-	}
-
-
-	void OnMouseEnter()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnMouseEnter");
-			}
-		}
-	}
-
-
-	void OnMouseOver()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnMouseOver");
-			}
-		}
-	}
-
-
-	void OnMouseExit()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnMouseExit");
-			}
-		}
-	}
-
-
-	void OnMouseDown()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnMouseDown");
-			}
-		}
-	}
-
-
-	void OnMouseUp()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnMouseUp");
-			}
-		}
-	}
-
-
-	void OnMouseUpAsButton()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnMouseUpAsButton");
-			}
-		}
-	}
-
-
-	void OnMouseDrag()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnMouseDrag");
-			}
-		}
-	}
-
-
-	void OnBecameVisible()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnBecameVisible");
-			}
-		}
-	}
-
-
-	void OnBecameInvisible()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnBecameInvisible");
-			}
-		}
-	}
-
-
-	void OnEnable()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnEnable");
-			}
-		}
-	}
-
-
-	void OnDisable()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnDisable");
-			}
-		}
-	}
-
-
-	void OnDestroy()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnDestroy");
-			}
-		}
-	}
-
-
-	void OnPreCull()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnPreCull");
-			}
-		}
-	}
-
-
-	void OnPreRender()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnPreRender");
-			}
-		}
-	}
-
-
-	void OnPostRender()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnPostRender");
-			}
-		}
-	}
-
-
-	void OnRenderObject()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnRenderObject");
-			}
-		}
-	}
-
-
-	void OnWillRenderObject()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnWillRenderObject");
-			}
-		}
-	}
-
-
-	void OnGUI()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnGUI");
-			}
-		}
-	}
-
-
-	void OnDrawGizmosSelected()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnDrawGizmosSelected");
-			}
-		}
-	}
-
-
-	void OnDrawGizmos()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnDrawGizmos");
-			}
-		}
-	}
-
-
-	void OnServerInitialized()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnServerInitialized");
-			}
-		}
-	}
-
-
-	void OnConnectedToServer()
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnConnectedToServer");
+				vs.RunMessage("OnApplicationPause", pause);
 			}
 		}
 	}
@@ -287,31 +66,31 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
-	void OnTriggerEnter(Collider colliderInfo)
+	void OnAudioFilterRead(float[] data, int channels)
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnTriggerEnter", colliderInfo);
+				vs.RunMessage("OnAudioFilterRead", data, channels);
 			}
 		}
 	}
 
 
-	void OnTriggerExit(Collider colliderInfo)
+	void OnBecameInvisible()
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnTriggerExit", colliderInfo);
+				vs.RunMessage("OnBecameInvisible");
 			}
 		}
 	}
 
 
-	void OnTriggerStay(Collider colliderInfo)
+	void OnBecameVisible()
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnTriggerStay", colliderInfo);
+				vs.RunMessage("OnBecameVisible");
 			}
 		}
 	}
@@ -347,6 +126,16 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
+	void OnConnectedToServer()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnConnectedToServer");
+			}
+		}
+	}
+
+
 	void OnControllerColliderHit(ControllerColliderHit hit)
 	{
 		if(allVisualScripts != null) {
@@ -357,71 +146,21 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
-	void OnJointBreak(float breakForce)
+	void OnDestroy()
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnJointBreak", breakForce);
+				vs.RunMessage("OnDestroy");
 			}
 		}
 	}
 
 
-	void ParticleCollision(GameObject gameObject)
+	void OnDisable()
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("ParticleCollision", gameObject);
-			}
-		}
-	}
-
-
-	void OnLevelWasLoaded(int level)
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnLevelWasLoaded", level);
-			}
-		}
-	}
-
-
-	void OnApplicationPause(bool pause)
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnApplicationPause", pause);
-			}
-		}
-	}
-
-
-	void OnApplicationFocus(bool focus)
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnApplicationFocus", focus);
-			}
-		}
-	}
-
-
-	void OnPlayerConnected(NetworkPlayer player)
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnPlayerConnected", player);
-			}
-		}
-	}
-
-
-	void OnPlayerDisconnected(NetworkPlayer player)
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnPlayerDisconnected", player);
+				vs.RunMessage("OnDisable");
 			}
 		}
 	}
@@ -432,6 +171,36 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
 				vs.RunMessage("OnDisconnectedFromServer", mode);
+			}
+		}
+	}
+
+
+	void OnDrawGizmos()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnDrawGizmos");
+			}
+		}
+	}
+
+
+	void OnDrawGizmosSelected()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnDrawGizmosSelected");
+			}
+		}
+	}
+
+
+	void OnEnable()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnEnable");
 			}
 		}
 	}
@@ -457,11 +226,111 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
+	void OnGUI()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnGUI");
+			}
+		}
+	}
+
+
+	void OnJointBreak(float breakForce)
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnJointBreak", breakForce);
+			}
+		}
+	}
+
+
+	void OnLevelWasLoaded(int level)
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnLevelWasLoaded", level);
+			}
+		}
+	}
+
+
 	void OnMasterServerEvent(MasterServerEvent msEvent)
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
 				vs.RunMessage("OnMasterServerEvent", msEvent);
+			}
+		}
+	}
+
+
+	void OnMouseDown()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnMouseDown");
+			}
+		}
+	}
+
+
+	void OnMouseDrag()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnMouseDrag");
+			}
+		}
+	}
+
+
+	void OnMouseEnter()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnMouseEnter");
+			}
+		}
+	}
+
+
+	void OnMouseExit()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnMouseExit");
+			}
+		}
+	}
+
+
+	void OnMouseOver()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnMouseOver");
+			}
+		}
+	}
+
+
+	void OnMouseUp()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnMouseUp");
+			}
+		}
+	}
+
+
+	void OnMouseUpAsButton()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnMouseUpAsButton");
 			}
 		}
 	}
@@ -477,11 +346,51 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
-	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+	void OnPlayerConnected(NetworkPlayer player)
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnSerializeNetworkView", stream, info);
+				vs.RunMessage("OnPlayerConnected", player);
+			}
+		}
+	}
+
+
+	void OnPlayerDisconnected(NetworkPlayer player)
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnPlayerDisconnected", player);
+			}
+		}
+	}
+
+
+	void OnPostRender()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnPostRender");
+			}
+		}
+	}
+
+
+	void OnPreCull()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnPreCull");
+			}
+		}
+	}
+
+
+	void OnPreRender()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnPreRender");
 			}
 		}
 	}
@@ -497,11 +406,102 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
-	void OnAudioFilterRead(float[] data, int channels)
+	void OnRenderObject()
 	{
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnAudioFilterRead", data, channels);
+				vs.RunMessage("OnRenderObject");
+			}
+		}
+	}
+
+
+	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnSerializeNetworkView", stream, info);
+			}
+		}
+	}
+
+
+	void OnServerInitialized()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnServerInitialized");
+			}
+		}
+	}
+
+
+	void OnTriggerEnter(Collider colliderInfo)
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnTriggerEnter", colliderInfo);
+			}
+		}
+	}
+
+
+	void OnTriggerExit(Collider colliderInfo)
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnTriggerExit", colliderInfo);
+			}
+		}
+	}
+
+
+	void OnTriggerStay(Collider colliderInfo)
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnTriggerStay", colliderInfo);
+			}
+		}
+	}
+
+
+	void OnWillRenderObject()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnWillRenderObject");
+			}
+		}
+	}
+
+
+	void ParticleCollision(GameObject gameObject)
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("ParticleCollision", gameObject);
+			}
+		}
+	}
+
+
+	void Reset()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("Reset");
+			}
+		}
+	}
+
+
+
+	void Update()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("Update");
 			}
 		}
 	}

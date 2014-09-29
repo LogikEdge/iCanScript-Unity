@@ -18,36 +18,7 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     public static void QSort() {
         if(IsSorted) return;
-        int reorderCnt= 0;
-        int cmpCnt= 0;
-        int len= Functions.Count;
-        int step= (len >> 1) + (len & 1);
-        while(step != 0) {
-            int i= 0;
-            int j= step;
-            while(j < len) {
-                ++cmpCnt;
-                if(CompareFunctionNames(Functions[i], Functions[j]) > 0) {
-                    ++reorderCnt;
-                    var tmp= Functions[i];
-                    Functions[i]= Functions[j];
-                    Functions[j]= tmp;
-                    int k= i-step;
-                    while(k >= 0) {
-                        ++cmpCnt;
-                        if(CompareFunctionNames(Functions[k], Functions[k+step]) < 0) break;
-                        ++reorderCnt;
-                        tmp= Functions[k];
-                        Functions[k]= Functions[k+step];
-                        Functions[k+step]= tmp;
-                        k-= step;
-                    }
-                }
-                ++i;
-                ++j;
-            }
-            step >>= 1;
-        }
+        P.QSort(ref Functions, CompareFunctionNames);
         IsSorted= true;
     }
 
@@ -178,6 +149,7 @@ public class iCS_LibraryDatabase {
                 messages.Add(m.ToMessageInfo);
             }
         }
+        P.QSort(ref messages, (a,b)=> { return string.Compare(a.DisplayName, b.DisplayName); });
         return messages.ToArray();
     }
     // ----------------------------------------------------------------------
