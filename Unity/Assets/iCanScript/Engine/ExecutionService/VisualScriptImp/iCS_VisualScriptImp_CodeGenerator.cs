@@ -229,7 +229,10 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 break;
                             }
                             case iCS_ObjectTypeEnum.StateChart: {
-                                iCS_StateChart stateChart= new iCS_StateChart(this, priority);
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                                iCS_StateChart stateChart= new iCS_StateChart(this, priority, nbParams, nbEnables);
                                 myRuntimeNodes[node.InstanceId]= stateChart;
                                 InvokeAddChildIfExists(parent, stateChart);
                                 break;

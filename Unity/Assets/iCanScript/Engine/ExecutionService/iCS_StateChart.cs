@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class iCS_StateChart : iCS_Action {
+public sealed class iCS_StateChart : iCS_ActionWithSignature {
     // ======================================================================
     // Internal types
     // ----------------------------------------------------------------------
@@ -45,17 +45,15 @@ public sealed class iCS_StateChart : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_StateChart(iCS_VisualScriptImp visualScript, int priority)
-    : base(visualScript, priority) {
+    public iCS_StateChart(iCS_VisualScriptImp visualScript, int priority, int nbOfParams, int nbOfEnables)
+    : base(visualScript, priority, nbOfParams, nbOfEnables) {
     	myDispatcher= new iCS_ParallelDispatcher(visualScript, priority, 0, 0);
     }
 
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void Execute(int frameId) {
-        if(!IsActive) return;
-        IsStalled= true;
+    protected override void DoExecute(int frameId) {
         // Make certain that at least one active state exists.
         if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState, frameId);
         // Process any active transition.
@@ -120,7 +118,7 @@ public sealed class iCS_StateChart : iCS_Action {
         return null;
     }
     // ----------------------------------------------------------------------
-    public override void ForceExecute(int frameId) {
+    protected override void DoForceExecute(int frameId) {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
             ExecuteVerifyTransitions(frameId, /*forced=*/true);            

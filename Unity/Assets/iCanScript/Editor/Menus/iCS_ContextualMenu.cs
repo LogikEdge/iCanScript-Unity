@@ -225,8 +225,16 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
+        int idx= GrowMenuBy(ref menu, 3);
+        menu[idx]= new iCS_MenuContext(EnablePortStr);
+        if(storage.HasTriggerPort(selectedObject)) {
+            menu[idx+1]= new iCS_MenuContext("#"+TriggerPortStr);
+        } else {
+            menu[idx+1]= new iCS_MenuContext(TriggerPortStr);                
+        }
+        menu[idx+2]= new iCS_MenuContext(SeparatorStr);            
         if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
-            int idx= GrowMenuBy(ref menu, 1);
+            idx= GrowMenuBy(ref menu, 1);
             menu[idx]= new iCS_MenuContext(StateStr); 
         }
 		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
