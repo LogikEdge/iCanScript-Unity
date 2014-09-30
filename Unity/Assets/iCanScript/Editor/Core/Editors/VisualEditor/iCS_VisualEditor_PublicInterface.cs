@@ -6,7 +6,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Public interface Utilities
 	// ----------------------------------------------------------------------
-    void BuildPublicInterfaceMenu(GameObject gameObject, iCS_EditorObject parent, iCS_VisualScriptImp vs, Vector2 mousePosition) {
+    bool BuildPublicInterfaceMenu(GameObject gameObject, iCS_EditorObject parent, iCS_VisualScriptImp vs, Vector2 mousePosition) {
         var publicVariables= iCS_VisualScriptData.FindPublicVariables(vs);
         var userFunctions= iCS_VisualScriptData.FindUserFunctions(vs);
         if(publicVariables.Length != 0 || userFunctions.Length != 0) {
@@ -34,7 +34,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                               o=> CreateUserFunctionCall(vs, o), puf); 
             }
             gMenu.ShowAsContext();
+            return true;
         }
+        return false;
     }
 	// ----------------------------------------------------------------------
     void CreatePortProxy(iCS_VisualScriptImp vs, object _pv) {
