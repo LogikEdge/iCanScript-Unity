@@ -42,11 +42,25 @@ public class HelpTest : MonoBehaviour {
 					// Look for "Section"
 					if(currentText == section ) {
 						while(reader.Read ()) {
-							// Description will be broken up in formating, keep concatinating the bits and pieces.
+							// Section will be broken up in formating, keep concatinating the bits and pieces.
 							currentText = reader.ReadString();
+
+							if(reader.Name == "div")
+								helpText= string.Concat (helpText, "\n");
+
+							if(reader.Name == "a")
+								helpText= string.Concat (helpText, " ");
+
+							if(reader.Name == "td")
+								helpText= string.Concat (helpText, "\n"); 
+
+							currentText=currentText.Replace('\n', ' ');
 							helpText= string.Concat (helpText, currentText);
 
-							// If there is another header, or a format change, description is probably over.
+							Debug.Log (string.Concat ("---->", reader.Name));
+						    Debug.Log (currentText);
+
+							// If there is another header, or a format change, section is probably over.
 							if(reader.Name=="h2" || reader.Name=="pre")
 								return helpText;
 						}
@@ -65,8 +79,8 @@ public class HelpTest : MonoBehaviour {
 	private string parameterText= "";
 	void OnGUI() {
 	
-		GUI.Label( new Rect(30,30,Screen.width,Screen.height/2), string.Concat("Description:\n\n",descriptionText));
-		GUI.Label( new Rect(30,(Screen.height/2)+60 ,Screen.width,Screen.height/2), string.Concat("Parameters:\n\n",parameterText));
+		GUI.Label( new Rect(30,30,Screen.width-30 ,Screen.height/2), string.Concat("Description:\n\n",descriptionText));
+		GUI.Label( new Rect(30,(Screen.height/2)+60 ,Screen.width-30 ,Screen.height/2), string.Concat("Parameters:\n\n",parameterText));
 
 		inputString = GUI.TextField(new Rect(10, 10, Screen.width-20, 20), inputString);
 
