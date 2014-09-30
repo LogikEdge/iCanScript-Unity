@@ -9,18 +9,18 @@ using System.Xml;
 public class HelpTest : MonoBehaviour {
 
 
-	string getHelpDescription(string findHelpOn) {
+	string getHelp(string searchAPI, string section) {
 
 		// Create Filename that will contain help in Unity folder.
 		string path = "/Applications/Unity/Unity.app/Contents/Documentation/html/en/ScriptReference";
-		string fileName = string.Concat (findHelpOn, ".html");
+		string fileName = string.Concat (searchAPI, ".html");
 
 		// Find file if it exists
 		string[] helpFiles = Directory.GetFiles (path, fileName);
 
-		// Parameters use "-" instead of "." in filename, try replacing "." with "-" if we did not find it the first time.
+		// Variables use "-" instead of "." in filename, try replacing "." with "-" if we did not find it the first time.
 		if (helpFiles.Length == 0) {
-			fileName = string.Concat ( findHelpOn.Replace('.', '-'), ".html");
+			fileName = string.Concat ( searchAPI.Replace('.', '-'), ".html");
 			helpFiles = Directory.GetFiles (path, fileName);
 		}
 
@@ -32,48 +32,49 @@ public class HelpTest : MonoBehaviour {
 				doc.Load (helpFile);
 				XmlNodeReader reader = new XmlNodeReader (doc);
 		
-				
-				string descriptionText= "";	
 				string currentText;
-
+				string helpText="";
 				
 				// Parse through the "XML"
 				while (reader.Read()) {
 					currentText= reader.ReadString();
-					// Look for "Description"
-					if(currentText == "Description") {
-						while(reader.Read () ) {
+
+					// Look for "Section"
+					if(currentText == section ) {
+						while(reader.Read ()) {
 							// Description will be broken up in formating, keep concatinating the bits and pieces.
 							currentText = reader.ReadString();
-							descriptionText= string.Concat (descriptionText, currentText);
+							helpText= string.Concat (helpText, currentText);
+
 							// If there is another header, or a format change, description is probably over.
 							if(reader.Name=="h2" || reader.Name=="pre")
-						 	  break;
+								return helpText;
 						}
-						return descriptionText;
 					}
+
 				}
 		}
 		return "";
 					
 	} 
 
-		
-
 
 	public string inputString = "";
 	private string previousInputString = "";
-	private string helpDescription= "";
+	private string descriptionText= "";
+	private string parameterText= "";
 	void OnGUI() {
 	
-		GUI.Label( new Rect(30,30,Screen.width,Screen.height), helpDescription);
+		GUI.Label( new Rect(30,30,Screen.width,Screen.height/2), string.Concat("Description:\n\n",descriptionText));
+		GUI.Label( new Rect(30,(Screen.height/2)+60 ,Screen.width,Screen.height/2), string.Concat("Parameters:\n\n",parameterText));
 
-		inputString = GUI.TextField(new Rect(10, 10, 200, 20), inputString,40);
+		inputString = GUI.TextField(new Rect(10, 10, Screen.width-20, 20), inputString);
 
 
 		if (previousInputString != inputString) {
-				helpDescription = getHelpDescription (inputString);
-				previousInputString = inputString;					
+			descriptionText= getHelp(inputString, "Description");
+			parameterText= getHelp(inputString, "Parameters");
+			previousInputString = inputString;					
 		}
 	}
 }
