@@ -18,6 +18,12 @@ public class HelpTest : MonoBehaviour {
 		// Find file if it exists
 		string[] helpFiles = Directory.GetFiles (path, fileName);
 
+		// Parameters use "-" instead of "." in filename, try replacing "." with "-" if we did not find it the first time.
+		if (helpFiles.Length == 0) {
+			fileName = string.Concat ( findHelpOn.Replace('.', '-'), ".html");
+			helpFiles = Directory.GetFiles (path, fileName);
+		}
+
 		if (helpFiles.Length != 0) {
 				string helpFile = helpFiles [0];
 
