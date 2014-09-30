@@ -4,12 +4,12 @@ using System.Collections;
 
 public static class iCS_UnityUtility {
     // -----------------------------------------------------------------------
-    // Returns true if the given object is a GameObject
+    //! Returns true if the given object is a GameObject
     public static bool IsGameObject(UnityEngine.Object theObject) {
         return iCS_Types.IsA<GameObject>(theObject.GetType());
     }
     // -----------------------------------------------------------------------
-    // Returns true if the given GameObject is in the current scene.
+    //! Returns true if the given GameObject is a Prefab.
     public static bool IsPrefab(GameObject go) {
         if(go == null) return false;
         var prefabType= PrefabUtility.GetPrefabType(go);
@@ -19,7 +19,7 @@ public static class iCS_UnityUtility {
         return false;
     }
     // -----------------------------------------------------------------------
-    // Returns true if the given GameObject is a Prefab instance.
+    //! Returns true if the given GameObject is an instance of a Prefab.
     public static bool IsPrefabInstance(GameObject go) {
         if(go == null) return false;
         var prefabType= PrefabUtility.GetPrefabType(go);
@@ -30,7 +30,7 @@ public static class iCS_UnityUtility {
         return false;
     }
     // -----------------------------------------------------------------------
-    // Returns true if the given GameObject is a Prefab instance.
+    //! Returns true if the given GameObject is in the current scene.
     public static bool IsSceneGameObject(GameObject go) {
         if(go == null) return false;
         return !IsPrefab(go);
