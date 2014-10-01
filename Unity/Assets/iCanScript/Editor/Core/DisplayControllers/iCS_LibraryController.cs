@@ -10,8 +10,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     public enum NodeTypeEnum { Root, Company, Library, Package, Class, Constructor, Field, Property, Method, Message, InParameter, OutParameter };
     public class Node {
-        public NodeTypeEnum        Type;
-        public string              Name;
+        public NodeTypeEnum    Type;
+        public string          Name;
         public iCS_MemberInfo  Desc;
         public Node(NodeTypeEnum type, string name, iCS_MemberInfo desc) {
             Init(type, name, desc);
