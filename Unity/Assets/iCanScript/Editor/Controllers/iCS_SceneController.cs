@@ -30,9 +30,16 @@ public static class iCS_SceneController {
     // Common Controller activation/deactivation
     // ----------------------------------------------------------------------
 	static iCS_SceneController() {
+        // Events to refresh scene content information.
         iCS_SystemEvents.OnSceneChanged    = OnSceneChanged;
         iCS_SystemEvents.OnHierarchyChanged= RefreshCache;
         iCS_SystemEvents.OnProjectChanged  = RefreshCache;
+        // Events to refresh visual script information.
+        iCS_SystemEvents.OnVisualScriptChanged             = OnVisualScriptChanged;
+        iCS_SystemEvents.OnVisualScriptUndo                = OnVisualScriptUndo;                
+        iCS_SystemEvents.OnVisualScriptElementAdded        = OnVisualScriptElementAdded;        
+        iCS_SystemEvents.OnVisualScriptElementWillBeRemoved= OnVisualScriptElementWillBeRemoved;
+        iCS_SystemEvents.OnVisualScriptElementNameChanged  = OnVisualScriptElementNameChanged;  
 	}
     
     /// Start the application controller.
@@ -98,7 +105,7 @@ public static class iCS_SceneController {
     }
     
     // ======================================================================
-    // Update on scene change
+    // Update scene content changed
     // ----------------------------------------------------------------------
     static void OnSceneChanged() {
         RefreshCache();
@@ -109,5 +116,24 @@ public static class iCS_SceneController {
         ourVisualScriptsInOrReferencesByScene= GetVisualScriptsInOrReferencedByScene();
         
         Debug.Log("Scene as changed =>"+EditorApplication.currentScene);
+    }
+
+    // ======================================================================
+    // Update visual script content changed
+    // ----------------------------------------------------------------------
+    static void OnVisualScriptChanged(iCS_IStorage iStorage) {
+        Debug.Log("Visual Script changed=> "+iStorage.VisualScript.name);
+    }
+    static void OnVisualScriptUndo(iCS_IStorage iStorage) {
+        Debug.Log("Visual Script undo=> "+iStorage.VisualScript.name);
+    }
+    static void OnVisualScriptElementAdded(iCS_IStorage iStorage, iCS_EditorObject element) {
+        Debug.Log("Visual Script element added=> "+iStorage.VisualScript.name+"."+element.Name);
+    }
+    static void OnVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
+        Debug.Log("Visual Script element will be removed=> "+iStorage.VisualScript.name+"."+element.Name);
+    }
+    static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
+        Debug.Log("Visual Script element name changed=> "+iStorage.VisualScript.name+"."+element.Name);
     }
 }
