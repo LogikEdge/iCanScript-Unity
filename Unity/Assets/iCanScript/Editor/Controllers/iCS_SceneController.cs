@@ -35,7 +35,6 @@ public static class iCS_SceneController {
         iCS_SystemEvents.OnHierarchyChanged= RefreshCache;
         iCS_SystemEvents.OnProjectChanged  = RefreshCache;
         // Events to refresh visual script information.
-        iCS_SystemEvents.OnVisualScriptChanged             = OnVisualScriptChanged;
         iCS_SystemEvents.OnVisualScriptUndo                = OnVisualScriptUndo;                
         iCS_SystemEvents.OnVisualScriptElementAdded        = OnVisualScriptElementAdded;        
         iCS_SystemEvents.OnVisualScriptElementWillBeRemoved= OnVisualScriptElementWillBeRemoved;
@@ -121,9 +120,6 @@ public static class iCS_SceneController {
     // ======================================================================
     // Update visual script content changed
     // ----------------------------------------------------------------------
-    static void OnVisualScriptChanged(iCS_IStorage iStorage) {
-        Debug.Log("Visual Script changed=> "+iStorage.VisualScript.name);
-    }
     static void OnVisualScriptUndo(iCS_IStorage iStorage) {
         Debug.Log("Visual Script undo=> "+iStorage.VisualScript.name);
     }

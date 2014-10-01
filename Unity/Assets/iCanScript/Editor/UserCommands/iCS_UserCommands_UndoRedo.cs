@@ -60,5 +60,7 @@ public static partial class iCS_UserCommands {
         iCS_EditorController.RepaintAllEditors();
         // Force redraw of Inspector Window.
         EditorUtility.SetDirty(iStorage.iCSMonoBehaviour);
+		// Annouce that an undo occured.
+		iCS_SystemEvents.AnnouceVisualScriptUndo(iStorage);
     }
 }
