@@ -23,8 +23,4 @@ public static class iCS_Config {
     public const string CodeGenerationPath       = AssetsPath+"/"+CodeGenerationFolder;
     public const string BehaviourGenerationFolder= "Behaviours";
     public const string BehaviourGenerationPath  = CodeGenerationPath+"/"+BehaviourGenerationFolder;
-    
-    // ----------------------------------------------------------------------
-    // Miscenious
-	public const char   PrivateStringPrefix= '$';
 }

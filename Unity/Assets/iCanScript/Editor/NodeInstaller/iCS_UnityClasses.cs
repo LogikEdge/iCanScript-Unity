@@ -173,7 +173,7 @@ public static class iCS_UnityClasses {
                     DecodeUnityClassInfo(typeof(Light));        
                     DecodeUnityClassInfo(typeof(MonoBehaviour));        
 //        DecodeUnityClassInfo(typeof(Terrain));        // This is a special behaviour (not supported yet)
-//                    DecodeUnityClassInfo(typeof(NavMeshAgent));        
+                    DecodeUnityClassInfo(typeof(NavMeshAgent));        
                     DecodeUnityClassInfo(typeof(NetworkView));        
                     DecodeUnityClassInfo(typeof(Projector));        
                     DecodeUnityClassInfo(typeof(Skybox));        
@@ -218,7 +218,13 @@ public static class iCS_UnityClasses {
             DecodeUnityClassInfo(typeof(Material));        
                 DecodeUnityClassInfo(typeof(ProceduralMaterial));        
             DecodeUnityClassInfo(typeof(Mesh));        
-//            DecodeUnityClassInfo(typeof(NavMesh));        
+            DecodeUnityClassInfo(typeof(NavMesh));
+            DecodeUnityClassInfo(typeof(NavMeshHit));
+            DecodeUnityClassInfo(typeof(NavMeshPath));
+//            DecodeUnityClassInfo(typeof(NavMeshBuilder));
+            DecodeUnityClassInfo(typeof(NavMeshObstacle));
+            DecodeUnityClassInfo(typeof(NavMeshPathStatus));
+            DecodeUnityClassInfo(typeof(NavMeshTriangulation));
             DecodeUnityClassInfo(typeof(PhysicMaterial));        
             DecodeUnityClassInfo(typeof(QualitySettings));        
             DecodeUnityClassInfo(typeof(ScriptableObject));        
