@@ -18,7 +18,6 @@ public static class iCS_AppController {
 		iCS_InstallationController.Start();
 		iCS_CodeGenerator.Start();
         iCS_VisualScriptDataController.Start();
-        iCS_ProjectController.Start();
         iCS_SceneController.Start();
 	}
     
@@ -28,7 +27,6 @@ public static class iCS_AppController {
     public static void Shutdown() {
         // Shutdown all subsystems.
         iCS_SceneController.Shutdown();
-        iCS_ProjectController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
         iCS_CodeGenerator.Shutdown();
         iCS_InstallationController.Shutdown();
