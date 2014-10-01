@@ -26,21 +26,37 @@ public static class iCS_SceneController {
 
     // ----------------------------------------------------------------------
     /// Returns all Visual Scripts referenced in the current scene.
-    public static iCS_VisualScriptImp[] GetReferencedVisualScriptsByScene() {
+    public static iCS_VisualScriptImp[] GetVisualScriptsReferencedByScene() {
         var sceneVisualScripts= GetVisualScriptsInScene();
-        List<iCS_VisualScriptImp> result= new List<iCS_VisualScriptImp>(sceneVisualScripts);
+        var result= new iCS_VisualScriptImp[0];
         P.forEach(
             vs=> {
-                result.AddRange(GetReferencedVisualsScriptBy(vs));
+                result= P.append(result, GetVisualScriptsReferencedBy(vs));
             },
             sceneVisualScripts
         );
-        return result.ToArray();
+        result= P.removeDuplicates(result);
+        return result;
+    }
+    
+    // ----------------------------------------------------------------------
+    /// Returns all Visual Scripts referenced in the current scene.
+    public static iCS_VisualScriptImp[] GetVisualScriptsInOrReferencedByScene() {
+        var sceneVisualScripts= GetVisualScriptsInScene();
+        var result= sceneVisualScripts;
+        P.forEach(
+            vs=> {
+                result= P.append(result, GetVisualScriptsReferencedBy(vs));
+            },
+            sceneVisualScripts
+        );
+        result= P.removeDuplicates(result);
+        return result;
     }
     
     // ----------------------------------------------------------------------
     /// Returns Visual Scripts referenced by the given Visual Script.
-    public static iCS_VisualScriptImp[] GetReferencedVisualsScriptBy(iCS_VisualScriptImp vs) {
+    public static iCS_VisualScriptImp[] GetVisualScriptsReferencedBy(iCS_VisualScriptImp vs) {
         var visualScripts= P.map(o=> o as iCS_VisualScriptImp, P.filter(o=> o is iCS_VisualScriptImp, vs.UnityObjects));
         var gameObjects  = P.map(o=> o as GameObject         , P.filter(o=> o is GameObject         , vs.UnityObjects));
         P.forEach(
@@ -52,6 +68,7 @@ public static class iCS_SceneController {
             },
             gameObjects
         );
+        visualScripts= P.removeDuplicates(visualScripts);
         return visualScripts.ToArray();
     }
 }

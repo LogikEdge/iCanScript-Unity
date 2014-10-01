@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public static partial class Prelude {
     // ----------------------------------------------------------------------
@@ -49,5 +50,64 @@ public static partial class Prelude {
             Array.Copy(lst, idx, newLst, idx+1, lst.Length-idx);
         }
         return newLst;
+    }
+
+    // ----------------------------------------------------------------------
+    // append :: [a]->[a]->[a]
+    public static A[] append<A>(A[] a, A[] b) {
+        var aLen= length(a);
+        var bLen= length(b);
+        var result= new A[aLen+bLen];
+        for(int i= 0; i < aLen; ++i) {
+            result[i]= a[i];
+        }
+        for(int i= 0; i < bLen; ++i) {
+            result[aLen+i]= b[i];
+        }
+        return result;
+    }
+    public static List<A> append<A>(List<A> a, List<A> b) {
+        var result= new List<A>(a);
+        result.AddRange(b);
+        return result;
+    }
+
+    // ----------------------------------------------------------------------
+    // removeDuplicates :: [a]->[a]
+    public static A[] removeDuplicates<A>(A[] a) {
+        var aLen= length(a);
+        var result= new A[aLen];
+        var rLen= 0;
+        for(int i= 0; i < aLen; ++i) {
+            bool found= false;
+            var element= a[i];
+            for(int j= 0; j < rLen; ++j) {
+                if(element.Equals(result[j])) {
+                    found= true;
+                    break;
+                }
+            }
+            if(found == false) {
+                result[rLen]= element;
+                ++rLen;
+            }
+        }
+        Array.Resize(ref result, rLen);
+        return result;
+    }
+    public static List<A> removeDuplicates<A>(List<A> a) {
+        var result= new List<A>(a);
+        for(int i= 0; i < length(result); ++i) {
+            var element= result[i];
+            for(int j= i+1; j < length(result);) {
+                if(element.Equals(result[j])) {
+                    result.RemoveAt(j);
+                }
+                else {
+                    ++j;
+                }
+            }
+        }
+        return result;
     }
 }
