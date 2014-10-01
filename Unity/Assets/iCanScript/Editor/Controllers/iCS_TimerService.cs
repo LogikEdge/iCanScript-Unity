@@ -57,6 +57,7 @@ public static class iCS_TimerService {
     // ======================================================================
     static void PeriodicUpdate() {
         var elapsedTimers= P.filter(t=> t.IsElapsed, myTimers);
-        P.forEach(t=> { t.RunAction(); myTimers.Remove(t); }, elapsedTimers);
+        P.forEach(t=> { myTimers.Remove(t); }, elapsedTimers);
+        P.forEach(t=> { t.RunAction(); }, elapsedTimers);
     }
 }

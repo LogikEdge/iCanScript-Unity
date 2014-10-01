@@ -102,11 +102,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         base.OnSelectionChange();
         myNeedRepaint= true;
         mySubEditor= null;
-
-        var visualScripts= iCS_SceneController.GetVisualScriptsInOrReferencedByScene();
-        foreach(var vs in visualScripts) {
-            Debug.Log("ref vs=> "+vs.name);
-        }
     }
     // ======================================================================
     // Update all message ports when hierarchy has changed
