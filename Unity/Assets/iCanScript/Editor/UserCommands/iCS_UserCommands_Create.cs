@@ -704,7 +704,6 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create "+name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(iStorage, package);
         return package;
     }
 }
