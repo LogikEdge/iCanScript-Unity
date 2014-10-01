@@ -26,7 +26,7 @@ public static class iCS_SceneController {
 
     // ----------------------------------------------------------------------
     /// Returns all Visual Scripts referenced in the current scene.
-    public static iCS_VisualScriptImp[] GetReferencedVisualScriptsByScene() {
+    public static iCS_VisualScriptImp[] GetVisualScriptsReferencedByScene() {
         var sceneVisualScripts= GetVisualScriptsInScene();
         List<iCS_VisualScriptImp> result= new List<iCS_VisualScriptImp>(sceneVisualScripts);
         P.forEach(
@@ -36,6 +36,12 @@ public static class iCS_SceneController {
             sceneVisualScripts
         );
         return result.ToArray();
+    }
+    
+    // ----------------------------------------------------------------------
+    /// Returns all Visual Scripts referenced in the current scene.
+    public static iCS_VisualScriptImp[] GetVisualScriptsInOrReferencesByScene() {
+        return new iCS_VisualScriptImp[0];
     }
     
     // ----------------------------------------------------------------------
