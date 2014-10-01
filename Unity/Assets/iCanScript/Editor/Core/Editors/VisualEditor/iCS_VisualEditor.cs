@@ -103,7 +103,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myNeedRepaint= true;
         mySubEditor= null;
 
-        var visualScripts= iCS_SceneController.GetVisualScriptsReferencedByScene();
+        var visualScripts= iCS_SceneController.GetVisualScriptsInOrReferencedByScene();
         foreach(var vs in visualScripts) {
             Debug.Log("ref vs=> "+vs.name);
         }

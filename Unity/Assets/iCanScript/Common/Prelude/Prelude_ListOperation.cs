@@ -73,8 +73,8 @@ public static partial class Prelude {
     }
 
     // ----------------------------------------------------------------------
-    // removeDuplicate :: [a]->[a]
-    public static A[] removeDuplicate<A>(A[] a) {
+    // removeDuplicates :: [a]->[a]
+    public static A[] removeDuplicates<A>(A[] a) {
         var aLen= length(a);
         var result= new A[aLen];
         var rLen= 0;
@@ -95,7 +95,7 @@ public static partial class Prelude {
         Array.Resize(ref result, rLen);
         return result;
     }
-    public static List<A> removeDuplicate<A>(List<A> a) {
+    public static List<A> removeDuplicates<A>(List<A> a) {
         var result= new List<A>(a);
         for(int i= 0; i < length(result); ++i) {
             var element= result[i];
