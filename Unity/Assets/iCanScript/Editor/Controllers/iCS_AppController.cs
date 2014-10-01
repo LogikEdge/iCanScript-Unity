@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
+/// The AppController controls the Start and Shutdown of all sub-systems.
 public static class iCS_AppController {
     // ======================================================================
-    // Initialization all application sub-systems
+    // Initialization all sub-systems
     // ----------------------------------------------------------------------
 	static iCS_AppController() {
         // Start all sub-systems.
@@ -17,6 +18,8 @@ public static class iCS_AppController {
 		iCS_InstallationController.Start();
 		iCS_CodeGenerator.Start();
         iCS_VisualScriptDataController.Start();
+        iCS_ProjectController.Start();
+        iCS_SceneController.Start();
 	}
     
     /// Start the application controller.
@@ -24,6 +27,8 @@ public static class iCS_AppController {
     /// Shutdowns the application controller.
     public static void Shutdown() {
         // Shutdown all subsystems.
+        iCS_SceneController.Shutdown();
+        iCS_ProjectController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
         iCS_CodeGenerator.Shutdown();
         iCS_InstallationController.Shutdown();
