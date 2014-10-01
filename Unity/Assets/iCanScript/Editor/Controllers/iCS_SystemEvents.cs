@@ -7,15 +7,15 @@ public static class iCS_SystemEvents {
     // ======================================================================
     // Callbacks
     // ----------------------------------------------------------------------
-    public static Action    OnEditorStarted   = null;
-    public static Action    OnSceneChanged    = null;
-    public static Action    OnHierarchyChanged= null;
-    public static Action    OnProjectChanged  = null;
-    public static Action    OnCompileStarted  = null;
-    public static Action    OnCompileCompleted= null;
-    public static Action    OnEngineStarted   = null;
-    public static Action    OnEngineStopped   = null;
-    public static Action    OnEnginePaused    = null;
+    public static Action    OnEditorStarted   = null;   ///< Event: Editor as started
+    public static Action    OnSceneChanged    = null;   ///< Event: Scene as changed
+    public static Action    OnHierarchyChanged= null;   ///< Event: Hierarchy as changed
+    public static Action    OnProjectChanged  = null;   ///< Event: Project as changed
+    public static Action    OnCompileStarted  = null;   ///< Event: Start compiling
+    public static Action    OnCompileCompleted= null;   ///< Event: Compile completed
+    public static Action    OnEngineStarted   = null;   ///< Event: Engine starting
+    public static Action    OnEngineStopped   = null;   ///< Event: Engine stopping
+    public static Action    OnEnginePaused    = null;   ///< Event: Engine paused
     
     // ======================================================================
     // State fields
