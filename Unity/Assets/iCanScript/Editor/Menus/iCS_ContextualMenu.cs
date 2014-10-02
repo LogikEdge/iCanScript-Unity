@@ -41,7 +41,8 @@ public class iCS_ContextualMenu {
     const string UnwrapPackageStr              = "- Unwrap Package";
     const string UpdateMessageHandlerPortsStr  = "+ Update Message Ports";
 	const string RemoveUnusedPortsStr          = "- Remove Unused Ports";
-    const string PublicFunctionStr             = "+ Public Function";  
+    const string PublicFunctionStr             = "+ Public Function";
+    const string AddNodeStr                    = "+ Add Node";  
     const string SeparatorStr                  = "";
 
     // ======================================================================
@@ -131,6 +132,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void MessageHandlerMenu(iCS_EditorObject messageHandler, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(messageHandler);
+        AddNodeMenu(ref menu);
         var idx= GrowMenuBy(ref menu, 3);
         menu[idx]= new iCS_MenuContext(UpdateMessageHandlerPortsStr);
 		menu[idx+1]= new iCS_MenuContext(RemoveUnusedPortsStr);
@@ -429,6 +431,17 @@ public class iCS_ContextualMenu {
             int idx= GrowMenuBy(ref menu, 1);
             menu[idx]= new iCS_MenuContext(SetAsDisplayRootStr);            
         }        
+    }
+	// ----------------------------------------------------------------------
+    void AddNodeMenu(ref iCS_MenuContext[] menu) {
+        var fullMenu= iCS_LibraryDatabase.BuildExpertMenu();
+        if(fullMenu.Count == 0) return;
+        int idx= GrowMenuBy(ref menu, fullMenu.Count+1);
+        for(int i= 0; i < fullMenu.Count; ++i) {
+            menu[idx]= new iCS_MenuContext(AddNodeStr+"/"+fullMenu[i].ToMenu(), fullMenu[i]);
+            ++idx;
+        }
+        menu[idx]= new iCS_MenuContext(SeparatorStr);
     }
 	
     // ======================================================================
