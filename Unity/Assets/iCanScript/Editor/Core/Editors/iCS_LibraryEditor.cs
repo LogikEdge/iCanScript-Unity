@@ -51,6 +51,10 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 		var toolbarRect= iCS_ToolbarUtility.BuildToolbar(position.width);
 		string searchString= myController.SearchString ?? "";
 		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 120.0f, searchString, 0, 0, true);
+        var nbItemsRect= new Rect(toolbarRect);
+        nbItemsRect.width= toolbarRect.width-120;
+        var numberOfItems= myController.NumberOfItems;
+        EditorGUI.LabelField(nbItemsRect, "# items: "+numberOfItems.ToString());
 		return toolbarRect;
 	}
 	// =================================================================================
@@ -168,30 +172,35 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             CreatePackage(node.Name, iStorage);        
             return;
         }
+        var groupDesc= node.GroupDesc;
+        var desc= groupDesc[0];
+        if(groupDesc.Length != 1) {
+            Debug.LogWarning("iCanScript: need to popup another menu");
+        }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Class) {
-            CreateObjectInstance(node.Desc.ClassType, iStorage);        
+            CreateObjectInstance(desc.ClassType, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {
-            CreateMethod(node.Desc, iStorage);        
+            CreateMethod(desc, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Property) {
-            CreateMethod(node.Desc, iStorage);        
+            CreateMethod(desc, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Constructor) {
-            CreateMethod(node.Desc, iStorage);        
+            CreateMethod(desc, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Method) {
-            CreateMethod(node.Desc, iStorage);        
+            CreateMethod(desc, iStorage);        
             return;
         }
 		if(node.Type == iCS_LibraryController.NodeTypeEnum.Message) {
-            var module= CreateMessage(node.Desc, iStorage);        
-			if(node.Desc.IconPath != null) {
-				module.IconPath= node.Desc.IconPath;				
+            var module= CreateMessage(desc, iStorage);        
+			if(desc.IconPath != null) {
+				module.IconPath= desc.IconPath;				
 			}
 			return;
 		}

@@ -18,7 +18,7 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     public static void QSort() {
         if(IsSorted) return;
-        P.QSort(ref Functions, CompareFunctionNames);
+        Functions.Sort(CompareFunctionNames);
         IsSorted= true;
     }
 
@@ -39,6 +39,8 @@ public class iCS_LibraryDatabase {
             result= d1.Library.CompareTo(d2.Library);
             if(result != 0) return result;            
         }
+        result= iCS_Types.TypeName(d1.ClassType).CompareTo(iCS_Types.TypeName(d2.ClassType));
+        if(result != 0) return result;
         return d1.DisplayName.CompareTo(d2.DisplayName);
     }
     // ----------------------------------------------------------------------
@@ -49,6 +51,30 @@ public class iCS_LibraryDatabase {
     public static List<iCS_MethodBaseInfo> AllFunctions() {
         QSort();
         return Functions;
+    }
+    // ----------------------------------------------------------------------
+    public static List<iCS_MethodBaseInfo[]> BuildMenuFoldedOnFunctionName() {
+        var  result= new List<iCS_MethodBaseInfo[]>();
+        var allFunctions= AllFunctions();
+        iCS_MethodBaseInfo previousDesc= null;
+        List<iCS_MethodBaseInfo> foldedFunction= new List<iCS_MethodBaseInfo>();
+        foreach(var desc in allFunctions) {
+            if(previousDesc == null) {
+                foldedFunction.Add(desc);
+            }
+            else {
+                if(previousDesc.ClassType == desc.ClassType && previousDesc.DisplayName == desc.DisplayName) {
+                    foldedFunction.Add(desc);
+                }
+                else {
+                    result.Add(foldedFunction.ToArray());
+                    foldedFunction.Clear();
+                    foldedFunction.Add(desc);
+                }
+            }
+            previousDesc= desc;
+        }
+        return result;
     }
     // ----------------------------------------------------------------------
     public static List<iCS_MethodBaseInfo> BuildNormalMenu() {
