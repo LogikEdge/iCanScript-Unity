@@ -41,7 +41,7 @@ public class iCS_ContextualMenu {
     const string UnwrapPackageStr              = "- Unwrap Package";
     const string UpdateMessageHandlerPortsStr  = "+ Update Message Ports";
 	const string RemoveUnusedPortsStr          = "- Remove Unused Ports";
-    const string UserMessageHandlerStr         = "+ User Function";  
+    const string PublicFunctionStr             = "+ Public Function";  
     const string SeparatorStr                  = "";
 
     // ======================================================================
@@ -111,7 +111,7 @@ public class iCS_ContextualMenu {
         if(selectedObject.IsIconizedInLayout || selectedObject.IsFoldedInLayout) return;
 
         iCS_MenuContext[] menu= new iCS_MenuContext[2];
-        menu[0]= new iCS_MenuContext(UserMessageHandlerStr);
+        menu[0]= new iCS_MenuContext(PublicFunctionStr);
         menu[1]= new iCS_MenuContext(SeparatorStr);
         // Add Unity message handlers
 		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
@@ -542,7 +542,7 @@ public class iCS_ContextualMenu {
             case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
             case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
             case UnwrapPackageStr:               iCS_UserCommands.DeleteKeepChildren(targetObject); break;
-            case UserMessageHandlerStr:          iCS_UserCommands.CreateUserMessageHandler(targetObject, globalPos); break;
+            case PublicFunctionStr:              iCS_UserCommands.CreatePublicFunction(targetObject, globalPos); break;
             default: {
 				iCS_MethodBaseInfo desc= context.Descriptor;
 				if(desc == null) {
