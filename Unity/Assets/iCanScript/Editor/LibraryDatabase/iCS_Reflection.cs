@@ -7,6 +7,13 @@ using System.Collections.Generic;
 
 public class iCS_Reflection {
     // ======================================================================
+    // Constants
+    // ----------------------------------------------------------------------
+    const string kUnityEnginePackage= "UnityEngine";
+    const string kResourcesPath     = iCS_Config.ImagePath;
+    const string kUnityIcon         = kResourcesPath+"/iCS_UnityLogo_32x32.png";
+
+    // ======================================================================
     // Fileds.
     // ----------------------------------------------------------------------
     public static List<Type>    AllTypesWithDefaultConstructor= new List<Type>();
@@ -76,6 +83,15 @@ public class iCS_Reflection {
         iCS_LibraryDatabase.Clear();
         // Scan the application for functions/methods/conversions to register.
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+            // Install all public type of the Unity Engine assembly
+            if(assembly.FullName.StartsWith("UnityEngine")) {
+                foreach(var classType in assembly.GetTypes()) {
+                    if(classType.IsPublic && !classType.IsGenericType) {
+                        DecodeUnityClassInfo(classType);                        
+                    }
+                }                
+                continue;
+            }
             foreach(var classType in assembly.GetTypes()) {
                 AddToAllTypes(classType);
                 if(classType.Name == "iCS_Installer") {
@@ -125,6 +141,23 @@ public class iCS_Reflection {
             }
         }
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
+    }
+    // ======================================================================
+    // The following are helper functions to register Unity3D classes
+    // ----------------------------------------------------------------------
+    // Use this function to register Unity3d classes.
+    // All public fields/properties and methods will be registered.
+    //
+    // This function can be called by the iCanScript user to add to the
+    // existing Unity library.
+    // 
+    public static void DecodeUnityClassInfo(Type classType, string package= "UnityEngine", string iconPath= null, string description= null) {
+        string                  company               = "Unity";
+        bool                    decodeAllPublicMembers= true;
+        if(package == null)     package               = kUnityEnginePackage;
+        if(description == null) description           = "Unity class "+classType.Name;
+        if(iconPath == null)    iconPath              = kUnityIcon;
+        iCS_Reflection.DecodeClassInfo(classType, company, package, description, iconPath, decodeAllPublicMembers,true);
     }
     // ----------------------------------------------------------------------
     public static void DecodeClassInfo(Type classType, string company, string library, string description, string classIconPath,
