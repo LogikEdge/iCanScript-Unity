@@ -10,23 +10,23 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     public enum NodeTypeEnum { Root, Company, Library, Package, Class, Constructor, Field, Property, Method, Message, InParameter, OutParameter };
     public class Node {
-        public NodeTypeEnum    Type;
-        public string          Name;
-        public iCS_MemberInfo  Desc;
-        public Node(NodeTypeEnum type, string name, iCS_MemberInfo desc) {
+        public NodeTypeEnum     Type;
+        public string           Name;
+        public iCS_MemberInfo[] GroupDesc;
+        public Node(NodeTypeEnum type, string name, iCS_MemberInfo[] desc) {
             Init(type, name, desc);
         }
-        public void Init(NodeTypeEnum type, string name, iCS_MemberInfo desc) {
+        public void Init(NodeTypeEnum type, string name, iCS_MemberInfo[] groupDesc) {
             Type= type;
             Name= name;
-            Desc= desc;
+            GroupDesc= groupDesc;
         }
         public override bool Equals(System.Object theOther) {
             Node other= theOther as Node;
             if(other == null) return false;
             if(Type != other.Type) return false;
             if(Name != other.Name) return false;
-            if(Desc != other.Desc) return false;
+            if(GroupDesc != other.GroupDesc) return false;
             return true;
         }
         public override int GetHashCode() {
@@ -54,10 +54,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-	public DSView 		View 	     { get { return myTreeView; }}
-	public Node 		Selected     { get { return mySelected; } set { mySelected= value; }}
-	public Rect         SelectedArea { get { return mySelectedArea; }}
-	public bool         IsSelected   { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
+    public int          NumberOfItems   { get { return myTreeSize; }}
+	public DSView 		View 	        { get { return myTreeView; }}
+	public Node 		Selected        { get { return mySelected; } set { mySelected= value; }}
+	public Rect         SelectedArea    { get { return mySelectedArea; }}
+	public bool         IsSelected      { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
 	public string		SearchString {
 	    get { return mySearchString; }
 	    set {
@@ -104,30 +105,42 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void BuildTree() {
         // Build filter list of object...
-        var allFunctions= iCS_LibraryDatabase.AllFunctions();
+        var allFunctions= iCS_LibraryDatabase.BuildMenuFoldedOnFunctionName();
 		// Build tree and sort it elements.
 		myTree= BuildTreeNode(allFunctions);
     }
-	Prelude.Tree<Node> BuildTreeNode(List<iCS_MethodBaseInfo> functions) {
+	Prelude.Tree<Node> BuildTreeNode(List<iCS_MethodBaseInfo[]> functions) {
         if(functions.Count == 0) return null;
         myTreeSize= 0;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
         string upperSearchStr= string.IsNullOrEmpty(mySearchString) ? null : mySearchString.ToUpper();
         for(int i= 0; i < functions.Count; ++i) {
             if(FilterIn(functions[i], upperSearchStr)) {
-                var desc= functions[i];
-                var parentTree= GetParentTree(desc, tree);
+                var groupDesc= functions[i];
+                var desc= groupDesc[0];
+                var parentTree= GetParentTree(groupDesc, tree);
                 Node toAdd= null;
+//                if(desc.IsField) {
+//                    toAdd= new Node(NodeTypeEnum.Field, desc.ToFieldInfo.FieldName, groupDesc);
+//                } else if(desc.IsProperty) {
+//                    toAdd= new Node(NodeTypeEnum.Property, desc.ToPropertyInfo.PropertyName, groupDesc);
+//                } else if(desc.IsConstructor) {
+//                    toAdd= new Node(NodeTypeEnum.Constructor, desc.ToConstructorInfo.FunctionSignature, groupDesc);
+//                } else if(desc.IsMethod) {
+//                    toAdd= new Node(NodeTypeEnum.Method, desc.ToMethodInfo.FunctionSignature, groupDesc);                
+//                } else if(desc.IsMessage) {
+//                    toAdd= new Node(NodeTypeEnum.Message, desc.ToMessageInfo.FunctionSignature, groupDesc);
+//                }
                 if(desc.IsField) {
-                    toAdd= new Node(NodeTypeEnum.Field, desc.ToFieldInfo.FieldName, desc);
+                    toAdd= new Node(NodeTypeEnum.Field, desc.ToFieldInfo.DisplayName, groupDesc);
                 } else if(desc.IsProperty) {
-                    toAdd= new Node(NodeTypeEnum.Property, desc.ToPropertyInfo.PropertyName, desc);
+                    toAdd= new Node(NodeTypeEnum.Property, desc.ToPropertyInfo.DisplayName, groupDesc);
                 } else if(desc.IsConstructor) {
-                    toAdd= new Node(NodeTypeEnum.Constructor, desc.ToConstructorInfo.FunctionSignature, desc);
+                    toAdd= new Node(NodeTypeEnum.Constructor, desc.ToConstructorInfo.DisplayName, groupDesc);
                 } else if(desc.IsMethod) {
-                    toAdd= new Node(NodeTypeEnum.Method, desc.ToMethodInfo.FunctionSignature, desc);                
+                    toAdd= new Node(NodeTypeEnum.Method, desc.ToMethodInfo.DisplayName, groupDesc);                
                 } else if(desc.IsMessage) {
-                    toAdd= new Node(NodeTypeEnum.Message, desc.ToMessageInfo.FunctionSignature, desc);
+                    toAdd= new Node(NodeTypeEnum.Message, desc.ToMessageInfo.DisplayName, groupDesc);
                 }
                 if(toAdd != null) {
                     ++myTreeSize;
@@ -146,11 +159,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         }
         return -1;
     }
-    Prelude.Tree<Node> GetParentTree(iCS_MemberInfo desc, Prelude.Tree<Node> tree) {
+    Prelude.Tree<Node> GetParentTree(iCS_MemberInfo[] groupDesc, Prelude.Tree<Node> tree) {
+        var desc= groupDesc[0];
         if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Company)) {
             var idx= FindInTreeChildren(desc.ParentTypeInfo.Company, tree);
             if(idx < 0) {
-                tree.AddChild(new Node(NodeTypeEnum.Company, desc.ParentTypeInfo.Company, desc));
+                tree.AddChild(new Node(NodeTypeEnum.Company, desc.ParentTypeInfo.Company, groupDesc));
                 idx= FindInTreeChildren(desc.ParentTypeInfo.Company, tree);
             }
             tree= tree.Children[idx];
@@ -158,7 +172,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Library)) {
             var idx= FindInTreeChildren(desc.ParentTypeInfo.Library, tree);
             if(idx < 0) {
-                tree.AddChild(new Node(NodeTypeEnum.Library, desc.ParentTypeInfo.Library, desc));
+                tree.AddChild(new Node(NodeTypeEnum.Library, desc.ParentTypeInfo.Library, groupDesc));
                 idx= FindInTreeChildren(desc.ParentTypeInfo.Library, tree);
             }
             tree= tree.Children[idx];            
@@ -170,7 +184,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	            var idx= FindInTreeChildren(className, tree);
 	            if(idx < 0) {
 					var nodeType= iCS_Types.IsStaticClass(compilerType) ? NodeTypeEnum.Package : NodeTypeEnum.Class;
-	                tree.AddChild(new Node(nodeType, className, desc));
+	                tree.AddChild(new Node(nodeType, className, groupDesc));
 	                idx= FindInTreeChildren(className, tree);
 	            }
 	            tree= tree.Children[idx];            
@@ -211,13 +225,13 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(x.Type != NodeTypeEnum.Company && y.Type == NodeTypeEnum.Company) return 1;
         // The types are the same so lets sort according to input/output direction.
         if(x.Type == NodeTypeEnum.Field) {
-            bool isXGet= x.Desc.IsGetField;
-            bool isYGet= y.Desc.IsGetField;
+            bool isXGet= x.GroupDesc[0].IsGetField;
+            bool isYGet= y.GroupDesc[0].IsGetField;
             if(isXGet != isYGet) return isXGet ? 1 : -1;
         }
         if(x.Type == NodeTypeEnum.Property) {
-            bool isXGet= x.Desc.IsGetProperty;
-            bool isYGet= y.Desc.IsGetProperty;
+            bool isXGet= x.GroupDesc[0].IsGetProperty;
+            bool isYGet= y.GroupDesc[0].IsGetProperty;
             if(isXGet != isYGet) return isXGet ? 1 : -1;
         }
         // Everything is the same so lets sort according to the name.
@@ -245,9 +259,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterIn(iCS_MemberInfo desc, string upperSearchStr) {
-        if(desc == null) return false;
+    bool FilterIn(iCS_MemberInfo[] groupDesc, string upperSearchStr) {
+        if(groupDesc == null || groupDesc.Length == 0) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
+        var desc= groupDesc[0];
         if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         if(desc.ParentTypeInfo.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Library) && desc.Library.ToUpper().IndexOf(upperSearchStr) != -1) return true;
@@ -367,6 +382,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		var current= IterValue;
 		var nodeType= current.Type;
 		string name= current.Name;
+        var desc= current.GroupDesc[0];
 //        var methodBaseInfo= current.Desc as iCS_MethodBaseInfo;
 //        if(methodBaseInfo != null && methodBaseInfo.IsClassMember) {
 //            name= "+"+name;
@@ -388,13 +404,13 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         } else if(nodeType == NodeTypeEnum.Class) {
 			icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);            
         } else if(nodeType == NodeTypeEnum.Field) {
-            if(current.Desc.IsGetField) {
+            if(desc.IsGetField) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
             } else {
                 icon= iCS_BuiltinTextures.InEndPortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Property) {
-            if(current.Desc.IsGetProperty) {
+            if(desc.IsGetProperty) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
             } else {
                 icon= iCS_BuiltinTextures.InEndPortIcon;
