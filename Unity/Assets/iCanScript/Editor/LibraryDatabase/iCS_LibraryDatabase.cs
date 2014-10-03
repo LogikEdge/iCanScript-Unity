@@ -39,6 +39,8 @@ public class iCS_LibraryDatabase {
             result= d1.Library.CompareTo(d2.Library);
             if(result != 0) return result;            
         }
+        result= iCS_Types.TypeName(d1.ClassType).CompareTo(iCS_Types.TypeName(d2.ClassType));
+        if(result != 0) return result;
         return d1.DisplayName.CompareTo(d2.DisplayName);
     }
     // ----------------------------------------------------------------------
