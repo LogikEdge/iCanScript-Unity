@@ -114,22 +114,32 @@ public static class iCS_SceneController {
         ourVisualScriptsReferencesByScene    = GetVisualScriptsReferencedByScene();
         ourVisualScriptsInOrReferencesByScene= GetVisualScriptsInOrReferencedByScene();
         
+#if DEBUG
         Debug.Log("Scene as changed =>"+EditorApplication.currentScene);
+#endif
     }
 
     // ======================================================================
     // Update visual script content changed
     // ----------------------------------------------------------------------
     static void OnVisualScriptUndo(iCS_IStorage iStorage) {
+#if DEBUG
         Debug.Log("Visual Script undo=> "+iStorage.VisualScript.name);
+#endif
     }
     static void OnVisualScriptElementAdded(iCS_IStorage iStorage, iCS_EditorObject element) {
+#if DEBUG
         Debug.Log("Visual Script element added=> "+iStorage.VisualScript.name+"."+element.Name);
+#endif
     }
     static void OnVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
+#if DEBUG
         Debug.Log("Visual Script element will be removed=> "+iStorage.VisualScript.name+"."+element.Name);
+#endif
     }
     static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
+#if DEBUG
         Debug.Log("Visual Script element name changed=> "+iStorage.VisualScript.name+"."+element.Name);
+#endif
     }
 }

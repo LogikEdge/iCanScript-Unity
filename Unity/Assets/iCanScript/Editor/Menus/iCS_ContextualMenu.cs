@@ -132,7 +132,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void MessageHandlerMenu(iCS_EditorObject messageHandler, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(messageHandler);
-        AddNodeMenu(ref menu);
+//        AddNodeMenu(ref menu);
         var idx= GrowMenuBy(ref menu, 3);
         menu[idx]= new iCS_MenuContext(UpdateMessageHandlerPortsStr);
 		menu[idx+1]= new iCS_MenuContext(RemoveUnusedPortsStr);
