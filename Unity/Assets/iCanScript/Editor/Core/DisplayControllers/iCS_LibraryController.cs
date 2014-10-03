@@ -69,6 +69,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	public string		SearchString {
 	    get { return mySearchString; }
 	    set {
+            var preSearchLen= mySearchString == null ? 0 : mySearchString.Length;
+            var newSearchLen=          value == null ? 0 : value.Length;
 	        if(mySearchString != value) {
                 if(iCS_Strings.IsEmpty(mySearchString)) {
                     myTreeView.CopyActiveFoldDictionaryTo(1);
@@ -77,7 +79,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                     myTreeView.SwitchFoldDictionaryTo(0);
                 }
 	            mySearchString= value;
-	            BuildTree();
+                if(preSearchLen < newSearchLen) {
+    	            BuildTree();                    
+                }
 	            if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
                     string upperSearchStr= mySearchString.ToUpper();
 	                ShowAllFiltered(upperSearchStr);
