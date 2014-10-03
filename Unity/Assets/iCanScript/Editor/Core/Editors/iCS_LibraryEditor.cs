@@ -49,6 +49,12 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
 	Rect ShowToolbar() {
 		var toolbarRect= iCS_ToolbarUtility.BuildToolbar(position.width);
+        // Display # of items found
+        var nbItemsRect= new Rect(toolbarRect);
+        nbItemsRect.width= toolbarRect.width-120;
+        var numberOfItems= myController.NumberOfItems;
+        EditorGUI.LabelField(nbItemsRect, "# items: "+numberOfItems.ToString());
+        // Display search field.
 		string searchString= myController.SearchString ?? "";
 		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 120.0f, searchString, 0, 0, true);
 		return toolbarRect;
