@@ -45,13 +45,14 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    Node                        mySelected     = null;
-    Rect                        mySelectedArea = new Rect(0,0,0,0);
-	DSTreeView		    		myTreeView     = null;
-	float               		myFoldOffset   = 0;
-	string              		mySearchString = null;
-	List<P.Tree<Node> >	        myTrees		   = new List<P.Tree<Node> >();
-    List<int>                   myTreesSize    = new List<int>();
+    Node                        mySelected      = null;
+    Rect                        mySelectedArea  = new Rect(0,0,0,0);
+	DSTreeView		    		myTreeView      = null;
+	float               		myFoldOffset    = 0;
+	string              		mySearchString  = null;
+    P.Tree<Node>                myUnfilteredTree= null;
+    P.Tree<Node>                myActiveTree    = null;
+    int                         myActiveTreeSize= 0;
     // Used to move selection up/down
     Node                        myLastDisplayed  = null;
     int                         myChangeSelection= 0;
@@ -66,22 +67,21 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	public Node 		Selected        { get { return mySelected; } set { mySelected= value; }}
 	public Rect         SelectedArea    { get { return mySelectedArea; }}
 	public bool         IsSelected      { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
+    public P.Tree<Node> UnfilteredTree  { get { return myUnfilteredTree; } set { myUnfilteredTree= value; }}
     public int          TreeIndex {
         get { return SearchString == null ? 0 : SearchString.Length; }
     }
     public int          NumberOfItems {
-        get { GrowTrees(); return myTreesSize[TreeIndex]; }
-        set { GrowTrees(); myTreesSize[TreeIndex]= value; }
+        get { return myActiveTreeSize; }
+        set { myActiveTreeSize= value; }
     }
     public P.Tree<Node> ActiveTree {
-        get { GrowTrees(); return myTrees[TreeIndex]; }
-        set { GrowTrees(); myTrees[TreeIndex]= value; }
+        get { return myActiveTree; }
+        set { myActiveTree= value; }
     }
 	public string		SearchString {
 	    get { return mySearchString; }
 	    set {
-            var preSearchLen= mySearchString == null ? 0 : mySearchString.Length;
-            var newSearchLen=          value == null ? 0 : value.Length;
 	        if(mySearchString != value) {
                 if(iCS_Strings.IsEmpty(mySearchString)) {
                     myTreeView.CopyActiveFoldDictionaryTo(1);
@@ -90,9 +90,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                     myTreeView.SwitchFoldDictionaryTo(0);
                 }
 	            mySearchString= value;
-                if(preSearchLen < newSearchLen) {
-    	            BuildTreeFrom(myTrees[preSearchLen]);
-                }
+                BuildTreeFrom(UnfilteredTree);
 	            if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
                     string upperSearchStr= mySearchString.ToUpper();
 	                ShowAllFiltered(upperSearchStr);
@@ -116,7 +114,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // Initialization
     // ---------------------------------------------------------------------------------
 	public iCS_LibraryController() {
-		BuildTree();
+        // Build the unfiltered tree.
+        var allFunctions= iCS_LibraryDatabase.AllFunctions();
+	    UnfilteredTree= BuildTreeNode(allFunctions);
+        ActiveTree= UnfilteredTree;
+        // Initialize panel.
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
 		myIterStackNode= new Stack<Prelude.Tree<Node>>();
 		myIterStackChildIdx = new Stack<int>();
@@ -324,13 +326,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
-    // ---------------------------------------------------------------------------------
-    void GrowTrees() {
-        while(myTrees.Count <= TreeIndex) {
-            myTrees.Add(new P.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null)));
-            myTreesSize.Add(0);
-        }
-    }
     
 	// =================================================================================
     // TreeViewDataSource
@@ -436,10 +431,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		var current= IterValue;
 		var nodeType= current.Type;
 		string name= current.Name;
-//        var methodBaseInfo= current.Desc as iCS_MethodBaseInfo;
-//        if(methodBaseInfo != null && methodBaseInfo.IsClassMember) {
-//            name= "+"+name;
-//        }
         if(nodeType == NodeTypeEnum.Company) {
             if(name == "iCanScript") {
                 icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.iCanScript);
