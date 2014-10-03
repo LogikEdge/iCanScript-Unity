@@ -310,27 +310,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
-    bool FilterInCompany(iCS_MemberInfo desc, string upperSearchStr) {
-        if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Company) && desc.ParentTypeInfo.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        return false;
-    }
-    // ---------------------------------------------------------------------------------
-    bool FilterInLibrary(iCS_MemberInfo desc, string upperSearchStr) {
-        if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Library) && desc.ParentTypeInfo.Library.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        return false;
-    }
-    // ---------------------------------------------------------------------------------
-    bool FilterInName(iCS_MemberInfo desc, string upperSearchStr) {
-        if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        return false;
-    }
-    // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_MemberInfo desc, string upperSearchStr) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
