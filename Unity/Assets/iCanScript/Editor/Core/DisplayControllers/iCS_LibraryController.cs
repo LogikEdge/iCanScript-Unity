@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using P= Prelude;
 
 public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
@@ -42,7 +43,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	DSTreeView		    		myTreeView     = null;
 	float               		myFoldOffset   = 0;
 	string              		mySearchString = null;
-	Prelude.Tree<Node>	        myTree		   = null;
+	List<P.Tree<Node> >	        myTrees		   = new List<P.Tree<Node> >();
     int                         myTreeSize     = 0;
     // Used to move selection up/down
     Node                        myLastDisplayed  = null;
@@ -58,6 +59,13 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	public Node 		Selected     { get { return mySelected; } set { mySelected= value; }}
 	public Rect         SelectedArea { get { return mySelectedArea; }}
 	public bool         IsSelected   { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
+    public int          TreeIndex {
+        get { return SearchString == null ? 0 : SearchString.Length; }
+    }
+    public P.Tree<Node> ActiveTree {
+        get { GrowTrees(); return myTrees[TreeIndex]; }
+        set { GrowTrees(); myTrees[TreeIndex]= value; }
+    }
 	public string		SearchString {
 	    get { return mySearchString; }
 	    set {
@@ -106,7 +114,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         // Build filter list of object...
         var allFunctions= iCS_LibraryDatabase.AllFunctions();
 		// Build tree and sort it elements.
-		myTree= BuildTreeNode(allFunctions);
+	    ActiveTree= BuildTreeNode(allFunctions);
     }
 	Prelude.Tree<Node> BuildTreeNode(List<iCS_MethodBaseInfo> functions) {
         if(functions.Count == 0) return null;
@@ -261,6 +269,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
+    // ---------------------------------------------------------------------------------
+    void GrowTrees() {
+        while(myTrees.Count <= TreeIndex) {
+            myTrees.Add(new P.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null)));
+        }
+    }
     
 	// =================================================================================
     // TreeViewDataSource
@@ -268,15 +282,15 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	public void	Reset() {
 		myIterStackNode.Clear();
 		myIterStackChildIdx.Clear();
-		if(myTree != null) {
-			myIterStackNode.Push(myTree);
+		if(ActiveTree != null) {
+			myIterStackNode.Push(ActiveTree);
 			myIterStackChildIdx.Push(0);
 		}
 	}
 	public void BeginDisplay() { EditorGUIUtility.LookLikeControls(); }
 	public void EndDisplay() {}
 	public bool	MoveToNext() {
-		if(myTree == null || myIterStackNode.Count == 0) return false;
+		if(ActiveTree == null || myIterStackNode.Count == 0) return false;
 		if(MoveToFirstChild()) return true;
 		if(MoveToNextSibling()) return true;
 		do {
@@ -286,7 +300,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
 	public bool	MoveToNextSibling() {
-		if(myTree == null || myIterStackNode.Count == 0) return false;
+		if(ActiveTree == null || myIterStackNode.Count == 0) return false;
 		if(myIterStackNode.Count == 1) return false;
 		var savedNode= myIterStackNode.Pop();
 		var savedIdx= myIterStackChildIdx.Pop();
@@ -299,14 +313,14 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
 	public bool MoveToParent() {
-		if(myTree == null || myIterStackNode.Count == 0) return false;
+		if(ActiveTree == null || myIterStackNode.Count == 0) return false;
 		myIterStackNode.Pop();
 		myIterStackChildIdx.Pop();
 		return myIterStackNode.Count != 0;
 	}
 	// ---------------------------------------------------------------------------------
 	public bool	MoveToFirstChild() {
-		if(myTree == null || myIterStackNode.Count == 0) return false;
+		if(ActiveTree == null || myIterStackNode.Count == 0) return false;
 		var node= IterNode;
 		if(node == null || node.Children == null) return false;
 		myIterStackChildIdx.Pop();
@@ -318,7 +332,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	}
 	// ---------------------------------------------------------------------------------
 	public bool	MoveToNextChild() {
-		if(myTree == null || myIterStackNode.Count == 0) return false;
+		if(ActiveTree == null || myIterStackNode.Count == 0) return false;
 		var node= IterNode;
 		if(node == null || node.Children == null) return false;
 		int idx= myIterStackChildIdx.Pop();
@@ -468,14 +482,14 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     }
     // ---------------------------------------------------------------------------------
     public void ShowAllFiltered(string searchString) {
-        if(myTree == null) return;
-        var children= myTree.Children;
+        if(ActiveTree == null) return;
+        var children= ActiveTree.Children;
         if(children == null) return;
         bool result= false;
         foreach(var child in children) {
             result |= ShowAllFilteredFrom(child, searchString);
         }
-        if(result) myTreeView.Unfold(myTree.Value);
+        if(result) myTreeView.Unfold(ActiveTree.Value);
     }
     bool ShowAllFilteredFrom(Prelude.Tree<Node> tree, string searchString) {
         if(tree == null) return false;
