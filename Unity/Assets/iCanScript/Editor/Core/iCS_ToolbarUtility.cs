@@ -106,6 +106,29 @@ public static class iCS_ToolbarUtility {
         return GUI.TextField(r, value, EditorStyles.toolbarTextField);
     }
 	// ----------------------------------------------------------------------
+    public static void Texture(ref Rect toolbarRect, Texture texture, float leftMargin, float rightMargin, bool isRightJustified= false) {
+		var textureSize= new Vector2(texture.width, texture.height);
+        if(texture.height > toolbarRect.height) {
+            textureSize*= 0.8f*toolbarRect.height/texture.height;
+        }
+		Rect r= ReserveArea(ref toolbarRect, textureSize.x, leftMargin, rightMargin, isRightJustified);		
+        if(r.width < 1f) return;
+        float offset= 0.5f*(r.height-textureSize.y);
+        r.y+= offset;
+        r.height-= offset;
+        GUI.Label(r, texture);
+    }
+	// ----------------------------------------------------------------------
+    public static void Texture(ref Rect toolbarRect, float width, float height, Texture texture, float leftMargin, float rightMargin, bool isRightJustified= false) {
+		var textureSize= new Vector2(width, height);
+		Rect r= ReserveArea(ref toolbarRect, textureSize.x, leftMargin, rightMargin, isRightJustified);		
+        if(r.width < 1f) return;
+        float offset= 0.5f*(r.height-textureSize.y);
+        r.y+= offset;
+        r.height-= offset;
+        GUI.Label(r, texture);
+    }
+	// ----------------------------------------------------------------------
 	// FIXME: CenterLabel: left margin not functional
     public static void CenteredTitle(ref Rect toolbarRect, string title) {
         GUIContent content= new GUIContent(title);

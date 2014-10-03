@@ -9,6 +9,13 @@ using System.Collections.Generic;
 */
 public class iCS_LibraryEditor : iCS_EditorBase {
     // =================================================================================
+    // Constants
+    // ---------------------------------------------------------------------------------
+    const int   kIconWidth  = 16;
+    const int   kIconHeight = 16;
+    const float kLabelSpacer= 4f;
+
+    // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
     DSScrollView            myMainView;
@@ -56,12 +63,28 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         iCS_ToolbarUtility.MiniLabel(ref headerRect, "Show Inherited", 0, 0);
         var numberOfItems= myController.NumberOfItems;
         iCS_ToolbarUtility.MiniLabel(ref headerRect, "# items: "+numberOfItems.ToString(), 0, 0, true);
-//        var nbItemsRect= new Rect(headerRect);
-//        
-//        nbItemsRect.width= headerRect.width;
-//        EditorGUI.LabelField(nbItemsRect, "# items: "+numberOfItems.ToString());
+
         // -- Display toolbar search field #1 --
+        var search= myController.SearchCriteria_1;
         iCS_ToolbarUtility.BuildToolbar(search1Rect);
+        search.ShowClasses= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowClasses, 0, 0);
+		var icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);
+        iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, 4);            
+        iCS_ToolbarUtility.Separator(ref search1Rect);
+        iCS_ToolbarUtility.Separator(ref search1Rect);
+
+        search.ShowFunctions= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowFunctions, kLabelSpacer, 0);
+        icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Function);            
+        iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, kLabelSpacer);            
+        iCS_ToolbarUtility.Separator(ref search1Rect);
+
+        search.ShowVariables= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowVariables, kLabelSpacer, 0);
+        icon= iCS_BuiltinTextures.OutEndPortIcon;
+        iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, 0);            
+        icon= iCS_BuiltinTextures.InEndPortIcon;
+        iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, kLabelSpacer);            
+        iCS_ToolbarUtility.Separator(ref search1Rect);
+
 		string searchString= myController.SearchString ?? "";
 		myController.SearchString= iCS_ToolbarUtility.Search(ref search1Rect, 120.0f, searchString, 0, 0, true);
 		return Math3D.Union(headerRect, search1Rect);
