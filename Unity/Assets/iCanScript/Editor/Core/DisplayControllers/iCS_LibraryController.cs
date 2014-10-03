@@ -260,7 +260,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             }
             case NodeTypeEnum.Class: {
                 if(SearchCriteria_1.ShowClasses) {
-                    if(NameMatches(node.MemberInfo.DisplayName, upperSearchStr)) {
+                    if(NameMatches(node.Name, upperSearchStr)) {
                 		tree= new Prelude.Tree<Node>(baseTree.Value);
                     }
                 }
@@ -330,7 +330,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     bool NameMatches(string name, string matchString) {
-        return name.ToUpper().IndexOf(matchString) != -1;
+        var result= name.ToUpper().IndexOf(matchString);
+        return result >= 0;
     }
     // ---------------------------------------------------------------------------------
     int FindInTreeChildren(string name, Prelude.Tree<Node> tree) {
@@ -674,6 +675,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                         }
                         if(myTreeSize < 3000) {
                             myTreeView.Unfold(tree.Value);                                                
+                        }
+                        else {
+                            myTreeView.Fold(tree.Value);
                         }
                         break;
                     }
