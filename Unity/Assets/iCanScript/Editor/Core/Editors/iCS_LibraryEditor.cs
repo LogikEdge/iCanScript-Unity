@@ -32,7 +32,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     public new void OnGUI() {
         // Draw the base stuff for all windows.
         base.OnGUI();
-        
+    
         // Show library components.
         UpdateMgr();
 		if(!IsInitialized()) return;
@@ -44,17 +44,19 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 		if(mySelectedAreaCache != myController.SelectedArea) {
 		    mySelectedAreaCache= myController.SelectedArea;
 		    myMainView.MakeVisible(mySelectedAreaCache, frameArea);
-		}
+		}            
 	}
     // ---------------------------------------------------------------------------------
 	Rect ShowToolbar() {
 		var toolbarRect= iCS_ToolbarUtility.BuildToolbar(position.width);
-		string searchString= myController.SearchString ?? "";
-		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 120.0f, searchString, 0, 0, true);
+        // Display # of items found
         var nbItemsRect= new Rect(toolbarRect);
         nbItemsRect.width= toolbarRect.width-120;
         var numberOfItems= myController.NumberOfItems;
         EditorGUI.LabelField(nbItemsRect, "# items: "+numberOfItems.ToString());
+        // Display search field.
+		string searchString= myController.SearchString ?? "";
+		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 120.0f, searchString, 0, 0, true);
 		return toolbarRect;
 	}
 	// =================================================================================
@@ -172,35 +174,30 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             CreatePackage(node.Name, iStorage);        
             return;
         }
-        var groupDesc= node.GroupDesc;
-        var desc= groupDesc[0];
-        if(groupDesc.Length != 1) {
-            Debug.LogWarning("iCanScript: need to popup another menu");
-        }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Class) {
-            CreateObjectInstance(desc.ClassType, iStorage);        
+            CreateObjectInstance(node.MemberInfo.ClassType, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {
-            CreateMethod(desc, iStorage);        
+            CreateMethod(node.MemberInfo, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Property) {
-            CreateMethod(desc, iStorage);        
+            CreateMethod(node.MemberInfo, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Constructor) {
-            CreateMethod(desc, iStorage);        
+            CreateMethod(node.MemberInfo, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Method) {
-            CreateMethod(desc, iStorage);        
+            CreateMethod(node.MemberInfo, iStorage);        
             return;
         }
 		if(node.Type == iCS_LibraryController.NodeTypeEnum.Message) {
-            var module= CreateMessage(desc, iStorage);        
-			if(desc.IconPath != null) {
-				module.IconPath= desc.IconPath;				
+            var module= CreateMessage(node.MemberInfo, iStorage);        
+			if(node.MemberInfo.IconPath != null) {
+				module.IconPath= node.MemberInfo.IconPath;				
 			}
 			return;
 		}

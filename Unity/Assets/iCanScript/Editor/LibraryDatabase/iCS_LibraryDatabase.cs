@@ -18,7 +18,7 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     public static void QSort() {
         if(IsSorted) return;
-        Functions.Sort(CompareFunctionNames);
+        P.QSort(ref Functions, CompareFunctionNames);
         IsSorted= true;
     }
 
@@ -51,30 +51,6 @@ public class iCS_LibraryDatabase {
     public static List<iCS_MethodBaseInfo> AllFunctions() {
         QSort();
         return Functions;
-    }
-    // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo[]> BuildMenuFoldedOnFunctionName() {
-        var  result= new List<iCS_MethodBaseInfo[]>();
-        var allFunctions= AllFunctions();
-        iCS_MethodBaseInfo previousDesc= null;
-        List<iCS_MethodBaseInfo> foldedFunction= new List<iCS_MethodBaseInfo>();
-        foreach(var desc in allFunctions) {
-            if(previousDesc == null) {
-                foldedFunction.Add(desc);
-            }
-            else {
-                if(previousDesc.ClassType == desc.ClassType && previousDesc.DisplayName == desc.DisplayName) {
-                    foldedFunction.Add(desc);
-                }
-                else {
-                    result.Add(foldedFunction.ToArray());
-                    foldedFunction.Clear();
-                    foldedFunction.Add(desc);
-                }
-            }
-            previousDesc= desc;
-        }
-        return result;
     }
     // ----------------------------------------------------------------------
     public static List<iCS_MethodBaseInfo> BuildNormalMenu() {

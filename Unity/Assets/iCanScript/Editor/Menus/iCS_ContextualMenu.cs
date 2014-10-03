@@ -434,7 +434,7 @@ public class iCS_ContextualMenu {
     }
 	// ----------------------------------------------------------------------
     void AddNodeMenu(ref iCS_MenuContext[] menu) {
-        var fullMenu= iCS_LibraryDatabase.BuildNormalMenu();
+        var fullMenu= iCS_LibraryDatabase.BuildExpertMenu();
         if(fullMenu.Count == 0) return;
         int idx= GrowMenuBy(ref menu, fullMenu.Count+1);
         for(int i= 0; i < fullMenu.Count; ++i) {
