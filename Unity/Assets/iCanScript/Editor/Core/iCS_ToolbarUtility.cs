@@ -23,6 +23,10 @@ public static class iCS_ToolbarUtility {
 	// ----------------------------------------------------------------------
     public static Rect BuildToolbar(float width, float yOffset= 0) {
         Rect toolbarRect= new Rect(0,yOffset,width,GetHeight());
+        return BuildToolbar(toolbarRect);
+    }
+	// ----------------------------------------------------------------------
+    public static Rect BuildToolbar(Rect toolbarRect) {
         Rect r= toolbarRect;
         r.height+= 20f;
 		GUI.Box(r, "", EditorStyles.toolbar);

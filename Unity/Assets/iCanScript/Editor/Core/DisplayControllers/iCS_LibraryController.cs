@@ -36,6 +36,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             return Name.GetHashCode();
         }
     };
+    public class SearchCriterias {
+        public bool     shouldSearchInClasses  = true;
+        public bool     shouldSearchInFunctions= true;
+        public bool     shouldSearchInVariables= true;
+        public string   searchString           = "";
+    };
     
     // =================================================================================
     // Constants
@@ -45,6 +51,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
+    bool                        myShowInherited = false;
     Node                        mySelected      = null;
     Rect                        mySelectedArea  = new Rect(0,0,0,0);
 	DSTreeView		    		myTreeView      = null;
@@ -68,6 +75,15 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	public Rect         SelectedArea    { get { return mySelectedArea; }}
 	public bool         IsSelected      { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
     public P.Tree<Node> UnfilteredTree  { get { return myUnfilteredTree; } set { myUnfilteredTree= value; }}
+    public bool         ShowInherited   {
+        get { return myShowInherited; }
+        set {
+            if(value != myShowInherited) {
+                myShowInherited= value;
+                RebuildActiveTree();                
+            }
+        }
+    }
     public int          TreeIndex {
         get { return SearchString == null ? 0 : SearchString.Length; }
     }
@@ -90,11 +106,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                     myTreeView.SwitchFoldDictionaryTo(0);
                 }
 	            mySearchString= value;
-                BuildTreeFrom(UnfilteredTree);
-	            if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
-                    string upperSearchStr= mySearchString.ToUpper();
-	                ShowAllFiltered(upperSearchStr);
-	            }
+                RebuildActiveTree();
 	        }
 	    }
 	}
@@ -166,6 +178,15 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		return tree;
 	}
     // ---------------------------------------------------------------------------------
+    /// Rebuilds the active tree using the existing search criterias.
+    void RebuildActiveTree() {
+        BuildTreeFrom(UnfilteredTree);
+        if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
+            string upperSearchStr= mySearchString.ToUpper();
+            ShowAllFiltered(upperSearchStr);
+        }        
+    }
+    // ---------------------------------------------------------------------------------
     /// Builds a filtered tree starting for a prefiltered tree
     void BuildTreeFrom(P.Tree<Node> baseTree) {
         var treeSize= 0;
@@ -195,13 +216,21 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             case NodeTypeEnum.Field:
             case NodeTypeEnum.Property:
             case NodeTypeEnum.Method:
-            case NodeTypeEnum.Message:
             case NodeTypeEnum.InParameter:
             case NodeTypeEnum.OutParameter: {
+                if(!ShowInherited && iCS_LibraryDatabase.IsInherited(node.MemberInfo)) {
+                    return null;
+                }
                 if(FilterIn(node.MemberInfo, upperSearchStr)) {
                     return new P.Tree<Node>(node);                    
                 }
                 return null;
+            }
+            case NodeTypeEnum.Message: {
+                if(FilterIn(node.MemberInfo, upperSearchStr)) {
+                    return new P.Tree<Node>(node);                    
+                }
+                return null;                
             }
         }
                               
