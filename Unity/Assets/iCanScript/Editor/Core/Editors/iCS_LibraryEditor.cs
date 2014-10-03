@@ -32,7 +32,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     public new void OnGUI() {
         // Draw the base stuff for all windows.
         base.OnGUI();
-        
+    
         // Show library components.
         UpdateMgr();
 		if(!IsInitialized()) return;
@@ -44,7 +44,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 		if(mySelectedAreaCache != myController.SelectedArea) {
 		    mySelectedAreaCache= myController.SelectedArea;
 		    myMainView.MakeVisible(mySelectedAreaCache, frameArea);
-		}
+		}            
 	}
     // ---------------------------------------------------------------------------------
 	Rect ShowToolbar() {
@@ -175,29 +175,29 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Class) {
-            CreateObjectInstance(node.Desc.ClassType, iStorage);        
+            CreateObjectInstance(node.MemberInfo.ClassType, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {
-            CreateMethod(node.Desc, iStorage);        
+            CreateMethod(node.MemberInfo, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Property) {
-            CreateMethod(node.Desc, iStorage);        
+            CreateMethod(node.MemberInfo, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Constructor) {
-            CreateMethod(node.Desc, iStorage);        
+            CreateMethod(node.MemberInfo, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Method) {
-            CreateMethod(node.Desc, iStorage);        
+            CreateMethod(node.MemberInfo, iStorage);        
             return;
         }
 		if(node.Type == iCS_LibraryController.NodeTypeEnum.Message) {
-            var module= CreateMessage(node.Desc, iStorage);        
-			if(node.Desc.IconPath != null) {
-				module.IconPath= node.Desc.IconPath;				
+            var module= CreateMessage(node.MemberInfo, iStorage);        
+			if(node.MemberInfo.IconPath != null) {
+				module.IconPath= node.MemberInfo.IconPath;				
 			}
 			return;
 		}

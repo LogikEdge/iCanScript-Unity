@@ -13,27 +13,34 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     public class Node {
         public NodeTypeEnum    Type;
         public string          Name;
-        public iCS_MemberInfo  Desc;
-        public Node(NodeTypeEnum type, string name, iCS_MemberInfo desc) {
-            Init(type, name, desc);
+        public Vector2         NameSize;
+        public iCS_MemberInfo  MemberInfo;
+        public Node(NodeTypeEnum type, string name, iCS_MemberInfo memberInfo) {
+            Init(type, name, memberInfo);
         }
-        public void Init(NodeTypeEnum type, string name, iCS_MemberInfo desc) {
+        public void Init(NodeTypeEnum type, string name, iCS_MemberInfo memberInfo) {
             Type= type;
             Name= name;
-            Desc= desc;
+            MemberInfo= memberInfo;
+            NameSize= EditorStyles.label.CalcSize(new GUIContent(Name));
         }
         public override bool Equals(System.Object theOther) {
             Node other= theOther as Node;
             if(other == null) return false;
             if(Type != other.Type) return false;
             if(Name != other.Name) return false;
-            if(Desc != other.Desc) return false;
+            if(MemberInfo != other.MemberInfo) return false;
             return true;
         }
         public override int GetHashCode() {
             return Name.GetHashCode();
         }
     };
+    
+    // =================================================================================
+    // Constants
+    // ---------------------------------------------------------------------------------
+    float   kGUIEmptyFoldOffset= 0;
     
     // =================================================================================
     // Fields
@@ -44,7 +51,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	float               		myFoldOffset   = 0;
 	string              		mySearchString = null;
 	List<P.Tree<Node> >	        myTrees		   = new List<P.Tree<Node> >();
-    int                         myTreeSize     = 0;
+    List<int>                   myTreesSize    = new List<int>();
     // Used to move selection up/down
     Node                        myLastDisplayed  = null;
     int                         myChangeSelection= 0;
@@ -59,9 +66,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	public Node 		Selected        { get { return mySelected; } set { mySelected= value; }}
 	public Rect         SelectedArea    { get { return mySelectedArea; }}
 	public bool         IsSelected      { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
-    public int          NumberOfItems   { get { return myTreeSize; }}
     public int          TreeIndex {
         get { return SearchString == null ? 0 : SearchString.Length; }
+    }
+    public int          NumberOfItems {
+        get { GrowTrees(); return myTreesSize[TreeIndex]; }
+        set { GrowTrees(); myTreesSize[TreeIndex]= value; }
     }
     public P.Tree<Node> ActiveTree {
         get { GrowTrees(); return myTrees[TreeIndex]; }
@@ -81,7 +91,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 }
 	            mySearchString= value;
                 if(preSearchLen < newSearchLen) {
-    	            BuildTree();                    
+    	            BuildTreeFrom(myTrees[preSearchLen]);
                 }
 	            if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
                     string upperSearchStr= mySearchString.ToUpper();
@@ -110,6 +120,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
 		myIterStackNode= new Stack<Prelude.Tree<Node>>();
 		myIterStackChildIdx = new Stack<int>();
+        kGUIEmptyFoldOffset= EditorStyles.foldout.CalcSize(new GUIContent("")).x;
 	}
 	
 	// =================================================================================
@@ -123,24 +134,24 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     }
 	Prelude.Tree<Node> BuildTreeNode(List<iCS_MethodBaseInfo> functions) {
         if(functions.Count == 0) return null;
-        myTreeSize= 0;
+        var myTreeSize= 0;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
         string upperSearchStr= string.IsNullOrEmpty(mySearchString) ? null : mySearchString.ToUpper();
         for(int i= 0; i < functions.Count; ++i) {
             if(FilterIn(functions[i], upperSearchStr)) {
-                var desc= functions[i];
-                var parentTree= GetParentTree(desc, tree);
+                var memberInfo= functions[i];
+                var parentTree= GetParentTree(memberInfo, tree, ref myTreeSize);
                 Node toAdd= null;
-                if(desc.IsField) {
-                    toAdd= new Node(NodeTypeEnum.Field, desc.ToFieldInfo.FieldName, desc);
-                } else if(desc.IsProperty) {
-                    toAdd= new Node(NodeTypeEnum.Property, desc.ToPropertyInfo.PropertyName, desc);
-                } else if(desc.IsConstructor) {
-                    toAdd= new Node(NodeTypeEnum.Constructor, desc.ToConstructorInfo.FunctionSignature, desc);
-                } else if(desc.IsMethod) {
-                    toAdd= new Node(NodeTypeEnum.Method, desc.ToMethodInfo.FunctionSignature, desc);                
-                } else if(desc.IsMessage) {
-                    toAdd= new Node(NodeTypeEnum.Message, desc.ToMessageInfo.FunctionSignature, desc);
+                if(memberInfo.IsField) {
+                    toAdd= new Node(NodeTypeEnum.Field, memberInfo.ToFieldInfo.FieldName, memberInfo);
+                } else if(memberInfo.IsProperty) {
+                    toAdd= new Node(NodeTypeEnum.Property, memberInfo.ToPropertyInfo.PropertyName, memberInfo);
+                } else if(memberInfo.IsConstructor) {
+                    toAdd= new Node(NodeTypeEnum.Constructor, memberInfo.ToConstructorInfo.FunctionSignature, memberInfo);
+                } else if(memberInfo.IsMethod) {
+                    toAdd= new Node(NodeTypeEnum.Method, memberInfo.ToMethodInfo.FunctionSignature, memberInfo);                
+                } else if(memberInfo.IsMessage) {
+                    toAdd= new Node(NodeTypeEnum.Message, memberInfo.ToMessageInfo.FunctionSignature, memberInfo);
                 }
                 if(toAdd != null) {
                     ++myTreeSize;
@@ -148,9 +159,68 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 }                            
             }
         }
+        NumberOfItems= myTreeSize;
         Sort(tree);
 		return tree;
 	}
+    // ---------------------------------------------------------------------------------
+    /// Builds a filtered tree starting for a prefiltered tree
+    void BuildTreeFrom(P.Tree<Node> baseTree) {
+        var treeSize= 0;
+        ActiveTree= BuildTreeNodeFrom(baseTree, ref treeSize);
+        NumberOfItems= treeSize;
+    }
+	Prelude.Tree<Node> BuildTreeNodeFrom(P.Tree<Node> baseTree, ref int treeSize) {
+        // Protect against empty tree
+        if(baseTree == null || baseTree.Value == null) return null;
+        string upperSearchStr= string.IsNullOrEmpty(mySearchString) ? null : mySearchString.ToUpper();
+        
+        // Add if we match the search criteria
+        P.Tree<Node> tree= null;
+        var node= baseTree.Value;
+        switch(node.Type) {
+            case NodeTypeEnum.Root: {
+        		tree= new Prelude.Tree<Node>(baseTree.Value);
+                break;
+            }
+            case NodeTypeEnum.Company:
+            case NodeTypeEnum.Library:
+            case NodeTypeEnum.Package:
+            case NodeTypeEnum.Class: {
+                break;
+            }
+            case NodeTypeEnum.Constructor:
+            case NodeTypeEnum.Field:
+            case NodeTypeEnum.Property:
+            case NodeTypeEnum.Method:
+            case NodeTypeEnum.Message:
+            case NodeTypeEnum.InParameter:
+            case NodeTypeEnum.OutParameter: {
+                if(FilterIn(node.MemberInfo, upperSearchStr)) {
+                    return new P.Tree<Node>(node);                    
+                }
+                return null;
+            }
+        }
+                              
+        // Process each child
+        var nbOfChild= baseTree.Children == null ? 0 : baseTree.Children.Count;
+        for(int i= 0; i < nbOfChild; ++i) {
+            var child= baseTree.Children[i];
+            if(child == null || child.Value == null) continue;
+            var childTree= BuildTreeNodeFrom(child, ref treeSize);
+            if(childTree != null) {
+                // Add parent node.
+                if(tree == null) {
+                    tree= new P.Tree<Node>(node);
+                }
+                tree.AddChild(childTree);
+                ++treeSize;                
+            }
+        }
+		return tree;
+	}
+    // ---------------------------------------------------------------------------------
     int FindInTreeChildren(string name, Prelude.Tree<Node> tree) {
         var children= tree.Children;
         if(children == null) return -1;
@@ -159,11 +229,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         }
         return -1;
     }
-    Prelude.Tree<Node> GetParentTree(iCS_MemberInfo desc, Prelude.Tree<Node> tree) {
+    Prelude.Tree<Node> GetParentTree(iCS_MemberInfo desc, Prelude.Tree<Node> tree, ref int treeSize) {
         if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Company)) {
             var idx= FindInTreeChildren(desc.ParentTypeInfo.Company, tree);
             if(idx < 0) {
                 tree.AddChild(new Node(NodeTypeEnum.Company, desc.ParentTypeInfo.Company, desc));
+                ++treeSize;
                 idx= FindInTreeChildren(desc.ParentTypeInfo.Company, tree);
             }
             tree= tree.Children[idx];
@@ -172,6 +243,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             var idx= FindInTreeChildren(desc.ParentTypeInfo.Library, tree);
             if(idx < 0) {
                 tree.AddChild(new Node(NodeTypeEnum.Library, desc.ParentTypeInfo.Library, desc));
+                ++treeSize;
                 idx= FindInTreeChildren(desc.ParentTypeInfo.Library, tree);
             }
             tree= tree.Children[idx];            
@@ -184,6 +256,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	            if(idx < 0) {
 					var nodeType= iCS_Types.IsStaticClass(compilerType) ? NodeTypeEnum.Package : NodeTypeEnum.Class;
 	                tree.AddChild(new Node(nodeType, className, desc));
+                    ++treeSize;
 	                idx= FindInTreeChildren(className, tree);
 	            }
 	            tree= tree.Children[idx];            
@@ -224,13 +297,13 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(x.Type != NodeTypeEnum.Company && y.Type == NodeTypeEnum.Company) return 1;
         // The types are the same so lets sort according to input/output direction.
         if(x.Type == NodeTypeEnum.Field) {
-            bool isXGet= x.Desc.IsGetField;
-            bool isYGet= y.Desc.IsGetField;
+            bool isXGet= x.MemberInfo.IsGetField;
+            bool isYGet= y.MemberInfo.IsGetField;
             if(isXGet != isYGet) return isXGet ? 1 : -1;
         }
         if(x.Type == NodeTypeEnum.Property) {
-            bool isXGet= x.Desc.IsGetProperty;
-            bool isYGet= y.Desc.IsGetProperty;
+            bool isXGet= x.MemberInfo.IsGetProperty;
+            bool isYGet= y.MemberInfo.IsGetProperty;
             if(isXGet != isYGet) return isXGet ? 1 : -1;
         }
         // Everything is the same so lets sort according to the name.
@@ -278,6 +351,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     void GrowTrees() {
         while(myTrees.Count <= TreeIndex) {
             myTrees.Add(new P.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null)));
+            myTreesSize.Add(0);
         }
     }
     
@@ -351,10 +425,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public Vector2	CurrentObjectLayoutSize() {
 		if(myFoldOffset == 0) {
-            var emptySize= EditorStyles.foldout.CalcSize(new GUIContent(""));
-    		myFoldOffset= emptySize.x;
+    		myFoldOffset= kGUIEmptyFoldOffset;
 		}
-        var nameSize= EditorStyles.label.CalcSize(new GUIContent(IterValue.Name));
+        var nameSize= IterValue.NameSize;
         return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, kIconHeight);
 	}
     // ---------------------------------------------------------------------------------
@@ -407,13 +480,13 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         } else if(nodeType == NodeTypeEnum.Class) {
 			icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);            
         } else if(nodeType == NodeTypeEnum.Field) {
-            if(current.Desc.IsGetField) {
+            if(current.MemberInfo.IsGetField) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
             } else {
                 icon= iCS_BuiltinTextures.InEndPortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Property) {
-            if(current.Desc.IsGetProperty) {
+            if(current.MemberInfo.IsGetProperty) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
             } else {
                 icon= iCS_BuiltinTextures.InEndPortIcon;
@@ -500,16 +573,17 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(tree == null) return false;
         bool result= false;
         var children= tree.Children;
+        var myTreeSize= NumberOfItems;
         if(children != null) {
             foreach(var child in children) {
                 result |= ShowAllFilteredFrom(child, searchString);
             }            
             // Don't unfold everthing if we have too many search results.
             if(result) {
-                if(myTreeSize < 2000) {
+                if(myTreeSize < 750) {
                     myTreeView.Unfold(tree.Value);                    
                 }
-                else if(myTreeSize < 4000) {
+                else if(myTreeSize < 1500) {
                     switch(tree.Value.Type) {
                         case NodeTypeEnum.Root:
                         case NodeTypeEnum.Company:
@@ -522,7 +596,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                         default: break;
                     }
                 }
-                else if(myTreeSize < 6000) {
+                else if(myTreeSize < 3000) {
                     switch(tree.Value.Type) {
                         case NodeTypeEnum.Root:
                         case NodeTypeEnum.Company:
