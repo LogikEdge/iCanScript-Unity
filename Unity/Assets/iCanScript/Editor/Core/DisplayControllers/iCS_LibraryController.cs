@@ -55,10 +55,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-	public DSView 		View 	     { get { return myTreeView; }}
-	public Node 		Selected     { get { return mySelected; } set { mySelected= value; }}
-	public Rect         SelectedArea { get { return mySelectedArea; }}
-	public bool         IsSelected   { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
+	public DSView 		View 	        { get { return myTreeView; }}
+	public Node 		Selected        { get { return mySelected; } set { mySelected= value; }}
+	public Rect         SelectedArea    { get { return mySelectedArea; }}
+	public bool         IsSelected      { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
+    public int          NumberOfItems   { get { return myTreeSize; }}
     public int          TreeIndex {
         get { return SearchString == null ? 0 : SearchString.Length; }
     }
