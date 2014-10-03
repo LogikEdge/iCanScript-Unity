@@ -160,6 +160,18 @@ public class iCS_LibraryDatabase {
         if(methodInfo != null) {
             return methodInfo.Method.DeclaringType != methodInfo.ClassType;
         }
+        var messageInfo= memberInfo.ToMessageInfo;
+        if(messageInfo != null) {
+            var parentTypeInfo= messageInfo.ParentTypeInfo;
+            var baseType= parentTypeInfo.BaseType;
+            foreach(var m in GetMembers(baseType)) {
+                if(m.IsMessage) {
+                    if(m.DisplayName == messageInfo.DisplayName) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
     // ----------------------------------------------------------------------

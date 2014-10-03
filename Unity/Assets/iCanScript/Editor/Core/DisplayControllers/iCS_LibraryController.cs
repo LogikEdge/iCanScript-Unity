@@ -212,6 +212,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             case NodeTypeEnum.Class: {
                 break;
             }
+            case NodeTypeEnum.Message:
             case NodeTypeEnum.Constructor:
             case NodeTypeEnum.Field:
             case NodeTypeEnum.Property:
@@ -225,12 +226,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                     return new P.Tree<Node>(node);                    
                 }
                 return null;
-            }
-            case NodeTypeEnum.Message: {
-                if(FilterIn(node.MemberInfo, upperSearchStr)) {
-                    return new P.Tree<Node>(node);                    
-                }
-                return null;                
             }
         }
                               
