@@ -17,13 +17,13 @@ public static partial class iCS_UserCommands {
         var iStorage= parent.IStorage;
         iCS_IVisualScriptData vsd= vs;
         OpenTransaction(iStorage);
-        iCS_EditorObject variableProxy= null;
+        iCS_EditorObject variableReference= null;
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    variableProxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.VariableReference, null);
+                    variableReference= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.VariableReference, null);
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, realObject);
-                    var proxyId= variableProxy.InstanceId;
+                    var proxyId= variableReference.InstanceId;
                     // Copy all output ports.
                     foreach(var p in ports) {
                         if(p.IsOutDataPort && !p.IsControlPort) {
@@ -42,8 +42,8 @@ public static partial class iCS_UserCommands {
                     // Instance visual script port to support dynamic connection
                     var gameObjectPort= iStorage.CreateInInstancePort(proxyId, typeof(GameObject));
                     gameObjectPort.PortValue= vs.gameObject;
-                    variableProxy.ProxyOriginalNodeId= realObject.InstanceId;
-                    variableProxy.ProxyOriginalVisualScriptTag= vs.tag;
+                    variableReference.ProxyOriginalNodeId= realObject.InstanceId;
+                    variableReference.ProxyOriginalVisualScriptTag= vs.tag;
                     iStorage.ForcedRelayoutOfTree();
                 }
             );
@@ -52,13 +52,13 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        if(variableProxy == null) {
+        if(variableReference == null) {
             CancelTransaction(iStorage);
             return null;
         }
-        CloseTransaction(iStorage, "Create Proxy Port: "+name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(iStorage, variableProxy);
-        return variableProxy;
+        CloseTransaction(iStorage, "Create Variable Proxy: "+name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(iStorage, variableReference);
+        return variableReference;
     }
 	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreateUserFunctionCall(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject userFunction) {
