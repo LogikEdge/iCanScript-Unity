@@ -155,6 +155,26 @@ public class iCS_LibraryDatabase {
         return messages.ToArray();
     }
     // ----------------------------------------------------------------------
+    public static bool IsInherited(iCS_MemberInfo memberInfo) {
+        var methodInfo= memberInfo.ToMethodInfo;
+        if(methodInfo != null) {
+            return methodInfo.Method.DeclaringType != methodInfo.ClassType;
+        }
+        var messageInfo= memberInfo.ToMessageInfo;
+        if(messageInfo != null) {
+            var parentTypeInfo= messageInfo.ParentTypeInfo;
+            var baseType= parentTypeInfo.BaseType;
+            foreach(var m in GetMembers(baseType)) {
+                if(m.IsMessage) {
+                    if(m.DisplayName == messageInfo.DisplayName) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    // ----------------------------------------------------------------------
     public static List<iCS_MethodBaseInfo> BuildMenuForMembersOfType(Type classType, Type inputType, Type outputType) {
         QSort();
         var menu= new List<iCS_MethodBaseInfo>();

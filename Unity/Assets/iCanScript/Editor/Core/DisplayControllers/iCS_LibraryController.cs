@@ -36,6 +36,53 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             return Name.GetHashCode();
         }
     };
+    public class SearchCriterias {
+        iCS_LibraryController   myController   = null;
+        bool                    myShowClasses  = true;
+        bool                    myShowFunctions= true;
+        bool                    myShowVariables= true;
+        string                  mySearchString = "";
+
+        public SearchCriterias(iCS_LibraryController controller) {
+            myController= controller;
+        }
+        public bool ShowClasses { 
+            get { return myShowClasses; }
+            set {
+                if(value != myShowClasses) {
+                    myShowClasses= value;
+                    myController.RebuildActiveTree();
+                }
+            }
+        }
+        public bool ShowFunctions { 
+            get { return myShowFunctions; }
+            set {
+                if(value != myShowFunctions) {
+                    myShowFunctions= value;
+                    myController.RebuildActiveTree();
+                }
+            }
+        }
+        public bool ShowVariables { 
+            get { return myShowVariables; }
+            set {
+                if(value != myShowVariables) {
+                    myShowVariables= value;
+                    myController.RebuildActiveTree();
+                }
+            }
+        }
+        public string SearchString {
+            get { return mySearchString; }
+            set {
+                if(value != mySearchString) {
+                    mySearchString= value;
+                    myController.RebuildActiveTree();
+                }
+            }
+        }
+    };
     
     // =================================================================================
     // Constants
@@ -45,13 +92,16 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    Node                        mySelected     = null;
-    Rect                        mySelectedArea = new Rect(0,0,0,0);
-	DSTreeView		    		myTreeView     = null;
-	float               		myFoldOffset   = 0;
-	string              		mySearchString = null;
-	List<P.Tree<Node> >	        myTrees		   = new List<P.Tree<Node> >();
-    List<int>                   myTreesSize    = new List<int>();
+    bool                        myShowInherited    = false;
+    Node                        mySelected         = null;
+    Rect                        mySelectedArea     = new Rect(0,0,0,0);
+	DSTreeView		    		myTreeView         = null;
+	float               		myFoldOffset       = 0;
+    SearchCriterias             mySearchCriterias_1= null;
+	string              		mySearchString     = null;
+    P.Tree<Node>                myUnfilteredTree   = null;
+    P.Tree<Node>                myActiveTree       = null;
+    int                         myActiveTreeSize   = 0;
     // Used to move selection up/down
     Node                        myLastDisplayed  = null;
     int                         myChangeSelection= 0;
@@ -66,22 +116,33 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	public Node 		Selected        { get { return mySelected; } set { mySelected= value; }}
 	public Rect         SelectedArea    { get { return mySelectedArea; }}
 	public bool         IsSelected      { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
+    public P.Tree<Node> UnfilteredTree  { get { return myUnfilteredTree; } set { myUnfilteredTree= value; }}
+    public bool         ShowInherited   {
+        get { return myShowInherited; }
+        set {
+            if(value != myShowInherited) {
+                myShowInherited= value;
+                RebuildActiveTree();                
+            }
+        }
+    }
+    public SearchCriterias SearchCriteria_1 {
+        get { return mySearchCriterias_1; }
+    }
     public int          TreeIndex {
         get { return SearchString == null ? 0 : SearchString.Length; }
     }
     public int          NumberOfItems {
-        get { GrowTrees(); return myTreesSize[TreeIndex]; }
-        set { GrowTrees(); myTreesSize[TreeIndex]= value; }
+        get { return myActiveTreeSize; }
+        set { myActiveTreeSize= value; }
     }
     public P.Tree<Node> ActiveTree {
-        get { GrowTrees(); return myTrees[TreeIndex]; }
-        set { GrowTrees(); myTrees[TreeIndex]= value; }
+        get { return myActiveTree; }
+        set { myActiveTree= value; }
     }
 	public string		SearchString {
 	    get { return mySearchString; }
 	    set {
-            var preSearchLen= mySearchString == null ? 0 : mySearchString.Length;
-            var newSearchLen=          value == null ? 0 : value.Length;
 	        if(mySearchString != value) {
                 if(iCS_Strings.IsEmpty(mySearchString)) {
                     myTreeView.CopyActiveFoldDictionaryTo(1);
@@ -90,13 +151,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                     myTreeView.SwitchFoldDictionaryTo(0);
                 }
 	            mySearchString= value;
-                if(preSearchLen < newSearchLen) {
-    	            BuildTreeFrom(myTrees[preSearchLen]);
-                }
-	            if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
-                    string upperSearchStr= mySearchString.ToUpper();
-	                ShowAllFiltered(upperSearchStr);
-	            }
+                RebuildActiveTree();
 	        }
 	    }
 	}
@@ -116,7 +171,13 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // Initialization
     // ---------------------------------------------------------------------------------
 	public iCS_LibraryController() {
-		BuildTree();
+        // Build the unfiltered tree.
+        var allFunctions= iCS_LibraryDatabase.AllFunctions();
+	    UnfilteredTree= BuildTreeNode(allFunctions);
+        ActiveTree= UnfilteredTree;
+        // Initialize search criterias.
+        mySearchCriterias_1= new SearchCriterias(this);
+        // Initialize panel.
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
 		myIterStackNode= new Stack<Prelude.Tree<Node>>();
 		myIterStackChildIdx = new Stack<int>();
@@ -164,6 +225,15 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		return tree;
 	}
     // ---------------------------------------------------------------------------------
+    /// Rebuilds the active tree using the existing search criterias.
+    public void RebuildActiveTree() {
+        BuildTreeFrom(UnfilteredTree);
+        if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
+            string upperSearchStr= mySearchString.ToUpper();
+            ShowAllFiltered(upperSearchStr);
+        }        
+    }
+    // ---------------------------------------------------------------------------------
     /// Builds a filtered tree starting for a prefiltered tree
     void BuildTreeFrom(P.Tree<Node> baseTree) {
         var treeSize= 0;
@@ -173,7 +243,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	Prelude.Tree<Node> BuildTreeNodeFrom(P.Tree<Node> baseTree, ref int treeSize) {
         // Protect against empty tree
         if(baseTree == null || baseTree.Value == null) return null;
-        string upperSearchStr= string.IsNullOrEmpty(mySearchString) ? null : mySearchString.ToUpper();
+        string upperSearchStr= string.IsNullOrEmpty(mySearchString) ? "" : mySearchString.ToUpper();
         
         // Add if we match the search criteria
         P.Tree<Node> tree= null;
@@ -185,17 +255,55 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             }
             case NodeTypeEnum.Company:
             case NodeTypeEnum.Library:
-            case NodeTypeEnum.Package:
-            case NodeTypeEnum.Class: {
+            case NodeTypeEnum.Package: {
                 break;
             }
-            case NodeTypeEnum.Constructor:
+            case NodeTypeEnum.Class: {
+                if(SearchCriteria_1.ShowClasses) {
+                    if(NameMatches(node.Name, upperSearchStr)) {
+                		tree= new Prelude.Tree<Node>(baseTree.Value);
+                    }
+                }
+                break;
+            }
             case NodeTypeEnum.Field:
             case NodeTypeEnum.Property:
-            case NodeTypeEnum.Method:
-            case NodeTypeEnum.Message:
             case NodeTypeEnum.InParameter:
             case NodeTypeEnum.OutParameter: {
+                if(!ShowInherited && iCS_LibraryDatabase.IsInherited(node.MemberInfo)) {
+                    return null;
+                }
+                if(SearchCriteria_1.ShowVariables == false) {
+                    if(SearchCriteria_1.ShowClasses == false) {
+                        return null;
+                    }
+                    var parentName= iCS_Types.TypeName(node.MemberInfo.ParentTypeInfo.ClassType);
+                    if(NameMatches(parentName, upperSearchStr)) {
+                        return new P.Tree<Node>(node);
+                    }
+                    return null;
+                }
+                if(FilterIn(node.MemberInfo, upperSearchStr)) {
+                    return new P.Tree<Node>(node);                    
+                }
+                return null;
+            }
+            case NodeTypeEnum.Message:
+            case NodeTypeEnum.Constructor:
+            case NodeTypeEnum.Method: {
+                if(!ShowInherited && iCS_LibraryDatabase.IsInherited(node.MemberInfo)) {
+                    return null;
+                }
+                if(SearchCriteria_1.ShowFunctions == false) {
+                    if(SearchCriteria_1.ShowClasses == false) {
+                        return null;
+                    }
+                    var parentName= iCS_Types.TypeName(node.MemberInfo.ParentTypeInfo.ClassType);
+                    if(NameMatches(parentName, upperSearchStr)) {
+                        return new P.Tree<Node>(node);
+                    }
+                    return null;
+                }
                 if(FilterIn(node.MemberInfo, upperSearchStr)) {
                     return new P.Tree<Node>(node);                    
                 }
@@ -220,6 +328,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         }
 		return tree;
 	}
+    // ---------------------------------------------------------------------------------
+    bool NameMatches(string name, string matchString) {
+        var result= name.ToUpper().IndexOf(matchString);
+        return result >= 0;
+    }
     // ---------------------------------------------------------------------------------
     int FindInTreeChildren(string name, Prelude.Tree<Node> tree) {
         var children= tree.Children;
@@ -310,34 +423,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
-    bool FilterInCompany(iCS_MemberInfo desc, string upperSearchStr) {
-        if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Company) && desc.ParentTypeInfo.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        return false;
-    }
-    // ---------------------------------------------------------------------------------
-    bool FilterInLibrary(iCS_MemberInfo desc, string upperSearchStr) {
-        if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Library) && desc.ParentTypeInfo.Library.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        return false;
-    }
-    // ---------------------------------------------------------------------------------
-    bool FilterInName(iCS_MemberInfo desc, string upperSearchStr) {
-        if(desc == null) return false;
-        if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        return false;
-    }
-    // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_MemberInfo desc, string upperSearchStr) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
         if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         if(desc.ParentTypeInfo.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Library) && desc.Library.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        if(!iCS_Strings.IsEmpty(desc.ParentTypeInfo.Company) && desc.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     // ---------------------------------------------------------------------------------
@@ -346,13 +436,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
         if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
-    }
-    // ---------------------------------------------------------------------------------
-    void GrowTrees() {
-        while(myTrees.Count <= TreeIndex) {
-            myTrees.Add(new P.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null)));
-            myTreesSize.Add(0);
-        }
     }
     
 	// =================================================================================
@@ -459,10 +542,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		var current= IterValue;
 		var nodeType= current.Type;
 		string name= current.Name;
-//        var methodBaseInfo= current.Desc as iCS_MethodBaseInfo;
-//        if(methodBaseInfo != null && methodBaseInfo.IsClassMember) {
-//            name= "+"+name;
-//        }
         if(nodeType == NodeTypeEnum.Company) {
             if(name == "iCanScript") {
                 icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.iCanScript);
@@ -580,34 +659,32 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             }            
             // Don't unfold everthing if we have too many search results.
             if(result) {
-                if(myTreeSize < 750) {
-                    myTreeView.Unfold(tree.Value);                    
-                }
-                else if(myTreeSize < 1500) {
-                    switch(tree.Value.Type) {
-                        case NodeTypeEnum.Root:
-                        case NodeTypeEnum.Company:
-                        case NodeTypeEnum.Library:
-                        case NodeTypeEnum.Package:
-                        case NodeTypeEnum.Class: {
-                            myTreeView.Unfold(tree.Value);                    
+                switch(tree.Value.Type) {
+                    case NodeTypeEnum.Root:
+                    case NodeTypeEnum.Company:
+                    case NodeTypeEnum.Library:
+                    case NodeTypeEnum.Package: {
+                        myTreeView.Unfold(tree.Value);                    
+                        break;                        
+                    }
+                    case NodeTypeEnum.Class: {
+                        if(SearchCriteria_1.ShowClasses == true &&
+                           SearchCriteria_1.ShowFunctions == false && SearchCriteria_1.ShowVariables == false) {
+                            myTreeView.Fold(tree.Value);                                                
                             break;
                         }
-                        default: break;
-                    }
-                }
-                else if(myTreeSize < 3000) {
-                    switch(tree.Value.Type) {
-                        case NodeTypeEnum.Root:
-                        case NodeTypeEnum.Company:
-                        case NodeTypeEnum.Library:
-                        case NodeTypeEnum.Package: {
-                            myTreeView.Unfold(tree.Value);                    
-                            break;
+                        if(myTreeSize < 3000) {
+                            myTreeView.Unfold(tree.Value);                                                
                         }
-                        default: break;
+                        else {
+                            myTreeView.Fold(tree.Value);
+                        }
+                        break;
                     }
-                    
+                    default: {
+                        myTreeView.Unfold(tree.Value);                                                
+                        break;
+                    }
                 }
             }
         }

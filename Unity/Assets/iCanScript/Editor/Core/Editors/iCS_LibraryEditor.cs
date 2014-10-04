@@ -9,6 +9,13 @@ using System.Collections.Generic;
 */
 public class iCS_LibraryEditor : iCS_EditorBase {
     // =================================================================================
+    // Constants
+    // ---------------------------------------------------------------------------------
+    const int   kIconWidth  = 16;
+    const int   kIconHeight = 16;
+    const float kLabelSpacer= 4f;
+
+    // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
     DSScrollView            myMainView;
@@ -48,16 +55,39 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 	}
     // ---------------------------------------------------------------------------------
 	Rect ShowToolbar() {
-		var toolbarRect= iCS_ToolbarUtility.BuildToolbar(position.width);
+        // -- Display toolbar header --
+		var headerRect= iCS_ToolbarUtility.BuildToolbar(position.width);
+        var search1Rect= new Rect(headerRect.x, headerRect.yMax, headerRect.width, headerRect.height);
         // Display # of items found
-        var nbItemsRect= new Rect(toolbarRect);
-        nbItemsRect.width= toolbarRect.width-120;
+        myController.ShowInherited= iCS_ToolbarUtility.Toggle(ref headerRect, myController.ShowInherited, 0, 0);
+        iCS_ToolbarUtility.MiniLabel(ref headerRect, "Show Inherited", 0, 0);
         var numberOfItems= myController.NumberOfItems;
-        EditorGUI.LabelField(nbItemsRect, "# items: "+numberOfItems.ToString());
-        // Display search field.
+        iCS_ToolbarUtility.MiniLabel(ref headerRect, "# items: "+numberOfItems.ToString(), 0, 0, true);
+
+        // -- Display toolbar search field #1 --
+        var search= myController.SearchCriteria_1;
+        iCS_ToolbarUtility.BuildToolbar(search1Rect);
+        search.ShowClasses= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowClasses, 0, 0);
+		var icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);
+        iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, 4);            
+        iCS_ToolbarUtility.Separator(ref search1Rect);
+        iCS_ToolbarUtility.Separator(ref search1Rect);
+
+        search.ShowFunctions= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowFunctions, kLabelSpacer, 0);
+        icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Function);            
+        iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, kLabelSpacer);            
+        iCS_ToolbarUtility.Separator(ref search1Rect);
+
+        search.ShowVariables= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowVariables, kLabelSpacer, 0);
+        icon= iCS_BuiltinTextures.OutEndPortIcon;
+        iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, 0);            
+        icon= iCS_BuiltinTextures.InEndPortIcon;
+        iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, kLabelSpacer);            
+        iCS_ToolbarUtility.Separator(ref search1Rect);
+
 		string searchString= myController.SearchString ?? "";
-		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 120.0f, searchString, 0, 0, true);
-		return toolbarRect;
+		myController.SearchString= iCS_ToolbarUtility.Search(ref search1Rect, 120.0f, searchString, 0, 0, true);
+		return Math3D.Union(headerRect, search1Rect);
 	}
 	// =================================================================================
     // Event processing
