@@ -250,7 +250,7 @@ public partial class iCS_IStorage {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
-                    if(obj.IsUserFunctionCall || obj.IsVariableProxy) {
+                    if(obj.IsFunctionCall || obj.IsVariableReference) {
                     }
                     else {
                         obj.InitialValueArchive= null;

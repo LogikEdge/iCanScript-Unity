@@ -21,7 +21,7 @@ public static partial class iCS_UserCommands {
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    variableProxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.VariableProxy, null);
+                    variableProxy= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.VariableReference, null);
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, realObject);
                     var proxyId= variableProxy.InstanceId;
                     // Copy all output ports.
@@ -70,7 +70,7 @@ public static partial class iCS_UserCommands {
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    userFunctionCall= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.UserFunctionCall, null);
+                    userFunctionCall= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.FunctionCall, null);
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, userFunction);
                     var usrFncCallId= userFunctionCall.InstanceId;
                     // Copy all output ports.

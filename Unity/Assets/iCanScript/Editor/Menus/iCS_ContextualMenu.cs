@@ -91,8 +91,8 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.ClassField:        FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassProperty:     FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.UserFunctionCall:  FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.VariableProxy:     FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.FunctionCall:      FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.VariableReference: FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
@@ -275,10 +275,10 @@ public class iCS_ContextualMenu {
             Type classType= selectedObject.RuntimeType;
             bool isOutInstanceSupported= true;
             if(iCS_Types.IsStaticClass(classType) || selectedObject.IsConstructor ||
-               selectedObject.IsUserFunctionCall || selectedObject.IsVariableProxy) {
+               selectedObject.IsFunctionCall || selectedObject.IsVariableReference) {
                 isOutInstanceSupported= false;
             }
-            bool isEnableSupported= !selectedObject.IsVariableProxy;
+            bool isEnableSupported= !selectedObject.IsVariableReference;
             // Base menu items
             menu= new iCS_MenuContext[0];
             int idx= 0;
