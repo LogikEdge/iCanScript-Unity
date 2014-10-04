@@ -10,7 +10,7 @@ public static class iCS_SceneController {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
-    class VSObjectReference {
+    public class VSObjectReference {
         iCS_VisualScriptImp     myVisualScript= null;
         int                     myObjectId= -1;
 
@@ -32,10 +32,10 @@ public static class iCS_SceneController {
     static iCS_VisualScriptImp[]    ourVisualScriptsInOrReferencesByScene= null;
 
     // Public Interfaces
-    static VSObjectReference[]    ourPublicVariables= null;
-    static VSObjectReference[]    ourPublicFunctions= null;
-    static VSObjectReference[]    ourReferencesToVariables= null;
-    static VSObjectReference[]    ourReferencesToFunctions= null;
+    static VSObjectReference[]    ourPublicVariables   = null;
+    static VSObjectReference[]    ourPublicFunctions   = null;
+    static VSObjectReference[]    ourVariableReferences= null;
+    static VSObjectReference[]    ourFunctionCalls     = null;
 
     // ======================================================================
     // Scene properties
@@ -48,6 +48,18 @@ public static class iCS_SceneController {
     }
     public static iCS_VisualScriptImp[] VisualScriptsInOrReferencedByScene {
         get { return ourVisualScriptsInOrReferencesByScene; }
+    }
+    public static VSObjectReference[] PublicVariables {
+        get { return ourPublicVariables; }
+    }
+    public static VSObjectReference[] PublicFunctions {
+        get { return ourPublicFunctions; }
+    }
+    public static VSObjectReference[] VariableReferences {
+        get { return ourVariableReferences; }
+    }
+    public static VSObjectReference[] FunctionCalls {
+        get { return ourFunctionCalls; }
     }
     
     // ======================================================================
@@ -83,24 +95,24 @@ public static class iCS_SceneController {
 
         ourPublicVariables                   = ScanForPublicVariables();
         ourPublicFunctions                   = ScanForPublicFunctions();
-        ourReferencesToVariables             = ScanForReferencesToVariables();
-        ourReferencesToFunctions             = ScanForReferencesToFunctions();
+        ourVariableReferences                = ScanForVariableReferences();
+        ourFunctionCalls                     = ScanForFunctionCalls();
 
 #if DEBUG
         Debug.Log("Scene as changed =>"+EditorApplication.currentScene);
         foreach(var vs in VisualScriptsInOrReferencedByScene) {
             Debug.Log("Visual Script=> "+vs.name);
         }
-        foreach(var or in ourPublicVariables) {
+        foreach(var or in PublicVariables) {
             Debug.Log("Public Variable=> "+or.VisualScript.name+"."+or.EngineObject.Name);
         }
-        foreach(var or in ourPublicFunctions) {
+        foreach(var or in PublicFunctions) {
             Debug.Log("Public Function=> "+or.VisualScript.name+"."+or.EngineObject.Name);
         }
-        foreach(var or in ourReferencesToVariables) {
+        foreach(var or in VariableReferences) {
             Debug.Log("Variable Reference=> "+or.VisualScript.name+"."+or.EngineObject.Name);
         }
-        foreach(var or in ourReferencesToFunctions) {
+        foreach(var or in FunctionCalls) {
             Debug.Log("Function Call=> "+or.VisualScript.name+"."+or.EngineObject.Name);
         }
 #endif
@@ -219,7 +231,7 @@ public static class iCS_SceneController {
         );
         return result.ToArray();
     }
-    static VSObjectReference[] ScanForReferencesToVariables() {
+    static VSObjectReference[] ScanForVariableReferences() {
         var result= new List<VSObjectReference>();
         P.forEach(vs=> {
                 var variableReferences= iCS_VisualScriptData.FindVariableReferences(vs);
@@ -234,7 +246,7 @@ public static class iCS_SceneController {
         );
         return result.ToArray();
     }
-    static VSObjectReference[] ScanForReferencesToFunctions() {
+    static VSObjectReference[] ScanForFunctionCalls() {
         var result= new List<VSObjectReference>();
         P.forEach(vs=> {
                 var functionCalls= iCS_VisualScriptData.FindFunctionCalls(vs);
@@ -248,5 +260,12 @@ public static class iCS_SceneController {
             VisualScriptsInOrReferencedByScene
         );
         return result.ToArray();
+    }
+    // ----------------------------------------------------------------------
+    static void LinkVariableReferences() {
+        // TODO
+    }
+    static void LinkFunctionCalls() {
+        // TODO
     }
 }
