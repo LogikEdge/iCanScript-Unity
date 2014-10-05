@@ -33,6 +33,11 @@ public partial class iCS_IStorage {
             return iCSMonoBehaviour as iCS_VisualScriptImp;
         }
     }
+    public iCS_MonoBehaviourImp VSMonoBehaviour {
+        get {
+            return iCSMonoBehaviour;
+        }
+    }
     public iCS_EditorObject RootObject {
         get { return EditorObjects[0]; }
     }
