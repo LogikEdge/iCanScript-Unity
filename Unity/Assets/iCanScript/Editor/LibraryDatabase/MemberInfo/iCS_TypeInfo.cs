@@ -38,6 +38,11 @@ public class iCS_TypeInfo : iCS_MemberInfo {
             return CompilerType;
         }
     }
+    public string ClassName {
+        get {
+            return ClassType.Name;
+        }
+    }
     
     // ======================================================================
     // Creation/Destruction
