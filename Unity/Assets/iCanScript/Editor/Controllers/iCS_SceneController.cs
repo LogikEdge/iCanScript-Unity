@@ -10,6 +10,68 @@ public static class iCS_SceneController {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
+	public class VSPublicGroups {
+		Dictionary<string, VSObjectReferenceGroup>	myGroups= null;
+		
+		public VSPublicGroups() {
+			myGroups= new Dictionary<string, VSObjectReferenceGroup>();
+		}
+		public int	NbOfGroups { get { return myGroups.Count; }}
+		public void Add(VSObjectReference objRef) {
+			var objName= objRef.EngineObject.Name;
+			VSObjectReferenceGroup	group= null;
+			if(myGroups.TryGetValue(objName, out group)) {
+				group.Add(objRef);
+			}
+			else {
+				var newGroup= new VSObjectReferenceGroup(objName);
+				newGroup.Add(objRef);
+				myGroups.Add(objName, newGroup);
+			}
+		}
+		public void Remove(VSObjectReference objRef) {
+			var objName= objRef.EngineObject.Name;
+			VSObjectReferenceGroup	group= null;
+			if(myGroups.TryGetValue(objName, out group)) {
+				group.Remove(objRef);
+				if(group.IsEmpty) {
+					myGroups.Remove(objName);
+				}
+			}
+		}
+		public void ForEach(Action<string, VSObjectReferenceGroup> action) {
+			foreach(var p in myGroups) {
+				action(p.Key, p.Value);
+			}
+		}
+	}
+    // ----------------------------------------------------------------------	
+	public class VSObjectReferenceGroup {
+		string					myName    	 = null;
+		List<VSObjectReference>	myDefinitions= new List<VSObjectReference>();
+		List<VSObjectReference> myReferences = new List<VSObjectReference>();
+		
+		public VSObjectReferenceGroup(string name) {
+			myName= name;
+		}
+		public List<VSObjectReference>	Definitions 	{ get { return myDefinitions; }}
+		public List<VSObjectReference>	References		{ get { return myReferences; }}
+		public int 						NbOfDefinitions	{ get { return myDefinitions.Count; }}
+		public int 						NbOfReferences	{ get { return myReferences.Count; }}
+		public bool						IsEmpty			{ get { return NbOfDefinitions+NbOfReferences == 0; }}
+		public void Add(VSObjectReference objRef) {
+			if(iCS_VisualScriptData.IsPublicVariable(objRef.EngineObject) ||
+			   iCS_VisualScriptData.IsPublicFunction(objRef.EngineObject)) {
+			   myDefinitions.Add(objRef);	
+			}
+			else {
+				myReferences.Add(objRef);
+			}
+		}
+		public void Remove(VSObjectReference objRef) {
+			
+		}
+	};
     public class VSObjectReference {
         iCS_VisualScriptImp     myVisualScript= null;
         int                     myObjectId= -1;
@@ -32,11 +94,12 @@ public static class iCS_SceneController {
     static iCS_VisualScriptImp[]    ourVisualScriptsInOrReferencesByScene= null;
 
     // Public Interfaces
-    static VSObjectReference[]    ourPublicVariables   = null;
-    static VSObjectReference[]    ourPublicFunctions   = null;
-    static VSObjectReference[]    ourVariableReferences= null;
-    static VSObjectReference[]    ourFunctionCalls     = null;
-
+    static VSObjectReference[]	ourPublicVariables   = null;
+    static VSObjectReference[]	ourPublicFunctions   = null;
+    static VSObjectReference[]	ourVariableReferences= null;
+    static VSObjectReference[]	ourFunctionCalls     = null;
+	static VSPublicGroups		ourPublicGroups      = null;
+	
     // ======================================================================
     // Scene properties
     // ----------------------------------------------------------------------
@@ -61,7 +124,11 @@ public static class iCS_SceneController {
     public static VSObjectReference[] FunctionCalls {
         get { return ourFunctionCalls; }
     }
-    
+	public static VSPublicGroups	PublicGroups {
+		get { return ourPublicGroups; }
+		set { ourPublicGroups= value; }
+	}
+
     // ======================================================================
     // Common Controller activation/deactivation
     // ----------------------------------------------------------------------
@@ -93,28 +160,44 @@ public static class iCS_SceneController {
         ourVisualScriptsReferencesByScene    = ScanForVisualScriptsReferencedByScene();
         ourVisualScriptsInOrReferencesByScene= CombineVisualScriptsInOrReferencedByScene();
 
+		// Extract all public interface definitions and usages
         ourPublicVariables                   = ScanForPublicVariables();
         ourPublicFunctions                   = ScanForPublicFunctions();
         ourVariableReferences                = ScanForVariableReferences();
         ourFunctionCalls                     = ScanForFunctionCalls();
-
+		
+		// Build groups out of linked objects
+		PublicGroups= new VSPublicGroups();
+		foreach(var pv in ourPublicVariables)		{ PublicGroups.Add(pv); }
+		foreach(var pf in ourPublicFunctions)		{ PublicGroups.Add(pf); }
+		foreach(var vr in ourVariableReferences)	{ PublicGroups.Add(vr); }
+		foreach(var fc in ourFunctionCalls)			{ PublicGroups.Add(fc); }
+		
 #if DEBUG
         Debug.Log("Scene as changed =>"+EditorApplication.currentScene);
-        foreach(var vs in VisualScriptsInOrReferencedByScene) {
-            Debug.Log("Visual Script=> "+vs.name);
-        }
-        foreach(var or in PublicVariables) {
-            Debug.Log("Public Variable=> "+or.VisualScript.name+"."+or.EngineObject.Name);
-        }
-        foreach(var or in PublicFunctions) {
-            Debug.Log("Public Function=> "+or.VisualScript.name+"."+or.EngineObject.Name);
-        }
-        foreach(var or in VariableReferences) {
-            Debug.Log("Variable Reference=> "+or.VisualScript.name+"."+or.EngineObject.Name);
-        }
-        foreach(var or in FunctionCalls) {
-            Debug.Log("Function Call=> "+or.VisualScript.name+"."+or.EngineObject.Name);
-        }
+		Debug.Log("NbOfPublicGroups=> "+PublicGroups.NbOfGroups);
+		PublicGroups.ForEach(
+			(name, group)=> {
+				Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
+			}
+		);
+//        foreach(var vs in VisualScriptsInOrReferencedByScene) {
+//            Debug.Log("Visual Script=> "+vs.name);
+//        }
+//        foreach(var objRef in PublicVariables) {
+//            Debug.Log("Public Variable=> "+objRef.VisualScript.name+"."+objRef.EngineObject.Name);
+//        }
+//        foreach(var objRef in PublicFunctions) {
+//            Debug.Log("Public Function=> "+objRef.VisualScript.name+"."+objRef.EngineObject.Name);
+//        }
+//        foreach(var objRef in VariableReferences) {
+//			var rvs= FindVisualScriptFromReferenceNode(objRef);
+//            Debug.Log("Variable Reference=> "+objRef.VisualScript.name+"."+objRef.EngineObject.Name+(rvs != null ? (" linked to=> "+rvs.name):""));
+//        }
+//        foreach(var objRef in FunctionCalls) {
+//			var rvs= FindVisualScriptFromReferenceNode(objRef);
+//            Debug.Log("Function Call=> "+objRef.VisualScript.name+"."+objRef.EngineObject.Name+(rvs != null ? (" linked to=> "+rvs.name):""));
+//        }
 #endif
     }
 
@@ -268,4 +351,8 @@ public static class iCS_SceneController {
     static void LinkFunctionCalls() {
         // TODO
     }
+    // ----------------------------------------------------------------------
+	static iCS_VisualScriptImp FindVisualScriptFromReferenceNode(VSObjectReference objRef) {
+		return objRef.VisualScript.GetVisualScriptFromRefenceNode(objRef.EngineObject);
+	}
 }
