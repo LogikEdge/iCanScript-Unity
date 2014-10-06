@@ -14,8 +14,8 @@ public static class iCS_AppController {
         iCS_EditionController.Start();
         iCS_LicenseController.Start();
 		iCS_SoftwareUpdateController.Start();
-		iCS_SystemEvents.Start();
         iCS_GizmoController.Start();
+        iCS_LibraryDatabaseController.Start();
 		iCS_InstallationController.Start();
 		iCS_CodeGenerator.Start();
         iCS_VisualScriptDataController.Start();
@@ -31,6 +31,7 @@ public static class iCS_AppController {
         iCS_VisualScriptDataController.Shutdown();
         iCS_CodeGenerator.Shutdown();
         iCS_InstallationController.Shutdown();
+        iCS_LibraryDatabaseController.Shutdown();
         iCS_GizmoController.Shutdown();
         iCS_SystemEvents.Shutdown();
         iCS_SoftwareUpdateController.Shutdown();

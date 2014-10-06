@@ -24,7 +24,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     iCS_ContextualMenu  myContextualMenu = null;
     iCS_Graphics        myGraphics       = null;
-//    iCS_ObjectInspector myObjectInspector= null;
 
     // ----------------------------------------------------------------------
     Vector2 GridOffset= Vector2.zero;
@@ -38,9 +37,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool  myNeedRepaint        = true;
     bool  myNotificationShown  = false;
 	
-    // ----------------------------------------------------------------------
-    static bool	ourAlreadyParsed  = false;
-
     // ----------------------------------------------------------------------
     // Debug properties.
 #if SHOW_FRAME_RATE
