@@ -28,12 +28,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myGraphics      = new iCS_Graphics();
         myContextualMenu= new iCS_ContextualMenu();
         
-        // Inspect the assemblies for components.
-        if(!ourAlreadyParsed) {
-            ourAlreadyParsed= true;
-            iCS_Reflection.ParseAppDomain();
-        }
-        
         // Get snapshot for realtime clock.
         myCurrentTime= Time.realtimeSinceStartup;	
         
