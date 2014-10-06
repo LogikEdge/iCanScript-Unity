@@ -270,6 +270,7 @@ public partial class iCS_IStorage {
 	// function is invoked.
     public bool Cleanup() {
         bool modified= false;
+		bool needsRelayout= false;
         ForEach(
             obj=> {
                 // Keep a copy of the final position.
@@ -344,8 +345,30 @@ public partial class iCS_IStorage {
 						}
 					}                    
 				}
+				// Propagate variable name to instance nodes
+				if(obj.IsInstanceNode) {
+					string instanceNodeName= obj.DefaultName;
+					var thisPort= InstanceWizardGetInputThisPort(obj);
+					if(thisPort != null) {
+						var producerPort= thisPort.FirstProviderPort;
+						if(producerPort != null) {
+							var producerNode= producerPort.ParentNode;
+							if(producerNode.IsConstructor) {
+								instanceNodeName= producerNode.Name;
+							}
+						}
+					}
+					if(obj.Name != instanceNodeName) {
+						obj.Name= instanceNodeName;						
+						needsRelayout= true;
+						modified= true;
+					}
+				}
             }
         );
+		if(needsRelayout) {
+			ForcedRelayoutOfTree();
+		}
         ClearUserTransactions();        
         return modified;
     }
