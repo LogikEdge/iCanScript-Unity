@@ -21,6 +21,11 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     DSScrollView            myMainView;
 	iCS_LibraryController   myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
+
+	public new void OnEnable() { 
+		// Tell Unity we want to be informed of mouse move events
+		wantsMouseMove= true;
+	}
 	
     // =================================================================================
     // Activation/Deactivation.
@@ -122,6 +127,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
                 //Focus();
 				break;
 			}
+
             case EventType.MouseUp: {
 				break;
 			}

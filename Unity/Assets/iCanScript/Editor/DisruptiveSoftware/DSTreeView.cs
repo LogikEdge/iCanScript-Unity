@@ -207,10 +207,20 @@ public class DSTreeView : DSView {
                         var mouseInScreenPoint= GUIUtility.GUIToScreenPoint(mousePosition);
                         var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(area.x, area.y));
                         var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, area.width, area.height);
-                        myDataSource.MouseDownOn(keyValue.Key, mouseInScreenPoint, areaInScreenPosition);
+                        myDataSource.MouseDownOn(keyValue.Key, mouseInScreenPoint, areaInScreenPosition);						
                         Event.current.Use();
                         return;
                     }
+                }
+				break;
+			}
+            case EventType.MouseMove: {
+               foreach(var keyValue in myRowInfo) {
+				   Rect area= keyValue.Value;
+				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
+					   myDataSource.MouseMove(keyValue.Key);				
+					   return;
+					}
                 }
 				break;
 			}

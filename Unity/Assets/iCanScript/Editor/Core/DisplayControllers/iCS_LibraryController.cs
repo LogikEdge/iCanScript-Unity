@@ -13,6 +13,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     public class Node {
         public NodeTypeEnum    Type;
         public string          Name;
+		public string          Tooltip="";
         public Vector2         NameSize;
         public iCS_MemberInfo  MemberInfo;
         public Node(NodeTypeEnum type, string name, iCS_MemberInfo memberInfo) {
@@ -516,20 +517,26 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
         // Show selected outline.
+		
+		// TODO: Rich text does not seem to work in tooltips, even setting richtext=true ... would be nice to get formating to work.
         GUIStyle labelStyle= EditorStyles.label;
+		
 		if(IsSelected) {
             mySelectedArea= frameArea;
             Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
             iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
             labelStyle= EditorStyles.whiteLabel;
-		}
+		}		
 		bool result= ShouldUseFoldout() ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
         var content= GetContent();
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
-    	GUI.Label(pos, content.text, labelStyle);            
-        ProcessChangeSelection();
+		
+		var contentWithTooltip= new GUIContent(content.text, content.tooltip);
+		GUI.Label(pos, contentWithTooltip, labelStyle);    
+
+		ProcessChangeSelection();
 		return result;
 	}
     // ---------------------------------------------------------------------------------
@@ -573,7 +580,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         } else if(nodeType == NodeTypeEnum.Constructor) {
             icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Builder);            
         } else if(nodeType == NodeTypeEnum.Method) {
-            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Function);            
+			icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Function);            
         } else if(nodeType == NodeTypeEnum.Message) {
             icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Message);            
         } else if(nodeType == NodeTypeEnum.InParameter) {
@@ -581,7 +588,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         } else if(nodeType == NodeTypeEnum.OutParameter) {
             icon= iCS_BuiltinTextures.OutEndPortIcon;
         }
-        return new GUIContent(name, icon); 
+        return new GUIContent(name, icon, current.Tooltip); 
     }
     // ---------------------------------------------------------------------------------
     bool ShouldUseFoldout() {
@@ -598,6 +605,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         Node node= key as Node;
         Selected= node;
     }
+	
+    public void MouseMove(object key) {
+        Node node= key as Node;
+		node.Tooltip=  iCS_HelpSearch.getHelpSummary(node.MemberInfo);
+    }
+	
     // ---------------------------------------------------------------------------------
     public void SelectPrevious() {
         myChangeSelection= -1;
@@ -621,6 +634,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             }
         }
         myLastDisplayed= IterValue;
+
     }
     // ---------------------------------------------------------------------------------
     public void FoldSelected() {
