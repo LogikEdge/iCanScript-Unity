@@ -33,6 +33,11 @@ public partial class iCS_IStorage {
             return iCSMonoBehaviour as iCS_VisualScriptImp;
         }
     }
+    public iCS_MonoBehaviourImp VSMonoBehaviour {
+        get {
+            return iCSMonoBehaviour;
+        }
+    }
     public iCS_EditorObject RootObject {
         get { return EditorObjects[0]; }
     }
@@ -250,7 +255,7 @@ public partial class iCS_IStorage {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
-                    if(obj.IsUserFunctionCall || obj.IsVariableProxy) {
+                    if(obj.IsFunctionCall || obj.IsVariableReference) {
                     }
                     else {
                         obj.InitialValueArchive= null;

@@ -27,7 +27,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     // Returns 'true' if the given engine object is a user function.
-    public static bool IsUserFunction(iCS_EngineObject obj) {
+    public static bool IsPublicFunction(iCS_EngineObject obj) {
         if(obj == null) return false;
         if(obj.ParentId != 0) return false;
         return obj.IsPackage;
@@ -68,13 +68,13 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // -----------------------------------------------------------------------
     // Finds all the user functions
-    public static iCS_EngineObject[] FindUserFunctionCalls(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> o.IsUserFunctionCall);
+    public static iCS_EngineObject[] FindFunctionCalls(iCS_IVisualScriptData vsd) {
+        return FindMany(vsd, o=> o.IsFunctionCall);
     }
     // -----------------------------------------------------------------------
     // Finds all the variable proxies
-    public static iCS_EngineObject[] FindVariableProxies(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> o.IsVariableProxy);
+    public static iCS_EngineObject[] FindVariableReferences(iCS_IVisualScriptData vsd) {
+        return FindMany(vsd, o=> o.IsVariableReference);
     }
     // -----------------------------------------------------------------------
     // Finds all the constructors
@@ -83,8 +83,8 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // -----------------------------------------------------------------------
     // Finds all user functions
-    public static iCS_EngineObject[] FindUserFunctions(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, IsUserFunction);
+    public static iCS_EngineObject[] FindPublicFunctions(iCS_IVisualScriptData vsd) {
+        return FindMany(vsd, IsPublicFunction);
     }
     // -----------------------------------------------------------------------
     // Finds all user functions

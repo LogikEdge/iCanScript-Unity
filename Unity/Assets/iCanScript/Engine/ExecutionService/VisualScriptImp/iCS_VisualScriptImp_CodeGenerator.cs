@@ -196,7 +196,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             case iCS_ObjectTypeEnum.Behaviour: {
                                 break;
                             }
-                            case iCS_ObjectTypeEnum.VariableProxy: {
+                            case iCS_ObjectTypeEnum.VariableReference: {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
@@ -211,7 +211,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 }
                                 break;
                             }
-                            case iCS_ObjectTypeEnum.UserFunctionCall: {
+                            case iCS_ObjectTypeEnum.FunctionCall: {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
@@ -273,7 +273,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 var module= new iCS_Package(this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= module;
                                 InvokeAddChildIfExists(parent, module);                                
-                                if(iCS_VisualScriptData.IsUserFunction(node)) {
+                                if(iCS_VisualScriptData.IsPublicFunction(node)) {
                                     myPublicInterfaces.Add(node.InstanceId);
                                 }
                                 break;
@@ -443,7 +443,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 						case iCS_ObjectTypeEnum.OutParentMuxPort: {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
-                            if(parentNode.IsVariableProxy) {
+                            if(parentNode.IsVariableReference) {
                                 break;
                             }
 							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
@@ -474,7 +474,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             // Special case for proxy ports.  The connection will be made on the original port.
                             iCS_Connection connection= null;
                             var sourceParent= GetParentNode(sourcePort);
-                            if(sourceParent.IsVariableProxy) {
+                            if(sourceParent.IsVariableReference) {
                                 connection= BuildVariableProxyConnection(sourceParent, sourcePort, port);
                             }
     						else {
@@ -484,7 +484,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     						object initValue= GetInitialValue(sourcePort);
 							// Automatically build instance object if not specified.
 							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.InInstance) {
-								if(!parentNode.IsMessage && !parentNode.IsVariableProxy && !parentNode.IsUserFunctionCall) {
+								if(!parentNode.IsMessage && !parentNode.IsVariableReference && !parentNode.IsFunctionCall) {
                                     try {
     									initValue= System.Activator.CreateInstance(port.RuntimeType);                                        
                                         compileWarnings.Add( new CompileWarning(parentNode.InstanceId, "No instance provided.  Generating a default builder.") );

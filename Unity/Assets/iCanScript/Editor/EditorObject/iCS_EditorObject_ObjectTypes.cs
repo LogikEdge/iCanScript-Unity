@@ -27,8 +27,8 @@ public partial class iCS_EditorObject {
     public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}
     public bool IsOnStateUpdatePackage  	{ get { return EngineObject.IsOnStateUpdatePackage; }}
     public bool IsOnStateExitPackage    	{ get { return EngineObject.IsOnStateExitPackage; }}
-    public bool IsVariableProxy             { get { return EngineObject.IsVariableProxy; }}
-    public bool IsUserFunctionCall          { get { return EngineObject.IsUserFunctionCall; }}
+    public bool IsVariableReference         { get { return EngineObject.IsVariableReference; }}
+    public bool IsFunctionCall              { get { return EngineObject.IsFunctionCall; }}
     
     // General Ports
     public bool IsPort                      { get { return EngineObject.IsPort; }}
@@ -94,9 +94,9 @@ public partial class iCS_EditorObject {
     // Special Cases
     public bool IsProgrammaticInstancePort  {
         get {
-            if(IsInInstancePort && (!ParentNode.IsVariableProxy && !ParentNode.IsUserFunctionCall) ||
+            if(IsInInstancePort && (!ParentNode.IsVariableReference && !ParentNode.IsFunctionCall) ||
                IsOutInstancePort ||
-               (PortIndex == (int)iCS_PortIndex.Return && (ParentNode.IsConstructor || ParentNode.IsVariableProxy))) {
+               (PortIndex == (int)iCS_PortIndex.Return && (ParentNode.IsConstructor || ParentNode.IsVariableReference))) {
                    return true;
             }
             return false;
