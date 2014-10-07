@@ -29,6 +29,9 @@ public static class iCS_SceneController {
 				myGroups.Add(objName, newGroup);
 			}
 		}
+        public void Add(iCS_EditorObject element) {
+            Add(new VSObjectReference(element.IStorage.VisualScript, element.InstanceId));
+        }
 		public void Remove(VSObjectReference objRef) {
 			var objName= objRef.EngineObject.Name;
 			VSObjectReferenceGroup	group= null;
@@ -39,6 +42,9 @@ public static class iCS_SceneController {
 				}
 			}
 		}
+        public void Remove(iCS_EditorObject element) {
+            Remove(new VSObjectReference(element.IStorage.VisualScript, element.InstanceId));
+        }
 		public void ForEach(Action<string, VSObjectReferenceGroup> action) {
 			foreach(var p in myGroups) {
 				action(p.Key, p.Value);
@@ -74,7 +80,25 @@ public static class iCS_SceneController {
 			}
 		}
 		public void Remove(VSObjectReference objRef) {
-			
+			if(iCS_VisualScriptData.IsPublicVariable(objRef.EngineObject) ||
+			   iCS_VisualScriptData.IsPublicFunction(objRef.EngineObject)) {
+                   for(int i= 0; i < myDefinitions.Count; ++i) {
+                       var definition= myDefinitions[i];
+                       if(definition.ObjectId == objRef.ObjectId && definition.VisualScript == objRef.VisualScript) {
+                           myDefinitions.RemoveAt(i);
+                           break;
+                       }
+                   }
+			}
+			else {
+                for(int i= 0; i < myReferences.Count; ++i) {
+                    var reference= myReferences[i];
+                    if(reference.ObjectId == objRef.ObjectId && reference.VisualScript == objRef.VisualScript) {
+                        myReferences.RemoveAt(i);
+                        break;
+                    }
+                }
+			}			
 		}
 	};
     public class VSObjectReference {
@@ -151,7 +175,9 @@ public static class iCS_SceneController {
         iCS_SystemEvents.OnVisualScriptUndo                = OnVisualScriptUndo;                
         iCS_SystemEvents.OnVisualScriptElementAdded        = OnVisualScriptElementAdded;        
         iCS_SystemEvents.OnVisualScriptElementWillBeRemoved= OnVisualScriptElementWillBeRemoved;
-        iCS_SystemEvents.OnVisualScriptElementNameChanged  = OnVisualScriptElementNameChanged;  
+        iCS_SystemEvents.OnVisualScriptElementNameChanged  = OnVisualScriptElementNameChanged;
+        // Force an initial refresh of the scene info.
+        RefreshSceneInfo();  
 	}
     
     /// Start the application controller.
@@ -166,6 +192,7 @@ public static class iCS_SceneController {
         RefreshSceneInfo();
     }
     static void RefreshSceneInfo() {
+        Debug.Log("Refreshing Scene Info");
         ourVisualScriptsInScene              = ScanForVisualScriptsInScene();
         ourVisualScriptsReferencesByScene    = ScanForVisualScriptsReferencedByScene();
         ourVisualScriptsInOrReferencesByScene= CombineVisualScriptsInOrReferencedByScene();
@@ -184,21 +211,22 @@ public static class iCS_SceneController {
 		foreach(var pf in ourPublicFunctions)		{ PublicFunctionGroups.Add(pf); }
 		foreach(var fc in ourFunctionCalls)			{ PublicFunctionGroups.Add(fc); }
 		
-#if DEBUG
-        Debug.Log("Scene as changed =>"+EditorApplication.currentScene);
-		Debug.Log("NbOfPublicVariableGroups=> "+PublicVariableGroups.NbOfGroups);
-		PublicVariableGroups.ForEach(
-			(name, group)=> {
-				Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
-			}
-		);
-		Debug.Log("NbOfPublicFunctionGroups=> "+PublicFunctionGroups.NbOfGroups);
-		PublicFunctionGroups.ForEach(
-			(name, group)=> {
-				Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
-			}
-		);
-#endif
+//#if DEBUG
+//        Debug.Log("Scene as changed =>"+EditorApplication.currentScene);
+//		Debug.Log("NbOfPublicVariableGroups=> "+PublicVariableGroups.NbOfGroups);
+//		PublicVariableGroups.ForEach(
+//			(name, group)=> {
+//				Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
+//			}
+//		);
+//		Debug.Log("NbOfPublicFunctionGroups=> "+PublicFunctionGroups.NbOfGroups);
+//		PublicFunctionGroups.ForEach(
+//			(name, group)=> {
+//				Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
+//			}
+//		);
+//#endif
+        ValidatePublicGroups();
     }
 
     // ======================================================================
@@ -208,21 +236,37 @@ public static class iCS_SceneController {
 #if DEBUG
         Debug.Log("Visual Script undo=> "+iStorage.VisualScript.name);
 #endif
+        RefreshSceneInfo();
     }
     static void OnVisualScriptElementAdded(iCS_IStorage iStorage, iCS_EditorObject element) {
 #if DEBUG
         Debug.Log("Visual Script element added=> "+iStorage.VisualScript.name+"."+element.Name);
 #endif
+        if(element.IsPublicVariable || element.IsVariableReference) {
+            PublicVariableGroups.Add(element);
+        }
+        if(element.IsPublicFunction || element.IsFunctionCall) {
+            PublicFunctionGroups.Add(element);
+        }
+        ValidatePublicGroups();
     }
     static void OnVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
 #if DEBUG
         Debug.Log("Visual Script element will be removed=> "+iStorage.VisualScript.name+"."+element.Name);
 #endif
+        if(element.IsPublicVariable || element.IsVariableReference) {
+            PublicVariableGroups.Remove(element);
+        }
+        if(element.IsPublicFunction || element.IsFunctionCall) {
+            PublicFunctionGroups.Remove(element);
+        }
+        ValidatePublicGroups();
     }
     static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
 #if DEBUG
         Debug.Log("Visual Script element name changed=> "+iStorage.VisualScript.name+"."+element.Name);
 #endif
+        ValidatePublicGroups();
     }
 
     // ======================================================================
@@ -353,6 +397,31 @@ public static class iCS_SceneController {
     // VALIDATE PUBLIC INTERFACES
     // ----------------------------------------------------------------------
 	public static bool ValidatePublicGroups() {
+        // Validate Variables
+        PublicVariableGroups.ForEach(
+            (name, group)=> {
+                var definitions= group.Definitions;
+                var references = group.References;
+                if(references.Count != 0 && definitions.Count == 0) {
+                    foreach(var varRef in references) {
+                        Debug.LogWarning("iCanScript: No definition found for variable=> "+name+" in visual script=> "+varRef.VisualScript.name);                    
+                    }
+                }                
+            }
+        );
+        
+        // Validate Functions
+        PublicFunctionGroups.ForEach(
+            (name, group)=> {
+                var definitions= group.Definitions;
+                var references = group.References;
+                if(references.Count != 0 && definitions.Count == 0) {
+                    foreach(var varRef in references) {
+                        Debug.LogWarning("iCanScript: No definition found for variable=> "+name+" in visual script=> "+varRef.VisualScript.name);
+                    }
+                }
+            }
+        );
 		return true;
 	}
 }

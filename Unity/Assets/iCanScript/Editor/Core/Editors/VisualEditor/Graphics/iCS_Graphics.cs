@@ -569,7 +569,7 @@ public partial class iCS_Graphics {
         if(node.IsMessage) {
             return Prefs.MessageNodeColor;
         }
-        if(node.IsUserFunction) {
+        if(node.IsPublicFunction) {
             return Prefs.UserFunctionNodeColor;
         }
         if(node.IsEntryState) {

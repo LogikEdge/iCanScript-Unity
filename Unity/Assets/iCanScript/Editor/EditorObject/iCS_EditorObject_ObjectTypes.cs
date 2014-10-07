@@ -22,7 +22,8 @@ public partial class iCS_EditorObject {
 	public bool IsInstanceNode				{ get { return EngineObject.IsInstanceNode; }}
     public bool IsTransitionPackage         { get { return EngineObject.IsTransitionPackage; }}
 	public bool IsMessageHandler			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour; }}
-    public bool IsUserFunction              { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
+    public bool IsPublicFunction            { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
+    public bool IsPublicVariable            { get { return IsConstructor && IsParentValid && Parent.IsBehaviour; }}
 	public bool IsOnStatePackage        	{ get { return EngineObject.IsOnStatePackage; }}
     public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}
     public bool IsOnStateUpdatePackage  	{ get { return EngineObject.IsOnStateUpdatePackage; }}
