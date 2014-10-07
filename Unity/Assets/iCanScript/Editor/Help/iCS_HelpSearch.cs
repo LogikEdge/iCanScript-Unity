@@ -69,6 +69,7 @@ public class iCS_HelpSearch {
 
 	private static string formatFromHTML(string stringToFormat)
 	{
+		// TODO: can support rich text, but at present rich text does not seem to work in 
 		// Just strip out HTML tags for now
 		return Regex.Replace(stringToFormat, "<.*?>", string.Empty);
 	}	
@@ -84,8 +85,8 @@ public class iCS_HelpSearch {
 			
 		foreach (JObject jObject in arrayOfEntries.value) {
 			// Get the title, summary as per the index.js file.
-			JString jTitle= jObject.GetValueFor("title") as JString;
-//			JString jUrl= jObject.GetValueFor("url") as JString;
+//			JString jTitle= jObject.GetValueFor("title") as JString;
+			JString jUrl= jObject.GetValueFor("url") as JString;
 			JString jSummary= jObject.GetValueFor("summary") as JString;
 	
 			// replace HTML formating in summary
@@ -94,10 +95,10 @@ public class iCS_HelpSearch {
 			// Transfer information to dictionary
 			// Warning: "title" and "url" are not all unique in current index.js
 			try {
-				unityHelpSummary.Add(jTitle.value, summary);
+				unityHelpSummary.Add(jUrl.value, summary);
 			}
 			catch {
-					//Debug.Log("Duplicate: "+ jUrl.value + "\nsummary: " + summary);
+//				Debug.Log("Duplicate: "+ jUrl.value + "\nsummary: " + summary);
 			}
 		}
 	}
@@ -107,26 +108,64 @@ public class iCS_HelpSearch {
 	// ---------------------------------------------------------------------------------
 	public static string getHelpSummary(iCS_MemberInfo memberInfo )
 	{	
-		 		
-		if (memberInfo.ParentTypeInfo.Company == "Unity") {
-			string summary;
-			string search= "";
-			search = search + iCS_Types.TypeName(memberInfo.ParentTypeInfo.CompilerType);
-			//TODO: not all level one items in library marked as constructors, return IsConstructor.
-			if(!memberInfo.IsConstructor)
-				search= search + "." +  memberInfo.DisplayName;
+		if (memberInfo.Company == "Unity") {
 			
-		
-			search= Regex.Replace(search, "get_", string.Empty);
-			search= Regex.Replace(search, "set_", string.Empty);
-		
+			string className="";
+			string demarcator="";
+			string methodName="";
+			
+			if (memberInfo.IsTypeInfo) {
+				// First level libray entries (classes and packages), just return className
+				className = memberInfo.ToTypeInfo.ClassName;
+			}
+			else if (memberInfo.IsMethod) {
+				className= memberInfo.ParentTypeInfo.ClassName;
+				methodName= memberInfo.ToMethodInfo.MethodName;
+				if (memberInfo.IsProperty) {
+					// Property Nodes
+					demarcator="-";
+					methodName= Regex.Replace(methodName, "get_", string.Empty);
+					methodName= Regex.Replace(methodName, "set_", string.Empty);
+				}
+				else if(memberInfo.IsConstructor) {
+					// Builders
+					demarcator="-ctor";
+					methodName= "";
+				}
+				else {
+					// Functions, etc.
+					demarcator= ".";
+					// Remap arithmetic operator names
+					if (methodName.Contains("op_")) {
+						demarcator="-";
+						methodName= Regex.Replace(methodName, "op_Addition", "operator_add");
+						methodName= Regex.Replace(methodName, "op_Division", "operator_divide");
+						methodName= Regex.Replace(methodName, "op_Equality", "operator_eq");
+						methodName= Regex.Replace(methodName, "op_Inequality", "operator_ne");
+						methodName= Regex.Replace(methodName, "op_Multiply", "operator_multiply");
+						methodName= Regex.Replace(methodName, "op_Subtraction", "operator_subtract");
+						//methodName= Regex.Replace(methodName, "op_UnaryNegation", ???);
+					}
+				}
+			}
+			else if (memberInfo.IsField) {
+				// Field Nodes
+				className= memberInfo.ParentTypeInfo.ClassName;
+				methodName= memberInfo.ToFieldInfo.MethodName;	
+				if(memberInfo.ToFieldInfo.IsClassMember)
+					demarcator= ".";
+				else if(memberInfo.ToFieldInfo.IsInstanceMember) 
+					demarcator= "-";
+				else 
+					demarcator= ".";
+			}		
+	
+			string summary;
+			string search= className + demarcator + methodName;
 			unityHelpSummary.TryGetValue(search, out summary);
-
-//			summary= summary+ "Constructor: "+ memberInfo.IsConstructor+ "\n Field: " + memberInfo.IsField + "\nProperty: "+ memberInfo.IsProperty+ "\nMethod: " + memberInfo.IsMethod+ "\nMEssage: " + memberInfo.IsMessage + "\n";
-
-			return search + "\n" + summary;
+			
+			return summary;
 		}
-		
 		return null;
 		
 	}

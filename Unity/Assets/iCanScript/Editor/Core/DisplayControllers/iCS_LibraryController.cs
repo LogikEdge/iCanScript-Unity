@@ -369,7 +369,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	            var idx= FindInTreeChildren(className, tree);
 	            if(idx < 0) {
 					var nodeType= iCS_Types.IsStaticClass(compilerType) ? NodeTypeEnum.Package : NodeTypeEnum.Class;
-	                tree.AddChild(new Node(nodeType, className, desc));
+	                tree.AddChild(new Node(nodeType, className, desc.ParentTypeInfo));
                     ++treeSize;
 	                idx= FindInTreeChildren(className, tree);
 	            }
