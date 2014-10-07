@@ -209,7 +209,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                     toAdd= new Node(NodeTypeEnum.Property, memberInfo.ToPropertyInfo.PropertyName, memberInfo);
                 } else if(memberInfo.IsConstructor) {
                     toAdd= new Node(NodeTypeEnum.Constructor, memberInfo.ToConstructorInfo.FunctionSignature, memberInfo);
-                } else if(memberInfo.IsMethod) {
+                    } else if(memberInfo.IsTypeCast) {
+                        // Don't add the typecasts in the library.
+                    } else if(memberInfo.IsMethod) {
                     toAdd= new Node(NodeTypeEnum.Method, memberInfo.ToMethodInfo.FunctionSignature, memberInfo);                
                 } else if(memberInfo.IsMessage) {
                     toAdd= new Node(NodeTypeEnum.Message, memberInfo.ToMessageInfo.FunctionSignature, memberInfo);
