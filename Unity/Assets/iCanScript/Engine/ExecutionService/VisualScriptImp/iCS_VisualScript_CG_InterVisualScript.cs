@@ -25,7 +25,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     iCS_ActionWithSignature GetUserFunctionAction(iCS_EngineObject userFunctionCall) {
         var runtimeNode= GetRuntimeNodeFromReferenceNode(userFunctionCall);
         if(runtimeNode == null) {
-            Debug.LogWarning("Unable to find user function=> "+userFunctionCall.Name);
+            Debug.LogWarning("iCanScript: Unable to find user function=> "+userFunctionCall.Name);
             return null;                   
         }
         return runtimeNode as iCS_ActionWithSignature;
@@ -34,7 +34,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     object GetRuntimeNodeFromReferenceNode(iCS_EngineObject referenceNode) {
         var vs= GetVisualScriptFromRefenceNode(referenceNode);
         if(vs == null) {
-            Debug.LogWarning("Unable to find user function=> "+referenceNode.Name);
+            Debug.LogWarning("iCanScript: Unable to find user function=> "+referenceNode.Name);
             return null;
         }
         var runtimeNodeId  = referenceNode.ProxyOriginalNodeId;
@@ -48,7 +48,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         return providerPort != null && providerPort != gameObjectPort;
     }
     // ----------------------------------------------------------------------
-    iCS_VisualScriptImp GetVisualScriptFromRefenceNode(iCS_EngineObject referenceNode) {
+    public iCS_VisualScriptImp GetVisualScriptFromRefenceNode(iCS_EngineObject referenceNode) {
         var gameObjectPort= iCS_VisualScriptData.GetInInstancePort(this, referenceNode);
         iCS_VisualScriptImp vs= null;
         if(gameObjectPort != null) {
