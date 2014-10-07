@@ -273,7 +273,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 var module= new iCS_Package(this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= module;
                                 InvokeAddChildIfExists(parent, module);                                
-                                if(iCS_VisualScriptData.IsPublicFunction(node)) {
+                                if(iCS_VisualScriptData.IsPublicFunction(this, node)) {
                                     myPublicInterfaces.Add(node.InstanceId);
                                 }
                                 break;
@@ -304,7 +304,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 iCS_Constructor func= new iCS_Constructor(methodBase, this, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= func;
                                 // Special case for public variables.  They are created in the Awake message handler.
-                                if(iCS_VisualScriptData.IsPublicVariable(node)) {
+                                if(iCS_VisualScriptData.IsPublicVariable(this, node)) {
                                     myPublicInterfaces.Add(node.InstanceId);                                    
                                     // Create a start message handler (if it does not exist)
                                     if(!myMessageContexts.ContainsKey("Start")) {

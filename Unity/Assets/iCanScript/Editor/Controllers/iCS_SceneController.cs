@@ -71,8 +71,7 @@ public static class iCS_SceneController {
 		public int 						NbOfReferences	{ get { return myReferences.Count; }}
 		public bool						IsEmpty			{ get { return NbOfDefinitions+NbOfReferences == 0; }}
 		public void Add(VSObjectReference objRef) {
-			if(iCS_VisualScriptData.IsPublicVariable(objRef.EngineObject) ||
-			   iCS_VisualScriptData.IsPublicFunction(objRef.EngineObject)) {
+			if(objRef.IsPublicVariable || objRef.IsPublicFunction) {
 			   myDefinitions.Add(objRef);	
 			}
 			else {
@@ -80,8 +79,7 @@ public static class iCS_SceneController {
 			}
 		}
 		public void Remove(VSObjectReference objRef) {
-			if(iCS_VisualScriptData.IsPublicVariable(objRef.EngineObject) ||
-			   iCS_VisualScriptData.IsPublicFunction(objRef.EngineObject)) {
+			if(objRef.IsPublicVariable || objRef.IsPublicFunction) {
                    for(int i= 0; i < myDefinitions.Count; ++i) {
                        var definition= myDefinitions[i];
                        if(definition.ObjectId == objRef.ObjectId && definition.VisualScript == objRef.VisualScript) {
@@ -112,6 +110,10 @@ public static class iCS_SceneController {
         public iCS_VisualScriptImp VisualScript { get { return myVisualScript; }}
         public int                 ObjectId     { get { return myObjectId; }}
         public iCS_EngineObject    EngineObject { get { return myVisualScript.EngineObjects[myObjectId]; }}
+        public bool                IsPublicVariable     { get { return iCS_VisualScriptData.IsPublicVariable(VisualScript, EngineObject); }}
+        public bool                IsPublicFunction     { get { return iCS_VisualScriptData.IsPublicFunction(VisualScript, EngineObject); }}
+        public bool                IsVariableReference  { get { return EngineObject.IsVariableReference; }}
+        public bool                IsFunctionCall       { get { return EngineObject.IsFunctionCall; }}
     };
 
     // ======================================================================
