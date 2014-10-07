@@ -14,4 +14,5 @@ public interface DSTreeViewDataSource {
 	object	CurrentObjectKey();
 	void    MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea);
 	void    MouseMove(object key);
+	void	KeyDown(object key, KeyCode keyCode);
 }

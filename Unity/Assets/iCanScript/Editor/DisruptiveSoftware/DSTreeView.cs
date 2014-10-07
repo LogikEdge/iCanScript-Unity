@@ -214,17 +214,33 @@ public class DSTreeView : DSView {
                 }
 				break;
 			}
+            case EventType.MouseUp: {
+				break;
+			}
             case EventType.MouseMove: {
                foreach(var keyValue in myRowInfo) {
 				   Rect area= keyValue.Value;
 				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
-					   myDataSource.MouseMove(keyValue.Key);				
+					   myDataSource.MouseMove(keyValue.Key);	
+					   //TODO: not sure why this line adversly affect tooltips (they work intermitently) ... investigate
+                       //Event.current.Use();							
 					   return;
 					}
                 }
 				break;
 			}
-            case EventType.MouseUp: {
+			case EventType.KeyDown: {
+				var ev= Event.current;
+				if(ev.isKey) {
+	                foreach(var keyValue in myRowInfo) {
+	 				   Rect area= keyValue.Value;
+	 				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
+	 					   myDataSource.KeyDown(keyValue.Key, ev.keyCode);		
+                           Event.current.Use();							
+	 					   return;
+	 					}
+	                 }
+				}
 				break;
 			}
         }   

@@ -603,12 +603,22 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             return;
         }
         Node node= key as Node;
-        Selected= node;
+        Selected= node;		
+		// Added this to remove focus control from search box when a library object is selected, in order to be able to use h key for help.
+		//TODO: is this a good idea?
+		GUI.FocusControl("");
     }
 	
     public void MouseMove(object key) {
         Node node= key as Node;
 		node.Tooltip=  iCS_HelpSearch.getHelpSummary(node.MemberInfo);
+    }
+	
+    public void KeyDown(object key, KeyCode keyCode) {
+		if (keyCode==KeyCode.H) {
+			Node node= key as Node;
+			iCS_HelpSearch.openDetailedHelp(node.MemberInfo);
+		}
     }
 	
     // ---------------------------------------------------------------------------------

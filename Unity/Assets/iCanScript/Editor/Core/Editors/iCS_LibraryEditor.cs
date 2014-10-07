@@ -120,7 +120,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
                 var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, frameArea.width, frameArea.height);
                 myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
                 Event.current.Use();
-                // Move keyboard focus to this window.
+                // Move keyboard focus to this window.			
                 /*
                     FIXME: Must move back the focus here.
                 */

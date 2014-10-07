@@ -15,13 +15,7 @@ public class iCS_HelpSearch {
 	static private string unityHelpIndex;
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
 
-	/*
-	// For testing: Add a menu item named "Do Something" to MyMenu in the menu bar.
-	[MenuItem ("MyMenu/Do Something")]
-	static void DoSomething () {
-		Debug.Log(getUnityHelpSummary ("Debug.Log"));
-	}
-	*/
+	static string unityHelpPath = "/Applications/Unity/Unity.app/Contents/Documentation/html/en/ScriptReference";
 
 	public static void Start() {
 		buildUnityHelpIndex();
@@ -36,9 +30,8 @@ public class iCS_HelpSearch {
 	// Convert the JavaScript unity help index file "index.js" to a json string.
 	// ---------------------------------------------------------------------------------
 	private static void buildUnityHelpIndex() {
-		string path = "/Applications/Unity/Unity.app/Contents/Documentation/html/en/ScriptReference/index.js";
 		
-		var fileStream = new StreamReader (path);
+		var fileStream = new StreamReader (unityHelpPath+"/index.js");
 		StringBuilder unityHelpIndexBuilder = new StringBuilder ("");
 		string line;
 		
@@ -104,12 +97,35 @@ public class iCS_HelpSearch {
 	}
 
 	// =================================================================================
-	// Get the summary descriptin for a unity API by providing class.function
+	// Get the summary description for a unity API
 	// ---------------------------------------------------------------------------------
 	public static string getHelpSummary(iCS_MemberInfo memberInfo )
+	{
+		if (memberInfo.Company == "Unity") {
+			string summary;
+			string search= getHelpUrl(memberInfo);
+			unityHelpSummary.TryGetValue(search, out summary);
+			return summary;
+		}
+		return null;
+	}
+	
+	// =================================================================================
+	// Open web browser for specific help
+	// ---------------------------------------------------------------------------------		
+	public static void openDetailedHelp(iCS_MemberInfo memberInfo )	
 	{	
 		if (memberInfo.Company == "Unity") {
-			
+			string search= getHelpUrl(memberInfo);
+			Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
+		}
+	}	
+
+	// =================================================================================
+	// Get the Unity help file url 
+	// ---------------------------------------------------------------------------------		
+	private static string getHelpUrl(iCS_MemberInfo memberInfo )	
+	{		
 			string className="";
 			string demarcator="";
 			string methodName="";
@@ -160,14 +176,7 @@ public class iCS_HelpSearch {
 					demarcator= ".";
 			}		
 	
-			string summary;
-			string search= className + demarcator + methodName;
-			unityHelpSummary.TryGetValue(search, out summary);
-			
-			return summary;
-		}
-		return null;
-		
+			return className + demarcator + methodName;
 	}
 
 
