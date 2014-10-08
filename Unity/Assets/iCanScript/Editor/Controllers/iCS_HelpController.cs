@@ -14,9 +14,8 @@ public static class iCS_HelpController {
 
 	static private string unityHelpIndex;
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
+	static string unityHelpPath = EditorApplication.applicationPath + "/Contents/Documentation/html/en/ScriptReference";
 
-	//TODO: look in Application class unity  Or Editor Application for path
-	static string unityHelpPath = "/Applications/Unity/Unity.app/Contents/Documentation/html/en/ScriptReference";
 
 	// ---------------------------------------------------------------------------------
 	static iCS_HelpController() {
@@ -37,7 +36,7 @@ public static class iCS_HelpController {
 	private static void buildUnityHelpIndex() {
 		StreamReader fileStream;
 		try {
-			fileStream = new StreamReader (unityHelpPath+"/index.js");
+			fileStream = new StreamReader (unityHelpPath + "/index.js");
 		}
 		catch {
 			Debug.Log("iCanScript: unable to open Unity help.");

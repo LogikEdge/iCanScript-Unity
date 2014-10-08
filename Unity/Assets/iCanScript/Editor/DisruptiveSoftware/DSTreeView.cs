@@ -229,25 +229,6 @@ public class DSTreeView : DSView {
                 }
 				break;
 			}
-			/*
-			case EventType.KeyDown: {
-				// Intercept Help key for Library.
-				//TODO: consider moving this to LibraryEditor
-				var ev= Event.current;
-				if(ev.isKey) {
-	                foreach(var keyValue in myRowInfo) {
-	 				   Rect area= keyValue.Value;
-	 				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
-	 					   myDataSource.KeyDown(keyValue.Key, ev.keyCode);		
-						   if(ev.keyCode== KeyCode.H)
-							   Event.current.Use();							
-	 					   return;
-	 					}
-	                 }
-				}
-				break;
-			}
-			*/
         }   
     }
 
