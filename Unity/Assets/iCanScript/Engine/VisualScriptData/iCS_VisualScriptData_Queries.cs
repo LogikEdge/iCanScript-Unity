@@ -20,17 +20,17 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     // Returns 'true' if the given engine object is a public varaiable.
-    public static bool IsPublicVariable(iCS_EngineObject obj) {
+    public static bool IsPublicVariable(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
         if(obj == null) return false;
         if(obj.ParentId != 0) return false;
-        return obj.IsConstructor;
+        return obj.IsConstructor && vsd.EngineObjects[0].IsBehaviour;
     }
     // ----------------------------------------------------------------------
     // Returns 'true' if the given engine object is a user function.
-    public static bool IsPublicFunction(iCS_EngineObject obj) {
+    public static bool IsPublicFunction(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
         if(obj == null) return false;
         if(obj.ParentId != 0) return false;
-        return obj.IsPackage;
+        return obj.IsPackage && vsd.EngineObjects[0].IsBehaviour;
     }
     
     // =======================================================================
@@ -84,12 +84,12 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // -----------------------------------------------------------------------
     // Finds all user functions
     public static iCS_EngineObject[] FindPublicFunctions(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, IsPublicFunction);
+        return FindMany(vsd, o=> IsPublicFunction(vsd, o));
     }
     // -----------------------------------------------------------------------
     // Finds all user functions
     public static iCS_EngineObject[] FindPublicVariables(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, IsPublicVariable);
+        return FindMany(vsd, o=> IsPublicVariable(vsd, o));
     }
     // -----------------------------------------------------------------------
     // Find all public objects
