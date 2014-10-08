@@ -193,13 +193,19 @@ public class DSTreeView : DSView {
 			}			
 		}
     }
+	public object ObjectFromMousePosition(Vector2 mousePosition) {
+        foreach(var keyValue in myRowInfo) {
+		   Rect area= keyValue.Value;
+		   if(area.y < mousePosition.y && area.yMax > mousePosition.y) 
+			   return keyValue.Key;	
+		}
+		return null;
+	}
+	
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
      	Vector2 mousePosition= Event.current.mousePosition;
 		switch(Event.current.type) {
-            case EventType.ScrollWheel: {
-                break;
-            }
             case EventType.MouseDown: {
                 foreach(var keyValue in myRowInfo) {
                     Rect area= keyValue.Value;
@@ -208,23 +214,10 @@ public class DSTreeView : DSView {
                         var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(area.x, area.y));
                         var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, area.width, area.height);
                         myDataSource.MouseDownOn(keyValue.Key, mouseInScreenPoint, areaInScreenPosition);						
-                        Event.current.Use();
+//                        Event.current.Use();
                         return;
                     }
                 }
-				break;
-			}
-            case EventType.MouseMove: {
-               foreach(var keyValue in myRowInfo) {
-				   Rect area= keyValue.Value;
-				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
-					   myDataSource.MouseMove(keyValue.Key);				
-					   return;
-					}
-                }
-				break;
-			}
-            case EventType.MouseUp: {
 				break;
 			}
         }   

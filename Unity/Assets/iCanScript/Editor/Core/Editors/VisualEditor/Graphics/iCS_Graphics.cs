@@ -1,7 +1,7 @@
 /*
     TODO: re-examine tooltip implementation since the current one triples the frame rate.
 */
-//#define SHOW_TOOLTIP
+#define SHOW_TOOLTIP
 
 using UnityEngine;
 using UnityEditor;
@@ -467,7 +467,7 @@ public partial class iCS_Graphics {
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
 #if SHOW_TOOLTIP
-        string tooltip= isMouseOver ? GetNodeTooltip(node,iStorage) : null;
+        string tooltip= isMouseOver ? GetNodeTooltip(node) : null;
 #else
         string tooltip= null;
 #endif
@@ -531,7 +531,7 @@ public partial class iCS_Graphics {
         if(textureRect.Contains(MousePosition)) {
             EditorGUIUtility_AddCursorRect (textureRect, MouseCursor.Link);
 #if SHOW_TOOLTIP
-            GUI_Label(textureRect, new GUIContent("", GetNodeTooltip(node,iStorage)), LabelStyle);            
+            GUI_Label(textureRect, new GUIContent("", GetNodeTooltip(node)), LabelStyle);            
 #endif
         }
 		ShowTitleOver(textureRect, node);

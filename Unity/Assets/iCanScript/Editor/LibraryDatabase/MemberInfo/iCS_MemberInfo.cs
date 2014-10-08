@@ -18,6 +18,7 @@ public abstract class iCS_MemberInfo {
     public  iCS_TypeInfo         ParentTypeInfo  = null;
 	public  bool				 HideFromLibrary = false;
     public  string               DisplayName     = null;
+	private string               mySummary   	 = null;
     private string               myDescription   = null;
     private string               myIconPath      = null;
 
@@ -35,9 +36,9 @@ public abstract class iCS_MemberInfo {
 		if(_parentTypeInfo != null) {
 			_parentTypeInfo.Members.Add(this);			
 		}
-
     }
 
+		
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
@@ -110,6 +111,22 @@ public abstract class iCS_MemberInfo {
             myDescription= value;
         }
     }
+    public string Summary {
+        get {
+            if(mySummary == null) {
+				// Fetch the summaries as they are needed, and cache them.
+                mySummary=  iCS_HelpController.getHelpSummary(this);
+				if (mySummary == null || mySummary == "") {					
+					if(Description == null || Description == "")
+						mySummary= "No tip available";
+					else
+						mySummary= Description;
+				}
+            }
+            return mySummary;            
+        }
+
+    }
     public string IconPath {
         get {
             return myIconPath;            
@@ -118,4 +135,5 @@ public abstract class iCS_MemberInfo {
             myIconPath= value;
         }
     }
+
 }

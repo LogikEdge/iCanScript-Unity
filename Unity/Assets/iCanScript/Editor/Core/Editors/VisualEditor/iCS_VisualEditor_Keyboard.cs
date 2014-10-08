@@ -213,7 +213,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.H: {  // Show Help
                 if(SelectedObject != null) {
-                    Help.ShowHelpPage("file:///unity/ScriptReference/index.html");
+					iCS_HelpController.openDetailedHelp(iCS_LibraryDatabase.GetAssociatedDescriptor(SelectedObject));
                 }
                 Event.current.Use();
                 break;

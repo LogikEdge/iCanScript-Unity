@@ -20,9 +20,8 @@ public static class iCS_AppController {
 		iCS_CodeGenerator.Start();
         iCS_VisualScriptDataController.Start();
         iCS_SceneController.Start();
+		iCS_HelpController.Start();	
         iCS_PublicInterfaceController.Start();
-		// TODO: Does not start until a graph is on screen!  Needs to be available to Library window at all times.
-		iCS_HelpSearch.Start();	
 	}
     
     /// Start the application controller.
@@ -42,6 +41,6 @@ public static class iCS_AppController {
         iCS_EditionController.Shutdown();
         iCS_TimerService.Shutdown();
         iCS_SystemEvents.Shutdown();
-		iCS_HelpSearch.Shutdown();
+		iCS_HelpController.Shutdown();
     }
 }
