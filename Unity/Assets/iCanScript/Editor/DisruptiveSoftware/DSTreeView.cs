@@ -218,25 +218,28 @@ public class DSTreeView : DSView {
 				break;
 			}
             case EventType.MouseMove: {
-               foreach(var keyValue in myRowInfo) {
+				//TODO: Can be removed once tips are cached in memberInfo.
+                foreach(var keyValue in myRowInfo) {
 				   Rect area= keyValue.Value;
 				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
 					   myDataSource.MouseMove(keyValue.Key);	
-					   //TODO: not sure why this line adversly affect tooltips (they work intermitently) ... investigate
-                       //Event.current.Use();							
+                       //Do not do an Event.current.Use(), or we may steal mouse moves from others.						
 					   return;
 					}
                 }
 				break;
 			}
 			case EventType.KeyDown: {
+				// Intercept Help key for Library.
+				//TODO: consider moving this to LibraryEditor
 				var ev= Event.current;
 				if(ev.isKey) {
 	                foreach(var keyValue in myRowInfo) {
 	 				   Rect area= keyValue.Value;
 	 				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
 	 					   myDataSource.KeyDown(keyValue.Key, ev.keyCode);		
-                           Event.current.Use();							
+						   if(ev.keyCode== KeyCode.H)
+							   Event.current.Use();							
 	 					   return;
 	 					}
 	                 }

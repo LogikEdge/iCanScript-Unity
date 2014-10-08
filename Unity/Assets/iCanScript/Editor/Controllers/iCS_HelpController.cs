@@ -10,29 +10,41 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
 
-public class iCS_HelpSearch {
+public static class iCS_HelpController {
 
 	static private string unityHelpIndex;
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
 
+	//TODO: look in Application class unity  Or Editor Application for path
 	static string unityHelpPath = "/Applications/Unity/Unity.app/Contents/Documentation/html/en/ScriptReference";
 
-	public static void Start() {
+	// ---------------------------------------------------------------------------------
+	static iCS_HelpController() {
 		buildUnityHelpIndex();
 		buildUnityHelpSummary();
 	}
-	
-	public static void Shutdown() {
-	}
+
+	// ---------------------------------------------------------------------------------
+	public static void Start() {}
+
+	// ---------------------------------------------------------------------------------	
+	public static void Shutdown() {}
 
 
 	// =================================================================================
 	// Convert the JavaScript unity help index file "index.js" to a json string.
 	// ---------------------------------------------------------------------------------
 	private static void buildUnityHelpIndex() {
+		StreamReader fileStream;
+		try {
+			fileStream = new StreamReader (unityHelpPath+"/index.js");
+		}
+		catch {
+			Debug.Log("iCanScript: unable to open Unity help.");
+			return;
+		}
 		
-		var fileStream = new StreamReader (unityHelpPath+"/index.js");
-		StringBuilder unityHelpIndexBuilder = new StringBuilder ("");
+		StringBuilder unityHelpIndexBuilder = new StringBuilder("");
 		string line;
 		
 		// Read the info file one line at a time (stripping spaces), and convert the java script formating to json where needed.
@@ -73,14 +85,28 @@ public class iCS_HelpSearch {
 	// ---------------------------------------------------------------------------------
 	private static void buildUnityHelpSummary()
 	{
-		JObject rootObject= JSON.GetRootObject(unityHelpIndex);	
-		JArray  arrayOfEntries= rootObject.GetValueFor("info") as JArray;
-			
+		JArray  arrayOfEntries;
+		try {
+			JObject rootObject= JSON.GetRootObject(unityHelpIndex);	
+			arrayOfEntries= rootObject.GetValueFor("info") as JArray;
+		}
+		catch {
+			Debug.Log("iCanScript: Error reading unity help index as JSON format");
+			return;
+		}
+		
 		foreach (JObject jObject in arrayOfEntries.value) {
-			// Get the title, summary as per the index.js file.
-//			JString jTitle= jObject.GetValueFor("title") as JString;
-			JString jUrl= jObject.GetValueFor("url") as JString;
-			JString jSummary= jObject.GetValueFor("summary") as JString;
+			// Get the url and summary as per the index.js file.
+			JString jSummary;
+			JString jUrl;
+			try {
+				jUrl= jObject.GetValueFor("url") as JString;
+				jSummary= jObject.GetValueFor("summary") as JString;
+			}
+			catch {
+				Debug.Log("iCanScript: Error reading line in JSON unity help index");
+				return;
+			}
 	
 			// replace HTML formating in summary
 			string summary= formatFromHTML(jSummary.value);
@@ -91,7 +117,8 @@ public class iCS_HelpSearch {
 				unityHelpSummary.Add(jUrl.value, summary);
 			}
 			catch {
-//				Debug.Log("Duplicate: "+ jUrl.value + "\nsummary: " + summary);
+				// Duplicate URL's are caught here.  This is known to happen in regular case.
+				//Debug.Log("Duplicate: "+ jUrl.value + "\nsummary: " + summary);
 			}
 		}
 	}
@@ -102,12 +129,13 @@ public class iCS_HelpSearch {
 	public static string getHelpSummary(iCS_MemberInfo memberInfo )
 	{
 		if (memberInfo.Company == "Unity") {
-			string summary;
+			string summary=null;
 			string search= getHelpUrl(memberInfo);
 			unityHelpSummary.TryGetValue(search, out summary);
-			return summary;
+			if (summary!=null)
+				return summary;
 		}
-		return null;
+		return "no tip available";
 	}
 	
 	// =================================================================================
@@ -117,7 +145,8 @@ public class iCS_HelpSearch {
 	{	
 		if (memberInfo.Company == "Unity") {
 			string search= getHelpUrl(memberInfo);
-			Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
+			if (search != null)
+				Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
 		}
 	}	
 
@@ -161,6 +190,8 @@ public class iCS_HelpSearch {
 						methodName= Regex.Replace(methodName, "op_Multiply", "operator_multiply");
 						methodName= Regex.Replace(methodName, "op_Subtraction", "operator_subtract");
 						//methodName= Regex.Replace(methodName, "op_UnaryNegation", ???);
+						// TODO: else Debug.Log 
+						// TODO: More opertators .. csharp operators.
 					}
 				}
 			}
@@ -183,7 +214,7 @@ public class iCS_HelpSearch {
 	// =================================================================================
 	// DEPRICATED
 	// ---------------------------------------------------------------------------------
-	string getHelpFromHTMLFiles(string apiToSearch, string sectionToGet) {
+	static string getHelpFromHTMLFiles(string apiToSearch, string sectionToGet) {
 
 		// Create Filename that will contain help in Unity folder.
 		string path = "/Applications/Unity/Unity.app/Contents/Documentation/html/en/ScriptReference";

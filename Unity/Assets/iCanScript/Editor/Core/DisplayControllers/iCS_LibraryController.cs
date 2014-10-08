@@ -517,8 +517,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
         // Show selected outline.
-		
-		// TODO: Rich text does not seem to work in tooltips, even setting richtext=true ... would be nice to get formating to work.
         GUIStyle labelStyle= EditorStyles.label;
 		
 		if(IsSelected) {
@@ -533,6 +531,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
 		
+		// TODO: Rich text does not seem to work in tooltips, (tried setting richtext=true) ... would be nice to get formating to work.
 		var contentWithTooltip= new GUIContent(content.text, content.tooltip);
 		GUI.Label(pos, contentWithTooltip, labelStyle);    
 
@@ -604,20 +603,17 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         }
         Node node= key as Node;
         Selected= node;		
-		// Added this to remove focus control from search box when a library object is selected, in order to be able to use h key for help.
-		//TODO: is this a good idea?
-		GUI.FocusControl("");
     }
 	
     public void MouseMove(object key) {
         Node node= key as Node;
-		node.Tooltip=  iCS_HelpSearch.getHelpSummary(node.MemberInfo);
+		node.Tooltip=  iCS_HelpController.getHelpSummary(node.MemberInfo);
     }
 	
     public void KeyDown(object key, KeyCode keyCode) {
 		if (keyCode==KeyCode.H) {
 			Node node= key as Node;
-			iCS_HelpSearch.openDetailedHelp(node.MemberInfo);
+			iCS_HelpController.openDetailedHelp(node.MemberInfo);
 		}
     }
 	
