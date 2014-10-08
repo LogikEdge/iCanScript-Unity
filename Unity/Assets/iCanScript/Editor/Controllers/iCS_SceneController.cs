@@ -33,9 +33,11 @@ public static class iCS_SceneController {
     // ----------------------------------------------------------------------
 	static iCS_SceneController() {
         // Events to refresh scene content information.
+		iCS_SystemEvents.OnEditorStarted   = RefreshSceneInfo;
         iCS_SystemEvents.OnSceneChanged    = RefreshSceneInfo;
         iCS_SystemEvents.OnHierarchyChanged= RefreshSceneInfo;
         iCS_SystemEvents.OnProjectChanged  = RefreshSceneInfo;
+		iCS_SystemEvents.OnCompileStarted  = RefreshSceneInfo;
         // Force an initial refresh of the scene info.
         RefreshSceneInfo();  
 	}
@@ -52,6 +54,8 @@ public static class iCS_SceneController {
         ourVisualScriptsInScene              = ScanForVisualScriptsInScene();
         ourVisualScriptsReferencesByScene    = ScanForVisualScriptsReferencedByScene();
         ourVisualScriptsInOrReferencesByScene= CombineVisualScriptsInOrReferencedByScene();
+		// Vaidate proper visual script setup.
+		SceneSanityCheck();
     }
 
     // ======================================================================
@@ -108,4 +112,30 @@ public static class iCS_SceneController {
 			)
 		).ToArray();
     }
+	
+    // ======================================================================
+    // VALIDATE SCENE VISUAL SCRIPTS
+    // ----------------------------------------------------------------------
+	const string kiCS_Behaviour= iCS_EditorStrings.DefaultBehaviourClassName;
+	static void SceneSanityCheck() {
+		Debug.Log("SceneSanityCheck is running");
+		foreach(var vs in VisualScriptsInOrReferencedByScene) {
+			var go= vs.gameObject;
+			CleanupEmptyComponents(go);
+			if(go == null) continue;
+			var behaviourScript= vs.gameObject.GetComponent(kiCS_Behaviour);
+			if(behaviourScript == null) {
+//				Debug.LogWarning("iCanScript: iCS_Behaviour script has been disconnected from=> "+go.name+".  Attempting to reconnect...");
+				go.AddComponent(kiCS_Behaviour);
+			}
+		}
+	}
+	static void CleanupEmptyComponents(GameObject go) {
+		var allComponents= go.GetComponents<Component>();
+		foreach(var c in allComponents) {
+			if(c == null) {
+				Debug.LogWarning("iCanScript: PLEASE REMOVE empty component found on=> "+go.name+".");
+			}
+		}
+	}
 }
