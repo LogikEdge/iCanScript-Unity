@@ -22,10 +22,12 @@ public class iCS_HelpSearch {
 		Debug.Log(getUnityHelpSummary ("Debug.Log"));
 	}
 	*/
+    static iCS_HelpSearch() {
+		buildUnityHelpIndex();
+		buildUnityHelpSummary();        
+    }
 
 	public static void Start() {
-		buildUnityHelpIndex();
-		buildUnityHelpSummary();
 	}
 	
 	public static void Shutdown() {
