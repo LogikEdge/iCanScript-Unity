@@ -19,6 +19,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // Fields
     // ---------------------------------------------------------------------------------
     DSScrollView            myMainView;
+    Rect                    myScrollViewArea;
 	iCS_LibraryController   myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
 
@@ -49,13 +50,13 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         UpdateMgr();
 		if(!IsInitialized()) return;
 		var toolbarRect= ShowToolbar();
-        var frameArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
-		myMainView.Display(frameArea);
-		ProcessEvents(frameArea);
+        myScrollViewArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
+		myMainView.Display(myScrollViewArea);
+		ProcessEvents(myScrollViewArea);
 		// Make new selection visible
 		if(mySelectedAreaCache != myController.SelectedArea) {
 		    mySelectedAreaCache= myController.SelectedArea;
-		    myMainView.MakeVisible(mySelectedAreaCache, frameArea);
+		    myMainView.MakeVisible(mySelectedAreaCache, myScrollViewArea);
 		}            
 	}
     // ---------------------------------------------------------------------------------
