@@ -16,27 +16,10 @@ public static class iCS_HelpController {
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
 	static string unityHelpPath = EditorApplication.applicationPath + "/Contents/Documentation/html/en/ScriptReference";
 
-<<<<<<< HEAD:Unity/Assets/iCanScript/Editor/Controllers/iCS_HelpController.cs
-
 	// ---------------------------------------------------------------------------------
 	static iCS_HelpController() {
 		buildUnityHelpIndex();
 		buildUnityHelpSummary();
-=======
-	/*
-	// For testing: Add a menu item named "Do Something" to MyMenu in the menu bar.
-	[MenuItem ("MyMenu/Do Something")]
-	static void DoSomething () {
-		Debug.Log(getUnityHelpSummary ("Debug.Log"));
-	}
-	*/
-    static iCS_HelpSearch() {
-		buildUnityHelpIndex();
-		buildUnityHelpSummary();        
-    }
-
-	public static void Start() {
->>>>>>> develop:Unity/Assets/iCanScript/Editor/Help/iCS_HelpSearch.cs
 	}
 
 	// ---------------------------------------------------------------------------------
@@ -158,10 +141,12 @@ public static class iCS_HelpController {
 	// ---------------------------------------------------------------------------------		
 	public static void openDetailedHelp(iCS_MemberInfo memberInfo )	
 	{	
-		if (memberInfo.Company == "Unity") {
-			string search= getHelpUrl(memberInfo);
-			if (search != null)
-				Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
+		if(memberInfo != null) {
+			if (memberInfo.Company == "Unity") {
+				string search= getHelpUrl(memberInfo);
+				if (search != null)
+					Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
+			}
 		}
 	}	
 
