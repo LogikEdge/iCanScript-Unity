@@ -164,7 +164,7 @@ public static class iCS_HelpController {
 				className = memberInfo.ToTypeInfo.ClassName;
 			}
 			else if (memberInfo.IsMethod) {
-				className= memberInfo.ToMethodInfo.DeclaringType.Name;
+				className= memberInfo.ParentTypeInfo.ClassName;
 				methodName= memberInfo.ToMethodInfo.MethodName;
 				if (memberInfo.IsProperty) {
 					// Property Nodes
