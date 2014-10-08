@@ -121,10 +121,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
                 myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
                 Event.current.Use();
                 // Move keyboard focus to this window.			
-                /*
-                    FIXME: Must move back the focus here.
-                */
-                //Focus();
+                GUI.FocusControl("");   // Removes focus from the search field.
 				break;
 			}
 

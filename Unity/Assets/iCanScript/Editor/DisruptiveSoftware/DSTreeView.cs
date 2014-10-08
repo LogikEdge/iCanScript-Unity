@@ -208,7 +208,7 @@ public class DSTreeView : DSView {
                         var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(area.x, area.y));
                         var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, area.width, area.height);
                         myDataSource.MouseDownOn(keyValue.Key, mouseInScreenPoint, areaInScreenPosition);						
-                        Event.current.Use();
+//                        Event.current.Use();
                         return;
                     }
                 }
