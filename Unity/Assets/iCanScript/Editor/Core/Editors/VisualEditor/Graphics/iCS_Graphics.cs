@@ -1141,7 +1141,8 @@ public partial class iCS_Graphics {
 		var enablePorts= obj.BuildListOfChildPorts(p=> p.IsEnablePort);
 		foreach(var ep in enablePorts) {
 			if(isPlaying || ep.ProviderPort == null) {
-				if((bool)(ep.PortValue) == false) {
+                var portValue= ep.PortValue;
+				if(portValue != null && (bool)(ep.PortValue) == false) {
 					return false;
 				}				
 			}
