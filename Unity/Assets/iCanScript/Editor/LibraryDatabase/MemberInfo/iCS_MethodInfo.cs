@@ -17,6 +17,9 @@ public class iCS_MethodInfo : iCS_MethodBaseInfo {
     public override string MethodName {
         get { return Method.Name; }
     }
+    public Type DeclaringType {
+        get { return Method == null ? null : Method.DeclaringType; }
+    }
     
     // ======================================================================
     // Creation/Destruction
