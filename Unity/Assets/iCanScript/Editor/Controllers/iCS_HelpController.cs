@@ -133,7 +133,7 @@ public static class iCS_HelpController {
 			if (summary!=null)
 				return summary;
 		}
-		return "no tip available";
+		return null;
 	}
 	
 	// =================================================================================

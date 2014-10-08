@@ -15,6 +15,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         public string          Name;
         public Vector2         NameSize;
         public iCS_MemberInfo  MemberInfo;
+		private GUIContent	   myGuiContent	 = null;
 		
         public Node(NodeTypeEnum type, string name, iCS_MemberInfo memberInfo) {
             Init(type, name, memberInfo);
@@ -36,6 +37,15 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         public override int GetHashCode() {
             return Name.GetHashCode();
         }
+	    // ----------------------------------------------------------------------	
+		// Create the GUIContent as they are needed, and cache them.
+	    public GUIContent getGUIContent() {
+	            if(myGuiContent == null) {
+					myGuiContent= new GUIContent(Name, MemberInfo.Summary);
+	            }
+	            return myGuiContent;            
+	    }
+		
 
     };
     public class SearchCriterias {
@@ -537,8 +547,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
 		
-		//TODO: Should we put the knowledge of creating the name in MemberInfo?  Then we don't have to pass it.
-		GUI.Label(pos, IterValue.MemberInfo.getGUIContent(content.text), labelStyle);    
+		var current= IterValue;
+		GUI.Label(pos, current.getGUIContent(),labelStyle);    
 
 		ProcessChangeSelection();
 		return result;

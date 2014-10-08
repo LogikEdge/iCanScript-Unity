@@ -21,7 +21,6 @@ public abstract class iCS_MemberInfo {
 	private string               mySummary   	 = null;
     private string               myDescription   = null;
     private string               myIconPath      = null;
-	private GUIContent			 myGuiContent	 = null;
 
     // ======================================================================
     // Creation/Destruction
@@ -117,6 +116,12 @@ public abstract class iCS_MemberInfo {
             if(mySummary == null) {
 				// Fetch the summaries as they are needed, and cache them.
                 mySummary=  iCS_HelpController.getHelpSummary(this);
+				if (mySummary == null || mySummary == "") {					
+					if(Description == null || Description == "")
+						mySummary= "No tip available";
+					else
+						mySummary= Description;
+				}
             }
             return mySummary;            
         }
@@ -129,16 +134,6 @@ public abstract class iCS_MemberInfo {
         set {
             myIconPath= value;
         }
-    }
-	
-    // ----------------------------------------------------------------------	
-	// Create the GUIContent as they are needed, and cache them.
-	// TODO: Should we put the knowledge of creating the name in MemberInfo?  Then we don't have to pass it.
-    public GUIContent getGUIContent(string text) {
-            if(myGuiContent == null) {
-				myGuiContent= new GUIContent(text, Summary);
-            }
-            return myGuiContent;            
     }
 
 }
