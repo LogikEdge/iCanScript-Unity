@@ -9,7 +9,10 @@ public static class iCS_PublicInterfaceController {
     // Initialization
     // ----------------------------------------------------------------------
     static iCS_PublicInterfaceController() {
-        // FIXME: Need to run after iCS_SceneController.
+        // Verify that the scene controller is ran before us.
+        if(iCS_SceneController.VisualScriptsInScene == null) {
+            Debug.LogError("iCanScript: Please move PublicInterfaceController after the SceneController in AppController");
+        }
         // Events to refresh scene content information.
         iCS_SystemEvents.OnSceneChanged    = RefreshPublicInterfaceInfo;
         iCS_SystemEvents.OnHierarchyChanged= RefreshPublicInterfaceInfo;
@@ -44,7 +47,7 @@ public static class iCS_PublicInterfaceController {
 				group.Add(objRef);
 			}
 			else {
-				var newGroup= new VSObjectReferenceGroup(objName);
+				var newGroup= new VSObjectReferenceGroup();
 				newGroup.Add(objRef);
 				myGroups.Add(objName, newGroup);
 			}
@@ -78,13 +81,10 @@ public static class iCS_PublicInterfaceController {
 	}
     // ----------------------------------------------------------------------	
 	public class VSObjectReferenceGroup {
-		string					myName    	 = null;
 		List<VSObjectReference>	myDefinitions= new List<VSObjectReference>();
 		List<VSObjectReference> myReferences = new List<VSObjectReference>();
 		
-		public VSObjectReferenceGroup(string name) {
-			myName= name;
-		}
+		public VSObjectReferenceGroup() {}
 		public List<VSObjectReference>	Definitions 	{ get { return myDefinitions; }}
 		public List<VSObjectReference>	References		{ get { return myReferences; }}
 		public int 						NbOfDefinitions	{ get { return myDefinitions.Count; }}
