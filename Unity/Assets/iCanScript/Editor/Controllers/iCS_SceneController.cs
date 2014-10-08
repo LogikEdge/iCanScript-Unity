@@ -107,13 +107,25 @@ public static class iCS_SceneController {
             myVisualScript= visualScript;
             myObjectId= objectId;
         }
-        public iCS_VisualScriptImp VisualScript { get { return myVisualScript; }}
-        public int                 ObjectId     { get { return myObjectId; }}
-        public iCS_EngineObject    EngineObject { get { return myVisualScript.EngineObjects[myObjectId]; }}
-        public bool                IsPublicVariable     { get { return iCS_VisualScriptData.IsPublicVariable(VisualScript, EngineObject); }}
-        public bool                IsPublicFunction     { get { return iCS_VisualScriptData.IsPublicFunction(VisualScript, EngineObject); }}
+        public iCS_VisualScriptImp VisualScript 		{ get { return myVisualScript; }}
+        public int                 ObjectId     		{ get { return myObjectId; }}
+        public iCS_EngineObject    EngineObject 		{ get { return myVisualScript.EngineObjects[myObjectId]; }}
         public bool                IsVariableReference  { get { return EngineObject.IsVariableReference; }}
         public bool                IsFunctionCall       { get { return EngineObject.IsFunctionCall; }}
+        public bool                IsPublicVariable
+			{ get { return iCS_VisualScriptData.IsPublicVariable(VisualScript, EngineObject); }}
+        public bool                IsPublicFunction
+			{ get { return iCS_VisualScriptData.IsPublicFunction(VisualScript, EngineObject); }}
+		public bool				   IsPublicInterface
+			{ get { return IsPublicVariable || IsPublicFunction; }}
+		public bool				   IsReferenceToPublicInterface
+			{ get { return IsVariableReference || IsFunctionCall; }}
+		public bool				   IsDynamicReference
+			{ get { return VisualScript.IsReferenceNodeUsingDynamicBinding(EngineObject); }}
+		public iCS_VisualScriptImp TargetVisualScript
+			{ get { return VisualScript.GetVisualScriptFromReferenceNode(EngineObject); }}
+		public iCS_EngineObject	   TargetEngineObject
+			{ get { return VisualScript.GetEngineObjectFromReferenceNode(EngineObject); }}
     };
 
     // ======================================================================
@@ -392,14 +404,95 @@ public static class iCS_SceneController {
     }
     // ----------------------------------------------------------------------
 	static iCS_VisualScriptImp FindVisualScriptFromReferenceNode(VSObjectReference objRef) {
-		return objRef.VisualScript.GetVisualScriptFromRefenceNode(objRef.EngineObject);
+		return objRef.VisualScript.GetVisualScriptFromReferenceNode(objRef.EngineObject);
 	}
 	
-    // ======================================================================
-    // VALIDATE PUBLIC INTERFACES
+	// =========================================
+	// = Public Interface Validation Utilities =
+	// =========================================
+    // ----------------------------------------------------------------------
+	public static P.Tuple<VSObjectReference,VSObjectReference>[] ValidateVariableDefinitions() {
+		var result= new List<P.Tuple<VSObjectReference,VSObjectReference> >();
+        PublicVariableGroups.ForEach(
+            (name, group)=> {
+				var definitions= group.Definitions;
+				if(P.length(definitions) < 2) return;
+				var qualifiedType= definitions[0].EngineObject.QualifiedType;
+				P.fold(
+					(acc,o)=> {
+						if(qualifiedType != o.EngineObject.QualifiedType) {
+							acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definitions[0], o));
+						}
+						return acc;
+					}
+					, result
+					, definitions
+				);
+            }
+        );
+		return result.ToArray();
+	}
+    // ----------------------------------------------------------------------
+	public static bool IsVariableDefinitionCompliant(iCS_EditorObject variable) {
+		var group= PublicVariableGroups.Find(variable.Name);
+		if(group == null) return true;
+		var definitions= group.Definitions;
+		if(P.length(definitions) == 0) return true;
+		var type= variable.RuntimeType;
+		return P.fold((acc,o)=> acc || type == o.EngineObject.RuntimeType, false, definitions);
+	}
+    // ----------------------------------------------------------------------
+	public static P.Tuple<VSObjectReference,VSObjectReference>[] ValidateFunctionDefinitions() {
+		var result= new List<P.Tuple<VSObjectReference,VSObjectReference> >();
+        PublicFunctionGroups.ForEach(
+            (name, group)=> {
+				var definitions= group.Definitions;
+				if(P.length(definitions) < 2) return;
+				var refFnc= definitions[0];
+				var vs = definitions[0].VisualScript;
+				var obj= definitions[0].EngineObject;
+				P.fold(
+					(acc,o)=> {
+						if(!IsSameFunction(vs, obj, o.VisualScript, o.EngineObject)) {
+							acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(refFnc, o));
+						}
+						return acc;
+					}
+					, result
+					, definitions
+				);
+            }
+        );
+		return result.ToArray();
+	}
+    // ----------------------------------------------------------------------
+	/// Determines if the given functions have the same composition.
+	static bool IsSameFunction(iCS_VisualScriptImp vs1, iCS_EngineObject f1,
+									 iCS_VisualScriptImp vs2, iCS_EngineObject f2) {
+		if(f1.Name != f2.Name) return false;
+		var ps1= iCS_VisualScriptData.GetChildPorts(vs1, f1);
+		var ps2= iCS_VisualScriptData.GetChildPorts(vs2, f2);
+		if(P.length(ps1) != P.length(ps2)) return false;
+		return P.and(P.zipWith( (p1,p2)=> IsSamePort(vs1,p1,vs2,p2), ps1, ps2));
+	}
+    // ----------------------------------------------------------------------
+	/// Determines if the given ports have the same relative identification.
+	static bool IsSamePort(iCS_VisualScriptImp vs1, iCS_EngineObject p1,
+						   iCS_VisualScriptImp vs2, iCS_EngineObject p2) {
+		if(p1.PortIndex != p2.PortIndex) return false;
+		if(p1.RuntimeType != p2.RuntimeType) return false;
+		return true;
+	}
+
+
+
+
     // ----------------------------------------------------------------------
 	public static bool ValidatePublicGroups() {
         // Validate Variables
+		ValidateVariableDefinitions();
+		ValidateFunctionDefinitions();
+		
         PublicVariableGroups.ForEach(
             (name, group)=> {
                 var definitions= group.Definitions;
@@ -426,4 +519,5 @@ public static class iCS_SceneController {
         );
 		return true;
 	}
+
 }

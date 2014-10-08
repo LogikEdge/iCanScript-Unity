@@ -32,7 +32,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     }
     // ----------------------------------------------------------------------
     object GetRuntimeNodeFromReferenceNode(iCS_EngineObject referenceNode) {
-        var vs= GetVisualScriptFromRefenceNode(referenceNode);
+        var vs= GetVisualScriptFromReferenceNode(referenceNode);
         if(vs == null) {
             Debug.LogWarning("iCanScript: Unable to find user function=> "+referenceNode.Name);
             return null;
@@ -41,14 +41,24 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         return vs.RuntimeNodes[runtimeNodeId];
     }
     // ----------------------------------------------------------------------
-    bool IsReferenceNodeUsingDynamicBinding(iCS_EngineObject referenceNode) {
+    public iCS_EngineObject GetEngineObjectFromReferenceNode(iCS_EngineObject referenceNode) {
+        var vs= GetVisualScriptFromReferenceNode(referenceNode);
+        if(vs == null) {
+            Debug.LogWarning("iCanScript: Unable to find user function=> "+referenceNode.Name);
+            return null;
+        }
+        var objectId= referenceNode.ProxyOriginalNodeId;
+        return vs.EngineObjects[objectId];
+    }
+    // ----------------------------------------------------------------------
+    public bool IsReferenceNodeUsingDynamicBinding(iCS_EngineObject referenceNode) {
         var gameObjectPort= iCS_VisualScriptData.GetInInstancePort(this, referenceNode);
         if(gameObjectPort == null) return false;
         var providerPort= iCS_VisualScriptData.GetFirstProviderPort(this, gameObjectPort);
         return providerPort != null && providerPort != gameObjectPort;
     }
     // ----------------------------------------------------------------------
-    public iCS_VisualScriptImp GetVisualScriptFromRefenceNode(iCS_EngineObject referenceNode) {
+    public iCS_VisualScriptImp GetVisualScriptFromReferenceNode(iCS_EngineObject referenceNode) {
         var gameObjectPort= iCS_VisualScriptData.GetInInstancePort(this, referenceNode);
         iCS_VisualScriptImp vs= null;
         if(gameObjectPort != null) {
@@ -71,7 +81,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     }
     // ----------------------------------------------------------------------
     iCS_Connection BuildUserFunctionOutputConnection(iCS_EngineObject port, iCS_EngineObject referenceNode, iCS_UserFunctionCall userFunctionCall) {
-        var vs= GetVisualScriptFromRefenceNode(referenceNode);
+        var vs= GetVisualScriptFromReferenceNode(referenceNode);
         if(vs == null) {
             return null;
         }
