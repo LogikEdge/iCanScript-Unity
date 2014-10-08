@@ -355,6 +355,35 @@ public static class iCS_SceneController {
             VisualScriptsInOrReferencedByScene
         );
         return result.ToArray();
+
+//        return P.fold(
+//            (result,vs)=> (
+//                P.append(
+//                    P.map(
+//                        pv=> new VSObjectReference(vs, pv.InstanceId),
+//                        iCS_VisualScriptData.FindPublicVariables(vs)
+//                    ),
+//                    result
+//                )                
+//            ),
+//            new VSObjectReference[0],
+//            VisualScriptsInOrReferencedByScene
+//        );
+
+//        return P.fold(
+//            (result,vs)=> (
+//                P.fold(
+//                    (acc,pv)=> {
+//                        acc.Add(new VSObjectReference(vs, pv.InstanceId));
+//                        return acc;
+//                    },
+//                    result,
+//                    iCS_VisualScriptData.FindPublicVariables(vs)        
+//                )
+//            ),
+//            new List<VSObjectReference>(),
+//            VisualScriptsInOrReferencedByScene
+//        ).ToArray();
     }
     static VSObjectReference[] ScanForPublicFunctions() {
         var result= new List<VSObjectReference>();
