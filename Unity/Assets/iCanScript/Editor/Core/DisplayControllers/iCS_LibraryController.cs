@@ -13,9 +13,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     public class Node {
         public NodeTypeEnum    Type;
         public string          Name;
-		public string          Tooltip="";
         public Vector2         NameSize;
         public iCS_MemberInfo  MemberInfo;
+		
         public Node(NodeTypeEnum type, string name, iCS_MemberInfo memberInfo) {
             Init(type, name, memberInfo);
         }
@@ -36,6 +36,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         public override int GetHashCode() {
             return Name.GetHashCode();
         }
+
     };
     public class SearchCriterias {
         iCS_LibraryController   myController   = null;
@@ -94,7 +95,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // Fields
     // ---------------------------------------------------------------------------------
     bool                        myShowInherited    = false;
+	// TODO: is there another way to get the pointed to node?  Then remove.
     Node                        mySelected         = null;
+	Node                        myPointed          = null;
     Rect                        mySelectedArea     = new Rect(0,0,0,0);
 	DSTreeView		    		myTreeView         = null;
 	float               		myFoldOffset       = 0;
@@ -533,9 +536,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
 		
-		// TODO: Rich text does not seem to work in tooltips, (tried setting richtext=true) ... would be nice to get formating to work.
-		var contentWithTooltip= new GUIContent(content.text, content.tooltip);
-		GUI.Label(pos, contentWithTooltip, labelStyle);    
+		//TODO: Should we put the knowledge of creating the name in MemberInfo?  Then we don't have to pass it.
+		GUI.Label(pos, IterValue.MemberInfo.getGUIContent(content.text), labelStyle);    
 
 		ProcessChangeSelection();
 		return result;
@@ -589,7 +591,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         } else if(nodeType == NodeTypeEnum.OutParameter) {
             icon= iCS_BuiltinTextures.OutEndPortIcon;
         }
-        return new GUIContent(name, icon, current.Tooltip); 
+        return new GUIContent(name, icon); 
     }
     // ---------------------------------------------------------------------------------
     bool ShouldUseFoldout() {
@@ -608,15 +610,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     }
 	
     public void MouseMove(object key) {
+		// TODO: This can be removed once another way to find currently pointed node is found.
+        if(key == null) {
+            return;
+        }
         Node node= key as Node;
-		node.Tooltip=  iCS_HelpController.getHelpSummary(node.MemberInfo);
-    }
-	
-    public void KeyDown(object key, KeyCode keyCode) {
-		if (keyCode==KeyCode.H) {
-			Node node= key as Node;
-			iCS_HelpController.openDetailedHelp(node.MemberInfo);
-		}
+		myPointed= node;
     }
 	
     // ---------------------------------------------------------------------------------
@@ -653,6 +652,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     public void UnfoldSelected() {
         if(Selected == null) return;
         myTreeView.Unfold(Selected);
+    }
+    // ---------------------------------------------------------------------------------
+    public void Help() {
+		iCS_HelpController.openDetailedHelp(myPointed.MemberInfo);
     }
     // ---------------------------------------------------------------------------------
     public void ToggleFoldUnfoldSelected() {

@@ -165,6 +165,11 @@ public class iCS_LibraryEditor : iCS_EditorBase {
                         ev.Use();
                         break;
                     }
+					case 'h': {
+                        myController.Help();
+                        ev.Use();
+                        break;
+					}
                 }
                 break;
 			}

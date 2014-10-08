@@ -229,6 +229,7 @@ public class DSTreeView : DSView {
                 }
 				break;
 			}
+			/*
 			case EventType.KeyDown: {
 				// Intercept Help key for Library.
 				//TODO: consider moving this to LibraryEditor
@@ -246,6 +247,7 @@ public class DSTreeView : DSView {
 				}
 				break;
 			}
+			*/
         }   
     }
 
