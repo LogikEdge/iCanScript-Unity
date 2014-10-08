@@ -610,6 +610,15 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         Selected= node;		
     }
 	
+    public void MouseMove(object key) {
+		// TODO: This can be removed once another way to find currently pointed node is found.
+        if(key == null) {
+            return;
+        }
+        Node node= key as Node;
+		myPointed= node;
+    }
+	
     // ---------------------------------------------------------------------------------
     public void SelectPrevious() {
         myChangeSelection= -1;

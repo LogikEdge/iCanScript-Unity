@@ -197,6 +197,9 @@ public class DSTreeView : DSView {
     void ProcessEvents(Rect frameArea) {
      	Vector2 mousePosition= Event.current.mousePosition;
 		switch(Event.current.type) {
+            case EventType.ScrollWheel: {
+                break;
+            }
             case EventType.MouseDown: {
                 foreach(var keyValue in myRowInfo) {
                     Rect area= keyValue.Value;
@@ -205,10 +208,24 @@ public class DSTreeView : DSView {
                         var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(area.x, area.y));
                         var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, area.width, area.height);
                         myDataSource.MouseDownOn(keyValue.Key, mouseInScreenPoint, areaInScreenPosition);						
-                        // Don't consume the event to allow for aditional processing by the data controller.
-                        // Event.current.Use();
+//                        Event.current.Use();
                         return;
                     }
+                }
+				break;
+			}
+            case EventType.MouseUp: {
+				break;
+			}
+            case EventType.MouseMove: {
+				//TODO: Can be removed once tips are cached in memberInfo.
+                foreach(var keyValue in myRowInfo) {
+				   Rect area= keyValue.Value;
+				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
+					   myDataSource.MouseMove(keyValue.Key);	
+                       //Do not do an Event.current.Use(), or we may steal mouse moves from others.						
+					   return;
+					}
                 }
 				break;
 			}
