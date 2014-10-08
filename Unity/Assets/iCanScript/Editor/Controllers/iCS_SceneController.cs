@@ -299,16 +299,13 @@ public static class iCS_SceneController {
 	///			has already been fetched.
 	///
     static iCS_VisualScriptImp[] ScanForVisualScriptsReferencedByScene() {
-        var sceneVisualScripts= VisualScriptsInScene;
-        var result= new iCS_VisualScriptImp[0];
-        P.forEach(
-            vs=> {
-                result= P.append(result, ScanForVisualScriptsReferencedBy(vs));
-            },
-            sceneVisualScripts
-        );
-        result= P.removeDuplicates(result);
-        return result;
+		return P.removeDuplicates(
+			P.fold(
+				(acc,vs)=> P.append(acc, ScanForVisualScriptsReferencedBy(vs))
+				, new iCS_VisualScriptImp[0]
+				, VisualScriptsInScene
+			)
+		);
     }
     
     // ----------------------------------------------------------------------
@@ -326,17 +323,19 @@ public static class iCS_SceneController {
     static iCS_VisualScriptImp[] ScanForVisualScriptsReferencedBy(iCS_VisualScriptImp vs) {
         var visualScripts= P.map(o=> o as iCS_VisualScriptImp, P.filter(o=> o is iCS_VisualScriptImp, vs.UnityObjects));
         var gameObjects  = P.map(o=> o as GameObject         , P.filter(o=> o is GameObject         , vs.UnityObjects));
-        P.forEach(
-            go=> {
-                var vsFromGameObject= go.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
-                if(vsFromGameObject != null) {
-                    visualScripts.Add(vsFromGameObject);
-                }
-            },
-            gameObjects
-        );
-        visualScripts= P.removeDuplicates(visualScripts);
-        return visualScripts.ToArray();
+		return P.removeDuplicates(
+			P.fold(
+				(acc,go)=> {
+	                var goVs= go.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
+	                if(goVs != null) {
+	                    acc.Add(goVs);
+	                }
+					return acc;
+				}
+				, visualScripts
+				, gameObjects
+			)
+		).ToArray();
     }
 
     // ======================================================================
