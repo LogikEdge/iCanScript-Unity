@@ -193,14 +193,7 @@ public class DSTreeView : DSView {
 			}			
 		}
     }
-	public object ObjectFromMousePosition(Vector2 mousePosition) {
-        foreach(var keyValue in myRowInfo) {
-		   Rect area= keyValue.Value;
-		   if(area.y < mousePosition.y && area.yMax > mousePosition.y) 
-			   return keyValue.Key;	
-		}
-		return null;
-	}
+
 	
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
