@@ -218,7 +218,6 @@ public class DSTreeView : DSView {
 				break;
 			}
             case EventType.MouseMove: {
-				//TODO: Can be removed once tips are cached in memberInfo.
                 foreach(var keyValue in myRowInfo) {
 				   Rect area= keyValue.Value;
 				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {

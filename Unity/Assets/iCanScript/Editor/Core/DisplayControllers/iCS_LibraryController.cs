@@ -105,7 +105,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // Fields
     // ---------------------------------------------------------------------------------
     bool                        myShowInherited    = false;
-	// TODO: is there another way to get the pointed to node?  Then remove.
     Node                        mySelected         = null;
 	Node                        myPointed          = null;
     Rect                        mySelectedArea     = new Rect(0,0,0,0);
@@ -621,7 +620,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     }
 	
     public void MouseMove(object key) {
-		// TODO: This can be removed once another way to find currently pointed node is found.
         if(key == null) {
             return;
         }
