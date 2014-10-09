@@ -954,13 +954,28 @@ public partial class iCS_Graphics {
         iCS_EditorObject portParent= port.ParentNode;
 
         // No connection to draw if the port is not visible.
-        if(!port.IsVisibleOnDisplay) return;
+        bool isPortVisible= port.IsVisibleOnDisplay;
+        bool isShowInvisiblePort= false;
+        if(port.IsStatePort || port.IsTransitionPort) {
+            // For state ports, we draw them if the transition module is visible.
+            var transitionPackage= port.IStorage.GetTransitionPackage(port);
+            if(transitionPackage != null) {
+                if(!transitionPackage.IsVisibleOnDisplay) return;
+                isShowInvisiblePort= true;
+            }
+            else {
+                if(isPortVisible == false) return;                
+            }
+        } else {
+            if(isPortVisible == false) return;
+        }
 
         // No connection to draw if source port is not visible.
         iCS_EditorObject source= port.ProviderPort;
         iCS_EditorObject sourceParent= source.Parent;
-        if(!(source.IsVisibleOnDisplay && !port.IsOutStatePort)) return;
-
+        if(source.IsVisibleOnDisplay == false && isShowInvisiblePort == false) return;
+        if(port.IsOutStatePort) return;
+        
         // No connection to draw if outside clipping area.
         var portPos= port.AnimatedPosition;
         var sourcePos= source.AnimatedPosition;
@@ -968,7 +983,13 @@ public partial class iCS_Graphics {
         if(!IsVisibleInViewport(displayArea)) return;
 
         // Set connection alpha according to port alpha.
-        var alpha= port.DisplayAlpha*source.DisplayAlpha;
+        var alpha= 1f;
+        if(isShowInvisiblePort) {
+            alpha= Mathf.Max(port.DisplayAlpha, source.DisplayAlpha);
+        }
+        else {
+            alpha= port.DisplayAlpha*source.DisplayAlpha;
+        }
         
 		// Reduce alpha if consumer port is disable
 		if(IsDisable(port)) {
