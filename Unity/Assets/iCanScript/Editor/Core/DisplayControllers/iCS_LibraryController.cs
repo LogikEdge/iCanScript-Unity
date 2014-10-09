@@ -654,9 +654,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         myTreeView.Unfold(Selected);
     }
     // ---------------------------------------------------------------------------------
-    public void Help(Vector2 mousePosition) {
-		Node node= myTreeView.ObjectFromMousePosition(mousePosition) as Node;
-		iCS_HelpController.openDetailedHelp( node.MemberInfo );
+    public void Help() {
+		iCS_HelpController.openDetailedHelp( mySelected.MemberInfo );
     }
     // ---------------------------------------------------------------------------------
     public void ToggleFoldUnfoldSelected() {
