@@ -55,7 +55,11 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Make certain that at least one active state exists.
-        if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState, frameId);
+        if(myActiveStack.Count == 0 && myEntryState != null) {
+            var entryState= myEntryState;
+            while(entryState.EntryState != null) entryState= entryState.EntryState;
+            MoveToState(entryState, frameId);
+        }
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
             ExecuteVerifyTransitions(frameId);            
