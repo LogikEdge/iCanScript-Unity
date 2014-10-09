@@ -392,6 +392,7 @@ public partial class iCS_IStorage {
 	
 	// ----------------------------------------------------------------------
 	public void RebuildStateConnection(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
+        if(fromStatePort == null || toStatePort == null) return;
 		var commonParent= fromStatePort.GetCommonParent(toStatePort);
 		if(commonParent == null) {
 			Debug.LogWarning("iCanScript: Unable to find common parent after relocating state !!!");

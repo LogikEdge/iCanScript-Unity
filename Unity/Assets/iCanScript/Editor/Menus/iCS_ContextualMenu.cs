@@ -244,7 +244,7 @@ public class iCS_ContextualMenu {
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
         if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             int len= iCS_AllowedChildren.StateChildNames.Length;
-            int idx= GrowMenuBy(ref menu, len+4);
+            int idx= GrowMenuBy(ref menu, len+3);
             menu[idx]= new iCS_MenuContext(StateStr);
             menu[idx+1]= new iCS_MenuContext(SeparatorStr);
             for(int i= 0; i < len; ++i) {
@@ -256,11 +256,12 @@ public class iCS_ContextualMenu {
                 }
             }
             menu[idx+len+2]= new iCS_MenuContext(SeparatorStr);
-            if(selectedObject.IsEntryState) {
-                menu[idx+len+3]= new iCS_MenuContext(String.Concat("#", SetAsEntryStr));
-            } else {
-                menu[idx+len+3]= new iCS_MenuContext(SetAsEntryStr);
-            }
+        }
+        int cursor= GrowMenuBy(ref menu, 1);
+        if(selectedObject.IsEntryState) {
+            menu[cursor]= new iCS_MenuContext(String.Concat("#", SetAsEntryStr));
+        } else {
+            menu[cursor]= new iCS_MenuContext(SetAsEntryStr);
         }
         AddShowInHierarchyMenuItem(ref menu);
         AddDeleteMenuItem(ref menu);
