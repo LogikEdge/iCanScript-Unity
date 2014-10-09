@@ -105,9 +105,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // Fields
     // ---------------------------------------------------------------------------------
     bool                        myShowInherited    = false;
-	// TODO: is there another way to get the pointed to node?  Then remove.
     Node                        mySelected         = null;
-	Node                        myPointed          = null;
     Rect                        mySelectedArea     = new Rect(0,0,0,0);
 	DSTreeView		    		myTreeView         = null;
 	float               		myFoldOffset       = 0;
@@ -617,16 +615,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             return;
         }
         Node node= key as Node;
-        Selected= node;		
-    }
-	
-    public void MouseMove(object key) {
-		// TODO: This can be removed once another way to find currently pointed node is found.
-        if(key == null) {
-            return;
-        }
-        Node node= key as Node;
-		myPointed= node;
+        Selected= node;			
     }
 	
     // ---------------------------------------------------------------------------------
@@ -665,8 +654,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         myTreeView.Unfold(Selected);
     }
     // ---------------------------------------------------------------------------------
-    public void Help() {
-		iCS_HelpController.openDetailedHelp(myPointed.MemberInfo);
+    public void Help(Vector2 mousePosition) {
+		Node node= myTreeView.ObjectFromMousePosition(mousePosition) as Node;
+		iCS_HelpController.openDetailedHelp( node.MemberInfo );
     }
     // ---------------------------------------------------------------------------------
     public void ToggleFoldUnfoldSelected() {
