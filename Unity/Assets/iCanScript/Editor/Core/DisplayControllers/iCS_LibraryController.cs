@@ -13,9 +13,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     public class Node {
         public NodeTypeEnum    Type;
         public string          Name;
-		public string          Tooltip="";
         public Vector2         NameSize;
         public iCS_MemberInfo  MemberInfo;
+		private GUIContent	   myGuiContent	 = null;
+		
         public Node(NodeTypeEnum type, string name, iCS_MemberInfo memberInfo) {
             Init(type, name, memberInfo);
         }
@@ -36,6 +37,16 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         public override int GetHashCode() {
             return Name.GetHashCode();
         }
+	    // ----------------------------------------------------------------------	
+		// Create the GUIContent as they are needed, and cache them.
+	    public GUIContent getGUIContent() {
+	            if(myGuiContent == null) {
+					myGuiContent= new GUIContent(Name, MemberInfo.Summary);
+	            }
+	            return myGuiContent;            
+	    }
+		
+
     };
     public class SearchCriterias {
         iCS_LibraryController   myController   = null;
@@ -371,7 +382,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	            var idx= FindInTreeChildren(className, tree);
 	            if(idx < 0) {
 					var nodeType= iCS_Types.IsStaticClass(compilerType) ? NodeTypeEnum.Package : NodeTypeEnum.Class;
-	                tree.AddChild(new Node(nodeType, className, desc));
+	                tree.AddChild(new Node(nodeType, className, desc.ParentTypeInfo));
                     ++treeSize;
 	                idx= FindInTreeChildren(className, tree);
 	            }
@@ -519,24 +530,23 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
         // Show selected outline.
-		
-		// TODO: Rich text does not seem to work in tooltips, even setting richtext=true ... would be nice to get formating to work.
         GUIStyle labelStyle= EditorStyles.label;
-		
+	
 		if(IsSelected) {
             mySelectedArea= frameArea;
             Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
             iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
             labelStyle= EditorStyles.whiteLabel;
-		}		
+		}
+	
 		bool result= ShouldUseFoldout() ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
         var content= GetContent();
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
 		
-		var contentWithTooltip= new GUIContent(content.text, content.tooltip);
-		GUI.Label(pos, contentWithTooltip, labelStyle);    
+		var current= IterValue;
+		GUI.Label(pos, current.getGUIContent(),labelStyle);    
 
 		ProcessChangeSelection();
 		return result;
@@ -590,7 +600,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         } else if(nodeType == NodeTypeEnum.OutParameter) {
             icon= iCS_BuiltinTextures.OutEndPortIcon;
         }
-        return new GUIContent(name, icon, current.Tooltip); 
+        return new GUIContent(name, icon); 
     }
     // ---------------------------------------------------------------------------------
     bool ShouldUseFoldout() {
@@ -605,12 +615,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             return;
         }
         Node node= key as Node;
-        Selected= node;
-    }
-	
-    public void MouseMove(object key) {
-        Node node= key as Node;
-		node.Tooltip=  iCS_HelpSearch.getHelpSummary(node.MemberInfo);
+        Selected= node;			
     }
 	
     // ---------------------------------------------------------------------------------
@@ -647,6 +652,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     public void UnfoldSelected() {
         if(Selected == null) return;
         myTreeView.Unfold(Selected);
+    }
+    // ---------------------------------------------------------------------------------
+    public void Help(Vector2 mousePosition) {
+		Node node= myTreeView.ObjectFromMousePosition(mousePosition) as Node;
+		iCS_HelpController.openDetailedHelp( node.MemberInfo );
     }
     // ---------------------------------------------------------------------------------
     public void ToggleFoldUnfoldSelected() {

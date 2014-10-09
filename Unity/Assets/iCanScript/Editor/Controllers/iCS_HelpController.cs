@@ -10,38 +10,39 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
 
-public class iCS_HelpSearch {
+public static class iCS_HelpController {
 
 	static private string unityHelpIndex;
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
+	static string unityHelpPath = EditorApplication.applicationPath + "/Contents/Documentation/html/en/ScriptReference";
 
-	/*
-	// For testing: Add a menu item named "Do Something" to MyMenu in the menu bar.
-	[MenuItem ("MyMenu/Do Something")]
-	static void DoSomething () {
-		Debug.Log(getUnityHelpSummary ("Debug.Log"));
-	}
-	*/
-    static iCS_HelpSearch() {
+	// ---------------------------------------------------------------------------------
+	static iCS_HelpController() {
 		buildUnityHelpIndex();
-		buildUnityHelpSummary();        
-    }
+		buildUnityHelpSummary();
+	}
 
-	public static void Start() {
-	}
-	
-	public static void Shutdown() {
-	}
+	// ---------------------------------------------------------------------------------
+	public static void Start() {}
+
+	// ---------------------------------------------------------------------------------	
+	public static void Shutdown() {}
 
 
 	// =================================================================================
 	// Convert the JavaScript unity help index file "index.js" to a json string.
 	// ---------------------------------------------------------------------------------
 	private static void buildUnityHelpIndex() {
-		string path = "/Applications/Unity/Unity.app/Contents/Documentation/html/en/ScriptReference/index.js";
+		StreamReader fileStream;
+		try {
+			fileStream = new StreamReader (unityHelpPath + "/index.js");
+		}
+		catch {
+			Debug.Log("iCanScript: unable to open Unity help.");
+			return;
+		}
 		
-		var fileStream = new StreamReader (path);
-		StringBuilder unityHelpIndexBuilder = new StringBuilder ("");
+		StringBuilder unityHelpIndexBuilder = new StringBuilder("");
 		string line;
 		
 		// Read the info file one line at a time (stripping spaces), and convert the java script formating to json where needed.
@@ -71,6 +72,7 @@ public class iCS_HelpSearch {
 
 	private static string formatFromHTML(string stringToFormat)
 	{
+		// TODO: can support rich text, but at present rich text does not seem to work in 
 		// Just strip out HTML tags for now
 		return Regex.Replace(stringToFormat, "<.*?>", string.Empty);
 	}	
@@ -81,14 +83,28 @@ public class iCS_HelpSearch {
 	// ---------------------------------------------------------------------------------
 	private static void buildUnityHelpSummary()
 	{
-		JObject rootObject= JSON.GetRootObject(unityHelpIndex);	
-		JArray  arrayOfEntries= rootObject.GetValueFor("info") as JArray;
-			
+		JArray  arrayOfEntries;
+		try {
+			JObject rootObject= JSON.GetRootObject(unityHelpIndex);	
+			arrayOfEntries= rootObject.GetValueFor("info") as JArray;
+		}
+		catch {
+			Debug.Log("iCanScript: Error reading unity help index as JSON format");
+			return;
+		}
+		
 		foreach (JObject jObject in arrayOfEntries.value) {
-			// Get the title, summary as per the index.js file.
-			JString jTitle= jObject.GetValueFor("title") as JString;
-//			JString jUrl= jObject.GetValueFor("url") as JString;
-			JString jSummary= jObject.GetValueFor("summary") as JString;
+			// Get the url and summary as per the index.js file.
+			JString jSummary;
+			JString jUrl;
+			try {
+				jUrl= jObject.GetValueFor("url") as JString;
+				jSummary= jObject.GetValueFor("summary") as JString;
+			}
+			catch {
+				Debug.Log("iCanScript: Error reading line in JSON unity help index");
+				return;
+			}
 	
 			// replace HTML formating in summary
 			string summary= formatFromHTML(jSummary.value);
@@ -96,48 +112,113 @@ public class iCS_HelpSearch {
 			// Transfer information to dictionary
 			// Warning: "title" and "url" are not all unique in current index.js
 			try {
-				unityHelpSummary.Add(jTitle.value, summary);
+				unityHelpSummary.Add(jUrl.value, summary);
 			}
 			catch {
-					//Debug.Log("Duplicate: "+ jUrl.value + "\nsummary: " + summary);
+				// Duplicate URL's are caught here.  This is known to happen in regular case.
+				//Debug.Log("Duplicate: "+ jUrl.value + "\nsummary: " + summary);
 			}
 		}
 	}
 
 	// =================================================================================
-	// Get the summary descriptin for a unity API by providing class.function
+	// Get the summary description for a unity API
 	// ---------------------------------------------------------------------------------
 	public static string getHelpSummary(iCS_MemberInfo memberInfo )
-	{	
-		 		
-		if (memberInfo.ParentTypeInfo.Company == "Unity") {
-			string summary;
-			string search= "";
-			search = search + iCS_Types.TypeName(memberInfo.ParentTypeInfo.CompilerType);
-			//TODO: not all level one items in library marked as constructors, return IsConstructor.
-			if(!memberInfo.IsConstructor)
-				search= search + "." +  memberInfo.DisplayName;
-			
-		
-			search= Regex.Replace(search, "get_", string.Empty);
-			search= Regex.Replace(search, "set_", string.Empty);
-		
+	{
+		if (memberInfo.Company == "Unity") {
+			string summary=null;
+			string search= getHelpUrl(memberInfo);
 			unityHelpSummary.TryGetValue(search, out summary);
-
-//			summary= summary+ "Constructor: "+ memberInfo.IsConstructor+ "\n Field: " + memberInfo.IsField + "\nProperty: "+ memberInfo.IsProperty+ "\nMethod: " + memberInfo.IsMethod+ "\nMEssage: " + memberInfo.IsMessage + "\n";
-
-			return search + "\n" + summary;
+			if (summary!=null)
+				return summary;
 		}
-		
 		return null;
-		
+	}
+	
+	// =================================================================================
+	// Open web browser for specific help
+	// ---------------------------------------------------------------------------------		
+	public static void openDetailedHelp(iCS_MemberInfo memberInfo )	
+	{	
+		if(memberInfo != null) {
+			if (memberInfo.Company == "Unity") {
+				string search= getHelpUrl(memberInfo);
+				if (search != null)
+					Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
+			}
+		}
+	}	
+
+	// =================================================================================
+	// Get the Unity help file url 
+	// ---------------------------------------------------------------------------------		
+	private static string getHelpUrl(iCS_MemberInfo memberInfo )	
+	{		
+			string className="";
+			string demarcator="";
+			string methodName="";
+			
+			if (memberInfo.IsTypeInfo) {
+				// First level libray entries (classes and packages), just return className
+				className = memberInfo.ToTypeInfo.ClassName;
+			}
+			else if (memberInfo.IsMethod) {
+				if(memberInfo.ToMethodInfo.DeclaringType.Name == null)
+					className= memberInfo.ParentTypeInfo.ClassName;
+				else
+					className= memberInfo.ToMethodInfo.DeclaringType.Name;
+				
+				methodName= memberInfo.ToMethodInfo.MethodName;
+				if (memberInfo.IsProperty) {
+					// Property Nodes
+					demarcator="-";
+					methodName= Regex.Replace(methodName, "get_", string.Empty);
+					methodName= Regex.Replace(methodName, "set_", string.Empty);
+				}
+				else if(memberInfo.IsConstructor) {
+					// Builders
+					demarcator="-ctor";
+					methodName= "";
+				}
+				else {
+					// Functions, etc.
+					demarcator= ".";
+					// Remap arithmetic operator names
+					if (methodName.Contains("op_")) {
+						demarcator="-";
+						methodName= Regex.Replace(methodName, "op_Addition", "operator_add");
+						methodName= Regex.Replace(methodName, "op_Division", "operator_divide");
+						methodName= Regex.Replace(methodName, "op_Equality", "operator_eq");
+						methodName= Regex.Replace(methodName, "op_Inequality", "operator_ne");
+						methodName= Regex.Replace(methodName, "op_Multiply", "operator_multiply");
+						methodName= Regex.Replace(methodName, "op_Subtraction", "operator_subtract");
+						//methodName= Regex.Replace(methodName, "op_UnaryNegation", ???);
+						// TODO: else Debug.Log 
+						// TODO: More opertators .. csharp operators.
+					}
+				}
+			}
+			else if (memberInfo.IsField) {
+				// Field Nodes
+				className= memberInfo.ParentTypeInfo.ClassName;
+				methodName= memberInfo.ToFieldInfo.MethodName;	
+				if(memberInfo.ToFieldInfo.IsClassMember)
+					demarcator= ".";
+				else if(memberInfo.ToFieldInfo.IsInstanceMember) 
+					demarcator= "-";
+				else 
+					demarcator= ".";
+			}		
+	
+			return className + demarcator + methodName;
 	}
 
 
 	// =================================================================================
 	// DEPRICATED
 	// ---------------------------------------------------------------------------------
-	string getHelpFromHTMLFiles(string apiToSearch, string sectionToGet) {
+	static string getHelpFromHTMLFiles(string apiToSearch, string sectionToGet) {
 
 		// Create Filename that will contain help in Unity folder.
 		string path = "/Applications/Unity/Unity.app/Contents/Documentation/html/en/ScriptReference";

@@ -120,11 +120,8 @@ public class iCS_LibraryEditor : iCS_EditorBase {
                 var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, frameArea.width, frameArea.height);
                 myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
                 Event.current.Use();
-                // Move keyboard focus to this window.
-                /*
-                    FIXME: Must move back the focus here.
-                */
-                //Focus();
+                // Move keyboard focus to this window.			
+                GUI.FocusControl("");   // Removes focus from the search field.
 				break;
 			}
 
@@ -165,6 +162,11 @@ public class iCS_LibraryEditor : iCS_EditorBase {
                         ev.Use();
                         break;
                     }
+					case 'h': {
+                        myController.Help(mousePosition);
+                        ev.Use();
+                        break;
+					}
                 }
                 break;
 			}
