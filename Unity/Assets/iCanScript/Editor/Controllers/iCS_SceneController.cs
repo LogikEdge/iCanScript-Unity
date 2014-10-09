@@ -118,7 +118,7 @@ public static class iCS_SceneController {
     // ----------------------------------------------------------------------
 	const string kiCS_Behaviour= iCS_EditorStrings.DefaultBehaviourClassName;
 	static void SceneSanityCheck() {
-		Debug.Log("SceneSanityCheck is running");
+//		Debug.Log("SceneSanityCheck is running");
 		foreach(var vs in VisualScriptsInOrReferencedByScene) {
 			var go= vs.gameObject;
 			CleanupEmptyComponents(go);

@@ -1,7 +1,7 @@
 /*
     TODO: re-examine tooltip implementation since the current one triples the frame rate.
 */
-#define SHOW_TOOLTIP
+//#define SHOW_TOOLTIP
 
 using UnityEngine;
 using UnityEditor;
