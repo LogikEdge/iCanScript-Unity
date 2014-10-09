@@ -142,7 +142,7 @@ public static class iCS_SystemEvents {
     static void CheckCurrentSceneChange() {
         var currentScene= EditorApplication.currentScene;
         if(currentScene != myCurrentScene) {
-            Debug.Log("iCanScript: scene has changed. New path is: "+currentScene+"; New GUID is: "+AssetDatabase.AssetPathToGUID(currentScene));
+//            Debug.Log("iCanScript: scene has changed. New path is: "+currentScene+"; New GUID is: "+AssetDatabase.AssetPathToGUID(currentScene));
             Invoke(OnSceneChanged);
             myCurrentScene= currentScene;
         }        

@@ -671,6 +671,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             CreateDragPort();
             return;
 		}                      
+        // Determine new edge
+        var currentEdge= port.Edge;
+        var newEdge= port.GetClosestEdge(newPosition-Math3D.Middle(parentRect));
+        if(newEdge != currentEdge) {
+            port.LocalAnchorFromGlobalPosition= newPosition;            
+        }
         // No reordering necessary if this is the only port on this edge.
         var sameEdgePorts= P.filter(p=> p != port, port.BuildListOfPortsOnSameEdge());
 		var nbOfPortsOnEdge= sameEdgePorts.Length;
