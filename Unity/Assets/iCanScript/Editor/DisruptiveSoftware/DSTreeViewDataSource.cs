@@ -13,4 +13,5 @@ public interface DSTreeViewDataSource {
 	bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea);
 	object	CurrentObjectKey();
 	void    MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea);
+	void    MouseMove(object key);
 }

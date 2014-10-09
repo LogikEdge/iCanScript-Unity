@@ -193,19 +193,13 @@ public class DSTreeView : DSView {
 			}			
 		}
     }
-	public object ObjectFromMousePosition(Vector2 mousePosition) {
-        foreach(var keyValue in myRowInfo) {
-		   Rect area= keyValue.Value;
-		   if(area.y < mousePosition.y && area.yMax > mousePosition.y) 
-			   return keyValue.Key;	
-		}
-		return null;
-	}
-	
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
      	Vector2 mousePosition= Event.current.mousePosition;
 		switch(Event.current.type) {
+            case EventType.ScrollWheel: {
+                break;
+            }
             case EventType.MouseDown: {
                 foreach(var keyValue in myRowInfo) {
                     Rect area= keyValue.Value;
@@ -217,6 +211,21 @@ public class DSTreeView : DSView {
 //                        Event.current.Use();
                         return;
                     }
+                }
+				break;
+			}
+            case EventType.MouseUp: {
+				break;
+			}
+            case EventType.MouseMove: {
+				//TODO: Can be removed once tips are cached in memberInfo.
+                foreach(var keyValue in myRowInfo) {
+				   Rect area= keyValue.Value;
+				   if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
+					   myDataSource.MouseMove(keyValue.Key);	
+                       //Do not do an Event.current.Use(), or we may steal mouse moves from others.						
+					   return;
+					}
                 }
 				break;
 			}

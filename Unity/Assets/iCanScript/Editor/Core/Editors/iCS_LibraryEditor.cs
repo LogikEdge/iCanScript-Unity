@@ -164,7 +164,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
                         break;
                     }
 					case 'h': {
-                        myController.Help(mousePosition);
+                        myController.Help();
                         ev.Use();
                         break;
 					}
