@@ -184,7 +184,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public iCS_LibraryController() {
         // Build the unfiltered tree.
-        var allFunctions= iCS_LibraryDatabase.AllFunctions();
+        var allFunctions= iCS_LibraryDatabase.AllFunctionsUnsorted();
 	    UnfilteredTree= BuildTreeNode(allFunctions);
         ActiveTree= UnfilteredTree;
         // Initialize search criterias.

@@ -18,7 +18,7 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     public static void QSort() {
         if(IsSorted) return;
-        P.QSort(ref Functions, CompareFunctionNames);
+        Functions.Sort(CompareFunctionNames);
         IsSorted= true;
     }
 
@@ -50,6 +50,10 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     public static List<iCS_MethodBaseInfo> AllFunctions() {
         QSort();
+        return Functions;
+    }
+    // ----------------------------------------------------------------------
+    public static List<iCS_MethodBaseInfo> AllFunctionsUnsorted() {
         return Functions;
     }
     // ----------------------------------------------------------------------
