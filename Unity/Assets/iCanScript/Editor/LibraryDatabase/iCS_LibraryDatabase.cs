@@ -426,7 +426,7 @@ public class iCS_LibraryDatabase {
                             iCS_ObjectTypeEnum.InstanceFunction :
                             iCS_ObjectTypeEnum.ClassFunction;
         var record= new iCS_MethodInfo(objectType, classInfo,
-                                       displayName, description, iconPath,
+                                       ImproveDisplayName(displayName), description, iconPath,
             						   parameters, functionReturn,
             						   storageClass, methodInfo);
 		AddDataBaseRecord(record);
@@ -499,4 +499,18 @@ public class iCS_LibraryDatabase {
             IsSorted= false;	            
         }
 	}
+
+    // ======================================================================
+    // Fix operator display names
+    // ----------------------------------------------------------------------
+    static string ImproveDisplayName(string displayName) {
+        if(displayName.StartsWith("op_") == false) return displayName;
+        if(displayName == "op_Equality")     return "operator ==";
+        if(displayName == "op_Inequality")   return "operator !=";
+        if(displayName == "op_Addition")     return "operator +";
+        if(displayName == "op_Subtraction")  return "operator -";
+        if(displayName == "op_Multiply")     return "operator *";
+        if(displayName == "op_Division")     return "operator /";
+        return displayName;
+    }
 }
