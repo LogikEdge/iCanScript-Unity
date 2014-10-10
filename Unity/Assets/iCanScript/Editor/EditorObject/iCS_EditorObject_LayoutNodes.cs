@@ -79,7 +79,7 @@ public partial class iCS_EditorObject {
             return;
         }
         var childNodes= BuildListOfChildNodes(n => !n.IsFloating);
-        var childRects= P.map(n => BuildRect(n.LocalPosition, n.LocalSize), childNodes);
+        var childRects= P.map(n => n.LocalRect, childNodes);
         // WrapAroundChildRects(childRects);
         var totalChildRect= GetRectWithMargins(childRects);
         var parentRect= NodeRectFromChildrenRectWithMargins(totalChildRect);

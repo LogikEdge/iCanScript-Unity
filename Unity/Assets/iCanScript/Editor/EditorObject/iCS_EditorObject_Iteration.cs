@@ -401,4 +401,26 @@ public partial class iCS_EditorObject {
         }
         return parent;
     }
+    // ----------------------------------------------------------------------
+    // Return the first visible node.
+    public iCS_EditorObject GetLeafVisibleNode() {
+        var firstVisible= this;
+        while(firstVisible.IsVisibleInLayout == false) {
+            firstVisible= firstVisible.ParentNode;
+        }
+        return firstVisible;
+    }
+    // ----------------------------------------------------------------------
+    // Return the first visible node.
+    public iCS_EditorObject GetRootInvisibleNode() {
+        var rootInvisible= this;
+        if(rootInvisible.IsVisibleInLayout) {
+            Debug.LogWarning("iCanScript: Unable to find root invisible node");
+            return rootInvisible;
+        }
+        for(var tmp= rootInvisible.ParentNode; tmp != null && !tmp.IsVisibleInLayout; tmp= tmp.ParentNode) {
+            rootInvisible= tmp;
+        }
+        return rootInvisible;
+    }
 }

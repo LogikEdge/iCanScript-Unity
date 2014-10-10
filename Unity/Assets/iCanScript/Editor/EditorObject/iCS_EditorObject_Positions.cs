@@ -119,6 +119,12 @@ public partial class iCS_EditorObject {
 			return LocalAnchorPosition+CollisionOffset+WrappingOffset;
 		}
 	}
+    // ----------------------------------------------------------------------
+    public Rect LocalRect {
+        get {
+            return BuildRect(LocalPosition, LocalSize);
+        }
+    }
     // ======================================================================
 	// Layout
     // ----------------------------------------------------------------------

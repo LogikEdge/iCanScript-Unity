@@ -973,12 +973,26 @@ public partial class iCS_Graphics {
         // No connection to draw if source port is not visible.
         iCS_EditorObject source= port.ProviderPort;
         iCS_EditorObject sourceParent= source.Parent;
-        if(source.IsVisibleOnDisplay == false && isShowInvisiblePort == false) return;
+        bool isSourceVisible= source.IsVisibleOnDisplay;
+        if(isSourceVisible == false && isShowInvisiblePort == false) return;
         if(port.IsOutStatePort) return;
         
         // No connection to draw if outside clipping area.
-        var portPos= port.AnimatedPosition;
+        var portPos = port.AnimatedPosition;
         var sourcePos= source.AnimatedPosition;
+        if(!isPortVisible) {
+            var visibleNode= portParent.GetLeafVisibleNode();
+            var parentRect= visibleNode.GlobalRect;
+            portPos= ClosestPointOnRectOnEdge(parentRect, sourcePos, port.Edge);
+            Math3D.LineSegmentAndRectEdgeIntersection(sourcePos, portPos, parentRect, out portPos);
+        }
+        if(!isSourceVisible) {
+            var visibleNode= sourceParent.GetLeafVisibleNode();
+            var parentRect= visibleNode.GlobalRect;
+            sourcePos= Math3D.Middle(parentRect);
+            sourcePos= ClosestPointOnRectOnEdge(parentRect, portPos, source.Edge);
+            Math3D.LineSegmentAndRectEdgeIntersection(portPos, sourcePos, parentRect, out sourcePos);
+        }
         Rect displayArea= Math3D.Union(new Rect(portPos.x, portPos.y, 1f, 1f), new Rect(sourcePos.x, sourcePos.y, 1f, 1f));
         if(!IsVisibleInViewport(displayArea)) return;
 
@@ -997,7 +1011,15 @@ public partial class iCS_Graphics {
 		}
 		
         // Determine line color.
-        Color color= Prefs.GetTypeColor(source.RuntimeType);
+        Color color= Color.white;
+        if(port.IsStatePort || port.IsTransitionPort) {
+            if(isPortVisible == false || isSourceVisible == false) {
+                color= Color.yellow;
+            }
+        }
+        else {
+            color= Prefs.GetTypeColor(source.RuntimeType);            
+        }
         color.a*= alpha;
         // Determine if this connection is part of the selected object.
         float highlightWidth= 2f;
@@ -1034,7 +1056,8 @@ public partial class iCS_Graphics {
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
         } else {
             color.a= 0.85f*color.a;
-    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                   }
+    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
+        }
         // Show transition name for state connections.
 		if(port.IsInTransitionPort && portParent.IsIconizedInLayout) return;
         if(port.IsInStatePort || port.IsInTransitionPort) {
@@ -1178,5 +1201,30 @@ public partial class iCS_Graphics {
         var rtStateChart= runtimeNodes[stateChart.InstanceId] as iCS_StateChart;
         var rtState     = runtimeNodes[state.InstanceId] as iCS_State;
         return rtStateChart.IsActiveState(rtState);
+    }
+    
+    // ----------------------------------------------------------------------
+    /// Returns the closest point on the given edge
+    Vector2 ClosestPointOnRectOnEdge(Rect r, Vector2 p, iCS_EdgeEnum edge) {
+        Vector2 result= Vector2.zero;
+        switch(edge) {
+            case iCS_EdgeEnum.Left: {
+                result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.TopLeftCorner(r), Math3D.BottomLeftCorner(r), p);
+                break;
+            }
+            case iCS_EdgeEnum.Right: {
+                result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.TopRightCorner(r), Math3D.BottomRightCorner(r), p);
+                break;                    
+            }
+            case iCS_EdgeEnum.Top: {
+                result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.TopLeftCorner(r), Math3D.TopRightCorner(r), p);
+                break;
+            }
+            case iCS_EdgeEnum.Bottom: {
+                result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.BottomLeftCorner(r), Math3D.BottomRightCorner(r), p);
+                break;
+            }
+        }
+        return result;
     }
 }
