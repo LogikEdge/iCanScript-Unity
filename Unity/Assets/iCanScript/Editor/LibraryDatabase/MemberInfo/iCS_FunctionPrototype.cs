@@ -1,11 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-public class iCS_MethodBaseInfo : iCS_MemberInfo {
+public class iCS_FunctionPrototype : iCS_MemberInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -35,10 +35,10 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_MethodBaseInfo(iCS_ObjectTypeEnum objType, iCS_TypeInfo _classInfo,
-                              string _name, string _description, string _iconPath,
-                              iCS_Parameter[] _parameters, iCS_FunctionReturn _functionReturn,
-                              iCS_StorageClass _storageClass)
+    public iCS_FunctionPrototype(iCS_ObjectTypeEnum objType, iCS_TypeInfo _classInfo,
+                                 string _name, string _description, string _iconPath,
+                                 iCS_Parameter[] _parameters, iCS_FunctionReturn _functionReturn,
+                                 iCS_StorageClass _storageClass)
     : base(objType, _classInfo, _name, _description, _iconPath) {
         Parameters    = _parameters;
         FunctionReturn= _functionReturn;
@@ -240,5 +240,4 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
     public override string ToString() {
         return FunctionPath+memberSeparator+FunctionSignature;            
     }
-
 }

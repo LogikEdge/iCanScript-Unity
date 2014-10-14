@@ -279,7 +279,7 @@ public partial class iCS_IStorage {
         return port;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject InstanceWizardFindFunction(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject InstanceWizardFindFunction(iCS_EditorObject module, iCS_FunctionPrototype desc) {
         iCS_EditorObject[] children= BuildFilteredListOfChildren(
             child=> {
                 if(child.ObjectType != desc.ObjectType || child.NbOfParams != desc.Parameters.Length) {
@@ -292,7 +292,7 @@ public partial class iCS_IStorage {
     }
 
     // ======================================================================
-    public iCS_EditorObject InstanceWizardCreate(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject InstanceWizardCreate(iCS_EditorObject module, iCS_FunctionPrototype desc) {
         if(InstanceWizardFindFunction(module, desc) != null) return null;
         Rect moduleRect= module.GlobalRect;
         iCS_EditorObject func= CreateFunction(module.InstanceId, desc);
@@ -348,7 +348,7 @@ public partial class iCS_IStorage {
         return func;
     }
     // -------------------------------------------------------------------------
-    public void InstanceWizardDestroy(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
+    public void InstanceWizardDestroy(iCS_EditorObject module, iCS_FunctionPrototype desc) {
         iCS_EditorObject func= InstanceWizardFindFunction(module, desc);
         if(func != null) DestroyInstance(func);
     }

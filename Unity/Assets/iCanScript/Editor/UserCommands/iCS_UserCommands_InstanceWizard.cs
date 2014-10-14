@@ -10,7 +10,7 @@ using System.Collections;
 public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // OK
-    public static iCS_EditorObject CreateInstanceWizardElement(iCS_EditorObject parent, iCS_MethodBaseInfo desc) {
+    public static iCS_EditorObject CreateInstanceWizardElement(iCS_EditorObject parent, iCS_FunctionPrototype desc) {
 #if DEBUG
         Debug.Log("iCanScript: Create Instance Element => "+desc.DisplayName);
 #endif
@@ -42,7 +42,7 @@ public static partial class iCS_UserCommands {
         return instance;
     }
 	// ----------------------------------------------------------------------
-    public static void DeleteInstanceWizardElement(iCS_EditorObject parent, iCS_MethodBaseInfo desc) {
+    public static void DeleteInstanceWizardElement(iCS_EditorObject parent, iCS_FunctionPrototype desc) {
 #if DEBUG
         Debug.Log("iCanScript: Delete Instance Element => "+desc.DisplayName);
 #endif
@@ -67,7 +67,7 @@ public static partial class iCS_UserCommands {
     }
  	// ----------------------------------------------------------------------
     // OK
-    public static iCS_EditorObject CreateInstanceObjectAndElement(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_MethodBaseInfo desc) {
+    public static iCS_EditorObject CreateInstanceObjectAndElement(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_FunctionPrototype desc) {
         if(instanceType == null) return null;
         instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
 #if DEBUG
@@ -104,7 +104,7 @@ public static partial class iCS_UserCommands {
     }
 	// ----------------------------------------------------------------------
     // OK
-    public static iCS_EditorObject CreateInstanceBuilderAndObjectAndElement(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_MethodBaseInfo desc) {
+    public static iCS_EditorObject CreateInstanceBuilderAndObjectAndElement(iCS_EditorObject parent, Vector2 globalPos, Type instanceType, iCS_FunctionPrototype desc) {
         if(instanceType == null) return null;
         instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
 #if DEBUG

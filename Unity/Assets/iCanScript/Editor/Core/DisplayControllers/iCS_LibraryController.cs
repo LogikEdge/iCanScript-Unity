@@ -205,7 +205,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		// Build tree and sort it elements.
 	    ActiveTree= BuildTreeNode(allFunctions);
     }
-	Prelude.Tree<Node> BuildTreeNode(List<iCS_MethodBaseInfo> functions) {
+	Prelude.Tree<Node> BuildTreeNode(List<iCS_FunctionPrototype> functions) {
         if(functions.Count == 0) return null;
         var myTreeSize= 0;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));

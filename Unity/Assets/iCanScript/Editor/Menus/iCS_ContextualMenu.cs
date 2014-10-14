@@ -351,7 +351,7 @@ public class iCS_ContextualMenu {
 		}
         // Get compatible functions.
         if(port.IsDataOrControlPort) {
-            List<iCS_MethodBaseInfo> functionMenu= null;
+            List<iCS_FunctionPrototype> functionMenu= null;
 			Type inputType= null;
 			Type outputType= null;
 			if(port.IsInputPort) {
@@ -558,7 +558,7 @@ public class iCS_ContextualMenu {
             case UnwrapPackageStr:               iCS_UserCommands.DeleteKeepChildren(targetObject); break;
             case PublicFunctionStr:              iCS_UserCommands.CreatePublicFunction(targetObject, globalPos); break;
             default: {
-				iCS_MethodBaseInfo desc= context.Descriptor;
+				iCS_FunctionPrototype desc= context.Descriptor;
 				if(desc == null) {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
@@ -599,7 +599,7 @@ public class iCS_ContextualMenu {
     }
 
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage iStorage, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage iStorage, Vector2 globalPos, iCS_FunctionPrototype desc) {
         iCS_EditorObject newNodeParent= iStorage.GetNodeAt(globalPos);
 		if(newNodeParent == null) return null;
         if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;

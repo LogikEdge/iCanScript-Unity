@@ -319,7 +319,7 @@ public static partial class iCS_UserCommands {
     }
 	// ----------------------------------------------------------------------
     // OK
-    public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos, iCS_FunctionPrototype desc) {
 #if DEBUG
         Debug.Log("iCanScript: Create Function => "+desc.DisplayName);
 #endif

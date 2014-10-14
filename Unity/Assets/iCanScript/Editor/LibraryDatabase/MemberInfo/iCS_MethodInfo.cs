@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-public class iCS_MethodInfo : iCS_MethodBaseInfo {
+public class iCS_MethodInfo : iCS_FunctionPrototype {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

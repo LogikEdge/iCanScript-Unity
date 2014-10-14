@@ -496,7 +496,7 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateFunction(int parentId, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateFunction(int parentId, iCS_FunctionPrototype desc) {
         iCS_EditorObject instance= desc.IsInstanceMember ?
                     				CreateInstanceFunction(parentId, desc) : 
                     				CreateClassFunction(parentId, desc);
@@ -506,7 +506,7 @@ public partial class iCS_IStorage {
 		return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateClassFunction(int parentId, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateClassFunction(int parentId, iCS_FunctionPrototype desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
@@ -536,7 +536,7 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateInstanceFunction(int parentId, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateInstanceFunction(int parentId, iCS_FunctionPrototype desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
@@ -644,7 +644,7 @@ public partial class iCS_IStorage {
         return "<"+iCS_Types.GetName(type)+">";
     }
     // ----------------------------------------------------------------------
-    public string GetDefaultNodeName(iCS_MethodBaseInfo desc) {
+    public string GetDefaultNodeName(iCS_FunctionPrototype desc) {
         var displayName= desc.DisplayName;
         if(desc.IsConstructor) {
             displayName= "Variable";

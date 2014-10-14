@@ -44,7 +44,7 @@ public abstract class iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public iCS_TypeInfo         ToTypeInfo          { get { return this as iCS_TypeInfo; }}
     public iCS_ConstructorInfo  ToConstructorInfo   { get { return this as iCS_ConstructorInfo; }}
-    public iCS_MethodBaseInfo   ToMethodBaseInfo    { get { return this as iCS_MethodBaseInfo; }}
+    public iCS_FunctionPrototype   ToMethodBaseInfo    { get { return this as iCS_FunctionPrototype; }}
     public iCS_MethodInfo       ToMethodInfo        { get { return this as iCS_MethodInfo; }}
     public iCS_FieldInfo        ToFieldInfo         { get { return this as iCS_FieldInfo; }}
     public iCS_PropertyInfo     ToPropertyInfo      { get { return this as iCS_PropertyInfo; }}

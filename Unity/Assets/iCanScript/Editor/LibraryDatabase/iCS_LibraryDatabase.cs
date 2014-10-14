@@ -10,7 +10,7 @@ public class iCS_LibraryDatabase {
     // Properties
     // ----------------------------------------------------------------------
     public static List<iCS_TypeInfo>        types    = new List<iCS_TypeInfo>();
-    public static List<iCS_MethodBaseInfo>  Functions= new List<iCS_MethodBaseInfo>();
+    public static List<iCS_FunctionPrototype>  Functions= new List<iCS_FunctionPrototype>();
     public static bool                      IsSorted = false;
     
     // ======================================================================
@@ -44,22 +44,22 @@ public class iCS_LibraryDatabase {
         return d1.DisplayName.CompareTo(d2.DisplayName);
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> BuildExpertMenu() {
+    public static List<iCS_FunctionPrototype> BuildExpertMenu() {
         return AllFunctions();
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> AllFunctions() {
+    public static List<iCS_FunctionPrototype> AllFunctions() {
         QSort();
         return Functions;
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> AllFunctionsUnsorted() {
+    public static List<iCS_FunctionPrototype> AllFunctionsUnsorted() {
         return Functions;
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> BuildNormalMenu() {
+    public static List<iCS_FunctionPrototype> BuildNormalMenu() {
         QSort();
-        var menu= new List<iCS_MethodBaseInfo>();
+        var menu= new List<iCS_FunctionPrototype>();
         foreach(var desc in Functions) {
             Type classType= desc.ClassType;
             if(iCS_Types.IsStaticClass(classType)) {
@@ -128,8 +128,8 @@ public class iCS_LibraryDatabase {
 	    return properties.ToArray();
 	}
     // ----------------------------------------------------------------------
-	public static iCS_MethodBaseInfo[] GetPropertiesAndFields(Type compilerType) {
-	    var variables= new List<iCS_MethodBaseInfo>();
+	public static iCS_FunctionPrototype[] GetPropertiesAndFields(Type compilerType) {
+	    var variables= new List<iCS_FunctionPrototype>();
 	    foreach(var v in GetMembers(compilerType)) {
 	        if(v.IsField || v.IsProperty) {
 	            variables.Add(v.ToMethodBaseInfo);
@@ -179,9 +179,9 @@ public class iCS_LibraryDatabase {
         return false;
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> BuildMenuForMembersOfType(Type classType, Type inputType, Type outputType) {
+    public static List<iCS_FunctionPrototype> BuildMenuForMembersOfType(Type classType, Type inputType, Type outputType) {
         QSort();
-        var menu= new List<iCS_MethodBaseInfo>();
+        var menu= new List<iCS_FunctionPrototype>();
 		classType= iCS_Types.GetElementType(classType);
 		inputType= iCS_Types.GetElementType(inputType);
 		outputType= iCS_Types.GetElementType(outputType);
@@ -228,9 +228,9 @@ public class iCS_LibraryDatabase {
 		return menu;
 	}
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> BuildMenu(Type inputType, Type outputType) {
+    public static List<iCS_FunctionPrototype> BuildMenu(Type inputType, Type outputType) {
         QSort();
-        var menu= new List<iCS_MethodBaseInfo>();
+        var menu= new List<iCS_FunctionPrototype>();
 		inputType= iCS_Types.GetElementType(inputType);
         for(int i= 0; i < Functions.Count; ++i) {
             // Filter functions according to input or output filter.
