@@ -14,7 +14,7 @@ public static class iCS_HelpController {
 
 	static private string unityHelpIndex;
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
-	static string unityHelpPath = EditorApplication.applicationPath + "/Contents/Documentation/html/en/ScriptReference";
+	static string unityHelpPath = EditorApplication.applicationContentsPath + "/Documentation/html/en/ScriptReference";
 
 	// ---------------------------------------------------------------------------------
 	static iCS_HelpController() {
