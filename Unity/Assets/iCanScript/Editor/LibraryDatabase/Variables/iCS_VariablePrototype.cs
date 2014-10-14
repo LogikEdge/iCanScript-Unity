@@ -5,8 +5,8 @@ public class iCS_VariablePrototype {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	public string               name        = null;
-	public Type                 type        = null;
+	public string   name= null;     ///< The name of the variable
+	public Type     type= null;     ///< The type of the variable
 
     // ======================================================================
     // Constructor/Destructor
