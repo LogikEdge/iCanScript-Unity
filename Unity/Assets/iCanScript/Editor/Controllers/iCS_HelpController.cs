@@ -5,9 +5,9 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Text;
-using DisruptiveSoftware;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using iCanScript.JSON;
 
 
 public static class iCS_HelpController {
