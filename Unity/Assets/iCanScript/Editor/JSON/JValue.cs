@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript { namespace JSON {
+namespace iCanScript.JSON {
     
 // =============================================================================
 // JSON value
@@ -257,4 +257,4 @@ public class JNameValuePair : JSON {
     }
 }
 
-}} // namespace iCanScript.JSON
+} // namespace iCanScript.JSON

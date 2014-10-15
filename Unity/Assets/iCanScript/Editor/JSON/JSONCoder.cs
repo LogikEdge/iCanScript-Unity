@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-namespace iCanScript { namespace JSON {
+namespace iCanScript.JSON {
 
 public class JSONCoder {
     // =================================================================================
@@ -10,4 +10,4 @@ public class JSONCoder {
     public JSONCoder() {}
 }
 
-}} // namespace iCanScript.JSON
+} // namespace iCanScript.JSON
