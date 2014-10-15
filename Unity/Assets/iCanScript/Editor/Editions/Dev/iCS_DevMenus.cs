@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.IO;
 
-using DisruptiveSoftware;
+using iCanScript;
 
 public static class iCS_DevMenus {
     // ======================================================================

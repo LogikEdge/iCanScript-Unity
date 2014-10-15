@@ -6,7 +6,8 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace DisruptiveSoftware {
+namespace iCanScript.JSON {
+    
 // =============================================================================
 // JSON value
 // -----------------------------------------------------------------------------
@@ -255,4 +256,5 @@ public class JNameValuePair : JSON {
         return new JNameValuePair(name, value);        
     }
 }
-} // namespace DisruptiveSoftware
+
+} // namespace iCanScript.JSON

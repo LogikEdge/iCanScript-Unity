@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 
+namespace iCanScript {
+    
 public static class iCS_Debug {	
 	public enum Flags { CodeGeneration };
 
@@ -55,3 +57,5 @@ public static class iCS_Debug {
         return result;
     }
 }
+
+} // Namespace iCanScript

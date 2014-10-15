@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 
-namespace DisruptiveSoftware {
+namespace iCanScript.JSON {
 
 public static class JSONPrettyPrint {
     // ======================================================================
@@ -67,4 +67,4 @@ public static class JSONPrettyPrint {
     }
 }
 
-} // namespace DisruptiveSoftware
+} // namespace iCanScript.JSON
