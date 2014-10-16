@@ -1041,32 +1041,21 @@ public partial class iCS_Graphics {
         }
         // Determine if this connection is part of a drag.
         iCS_BindingParams cp= new iCS_BindingParams(port, portPos, source, sourcePos, iStorage);
-        // Reposition the end to make space for the arrow
-        Vector2 normalizedEndTangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
-        normalizedEndTangent.Normalize();
-        Vector3 startPos= TranslateAndScale(cp.Start);
-        Vector3 endPos= TranslateAndScale(cp.End);
-        Vector3 startTangent= TranslateAndScale(cp.StartTangent);
-        Vector3 endTangent= TranslateAndScale(cp.EndTangent);
-        lineWidth= Scale*lineWidth;
-        if(lineWidth < 1f) lineWidth= 1f;
         if(highlight) {
-            highlightWidth= Scale*highlightWidth;
-            if(highlightWidth < 1f) highlightWidth= 1f;
-//    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                    
-            DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, portColor, lineTexture, lineWidth, highlightColor, highlightWidth, cp);
-//    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, lineTexture, lineWidth);
+            DrawBezier(cp, sourceColor, portColor, highlightColor, lineWidth, highlightWidth);
         } else {
             sourceColor.a= 0.85f*sourceColor.a;
             portColor.a  = 0.85f*portColor.a;
-            DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, portColor, lineTexture, lineWidth, highlightColor, 0f, cp);
-//    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, lineTexture, lineWidth);
+            DrawBezier(cp, sourceColor, portColor, highlightColor, lineWidth, 0f);
         }
         // Show transition name for state connections.
 		if(port.IsInTransitionPort && portParent.IsIconizedInLayout) return;
         if(port.IsInStatePort || port.IsInTransitionPort) {
             var arrowColor= new Color(1f,1f,1f,alpha);
             DirectionEnum dir= DirectionEnum.Up;
+            // Reposition the end to make space for the arrow
+            Vector2 normalizedEndTangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
+            normalizedEndTangent.Normalize();
             // Show transition input port.
             if(Mathf.Abs(normalizedEndTangent.x) > Mathf.Abs(normalizedEndTangent.y)) {
                 if(normalizedEndTangent.x > 0) {
@@ -1091,18 +1080,27 @@ public partial class iCS_Graphics {
         }
     }
     // ----------------------------------------------------------------------
-    void DrawBezier(Vector3 startPos    , Vector3 endPos,
-                    Vector3 startTangent, Vector3 endTangent,
-                    Color   startColor  , Color   endColor,
-                    Texture2D lineTexture, float lineWidth,
-                    Color highlightColor, float highlightWidth,
-                    iCS_BindingParams cp) {
+    void DrawBezier(iCS_BindingParams cp,
+                    Color startColor, Color endColor, Color highlightColor,
+                    float lineWidth, float highlightWidth) {
+
+        // Adjust to canvas settings
+        Vector3 startPos= TranslateAndScale(cp.Start);
+        Vector3 endPos= TranslateAndScale(cp.End);
+        Vector3 startTangent= TranslateAndScale(cp.StartTangent);
+        Vector3 endTangent= TranslateAndScale(cp.EndTangent);
+        lineWidth*= Scale; if(lineWidth < 1f) lineWidth= 1f;
+
+        // Simple case where the start and end point are of the same color.
         if(startColor == endColor) {
             if(highlightWidth != 0) {
+                highlightWidth*= Scale; if(highlightWidth < 1f) highlightWidth= 1f;
         		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);
             }
             Handles.DrawBezier(startPos, endPos, startTangent, endTangent, startColor, lineTexture, lineWidth);
         }
+
+        // Different colors for start & end points.  Draw two bezier curves of different colors attached in the center.
         else {
             Vector3 center= TranslateAndScale(cp.Center);
             // Adjust tangent strength to half since we are creating two beziers.
@@ -1112,6 +1110,7 @@ public partial class iCS_Graphics {
             startTangent= startPos + 0.5f*(startTangent-startPos);
             endTangent  = endPos   + 0.5f*(endTangent-endPos);
             if(highlightWidth != 0) {
+                highlightWidth*= Scale; if(highlightWidth < 1f) highlightWidth= 1f;
                 Handles.DrawBezier(startPos, center, startTangent, centerEndTangent, highlightColor, lineTexture, lineWidth+highlightWidth);
                 Handles.DrawBezier(center, endPos, centerStartTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                
             }
