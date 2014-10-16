@@ -11,7 +11,6 @@ using System.Collections.Generic;
 
 
 public static class iCS_HelpController {
-
 	static private string unityHelpIndex;
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
 	static string unityHelpPath = EditorApplication.applicationContentsPath + "/Documentation/html/en/ScriptReference";
@@ -126,12 +125,14 @@ public static class iCS_HelpController {
 	// ---------------------------------------------------------------------------------
 	public static string getHelpSummary(iCS_MemberInfo memberInfo )
 	{
-		if (memberInfo.Company == "Unity") {
-			string summary=null;
-			string search= getHelpUrl(memberInfo);
-			unityHelpSummary.TryGetValue(search, out summary);
-			if (summary!=null)
-				return summary;
+		if(memberInfo != null) {
+			if (memberInfo.Company == "Unity") {
+				string summary=null;
+				string search= getHelpUrl(memberInfo);
+				unityHelpSummary.TryGetValue(search, out summary);
+				if (summary!=null)
+					return summary;
+			}
 		}
 		return null;
 	}

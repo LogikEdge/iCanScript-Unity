@@ -295,15 +295,21 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given editor object.
     public static iCS_MemberInfo GetAssociatedDescriptor(iCS_EditorObject edObj) {
-        if(edObj.IsPort || edObj.IsPackage) {
+		
+        if(edObj.IsPort ) { 	//}|| edObj.IsPackage) {
             return null;
         }
+						
         var runtimeType= edObj.RuntimeType;
         var engineObject= edObj.EngineObject;
         int numberOfOutputPorts= edObj.NumberOfChildOutputPorts();
         foreach(var t in types) {
+
             if(t.CompilerType == runtimeType) {
-                foreach(var member in t.Members) {
+                foreach(var member in t.Members) {		
+					if(edObj.IsInstanceNode) {
+						return member.ParentTypeInfo;
+					}
                     if(member is iCS_MethodInfo) {
                         var methodInfo= member as iCS_MethodInfo;
                         if(engineObject.MethodName == methodInfo.MethodName) {
@@ -321,6 +327,7 @@ public class iCS_LibraryDatabase {
                             }
                         }
                     }
+
                 }
             }
         }

@@ -1,8 +1,3 @@
-/*
-    TODO: re-examine tooltip implementation since the current one triples the frame rate.
-*/
-//#define SHOW_TOOLTIP
-
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -144,12 +139,6 @@ public partial class iCS_Graphics {
         if(titleStyle == null) titleStyle= TitleStyle;
         Rect adjPos= TranslateAndScale(pos);
         DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, title, titleStyle);
-#if SHOW_TOOLTIP
-        string tooltip= title.tooltip;
-        if(tooltip != null && tooltip != "") {
-            GUI.Label(adjPos, new GUIContent("", tooltip), LabelStyle);
-        }
-#endif
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -466,14 +455,10 @@ public partial class iCS_Graphics {
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
-#if SHOW_TOOLTIP
-        string tooltip= isMouseOver ? GetNodeTooltip(node) : null;
-#else
-        string tooltip= null;
-#endif
+		
         // Determine title style
         var shadowColor= isMouseOver || iStorage.IsSelectedOrMultiSelected(node) ? WhiteShadowColor : BlackShadowColor;
-        GUI_Box(position, new GUIContent(title, tooltip), GetNodeColor(node), backgroundColor, shadowColor);
+        GUI_Box(position, new GUIContent(title), GetNodeColor(node), backgroundColor, shadowColor);
         if(isMouseOver) {
             EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
         }
@@ -530,9 +515,6 @@ public partial class iCS_Graphics {
         }
         if(textureRect.Contains(MousePosition)) {
             EditorGUIUtility_AddCursorRect (textureRect, MouseCursor.Link);
-#if SHOW_TOOLTIP
-            GUI_Label(textureRect, new GUIContent("", GetNodeTooltip(node)), LabelStyle);            
-#endif
         }
 		ShowTitleOver(textureRect, node);
         GUI.color= Color.white;
@@ -555,7 +537,7 @@ public partial class iCS_Graphics {
             backgroundColor= GetBackgroundColor(node);
         }
         DrawLabelBackground(labelRect, boxAlpha, backgroundColor, outlineColor);
-        GUI.Label(labelRect, new GUIContent(title, node.Tooltip), LabelStyle);		
+        GUI.Label(labelRect, new GUIContent(title), LabelStyle);		
 	}
 	
     // ======================================================================
@@ -689,13 +671,7 @@ public partial class iCS_Graphics {
         if(portPos.Contains(MousePosition)) {
             if(!port.IsTransitionPort) {
                 EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
-            }
-            if(!port.IsFloating) {
-#if SHOW_TOOLTIP
-        		string tooltip= GetPortTooltip(port, iStorage);
-                GUI_Label(portPos, new GUIContent("", tooltip), LabelStyle);            
-#endif
-            }            
+            }        
         }            
 		
         // State transition name is handle by DrawConnection.

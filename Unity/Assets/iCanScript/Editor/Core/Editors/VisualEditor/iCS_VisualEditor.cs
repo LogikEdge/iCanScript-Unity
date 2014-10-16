@@ -36,6 +36,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     float myDeltaTime          = 0;
     bool  myNeedRepaint        = true;
     bool  myNotificationShown  = false;
+	private static string myHelpText  = null;
+
 	
     // ----------------------------------------------------------------------
     // Debug properties.
@@ -274,8 +276,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         FrameRateDebugInfo();
 #endif
 
+		// Display Help Text
+		DisplayHelpGUI();
+		
 		// Simulate OnPostRender.
 		OnPostRender();
+	}
+
+	void DisplayHelpGUI() {
+		GUI.Box(new Rect(Screen.width-400, Screen.height-80, 400, 80), myHelpText, EditorStyles.textArea);
 	}
 
 	// ----------------------------------------------------------------------
