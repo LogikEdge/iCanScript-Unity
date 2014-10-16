@@ -6,7 +6,7 @@ public class iCS_Connection {
     // Properties
     // ----------------------------------------------------------------------
     iCS_ISignature  mySignature    = null;
-    int             myParameterIndex    = -1;
+    int             myPortIndex    = -1;
     bool            myIsAlwaysReady= false;
 
     // ======================================================================
@@ -18,15 +18,15 @@ public class iCS_Connection {
     public iCS_SignatureDataSource Signature {
         get { return mySignature != null ? mySignature.GetSignatureDataSource() : null; }
     }
-    public int ParameterIndex {
-        get { return myParameterIndex; }
+    public int PortIndex {
+        get { return myPortIndex; }
     }
 //#if UNITY_EDITOR
     public string PortFullName {
         get {
             var nodeName= Action.FullName;
-            var port= Action.GetPortWithIndex(myParameterIndex);
-            var portName= port == null ? "["+myParameterIndex+"]" : port.Name;
+            var port= Action.GetPortWithIndex(myPortIndex);
+            var portName= port == null ? "["+myPortIndex+"]" : port.Name;
             return nodeName+"."+portName;            
         }
     }
@@ -38,14 +38,14 @@ public class iCS_Connection {
     public iCS_Connection() { }
     public iCS_Connection(iCS_ISignature signature, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
         mySignature    = signature;
-        myParameterIndex    = portIndex;
+        myPortIndex    = portIndex;
         myIsAlwaysReady= isAlwaysReady;
     }
 
     public bool IsConnected             { get{ return mySignature != null; }}
     public object Value                 {
-        get { return Signature.GetValue(ParameterIndex); }
-        set { Signature.SetValue(ParameterIndex, value); }
+        get { return Signature.GetValue(PortIndex); }
+        set { Signature.SetValue(PortIndex, value); }
     }
     public bool IsReady(int frameId)    {
         if(myIsAlwaysReady || !IsConnected) return true;

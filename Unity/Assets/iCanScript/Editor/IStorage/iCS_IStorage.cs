@@ -522,7 +522,7 @@ public partial class iCS_IStorage {
             var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.name, id, p.type, portType, (int)iCS_ParameterIndex.ParametersStart+parameterIdx);
+                port= CreatePort(p.name, id, p.type, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
 				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
 					initialPortValue= iCS_Types.DefaultValue(p.type);
@@ -532,7 +532,7 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_ParameterIndex.Return);
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
         return instance;
     }
@@ -550,7 +550,7 @@ public partial class iCS_IStorage {
             var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.name, id, p.type, portType, (int)iCS_ParameterIndex.ParametersStart+parameterIdx);
+                port= CreatePort(p.name, id, p.type, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
 				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
 					initialPortValue= iCS_Types.DefaultValue(p.type);
@@ -560,10 +560,10 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_ParameterIndex.Return);
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
 		// Create 'instance' ports.
-        port= CreatePort(GetInstancePortName(desc), id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_ParameterIndex.InInstance);
+        port= CreatePort(GetInstancePortName(desc), id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
         return instance;
     }
     // ----------------------------------------------------------------------
@@ -581,7 +581,7 @@ public partial class iCS_IStorage {
             var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.name, id, p.type, portType, (int)iCS_ParameterIndex.ParametersStart+parameterIdx);
+                port= CreatePort(p.name, id, p.type, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
 				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
 					initialPortValue= iCS_Types.DefaultValue(p.type);
@@ -591,11 +591,11 @@ public partial class iCS_IStorage {
         }
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_ParameterIndex.Return);
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
         // Create 'this' port.
         if(desc.IsInstanceMember) {
-            port= CreatePort(GetInstancePortName(desc), id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_ParameterIndex.InInstance);            
+            port= CreatePort(GetInstancePortName(desc), id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);            
             port.IsNameEditable= false;
             if(instance.Parent.IsBehaviour) {
                 port.InitialValue= instance.Parent.iCSMonoBehaviour;
@@ -619,7 +619,7 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
 	private iCS_EditorObject CreateParameterPort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType, int index) {
-		if(index < (int)iCS_ParameterIndex.ParametersStart || index > (int)iCS_ParameterIndex.ParametersEnd) {
+		if(index < (int)iCS_PortIndex.ParametersStart || index > (int)iCS_PortIndex.ParametersEnd) {
 			Debug.LogError("iCanScript: Invalid parameter port index: "+index);
 		}
 		return CreatePort(name, parentId, valueType, portType, index);

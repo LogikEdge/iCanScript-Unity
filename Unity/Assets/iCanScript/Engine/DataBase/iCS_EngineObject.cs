@@ -29,7 +29,7 @@ public class iCS_EngineObject {
 
     // Port specific attributes ---------------------------------------------
     public int                   SourceId           = -1;    // Proxy original node id
-    public int                   ParameterIndex          = -1;
+    public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;  // Proxy original visual script tag
 
     // State specific attributes ---------------------------------------------
@@ -141,7 +141,7 @@ public class iCS_EngineObject {
         instance.Tooltip= toClone.Tooltip;
 		// Port
         instance.Edge= toClone.Edge;
-        instance.ParameterIndex= toClone.ParameterIndex;
+        instance.PortIndex= toClone.PortIndex;
         if(instance.IsInDataOrControlPort && toClone.SourceId == -1 && !iCS_Types.IsA<UnityEngine.Object>(toClone.RuntimeType)) {
             instance.InitialValueArchive= toClone.InitialValueArchive;
         }
@@ -165,7 +165,7 @@ public class iCS_EngineObject {
         to.ExecutionPriority= ExecutionPriority;
         to.LayoutPriority= LayoutPriority;
         to.SourceId= SourceId;
-        to.ParameterIndex= ParameterIndex;
+        to.PortIndex= PortIndex;
         to.InitialValueArchive= InitialValueArchive;
         to.IsEntryState= IsEntryState;
 		return to;
@@ -191,7 +191,7 @@ public class iCS_EngineObject {
 		// Port
         Edge= iCS_EdgeEnum.None;
         SourceId= -1;
-		ParameterIndex= -1;
+		PortIndex= -1;
 		InitialValueArchive= null;
 		// State
 		IsEntryState= false;
@@ -363,7 +363,7 @@ public class iCS_EngineObject {
     // Utilities
     // -----------------------------------------------------------------------
     public static iCS_EngineObject[] SortPortsOnIndex(iCS_EngineObject[] lst) {
-		Array.Sort(lst, (x,y)=> x.ParameterIndex - y.ParameterIndex);
+		Array.Sort(lst, (x,y)=> x.PortIndex - y.PortIndex);
         return lst;
     }
 }

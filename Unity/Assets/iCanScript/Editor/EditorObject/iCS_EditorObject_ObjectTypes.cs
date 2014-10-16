@@ -97,7 +97,7 @@ public partial class iCS_EditorObject {
         get {
             if(IsInInstancePort && (!ParentNode.IsVariableReference && !ParentNode.IsFunctionCall) ||
                IsOutInstancePort ||
-               (ParameterIndex == (int)iCS_ParameterIndex.Return && (ParentNode.IsConstructor || ParentNode.IsVariableReference))) {
+               (PortIndex == (int)iCS_PortIndex.Return && (ParentNode.IsConstructor || ParentNode.IsVariableReference))) {
                    return true;
             }
             return false;

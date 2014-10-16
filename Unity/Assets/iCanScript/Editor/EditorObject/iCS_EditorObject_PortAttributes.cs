@@ -21,12 +21,12 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Port source related attributes.
 	// ----------------------------------------------------------------------
-    public int ParameterIndex {
-		get { return EngineObject.ParameterIndex; }
+    public int PortIndex {
+		get { return EngineObject.PortIndex; }
 		set {
             var engineObject= EngineObject;
-			if(engineObject.ParameterIndex == value) return;
-			engineObject.ParameterIndex= value;
+			if(engineObject.PortIndex == value) return;
+			engineObject.PortIndex= value;
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -150,7 +150,7 @@ public partial class iCS_EditorObject {
                 return port.InitialPortValue;
             }
             try {
-    			return funcBase.GetSignatureDataSource().GetValue(port.ParameterIndex);			                
+    			return funcBase.GetSignatureDataSource().GetValue(port.PortIndex);			                
             }
             catch(System.Exception) {
                 Debug.LogWarning("iCanScript: Unable to get runtime value for port => "+port.FullName);
@@ -183,13 +183,13 @@ public partial class iCS_EditorObject {
 //	            }
 //	            return;
 //	        }
-	        if(ParameterIndex < 0) return;
+	        if(PortIndex < 0) return;
 	        iCS_EditorObject parent= Parent;
 	        if(parent == null) return;
 	        // Get runtime object if it exists.
 	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as iCS_ISignature;
 	        if(runtimeObject == null) return;
-	        runtimeObject.GetSignatureDataSource().SetValue(ParameterIndex, value);			
+	        runtimeObject.GetSignatureDataSource().SetValue(PortIndex, value);			
 		}
 	}
 }
