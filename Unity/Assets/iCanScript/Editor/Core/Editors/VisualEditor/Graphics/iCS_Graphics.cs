@@ -954,7 +954,7 @@ public partial class iCS_Graphics {
         iCS_EditorObject portParent= port.ParentNode;
 
         // No connection to draw if the port is not visible.
-        bool isPortVisible= port.IsVisibleOnDisplay;
+        bool isPortVisible= port.IsVisibleOnDisplay || port.IsFloating;
         bool isShowInvisiblePort= false;
         if(port.IsStatePort || port.IsTransitionPort) {
             // For state ports, we draw them if the transition module is visible.
@@ -971,7 +971,7 @@ public partial class iCS_Graphics {
         }
 
         // No connection to draw if source port is not visible.
-        iCS_EditorObject source= port.ProviderPort;
+        iCS_EditorObject source= port.VisibleProviderPort;
         iCS_EditorObject sourceParent= source.Parent;
         bool isSourceVisible= source.IsVisibleOnDisplay;
         if(isSourceVisible == false && isShowInvisiblePort == false) return;
@@ -1011,16 +1011,20 @@ public partial class iCS_Graphics {
 		}
 		
         // Determine line color.
-        Color color= Color.white;
+        Color sourceColor= Color.white;
+        Color portColor  = Color.white;
         if(port.IsStatePort || port.IsTransitionPort) {
             if(isPortVisible == false || isSourceVisible == false) {
-                color= Color.yellow;
+                sourceColor= Color.yellow;
+                portColor  = Color.yellow;
             }
         }
         else {
-            color= Prefs.GetTypeColor(source.RuntimeType);            
+            sourceColor= Prefs.GetTypeColor(source.RuntimeType);            
+            portColor  = Prefs.GetTypeColor(port.RuntimeType);            
         }
-        color.a*= alpha;
+        sourceColor.a*= alpha;
+        portColor.a  *= alpha;
         // Determine if this connection is part of the selected object.
         float highlightWidth= 2f;
         Color highlightColor= new Color(0.67f, 0.67f, 0.67f, alpha);
@@ -1028,21 +1032,18 @@ public partial class iCS_Graphics {
            iStorage.IsSelectedOrMultiSelected(source) ||
            iStorage.IsSelectedOrMultiSelected(portParent) ||
            iStorage.IsSelectedOrMultiSelected(sourceParent)) {
-            highlight= true;
+           highlight= true;
         }
         // Special case for asset store images.
         if(iCS_DevToolsConfig.ShowBoldImage) {
             highlight= true;
-            highlightColor= color;
+            highlightColor= sourceColor;
         }
         // Determine if this connection is part of a drag.
         iCS_BindingParams cp= new iCS_BindingParams(port, portPos, source, sourcePos, iStorage);
         // Reposition the end to make space for the arrow
         Vector2 normalizedEndTangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
         normalizedEndTangent.Normalize();
-        if(!portParent.IsIconizedInLayout) {
-//            cp.End= GetBindingEndPosition(port, cp.End, normalizedEndTangent);            
-        }
         Vector3 startPos= TranslateAndScale(cp.Start);
         Vector3 endPos= TranslateAndScale(cp.End);
         Vector3 startTangent= TranslateAndScale(cp.StartTangent);
@@ -1053,10 +1054,13 @@ public partial class iCS_Graphics {
             highlightWidth= Scale*highlightWidth;
             if(highlightWidth < 1f) highlightWidth= 1f;
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                    
-    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
+            DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, portColor, lineTexture, lineWidth, cp);
+//    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, lineTexture, lineWidth);
         } else {
-            color.a= 0.85f*color.a;
-    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
+            sourceColor.a= 0.85f*sourceColor.a;
+            portColor.a  = 0.85f*portColor.a;
+            DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, portColor, lineTexture, lineWidth, cp);
+//    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, lineTexture, lineWidth);
         }
         // Show transition name for state connections.
 		if(port.IsInTransitionPort && portParent.IsIconizedInLayout) return;
@@ -1082,8 +1086,30 @@ public partial class iCS_Graphics {
         else {
             // Show binding direction
             if(ShouldShowPort()) {
-                DrawArrowMiddleBezier(cp, color, highlight);
+                DrawArrowMiddleBezier(cp, sourceColor, highlight);
             }
+        }
+    }
+    // ----------------------------------------------------------------------
+    void DrawBezier(Vector3 startPos    , Vector3 endPos,
+                    Vector3 startTangent, Vector3 endTangent,
+                    Color   startColor  , Color   endColor,
+                    Texture2D lineTexture, float lineWidth,
+//                    Color highlightColor, float highlightWidth,
+                    iCS_BindingParams cp) {
+        if(startColor == endColor) {
+            Handles.DrawBezier(startPos, endPos, startTangent, endTangent, startColor, lineTexture, lineWidth);
+        }
+        else {
+            Vector3 center= TranslateAndScale(cp.Center);
+            // Adjust tangent strength to half since we are creating two beziers.
+            float tangentMagnitude= 0.25f*(cp.StartTangent-cp.Start).magnitude;
+            Vector3 centerStartTangent=  TranslateAndScale(cp.Center+(cp.CenterDirection * tangentMagnitude));
+            Vector3 centerEndTangent  =  TranslateAndScale(cp.Center-(cp.CenterDirection * tangentMagnitude));
+            startTangent= startPos + 0.5f*(startTangent-startPos);
+            endTangent  = endPos   + 0.5f*(endTangent-endPos);
+            Handles.DrawBezier(startPos, center, startTangent, centerEndTangent, startColor, lineTexture, lineWidth);
+            Handles.DrawBezier(center, endPos, centerStartTangent, endTangent, endColor, lineTexture, lineWidth);
         }
     }
     // ----------------------------------------------------------------------

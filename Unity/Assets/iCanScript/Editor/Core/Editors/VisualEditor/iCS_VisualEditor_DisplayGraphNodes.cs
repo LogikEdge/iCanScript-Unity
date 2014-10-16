@@ -86,7 +86,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             node=> {
                 if(node.IsNode) {
-					if(node.IsBehaviour) return;
+					if(node.IsBehaviour || node.IsHidden) return;
 					if(node == rootNode && !IStorage.ShowDisplayRootNode) return;
                     if(node.IsFloating && floatingRootNode == null) {
                         floatingRootNode= node;
@@ -107,6 +107,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             child=> {
                 if(child.IsNode) {
+                    if(child.IsHidden) return;
 					if( child.IsIconizedInLayout ) {
 						myGraphics.DrawMinimizedNode(child, IStorage);						
 					}

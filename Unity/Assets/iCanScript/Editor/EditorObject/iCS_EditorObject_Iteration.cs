@@ -351,6 +351,11 @@ public partial class iCS_EditorObject {
 		return BuildListOfChildren(c=> c.IsNode && cond(c));
 	}
     // ----------------------------------------------------------------------
+    // Build a list of child nodes that satisfies the given criteria.
+	public iCS_EditorObject[] BuildListOfVisibleChildNodes(Func<iCS_EditorObject, bool> cond) {
+		return BuildListOfChildren(c=> c.IsNode && !c.IsHidden && cond(c));
+	}
+    // ----------------------------------------------------------------------
     // Build a list of ports that satisfies the given criteria.
 	public iCS_EditorObject[] BuildListOfChildPorts(Func<iCS_EditorObject, bool> cond) {
 		return BuildListOfChildren(c=> c.IsPort && cond(c));

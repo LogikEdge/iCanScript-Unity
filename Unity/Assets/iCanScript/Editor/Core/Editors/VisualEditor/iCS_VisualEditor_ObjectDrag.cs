@@ -244,6 +244,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void EndDrag() {
 		ProcessDrag();
         OnEndRelayoutOfTree();
+        IStorage.CleanupDeadPorts= true;
         
         // End the drag according to the drag type.
         try {
@@ -493,7 +494,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         DragOriginalPort= null;
         DragFixPort     = null;
         IsDragEnabled   = false;
-        IStorage.CleanupDeadPorts= true;                    
     }
 
 	// ----------------------------------------------------------------------

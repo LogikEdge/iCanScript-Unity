@@ -40,6 +40,24 @@ public partial class iCS_EditorObject {
 		set { ProviderPortId= (value != null ? value.InstanceId : -1); }
 	}
 	// ----------------------------------------------------------------------
+    public iCS_EditorObject VisibleProviderPort {
+		get {
+            var providerPort= ProviderPort;
+            if(providerPort != null) {
+                var providerNode= providerPort.Parent;
+                if(providerNode.IsHidden) {
+                    if(providerNode.IsTypeCast) {
+                        providerNode.ForEachChild(c=> P.executeIf(c, t=> t.IsInDataPort && !t.IsFloating, f=> providerPort= f.ProviderPort));
+                    }
+                    else {
+                        Debug.LogWarning("iCanScript: Internal warning=> Need to update VisibleProviderPort filtering.");
+                    }                    
+                }
+            }
+            return providerPort;
+        }
+	}
+	// ----------------------------------------------------------------------
 	public iCS_EditorObject FirstProviderPort {
 		get {
 		    var engineObject= Storage.GetFirstProviderPort(EngineObject);
