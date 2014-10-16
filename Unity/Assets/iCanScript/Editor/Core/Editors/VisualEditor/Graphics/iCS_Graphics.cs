@@ -1053,13 +1053,13 @@ public partial class iCS_Graphics {
         if(highlight) {
             highlightWidth= Scale*highlightWidth;
             if(highlightWidth < 1f) highlightWidth= 1f;
-    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                    
-            DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, portColor, lineTexture, lineWidth, cp);
+//    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                    
+            DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, portColor, lineTexture, lineWidth, highlightColor, highlightWidth, cp);
 //    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, lineTexture, lineWidth);
         } else {
             sourceColor.a= 0.85f*sourceColor.a;
             portColor.a  = 0.85f*portColor.a;
-            DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, portColor, lineTexture, lineWidth, cp);
+            DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, portColor, lineTexture, lineWidth, highlightColor, 0f, cp);
 //    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, sourceColor, lineTexture, lineWidth);
         }
         // Show transition name for state connections.
@@ -1095,9 +1095,12 @@ public partial class iCS_Graphics {
                     Vector3 startTangent, Vector3 endTangent,
                     Color   startColor  , Color   endColor,
                     Texture2D lineTexture, float lineWidth,
-//                    Color highlightColor, float highlightWidth,
+                    Color highlightColor, float highlightWidth,
                     iCS_BindingParams cp) {
         if(startColor == endColor) {
+            if(highlightWidth != 0) {
+        		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);
+            }
             Handles.DrawBezier(startPos, endPos, startTangent, endTangent, startColor, lineTexture, lineWidth);
         }
         else {
@@ -1108,6 +1111,10 @@ public partial class iCS_Graphics {
             Vector3 centerEndTangent  =  TranslateAndScale(cp.Center-(cp.CenterDirection * tangentMagnitude));
             startTangent= startPos + 0.5f*(startTangent-startPos);
             endTangent  = endPos   + 0.5f*(endTangent-endPos);
+            if(highlightWidth != 0) {
+                Handles.DrawBezier(startPos, center, startTangent, centerEndTangent, highlightColor, lineTexture, lineWidth+highlightWidth);
+                Handles.DrawBezier(center, endPos, centerStartTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                
+            }
             Handles.DrawBezier(startPos, center, startTangent, centerEndTangent, startColor, lineTexture, lineWidth);
             Handles.DrawBezier(center, endPos, centerStartTangent, endTangent, endColor, lineTexture, lineWidth);
         }
