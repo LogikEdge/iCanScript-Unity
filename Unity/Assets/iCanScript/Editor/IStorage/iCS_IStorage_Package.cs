@@ -13,7 +13,7 @@ public partial class iCS_IStorage {
 		// Attempt to reposition the package ports to match the object ports.		
 		obj.ForEachChildPort(
 			p => {
-				var sourcePort= p.ProducerPort;
+				var sourcePort= p.ProviderPort;
 				if(sourcePort != null && sourcePort.ParentNode == package) {
 					sourcePort.Edge= p.Edge;
 					sourcePort.PortPositionRatio= p.PortPositionRatio;
@@ -21,7 +21,7 @@ public partial class iCS_IStorage {
 				else {
 					package.UntilMatchingChild(
 						pp => {
-							if(pp.ProducerPort == p) {
+							if(pp.ProviderPort == p) {
 								pp.Edge= p.Edge;
 								pp.PortPositionRatio= p.PortPositionRatio;
 								return true;
@@ -54,7 +54,7 @@ public partial class iCS_IStorage {
     		// Attempt to reposition the package ports to match the object ports.		
     		obj.ForEachChildPort(
     			p => {
-    				var sourcePort= p.ProducerPort;
+    				var sourcePort= p.ProviderPort;
     				if(sourcePort != null && sourcePort.ParentNode == package) {
     					sourcePort.Edge= p.Edge;
     					sourcePort.PortPositionRatio= p.PortPositionRatio;
@@ -62,7 +62,7 @@ public partial class iCS_IStorage {
     				else {
     					package.UntilMatchingChild(
     						pp => {
-    							if(pp.ProducerPort == p) {
+    							if(pp.ProviderPort == p) {
     								pp.Edge= p.Edge;
     								pp.PortPositionRatio= p.PortPositionRatio;
     								return true;

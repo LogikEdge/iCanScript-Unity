@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 [AddComponentMenu("")]
@@ -90,7 +90,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
         return iCS_VisualScriptData.GetParent(this, obj);
     }
     public iCS_EngineObject GetSourceEndPort(iCS_EngineObject port) {
-        return iCS_VisualScriptData.GetFirstProducerPort(this, port);
+        return iCS_VisualScriptData.GetFirstProviderPort(this, port);
     }
     public iCS_EngineObject GetSourcePort(iCS_EngineObject port) {
         return iCS_VisualScriptData.GetSourcePort(this, port);

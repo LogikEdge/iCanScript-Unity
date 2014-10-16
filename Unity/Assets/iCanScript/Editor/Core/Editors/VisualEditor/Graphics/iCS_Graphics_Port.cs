@@ -70,10 +70,10 @@ public partial class iCS_Graphics {
         var parent= port.ParentNode;
         if(parent.IsIconizedOnDisplay) return false;
         if(port.IsEndPort) return true;
-        var Producer= port.ProducerPort;
-        if(Producer == null) return true;
-        if(!Producer.IsVisibleOnDisplay) return true;
-        if(Producer.ParentNode.IsIconizedOnDisplay) return true;
+        var provider= port.ProviderPort;
+        if(provider == null) return true;
+        if(!provider.IsVisibleOnDisplay) return true;
+        if(provider.ParentNode.IsIconizedOnDisplay) return true;
         var consumerPorts= port.ConsumerPorts;
         foreach(var cp in consumerPorts) {
             if(cp.IsVisibleOnDisplay && !cp.ParentNode.IsIconizedOnDisplay) {
@@ -141,8 +141,8 @@ public partial class iCS_Graphics {
 		}
         if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
-        if((port.IsInputPort || port.IsKindOfPackagePort) && port.ProducerPortId != -1) {
-            var sourcePort= port.ProducerPort;
+        if((port.IsInputPort || port.IsKindOfPackagePort) && port.ProviderPortId != -1) {
+            var sourcePort= port.ProviderPort;
             if(sourcePort == null) return true;
             var sourceCenter= sourcePort.AnimatedPosition;
             var portCenter= port.AnimatedPosition;
@@ -198,7 +198,7 @@ public partial class iCS_Graphics {
 		if(runtimeType != null) tooltip+= "Type: "+iCS_Types.TypeName(runtimeType)+"\n";
 		// Source information.
 		if(port.IsDataOrControlPort) {
-			iCS_EditorObject sourcePort= iStorage.GetFirstProducerPort(port);
+			iCS_EditorObject sourcePort= iStorage.GetFirstProviderPort(port);
 			if(sourcePort != null && sourcePort != port) {
 				tooltip+= "Source: "+GetPortFullPathName(sourcePort, iStorage)+"\n";
 			}

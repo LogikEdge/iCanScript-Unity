@@ -74,7 +74,7 @@ public partial class iCS_IStorage {
 			return null;
 		}
         if(transitionObject.IsInStatePort) {
-        	iCS_EditorObject source= transitionObject.ProducerPort;
+        	iCS_EditorObject source= transitionObject.ProviderPort;
 			if(source == null) {
 				return null;
 			}
@@ -95,7 +95,7 @@ public partial class iCS_IStorage {
             }
         }
         if(transitionObject.IsInTransitionPort) {
-        	iCS_EditorObject source= transitionObject.ProducerPort;
+        	iCS_EditorObject source= transitionObject.ProviderPort;
 			if(source == null) {
 				return null;
 			}
@@ -139,7 +139,7 @@ public partial class iCS_IStorage {
 		}
         if(transitionObject.IsInTransitionPort) return transitionObject;
 		if(transitionObject.IsInStatePort) {
-			transitionObject= transitionObject.ProducerPort;
+			transitionObject= transitionObject.ProviderPort;
 			if(transitionObject == null) return null;
 		}
 		if(transitionObject.IsOutTransitionPort) {
@@ -163,7 +163,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject GetOutTransitionPort(iCS_EditorObject transitionObject) {
 		if(transitionObject.IsInStatePort) {
-			transitionObject= transitionObject.ProducerPort;
+			transitionObject= transitionObject.ProviderPort;
 			if(transitionObject == null) return null;
 		}
 		if(transitionObject.IsOutTransitionPort) return transitionObject;
@@ -194,7 +194,7 @@ public partial class iCS_IStorage {
 		if(transitionObject == null) return null;
 		if(transitionObject.IsTransitionPackage) return transitionObject;
 		if(transitionObject.IsInStatePort) {
-			transitionObject= transitionObject.ProducerPort;
+			transitionObject= transitionObject.ProviderPort;
 			if(transitionObject == null) return null;
 		}
 		if(transitionObject.IsOutStatePort) {

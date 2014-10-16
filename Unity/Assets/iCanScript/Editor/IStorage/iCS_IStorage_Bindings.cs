@@ -7,8 +7,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject obj, iCS_EditorObject src) {
         int id= src == null ? -1 : src.InstanceId;
-        if(id != obj.ProducerPortId) {
-            obj.ProducerPortId= id; 
+        if(id != obj.ProviderPortId) {
+            obj.ProviderPortId= id; 
         }
     }
     // ----------------------------------------------------------------------
@@ -50,14 +50,14 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     bool IsPortConnected(iCS_EditorObject port) {
         if(port.IsSourceValid) return true;
-        if(FindFirst(o=> o.IsPort && o.ProducerPortId == port.InstanceId) != null) return true;
+        if(FindFirst(o=> o.IsPort && o.ProviderPortId == port.InstanceId) != null) return true;
         return false;
     }
     bool IsPortDisconnected(iCS_EditorObject port) { return !IsPortConnected(port); }
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
-    public iCS_EditorObject GetFirstProducerPort(iCS_EditorObject port) {
-        iCS_EngineObject engineObject= Storage.GetFirstProducerPort(port.EngineObject);
+    public iCS_EditorObject GetFirstProviderPort(iCS_EditorObject port) {
+        iCS_EngineObject engineObject= Storage.GetFirstProviderPort(port.EngineObject);
         return engineObject != null ? EditorObjects[engineObject.InstanceId] : null;
     }
     
@@ -65,35 +65,35 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Binding Queries
 	// ----------------------------------------------------------------------
-    public iCS_EditorObject GetPointToPointProducerPortForConsumerPort(iCS_EditorObject consumerPort) {
+    public iCS_EditorObject GetPointToPointProviderPortForConsumerPort(iCS_EditorObject consumerPort) {
         if(consumerPort == null) return null;
-        var ProducerPort= consumerPort.ProducerPort;
-        while( ProducerPort != null ) {
-            if(ProducerPort.ConsumerPorts.Length > 1) break;
-            consumerPort= ProducerPort;
-            ProducerPort= ProducerPort.ProducerPort;
+        var providerPort= consumerPort.ProviderPort;
+        while( providerPort != null ) {
+            if(providerPort.ConsumerPorts.Length > 1) break;
+            consumerPort= providerPort;
+            providerPort= providerPort.ProviderPort;
         }
         return consumerPort; 
     }
 	// ----------------------------------------------------------------------
-    public iCS_EditorObject GetPointToPointConsumerPortForProducerPort(iCS_EditorObject ProducerPort) {
-        if(ProducerPort == null) return null;
-        while(ProducerPort != null) {
-            var consumerPorts= ProducerPort.ConsumerPorts;
-            if(consumerPorts == null || consumerPorts.Length == 0) return ProducerPort;
-            if(consumerPorts.Length > 1) return ProducerPort;
-            ProducerPort= consumerPorts[0];            
+    public iCS_EditorObject GetPointToPointConsumerPortForProviderPort(iCS_EditorObject providerPort) {
+        if(providerPort == null) return null;
+        while(providerPort != null) {
+            var consumerPorts= providerPort.ConsumerPorts;
+            if(consumerPorts == null || consumerPorts.Length == 0) return providerPort;
+            if(consumerPorts.Length > 1) return providerPort;
+            providerPort= consumerPorts[0];            
         }
-        return ProducerPort;
+        return providerPort;
     }
 	// ----------------------------------------------------------------------
-    public iCS_EditorObject[] GetPointToPointConsumerPortsForProducerPort(iCS_EditorObject ProducerPort) {
-        if(ProducerPort == null) return null;
-        var consumerPorts= ProducerPort.ConsumerPorts;
+    public iCS_EditorObject[] GetPointToPointConsumerPortsForProviderPort(iCS_EditorObject providerPort) {
+        if(providerPort == null) return null;
+        var consumerPorts= providerPort.ConsumerPorts;
         if(consumerPorts == null || consumerPorts.Length == 0) return new iCS_EditorObject[0];
         var len= consumerPorts.Length;
         for(int i= 0; i < len; ++i) {
-            consumerPorts[i]= GetPointToPointConsumerPortForProducerPort(consumerPorts[i]);
+            consumerPorts[i]= GetPointToPointConsumerPortForProviderPort(consumerPorts[i]);
         }
         return consumerPorts;
     }
@@ -101,20 +101,20 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Binding Automatic Layout
 	// ----------------------------------------------------------------------
-    public void AutoLayoutOfPointToPointBinding(iCS_EditorObject ProducerPort, iCS_EditorObject consumerPort) {
-        if(ProducerPort == null || consumerPort == null || ProducerPort == consumerPort) return;
-        AutoLayoutOfProducerPort(ProducerPort, consumerPort);
-        AutoLayoutOfConsumerPort(ProducerPort, consumerPort);
-        AutoLayoutOfPointToPointBindingExclusive(ProducerPort, consumerPort);
+    public void AutoLayoutOfPointToPointBinding(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return;
+        AutoLayoutOfProviderPort(providerPort, consumerPort);
+        AutoLayoutOfConsumerPort(providerPort, consumerPort);
+        AutoLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
     }
 	// ----------------------------------------------------------------------
-    public Vector2 GetProducerLineSegmentPosition(iCS_EditorObject port) {
+    public Vector2 GetProviderLineSegmentPosition(iCS_EditorObject port) {
         if(port == null) {
-            Debug.LogWarning("iCanScript: GetProducerPosition(...) should not be called with null!");
+            Debug.LogWarning("iCanScript: GetProviderPosition(...) should not be called with null!");
             return Vector2.zero;
         }
-        var ProducerPort= port.ProducerPort;
-        return ProducerPort == null ? port.ParentNode.GlobalPosition : ProducerPort.GlobalPosition;
+        var providerPort= port.ProviderPort;
+        return providerPort == null ? port.ParentNode.GlobalPosition : providerPort.GlobalPosition;
     }
 	// ----------------------------------------------------------------------
     public Vector2 GetConsumerLineSegmentPosition(iCS_EditorObject port) {
@@ -139,15 +139,15 @@ public partial class iCS_IStorage {
 	// ----------------------------------------------------------------------
 	public void AutoLayoutPort(iCS_EditorObject port) {
         var portPos= port.GlobalPosition;		
-        // First layout from port to Producer
-        var ProducerPort= GetPointToPointProducerPortForConsumerPort(port);
-        if(ProducerPort != null && ProducerPort != port) {
-            var ProducerLayoutEndPoint= GetProducerLineSegmentPosition(ProducerPort);
-            AutoLayoutPort(ProducerPort, portPos, ProducerLayoutEndPoint);
-            AutoLayoutOfPointToPointBindingExclusive(ProducerPort, port);
+        // First layout from port to provider
+        var providerPort= GetPointToPointProviderPortForConsumerPort(port);
+        if(providerPort != null && providerPort != port) {
+            var providerLayoutEndPoint= GetProviderLineSegmentPosition(providerPort);
+            AutoLayoutPort(providerPort, portPos, providerLayoutEndPoint);
+            AutoLayoutOfPointToPointBindingExclusive(providerPort, port);
         }
         // Secondly, layout from port to consumer.
-        var consumerPorts= GetPointToPointConsumerPortsForProducerPort(port);
+        var consumerPorts= GetPointToPointConsumerPortsForProviderPort(port);
         if(consumerPorts != null) {
             foreach(var consumerPort in consumerPorts) {
                 var consumerLayoutEndPoint= GetConsumerLineSegmentPosition(consumerPort);
@@ -171,27 +171,27 @@ public partial class iCS_IStorage {
         return false;
     }
 	// ----------------------------------------------------------------------
-    public bool AutoLayoutOfProducerPort(iCS_EditorObject ProducerPort, iCS_EditorObject consumerPort) {
-        if(ProducerPort == null || consumerPort == null || ProducerPort == consumerPort) return false;
-        var ProducerPos= GetProducerLineSegmentPosition(ProducerPort);
+    public bool AutoLayoutOfProviderPort(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return false;
+        var providerPos= GetProviderLineSegmentPosition(providerPort);
         var consumerPos= GetConsumerLineSegmentPosition(consumerPort);
-        return AutoLayoutPort(ProducerPort, ProducerPos, consumerPos);
+        return AutoLayoutPort(providerPort, providerPos, consumerPos);
     }
 	// ----------------------------------------------------------------------
-    public bool AutoLayoutOfConsumerPort(iCS_EditorObject ProducerPort, iCS_EditorObject consumerPort) {
-        if(ProducerPort == null || consumerPort == null || ProducerPort == consumerPort) return false;
-        var ProducerPos= GetProducerLineSegmentPosition(ProducerPort);
+    public bool AutoLayoutOfConsumerPort(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return false;
+        var providerPos= GetProviderLineSegmentPosition(providerPort);
         var consumerPos= GetConsumerLineSegmentPosition(consumerPort);
-        return AutoLayoutPort(consumerPort, ProducerPos, consumerPos);
+        return AutoLayoutPort(consumerPort, providerPos, consumerPos);
     }
 	// ----------------------------------------------------------------------
-    public bool AutoLayoutOfPointToPointBindingExclusive(iCS_EditorObject ProducerPort, iCS_EditorObject consumerPort) {
-        if(ProducerPort == null || consumerPort == null || ProducerPort == consumerPort) return false;
+    public bool AutoLayoutOfPointToPointBindingExclusive(iCS_EditorObject providerPort, iCS_EditorObject consumerPort) {
+        if(providerPort == null || consumerPort == null || providerPort == consumerPort) return false;
         bool hasChanged= false;
-        var ProducerPos= ProducerPort.GlobalPosition;
+        var providerPos= providerPort.GlobalPosition;
         var consumerPos= consumerPort.GlobalPosition;
-        for(consumerPort= consumerPort.ProducerPort; consumerPort != null && consumerPort != ProducerPort; consumerPort= consumerPort.ProducerPort) {
-            hasChanged |= AutoLayoutPort(consumerPort, ProducerPos, consumerPos);
+        for(consumerPort= consumerPort.ProviderPort; consumerPort != null && consumerPort != providerPort; consumerPort= consumerPort.ProviderPort) {
+            hasChanged |= AutoLayoutPort(consumerPort, providerPos, consumerPos);
         }
         return hasChanged;
     }
@@ -210,9 +210,9 @@ public partial class iCS_IStorage {
         RebuildConnectionsFor(node);
     }
 	// ----------------------------------------------------------------------
-    public void SetAndAutoLayoutNewDataConnection(iCS_EditorObject consumerPort, iCS_EditorObject ProducerPort, iCS_TypeCastInfo conversion= null) {
-        SetNewDataConnection(consumerPort, ProducerPort, conversion);
-        AutoLayoutOfPointToPointBindingExclusive(ProducerPort, consumerPort);
+    public void SetAndAutoLayoutNewDataConnection(iCS_EditorObject consumerPort, iCS_EditorObject providerPort, iCS_TypeCastInfo conversion= null) {
+        SetNewDataConnection(consumerPort, providerPort, conversion);
+        AutoLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
     }
 	// ----------------------------------------------------------------------
     public void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_TypeCastInfo conversion= null) {
@@ -236,7 +236,7 @@ public partial class iCS_IStorage {
             }
         }
         if(!inParentSeen && inGrandParent != null) {
-			var sourcePort= inPort.ProducerPort;
+			var sourcePort= inPort.ProviderPort;
 			iCS_EditorObject newPort= null;
 			// Attempt to reuse existing ports.
 			if(sourcePort != null && sourcePort.ParentNode == inGrandParent && conversion == null) {
@@ -265,7 +265,7 @@ public partial class iCS_IStorage {
 			if(conversion == null &&
 			   outGrandParent.UntilMatchingChild(
 				   p=> {
-					   if(p.IsPort && p.ProducerPort == outPort) {
+					   if(p.IsPort && p.ProviderPort == outPort) {
 						   newPort= p;
 						   return true;
 					   }
@@ -306,9 +306,9 @@ public partial class iCS_IStorage {
 			}
 			var existingPort= FindPortWithSourceEndPoint(newInputNode, outputPort);
 			if(existingPort != null) {
-				var prevSource= inputPort.ProducerPort;
+				var prevSource= inputPort.ProviderPort;
 				if(prevSource != existingPort) {
-					inputPort.ProducerPort= existingPort;
+					inputPort.ProviderPort= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
@@ -317,8 +317,8 @@ public partial class iCS_IStorage {
 			} else {
 	            iCS_EditorObject newPort= CreatePort(inputPort.Name, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
-				newPort.ProducerPort= inputPort.ProducerPort;
-				inputPort.ProducerPort= newPort;
+				newPort.ProviderPort= inputPort.ProviderPort;
+				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
 			}			
 			return;
@@ -332,9 +332,9 @@ public partial class iCS_IStorage {
 			}
 			var existingPort= FindPortWithSourceEndPoint(newDstNode, outputPort);
 			if(existingPort != null) {
-				var prevSource= inputPort.ProducerPort;
+				var prevSource= inputPort.ProviderPort;
 				if(prevSource != existingPort) {
-					inputPort.ProducerPort= existingPort;
+					inputPort.ProviderPort= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
@@ -343,8 +343,8 @@ public partial class iCS_IStorage {
 			} else {
 	            iCS_EditorObject newPort= CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
-				newPort.ProducerPort= inputPort.ProducerPort;
-				inputPort.ProducerPort= newPort;
+				newPort.ProviderPort= inputPort.ProviderPort;
+				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
 			}
 			return;
@@ -352,9 +352,9 @@ public partial class iCS_IStorage {
 			// Rebuilding moving up from the consumer port towards the common parent.
 			var existingPort= FindPortWithSourceEndPoint(inputNodeParent, outputPort);
 			if(existingPort != null) {
-				var prevSource= inputPort.ProducerPort;
+				var prevSource= inputPort.ProviderPort;
 				if(prevSource != existingPort) {
-					inputPort.ProducerPort= existingPort;
+					inputPort.ProviderPort= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						CleanupHangingConnection(prevSource);
 					}					
@@ -363,8 +363,8 @@ public partial class iCS_IStorage {
 			} else {
 	            iCS_EditorObject newPort= CreatePort(inputPort.Name, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
-				newPort.ProducerPort= inputPort.ProducerPort;
-				inputPort.ProducerPort= newPort;
+				newPort.ProviderPort= inputPort.ProviderPort;
+				inputPort.ProviderPort= newPort;
 				RebuildDataConnection(outputPort, newPort);
 			}			
 		}
@@ -375,7 +375,7 @@ public partial class iCS_IStorage {
 		node.ForEachChildPort(
 			p=> {
 			    if(p.IsDataOrControlPort) {
-    				var outputPort= p.FirstProducerPort;
+    				var outputPort= p.FirstProviderPort;
     				foreach(var inputPort in p.EndConsumerPorts) {
     					RebuildDataConnection(outputPort, inputPort);
     				}			        
@@ -456,7 +456,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public iCS_EditorObject FindPortWithSourceEndPoint(iCS_EditorObject node, iCS_EditorObject srcEP) {
 		// Get all ports that match request (supports connection loops).
-		var matchingPorts= node.BuildListOfChildPorts(p=> p.FirstProducerPort == srcEP);
+		var matchingPorts= node.BuildListOfChildPorts(p=> p.FirstProviderPort == srcEP);
 		if(matchingPorts.Length == 0) return null;
 		if(matchingPorts.Length == 1) return matchingPorts[0];
 		foreach(var p in matchingPorts) {
@@ -468,7 +468,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public void CleanupHangingConnection(iCS_EditorObject port) {
 		if(port.ConsumerPorts.Length == 0) {
-			var src= port.ProducerPort;
+			var src= port.ProviderPort;
 			DestroyInstance(port);
 			if(src != null) {
 				CleanupHangingConnection(src);

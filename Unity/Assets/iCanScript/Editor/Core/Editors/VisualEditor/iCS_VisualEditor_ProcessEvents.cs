@@ -191,7 +191,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case iCS_PickPartEnum.Value: {
-                if(!pickedObject.IsInDataOrControlPort || pickedObject.ProducerPortId != -1) break;
+                if(!pickedObject.IsInDataOrControlPort || pickedObject.ProviderPortId != -1) break;
 				if(iCS_PortValueEditor.IsValueEditionSupported(pickedObject.RuntimeType)) {
 					mySubEditor= new iCS_PortValueEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);
 				}

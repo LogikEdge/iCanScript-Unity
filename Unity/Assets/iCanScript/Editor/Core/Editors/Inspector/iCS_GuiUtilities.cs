@@ -32,7 +32,7 @@ public static class iCS_GuiUtilities {
         // Extract port information
 		Type portType= port.RuntimeType;
         iCS_EditorObject parent= port.Parent;
-        iCS_EditorObject sourcePort= port.ProducerPort;
+        iCS_EditorObject sourcePort= port.ProviderPort;
         bool hasSource= sourcePort != null;
         // Get runtime object if it exists.
         var runtimeObject= iStorage.GetRuntimeObject(parent) as iCS_ISignature;

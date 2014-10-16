@@ -379,7 +379,7 @@ public static partial class iCS_UserCommands {
             transitionPackage.SetInitialPosition(globalPos);
             transitionPackage.Iconize();
             // Attempt to proper edge for transition ports.
-            var outTransitionPort= toStatePort.ProducerPort;
+            var outTransitionPort= toStatePort.ProviderPort;
             var inTransitionPort= iStorage.GetInTransitionPort(transitionPackage);
             var diff= toStatePortPos-fromStatePortPos;
             if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y)) {

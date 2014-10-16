@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -174,8 +174,8 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
-    public iCS_EngineObject GetFirstProducerPort(iCS_EngineObject port) {
-        return GetFirstProducerPort(this, port);
+    public iCS_EngineObject GetFirstProviderPort(iCS_EngineObject port) {
+        return GetFirstProviderPort(this, port);
     }
     // ----------------------------------------------------------------------
     // Returns the list of consumer ports.
@@ -364,7 +364,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
-    public static iCS_EngineObject GetFirstProducerPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+    public static iCS_EngineObject GetFirstProviderPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
         if(port == null) return null;
         int linkLength= 0;
         for(iCS_EngineObject sourcePort= GetSourcePort(vsd, port); sourcePort != null; sourcePort= GetSourcePort(vsd, port)) {

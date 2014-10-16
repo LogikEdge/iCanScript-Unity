@@ -30,44 +30,44 @@ public partial class iCS_EditorObject {
 		}
 	}
 	// ----------------------------------------------------------------------
-    public int ProducerPortId {
+    public int ProviderPortId {
 		get { return EngineObject.SourceId; }
 		set { EngineObject.SourceId= value; }
 	}
 	// ----------------------------------------------------------------------
-    public iCS_EditorObject ProducerPort {
-		get { return ProducerPortId != -1 ? myIStorage[ProducerPortId] : null; }
-		set { ProducerPortId= (value != null ? value.InstanceId : -1); }
+    public iCS_EditorObject ProviderPort {
+		get { return ProviderPortId != -1 ? myIStorage[ProviderPortId] : null; }
+		set { ProviderPortId= (value != null ? value.InstanceId : -1); }
 	}
 	// ----------------------------------------------------------------------
-    public iCS_EditorObject VisibleProducerPort {
+    public iCS_EditorObject VisibleProviderPort {
 		get {
-            var ProducerPort= ProducerPort;
-            if(ProducerPort != null) {
-                var ProducerNode= ProducerPort.Parent;
-                if(ProducerNode.IsHidden) {
-                    if(ProducerNode.IsTypeCast) {
-                        ProducerNode.ForEachChild(c=> P.executeIf(c, t=> t.IsInDataPort && !t.IsFloating, f=> ProducerPort= f.ProducerPort));
+            var providerPort= ProviderPort;
+            if(providerPort != null) {
+                var providerNode= providerPort.Parent;
+                if(providerNode.IsHidden) {
+                    if(providerNode.IsTypeCast) {
+                        providerNode.ForEachChild(c=> P.executeIf(c, t=> t.IsInDataPort && !t.IsFloating, f=> providerPort= f.ProviderPort));
                     }
                     else {
-                        Debug.LogWarning("iCanScript: Internal warning=> Need to update VisibleProducerPort filtering.");
+                        Debug.LogWarning("iCanScript: Internal warning=> Need to update VisibleProviderPort filtering.");
                     }                    
                 }
             }
-            return ProducerPort;
+            return providerPort;
         }
 	}
 	// ----------------------------------------------------------------------
-	public iCS_EditorObject FirstProducerPort {
+	public iCS_EditorObject FirstProviderPort {
 		get {
-		    var engineObject= Storage.GetFirstProducerPort(EngineObject);
+		    var engineObject= Storage.GetFirstProviderPort(EngineObject);
 		    return engineObject != null ? EditorObjects[engineObject.InstanceId] : this;
 		}
 	}
 	// ----------------------------------------------------------------------
 	public iCS_EditorObject[] ConsumerPorts {
 		get {
-			return Filter(c=> c.IsPort && c.ProducerPortId == InstanceId).ToArray();
+			return Filter(c=> c.IsPort && c.ProviderPortId == InstanceId).ToArray();
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -92,7 +92,7 @@ public partial class iCS_EditorObject {
 	public P.Tuple<iCS_EditorObject,iCS_EditorObject>[] Connections {
 		get {
 			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
-			var source= FirstProducerPort;
+			var source= FirstProviderPort;
 			foreach(var consumer in source.EndConsumerPorts) {
 				result.Add(new P.Tuple<iCS_EditorObject,iCS_EditorObject>(source, consumer));
 			}			        
@@ -102,7 +102,7 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
 	public bool IsPartOfConnection(iCS_EditorObject testedPort) {
 		if(this == testedPort) return true;
-		var src= ProducerPort;
+		var src= ProviderPort;
 		if(src == null) return false;
 		return src.IsPartOfConnection(testedPort);
 	} 
@@ -122,12 +122,12 @@ public partial class iCS_EditorObject {
 	public object InitialPortValue {
 		get {
 			if(!IsInDataOrControlPort) return null;
-			if(ProducerPortId != -1) return null;
+			if(ProviderPortId != -1) return null;
 			return InitialValue;			
 		}
 		set {
 			if(!IsInDataOrControlPort) return;
-			if(ProducerPortId != -1) return;
+			if(ProviderPortId != -1) return;
 			InitialValue= value;
 	        myIStorage.StoreInitialPortValueInArchive(this);			
 		}
@@ -137,7 +137,7 @@ public partial class iCS_EditorObject {
 	public object PortValue {
 		get {
 			if(!IsDataOrControlPort) return null;
-			var port= FirstProducerPort;
+			var port= FirstProviderPort;
 			// Get value from port group (ex: ParentMuxPort).
 			var funcBase= myIStorage.GetRuntimeObject(port) as iCS_ISignature;
 			if(funcBase != null) {

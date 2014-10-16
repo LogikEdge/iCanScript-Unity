@@ -231,9 +231,9 @@ public partial class iCS_IStorage {
             c=> {
                 if(c.IsPort) {
                     if(port.IsInputPort) {
-                        if(c.ProducerPort == port) result= c.Parent;
+                        if(c.ProviderPort == port) result= c.Parent;
                     } else {
-                        if(port.ProducerPort == c) result= c.Parent;
+                        if(port.ProviderPort == c) result= c.Parent;
                     }                    
                 }
             }
@@ -261,7 +261,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void InstanceWizardDestroyPortIfNotConnected(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
         iCS_EditorObject port= InstanceWizardGetPort(module, portName, objType);
-        if(port != null && port.ProducerPort == null && FindAConnectedPort(port) == null) {
+        if(port != null && port.ProviderPort == null && FindAConnectedPort(port) == null) {
             DestroyInstance(port.InstanceId);
         }
     }
@@ -362,7 +362,7 @@ public partial class iCS_IStorage {
         toDelete.ForEachChildPort(
             p=> {
                 if(p.IsInDataPort && !p.IsInInstancePort) {
-                    var source= p.ProducerPort;
+                    var source= p.ProviderPort;
                     if(source != null && source.ParentNode == objectInstance) {
                         portsToDestroy.Add(source);
                     }
@@ -373,7 +373,7 @@ public partial class iCS_IStorage {
         objectInstance.ForEachChildPort(
             p=> {
                 if(p.IsOutDataPort) {
-                    var source= p.ProducerPort;
+                    var source= p.ProviderPort;
                     if(source != null && source.ParentNode == toDelete) {
                         portsToDestroy.Add(p);
                     }
@@ -430,7 +430,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject InstanceWizardGetConstructor(iCS_EditorObject module) {
         iCS_EditorObject instancePort= InstanceWizardGetInputThisPort(module);
         if(instancePort == null) return null;
-        iCS_EditorObject constructorThisPort= instancePort.ProducerPort;
+        iCS_EditorObject constructorThisPort= instancePort.ProviderPort;
         if(constructorThisPort == null) return null;
         iCS_EditorObject constructor= constructorThisPort.ParentNode;
         return constructor.IsConstructor ? constructor : null;
