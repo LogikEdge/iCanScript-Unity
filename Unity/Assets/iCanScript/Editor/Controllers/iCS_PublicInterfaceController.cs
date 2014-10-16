@@ -146,6 +146,11 @@ public static class iCS_PublicInterfaceController {
 			{ get { return VisualScript.GetVisualScriptFromReferenceNode(EngineObject); }}
 		public iCS_EngineObject	   TargetEngineObject
 			{ get { return VisualScript.GetEngineObjectFromReferenceNode(EngineObject); }}
+        public string Name {
+            get {
+                return VisualScript.name+"."+EngineObject.Name;
+            }
+        }
     };
 
 
@@ -202,20 +207,30 @@ public static class iCS_PublicInterfaceController {
 		foreach(var pf in ourPublicFunctions)		{ PublicFunctionGroups.Add(pf); }
 		foreach(var fc in ourFunctionCalls)			{ PublicFunctionGroups.Add(fc); }
 		
+        // Validate variable & function groups
+        var variableDiff= ValidateVariableDefinitions();
+        var functionDiff= ValidateFunctionDefinitions();
+        Debug.Log("Did validate public interface");
+        foreach(var t in variableDiff) {
+            Debug.Log("Variable mismatch=> "+t.Item1.Name+" & "+t.Item2.Name);
+        }
+        foreach(var t in functionDiff) {
+            Debug.Log("Function mismatch=> "+t.Item1.Name+" & "+t.Item2.Name);
+        }
 //#if DEBUG
 //        Debug.Log("Scene as changed =>"+EditorApplication.currentScene);
-//		Debug.Log("NbOfPublicVariableGroups=> "+PublicVariableGroups.NbOfGroups);
-//		PublicVariableGroups.ForEach(
-//			(name, group)=> {
-//				Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
-//			}
-//		);
-//		Debug.Log("NbOfPublicFunctionGroups=> "+PublicFunctionGroups.NbOfGroups);
-//		PublicFunctionGroups.ForEach(
-//			(name, group)=> {
-//				Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
-//			}
-//		);
+//        Debug.Log("NbOfPublicVariableGroups=> "+PublicVariableGroups.NbOfGroups);
+//        PublicVariableGroups.ForEach(
+//            (name, group)=> {
+//                Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
+//            }
+//        );
+//        Debug.Log("NbOfPublicFunctionGroups=> "+PublicFunctionGroups.NbOfGroups);
+//        PublicFunctionGroups.ForEach(
+//            (name, group)=> {
+//                Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
+//            }
+//        );
 //#endif
     }
 
@@ -276,35 +291,6 @@ public static class iCS_PublicInterfaceController {
             iCS_SceneController.VisualScriptsInOrReferencedByScene
         );
         return result.ToArray();
-
-//        return P.fold(
-//            (result,vs)=> (
-//                P.append(
-//                    P.map(
-//                        pv=> new VSObjectReference(vs, pv.InstanceId),
-//                        iCS_VisualScriptData.FindPublicVariables(vs)
-//                    ),
-//                    result
-//                )                
-//            ),
-//            new VSObjectReference[0],
-//            VisualScriptsInOrReferencedByScene
-//        );
-
-//        return P.fold(
-//            (result,vs)=> (
-//                P.fold(
-//                    (acc,pv)=> {
-//                        acc.Add(new VSObjectReference(vs, pv.InstanceId));
-//                        return acc;
-//                    },
-//                    result,
-//                    iCS_VisualScriptData.FindPublicVariables(vs)        
-//                )
-//            ),
-//            new List<VSObjectReference>(),
-//            VisualScriptsInOrReferencedByScene
-//        ).ToArray();
     }
     static VSObjectReference[] ScanForPublicFunctions() {
         var result= new List<VSObjectReference>();
@@ -367,6 +353,7 @@ public static class iCS_PublicInterfaceController {
             (name, group)=> {
 				var definitions= group.Definitions;
 				if(P.length(definitions) < 2) return;
+                Debug.Log("validating variable definitions");
 				var qualifiedType= definitions[0].EngineObject.QualifiedType;
 				P.fold(
 					(acc,o)=> {
@@ -418,11 +405,13 @@ public static class iCS_PublicInterfaceController {
     // ----------------------------------------------------------------------
 	/// Determines if the given functions have the same composition.
 	static bool IsSameFunction(iCS_VisualScriptImp vs1, iCS_EngineObject f1,
-									 iCS_VisualScriptImp vs2, iCS_EngineObject f2) {
+							   iCS_VisualScriptImp vs2, iCS_EngineObject f2) {
 		if(f1.Name != f2.Name) return false;
 		var ps1= iCS_VisualScriptData.GetChildPorts(vs1, f1);
 		var ps2= iCS_VisualScriptData.GetChildPorts(vs2, f2);
 		if(P.length(ps1) != P.length(ps2)) return false;
+        Array.Sort(ps1, (x,y)=> (int)x.PortIndex - (int)y.PortIndex);
+        Array.Sort(ps2, (x,y)=> (int)x.PortIndex - (int)y.PortIndex);
 		return P.and(P.zipWith( (p1,p2)=> IsSamePort(vs1,p1,vs2,p2), ps1, ps2));
 	}
     // ----------------------------------------------------------------------
