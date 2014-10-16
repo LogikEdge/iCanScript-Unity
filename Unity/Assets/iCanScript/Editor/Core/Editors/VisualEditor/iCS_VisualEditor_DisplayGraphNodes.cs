@@ -94,6 +94,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						if( !node.IsParentFloating ) {
                             if(node == rootNode) {
                             }
+							DisplayHelp(node);
 	                        myGraphics.DrawNormalNode(node, IStorage);							
 						}
                     }
@@ -109,6 +110,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(child.IsNode) {
                     if(child.IsHidden) return;
 					if( child.IsIconizedInLayout ) {
+						DisplayHelp(child);
 						myGraphics.DrawMinimizedNode(child, IStorage);						
 					}
 					else {
@@ -116,12 +118,35 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
 				}
                 if(child.IsPort) {
+					DisplayHelp(child);
 					myGraphics.DrawPort(child, IStorage);
 					myGraphics.DrawBinding(child, IStorage);
 				}
             }
         );
     }
+
+
+	void DisplayHelp(iCS_EditorObject node) {
+		Rect position= node.AnimatedRect;
+		bool isMouseOver= position.Contains(GraphMousePosition);
+		if(isMouseOver) {
+			iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
+			if (memberInfo != null) {
+				string tooltip= memberInfo.Summary;
+				if(tooltip != null && tooltip != "") {
+					myHelpText= tooltip;
+				}
+				else {
+					myHelpText= "no tip available";
+				}
+			}
+			else{
+				myHelpText= "no info available";
+			}
+		}
+	}
+
 
     // ======================================================================
     // Connections
@@ -165,12 +190,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             child=> {
                 if(child.IsPort) {
                     if(!IStorage.ShowDisplayRootNode && child.ParentNode == rootNode) return;
+					DisplayHelp(child);
                     myGraphics.DrawPort(child, IStorage);
                 }
                 if(child.IsNode) {
                     if(child.IsFloating && floatingRootNode == null) {
                         floatingRootNode= child;
                     } else {
+						DisplayHelp(child);
                         myGraphics.DrawMinimizedNode(child, IStorage);
                     }
                 }
