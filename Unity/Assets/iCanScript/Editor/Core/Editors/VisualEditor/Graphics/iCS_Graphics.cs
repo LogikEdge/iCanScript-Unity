@@ -971,7 +971,7 @@ public partial class iCS_Graphics {
         }
 
         // No connection to draw if source port is not visible.
-        iCS_EditorObject source= port.VisibleProviderPort;
+        iCS_EditorObject source= port.VisibleProducerPort;
         iCS_EditorObject sourceParent= source.Parent;
         bool isSourceVisible= source.IsVisibleOnDisplay;
         if(isSourceVisible == false && isShowInvisiblePort == false) return;
@@ -1216,7 +1216,7 @@ public partial class iCS_Graphics {
 		}
 		var enablePorts= obj.BuildListOfChildPorts(p=> p.IsEnablePort);
 		foreach(var ep in enablePorts) {
-			if(isPlaying || ep.ProviderPort == null) {
+			if(isPlaying || ep.ProducerPort == null) {
                 var portValue= ep.PortValue;
 				if(portValue != null && (bool)(ep.PortValue) == false) {
 					return false;

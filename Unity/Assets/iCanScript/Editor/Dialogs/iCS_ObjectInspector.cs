@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
@@ -98,7 +98,7 @@ public class iCS_ObjectInspector : EditorWindow {
 //                myObject.Tooltip= newTooltip;
 //                if(myObject.IsStatePort) {
 //                    if(myObject.IsOutStatePort) iStorage.FindAConnectedPort(myObject).Tooltip= toolTip;
-//                    else myObject.ProviderPort.Tooltip= toolTip;
+//                    else myObject.ProducerPort.Tooltip= toolTip;
 //                }
 //                iCS_UserCommands.CloseTransaction(iStorage, "Change tooltip");
 //            }
@@ -212,7 +212,7 @@ public class iCS_ObjectInspector : EditorWindow {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in inPorts) {
                     EditorGUILayout.LabelField("Name", port.Name);                        
-                    iCS_EditorObject outPort= port.ProviderPort;
+                    iCS_EditorObject outPort= port.ProducerPort;
                     EditorGUILayout.LabelField("State", outPort.Parent.Name);                    
                 }
             }

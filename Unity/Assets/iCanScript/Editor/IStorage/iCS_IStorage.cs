@@ -192,7 +192,7 @@ public partial class iCS_IStorage {
     public bool IsValid(iCS_EditorObject obj) {
 		return obj != null && IsIdValid(obj.InstanceId);
 	}
-    public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.ProviderPortId); }
+    public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.ProducerPortId); }
     public bool IsParentValid(iCS_EditorObject obj)  { return IsIdValid(obj.ParentId); }
     // ----------------------------------------------------------------------
 	public bool IsAnimationPlaying {
@@ -251,7 +251,7 @@ public partial class iCS_IStorage {
         // Keep a copy to repopulate for long bindings
         ForEach(
             obj=> {
-                if(obj.IsInDataOrControlPort && obj.ProviderPortId == -1 && obj.InitialValue != null) {
+                if(obj.IsInDataOrControlPort && obj.ProducerPortId == -1 && obj.InitialValue != null) {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
@@ -283,9 +283,9 @@ public partial class iCS_IStorage {
 	                        shouldRemove= true;
 	                    } else if(obj.IsParentMuxPort && IsPortDisconnected(obj) && obj.HasChildPort() == false) {
 	                        shouldRemove= true;
-	                    } else if(obj.IsChildMuxPort && obj.ProviderPort == null) {
+	                    } else if(obj.IsChildMuxPort && obj.ProducerPort == null) {
 	                        shouldRemove= true;
-	                    } else if(obj.ProviderPort == null) {
+	                    } else if(obj.ProducerPort == null) {
 							if(obj.IsChildMuxPort || obj.IsInStatePort || obj.IsInTransitionPort) {
 		                        shouldRemove= true;								
 							}
@@ -308,7 +308,7 @@ public partial class iCS_IStorage {
 	                                break;
 	                            case 1:
 	                                var childPorts= obj.BuildListOfChildPorts(_=> true);
-	                                obj.ProviderPort= childPorts[0].ProviderPort;
+	                                obj.ProducerPort= childPorts[0].ProducerPort;
 	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;
 	                                DestroyInstanceInternal(childPorts[0]);
                                     modified= true;
@@ -319,7 +319,7 @@ public partial class iCS_IStorage {
                     // Cleanup disconnected typecasts.
     				if(obj.IsTypeCast) {
 						var inDataPort= FindInChildren(obj, c=> c.IsInDataOrControlPort);
-                        if(inDataPort.ProviderPort == null ||
+                        if(inDataPort.ProducerPort == null ||
                            FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataOrControlPort)) == null) {
                            DestroyInstanceInternal(obj);
                            modified= true;
@@ -351,7 +351,7 @@ public partial class iCS_IStorage {
 					string instanceNodeName= obj.DefaultName;
 					var thisPort= InstanceWizardGetInputThisPort(obj);
 					if(thisPort != null) {
-						var producerPort= thisPort.FirstProviderPort;
+						var producerPort= thisPort.FirstProducerPort;
 						if(producerPort != null) {
 							var producerNode= producerPort.ParentNode;
 							if(producerNode.IsConstructor) {
@@ -418,7 +418,7 @@ public partial class iCS_IStorage {
     void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_IStorage destStorage, List<Prelude.Tuple<int,int>> xlat) {
         srcStorage.ForEachRecursive(srcObj,
             child=> {
-                if(child.ProviderPortId != -1) {
+                if(child.ProducerPortId != -1) {
                     int id= -1;
                     int sourceId= -1;
                     foreach(var pair in xlat) {
@@ -426,7 +426,7 @@ public partial class iCS_IStorage {
                             id= pair.Item2;
                             if(sourceId != -1) break;
                         }
-                        if(pair.Item1 == child.ProviderPortId) {
+                        if(pair.Item1 == child.ProducerPortId) {
                             sourceId= pair.Item2;
                             if(id != -1) break;
                         }

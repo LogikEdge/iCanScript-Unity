@@ -646,7 +646,7 @@ public class iCS_ContextualMenu {
         		var portParent= port.ParentNode;
         		if(portParent.IsParentOf(method)) isConsumerPort= !isConsumerPort;
                 iCS_EditorObject attachedPort= null;
-                iCS_EditorObject providerPort= null;
+                iCS_EditorObject ProducerPort= null;
                 iCS_EditorObject consumerPort= null;
                 if(isConsumerPort) {
         			iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), iStorage.GetChildOutputDataPorts(method)); 
@@ -654,14 +654,14 @@ public class iCS_ContextualMenu {
         			if(outputPorts.Length == 1) {
                         attachedPort= outputPorts[0];
                         consumerPort= port;
-                        providerPort= attachedPort;
+                        ProducerPort= attachedPort;
         			}
         			else {
         				var bestPort= GetClosestMatch(port, outputPorts);
         				if(bestPort != null) {
                             attachedPort= bestPort;
                             consumerPort= port;
-                            providerPort= bestPort;
+                            ProducerPort= bestPort;
         				}
         			}
                 } else {
@@ -670,7 +670,7 @@ public class iCS_ContextualMenu {
         			if(inputPorts.Length == 1) {
                         attachedPort= inputPorts[0];
                         consumerPort= attachedPort;
-                        providerPort= port;
+                        ProducerPort= port;
         			}
         			// Multiple choices exist so try the one with the closest name.
         			else {
@@ -678,14 +678,14 @@ public class iCS_ContextualMenu {
         				if(bestPort != null) {
                             attachedPort= bestPort;
                             consumerPort= bestPort;
-                            providerPort= port;
+                            ProducerPort= port;
         				}
         			}
                 }
                 // Position attached port and layout binding.
-                if(attachedPort != null && consumerPort != null && providerPort != null) {
+                if(attachedPort != null && consumerPort != null && ProducerPort != null) {
                     iStorage.AutoLayoutPort(attachedPort, port.GlobalPosition, attachedPort.ParentNode.GlobalPosition);
-                    iStorage.SetAndAutoLayoutNewDataConnection(consumerPort, providerPort);
+                    iStorage.SetAndAutoLayoutNewDataConnection(consumerPort, ProducerPort);
                 }                
                 iStorage.ForcedRelayoutOfTree();
             }
