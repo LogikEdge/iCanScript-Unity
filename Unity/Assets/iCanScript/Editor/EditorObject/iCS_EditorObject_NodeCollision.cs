@@ -15,7 +15,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public void ResolveCollisionOnChildrenNodes() {
 		// Get a snapshot of the children state.
-		var children= BuildListOfChildNodes(c=> !c.IsFloating);
+		var children= BuildListOfVisibleChildNodes(c=> !c.IsFloating);
         var childPos= P.map(n => n.LocalAnchorPosition+n.WrappingOffset, children);
 		var childRect= P.map(n => BuildRect(n.LocalAnchorPosition+n.WrappingOffset, n.LocalSize), children);
         // Resolve collisions.

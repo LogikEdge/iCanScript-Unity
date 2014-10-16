@@ -8,7 +8,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public void LoadInitialPortValueFromArchive(iCS_EditorObject port) {
 		if(!port.IsInDataOrControlPort) return;
-		if(port.ProviderPortId != -1) return;
+		if(port.ProducerPortId != -1) return;
 		if(iCS_Strings.IsEmpty(port.InitialValueArchive)) {
 			port.InitialValue= null;
 			return;
