@@ -101,13 +101,13 @@ public class iCS_SignatureDataSource {
 	// -------------------------------------------------------------------------
     // Returns one of the signature outputs.
     public object GetValue(int idx) {
-        if(idx == (int)iCS_PortIndex.Return) return ReturnValue;
-		if(idx == (int)iCS_PortIndex.OutInstance) return OutInstance;
-		if(idx == (int)iCS_PortIndex.Trigger) return Trigger;
-        if(idx == (int)iCS_PortIndex.InInstance) return InInstance;
+        if(idx == (int)iCS_ParameterIndex.Return) return ReturnValue;
+		if(idx == (int)iCS_ParameterIndex.OutInstance) return OutInstance;
+		if(idx == (int)iCS_ParameterIndex.Trigger) return Trigger;
+        if(idx == (int)iCS_ParameterIndex.InInstance) return InInstance;
 		if(idx < myParameters.Length) return GetParameter(idx);
-		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
-            int i= idx-(int)iCS_PortIndex.EnablesStart;
+		if(idx >= (int)iCS_ParameterIndex.EnablesStart && idx <= (int)iCS_ParameterIndex.EnablesEnd) {
+            int i= idx-(int)iCS_ParameterIndex.EnablesStart;
             if(i < myEnables.Length) {
                 var connection= myEnableConnections[i];
                 return connection == null ? myEnables[i] : myEnableConnections[i].Value;
@@ -127,23 +127,23 @@ public class iCS_SignatureDataSource {
             SetParameter(idx, value);
             return;
         }
-        if(idx == (int)iCS_PortIndex.Return) {
+        if(idx == (int)iCS_ParameterIndex.Return) {
             ReturnValue= value;
             return;
         }
-        if(idx == (int)iCS_PortIndex.InInstance) {
+        if(idx == (int)iCS_ParameterIndex.InInstance) {
             InInstance= value;
             return;
         }
-		if(idx == (int)iCS_PortIndex.OutInstance) {
+		if(idx == (int)iCS_ParameterIndex.OutInstance) {
 			OutInstance= value;
 			return;
 		}
-		if(idx == (int)iCS_PortIndex.Trigger) {
+		if(idx == (int)iCS_ParameterIndex.Trigger) {
 			Trigger= (bool)value;
 			return;
 		}
-		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
+		if(idx >= (int)iCS_ParameterIndex.EnablesStart && idx <= (int)iCS_ParameterIndex.EnablesEnd) {
 			SetEnable(idx, (bool)value);
 			return;
 		}
@@ -163,7 +163,7 @@ public class iCS_SignatureDataSource {
     }
 	// -------------------------------------------------------------------------
 	public void SetEnable(int idx, bool value) {
-		var i= idx-(int)iCS_PortIndex.EnablesStart;
+		var i= idx-(int)iCS_ParameterIndex.EnablesStart;
 //#if UNITY_EDITOR
 		if(i >= myEnables.Length) {
 			Debug.LogWarning("iCanScript: Invalid signature access: ["+idx+"]");
@@ -178,12 +178,12 @@ public class iCS_SignatureDataSource {
     		myParameterConnections[idx]= connection;            
             return;
         }
-        if(idx == (int)iCS_PortIndex.InInstance) {
+        if(idx == (int)iCS_ParameterIndex.InInstance) {
             myInInstanceConnection= connection;
             return;
         }
-		if(myEnableConnections != null && idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
-			var i= idx-(int)iCS_PortIndex.EnablesStart;
+		if(myEnableConnections != null && idx >= (int)iCS_ParameterIndex.EnablesStart && idx <= (int)iCS_ParameterIndex.EnablesEnd) {
+			var i= idx-(int)iCS_ParameterIndex.EnablesStart;
 			if(i < myEnableConnections.Length) {
 				myEnableConnections[i]= connection;
 			}

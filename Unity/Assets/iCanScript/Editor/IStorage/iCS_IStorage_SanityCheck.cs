@@ -6,7 +6,7 @@ public partial class iCS_IStorage {
     // Performs all sanity checks.
     public void SanityCheck() {
 	    SanityCheck_EditorEngineContainerCoherency();
-		SanityCheck_PortIndexes();
+		SanityCheck_ParameterIndexes();
 
     }
 
@@ -20,7 +20,7 @@ public partial class iCS_IStorage {
     }
 
     // ----------------------------------------------------------------------
-	void SanityCheck_PortIndexes() {
+	void SanityCheck_ParameterIndexes() {
 		ForEachNode(
 			node=> {
 				var ports= BuildFilteredListOfChildren(p=> p.IsPort, node);
@@ -28,17 +28,17 @@ public partial class iCS_IStorage {
 				ports= SortPortsOnIndex(ports);
 				// Check parameters
 				int i= 0;
-				int portIndex= ports[i].PortIndex;
-				int parametersStart= (int)iCS_PortIndex.ParametersStart;
-				int parametersEnd  = (int)iCS_PortIndex.ParametersEnd;
+				int portIndex= ports[i].ParameterIndex;
+				int parametersStart= (int)iCS_ParameterIndex.ParametersStart;
+				int parametersEnd  = (int)iCS_ParameterIndex.ParametersEnd;
 				if(portIndex >= parametersStart && portIndex <= parametersEnd) {
 					bool isFixPort= true;
-					int expectedPortIndex= parametersStart;
-					for(; i < ports.Length; ++i, ++expectedPortIndex) {
-						portIndex= ports[i].PortIndex;
+					int expectedParameterIndex= parametersStart;
+					for(; i < ports.Length; ++i, ++expectedParameterIndex) {
+						portIndex= ports[i].ParameterIndex;
 						if(portIndex < parametersStart || portIndex > parametersEnd) break;
-						if(portIndex != expectedPortIndex) {
-							Debug.LogWarning("iCanScript: Expected port index was: "+expectedPortIndex+" actual is: "+portIndex+" => "+ports[i].Name);
+						if(portIndex != expectedParameterIndex) {
+							Debug.LogWarning("iCanScript: Expected port index was: "+expectedParameterIndex+" actual is: "+portIndex+" => "+ports[i].Name);
 						}
 						if(isFixPort) {
 							if(!ports[i].IsFixDataPort) {

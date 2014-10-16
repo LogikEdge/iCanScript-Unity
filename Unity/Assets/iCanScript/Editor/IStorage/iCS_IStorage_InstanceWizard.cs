@@ -13,7 +13,7 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
             iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, iCS_IStorage.GetInstancePortName(classType), classType,
-                                                                               iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+                                                                               iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_ParameterIndex.InInstance);
             inThisPort.IsNameEditable= false;
         }
         if(Prefs.InstanceAutocreateOutFields)          InstanceWizardCreateOutputInstanceFields(module);
@@ -37,7 +37,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateInputInstancePort(Type classType, iCS_EditorObject instanceNode) {
-        return InstanceWizardCreatePortIfNonExisting(instanceNode, iCS_IStorage.GetInstancePortName(classType), classType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+        return InstanceWizardCreatePortIfNonExisting(instanceNode, iCS_IStorage.GetInstancePortName(classType), classType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_ParameterIndex.InInstance);
     }
     // ----------------------------------------------------------------------
     public void InstanceWizardCreateOutputInstanceFields(iCS_EditorObject module) {
@@ -211,7 +211,7 @@ public partial class iCS_IStorage {
         UntilMatchingChildPort(module,
             port=> {
                 if(port.Name == portName && port.ObjectType == objType) {
-                    if(portId != -1 && port.PortIndex != portId) {
+                    if(portId != -1 && port.ParameterIndex != portId) {
                         return false;
                     }
                     result= port;
@@ -243,7 +243,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardGetInputThisPort(iCS_EditorObject module) {
 //        iCS_EditorObject thisPort= InstanceWizardGetPort(module, iCS_IStorage.GetInstancePortName(module.RuntimeType),
-//                                                         iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+//                                                         iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_ParameterIndex.InInstance);
 //        if(thisPort == null) {
 //            iCS_EditorObject constructor= InstanceWizardGetConstructor(module);
 //            if(constructor == null) return null;
@@ -273,7 +273,7 @@ public partial class iCS_IStorage {
             port= CreatePort(portName, module.InstanceId, portType, objType);                
 			port.IsNameEditable= false;
             if(portIdx != -1) {
-                port.PortIndex= portIdx;                
+                port.ParameterIndex= portIdx;                
             }
         }
         return port;
@@ -394,7 +394,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject InstanceWizardCreateConstructor(iCS_EditorObject module, iCS_ConstructorInfo desc) {
         InstanceWizardDestroyConstructor(module);
         iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_IStorage.GetInstancePortName(module.RuntimeType),
-                                                               iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+                                                               iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_ParameterIndex.InInstance);
         if(moduleThisPort == null) return null;
         Rect thisPos= moduleThisPort.GlobalRect; 
         iCS_EditorObject constructor= CreateFunction(module.ParentId, desc);
@@ -456,11 +456,11 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject FindInputInstancePortOn(iCS_EditorObject module) {
-        var portId= (int)iCS_PortIndex.InInstance;
+        var portId= (int)iCS_ParameterIndex.InInstance;
         iCS_EditorObject result= null;
         UntilMatchingChildPort(module,
             port=> {
-                if(port.PortIndex == portId) {
+                if(port.ParameterIndex == portId) {
                     result= port;
                     return true;
                 }
@@ -471,11 +471,11 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject FindOutputInstancePortOn(iCS_EditorObject module) {
-        var portId= (int)iCS_PortIndex.OutInstance;
+        var portId= (int)iCS_ParameterIndex.OutInstance;
         iCS_EditorObject result= null;
         UntilMatchingChildPort(module,
             port=> {
-                if(port.PortIndex == portId) {
+                if(port.ParameterIndex == portId) {
                     result= port;
                     return true;
                 }

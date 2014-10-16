@@ -154,8 +154,8 @@ public static class iCS_ObjectType {
 
 	// Parameter Data Flow Ports
 	public static bool IsParameterPort        (iCS_EngineObject obj) { return IsPort(obj) &&
-	                                                                          obj.PortIndex >= (int)iCS_PortIndex.ParametersStart &&
-	                                                                          obj.PortIndex <= (int)iCS_PortIndex.ParametersEnd; }
+	                                                                          obj.ParameterIndex >= (int)iCS_ParameterIndex.ParametersStart &&
+	                                                                          obj.ParameterIndex <= (int)iCS_ParameterIndex.ParametersEnd; }
 	public static bool IsInParameterPort	  (iCS_EngineObject obj) { return IsInputPort(obj) && IsParameterPort(obj); }
 	public static bool IsOutParameterPort     (iCS_EngineObject obj) { return IsOutputPort(obj) && IsParameterPort(obj); }
 
@@ -183,6 +183,6 @@ public static class iCS_ObjectType {
 	// Instance Ports
 	public static bool IsInstancePort		  (iCS_EngineObject obj) { return IsInInstancePort(obj) || IsOutInstancePort(obj); }
 	public static bool IsInInstancePort		  (iCS_EngineObject obj) { return IsInFixDataPort(obj) &&
-	                                                                          obj.PortIndex == (int)iCS_PortIndex.InInstance; }
-	public static bool IsOutInstancePort	  (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.OutInstance; }
+	                                                                          obj.ParameterIndex == (int)iCS_ParameterIndex.InInstance; }
+	public static bool IsOutInstancePort	  (iCS_EngineObject obj) { return obj.ParameterIndex == (int)iCS_ParameterIndex.OutInstance; }
 }

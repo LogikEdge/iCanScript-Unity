@@ -40,7 +40,7 @@ public partial class iCS_IStorage {
         int idx= 0;
         port.ForEachChildPort(
             c=> {
-                c.PortIndex= idx++;
+                c.ParameterIndex= idx++;
             }
         );
 	}

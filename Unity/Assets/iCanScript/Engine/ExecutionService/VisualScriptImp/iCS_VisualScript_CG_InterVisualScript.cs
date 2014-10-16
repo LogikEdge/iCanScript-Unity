@@ -18,7 +18,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		iCS_Connection connection= null;
         bool isAlwaysReady= true;
         bool isControlPort= proxyPort.IsControlPort;
-		connection= new iCS_Connection(runtimeNode as iCS_ISignature, proxyPort.PortIndex, isAlwaysReady, isControlPort);
+		connection= new iCS_Connection(runtimeNode as iCS_ISignature, proxyPort.ParameterIndex, isAlwaysReady, isControlPort);
         return connection;
     }
     // ----------------------------------------------------------------------
@@ -87,7 +87,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         }
         var runtimeNodeId= referenceNode.ProxyOriginalNodeId;
         var userFunction = vs.EngineObjects[runtimeNodeId];
-        var userFunctionPort= iCS_VisualScriptData.GetChildPortWithIndex(vs, userFunction, port.PortIndex);
+        var userFunctionPort= iCS_VisualScriptData.GetChildPortWithIndex(vs, userFunction, port.ParameterIndex);
         if(userFunctionPort == null) return null;
         var sourcePort= iCS_VisualScriptData.GetFirstProducerPort(vs, userFunctionPort);
         var sourcePortParent= vs.GetParentNode(sourcePort);
@@ -95,8 +95,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		iCS_Connection connection= null;
         bool isAlwaysReady= false;
         bool isControlPort= false;
-		connection= new iCS_Connection(runtimeNode as iCS_ISignature, sourcePort.PortIndex, isAlwaysReady, isControlPort);
-        userFunctionCall.SetConnection(port.PortIndex, connection);
+		connection= new iCS_Connection(runtimeNode as iCS_ISignature, sourcePort.ParameterIndex, isAlwaysReady, isControlPort);
+        userFunctionCall.SetConnection(port.ParameterIndex, connection);
         return connection;        
     }
     // ----------------------------------------------------------------------

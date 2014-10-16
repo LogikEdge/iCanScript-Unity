@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 [System.Serializable]
-public enum iCS_PortIndex  {
+public enum iCS_ParameterIndex  {
     // .NET Signature
     ParametersStart= 0,
     ParametersEnd=399,

@@ -183,7 +183,7 @@ public class iCS_ObjectInspector : EditorWindow {
     void InspectStateNode(iCS_EditorObject node) {
         // Collect transitions.
         var iStorage= node.IStorage;
-        iCS_EditorObject[] dataPorts= iStorage.RecalculatePortIndexes(node);
+        iCS_EditorObject[] dataPorts= iStorage.RecalculateParameterIndexes(node);
         List<iCS_EditorObject> inPorts= new List<iCS_EditorObject>();
         List<iCS_EditorObject> outPorts= new List<iCS_EditorObject>();
         foreach(var child in dataPorts) {
@@ -224,7 +224,7 @@ public class iCS_ObjectInspector : EditorWindow {
     void InspectPort(iCS_EditorObject port) {
         iCS_EditorObject parent= port.Parent;
         EditorGUILayout.LabelField("Parent", parent.Name);
-        EditorGUILayout.LabelField("Port Index", port.PortIndex.ToString());
+        EditorGUILayout.LabelField("Port Index", port.ParameterIndex.ToString());
         iCS_GuiUtilities.OnInspectorDataPortGUI(port, port.IStorage, 1, myFoldoutDB);        
     }
 

@@ -407,7 +407,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     						if(rtMuxPort == null) break;
                             iCS_EngineObject sourcePort= GetSourceEndPort(port);
     						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
-    						rtMuxPort.GetSignatureDataSource().SetConnection(port.PortIndex, connection);
+    						rtMuxPort.GetSignatureDataSource().SetConnection(port.ParameterIndex, connection);
     						break;
     					}
                         case iCS_ObjectTypeEnum.InStatePort: {
@@ -419,7 +419,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             GetTransitionPackageParts(transitionPackage, out triggerPort, out outStatePort);
 							triggerPort= GetSourceEndPort(triggerPort);
                             iCS_ActionWithSignature triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_ActionWithSignature;
-                            int triggerIdx= triggerPort.PortIndex;
+                            int triggerIdx= triggerPort.ParameterIndex;
                             iCS_Transition transition= new iCS_Transition(this,
                                                                         myRuntimeNodes[endState.InstanceId] as iCS_State,
                                                                         myRuntimeNodes[transitionPackage.InstanceId] as iCS_Package,
@@ -449,13 +449,13 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 							bool isMux= port.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort;
                             object parentObj= myRuntimeNodes[isMux ? port.InstanceId : port.ParentId];
                             Prelude.choice<iCS_InstanceFunction, iCS_GetInstanceField, iCS_GetClassField, iCS_SetInstanceField, iCS_SetClassField, iCS_ClassFunction, iCS_Mux, iCS_UserFunctionCall>(parentObj,
-                                instanceFunction=> instanceFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                                getInstanceField=> getInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                                getClassField   => getClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                                setInstanceField=> setInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                                setClassField   => setClassField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-                                classFunction   => classFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
-								muxFunction		=> muxFunction[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                instanceFunction=> instanceFunction[port.ParameterIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                getInstanceField=> getInstanceField[port.ParameterIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                getClassField   => getClassField[port.ParameterIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                setInstanceField=> setInstanceField[port.ParameterIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                setClassField   => setClassField[port.ParameterIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                                classFunction   => classFunction[port.ParameterIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+								muxFunction		=> muxFunction[port.ParameterIndex]= iCS_Types.DefaultValue(port.RuntimeType),
                                 userFunctionCall=> {
                                     var referenceNode= GetParentNode(port);
                                     BuildUserFunctionOutputConnection(port, referenceNode, userFunctionCall);
@@ -483,7 +483,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             // Build initial value.
     						object initValue= GetInitialValue(sourcePort);
 							// Automatically build instance object if not specified.
-							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.InInstance) {
+							if(connection == null && initValue == null && port.ParameterIndex == (int)iCS_ParameterIndex.InInstance) {
 								if(!parentNode.IsMessage && !parentNode.IsVariableReference && !parentNode.IsFunctionCall) {
                                     try {
     									initValue= System.Activator.CreateInstance(port.RuntimeType);                                        
@@ -534,9 +534,9 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 							}
                             // Set data port.
                             iCS_ActionWithSignature parentObj= myRuntimeNodes[port.ParentId] as iCS_ActionWithSignature;
-                            parentObj[port.PortIndex]= initValue;
+                            parentObj[port.ParameterIndex]= initValue;
                             if(!(parentObj is iCS_Message)) {
-                                parentObj.SetConnection(port.PortIndex, connection);                                
+                                parentObj.SetConnection(port.ParameterIndex, connection);                                
                             }
                             break;
                         }
@@ -657,11 +657,11 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		iCS_Connection connection= null;
         var rtPortGroup= myRuntimeNodes[port.InstanceId] as iCS_ISignature;
 		if(rtPortGroup != null) {
-			connection= new iCS_Connection(rtPortGroup, (int)iCS_PortIndex.Return);	
+			connection= new iCS_Connection(rtPortGroup, (int)iCS_ParameterIndex.Return);	
 		} else {
             bool isAlwaysReady= port.IsInputPort;
             bool isControlPort= port.IsControlPort;
-			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_ISignature, port.PortIndex, isAlwaysReady, isControlPort);
+			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_ISignature, port.ParameterIndex, isAlwaysReady, isControlPort);
 		}
 		return connection;
 	}

@@ -428,7 +428,7 @@ public static class iCS_PublicInterfaceController {
 	/// Determines if the given ports have the same relative identification.
 	static bool IsSamePort(iCS_VisualScriptImp vs1, iCS_EngineObject p1,
 						   iCS_VisualScriptImp vs2, iCS_EngineObject p2) {
-		if(p1.PortIndex != p2.PortIndex) return false;
+		if(p1.ParameterIndex != p2.ParameterIndex) return false;
 		if(p1.RuntimeType != p2.RuntimeType) return false;
 		return true;
 	}

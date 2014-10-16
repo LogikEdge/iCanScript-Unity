@@ -34,7 +34,7 @@ public static partial class iCS_UserCommands {
                             if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
                                 objectType= iCS_ObjectTypeEnum.OutFixDataPort;
                             }
-                            var newPort= iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, objectType, p.PortIndex);
+                            var newPort= iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, objectType, p.ParameterIndex);
                             newPort.InitialValueArchive= p.InitialValueArchive;
                             iStorage.LoadInitialPortValueFromArchive(newPort);
                         }
@@ -83,7 +83,7 @@ public static partial class iCS_UserCommands {
                             if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
                                 objectType= iCS_ObjectTypeEnum.OutFixDataPort;
                             }
-                            var newPort= iStorage.CreatePort(p.Name, usrFncCallId, p.RuntimeType, objectType, p.PortIndex);
+                            var newPort= iStorage.CreatePort(p.Name, usrFncCallId, p.RuntimeType, objectType, p.ParameterIndex);
                             newPort.InitialValueArchive= p.InitialValueArchive;
                             iStorage.LoadInitialPortValueFromArchive(newPort);
                         }

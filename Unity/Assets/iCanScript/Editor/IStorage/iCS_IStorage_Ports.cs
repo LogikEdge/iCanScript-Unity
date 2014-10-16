@@ -10,7 +10,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateTriggerPort(int parentId) {
         var existingTriggerPort= GetTriggerPort(EditorObjects[parentId]);
         if(existingTriggerPort != null) return existingTriggerPort;
-        iCS_EditorObject port= CreatePort(iCS_Strings.TriggerPort, parentId, typeof(bool), iCS_ObjectTypeEnum.TriggerPort, (int)iCS_PortIndex.Trigger);
+        iCS_EditorObject port= CreatePort(iCS_Strings.TriggerPort, parentId, typeof(bool), iCS_ObjectTypeEnum.TriggerPort, (int)iCS_ParameterIndex.Trigger);
         port.IsNameEditable= false;
         port.InitialPortValue= true;
         return port;
@@ -28,7 +28,7 @@ public partial class iCS_IStorage {
     // Enable Ports
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateEnablePort(int parentId) {
-        iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), iCS_ObjectTypeEnum.EnablePort, (int)GetNextAvailableEnablePortIndex(EditorObjects[parentId]));
+        iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), iCS_ObjectTypeEnum.EnablePort, (int)GetNextAvailableEnableParameterIndex(EditorObjects[parentId]));
         port.IsNameEditable= false;
         port.InitialPortValue= true;
         return port;
@@ -42,17 +42,17 @@ public partial class iCS_IStorage {
         return BuildFilteredListOfChildren(c=> c.IsEnablePort, package);
     }
     // -------------------------------------------------------------------------
-    public int GetNextAvailableEnablePortIndex(iCS_EditorObject node) {
+    public int GetNextAvailableEnableParameterIndex(iCS_EditorObject node) {
         var enables= CleanupEnablePorts(node);
-        if(enables == null) return (int)iCS_PortIndex.EnablesStart;
-        return (int)iCS_PortIndex.EnablesStart + enables.Length;
+        if(enables == null) return (int)iCS_ParameterIndex.EnablesStart;
+        return (int)iCS_ParameterIndex.EnablesStart + enables.Length;
     }
     // -------------------------------------------------------------------------
     public iCS_EditorObject[] CleanupEnablePorts(iCS_EditorObject node) {
         var enables= GetEnablePorts(node);
         if(enables == null || enables.Length == 0) return null;
         for(int i= 0; i < enables.Length; ++i) {
-            enables[i].PortIndex= (int)iCS_PortIndex.EnablesStart+i;
+            enables[i].ParameterIndex= (int)iCS_ParameterIndex.EnablesStart+i;
         }
         return enables;
     }
@@ -63,7 +63,7 @@ public partial class iCS_IStorage {
     // -------------------------------------------------------------------------
 	public iCS_EditorObject CreateInInstancePort(int parentId, Type runtimeType) {
 		var port= CreatePort(GetInstancePortName(runtimeType), parentId, runtimeType,
-							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_ParameterIndex.InInstance);
 		port.IsNameEditable= false;
 		return port;
 	}
@@ -83,7 +83,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateOutInstancePort(int parentId, Type runtimeType) {
         iCS_EditorObject port= CreatePort(GetInstancePortName(runtimeType), parentId, runtimeType,
-                                          iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.OutInstance);
+                                          iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_ParameterIndex.OutInstance);
         port.IsNameEditable= false;
         return port;
     }
@@ -102,13 +102,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public iCS_EditorObject CreateInDynamicDataPort(string name, int parentId, Type valueType) {
 		var parent= EditorObjects[parentId];
-		int index= GetNextDynamicOrProposedPortIndex(parent);
+		int index= GetNextDynamicOrProposedParameterIndex(parent);
 		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.InDynamicDataPort, index);
 	}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject CreateOutDynamicDataPort(string name, int parentId, Type valueType) {
 		var parent= EditorObjects[parentId];
-		int index= GetNextDynamicOrProposedPortIndex(parent);
+		int index= GetNextDynamicOrProposedParameterIndex(parent);
 		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.OutDynamicDataPort, index);		
 	}
 
@@ -118,13 +118,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public iCS_EditorObject CreateInProposedDataPort(string name, int parentId, Type valueType) {
 		var parent= EditorObjects[parentId];
-		int index= GetNextDynamicOrProposedPortIndex(parent);
+		int index= GetNextDynamicOrProposedParameterIndex(parent);
 		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.InProposedDataPort, index);
 	}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject CreateOutProposedDataPort(string name, int parentId, Type valueType) {
 		var parent= EditorObjects[parentId];
-		int index= GetNextDynamicOrProposedPortIndex(parent);
+		int index= GetNextDynamicOrProposedParameterIndex(parent);
 		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.OutProposedDataPort, index);		
 	}
 
@@ -137,16 +137,16 @@ public partial class iCS_IStorage {
         var parent= EditorObjects[parentId];
         if(index == -1) {
             if(portType == iCS_ObjectTypeEnum.TriggerPort) {
-                index= (int)iCS_PortIndex.Trigger;
+                index= (int)iCS_ParameterIndex.Trigger;
             } if(portType == iCS_ObjectTypeEnum.EnablePort) {
-                index= GetNextAvailableEnablePortIndex(parent);
+                index= GetNextAvailableEnableParameterIndex(parent);
             }
             else {
-        		index= GetNextDynamicOrProposedPortIndex(parent);                
+        		index= GetNextDynamicOrProposedParameterIndex(parent);                
             }
         }
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
-        port.PortIndex= index;
+        port.ParameterIndex= index;
         if(parent.IsPort) {
 //            port.LocalOffset= parent.LocalOffset;
             port.CollisionOffset= parent.CollisionOffset;
@@ -178,15 +178,15 @@ public partial class iCS_IStorage {
     public void MoveDynamicPortToLastIndex(iCS_EditorObject port) {
 		// Relocate the port at the end.
         iCS_EditorObject parent= port.Parent;
-		port.PortIndex= RecalculatePortIndexes(parent).Length;
+		port.ParameterIndex= RecalculateParameterIndexes(parent).Length;
         // Rearrange port indexes
-        RecalculatePortIndexes(parent);
+        RecalculateParameterIndexes(parent);
     }
 
 	// ======================================================================
 	// High-order functions
     // ----------------------------------------------------------------------
-	public iCS_EditorObject[] RecalculatePortIndexes(iCS_EditorObject node) {
+	public iCS_EditorObject[] RecalculateParameterIndexes(iCS_EditorObject node) {
 		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
 		// Get all child data ports.
 		ForEachChildDataPort(node, child=> ports.Add(child));
@@ -196,27 +196,27 @@ public partial class iCS_IStorage {
 		int firstDynamicIdx= 0;
 		for(int i= 0; i < result.Length; ++i) {
 		    if(result[i].IsParameterPort && result[i].IsFixDataPort) {
-		        firstDynamicIdx= result[i].PortIndex+1;
+		        firstDynamicIdx= result[i].ParameterIndex+1;
 		    }
 		}
 		// Re-index dynamic and proposed ports
         for(int i= 0; i < result.Length; ++i) {
             if(result[i].IsDynamicDataPort || result[i].IsProposedDataPort) {
-                if(result[i].PortIndex <= (int)iCS_PortIndex.ParametersEnd) {
-                    result[i].PortIndex= firstDynamicIdx++; 
+                if(result[i].ParameterIndex <= (int)iCS_ParameterIndex.ParametersEnd) {
+                    result[i].ParameterIndex= firstDynamicIdx++; 
                 }
             }
         }
 		return result;
 	}
     // -------------------------------------------------------------------------
-    public int GetNextDynamicOrProposedPortIndex(iCS_EditorObject node) {
-        var ports= RecalculatePortIndexes(node);
+    public int GetNextDynamicOrProposedParameterIndex(iCS_EditorObject node) {
+        var ports= RecalculateParameterIndexes(node);
         int lastIdx= 0;
         for(int i= 0; i < ports.Length; ++i) {
             var p= ports[i];
             if(p.IsDynamicDataPort || p.IsProposedDataPort) {
-                lastIdx= p.PortIndex+1;
+                lastIdx= p.ParameterIndex+1;
             }
         }
         return lastIdx;
@@ -235,20 +235,20 @@ public partial class iCS_IStorage {
         int lastIndex= -1;
         foreach(var p in lst) {
 			if(p.IsDynamicDataPort || p.IsProposedDataPort) {
-	            if(p.PortIndex > lastIndex) {
-	                lastIndex= p.PortIndex;
+	            if(p.ParameterIndex > lastIndex) {
+	                lastIndex= p.ParameterIndex;
 	            }				
 			}
         }
         // Assign all unassigned port indexes (we assume that it is a dynmic port).
         if(lastIndex != -1) {
             foreach(var p in lst) {
-                if(p.PortIndex < 0) {
-                    p.PortIndex= ++lastIndex;
+                if(p.ParameterIndex < 0) {
+                    p.ParameterIndex= ++lastIndex;
                 }
             }
         }
-		Array.Sort(lst, (x,y)=> x.PortIndex - y.PortIndex);
+		Array.Sort(lst, (x,y)=> x.ParameterIndex - y.ParameterIndex);
         return lst;
     }
 

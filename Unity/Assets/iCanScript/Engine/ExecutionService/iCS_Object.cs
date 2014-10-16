@@ -66,7 +66,7 @@ public class iCS_Object {
         for(int i= 0; i < VisualScript.EngineObjects.Count; ++i) {
             var eObj= VisualScript.EngineObjects[i];
             if(eObj != null && eObj.InstanceId != -1) {
-                if(eObj.IsPort && eObj.ParentId == ourId && eObj.PortIndex == idx) {
+                if(eObj.IsPort && eObj.ParentId == ourId && eObj.ParameterIndex == idx) {
                     return eObj;
                 }
             }
