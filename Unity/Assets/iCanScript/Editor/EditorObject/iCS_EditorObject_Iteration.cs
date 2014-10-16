@@ -336,6 +336,24 @@ public partial class iCS_EditorObject {
         }
     }
 
+    // Speciality Iterations ================================================
+    /// Exceutes the given action for each connected producer TypeCast node.
+    public void ForEachConnectedProducerTypeCast(Action<iCS_EditorObject> action) {
+        ForEachChildPort(
+            p=> {
+                if(p.IsInDataOrControlPort) {
+                    var producer= p.ProducerPort;
+                    if(producer != null) {
+                        var parent= producer.Parent;
+                        if(parent.IsTypeCast) {
+                            action(parent);
+                        }                        
+                    }
+                }
+            }
+        );
+    }
+
     // ======================================================================
 	// List builders.
     // ----------------------------------------------------------------------
