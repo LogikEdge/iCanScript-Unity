@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Text;
 using System.Collections;
-using DisruptiveSoftware;
+using iCanScript.JSON;
 
 public static class iCS_CSFileTemplates {
     // ----------------------------------------------------------------------

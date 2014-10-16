@@ -13,8 +13,8 @@ public class iCS_VariablePrototype {
     // ----------------------------------------------------------------------
     public iCS_VariablePrototype() {}
     public iCS_VariablePrototype(string _name, Type _type) {
-        name        = _name;
-        type        = _type;
+        name= _name;
+        type= _type;
     }
 	    
     // ======================================================================

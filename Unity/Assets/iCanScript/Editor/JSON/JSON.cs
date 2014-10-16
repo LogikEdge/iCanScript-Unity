@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-namespace DisruptiveSoftware {
+namespace iCanScript.JSON {
     
 public abstract class JSON {
     // =============================================================================
@@ -321,4 +321,4 @@ public abstract class JSON {
     }
 }
 
-}   // namespace DisruptiveSoftware
+}   // namespace iCanScript.JSON

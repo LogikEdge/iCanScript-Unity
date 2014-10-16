@@ -70,7 +70,7 @@ public partial class iCS_Graphics {
         var parent= port.ParentNode;
         if(parent.IsIconizedOnDisplay) return false;
         if(port.IsEndPort) return true;
-        var provider= port.ProviderPort;
+        var provider= port.ProducerPort;
         if(provider == null) return true;
         if(!provider.IsVisibleOnDisplay) return true;
         if(provider.ParentNode.IsIconizedOnDisplay) return true;
@@ -141,8 +141,8 @@ public partial class iCS_Graphics {
 		}
         if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
-        if((port.IsInputPort || port.IsKindOfPackagePort) && port.ProviderPortId != -1) {
-            var sourcePort= port.ProviderPort;
+        if((port.IsInputPort || port.IsKindOfPackagePort) && port.ProducerPortId != -1) {
+            var sourcePort= port.ProducerPort;
             if(sourcePort == null) return true;
             var sourceCenter= sourcePort.AnimatedPosition;
             var portCenter= port.AnimatedPosition;
@@ -189,4 +189,23 @@ public partial class iCS_Graphics {
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
 	}
+	// ----------------------------------------------------------------------
+    // Returns the tooltip for the given port.
+	public static string GetPortTooltip(iCS_EditorObject port, iCS_IStorage iStorage) {
+		string tooltip= "Name: "+(port.RawName ?? "")+"\n";
+		// Type information
+		Type runtimeType= port.RuntimeType;
+		if(runtimeType != null) tooltip+= "Type: "+iCS_Types.TypeName(runtimeType)+"\n";
+		// Source information.
+		if(port.IsDataOrControlPort) {
+			iCS_EditorObject sourcePort= iStorage.GetFirstProducerPort(port);
+			if(sourcePort != null && sourcePort != port) {
+				tooltip+= "Source: "+GetPortFullPathName(sourcePort, iStorage)+"\n";
+			}
+		}
+		// User defined tooltip
+		if(iCS_Strings.IsNotEmpty(port.Tooltip)) tooltip+= port.Tooltip;
+		return tooltip;
+	}
+	
 }

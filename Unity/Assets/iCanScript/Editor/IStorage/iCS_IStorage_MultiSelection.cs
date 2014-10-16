@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 public partial class iCS_IStorage {
     // =========================================================================
@@ -33,7 +34,7 @@ public partial class iCS_IStorage {
         set {
             mySelectedObjects.Clear();
             if(value != null) {
-                mySelectedObjects.Add(value);
+                AddToSelectedObjects(value);
             }
             var selectedId= value != null ? value.InstanceId : DisplayRootId;
             SelectedObjectId= selectedId;
@@ -63,7 +64,17 @@ public partial class iCS_IStorage {
             RemoveFromSelectedObjects(obj);
             return false;
         }
-        AddToSelectedObjects(obj);
+        // Ignore display root if selected
+        if(P.length(mySelectedObjects) == 1 && mySelectedObjects[0] == DisplayRoot) {
+            mySelectedObjects.Clear();
+        }
+        // Update SelectedObject if multi-select list is empty.
+        if(P.length(mySelectedObjects) == 0) {
+            SelectedObject= obj;
+        }
+        else {
+            AddToSelectedObjects(obj);
+        }
         return true;
 	}
 	// -------------------------------------------------------------------------
@@ -128,6 +139,9 @@ public partial class iCS_IStorage {
     // =========================================================================
     // Utilities
 	// -------------------------------------------------------------------------
+    // Don't use this function directly !!!
+    // Use ToggleMultiSelection or SelectedObject= value to add an object to the
+    // selection list.
     void RemoveFromSelectedObjects(iCS_EditorObject obj) {
         int idx= mySelectedObjects.IndexOf(obj);
         if(idx == -1) return;
@@ -135,20 +149,16 @@ public partial class iCS_IStorage {
         if(idx == 0) {
             SelectedObjectId= mySelectedObjects.Count == 0 ? -1 : mySelectedObjects[0].InstanceId;
         }
+        obj.ForEachConnectedProducerTypeCast(n=> RemoveFromSelectedObjects(n));
     }
 	// -------------------------------------------------------------------------
+    // Don't use this function directly !!!
+    // Use ToggleMultiSelection or SelectedObject= value to add an object to the
+    // selection list.
     void AddToSelectedObjects(iCS_EditorObject obj) {
-        // Ignore display root if selected
-        if(mySelectedObjects.Count == 1 && mySelectedObjects[0] == DisplayRoot) {
-            mySelectedObjects.Clear();
-        }
         // Add new object to selection list.
-        if(mySelectedObjects.Count == 0) {
-            SelectedObject= obj;
-        }
-        else {
-            mySelectedObjects.Add(obj);
-        }
+        mySelectedObjects.Add(obj);
+        obj.ForEachConnectedProducerTypeCast(n=> AddToSelectedObjects(n));
     }
 	// -------------------------------------------------------------------------
 	bool IsMultiSelectionAllowed(iCS_EditorObject obj) {

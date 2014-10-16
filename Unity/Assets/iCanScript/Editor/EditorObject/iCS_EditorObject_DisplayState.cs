@@ -14,21 +14,29 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Queries
     // ----------------------------------------------------------------------    
+    public bool IsHidden {
+        get {
+            return IsTypeCast;
+        }
+    }
     public bool IsUnfoldedInLayout  {
         get {
             if(this == IStorage.DisplayRoot) return true;
+            if(IsHidden) return false;
             return IsVisibleInLayout && DisplayOption == iCS_DisplayOptionEnum.Unfolded;
         }
     }
     public bool IsFoldedInLayout {
         get {
             if(this == IStorage.DisplayRoot) return false;
+            if(IsHidden) return false;
             return IsVisibleInLayout && DisplayOption == iCS_DisplayOptionEnum.Folded;
         }
     }
     public bool IsIconizedInLayout {
         get {
             if(this == IStorage.DisplayRoot) return false;
+            if(IsHidden) return false;
             return IsVisibleInLayout && DisplayOption == iCS_DisplayOptionEnum.Iconized;
         }
     }
@@ -59,6 +67,7 @@ public partial class iCS_EditorObject {
     public bool IsVisibleInLayout {
         get {
             if(this == IStorage.DisplayRoot) return true;
+            if(IsHidden) return false;
             var parent= Parent;
             if(parent == null) return true;
             if(parent == IStorage.DisplayRoot) return true;    
@@ -115,5 +124,4 @@ public partial class iCS_EditorObject {
             DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         }
     }
-
 }

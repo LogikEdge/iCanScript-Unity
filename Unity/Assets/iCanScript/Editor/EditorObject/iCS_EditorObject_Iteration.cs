@@ -336,6 +336,24 @@ public partial class iCS_EditorObject {
         }
     }
 
+    // Speciality Iterations ================================================
+    /// Exceutes the given action for each connected producer TypeCast node.
+    public void ForEachConnectedProducerTypeCast(Action<iCS_EditorObject> action) {
+        ForEachChildPort(
+            p=> {
+                if(p.IsInDataOrControlPort) {
+                    var producer= p.ProducerPort;
+                    if(producer != null) {
+                        var parent= producer.Parent;
+                        if(parent.IsTypeCast) {
+                            action(parent);
+                        }                        
+                    }
+                }
+            }
+        );
+    }
+
     // ======================================================================
 	// List builders.
     // ----------------------------------------------------------------------
@@ -349,6 +367,11 @@ public partial class iCS_EditorObject {
     // Build a list of child nodes that satisfies the given criteria.
 	public iCS_EditorObject[] BuildListOfChildNodes(Func<iCS_EditorObject, bool> cond) {
 		return BuildListOfChildren(c=> c.IsNode && cond(c));
+	}
+    // ----------------------------------------------------------------------
+    // Build a list of child nodes that satisfies the given criteria.
+	public iCS_EditorObject[] BuildListOfVisibleChildNodes(Func<iCS_EditorObject, bool> cond) {
+		return BuildListOfChildren(c=> c.IsNode && !c.IsHidden && cond(c));
 	}
     // ----------------------------------------------------------------------
     // Build a list of ports that satisfies the given criteria.

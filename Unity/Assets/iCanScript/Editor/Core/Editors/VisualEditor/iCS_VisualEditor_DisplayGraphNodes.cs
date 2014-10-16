@@ -86,7 +86,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             node=> {
                 if(node.IsNode) {
-					if(node.IsBehaviour) return;
+					if(node.IsBehaviour || node.IsHidden) return;
 					if(node == rootNode && !IStorage.ShowDisplayRootNode) return;
                     if(node.IsFloating && floatingRootNode == null) {
                         floatingRootNode= node;
@@ -94,7 +94,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						if( !node.IsParentFloating ) {
                             if(node == rootNode) {
                             }
-							DisplayHelp(node);
 	                        myGraphics.DrawNormalNode(node, IStorage);							
 						}
                     }
@@ -108,7 +107,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             child=> {
                 if(child.IsNode) {
-					DisplayHelp(child);
+                    if(child.IsHidden) return;
 					if( child.IsIconizedInLayout ) {
 						myGraphics.DrawMinimizedNode(child, IStorage);						
 					}
@@ -117,7 +116,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
 				}
                 if(child.IsPort) {
-					DisplayHelp(child);
 					myGraphics.DrawPort(child, IStorage);
 					myGraphics.DrawBinding(child, IStorage);
 				}
@@ -125,26 +123,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         );
     }
 
-	void DisplayHelp(iCS_EditorObject node) {
-		Rect position= node.AnimatedRect;
-		bool isMouseOver= position.Contains(GraphMousePosition);
-		if(isMouseOver) {
-			iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
-			if (memberInfo != null) {
-				string tooltip= memberInfo.Summary;
-				if(tooltip != null && tooltip != "") {
-					myHelpText= tooltip;
-				}
-				else {
-					myHelpText= "no tip available";
-				}
-			}
-			else{
-				myHelpText= "no info available";
-			}
-		}
-	}
-		
     // ======================================================================
     // Connections
 	// ----------------------------------------------------------------------
@@ -153,7 +131,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             child=> {
 				if(child.IsPort) {
 					var parent= child.ParentNode;
-                    var source= child.ProviderPort;
+                    var source= child.ProducerPort;
                     var srcParent= source != null ? source.ParentNode : null;
                     if(!IStorage.ShowDisplayRootNode) {
                         if(parent == rootNode) {

@@ -26,7 +26,7 @@ public partial class iCS_IStorage {
 		}
 		// Transform mux port to standard dynamic port if only one child port exist.
 		if(nbChildPorts == 1) {
-			var source= aChild.ProviderPort;
+			var source= aChild.ProducerPort;
 			DestroyInstance(aChild);
 			if(source != null) {
 				port.ObjectType= port.IsOutMuxPort ? iCS_ObjectTypeEnum.OutDynamicDataPort : iCS_ObjectTypeEnum.InDynamicDataPort;
