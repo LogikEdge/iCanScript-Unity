@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Reflection;
 using System.Collections;
@@ -54,7 +54,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     public bool IsReferenceNodeUsingDynamicBinding(iCS_EngineObject referenceNode) {
         var gameObjectPort= iCS_VisualScriptData.GetInInstancePort(this, referenceNode);
         if(gameObjectPort == null) return false;
-        var providerPort= iCS_VisualScriptData.GetFirstProviderPort(this, gameObjectPort);
+        var providerPort= iCS_VisualScriptData.GetFirstProducerPort(this, gameObjectPort);
         return providerPort != null && providerPort != gameObjectPort;
     }
     // ----------------------------------------------------------------------
@@ -89,7 +89,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         var userFunction = vs.EngineObjects[runtimeNodeId];
         var userFunctionPort= iCS_VisualScriptData.GetChildPortWithIndex(vs, userFunction, port.PortIndex);
         if(userFunctionPort == null) return null;
-        var sourcePort= iCS_VisualScriptData.GetFirstProviderPort(vs, userFunctionPort);
+        var sourcePort= iCS_VisualScriptData.GetFirstProducerPort(vs, userFunctionPort);
         var sourcePortParent= vs.GetParentNode(sourcePort);
         var runtimeNode= vs.RuntimeNodes[sourcePortParent.InstanceId];
 		iCS_Connection connection= null;

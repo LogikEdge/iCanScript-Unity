@@ -125,9 +125,9 @@ public class iCS_Inspector : Editor {
                     myPreviousSelectedObject= mySelectedObject;
                 }
                 if(mySelectedObject != null && mySelectedObject.IsDataOrControlPort) {
-                    if(myPreviousPortSourceId != mySelectedObject.ProviderPortId) {
+                    if(myPreviousPortSourceId != mySelectedObject.ProducerPortId) {
                         myAbortRepaint= true;
-                        myPreviousPortSourceId= mySelectedObject.ProviderPortId;
+                        myPreviousPortSourceId= mySelectedObject.ProducerPortId;
                     }
                 }
                 break;
@@ -191,7 +191,7 @@ public class iCS_Inspector : Editor {
                 SelectedObject.Tooltip= newTooltip;
                 if(SelectedObject.IsStatePort) {
                     if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
-                    else SelectedObject.ProviderPort.Tooltip= toolTip;
+                    else SelectedObject.ProducerPort.Tooltip= toolTip;
                 }
                 iCS_UserCommands.CloseTransaction(myIStorage, "Change tooltip");
             }
@@ -303,7 +303,7 @@ public class iCS_Inspector : Editor {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in inPorts) {
                     EditorGUILayout.LabelField("Name", port.Name);                        
-                    iCS_EditorObject outPort= port.ProviderPort;
+                    iCS_EditorObject outPort= port.ProducerPort;
                     EditorGUILayout.LabelField("State", outPort.Parent.Name);                    
                 }
             }

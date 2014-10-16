@@ -145,12 +145,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Verify for output Mux port creation
         iCS_EditorObject portParent= fixPort.Parent;
         iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
-        if(IsMuxPortKeyDown && overlappingPort.ProviderPort != null) {
+        if(IsMuxPortKeyDown && overlappingPort.ProducerPort != null) {
             // Mux output port creation
             if(overlappingPort.IsOutputPort && 
     		   overlappingPort.IsDynamicDataPort &&
                !overlappingPortParent.IsInstanceNode) {
-                   var provideNode= overlappingPort.ProviderPort.ParentNode;
+                   var provideNode= overlappingPort.ProducerPort.ParentNode;
                    if(overlappingPortParent.IsParentOf(provideNode) &&
                       overlappingPortParent.IsParentOf(portParent)) {
                        CreateMuxPort(fixPort, overlappingPort);                   
@@ -236,7 +236,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_TypeCastInfo conversion= null;
         if(!VerifyConnectionTypes(parentMuxPort, fixPort, out conversion)) return;
         var childPortType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InChildMuxPort : iCS_ObjectTypeEnum.OutChildMuxPort;
-		var source= parentMuxPort.ProviderPort;
+		var source= parentMuxPort.ProducerPort;
 		// Convert source port to child port.
 		if(source != null) {
 			var firstChildMux= IStorage.CreatePort(fixPort.Name, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
@@ -311,9 +311,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 			var existingPort= IStorage.FindPortWithSourceEndPoint(newInputNode, outputPort);
 			if(existingPort != null) {
-				var prevSource= inputPort.ProviderPort;
+				var prevSource= inputPort.ProducerPort;
 				if(prevSource != existingPort) {
-					inputPort.ProviderPort= existingPort;
+					inputPort.ProducerPort= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						IStorage.CleanupHangingConnection(prevSource);
 					}					
@@ -322,8 +322,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
-				newPort.ProviderPort= inputPort.ProviderPort;
-				inputPort.ProviderPort= newPort;
+				newPort.ProducerPort= inputPort.ProducerPort;
+				inputPort.ProducerPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
 			}			
 			return;
@@ -337,9 +337,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 			var existingPort= IStorage.FindPortWithSourceEndPoint(newDstNode, outputPort);
 			if(existingPort != null) {
-				var prevSource= inputPort.ProviderPort;
+				var prevSource= inputPort.ProducerPort;
 				if(prevSource != existingPort) {
-					inputPort.ProviderPort= existingPort;
+					inputPort.ProducerPort= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						IStorage.CleanupHangingConnection(prevSource);
 					}					
@@ -348,8 +348,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
-				newPort.ProviderPort= inputPort.ProviderPort;
-				inputPort.ProviderPort= newPort;
+				newPort.ProducerPort= inputPort.ProducerPort;
+				inputPort.ProducerPort= newPort;
 				RebuildDataConnection(outputPort, newPort);				
 			}
 			return;
@@ -357,9 +357,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			// Rebuilding moving up from the consumer port towards the common parent.
 			var existingPort= IStorage.FindPortWithSourceEndPoint(inputNodeParent, outputPort);
 			if(existingPort != null) {
-				var prevSource= inputPort.ProviderPort;
+				var prevSource= inputPort.ProducerPort;
 				if(prevSource != existingPort) {
-					inputPort.ProviderPort= existingPort;
+					inputPort.ProducerPort= existingPort;
 					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
 						IStorage.CleanupHangingConnection(prevSource);
 					}					
@@ -368,8 +368,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
-				newPort.ProviderPort= inputPort.ProviderPort;
-				inputPort.ProviderPort= newPort;
+				newPort.ProducerPort= inputPort.ProducerPort;
+				inputPort.ProducerPort= newPort;
 				RebuildDataConnection(outputPort, newPort);
 			}			
 		}
@@ -391,7 +391,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         if(p.IsStatePort) {
                             iCS_EditorObject transitionPackage= null;
                             if(p.IsInStatePort) {
-                                transitionPackage= p.ProviderPort.Parent;
+                                transitionPackage= p.ProducerPort.Parent;
                             } else {
                                 iCS_EditorObject[] connectedPorts= p.ConsumerPorts;
                                 foreach(var cp in connectedPorts) {
@@ -461,14 +461,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject RemoveConnection(iCS_EditorObject inPort) {
-        iCS_EditorObject sourcePort= IStorage.GetFirstProviderPort(inPort);
+        iCS_EditorObject sourcePort= IStorage.GetFirstProducerPort(inPort);
         // Tear down previous connection.
-        iCS_EditorObject tmpPort= inPort.ProviderPort;
+        iCS_EditorObject tmpPort= inPort.ProducerPort;
         List<iCS_EditorObject> toDestroy= new List<iCS_EditorObject>();
         while(tmpPort != null && tmpPort != sourcePort) {
             iCS_EditorObject[] connected= tmpPort.ConsumerPorts;
             if(connected.Length == 1) {
-                iCS_EditorObject t= tmpPort.ProviderPort;
+                iCS_EditorObject t= tmpPort.ProducerPort;
                 toDestroy.Add(tmpPort);
                 tmpPort= t;
             } else {
