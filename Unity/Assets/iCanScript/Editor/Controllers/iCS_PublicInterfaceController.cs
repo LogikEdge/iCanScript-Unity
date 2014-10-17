@@ -209,17 +209,7 @@ public static class iCS_PublicInterfaceController {
 		foreach(var fc in ourFunctionCalls)			{ PublicFunctionGroups.Add(fc); }
 		
         // Validate variable & function groups
-        var variableDiff= ValidateVariableDefinitions();
-        var functionDiff= ValidateFunctionDefinitions();
-
-#if DEBUG
-        foreach(var t in variableDiff) {
-            Debug.Log("Variable mismatch=> "+t.Item1.Name+" & "+t.Item2.Name);
-        }
-        foreach(var t in functionDiff) {
-            Debug.Log("Function mismatch=> "+t.Item1.Name+" & "+t.Item2.Name);
-        }
-#endif
+        ValidatePublicGroups();
     }
 
     // ======================================================================
@@ -348,7 +338,7 @@ public static class iCS_PublicInterfaceController {
 						if(qualifiedType != o.EngineObject.QualifiedType) {
 							acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definitions[0], o));
 #if DEBUG
-                            Debug.LogWarning("iCanScript: public variable=> "+name+" in "+definition.VisualScript.name+" and "+o.VisualScript.name+" have different types");
+                            Debug.LogWarning("iCanScript: public variables=> <color=orange><b>"+definition.VisualScript.name+"."+name+"</b></color> and=> <color=orange><b>"+o.VisualScript.name+"."+name+"</b></color> differ in terms of type! Please correct before continuing.");
 #endif
 						}
 						return acc;
@@ -384,7 +374,9 @@ public static class iCS_PublicInterfaceController {
 						if(!IsSameFunction(vs, obj, o.VisualScript, o.EngineObject)) {
 							acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definition, o));
 #if DEBUG
-                            Debug.LogWarning("iCanScript: public function=> "+name+" in=> "+definition.VisualScript.name+" and=> "+o.VisualScript.name+" have different ports");
+                            var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
+                            var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
+                            Debug.LogWarning("iCanScript: public functions=> <color=orange><b>"+definitionName+"</b></color> and=> <color=orange><b>"+otherName+"</b></color> are mismatched in terms of ports. Please correct before continuing.");
 #endif
 						}
 						return acc;
@@ -440,10 +432,14 @@ public static class iCS_PublicInterfaceController {
         var f1 = definition.EngineObject;
         return P.fold(
             (acc,o)=> {
-				if(!IsSameFunction(vs1, f1, o.VisualScript, o.EngineObject)) {
+                var vs2= o.VisualScript;
+                var f2= o.EngineObject;
+				if(!IsSameFunction(vs1, f1, vs2, f2)) {
 					acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definition, o));
 #if DEBUG
-                    Debug.LogWarning("iCanScript: definition of public function=> "+o.EngineObject.Name+" in=> "+definition.VisualScript.name+" and call to that function in "+o.VisualScript.name+" have different ports.");
+                    var definitionName= iCS_VisualScriptData.GetFullName(vs1, vs1, f1);
+                    var refName       = iCS_VisualScriptData.GetFullName(vs2, vs2, f2);
+                    Debug.LogWarning("iCanScript: function call=> <color=orange><b>"+refName+"</b></color> differs for function definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.");
 #endif
 				}
 				return acc;
@@ -472,14 +468,18 @@ public static class iCS_PublicInterfaceController {
             ).ToArray();
         }                
         var definition= definitions[0];
-        var qualifiedType = definition.EngineObject.QualifiedType;
+        var vs= definition.VisualScript;
+        var obj= definition.EngineObject;
+        var qualifiedType = obj.QualifiedType;
         return P.fold(
             (acc,o)=> {
                 var outputPort= iCS_VisualScriptData.GetChildPortWithIndex(o.VisualScript, o.EngineObject, (int)iCS_PortIndex.OutInstance);
 				if(outputPort == null || qualifiedType != outputPort.QualifiedType) {
 					acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definition, o));
 #if DEBUG
-                    Debug.LogWarning("iCanScript: definition of public variable=> "+o.EngineObject.Name+" in=> "+definition.VisualScript.name+" and reference in "+o.VisualScript.name+" have different types.");
+                    var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
+                    var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
+                    Debug.LogWarning("iCanScript: variable reference=> <color=orange><b>"+otherName+"</b></color> differs in terms of type from definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.");
 #endif
 				}
 				return acc;
