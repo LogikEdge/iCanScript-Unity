@@ -29,7 +29,6 @@ public static class iCS_FunctionPrototypeUtility {
 	/// </summary>
 	/// <param name="node"></param>
 	public static iCS_FunctionPrototype ConvertNodeToFunctionPrototype(iCS_EngineObject node){
-
 		return null;
 	}
 

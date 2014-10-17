@@ -155,7 +155,7 @@ public class iCS_LibraryDatabase {
                 messages.Add(m.ToMessageInfo);
             }
         }
-        P.QSort(ref messages, (a,b)=> { return string.Compare(a.DisplayName, b.DisplayName); });
+        P.sort(messages, (a,b)=> { return string.Compare(a.DisplayName, b.DisplayName); });
         return messages.ToArray();
     }
     // ----------------------------------------------------------------------
