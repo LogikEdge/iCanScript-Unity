@@ -284,7 +284,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 	void DisplayHelpGUI() {
-		GUI.Box(new Rect(Screen.width-400, Screen.height-80, 400, 80), myHelpText, EditorStyles.textArea);
+		GUI.Box(new Rect(Screen.width-400, Screen.height-80, 400, 80), "tip:\n" + myHelpText, EditorStyles.textArea);
 	}
 
 	// ----------------------------------------------------------------------

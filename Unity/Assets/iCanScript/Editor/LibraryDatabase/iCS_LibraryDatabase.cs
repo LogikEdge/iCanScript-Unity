@@ -296,9 +296,10 @@ public class iCS_LibraryDatabase {
     // Returns the descriptor associated with the given editor object.
     public static iCS_MemberInfo GetAssociatedDescriptor(iCS_EditorObject edObj) {
 		
-        if(edObj.IsPort ) { 	//}|| edObj.IsPackage) {
+		// Do not process ports, or packages that are not instance nodes
+        if(edObj.IsPort || (edObj.IsPackage && !edObj.IsInstanceNode)) {
             return null;
-        }
+        }	
 						
         var runtimeType= edObj.RuntimeType;
         var engineObject= edObj.EngineObject;
