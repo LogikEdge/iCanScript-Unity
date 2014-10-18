@@ -127,16 +127,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         );
     }
 	
-	string GetPortHelpString(string prefix, string displayName, iCS_EditorObject node) {
-		if(node != null && node.IsKindOfFunction) {
-	    	iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
-			string summary= memberInfo != null ? memberInfo.Summary : null;					
-			if(!String.IsNullOrEmpty(summary)) {
-				return prefix + displayName + "\n" + summary;
-			}
-		}
-		return null;
-	}
+
 
     // ======================================================================
     // Poplulates the help string which will be displayed on on GUI when 
@@ -168,9 +159,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			   		if(firstPort != null) {
 			   			myHelpText= myHelpText + GetPortHelpString("", node.DisplayName, firstPort.ParentNode);
 			   		}
-					if(endPortArray[0] != null && firstPort != endPortArray[0]){
-						myHelpText= myHelpText + "\n\n" + GetPortHelpString("connected -> ", endPortArray[0].DisplayName, endPortArray[0].ParentNode);
-					}
+					myHelpText= myHelpText + "\n";
+					foreach(iCS_EditorObject endPort in endPortArray)
+						if(endPort != null && firstPort != endPort){
+							myHelpText= myHelpText + "\n" + GetPortHelpString("connected -> ", endPort.DisplayName, endPort.ParentNode);
+						}
 				}
 			}
 			// Polpulate help if pointed object is a node
@@ -181,12 +174,24 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					myHelpText= "no tip available";
 				}
 				else {
-					myHelpText= node.DisplayName + "\n" + myHelpText;
+					myHelpText= "<b><color=blue>" + node.DisplayName + "</color></b>" + "\n" + myHelpText;
 				}
 			}
 		}
 	}
 
+    // ======================================================================
+    // Used by populate help to build help string
+	string GetPortHelpString(string prefix, string displayName, iCS_EditorObject node) {
+		if(node != null && node.IsKindOfFunction) {
+	    	iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
+			string summary= memberInfo != null ? memberInfo.Summary : null;					
+			if(!String.IsNullOrEmpty(summary)) {
+				return "<b>" + prefix + "<color=blue>" + displayName + "</color></b>" + "\n" + summary;
+			}
+		}
+		return null;
+	}
 
     // ======================================================================
     // Connections
