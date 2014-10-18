@@ -296,15 +296,22 @@ public class iCS_LibraryDatabase {
     // Returns the descriptor associated with the given editor object.
     public static iCS_MemberInfo GetAssociatedDescriptor(iCS_EditorObject edObj) {
 		
-        if(edObj.IsPackage && !edObj.IsInstanceNode) {
+		if(edObj==null)
+			return null;
+		
+        if(edObj.IsPackage && !edObj.IsInstanceNode)
             return null;
-        }	
 				
 		if(edObj.IsPort) {
-			if(edObj.IsInputPort)
-				return GetAssociatedConsumerPortDescriptor(edObj);
+			iCS_EditorObject portNode=null;
+			if(edObj.IsInputPort) 
+				portNode= GetAssociatedConsumerPortNode(edObj);
 			else if(edObj.IsOutputPort)
-				return GetAssociatedProducerPortDescriptor(edObj);
+				portNode= GetAssociatedProducerPortNode(edObj);
+			if(portNode != null) {
+				return GetAssociatedDescriptor(portNode);
+			}	
+			return null;		
 		}
 		
         var runtimeType= edObj.RuntimeType;
@@ -343,43 +350,34 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given port editor object from
 	// the consumer direction.
-	public static iCS_MemberInfo GetAssociatedConsumerPortDescriptor(iCS_EditorObject edObj) {
+	public static iCS_EditorObject GetAssociatedConsumerPortNode(iCS_EditorObject edObj) {
+		iCS_EditorObject parentNode = null;
 		if(edObj.IsPort) {
-			iCS_EditorObject parentNode = null;
 			iCS_EditorObject[] endPortArray= edObj.EndConsumerPorts;
-			if(endPortArray != null)
+			if(endPortArray != null){
 				foreach(iCS_EditorObject endPort in endPortArray) {
 					//TODO: handle multiple in array endConsumerPorts
 					parentNode= endPort.ParentNode;
+					Debug.Log("ConsumerEndPort: " + endPort.DisplayName);
 				}
-
-			if(parentNode != null) {
-				// Will we be able to lookup the memberInfo from the parent?
-				if (parentNode.IsKindOfFunction)
-					return GetAssociatedDescriptor(parentNode);
 			}
 		}
-		return null;
+		return parentNode.IsKindOfFunction ? parentNode : null;
 	}
 	
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given port editor object from
 	// the producer direction.
-	public static iCS_MemberInfo GetAssociatedProducerPortDescriptor(iCS_EditorObject edObj) {
+	public static iCS_EditorObject GetAssociatedProducerPortNode(iCS_EditorObject edObj) {
+		iCS_EditorObject parentNode = null;
 		if(edObj.IsPort) {
-			iCS_EditorObject parentNode = null;
 			iCS_EditorObject firstPort= edObj.FirstProducerPort;
 			if(firstPort != null)
 				parentNode= firstPort.ParentNode;
-			
-			if(parentNode != null) {
-				//Debug.Log(parentNode.RawName + "     " + sourcePort.RawName);
-				// Will we be able to lookup the memberInfo from the parent?
-				if (parentNode.IsKindOfFunction)
-					return GetAssociatedDescriptor(parentNode);
-			}
+				Debug.Log("ProducerfirstPort: " + firstPort.DisplayName);
+
 		}
-		return null;
+		return parentNode.IsKindOfFunction ? parentNode : null;
 	}
 	
     // ----------------------------------------------------------------------

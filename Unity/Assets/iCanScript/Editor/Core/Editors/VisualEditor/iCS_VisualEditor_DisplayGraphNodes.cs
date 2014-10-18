@@ -136,33 +136,42 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		bool isMouseOver= position.Contains(GraphMousePosition);
 		if(isMouseOver) {
 			myHelpText="";
+			// Polpulate help if pointed object is a port
 			if(node.IsPort) {
-				iCS_MemberInfo consumerMemberInfo= iCS_LibraryDatabase.GetAssociatedConsumerPortDescriptor(node);
-				iCS_MemberInfo producerMemberInfo= iCS_LibraryDatabase.GetAssociatedProducerPortDescriptor(node);
+				// Get consumer side port, memberInfo, and tooltip
+				iCS_EditorObject consumerNode= iCS_LibraryDatabase.GetAssociatedConsumerPortNode(node);
+				iCS_MemberInfo consumerMemberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(consumerNode);
 				string consumerTooltip= consumerMemberInfo != null ? consumerMemberInfo.Summary : null;
+				
+				// Get producer side port, memberInfo, and tooltip
+				iCS_EditorObject producerNode= iCS_LibraryDatabase.GetAssociatedProducerPortNode(node);
+				iCS_MemberInfo producerMemberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerNode);
 				string producerTooltip= producerMemberInfo != null ? producerMemberInfo.Summary : null;
 				
+				// Display Port info for both consumer and producer side, in correct order 
+				// pointed to first, connected node (if any) second.
 				if(node.IsInputPort) {
 					if(!String.IsNullOrEmpty(consumerTooltip)) {
-						myHelpText= myHelpText + consumerMemberInfo.DisplayName + "\n";
+						myHelpText= myHelpText + consumerNode.DisplayName + "\n";
 						myHelpText= myHelpText + consumerTooltip + "\n\n";
 					}
-					if(!String.IsNullOrEmpty(producerTooltip) && consumerMemberInfo != producerMemberInfo) {
-						myHelpText= myHelpText + "connected -> " + producerMemberInfo.DisplayName + "\n";
+					if(!String.IsNullOrEmpty(producerTooltip) && consumerNode != producerNode) {
+						myHelpText= myHelpText + "connected -> " + producerNode.DisplayName + "\n";
 						myHelpText= myHelpText + producerTooltip;
 					}
 				}
 				else if (node.IsOutputPort) {
 					if(!String.IsNullOrEmpty(producerTooltip)) {
-						myHelpText= myHelpText + producerMemberInfo.DisplayName + "\n";
+						myHelpText= myHelpText + producerNode.DisplayName + "\n";
 						myHelpText= myHelpText + producerTooltip + "\n\n";
 					}
-					if(!String.IsNullOrEmpty(consumerTooltip) && consumerMemberInfo != producerMemberInfo) {
-						myHelpText= myHelpText + "connected -> " + consumerMemberInfo.DisplayName + "\n";
+					if(!String.IsNullOrEmpty(consumerTooltip) && consumerNode != producerNode) {
+						myHelpText= myHelpText + "connected -> " + consumerNode.DisplayName + "\n";
 						myHelpText= myHelpText + consumerTooltip;	
 					}				
 				}
 			}
+			// Polpulate help if pointed object is a node
 			else {
 				iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
 				myHelpText= memberInfo != null ? memberInfo.Summary : null;
@@ -170,7 +179,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					myHelpText= "no tip available";
 				}
 				else {
-					myHelpText= memberInfo.DisplayName + "\n" + myHelpText;
+					myHelpText= node.DisplayName + "\n" + myHelpText;
 				}
 			}
 		}
