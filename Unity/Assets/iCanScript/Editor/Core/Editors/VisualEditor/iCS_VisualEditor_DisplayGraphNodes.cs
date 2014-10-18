@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Pref=iCS_PreferencesController;
+using System;
 
 /*
     TODO: Cleanup conditional tree descent VS full tree descent when drawing graph.
@@ -94,7 +95,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						if( !node.IsParentFloating ) {
                             if(node == rootNode) {
                             }
-							DisplayHelp(node);
+							PopulateHelp(node);
 	                        myGraphics.DrawNormalNode(node, IStorage);							
 						}
                     }
@@ -110,7 +111,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(child.IsNode) {
                     if(child.IsHidden) return;
 					if( child.IsIconizedInLayout ) {
-						DisplayHelp(child);
+						PopulateHelp(child);
 						myGraphics.DrawMinimizedNode(child, IStorage);						
 					}
 					else {
@@ -118,7 +119,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
 				}
                 if(child.IsPort) {
-					DisplayHelp(child);
+					PopulateHelp(child);
 					myGraphics.DrawPort(child, IStorage);
 					myGraphics.DrawBinding(child, IStorage);
 				}
@@ -126,23 +127,51 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         );
     }
 
-
-	void DisplayHelp(iCS_EditorObject node) {
+    // ======================================================================
+    // Poplulates the help string which will be displayed on on GUI when 
+	// a node/port is floated over.
+	// ----------------------------------------------------------------------
+	void PopulateHelp(iCS_EditorObject node) {
 		Rect position= node.AnimatedRect;
 		bool isMouseOver= position.Contains(GraphMousePosition);
 		if(isMouseOver) {
-			iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
-			if (memberInfo != null) {
-				string tooltip= memberInfo.Summary;
-				if(tooltip != null && tooltip != "") {
-					myHelpText= tooltip;
+			myHelpText="";
+			if(node.IsPort) {
+				iCS_MemberInfo consumerMemberInfo= iCS_LibraryDatabase.GetAssociatedConsumerPortDescriptor(node);
+				iCS_MemberInfo producerMemberInfo= iCS_LibraryDatabase.GetAssociatedProducerPortDescriptor(node);
+				string consumerTooltip= consumerMemberInfo != null ? consumerMemberInfo.Summary : null;
+				string producerTooltip= producerMemberInfo != null ? producerMemberInfo.Summary : null;
+				
+				if(node.IsInputPort) {
+					if(!String.IsNullOrEmpty(consumerTooltip)) {
+						myHelpText= myHelpText + consumerMemberInfo.DisplayName + "\n";
+						myHelpText= myHelpText + consumerTooltip + "\n\n";
+					}
+					if(!String.IsNullOrEmpty(producerTooltip) && consumerMemberInfo != producerMemberInfo) {
+						myHelpText= myHelpText + "connected -> " + producerMemberInfo.DisplayName + "\n";
+						myHelpText= myHelpText + producerTooltip;
+					}
 				}
-				else {
-					myHelpText= "no tip available";
+				else if (node.IsOutputPort) {
+					if(!String.IsNullOrEmpty(producerTooltip)) {
+						myHelpText= myHelpText + producerMemberInfo.DisplayName + "\n";
+						myHelpText= myHelpText + producerTooltip + "\n\n";
+					}
+					if(!String.IsNullOrEmpty(consumerTooltip) && consumerMemberInfo != producerMemberInfo) {
+						myHelpText= myHelpText + "connected -> " + consumerMemberInfo.DisplayName + "\n";
+						myHelpText= myHelpText + consumerTooltip;	
+					}				
 				}
 			}
-			else{
-				myHelpText= "no info available";
+			else {
+				iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
+				myHelpText= memberInfo != null ? memberInfo.Summary : null;
+				if(String.IsNullOrEmpty(myHelpText)) {
+					myHelpText= "no tip available";
+				}
+				else {
+					myHelpText= memberInfo.DisplayName + "\n" + myHelpText;
+				}
 			}
 		}
 	}
@@ -190,14 +219,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             child=> {
                 if(child.IsPort) {
                     if(!IStorage.ShowDisplayRootNode && child.ParentNode == rootNode) return;
-					DisplayHelp(child);
+					PopulateHelp(child);
                     myGraphics.DrawPort(child, IStorage);
                 }
                 if(child.IsNode) {
                     if(child.IsFloating && floatingRootNode == null) {
                         floatingRootNode= child;
                     } else {
-						DisplayHelp(child);
+						PopulateHelp(child);
                         myGraphics.DrawMinimizedNode(child, IStorage);
                     }
                 }
