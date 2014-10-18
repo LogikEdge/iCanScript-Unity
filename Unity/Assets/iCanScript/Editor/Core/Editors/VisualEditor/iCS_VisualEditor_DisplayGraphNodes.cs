@@ -126,49 +126,51 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         );
     }
+	
+	string GetPortHelpString(string prefix, string displayName, iCS_EditorObject node) {
+		if(node != null && node.IsKindOfFunction) {
+	    	iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
+			string summary= memberInfo != null ? memberInfo.Summary : null;					
+			if(!String.IsNullOrEmpty(summary)) {
+				return prefix + displayName + "\n" + summary;
+			}
+		}
+		return null;
+	}
 
     // ======================================================================
     // Poplulates the help string which will be displayed on on GUI when 
 	// a node/port is floated over.
 	// ----------------------------------------------------------------------
 	void PopulateHelp(iCS_EditorObject node) {
+		if(node==null)
+			return;
+		
 		Rect position= node.AnimatedRect;
 		bool isMouseOver= position.Contains(GraphMousePosition);
 		if(isMouseOver) {
 			myHelpText="";
 			// Polpulate help if pointed object is a port
 			if(node.IsPort) {
-				// Get consumer side port, memberInfo, and tooltip
-				iCS_EditorObject consumerNode= iCS_LibraryDatabase.GetAssociatedConsumerPortNode(node);
-				iCS_MemberInfo consumerMemberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(consumerNode);
-				string consumerTooltip= consumerMemberInfo != null ? consumerMemberInfo.Summary : null;
-				
-				// Get producer side port, memberInfo, and tooltip
-				iCS_EditorObject producerNode= iCS_LibraryDatabase.GetAssociatedProducerPortNode(node);
-				iCS_MemberInfo producerMemberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerNode);
-				string producerTooltip= producerMemberInfo != null ? producerMemberInfo.Summary : null;
-				
-				// Display Port info for both consumer and producer side, in correct order 
-				// pointed to first, connected node (if any) second.
-				if(node.IsInputPort) {
-					if(!String.IsNullOrEmpty(consumerTooltip)) {
-						myHelpText= myHelpText + consumerNode.DisplayName + "\n";
-						myHelpText= myHelpText + consumerTooltip + "\n\n";
+				iCS_EditorObject   firstPort= node.FirstProducerPort;
+				iCS_EditorObject[] endPortArray= node.EndConsumerPorts;
+							
+			    if (node.IsInputPort) {
+					// there should only be one end consumer port for an input port.
+					if(endPortArray[0] != null){
+			   			myHelpText= myHelpText + GetPortHelpString("", node.DisplayName, endPortArray[0].ParentNode);	
+					}	
+			   		if(firstPort != null && firstPort != endPortArray[0]) {
+			   			myHelpText= myHelpText + "\n\n" + GetPortHelpString("connected -> ", firstPort.DisplayName, firstPort.ParentNode);
+			   		}	
+			   	}
+				else if(node.IsOutputPort) {
+			   		if(firstPort != null) {
+			   			myHelpText= myHelpText + GetPortHelpString("", node.DisplayName, firstPort.ParentNode);
+			   		}
+					if(endPortArray[0] != null && firstPort != endPortArray[0]){
+						myHelpText= myHelpText + "\n\n" + GetPortHelpString("connected -> ", endPortArray[0].DisplayName, endPortArray[0].ParentNode);
 					}
-					if(!String.IsNullOrEmpty(producerTooltip) && consumerNode != producerNode) {
-						myHelpText= myHelpText + "connected -> " + producerNode.DisplayName + "\n";
-						myHelpText= myHelpText + producerTooltip;
-					}
-				}
-				else if (node.IsOutputPort) {
-					if(!String.IsNullOrEmpty(producerTooltip)) {
-						myHelpText= myHelpText + producerNode.DisplayName + "\n";
-						myHelpText= myHelpText + producerTooltip + "\n\n";
-					}
-					if(!String.IsNullOrEmpty(consumerTooltip) && consumerNode != producerNode) {
-						myHelpText= myHelpText + "connected -> " + consumerNode.DisplayName + "\n";
-						myHelpText= myHelpText + consumerTooltip;	
-					}				
 				}
 			}
 			// Polpulate help if pointed object is a node

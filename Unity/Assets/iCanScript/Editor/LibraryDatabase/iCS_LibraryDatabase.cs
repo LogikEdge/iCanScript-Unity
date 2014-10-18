@@ -304,13 +304,22 @@ public class iCS_LibraryDatabase {
 				
 		if(edObj.IsPort) {
 			iCS_EditorObject portNode=null;
-			if(edObj.IsInputPort) 
-				portNode= GetAssociatedConsumerPortNode(edObj);
-			else if(edObj.IsOutputPort)
-				portNode= GetAssociatedProducerPortNode(edObj);
+			if(edObj.IsInputPort) {
+				iCS_EditorObject[] endPortArray= edObj.EndConsumerPorts;
+				if(endPortArray[0] != null){
+					// there should only be one end consumer port for an input port.
+					portNode= endPortArray[0].ParentNode;
+				}
+			}
+			else if(edObj.IsOutputPort) {
+				iCS_EditorObject firstPort= edObj.FirstProducerPort;
+				if(firstPort != null)
+					portNode= firstPort.ParentNode;
+			}
 			if(portNode != null) {
-				return GetAssociatedDescriptor(portNode);
-			}	
+				if(portNode.IsKindOfFunction) 
+					return GetAssociatedDescriptor(portNode);
+			}
 			return null;		
 		}
 		
@@ -346,39 +355,6 @@ public class iCS_LibraryDatabase {
         }
         return null;        
     }
-	
-    // ----------------------------------------------------------------------
-    // Returns the descriptor associated with the given port editor object from
-	// the consumer direction.
-	public static iCS_EditorObject GetAssociatedConsumerPortNode(iCS_EditorObject edObj) {
-		iCS_EditorObject parentNode = null;
-		if(edObj.IsPort) {
-			iCS_EditorObject[] endPortArray= edObj.EndConsumerPorts;
-			if(endPortArray != null){
-				foreach(iCS_EditorObject endPort in endPortArray) {
-					//TODO: handle multiple in array endConsumerPorts
-					parentNode= endPort.ParentNode;
-					Debug.Log("ConsumerEndPort: " + endPort.DisplayName);
-				}
-			}
-		}
-		return parentNode.IsKindOfFunction ? parentNode : null;
-	}
-	
-    // ----------------------------------------------------------------------
-    // Returns the descriptor associated with the given port editor object from
-	// the producer direction.
-	public static iCS_EditorObject GetAssociatedProducerPortNode(iCS_EditorObject edObj) {
-		iCS_EditorObject parentNode = null;
-		if(edObj.IsPort) {
-			iCS_EditorObject firstPort= edObj.FirstProducerPort;
-			if(firstPort != null)
-				parentNode= firstPort.ParentNode;
-				Debug.Log("ProducerfirstPort: " + firstPort.DisplayName);
-
-		}
-		return parentNode.IsKindOfFunction ? parentNode : null;
-	}
 	
     // ----------------------------------------------------------------------
     // Returns the class type associated with the given company/package.
