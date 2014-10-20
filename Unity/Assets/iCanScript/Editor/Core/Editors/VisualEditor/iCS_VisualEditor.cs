@@ -36,7 +36,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     float myDeltaTime          = 0;
     bool  myNeedRepaint        = true;
     bool  myNotificationShown  = false;
-	private static string myHelpText  = null;
 
 	
     // ----------------------------------------------------------------------
@@ -275,18 +274,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 #if SHOW_FRAME_RATE || SHOW_FRAME_TIME
         FrameRateDebugInfo();
 #endif
-
-		// Display Help Text
-		DisplayHelpGUI();
 		
 		// Simulate OnPostRender.
 		OnPostRender();
 	}
 
-	void DisplayHelpGUI() {
+	void DisplayHelp() {
 		GUIStyle style =  EditorStyles.textArea;
 		style.richText = true;
-		GUI.Box(new Rect(Screen.width-500, Screen.height-125, 500, 125), myHelpText, style);
+		GUI.Box(new Rect(Screen.width-400, Screen.height-125, 400, 125), myHelpText, style);
 	}
 
 	// ----------------------------------------------------------------------
@@ -296,8 +292,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var ev= Event.current;
         switch(ev.type) {
             case EventType.Repaint: {
-                // Draw Graph.
+                // Draw Graph.				
                 DrawGraph();
+				DisplayHelp();
                 break;                
             }
             case EventType.Layout: {
@@ -309,7 +306,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case EventType.MouseMove: {
                 MouseMoveEvent();
-                Event.current.Use();                        
+                Event.current.Use();  
+				// TODO: call PopulateHelp here instead. use pickInfo to get node.     
                 break;
             }
             case EventType.MouseDrag: {
