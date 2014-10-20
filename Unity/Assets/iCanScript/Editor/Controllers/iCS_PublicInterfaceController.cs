@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define DEBUG
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -208,30 +209,7 @@ public static class iCS_PublicInterfaceController {
 		foreach(var fc in ourFunctionCalls)			{ PublicFunctionGroups.Add(fc); }
 		
         // Validate variable & function groups
-        var variableDiff= ValidateVariableDefinitions();
-        var functionDiff= ValidateFunctionDefinitions();
-        Debug.Log("Did validate public interface");
-        foreach(var t in variableDiff) {
-            Debug.Log("Variable mismatch=> "+t.Item1.Name+" & "+t.Item2.Name);
-        }
-        foreach(var t in functionDiff) {
-            Debug.Log("Function mismatch=> "+t.Item1.Name+" & "+t.Item2.Name);
-        }
-//#if DEBUG
-//        Debug.Log("Scene as changed =>"+EditorApplication.currentScene);
-//        Debug.Log("NbOfPublicVariableGroups=> "+PublicVariableGroups.NbOfGroups);
-//        PublicVariableGroups.ForEach(
-//            (name, group)=> {
-//                Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
-//            }
-//        );
-//        Debug.Log("NbOfPublicFunctionGroups=> "+PublicFunctionGroups.NbOfGroups);
-//        PublicFunctionGroups.ForEach(
-//            (name, group)=> {
-//                Debug.Log("Group Name=> "+name+" #Definitions=> "+group.NbOfDefinitions+" #References=> "+group.NbOfReferences);
-//            }
-//        );
-//#endif
+        ValidatePublicGroups();
     }
 
     // ======================================================================
@@ -353,12 +331,15 @@ public static class iCS_PublicInterfaceController {
             (name, group)=> {
 				var definitions= group.Definitions;
 				if(P.length(definitions) < 2) return;
-                Debug.Log("validating variable definitions");
-				var qualifiedType= definitions[0].EngineObject.QualifiedType;
+                var definition= definitions[0];
+				var qualifiedType= definition.EngineObject.QualifiedType;
 				P.fold(
 					(acc,o)=> {
 						if(qualifiedType != o.EngineObject.QualifiedType) {
 							acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definitions[0], o));
+#if DEBUG
+                            Debug.LogWarning("iCanScript: public variables=> <color=orange><b>"+definition.VisualScript.name+"."+name+"</b></color> and=> <color=orange><b>"+o.VisualScript.name+"."+name+"</b></color> differ in terms of type! Please correct before continuing.");
+#endif
 						}
 						return acc;
 					}
@@ -385,13 +366,18 @@ public static class iCS_PublicInterfaceController {
             (name, group)=> {
 				var definitions= group.Definitions;
 				if(P.length(definitions) < 2) return;
-				var refFnc= definitions[0];
-				var vs = definitions[0].VisualScript;
-				var obj= definitions[0].EngineObject;
+				var definition= definitions[0];
+				var vs = definition.VisualScript;
+				var obj= definition.EngineObject;
 				P.fold(
 					(acc,o)=> {
 						if(!IsSameFunction(vs, obj, o.VisualScript, o.EngineObject)) {
-							acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(refFnc, o));
+							acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definition, o));
+#if DEBUG
+                            var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
+                            var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
+                            Debug.LogWarning("iCanScript: public functions=> <color=orange><b>"+definitionName+"</b></color> and=> <color=orange><b>"+otherName+"</b></color> are mismatched in terms of ports. Please correct before continuing.");
+#endif
 						}
 						return acc;
 					}
@@ -422,9 +408,86 @@ public static class iCS_PublicInterfaceController {
 		if(p1.RuntimeType != p2.RuntimeType) return false;
 		return true;
 	}
-
-
-
+    // ----------------------------------------------------------------------
+	public static P.Tuple<VSObjectReference,VSObjectReference>[] ValidateCallsToFunction(string name, VSObjectReferenceGroup group) {
+		var result= new List<P.Tuple<VSObjectReference,VSObjectReference> >();
+        var definitions= group.Definitions;
+        var references = group.References;
+        // No mismatch if no function call exists.
+        if(references.Count == 0) return result.ToArray();
+        // At least definition must exist is a function call exists.
+        if(references.Count != 0 && definitions.Count == 0) {
+            return P.map(
+                o=> {
+#if DEBUG
+                    Debug.LogWarning("iCanScript: no definition exist for function call=> "+o.EngineObject.Name+" in=> "+o.VisualScript.name+".");
+#endif
+                    return new P.Tuple<VSObjectReference,VSObjectReference>(o, null);
+                },
+                references
+            ).ToArray();
+        }                
+        var definition= definitions[0];
+        var vs1= definition.VisualScript;
+        var f1 = definition.EngineObject;
+        return P.fold(
+            (acc,o)=> {
+                var vs2= o.VisualScript;
+                var f2= o.EngineObject;
+				if(!IsSameFunction(vs1, f1, vs2, f2)) {
+					acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definition, o));
+#if DEBUG
+                    var definitionName= iCS_VisualScriptData.GetFullName(vs1, vs1, f1);
+                    var refName       = iCS_VisualScriptData.GetFullName(vs2, vs2, f2);
+                    Debug.LogWarning("iCanScript: function call=> <color=orange><b>"+refName+"</b></color> differs for function definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.");
+#endif
+				}
+				return acc;
+            },
+            result,
+            references
+        ).ToArray();
+    }
+    // ----------------------------------------------------------------------
+	public static P.Tuple<VSObjectReference,VSObjectReference>[] ValidateReferencesToVariable(string name, VSObjectReferenceGroup group) {
+		var result= new List<P.Tuple<VSObjectReference,VSObjectReference> >();
+        var definitions= group.Definitions;
+        var references = group.References;
+        // No mismatch if no function call exists.
+        if(references.Count == 0) return result.ToArray();
+        // At least definition must exist is a function call exists.
+        if(references.Count != 0 && definitions.Count == 0) {
+            return P.map(
+                o=> {
+#if DEBUG
+                    Debug.LogWarning("iCanScript: no public variable exist for reference=> "+o.EngineObject.Name+" in=> "+o.VisualScript.name+".");
+#endif
+                    return new P.Tuple<VSObjectReference,VSObjectReference>(o, null);
+                },
+                references
+            ).ToArray();
+        }                
+        var definition= definitions[0];
+        var vs= definition.VisualScript;
+        var obj= definition.EngineObject;
+        var qualifiedType = obj.QualifiedType;
+        return P.fold(
+            (acc,o)=> {
+                var outputPort= iCS_VisualScriptData.GetChildPortWithIndex(o.VisualScript, o.EngineObject, (int)iCS_PortIndex.OutInstance);
+				if(outputPort == null || qualifiedType != outputPort.QualifiedType) {
+					acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definition, o));
+#if DEBUG
+                    var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
+                    var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
+                    Debug.LogWarning("iCanScript: variable reference=> <color=orange><b>"+otherName+"</b></color> differs in terms of type from definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.");
+#endif
+				}
+				return acc;
+            },
+            result,
+            references
+        ).ToArray();
+    }
 
     // ----------------------------------------------------------------------
 	public static bool ValidatePublicGroups() {
@@ -434,26 +497,29 @@ public static class iCS_PublicInterfaceController {
 		
         PublicVariableGroups.ForEach(
             (name, group)=> {
-                var definitions= group.Definitions;
-                var references = group.References;
-                if(references.Count != 0 && definitions.Count == 0) {
-                    foreach(var varRef in references) {
-                        Debug.LogWarning("iCanScript: No definition found for variable=> "+name+" in visual script=> "+varRef.VisualScript.name);                    
-                    }
-                }                
+                ValidateReferencesToVariable(name, group);
+//                var definitions= group.Definitions;
+//                var references = group.References;
+//                if(references.Count != 0 && definitions.Count == 0) {
+//                    foreach(var varRef in references) {
+//                        Debug.LogWarning("iCanScript: No definition found for variable=> "+name+" in visual script=> "+varRef.VisualScript.name);                    
+//                    }
+//                }                
             }
         );
         
         // Validate Functions
+        // TODO: Cumulate errors
         PublicFunctionGroups.ForEach(
             (name, group)=> {
-                var definitions= group.Definitions;
-                var references = group.References;
-                if(references.Count != 0 && definitions.Count == 0) {
-                    foreach(var varRef in references) {
-                        Debug.LogWarning("iCanScript: No definition found for variable=> "+name+" in visual script=> "+varRef.VisualScript.name);
-                    }
-                }
+                ValidateCallsToFunction(name, group);
+//                var definitions= group.Definitions;
+//                var references = group.References;
+//                if(references.Count != 0 && definitions.Count == 0) {
+//                    foreach(var varRef in references) {
+//                        Debug.LogWarning("iCanScript: No definition found for variable=> "+name+" in visual script=> "+varRef.VisualScript.name);
+//                    }
+//                }
             }
         );
 		return true;
