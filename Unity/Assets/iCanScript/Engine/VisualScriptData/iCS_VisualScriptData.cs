@@ -343,7 +343,13 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
 		return parentNode;
 	}
     // ----------------------------------------------------------------------
+    /// Returns the full name of the object including the name of the game object.
 	public static string GetFullName(iCS_IVisualScriptData vsd, UnityEngine.Object host, iCS_EngineObject obj) {
+		return host.name+"."+GetRelativeName(vsd, obj);
+	}
+    // ----------------------------------------------------------------------
+    /// Returns the relative name of the object reference by the visual script.
+	public static string GetRelativeName(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
 		if(obj == null) return "";
 		string fullName= "";
 		for(; obj != null; obj= GetParentNode(vsd, obj)) {
@@ -351,7 +357,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "."+fullName);                
             }
 		}
-		return host.name+"."+fullName;
+		return fullName;
 	}
     
     // ======================================================================

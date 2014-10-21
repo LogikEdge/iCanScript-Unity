@@ -7,8 +7,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Public interface Utilities
 	// ----------------------------------------------------------------------
     bool BuildPublicInterfaceMenu(GameObject gameObject, iCS_EditorObject parent, iCS_VisualScriptImp vs, Vector2 mousePosition) {
-        var publicVariables= iCS_VisualScriptData.FindPublicVariables(vs);
-        var userFunctions= iCS_VisualScriptData.FindPublicFunctions(vs);
+        var publicVariables= iCS_VisualScriptData.FindPublicVariableDefinitions(vs);
+        var userFunctions= iCS_VisualScriptData.FindFunctionDefinitions(vs);
         if(publicVariables.Length != 0 || userFunctions.Length != 0) {
             GenericMenu gMenu= new GenericMenu();
             gMenu.AddItem(new GUIContent("+ <GameObject>"), false,

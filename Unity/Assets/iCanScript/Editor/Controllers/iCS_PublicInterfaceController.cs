@@ -35,96 +35,147 @@ public static class iCS_PublicInterfaceController {
     // Types
     // ----------------------------------------------------------------------
 	public class VSPublicGroups {
-		Dictionary<string, VSObjectReferenceGroup>	myGroups= null;
+		Dictionary<string, LinkedGroup>	myGroups= null;
 		
 		public VSPublicGroups() {
-			myGroups= new Dictionary<string, VSObjectReferenceGroup>();
+			myGroups= new Dictionary<string, LinkedGroup>();
 		}
 		public int	NbOfGroups { get { return myGroups.Count; }}
-		public void Add(VSObjectReference objRef) {
-			var objName= objRef.EngineObject.Name;
-			VSObjectReferenceGroup	group= null;
-			if(myGroups.TryGetValue(objName, out group)) {
-				group.Add(objRef);
+		public void Add(ReferenceToDefinition definition) {
+			var name= definition.Name;
+			LinkedGroup	group= null;
+			if(myGroups.TryGetValue(name, out group)) {
+				group.Add(definition);
 			}
 			else {
-				var newGroup= new VSObjectReferenceGroup();
-				newGroup.Add(objRef);
-				myGroups.Add(objName, newGroup);
+				var newGroup= new LinkedGroup();
+				newGroup.Add(definition);
+				myGroups.Add(name, newGroup);
+			}
+		}
+		public void Add(ReferenceToEngineObject reference) {
+			var name= reference.Name;
+			LinkedGroup	group= null;
+			if(myGroups.TryGetValue(name, out group)) {
+				group.Add(reference);
+			}
+			else {
+				var newGroup= new LinkedGroup();
+				newGroup.Add(reference);
+				myGroups.Add(name, newGroup);
 			}
 		}
         public void Add(iCS_EditorObject element) {
-            Add(new VSObjectReference(element.IStorage.VisualScript, element.InstanceId));
+            var vs= element.IStorage.VisualScript;
+            if(element.IsPublicVariable || element.IsPublicFunction) {
+                Add(new ReferenceToDefinition(vs, element.Name));
+            }
+            else {
+                Add(new ReferenceToEngineObject(vs, element.InstanceId));                
+            }
         }
-		public void Remove(VSObjectReference objRef) {
-			var objName= objRef.EngineObject.Name;
-			VSObjectReferenceGroup	group= null;
-			if(myGroups.TryGetValue(objName, out group)) {
-				group.Remove(objRef);
+		public void Remove(ReferenceToDefinition definition) {
+			var name= definition.Name;
+			LinkedGroup	group= null;
+			if(myGroups.TryGetValue(name, out group)) {
+				group.Remove(definition);
 				if(group.IsEmpty) {
-					myGroups.Remove(objName);
+					myGroups.Remove(name);
+				}
+			}
+		}
+		public void Remove(ReferenceToEngineObject reference) {
+			var name= reference.Name;
+			LinkedGroup	group= null;
+			if(myGroups.TryGetValue(name, out group)) {
+				group.Remove(reference);
+				if(group.IsEmpty) {
+					myGroups.Remove(name);
 				}
 			}
 		}
         public void Remove(iCS_EditorObject element) {
-            Remove(new VSObjectReference(element.IStorage.VisualScript, element.InstanceId));
+            var vs= element.IStorage.VisualScript;
+            if(element.IsPublicVariable || element.IsPublicFunction) {
+                Remove(new ReferenceToDefinition(vs, element.Name));
+            }
+            else {
+                Remove(new ReferenceToEngineObject(vs, element.InstanceId));
+            }
         }
-		public void ForEach(Action<string, VSObjectReferenceGroup> action) {
+		public void ForEach(Action<string, LinkedGroup> action) {
 			foreach(var p in myGroups) {
 				action(p.Key, p.Value);
 			}
 		}
-		public VSObjectReferenceGroup Find(string name) {
-			VSObjectReferenceGroup	group= null;
+		public LinkedGroup Find(string name) {
+			LinkedGroup	group= null;
 			myGroups.TryGetValue(name, out group);
 			return group;
 		}
 	}
     // ----------------------------------------------------------------------	
-	public class VSObjectReferenceGroup {
-		List<VSObjectReference>	myDefinitions= new List<VSObjectReference>();
-		List<VSObjectReference> myReferences = new List<VSObjectReference>();
+	public class LinkedGroup {
+		List<ReferenceToDefinition>   myDefinitions= new List<ReferenceToDefinition>();
+		List<ReferenceToEngineObject> myReferences = new List<ReferenceToEngineObject>();
 		
-		public VSObjectReferenceGroup() {}
-		public List<VSObjectReference>	Definitions 	{ get { return myDefinitions; }}
-		public List<VSObjectReference>	References		{ get { return myReferences; }}
-		public int 						NbOfDefinitions	{ get { return myDefinitions.Count; }}
-		public int 						NbOfReferences	{ get { return myReferences.Count; }}
-		public bool						IsEmpty			{ get { return NbOfDefinitions+NbOfReferences == 0; }}
-		public void Add(VSObjectReference objRef) {
-			if(objRef.IsPublicVariable || objRef.IsPublicFunction) {
-			   myDefinitions.Add(objRef);	
-			}
-			else {
-				myReferences.Add(objRef);
-			}
+		public LinkedGroup() {}
+		public List<ReferenceToDefinition>	    Definitions 	{ get { return myDefinitions; }}
+		public List<ReferenceToEngineObject>	References		{ get { return myReferences; }}
+		public int 						        NbOfDefinitions	{ get { return myDefinitions.Count; }}
+		public int 						        NbOfReferences	{ get { return myReferences.Count; }}
+		public bool						        IsEmpty			{ get { return NbOfDefinitions+NbOfReferences == 0; }}
+		public void Add(ReferenceToDefinition definition) {
+		    myDefinitions.Add(definition);	
 		}
-		public void Remove(VSObjectReference objRef) {
-			if(objRef.IsPublicVariable || objRef.IsPublicFunction) {
-                   for(int i= 0; i < myDefinitions.Count; ++i) {
-                       var definition= myDefinitions[i];
-                       if(definition.ObjectId == objRef.ObjectId && definition.VisualScript == objRef.VisualScript) {
-                           myDefinitions.RemoveAt(i);
-                           break;
-                       }
-                   }
-			}
-			else {
-                for(int i= 0; i < myReferences.Count; ++i) {
-                    var reference= myReferences[i];
-                    if(reference.ObjectId == objRef.ObjectId && reference.VisualScript == objRef.VisualScript) {
-                        myReferences.RemoveAt(i);
-                        break;
-                    }
+		public void Add(ReferenceToEngineObject reference) {
+			myReferences.Add(reference);
+		}
+		public void Remove(ReferenceToDefinition definition) {
+            var name= definition.Name;
+            var vs  = definition.VisualScript;
+            for(int i= 0; i < myDefinitions.Count; ++i) {
+                var cursor= myDefinitions[i];
+                if(cursor.Name == name && cursor.VisualScript == vs) {
+                    myDefinitions.RemoveAt(i);
+                    break;
                 }
-			}			
+            }
 		}
+		public void Remove(ReferenceToEngineObject reference) {
+            var id= reference.ObjectId;
+            var vs= reference.VisualScript;
+            for(int i= 0; i < myReferences.Count; ++i) {
+                var cursor= myReferences[i];
+                if(cursor.ObjectId == id && cursor.VisualScript == vs) {
+                    myReferences.RemoveAt(i);
+                    break;
+                }
+            }
+        }
 	};
-    public class VSObjectReference {
+    // ----------------------------------------------------------------------	
+    public class ReferenceToDefinition {
+        iCS_VisualScriptImp     myVisualScript = null;
+        string                  myDefintionName= null;
+
+        public ReferenceToDefinition(iCS_VisualScriptImp visualScript, string name) {
+            myVisualScript = visualScript;
+            myDefintionName= name;
+        }
+        public iCS_VisualScriptImp VisualScript 		{ get { return myVisualScript; }}
+        public iCS_EngineObject    EngineObject 		{ get { return iCS_VisualScriptData.FindDefinitionWithName(myVisualScript, myDefintionName); }}
+        public bool                IsVariableDefinition { get { return EngineObject.IsConstructor; }}
+        public bool                IsFunctionDefinition { get { return EngineObject.IsPackage; }}
+        public string              Name                 { get { return myDefintionName; }}
+        public string              FullName             { get { return iCS_VisualScriptData.GetFullName(myVisualScript, myVisualScript, EngineObject); }}
+    };
+    // ----------------------------------------------------------------------	
+    public class ReferenceToEngineObject {
         iCS_VisualScriptImp     myVisualScript= null;
         int                     myObjectId= -1;
 
-        public VSObjectReference(iCS_VisualScriptImp visualScript, int objectId) {
+        public ReferenceToEngineObject(iCS_VisualScriptImp visualScript, int objectId) {
             myVisualScript= visualScript;
             myObjectId= objectId;
         }
@@ -158,26 +209,26 @@ public static class iCS_PublicInterfaceController {
     // ======================================================================
     // Fields 
     // ----------------------------------------------------------------------
-    static VSObjectReference[]	ourPublicVariables   = null;
-    static VSObjectReference[]	ourPublicFunctions   = null;
-    static VSObjectReference[]	ourVariableReferences= null;
-    static VSObjectReference[]	ourFunctionCalls     = null;
-	static VSPublicGroups		ourPublicVariableGroups= null;
-	static VSPublicGroups		ourPublicFunctionGroups= null;
+    static ReferenceToDefinition[]	    ourPublicVariables   = null;
+    static ReferenceToDefinition[]	    ourPublicFunctions   = null;
+    static ReferenceToEngineObject[]	ourVariableReferences= null;
+    static ReferenceToEngineObject[]	ourFunctionCalls     = null;
+	static VSPublicGroups		        ourPublicVariableGroups= null;
+	static VSPublicGroups		        ourPublicFunctionGroups= null;
 	
     // ======================================================================
     // Scene properties
     // ----------------------------------------------------------------------
-    public static VSObjectReference[] PublicVariables {
+    public static ReferenceToDefinition[] PublicVariables {
         get { return ourPublicVariables; }
     }
-    public static VSObjectReference[] PublicFunctions {
+    public static ReferenceToDefinition[] PublicFunctions {
         get { return ourPublicFunctions; }
     }
-    public static VSObjectReference[] VariableReferences {
+    public static ReferenceToEngineObject[] VariableReferences {
         get { return ourVariableReferences; }
     }
-    public static VSObjectReference[] FunctionCalls {
+    public static ReferenceToEngineObject[] FunctionCalls {
         get { return ourFunctionCalls; }
     }
 	public static VSPublicGroups	PublicVariableGroups {
@@ -223,7 +274,10 @@ public static class iCS_PublicInterfaceController {
     }
     static void OnVisualScriptElementAdded(iCS_IStorage iStorage, iCS_EditorObject element) {
 #if DEBUG
-        Debug.Log("Visual Script element added=> "+iStorage.VisualScript.name+"."+element.Name);
+        if(element.IsPublicVariable || element.IsVariableReference ||
+           element.IsPublicFunction || element.IsFunctionCall) {
+               Debug.Log("Visual Script element added=> "+iStorage.VisualScript.name+"."+element.Name);               
+        }
 #endif
         if(element.IsPublicVariable || element.IsVariableReference) {
             PublicVariableGroups.Add(element);
@@ -235,7 +289,10 @@ public static class iCS_PublicInterfaceController {
     }
     static void OnVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
 #if DEBUG
-        Debug.Log("Visual Script element will be removed=> "+iStorage.VisualScript.name+"."+element.Name);
+        if(element.IsPublicVariable || element.IsVariableReference ||
+           element.IsPublicFunction || element.IsFunctionCall) {
+               Debug.Log("Visual Script element will be removed=> "+iStorage.VisualScript.name+"."+element.Name);
+        }
 #endif
         if(element.IsPublicVariable || element.IsVariableReference) {
             PublicVariableGroups.Remove(element);
@@ -247,7 +304,10 @@ public static class iCS_PublicInterfaceController {
     }
     static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
 #if DEBUG
-        Debug.Log("Visual Script element name changed=> "+iStorage.VisualScript.name+"."+element.Name);
+        if(element.IsPublicVariable || element.IsVariableReference ||
+           element.IsPublicFunction || element.IsFunctionCall) {
+               Debug.Log("Visual Script element name changed=> "+iStorage.VisualScript.name+"."+element.Name);
+        }
 #endif
         ValidatePublicGroups();
     }
@@ -255,13 +315,13 @@ public static class iCS_PublicInterfaceController {
     // ======================================================================
     // PUBLIC INTERFACES
     // ----------------------------------------------------------------------
-    static VSObjectReference[] ScanForPublicVariables() {
-        var result= new List<VSObjectReference>();
+    static ReferenceToDefinition[] ScanForPublicVariables() {
+        var result= new List<ReferenceToDefinition>();
         P.forEach(vs=> {
-                var publicVariables= iCS_VisualScriptData.FindPublicVariables(vs);
+                var publicVariables= iCS_VisualScriptData.FindPublicVariableDefinitions(vs);
                 P.forEach(
                     pv=> {
-                        result.Add(new VSObjectReference(vs, pv.InstanceId));
+                        result.Add(new ReferenceToDefinition(vs, pv.Name));
                     },
                     publicVariables
                 );
@@ -270,14 +330,14 @@ public static class iCS_PublicInterfaceController {
         );
         return result.ToArray();
     }
-    static VSObjectReference[] ScanForPublicFunctions() {
-        var result= new List<VSObjectReference>();
+    static ReferenceToDefinition[] ScanForPublicFunctions() {
+        var result= new List<ReferenceToDefinition>();
         P.forEach(vs=> {
-                var publicFunctions= iCS_VisualScriptData.FindPublicFunctions(vs);
+                var publicFunctions= iCS_VisualScriptData.FindFunctionDefinitions(vs);
                 P.forEach(
                     pf=> {
                         iCS_PortUtility.RepairPorts(vs, pf);
-                        result.Add(new VSObjectReference(vs, pf.InstanceId));
+                        result.Add(new ReferenceToDefinition(vs, pf.Name));
                     },
                     publicFunctions
                 );
@@ -286,13 +346,13 @@ public static class iCS_PublicInterfaceController {
         );
         return result.ToArray();
     }
-    static VSObjectReference[] ScanForVariableReferences() {
-        var result= new List<VSObjectReference>();
+    static ReferenceToEngineObject[] ScanForVariableReferences() {
+        var result= new List<ReferenceToEngineObject>();
         P.forEach(vs=> {
                 var variableReferences= iCS_VisualScriptData.FindVariableReferences(vs);
                 P.forEach(
                     vr=> {
-                        result.Add(new VSObjectReference(vs, vr.InstanceId));
+                        result.Add(new ReferenceToEngineObject(vs, vr.InstanceId));
                     },
                     variableReferences
                 );
@@ -301,13 +361,13 @@ public static class iCS_PublicInterfaceController {
         );
         return result.ToArray();
     }
-    static VSObjectReference[] ScanForFunctionCalls() {
-        var result= new List<VSObjectReference>();
+    static ReferenceToEngineObject[] ScanForFunctionCalls() {
+        var result= new List<ReferenceToEngineObject>();
         P.forEach(vs=> {
                 var functionCalls= iCS_VisualScriptData.FindFunctionCalls(vs);
                 P.forEach(
                     fc=> {
-                        result.Add(new VSObjectReference(vs, fc.InstanceId));
+                        result.Add(new ReferenceToEngineObject(vs, fc.InstanceId));
                     },
                     functionCalls
                 );
@@ -317,7 +377,7 @@ public static class iCS_PublicInterfaceController {
         return result.ToArray();
     }
     // ----------------------------------------------------------------------
-	static iCS_VisualScriptImp FindVisualScriptFromReferenceNode(VSObjectReference objRef) {
+	static iCS_VisualScriptImp FindVisualScriptFromReferenceNode(ReferenceToEngineObject objRef) {
 		return objRef.VisualScript.GetVisualScriptFromReferenceNode(objRef.EngineObject);
 	}
 	
@@ -325,8 +385,8 @@ public static class iCS_PublicInterfaceController {
 	// = Public Interface Validation Utilities =
 	// =========================================
     // ----------------------------------------------------------------------
-	public static P.Tuple<VSObjectReference,VSObjectReference>[] ValidateVariableDefinitions() {
-		var result= new List<P.Tuple<VSObjectReference,VSObjectReference> >();
+	public static P.Tuple<ReferenceToDefinition,ReferenceToDefinition>[] ValidateVariableDefinitions() {
+		var result= new List<P.Tuple<ReferenceToDefinition,ReferenceToDefinition> >();
         PublicVariableGroups.ForEach(
             (name, group)=> {
 				var definitions= group.Definitions;
@@ -336,9 +396,9 @@ public static class iCS_PublicInterfaceController {
 				P.fold(
 					(acc,o)=> {
 						if(qualifiedType != o.EngineObject.QualifiedType) {
-							acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definitions[0], o));
+							acc.Add(new P.Tuple<ReferenceToDefinition,ReferenceToDefinition>(definitions[0], o));
 #if DEBUG
-                            Debug.LogWarning("iCanScript: public variables=> <color=orange><b>"+definition.VisualScript.name+"."+name+"</b></color> and=> <color=orange><b>"+o.VisualScript.name+"."+name+"</b></color> differ in terms of type! Please correct before continuing.");
+                            Debug.LogWarning("iCanScript: public variables=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> differ in terms of type! Please correct before continuing.");
 #endif
 						}
 						return acc;
@@ -360,8 +420,8 @@ public static class iCS_PublicInterfaceController {
 		return P.fold((acc,o)=> acc || type == o.EngineObject.RuntimeType, false, definitions);
 	}
     // ----------------------------------------------------------------------
-	public static P.Tuple<VSObjectReference,VSObjectReference>[] ValidateFunctionDefinitions() {
-		var result= new List<P.Tuple<VSObjectReference,VSObjectReference> >();
+	public static P.Tuple<ReferenceToDefinition,ReferenceToDefinition>[] ValidateFunctionDefinitions() {
+		var result= new List<P.Tuple<ReferenceToDefinition,ReferenceToDefinition> >();
         PublicFunctionGroups.ForEach(
             (name, group)=> {
 				var definitions= group.Definitions;
@@ -372,7 +432,7 @@ public static class iCS_PublicInterfaceController {
 				P.fold(
 					(acc,o)=> {
 						if(!IsSameFunction(vs, obj, o.VisualScript, o.EngineObject)) {
-							acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definition, o));
+							acc.Add(new P.Tuple<ReferenceToDefinition,ReferenceToDefinition>(definition, o));
 #if DEBUG
                             var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
                             var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
@@ -409,8 +469,8 @@ public static class iCS_PublicInterfaceController {
 		return true;
 	}
     // ----------------------------------------------------------------------
-	public static P.Tuple<VSObjectReference,VSObjectReference>[] ValidateCallsToFunction(string name, VSObjectReferenceGroup group) {
-		var result= new List<P.Tuple<VSObjectReference,VSObjectReference> >();
+	public static P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>[] ValidateCallsToFunction(string name, LinkedGroup group) {
+		var result= new List<P.Tuple<ReferenceToDefinition,ReferenceToEngineObject> >();
         var definitions= group.Definitions;
         var references = group.References;
         // No mismatch if no function call exists.
@@ -422,7 +482,7 @@ public static class iCS_PublicInterfaceController {
 #if DEBUG
                     Debug.LogWarning("iCanScript: no definition exist for function call=> "+o.EngineObject.Name+" in=> "+o.VisualScript.name+".");
 #endif
-                    return new P.Tuple<VSObjectReference,VSObjectReference>(o, null);
+                    return new P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>(null, o);
                 },
                 references
             ).ToArray();
@@ -435,7 +495,7 @@ public static class iCS_PublicInterfaceController {
                 var vs2= o.VisualScript;
                 var f2= o.EngineObject;
 				if(!IsSameFunction(vs1, f1, vs2, f2)) {
-					acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definition, o));
+					acc.Add(new P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>(definition, o));
 #if DEBUG
                     var definitionName= iCS_VisualScriptData.GetFullName(vs1, vs1, f1);
                     var refName       = iCS_VisualScriptData.GetFullName(vs2, vs2, f2);
@@ -449,8 +509,8 @@ public static class iCS_PublicInterfaceController {
         ).ToArray();
     }
     // ----------------------------------------------------------------------
-	public static P.Tuple<VSObjectReference,VSObjectReference>[] ValidateReferencesToVariable(string name, VSObjectReferenceGroup group) {
-		var result= new List<P.Tuple<VSObjectReference,VSObjectReference> >();
+	public static P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>[] ValidateReferencesToVariable(string name, LinkedGroup group) {
+		var result= new List<P.Tuple<ReferenceToDefinition,ReferenceToEngineObject> >();
         var definitions= group.Definitions;
         var references = group.References;
         // No mismatch if no function call exists.
@@ -460,9 +520,10 @@ public static class iCS_PublicInterfaceController {
             return P.map(
                 o=> {
 #if DEBUG
-                    Debug.LogWarning("iCanScript: no public variable exist for reference=> "+o.EngineObject.Name+" in=> "+o.VisualScript.name+".");
+                    var fullName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
+                    Debug.LogWarning("iCanScript: no public variable exist for reference=> <color=orange><b>"+fullName+"</b></color>. Please correct before continuing.");
 #endif
-                    return new P.Tuple<VSObjectReference,VSObjectReference>(o, null);
+                    return new P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>(null, o);
                 },
                 references
             ).ToArray();
@@ -473,9 +534,9 @@ public static class iCS_PublicInterfaceController {
         var qualifiedType = obj.QualifiedType;
         return P.fold(
             (acc,o)=> {
-                var outputPort= iCS_VisualScriptData.GetChildPortWithIndex(o.VisualScript, o.EngineObject, (int)iCS_PortIndex.OutInstance);
+                var outputPort= iCS_VisualScriptData.GetChildPortWithIndex(o.VisualScript, o.EngineObject, (int)iCS_PortIndex.Return);
 				if(outputPort == null || qualifiedType != outputPort.QualifiedType) {
-					acc.Add(new P.Tuple<VSObjectReference,VSObjectReference>(definition, o));
+					acc.Add(new P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>(definition, o));
 #if DEBUG
                     var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
                     var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
