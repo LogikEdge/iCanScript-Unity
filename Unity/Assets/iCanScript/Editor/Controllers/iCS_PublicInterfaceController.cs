@@ -200,7 +200,12 @@ public static class iCS_PublicInterfaceController {
 			{ get { return VisualScript.GetEngineObjectFromReferenceNode(EngineObject); }}
         public string Name {
             get {
-                return VisualScript.name+"."+EngineObject.Name;
+                return iCS_VisualScriptData.GetRelativeName(VisualScript, EngineObject);
+            }
+        }
+        public string FullName {
+            get {
+                return iCS_VisualScriptData.GetFullName(VisualScript, VisualScript, EngineObject);
             }
         }
     };
@@ -209,6 +214,7 @@ public static class iCS_PublicInterfaceController {
     // ======================================================================
     // Fields 
     // ----------------------------------------------------------------------
+	static string						kServiceId			 = "Public Interface";
     static ReferenceToDefinition[]	    ourPublicVariables   = null;
     static ReferenceToDefinition[]	    ourPublicFunctions   = null;
     static ReferenceToEngineObject[]	ourVariableReferences= null;
@@ -245,6 +251,9 @@ public static class iCS_PublicInterfaceController {
     // Update scene content changed
     // ----------------------------------------------------------------------
     static void RefreshPublicInterfaceInfo() {
+		// Remove all previous errors/warnings
+		iCS_ErrorController.Clear(kServiceId);
+		
 		// Extract all public interface definitions and usages
         ourPublicVariables   = ScanForPublicVariables();
         ourPublicFunctions   = ScanForPublicFunctions();
@@ -271,46 +280,60 @@ public static class iCS_PublicInterfaceController {
         Debug.Log("Visual Script undo=> "+iStorage.VisualScript.name);
 #endif
         RefreshPublicInterfaceInfo();
+        ValidatePublicGroups();
     }
     static void OnVisualScriptElementAdded(iCS_IStorage iStorage, iCS_EditorObject element) {
+		// Don't process if the lement does not imply a public interface.
+		if(!IsPublicObject(element)) return;
+
 #if DEBUG
-        if(element.IsPublicVariable || element.IsVariableReference ||
-           element.IsPublicFunction || element.IsFunctionCall) {
-               Debug.Log("Visual Script element added=> "+iStorage.VisualScript.name+"."+element.Name);               
-        }
+        Debug.Log("Visual Script element added=> "+iStorage.VisualScript.name+"."+element.Name);               
 #endif
-        if(element.IsPublicVariable || element.IsVariableReference) {
-            PublicVariableGroups.Add(element);
-        }
-        if(element.IsPublicFunction || element.IsFunctionCall) {
-            PublicFunctionGroups.Add(element);
-        }
+//        if(element.IsPublicVariable || element.IsVariableReference) {
+//            PublicVariableGroups.Add(element);
+//        }
+//        if(element.IsPublicFunction || element.IsFunctionCall) {
+//            PublicFunctionGroups.Add(element);
+//        }
+        RefreshPublicInterfaceInfo();
         ValidatePublicGroups();
     }
     static void OnVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
+		// Don't process if the lement does not imply a public interface.
+		if(!IsPublicObject(element)) return;		
 #if DEBUG
-        if(element.IsPublicVariable || element.IsVariableReference ||
-           element.IsPublicFunction || element.IsFunctionCall) {
-               Debug.Log("Visual Script element will be removed=> "+iStorage.VisualScript.name+"."+element.Name);
-        }
+        Debug.Log("Visual Script element will be removed=> "+iStorage.VisualScript.name+"."+element.Name);
 #endif
-        if(element.IsPublicVariable || element.IsVariableReference) {
-            PublicVariableGroups.Remove(element);
-        }
-        if(element.IsPublicFunction || element.IsFunctionCall) {
-            PublicFunctionGroups.Remove(element);
-        }
+//        if(element.IsPublicVariable || element.IsVariableReference) {
+//            PublicVariableGroups.Remove(element);
+//        }
+//        if(element.IsPublicFunction || element.IsFunctionCall) {
+//            PublicFunctionGroups.Remove(element);
+//        }
+		RefreshPublicInterfaceInfo();
         ValidatePublicGroups();
     }
     static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
+		// Don't process if the lement does not imply a public interface.
+		if(!IsPublicObject(element)) return;
 #if DEBUG
-        if(element.IsPublicVariable || element.IsVariableReference ||
-           element.IsPublicFunction || element.IsFunctionCall) {
-               Debug.Log("Visual Script element name changed=> "+iStorage.VisualScript.name+"."+element.Name);
-        }
+        Debug.Log("Visual Script element name changed=> "+iStorage.VisualScript.name+"."+element.Name);
 #endif
+		RefreshPublicInterfaceInfo();
         ValidatePublicGroups();
     }
+    // ----------------------------------------------------------------------
+	static bool IsPublicObject(iCS_EditorObject element) {
+		return IsPublicDefinition(element) || IsReferenceToPublicObject(element);
+	}
+    // ----------------------------------------------------------------------
+	static bool IsPublicDefinition(iCS_EditorObject element) {
+		return element.IsPublicVariable || element.IsPublicFunction;
+	}
+    // ----------------------------------------------------------------------
+	static bool IsReferenceToPublicObject(iCS_EditorObject element) {
+		return element.IsVariableReference || element.IsFunctionCall;
+	}
 
     // ======================================================================
     // PUBLIC INTERFACES
@@ -385,30 +408,26 @@ public static class iCS_PublicInterfaceController {
 	// = Public Interface Validation Utilities =
 	// =========================================
     // ----------------------------------------------------------------------
-	public static P.Tuple<ReferenceToDefinition,ReferenceToDefinition>[] ValidateVariableDefinitions() {
-		var result= new List<P.Tuple<ReferenceToDefinition,ReferenceToDefinition> >();
+	public static void ValidateVariableDefinitions() {
         PublicVariableGroups.ForEach(
             (name, group)=> {
 				var definitions= group.Definitions;
 				if(P.length(definitions) < 2) return;
                 var definition= definitions[0];
-				var qualifiedType= definition.EngineObject.QualifiedType;
-				P.fold(
-					(acc,o)=> {
+				var defVisualScript= definition.VisualScript;
+				var defEngineObject= definition.EngineObject;
+				var qualifiedType= defEngineObject.QualifiedType;
+				definitions.ForEach(
+					o=> {
 						if(qualifiedType != o.EngineObject.QualifiedType) {
-							acc.Add(new P.Tuple<ReferenceToDefinition,ReferenceToDefinition>(definitions[0], o));
-#if DEBUG
-                            Debug.LogWarning("iCanScript: public variables=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> differ in terms of type! Please correct before continuing.");
-#endif
+                            var errorMsg= "public variables=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> differ in terms of type! Please correct before continuing.";
+							iCS_ErrorController.AddError(kServiceId, errorMsg, defVisualScript, defEngineObject.InstanceId);
+							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
 						}
-						return acc;
 					}
-					, result
-					, definitions
 				);
             }
         );
-		return result.ToArray();
 	}
     // ----------------------------------------------------------------------
 	public static bool IsVariableDefinitionCompliant(iCS_EditorObject variable) {
@@ -509,71 +528,56 @@ public static class iCS_PublicInterfaceController {
         ).ToArray();
     }
     // ----------------------------------------------------------------------
-	public static P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>[] ValidateReferencesToVariable(string name, LinkedGroup group) {
-		var result= new List<P.Tuple<ReferenceToDefinition,ReferenceToEngineObject> >();
+	public static void ValidateReferencesToVariable(string name, LinkedGroup group) {
         var definitions= group.Definitions;
         var references = group.References;
         // No mismatch if no function call exists.
-        if(references.Count == 0) return result.ToArray();
+        if(references.Count == 0) return;
         // At least definition must exist is a function call exists.
-        if(references.Count != 0 && definitions.Count == 0) {
-            return P.map(
+        if(definitions.Count == 0) {
+            references.ForEach(
                 o=> {
-#if DEBUG
-                    var fullName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
-                    Debug.LogWarning("iCanScript: no public variable exist for reference=> <color=orange><b>"+fullName+"</b></color>. Please correct before continuing.");
-#endif
-                    return new P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>(null, o);
-                },
-                references
-            ).ToArray();
+                    var fullName= o.FullName;
+					var errorMessage= "no public variable exist for reference=> <color=orange><b>"+fullName+"</b></color>. Please correct before continuing.";
+					iCS_ErrorController.AddError(kServiceId, errorMessage, o.VisualScript, o.EngineObject.InstanceId);
+                }
+            );
+			return;
         }                
         var definition= definitions[0];
         var vs= definition.VisualScript;
         var obj= definition.EngineObject;
         var qualifiedType = obj.QualifiedType;
-        return P.fold(
-            (acc,o)=> {
+        references.ForEach(
+            o=> {
                 var outputPort= iCS_VisualScriptData.GetChildPortWithIndex(o.VisualScript, o.EngineObject, (int)iCS_PortIndex.Return);
 				if(outputPort == null || qualifiedType != outputPort.QualifiedType) {
-					acc.Add(new P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>(definition, o));
-#if DEBUG
                     var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
                     var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
-                    Debug.LogWarning("iCanScript: variable reference=> <color=orange><b>"+otherName+"</b></color> differs in terms of type from definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.");
-#endif
+					var errorMessage= "variable reference=> <color=orange><b>"+otherName+"</b></color> differs in terms of type from definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.";
+					iCS_ErrorController.AddError(kServiceId, errorMessage, o.VisualScript, o.EngineObject.InstanceId);
 				}
-				return acc;
-            },
-            result,
-            references
-        ).ToArray();
+            }
+        );
     }
 
     // ----------------------------------------------------------------------
 	public static bool ValidatePublicGroups() {
         // Validate Variables
 		ValidateVariableDefinitions();
-		ValidateFunctionDefinitions();
+//		ValidateFunctionDefinitions();
 		
         PublicVariableGroups.ForEach(
             (name, group)=> {
                 ValidateReferencesToVariable(name, group);
-//                var definitions= group.Definitions;
-//                var references = group.References;
-//                if(references.Count != 0 && definitions.Count == 0) {
-//                    foreach(var varRef in references) {
-//                        Debug.LogWarning("iCanScript: No definition found for variable=> "+name+" in visual script=> "+varRef.VisualScript.name);                    
-//                    }
-//                }                
             }
         );
         
         // Validate Functions
         // TODO: Cumulate errors
-        PublicFunctionGroups.ForEach(
-            (name, group)=> {
-                ValidateCallsToFunction(name, group);
+//        PublicFunctionGroups.ForEach(
+//            (name, group)=> {
+//                ValidateCallsToFunction(name, group);
 //                var definitions= group.Definitions;
 //                var references = group.References;
 //                if(references.Count != 0 && definitions.Count == 0) {
@@ -581,8 +585,8 @@ public static class iCS_PublicInterfaceController {
 //                        Debug.LogWarning("iCanScript: No definition found for variable=> "+name+" in visual script=> "+varRef.VisualScript.name);
 //                    }
 //                }
-            }
-        );
+//            }
+//        );
 		return true;
 	}
 

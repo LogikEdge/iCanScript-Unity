@@ -9,6 +9,7 @@ public static class iCS_AppController {
     // ----------------------------------------------------------------------
 	static iCS_AppController() {
         // Start all sub-systems.
+		iCS_ErrorController.Start();
         iCS_SystemEvents.Start();
         iCS_TimerService.Start();
         iCS_EditionController.Start();
@@ -20,8 +21,8 @@ public static class iCS_AppController {
 		iCS_CodeGenerator.Start();
         iCS_VisualScriptDataController.Start();
         iCS_SceneController.Start();
-		iCS_HelpController.Start();	
         iCS_PublicInterfaceController.Start();
+		iCS_HelpController.Start();	
 	}
     
     /// Start the application controller.
@@ -29,6 +30,8 @@ public static class iCS_AppController {
     /// Shutdowns the application controller.
     public static void Shutdown() {
         // Shutdown all subsystems.
+		iCS_HelpController.Shutdown();
+        iCS_PublicInterfaceController.Start();
         iCS_SceneController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
         iCS_CodeGenerator.Shutdown();
@@ -41,6 +44,6 @@ public static class iCS_AppController {
         iCS_EditionController.Shutdown();
         iCS_TimerService.Shutdown();
         iCS_SystemEvents.Shutdown();
-		iCS_HelpController.Shutdown();
+		iCS_ErrorController.Shutdown();
     }
 }

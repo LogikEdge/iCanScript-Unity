@@ -222,6 +222,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Tell the user that we can display without a behavior or library.
             ShowNotification(new GUIContent("No iCanScript component selected !!!"));
             myNotificationShown= true;
+			ShowErrorsAndWarnings();
             return;            
         }
         // Remove any previously shown notification.

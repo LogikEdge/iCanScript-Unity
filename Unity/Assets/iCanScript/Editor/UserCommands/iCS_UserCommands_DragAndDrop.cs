@@ -37,6 +37,7 @@ public static partial class iCS_UserCommands {
                                       iCS_IStorage iStorage, iCS_EditorObject parent, Vector2 globalPos) {
         if(!IsCreationAllowed()) return;
         OpenTransaction(iStorage);
+		iCS_EditorObject pasted= null;
         try {
             iStorage.AnimateGraph(null,
                 _=> {
@@ -45,7 +46,7 @@ public static partial class iCS_UserCommands {
                     }
                     iCS_IStorage srcIStorage= new iCS_IStorage(sourceMonoBehaviour);
                     iCS_EditorObject srcRoot= srcIStorage.EditorObjects[sourceRoot.InstanceId];
-                    iCS_EditorObject pasted= iStorage.Copy(srcRoot, srcIStorage, parent, globalPos, iStorage);
+                    pasted= iStorage.Copy(srcRoot, srcIStorage, parent, globalPos, iStorage);
                     if(pasted != null) {
                         if(pasted.IsUnfoldedInLayout) {
                             pasted.Fold();            
@@ -60,6 +61,9 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return;
         }
+		if(pasted != null) {
+			iCS_SystemEvents.AnnounceVisualScriptElementAdded(iStorage, pasted);			
+		}
         CloseTransaction(iStorage, "Add Prefab "+sourceRoot.Name);
     }
 	// ----------------------------------------------------------------------

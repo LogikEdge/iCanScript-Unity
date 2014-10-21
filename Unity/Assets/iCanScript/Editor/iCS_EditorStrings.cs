@@ -19,11 +19,13 @@ public class iCS_EditorStrings {
 	public const string RightArrowHeadIcon   = "iCS_RightArrowHeadIcon.png";
 	public const string ModuleIcon           = "iCS_PackageIcon_32x32.png";
 	public const string FunctionIcon         = "iCS_FunctionIcon_32x32.png";
-    public const string TransitionPackageIcon = "iCS_TransitionPackageIcon.png";
+    public const string TransitionPackageIcon= "iCS_TransitionPackageIcon.png";
 	public const string RandomIcon           = "iCS_RandomIcon_32x32.png";
 	public const string MuxIcon				 = "iCS_JoinIcon_32x32.psd";
 	public const string CancelIcon           = "iCS_CancelIcon_16x16x32.png";
 	public const string SearchIcon           = "iCS_SearchIcon_16x16x32.png";
+	public const string ErrorIcon			 = "iCS_Logo_64x64.png";
+	public const string WarningIcon			 = "iCS_Logo_64x64.png";
 	
     // Textures
     public const string AALineTexture        = "iCS_LineTexture.psd";
