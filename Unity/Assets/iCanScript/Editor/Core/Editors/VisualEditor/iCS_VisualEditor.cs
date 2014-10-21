@@ -279,11 +279,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		OnPostRender();
 	}
 
-	void DisplayHelp() {
-		GUIStyle style =  EditorStyles.textArea;
-		style.richText = true;
-		GUI.Box(new Rect(Screen.width-400, Screen.height-125, 400, 125), myHelpText, style);
-	}
 
 	// ----------------------------------------------------------------------
     // Processes all events.

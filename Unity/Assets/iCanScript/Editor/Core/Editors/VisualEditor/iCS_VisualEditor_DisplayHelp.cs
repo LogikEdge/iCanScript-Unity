@@ -10,6 +10,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
 	private string myHelpText  = null;
 	string nameColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
+	string noHelp= "no tip available";
+	string defaultHelp= 
+		"<b>Press on selected:</b>\n" +
+		" <b>H-</b> more Help\t\t<b>drag-</b> moves node\n" +
+		" <b>F-</b> Focus in view\t\t<b>ctrl drag-</b> moves node outside\n" +
+		" <b>L-</b> Auto Layout\t\t<b>shift drag-</b> move copies node\n" +
+		" <b>B-</b> Bookmark\t\t<b>del-</b> deletes object\n" +
+		" <b>G-</b> Move to Bookmark\t<b>C-</b> Connect to Bookmark\n";
 	
     // ======================================================================
     // Poplulates the help string which will be displayed on on GUI when 
@@ -43,10 +51,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			   			myHelpText= myHelpText + GetPortHelpString("", firstProducerPort);
 			   		}
 					myHelpText= myHelpText + "\n";
-					foreach(iCS_EditorObject endConsumerPort in endConsumerPortArray) {
-						if(endConsumerPort != null && firstProducerPort != endConsumerPort){
-							myHelpText= myHelpText + "\n" + GetPortHelpString("connected-> ", endConsumerPort);
-						}
+					
+					//For real estate reasons, show only first connection.
+					iCS_EditorObject endConsumerPort= endConsumerPortArray[0];
+					if(endConsumerPort != null && firstProducerPort != endConsumerPort) {
+						myHelpText= myHelpText + "\n" + GetPortHelpString("connected-> ", endConsumerPort);
 					}
 				}
 			}
@@ -55,7 +64,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
 				myHelpText= memberInfo != null ? memberInfo.Summary : null;
 				if(String.IsNullOrEmpty(myHelpText)) {
-					myHelpText= "no tip available";
+					myHelpText= noHelp;
 				}
 				else {
 					myHelpText= "<b>" + nameColour + edObj.DisplayName + "</color></b>" + "\n" + myHelpText;
@@ -89,7 +98,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						summary= memberInfo.Summary;	
 				}
 				if(String.IsNullOrEmpty(summary)) {
-					summary= "no tip available";
+					summary= noHelp;
 				}
 				
 				string displayName= portNameEdObj.DisplayName;
@@ -101,5 +110,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 		}
 		return null;
+	}
+	
+    // ======================================================================
+    // Display the help already populated in myHelpText
+	void DisplayHelp() {
+		GUIStyle style =  EditorStyles.textArea;
+		style.richText = true;
+		style.alignment = TextAnchor.UpperLeft;
+		if (myHelpText==noHelp)
+			myHelpText= defaultHelp;
+		GUI.Box(new Rect(Screen.width-400, Screen.height-100, 400, 100), myHelpText, style);
 	}
 }
