@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Text.RegularExpressions;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	
@@ -24,27 +25,27 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			myHelpText="";
 			// Polpulate help if pointed object is a port
 			if(edObj.IsPort) {
-				iCS_EditorObject   firstPort= edObj.FirstProducerPort;
-				iCS_EditorObject[] endPortArray= edObj.EndConsumerPorts;
+				iCS_EditorObject   firstProducerPort= edObj.FirstProducerPort;
+				iCS_EditorObject[] endConsumerPortArray= edObj.EndConsumerPorts;
 							
 			    if (edObj.IsInputPort) {
 					// there should only be one end consumer port for an input port.
 					
-					if(endPortArray[0] != null){
-			   			myHelpText= myHelpText + GetPortHelpString("", edObj, endPortArray[0].ParentNode);
+					if(endConsumerPortArray[0] != null){
+						myHelpText= myHelpText + GetPortHelpString("", endConsumerPortArray[0]);
 					}	
-			   		if(firstPort != null && firstPort != endPortArray[0]) {
-			   			myHelpText= myHelpText + "\n\n" + GetPortHelpString("connected-> ", firstPort, firstPort.ParentNode);
+			   		if(firstProducerPort != null && firstProducerPort != endConsumerPortArray[0]) {
+						myHelpText= myHelpText + "\n\n" + GetPortHelpString("connected-> ", firstProducerPort);
 			   		}	
 			   	}
 				else if(edObj.IsOutputPort) {
-			   		if(firstPort != null) {
-			   			myHelpText= myHelpText + GetPortHelpString("", edObj, firstPort.ParentNode);
+			   		if(firstProducerPort != null) {
+			   			myHelpText= myHelpText + GetPortHelpString("", firstProducerPort);
 			   		}
 					myHelpText= myHelpText + "\n";
-					foreach(iCS_EditorObject endPort in endPortArray) {
-						if(endPort != null && firstPort != endPort){
-							myHelpText= myHelpText + "\n" + GetPortHelpString("connected-> ", endPort, endPort.ParentNode);
+					foreach(iCS_EditorObject endConsumerPort in endConsumerPortArray) {
+						if(endConsumerPort != null && firstProducerPort != endConsumerPort){
+							myHelpText= myHelpText + "\n" + GetPortHelpString("connected-> ", endConsumerPort);
 						}
 					}
 				}
@@ -57,7 +58,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					myHelpText= "no tip available";
 				}
 				else {
-					myHelpText= "<b>" + nameColour + edObj + "</color></b>" + "\n" + myHelpText;
+					myHelpText= "<b>" + nameColour + edObj.DisplayName + "</color></b>" + "\n" + myHelpText;
 				}
 			}
 		}
@@ -65,13 +66,37 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
     // ======================================================================
     // Used by populate help to build help string
-	string GetPortHelpString(string prefix, iCS_EditorObject nameEdObj, iCS_EditorObject edObj) {
-		if(edObj != null && edObj.IsKindOfFunction) {
-			string displayName= nameEdObj.DisplayName;
-			string typeName= iCS_Types.TypeName(nameEdObj.RuntimeType);
-	    	iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
-			string summary= memberInfo != null ? memberInfo.Summary : null;					
-			if(!String.IsNullOrEmpty(summary)) {
+	string GetPortHelpString(string prefix, iCS_EditorObject edObj) {
+		if(edObj.ParentNode != null) {
+			if(edObj.ParentNode.IsKindOfFunction) {
+
+				iCS_EditorObject portNameEdObj= edObj;
+				if(edObj.ParentNode.ParentNode.IsInstanceNode) {
+					portNameEdObj= edObj.IsInputPort ? edObj.ProducerPort : edObj.ConsumerPorts[0];
+				}
+				
+				string summary= null;
+	    		iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj.ParentNode);
+				
+				if(memberInfo != null) {
+					// Handle special types of ports.
+					if (portNameEdObj.PortIndex == 400 && edObj.ParentNode.EngineObject.IsClassField)
+						// return port will be same as parent node description.
+						summary= memberInfo.Summary;		
+					else if( portNameEdObj.PortIndex >= 400 )
+						summary= null;
+					else
+						summary= memberInfo.Summary;	
+				}
+				if(String.IsNullOrEmpty(summary)) {
+					summary= "no tip available";
+				}
+				
+				string displayName= portNameEdObj.DisplayName;
+				displayName= Regex.Replace(displayName, "<Color>", "< Color >");	
+				
+				string typeName= iCS_Types.TypeName(portNameEdObj.RuntimeType);
+							
 				return "<b>" + prefix + typeName + " " + nameColour + displayName + "</color></b>" + "\n" + summary;
 			}
 		}
