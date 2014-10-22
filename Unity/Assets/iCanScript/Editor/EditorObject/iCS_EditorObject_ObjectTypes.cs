@@ -16,6 +16,7 @@ public partial class iCS_EditorObject {
     public bool IsMux                       { get { return EngineObject.IsMux; }}
     public bool IsSelector                  { get { return EngineObject.IsSelector; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
+	public bool IsClassField                { get { return EngineObject.IsClassField; }}
     public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
     public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
     public bool IsState                     { get { return EngineObject.IsState; }}

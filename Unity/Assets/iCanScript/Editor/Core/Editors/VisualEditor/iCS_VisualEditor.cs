@@ -36,6 +36,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     float myDeltaTime          = 0;
     bool  myNeedRepaint        = true;
     bool  myNotificationShown  = false;
+
 	
     // ----------------------------------------------------------------------
     // Debug properties.
@@ -281,10 +282,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 #if SHOW_FRAME_RATE || SHOW_FRAME_TIME
         FrameRateDebugInfo();
 #endif
-
+		
 		// Simulate OnPostRender.
 		OnPostRender();
 	}
+
 
 	// ----------------------------------------------------------------------
     // Processes all events.
@@ -293,8 +295,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var ev= Event.current;
         switch(ev.type) {
             case EventType.Repaint: {
-                // Draw Graph.
+                // Draw Graph.				
                 DrawGraph();
+				DisplayHelp();
                 break;                
             }
             case EventType.Layout: {
@@ -305,8 +308,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case EventType.MouseMove: {
-                MouseMoveEvent();
-                Event.current.Use();                        
+                MouseMoveEvent(); 
+				Event.current.Use();  
                 break;
             }
             case EventType.MouseDrag: {

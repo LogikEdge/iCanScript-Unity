@@ -11,7 +11,6 @@ using iCanScript.JSON;
 
 
 public static class iCS_HelpController {
-
 	static private string unityHelpIndex;
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
 	static string unityHelpPath = EditorApplication.applicationContentsPath + "/Documentation/html/en/ScriptReference";
@@ -126,12 +125,14 @@ public static class iCS_HelpController {
 	// ---------------------------------------------------------------------------------
 	public static string getHelpSummary(iCS_MemberInfo memberInfo )
 	{
-		if (memberInfo.Company == "Unity") {
-			string summary=null;
-			string search= getHelpUrl(memberInfo);
-			unityHelpSummary.TryGetValue(search, out summary);
-			if (summary!=null)
-				return summary;
+		if(memberInfo != null) {
+			if (memberInfo.Company == "Unity") {
+				string summary=null;
+				string search= getHelpUrl(memberInfo);
+				unityHelpSummary.TryGetValue(search, out summary);
+				if (summary!=null)
+					return summary;
+			}
 		}
 		return null;
 	}
@@ -153,7 +154,7 @@ public static class iCS_HelpController {
 	// =================================================================================
 	// Get the Unity help file url 
 	// ---------------------------------------------------------------------------------		
-	private static string getHelpUrl(iCS_MemberInfo memberInfo )	
+	private static string getHelpUrl(iCS_MemberInfo memberInfo)	
 	{		
 			string className="";
 			string demarcator="";
@@ -215,6 +216,26 @@ public static class iCS_HelpController {
 	}
 
 
+	/*
+	static Dictionary<string, string> getParametersDescFromHTMLFiles(iCS_MemberInfo memberInfo) {
+		string search= getHelpUrl(memberInfo);
+		string helpFile;
+		Dictionary<string, string> parametersDictionary= new Dictionary<string, string>();
+		if (search != null)
+			helpFile= unityHelpPath + search + ".html";
+		else
+			return parametersDictionary;
+		
+		// Create an XML document from the file (even though it is HTML)
+		XmlDocument doc = new XmlDocument ();
+		doc.Load (helpFile);
+		XmlNodeReader reader = new XmlNodeReader (doc);
+		
+		return parametersDictionary;
+	}
+	
+	
+	
 	// =================================================================================
 	// DEPRICATED
 	// ---------------------------------------------------------------------------------
@@ -280,4 +301,5 @@ public static class iCS_HelpController {
 		return "";
 					
 	} 
+*/
 }
