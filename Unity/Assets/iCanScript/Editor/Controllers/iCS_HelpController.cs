@@ -121,19 +121,53 @@ public static class iCS_HelpController {
 	}
 
 	// =================================================================================
-	// Get the summary description for a unity API
+	// Get the summary help description 
 	// ---------------------------------------------------------------------------------
-	public static string getHelpSummary(iCS_MemberInfo memberInfo )
+	
+	public static string getHelp(iCS_EditorObject edObj )
+	{
+		return getHelp(iCS_LibraryDatabase.GetAssociatedDescriptor(edObj));
+	}
+	
+	public static string getHelp(iCS_MemberInfo memberInfo )
 	{
 		if(memberInfo != null) {
-			if (memberInfo.Company == "Unity") {
-				string summary=null;
+			// Return help string if there is already one in the memberInfo
+			if (memberInfo.HelpSummaryCache != null)
+				return memberInfo.HelpSummaryCache;
+			// If there is no help string already in MemberInfo, try and look up Unity help
+			if (memberInfo.HelpSummaryCache==null && memberInfo.Company == "Unity") {
 				string search= getHelpUrl(memberInfo);
+				string summary=null;
 				unityHelpSummary.TryGetValue(search, out summary);
-				if (summary!=null)
+				if (!String.IsNullOrEmpty(summary)) {
+					// cache and return the found help string
+					memberInfo.HelpSummaryCache= summary;
 					return summary;
+				}
 			}
+			// If we could not look up help, use the description if there is one
+			if (!String.IsNullOrEmpty(memberInfo.Description)) {	
+				memberInfo.HelpSummaryCache= memberInfo.Description;				
+				return memberInfo.Description;
+			}
+			// If there is no help found yet, try and return help based on type
+			String typeHelp= getHelp(memberInfo.ParentTypeInfo);
+			if (!String.IsNullOrEmpty(typeHelp)) {
+				memberInfo.HelpSummaryCache= typeHelp;
+			}	
+			else
+			{
+				// Mark cache as empty string (vs null), so we do not search again 
+				memberInfo.HelpSummaryCache= "";	
+			}					
+			return typeHelp;
 		}
+		return null;
+	}
+	
+	public static string getHelp(iCS_TypeInfo type )
+	{
 		return null;
 	}
 	

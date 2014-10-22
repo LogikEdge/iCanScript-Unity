@@ -13,22 +13,26 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	private string myHelpText= null;
 	
 	// Help strings.  Note <tcolor> should be replaced with title colour markup when used.
-	string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
-	string noHelp= "no tip available";
-	string defaultHelp= 
+	static string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
+	const string noHelp= "no help available";
+	const string defaultHelp= 
 		"<tcolor><b>Keyboard shortcuts (for selected):</b></color>\n" +
 		"<tcolor><b>H:</b></color> more Help\t\t<tcolor><b>drag:</b></color> moves node\n" +
 		"<tcolor><b>F:</b></color> Focus in view\t\t<tcolor><b>ctrl-drag:</b></color> moves node outside\n" +
 		"<tcolor><b>L:</b></color> auto Layout\t\t<tcolor><b>shift-drag:</b></color> move copies node\n" +
 		"<tcolor><b>B:</b></color> Bookmark\t\t<tcolor><b>del:</b></color> deletes object\n" +
 		"<tcolor><b>G:</b></color> move to bookmark\t<tcolor><b>C:</b></color> Connect to bookmark\n";
-	string libraryHelp= 
+	const string libraryHelp= 
 		"<tcolor><b>Library tips:</b></color>\n" +
 		"From the library window, you can drag objects into a message handler in the Visual Editor window to create nodes.\n" +
 		"\n" +
 		"<tcolor><b>Keyboard shortcuts:</b></color>\n" +
 		"<tcolor><b>H:</b></color> additional help for selected\t <tcolor><b>Enter:</b></color> fold/unfold";
 			
+	const string InstanceEditorHelp= 
+		"<tcolor><b>Instance Wizard tips:</b></color>\n" +
+		"The Instance Wizard is used to add and remove ports in a class node.  Select a class node in the visual editor to use.\n";
+
 	
     // ======================================================================
     // Dynamic Properties
@@ -43,12 +47,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Find object under mouse, and prepare help.
 	// ----------------------------------------------------------------------
-    void updateHelp() {
+    private void updateHelp() {
 		iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 		if(pickInfo != null) {
 			iCS_EditorObject edObj= pickInfo.PickedObject;
 			if(edObj != null)
-				PopulateHelpString(edObj);
+				myHelpText= getHelpWindowText(edObj);
 		}   
 	}
 	
@@ -60,59 +64,61 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	
     // ======================================================================
+    // Display library tip in visual editor when mouse is over library
+	// ----------------------------------------------------------------------
+    public void updateHelpFromInstanceEditor() {
+		myHelpText= Regex.Replace(InstanceEditorHelp, "<tcolor>", titleColour);
+	}
+	
+    // ======================================================================
     // Poplulates the help string which will be displayed in onGUI 
 	// ----------------------------------------------------------------------
-	void PopulateHelpString(iCS_EditorObject edObj) {
-		myHelpText=null;
+	public static string getHelpWindowText(iCS_EditorObject edObj) {
 		// Polpulate help if pick object is a port
+		string helpText= "";
 		if(edObj.IsPort) {
-			myHelpText="";
 			iCS_EditorObject   firstProducerPort= edObj.FirstProducerPort;
 			iCS_EditorObject[] endConsumerPortArray= edObj.EndConsumerPorts;					
 		    if (edObj.IsInputPort) {
 				// there should only be one end consumer port for an input port.			
 				if(endConsumerPortArray[0] != null){
-					myHelpText= myHelpText + GetPortHelpString("", endConsumerPortArray[0]);
+					helpText= helpText + GetPortHelpString("", endConsumerPortArray[0]);
 				}	
-				if (!String.IsNullOrEmpty(myHelpText)) {
-					 myHelpText= myHelpText + "\n";
+				if (!String.IsNullOrEmpty(helpText)) {
+					 helpText= helpText + "\n";
 				 }
 		   		if(firstProducerPort != null && firstProducerPort != endConsumerPortArray[0]) {
-					myHelpText= myHelpText + GetPortHelpString("connected-> ", firstProducerPort);
+					helpText= helpText + GetPortHelpString("connected-> ", firstProducerPort);
 		   		}	
 		   	}
 			else if(edObj.IsOutputPort) {
 		   		if(firstProducerPort != null) {
-		   			myHelpText= myHelpText + GetPortHelpString("", firstProducerPort);
+		   			helpText= helpText + GetPortHelpString("", firstProducerPort);
 		   		}
-				if (!String.IsNullOrEmpty(myHelpText)) {
-					 myHelpText= myHelpText + "\n";
+				if (!String.IsNullOrEmpty(helpText)) {
+					 helpText= helpText + "\n";
 				}			
 				//For screen real estate reasons, show only first connection.
 				iCS_EditorObject endConsumerPort= endConsumerPortArray[0];
 				if(endConsumerPort != null && firstProducerPort != endConsumerPort) {
-					myHelpText= myHelpText + GetPortHelpString("connected-> ", endConsumerPort);
+					helpText= helpText + GetPortHelpString("connected-> ", endConsumerPort);
 				}
 			}
 		}
 		// Polpulate help if pick object is a node
 		else if (edObj.IsNode){
-			myHelpText= GetNodeHelpString("", edObj);
+			helpText= GetNodeHelpString("", edObj);
 		}
 		
 		// Display default help, if no specific help is available.
-		if (String.IsNullOrEmpty(myHelpText))	
-			myHelpText= Regex.Replace(defaultHelp, "<tcolor>", titleColour);
+		return helpText != null ? helpText : Regex.Replace(defaultHelp, "<tcolor>", titleColour);
 	}
 
     // ======================================================================
     // Used by populate help to build node help string
-	string GetNodeHelpString(string prefix, iCS_EditorObject edObj) {
-		iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
-		
-		string summary= memberInfo != null ? memberInfo.Summary : noHelp ;
+	private static string GetNodeHelpString(string prefix, iCS_EditorObject edObj) {
+
 		string typeName= null;
-		
 		// Type names to be displayed in front of node name.
 		if(edObj.IsConstructor)
 			typeName= "Builder";
@@ -125,7 +131,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		else if(edObj.IsFunctionCall)
 			typeName= "Function Call";
 		
-		if (memberInfo != null || typeName != null ) {
+		string summary= iCS_HelpController.getHelp(edObj);
+		if(String.IsNullOrEmpty(summary))
+			summary= noHelp;
+		
+		if (typeName != null) {
 			return "<b>" + prefix + typeName + " " + titleColour + edObj.DisplayName + "</color></b>" + "\n" + summary + "\n";
 		}
 		else {
@@ -136,44 +146,42 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
     // ======================================================================
     // Used by populate help to build port help string
-	string GetPortHelpString(string prefix, iCS_EditorObject edObj) {
+	private static string GetPortHelpString(string prefix, iCS_EditorObject edObj) {
 		if(edObj.ParentNode != null) {
 			if(edObj.ParentNode.IsKindOfFunction || edObj.ParentNode.IsVariableReference || edObj.ParentNode.IsFunctionCall) {
 				iCS_EditorObject portNameEdObj= edObj;
 				if(edObj.ParentNode.ParentNode.IsInstanceNode) {
 					portNameEdObj= edObj.IsInputPort ? edObj.ProducerPort : edObj.ConsumerPorts[0];
 				}			
-				string summary= null;
-	    		iCS_MemberInfo memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj.ParentNode);
+				string summary= null;				
 				string typeName= iCS_Types.TypeName(portNameEdObj.RuntimeType);
 				string displayName= portNameEdObj.DisplayName;
 				// Variable name "<Color>" interferes with the RTF ...
 				displayName= Regex.Replace(displayName, "<Color>", "< Color >");	
 				
-				if(memberInfo != null) {
-					// Handle special types of ports.
-					if (portNameEdObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsClassField) {
-						// return port will be same as parent node description, and no need to show type name
-						// which will be repeated in port name.
-						summary= memberInfo.Summary;	
-					}
-					else if (portNameEdObj.PortIndex == (int)iCS_PortIndex.InInstance || 
-							portNameEdObj.PortIndex == (int)iCS_PortIndex.OutInstance) {
-						// no need to show type name of Instance ports which will be repeated in port name.
-						typeName= "Instance";	
-					}
-					else if (portNameEdObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsConstructor) {
-						// no need to show type name of builder return port which will be repeated in port name.
-						typeName= "Instance";	
-					}
-					else if( portNameEdObj.PortIndex >= (int)iCS_PortIndex.ParametersEnd ) {
-						// No summary available for special types, excluding above exceptions
-						summary= noHelp;	
-					}
-					else {
-						summary= memberInfo.Summary;
-					}
+				// Handle special types of ports.
+				if (portNameEdObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsClassField) {
+					// return port will be same as parent node description, and no need to show type name
+					// which will be repeated in port name.
+					summary= iCS_HelpController.getHelp(edObj.ParentNode);	
 				}
+				else if (portNameEdObj.PortIndex == (int)iCS_PortIndex.InInstance || 
+						portNameEdObj.PortIndex == (int)iCS_PortIndex.OutInstance) {
+					// no need to show type name of Instance ports which will be repeated in port name.
+					typeName= "Instance";	
+				}
+				else if (portNameEdObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsConstructor) {
+					// no need to show type name of builder return port which will be repeated in port name.
+					typeName= "Instance";	
+				}
+				else if( portNameEdObj.PortIndex >= (int)iCS_PortIndex.ParametersEnd ) {
+					// No summary available for special types, excluding above exceptions
+					summary= noHelp;	
+				}
+				else {
+					summary= iCS_HelpController.getHelp(edObj.ParentNode);
+				}
+				
 				if(String.IsNullOrEmpty(summary)) {
 					summary= noHelp;
 				}		

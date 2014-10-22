@@ -57,7 +57,8 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 		if(mySelectedAreaCache != myController.SelectedArea) {
 		    mySelectedAreaCache= myController.SelectedArea;
 		    myMainView.MakeVisible(mySelectedAreaCache, myScrollViewArea);
-		}            
+		}  
+		iCS_EditorController.FindVisualEditor().updateHelpFromLibrary();          
 	}
     // ---------------------------------------------------------------------------------
 	Rect ShowToolbar() {
@@ -101,7 +102,6 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     void ProcessEvents(Rect frameArea) {
      	Vector2 mousePosition= Event.current.mousePosition;
         var selected= myController.Selected;
-		iCS_EditorController.FindVisualEditor().updateHelpFromLibrary();
 		switch(Event.current.type) {
             case EventType.MouseDrag: {
                 switch(Event.current.button) {
