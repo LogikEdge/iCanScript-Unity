@@ -17,9 +17,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		"<tcolor><b>Keyboard shortcuts (for selected):</b></color>\n" +
 		"<tcolor><b>H:</b></color> more Help\t\t<tcolor><b>drag:</b></color> moves node\n" +
 		"<tcolor><b>F:</b></color> Focus in view\t\t<tcolor><b>ctrl-drag:</b></color> moves node outside\n" +
-		"<tcolor><b>L:</b></color> Auto Layout\t\t<tcolor><b>shift-drag:</b></color> move copies node\n" +
+		"<tcolor><b>L:</b></color> auto Layout\t\t<tcolor><b>shift-drag:</b></color> move copies node\n" +
 		"<tcolor><b>B:</b></color> Bookmark\t\t<tcolor><b>del:</b></color> deletes object\n" +
-		"<tcolor><b>G:</b></color> Move to Bookmark\t<tcolor><b>C:</b></color> Connect to Bookmark\n";
+		"<tcolor><b>G:</b></color> move to bookmark\t<tcolor><b>C:</b></color> Connect to bookmark\n";
 	
     // ======================================================================
     // Dynamic Properties
