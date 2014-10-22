@@ -32,16 +32,15 @@ public partial class iCS_VisualEditor {
 			}
 			// Show the error icon
 			if(ourErrorIcon != null) {
-				// Build tooltip
-				var tooltip= "";
-				foreach(var e in iCS_ErrorController.Errors) {
-					tooltip+= e.Message+"\n";
-				}
-				var content= new GUIContent(ourErrorIcon, tooltip);
+//				// Build tooltip
+//				var tooltip= "";
+//				foreach(var e in iCS_ErrorController.Errors) {
+//					tooltip+= e.Message+"\n";
+//				}
+//				var content= new GUIContent(ourErrorIcon, tooltip);
 				var r= new Rect(kMargins, position.height-kMargins-48f, 48f, 48f);
 				GUI.color= new Color(1f,1f,1f, ourAlphaAnimation.CurrentValue);
-//				GUI.DrawTexture(r, ourErrorIcon, ScaleMode.ScaleToFit);
-				GUI.Label(r, content);
+				GUI.DrawTexture(r, ourErrorIcon, ScaleMode.ScaleToFit);
 				GUI.color= Color.white;
 
 //				var nbErrorsAsStr= nbOfErrors.ToString();
