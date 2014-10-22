@@ -16,7 +16,7 @@ public partial class iCS_VisualEditor {
 	static P.Animate<float>	ourAlphaAnimation   = new P.Animate<float>();
 		   TS.TimedAction	ourRefreshAction    = null;
 	static bool				showErrorDetails    = false;
-		   TS.TimedAction	showErrorDetailTimer= null;
+		   TS.TimedAction	showErrorDetailTimer= null;	
 	
 	// -----------------------------------------------------------------------
 	void ShowErrorsAndWarnings() {
@@ -43,7 +43,7 @@ public partial class iCS_VisualEditor {
 				if(r.Contains(WindowMousePosition)) {
 					showErrorDetails= true;
 					if(showErrorDetailTimer == null) {
-						showErrorDetailTimer= new TS.TimedAction(1f, ()=> showErrorDetails= false);
+						showErrorDetailTimer= new TS.TimedAction(1f, ()=> { showErrorDetails= false; IsHelpEnabled= true; });
 						showErrorDetailTimer.Schedule();
 					}
 					else {
@@ -51,6 +51,9 @@ public partial class iCS_VisualEditor {
 					}
 				}
 				if(showErrorDetails) {
+					// Remove help viewport.
+					IsHelpEnabled= false;
+					
 					r.x= kMargins+r.xMax;
 					r.width= position.width-r.x-kMargins;
 					if(r.Contains(WindowMousePosition)) {
