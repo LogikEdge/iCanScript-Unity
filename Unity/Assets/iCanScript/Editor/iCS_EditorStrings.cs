@@ -26,6 +26,8 @@ public class iCS_EditorStrings {
 	public const string SearchIcon           = "iCS_SearchIcon_16x16x32.png";
 	public const string ErrorIcon			 = "ics-error-icon-48x48.png";
 	public const string WarningIcon			 = "ics-warning-icon-48x48.png";
+	public const string ErrorSmallIcon		 = "ics-error-icon-16x16.png";
+	public const string WarningSmallIcon	 = "ics-warning-icon-16x16.png";
 	
     // Textures
     public const string AALineTexture        = "iCS_LineTexture.psd";

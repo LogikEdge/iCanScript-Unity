@@ -49,6 +49,7 @@ public static class iCS_TimerService {
         public void Restart()            { myTimer.Restart(); iCS_TimerService.Restart(this); }
         public void Restart(float time)  { myTimer.Restart(time); iCS_TimerService.Restart(this); }
         public void Stop()               { iCS_TimerService.Stop(this); }
+		public float RemainingTime		 { get { return myTimer.RemainingTime; }}
     }
     
     // ======================================================================
