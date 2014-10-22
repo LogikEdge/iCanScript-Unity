@@ -17,6 +17,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // USER INTERACTIONS
 	// ----------------------------------------------------------------------
     void MouseMoveEvent() {
+		updateHelp();
         switch(Event.current.button) {
             case 2: { // Middle mouse button
                 UpdateViewportPanning();

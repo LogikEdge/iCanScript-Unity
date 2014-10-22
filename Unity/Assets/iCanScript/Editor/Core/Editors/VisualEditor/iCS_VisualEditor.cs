@@ -300,9 +300,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case EventType.MouseMove: {
-                MouseMoveEvent();
-                Event.current.Use();  
-				// TODO: call PopulateHelp here instead. use pickInfo to get node.     
+                MouseMoveEvent(); 
+				Event.current.Use();  
                 break;
             }
             case EventType.MouseDrag: {

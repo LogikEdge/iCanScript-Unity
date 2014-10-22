@@ -95,7 +95,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						if( !node.IsParentFloating ) {
                             if(node == rootNode) {
                             }
-							PopulateHelp(node);
 	                        myGraphics.DrawNormalNode(node, IStorage);							
 						}
                     }
@@ -111,7 +110,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(child.IsNode) {
                     if(child.IsHidden) return;
 					if( child.IsIconizedInLayout ) {
-						PopulateHelp(child);
 						myGraphics.DrawMinimizedNode(child, IStorage);						
 					}
 					else {
@@ -119,7 +117,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
 				}
                 if(child.IsPort) {
-					PopulateHelp(child);
 					myGraphics.DrawPort(child, IStorage);
 					myGraphics.DrawBinding(child, IStorage);
 				}
@@ -169,14 +166,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             child=> {
                 if(child.IsPort) {
                     if(!IStorage.ShowDisplayRootNode && child.ParentNode == rootNode) return;
-					PopulateHelp(child);
                     myGraphics.DrawPort(child, IStorage);
                 }
                 if(child.IsNode) {
                     if(child.IsFloating && floatingRootNode == null) {
                         floatingRootNode= child;
                     } else {
-						PopulateHelp(child);
                         myGraphics.DrawMinimizedNode(child, IStorage);
                     }
                 }
