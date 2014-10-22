@@ -214,11 +214,11 @@ public static class iCS_PublicInterfaceController {
     // ======================================================================
     // Fields 
     // ----------------------------------------------------------------------
-	static string						kServiceId			 = "Public Interface";
-    static ReferenceToDefinition[]	    ourPublicVariables   = null;
-    static ReferenceToDefinition[]	    ourPublicFunctions   = null;
-    static ReferenceToEngineObject[]	ourVariableReferences= null;
-    static ReferenceToEngineObject[]	ourFunctionCalls     = null;
+	static string						kServiceId			   = "Public Interface";
+    static ReferenceToDefinition[]	    ourPublicVariables     = null;
+    static ReferenceToDefinition[]	    ourPublicFunctions     = null;
+    static ReferenceToEngineObject[]	ourVariableReferences  = null;
+    static ReferenceToEngineObject[]	ourFunctionCalls       = null;
 	static VSPublicGroups		        ourPublicVariableGroups= null;
 	static VSPublicGroups		        ourPublicFunctionGroups= null;
 	
