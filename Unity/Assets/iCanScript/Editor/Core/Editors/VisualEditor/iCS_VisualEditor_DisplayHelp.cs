@@ -11,6 +11,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	
 	private bool myHelpEnabled= true;
 	private string myHelpText= null;
+	
+	// Help strings.  Note <tcolor> should be replaced with title colour markup when used.
 	string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
 	string noHelp= "no tip available";
 	string defaultHelp= 
@@ -20,6 +22,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		"<tcolor><b>L:</b></color> auto Layout\t\t<tcolor><b>shift-drag:</b></color> move copies node\n" +
 		"<tcolor><b>B:</b></color> Bookmark\t\t<tcolor><b>del:</b></color> deletes object\n" +
 		"<tcolor><b>G:</b></color> move to bookmark\t<tcolor><b>C:</b></color> Connect to bookmark\n";
+	string libraryHelp= 
+		"<tcolor><b>Library tips:</b></color>\n" +
+		"From the library window, you can drag objects into a message handler in the Visual Editor window to create nodes.\n" +
+		"\n" +
+		"<tcolor><b>Keyboard shortcuts:</b></color>\n" +
+		"<tcolor><b>H:</b></color> additional help for selected\t <tcolor><b>Enter:</b></color> fold/unfold";
+			
 	
     // ======================================================================
     // Dynamic Properties
@@ -41,6 +50,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(edObj != null)
 				PopulateHelpString(edObj);
 		}   
+	}
+	
+    // ======================================================================
+    // Display library tip in visual editor when mouse is over library
+	// ----------------------------------------------------------------------
+    public void updateHelpFromLibrary() {
+		myHelpText= Regex.Replace(libraryHelp, "<tcolor>", titleColour);
 	}
 	
     // ======================================================================
