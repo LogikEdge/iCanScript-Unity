@@ -24,8 +24,8 @@ public class iCS_EditorStrings {
 	public const string MuxIcon				 = "iCS_JoinIcon_32x32.psd";
 	public const string CancelIcon           = "iCS_CancelIcon_16x16x32.png";
 	public const string SearchIcon           = "iCS_SearchIcon_16x16x32.png";
-	public const string ErrorIcon			 = "iCS_Logo_64x64.png";
-	public const string WarningIcon			 = "iCS_Logo_64x64.png";
+	public const string ErrorIcon			 = "ics-error-icon-48x48.png";
+	public const string WarningIcon			 = "ics-warning-icon-48x48.png";
 	
     // Textures
     public const string AALineTexture        = "iCS_LineTexture.psd";

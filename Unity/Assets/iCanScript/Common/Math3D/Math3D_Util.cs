@@ -241,6 +241,14 @@ public static partial class Math3D {
         return new Rect(pos.x, pos.y, size.x, size.y);
     }
 	// ----------------------------------------------------------------------
+    public static Rect BuildRectCenteredAt(Vector2 center, Vector2 size) {
+        return new Rect(center.x-0.5f*size.x, center.y-0.5f*size.y, size.x, size.y);
+    }
+	// ----------------------------------------------------------------------
+    public static Rect BuildRectCenteredAt(Vector2 center, float width, float height) {
+        return new Rect(center.x-0.5f*width, center.y-0.5f*height, width, height);
+    }
+	// ----------------------------------------------------------------------
     public static Vector2 ToVector2(Rect rect) {
         return new Vector2(rect.x, rect.y);
     }

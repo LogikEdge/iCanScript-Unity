@@ -372,6 +372,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     ev.Use();
 			        break;                    
                 }
+				if(ev.commandName == "RepaintErrors") {
+					ShowErrorsAndWarnings();
+					ev.Use();
+					break;
+				}
 			    break;
 			}
         }
