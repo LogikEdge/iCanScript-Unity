@@ -35,7 +35,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
 
 	// Use to turn help window on or off.
-	public bool HelpEnabled {
+	public bool IsHelpEnabled {
 	        set { myHelpEnabled= value; }
 			get { return myHelpEnabled; }
 	}

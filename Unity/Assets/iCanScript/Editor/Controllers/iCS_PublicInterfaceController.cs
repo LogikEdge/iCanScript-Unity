@@ -420,7 +420,7 @@ public static class iCS_PublicInterfaceController {
 				definitions.ForEach(
 					o=> {
 						if(qualifiedType != o.EngineObject.QualifiedType) {
-                            var errorMsg= "public variables=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> differ in terms of type! Please correct before continuing.";
+                            var errorMsg= "Public variables=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> differ in terms of type! Please correct before continuing.";
 							iCS_ErrorController.AddError(kServiceId, errorMsg, defVisualScript, defEngineObject.InstanceId);
 							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
 						}
@@ -455,7 +455,7 @@ public static class iCS_PublicInterfaceController {
 #if DEBUG
                             var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
                             var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
-                            Debug.LogWarning("iCanScript: public functions=> <color=orange><b>"+definitionName+"</b></color> and=> <color=orange><b>"+otherName+"</b></color> are mismatched in terms of ports. Please correct before continuing.");
+                            Debug.LogWarning("Public functions=> <color=orange><b>"+definitionName+"</b></color> and=> <color=orange><b>"+otherName+"</b></color> are mismatched in terms of ports. Please correct before continuing.");
 #endif
 						}
 						return acc;
@@ -499,7 +499,7 @@ public static class iCS_PublicInterfaceController {
             return P.map(
                 o=> {
 #if DEBUG
-                    Debug.LogWarning("iCanScript: no definition exist for function call=> "+o.EngineObject.Name+" in=> "+o.VisualScript.name+".");
+                    Debug.LogWarning("No definition exist for function call=> "+o.EngineObject.Name+" in=> "+o.VisualScript.name+".");
 #endif
                     return new P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>(null, o);
                 },
@@ -518,7 +518,7 @@ public static class iCS_PublicInterfaceController {
 #if DEBUG
                     var definitionName= iCS_VisualScriptData.GetFullName(vs1, vs1, f1);
                     var refName       = iCS_VisualScriptData.GetFullName(vs2, vs2, f2);
-                    Debug.LogWarning("iCanScript: function call=> <color=orange><b>"+refName+"</b></color> differs for function definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.");
+                    Debug.LogWarning("Function call=> <color=orange><b>"+refName+"</b></color> differs for function definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.");
 #endif
 				}
 				return acc;
@@ -538,7 +538,7 @@ public static class iCS_PublicInterfaceController {
             references.ForEach(
                 o=> {
                     var fullName= o.FullName;
-					var errorMessage= "no public variable exist for reference=> <color=orange><b>"+fullName+"</b></color>. Please correct before continuing.";
+					var errorMessage= "No public variable exist for reference=> <color=orange><b>"+fullName+"</b></color>.";
 					iCS_ErrorController.AddError(kServiceId, errorMessage, o.VisualScript, o.EngineObject.InstanceId);
                 }
             );
@@ -554,7 +554,7 @@ public static class iCS_PublicInterfaceController {
 				if(outputPort == null || qualifiedType != outputPort.QualifiedType) {
                     var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
                     var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
-					var errorMessage= "variable reference=> <color=orange><b>"+otherName+"</b></color> differs in terms of type from definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.";
+					var errorMessage= "Variable reference=> <color=orange><b>"+otherName+"</b></color> differs in terms of type from definition=> <color=orange><b>"+definitionName+"</b></color>.";
 					iCS_ErrorController.AddError(kServiceId, errorMessage, o.VisualScript, o.EngineObject.InstanceId);
 				}
             }
