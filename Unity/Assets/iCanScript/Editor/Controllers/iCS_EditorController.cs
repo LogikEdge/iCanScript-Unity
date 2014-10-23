@@ -173,7 +173,6 @@ public static class iCS_EditorController {
     }
     public static void OpenInstanceEditor() {
         if(FindInstanceEditor() == null) {
-            Debug.Log("InstanceEditor now found");
             ShowInstanceEditor();
         }
     }

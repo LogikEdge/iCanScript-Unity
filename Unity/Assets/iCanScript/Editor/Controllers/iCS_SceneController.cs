@@ -60,7 +60,9 @@ public static class iCS_SceneController {
         var unityObject= EditorUtility.InstanceIDToObject(instanceId);
         var go= unityObject as GameObject;
         if(go != null && go.GetComponent("iCS_VisualScriptImp") != null) {
-            var iconRect= new Rect(r.xMax-ourLogo.width,r.y,ourLogo.width,ourLogo.height);
+            var heightDiff= r.height-ourLogo.height;
+            if(heightDiff <= 0f) heightDiff= 0f;
+            var iconRect= new Rect(r.xMax-ourLogo.width, r.y+0.5f*heightDiff, ourLogo.width, ourLogo.height);
             GUI.DrawTexture(iconRect, ourLogo);            
         }
     }
