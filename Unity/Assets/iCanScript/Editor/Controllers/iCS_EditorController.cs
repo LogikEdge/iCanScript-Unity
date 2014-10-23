@@ -17,6 +17,8 @@ public static class iCS_EditorController {
     static iCS_EditorController() {
         myEditors= new List<iCS_EditorBase>();
     }
+    public static void Start()    {}
+    public static void Shutdown() {}
     
     // =================================================================================
     // Window management
@@ -167,6 +169,12 @@ public static class iCS_EditorController {
         }
         if(FindLibraryEditor() == null) {
             ShowLibraryEditor();
+        }
+    }
+    public static void OpenInstanceEditor() {
+        if(FindInstanceEditor() == null) {
+            Debug.Log("InstanceEditor now found");
+            ShowInstanceEditor();
         }
     }
 }

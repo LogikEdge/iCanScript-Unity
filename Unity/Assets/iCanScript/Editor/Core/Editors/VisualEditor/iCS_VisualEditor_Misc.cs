@@ -36,10 +36,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		else {
 	        iCS_UserCommands.Select(newSelected, IStorage);
-            if(SelectedObject.IsInstanceNode) {
-                iCS_EditorController.ShowInstanceEditor();
-                Focus();
-            }
+            UpdateSelected();
+            Focus();
 		}
         return SelectedObject;
     }
@@ -524,6 +522,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
         }
         iCS_UserCommands.PasteIntoGraph(sourceMonoBehaviour, sourceRoot, IStorage, validParent, point);
+        UpdateSelected();
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {
@@ -531,5 +530,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(updateDesc == null || updateDesc.Length == 0) return null;
         return iCS_UserCommands.CreateMessageHandler(IStorage[0], globalPos, updateDesc[0]);
     }
-
+	// ----------------------------------------------------------------------
+    void UpdateSelected() {
+        if(SelectedObject != null && SelectedObject.IsInstanceNode) {
+            OpenInstanceEditor();
+        }
+    }
+	// ----------------------------------------------------------------------
+    void OpenInstanceEditor() {
+        iCS_EditorController.OpenInstanceEditor();
+        Focus();
+    }
 }
