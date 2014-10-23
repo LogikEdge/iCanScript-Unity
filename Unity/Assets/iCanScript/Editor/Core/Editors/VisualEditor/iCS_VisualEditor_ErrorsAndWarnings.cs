@@ -71,11 +71,10 @@ public partial class iCS_VisualEditor {
 
 	// -----------------------------------------------------------------------
     void DisplayVisualScriptErrorsAndWarnings() {
-        var len= 32f*Scale;
         var visibleRect= VisibleGraphRect;
         var warnings= iCS_ErrorController.GetWarningsFor(VisualScript);
         foreach(var w in warnings) {
-            if(!IStorage.IsIdValid(w.ObjectId)) continue;
+            if(!IStorage.IsValid(w.ObjectId)) continue;
             var node= IStorage[w.ObjectId];
             var pos= node.GlobalPosition;
             if(!visibleRect.Contains(pos)) continue;
@@ -85,7 +84,7 @@ public partial class iCS_VisualEditor {
         }
         var errors= iCS_ErrorController.GetErrorsFor(VisualScript);
         foreach(var e in errors) {
-            if(!IStorage.IsIdValid(e.ObjectId)) continue;
+            if(!IStorage.IsValid(e.ObjectId)) continue;
             var node= IStorage[e.ObjectId];
             var pos= node.GlobalPosition;
             if(!visibleRect.Contains(pos)) continue;
