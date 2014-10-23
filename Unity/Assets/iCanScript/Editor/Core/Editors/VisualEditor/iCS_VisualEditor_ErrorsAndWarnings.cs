@@ -119,12 +119,13 @@ public partial class iCS_VisualEditor {
 	// -----------------------------------------------------------------------
     void DisplayErrorAndWarningDetails(Rect r, List<iCS_ErrorController.ErrorWarning> errors, List<iCS_ErrorController.ErrorWarning> warnings) {
         // Draw background box
+        var savedColor= GUI.color;
         var outlineRect= new Rect(r.x-2, r.y-2, r.width+4, r.height+4);
         GUI.color= errors.Count != 0 ? Color.red : Color.yellow;
         GUI.Box(outlineRect,"");
 		GUI.color= Color.black;
 		GUI.Box(r,"");
-		GUI.color= Color.white;
+		GUI.color= savedColor;
 
         // Define error/warning detail style.
 		GUIStyle style= EditorStyles.whiteLabel;
@@ -136,13 +137,13 @@ public partial class iCS_VisualEditor {
         var content= new GUIContent("", iCS_ErrorController.SmallErrorIcon);
 		foreach(var e in errors) {
 			content.text= e.Message;
-			GUI.Label(new Rect(0,y, r.width, r.height), content, style);
+			GUI.Label(new Rect(0, y, r.width, r.height), content, style);
 			y+= 16;
 		}
         content.image= iCS_ErrorController.SmallWarningIcon;
 		foreach(var w in warnings) {
 			content.text= w.Message;
-			GUI.Label(new Rect(0,y, r.width, r.height), content, style);
+//			GUI.Label(new Rect(0, y, r.width, r.height), content, style);
 			y+= 16;
 		}
 		GUI.EndScrollView();        
