@@ -69,32 +69,39 @@ public partial class iCS_VisualEditor {
 
 	// -----------------------------------------------------------------------
     void DisplayVisualScriptErrorsAndWarnings() {
-        var visibleRect= VisibleGraphRect;
-        var errors= iCS_ErrorController.GetErrorsFor(VisualScript);
+        // Get errors/warnings for this visual script.
+        var errors  = iCS_ErrorController.GetErrorsFor(VisualScript);
         var warnings= iCS_ErrorController.GetWarningsFor(VisualScript);
-        var nbOfErrors= P.length(errors);
-        var nbOfMessages= Mathf.Min(10,nbOfErrors+P.length(warnings));
-        foreach(var w in warnings) {
-            if(!IStorage.IsValid(w.ObjectId)) continue;
-            var node= IStorage[w.ObjectId];
+
+        // Filter out invalid objects
+        errors  = P.filter(e=> IStorage.IsValid(e.ObjectId), errors);
+        warnings= P.filter(w=> IStorage.IsValid(w.ObjectId), warnings);
+
+        // Determine wich objects have errors or warnings.
+        var objectIds= P.append(P.map(e=> e.ObjectId, errors), P.map(w=> w.ObjectId, warnings));
+        objectIds= P.removeDuplicates(objectIds);
+
+        // Display the errors/warnings on the objects in the graph.
+        foreach(var id in objectIds) {
+            // Determine if node is visible
+            var node= IStorage[id];
+            if(!DisplayRoot.IsParentOf(node)) continue;
             var pos= node.GlobalPosition;
-            if(!visibleRect.Contains(pos)) continue;
+            if(!VisibleGraphRect.Contains(pos)) continue;
+            // Determine errors/warnings for this particular node
+            var nodeErrors  = P.filter(e=> e.ObjectId == id, errors);
+            var nodeWarnings= P.filter(w=> w.ObjectId == id, warnings);
+            // Display the appropriate error/warning icon
             var r= Math3D.BuildRectCenteredAt(pos, 32f, 32f);
             r= myGraphics.TranslateAndScale(r);
-            DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.ErrorIcon);
-        }
-        foreach(var e in errors) {
-            if(!IStorage.IsValid(e.ObjectId)) continue;
-            var node= IStorage[e.ObjectId];
-            var pos= node.GlobalPosition;
-            if(!visibleRect.Contains(pos)) continue;
-            var r= Math3D.BuildRectCenteredAt(pos, 32f, 32f);
-            r= myGraphics.TranslateAndScale(r);
+            var icon= nodeErrors.Count != 0 ? iCS_ErrorController.ErrorIcon : iCS_ErrorController.WarningIcon;
+            DisplayErrorOrWarningIconWithAlpha(r, icon);
+            // Display error/warning details
             if(r.Contains(WindowMousePosition)) {
+                var nbOfMessages= Mathf.Min(5, nodeErrors.Count + nodeWarnings.Count);
                 var detailRect= DetermineErrorDetailRect(r, nbOfMessages);
-                DisplayErrorAndWarningDetails(detailRect, P.filter(er=> er.ObjectId == e.ObjectId, errors), P.filter(wa=> wa.ObjectId == e.ObjectId, warnings));
+                DisplayErrorAndWarningDetails(detailRect, nodeErrors, nodeWarnings);
             }
-            DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.ErrorIcon);
         }
     }
 
