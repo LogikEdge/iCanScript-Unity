@@ -43,17 +43,18 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // Display.
     // ---------------------------------------------------------------------------------
     public new void OnGUI() {
-        // Draw the base stuff for all windows.
+		if(!IsInitialized()) return;
+
+        // -- Draw the base stuff for all windows --
         base.OnGUI();
     
-        // Show library components.
+        // -- Show library components --
         UpdateMgr();
-		if(!IsInitialized()) return;
 		var toolbarRect= ShowToolbar();
         myScrollViewArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
 		myMainView.Display(myScrollViewArea);
 		ProcessEvents(myScrollViewArea);
-		// Make new selection visible
+		// -- Make new selection visible --
 		if(mySelectedAreaCache != myController.SelectedArea) {
 		    mySelectedAreaCache= myController.SelectedArea;
 		    myMainView.MakeVisible(mySelectedAreaCache, myScrollViewArea);
