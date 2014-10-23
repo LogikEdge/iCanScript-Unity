@@ -92,6 +92,9 @@ public class iCS_Inspector : Editor {
     // Paint to inspector for the selected object (see editor).
 	public override void OnInspectorGUI ()
 	{
+        // Assure that the visual editor & library panel are opened
+        iCS_EditorController.OpenNeededEditors();
+        
         // Update all variables we rely on.
         UpdateVariables();
 		
