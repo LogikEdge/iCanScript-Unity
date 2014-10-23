@@ -34,45 +34,46 @@ public partial class iCS_VisualEditor {
 		// Nothing to show if no errors/warnings detected.
         if(!iCS_ErrorController.IsErrorOrWarning) return;
 		
-        // Display scene errors
-		var nbOfErrors= iCS_ErrorController.NumberOfErrors;
-		if(nbOfErrors != 0) {
-            var r= DisplaySceneErrorIcon();
-			
-			if(r.Contains(WindowMousePosition)) {
-				showErrorDetails= true;
-				if(showErrorDetailTimer == null) {
-					showErrorDetailTimer= new TS.TimedAction(1f, ()=> { showErrorDetails= false; IsHelpEnabled= true; });
-					showErrorDetailTimer.Schedule();
-				}
-				else {
-					showErrorDetailTimer.Restart();
-				}
+        // Display scene error/warning icon
+		var nbOfErrors  = iCS_ErrorController.NumberOfErrors;
+        var nbOfWarnings= iCS_ErrorController.NumberOfWarnings;
+        var r= GetSceneErrorWarningIconRect();
+        var icon= nbOfErrors != 0 ? iCS_ErrorController.ErrorIcon : iCS_ErrorController.WarningIcon;
+        DisplayErrorOrWarningIconWithAlpha(r, icon);
+        
+        // Initiate the display of the scene error/warning details when mouse is over the icon
+		if(r.Contains(WindowMousePosition)) {
+			showErrorDetails= true;
+			if(showErrorDetailTimer == null) {
+				showErrorDetailTimer= new TS.TimedAction(1f, ()=> { showErrorDetails= false; IsHelpEnabled= true; });
+				showErrorDetailTimer.Schedule();
 			}
-			if(showErrorDetails) {
-				// Remove help viewport.
-				IsHelpEnabled= false;
-				
-                r= DetermineErrorDetailRect(r, 3);
-				if(r.Contains(WindowMousePosition)) {
-					showErrorDetailTimer.Restart();
-				}
-                DisplayErrorAndWarningDetails(r, iCS_ErrorController.Errors, iCS_ErrorController.Warnings);
+			else {
+				showErrorDetailTimer.Restart();
 			}
 		}
 
-		// Display scene warnings
-		var nbOfWarnings= iCS_ErrorController.NumberOfWarnings;
-		if(nbOfWarnings != 0) {
-            DisplaySceneWarningIcon();
+        // Display scene errors/warnings
+		if(showErrorDetails) {
+			// Remove help viewport.
+			IsHelpEnabled= false;
+			
+            var nbOfMessages= Mathf.Min(10, nbOfErrors+nbOfWarnings);
+            r= DetermineErrorDetailRect(r, nbOfMessages, true);
+			if(r.Contains(WindowMousePosition)) {
+				showErrorDetailTimer.Restart();
+			}
+            DisplayErrorAndWarningDetails(r, iCS_ErrorController.Errors, iCS_ErrorController.Warnings);
 		}
-        GUI.color= Color.white;
 	}
 
 	// -----------------------------------------------------------------------
     void DisplayVisualScriptErrorsAndWarnings() {
         var visibleRect= VisibleGraphRect;
+        var errors= iCS_ErrorController.GetErrorsFor(VisualScript);
         var warnings= iCS_ErrorController.GetWarningsFor(VisualScript);
+        var nbOfErrors= P.length(errors);
+        var nbOfMessages= Mathf.Min(10,nbOfErrors+P.length(warnings));
         foreach(var w in warnings) {
             if(!IStorage.IsValid(w.ObjectId)) continue;
             var node= IStorage[w.ObjectId];
@@ -82,7 +83,6 @@ public partial class iCS_VisualEditor {
             r= myGraphics.TranslateAndScale(r);
             DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.ErrorIcon);
         }
-        var errors= iCS_ErrorController.GetErrorsFor(VisualScript);
         foreach(var e in errors) {
             if(!IStorage.IsValid(e.ObjectId)) continue;
             var node= IStorage[e.ObjectId];
@@ -91,7 +91,7 @@ public partial class iCS_VisualEditor {
             var r= Math3D.BuildRectCenteredAt(pos, 32f, 32f);
             r= myGraphics.TranslateAndScale(r);
             if(r.Contains(WindowMousePosition)) {
-                var detailRect= DetermineErrorDetailRect(r, 2);
+                var detailRect= DetermineErrorDetailRect(r, nbOfMessages);
                 DisplayErrorAndWarningDetails(detailRect, P.filter(er=> er.ObjectId == e.ObjectId, errors), P.filter(wa=> wa.ObjectId == e.ObjectId, warnings));
             }
             DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.ErrorIcon);
@@ -99,16 +99,8 @@ public partial class iCS_VisualEditor {
     }
 
 	// -----------------------------------------------------------------------
-    Rect DisplaySceneErrorIcon() {
-		var r= new Rect(kMargins, position.height-kMargins-48f, 48f, 48f);
-        DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.ErrorIcon);
-        return r;
-    }
-	// -----------------------------------------------------------------------
-    Rect DisplaySceneWarningIcon() {
-		var r= new Rect(kMargins, position.height-kMargins-48f, 48f, 48f);
-        DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.WarningIcon);
-        return r;
+    Rect GetSceneErrorWarningIconRect() {
+		return new Rect(kMargins, position.height-kMargins-48f, 48f, 48f);
     }
 	// -----------------------------------------------------------------------
     void DisplayErrorOrWarningIconWithAlpha(Rect r, Texture2D icon) {
@@ -149,11 +141,15 @@ public partial class iCS_VisualEditor {
 		GUI.EndScrollView();        
     }
 	// -----------------------------------------------------------------------
-    Rect DetermineErrorDetailRect(Rect iconRect, int nbOfLines) {
+    Rect DetermineErrorDetailRect(Rect iconRect, int nbOfLines, bool growUpward= false) {
         var r= iconRect;
 		r.x= kMargins+iconRect.xMax;
 		r.width= position.width-r.x-kMargins;
-        r.height= 16*nbOfLines;
+        var height= 16*nbOfLines;
+        if(growUpward) {
+            r.y= r.yMax-height;
+        }
+        r.height= height;
         return r;
     }
     
