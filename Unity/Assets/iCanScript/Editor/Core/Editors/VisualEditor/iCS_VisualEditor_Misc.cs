@@ -38,6 +38,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	        iCS_UserCommands.Select(newSelected, IStorage);
             if(SelectedObject.IsInstanceNode) {
                 iCS_EditorController.ShowInstanceEditor();
+                Focus();
             }
 		}
         return SelectedObject;
