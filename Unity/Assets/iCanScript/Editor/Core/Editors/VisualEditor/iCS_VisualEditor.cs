@@ -218,6 +218,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Attempt to initialize environment (if not already done).
         bool isInit= IsInitialized();
 
+		// Update mouse info.
+		UpdateMouse();
+		
 		// Nothing to be drawn until we are fully initialized.
         if(!isInit || IStorage == null) {
             // Tell the user that we can display without a behavior or library.
@@ -239,9 +242,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
         myCurrentTime= Time.realtimeSinceStartup;
 
-		// Update mouse info.
-		UpdateMouse();
-		
         // Load Editor Skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
