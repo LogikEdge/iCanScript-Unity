@@ -224,13 +224,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             ShowNotification(new GUIContent("No iCanScript component selected !!!"));
             myNotificationShown= true;
 			// Repaint erros/warning info.
-			ShowErrorsAndWarnings();
-			var evt= Event.current;
-			if(evt.type == EventType.ExecuteCommand) {
-				if(evt.commandName == "RepaintErrors") {
-					evt.Use();
-				}
-			}
+			DisplaySceneErrorsAndWarnings();
             return;            
         }
         // Remove any previously shown notification.
@@ -382,11 +376,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     ev.Use();
 			        break;                    
                 }
-				if(ev.commandName == "RepaintErrors") {
-					ShowErrorsAndWarnings();
-					ev.Use();
-					break;
-				}
 			    break;
 			}
         }

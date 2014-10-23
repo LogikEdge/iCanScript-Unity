@@ -126,7 +126,7 @@ public partial class iCS_Graphics {
         return Scale*(v-new Vector3(Translation.x, Translation.y, 0));
     }
 	// ----------------------------------------------------------------------
-    Rect TranslateAndScale(Rect r) {
+    public Rect TranslateAndScale(Rect r) {
         Vector2 pos= TranslateAndScale(new Vector2(r.x, r.y));
         return new Rect(pos.x, pos.y, Scale*r.width, Scale*r.height);
     }

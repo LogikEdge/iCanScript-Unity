@@ -89,6 +89,12 @@ public static class iCS_ErrorController {
             myAnimationTimer.Restart();            
         }
 	}
+    public static List<ErrorWarning> GetErrorsFor(iCS_VisualScriptImp vs) {
+        return P.filter(e=> e.VisualScript == vs, Errors);
+    }
+    public static List<ErrorWarning> GetWarningsFor(iCS_VisualScriptImp vs) {
+        return P.filter(e=> e.VisualScript == vs, Warnings);
+    }
 
     // ======================================================================
     // Utilities

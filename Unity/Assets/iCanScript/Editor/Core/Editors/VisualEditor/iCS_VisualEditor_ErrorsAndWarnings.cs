@@ -1,33 +1,43 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 using P=Prelude;
 using TS=iCS_TimerService;
+using EC=iCS_ErrorController;
 
 public partial class iCS_VisualEditor {
 	// =======================================================================
 	// Fields
 	// -----------------------------------------------------------------------
 	const  float			kMargins            = 4f;
-		   TS.TimedAction	ourRefreshAction    = null;
+		   TS.TimedAction	ourErrorRepaintTimer= null;
 	static bool				showErrorDetails    = false;
 		   TS.TimedAction	showErrorDetailTimer= null;	
 	
+	// =======================================================================
+    // Errors/Warning display functionality
 	// -----------------------------------------------------------------------
-	void ShowErrorsAndWarnings() {
+    void DisplayErrorsAndWarnings() {
+        // Nothing to display if no error/warning exists.
+        if(!iCS_ErrorController.IsErrorOrWarning) return;
+        // Update the repaint timer
+        UpdateErrorRepaintTimer();
+        // Show scene errors/warnings
+        DisplaySceneErrorsAndWarnings();
+        // Show errors/warnings on the nodes of our visual script
+        DisplayVisualScriptErrorsAndWarnings();
+    }
+    
+	// -----------------------------------------------------------------------
+	void DisplaySceneErrorsAndWarnings() {
 		// Nothing to show if no errors/warnings detected.
         if(!iCS_ErrorController.IsErrorOrWarning) return;
-		var nbOfErrors= iCS_ErrorController.NumberOfErrors;
-		var nbOfWarnings= iCS_ErrorController.NumberOfWarnings;
-		AnimateErrorAlpha();
 		
-		// Show errors icon
+        // Display scene errors
+		var nbOfErrors= iCS_ErrorController.NumberOfErrors;
 		if(nbOfErrors != 0) {
-			// Show the error icon
-			var r= new Rect(kMargins, position.height-kMargins-48f, 48f, 48f);
-			GUI.color= iCS_ErrorController.BlendColor;
-			GUI.DrawTexture(r, iCS_ErrorController.ErrorIcon, ScaleMode.ScaleToFit);
-			GUI.color= Color.white;
+            var r= DisplaySceneErrorIcon();
 			
 			if(r.Contains(WindowMousePosition)) {
 				showErrorDetails= true;
@@ -43,56 +53,127 @@ public partial class iCS_VisualEditor {
 				// Remove help viewport.
 				IsHelpEnabled= false;
 				
-				r.x= kMargins+r.xMax;
-				r.width= position.width-r.x-kMargins;
+                r= DetermineErrorDetailRect(r, 3);
 				if(r.Contains(WindowMousePosition)) {
 					showErrorDetailTimer.Restart();
 				}
-				GUIStyle style= EditorStyles.whiteLabel;
-				style.richText= true;
-				Color bgColor= Color.black;
-				bgColor.a= showErrorDetailTimer.RemainingTime;
-				GUI.color= bgColor;					
-				GUI.Box(r,"");
-				Color fgColor= Color.white;
-				fgColor.a= showErrorDetailTimer.RemainingTime;
-				GUI.color= fgColor;
-				GUI.BeginScrollView(r, Vector2.zero, new Rect(0,0,r.width,r.height));
-				float y= 0;
-				EditorGUIUtility.LookLikeControls();
-				foreach(var e in iCS_ErrorController.Errors) {
-					var content= new GUIContent(e.Message, iCS_ErrorController.SmallErrorIcon);
-					GUI.Button(new Rect(0,y, r.width, r.height), content/*"-> "+e.Message*/, style);
-					y+= 16;
-				}
-				foreach(var e in iCS_ErrorController.Warnings) {
-					var content= new GUIContent(e.Message, iCS_ErrorController.SmallWarningIcon);
-					GUI.Button(new Rect(0,y, r.width, r.height), content/*"-> "+e.Message*/, style);
-					y+= 16;
-				}
-				GUI.EndScrollView();
-				GUI.color= Color.white;
+                DisplayErrorAndWarningDetails(r, iCS_ErrorController.Errors, iCS_ErrorController.Warnings);
 			}
 		}
-		//Show warning icon
+
+		// Display scene warnings
+		var nbOfWarnings= iCS_ErrorController.NumberOfWarnings;
 		if(nbOfWarnings != 0) {
-			// Show the error icon
-			var r= new Rect(2*kMargins+48f, position.height-kMargins-48f, 48f, 48f);
-			GUI.color= iCS_ErrorController.BlendColor;
-			GUI.DrawTexture(r, iCS_ErrorController.WarningIcon, ScaleMode.ScaleToFit);
-			GUI.color= Color.white;
+            DisplaySceneWarningIcon();
 		}
+        GUI.color= Color.white;
 	}
-	
+
 	// -----------------------------------------------------------------------
-	/// Cycle the alpha animation.
-	void AnimateErrorAlpha() {
-		// Assure that we are being repainted at 10ms.
-		if(ourRefreshAction == null) {
-			ourRefreshAction= new TS.TimedAction(0.05f, ()=> SendEvent(EditorGUIUtility.CommandEvent("RepaintErrors")));
+    void DisplayVisualScriptErrorsAndWarnings() {
+        var len= 32f*Scale;
+        var visibleRect= VisibleGraphRect;
+        var warnings= iCS_ErrorController.GetWarningsFor(VisualScript);
+        foreach(var w in warnings) {
+            if(!IStorage.IsIdValid(w.ObjectId)) continue;
+            var node= IStorage[w.ObjectId];
+            var pos= node.GlobalPosition;
+            if(!visibleRect.Contains(pos)) continue;
+            var r= Math3D.BuildRectCenteredAt(pos, 32f, 32f);
+            r= myGraphics.TranslateAndScale(r);
+            DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.ErrorIcon);
+        }
+        var errors= iCS_ErrorController.GetErrorsFor(VisualScript);
+        foreach(var e in errors) {
+            if(!IStorage.IsIdValid(e.ObjectId)) continue;
+            var node= IStorage[e.ObjectId];
+            var pos= node.GlobalPosition;
+            if(!visibleRect.Contains(pos)) continue;
+            var r= Math3D.BuildRectCenteredAt(pos, 32f, 32f);
+            r= myGraphics.TranslateAndScale(r);
+            if(r.Contains(WindowMousePosition)) {
+                var detailRect= DetermineErrorDetailRect(r, 2);
+                DisplayErrorAndWarningDetails(detailRect, P.filter(er=> er.ObjectId == e.ObjectId, errors), P.filter(wa=> wa.ObjectId == e.ObjectId, warnings));
+            }
+            DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.ErrorIcon);
+        }
+    }
+
+	// -----------------------------------------------------------------------
+    Rect DisplaySceneErrorIcon() {
+		var r= new Rect(kMargins, position.height-kMargins-48f, 48f, 48f);
+        DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.ErrorIcon);
+        return r;
+    }
+	// -----------------------------------------------------------------------
+    Rect DisplaySceneWarningIcon() {
+		var r= new Rect(kMargins, position.height-kMargins-48f, 48f, 48f);
+        DisplayErrorOrWarningIconWithAlpha(r, iCS_ErrorController.WarningIcon);
+        return r;
+    }
+	// -----------------------------------------------------------------------
+    void DisplayErrorOrWarningIconWithAlpha(Rect r, Texture2D icon) {
+        var savedColor= GUI.color;
+		GUI.color= iCS_ErrorController.BlendColor;
+		GUI.DrawTexture(r, icon, ScaleMode.ScaleToFit);
+		GUI.color= savedColor;
+    }
+	// -----------------------------------------------------------------------
+    void DisplayErrorAndWarningDetails(Rect r, List<iCS_ErrorController.ErrorWarning> errors, List<iCS_ErrorController.ErrorWarning> warnings) {
+        // Draw background box
+        var outlineRect= new Rect(r.x-2, r.y-2, r.width+4, r.height+4);
+        GUI.color= errors.Count != 0 ? Color.red : Color.yellow;
+        GUI.Box(outlineRect,"");
+		GUI.color= Color.black;
+		GUI.Box(r,"");
+		GUI.color= Color.white;
+
+        // Define error/warning detail style.
+		GUIStyle style= EditorStyles.whiteLabel;
+		style.richText= true;
+        
+        // Show Error first than Warnings.
+		float y= 0;
+		GUI.BeginScrollView(r, Vector2.zero, new Rect(0,0,r.width,r.height));
+        var content= new GUIContent("", iCS_ErrorController.SmallErrorIcon);
+		foreach(var e in errors) {
+			content.text= e.Message;
+			GUI.Label(new Rect(0,y, r.width, r.height), content, style);
+			y+= 16;
 		}
-		if(ourRefreshAction.IsElapsed) {
-			ourRefreshAction.Restart();
+        content.image= iCS_ErrorController.SmallWarningIcon;
+		foreach(var w in warnings) {
+			content.text= w.Message;
+			GUI.Label(new Rect(0,y, r.width, r.height), content, style);
+			y+= 16;
 		}
-	}
+		GUI.EndScrollView();        
+    }
+	// -----------------------------------------------------------------------
+    Rect DetermineErrorDetailRect(Rect iconRect, int nbOfLines) {
+        var r= iconRect;
+		r.x= kMargins+iconRect.xMax;
+		r.width= position.width-r.x-kMargins;
+        r.height= 16*nbOfLines;
+        return r;
+    }
+    
+    // =======================================================================
+    // Utilities
+	// -----------------------------------------------------------------------
+    void UpdateErrorRepaintTimer() {
+        if(!iCS_ErrorController.IsErrorOrWarning) {
+            if(ourErrorRepaintTimer != null) {
+                ourErrorRepaintTimer.Stop();                
+            }
+        }
+        else {
+            if(ourErrorRepaintTimer == null) {
+                ourErrorRepaintTimer= TS.CreateTimedAction(0.06f, Repaint, /*isLooping=*/true);
+            }
+            else if(ourErrorRepaintTimer.IsElapsed) {
+                ourErrorRepaintTimer.Restart();
+            }
+        }
+    }
 }

@@ -420,7 +420,7 @@ public static class iCS_PublicInterfaceController {
 				definitions.ForEach(
 					o=> {
 						if(qualifiedType != o.EngineObject.QualifiedType) {
-                            var errorMsg= "Public variables=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> differ in terms of type! Please correct before continuing.";
+                            var errorMsg= "Public variables=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> differ in terms of type.";
 							iCS_ErrorController.AddError(kServiceId, errorMsg, defVisualScript, defEngineObject.InstanceId);
 							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
 						}
