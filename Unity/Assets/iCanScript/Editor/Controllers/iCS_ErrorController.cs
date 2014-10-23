@@ -79,15 +79,11 @@ public static class iCS_ErrorController {
 	}
 	public static void AddError(string serviceId, string message, iCS_VisualScriptImp vs, int objectId) {
 		myErrors.Add(new ErrorWarning(serviceId, message, vs, objectId));
-        if(myAnimationTimer.IsElapsed) {
-            myAnimationTimer.Restart();            
-        }
+        iCS_TimerService.Schedule(myAnimationTimer);
 	}
 	public static void AddWarning(string serviceId, string message, iCS_VisualScriptImp vs, int objectId) {
 		myWarnings.Add(new ErrorWarning(serviceId, message, vs, objectId));
-        if(myAnimationTimer.IsElapsed) {
-            myAnimationTimer.Restart();            
-        }
+        iCS_TimerService.Schedule(myAnimationTimer);
 	}
     public static List<ErrorWarning> GetErrorsFor(iCS_VisualScriptImp vs) {
         return P.filter(e=> e.VisualScript == vs, Errors);

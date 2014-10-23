@@ -23,15 +23,20 @@ public static class iCS_TimerService {
     }
     public static void Schedule(TimedAction timedAction) {
         if(timedAction == null) return;
-        myTimers.Add(timedAction);
+        if(!IsActive(timedAction)) {
+            myTimers.Add(timedAction);            
+        }
     }
     public static void Restart(TimedAction timedAction) {
-        if(!myTimers.Contains(timedAction)) {
+        if(!IsActive(timedAction)) {
             myTimers.Add(timedAction);
         }
     }
     public static void Stop(TimedAction timedAction) {
         myTimers.Remove(timedAction);
+    }
+    public static bool IsActive(TimedAction timedAction) {
+        return myTimers.Contains(timedAction);
     }
     
     // ======================================================================
@@ -46,6 +51,7 @@ public static class iCS_TimerService {
             myIsLooping= isLooping;
         }
         public bool  IsElapsed           { get { return myTimer.IsElapsed; }}
+        public bool  IsActive            { get { return iCS_TimerService.IsActive(this); }}
         public bool  IsLooping           { get { return myIsLooping; }}
         public void  RunAction()         { myAction(); }
         public void  Schedule()          { iCS_TimerService.Schedule(this); }
