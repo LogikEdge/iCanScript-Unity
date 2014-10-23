@@ -36,16 +36,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		else {
 	        iCS_UserCommands.Select(newSelected, IStorage);
+            if(SelectedObject.IsInstanceNode) {
+                iCS_EditorController.ShowInstanceEditor();
+            }
 		}
-//        // Show iCS inspector if window is maximized.
-//        if(maximized && SelectedObject != null) {
-//            if(myObjectInspector == null) {
-//                myObjectInspector= iCS_ObjectInspector.CreateInstance(SelectedObject, Vector2.zero);
-//            }
-//            else if(myObjectInspector.InspectedObject != SelectedObject) {
-//                myObjectInspector.Init(SelectedObject, Vector2.zero);
-//            }
-//        }
         return SelectedObject;
     }
 
