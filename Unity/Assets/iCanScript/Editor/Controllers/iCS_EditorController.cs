@@ -25,7 +25,9 @@ public static class iCS_EditorController {
     // ---------------------------------------------------------------------------------
     // FIXME: The relationship between proxy type and editor name needs to be cleaned up.
     public static void Add(iCS_EditorBase editor) {
-        myEditors.Add(editor);
+        if(FindIndexOf(editor) == -1) {
+            myEditors.Add(editor);            
+        }
     }
     public static void Remove(iCS_EditorBase editor) {
         int idx= FindIndexOf(editor);

@@ -68,9 +68,9 @@ public static class iCS_SceneController {
             }
 
             // -- Assure that the visual editor is opened --
-            if(ourVisualScriptsInOrReferencesByScene.Length != 0) {
-                iCS_EditorController.OpenVisualEditor();
-            }
+//            if(ourVisualScriptsInOrReferencesByScene.Length != 0) {
+//                iCS_EditorController.OpenVisualEditor();
+//            }
         }
     }
     

@@ -74,11 +74,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(iCS_Graphics.IsInitialized == false) {
             iCS_Graphics.Init(IStorage);
 		}
-        iCS_AppController.Start();
 
         // Update visual script cache.
         UpdateVisualScriptCache();
-        iCS_EditorController.OpenLibraryEditor();
         return true;
 	}
 

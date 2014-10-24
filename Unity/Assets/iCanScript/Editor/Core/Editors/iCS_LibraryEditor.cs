@@ -23,13 +23,13 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 	iCS_LibraryController   myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
 
-	public new void OnEnable() { 
-		// Tell Unity we want to be informed of mouse move events
-		wantsMouseMove= true;
-	}
-	
     // =================================================================================
     // Activation/Deactivation.
+    // ---------------------------------------------------------------------------------
+	public new void OnEnable() { 
+        base.OnEnable();        
+		wantsMouseMove= true;
+	}
     // ---------------------------------------------------------------------------------
     bool IsInitialized() {
         if(myController == null || myMainView == null) {
@@ -38,6 +38,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         }
         return true;
     }
+	
     
 	// =================================================================================
     // Display.

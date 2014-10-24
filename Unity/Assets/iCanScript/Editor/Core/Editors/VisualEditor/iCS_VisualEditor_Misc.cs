@@ -37,7 +37,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		else {
 	        iCS_UserCommands.Select(newSelected, IStorage);
             UpdateSelected();
-            Focus();
 		}
         return SelectedObject;
     }
@@ -533,12 +532,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void UpdateSelected() {
         if(SelectedObject != null && SelectedObject.IsInstanceNode) {
-            OpenInstanceEditor();
+            iCS_EditorController.OpenInstanceEditor();
         }
-    }
-	// ----------------------------------------------------------------------
-    void OpenInstanceEditor() {
-        iCS_EditorController.OpenInstanceEditor();
-        Focus();
     }
 }
