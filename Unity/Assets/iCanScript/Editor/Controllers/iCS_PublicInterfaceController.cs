@@ -299,7 +299,7 @@ public static class iCS_PublicInterfaceController {
 //        ValidatePublicGroups();
     }
     static void OnVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
-		// Don't process if the lement does not imply a public interface.
+		// Don't process if the element does not imply a public interface.
 		if(!IsPublicObject(element)) return;		
 #if DEBUG
         Debug.Log("Visual Script element will be removed=> "+iStorage.VisualScript.name+"."+element.Name);
@@ -311,16 +311,14 @@ public static class iCS_PublicInterfaceController {
 //            PublicFunctionGroups.Remove(element);
 //        }
 		RefreshPublicInterfaceInfo();
-//        ValidatePublicGroups();
     }
     static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
-		// Don't process if the lement does not imply a public interface.
+		// Don't process if the element does not imply a public interface.
 		if(!IsPublicObject(element)) return;
 #if DEBUG
         Debug.Log("Visual Script element name changed=> "+iStorage.VisualScript.name+"."+element.Name);
 #endif
 		RefreshPublicInterfaceInfo();
-//        ValidatePublicGroups();
     }
     // ----------------------------------------------------------------------
 	static bool IsPublicObject(iCS_EditorObject element) {
@@ -563,6 +561,7 @@ public static class iCS_PublicInterfaceController {
 
     // ----------------------------------------------------------------------
 	public static bool ValidatePublicGroups() {
+        return true;
         // Validate Variables
 		ValidateVariableDefinitions();
 //		ValidateFunctionDefinitions();
