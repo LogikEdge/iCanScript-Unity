@@ -74,19 +74,26 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	public static string getHelpWindowText(iCS_EditorObject edObj) {
 		string helpText= "";
-		if(edObj.IsPort) {			
+		if(edObj.IsPort) {						
 			// Show help for selected port				
-			helpText= helpText + GetPortTitle(edObj) + "\n" + iCS_HelpController.getHelp(edObj) + "\n";			
+			helpText= helpText + GetPortTitle(edObj) + "\n" + iCS_HelpController.getHelp(edObj) + "\n";	
+
 			// find connected port
 			iCS_EditorObject connectedPort= null;
 		    if (edObj.IsInputPort) {
 				connectedPort= edObj.FirstProducerPort;
+				if(connectedPort.ParentNode.ParentNode.IsInstanceNode) {
+					connectedPort= connectedPort.ConsumerPorts[0];
+				}
 			}
 			else if(edObj.IsOutputPort) {
 				//For screen real estate reasons, show only first connection.
 				connectedPort= edObj.EndConsumerPorts[0];
-			}
-					
+				if(connectedPort.ParentNode.ParentNode.IsInstanceNode) {
+					connectedPort= connectedPort.ProducerPort;
+				}
+			}	
+							
 			if (connectedPort != null && connectedPort != edObj) {	
 				helpText= helpText + "\n<b>connected-> </b>" + GetPortTitle(connectedPort) + 
 					"\n" + iCS_HelpController.getHelp(connectedPort) + "\n";
@@ -131,31 +138,41 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 	private static string GetPortTitle(iCS_EditorObject edObj) {
-		if (edObj!=null) {
-//			if(edObj.ParentNode != null) {
-//				if(edObj.ParentNode.IsKindOfFunction || edObj.ParentNode.IsVariableReference || edObj.ParentNode.IsFunctionCall) {	
+		if (edObj!=null) {					
+			// Get Type of Port	
+			string typeName;
+			// change Type for special types of ports. 
+			if (edObj.PortIndex == (int)iCS_PortIndex.InInstance || 
+					edObj.PortIndex == (int)iCS_PortIndex.OutInstance) {
+				// no need to show type name of Instance ports which will be repeated in port name.
+				typeName= "Instance";	
+			}
+			else if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.IsConstructor) {
+				// no need to show type name of builder return port which will be repeated in port name.
+				typeName= "Instance";	
+			}
+			else {
+				typeName= iCS_Types.TypeName(edObj.RuntimeType);
+			}			
+		
+			// Get name of port
+			string displayName= edObj.DisplayName;
+			// Variable name "<Color>" interferes with the RTF ... so modify it.
+			displayName= Regex.Replace(displayName, "<Color>", "< Color >");	
 			
 			if (edObj.IsInputPort) {
-				edObj= edObj.EndConsumerPorts[0];
+				edObj= edObj.EndConsumerPorts[0].Parent;
 			}
 			else if (edObj.IsOutputPort) {
-				edObj= edObj.FirstProducerPort;
-			}
-			
-			if(edObj.ParentNode.ParentNode.IsInstanceNode) 
-				edObj= edObj.IsInputPort ? edObj.ProducerPort : edObj.ConsumerPorts[0];	
-			
-			// If the parent.parent is an instance node, step back one
-			if(edObj.ParentNode.ParentNode.IsInstanceNode)
-				edObj = edObj.IsInputPort ? edObj.ProducerPort : edObj.ConsumerPorts[0];			
-				
-			string displayName= edObj.DisplayName;
-			// Variable name "<Color>" interferes with the RTF ...
-			displayName= Regex.Replace(displayName, "<Color>", "< Color >");	
-			return "<b>" + iCS_Types.TypeName(edObj.RuntimeType) + " " + titleColour + displayName + "</color></b>";
+				edObj= edObj.FirstProducerPort.Parent;
+			}			
+			// Verify if this is an appropriate kind of port to display help for
+			if(!(edObj.IsKindOfFunction || edObj.IsVariableReference || edObj.IsFunctionCall))
+				return null;
+									
+			return "<b>" + typeName + " " + titleColour + displayName + "</color></b>";
+
 		}
-//			}
-//		}
 		return null;		
 	}
 	

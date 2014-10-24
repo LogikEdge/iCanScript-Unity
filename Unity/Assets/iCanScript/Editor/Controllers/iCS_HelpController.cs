@@ -122,25 +122,33 @@ public static class iCS_HelpController {
 		}
 	}
 
-	public static iCS_EditorObject portContainingHelp(iCS_EditorObject edObj) {
-		// check for special types of ports. 
-		if( edObj.PortIndex >= (int)iCS_PortIndex.ParametersEnd ) {
-			Debug.Log("null");
-			return null;
-		}	
-		if (edObj.IsInputPort) {
-			return edObj.EndConsumerPorts[0];
-		}
-		else if (edObj.IsOutputPort) {
-			return edObj.FirstProducerPort;
-		}
-		return null;
-	}
 
-	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj ) {
+	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj ) {		
 		if(edObj != null) {
-			if (edObj.IsPort) 	
-				edObj= portContainingHelp(edObj);
+			if (edObj.IsPort) {				
+				// check for special types of ports. 
+				// TODO: support these.
+				if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsClassField) {
+					// return port will be same as parent node description, and no need to show type name
+					// which will be repeated in port name.
+				}
+				else if( edObj.PortIndex >= (int)iCS_PortIndex.ParametersEnd ) {
+					return null;
+				}	
+			
+				// Following port will contain the member info
+				if (edObj.IsInputPort) {
+					edObj= edObj.EndConsumerPorts[0].Parent;
+				}
+				else if (edObj.IsOutputPort) {
+					edObj= edObj.FirstProducerPort.Parent;
+				}	
+				
+				// Verify if this is an appropriate kind of port to display help for
+				if(!(edObj.IsKindOfFunction || edObj.IsVariableReference || edObj.IsFunctionCall))
+					return null;
+				
+			}
 			return iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
 		}
 		return null;
@@ -153,15 +161,8 @@ public static class iCS_HelpController {
 	public static string getHelp(iCS_EditorObject edObj )
 	{	
 		if(edObj != null) {
-			string help;
 			// Get the EditorObject tooltip if there is one.
-			if (edObj.IsPort) {
-				iCS_EditorObject portObj= portContainingHelp(edObj);
-				help= portObj != null ? portObj.Tooltip : null;
-			}
-			else {
-				help= edObj.Tooltip;
-			}
+			string help= edObj.Tooltip;
 			// otherwise try and get help based on the MemberInfo,
 			if(String.IsNullOrEmpty(help)) {
 				help= getHelp(getAssociatedHelpMemberInfo(edObj));
@@ -223,6 +224,11 @@ public static class iCS_HelpController {
 	// =================================================================================
 	// Open web browser for specific help
 	// ---------------------------------------------------------------------------------		
+
+	public static void openDetailedHelp(iCS_EditorObject edObj ) {
+		openDetailedHelp(getAssociatedHelpMemberInfo(edObj));
+	}	
+
 	public static void openDetailedHelp(iCS_MemberInfo memberInfo )	
 	{	
 		if(memberInfo != null) {
