@@ -23,7 +23,6 @@ public class iCS_EditorBase : EditorWindow {
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     public void OnEnable() {
-        iCS_AppController.Start();
         iCS_EditorController.Add(this);
     }
     public void OnDisable() {
