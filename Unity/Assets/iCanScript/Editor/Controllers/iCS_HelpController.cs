@@ -15,6 +15,8 @@ public static class iCS_HelpController {
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
 	static string unityHelpPath = EditorApplication.applicationContentsPath + "/Documentation/html/en/ScriptReference";
 
+	const string noHelp= "no help available" ;
+	
 	// ---------------------------------------------------------------------------------
 	static iCS_HelpController() {
 		buildUnityHelpIndex();
@@ -120,14 +122,60 @@ public static class iCS_HelpController {
 		}
 	}
 
+	public static iCS_EditorObject portContainingHelp(iCS_EditorObject edObj) {
+		// check for special types of ports. 
+		if( edObj.PortIndex >= (int)iCS_PortIndex.ParametersEnd ) {
+			Debug.Log("null");
+			return null;
+		}	
+		if (edObj.IsInputPort) {
+			return edObj.EndConsumerPorts[0];
+		}
+		else if (edObj.IsOutputPort) {
+			return edObj.FirstProducerPort;
+		}
+		return null;
+	}
+
+	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj ) {
+		if(edObj != null) {
+			if (edObj.IsPort) 	
+				edObj= portContainingHelp(edObj);
+			return iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
+		}
+		return null;
+	}
+
 	// =================================================================================
 	// Get the summary help description 
 	// ---------------------------------------------------------------------------------
 	
 	public static string getHelp(iCS_EditorObject edObj )
-	{
-		return getHelp(iCS_LibraryDatabase.GetAssociatedDescriptor(edObj));
+	{	
+		if(edObj != null) {
+			string help;
+			// Get the EditorObject tooltip if there is one.
+			if (edObj.IsPort) {
+				iCS_EditorObject portObj= portContainingHelp(edObj);
+				help= portObj != null ? portObj.Tooltip : null;
+			}
+			else {
+				help= edObj.Tooltip;
+			}
+			// otherwise try and get help based on the MemberInfo,
+			if(String.IsNullOrEmpty(help)) {
+				help= getHelp(getAssociatedHelpMemberInfo(edObj));
+			}
+			// otherwise try and get help bases on type.
+			if (String.IsNullOrEmpty(help)) {
+				//TODO get help based on type
+				// return getHelp(type);
+			}
+			return help;
+		}
+		return null;
 	}
+	
 	
 	public static string getHelp(iCS_MemberInfo memberInfo )
 	{
@@ -146,11 +194,9 @@ public static class iCS_HelpController {
 					return summary;
 				}
 			}
-			// If we could not look up help, use the description if there is one
-			if (!String.IsNullOrEmpty(memberInfo.Description)) {	
-				memberInfo.HelpSummaryCache= memberInfo.Description;				
+			// Try and use MemberInfo Description
+			if (memberInfo.Description!=null)
 				return memberInfo.Description;
-			}
 			// If there is no help found yet, try and return help based on type
 			String typeHelp= getHelp(memberInfo.ParentTypeInfo);
 			if (!String.IsNullOrEmpty(typeHelp)) {
@@ -168,6 +214,9 @@ public static class iCS_HelpController {
 	
 	public static string getHelp(iCS_TypeInfo type )
 	{
+		if(type != null) {
+			return noHelp;
+		}
 		return null;
 	}
 	
