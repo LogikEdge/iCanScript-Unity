@@ -163,10 +163,12 @@ public static class iCS_EditorController {
         visualEditor.ShowNotification(content);
     }
     // ======================================================================
-    public static void OpenNeededEditors() {
+    public static void OpenVisualEditor() {
         if(FindVisualEditor() == null) {
             ShowVisualEditor();
         }
+    }
+    public static void OpenLibraryEditor() {
         if(FindLibraryEditor() == null) {
             ShowLibraryEditor();
         }
