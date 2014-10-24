@@ -55,7 +55,11 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // Finds all engine objects that passes the test
     public static iCS_EngineObject[] FindMany(iCS_IVisualScriptData vsd, Func<iCS_EngineObject,bool> cond) {
         List<iCS_EngineObject> result= new List<iCS_EngineObject>();
-        foreach(var o in vsd.EngineObjects) { if(Test(o, cond, vsd)) result.Add(o); }
+        foreach(var o in vsd.EngineObjects) {
+            if(Test(o, cond, vsd)) {
+                result.Add(o);
+            }
+        }
         return result.ToArray();
     }
 
