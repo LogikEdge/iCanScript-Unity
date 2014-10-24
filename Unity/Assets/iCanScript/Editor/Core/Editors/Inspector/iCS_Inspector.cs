@@ -36,8 +36,8 @@ public class iCS_Inspector : Editor {
     // Keyboard input functions
 #if BUFFERED_INPUT
     iCS_BufferedTextField myNameEditor   = new iCS_BufferedTextField();
-#endif
     iCS_BufferedTextField myTooltipEditor= new iCS_BufferedTextField();
+#endif
 
     
     // ======================================================================
@@ -181,21 +181,29 @@ public class iCS_Inspector : Editor {
         var typeName= ObjectNames.NicifyVariableName(SelectedObject.ObjectType.ToString());
         EditorGUILayout.LabelField("Type", typeName);
         // Show object tooltip.
-        string toolTip= SelectedObject.Tooltip;
-        if(mySelectedObject.IsOutStatePort) toolTip= myIStorage.FindAConnectedPort(SelectedObject).Tooltip;
-        if(toolTip == null || toolTip == "") toolTip= EmptyStr;
+        string tooltip= SelectedObject.Tooltip;
+        if(mySelectedObject.IsOutStatePort) tooltip= myIStorage.FindAConnectedPort(SelectedObject).Tooltip;
+        if(tooltip == null || tooltip == "") tooltip= EmptyStr;
+#if BUFFERED_INPUT
 		GUI.SetNextControlName("tooltip");
-        myTooltipEditor.Update("Tooltip", toolTip,
+        myTooltipEditor.Update("Tooltip", tooltip,
             newTooltip=> {
                 iCS_UserCommands.OpenTransaction(myIStorage);
                 SelectedObject.Tooltip= newTooltip;
                 if(SelectedObject.IsStatePort) {
                     if(SelectedObject.IsOutStatePort) myIStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
-                    else SelectedObject.ProducerPort.Tooltip= toolTip;
+                    else SelectedObject.ProducerPort.Tooltip= tooltip;
                 }
                 iCS_UserCommands.CloseTransaction(myIStorage, "Change tooltip");
             }
         );
+#else
+        GUI.changed= false;
+        var newTooltip= EditorGUILayout.TextField("Tooltip", tooltip);
+        if(GUI.changed) {
+            iCS_UserCommands.ChangeTooltip(SelectedObject, newTooltip);
+        }
+#endif
         // Show inspector specific for each type of component.
         if(SelectedObject.IsNode)      InspectNode(SelectedObject);
         else if(SelectedObject.IsPort) InspectPort(SelectedObject);

@@ -69,6 +69,21 @@ public static partial class iCS_UserCommands {
         iCS_EditorController.RepaintEditorsWithLabels();
     }
     // ----------------------------------------------------------------------
+    public static void ChangeTooltip(iCS_EditorObject obj, string tooltip) {
+        var iStorage= obj.IStorage;
+        if(string.IsNullOrEmpty(tooltip)) {
+            OpenTransaction(iStorage);
+            obj.Tooltip= null;
+            CloseTransaction(iStorage, "Change tooltip for "+obj.Name, TransactionType.Field);
+            return;
+        }
+        tooltip.Trim();
+        if(string.Compare(obj.Tooltip, tooltip) == 0) return;
+        OpenTransaction(iStorage);
+        obj.Tooltip= tooltip;
+        CloseTransaction(iStorage, "Change tooltip for "+obj.Name, TransactionType.Field);
+    }
+    // ----------------------------------------------------------------------
 	public static void ChangePortValue(iCS_EditorObject port, object newValue) {
 		if(port == null) return;
 		var iStorage= port.IStorage;
