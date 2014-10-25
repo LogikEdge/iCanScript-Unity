@@ -46,11 +46,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Find object under mouse, and prepare help.
 	// ----------------------------------------------------------------------
-<<<<<<< HEAD
-    private void updateHelp() {
-=======
     void UpdateHelp() {
->>>>>>> develop
 		iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 		if(pickInfo != null) {
 			iCS_EditorObject edObj= pickInfo.PickedObject;
