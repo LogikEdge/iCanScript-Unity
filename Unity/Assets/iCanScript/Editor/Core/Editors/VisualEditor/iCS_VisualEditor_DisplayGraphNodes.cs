@@ -55,7 +55,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(IsDragStarted) DrawScrollZone();
 
 		// Show toolbar
-		Toolbar();			
+		Toolbar();
+        
+        // Show errors/warnings
+        DisplayErrorsAndWarnings();
 	}
 	
 	// ----------------------------------------------------------------------

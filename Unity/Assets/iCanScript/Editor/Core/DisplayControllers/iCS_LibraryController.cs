@@ -15,7 +15,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         public string          Name;
         public Vector2         NameSize;
         public iCS_MemberInfo  MemberInfo;
-		private GUIContent	   myGuiContent	 = null;
+		private GUIContent	   myGuiContent= null;
 		
         public Node(NodeTypeEnum type, string name, iCS_MemberInfo memberInfo) {
             Init(type, name, memberInfo);
@@ -39,7 +39,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         }
 	    // ----------------------------------------------------------------------	
 		// Create the GUIContent as they are needed, and cache them.
-	    public GUIContent getGUIContent() {
+	    public GUIContent GetGUIContent() {
 	            if(myGuiContent == null) {
 					myGuiContent= new GUIContent(Name, MemberInfo.HelpSummary);
 	            }
@@ -546,7 +546,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
 		
 		var current= IterValue;
-		GUI.Label(pos, current.getGUIContent(),labelStyle);    
+		GUI.Label(pos, current.GetGUIContent(), labelStyle);
 
 		ProcessChangeSelection();
 		return result;

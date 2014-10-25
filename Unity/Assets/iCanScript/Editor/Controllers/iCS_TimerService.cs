@@ -18,37 +18,46 @@ public static class iCS_TimerService {
     }
     
     // ======================================================================
-    public static TimedAction CreateTimedAction(float time, Action action) {
-        return new TimedAction(time, action);
+    public static TimedAction CreateTimedAction(float time, Action action, bool isLooping= false) {
+        return new TimedAction(time, action, isLooping);
     }
     public static void Schedule(TimedAction timedAction) {
         if(timedAction == null) return;
-        myTimers.Add(timedAction);
+        if(!IsActive(timedAction)) {
+            myTimers.Add(timedAction);            
+        }
     }
     public static void Restart(TimedAction timedAction) {
-        if(!myTimers.Contains(timedAction)) {
+        if(!IsActive(timedAction)) {
             myTimers.Add(timedAction);
         }
     }
     public static void Stop(TimedAction timedAction) {
         myTimers.Remove(timedAction);
     }
+    public static bool IsActive(TimedAction timedAction) {
+        return myTimers.Contains(timedAction);
+    }
     
     // ======================================================================
     public class TimedAction {
         P.Timer myTimer;
         Action  myAction;
+        bool    myIsLooping;
         
-        public TimedAction(float delay, Action action) {
-            myAction= action;
-            myTimer= new P.Timer(delay);
+        public TimedAction(float delay, Action action, bool isLooping= false) {
+            myAction   = action;
+            myTimer    = new P.Timer(delay);
+            myIsLooping= isLooping;
         }
-        public bool IsElapsed            { get { return myTimer.IsElapsed; }}
-        public void RunAction()          { myAction(); }
-        public void Schedule()           { iCS_TimerService.Schedule(this); }
-        public void Restart()            { myTimer.Restart(); iCS_TimerService.Restart(this); }
-        public void Restart(float time)  { myTimer.Restart(time); iCS_TimerService.Restart(this); }
-        public void Stop()               { iCS_TimerService.Stop(this); }
+        public bool  IsElapsed           { get { return myTimer.IsElapsed; }}
+        public bool  IsActive            { get { return iCS_TimerService.IsActive(this); }}
+        public bool  IsLooping           { get { return myIsLooping; }}
+        public void  RunAction()         { myAction(); }
+        public void  Schedule()          { iCS_TimerService.Schedule(this); }
+        public void  Restart()           { myTimer.Restart(); iCS_TimerService.Restart(this); }
+        public void  Restart(float time) { myTimer.Restart(time); iCS_TimerService.Restart(this); }
+        public void  Stop()              { iCS_TimerService.Stop(this); }
 		public float RemainingTime		 { get { return myTimer.RemainingTime; }}
     }
     
@@ -58,7 +67,7 @@ public static class iCS_TimerService {
     // ======================================================================
     static void PeriodicUpdate() {
         var elapsedTimers= P.filter(t=> t.IsElapsed, myTimers);
-        P.forEach(t=> { myTimers.Remove(t); }, elapsedTimers);
+        P.forEach(t=> { if(t.IsLooping) { t.Restart(); } else { myTimers.Remove(t);}}, elapsedTimers);
         P.forEach(t=> { t.RunAction(); }, elapsedTimers);
     }
 }

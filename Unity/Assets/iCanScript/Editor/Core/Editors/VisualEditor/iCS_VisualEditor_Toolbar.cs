@@ -143,8 +143,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		r= new Rect(position.width-scrollPositionSize.x, position.height-scrollPositionSize.y,
 			        scrollPositionSize.x, scrollPositionSize.y);
 		GUI.Label(r, scrollPositionAsGUIContent);
-		
-		ShowErrorsAndWarnings();
 	}
     
 }

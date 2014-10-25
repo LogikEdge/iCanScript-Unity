@@ -212,56 +212,53 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// Handles all event messages.
 	// ----------------------------------------------------------------------
 	public new void OnGUI() {
-        // Draw common stuff for all editors
+        // -- Draw common stuff for all editors --
         base.OnGUI();
 
-        // Attempt to initialize environment (if not already done).
+        // -- Attempt to initialize environment (if not already done) --
         bool isInit= IsInitialized();
 
-		// Nothing to be drawn until we are fully initialized.
+		// Update mouse info.
+		UpdateMouse();
+		
+		// -- Nothing to be drawn until we are fully initialized --
         if(!isInit || IStorage == null) {
             // Tell the user that we can display without a behavior or library.
             ShowNotification(new GUIContent("No iCanScript component selected !!!"));
             myNotificationShown= true;
 			// Repaint erros/warning info.
-			ShowErrorsAndWarnings();
-			var evt= Event.current;
-			if(evt.type == EventType.ExecuteCommand) {
-				if(evt.commandName == "RepaintErrors") {
-					evt.Use();
-				}
-			}
+			DisplaySceneErrorsAndWarnings();
             return;            
         }
-        // Remove any previously shown notification.
+        // -- Remove any previously shown notification --
         if(myNotificationShown) {
             RemoveNotification();
             myNotificationShown= false;
         }
-       	// Update pending GUI commands
+       	// -- Update pending GUI commands --
         RunOnGUICommands();
         
-        // Update GUI time.
+        // -- Assure that we have a library window opened --
+        iCS_EditorController.OpenLibraryEditor();
+        
+        // -- Update GUI time --
         myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
         myCurrentTime= Time.realtimeSinceStartup;
 
-		// Update mouse info.
-		UpdateMouse();
-		
-        // Load Editor Skin.
+        // -- Load Editor Skin --
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
-		// Update pending menu commands
+		// -- Update pending menu commands --
 		myContextualMenu.OnGUI();
 		
-        // Process all visual editor events including Repaint.
+        // -- Process all visual editor events including Repaint --
         if(IsMouseInToolbar && Event.current.type != EventType.Repaint) {
             Toolbar();
         } else {
              ProcessEvents();            
         }
         
-        // Update sub editor if active.
+        // -- Update sub editor if active --
         if(mySubEditor != null) {
 //            EditorGUI.FocusTextInControl("SubEditor");
         	mySubEditor.Update();
@@ -275,15 +272,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         }
 
-        // Process scroll zone.
+        // -- Process scroll zone --
         ProcessScrollZone();
         
-        // Debug information.
+        // -- Debug information --
 #if SHOW_FRAME_RATE || SHOW_FRAME_TIME
         FrameRateDebugInfo();
 #endif
 		
-		// Simulate OnPostRender.
+		// -- Simulate OnPostRender --
 		OnPostRender();
 	}
 
@@ -382,11 +379,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     ev.Use();
 			        break;                    
                 }
-				if(ev.commandName == "RepaintErrors") {
-					ShowErrorsAndWarnings();
-					ev.Use();
-					break;
-				}
 			    break;
 			}
         }

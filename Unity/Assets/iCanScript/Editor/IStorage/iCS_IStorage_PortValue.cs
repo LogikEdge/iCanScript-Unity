@@ -9,15 +9,22 @@ public partial class iCS_IStorage {
 	public void LoadInitialPortValueFromArchive(iCS_EditorObject port) {
 		if(!port.IsInDataOrControlPort) return;
 		if(port.ProducerPortId != -1) return;
+        port.InitialValue= GetInitialPortValueFromArchive(port);
+	}
+    // ----------------------------------------------------------------------
+	public object GetInitialPortValueFromArchive(iCS_EditorObject port) {
+		if(!port.IsInDataOrControlPort) return null;
+		if(port.ProducerPortId != -1) return null;
 		if(iCS_Strings.IsEmpty(port.InitialValueArchive)) {
-			port.InitialValue= null;
-			return;
+			return null;
 		}
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
         try {
-    		port.InitialValue= coder.DecodeObjectForKey("InitialValue", Storage);            
+    		return coder.DecodeObjectForKey("InitialValue", Storage);
         }
-        finally  {}
+        catch  {
+            return null;
+        }
 	}
     // ----------------------------------------------------------------------
     public void StoreInitialPortValueInArchive(iCS_EditorObject port) {

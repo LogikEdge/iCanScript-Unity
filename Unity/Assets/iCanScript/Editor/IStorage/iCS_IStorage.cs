@@ -393,7 +393,6 @@ public partial class iCS_IStorage {
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
         iCS_EditorObject instance= Copy(srcObj, srcStorage, destParent, destStorage, globalPos, xlat);
         ReconnectCopy(srcObj, srcStorage, destStorage, xlat);
-//        instance.GlobalRect= iCS_EditorObject.BuildRect(globalPos, Vector2.zero);
         instance.CollisionOffsetFromGlobalPosition= globalPos;
         return instance;
     }
@@ -404,7 +403,7 @@ public partial class iCS_IStorage {
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
         if(newObj.IsNode) {
-            newObj.LocalAnchorFromGlobalPosition= globalPos;            
+            newObj.LocalAnchorFromGlobalPosition= globalPos;
         }
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(

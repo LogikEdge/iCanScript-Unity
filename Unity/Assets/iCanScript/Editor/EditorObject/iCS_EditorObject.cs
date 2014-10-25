@@ -245,7 +245,6 @@ public partial class iCS_EditorObject {
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
-//		editorObject.IsDirty= true;
         RunOnCreated(editorObject);
 		return editorObject;
 	}
@@ -262,8 +261,11 @@ public partial class iCS_EditorObject {
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
         editorObject.LocalSize= toClone.LocalSize;
-//		editorObject.IsDirty= true;
         RunOnCreated(editorObject);
+        if(editorObject.IsInDataOrControlPort && toClone.ProducerPortId == -1) {
+            editorObject.InitialValue= toClone.IStorage.GetInitialPortValueFromArchive(toClone);
+            editorObject.IStorage.StoreInitialPortValueInArchive(editorObject);
+        }
 		return editorObject;
     }
 

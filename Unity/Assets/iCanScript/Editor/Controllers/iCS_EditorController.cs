@@ -17,13 +17,17 @@ public static class iCS_EditorController {
     static iCS_EditorController() {
         myEditors= new List<iCS_EditorBase>();
     }
+    public static void Start()    {}
+    public static void Shutdown() {}
     
     // =================================================================================
     // Window management
     // ---------------------------------------------------------------------------------
     // FIXME: The relationship between proxy type and editor name needs to be cleaned up.
     public static void Add(iCS_EditorBase editor) {
-        myEditors.Add(editor);
+        if(FindIndexOf(editor) == -1) {
+            myEditors.Add(editor);            
+        }
     }
     public static void Remove(iCS_EditorBase editor) {
         int idx= FindIndexOf(editor);
@@ -159,5 +163,21 @@ public static class iCS_EditorController {
         var visualEditor= FindVisualEditor();
         if(visualEditor == null) return;
         visualEditor.ShowNotification(content);
+    }
+    // ======================================================================
+    public static void OpenVisualEditor() {
+        if(FindVisualEditor() == null) {
+            ShowVisualEditor();
+        }
+    }
+    public static void OpenLibraryEditor() {
+        if(FindLibraryEditor() == null) {
+            ShowLibraryEditor();
+        }
+    }
+    public static void OpenInstanceEditor() {
+        if(FindInstanceEditor() == null) {
+            ShowInstanceEditor();
+        }
     }
 }

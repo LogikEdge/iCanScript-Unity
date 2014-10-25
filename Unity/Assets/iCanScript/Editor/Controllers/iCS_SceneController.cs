@@ -11,6 +11,7 @@ public static class iCS_SceneController {
     // Scene Cache
     // ----------------------------------------------------------------------
     // Visual Scripts
+    static Texture2D                ourLogo                              = null;
     static iCS_VisualScriptImp[]    ourVisualScriptsInScene              = null;
     static iCS_VisualScriptImp[]    ourVisualScriptsReferencesByScene    = null;
     static iCS_VisualScriptImp[]    ourVisualScriptsInOrReferencesByScene= null;
@@ -32,6 +33,10 @@ public static class iCS_SceneController {
     // Common Controller activation/deactivation
     // ----------------------------------------------------------------------
 	static iCS_SceneController() {
+        // Delegate to draw iCanScript icon in hierarchy
+        iCS_TextureCache.GetIcon(iCS_EditorStrings.TitleLogoIcon, out ourLogo);
+        EditorApplication.hierarchyWindowItemOnGUI+= UnityHierarchyItemOnGui;
+        
         // Events to refresh scene content information.
 		iCS_SystemEvents.OnEditorStarted   = RefreshSceneInfo;
         iCS_SystemEvents.OnSceneChanged    = RefreshSceneInfo;
@@ -48,13 +53,37 @@ public static class iCS_SceneController {
     public static void Shutdown() {}
 
     // ======================================================================
+    // Show iCanScript logo in Unity hierarchy
+    // ----------------------------------------------------------------------
+    static void UnityHierarchyItemOnGui(int instanceId, Rect r) {
+        var unityObject= EditorUtility.InstanceIDToObject(instanceId);
+        var go= unityObject as GameObject;
+        if(go != null && go.GetComponent("iCS_VisualScriptImp") != null) {
+            // -- Draw iCanScript logo next to hierarchy item --
+            if(ourLogo != null) {
+                var heightDiff= r.height-ourLogo.height;
+                if(heightDiff <= 0f) heightDiff= 0f;
+                var iconRect= new Rect(r.xMax-ourLogo.width, r.y+0.5f*heightDiff, ourLogo.width, ourLogo.height);
+                GUI.DrawTexture(iconRect, ourLogo);                            
+            }
+
+            // -- Assure that the visual editor is opened --
+//            if(ourVisualScriptsInOrReferencesByScene.Length != 0) {
+//                iCS_EditorController.OpenVisualEditor();
+//            }
+        }
+    }
+    
+    // ======================================================================
     // Update scene content changed
     // ----------------------------------------------------------------------
     static void RefreshSceneInfo() {
+        // -- Scan scene for visual scripts --
         ourVisualScriptsInScene              = ScanForVisualScriptsInScene();
         ourVisualScriptsReferencesByScene    = ScanForVisualScriptsReferencedByScene();
         ourVisualScriptsInOrReferencesByScene= CombineVisualScriptsInOrReferencedByScene();
-		// Vaidate proper visual script setup.
+
+		// -- Vaidate proper visual script setup --
 		SceneSanityCheck();
     }
 

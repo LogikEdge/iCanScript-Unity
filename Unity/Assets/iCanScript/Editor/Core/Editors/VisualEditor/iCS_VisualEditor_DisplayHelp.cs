@@ -46,7 +46,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Find object under mouse, and prepare help.
 	// ----------------------------------------------------------------------
+<<<<<<< HEAD
     private void updateHelp() {
+=======
+    void UpdateHelp() {
+>>>>>>> develop
 		iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 		if(pickInfo != null) {
 			iCS_EditorObject edObj= pickInfo.PickedObject;
@@ -129,7 +133,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Display the help already populated in myHelpText
 	void DisplayHelp() {
-		if(myHelpEnabled) {
+		if(myHelpText != null && myHelpEnabled) {
 			GUIStyle style =  EditorStyles.textArea;
 			style.richText = true;
 			GUI.Box(new Rect(Screen.width-400, Screen.height-100, 400, 100), myHelpText, style);

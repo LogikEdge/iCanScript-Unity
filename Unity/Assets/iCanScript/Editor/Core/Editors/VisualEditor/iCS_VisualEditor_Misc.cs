@@ -36,16 +36,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		else {
 	        iCS_UserCommands.Select(newSelected, IStorage);
+            UpdateSelected();
 		}
-//        // Show iCS inspector if window is maximized.
-//        if(maximized && SelectedObject != null) {
-//            if(myObjectInspector == null) {
-//                myObjectInspector= iCS_ObjectInspector.CreateInstance(SelectedObject, Vector2.zero);
-//            }
-//            else if(myObjectInspector.InspectedObject != SelectedObject) {
-//                myObjectInspector.Init(SelectedObject, Vector2.zero);
-//            }
-//        }
         return SelectedObject;
     }
 
@@ -529,6 +521,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
         }
         iCS_UserCommands.PasteIntoGraph(sourceMonoBehaviour, sourceRoot, IStorage, validParent, point);
+        UpdateSelected();
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {
@@ -536,5 +529,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(updateDesc == null || updateDesc.Length == 0) return null;
         return iCS_UserCommands.CreateMessageHandler(IStorage[0], globalPos, updateDesc[0]);
     }
-
+	// ----------------------------------------------------------------------
+    void UpdateSelected() {
+        if(SelectedObject != null && SelectedObject.IsInstanceNode) {
+            iCS_EditorController.OpenInstanceEditor();
+        }
+    }
 }

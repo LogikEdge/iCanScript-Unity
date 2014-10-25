@@ -159,6 +159,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the port value display size in GUI scale.
     Vector2 GetPortValueSize(iCS_EditorObject port) {
+        if(ValueStyle == null) return Vector2.zero;
 		string valueAsStr= GetPortValueAsString(port);
 		return iCS_Strings.IsNotEmpty(valueAsStr) ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
     }
@@ -190,23 +191,4 @@ public partial class iCS_Graphics {
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
 	}
-	// ----------------------------------------------------------------------
-    // Returns the tooltip for the given port.
-	public static string GetPortTooltip(iCS_EditorObject port, iCS_IStorage iStorage) {
-		string tooltip= "Name: "+(port.RawName ?? "")+"\n";
-		// Type information
-		Type runtimeType= port.RuntimeType;
-		if(runtimeType != null) tooltip+= "Type: "+iCS_Types.TypeName(runtimeType)+"\n";
-		// Source information.
-		if(port.IsDataOrControlPort) {
-			iCS_EditorObject sourcePort= iStorage.GetFirstProducerPort(port);
-			if(sourcePort != null && sourcePort != port) {
-				tooltip+= "Source: "+GetPortFullPathName(sourcePort, iStorage)+"\n";
-			}
-		}
-		// User defined tooltip
-		if(iCS_Strings.IsNotEmpty(port.Tooltip)) tooltip+= port.Tooltip;
-		return tooltip;
-	}
-	
 }
