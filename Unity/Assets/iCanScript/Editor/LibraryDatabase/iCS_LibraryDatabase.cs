@@ -296,33 +296,14 @@ public class iCS_LibraryDatabase {
     // Returns the descriptor associated with the given editor object.
     public static iCS_MemberInfo GetAssociatedDescriptor(iCS_EditorObject edObj) {
 		
-		if(edObj==null)
+		if(edObj==null) {
 			return null;
-		
-        if(edObj.IsPackage && !edObj.IsInstanceNode)
-            return null;
-				
-		if(edObj.IsPort) {
-			iCS_EditorObject portNode=null;
-			if(edObj.IsInputPort) {
-				iCS_EditorObject[] endPortArray= edObj.EndConsumerPorts;
-				if(endPortArray[0] != null){
-					// there should only be one end consumer port for an input port.
-					portNode= endPortArray[0].ParentNode;
-				}
-			}
-			else if(edObj.IsOutputPort) {
-				iCS_EditorObject firstPort= edObj.FirstProducerPort;
-				if(firstPort != null)
-					portNode= firstPort.ParentNode;
-			}
-			if(portNode != null) {
-				if(portNode.IsKindOfFunction) 
-					return GetAssociatedDescriptor(portNode);
-			}
-			return null;		
 		}
 		
+        if( edObj.IsPort || (edObj.IsPackage && !edObj.IsInstanceNode)) {
+            return null;
+		}
+	
         var runtimeType= edObj.RuntimeType;
         var engineObject= edObj.EngineObject;
         int numberOfOutputPorts= edObj.NumberOfChildOutputPorts();

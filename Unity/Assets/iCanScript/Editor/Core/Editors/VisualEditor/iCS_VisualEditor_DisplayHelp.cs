@@ -10,7 +10,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
 	
 	private bool myHelpEnabled= true;
-	private string myHelpText= null;
+	private string myHelpText= defaultHelp;
 	
 	// Help strings.  Note <tcolor> should be replaced with title colour markup when used.
 	static string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
@@ -74,9 +74,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	public static string getHelpWindowText(iCS_EditorObject edObj) {
 		string helpText= "";
+		string title= null;
+		string help= null;
 		if(edObj.IsPort) {						
-			// Show help for selected port				
-			helpText= helpText + GetPortTitle(edObj) + "\n" + iCS_HelpController.getHelp(edObj) + "\n";	
+			// Show help for selected port	
+			title= iCS_HelpController.GetHelpTitle(edObj);
+			help= iCS_HelpController.getHelp(edObj);
+			if (! (String.IsNullOrEmpty(title) && String.IsNullOrEmpty(help)))					
+				helpText= helpText + title + "\n" + help + "\n\n";	
+			
 
 			// find connected port
 			iCS_EditorObject connectedPort= null;
@@ -92,16 +98,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				if(connectedPort.ParentNode.ParentNode.IsInstanceNode) {
 					connectedPort= connectedPort.ProducerPort;
 				}
-			}	
-							
+			}				
+			
+			// show help for connected port				
 			if (connectedPort != null && connectedPort != edObj) {	
-				helpText= helpText + "\n<b>connected-> </b>" + GetPortTitle(connectedPort) + 
-					"\n" + iCS_HelpController.getHelp(connectedPort) + "\n";
+				title= iCS_HelpController.GetHelpTitle(connectedPort);
+				help= iCS_HelpController.getHelp(connectedPort);
+				if (! (String.IsNullOrEmpty(title) && String.IsNullOrEmpty(help)))
+					helpText= helpText + "<b>connected-> </b>" + title + "\n" + help + "\n";
 			}
 		}
 		else if (edObj.IsNode){
-			string title= GetNodeTitle(edObj);
-			string help= iCS_HelpController.getHelp(edObj);
+			// Show help for node			
+			title= iCS_HelpController.GetHelpTitle(edObj);
+			help= iCS_HelpController.getHelp(edObj);
 			if (! (String.IsNullOrEmpty(title) && String.IsNullOrEmpty(help)))
 				helpText= title + "\n" + help + "\n";
 		}
@@ -115,66 +125,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	}
 	
-	private static string GetNodeTitle(iCS_EditorObject edObj) {
-		if (edObj==null)
-			return null;
-				
-		string typeName= null;
-		// Type names to be displayed in front of node name.
-		if(edObj.IsConstructor)
-			typeName= "Builder";
-		else if(edObj.IsInstanceNode)
-			typeName= "Class";
-		else if(edObj.IsKindOfFunction)
-			typeName= "Function";
-		else if(edObj.IsVariableReference)
-			typeName= "Variable Reference";
-		else if(edObj.IsFunctionCall)
-			typeName= "Function Call";
-		else
-			return null;
-		
-		return "<b>" + typeName + " " + titleColour + edObj.DisplayName + "</color></b>";
-	}
-
-	private static string GetPortTitle(iCS_EditorObject edObj) {
-		if (edObj!=null) {					
-			// Get Type of Port	
-			string typeName;
-			// change Type for special types of ports. 
-			if (edObj.PortIndex == (int)iCS_PortIndex.InInstance || 
-					edObj.PortIndex == (int)iCS_PortIndex.OutInstance) {
-				// no need to show type name of Instance ports which will be repeated in port name.
-				typeName= "Instance";	
-			}
-			else if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.IsConstructor) {
-				// no need to show type name of builder return port which will be repeated in port name.
-				typeName= "Instance";	
-			}
-			else {
-				typeName= iCS_Types.TypeName(edObj.RuntimeType);
-			}			
-		
-			// Get name of port
-			string displayName= edObj.DisplayName;
-			// Variable name "<Color>" interferes with the RTF ... so modify it.
-			displayName= Regex.Replace(displayName, "<Color>", "< Color >");	
-			
-			if (edObj.IsInputPort) {
-				edObj= edObj.EndConsumerPorts[0].Parent;
-			}
-			else if (edObj.IsOutputPort) {
-				edObj= edObj.FirstProducerPort.Parent;
-			}			
-			// Verify if this is an appropriate kind of port to display help for
-			if(!(edObj.IsKindOfFunction || edObj.IsVariableReference || edObj.IsFunctionCall))
-				return null;
-									
-			return "<b>" + typeName + " " + titleColour + displayName + "</color></b>";
-
-		}
-		return null;		
-	}
 	
     // ======================================================================
     // Display the help already populated in myHelpText

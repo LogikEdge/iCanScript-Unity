@@ -16,6 +16,7 @@ public static class iCS_HelpController {
 	static string unityHelpPath = EditorApplication.applicationContentsPath + "/Documentation/html/en/ScriptReference";
 
 	const string noHelp= "no help available" ;
+	static string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
 	
 	// ---------------------------------------------------------------------------------
 	static iCS_HelpController() {
@@ -121,39 +122,98 @@ public static class iCS_HelpController {
 			}
 		}
 	}
-
-
-	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj ) {		
+	
+	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj) 
+	{
 		if(edObj != null) {
-			if (edObj.IsPort) {				
+			if (edObj.IsPort) {	
 				// check for special types of ports. 
 				// TODO: support these.
 				if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsClassField) {
-					// return port will be same as parent node description, and no need to show type name
-					// which will be repeated in port name.
+					// return port will be same as parent node description.
 				}
+				else if(edObj.IsKindOfPackagePort && !edObj.IsInstanceNodePort)
+					return null;
 				else if( edObj.PortIndex >= (int)iCS_PortIndex.ParametersEnd ) {
 					return null;
-				}	
-			
+				}				
+				
 				// Following port will contain the member info
 				if (edObj.IsInputPort) {
 					edObj= edObj.EndConsumerPorts[0].Parent;
 				}
 				else if (edObj.IsOutputPort) {
 					edObj= edObj.FirstProducerPort.Parent;
-				}	
-				
-				// Verify if this is an appropriate kind of port to display help for
-				if(!(edObj.IsKindOfFunction || edObj.IsVariableReference || edObj.IsFunctionCall))
-					return null;
-				
+				}				
+				if (!edObj.IsKindOfFunction)
+					return null;						
 			}
 			return iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
 		}
 		return null;
 	}
-
+	
+	
+	public static string GetHelpTitle(iCS_EditorObject edObj) {
+		if (edObj==null)
+			return null;
+		
+		if (edObj.IsNode) {
+			string typeName= null;
+			// Type names to be displayed in front of node name.
+			if(edObj.IsConstructor)
+				typeName= "Builder";
+			else if(edObj.IsInstanceNode)
+				typeName= "Class";
+			else if(edObj.IsKindOfFunction)
+				typeName= "Function";
+			else if(edObj.IsVariableReference)
+				typeName= "Variable Reference";
+			else if(edObj.IsFunctionCall)
+				typeName= "Function Call";
+			else
+				return null;
+		
+			return "<b>" + typeName + " " + titleColour + edObj.DisplayName + "</color></b>";
+		}
+		else if (edObj.IsPort) {
+			// Get Type of Port	
+			string typeName;
+			// change Type for special types of ports. 
+			if (edObj.PortIndex == (int)iCS_PortIndex.InInstance || 
+					edObj.PortIndex == (int)iCS_PortIndex.OutInstance) {
+				// no need to show type name of Instance ports which will be repeated in port name.
+				typeName= "Instance";	
+			}
+			else if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.IsConstructor) {
+				// no need to show type name of builder return port which will be repeated in port name.
+				typeName= "Instance";	
+			}
+			else {
+				typeName= iCS_Types.TypeName(edObj.RuntimeType);
+			}			
+		
+			// Get name of port
+			string displayName= edObj.DisplayName;
+			// Variable name "<Color>" interferes with the RTF ... so modify it.
+			displayName= Regex.Replace(displayName, "<Color>", "< Color >");	
+			
+			if (edObj.IsInputPort) {
+				edObj= edObj.EndConsumerPorts[0].Parent;
+			}
+			else if (edObj.IsOutputPort) {
+				edObj= edObj.FirstProducerPort.Parent;
+			}			
+			// Verify if this is an appropriate kind of port to display help for
+			if(!(edObj.IsKindOfFunction || edObj.IsVariableReference || edObj.IsFunctionCall))
+				return null;
+									
+			return "<b>" + typeName + " " + titleColour + displayName + "</color></b>";
+		}
+		return null;	
+	}	
+	
+	
 	// =================================================================================
 	// Get the summary help description 
 	// ---------------------------------------------------------------------------------
@@ -163,16 +223,17 @@ public static class iCS_HelpController {
 		if(edObj != null) {
 			// Get the EditorObject tooltip if there is one.
 			string help= edObj.Tooltip;
+			if(!String.IsNullOrEmpty(help))
+				return help;
+		
 			// otherwise try and get help based on the MemberInfo,
-			if(String.IsNullOrEmpty(help)) {
-				help= getHelp(getAssociatedHelpMemberInfo(edObj));
-			}
+			help= getHelp(getAssociatedHelpMemberInfo(edObj));
+			if(!String.IsNullOrEmpty(help))
+				return help;
+			
 			// otherwise try and get help bases on type.
-			if (String.IsNullOrEmpty(help)) {
-				//TODO get help based on type
-				// return getHelp(type);
-			}
-			return help;
+			//TODO get help based on type
+			// return getHelp(type);
 		}
 		return null;
 	}
