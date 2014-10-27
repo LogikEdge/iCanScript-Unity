@@ -28,13 +28,20 @@ public static class iCS_SceneController {
     public static iCS_VisualScriptImp[] VisualScriptsInOrReferencedByScene {
         get { return ourVisualScriptsInOrReferencesByScene; }
     }
-
+    static Texture2D iCanScriptLogo {
+        get {
+            if(ourLogo == null) {
+                iCS_TextureCache.GetIcon(iCS_EditorStrings.TitleLogoIcon, out ourLogo);
+            }
+            return ourLogo;  
+        }
+    }
+    
     // ======================================================================
     // Common Controller activation/deactivation
     // ----------------------------------------------------------------------
 	static iCS_SceneController() {
         // Delegate to draw iCanScript icon in hierarchy
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.TitleLogoIcon, out ourLogo);
         EditorApplication.hierarchyWindowItemOnGUI+= UnityHierarchyItemOnGui;
         
         // Events to refresh scene content information.
@@ -60,17 +67,13 @@ public static class iCS_SceneController {
         var go= unityObject as GameObject;
         if(go != null && go.GetComponent("iCS_VisualScriptImp") != null) {
             // -- Draw iCanScript logo next to hierarchy item --
-            if(ourLogo != null) {
-                var heightDiff= r.height-ourLogo.height;
+            var logo= iCanScriptLogo;
+            if(logo != null) {
+                var heightDiff= r.height-logo.height;
                 if(heightDiff <= 0f) heightDiff= 0f;
-                var iconRect= new Rect(r.xMax-ourLogo.width, r.y+0.5f*heightDiff, ourLogo.width, ourLogo.height);
-                GUI.DrawTexture(iconRect, ourLogo);                            
+                var iconRect= new Rect(r.xMax-ourLogo.width, r.y+0.5f*heightDiff, logo.width, logo.height);
+                GUI.DrawTexture(iconRect, logo);                            
             }
-
-            // -- Assure that the visual editor is opened --
-//            if(ourVisualScriptsInOrReferencesByScene.Length != 0) {
-//                iCS_EditorController.OpenVisualEditor();
-//            }
         }
     }
     
