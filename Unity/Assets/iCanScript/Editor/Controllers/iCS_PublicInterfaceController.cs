@@ -118,6 +118,7 @@ public static class iCS_PublicInterfaceController {
 	}
     // ----------------------------------------------------------------------	
 	public class LinkedGroup {
+        bool                          myIsDefinitionsErrorFree= true;
 		List<ReferenceToDefinition>   myDefinitions= new List<ReferenceToDefinition>();
 		List<ReferenceToEngineObject> myReferences = new List<ReferenceToEngineObject>();
 		
@@ -127,6 +128,10 @@ public static class iCS_PublicInterfaceController {
 		public int 						        NbOfDefinitions	{ get { return myDefinitions.Count; }}
 		public int 						        NbOfReferences	{ get { return myReferences.Count; }}
 		public bool						        IsEmpty			{ get { return NbOfDefinitions+NbOfReferences == 0; }}
+        public bool IsDefinitionsErrorFree {
+            get { return myIsDefinitionsErrorFree; }
+            set { myIsDefinitionsErrorFree= value; }
+        }
 		public void Add(ReferenceToDefinition definition) {
 		    myDefinitions.Add(definition);	
 		}
@@ -288,19 +293,12 @@ public static class iCS_PublicInterfaceController {
     // Update visual script content changed
     // ----------------------------------------------------------------------
     static void OnVisualScriptUndo(iCS_IStorage iStorage) {
-#if DEBUG
-        Debug.Log("Visual Script undo=> "+iStorage.VisualScript.name);
-#endif
         RefreshPublicInterfaceInfo();
-//        ValidatePublicGroups();
     }
     static void OnVisualScriptElementAdded(iCS_IStorage iStorage, iCS_EditorObject element) {
 		// Don't process if the lement does not imply a public interface.
 		if(!IsPublicObject(element)) return;
 
-#if DEBUG
-        Debug.Log("Visual Script element added=> "+iStorage.VisualScript.name+"."+element.Name);               
-#endif
 //        if(element.IsPublicVariable || element.IsVariableReference) {
 //            PublicVariableGroups.Add(element);
 //        }
@@ -308,14 +306,10 @@ public static class iCS_PublicInterfaceController {
 //            PublicFunctionGroups.Add(element);
 //        }
         RefreshPublicInterfaceInfo();
-//        ValidatePublicGroups();
     }
     static void OnVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
 		// Don't process if the element does not imply a public interface.
 		if(!IsPublicObject(element)) return;		
-#if DEBUG
-        Debug.Log("Visual Script element will be removed=> "+iStorage.VisualScript.name+"."+element.Name);
-#endif
 //        if(element.IsPublicVariable || element.IsVariableReference) {
 //            PublicVariableGroups.Remove(element);
 //        }
@@ -327,9 +321,6 @@ public static class iCS_PublicInterfaceController {
     static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
 		// Don't process if the element does not imply a public interface.
 		if(!IsPublicObject(element)) return;
-#if DEBUG
-        Debug.Log("Visual Script element name changed=> "+iStorage.VisualScript.name+"."+element.Name);
-#endif
 		RefreshPublicInterfaceInfo();
     }
     // ----------------------------------------------------------------------
@@ -421,6 +412,7 @@ public static class iCS_PublicInterfaceController {
 	public static void ValidateVariableDefinitions() {
         PublicVariableGroups.ForEach(
             (name, group)=> {
+                group.IsDefinitionsErrorFree= true;
 				var definitions= group.Definitions;
 				if(P.length(definitions) < 2) return;
                 var definition= definitions[0];
@@ -433,6 +425,7 @@ public static class iCS_PublicInterfaceController {
                             var errorMsg= "Public variables=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> must have the same type.";
 							iCS_ErrorController.AddError(kServiceId, errorMsg, defVisualScript, defEngineObject.InstanceId);
 							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
+                            group.IsDefinitionsErrorFree= false;
 						}
 					}
 				);
