@@ -418,6 +418,17 @@ public static class iCS_PublicInterfaceController {
 	// = Public Interface Validation Utilities =
 	// =========================================
     // ----------------------------------------------------------------------
+	public static void ValidatePublicGroups() {
+        // -- Validate Interface Compliancy for Definitions --
+		ValidateVariableDefinitions();
+		ValidateFunctionDefinitions();
+		
+        // -- Validate Interface Compliancy for References --
+        ValidateVariableReferences();
+		ValidateFunctionCalls();
+	}
+	
+    // ----------------------------------------------------------------------
 	public static void ValidateVariableDefinitions() {
         PublicVariableGroups.ForEach(
             (name, group)=> {
@@ -485,114 +496,93 @@ public static class iCS_PublicInterfaceController {
         );
     }
     // ----------------------------------------------------------------------
-	public static bool IsVariableDefinitionCompliant(iCS_EditorObject variable) {
-		var group= PublicVariableGroups.Find(variable.Name);
-		if(group == null) return true;
-		var definitions= group.Definitions;
-		if(P.length(definitions) == 0) return true;
-		var type= variable.RuntimeType;
-		return P.fold((acc,o)=> acc || type == o.EngineObject.RuntimeType, false, definitions);
-	}
-    // ----------------------------------------------------------------------
-	public static P.Tuple<ReferenceToDefinition,ReferenceToDefinition>[] ValidateFunctionDefinitions() {
-		var result= new List<P.Tuple<ReferenceToDefinition,ReferenceToDefinition> >();
+	public static void ValidateFunctionDefinitions() {
         PublicFunctionGroups.ForEach(
             (name, group)=> {
 				var definitions= group.Definitions;
 				if(P.length(definitions) < 2) return;
-				var definition= definitions[0];
-				var vs = definition.VisualScript;
-				var obj= definition.EngineObject;
-				P.fold(
-					(acc,o)=> {
-						if(!IsSameFunction(vs, obj, o.VisualScript, o.EngineObject)) {
-							acc.Add(new P.Tuple<ReferenceToDefinition,ReferenceToDefinition>(definition, o));
-#if DEBUG
-                            var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
-                            var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
-                            Debug.LogWarning("Public functions=> <color=orange><b>"+definitionName+"</b></color> and=> <color=orange><b>"+otherName+"</b></color> are mismatched in terms of ports. Please correct before continuing.");
-#endif
+                var definition= definitions[0];
+				var vs= definition.VisualScript;
+				var engObj= definition.EngineObject;
+				var ports= GetFunctionInterface(vs, engObj);
+				definitions.ForEach(
+					o=> {
+						if(!CompareFunctionInterface(ports, o.VisualScript, o.EngineObject)) {
+                            var errorMsg= "Public functions=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> must have the same interface.";
+							iCS_ErrorController.AddError(kServiceId, errorMsg, vs, engObj.InstanceId);
+							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
 						}
-						return acc;
 					}
-					, result
-					, definitions
 				);
             }
         );
-		return result.ToArray();
 	}
     // ----------------------------------------------------------------------
-	/// Determines if the given functions have the same composition.
-	static bool IsSameFunction(iCS_VisualScriptImp vs1, iCS_EngineObject f1,
-							   iCS_VisualScriptImp vs2, iCS_EngineObject f2) {
-		if(f1.Name != f2.Name) return false;
-		var ps1= iCS_VisualScriptData.GetChildPorts(vs1, f1);
-		var ps2= iCS_VisualScriptData.GetChildPorts(vs2, f2);
-		if(P.length(ps1) != P.length(ps2)) return false;
-        Array.Sort(ps1, (x,y)=> (int)x.PortIndex - (int)y.PortIndex);
-        Array.Sort(ps2, (x,y)=> (int)x.PortIndex - (int)y.PortIndex);
-		return P.and(P.zipWith( (p1,p2)=> IsSamePort(vs1,p1,vs2,p2), ps1, ps2));
+	/// Get function interface
+	static iCS_EngineObject[] GetFunctionInterface(iCS_VisualScriptImp vs, iCS_EngineObject obj) {
+		var ports= iCS_VisualScriptData.GetChildPorts(vs, obj);
+		ports= P.filter(o=> o.PortIndex != (int)iCS_PortIndex.InInstance, ports);
+		P.sort(ports, (a,b)=> b.PortIndex - a.PortIndex);
+		return ports;
 	}
     // ----------------------------------------------------------------------
-	/// Determines if the given ports have the same relative identification.
-	static bool IsSamePort(iCS_VisualScriptImp vs1, iCS_EngineObject p1,
-						   iCS_VisualScriptImp vs2, iCS_EngineObject p2) {
-		if(p1.PortIndex != p2.PortIndex) return false;
-		if(p1.RuntimeType != p2.RuntimeType) return false;
+	/// Compare function interfaces
+	static bool CompareFunctionInterface(iCS_EngineObject[] interface1, iCS_VisualScriptImp vs, iCS_EngineObject obj) {
+		var interface2= GetFunctionInterface(vs, obj);
+		var len= interface1.Length;
+		if(len != interface2.Length) return false;
+		for(int i= 0; i < len; ++i) {
+			var a= interface1[i];
+			var b= interface2[i];
+			if(a.PortIndex != b.PortIndex) return false;
+			if(a.Name != b.Name) return false;
+			if(a.QualifiedType != b.QualifiedType) return false;
+		}
 		return true;
 	}
     // ----------------------------------------------------------------------
-	public static P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>[] ValidateCallsToFunction(string name, LinkedGroup group) {
-		var result= new List<P.Tuple<ReferenceToDefinition,ReferenceToEngineObject> >();
-        var definitions= group.Definitions;
-        var references = group.References;
-        // No mismatch if no function call exists.
-        if(references.Count == 0) return result.ToArray();
-        // At least definition must exist is a function call exists.
-        if(references.Count != 0 && definitions.Count == 0) {
-            return P.map(
-                o=> {
-#if DEBUG
-                    Debug.LogWarning("No definition exist for function call=> "+o.EngineObject.Name+" in=> "+o.VisualScript.name+".");
-#endif
-                    return new P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>(null, o);
-                },
-                references
-            ).ToArray();
-        }                
-        var definition= definitions[0];
-        var vs1= definition.VisualScript;
-        var f1 = definition.EngineObject;
-        return P.fold(
-            (acc,o)=> {
-                var vs2= o.VisualScript;
-                var f2= o.EngineObject;
-				if(!IsSameFunction(vs1, f1, vs2, f2)) {
-					acc.Add(new P.Tuple<ReferenceToDefinition,ReferenceToEngineObject>(definition, o));
-#if DEBUG
-                    var definitionName= iCS_VisualScriptData.GetFullName(vs1, vs1, f1);
-                    var refName       = iCS_VisualScriptData.GetFullName(vs2, vs2, f2);
-                    Debug.LogWarning("Function call=> <color=orange><b>"+refName+"</b></color> differs for function definition=> <color=orange><b>"+definitionName+"</b></color>.  Please correct before continuing.");
-#endif
-				}
-				return acc;
-            },
-            result,
-            references
-        ).ToArray();
+    public static void ValidateFunctionCalls() {
+        PublicFunctionGroups.ForEach(
+            (name, group)=> {
+                // -- Nothing to validate if no reference exists --
+                var references = group.References;
+                if(references.Count == 0) return;
+                
+                // -- Verify that all references comply to the definition interface.
+				var definitions= group.Definitions;
+                if(definitions.Count != 0) {
+                    var definition= definitions[0];
+                    var vs= definition.VisualScript;
+                    var obj= definition.EngineObject;
+					var ports= GetFunctionInterface(vs, obj);
+                    references.ForEach(
+                        o=> {
+							if(!CompareFunctionInterface(ports, o.VisualScript, o.EngineObject)) {
+                                var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
+                                var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
+            					var errorMessage= "Function call=> <color=orange><b>"+otherName+"</b></color> has a different interface then the function definition=> <color=orange><b>"+definitionName+"</b></color>.";
+            					iCS_ErrorController.AddError(kServiceId, errorMessage, o.VisualScript, o.EngineObject.InstanceId);
+							}
+                        }
+                    );
+                }
+                
+                // -- Verify that the specific defintion exists --
+                references.ForEach(
+                    o=> {
+                        var vs     = o.VisualScript;
+                        var refNode= o.EngineObject;
+                        if(vs.IsReferenceNodeUsingDynamicBinding(refNode)) return;
+                        var defNode= vs.GetEngineObjectFromReferenceNode(refNode);
+                        if(defNode == null || defNode.Name != refNode.Name) {
+                            var refName= o.FullName;
+                            var errorMessage= "Not able to find suitable function defintion for function call=> <b><color=orange>"+refName+"</color></b>.";
+        					iCS_ErrorController.AddError(kServiceId, errorMessage, o.VisualScript, o.EngineObject.InstanceId);
+                        }
+                    }
+                );
+            }
+        );
     }
-
-    // ----------------------------------------------------------------------
-	public static void ValidatePublicGroups() {
-        // -- Validate Interface Compliancy for Definitions --
-		ValidateVariableDefinitions();
-//		ValidateFunctionDefinitions();
-		
-        // -- Validate Interface Compliancy for References --
-        ValidateVariableReferences();
-        
-        // -- Validate Reference / Definition Pairing --
-	}
 
 }
