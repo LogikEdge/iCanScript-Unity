@@ -74,6 +74,7 @@ public static class iCS_SceneController {
                 var iconRect= new Rect(r.xMax-ourLogo.width, r.y+0.5f*heightDiff, logo.width, logo.height);
                 GUI.DrawTexture(iconRect, logo);                            
             }
+			iCS_EditorController.OpenVisualEditor();
         }
     }
     
