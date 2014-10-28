@@ -8,12 +8,7 @@ public static class iCS_ErrorController {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    static iCS_ErrorController()    {
-		iCS_TextureCache.GetIcon(iCS_EditorStrings.ErrorIcon, out myErrorIcon);
-		iCS_TextureCache.GetIcon(iCS_EditorStrings.ErrorSmallIcon, out mySmallErrorIcon);
-		iCS_TextureCache.GetIcon(iCS_EditorStrings.WarningIcon, out myWarningIcon);
-		iCS_TextureCache.GetIcon(iCS_EditorStrings.WarningSmallIcon, out mySmallWarningIcon);
-    }
+    static iCS_ErrorController()    {}
     public static void Start()      {}
     public static void Shutdown()   {}
 
@@ -62,10 +57,38 @@ public static class iCS_ErrorController {
 	public static List<ErrorWarning>	Warnings 			{ get { return myWarnings; }}
     public static float                 DisplayAlpha        { get { return myAnimatedAlpha.CurrentValue; }}
     public static Color                 BlendColor          { get { return myBlendColor; }}
-    public static Texture2D             ErrorIcon           { get { return myErrorIcon; }}
-    public static Texture2D             SmallErrorIcon      { get { return mySmallErrorIcon; }}
-    public static Texture2D             WarningIcon         { get { return myWarningIcon; }}
-    public static Texture2D             SmallWarningIcon    { get { return mySmallWarningIcon; }}
+    public static Texture2D ErrorIcon {
+        get {
+            if(myErrorIcon == null) {
+        		iCS_TextureCache.GetIcon(iCS_EditorStrings.ErrorIcon, out myErrorIcon);
+            }
+            return myErrorIcon;
+        }
+    }
+    public static Texture2D SmallErrorIcon {
+        get {
+            if(mySmallErrorIcon == null) {
+        		iCS_TextureCache.GetIcon(iCS_EditorStrings.ErrorSmallIcon, out mySmallErrorIcon);
+            }
+            return mySmallErrorIcon;
+        }
+    }
+    public static Texture2D WarningIcon {
+        get {
+            if(myWarningIcon == null) {
+        		iCS_TextureCache.GetIcon(iCS_EditorStrings.WarningIcon, out myWarningIcon);
+            }
+            return myWarningIcon;
+        }
+    }
+    public static Texture2D SmallWarningIcon {
+        get {
+            if(mySmallWarningIcon == null) {
+        		iCS_TextureCache.GetIcon(iCS_EditorStrings.WarningSmallIcon, out mySmallWarningIcon);
+            }
+            return mySmallWarningIcon;
+        }
+    }
 
     // ======================================================================
     // Operations
