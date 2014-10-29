@@ -603,13 +603,14 @@ public static class iCS_PublicInterfaceController {
         }
         
         // -- Get ports for which name needs to be changed --
-        var portsToRename= P.filter(p1=> P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, defPorts), callPorts);
+        var originalDefPorts= defPorts;
+        var portsToRename= P.filter(p1=>  P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, defPorts)     , callPorts);
+        defPorts         = P.filter(p1=> !P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, portsToRename), defPorts);
+        callPorts        = P.filter(p1=> !P.fold((acc,p2)=> acc || PortExactMatch(p1,p2)  , false, portsToRename), callPorts);
         foreach(var toRename in portsToRename) {
-            var defPort= P.find(p1=> PortRenameNeeded(p1,toRename), defPorts);
+            var defPort= P.find(p1=> PortRenameNeeded(p1,toRename), originalDefPorts);
             toRename.Name= defPort.Name;
         }
-        defPorts = P.filter(p1=> !P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, portsToRename), defPorts);
-        callPorts= P.filter(p1=> !P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, portsToRename), callPorts);
         
         // -- Add extra ports on function definition --
         foreach(var toClone in defPorts) {
@@ -626,6 +627,7 @@ public static class iCS_PublicInterfaceController {
             newPort.IsNameEditable= false;
             // FIXME: Must update unity object reference in visual script data.
             iCS_VisualScriptData.AddEngineObject(vs, newPort);
+            Debug.Log("Creating=> "+toClone.Name);
         }
 
         // -- Remove function call ports that don't exist in definition --
