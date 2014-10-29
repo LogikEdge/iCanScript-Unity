@@ -33,6 +33,7 @@ public static class iCS_SystemEvents {
     static bool    myIsCompiling = false;
     static bool    myIsPlaying   = false;
     static bool    myIsPaused    = false;
+	static EditorWindow myMouseOverWindow= null;
     
     // ======================================================================
     // Persistant States
@@ -106,6 +107,7 @@ public static class iCS_SystemEvents {
     static void SearchChanged() {
 //        Debug.Log("iCanScript: search has changed");        
     }
+	
     // ----------------------------------------------------------------------
     // This method attempts to determine what has changed.
     static void Update() {
@@ -122,7 +124,21 @@ public static class iCS_SystemEvents {
         // Detect engine activity state.
         CheckEnginePlayingState();
         CheckEnginePausedState();
+		// Detect if window for help has changed.
+		CheckHelpWindowChange();
     }
+	
+    // ----------------------------------------------------------------------
+    static void CheckHelpWindowChange() {
+		// If current moused over window changes, Update help string and display
+		var mouseOverWindow=  EditorWindow.mouseOverWindow;
+		if(mouseOverWindow !=  myMouseOverWindow) {
+			iCS_EditorController.FindVisualEditor().helpWindowChange();
+			iCS_EditorController.RepaintVisualEditor();	
+			myMouseOverWindow= mouseOverWindow;
+		}	
+    }
+	
     // ----------------------------------------------------------------------
     static void CheckCompileState() {
         var compiling= EditorApplication.isCompiling;

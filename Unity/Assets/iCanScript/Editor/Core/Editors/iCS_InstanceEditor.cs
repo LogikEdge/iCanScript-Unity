@@ -69,8 +69,5 @@ public class iCS_InstanceEditor : iCS_EditorBase {
         }
         
         myMainView.Display(new Rect(0,0,position.width, position.height));
-
-		iCS_EditorController.FindVisualEditor().updateHelpFromInstanceEditor(); 
-
     }
 }

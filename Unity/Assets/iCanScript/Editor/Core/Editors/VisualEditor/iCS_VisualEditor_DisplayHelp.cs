@@ -9,8 +9,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Properties
     // ----------------------------------------------------------------------
 	
-	private bool myHelpEnabled= true;
-	private string myHelpText= defaultHelp;
+	bool myHelpEnabled= true;
+	string myHelpText= defaultHelp;
 	
 	// Help strings.  Note <tcolor> should be replaced with title colour markup when used.
 	static string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
@@ -42,37 +42,32 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	        set { myHelpEnabled= value; }
 			get { return myHelpEnabled; }
 	}
-	
-    // ======================================================================
-    // Find object under mouse, and prepare help.
-	// ----------------------------------------------------------------------
-    void UpdateHelp() {
+
+
+    // =================================================================================================
+    // Mouse in detected over another window, show contextual help for that window in the Visual Editor.
+	// -------------------------------------------------------------------------------------------------
+	public void helpWindowChange() {
+		myHelpText= iCS_HelpController.getHelp(EditorWindow.mouseOverWindow.GetType());
+	}
+		
+    // ================================================================================
+    // Find object under mouse in VisualEditor, and prepare help.  Use only from onGUI.
+	// --------------------------------------------------------------------------------
+    private void UpdateHelp() {	
+		iCS_EditorObject edObj= null;
 		iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 		if(pickInfo != null) {
-			iCS_EditorObject edObj= pickInfo.PickedObject;
+			edObj= pickInfo.PickedObject;
 			if(edObj != null)
-				myHelpText= getHelpWindowText(edObj);
-		}   
+				myHelpText= prepareHelpWindowText(edObj);
+		}
 	}
 	
     // ======================================================================
-    // Display library tip in visual editor when mouse is over library
+    // prepares and returns the help string which will be displayed in onGUI 
 	// ----------------------------------------------------------------------
-    public void updateHelpFromLibrary() {
-		myHelpText= Regex.Replace(libraryHelp, "<tcolor>", titleColour);
-	}
-	
-    // ======================================================================
-    // Display library tip in visual editor when mouse is over library
-	// ----------------------------------------------------------------------
-    public void updateHelpFromInstanceEditor() {
-		myHelpText= Regex.Replace(InstanceEditorHelp, "<tcolor>", titleColour);
-	}
-	
-    // ======================================================================
-    // Poplulates the help string which will be displayed in onGUI 
-	// ----------------------------------------------------------------------
-	public static string getHelpWindowText(iCS_EditorObject edObj) {
+	public string prepareHelpWindowText(iCS_EditorObject edObj) {
 		string helpText= "";
 		string title= null;
 		string help= null;
@@ -115,6 +110,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if (! (String.IsNullOrEmpty(title) && String.IsNullOrEmpty(help)))
 				helpText= title + "\n" + help + "\n";
 		}
+		else {
+			
+		}
 		
 		// Display default help, if no specific help is available.
 		if (!String.IsNullOrEmpty(helpText)) {
@@ -122,13 +120,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		else
 			return Regex.Replace(defaultHelp, "<tcolor>", titleColour);
-
 	}
 	
-	
-    // ======================================================================
-    // Display the help already populated in myHelpText
-	void DisplayHelp() {
+
+    // =======================================================================
+    // Display the help already populated in myHelpText.  Use only from onGUI.
+	// -----------------------------------------------------------------------
+	private void DisplayHelp() {
 		if(myHelpText != null && myHelpEnabled) {
 			GUIStyle style =  EditorStyles.textArea;
 			style.richText = true;

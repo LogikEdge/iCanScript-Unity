@@ -232,8 +232,7 @@ public static class iCS_HelpController {
 				return help;
 			
 			// otherwise try and get help bases on type.
-			//TODO get help based on type
-			// return getHelp(type);
+			return getHelp(edObj.RuntimeType);
 		}
 		return null;
 	}
@@ -274,12 +273,9 @@ public static class iCS_HelpController {
 		return null;
 	}
 	
-	public static string getHelp(iCS_TypeInfo type )
+	public static string getHelp(Type type)
 	{
-		if(type != null) {
-			return noHelp;
-		}
-		return null;
+		return type.ToString();
 	}
 	
 	// =================================================================================
