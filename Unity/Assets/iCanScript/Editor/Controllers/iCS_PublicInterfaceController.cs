@@ -592,6 +592,15 @@ public static class iCS_PublicInterfaceController {
         var exactPorts= P.filter(p1=>  P.fold((acc,p2)=> acc || PortExactMatch(p1,p2), false, fncCallPorts), fncDefPorts);
         var defPorts  = P.filter(p1=> !P.fold((acc,p2)=> acc || PortExactMatch(p1,p2), false, exactPorts)  , fncDefPorts);
         var callPorts = P.filter(p1=> !P.fold((acc,p2)=> acc || PortExactMatch(p1,p2), false, exactPorts)  , fncCallPorts);
+        if(P.length(defPorts) == 0 && P.length(callPorts) == 0) return;
+        
+        // -- Determine if target visual script is being edited --
+        iCS_VisualEditor visualEditor= null;
+        iCS_IStorage     iStorage    = null;
+        if(iCS_VisualScriptDataController.IsInUse(vs)) {
+            iStorage= iCS_VisualScriptDataController.IStorage;
+            visualEditor= iCS_EditorController.FindVisualEditor();
+        }
         
         // -- Get ports for which name needs to be changed --
         var portsToRename= P.filter(p1=> P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, defPorts), callPorts);
@@ -621,17 +630,17 @@ public static class iCS_PublicInterfaceController {
 
         // -- Remove function call ports that don't exist in definition --
         foreach(var toRemove in callPorts) {
+            if(iStorage != null) {
+                iStorage.DestroyInstance(toRemove.InstanceId);
+                Debug.Log("Destroying=> "+toRemove.Name);
+            }
             iCS_VisualScriptData.DestroyEngineObject(vs, toRemove);
         }
         
         // -- Advise Unity that the visual script has changed --
-        ++vs.UndoRedoId;
         EditorUtility.SetDirty(vs);
-        if(iCS_VisualScriptDataController.IsInUse(vs)) {
-            var visualEditor= iCS_EditorController.FindVisualEditor();
-            if(visualEditor != null) {
-                visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
-            }
+        if(visualEditor != null) {
+            visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
         }
     }
     // ----------------------------------------------------------------------

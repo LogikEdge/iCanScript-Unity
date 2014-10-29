@@ -12,7 +12,7 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Object creation
 	// ----------------------------------------------------------------------
-    public static iCS_EditorObject CreateVariableProxy(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject realObject) {
+    public static iCS_EditorObject CreateReferenceToVariable(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject realObject) {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         iCS_IVisualScriptData vsd= vs;
@@ -22,6 +22,7 @@ public static partial class iCS_UserCommands {
             iStorage.AnimateGraph(null,
                 _=> {
                     variableReference= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.VariableReference, null);
+                    variableReference.IsNameEditable= false;
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, realObject);
                     var proxyId= variableReference.InstanceId;
                     // Copy all output ports.
@@ -61,18 +62,19 @@ public static partial class iCS_UserCommands {
         return variableReference;
     }
 	// ----------------------------------------------------------------------
-    public static iCS_EditorObject CreateUserFunctionCall(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject userFunction) {
+    public static iCS_EditorObject CreateFunctionCall(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject userFunction) {
         if(parent == null) return null;
         var iStorage= parent.IStorage;
         iCS_IVisualScriptData vsd= vs;
         OpenTransaction(iStorage);
-        iCS_EditorObject userFunctionCall= null;
+        iCS_EditorObject functionCall= null;
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    userFunctionCall= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.FunctionCall, null);
+                    functionCall= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.FunctionCall, null);
+                    functionCall.IsNameEditable= false;
                     var ports= iCS_VisualScriptData.GetChildPorts(vsd, userFunction);
-                    var usrFncCallId= userFunctionCall.InstanceId;
+                    var usrFncCallId= functionCall.InstanceId;
                     // Copy all output ports.
                     foreach(var p in ports) {
                         if(!p.IsControlPort) {
@@ -84,6 +86,7 @@ public static partial class iCS_UserCommands {
                                 objectType= iCS_ObjectTypeEnum.OutFixDataPort;
                             }
                             var newPort= iStorage.CreatePort(p.Name, usrFncCallId, p.RuntimeType, objectType, p.PortIndex);
+                            newPort.IsNameEditable= false;
                             newPort.InitialValueArchive= p.InitialValueArchive;
                             iStorage.LoadInitialPortValueFromArchive(newPort);
                         }
@@ -91,8 +94,8 @@ public static partial class iCS_UserCommands {
                     // Instance visual script port to support dynamic connection
                     var gameObjectPort= iStorage.CreateInInstancePort(usrFncCallId, typeof(GameObject));
                     gameObjectPort.PortValue= vs.gameObject;
-                    userFunctionCall.ProxyOriginalNodeId= userFunction.InstanceId;
-                    userFunctionCall.ProxyOriginalVisualScriptTag= vs.tag;
+                    functionCall.ProxyOriginalNodeId= userFunction.InstanceId;
+                    functionCall.ProxyOriginalVisualScriptTag= vs.tag;
                     iStorage.ForcedRelayoutOfTree();
                 }
             );
@@ -101,13 +104,13 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        if(userFunctionCall == null) {
+        if(functionCall == null) {
             CancelTransaction(iStorage);
             return null;
         }
-        CloseTransaction(iStorage, "Create User Function Call: "+name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(iStorage, userFunctionCall);
-        return userFunctionCall;
+        CloseTransaction(iStorage, "Create Function Call: "+name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(iStorage, functionCall);
+        return functionCall;
     }
 	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
