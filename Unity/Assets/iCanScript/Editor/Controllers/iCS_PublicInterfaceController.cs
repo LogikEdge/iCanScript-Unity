@@ -568,7 +568,7 @@ public static class iCS_PublicInterfaceController {
 	/// Get function interface
 	static iCS_EngineObject[] GetFunctionInterface(iCS_VisualScriptImp vs, iCS_EngineObject obj) {
 		var ports= iCS_VisualScriptData.GetChildPorts(vs, obj);
-		ports= P.filter(o=> o.PortIndex != (int)iCS_PortIndex.InInstance, ports);
+		ports= P.filter(o=> o.IsDataPort && o.PortIndex != (int)iCS_PortIndex.InInstance, ports);
 		P.sort(ports, (a,b)=> b.PortIndex - a.PortIndex);
 		return ports;
 	}
@@ -612,13 +612,21 @@ public static class iCS_PublicInterfaceController {
             var newPort= toClone.Clone();
             newPort.ParentId= functionCall.InstanceId;
             newPort.SourceId= -1;
+            // -- Convert dynamic and proposed ports to fix ports --
+            if(newPort.IsInDynamicDataPort || newPort.IsInProposedDataPort) {
+                newPort.ObjectType= iCS_ObjectTypeEnum.InFixDataPort;
+            }
+            if(newPort.IsOutDynamicDataPort || newPort.IsOutProposedDataPort) {
+                newPort.ObjectType= iCS_ObjectTypeEnum.OutFixDataPort;
+            }
+            newPort.IsNameEditable= false;
             // FIXME: Must update unity object reference in visual script data.
             iCS_VisualScriptData.AddEngineObject(vs, newPort);
         }
 
         // -- Remove function call ports that don't exist in definition --
         foreach(var toRemove in callPorts) {
-            Debug.Log("removing=> "+toRemove.Name);
+            // FIXME: need to filter out control ports.
             iCS_VisualScriptData.DestroyEngineObject(vs, toRemove);
         }
         

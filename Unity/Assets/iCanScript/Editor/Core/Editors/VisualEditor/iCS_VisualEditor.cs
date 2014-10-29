@@ -373,7 +373,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			        break;
 			    }
                 if(ev.commandName == "ReloadStorage") {
-                    Debug.Log("ReloadStorage Requested on=> "+IStorage.VisualScript.name);
                     IStorage.SynchronizeAfterUndoRedo();
                     ev.Use();
 			        break;                    
