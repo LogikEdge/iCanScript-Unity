@@ -48,7 +48,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Mouse in detected over another window, show contextual help for that window in the Visual Editor.
 	// -------------------------------------------------------------------------------------------------
 	public void helpWindowChange() {
-		myHelpText= iCS_HelpController.getHelp(EditorWindow.mouseOverWindow.GetType());
+		EditorWindow edWin= EditorWindow.mouseOverWindow;
+		if(edWin != null)
+			myHelpText= iCS_HelpController.getHelp(edWin.GetType());
 	}
 		
     // ================================================================================
