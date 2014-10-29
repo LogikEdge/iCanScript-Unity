@@ -627,14 +627,12 @@ public static class iCS_PublicInterfaceController {
             newPort.IsNameEditable= false;
             // FIXME: Must update unity object reference in visual script data.
             iCS_VisualScriptData.AddEngineObject(vs, newPort);
-            Debug.Log("Creating=> "+toClone.Name);
         }
 
         // -- Remove function call ports that don't exist in definition --
         foreach(var toRemove in callPorts) {
             if(iStorage != null) {
                 iStorage.DestroyInstance(toRemove.InstanceId);
-                Debug.Log("Destroying=> "+toRemove.Name);
             }
             iCS_VisualScriptData.DestroyEngineObject(vs, toRemove);
         }

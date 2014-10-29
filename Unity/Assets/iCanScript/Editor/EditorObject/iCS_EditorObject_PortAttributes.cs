@@ -61,7 +61,9 @@ public partial class iCS_EditorObject {
 	public iCS_EditorObject FirstProducerPort {
 		get {
 		    var engineObject= Storage.GetFirstProducerPort(EngineObject);
-		    return engineObject != null ? EditorObjects[engineObject.InstanceId] : this;
+            if(engineObject == null) return this;
+            var firstProducer= EditorObjects[engineObject.InstanceId];
+            return firstProducer ?? this;
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -145,7 +147,7 @@ public partial class iCS_EditorObject {
 				return returnValue;
 			}
             // Get value from parent node.
-			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_ISignature;
+    		funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_ISignature;                
             if(funcBase == null) {
                 return port.InitialPortValue;
             }
