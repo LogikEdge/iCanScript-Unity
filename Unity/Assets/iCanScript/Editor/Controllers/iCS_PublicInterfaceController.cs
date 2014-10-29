@@ -538,10 +538,6 @@ public static class iCS_PublicInterfaceController {
                         o=> {
 							if(!CompareFunctionInterface(ports, o.VisualScript, o.EngineObject)) {
                                 UpdateFunctionCall(ports, o.VisualScript, o.EngineObject);
-                                var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
-                                var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
-            					var errorMessage= "Function call=> <color=orange><b>"+otherName+"</b></color> has a different interface then the function definition=> <color=orange><b>"+definitionName+"</b></color>.";
-            					iCS_ErrorController.AddError(kServiceId, errorMessage, o.VisualScript, o.EngineObject.InstanceId);
 							}
                         }
                     );
@@ -602,7 +598,6 @@ public static class iCS_PublicInterfaceController {
         foreach(var toRename in portsToRename) {
             var defPort= P.find(p1=> PortRenameNeeded(p1,toRename), defPorts);
             toRename.Name= defPort.Name;
-            Debug.Log("renaming=> "+defPort.Name);
         }
         defPorts = P.filter(p1=> !P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, portsToRename), defPorts);
         callPorts= P.filter(p1=> !P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, portsToRename), callPorts);
@@ -626,7 +621,6 @@ public static class iCS_PublicInterfaceController {
 
         // -- Remove function call ports that don't exist in definition --
         foreach(var toRemove in callPorts) {
-            // FIXME: need to filter out control ports.
             iCS_VisualScriptData.DestroyEngineObject(vs, toRemove);
         }
         
