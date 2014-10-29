@@ -123,6 +123,77 @@ public static class iCS_HelpController {
 		}
 	}
 	
+	
+	// =================================================================================
+	// Get the summary help description 
+	// ---------------------------------------------------------------------------------
+	
+	public static string getHelp(iCS_EditorObject edObj )
+	{	
+		if(edObj != null) {
+			// Get the EditorObject tooltip if there is one.
+			string help= edObj.Tooltip;
+			if(!String.IsNullOrEmpty(help))
+				return help;
+		
+			// otherwise try and get help based on the MemberInfo,
+			help= getHelp(getAssociatedHelpMemberInfo(edObj));
+			if(!String.IsNullOrEmpty(help))
+				return help;
+			
+			// otherwise try and get help bases on type.
+			return getHelp(edObj.RuntimeType);
+		}
+		return null;
+	}
+	
+	
+	public static string getHelp(iCS_MemberInfo memberInfo )
+	{
+		if(memberInfo != null) {
+			// Return help string if there is already one in the memberInfo
+			if (memberInfo.HelpSummaryCache != null)
+				return memberInfo.HelpSummaryCache;
+			// If there is no help string already in MemberInfo, try and look up Unity help
+			if (memberInfo.HelpSummaryCache==null && memberInfo.Company == "Unity") {
+				string search= getHelpUrl(memberInfo);
+				string summary=null;
+				unityHelpSummary.TryGetValue(search, out summary);
+				if (!String.IsNullOrEmpty(summary)) {
+					// cache and return the found help string
+					memberInfo.HelpSummaryCache= summary;
+					return summary;
+				}
+			}
+			// Try and use MemberInfo Description
+			if (memberInfo.Description!=null)
+				return memberInfo.Description;
+			// If there is no help found yet, try and return help based on type
+			String typeHelp= getHelp(memberInfo.ParentTypeInfo);
+			if (!String.IsNullOrEmpty(typeHelp)) {
+				memberInfo.HelpSummaryCache= typeHelp;
+			}	
+			else
+			{
+				// Mark cache as empty string (vs null), so we do not search again 
+				memberInfo.HelpSummaryCache= "";	
+			}					
+			return typeHelp;
+		}
+		return null;
+	}
+	
+	public static string getHelp(Type type)
+	{
+		string help=null;
+		iCS_HelpDictionary.typeHelp.TryGetValue(type.ToString(), out help);
+		if(help != null) {
+			return Regex.Replace(help, "<tcolor>", titleColour);
+		}
+//		return type.ToString();
+		return null;
+	}
+		
 	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj) 
 	{
 		if(edObj != null) {
@@ -214,69 +285,6 @@ public static class iCS_HelpController {
 	}	
 	
 	
-	// =================================================================================
-	// Get the summary help description 
-	// ---------------------------------------------------------------------------------
-	
-	public static string getHelp(iCS_EditorObject edObj )
-	{	
-		if(edObj != null) {
-			// Get the EditorObject tooltip if there is one.
-			string help= edObj.Tooltip;
-			if(!String.IsNullOrEmpty(help))
-				return help;
-		
-			// otherwise try and get help based on the MemberInfo,
-			help= getHelp(getAssociatedHelpMemberInfo(edObj));
-			if(!String.IsNullOrEmpty(help))
-				return help;
-			
-			// otherwise try and get help bases on type.
-			return getHelp(edObj.RuntimeType);
-		}
-		return null;
-	}
-	
-	
-	public static string getHelp(iCS_MemberInfo memberInfo )
-	{
-		if(memberInfo != null) {
-			// Return help string if there is already one in the memberInfo
-			if (memberInfo.HelpSummaryCache != null)
-				return memberInfo.HelpSummaryCache;
-			// If there is no help string already in MemberInfo, try and look up Unity help
-			if (memberInfo.HelpSummaryCache==null && memberInfo.Company == "Unity") {
-				string search= getHelpUrl(memberInfo);
-				string summary=null;
-				unityHelpSummary.TryGetValue(search, out summary);
-				if (!String.IsNullOrEmpty(summary)) {
-					// cache and return the found help string
-					memberInfo.HelpSummaryCache= summary;
-					return summary;
-				}
-			}
-			// Try and use MemberInfo Description
-			if (memberInfo.Description!=null)
-				return memberInfo.Description;
-			// If there is no help found yet, try and return help based on type
-			String typeHelp= getHelp(memberInfo.ParentTypeInfo);
-			if (!String.IsNullOrEmpty(typeHelp)) {
-				memberInfo.HelpSummaryCache= typeHelp;
-			}	
-			else
-			{
-				// Mark cache as empty string (vs null), so we do not search again 
-				memberInfo.HelpSummaryCache= "";	
-			}					
-			return typeHelp;
-		}
-		return null;
-	}
-	
-	public static string getHelp(Type type)
-	{
-		return type.ToString();
-	}
 	
 	// =================================================================================
 	// Open web browser for specific help
