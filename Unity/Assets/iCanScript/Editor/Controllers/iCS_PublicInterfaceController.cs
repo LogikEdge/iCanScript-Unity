@@ -602,6 +602,8 @@ public static class iCS_PublicInterfaceController {
             visualEditor= iCS_EditorController.FindVisualEditor();
         }
         
+        // FIXME: support change in port index.
+        
         // -- Get ports for which name needs to be changed --
         var originalDefPorts= defPorts;
         var portsToRename= P.filter(p1=>  P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, defPorts)     , callPorts);
