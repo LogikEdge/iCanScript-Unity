@@ -1,5 +1,6 @@
 ﻿//#define DEBUG
 using UnityEngine;
+using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -447,6 +448,9 @@ public static class iCS_PublicInterfaceController {
     public static void ValidateVariableReferences() {
         PublicVariableGroups.ForEach(
             (name, group)=> {
+                // -- Don't validate references if the definitions are not error free --
+                if(!group.IsDefinitionsErrorFree) return;
+                
                 // -- Nothing to validate if no reference exists --
                 var references = group.References;
                 if(references.Count == 0) return;
@@ -492,6 +496,7 @@ public static class iCS_PublicInterfaceController {
 	public static void ValidateFunctionDefinitions() {
         PublicFunctionGroups.ForEach(
             (name, group)=> {
+                group.IsDefinitionsErrorFree= true;
 				var definitions= group.Definitions;
 				if(P.length(definitions) < 2) return;
                 var definition= definitions[0];
@@ -504,6 +509,7 @@ public static class iCS_PublicInterfaceController {
                             var errorMsg= "Public functions=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> must have the same interface.";
 							iCS_ErrorController.AddError(kServiceId, errorMsg, vs, engObj.InstanceId);
 							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
+                            group.IsDefinitionsErrorFree= false;
 						}
 					}
 				);
@@ -511,32 +517,12 @@ public static class iCS_PublicInterfaceController {
         );
 	}
     // ----------------------------------------------------------------------
-	/// Get function interface
-	static iCS_EngineObject[] GetFunctionInterface(iCS_VisualScriptImp vs, iCS_EngineObject obj) {
-		var ports= iCS_VisualScriptData.GetChildPorts(vs, obj);
-		ports= P.filter(o=> o.PortIndex != (int)iCS_PortIndex.InInstance, ports);
-		P.sort(ports, (a,b)=> b.PortIndex - a.PortIndex);
-		return ports;
-	}
-    // ----------------------------------------------------------------------
-	/// Compare function interfaces
-	static bool CompareFunctionInterface(iCS_EngineObject[] interface1, iCS_VisualScriptImp vs, iCS_EngineObject obj) {
-		var interface2= GetFunctionInterface(vs, obj);
-		var len= interface1.Length;
-		if(len != interface2.Length) return false;
-		for(int i= 0; i < len; ++i) {
-			var a= interface1[i];
-			var b= interface2[i];
-			if(a.PortIndex != b.PortIndex) return false;
-			if(a.Name != b.Name) return false;
-			if(a.QualifiedType != b.QualifiedType) return false;
-		}
-		return true;
-	}
-    // ----------------------------------------------------------------------
     public static void ValidateFunctionCalls() {
         PublicFunctionGroups.ForEach(
             (name, group)=> {
+                // -- Don't validate references if the definitions are not error free --
+                if(!group.IsDefinitionsErrorFree) return;
+                
                 // -- Nothing to validate if no reference exists --
                 var references = group.References;
                 if(references.Count == 0) return;
@@ -551,6 +537,7 @@ public static class iCS_PublicInterfaceController {
                     references.ForEach(
                         o=> {
 							if(!CompareFunctionInterface(ports, o.VisualScript, o.EngineObject)) {
+                                UpdateFunctionCall(ports, o.VisualScript, o.EngineObject);
                                 var definitionName= iCS_VisualScriptData.GetFullName(vs,vs,obj);
                                 var otherName= iCS_VisualScriptData.GetFullName(o.VisualScript, o.VisualScript, o.EngineObject);
             					var errorMessage= "Function call=> <color=orange><b>"+otherName+"</b></color> has a different interface then the function definition=> <color=orange><b>"+definitionName+"</b></color>.";
@@ -577,5 +564,85 @@ public static class iCS_PublicInterfaceController {
             }
         );
     }
+    // ----------------------------------------------------------------------
+	/// Get function interface
+	static iCS_EngineObject[] GetFunctionInterface(iCS_VisualScriptImp vs, iCS_EngineObject obj) {
+		var ports= iCS_VisualScriptData.GetChildPorts(vs, obj);
+		ports= P.filter(o=> o.PortIndex != (int)iCS_PortIndex.InInstance, ports);
+		P.sort(ports, (a,b)=> b.PortIndex - a.PortIndex);
+		return ports;
+	}
+    // ----------------------------------------------------------------------
+	/// Compare function interfaces
+	static bool CompareFunctionInterface(iCS_EngineObject[] interface1, iCS_VisualScriptImp vs, iCS_EngineObject obj) {
+		var interface2= GetFunctionInterface(vs, obj);
+		var len= interface1.Length;
+		if(len != interface2.Length) return false;
+		for(int i= 0; i < len; ++i) {
+			var a= interface1[i];
+			var b= interface2[i];
+			if(a.PortIndex != b.PortIndex) return false;
+			if(a.Name != b.Name) return false;
+			if(a.QualifiedType != b.QualifiedType) return false;
+		}
+		return true;
+	}
+    // ----------------------------------------------------------------------
+    /// Update function call from function definition.
+    static void UpdateFunctionCall(iCS_EngineObject[] fncDefPorts, iCS_VisualScriptImp vs, iCS_EngineObject functionCall) {
+        // -- Filter out ports that are equal on definition & call --
+        var fncCallPorts= GetFunctionInterface(vs, functionCall);
 
+        var exactPorts= P.filter(p1=>  P.fold((acc,p2)=> acc || PortExactMatch(p1,p2), false, fncCallPorts), fncDefPorts);
+        var defPorts  = P.filter(p1=> !P.fold((acc,p2)=> acc || PortExactMatch(p1,p2), false, exactPorts)  , fncDefPorts);
+        var callPorts = P.filter(p1=> !P.fold((acc,p2)=> acc || PortExactMatch(p1,p2), false, exactPorts)  , fncCallPorts);
+        
+        // -- Get ports for which name needs to be changed --
+        var portsToRename= P.filter(p1=> P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, defPorts), callPorts);
+        foreach(var toRename in portsToRename) {
+            var defPort= P.find(p1=> PortRenameNeeded(p1,toRename), defPorts);
+            toRename.Name= defPort.Name;
+            Debug.Log("renaming=> "+defPort.Name);
+        }
+        defPorts = P.filter(p1=> !P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, portsToRename), defPorts);
+        callPorts= P.filter(p1=> !P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2), false, portsToRename), callPorts);
+        
+        // -- Add extra ports on function definition --
+        foreach(var toClone in defPorts) {
+            var newPort= toClone.Clone();
+            newPort.ParentId= functionCall.InstanceId;
+            newPort.SourceId= -1;
+            // FIXME: Must update unity object reference in visual script data.
+            iCS_VisualScriptData.AddEngineObject(vs, newPort);
+        }
+
+        // -- Remove function call ports that don't exist in definition --
+        foreach(var toRemove in callPorts) {
+            Debug.Log("removing=> "+toRemove.Name);
+            iCS_VisualScriptData.DestroyEngineObject(vs, toRemove);
+        }
+        
+        // -- Advise Unity that the visual script has changed --
+        ++vs.UndoRedoId;
+        EditorUtility.SetDirty(vs);
+        if(iCS_VisualScriptDataController.IsInUse(vs)) {
+            var visualEditor= iCS_EditorController.FindVisualEditor();
+            if(visualEditor != null) {
+                visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
+            }
+        }
+    }
+    // ----------------------------------------------------------------------
+    static bool PortExactMatch(iCS_EngineObject p1, iCS_EngineObject p2) {
+        if(p1.PortIndex != p2.PortIndex) return false;
+        if(p1.Name != p2.Name) return false;
+        if(p1.QualifiedType != p2.QualifiedType) return false;
+        return true;
+    }
+    // ----------------------------------------------------------------------
+    static bool PortRenameNeeded(iCS_EngineObject p1, iCS_EngineObject p2) {
+        if(p1.PortIndex != p2.PortIndex) return false;
+        if(p1.QualifiedType != p2.QualifiedType) return false;
+        return p1.Name != p2.Name;
+    }
 }

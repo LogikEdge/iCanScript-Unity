@@ -16,10 +16,17 @@ public static partial class Prelude {
     
     // ----------------------------------------------------------------------
     // concat :: a->[a]->[a]
+    // concat :: [a]->a->[a]
     public static A[] concat<A>(A a, A[] lst) {
         A[] newLst= new A[lst.Length+1];
         newLst[0]= a;
         for(int i= 0; i < lst.Length; ++i) newLst[i+1]= lst[i];
+        return newLst;
+    }
+    public static A[] concat<A>(A[] lst, A a) {
+        A[] newLst= new A[lst.Length+1];
+        for(int i= 0; i < lst.Length; ++i) newLst[i]= lst[i];
+        newLst[lst.Length]= a;
         return newLst;
     }
     

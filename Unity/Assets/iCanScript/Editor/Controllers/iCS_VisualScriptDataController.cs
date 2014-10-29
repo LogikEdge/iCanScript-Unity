@@ -47,7 +47,12 @@ public static class iCS_VisualScriptDataController {
         if(iStorage.iCSMonoBehaviour == monoBehaviour) return true;
         return false;
     }
-
+    // ---------------------------------------------------------------------------------
+    public static bool IsInUse(iCS_MonoBehaviourImp monoBehaviour) {
+        if(IStorage == null) return false;
+        return IStorage.VisualScript == monoBehaviour;
+    }
+    
     // =================================================================================
     // Storage & Selected object Update.  This update is called by the Editors.
     // ---------------------------------------------------------------------------------

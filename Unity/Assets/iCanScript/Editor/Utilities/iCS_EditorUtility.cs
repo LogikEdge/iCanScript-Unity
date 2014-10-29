@@ -103,7 +103,6 @@ public static class iCS_EditorUtility {
     } 
     public static void UndoIfUndoRedoId(int modificationId, iCS_IStorage iStorage) {
         if(IsCurrentUndoRedoId(modificationId, iStorage)) {
-//	        EditorApplication.ExecuteMenuItem("/Edit/Undo iCanScript");                
             Undo.PerformUndo();
         }
     }
