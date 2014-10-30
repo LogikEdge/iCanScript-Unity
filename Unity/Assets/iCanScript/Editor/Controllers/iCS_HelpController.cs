@@ -135,7 +135,7 @@ public static class iCS_HelpController {
 			string help= edObj.Tooltip;
 			if(!String.IsNullOrEmpty(help))
 				return help;
-		
+/*		
 			// If this is a message handler component, look up the help based
 			// on name.
 			if(edObj.ParentNode !=null && edObj.ParentNode.IsMessageHandler) {
@@ -144,7 +144,8 @@ public static class iCS_HelpController {
 					return help;
 				}
 			}
-			
+*/
+						
 			// otherwise try and get help based on the MemberInfo,
 			help= getHelp(getAssociatedHelpMemberInfo(edObj));
 			if(!String.IsNullOrEmpty(help))
@@ -239,23 +240,38 @@ public static class iCS_HelpController {
 				if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsClassField) {
 					// return port will be same as parent node description.
 				}
-				else if(edObj.IsKindOfPackagePort && !edObj.IsInstanceNodePort)
+				else if(edObj.IsKindOfPackagePort && !edObj.IsInstanceNodePort && !edObj.IsProposedDataPort)
 					return null;
 				else if( edObj.PortIndex >= (int)iCS_PortIndex.ParametersEnd ) {
 					return null;
 				}				
 				
 				// Following port will contain the member info
-				if (edObj.IsInputPort) {
+				if (edObj.IsProposedDataPort) {
+					// contained in edObj
+				}
+				else if (edObj.IsInputPort) {
 					edObj= edObj.EndConsumerPorts[0].Parent;
 				}
 				else if (edObj.IsOutputPort) {
 					edObj= edObj.FirstProducerPort.Parent;
-				}				
-				if (!edObj.IsKindOfFunction)
-					return null;						
+				}							
 			}
-			return iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
+			
+			iCS_MemberInfo memberInfo=null;
+			
+			// Try and Get Member Info from GetAssociatedDescriptor 
+			if(edObj.IsKindOfFunction) {
+				memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
+			}
+			
+			// If no member Info was found, try and get based on type.
+			if(memberInfo == null) {
+				memberInfo= iCS_LibraryDatabase.GetTypeInfo(edObj.RuntimeType);
+			}
+
+			return memberInfo;
+			
 		}
 		return null;
 	}
