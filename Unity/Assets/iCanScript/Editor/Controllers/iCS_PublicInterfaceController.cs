@@ -26,9 +26,9 @@ public static class iCS_PublicInterfaceController {
         iCS_SystemEvents.OnVisualScriptElementWillBeRemoved= OnVisualScriptElementWillBeRemoved;
         iCS_SystemEvents.OnVisualScriptElementNameChanged  = OnVisualScriptElementNameChanged;
         // Force an initial refresh of the scene info.
-        var timedAction= iCS_TimerService.CreateTimedAction(5f, RefreshPublicInterfaceInfo, true);
+//        var timedAction= iCS_TimerService.CreateTimedAction(5f, RefreshPublicInterfaceInfo, true);
 //        timedAction.Schedule();
-//        RefreshPublicInterfaceInfo();
+        RefreshPublicInterfaceInfo();
     }
     public static void Start() {}
     public static void Shutdown() {
@@ -615,7 +615,7 @@ public static class iCS_PublicInterfaceController {
 		var srcLen= P.length(srcPorts);
 		var dstLen= P.length(dstPorts);
         if(srcLen == 0 && dstLen == 0) return;
-
+		
         // -- Simple port addition --
 		if(srcLen != 0 && dstLen == 0) {
 	        foreach(var toClone in srcPorts) {

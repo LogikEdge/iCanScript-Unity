@@ -11,7 +11,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	public object		    InitialValue= null;
+	public object	InitialValue= null;
 
     // ======================================================================
 	// Port source related attributes.

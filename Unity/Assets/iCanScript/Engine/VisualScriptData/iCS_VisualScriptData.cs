@@ -236,9 +236,11 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         
         // Grow engine object array if no free slot exists.
         if(emptySlot != -1) {
+			toAdd.InstanceId= emptySlot;
             vsd.EngineObjects[emptySlot]= toAdd;
             return;
         }
+		toAdd.InstanceId= P.length(vsd.EngineObjects);
         vsd.EngineObjects.Add(toAdd);
     }
     
