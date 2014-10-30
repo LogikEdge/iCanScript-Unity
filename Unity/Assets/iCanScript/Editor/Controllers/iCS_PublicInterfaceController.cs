@@ -631,13 +631,10 @@ public static class iCS_PublicInterfaceController {
 		// -- Simple port rename --
 		var srcPort= P.head(srcPorts);
 		var dstPort= P.head(dstPorts);
-		if(srcLen == 1 && dstLen == 1) {
-			if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
-				srcPort.Name= dstPort.Name;
-				return;
-			}
+		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
+			dstPort.Name= srcPort.Name;
+			return;
 		}
-		
 		// -- Add port if no matching type --
 		if(!P.or(p=> ArePortsTypeIdentical(p, srcPort), dstPorts)) {
 			AddPortOnFunctionCall(srcPort, vs, node);
@@ -650,36 +647,17 @@ public static class iCS_PublicInterfaceController {
 			ReplicatePorts(srcPorts, P.tail(dstPorts), vs, node);
 			return;
 		}
-		// -- Change port index if same name and type --
-		if(ArePortsIdenticalExceptIndex(srcPort, dstPort)) {
-			dstPort.PortIndex= srcPort.PortIndex;
-			ReplicatePorts(P.tail(srcPorts), P.tail(dstPorts), vs, node);
+		// -- Relink the port index --
+		var result= P.filter(p=> ArePortsIdenticalExceptIndex(p, srcPort), dstPorts);
+		if(P.length(result) != 0) {
+			result[0].PortIndex= srcPort.PortIndex;
+			dstPorts= P.filter(p=> p != result[0], dstPorts);
+			ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
 			return;
 		}
-		
-        // FIXME: support change in port index.
-
-        // -- Get ports for which name needs to be changed --
-        var originalSrcPorts= srcPorts;
-        var portsToRename= P.filter(p1=>  P.or(p2=> ArePortsIdenticalExceptName(p1,p2), srcPorts)     , dstPorts);
-        srcPorts         = P.filter(p1=> !P.or(p2=> ArePortsIdenticalExceptName(p1,p2), portsToRename), srcPorts);
-        dstPorts         = P.filter(p1=> !P.or(p2=> ArePortsIdentical(p1,p2)          , portsToRename), dstPorts);
-        foreach(var toRename in portsToRename) {
-            var defPort= P.find(p1=> ArePortsIdenticalExceptName(p1,toRename), originalSrcPorts);
-            toRename.Name= defPort.Name;
-        }
-		
-		// -- As a last attempt, add all conflicting ports from the source --
-        foreach(var toClone in srcPorts) {
-			AddPortOnFunctionCall(toClone, vs, node);
-			Debug.Log("Adding port=> "+toClone.Name);
-        }	
-		
-		// -- As a last attempt, remove all conflicting ports from the destination --
-        foreach(var toRemove in dstPorts) {
-			Debug.Log("Removing port=> "+toRemove.Name);
-			DestroyPortOnFunctionCall(toRemove, vs, node);
-        }
+		// -- Could not find a valid match for source port; so just add it --
+		AddPortOnFunctionCall(srcPort, vs, node);
+		ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
 	}
     // ----------------------------------------------------------------------
 	static P.Tuple<iCS_EngineObject[],iCS_EngineObject[]> KeepNonIdenticalPorts(iCS_EngineObject[] ps1, iCS_EngineObject[] ps2) {
