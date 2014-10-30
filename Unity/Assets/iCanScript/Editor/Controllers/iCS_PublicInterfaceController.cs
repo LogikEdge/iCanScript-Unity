@@ -628,25 +628,22 @@ public static class iCS_PublicInterfaceController {
 			return;
 		}
 		
-		// -- Simple port rename --
+		// -- Add port if no matching type --
 		var srcPort= P.head(srcPorts);
 		var dstPort= P.head(dstPorts);
-		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
-			dstPort.Name= srcPort.Name;
-			return;
-		}
-		// -- Add port if no matching type --
 		if(!P.or(p=> ArePortsTypeIdentical(p, srcPort), dstPorts)) {
 			AddPortOnFunctionCall(srcPort, vs, node);
 			ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
 			return;
 		}
+
 		// -- Remove port if no matching type --
 		if(!P.or(p=> ArePortsTypeIdentical(p, dstPort), srcPorts)) {
 			DestroyPortOnFunctionCall(dstPort, vs, node);
 			ReplicatePorts(srcPorts, P.tail(dstPorts), vs, node);
 			return;
 		}
+
 		// -- Relink the port index --
 		var result= P.filter(p=> ArePortsIdenticalExceptIndex(p, srcPort), dstPorts);
 		if(P.length(result) != 0) {
@@ -655,6 +652,14 @@ public static class iCS_PublicInterfaceController {
 			ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
 			return;
 		}
+
+		// -- Simple port rename --
+		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
+			dstPort.Name= srcPort.Name;
+			ReplicatePorts(P.tail(srcPorts), P.tail(dstPorts), vs, node);
+			return;
+		}			
+		
 		// -- Could not find a valid match for source port; so just add it --
 		AddPortOnFunctionCall(srcPort, vs, node);
 		ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);

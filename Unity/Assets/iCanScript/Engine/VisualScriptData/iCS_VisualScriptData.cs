@@ -398,7 +398,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
     public static iCS_EngineObject GetFirstProducerPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
-        if(port == null) return null;
+        if(port == null || port.InstanceId == -1) return null;
         int linkLength= 0;
         for(iCS_EngineObject sourcePort= GetSourcePort(vsd, port); sourcePort != null; sourcePort= GetSourcePort(vsd, port)) {
             port= sourcePort;
@@ -407,7 +407,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
                 return null;                
             }
         }
-        return port;
+        return IsValid(port, vsd) ? port : null;
     }
     // ----------------------------------------------------------------------
     // Returns the list of consumer ports.
