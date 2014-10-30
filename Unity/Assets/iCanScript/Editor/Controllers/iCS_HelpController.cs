@@ -141,7 +141,28 @@ public static class iCS_HelpController {
 			if(!String.IsNullOrEmpty(help))
 				return help;
 			
-			// otherwise try and get help bases on type.
+			// Otherwise try and get help based on engineObject Type.
+			if (edObj.IsNode) {
+				if(edObj.IsConstructor)
+					return getHelp("Constructor");
+				else if(edObj.IsInstanceNode)
+					return getHelp("Instance");
+				else if(edObj.IsKindOfFunction)
+					return getHelp("Function");
+				else if(edObj.IsVariableReference)
+					return getHelp("VariableReference");
+				else if(edObj.IsFunctionCall)
+					return getHelp("FunctionCall");
+			}
+			else if (edObj.IsPort) {
+				if (edObj.IsInstancePort)
+					return getHelp("InstancePort");
+				else if(edObj.IsTriggerPort)
+					return getHelp("TriggerPort");
+				else if(edObj.IsEnablePort)
+					return getHelp("EnablePort");
+			}
+			// otherwise try and get help bases on edObj type.
 			return getHelp(edObj.RuntimeType);
 		}
 		return null;
@@ -168,8 +189,9 @@ public static class iCS_HelpController {
 			// Try and use MemberInfo Description
 			if (memberInfo.Description!=null)
 				return memberInfo.Description;
+		
 			// If there is no help found yet, try and return help based on type
-			String typeHelp= getHelp(memberInfo.ParentTypeInfo);
+			String typeHelp= getHelp(memberInfo.GetType());
 			if (!String.IsNullOrEmpty(typeHelp)) {
 				memberInfo.HelpSummaryCache= typeHelp;
 			}	
@@ -179,18 +201,23 @@ public static class iCS_HelpController {
 				memberInfo.HelpSummaryCache= "";	
 			}					
 			return typeHelp;
+
 		}
 		return null;
 	}
 	
 	public static string getHelp(Type type)
 	{
+		return getHelp(type.ToString());
+	}
+	
+	public static string getHelp(string typeName)
+	{
 		string help=null;
-		iCS_HelpDictionary.typeHelp.TryGetValue(type.ToString(), out help);
+		iCS_HelpDictionary.typeHelp.TryGetValue(typeName, out help);
 		if(help != null) {
 			return Regex.Replace(help, "<tcolor>", titleColour);
 		}
-//		return type.ToString();
 		return null;
 	}
 		
@@ -251,13 +278,8 @@ public static class iCS_HelpController {
 			// Get Type of Port	
 			string typeName;
 			// change Type for special types of ports. 
-			if (edObj.PortIndex == (int)iCS_PortIndex.InInstance || 
-					edObj.PortIndex == (int)iCS_PortIndex.OutInstance) {
+			if (edObj.IsInstancePort) {
 				// no need to show type name of Instance ports which will be repeated in port name.
-				typeName= "Instance";	
-			}
-			else if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.IsConstructor) {
-				// no need to show type name of builder return port which will be repeated in port name.
 				typeName= "Instance";	
 			}
 			else {

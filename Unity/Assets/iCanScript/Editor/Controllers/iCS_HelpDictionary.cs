@@ -6,6 +6,30 @@ public static class iCS_HelpDictionary {
 	
 	public static Dictionary<string, string> typeHelp = new Dictionary<string, string>()
 	{
+	    { "Constructor", 
+			"A Builder node is used to construct and initialise a class or variable."
+		},
+	    { "Instance", 
+			"Class nodes have an instance port, you can use a builder node to create an instance."
+		},
+	    { "Function", 
+			"Function nodes are used to execute behaviours."
+		},
+	    { "VariableReference", 
+			"Variable References are used to accesses public variables."
+		},
+	    { "FunctionCall", 
+			"Function Calls invokes function."
+		},		
+	    { "InstancePort", 
+			"Instance ports are used to connect instances to functions, classes, and variables."
+		},		
+	    { "TriggerPort", 
+			"<tcolor><b>Trigger Ports</b></color> are used for flow control.  Will be set to true when execution of the attached node is complete."
+		},		
+	    { "EnablePort", 
+			"<tcolor><b>Enable ports</b></color> are used for flow control.  When set to true, attached node will execute"
+		},		
 	    { "UnityEditor.SceneHierarchyWindow", 
 			"<tcolor><b>Scene Hierarchy tips:</b></color>\n" +
 			"You can drag iCanScript Objects from the Hierarchy into a message handler to add Variables and User Functions."
