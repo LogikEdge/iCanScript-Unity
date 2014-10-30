@@ -136,6 +136,15 @@ public static class iCS_HelpController {
 			if(!String.IsNullOrEmpty(help))
 				return help;
 		
+			// If this is a message handler component, look up the help based
+			// on name.
+			if(edObj.ParentNode !=null && edObj.ParentNode.IsMessageHandler) {
+				unityHelpSummary.TryGetValue(edObj.Name, out help);
+				if (!String.IsNullOrEmpty(help)) {
+					return help;
+				}
+			}
+			
 			// otherwise try and get help based on the MemberInfo,
 			help= getHelp(getAssociatedHelpMemberInfo(edObj));
 			if(!String.IsNullOrEmpty(help))
@@ -299,9 +308,6 @@ public static class iCS_HelpController {
 			else if (edObj.IsOutputPort) {
 				edObj= edObj.FirstProducerPort.Parent;
 			}			
-			// Verify if this is an appropriate kind of port to display help for
-			if(!(edObj.IsKindOfFunction || edObj.IsVariableReference || edObj.IsFunctionCall))
-				return null;
 									
 			return "<b>" + typeName + " " + titleColour + displayName + "</color></b>";
 		}

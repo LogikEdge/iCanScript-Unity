@@ -25,10 +25,10 @@ public static class iCS_HelpDictionary {
 			"Instance ports are used to connect instances to functions, classes, and variables."
 		},		
 	    { "TriggerPort", 
-			"<tcolor><b>Trigger Ports</b></color> are used for flow control.  Will be set to true when execution of the attached node is complete."
+			"Trigger Ports are used for flow control.  Will be set to true when execution of the attached node is complete."
 		},		
 	    { "EnablePort", 
-			"<tcolor><b>Enable ports</b></color> are used for flow control.  When set to true, attached node will execute"
+			"Enable ports are used for flow control.  When set to true, attached node will execute"
 		},		
 	    { "UnityEditor.SceneHierarchyWindow", 
 			"<tcolor><b>Scene Hierarchy tips:</b></color>\n" +
