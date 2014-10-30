@@ -269,6 +269,8 @@ public static class iCS_HelpController {
 				typeName= "Variable Reference";
 			else if(edObj.IsFunctionCall)
 				typeName= "Function Call";
+			else if(edObj.IsMessageHandler)
+				typeName= "Message Handler";
 			else
 				return null;
 		
@@ -336,7 +338,12 @@ public static class iCS_HelpController {
 			string demarcator="";
 			string methodName="";
 			
-			if (memberInfo.IsTypeInfo) {
+			if (memberInfo.IsMessage) {
+				className = memberInfo.ParentTypeInfo.ClassName;
+				demarcator= ".";
+				methodName= memberInfo.DisplayName; 
+			}
+			else if (memberInfo.IsTypeInfo) {
 				// First level libray entries (classes and packages), just return className
 				className = memberInfo.ToTypeInfo.ClassName;
 			}

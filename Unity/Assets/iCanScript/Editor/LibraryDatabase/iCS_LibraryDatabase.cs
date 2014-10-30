@@ -303,7 +303,7 @@ public class iCS_LibraryDatabase {
         if( edObj.IsPort || (edObj.IsPackage && !edObj.IsInstanceNode)) {
             return null;
 		}
-	
+		
         var runtimeType= edObj.RuntimeType;
         var engineObject= edObj.EngineObject;
         int numberOfOutputPorts= edObj.NumberOfChildOutputPorts();
@@ -313,6 +313,12 @@ public class iCS_LibraryDatabase {
                 foreach(var member in t.Members) {		
 					if(edObj.IsInstanceNode) {
 						return member.ParentTypeInfo;
+					}
+					if(edObj.IsMessageHandler) {
+						var memberInfo= member as iCS_MemberInfo;
+						if(engineObject.Name == memberInfo.DisplayName) {
+							return member;
+						}
 					}
                     if(member is iCS_MethodInfo) {
                         var methodInfo= member as iCS_MethodInfo;
