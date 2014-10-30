@@ -612,7 +612,7 @@ public static class iCS_PublicInterfaceController {
 		var dstLen= P.length(dstPorts);
         if(srcLen == 0 && dstLen == 0) return;
 
-        // -- Add extra ports on function definition --
+        // -- Simple port addition --
 		if(srcLen != 0 && dstLen == 0) {
 	        foreach(var toClone in srcPorts) {
 				AddPortOnFunctionCall(toClone, vs, node);
@@ -620,7 +620,7 @@ public static class iCS_PublicInterfaceController {
 			return;
 		}
 
-	    // -- Remove function call ports that don't exist in definition --
+	    // -- Simple port removal --
 		if(srcLen == 0 && dstLen != 0) {
 	        foreach(var toRemove in dstPorts) {
 				DestroyPortOnFunctionCall(toRemove, vs, node);
@@ -628,15 +628,35 @@ public static class iCS_PublicInterfaceController {
 			return;
 		}
 		
-		// -- Assume rename if only one exist and they are identical except the name --
+		// -- Simple port rename --
+		var srcPort= P.head(srcPorts);
+		var dstPort= P.head(dstPorts);
 		if(srcLen == 1 && dstLen == 1) {
-			var srcPort= srcPorts[0];
-			var dstPort= dstPorts[0];
 			if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
 				srcPort.Name= dstPort.Name;
 				return;
 			}
 		}
+		
+		// -- Add port if no matching type --
+		if(!P.or(p=> ArePortsTypeIdentical(p, srcPort), dstPorts)) {
+			AddPortOnFunctionCall(srcPort, vs, node);
+			ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
+			return;
+		}
+		// -- Remove port if no matching type --
+		if(!P.or(p=> ArePortsTypeIdentical(p, dstPort), srcPorts)) {
+			DestroyPortOnFunctionCall(dstPort, vs, node);
+			ReplicatePorts(srcPorts, P.tail(dstPorts), vs, node);
+			return;
+		}
+		// -- Change port index if same name and type --
+		if(ArePortsIdenticalExceptIndex(srcPort, dstPort)) {
+			dstPort.PortIndex= srcPort.PortIndex;
+			ReplicatePorts(P.tail(srcPorts), P.tail(dstPorts), vs, node);
+			return;
+		}
+		
         // FIXME: support change in port index.
 
         // -- Get ports for which name needs to be changed --
