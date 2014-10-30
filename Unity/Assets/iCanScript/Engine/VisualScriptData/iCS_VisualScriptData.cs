@@ -216,6 +216,33 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     // ======================================================================
+    // Initialize / Destroy
+    // ----------------------------------------------------------------------
+    public static void DestroyEngineObject(iCS_IVisualScriptData vsd, iCS_EngineObject toDelete) {
+        // Disconnect all connected ports.
+        if(toDelete.IsPort) {
+            int id= toDelete.InstanceId;
+            if(id != -1) {
+                FilterWith(o=> o.IsPort && o.SourceId == id, p=> p.SourceId= -1, vsd);
+            }
+        }
+        // Destroy the instance.
+        toDelete.DestroyInstance();
+    }
+    // ----------------------------------------------------------------------
+    public static void AddEngineObject(iCS_IVisualScriptData vsd, iCS_EngineObject toAdd) {
+        // Try to find an available empty slot.
+        int emptySlot= P.findFirst(o=> o.InstanceId == -1, (i,o)=> i, -1, vsd.EngineObjects);
+        
+        // Grow engine object array if no free slot exists.
+        if(emptySlot != -1) {
+            vsd.EngineObjects[emptySlot]= toAdd;
+            return;
+        }
+        vsd.EngineObjects.Add(toAdd);
+    }
+    
+    // ======================================================================
     // Queries
     // ----------------------------------------------------------------------
     public static bool IsValidEngineObject(iCS_IVisualScriptData vsd, int id) {

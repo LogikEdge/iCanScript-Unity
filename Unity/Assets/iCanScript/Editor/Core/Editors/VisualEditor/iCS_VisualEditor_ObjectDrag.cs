@@ -412,6 +412,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 									fixPortIsBindingTo= false;																				
 								}									
 							}
+                            // -- public Function should use "proposed ports" instead of dynamic ports --
+                            if(newPortParent.IsPublicFunction) {
+                                newPortType= newPortType == iCS_ObjectTypeEnum.InDynamicDataPort ?
+                                    iCS_ObjectTypeEnum.InProposedDataPort :
+                                    iCS_ObjectTypeEnum.OutProposedDataPort;
+                            }
                             iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, newPortType);
                             newPort.LocalAnchorFromGlobalPosition= dragPortPos;
                             newPort.PortValue= DragFixPort.PortValue;
