@@ -300,7 +300,7 @@ public partial class iCS_IStorage {
 	                        DestroyInstanceInternal(obj);                            
 	                        modified= true;						
 						}
-						// Convert input mux to dynamic port if no children.
+						// -- Convert input mux to dynamic port if no children. --
 						if(obj.IsInParentMuxPort) {
 	                        switch(obj.NumberOfChildPorts()) {
 	                            case 0:
@@ -314,7 +314,13 @@ public partial class iCS_IStorage {
                                     modified= true;
 	                                break;
 	                        }
-						}						
+						}
+                        // -- Convert any dynamic ports on public functions to proposed ports --
+                        if(obj.IsDynamicDataPort && obj.ParentNode.IsPublicFunction) {
+                            obj.ObjectType= obj.IsInDynamicDataPort ?
+                                iCS_ObjectTypeEnum.InProposedDataPort :
+                                iCS_ObjectTypeEnum.OutProposedDataPort;
+                        }
 					}
                     // Cleanup disconnected typecasts.
     				if(obj.IsTypeCast) {
