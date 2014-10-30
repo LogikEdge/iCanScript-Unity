@@ -12,23 +12,18 @@ public static partial class Prelude {
 		}
 	};
     public class Tuple<A, B> {
-        public Tuple() {
-        }
+        public Tuple() {}
 
         public Tuple(A first, B second) {
             this.Item1 = first;
             this.Item2 = second;
         }
-		public static Tuple<A,B> CreateTuple(A first, B second) {
-			return new Tuple<A,B>(first, second);
-		}
 		
         public A Item1 { get; set; }
         public B Item2 { get; set; }
     };
     public class Tuple<A,B,C> {
-        public Tuple() {
-        }
+        public Tuple() {}
 
         public Tuple(A item1, B item2, C item3) {
             this.Item1 = item1;
@@ -41,8 +36,7 @@ public static partial class Prelude {
         public C Item3 { get; set; }
     };
     public class Tuple<A,B,C,D> {
-        public Tuple() {
-        }
+        public Tuple() {}
 
         public Tuple(A item1, B item2, C item3, D item4) {
             this.Item1 = item1;
@@ -57,8 +51,7 @@ public static partial class Prelude {
         public D Item4 { get; set; }
     };
     public class Tuple<A,B,C,D,E> {
-        public Tuple() {
-        }
+        public Tuple() {}
 
         public Tuple(A item1, B item2, C item3, D item4, E item5) {
             this.Item1 = item1;
