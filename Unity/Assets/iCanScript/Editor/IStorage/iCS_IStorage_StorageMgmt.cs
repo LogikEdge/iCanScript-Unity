@@ -129,7 +129,7 @@ public partial class iCS_IStorage {
         EditorUtility.SetDirty(iCSMonoBehaviour);
         ++ModificationId;
         iCS_EditorController.RepaintAllEditors();
-        iCS_SystemEvents.AnnouceVisualScriptChanged(this);
+        iCS_SystemEvents.AnnouceVisualScriptSaved(this);
     }
     // ----------------------------------------------------------------------
     public void GenerateEditorData() {
@@ -165,6 +165,6 @@ public partial class iCS_IStorage {
         var selectedObject= SelectedObject;
         SelectedObject= selectedObject;
         myLastTransactionType= TransactionType.None;
-        iCS_SystemEvents.AnnouceVisualScriptChanged(this);
+        iCS_SystemEvents.AnnouceVisualScriptReloaded(this);
     }
 }

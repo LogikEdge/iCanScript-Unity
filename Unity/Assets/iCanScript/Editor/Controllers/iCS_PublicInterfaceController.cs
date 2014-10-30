@@ -20,13 +20,14 @@ public static class iCS_PublicInterfaceController {
         iCS_SystemEvents.OnHierarchyChanged= RefreshPublicInterfaceInfo;
         iCS_SystemEvents.OnProjectChanged  = RefreshPublicInterfaceInfo;
         // Events to refresh visual script information.
+		iCS_SystemEvents.OnVisualScriptSaved			   = OnVisualScriptSaved;
         iCS_SystemEvents.OnVisualScriptUndo                = OnVisualScriptUndo;                
         iCS_SystemEvents.OnVisualScriptElementAdded        = OnVisualScriptElementAdded;        
         iCS_SystemEvents.OnVisualScriptElementWillBeRemoved= OnVisualScriptElementWillBeRemoved;
         iCS_SystemEvents.OnVisualScriptElementNameChanged  = OnVisualScriptElementNameChanged;
         // Force an initial refresh of the scene info.
         var timedAction= iCS_TimerService.CreateTimedAction(5f, RefreshPublicInterfaceInfo, true);
-        timedAction.Schedule();
+//        timedAction.Schedule();
 //        RefreshPublicInterfaceInfo();
     }
     public static void Start() {}
@@ -293,6 +294,9 @@ public static class iCS_PublicInterfaceController {
     // ======================================================================
     // Update visual script content changed
     // ----------------------------------------------------------------------
+    static void OnVisualScriptSaved(iCS_IStorage iStorage) {
+        RefreshPublicInterfaceInfo();
+    }
     static void OnVisualScriptUndo(iCS_IStorage iStorage) {
         RefreshPublicInterfaceInfo();
     }
@@ -317,12 +321,12 @@ public static class iCS_PublicInterfaceController {
 //        if(element.IsPublicFunction || element.IsFunctionCall) {
 //            PublicFunctionGroups.Remove(element);
 //        }
-		RefreshPublicInterfaceInfo();
+//		RefreshPublicInterfaceInfo();
     }
     static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
 		// Don't process if the element does not imply a public interface.
 		if(!IsPublicObject(element)) return;
-		RefreshPublicInterfaceInfo();
+//		RefreshPublicInterfaceInfo();
     }
     // ----------------------------------------------------------------------
 	static bool IsPublicObject(iCS_EditorObject element) {
