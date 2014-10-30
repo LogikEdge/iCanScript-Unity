@@ -219,14 +219,14 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // Initialize / Destroy
     // ----------------------------------------------------------------------
     public static void DestroyEngineObject(iCS_IVisualScriptData vsd, iCS_EngineObject toDelete) {
-        // Disconnect all connected ports.
+        // -- Disconnect all connected ports --
         if(toDelete.IsPort) {
             int id= toDelete.InstanceId;
             if(id != -1) {
                 FilterWith(o=> o.IsPort && o.SourceId == id, p=> p.SourceId= -1, vsd);
             }
         }
-        // Destroy the instance.
+        // -- Destroy the instance --
         toDelete.DestroyInstance();
     }
     // ----------------------------------------------------------------------

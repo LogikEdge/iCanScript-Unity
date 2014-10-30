@@ -601,73 +601,122 @@ public static class iCS_PublicInterfaceController {
         }
     }
     // ----------------------------------------------------------------------
-	static void ReplicatePorts(iCS_EngineObject[] portsToReplacate, iCS_EngineObject[] existingPorts,
+	static void ReplicatePorts(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
 						  iCS_VisualScriptImp vs, iCS_EngineObject node) {
 
         // -- Update is completed if all ports are identical --
-		var nonIdenticalPorts= KeepNonIdenticalPorts(portsToReplacate, existingPorts);
+		var nonIdenticalPorts= KeepNonIdenticalPorts(portsToReplicate, existingPorts);
 		var srcPorts= nonIdenticalPorts.Item1;
 		var dstPorts= nonIdenticalPorts.Item2;
-        if(P.length(srcPorts) == 0 && P.length(dstPorts) == 0) return;
+		var srcLen= P.length(srcPorts);
+		var dstLen= P.length(dstPorts);
+        if(srcLen == 0 && dstLen == 0) return;
 
         // -- Add extra ports on function definition --
-		if(P.length(srcPorts) != 0 && P.length(dstPorts) == 0) {
+		if(srcLen != 0 && dstLen == 0) {
 	        foreach(var toClone in srcPorts) {
-	            var newPort= toClone.Clone();
-	            newPort.ParentId= node.InstanceId;
-	            newPort.SourceId= -1;
-	            // -- Convert dynamic and proposed ports to fix ports --
-	            if(newPort.IsInDynamicDataPort || newPort.IsInProposedDataPort) {
-	                newPort.ObjectType= iCS_ObjectTypeEnum.InFixDataPort;
-	            }
-	            if(newPort.IsOutDynamicDataPort || newPort.IsOutProposedDataPort) {
-	                newPort.ObjectType= iCS_ObjectTypeEnum.OutFixDataPort;
-	            }
-	            newPort.IsNameEditable= false;
-	            // FIXME: Must update unity object reference in visual script data.
-	            iCS_VisualScriptData.AddEngineObject(vs, newPort);
+				AddPortOnFunctionCall(toClone, vs, node);
 	        }	
 			return;
 		}
 
 	    // -- Remove function call ports that don't exist in definition --
-		if(P.length(srcPorts) == 0 && P.length(dstPorts) != 0) {
+		if(srcLen == 0 && dstLen != 0) {
 	        foreach(var toRemove in dstPorts) {
-	            iCS_VisualScriptData.DestroyEngineObject(vs, toRemove);
+				DestroyPortOnFunctionCall(toRemove, vs, node);
 	        }
 			return;
 		}
 		
+		// -- Assume rename if only one exist and they are identical except the name --
+		if(srcLen == 1 && dstLen == 1) {
+			var srcPort= srcPorts[0];
+			var dstPort= dstPorts[0];
+			if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
+				srcPort.Name= dstPort.Name;
+				return;
+			}
+		}
         // FIXME: support change in port index.
 
         // -- Get ports for which name needs to be changed --
         var originalSrcPorts= srcPorts;
-        var portsToRename= P.filter(p1=>  P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2) , false, srcPorts)     , dstPorts);
-        srcPorts         = P.filter(p1=> !P.fold((acc,p2)=> acc || PortRenameNeeded(p1,p2) , false, portsToRename), srcPorts);
-        dstPorts         = P.filter(p1=> !P.fold((acc,p2)=> acc || ArePortsIdentical(p1,p2), false, portsToRename), dstPorts);
+        var portsToRename= P.filter(p1=>  P.or(p2=> ArePortsIdenticalExceptName(p1,p2), srcPorts)     , dstPorts);
+        srcPorts         = P.filter(p1=> !P.or(p2=> ArePortsIdenticalExceptName(p1,p2), portsToRename), srcPorts);
+        dstPorts         = P.filter(p1=> !P.or(p2=> ArePortsIdentical(p1,p2)          , portsToRename), dstPorts);
         foreach(var toRename in portsToRename) {
-            var defPort= P.find(p1=> PortRenameNeeded(p1,toRename), originalSrcPorts);
+            var defPort= P.find(p1=> ArePortsIdenticalExceptName(p1,toRename), originalSrcPorts);
             toRename.Name= defPort.Name;
+        }
+		
+		// -- As a last attempt, add all conflicting ports from the source --
+        foreach(var toClone in srcPorts) {
+			AddPortOnFunctionCall(toClone, vs, node);
+			Debug.Log("Adding port=> "+toClone.Name);
+        }	
+		
+		// -- As a last attempt, remove all conflicting ports from the destination --
+        foreach(var toRemove in dstPorts) {
+			Debug.Log("Removing port=> "+toRemove.Name);
+			DestroyPortOnFunctionCall(toRemove, vs, node);
         }
 	}
     // ----------------------------------------------------------------------
 	static P.Tuple<iCS_EngineObject[],iCS_EngineObject[]> KeepNonIdenticalPorts(iCS_EngineObject[] ps1, iCS_EngineObject[] ps2) {
-        var identicalPorts= P.filter(p1=>  P.fold((acc,p2)=> acc || ArePortsIdentical(p1,p2), false, ps1), ps2);
-        var nonIdentical1 = P.filter(p1=> !P.fold((acc,p2)=> acc || ArePortsIdentical(p1,p2), false, identicalPorts), ps1);
-        var nonIdentical2 = P.filter(p1=> !P.fold((acc,p2)=> acc || ArePortsIdentical(p1,p2), false, identicalPorts), ps2);
+        var identicalPorts= P.filter(p1=>  P.or(p2=> ArePortsIdentical(p1,p2), ps1), ps2);
+        var nonIdentical1 = P.filter(p1=> !P.or(p2=> ArePortsIdentical(p1,p2), identicalPorts), ps1);
+        var nonIdentical2 = P.filter(p1=> !P.or(p2=> ArePortsIdentical(p1,p2), identicalPorts), ps2);
 		return P.Tuple.Create(nonIdentical1, nonIdentical2);
 	}
     // ----------------------------------------------------------------------
     static bool ArePortsIdentical(iCS_EngineObject p1, iCS_EngineObject p2) {
+		if(!ArePortsTypeIdentical(p1, p2)) return false;
         if(p1.PortIndex != p2.PortIndex) return false;
-        if(p1.Name != p2.Name) return false;
-        if(p1.QualifiedType != p2.QualifiedType) return false;
-        return true;
+        return p1.Name == p2.Name;
     }
     // ----------------------------------------------------------------------
-    static bool PortRenameNeeded(iCS_EngineObject p1, iCS_EngineObject p2) {
+    static bool ArePortsIdenticalExceptName(iCS_EngineObject p1, iCS_EngineObject p2) {
+		if(!ArePortsTypeIdentical(p1, p2)) return false;
         if(p1.PortIndex != p2.PortIndex) return false;
-        if(p1.QualifiedType != p2.QualifiedType) return false;
         return p1.Name != p2.Name;
     }
+    // ----------------------------------------------------------------------
+    static bool ArePortsIdenticalExceptIndex(iCS_EngineObject p1, iCS_EngineObject p2) {
+		if(!ArePortsTypeIdentical(p1, p2)) return false;
+        if(p1.Name != p2.Name) return false;
+        return p1.PortIndex != p2.PortIndex;
+    }
+    // ----------------------------------------------------------------------
+	static bool ArePortsTypeIdentical(iCS_EngineObject p1, iCS_EngineObject p2) {
+		if(p1.QualifiedType != p2.QualifiedType) return false;
+		var ot1= ConvertDynamicAndProposedPortToFixPort(p1);
+		var ot2= ConvertDynamicAndProposedPortToFixPort(p2);
+		return ot1 == ot2;
+	}
+    // ----------------------------------------------------------------------
+	static iCS_ObjectTypeEnum ConvertDynamicAndProposedPortToFixPort(iCS_EngineObject p) {
+        // -- Convert dynamic and proposed ports to fix ports --
+        if(p.IsInDynamicDataPort || p.IsInProposedDataPort) {
+            return iCS_ObjectTypeEnum.InFixDataPort;
+        }
+        if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
+            return iCS_ObjectTypeEnum.OutFixDataPort;
+        }
+		return p.ObjectType;
+	}
+    // ----------------------------------------------------------------------
+	static void AddPortOnFunctionCall(iCS_EngineObject portToClone, iCS_VisualScriptImp vs, iCS_EngineObject functionCallNode) {
+        var newPort= portToClone.Clone();
+        newPort.ParentId= functionCallNode.InstanceId;
+        newPort.SourceId= -1;
+        // -- Convert dynamic and proposed ports to fix ports --
+		newPort.ObjectType= ConvertDynamicAndProposedPortToFixPort(newPort);
+        newPort.IsNameEditable= false;
+        // FIXME: Must update unity object reference in visual script data.
+        iCS_VisualScriptData.AddEngineObject(vs, newPort);
+	}
+    // ----------------------------------------------------------------------
+	static void DestroyPortOnFunctionCall(iCS_EngineObject portToDestroy, iCS_VisualScriptImp vs, iCS_EngineObject functionCallNode) {
+        iCS_VisualScriptData.DestroyEngineObject(vs, portToDestroy);
+	}
 }
