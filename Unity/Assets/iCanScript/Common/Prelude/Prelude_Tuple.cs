@@ -3,6 +3,14 @@ using System;
 using System.Collections;
 
 public static partial class Prelude {
+	public static class Tuple {
+		public static Tuple<A,B> Create<A,B>(A first, B second) {
+			return new Tuple<A,B>(first, second);
+		}
+		public static Tuple<A,B,C> Create<A,B,C>(A item1, B item2, C item3) {
+			return new Tuple<A,B,C>(item1, item2, item3);
+		}
+	};
     public class Tuple<A, B> {
         public Tuple() {
         }
@@ -11,7 +19,10 @@ public static partial class Prelude {
             this.Item1 = first;
             this.Item2 = second;
         }
-
+		public static Tuple<A,B> CreateTuple(A first, B second) {
+			return new Tuple<A,B>(first, second);
+		}
+		
         public A Item1 { get; set; }
         public B Item2 { get; set; }
     };
