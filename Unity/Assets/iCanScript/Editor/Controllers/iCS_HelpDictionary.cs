@@ -16,11 +16,25 @@ public static class iCS_HelpDictionary {
 			"Function nodes are used to execute behaviours."
 		},
 	    { "VariableReference", 
-			"Variable References are used to accesses public variables."
+			"A Variable Reference is used to accesses a Public Variable.\n\n" +
+			"Create Public Variable: drag a variable from the Library to the Canvas.\n" +
+			"Create Variable Reference: drag a Game Object containing a Public Variable from the Hierarchy into a Message Handler and select."
 		},
+	    { "PublicVariable", 
+			"A Public Variable can be accessed from any Game Object.\n\n" +
+			"Create Public Variable: drag a variable from the Library to the Canvas.\n" +
+			"Create Variable Reference: drag a Game Object containing a Public Variable from the Hierarchy into a Message Handler and select."
+		},	
 	    { "FunctionCall", 
-			"Function Calls invokes function."
-		},		
+			"A Function Call is used to invoke a Public Function.\n\n" + 
+			"Create Public Function: right click on the canvas and select.\n" +
+			"Create Function Call: drag a Game Object containing a Public Function from the Hierarchy into a Message Handler and select."
+		},	
+	    { "PublicFunction", 
+			"A Public Function can be invoked from any Game Object.\n\n" +
+			"Create Public Function: right click on the canvas and select.\n" +
+			"Create Function Call: drag a Game Object containing a Public Function from the Hierarchy into a Message Handler and select."
+		},									
 	    { "InstancePort", 
 			"Instance ports are used to connect instances to functions, classes, and variables."
 		},		
@@ -75,7 +89,7 @@ public static class iCS_HelpDictionary {
 			"<tcolor><b>G:</b></color> move to bookmark\t<tcolor><b>C:</b></color> Connect to bookmark\n"
 		},
 		{ "iCS_Package", 
-			"The Package is iCanScript most flexible node. It can contain complex graphs and expose only those ports that are made public by the visual script designer."
+			"The Package is a flexible node. It can contain complex graphs and expose only those ports that are made public by the visual script designer."
 		}
 	};
 

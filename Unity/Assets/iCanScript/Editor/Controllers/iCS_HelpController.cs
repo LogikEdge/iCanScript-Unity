@@ -152,17 +152,22 @@ public static class iCS_HelpController {
 				return help;
 			
 			// Otherwise try and get help based on engineObject Type.
+			
 			if (edObj.IsNode) {
-				if(edObj.IsConstructor)
-					return getHelp("Constructor");
-				else if(edObj.IsInstanceNode)
-					return getHelp("Instance");
-				else if(edObj.IsKindOfFunction)
-					return getHelp("Function");
-				else if(edObj.IsVariableReference)
+				if(edObj.IsVariableReference)
 					return getHelp("VariableReference");
 				else if(edObj.IsFunctionCall)
 					return getHelp("FunctionCall");
+				else if(edObj.IsPublicFunction)
+					return getHelp("PublicFunction");
+				else if(edObj.IsPublicVariable)
+					return getHelp("PublicVariable");
+				else if(edObj.IsConstructor)
+					return getHelp("Constructor");
+				else if(edObj.IsKindOfFunction)
+					return getHelp("Function");
+				else if(edObj.IsInstanceNode)
+					return getHelp("Instance");
 			}
 			else if (edObj.IsPort) {
 				if (edObj.IsInstancePort)
@@ -290,20 +295,25 @@ public static class iCS_HelpController {
 		if (edObj.IsNode) {
 			if(displayType) {
 				// Type names to be displayed in front of node name.
-				if(edObj.IsConstructor)
-					typeName= "Builder";
-				else if(edObj.IsInstanceNode)
-					typeName= "Class";
-				else if(edObj.IsKindOfFunction)
-					typeName= "Function";
-				else if(edObj.IsVariableReference)
+				// Carefull with the order, since for example some specific types are also a package, builder, or function!
+				if(edObj.IsVariableReference)
 					typeName= "Variable Reference";
 				else if(edObj.IsFunctionCall)
 					typeName= "Function Call";
 				else if(edObj.IsMessageHandler)
 					typeName= "Message Handler";
+				else if(edObj.IsPublicFunction)
+					typeName= "Public Function";
+				else if(edObj.IsPublicVariable)
+					typeName= "Public Variable";
+				else if(edObj.IsConstructor)
+					typeName= "Builder";
+				else if(edObj.IsKindOfFunction)
+					typeName= "Function";
 				else if(edObj.IsPackage)
 					typeName= "Package";
+				else if(edObj.IsInstanceNode)
+					typeName= "Class";
 				else
 					return null;
 			}
