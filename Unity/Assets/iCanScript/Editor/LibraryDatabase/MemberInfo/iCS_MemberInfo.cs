@@ -103,7 +103,7 @@ public abstract class iCS_MemberInfo {
     public string Description {
         get {
             if(String.IsNullOrEmpty(myDescription)) {
-                return ParentTypeInfo == null ? "" : ParentTypeInfo.Description;
+                return ParentTypeInfo == null ? "" : "Unity class "+ ParentTypeInfo.DisplayName;
             }
             return myDescription;            
         }
@@ -111,6 +111,13 @@ public abstract class iCS_MemberInfo {
             myDescription= value;
         }
     }
+	
+	public string StoredDescription {
+        get {
+            return myDescription;     
+		}
+	}
+	
     public string HelpSummary {
         get {
             if(myHelpSummary == null) {

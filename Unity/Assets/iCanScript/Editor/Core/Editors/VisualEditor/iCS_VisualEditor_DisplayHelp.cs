@@ -69,9 +69,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			
 			// Treat visible relay ports with different formating.
 			if(edObj.IsRelayPort && !edObj.ParentNode.IsInstanceNode) {
+				helpText= "<b>" + iCS_HelpController.titleColour + "Relay Port:" + "</color></b>\n\n";
 				helpPart1= prepareHelpItemRelayPort(getConnectedPort(edObj, Direction.Producer));
 				helpPart2= prepareHelpItemRelayPort(getConnectedPort(edObj, Direction.Consumer));
-				divider= "\n<->\n\n";
+				divider= "<->\n";
 			}
 			else {
 				helpPart1= prepareHelpItem(edObj);
@@ -80,7 +81,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					divider= "\n<b>connected-> </b>";
 				}
 			}			
-			helpText= helpPart1 + (connectedPort==null ? "" : divider + helpPart2);			
+			helpText += helpPart1 + (connectedPort==null ? "" : divider + helpPart2);			
 		}
 		else if (edObj.IsNode){
 			// Show help for node			
@@ -124,7 +125,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	
 	// Prepare help text for a single item, to be combined by prepareHelpWindowText.
 	string prepareHelpItemRelayPort(iCS_EditorObject edObj) {
-		return iCS_HelpController.GetHelpTitle(edObj, false, true) + "\n";
+		return iCS_HelpController.GetHelpTitle(edObj, true, true) + "\n";
 	}
 
     // =======================================================================

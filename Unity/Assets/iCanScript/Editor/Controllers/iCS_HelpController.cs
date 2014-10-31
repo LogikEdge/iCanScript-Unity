@@ -16,7 +16,7 @@ public static class iCS_HelpController {
 	static string unityHelpPath = EditorApplication.applicationContentsPath + "/Documentation/html/en/ScriptReference";
 
 	const string noHelp= "no help available" ;
-	static string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
+	public static string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
 	
 	// ---------------------------------------------------------------------------------
 	static iCS_HelpController() {
@@ -197,8 +197,8 @@ public static class iCS_HelpController {
 				}
 			}
 			// Try and use MemberInfo Description
-			if (memberInfo.Description!=null)
-				return memberInfo.Description;
+			if (memberInfo.StoredDescription!=null)
+				return memberInfo.StoredDescription;
 		
 			// If there is no help found yet, try and return help based on type
 			String typeHelp= getHelp(memberInfo.GetType());
@@ -304,6 +304,8 @@ public static class iCS_HelpController {
 					typeName= "Message Handler";
 				else if(edObj.IsPackage)
 					typeName= "Package";
+				else
+					return null;
 			}
 		}
 		else if (edObj.IsPort) {
