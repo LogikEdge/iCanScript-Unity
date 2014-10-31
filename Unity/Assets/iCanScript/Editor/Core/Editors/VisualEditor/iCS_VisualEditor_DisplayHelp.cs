@@ -35,7 +35,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ================================================================================
     // Find object under mouse in VisualEditor, and prepare help.  Use only from onGUI.
 	// --------------------------------------------------------------------------------
-    private void UpdateHelp() {	
+    void UpdateHelp() {	
 		iCS_EditorObject edObj= null;
 		iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 		if(pickInfo != null) {
@@ -45,64 +45,92 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 	}
 	
+	enum Direction {Producer, Consumer};
+	
     // ======================================================================
     // prepares and returns the help string which will be displayed in onGUI 
 	// ----------------------------------------------------------------------
-	public string prepareHelpWindowText(iCS_EditorObject edObj) {
+	string prepareHelpWindowText(iCS_EditorObject edObj) {
 		string helpText= "";
-		string title= null;
-		string help= null;
-		if(edObj.IsPort) {						
-			// Show help for selected port	
-			title= iCS_HelpController.GetHelpTitle(edObj);
-			help= iCS_HelpController.getHelp(edObj);
-			if (! (String.IsNullOrEmpty(title) && String.IsNullOrEmpty(help)))					
-				helpText= helpText + title + "\n" + help + "\n\n";	
-			
-
+		if(edObj.IsPort) {									
 			// find connected port
-			iCS_EditorObject connectedPort= null;
-		    if (edObj.IsInputPort) {
-				connectedPort= edObj.FirstProducerPort;
-				if(connectedPort.ParentNode.ParentNode.IsInstanceNode) {
-					connectedPort= connectedPort.ConsumerPorts[0];
-				}
-			}
-			else if(edObj.IsOutputPort) {
-				//For screen real estate reasons, show only first connection.
-				connectedPort= edObj.EndConsumerPorts[0];
-				if(connectedPort.ParentNode.ParentNode.IsInstanceNode) {
-					connectedPort= connectedPort.ProducerPort;
-				}
-			}				
+			Direction direction= edObj.IsInputPort ? Direction.Producer : Direction.Consumer;
+			iCS_EditorObject connectedPort= getConnectedPort(edObj, direction);
+
+			// If the connected port is ourself, it is not really a connected port
+			if ( connectedPort == edObj) {	
+				connectedPort= null;
+			}		
 			
-			// show help for connected port				
-			if (connectedPort != null && connectedPort != edObj) {	
-				title= iCS_HelpController.GetHelpTitle(connectedPort);
-				help= iCS_HelpController.getHelp(connectedPort);
-				if (! (String.IsNullOrEmpty(title) && String.IsNullOrEmpty(help)))
-					helpText= helpText + "<b>connected-> </b>" + title + "\n" + help + "\n";
+			// Show help for selected port, and connected port
+			string helpPart1 = null;
+			string helpPart2 = null;
+			string divider= null;
+			
+			// Treat visible relay ports with different formating.
+			if(edObj.IsRelayPort && !edObj.ParentNode.IsInstanceNode) {
+				helpPart1= prepareHelpItemRelayPort(getConnectedPort(edObj, Direction.Producer));
+				helpPart2= prepareHelpItemRelayPort(getConnectedPort(edObj, Direction.Consumer));
+				divider= "\n<->\n\n";
 			}
+			else {
+				helpPart1= prepareHelpItem(edObj);
+				if (connectedPort != null) { 
+					helpPart2= prepareHelpItem(connectedPort);
+					divider= "\n<b>connected-> </b>";
+				}
+			}			
+			helpText= helpPart1 + (connectedPort==null ? "" : divider + helpPart2);			
 		}
 		else if (edObj.IsNode){
 			// Show help for node			
-			title= iCS_HelpController.GetHelpTitle(edObj);
-			help= iCS_HelpController.getHelp(edObj);
-			if (!String.IsNullOrEmpty(title)) {
-				helpText= title + "\n";
-			}
-			if (!String.IsNullOrEmpty(help)) {
-				helpText= helpText + help + "\n";
-			}
+			helpText= prepareHelpItem(edObj);
 		}
-		return !String.IsNullOrEmpty(helpText) ? helpText : "";
+		return helpText;
 	}
 	
+	iCS_EditorObject getConnectedPort(iCS_EditorObject edObj, Direction direction) {
+		iCS_EditorObject port= edObj;
+	    if (direction == Direction.Producer) {
+			port= edObj.FirstProducerPort;
+			if(port.ParentNode.ParentNode.IsInstanceNode) {
+				port= port.ConsumerPorts[0];
+			}
+		}
+		else if(direction == Direction.Consumer) {
+			port= edObj.EndConsumerPorts[0];
+			if(port.ParentNode.ParentNode.IsInstanceNode) {
+				port= port.ProducerPort;
+			}
+		}	
+		return port;
+	}
+	
+	// Prepare help text for a single item, to be combined by prepareHelpWindowText.
+	string prepareHelpItem(iCS_EditorObject edObj) {
+		string helpText= null;
+		string title= iCS_HelpController.GetHelpTitle(edObj, true, false);
+		string help=  iCS_HelpController.getHelp(edObj);
+	
+		if (!String.IsNullOrEmpty(title)) {
+			helpText= title + "\n";
+		}
+		if (!String.IsNullOrEmpty(help)) {
+			helpText += help + "\n";
+		}
+		
+		return helpText;
+	}
+	
+	// Prepare help text for a single item, to be combined by prepareHelpWindowText.
+	string prepareHelpItemRelayPort(iCS_EditorObject edObj) {
+		return iCS_HelpController.GetHelpTitle(edObj, false, true) + "\n";
+	}
 
     // =======================================================================
     // Display the help already populated in myHelpText.  Use only from onGUI.
 	// -----------------------------------------------------------------------
-	private void DisplayHelp() {
+	void DisplayHelp() {
 		if(myHelpText != null && myHelpEnabled) {
 			GUIStyle style =  EditorStyles.textArea;
 			style.richText = true;

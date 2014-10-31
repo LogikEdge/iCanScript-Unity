@@ -75,7 +75,6 @@ public static class iCS_HelpDictionary {
 			"<tcolor><b>G:</b></color> move to bookmark\t<tcolor><b>C:</b></color> Connect to bookmark\n"
 		},
 		{ "iCS_Package", 
-			"<tcolor><b>Packages:</b></color>\n" +
 			"The Package is iCanScript most flexible node. It can contain complex graphs and expose only those ports that are made public by the visual script designer."
 		}
 	};

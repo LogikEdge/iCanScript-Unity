@@ -277,57 +277,53 @@ public static class iCS_HelpController {
 	}
 	
 	
-	public static string GetHelpTitle(iCS_EditorObject edObj) {
+	public static string GetHelpTitle(iCS_EditorObject edObj, bool displayType, bool displayParentNode) {
 		if (edObj==null)
 			return null;
 		
-		if (edObj.IsNode) {
-			string typeName= null;
-			// Type names to be displayed in front of node name.
-			if(edObj.IsConstructor)
-				typeName= "Builder";
-			else if(edObj.IsInstanceNode)
-				typeName= "Class";
-			else if(edObj.IsKindOfFunction)
-				typeName= "Function";
-			else if(edObj.IsVariableReference)
-				typeName= "Variable Reference";
-			else if(edObj.IsFunctionCall)
-				typeName= "Function Call";
-			else if(edObj.IsMessageHandler)
-				typeName= "Message Handler";
-			else
-				return null;
+		string parentName= null;
+		string typeName= null;
+		string displayName= edObj.DisplayName;
+		// Variable name "<Color>" interferes with the RTF ... so modify it.
+		displayName= Regex.Replace(displayName, "<Color>", "< Color >");	
 		
-			return "<b>" + typeName + " " + titleColour + edObj.DisplayName + "</color></b>";
+		if (edObj.IsNode) {
+			if(displayType) {
+				// Type names to be displayed in front of node name.
+				if(edObj.IsConstructor)
+					typeName= "Builder";
+				else if(edObj.IsInstanceNode)
+					typeName= "Class";
+				else if(edObj.IsKindOfFunction)
+					typeName= "Function";
+				else if(edObj.IsVariableReference)
+					typeName= "Variable Reference";
+				else if(edObj.IsFunctionCall)
+					typeName= "Function Call";
+				else if(edObj.IsMessageHandler)
+					typeName= "Message Handler";
+				else if(edObj.IsPackage)
+					typeName= "Package";
+			}
 		}
 		else if (edObj.IsPort) {
-			// Get Type of Port	
-			string typeName;
-			// change Type for special types of ports. 
-			if (edObj.IsInstancePort) {
-				// no need to show type name of Instance ports which will be repeated in port name.
-				typeName= "Instance";	
+			if(displayType) {
+				// change Type for special types of ports. 
+				if (edObj.IsInstancePort) {
+					// no need to show type name of Instance ports which will be repeated in port name.
+					typeName= "Instance";	
+				}
+				else {
+					typeName= iCS_Types.TypeName(edObj.RuntimeType);
+				}
 			}
-			else {
-				typeName= iCS_Types.TypeName(edObj.RuntimeType);
-			}			
-		
-			// Get name of port
-			string displayName= edObj.DisplayName;
-			// Variable name "<Color>" interferes with the RTF ... so modify it.
-			displayName= Regex.Replace(displayName, "<Color>", "< Color >");	
-			
-			if (edObj.IsInputPort) {
-				edObj= edObj.EndConsumerPorts[0].Parent;
-			}
-			else if (edObj.IsOutputPort) {
-				edObj= edObj.FirstProducerPort.Parent;
-			}			
-									
-			return "<b>" + typeName + " " + titleColour + displayName + "</color></b>";
 		}
-		return null;	
+		
+		if(displayParentNode) {
+			parentName= edObj.Parent.DisplayName + ".";
+		}
+			
+		return "<b>" + typeName + " " + titleColour + parentName + displayName + "</color></b>";
 	}	
 	
 	
