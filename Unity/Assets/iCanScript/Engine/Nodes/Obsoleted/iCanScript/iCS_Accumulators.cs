@@ -1,6 +1,4 @@
-﻿//#define OBSOLETED
-//#if !OBSOLETED
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 //[iCS_Class(Company="iCanScript", Library="Accumulators", HideClassFromLibrary= true)]
@@ -102,4 +100,3 @@ public class iCS_AccumulatorVector4 {
 		return acc;
 	}
 }
-//#endif

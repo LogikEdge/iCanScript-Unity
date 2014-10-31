@@ -1,12 +1,11 @@
-﻿#define OBSOLETED
-#if !OBSOLETED
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public enum TriggerType { TriggerOnTrueState, TriggerOnFalseState, TriggerOnFalseToTrueEdge, TriggerOnTrueToFalseEdge };
 public enum OutputType { SinglePulse, ContinuousState }
 
-[iCS_Class(Company="iCanScript", Icon= "iCS_ClockIcon.psd")]
+//[iCS_Class(Company="iCanScript", Icon= "iCS_ClockIcon.psd")]
+/// \deprecated
 public class iCS_TimeDelay {
     bool            myState= false;
     bool            myIsArmed= false;
@@ -14,13 +13,13 @@ public class iCS_TimeDelay {
     TriggerType     myTriggerType;
     OutputType      myOutputType;
     
-    [iCS_Function]
+//    [iCS_Function]
     public iCS_TimeDelay(TriggerType triggerType, OutputType outputControl) {
         myElapseTime    = Time.time-1f;
         myTriggerType   = triggerType;
         myOutputType    = outputControl;
     }
-    [iCS_Function(Return="output")]
+//    [iCS_Function(Return="output")]
     public bool Delay(float delayTime, bool startTrigger) {
         switch(myTriggerType) {
             case TriggerType.TriggerOnTrueState: {
@@ -121,4 +120,3 @@ public class iCS_TimeDelay {
         return false;
     }
 }
-#endif
