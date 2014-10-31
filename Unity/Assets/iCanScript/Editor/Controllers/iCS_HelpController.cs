@@ -152,7 +152,7 @@ public static class iCS_HelpController {
 				return help;
 			
 			// Otherwise try and get help based on engineObject Type.
-			
+			// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
 			if (edObj.IsNode) {
 				if(edObj.IsVariableReference)
 					return getHelp("VariableReference");
@@ -295,7 +295,7 @@ public static class iCS_HelpController {
 		if (edObj.IsNode) {
 			if(displayType) {
 				// Type names to be displayed in front of node name.
-				// Carefull with the order, since for example some specific types are also a package, builder, or function!
+				// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
 				if(edObj.IsVariableReference)
 					typeName= "Variable Reference";
 				else if(edObj.IsFunctionCall)
@@ -310,10 +310,10 @@ public static class iCS_HelpController {
 					typeName= "Builder";
 				else if(edObj.IsKindOfFunction)
 					typeName= "Function";
-				else if(edObj.IsPackage)
-					typeName= "Package";
 				else if(edObj.IsInstanceNode)
 					typeName= "Class";
+				else if(edObj.IsPackage)
+					typeName= "Package";
 				else
 					return null;
 			}
