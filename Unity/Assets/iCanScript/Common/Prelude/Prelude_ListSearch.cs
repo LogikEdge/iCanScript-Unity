@@ -14,6 +14,14 @@ public static partial class Prelude {
         }
         return default(A);
     }
+    public static A find<A>(Func<A,bool> cond, List<A> lst) {
+        foreach(var o in lst) {
+            if(cond(o)) {
+                return o;
+            }
+        }
+        return default(A);
+    }
     // findFirst :: (a->bool)->(int->a->b)->b->[a]->b
     public static R findFirst<A,R>(Func<A,bool> cond, Func<int,A,R> fnc, R defResult, A[] lst) {
         var len= length(lst);

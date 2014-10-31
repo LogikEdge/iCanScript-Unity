@@ -67,6 +67,7 @@ public static partial class iCS_UserCommands {
         }
         CloseTransaction(iStorage, "Change name => "+name, TransactionType.Field);
         iCS_EditorController.RepaintEditorsWithLabels();
+		iCS_SystemEvents.AnnounceVisualScriptElementNameChanged(obj);
     }
     // ----------------------------------------------------------------------
     public static void ChangeTooltip(iCS_EditorObject obj, string tooltip) {
