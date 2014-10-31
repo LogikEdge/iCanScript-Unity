@@ -21,8 +21,8 @@ public static class iCS_PublicInterfaceController {
         iCS_SystemEvents.OnProjectChanged  = RefreshPublicInterfaceInfo;
         // Events to refresh visual script information.
 		iCS_SystemEvents.OnVisualScriptSaved			   = OnVisualScriptSaved;
-        iCS_SystemEvents.OnVisualScriptUndo                = OnVisualScriptUndo;                
-        iCS_SystemEvents.OnVisualScriptElementAdded        = OnVisualScriptElementAdded;        
+        iCS_SystemEvents.OnVisualScriptUndo                = OnVisualScriptUndo;
+        iCS_SystemEvents.OnVisualScriptElementAdded        = OnVisualScriptElementAdded;
         iCS_SystemEvents.OnVisualScriptElementWillBeRemoved= OnVisualScriptElementWillBeRemoved;
         iCS_SystemEvents.OnVisualScriptElementNameChanged  = OnVisualScriptElementNameChanged;
         // Force an initial refresh of the scene info.
@@ -224,6 +224,10 @@ public static class iCS_PublicInterfaceController {
         }
     };
 
+    // ======================================================================
+    // Enums
+    // ----------------------------------------------------------------------
+	enum LastOperationEnum { Unknown, NameChange, AddPort, RemovePort, OfNoInterrest };
 
     // ======================================================================
     // Fields 
@@ -235,6 +239,8 @@ public static class iCS_PublicInterfaceController {
     static ReferenceToEngineObject[]	ourFunctionCalls       = null;
 	static VSPublicGroups		        ourPublicVariableGroups= null;
 	static VSPublicGroups		        ourPublicFunctionGroups= null;
+	static LastOperationEnum			ourLastOperation	   = LastOperationEnum.Unknown;
+	static iCS_EditorObject				ourLastOperationObject = null;
 	
     // ======================================================================
     // Scene properties
@@ -298,11 +304,16 @@ public static class iCS_PublicInterfaceController {
         RefreshPublicInterfaceInfo();
     }
     static void OnVisualScriptUndo(iCS_IStorage iStorage) {
+		ourLastOperation      = LastOperationEnum.Unknown;
+		ourLastOperationObject= null;
         RefreshPublicInterfaceInfo();
     }
-    static void OnVisualScriptElementAdded(iCS_IStorage iStorage, iCS_EditorObject element) {
+    static void OnVisualScriptElementAdded(iCS_EditorObject element) {
 		// Don't process if the lement does not imply a public interface.
 		if(!IsPublicObject(element)) return;
+		// FIXME: detect interface ports.
+		ourLastOperation      = LastOperationEnum.AddPort;
+		ourLastOperationObject= element;
 
 //        if(element.IsPublicVariable || element.IsVariableReference) {
 //            PublicVariableGroups.Add(element);
@@ -312,9 +323,13 @@ public static class iCS_PublicInterfaceController {
 //        }
         RefreshPublicInterfaceInfo();
     }
-    static void OnVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
+    static void OnVisualScriptElementWillBeRemoved(iCS_EditorObject element) {
 		// Don't process if the element does not imply a public interface.
 		if(!IsPublicObject(element)) return;		
+		// FIXME: detect interface ports.
+		ourLastOperation      = LastOperationEnum.RemovePort;
+		ourLastOperationObject= element;
+
 //        if(element.IsPublicVariable || element.IsVariableReference) {
 //            PublicVariableGroups.Remove(element);
 //        }
@@ -323,9 +338,13 @@ public static class iCS_PublicInterfaceController {
 //        }
 //		RefreshPublicInterfaceInfo();
     }
-    static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
+    static void OnVisualScriptElementNameChanged(iCS_EditorObject element) {
 		// Don't process if the element does not imply a public interface.
 		if(!IsPublicObject(element)) return;
+		// FIXME: detect interface ports.
+		ourLastOperation      = LastOperationEnum.NameChange;
+		ourLastOperationObject= element;
+		
 //		RefreshPublicInterfaceInfo();
     }
     // ----------------------------------------------------------------------
