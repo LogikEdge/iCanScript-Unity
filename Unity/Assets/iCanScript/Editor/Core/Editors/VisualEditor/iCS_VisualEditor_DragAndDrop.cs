@@ -24,7 +24,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(objectUnderMouse.IsNode) {
                 var draggedLibrary= GetDraggedLibrary(draggedObject);
                 var draggedEngineObject= draggedLibrary != null ? draggedLibrary.EngineObjects[0] : null;
-                // Don't accept to drag an object dirctly under Behaviour.
+                // -- Don't accept to drag an object directly under Behaviour --
                 if(objectUnderMouse.IsBehaviour) {
                     if(draggedEngineObject != null &&
                        iCS_AllowedChildren.CanAddChildNode(draggedEngineObject.Name, draggedEngineObject, objectUnderMouse, IStorage)) {
@@ -35,7 +35,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     return;
                 }
-                // Don't accept to drag object outside the root node.
+                // -- Don't accept to drag object outside the root node --
                 if(objectUnderMouse == DisplayRoot && IStorage.ShowDisplayRootNode) {
                     if(!DisplayRoot.GlobalRect.Contains(GraphMousePosition)) {
                         DragAndDrop.visualMode= DragAndDropVisualMode.Rejected;
