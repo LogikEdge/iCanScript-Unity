@@ -155,7 +155,7 @@ public class iCS_Reflection {
         string                  company               = "Unity";
         bool                    decodeAllPublicMembers= true;
         if(package == null)     package               = kUnityEnginePackage;
-        if(description == null) description           = "Unity class "+classType.Name;
+        if(description == null) description           = null;
         if(iconPath == null)    iconPath              = kUnityIcon;
         iCS_Reflection.DecodeClassInfo(classType, company, package, description, iconPath, decodeAllPublicMembers,true);
     }

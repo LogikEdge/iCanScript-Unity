@@ -59,7 +59,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 		if(mySelectedAreaCache != myController.SelectedArea) {
 		    mySelectedAreaCache= myController.SelectedArea;
 		    myMainView.MakeVisible(mySelectedAreaCache, myScrollViewArea);
-		}            
+		}          
 	}
     // ---------------------------------------------------------------------------------
 	Rect ShowToolbar() {

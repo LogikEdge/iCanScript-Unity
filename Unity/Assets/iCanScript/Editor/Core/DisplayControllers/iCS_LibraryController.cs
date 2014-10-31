@@ -41,7 +41,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		// Create the GUIContent as they are needed, and cache them.
 	    public GUIContent GetGUIContent() {
 	            if(myGuiContent == null) {
-					myGuiContent= new GUIContent(Name, MemberInfo.Summary);
+					myGuiContent= new GUIContent(Name, MemberInfo.HelpSummary);
 	            }
 	            return myGuiContent;            
 	    }

@@ -18,7 +18,7 @@ public abstract class iCS_MemberInfo {
     public  iCS_TypeInfo         ParentTypeInfo  = null;
 	public  bool				 HideFromLibrary = false;
     public  string               DisplayName     = null;
-	private string               mySummary   	 = null;
+	private string               myHelpSummary   = null;
     private string               myDescription   = null;
     private string               myIconPath      = null;
 
@@ -103,7 +103,7 @@ public abstract class iCS_MemberInfo {
     public string Description {
         get {
             if(String.IsNullOrEmpty(myDescription)) {
-                return ParentTypeInfo == null ? "" : ParentTypeInfo.Description;
+                return ParentTypeInfo == null ? "" : "Unity class "+ ParentTypeInfo.DisplayName;
             }
             return myDescription;            
         }
@@ -111,22 +111,32 @@ public abstract class iCS_MemberInfo {
             myDescription= value;
         }
     }
-    public string Summary {
+	
+	public string StoredDescription {
         get {
-            if(mySummary == null) {
-				// Fetch the summaries as they are needed, and cache them.
-                mySummary=  iCS_HelpController.getHelpSummary(this);
-				if (mySummary == null || mySummary == "") {					
-					if(Description == null || Description == "")
-						mySummary= "No tip available";
-					else
-						mySummary= Description;
-				}
+            return myDescription;     
+		}
+	}
+	
+    public string HelpSummary {
+        get {
+            if(myHelpSummary == null) {
+				// Update the cached helpSummary
+                HelpSummaryCache= iCS_HelpController.getHelp(this);
             }
-            return mySummary;            
+            return myHelpSummary;        
         }
-
+	}
+	
+    public string HelpSummaryCache {	
+        get {
+            return myHelpSummary;        
+        }
+        set {
+           myHelpSummary= value;
+        }
     }
+	
     public string IconPath {
         get {
             return myIconPath;            

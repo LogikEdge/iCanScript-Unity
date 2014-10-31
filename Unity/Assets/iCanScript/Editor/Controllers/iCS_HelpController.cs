@@ -15,6 +15,9 @@ public static class iCS_HelpController {
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
 	static string unityHelpPath = EditorApplication.applicationContentsPath + "/Documentation/html/en/ScriptReference";
 
+	const string noHelp= "no help available" ;
+	public static string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
+	
 	// ---------------------------------------------------------------------------------
 	static iCS_HelpController() {
 		buildUnityHelpIndex();
@@ -119,27 +122,222 @@ public static class iCS_HelpController {
 			}
 		}
 	}
-
+	
+	
 	// =================================================================================
-	// Get the summary description for a unity API
+	// Get the summary help description 
 	// ---------------------------------------------------------------------------------
-	public static string getHelpSummary(iCS_MemberInfo memberInfo )
-	{
-		if(memberInfo != null) {
-			if (memberInfo.Company == "Unity") {
-				string summary=null;
-				string search= getHelpUrl(memberInfo);
-				unityHelpSummary.TryGetValue(search, out summary);
-				if (summary!=null)
-					return summary;
+	
+	public static string getHelp(iCS_EditorObject edObj )
+	{	
+		if(edObj != null) {
+			// Get the EditorObject tooltip if there is one.
+			string help= edObj.Tooltip;
+			if(!String.IsNullOrEmpty(help))
+				return help;
+/*		
+			// If this is a message handler component, look up the help based
+			// on name.
+			if(edObj.ParentNode !=null && edObj.ParentNode.IsMessageHandler) {
+				unityHelpSummary.TryGetValue(edObj.Name, out help);
+				if (!String.IsNullOrEmpty(help)) {
+					return help;
+				}
 			}
+*/
+						
+			// otherwise try and get help based on the MemberInfo,
+			help= getHelp(getAssociatedHelpMemberInfo(edObj));
+			if(!String.IsNullOrEmpty(help))
+				return help;
+			
+			// Otherwise try and get help based on engineObject Type.
+			if (edObj.IsNode) {
+				if(edObj.IsConstructor)
+					return getHelp("Constructor");
+				else if(edObj.IsInstanceNode)
+					return getHelp("Instance");
+				else if(edObj.IsKindOfFunction)
+					return getHelp("Function");
+				else if(edObj.IsVariableReference)
+					return getHelp("VariableReference");
+				else if(edObj.IsFunctionCall)
+					return getHelp("FunctionCall");
+			}
+			else if (edObj.IsPort) {
+				if (edObj.IsInstancePort)
+					return getHelp("InstancePort");
+				else if(edObj.IsTriggerPort)
+					return getHelp("TriggerPort");
+				else if(edObj.IsEnablePort)
+					return getHelp("EnablePort");
+			}
+			// otherwise try and get help bases on edObj type.
+			return getHelp(edObj.RuntimeType);
 		}
 		return null;
 	}
 	
+	
+	public static string getHelp(iCS_MemberInfo memberInfo )
+	{
+		if(memberInfo != null) {
+			// Return help string if there is already one in the memberInfo
+			if (memberInfo.HelpSummaryCache != null)
+				return memberInfo.HelpSummaryCache;
+			// If there is no help string already in MemberInfo, try and look up Unity help
+			if (memberInfo.HelpSummaryCache==null && memberInfo.Company == "Unity") {
+				string search= getHelpUrl(memberInfo);
+				string summary=null;
+				unityHelpSummary.TryGetValue(search, out summary);
+				if (!String.IsNullOrEmpty(summary)) {
+					// cache and return the found help string
+					memberInfo.HelpSummaryCache= summary;
+					return summary;
+				}
+			}
+			// Try and use MemberInfo Description
+			if (memberInfo.StoredDescription!=null)
+				return memberInfo.StoredDescription;
+		
+			// If there is no help found yet, try and return help based on type
+			String typeHelp= getHelp(memberInfo.GetType());
+			if (!String.IsNullOrEmpty(typeHelp)) {
+				memberInfo.HelpSummaryCache= typeHelp;
+			}	
+			else
+			{
+				// Mark cache as empty string (vs null), so we do not search again 
+				memberInfo.HelpSummaryCache= "";	
+			}					
+			return typeHelp;
+
+		}
+		return null;
+	}
+	
+	public static string getHelp(Type type)
+	{
+		return getHelp(type.ToString());
+	}
+	
+	public static string getHelp(string typeName)
+	{
+		string help=null;
+		iCS_HelpDictionary.typeHelp.TryGetValue(typeName, out help);
+		if(help != null) {
+			return Regex.Replace(help, "<tcolor>", titleColour);
+		}
+		return null;
+	}
+		
+	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj) 
+	{
+		if(edObj != null) {
+			if (edObj.IsPort) {	
+				// check for special types of ports. 
+				// TODO: support these.
+				if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsClassField) {
+					// return port will be same as parent node description.
+				}
+				else if(edObj.IsKindOfPackagePort && !edObj.IsInstanceNodePort && !edObj.IsProposedDataPort)
+					return null;
+				else if( edObj.PortIndex >= (int)iCS_PortIndex.ParametersEnd ) {
+					return null;
+				}				
+				
+				// Following port will contain the member info
+				if (edObj.IsProposedDataPort) {
+					// contained in edObj
+				}
+				else if (edObj.IsInputPort) {
+					edObj= edObj.EndConsumerPorts[0].Parent;
+				}
+				else if (edObj.IsOutputPort) {
+					edObj= edObj.FirstProducerPort.Parent;
+				}							
+			}
+			
+			iCS_MemberInfo memberInfo=null;
+			
+			// Try and Get Member Info from GetAssociatedDescriptor 
+			if(edObj.IsKindOfFunction) {
+				memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
+			}
+			
+			// If no member Info was found, try and get based on type.
+			if(memberInfo == null) {
+				memberInfo= iCS_LibraryDatabase.GetTypeInfo(edObj.RuntimeType);
+			}
+
+			return memberInfo;
+			
+		}
+		return null;
+	}
+	
+	
+	public static string GetHelpTitle(iCS_EditorObject edObj, bool displayType, bool displayParentNode) {
+		if (edObj==null)
+			return null;
+		
+		string parentName= null;
+		string typeName= null;
+		string displayName= edObj.DisplayName;
+		// Variable name "<Color>" interferes with the RTF ... so modify it.
+		displayName= Regex.Replace(displayName, "<Color>", "< Color >");	
+		
+		if (edObj.IsNode) {
+			if(displayType) {
+				// Type names to be displayed in front of node name.
+				if(edObj.IsConstructor)
+					typeName= "Builder";
+				else if(edObj.IsInstanceNode)
+					typeName= "Class";
+				else if(edObj.IsKindOfFunction)
+					typeName= "Function";
+				else if(edObj.IsVariableReference)
+					typeName= "Variable Reference";
+				else if(edObj.IsFunctionCall)
+					typeName= "Function Call";
+				else if(edObj.IsMessageHandler)
+					typeName= "Message Handler";
+				else if(edObj.IsPackage)
+					typeName= "Package";
+				else
+					return null;
+			}
+		}
+		else if (edObj.IsPort) {
+			if(displayType) {
+				// change Type for special types of ports. 
+				if (edObj.IsInstancePort) {
+					// no need to show type name of Instance ports which will be repeated in port name.
+					typeName= "Instance";	
+				}
+				else {
+					typeName= iCS_Types.TypeName(edObj.RuntimeType);
+				}
+			}
+		}
+		
+		if(displayParentNode) {
+			parentName= edObj.Parent.DisplayName + ".";
+		}
+			
+		return "<b>" + typeName + " " + titleColour + parentName + displayName + "</color></b>";
+	}	
+	
+	
+	
 	// =================================================================================
 	// Open web browser for specific help
 	// ---------------------------------------------------------------------------------		
+
+	public static void openDetailedHelp(iCS_EditorObject edObj ) {
+		openDetailedHelp(getAssociatedHelpMemberInfo(edObj));
+	}	
+
 	public static void openDetailedHelp(iCS_MemberInfo memberInfo )	
 	{	
 		if(memberInfo != null) {
@@ -160,7 +358,12 @@ public static class iCS_HelpController {
 			string demarcator="";
 			string methodName="";
 			
-			if (memberInfo.IsTypeInfo) {
+			if (memberInfo.IsMessage) {
+				className = memberInfo.ParentTypeInfo.ClassName;
+				demarcator= ".";
+				methodName= memberInfo.DisplayName; 
+			}
+			else if (memberInfo.IsTypeInfo) {
 				// First level libray entries (classes and packages), just return className
 				className = memberInfo.ToTypeInfo.ClassName;
 			}
