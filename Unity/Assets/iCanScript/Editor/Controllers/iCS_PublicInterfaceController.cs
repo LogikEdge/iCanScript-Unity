@@ -510,10 +510,11 @@ public static class iCS_PublicInterfaceController {
 				definitions.ForEach(
 					o=> {
 						if(!CompareFunctionInterface(ports, o.VisualScript, o.EngineObject)) {
-                            var errorMsg= "Public functions=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> must have the same interface.";
-							iCS_ErrorController.AddError(kServiceId, errorMsg, vs, engObj.InstanceId);
-							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
-                            group.IsDefinitionsErrorFree= false;
+							UpdateFunctionInterfaceFrom(o.VisualScript, o.EngineObject, vs, engObj);
+//                            var errorMsg= "Public functions=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> must have the same interface.";
+//							iCS_ErrorController.AddError(kServiceId, errorMsg, vs, engObj.InstanceId);
+//							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
+//                            group.IsDefinitionsErrorFree= false;
 						}
 					}
 				);
@@ -587,12 +588,15 @@ public static class iCS_PublicInterfaceController {
 		}
 		return true;
 	}
+
+	// ======================================================================
+	// UPDATE FUNCTION CALL FROM FUNCTION DEFINITION
     // ----------------------------------------------------------------------
     /// Update function call from function definition.
     static void UpdateFunctionCall(iCS_EngineObject[] fncDefPorts, iCS_VisualScriptImp vs, iCS_EngineObject functionCall) {
-        // -- Update is completed if all ports are identical --
+        // -- Replicate interface ports --
         var fncCallPorts= GetFunctionInterface(vs, functionCall);
-		ReplicatePorts(fncDefPorts, fncCallPorts, vs, functionCall);
+		ReplicatePortsOnFunctionCall(fncDefPorts, fncCallPorts, vs, functionCall);
 
         // -- Advise Unity that the visual script has changed --
         EditorUtility.SetDirty(vs);
@@ -605,8 +609,8 @@ public static class iCS_PublicInterfaceController {
         }
     }
     // ----------------------------------------------------------------------
-	static void ReplicatePorts(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
-						  iCS_VisualScriptImp vs, iCS_EngineObject node) {
+	static void ReplicatePortsOnFunctionCall(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
+						                     iCS_VisualScriptImp vs, iCS_EngineObject node) {
 
         // -- Update is completed if all ports are identical --
 		var nonIdenticalPorts= KeepNonIdenticalPorts(portsToReplicate, existingPorts);
@@ -637,14 +641,14 @@ public static class iCS_PublicInterfaceController {
 		var dstPort= P.head(dstPorts);
 		if(!P.or(p=> ArePortsTypeIdentical(p, srcPort), dstPorts)) {
 			AddPortOnFunctionCall(srcPort, vs, node);
-			ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
+			ReplicatePortsOnFunctionCall(P.tail(srcPorts), dstPorts, vs, node);
 			return;
 		}
 
 		// -- Remove port if no matching type --
 		if(!P.or(p=> ArePortsTypeIdentical(p, dstPort), srcPorts)) {
 			DestroyPortOnFunctionCall(dstPort, vs, node);
-			ReplicatePorts(srcPorts, P.tail(dstPorts), vs, node);
+			ReplicatePortsOnFunctionCall(srcPorts, P.tail(dstPorts), vs, node);
 			return;
 		}
 
@@ -653,20 +657,20 @@ public static class iCS_PublicInterfaceController {
 		if(P.length(result) != 0) {
 			result[0].PortIndex= srcPort.PortIndex;
 			dstPorts= P.filter(p=> p != result[0], dstPorts);
-			ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
+			ReplicatePortsOnFunctionCall(P.tail(srcPorts), dstPorts, vs, node);
 			return;
 		}
 
 		// -- Simple port rename --
 		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
 			dstPort.Name= srcPort.Name;
-			ReplicatePorts(P.tail(srcPorts), P.tail(dstPorts), vs, node);
+			ReplicatePortsOnFunctionCall(P.tail(srcPorts), P.tail(dstPorts), vs, node);
 			return;
 		}			
 		
 		// -- Could not find a valid match for source port; so just add it --
 		AddPortOnFunctionCall(srcPort, vs, node);
-		ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
+		ReplicatePortsOnFunctionCall(P.tail(srcPorts), dstPorts, vs, node);
 	}
     // ----------------------------------------------------------------------
 	static P.Tuple<iCS_EngineObject[],iCS_EngineObject[]> KeepNonIdenticalPorts(iCS_EngineObject[] ps1, iCS_EngineObject[] ps2) {
@@ -725,5 +729,106 @@ public static class iCS_PublicInterfaceController {
     // ----------------------------------------------------------------------
 	static void DestroyPortOnFunctionCall(iCS_EngineObject portToDestroy, iCS_VisualScriptImp vs, iCS_EngineObject functionCallNode) {
         iCS_VisualScriptData.DestroyEngineObject(vs, portToDestroy);
+	}
+
+	// ======================================================================
+	// UPDATE FUNCTION DEFINIION FROM ANOTHER FUNCTION DEFINITION
+    // ----------------------------------------------------------------------
+	static void UpdateFunctionInterfaceFrom(iCS_VisualScriptImp toVs  , iCS_EngineObject toFnc,
+									 		iCS_VisualScriptImp fromVs, iCS_EngineObject fromFnc) {
+
+		// -- Replcate interface ports --
+		var fromPorts= GetFunctionInterface(fromVs, fromFnc);
+		var toPorts  = GetFunctionInterface(toVs  , toFnc);
+		ReplicatePortsOnFunction(fromPorts, toPorts, toVs, toFnc);
+		
+        // -- Advise Unity that the visual script has changed --
+        EditorUtility.SetDirty(toVs);
+        iCS_VisualEditor visualEditor= null;
+        if(iCS_VisualScriptDataController.IsInUse(toVs)) {
+            visualEditor= iCS_EditorController.FindVisualEditor();
+	        if(visualEditor != null) {
+	            visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
+	        }
+        }
+	}
+    // ----------------------------------------------------------------------
+	static void ReplicatePortsOnFunction(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
+						                     iCS_VisualScriptImp vs, iCS_EngineObject node) {
+
+        // -- Update is completed if all ports are identical --
+		var nonIdenticalPorts= KeepNonIdenticalPorts(portsToReplicate, existingPorts);
+		var srcPorts= nonIdenticalPorts.Item1;
+		var dstPorts= nonIdenticalPorts.Item2;
+		var srcLen= P.length(srcPorts);
+		var dstLen= P.length(dstPorts);
+        if(srcLen == 0 && dstLen == 0) return;
+		
+        // -- Simple port addition --
+		if(srcLen != 0 && dstLen == 0) {
+	        foreach(var toClone in srcPorts) {
+				AddPortOnFunction(toClone, vs, node);
+	        }	
+			return;
+		}
+
+	    // -- Simple port removal --
+		if(srcLen == 0 && dstLen != 0) {
+	        foreach(var toRemove in dstPorts) {
+				DestroyPortOnFunction(toRemove, vs, node);
+	        }
+			return;
+		}
+		
+		// -- Add port if no matching type --
+		var srcPort= P.head(srcPorts);
+		var dstPort= P.head(dstPorts);
+		if(!P.or(p=> ArePortsTypeIdentical(p, srcPort), dstPorts)) {
+			AddPortOnFunction(srcPort, vs, node);
+			ReplicatePortsOnFunction(P.tail(srcPorts), dstPorts, vs, node);
+			return;
+		}
+
+		// -- Remove port if no matching type --
+		if(!P.or(p=> ArePortsTypeIdentical(p, dstPort), srcPorts)) {
+			DestroyPortOnFunction(dstPort, vs, node);
+			ReplicatePortsOnFunction(srcPorts, P.tail(dstPorts), vs, node);
+			return;
+		}
+
+		// -- Relink the port index --
+		var result= P.filter(p=> ArePortsIdenticalExceptIndex(p, srcPort), dstPorts);
+		if(P.length(result) != 0) {
+			result[0].PortIndex= srcPort.PortIndex;
+			dstPorts= P.filter(p=> p != result[0], dstPorts);
+			ReplicatePortsOnFunction(P.tail(srcPorts), dstPorts, vs, node);
+			return;
+		}
+
+		// -- Simple port rename --
+		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
+			dstPort.Name= srcPort.Name;
+			ReplicatePortsOnFunction(P.tail(srcPorts), P.tail(dstPorts), vs, node);
+			return;
+		}			
+		
+		// -- Could not find a valid match for source port; so just add it --
+		AddPortOnFunction(srcPort, vs, node);
+		ReplicatePortsOnFunction(P.tail(srcPorts), dstPorts, vs, node);
+	}
+    // ----------------------------------------------------------------------
+	static void AddPortOnFunction(iCS_EngineObject portToClone, iCS_VisualScriptImp vs, iCS_EngineObject functionNode) {
+        var newPort= portToClone.Clone();
+        newPort.ParentId= functionNode.InstanceId;
+        newPort.SourceId= -1;
+        // -- Convert dynamic and proposed ports to fix ports --
+		newPort.ObjectType= newPort.ObjectType;
+        newPort.IsNameEditable= false;
+        // FIXME: Must update unity object reference in visual script data.
+        iCS_VisualScriptData.AddEngineObject(vs, newPort);
+	}
+    // ----------------------------------------------------------------------
+	static void DestroyPortOnFunction(iCS_EngineObject portToDestroy, iCS_VisualScriptImp vs, iCS_EngineObject functionNode) {
+		DestroyPortOnFunctionCall(portToDestroy, vs, functionNode);
 	}
 }
