@@ -219,14 +219,14 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // Initialize / Destroy
     // ----------------------------------------------------------------------
     public static void DestroyEngineObject(iCS_IVisualScriptData vsd, iCS_EngineObject toDelete) {
-        // Disconnect all connected ports.
+        // -- Disconnect all connected ports --
         if(toDelete.IsPort) {
             int id= toDelete.InstanceId;
             if(id != -1) {
                 FilterWith(o=> o.IsPort && o.SourceId == id, p=> p.SourceId= -1, vsd);
             }
         }
-        // Destroy the instance.
+        // -- Destroy the instance --
         toDelete.DestroyInstance();
     }
     // ----------------------------------------------------------------------
@@ -236,9 +236,11 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         
         // Grow engine object array if no free slot exists.
         if(emptySlot != -1) {
+			toAdd.InstanceId= emptySlot;
             vsd.EngineObjects[emptySlot]= toAdd;
             return;
         }
+		toAdd.InstanceId= P.length(vsd.EngineObjects);
         vsd.EngineObjects.Add(toAdd);
     }
     
@@ -398,7 +400,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
     public static iCS_EngineObject GetFirstProducerPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
-        if(port == null) return null;
+        if(port == null || port.InstanceId == -1) return null;
         int linkLength= 0;
         for(iCS_EngineObject sourcePort= GetSourcePort(vsd, port); sourcePort != null; sourcePort= GetSourcePort(vsd, port)) {
             port= sourcePort;
@@ -407,7 +409,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
                 return null;                
             }
         }
-        return port;
+        return IsValid(port, vsd) ? port : null;
     }
     // ----------------------------------------------------------------------
     // Returns the list of consumer ports.

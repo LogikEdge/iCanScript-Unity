@@ -372,7 +372,7 @@ public partial class iCS_EditorObject {
 		for(int i= 0; i < iStorage.EngineObjects.Count; ++i) {
             iCS_EditorObject editorObj= null;
             var engineObj= iStorage.EngineObjects[i];
-		    if(engineObj.InstanceId != -1) {
+		    if(iCS_VisualScriptData.IsValid(engineObj, iStorage.VisualScript)) {
 		        editorObj= new iCS_EditorObject(i, iStorage);
 		    }
 	        iStorage.EditorObjects.Add(editorObj);

@@ -158,7 +158,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             // Toggle show root node
 			case KeyCode.R: {
-				iCS_UserCommands.ToggleShowDisplayRootNode(IStorage);
+				if(IsCommandKeyDown) {
+					SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
+				}
+				else {
+					iCS_UserCommands.ToggleShowDisplayRootNode(IStorage);
+				}
                 Event.current.Use();
 				break;
 			}

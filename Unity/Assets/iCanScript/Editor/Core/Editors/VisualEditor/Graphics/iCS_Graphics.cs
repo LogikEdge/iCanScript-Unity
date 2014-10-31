@@ -948,6 +948,7 @@ public partial class iCS_Graphics {
 
         // No connection to draw if source port is not visible.
         iCS_EditorObject source= port.VisibleProducerPort;
+		if(source == null) return;
         iCS_EditorObject sourceParent= source.Parent;
         bool isSourceVisible= source.IsVisibleOnDisplay;
         if(isSourceVisible == false && isShowInvisiblePort == false) return;

@@ -19,7 +19,8 @@ public static class iCS_SystemEvents {
     public static Action    OnEngineStopped      = null;   ///< Event: Engine stopping
     public static Action    OnEnginePaused       = null;   ///< Event: Engine paused
     // Events related to visual script edition
-    public static ActionVisualScript OnVisualScriptChanged             = null;  ///< Event: Visual Script was changed
+    public static ActionVisualScript OnVisualScriptSaved               = null;  ///< Event: Changes to the Visual Script where saved
+    public static ActionVisualScript OnVisualScriptReloaded            = null;  ///< Event: Visual Script was reloaded
     public static ActionVisualScript OnVisualScriptUndo                = null;  ///< Event: Undo performed on Visual Script
     public static ActionEditorObject OnVisualScriptElementAdded        = null;  ///< Event: Element added to visual script
     public static ActionEditorObject OnVisualScriptElementWillBeRemoved= null;  ///< Event: Element removed from visual script
@@ -66,8 +67,11 @@ public static class iCS_SystemEvents {
     // ======================================================================
     // Event Announcements
     // ----------------------------------------------------------------------
-    public static void AnnouceVisualScriptChanged(iCS_IStorage iStorage) {
-        Invoke(OnVisualScriptChanged, iStorage);
+    public static void AnnouceVisualScriptSaved(iCS_IStorage iStorage) {
+        Invoke(OnVisualScriptSaved, iStorage);
+    }
+    public static void AnnouceVisualScriptReloaded(iCS_IStorage iStorage) {
+        Invoke(OnVisualScriptReloaded, iStorage);
     }
     public static void AnnouceVisualScriptUndo(iCS_IStorage iStorage) {
         Invoke(OnVisualScriptUndo, iStorage);
