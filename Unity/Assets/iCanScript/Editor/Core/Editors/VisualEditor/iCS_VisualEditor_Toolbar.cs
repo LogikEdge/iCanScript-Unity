@@ -175,9 +175,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
             // -- Display Purchase information --
             if(nbOfVisualScriptRemaining < 0 || nbOfNodesRemaining < 0) {
+                var toolbarHeight= iCS_ToolbarUtility.GetHeight();
                 var width = position.width;
-                var height= position.height;
-                var purchaseRect= new Rect(0.15f*width, 0.15f*height, 0.7f*width, 0.7f*height);
+                var height= position.height-toolbarHeight;
+                var purchaseRect= new Rect(0.15f*width, toolbarHeight+0.15f*height, 0.7f*width, 0.7f*height);
                 EditorGUI.HelpBox(purchaseRect, "Please Purchase", MessageType.Warning);
             }
 //        }        
