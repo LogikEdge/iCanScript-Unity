@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using ActionVisualScript= System.Action<iCS_IStorage>;
-using ActionEditorObject= System.Action<iCS_IStorage, iCS_EditorObject>;
+using ActionEditorObject= System.Action<iCS_EditorObject>;
 
 public static class iCS_SystemEvents {
     // ======================================================================
@@ -76,14 +76,14 @@ public static class iCS_SystemEvents {
     public static void AnnouceVisualScriptUndo(iCS_IStorage iStorage) {
         Invoke(OnVisualScriptUndo, iStorage);
     }
-    public static void AnnounceVisualScriptElementAdded(iCS_IStorage iStorage, iCS_EditorObject element) {
-        Invoke(OnVisualScriptElementAdded, iStorage, element);
+    public static void AnnounceVisualScriptElementAdded(iCS_EditorObject element) {
+        Invoke(OnVisualScriptElementAdded, element);
     }
-    public static void AnnounceVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
-        Invoke(OnVisualScriptElementWillBeRemoved, iStorage, element);
+    public static void AnnounceVisualScriptElementWillBeRemoved(iCS_EditorObject element) {
+        Invoke(OnVisualScriptElementWillBeRemoved, element);
     }
-    public static void AnnounceVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
-        Invoke(OnVisualScriptElementNameChanged, iStorage, element);
+    public static void AnnounceVisualScriptElementNameChanged(iCS_EditorObject element) {
+        Invoke(OnVisualScriptElementNameChanged, element);
     }
     
     // ======================================================================

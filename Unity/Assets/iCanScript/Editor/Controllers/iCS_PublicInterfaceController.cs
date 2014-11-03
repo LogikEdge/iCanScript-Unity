@@ -11,29 +11,138 @@ public static class iCS_PublicInterfaceController {
     // Initialization
     // ----------------------------------------------------------------------
     static iCS_PublicInterfaceController() {
-        // Verify that the scene controller is ran before us.
+        // -- Verify proper creation order --
         if(iCS_SceneController.VisualScriptsInScene == null) {
             Debug.LogError("iCanScript: Please move PublicInterfaceController after the SceneController in AppController");
         }
-        // Events to refresh scene content information.
-        iCS_SystemEvents.OnSceneChanged    = RefreshPublicInterfaceInfo;
-        iCS_SystemEvents.OnHierarchyChanged= RefreshPublicInterfaceInfo;
-        iCS_SystemEvents.OnProjectChanged  = RefreshPublicInterfaceInfo;
-        // Events to refresh visual script information.
+        // -- Events to refresh scene content information --
+        iCS_SystemEvents.OnSceneChanged    = OnSceneLoad;
+        iCS_SystemEvents.OnHierarchyChanged= OnSceneLoad;
+        iCS_SystemEvents.OnProjectChanged  = OnSceneLoad;
+        // -- Events to refresh visual script information --
 		iCS_SystemEvents.OnVisualScriptSaved			   = OnVisualScriptSaved;
-        iCS_SystemEvents.OnVisualScriptUndo                = OnVisualScriptUndo;                
-        iCS_SystemEvents.OnVisualScriptElementAdded        = OnVisualScriptElementAdded;        
+        iCS_SystemEvents.OnVisualScriptUndo                = OnVisualScriptUndo;
+        iCS_SystemEvents.OnVisualScriptElementAdded        = OnVisualScriptElementAdded;
         iCS_SystemEvents.OnVisualScriptElementWillBeRemoved= OnVisualScriptElementWillBeRemoved;
         iCS_SystemEvents.OnVisualScriptElementNameChanged  = OnVisualScriptElementNameChanged;
-        // Force an initial refresh of the scene info.
-//        var timedAction= iCS_TimerService.CreateTimedAction(5f, RefreshPublicInterfaceInfo, true);
-//        timedAction.Schedule();
-        RefreshPublicInterfaceInfo();
+
+        // -- Force an initial refresh of the scene info --
+        OnSceneLoad();
     }
     public static void Start() {}
     public static void Shutdown() {
     }
     
+    // ======================================================================
+    // PROCESS EVENTS
+    // ----------------------------------------------------------------------
+    static void OnSceneLoad() {
+        var timedAction= iCS_TimerService.CreateTimedAction(2f, RebuildAndValidatePublicInterfaceInfo);
+        timedAction.Schedule();
+    }
+    // ----------------------------------------------------------------------
+    static void OnVisualScriptSaved(iCS_IStorage iStorage) {
+		switch(ourNextOperation) {
+			case OperationEnum.RebuildInfo: {
+				RebuildAndValidatePublicInterfaceInfo();
+				break;
+			}
+			case OperationEnum.NodeNameChange: {
+                ChangeNodeName(ourOperationObject);
+				RebuildAndValidatePublicInterfaceInfo();
+				break;
+			}
+			case OperationEnum.PortNameChange: {
+				RebuildAndValidatePublicInterfaceInfo();
+				break;
+			}
+			case OperationEnum.PortAdded: {
+				RebuildAndValidatePublicInterfaceInfo();
+				break;
+			}
+			case OperationEnum.PortRemoved: {
+				RebuildAndValidatePublicInterfaceInfo();
+				break;
+			}
+			case OperationEnum.OfNoInterrest: {
+				RebuildAndValidatePublicInterfaceInfo();
+				break;
+			}
+			default: {
+				RebuildAndValidatePublicInterfaceInfo();
+				break;
+			}			
+		}
+		// -- Default to rebuild & validate the entire scene --
+		SetNextOperation(OperationEnum.RebuildInfo);
+    }
+    // ----------------------------------------------------------------------
+    static void OnVisualScriptUndo(iCS_IStorage iStorage) {
+        RebuildAndValidatePublicInterfaceInfo();
+    }
+    // ----------------------------------------------------------------------
+    static void OnVisualScriptElementAdded(iCS_EditorObject element) {
+		// -- Processing port addition on public function --
+		if(element.IsDataPort) {
+			var parent= element.ParentNode;
+			if(parent.IsPublicFunction) {
+				SetNextOperation(OperationEnum.PortAdded, element);
+			}
+			else {
+				SetNextOperation(OperationEnum.OfNoInterrest);
+			}
+			return;
+		}
+		// -- Process public interface node addition --
+		if(IsPublicObject(element)) {
+			SetNextOperation(OperationEnum.RebuildInfo);
+		}
+		else {
+			SetNextOperation(OperationEnum.OfNoInterrest);
+		}
+    }
+    // ----------------------------------------------------------------------
+    static void OnVisualScriptElementWillBeRemoved(iCS_EditorObject element) {
+		// -- Processing port addition on public function --
+		if(element.IsDataPort) {
+			var parent= element.ParentNode;
+			if(parent.IsPublicFunction) {
+				SetNextOperation(OperationEnum.PortRemoved, element);
+			}
+			else {
+				SetNextOperation(OperationEnum.OfNoInterrest);
+			}
+			return;
+		}
+		// -- Process public interface node addition --
+		if(IsPublicObject(element)) {
+			SetNextOperation(OperationEnum.RebuildInfo);
+		}
+		else {
+			SetNextOperation(OperationEnum.OfNoInterrest);
+		}
+    }
+    // ----------------------------------------------------------------------
+    static void OnVisualScriptElementNameChanged(iCS_EditorObject element) {
+		// -- Processing port addition on public function --
+		if(element.IsDataPort) {
+			var parent= element.ParentNode;
+			if(parent.IsPublicFunction) {
+				SetNextOperation(OperationEnum.PortNameChange, element);
+			}
+			else {
+				SetNextOperation(OperationEnum.OfNoInterrest);
+			}
+			return;
+		}
+		// -- Process public interface node addition --
+		if(IsPublicObject(element)) {
+			SetNextOperation(OperationEnum.NodeNameChange, element);
+		}
+		else {
+			SetNextOperation(OperationEnum.OfNoInterrest);
+		}
+    }
 
     // ======================================================================
     // Types
@@ -167,10 +276,12 @@ public static class iCS_PublicInterfaceController {
     public class ReferenceToDefinition {
         iCS_VisualScriptImp     myVisualScript = null;
         string                  myDefintionName= null;
+		int						myObjectId     = -1;
 
         public ReferenceToDefinition(iCS_VisualScriptImp visualScript, string name) {
             myVisualScript = visualScript;
             myDefintionName= name;
+			myObjectId     = EngineObject.InstanceId;
         }
         public iCS_VisualScriptImp VisualScript 		{ get { return myVisualScript; }}
         public iCS_EngineObject    EngineObject 		{ get { return iCS_VisualScriptData.FindDefinitionWithName(myVisualScript, myDefintionName); }}
@@ -178,6 +289,7 @@ public static class iCS_PublicInterfaceController {
         public bool                IsFunctionDefinition { get { return EngineObject.IsPackage; }}
         public string              Name                 { get { return myDefintionName; }}
         public string              FullName             { get { return iCS_VisualScriptData.GetFullName(myVisualScript, myVisualScript, EngineObject); }}
+		public int				   InstanceId			{ get { return myObjectId; }}
     };
     // ----------------------------------------------------------------------	
     public class ReferenceToEngineObject {
@@ -224,6 +336,10 @@ public static class iCS_PublicInterfaceController {
         }
     };
 
+    // ======================================================================
+    // Enums
+    // ----------------------------------------------------------------------
+	enum OperationEnum { RebuildInfo, NodeNameChange, PortNameChange, PortAdded, PortRemoved, OfNoInterrest };
 
     // ======================================================================
     // Fields 
@@ -235,6 +351,16 @@ public static class iCS_PublicInterfaceController {
     static ReferenceToEngineObject[]	ourFunctionCalls       = null;
 	static VSPublicGroups		        ourPublicVariableGroups= null;
 	static VSPublicGroups		        ourPublicFunctionGroups= null;
+	static OperationEnum				ourNextOperation	   = OperationEnum.RebuildInfo;
+	static iCS_EditorObject				ourOperationObject     = null;
+	
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+	static void SetNextOperation(OperationEnum op, iCS_EditorObject obj= null) {
+		ourNextOperation= op;
+		ourOperationObject= obj;
+	}
 	
     // ======================================================================
     // Scene properties
@@ -264,10 +390,22 @@ public static class iCS_PublicInterfaceController {
     // ======================================================================
     // Update scene content changed
     // ----------------------------------------------------------------------
-    static void RefreshPublicInterfaceInfo() {
-		// Remove all previous errors/warnings
+    static void RebuildAndValidatePublicInterfaceInfo() {
+		// -- Rebuild public interface information --
+		RebuildPublicInterfaceInfo();
+        
+		// -- Remove all previous errors/warnings --
 		iCS_ErrorController.Clear(kServiceId);
 		
+        // Validate variable & function groups
+        ValidatePublicGroups();
+		
+		// -- Reset next operation to rebuild & validate all visual script in the scene --
+		ourNextOperation  = OperationEnum.RebuildInfo;
+		ourOperationObject= null;
+    }
+    // ----------------------------------------------------------------------
+    static void RebuildPublicInterfaceInfo() {
 		// Extract all public interface definitions and usages
         ourPublicVariables   = ScanForPublicVariables();
         ourPublicFunctions   = ScanForPublicFunctions();
@@ -281,53 +419,8 @@ public static class iCS_PublicInterfaceController {
 		foreach(var vr in ourVariableReferences)	{ PublicVariableGroups.Add(vr); }
 		foreach(var pf in ourPublicFunctions)		{ PublicFunctionGroups.Add(pf); }
 		foreach(var fc in ourFunctionCalls)			{ PublicFunctionGroups.Add(fc); }
-		
-#if DEBUG
-        PublicVariableGroups.ForEach((name,group)=> { Debug.Log("Public Variable Found=> "+name); });
-        PublicFunctionGroups.ForEach((name,group)=> { Debug.Log("Public Function Found=> "+name); });
-#endif
-        
-        // Validate variable & function groups
-        ValidatePublicGroups();
     }
 
-    // ======================================================================
-    // Update visual script content changed
-    // ----------------------------------------------------------------------
-    static void OnVisualScriptSaved(iCS_IStorage iStorage) {
-        RefreshPublicInterfaceInfo();
-    }
-    static void OnVisualScriptUndo(iCS_IStorage iStorage) {
-        RefreshPublicInterfaceInfo();
-    }
-    static void OnVisualScriptElementAdded(iCS_IStorage iStorage, iCS_EditorObject element) {
-		// Don't process if the lement does not imply a public interface.
-		if(!IsPublicObject(element)) return;
-
-//        if(element.IsPublicVariable || element.IsVariableReference) {
-//            PublicVariableGroups.Add(element);
-//        }
-//        if(element.IsPublicFunction || element.IsFunctionCall) {
-//            PublicFunctionGroups.Add(element);
-//        }
-        RefreshPublicInterfaceInfo();
-    }
-    static void OnVisualScriptElementWillBeRemoved(iCS_IStorage iStorage, iCS_EditorObject element) {
-		// Don't process if the element does not imply a public interface.
-		if(!IsPublicObject(element)) return;		
-//        if(element.IsPublicVariable || element.IsVariableReference) {
-//            PublicVariableGroups.Remove(element);
-//        }
-//        if(element.IsPublicFunction || element.IsFunctionCall) {
-//            PublicFunctionGroups.Remove(element);
-//        }
-//		RefreshPublicInterfaceInfo();
-    }
-    static void OnVisualScriptElementNameChanged(iCS_IStorage iStorage, iCS_EditorObject element) {
-		// Don't process if the element does not imply a public interface.
-		if(!IsPublicObject(element)) return;
-//		RefreshPublicInterfaceInfo();
-    }
     // ----------------------------------------------------------------------
 	static bool IsPublicObject(iCS_EditorObject element) {
 		return IsPublicDefinition(element) || IsReferenceToPublicObject(element);
@@ -510,10 +603,11 @@ public static class iCS_PublicInterfaceController {
 				definitions.ForEach(
 					o=> {
 						if(!CompareFunctionInterface(ports, o.VisualScript, o.EngineObject)) {
-                            var errorMsg= "Public functions=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> must have the same interface.";
-							iCS_ErrorController.AddError(kServiceId, errorMsg, vs, engObj.InstanceId);
-							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
-                            group.IsDefinitionsErrorFree= false;
+							UpdateFunctionInterfaceFrom(o.VisualScript, o.EngineObject, vs, engObj);
+//                            var errorMsg= "Public functions=> <color=orange><b>"+definition.FullName+"</b></color> and=> <color=orange><b>"+o.FullName+"</b></color> must have the same interface.";
+//							iCS_ErrorController.AddError(kServiceId, errorMsg, vs, engObj.InstanceId);
+//							iCS_ErrorController.AddError(kServiceId, errorMsg, o.VisualScript, o.EngineObject.InstanceId);
+//                            group.IsDefinitionsErrorFree= false;
 						}
 					}
 				);
@@ -587,26 +681,22 @@ public static class iCS_PublicInterfaceController {
 		}
 		return true;
 	}
+
+	// ======================================================================
+	// UPDATE FUNCTION CALL FROM FUNCTION DEFINITION
     // ----------------------------------------------------------------------
     /// Update function call from function definition.
     static void UpdateFunctionCall(iCS_EngineObject[] fncDefPorts, iCS_VisualScriptImp vs, iCS_EngineObject functionCall) {
-        // -- Update is completed if all ports are identical --
+        // -- Replicate interface ports --
         var fncCallPorts= GetFunctionInterface(vs, functionCall);
-		ReplicatePorts(fncDefPorts, fncCallPorts, vs, functionCall);
+		ReplicatePortsOnFunctionCall(fncDefPorts, fncCallPorts, vs, functionCall);
 
         // -- Advise Unity that the visual script has changed --
-        EditorUtility.SetDirty(vs);
-        iCS_VisualEditor visualEditor= null;
-        if(iCS_VisualScriptDataController.IsInUse(vs)) {
-            visualEditor= iCS_EditorController.FindVisualEditor();
-	        if(visualEditor != null) {
-	            visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
-	        }
-        }
+        UpdateUnityAndEditors(vs);
     }
     // ----------------------------------------------------------------------
-	static void ReplicatePorts(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
-						  iCS_VisualScriptImp vs, iCS_EngineObject node) {
+	static void ReplicatePortsOnFunctionCall(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
+						                     iCS_VisualScriptImp vs, iCS_EngineObject node) {
 
         // -- Update is completed if all ports are identical --
 		var nonIdenticalPorts= KeepNonIdenticalPorts(portsToReplicate, existingPorts);
@@ -637,14 +727,14 @@ public static class iCS_PublicInterfaceController {
 		var dstPort= P.head(dstPorts);
 		if(!P.or(p=> ArePortsTypeIdentical(p, srcPort), dstPorts)) {
 			AddPortOnFunctionCall(srcPort, vs, node);
-			ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
+			ReplicatePortsOnFunctionCall(P.tail(srcPorts), dstPorts, vs, node);
 			return;
 		}
 
 		// -- Remove port if no matching type --
 		if(!P.or(p=> ArePortsTypeIdentical(p, dstPort), srcPorts)) {
 			DestroyPortOnFunctionCall(dstPort, vs, node);
-			ReplicatePorts(srcPorts, P.tail(dstPorts), vs, node);
+			ReplicatePortsOnFunctionCall(srcPorts, P.tail(dstPorts), vs, node);
 			return;
 		}
 
@@ -653,20 +743,20 @@ public static class iCS_PublicInterfaceController {
 		if(P.length(result) != 0) {
 			result[0].PortIndex= srcPort.PortIndex;
 			dstPorts= P.filter(p=> p != result[0], dstPorts);
-			ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
+			ReplicatePortsOnFunctionCall(P.tail(srcPorts), dstPorts, vs, node);
 			return;
 		}
 
 		// -- Simple port rename --
 		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
 			dstPort.Name= srcPort.Name;
-			ReplicatePorts(P.tail(srcPorts), P.tail(dstPorts), vs, node);
+			ReplicatePortsOnFunctionCall(P.tail(srcPorts), P.tail(dstPorts), vs, node);
 			return;
 		}			
 		
 		// -- Could not find a valid match for source port; so just add it --
 		AddPortOnFunctionCall(srcPort, vs, node);
-		ReplicatePorts(P.tail(srcPorts), dstPorts, vs, node);
+		ReplicatePortsOnFunctionCall(P.tail(srcPorts), dstPorts, vs, node);
 	}
     // ----------------------------------------------------------------------
 	static P.Tuple<iCS_EngineObject[],iCS_EngineObject[]> KeepNonIdenticalPorts(iCS_EngineObject[] ps1, iCS_EngineObject[] ps2) {
@@ -726,4 +816,171 @@ public static class iCS_PublicInterfaceController {
 	static void DestroyPortOnFunctionCall(iCS_EngineObject portToDestroy, iCS_VisualScriptImp vs, iCS_EngineObject functionCallNode) {
         iCS_VisualScriptData.DestroyEngineObject(vs, portToDestroy);
 	}
+
+	// ======================================================================
+	// UPDATE FUNCTION DEFINIION FROM ANOTHER FUNCTION DEFINITION
+    // ----------------------------------------------------------------------
+	static void UpdateFunctionInterfaceFrom(iCS_VisualScriptImp toVs  , iCS_EngineObject toFnc,
+									 		iCS_VisualScriptImp fromVs, iCS_EngineObject fromFnc) {
+
+		// -- Replcate interface ports --
+		var fromPorts= GetFunctionInterface(fromVs, fromFnc);
+		var toPorts  = GetFunctionInterface(toVs  , toFnc);
+		ReplicatePortsOnFunction(fromPorts, toPorts, toVs, toFnc);
+		
+        // -- Advise Unity that the visual script has changed --
+        UpdateUnityAndEditors(toVs);
+	}
+    // ----------------------------------------------------------------------
+	static void ReplicatePortsOnFunction(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
+						                     iCS_VisualScriptImp vs, iCS_EngineObject node) {
+
+        // -- Update is completed if all ports are identical --
+		var nonIdenticalPorts= KeepNonIdenticalPorts(portsToReplicate, existingPorts);
+		var srcPorts= nonIdenticalPorts.Item1;
+		var dstPorts= nonIdenticalPorts.Item2;
+		var srcLen= P.length(srcPorts);
+		var dstLen= P.length(dstPorts);
+        if(srcLen == 0 && dstLen == 0) return;
+		
+        // -- Simple port addition --
+		if(srcLen != 0 && dstLen == 0) {
+	        foreach(var toClone in srcPorts) {
+				AddPortOnFunction(toClone, vs, node);
+	        }	
+			return;
+		}
+
+	    // -- Simple port removal --
+		if(srcLen == 0 && dstLen != 0) {
+	        foreach(var toRemove in dstPorts) {
+				DestroyPortOnFunction(toRemove, vs, node);
+	        }
+			return;
+		}
+		
+		// -- Add port if no matching type --
+		var srcPort= P.head(srcPorts);
+		var dstPort= P.head(dstPorts);
+		if(!P.or(p=> ArePortsTypeIdentical(p, srcPort), dstPorts)) {
+			AddPortOnFunction(srcPort, vs, node);
+			ReplicatePortsOnFunction(P.tail(srcPorts), dstPorts, vs, node);
+			return;
+		}
+
+		// -- Remove port if no matching type --
+		if(!P.or(p=> ArePortsTypeIdentical(p, dstPort), srcPorts)) {
+			DestroyPortOnFunction(dstPort, vs, node);
+			ReplicatePortsOnFunction(srcPorts, P.tail(dstPorts), vs, node);
+			return;
+		}
+
+		// -- Relink the port index --
+		var result= P.filter(p=> ArePortsIdenticalExceptIndex(p, srcPort), dstPorts);
+		if(P.length(result) != 0) {
+			result[0].PortIndex= srcPort.PortIndex;
+			dstPorts= P.filter(p=> p != result[0], dstPorts);
+			ReplicatePortsOnFunction(P.tail(srcPorts), dstPorts, vs, node);
+			return;
+		}
+
+		// -- Simple port rename --
+		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
+			dstPort.Name= srcPort.Name;
+			ReplicatePortsOnFunction(P.tail(srcPorts), P.tail(dstPorts), vs, node);
+			return;
+		}			
+		
+		// -- Could not find a valid match for source port; so just add it --
+		AddPortOnFunction(srcPort, vs, node);
+		ReplicatePortsOnFunction(P.tail(srcPorts), dstPorts, vs, node);
+	}
+    // ----------------------------------------------------------------------
+	static void AddPortOnFunction(iCS_EngineObject portToClone, iCS_VisualScriptImp vs, iCS_EngineObject functionNode) {
+        var newPort= portToClone.Clone();
+        newPort.ParentId= functionNode.InstanceId;
+        newPort.SourceId= -1;
+        newPort.IsNameEditable= false;
+        // FIXME: Must update unity object reference in visual script data.
+        iCS_VisualScriptData.AddEngineObject(vs, newPort);
+	}
+    // ----------------------------------------------------------------------
+	static void DestroyPortOnFunction(iCS_EngineObject portToDestroy, iCS_VisualScriptImp vs, iCS_EngineObject functionNode) {
+		DestroyPortOnFunctionCall(portToDestroy, vs, functionNode);
+	}
+    // ----------------------------------------------------------------------
+    static void ChangeNodeName(iCS_EditorObject obj) {
+		// -- Determine if this is a new node --
+		var objVs= obj.IStorage.VisualScript;
+		var engObj= obj.EngineObject;
+        if(obj.IsPublicFunction) {
+    		// -- New functions follow existing interface --
+    		var isVirgin= obj.NbOfChildNodes == 0;
+    		if(isVirgin) {
+    			var group= ourPublicFunctionGroups.Find(obj.Name);
+    			if(group != null) {
+    				ReferenceToDefinition toFollow= null;
+    				toFollow= P.find(def=> def.EngineObject != engObj, group.Definitions);
+    				if(toFollow != null) {
+    					UpdateFunctionInterfaceFrom(objVs, engObj, toFollow.VisualScript, toFollow.EngineObject);
+    				}
+    			}
+    		}
+            else {
+                ChangeInterfaceName(ourPublicFunctionGroups, obj);
+            }
+        } else {
+            ChangeInterfaceName(ourPublicVariableGroups, obj);
+        }
+    }
+    // ----------------------------------------------------------------------
+    static void ChangeInterfaceName(VSPublicGroups groups, iCS_EditorObject obj) {
+        var objVs= obj.IStorage.PersistentStorage;
+		// -- Try to find the original group --
+		LinkedGroup myGroup= null;
+		groups.ForEach(
+			(_, group)=> {
+				foreach(var def in group.Definitions) {
+					if(def.VisualScript == objVs && obj.InstanceId == def.InstanceId) {
+						myGroup= group;
+						return;
+					}
+				}
+			}
+		);
+        // -- Change name of all nodes in the found linked group --
+		if(myGroup != null) {
+			foreach(var def in myGroup.Definitions) {
+				if(def != null) {
+					var eng= def.EngineObject;
+					if(eng != null) {
+						eng.Name= obj.Name;
+                        UpdateUnityAndEditors(def.VisualScript);
+					}
+				}
+			}
+			foreach(var r in myGroup.References) {
+				if(r != null) {
+					var eng= r.EngineObject;
+					if(eng != null) {
+						eng.Name= obj.Name;
+                        UpdateUnityAndEditors(r.VisualScript);
+					}
+				}
+			}
+		}
+    }
+    // ----------------------------------------------------------------------
+    static void UpdateUnityAndEditors(iCS_MonoBehaviourImp vs) {
+        // -- Advise Unity that the visual script has changed --
+        EditorUtility.SetDirty(vs);
+        // -- Reload the visual editor --
+        iCS_VisualEditor visualEditor= null;
+        if(iCS_VisualScriptDataController.IsInUse(vs)) {
+            visualEditor= iCS_EditorController.FindVisualEditor();
+	        if(visualEditor != null) {
+	            visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
+	        }
+        }        
+    }
 }

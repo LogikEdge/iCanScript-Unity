@@ -62,7 +62,7 @@ public static partial class iCS_UserCommands {
             return;
         }
 		if(pasted != null) {
-			iCS_SystemEvents.AnnounceVisualScriptElementAdded(iStorage, pasted);			
+			iCS_SystemEvents.AnnounceVisualScriptElementAdded(pasted);			
 		}
         CloseTransaction(iStorage, "Add Prefab "+sourceRoot.Name);
     }
