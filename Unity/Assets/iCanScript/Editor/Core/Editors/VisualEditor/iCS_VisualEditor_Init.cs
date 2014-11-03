@@ -32,7 +32,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myCurrentTime= Time.realtimeSinceStartup;	
         
         // Update visual editor cache.
-        UpdateVisualEditorCache();    
+        UpdateVisualEditorCache();
+        
+        // Register for window under mouse change
+        iCS_SystemEvents.OnWindowUnderMouseChange+= helpWindowChange;
 	}
 
 	// ----------------------------------------------------------------------
@@ -44,6 +47,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myGraphics      = null;
         myContextualMenu= null;
 		mySubEditor     = null;
+        
+        // Unregister for window under mouse change
+        iCS_SystemEvents.OnWindowUnderMouseChange-= helpWindowChange;
     }
 
 	// ----------------------------------------------------------------------

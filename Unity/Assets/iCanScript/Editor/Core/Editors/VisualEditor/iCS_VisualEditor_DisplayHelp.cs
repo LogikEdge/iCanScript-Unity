@@ -28,8 +28,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// -------------------------------------------------------------------------------------------------
 	public void helpWindowChange() {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
-		if(edWin != null)
+		if(edWin != null) {
 			myHelpText= iCS_HelpController.getHelp(edWin.GetType());
+            Repaint();		    
+		}
 	}
 		
     // ================================================================================

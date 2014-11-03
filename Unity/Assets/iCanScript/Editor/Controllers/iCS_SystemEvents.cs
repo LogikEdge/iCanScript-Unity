@@ -9,15 +9,16 @@ public static class iCS_SystemEvents {
     // ======================================================================
     // Callbacks
     // ----------------------------------------------------------------------
-    public static Action    OnEditorStarted      = null;   ///< Event: Editor has started
-    public static Action    OnSceneChanged       = null;   ///< Event: Scene has changed
-    public static Action    OnHierarchyChanged   = null;   ///< Event: Hierarchy has changed
-    public static Action    OnProjectChanged     = null;   ///< Event: Project has changed
-    public static Action    OnCompileStarted     = null;   ///< Event: Start compiling
-    public static Action    OnCompileCompleted   = null;   ///< Event: Compile completed
-    public static Action    OnEngineStarted      = null;   ///< Event: Engine starting
-    public static Action    OnEngineStopped      = null;   ///< Event: Engine stopping
-    public static Action    OnEnginePaused       = null;   ///< Event: Engine paused
+    public static Action    OnEditorStarted         = null;   ///< Event: Editor has started
+    public static Action    OnSceneChanged          = null;   ///< Event: Scene has changed
+    public static Action    OnHierarchyChanged      = null;   ///< Event: Hierarchy has changed
+    public static Action    OnProjectChanged        = null;   ///< Event: Project has changed
+    public static Action    OnCompileStarted        = null;   ///< Event: Start compiling
+    public static Action    OnCompileCompleted      = null;   ///< Event: Compile completed
+    public static Action    OnEngineStarted         = null;   ///< Event: Engine starting
+    public static Action    OnEngineStopped         = null;   ///< Event: Engine stopping
+    public static Action    OnEnginePaused          = null;   ///< Event: Engine paused
+    public static Action    OnWindowUnderMouseChange= null;   ///< Event: Mouse is hovering a new window
     // Events related to visual script edition
     public static ActionVisualScript OnVisualScriptSaved               = null;  ///< Event: Changes to the Visual Script where saved
     public static ActionVisualScript OnVisualScriptReloaded            = null;  ///< Event: Visual Script was reloaded
@@ -29,12 +30,12 @@ public static class iCS_SystemEvents {
     // ======================================================================
     // State fields
     // ----------------------------------------------------------------------
-    static bool    myIsUpdateSeen= false;
-    static string  myCurrentScene= null;
-    static bool    myIsCompiling = false;
-    static bool    myIsPlaying   = false;
-    static bool    myIsPaused    = false;
-	static EditorWindow myMouseOverWindow= null;
+    static bool         myIsUpdateSeen    = false;
+    static string       myCurrentScene    = null;
+    static bool         myIsCompiling     = false;
+    static bool         myIsPlaying       = false;
+    static bool         myIsPaused        = false;
+	static EditorWindow myWindowUnderMouse= null;
     
     // ======================================================================
     // Persistant States
@@ -129,17 +130,16 @@ public static class iCS_SystemEvents {
         CheckEnginePlayingState();
         CheckEnginePausedState();
 		// Detect if window for help has changed.
-		CheckHelpWindowChange();
+		CheckWindowUnderMouse();
     }
 	
     // ----------------------------------------------------------------------
-    static void CheckHelpWindowChange() {
+    static void CheckWindowUnderMouse() {
 		// If current moused over window changes, Update help string and display
-		var mouseOverWindow=  EditorWindow.mouseOverWindow;
-		if(mouseOverWindow !=  myMouseOverWindow) {
-			iCS_EditorController.FindVisualEditor().helpWindowChange();
-			iCS_EditorController.RepaintVisualEditor();	
-			myMouseOverWindow= mouseOverWindow;
+		var windowUnderMouse= EditorWindow.mouseOverWindow;
+		if(windowUnderMouse !=  myWindowUnderMouse) {
+			myWindowUnderMouse= windowUnderMouse;
+            Invoke(OnWindowUnderMouseChange);
 		}	
     }
 	
