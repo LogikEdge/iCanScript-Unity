@@ -48,57 +48,7 @@ public static class iCS_PublicInterfaceController {
 				break;
 			}
 			case OperationEnum.NodeNameChange: {
-				// -- Determine if this is a new node --
-				var obj= ourOperationObject;
-				var objVs= obj.IStorage.VisualScript;
-				var engObj= obj.EngineObject;
-				var isVirgin= obj.NbOfChildNodes == 0;
-				// -- New functions follow existing interface --
-				if(isVirgin) {
-					var group= ourPublicFunctionGroups.Find(obj.Name);
-					if(group != null) {
-						ReferenceToDefinition toFollow= null;
-						toFollow= P.find(def=> def.EngineObject != engObj, group.Definitions);
-						if(toFollow != null) {
-							UpdateFunctionInterfaceFrom(objVs, engObj, toFollow.VisualScript, toFollow.EngineObject);
-						}
-					}
-				}
-				// -- We assume the user wants to change to name of the interface --
-				// -- if the function is already populated --
-				else {
-					// -- Try to find the original group --
-					LinkedGroup myGroup= null;
-					ourPublicFunctionGroups.ForEach(
-						(_, group)=> {
-							foreach(var def in group.Definitions) {
-								if(def.VisualScript == objVs && obj.InstanceId == def.InstanceId) {
-									myGroup= group;
-									return;
-								}
-							}
-						}
-					);
-					// FIXME: NODE NAME CHANGE NOT WORKING !!!
-					if(myGroup != null) {
-						foreach(var def in myGroup.Definitions) {
-							if(def != null) {
-								var eng= def.EngineObject;
-								if(eng != null) {
-									eng.Name= obj.Name;
-								}
-							}
-						}
-						foreach(var r in myGroup.References) {
-							if(r != null) {
-								var eng= r.EngineObject;
-								if(eng != null) {
-									eng.Name= obj.Name;
-								}
-							}
-						}
-					}
-				}
+                ChangeNodeName(ourOperationObject);
 				RebuildAndValidatePublicInterfaceInfo();
 				break;
 			}
@@ -742,14 +692,7 @@ public static class iCS_PublicInterfaceController {
 		ReplicatePortsOnFunctionCall(fncDefPorts, fncCallPorts, vs, functionCall);
 
         // -- Advise Unity that the visual script has changed --
-        EditorUtility.SetDirty(vs);
-        iCS_VisualEditor visualEditor= null;
-        if(iCS_VisualScriptDataController.IsInUse(vs)) {
-            visualEditor= iCS_EditorController.FindVisualEditor();
-	        if(visualEditor != null) {
-	            visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
-	        }
-        }
+        UpdateUnityAndEditors(vs);
     }
     // ----------------------------------------------------------------------
 	static void ReplicatePortsOnFunctionCall(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
@@ -886,14 +829,7 @@ public static class iCS_PublicInterfaceController {
 		ReplicatePortsOnFunction(fromPorts, toPorts, toVs, toFnc);
 		
         // -- Advise Unity that the visual script has changed --
-        EditorUtility.SetDirty(toVs);
-        iCS_VisualEditor visualEditor= null;
-        if(iCS_VisualScriptDataController.IsInUse(toVs)) {
-            visualEditor= iCS_EditorController.FindVisualEditor();
-	        if(visualEditor != null) {
-	            visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
-	        }
-        }
+        UpdateUnityAndEditors(toVs);
 	}
     // ----------------------------------------------------------------------
 	static void ReplicatePortsOnFunction(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
@@ -972,4 +908,79 @@ public static class iCS_PublicInterfaceController {
 	static void DestroyPortOnFunction(iCS_EngineObject portToDestroy, iCS_VisualScriptImp vs, iCS_EngineObject functionNode) {
 		DestroyPortOnFunctionCall(portToDestroy, vs, functionNode);
 	}
+    // ----------------------------------------------------------------------
+    static void ChangeNodeName(iCS_EditorObject obj) {
+		// -- Determine if this is a new node --
+		var objVs= obj.IStorage.VisualScript;
+		var engObj= obj.EngineObject;
+        if(obj.IsPublicFunction) {
+    		// -- New functions follow existing interface --
+    		var isVirgin= obj.NbOfChildNodes == 0;
+    		if(isVirgin) {
+    			var group= ourPublicFunctionGroups.Find(obj.Name);
+    			if(group != null) {
+    				ReferenceToDefinition toFollow= null;
+    				toFollow= P.find(def=> def.EngineObject != engObj, group.Definitions);
+    				if(toFollow != null) {
+    					UpdateFunctionInterfaceFrom(objVs, engObj, toFollow.VisualScript, toFollow.EngineObject);
+    				}
+    			}
+    		}
+            else {
+                ChangeInterfaceName(ourPublicFunctionGroups, obj);
+            }
+        } else {
+            ChangeInterfaceName(ourPublicVariableGroups, obj);
+        }
+    }
+    // ----------------------------------------------------------------------
+    static void ChangeInterfaceName(VSPublicGroups groups, iCS_EditorObject obj) {
+        var objVs= obj.IStorage.PersistentStorage;
+		// -- Try to find the original group --
+		LinkedGroup myGroup= null;
+		groups.ForEach(
+			(_, group)=> {
+				foreach(var def in group.Definitions) {
+					if(def.VisualScript == objVs && obj.InstanceId == def.InstanceId) {
+						myGroup= group;
+						return;
+					}
+				}
+			}
+		);
+        // -- Change name of all nodes in the found linked group --
+		if(myGroup != null) {
+			foreach(var def in myGroup.Definitions) {
+				if(def != null) {
+					var eng= def.EngineObject;
+					if(eng != null) {
+						eng.Name= obj.Name;
+                        UpdateUnityAndEditors(def.VisualScript);
+					}
+				}
+			}
+			foreach(var r in myGroup.References) {
+				if(r != null) {
+					var eng= r.EngineObject;
+					if(eng != null) {
+						eng.Name= obj.Name;
+                        UpdateUnityAndEditors(r.VisualScript);
+					}
+				}
+			}
+		}
+    }
+    // ----------------------------------------------------------------------
+    static void UpdateUnityAndEditors(iCS_MonoBehaviourImp vs) {
+        // -- Advise Unity that the visual script has changed --
+        EditorUtility.SetDirty(vs);
+        // -- Reload the visual editor --
+        iCS_VisualEditor visualEditor= null;
+        if(iCS_VisualScriptDataController.IsInUse(vs)) {
+            visualEditor= iCS_EditorController.FindVisualEditor();
+	        if(visualEditor != null) {
+	            visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
+	        }
+        }        
+    }
 }
