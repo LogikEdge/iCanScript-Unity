@@ -98,7 +98,7 @@ public static class iCS_LicenseController {
     }
     public static bool HasProLicense {
         get {
-            return iCS_EditionController.IsDevEdition || iCS_EditionController.IsStoreEdition;
+            return iCS_EditionController.IsDevEdition || iCS_EditionController.IsProEdition;
         }
     }
     public static bool IsLicensed {

@@ -16,21 +16,31 @@ public static class iCS_PublicInterfaceController {
             Debug.LogError("iCanScript: Please move PublicInterfaceController after the SceneController in AppController");
         }
         // -- Events to refresh scene content information --
-        iCS_SystemEvents.OnSceneChanged    = OnSceneLoad;
-        iCS_SystemEvents.OnHierarchyChanged= OnSceneLoad;
-        iCS_SystemEvents.OnProjectChanged  = OnSceneLoad;
+        iCS_SystemEvents.OnSceneChanged    += OnSceneLoad;
+        iCS_SystemEvents.OnHierarchyChanged+= OnSceneLoad;
+        iCS_SystemEvents.OnProjectChanged  += OnSceneLoad;
         // -- Events to refresh visual script information --
-		iCS_SystemEvents.OnVisualScriptSaved			   = OnVisualScriptSaved;
-        iCS_SystemEvents.OnVisualScriptUndo                = OnVisualScriptUndo;
-        iCS_SystemEvents.OnVisualScriptElementAdded        = OnVisualScriptElementAdded;
-        iCS_SystemEvents.OnVisualScriptElementWillBeRemoved= OnVisualScriptElementWillBeRemoved;
-        iCS_SystemEvents.OnVisualScriptElementNameChanged  = OnVisualScriptElementNameChanged;
+		iCS_SystemEvents.OnVisualScriptSaved			   += OnVisualScriptSaved;
+        iCS_SystemEvents.OnVisualScriptUndo                += OnVisualScriptUndo;
+        iCS_SystemEvents.OnVisualScriptElementAdded        += OnVisualScriptElementAdded;
+        iCS_SystemEvents.OnVisualScriptElementWillBeRemoved+= OnVisualScriptElementWillBeRemoved;
+        iCS_SystemEvents.OnVisualScriptElementNameChanged  += OnVisualScriptElementNameChanged;
 
         // -- Force an initial refresh of the scene info --
         OnSceneLoad();
     }
     public static void Start() {}
     public static void Shutdown() {
+        // -- Unregister events to refresh scene content information --
+        iCS_SystemEvents.OnSceneChanged    -= OnSceneLoad;
+        iCS_SystemEvents.OnHierarchyChanged-= OnSceneLoad;
+        iCS_SystemEvents.OnProjectChanged  -= OnSceneLoad;
+        // -- Unregister events to refresh visual script information --
+		iCS_SystemEvents.OnVisualScriptSaved			   -= OnVisualScriptSaved;
+        iCS_SystemEvents.OnVisualScriptUndo                -= OnVisualScriptUndo;
+        iCS_SystemEvents.OnVisualScriptElementAdded        -= OnVisualScriptElementAdded;
+        iCS_SystemEvents.OnVisualScriptElementWillBeRemoved-= OnVisualScriptElementWillBeRemoved;
+        iCS_SystemEvents.OnVisualScriptElementNameChanged  -= OnVisualScriptElementNameChanged;
     }
     
     // ======================================================================

@@ -31,7 +31,7 @@ public static class iCS_InstallationController {
 				iCS_PreferencesController.UserLicense= iCS_LicenseController.ToString(license);
 			}			
 		}
-		else if(iCS_EditionController.IsStoreEdition) {
+		else if(iCS_EditionController.IsProEdition) {
 			if(iCS_LicenseController.HasProLicense == false) {
 				var fingerPrint= iCS_LicenseController.FingerPrint;
 				var licenseType= iCS_LicenseType.Pro;

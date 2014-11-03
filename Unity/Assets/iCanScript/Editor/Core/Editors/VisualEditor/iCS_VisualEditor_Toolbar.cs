@@ -128,13 +128,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		iCS_ToolbarUtility.CenteredTitle(ref r, name);
 
         // Trial information.
-        if(!iCS_LicenseController.IsActivated) {
-            GUIStyle style= EditorStyles.toolbarTextField;
-            var remainingTimeMessageSize= style.CalcSize(myCached_RemainingTrialDaysMessage);
-            var x= 0.5f*(position.width-remainingTimeMessageSize.x);
-            GUI.Label(new Rect(x,r.yMax,remainingTimeMessageSize.x, remainingTimeMessageSize.y), myCached_RemainingTrialDaysMessage, style);
-
-        }
+        ShowTrialInformation(ref r);
 
 		// Show scroll position
 		var scrollPositionAsStr= ScrollPosition.ToString();
@@ -144,5 +138,48 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			        scrollPositionSize.x, scrollPositionSize.y);
 		GUI.Label(r, scrollPositionAsGUIContent);
 	}
-    
+    // -----------------------------------------------------------------------
+    void ShowTrialInformation(ref Rect r) {
+//        if(!iCS_EditionController.IsTrialEdition) {
+            // -- Display trial remaining information --
+            GUIStyle style= EditorStyles.textField;
+            style.richText= true;
+            style.fontStyle= FontStyle.Bold;
+            style.fontSize= (int)(style.fontSize*1.1f);
+            var nbOfVisualScriptRemaining= iCS_EditionController.TrialVisualScriptsRemaining;
+            var nbOfNodesRemaining= iCS_EditionController.TrialNodesRemaining;
+            var visualScriptsMessage= "Visual Scripts Remaining= "+nbOfVisualScriptRemaining;
+            var nodesMessage="Nodes Remaining= "+nbOfNodesRemaining;
+            var percentVisualScriptsRemaining= iCS_EditionController.TrialPercentVisualScriptsRemaining;
+            var percentNodesRemaining        = iCS_EditionController.TrialPercentNodesRemaining;
+            if(percentVisualScriptsRemaining <= 0.4f) {
+                if(percentVisualScriptsRemaining <= 0.2f) {
+                    visualScriptsMessage= "<color=red>"+visualScriptsMessage+"</color>";
+                }
+                else {
+                    visualScriptsMessage= "<color=orange>"+visualScriptsMessage+"</color>";                    
+                }
+            }
+            if(percentNodesRemaining <= 0.4f) {
+                if(percentNodesRemaining <= 0.2f) {
+                    nodesMessage= "<color=red>"+nodesMessage+"</color>";
+                }
+                else {
+                    nodesMessage= "<color=orange>"+nodesMessage+"</color>";
+                }
+            }
+            var trialMessage= "TRIAL ==> "+visualScriptsMessage+" / "+nodesMessage+" <==";
+            var trialMessageSize= style.CalcSize(new GUIContent(trialMessage));
+            var x= 0.5f*(position.width-trialMessageSize.x);
+            GUI.Label(new Rect(x,r.yMax,trialMessageSize.x, trialMessageSize.y), trialMessage, style);
+
+            // -- Display Purchase information --
+            if(nbOfVisualScriptRemaining < 0 || nbOfNodesRemaining < 0) {
+                var width = position.width;
+                var height= position.height;
+                var purchaseRect= new Rect(0.15f*width, 0.15f*height, 0.7f*width, 0.7f*height);
+                EditorGUI.HelpBox(purchaseRect, "Please Purchase", MessageType.Warning);
+            }
+//        }        
+    }
 }

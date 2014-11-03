@@ -36,28 +36,41 @@ public static class iCS_SceneController {
             return ourLogo;  
         }
     }
+    public static int NumberOfVisualScriptsInOrReferencedByScene {
+        get { return VisualScriptsInOrReferencedByScene == null ? 0: VisualScriptsInOrReferencedByScene.Length; }
+    }
     
     // ======================================================================
     // Common Controller activation/deactivation
     // ----------------------------------------------------------------------
 	static iCS_SceneController() {
-        // Delegate to draw iCanScript icon in hierarchy
+        // -- Delegate to draw iCanScript icon in hierarchy --
         EditorApplication.hierarchyWindowItemOnGUI+= UnityHierarchyItemOnGui;
         
-        // Events to refresh scene content information.
-		iCS_SystemEvents.OnEditorStarted   = RefreshSceneInfo;
-        iCS_SystemEvents.OnSceneChanged    = RefreshSceneInfo;
-        iCS_SystemEvents.OnHierarchyChanged= RefreshSceneInfo;
-        iCS_SystemEvents.OnProjectChanged  = RefreshSceneInfo;
-		iCS_SystemEvents.OnCompileStarted  = RefreshSceneInfo;
-        // Force an initial refresh of the scene info.
+        // -- Events to refresh scene content information --
+		iCS_SystemEvents.OnEditorStarted   += RefreshSceneInfo;
+        iCS_SystemEvents.OnSceneChanged    += RefreshSceneInfo;
+        iCS_SystemEvents.OnHierarchyChanged+= RefreshSceneInfo;
+        iCS_SystemEvents.OnProjectChanged  += RefreshSceneInfo;
+		iCS_SystemEvents.OnCompileStarted  += RefreshSceneInfo;
+        // -- Force an initial refresh of the scene info --
         RefreshSceneInfo();  
 	}
     
     /// Start the application controller.
 	public static void Start() {}
     /// Shutdowns the application controller.
-    public static void Shutdown() {}
+    public static void Shutdown() {
+        // -- Remove events to refresh scene content information --
+		iCS_SystemEvents.OnEditorStarted   -= RefreshSceneInfo;
+        iCS_SystemEvents.OnSceneChanged    -= RefreshSceneInfo;
+        iCS_SystemEvents.OnHierarchyChanged-= RefreshSceneInfo;
+        iCS_SystemEvents.OnProjectChanged  -= RefreshSceneInfo;
+		iCS_SystemEvents.OnCompileStarted  -= RefreshSceneInfo;
+
+        // -- Delegate to draw iCanScript icon in hierarchy --
+        EditorApplication.hierarchyWindowItemOnGUI-= UnityHierarchyItemOnGui;
+    }
 
     // ======================================================================
     // Show iCanScript logo in Unity hierarchy
