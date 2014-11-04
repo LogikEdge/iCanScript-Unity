@@ -93,7 +93,7 @@ public static class iCS_LicenseController {
     // ----------------------------------------------------------------------
     public static bool HasTrialLicense {
         get {
-            return iCS_EditionController.IsTrialEdition && RemainingTrialDays >= 0;
+            return iCS_EditionController.IsCommunityEdition && RemainingTrialDays >= 0;
         }
     }
     public static bool HasProLicense {

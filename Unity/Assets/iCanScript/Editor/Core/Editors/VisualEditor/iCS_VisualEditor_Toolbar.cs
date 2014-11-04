@@ -140,18 +140,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
     // -----------------------------------------------------------------------
     void ShowTrialInformation(ref Rect r) {
-//        if(!iCS_EditionController.IsTrialEdition) {
+        if(iCS_EditionController.IsCommunityEdition) {
             // -- Display trial remaining information --
             GUIStyle style= EditorStyles.textField;
             style.richText= true;
             style.fontStyle= FontStyle.Bold;
             style.fontSize= (int)(style.fontSize*1.1f);
-            var nbOfVisualScriptRemaining= iCS_EditionController.TrialVisualScriptsRemaining;
-            var nbOfNodesRemaining= iCS_EditionController.TrialNodesRemaining;
+            var nbOfVisualScriptRemaining= iCS_EditionController.CommunityVisualScriptsRemaining;
+            var nbOfNodesRemaining= iCS_EditionController.CommunityNodesRemaining;
             var visualScriptsMessage= "Visual Scripts Remaining= "+nbOfVisualScriptRemaining;
             var nodesMessage="Nodes Remaining= "+nbOfNodesRemaining;
-            var percentVisualScriptsRemaining= iCS_EditionController.TrialPercentVisualScriptsRemaining;
-            var percentNodesRemaining        = iCS_EditionController.TrialPercentNodesRemaining;
+            var percentVisualScriptsRemaining= iCS_EditionController.CommunityPercentVisualScriptsRemaining;
+            var percentNodesRemaining        = iCS_EditionController.CommunityPercentNodesRemaining;
             if(percentVisualScriptsRemaining <= 0.4f) {
                 if(percentVisualScriptsRemaining <= 0.2f) {
                     visualScriptsMessage= "<color=red>"+visualScriptsMessage+"</color>";
@@ -168,7 +168,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     nodesMessage= "<color=orange>"+nodesMessage+"</color>";
                 }
             }
-            var trialMessage= "TRIAL ==> "+visualScriptsMessage+" / "+nodesMessage+" <==";
+            var trialMessage= "COMMUNITY EDITION ==> "+visualScriptsMessage+" / "+nodesMessage+" <==";
             var trialMessageSize= style.CalcSize(new GUIContent(trialMessage));
             var x= 0.5f*(position.width-trialMessageSize.x);
             GUI.Label(new Rect(x,r.yMax,trialMessageSize.x, trialMessageSize.y), trialMessage, style);
@@ -179,8 +179,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 var width = position.width;
                 var height= position.height-toolbarHeight;
                 var purchaseRect= new Rect(0.15f*width, toolbarHeight+0.15f*height, 0.7f*width, 0.7f*height);
-                EditorGUI.HelpBox(purchaseRect, "Please Purchase", MessageType.Warning);
+                GUI.Box(purchaseRect, "Please Purchase");
             }
-//        }        
+        }        
     }
 }

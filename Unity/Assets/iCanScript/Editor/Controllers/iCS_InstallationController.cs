@@ -40,14 +40,14 @@ public static class iCS_InstallationController {
 				iCS_PreferencesController.UserLicense= iCS_LicenseController.ToString(license);
 			}
 		}
-		else if(iCS_EditionController.IsTrialEdition) {
+		else if(iCS_EditionController.IsCommunityEdition) {
 	        // Warning customer of trial period.
 	        var today= DateTime.Today;
 	        if(iCS_LicenseController.HasTrialLicense) {
 	            var lastWarningDate= iCS_PreferencesController.TrialLastWarningDate;
 	            if(today != lastWarningDate) {
 	                iCS_PreferencesController.TrialLastWarningDate= today;
-	                if(iCS_EditionController.IsTrialEdition) {
+	                if(iCS_EditionController.IsCommunityEdition) {
 #if TRIAL_EDITION
 	                    iCS_TrialDialogs.PurchaseDialog();
 #endif
