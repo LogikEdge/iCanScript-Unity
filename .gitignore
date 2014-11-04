@@ -67,3 +67,5 @@ Unity/Assets/iCanScript/tmtags.meta
 Unity/Assets/iCanScript/tmtagsHistory.meta
 EnterpriseArchitect/iCanScript.eap
 EnterpriseArchitect/iCanScript.ldb
+bin/staging/iCanScriptEditorCommunity.dll
+bin/staging/iCanScriptEditorPro.dll
