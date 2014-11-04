@@ -60,6 +60,9 @@ public static class iCS_EditionController {
         get { return (float)(CommunityNodesRemaining) / MaxCommunityNodesPerVisualScript;}
     }
     public static bool IsCommunityLimitReached {
-        get { return CommunityVisualScriptsRemaining < 0 || CommunityNodesRemaining < 0; }
+        get {
+            if(!IsCommunityEdition) return false;
+            return CommunityVisualScriptsRemaining < 0 || CommunityNodesRemaining < 0;
+        }
     }
 }
