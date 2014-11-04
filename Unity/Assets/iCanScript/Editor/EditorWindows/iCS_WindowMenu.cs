@@ -4,7 +4,7 @@ using UnityEditor;
 public static class iCS_WindowMenu {
     // ======================================================================
 	// iCanScript Graph editor.
-	[MenuItem("iCanScript/Preferences...",false,1100)]
+	[MenuItem("iCanScript/Preferences...",false,50)]
 	public static void MenuPreferences() {
         var editor= EditorWindow.CreateInstance<iCS_PreferencesEditorWindow>();
         editor.ShowUtility();
