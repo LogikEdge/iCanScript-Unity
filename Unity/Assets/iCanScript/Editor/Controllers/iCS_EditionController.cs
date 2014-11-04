@@ -25,8 +25,8 @@ public static class iCS_EditionController {
     public static bool IsDevEdition         { get { return false; }}
 #else
     public static bool IsProEdition         { get { return false; }}
-    public static bool IsCommunityEdition   { get { return false; }}
-    public static bool IsDevEdition         { get { return true;  }}
+    public static bool IsCommunityEdition   { get { return true; }}
+    public static bool IsDevEdition         { get { return false;  }}
 #endif
 #endif
     public new static string ToString() {

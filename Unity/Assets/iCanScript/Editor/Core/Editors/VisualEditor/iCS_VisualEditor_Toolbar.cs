@@ -173,14 +173,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             var x= 0.5f*(position.width-trialMessageSize.x);
             GUI.Label(new Rect(x,r.yMax,trialMessageSize.x, trialMessageSize.y), trialMessage, style);
 
-            // -- Display Purchase information --
-            if(nbOfVisualScriptRemaining < 0 || nbOfNodesRemaining < 0) {
-                var toolbarHeight= iCS_ToolbarUtility.GetHeight();
-                var width = position.width;
-                var height= position.height-toolbarHeight;
-                var purchaseRect= new Rect(0.15f*width, toolbarHeight+0.15f*height, 0.7f*width, 0.7f*height);
-                GUI.Box(purchaseRect, "Please Purchase");
-            }
+//            // -- Display Purchase information --
+//            if(nbOfVisualScriptRemaining < 0 || nbOfNodesRemaining < 0) {
+//                var toolbarHeight= iCS_ToolbarUtility.GetHeight();
+//                var width = position.width;
+//                var height= position.height-toolbarHeight;
+//                var purchaseRect= new Rect(0.15f*width, toolbarHeight+0.15f*height, 0.7f*width, 0.7f*height);
+//                GUI.Box(purchaseRect, "Please Purchase");
+//            }
         }        
     }
 }
