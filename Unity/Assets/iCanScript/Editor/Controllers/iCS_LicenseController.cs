@@ -50,6 +50,7 @@ public static class iCS_LicenseController {
 	}
         
     // ======================================================================
+    // Signature Management
     // ----------------------------------------------------------------------
     public static byte[] FingerPrint {
         get { return ourFingerPrint; }

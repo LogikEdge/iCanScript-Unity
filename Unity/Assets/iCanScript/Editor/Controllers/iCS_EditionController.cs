@@ -37,17 +37,17 @@ public static class iCS_EditionController {
     }
 
     // ======================================================================
-    // Community Edition Queries
+    // Community License Management
     // ----------------------------------------------------------------------
-    public const int MaxComnunityVisualScriptPerScene= 5;
+    public const int MaxCommunityVisualScriptPerScene= 5;
     public const int MaxCommunityNodesPerVisualScript= 50;
     public static int CommunityVisualScriptsRemaining {
         get {
-            return MaxComnunityVisualScriptPerScene-iCS_SceneController.NumberOfVisualScriptsInOrReferencedByScene;
+            return MaxCommunityVisualScriptPerScene-iCS_SceneController.NumberOfVisualScriptsInOrReferencedByScene;
         }
     }
     public static float CommunityPercentVisualScriptsRemaining {
-        get { return (float)(CommunityVisualScriptsRemaining) / MaxComnunityVisualScriptPerScene; }
+        get { return (float)(CommunityVisualScriptsRemaining) / MaxCommunityVisualScriptPerScene; }
     }
     public static int CommunityNodesRemaining {
         get {

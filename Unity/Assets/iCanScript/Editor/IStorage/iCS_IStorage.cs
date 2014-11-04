@@ -161,7 +161,16 @@ public partial class iCS_IStorage {
             // Force a relayout
             ForceRelayout= true;
         }
-        Cleanup();
+
+        // -- Count number of nodes to limit community version --
+        if(iCS_EditionController.IsCommunityEdition) {
+            NumberOfNodes= 0;
+            ForEach(obj=> {
+                if(obj.IsNode && obj != RootObject && !obj.ParentNode.IsInstanceNode) {
+                    ++NumberOfNodes;
+                }
+            });            
+        }
     }
     
     // ----------------------------------------------------------------------
@@ -277,7 +286,7 @@ public partial class iCS_IStorage {
         ForEach(
             obj=> {
                 // -- Count number of nodes to limit trial version --
-                if(obj.IsNode && !obj.IsBehaviour) ++NumberOfNodes;
+                if(obj.IsNode && obj != RootObject && !obj.ParentNode.IsInstanceNode) ++NumberOfNodes;
                 
                 // Keep a copy of the final position.
                 obj.AnimationTargetRect= obj.GlobalRect;
