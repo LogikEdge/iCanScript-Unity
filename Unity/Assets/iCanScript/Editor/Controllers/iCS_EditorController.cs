@@ -57,19 +57,19 @@ public static class iCS_EditorController {
     
     // ======================================================================
     public static void ShowVisualEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Visual Editor");
+        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Visual Editor");
     }
     public static void ShowInstanceEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Instance Wizard");        
+        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Instance Wizard");        
     }
     public static void ShowHierarchyEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Hierarchy");                
+        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Hierarchy");                
     }
     public static void ShowLibraryEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Library");                
+        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Library");                
     }
     public static void ShowPreferences() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Preferences");                
+        EditorApplication.ExecuteMenuItem("iCanScript/Preferences...");                
     }
 
     // ======================================================================
