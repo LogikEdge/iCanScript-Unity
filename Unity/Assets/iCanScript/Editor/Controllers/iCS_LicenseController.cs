@@ -5,55 +5,50 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-
-public enum iCS_LicenseType {
-    Trial= 0, Community= 1, Pro= 0xdc45
-}
-
 public static class iCS_LicenseController {
+    // ======================================================================
+    // Types
+    // ----------------------------------------------------------------------
+    public enum iCS_LicenseType { Community= 0, Pro= 0xdc45 }
+
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
     static byte[]   ourFingerPrint;
     static byte[]   ourSignature;
-    static int      ourReinitializeCnt= 0;
-    static bool     hasProLicense= false;
-    static bool     hasTrialLicense= false;
-    static bool     hasCommunityLicense= true;
-    static bool     isProOperatingMode= false;
-    static bool     isCommunityOperatingMode= true;
     
     // =================================================================================
     // Installation
     // ---------------------------------------------------------------------------------
     static iCS_LicenseController() {
-        Initialize();
-    }
-    public static void Initialize() {
-        ourFingerPrint          = GetMD5Hash(System.Environment.MachineName);
-        hasProLicense      = HasProLicense;
-        hasTrialLicense    = HasTrialLicense;
-        hasCommunityLicense= !(hasProLicense || hasTrialLicense);
-        
-        isProOperatingMode      = hasProLicense || hasTrialLicense;
-        isCommunityOperatingMode= !isProOperatingMode;
-
-        // Restart the trial if the version changed.
-        var communityVersion= iCS_PreferencesController.TrialVersion;
-        if(communityVersion.IsEqual(iCS_Version.Current) == false) {
-            var remainingTrialDays= RemainingTrialDays;
-            if(remainingTrialDays < 7) {
-                remainingTrialDays= 7;
-            }
-            RestartTrial(remainingTrialDays);                
+        ourFingerPrint= GetMD5Hash(System.Environment.MachineName);
+        if(iCS_EditionController.IsProEdition) {
+            GenerateProLicense();
         }
-        ourReinitializeCnt= 0;
     }
 
     public static void Start() {}
     public static void Shutdown() {}
-    
-    
+        
+    // ======================================================================
+    // License management
+    // ----------------------------------------------------------------------
+    public static bool HasProLicense {
+        get {
+            return iCS_EditionController.IsProEdition;
+        }
+    }
+    public static void GenerateProLicense() {
+		var fingerPrint= iCS_LicenseController.FingerPrint;
+		var licenseType= iCS_LicenseType.Pro;
+		var version= iCS_Config.MajorVersion;
+		var license= iCS_LicenseController.BuildSignature(fingerPrint, (int)licenseType, (int)version);
+		iCS_PreferencesController.UserLicense= iCS_LicenseController.ToString(license);
+    }
+	public static string LicenseAsString() {
+        return iCS_PreferencesController.UserLicense;
+	}
+        
     // ======================================================================
     // ----------------------------------------------------------------------
     public static byte[] FingerPrint {
@@ -65,74 +60,6 @@ public static class iCS_LicenseController {
             return ourSignature;
         }
     }
-    public static bool IsActivated {
-        get {
-            return hasProLicense;
-        }
-    }
-    
-    // ======================================================================
-    // License Type
-    // ----------------------------------------------------------------------
-    public static bool IsProOperatingMode {
-        get { Refresh(); return isProOperatingMode; }
-    }
-    public static bool IsCommunityOperatingMode {
-        get { Refresh(); return isCommunityOperatingMode; }
-    }
-    static void Refresh() {
-        if(++ourReinitializeCnt > 1000) {
-            Initialize();
-        }
-    }
-    public static string OperatingModeAsString() {
-        if(hasProLicense)   return "Pro";
-        if(hasTrialLicense) return "Pro (Trial)";
-        return "Community";
-    }
-    // ----------------------------------------------------------------------
-    public static bool HasTrialLicense {
-        get {
-            return iCS_EditionController.IsCommunityEdition && RemainingTrialDays >= 0;
-        }
-    }
-    public static bool HasProLicense {
-        get {
-            return iCS_EditionController.IsDevEdition || iCS_EditionController.IsProEdition;
-        }
-    }
-    public static bool IsLicensed {
-        get {
-            return hasProLicense;
-        }
-    }
-    public static string LicenseTypeAsString() {
-        if(hasTrialLicense)     return "Trial";
-        if(hasCommunityLicense) return "Community";
-        if(hasProLicense)       return "Pro";
-        return "Unknown";
-    }
-	public static string LicenseAsString() {
-        return iCS_PreferencesController.UserLicense;
-	}
-    public static void RestartTrial(int timeoutInDays) {
-        ResetUserLicense();
-        iCS_PreferencesController.TrialStartDate= DateTime.Today.AddDays(timeoutInDays-15);
-    }
-    public static void ResetUserLicense() {
-        iCS_PreferencesController.ResetUserLicense();
-    }
-    
-    // ----------------------------------------------------------------------
-    public static int RemainingTrialDays {
-        get {
-            var today= DateTime.Today;
-            var trialEndDate= iCS_PreferencesController.TrialStartDate.AddDays(15);
-            var remainingTrialPeriod= trialEndDate.Subtract(today);
-            return remainingTrialPeriod.Days;
-        }
-    }
-    
     
     // ======================================================================
     // Utilities

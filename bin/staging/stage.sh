@@ -24,10 +24,6 @@ ASSET_STORE_TOOLS_DIR=$ASSETS_DIR/AssetStoreTools
 PRODUCT_DIR=$ASSETS_DIR/iCanScript
 EDITOR_DIR=$PRODUCT_DIR/Editor
 ENGINE_DIR=$PRODUCT_DIR/Engine
-EDITOR_EDITIONS_DIR=$EDITOR_DIR/Editions
-EDITOR_DEV_EDITION_DIR=$EDITOR_EDITIONS_DIR/Dev
-EDITOR_COMMUNITY_EDITION_DIR=$EDITOR_EDITIONS_DIR/Community
-EDITOR_PRO_EDITION_DIR=$EDITOR_EDITIONS_DIR/Pro
 EDITOR_PUBLIC_NODE_INSTALLER_DIR=$EDITOR_DIR/NodeInstaller
 EDITOR_PUBLIC_EDITOR_WINDOWS_DIR=$EDITOR_DIR/EditorWindows
 ENGINE_PUBLIC_COMPONENTS_DIR=$ENGINE_DIR/Components
@@ -50,7 +46,6 @@ find $PRODUCT_DIR -name "*.cs" | grep -v -f _editorFiles - >_engineFiles
 # Build list of files to exclude from the editor space (compile)
 find $EDITOR_PUBLIC_NODE_INSTALLER_DIR -name "*.cs" >editorFilesToExclude
 find $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR -name "*.cs" >>editorFilesToExclude
-find $EDITOR_EDITIONS_DIR -name "*.cs" >>editorFilesToExclude
 # Build list of files to exclude from the engine space (compile)
 find $ENGINE_PUBLIC_COMPONENTS_DIR -name "*.cs" >engineFilesToExclude
 find $ENGINE_PUBLIC_NODES_DIR -name "*.cs" >>engineFilesToExclude
@@ -58,14 +53,11 @@ find $DEMO_SCENES_DIR >>engineFilesToExclude
 # Exclude editor & engine files from compile
 grep -v -f editorFilesToExclude _editorFiles >editorFiles
 grep -v -f engineFilesToExclude _engineFiles >engineFiles
-# Build list of edition specific files
-find $EDITOR_COMMUNITY_EDITION_DIR -name "*.cs" >communityFilesToInclude
-find $EDITOR_PRO_EDITION_DIR -name "*.cs" >proFilesToInclude
 
 # ============================================================================
 # Create compiler response files.
-cat EditorCommandsCommunity editorFiles communityFilesToInclude >iCanScriptEditorCommunity.rsp
-cat EditorCommandsPro editorFiles proFilesToInclude >iCanScriptEditorPro.rsp
+cat EditorCommandsCommunity editorFiles >iCanScriptEditorCommunity.rsp
+cat EditorCommandsPro editorFiles >iCanScriptEditorPro.rsp
 cat EngineCommands engineFiles >iCanScriptEngine.rsp
 
 # ============================================================================

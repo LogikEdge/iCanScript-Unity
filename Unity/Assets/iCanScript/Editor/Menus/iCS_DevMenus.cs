@@ -3,9 +3,12 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.IO;
-
 using iCanScript;
 
+#if COMMUNITY_EDITION
+#else
+#if PRO_EDITION
+#else
 public static class iCS_DevMenus {
     // ======================================================================
     // Snapshot definitions
@@ -99,37 +102,6 @@ public static class iCS_DevMenus {
             "LayoutRect => "+selectedObj.GlobalRect
         );
     }
-    // ======================================================================
-    // Licensing.
-    [MenuItem("DevTools/Generate User Licenses",false,1043)]
-    public static void MenuGenerateUserLicenses() {
-        var fingerPrint= iCS_LicenseController.FingerPrint;
-        var proLicense     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, (int)iCS_Config.MajorVersion);
-        Debug.Log("Finger Print=> "+iCS_LicenseController.ToString(iCS_LicenseController.FingerPrint));
-        Debug.Log("Pro license=> "+iCS_LicenseController.ToString(proLicense));
-    }
-    [MenuItem("DevTools/Set Activation Keys",false,1044)]
-    public static void MenuSetActivationKeys() {
-        var fingerPrint= iCS_LicenseController.FingerPrint;
-        var proActivationKey     = iCS_LicenseController.BuildSignature(fingerPrint, (int)iCS_LicenseType.Pro, (int)iCS_Config.MajorVersion);
-        
-        var proDecode= iCS_LicenseController.Xor(fingerPrint, proActivationKey);
-        int license, version;
-        if(iCS_LicenseController.GetSignature(proDecode, out license, out version)) {
-            Debug.Log("Pro License for version=> "+version+".x");
-        }
-        else {
-            Debug.Log("Unable to decode Pro Activation Key=> "+iCS_LicenseController.ToString(proDecode));
-        }
-        
-        var activationForm= new iCS_ActivationForm();
-        activationForm.OnGUI();
-    }
-    [MenuItem("DevTools/Clear User License", false, 1045)]
-    public static void MenuClearLicense() {
-        iCS_LicenseController.ResetUserLicense();
-		iCS_PreferencesController.TrialLastWarningDate= DateTime.Today.AddDays(-1);
-    }
     [MenuItem("DevTools/Environment", false, 1050)]
     public static void ShowEnvironment() {
         Debug.Log("Machine Name=> "+System.Environment.MachineName);
@@ -142,3 +114,5 @@ public static class iCS_DevMenus {
         iStorage.ShowUserTransaction= iStorage.ShowUserTransaction ^ true;
     }    
 }
+#endif
+#endif

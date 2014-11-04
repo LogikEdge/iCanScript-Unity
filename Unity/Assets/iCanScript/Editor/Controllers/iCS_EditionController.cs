@@ -59,7 +59,7 @@ public static class iCS_EditionController {
     public static float CommunityPercentNodesRemaining {
         get { return (float)(CommunityNodesRemaining) / MaxCommunityNodesPerVisualScript;}
     }
-    public static bool CommunityLimitReached {
+    public static bool IsCommunityLimitReached {
         get { return CommunityVisualScriptsRemaining < 0 || CommunityNodesRemaining < 0; }
     }
 }
