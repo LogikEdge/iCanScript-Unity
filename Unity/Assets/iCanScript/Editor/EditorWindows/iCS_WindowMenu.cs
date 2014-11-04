@@ -14,8 +14,8 @@ public static class iCS_WindowMenu {
 	[MenuItem("iCanScript/Editors/Visual Editor",false,900)]
 	public static void MenuGraphEditor() {
         // -- Adjust default size when first opened --
-        var width= 1024;
-        var height= 768;
+        var width= 1280;
+        var height= 800;
         var r= new Rect(0.2f*width, 0.1f*height, 0.6f*width, 0.6f*height);
         var editor= EditorWindow.GetWindowWithRect(typeof(iCS_VisualEditorWindow), r, false, "Visual Editor");
         EditorWindow.DontDestroyOnLoad(editor);
@@ -34,8 +34,8 @@ public static class iCS_WindowMenu {
  	[MenuItem("iCanScript/Editors/Library",false,902)]
  	public static void MenuLibraryEditor() {
         // -- Adjust default size when first opened --
-        var width= 1024;
-        var height= 768;
+        var width= 1280;
+        var height= 800;
         var r= new Rect(0.2f*width, 0.1f*height, 0.2f*width, 0.6f*height);
         var editor= EditorWindow.GetWindowWithRect(typeof(iCS_LibraryEditorWindow), r, false, "Library");
         EditorWindow.DontDestroyOnLoad(editor);
