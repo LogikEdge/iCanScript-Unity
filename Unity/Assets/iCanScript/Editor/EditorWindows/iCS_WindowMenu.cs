@@ -13,7 +13,11 @@ public static class iCS_WindowMenu {
 	// iCanScript Graph editor.
 	[MenuItem("iCanScript/Editors/Visual Editor",false,900)]
 	public static void MenuGraphEditor() {
-        var editor= EditorWindow.GetWindow(typeof(iCS_VisualEditorWindow), false, "Visual Editor");
+        // -- Adjust default size when first opened --
+        var width= 1280;
+        var height= 800;
+        var r= new Rect(0.2f*width, 0.1f*height, 0.6f*width, 0.6f*height);
+        var editor= EditorWindow.GetWindowWithRect(typeof(iCS_VisualEditorWindow), r, false, "Visual Editor");
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
 	}
@@ -29,7 +33,11 @@ public static class iCS_WindowMenu {
  	// iCanScript Project editor Menu.
  	[MenuItem("iCanScript/Editors/Library",false,902)]
  	public static void MenuLibraryEditor() {
-        var editor= EditorWindow.GetWindow(typeof(iCS_LibraryEditorWindow), false, "Library");
+        // -- Adjust default size when first opened --
+        var width= 1280;
+        var height= 800;
+        var r= new Rect(0.2f*width, 0.1f*height, 0.2f*width, 0.6f*height);
+        var editor= EditorWindow.GetWindowWithRect(typeof(iCS_LibraryEditorWindow), r, false, "Library");
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
 
