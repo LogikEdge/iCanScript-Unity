@@ -16,6 +16,7 @@ public partial class iCS_IStorage {
     List<iCS_EditorObject>          myEditorObjects     = null;
     public  int                     ModificationId      = -1;
     public  bool                    CleanupDeadPorts    = true;
+    public  int                     NumberOfNodes       = 0;
     
     // ======================================================================
     // Properties
@@ -160,6 +161,16 @@ public partial class iCS_IStorage {
             // Force a relayout
             ForceRelayout= true;
         }
+
+        // -- Count number of nodes to limit community version --
+        if(iCS_EditionController.IsCommunityEdition) {
+            NumberOfNodes= 0;
+            ForEach(obj=> {
+                if(obj.IsNode && obj != RootObject && !obj.ParentNode.IsInstanceNode) {
+                    ++NumberOfNodes;
+                }
+            });            
+        }
     }
     
     // ----------------------------------------------------------------------
@@ -271,8 +282,12 @@ public partial class iCS_IStorage {
     public bool Cleanup() {
         bool modified= false;
 		bool needsRelayout= false;
+        NumberOfNodes= 0;
         ForEach(
             obj=> {
+                // -- Count number of nodes to limit trial version --
+                if(obj.IsNode && obj != RootObject && !obj.ParentNode.IsInstanceNode) ++NumberOfNodes;
+                
                 // Keep a copy of the final position.
                 obj.AnimationTargetRect= obj.GlobalRect;
                 // Cleanup disconnected or dangling ports.

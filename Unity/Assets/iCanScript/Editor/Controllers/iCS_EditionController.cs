@@ -14,25 +14,52 @@ public static class iCS_EditionController {
     // ======================================================================
     // Edition Query
     // ----------------------------------------------------------------------
-#if TRIAL_EDITION
-    public static bool IsStoreEdition { get { return false; }}
-    public static bool IsTrialEdition { get { return true;  }}
-    public static bool IsDevEdition   { get { return false; }}
+#if COMMUNITY_EDITION
+    public static bool IsProEdition         { get { return false; }}
+    public static bool IsCommunityEdition   { get { return true;  }}
+    public static bool IsDevEdition         { get { return false; }}
 #else
-#if UNITY_STORE_EDITION
-    public static bool IsStoreEdition { get { return true; }}
-    public static bool IsTrialEdition { get { return false;  }}
-    public static bool IsDevEdition   { get { return false; }}
+#if PRO_EDITION
+    public static bool IsProEdition         { get { return true;  }}
+    public static bool IsCommunityEdition   { get { return false; }}
+    public static bool IsDevEdition         { get { return false; }}
 #else
-    public static bool IsStoreEdition { get { return false; }}
-    public static bool IsTrialEdition { get { return false;  }}
-    public static bool IsDevEdition   { get { return true; }}
+    public static bool IsProEdition         { get { return false; }}
+    public static bool IsCommunityEdition   { get { return false; }}
+    public static bool IsDevEdition         { get { return true;  }}
 #endif
 #endif
     public new static string ToString() {
-        if(IsDevEdition) return "Development";
-        if(IsTrialEdition) return "Trial";
-        if(IsStoreEdition) return "Unity Store";
+        if(IsDevEdition)       return "Development";
+        if(IsCommunityEdition) return "Community";
+        if(IsProEdition)       return "Pro";
         return "Unknown";
+    }
+
+    // ======================================================================
+    // Community License Management
+    // ----------------------------------------------------------------------
+    public const int MaxCommunityVisualScriptPerScene= 5;
+    public const int MaxCommunityNodesPerVisualScript= 50;
+    public static int CommunityVisualScriptsRemaining {
+        get {
+            return MaxCommunityVisualScriptPerScene-iCS_SceneController.NumberOfVisualScriptsInOrReferencedByScene;
+        }
+    }
+    public static float CommunityPercentVisualScriptsRemaining {
+        get { return (float)(CommunityVisualScriptsRemaining) / MaxCommunityVisualScriptPerScene; }
+    }
+    public static int CommunityNodesRemaining {
+        get {
+            var iStorage= iCS_VisualScriptDataController.IStorage;
+            if(iStorage == null) return MaxCommunityNodesPerVisualScript;
+            return MaxCommunityNodesPerVisualScript-iStorage.NumberOfNodes;
+        }
+    }
+    public static float CommunityPercentNodesRemaining {
+        get { return (float)(CommunityNodesRemaining) / MaxCommunityNodesPerVisualScript;}
+    }
+    public static bool IsCommunityLimitReached {
+        get { return CommunityVisualScriptsRemaining < 0 || CommunityNodesRemaining < 0; }
     }
 }

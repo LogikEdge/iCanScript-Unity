@@ -8,11 +8,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_IStorage    myPreviousIStorage= null;
     
     // ======================================================================
-    // Cached Properties.
-	// ----------------------------------------------------------------------
-    GUIContent myCached_RemainingTrialDaysMessage;
-    
-    // ======================================================================
     // Initialization
 	// ----------------------------------------------------------------------
     // Prepares the editor for editing a graph.  Note that the graph to edit
@@ -89,9 +84,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     // System level cache update.
     void UpdateVisualEditorCache() {
-        string remainingTimeMessage= "Trial: ";
-        remainingTimeMessage+= " ("+iCS_LicenseController.RemainingTrialDays.ToString()+" days remaining) ";
-        myCached_RemainingTrialDaysMessage= new GUIContent(remainingTimeMessage);        
     }
     
 	// ----------------------------------------------------------------------

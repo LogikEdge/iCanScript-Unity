@@ -34,8 +34,8 @@ public class iCS_EditorBase : EditorWindow {
     // ---------------------------------------------------------------------------------
     public void OnGUI() {
         // Stop all processing if not registered & trial period is over
-        if(iCS_LicenseController.IsCommunityOperatingMode) {
-            string message= "Your trial period is over !!!";
+        if(iCS_EditionController.IsCommunityLimitReached) {
+            string message= "Community edition maxium visual script reached !!!\nPlease consider purchasing iCanScript from the Unity Asset Store.";
             ShowNotification(new GUIContent(message));
             return;
         }

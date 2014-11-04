@@ -713,17 +713,9 @@ public static class iCS_PreferencesController {
     // License Information
 	// ---------------------------------------------------------------------------------
 	//
-	// Default Values
-	//
-    const int kNumberOfTrialDays= 15;
-    
-	//
 	// Database access keys
 	//
-    const string kTrialStartDateKey      = "iCS_TrialStartDate";
-    const string kTrialVersionKey        = "iCS_TrialVersion";
-    const string kUserLicenseKey         = "iCS_UserLicenseKey";
-    const string kTrialLastWarningDateKey= "iCS_TrialLastWarningDate";
+    const string kUserLicenseKey= "iCS_UserLicenseKey";
     
 	//
 	// Reset to default value functions
@@ -735,62 +727,9 @@ public static class iCS_PreferencesController {
 	//
 	// Accessors
 	//
-    public static DateTime TrialStartDate {
-        get {
-            DateTime today= DateTime.Today;
-            var trialStartDate= GetDateTime(kTrialStartDateKey, today);
-            if(trialStartDate == today) {
-                SetDateTime(kTrialStartDateKey, today);
-            }
-            else {
-                var trialVersion= TrialVersion;
-                if(iCS_Version.Current.IsNewerThen(trialVersion)) {
-                    trialStartDate= today.AddDays(-(kNumberOfTrialDays/2));
-                    SetDateTime(kTrialStartDateKey, trialStartDate);
-                    string trialVersionStr= iCS_Version.Current.ToString();
-                    EditorPrefs.SetString(kTrialVersionKey, trialVersionStr);
-                }
-            }
-            return trialStartDate;
-        }
-        set { SetDateTime(kTrialStartDateKey, value); }
-    }
-    public static iCS_Version TrialVersion {
-        get {
-            var trialVersion= EditorPrefs.GetString(kTrialVersionKey, "");
-            if(String.IsNullOrEmpty(trialVersion)) {
-                trialVersion= iCS_Version.Current.ToString();
-                EditorPrefs.SetString(kTrialVersionKey, trialVersion);
-            }
-            return iCS_Version.FromString(trialVersion);
-        }
-    }
-    public static DateTime TrialLastWarningDate {
-        get {
-            DateTime today= DateTime.Today;
-            DateTime yesterday= today.AddDays(-1);
-            var warningDate= GetDateTime(kTrialLastWarningDateKey, yesterday);
-            if(warningDate == yesterday) {
-                SetDateTime(kTrialLastWarningDateKey, yesterday);
-                return yesterday;
-            }
-            return warningDate;
-        }
-        set { SetDateTime(kTrialLastWarningDateKey, value); }
-    }
     public static string UserLicense {
         get { return EditorPrefs.GetString(kUserLicenseKey, ""); }
-        set {
-            // Cleanup the license string.
-            value= iCS_LicenseController.CleanupLicenseString(value);
-            // Only save valid license string.
-            iCS_LicenseType licenseType;
-            uint version;
-            string errorMessage;
-            if(iCS_LicenseController.ValidateLicense(value, out licenseType, out version, out errorMessage)) {
-                EditorPrefs.SetString(kUserLicenseKey, value);                
-            }
-        }                
+        set { EditorPrefs.SetString(kUserLicenseKey, value); }
     }
 
 	// =================================================================================
