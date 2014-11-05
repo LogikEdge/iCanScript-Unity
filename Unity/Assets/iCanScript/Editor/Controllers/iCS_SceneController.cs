@@ -76,19 +76,52 @@ public static class iCS_SceneController {
     // Show iCanScript logo in Unity hierarchy
     // ----------------------------------------------------------------------
     static void UnityHierarchyItemOnGui(int instanceId, Rect r) {
+        // -- Need to have a logo to show --
+        var logo= iCanScriptLogo;
+        if(logo == null) return;
+        var heightDiff= r.height-logo.height;
+        if(heightDiff <= 0f) heightDiff= 0f;
+        var iconRect= new Rect(r.xMax-ourLogo.width, r.y+0.5f*heightDiff, logo.width, logo.height);
+        
+        // -- Get the associated the game object --
         var unityObject= EditorUtility.InstanceIDToObject(instanceId);
         var go= unityObject as GameObject;
-        if(go != null && go.GetComponent("iCS_VisualScriptImp") != null) {
-            // -- Draw iCanScript logo next to hierarchy item --
-            var logo= iCanScriptLogo;
-            if(logo != null) {
-                var heightDiff= r.height-logo.height;
-                if(heightDiff <= 0f) heightDiff= 0f;
-                var iconRect= new Rect(r.xMax-ourLogo.width, r.y+0.5f*heightDiff, logo.width, logo.height);
-                GUI.DrawTexture(iconRect, logo);                            
+        if(go != null) {
+            if(go.GetComponent("iCS_VisualScriptImp") != null) {
+                // -- Assure that we have a visual editor opened --
+                iCS_EditorController.OpenVisualEditor();
+                // -- Draw iCanScript logo next to hierarchy item --
+                GUI.DrawTexture(iconRect, logo);
             }
-			iCS_EditorController.OpenVisualEditor();
+            else {
+                if(IsVisualScriptInChild(go)) {
+//                    GUI.backgroundColor= Color.green;
+//                    GUI.Box(iconRect,"",EditorStyles.miniButton);
+//                    GUI.backgroundColor= Color.white;
+                    // -- Draw transparent logo --
+//                    GUI.color= new Color(1f, 1f, 1f, 0.5f);
+//                    GUI.DrawTexture(iconRect, logo);
+//                    GUI.color= Color.white;
+                }
+            }
         }
+    }
+    static bool IsVisualScriptInChild(GameObject go) {
+        var t= go.transform;
+        var childCount= t.childCount;
+        for(int i= 0; i < childCount; ++i) {
+            var child= t.GetChild(i).gameObject;
+            if(child != null) {
+                if(child.GetComponent("iCS_VisualScriptImp") != null) {
+                    return true;
+                }
+                var result= IsVisualScriptInChild(child);
+                if(result == true) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     // ======================================================================
