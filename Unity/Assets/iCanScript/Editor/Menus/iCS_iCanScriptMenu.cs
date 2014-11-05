@@ -118,9 +118,13 @@ public static class iCS_iCanScriptMenu {
     public static void ReleaseNotes() {
         Application.OpenURL("http://helpdesk.icanscript.com/support/tickets/new");
     }
-    [MenuItem("iCanScript/Support/Helpdesk and Community",false,1002)]
+    [MenuItem("iCanScript/Support/Knowledge Base",false,1002)]
     public static void Helpdesk() {
-        Application.OpenURL("http://helpdesk.icanscript.com");
+        Application.OpenURL("http://icanscript.com/helpdesk/knowledge-base/index.html");
+    }
+    [MenuItem("iCanScript/Support/Forum",false,1002)]
+    public static void Forum() {
+        Application.OpenURL("http://icanscript.com/helpdesk/community/index.html");
     }
     // ======================================================================
     // Purchase
