@@ -1,48 +1,35 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Library="Input", Icon="iCS_JoystickIcon.psd")]
-public static class iCS_GameController {
-    [iCS_Function(Return="scaledAnalog1", Icon="iCS_JoystickIcon.psd",
-                 Tooltip="RawAnalog returns the raw joystick value while Analog returns the time compensated joystick value ajusted with the input speed.")]
-
-    public static Vector2 GameController(out Vector2 analog1,
-                                         out bool b1, out bool b2, out bool b3,
-                                         float scale= 1.0f) {
-        analog1= new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        b1= Input.GetButton("Fire1");
-        b2= Input.GetButton("Fire2");
-        b3= Input.GetButton("Fire3");
-        return scale*analog1;
-    }
-    
+[iCS_Class(Company="iCanScript", Library="Input", Icon="iCS_JoystickIcon.psd", HideClassFromLibrary=true)]
+public static partial class iCS_GameController {
     [iCS_Function(Return="scaledAnalog1", Icon="iCS_JoystickIcon.psd",
                  Tooltip="Game Controller with configurable names.  Analog1 & 2 are time compensated and ajusted with the input associated speed.")]
-    public static Vector2 GameControllerExt(out Vector2 scaledAnalog2,
-                                         out bool b1, out bool b2, out bool b3, out bool b4,
-                                         out bool b5, out bool b6, out bool b7, out bool b8,
+    public static Vector2 GameController(out Vector2 scaledAnalog2,
+                                         out bool action1, out bool action2, out bool action3, out bool action4,
+                                         out bool action5, out bool action6, out bool action7, out bool action8,
                                          string analog1_x_name= "Horizontal",
                                          string analog1_y_name= "Vertical",
                                          float  analog1_scale= 1.0f,
                                          string analog2_x_name= null,
                                          string analog2_y_name= null,
                                          float  analog2_scale= 1.0f,
-                                         string b1_name= "Fire1",
-                                         string b2_name= "Fire2",
-                                         string b3_name= "Fire3",
-                                         string b4_name= "Jump",
-                                         string b5_name= null,
-                                         string b6_name= null,
-                                         string b7_name= null,
-                                         string b8_name= null) {
-        b1= string.IsNullOrEmpty(b1_name) ? false : Input.GetButton(b1_name);
-        b2= string.IsNullOrEmpty(b2_name) ? false : Input.GetButton(b2_name);
-        b3= string.IsNullOrEmpty(b3_name) ? false : Input.GetButton(b3_name);
-        b4= string.IsNullOrEmpty(b4_name) ? false : Input.GetButton(b4_name);
-        b5= string.IsNullOrEmpty(b5_name) ? false : Input.GetButton(b5_name);
-        b6= string.IsNullOrEmpty(b6_name) ? false : Input.GetButton(b6_name);
-        b7= string.IsNullOrEmpty(b7_name) ? false : Input.GetButton(b7_name);
-        b8= string.IsNullOrEmpty(b8_name) ? false : Input.GetButton(b8_name);
+                                         string action1_name= "Fire1",
+                                         string action2_name= "Fire2",
+                                         string action3_name= "Fire3",
+                                         string action4_name= "Jump",
+                                         string action5_name= null,
+                                         string action6_name= null,
+                                         string action7_name= null,
+                                         string action8_name= null) {
+        action1= string.IsNullOrEmpty(action1_name) ? false : Input.GetButton(action1_name);
+        action2= string.IsNullOrEmpty(action2_name) ? false : Input.GetButton(action2_name);
+        action3= string.IsNullOrEmpty(action3_name) ? false : Input.GetButton(action3_name);
+        action4= string.IsNullOrEmpty(action4_name) ? false : Input.GetButton(action4_name);
+        action5= string.IsNullOrEmpty(action5_name) ? false : Input.GetButton(action5_name);
+        action6= string.IsNullOrEmpty(action6_name) ? false : Input.GetButton(action6_name);
+        action7= string.IsNullOrEmpty(action7_name) ? false : Input.GetButton(action7_name);
+        action8= string.IsNullOrEmpty(action8_name) ? false : Input.GetButton(action8_name);
         bool isAnalog1XNameEmpty= string.IsNullOrEmpty(analog1_x_name);
         bool isAnalog1YNameEmpty= string.IsNullOrEmpty(analog1_y_name);
         var analog1= new Vector2(
@@ -58,5 +45,4 @@ public static class iCS_GameController {
         scaledAnalog2= analog2*analog2_scale;
         return analog1*analog1_scale;
     }
-    
 }

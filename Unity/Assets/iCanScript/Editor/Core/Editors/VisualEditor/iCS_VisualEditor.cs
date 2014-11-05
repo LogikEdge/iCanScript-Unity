@@ -223,10 +223,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		
 		// -- Nothing to be drawn until we are fully initialized --
         if(!isInit || IStorage == null) {
-            // Tell the user that we can display without a behavior or library.
+            // -- Tell the user that we can display without a behavior or library --
             ShowNotification(new GUIContent("No iCanScript component selected !!!"));
             myNotificationShown= true;
-			// Repaint erros/warning info.
+            // -- Show next step help --
+            ShowNextStepHelp();
+			// -- Repaint erros/warning info --
 			DisplaySceneErrorsAndWarnings();
             return;            
         }

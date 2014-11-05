@@ -47,7 +47,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	    DrawGrid();			
         
         // -- Show next step help --
-        ShowNextStepHelp(WindowRectForGraph);
+        ShowNextStepHelp();
         
         // Draw nodes and their connections.
         DisplayGraphNodes();
