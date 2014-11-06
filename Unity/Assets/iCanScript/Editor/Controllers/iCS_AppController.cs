@@ -13,6 +13,7 @@ public static class iCS_AppController {
 		iCS_ErrorController.Start();
         iCS_SystemEvents.Start();
         iCS_TimerService.Start();
+        iCS_BlinkController.Start();
         iCS_EditionController.Start();
         iCS_LicenseController.Start();
 		iCS_SoftwareUpdateController.Start();
@@ -43,6 +44,7 @@ public static class iCS_AppController {
         iCS_SoftwareUpdateController.Shutdown();
         iCS_LicenseController.Shutdown();
         iCS_EditionController.Shutdown();
+        iCS_BlinkController.Shutdown();
         iCS_TimerService.Shutdown();
         iCS_SystemEvents.Shutdown();
 		iCS_ErrorController.Shutdown();
