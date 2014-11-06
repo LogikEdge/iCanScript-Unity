@@ -135,21 +135,10 @@ public static class iCS_HelpController {
 			string help= edObj.Tooltip;
 			if(!String.IsNullOrEmpty(help))
 				return help;
-/*		
-			// If this is a message handler component, look up the help based
-			// on name.
-			if(edObj.ParentNode !=null && edObj.ParentNode.IsMessageHandler) {
-				unityHelpSummary.TryGetValue(edObj.Name, out help);
-				if (!String.IsNullOrEmpty(help)) {
-					return help;
-				}
-			}
-*/
-						
+					
 			// otherwise try and get help based on the MemberInfo,
 			help= getHelp(getAssociatedHelpMemberInfo(edObj));
-			if(!String.IsNullOrEmpty(help))
-				return help;
+			if(!String.IsNullOrEmpty(help)) return help;
 			
 			// Otherwise try and get help based on engineObject Type.
 			// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
@@ -190,6 +179,12 @@ public static class iCS_HelpController {
 			// Return help string if there is already one in the memberInfo
 			if (memberInfo.HelpSummaryCache != null)
 				return memberInfo.HelpSummaryCache;
+			
+			// Try and use MemberInfo Description
+			if (!String.IsNullOrEmpty(memberInfo.StoredDescription)) {
+				return memberInfo.StoredDescription;
+			}
+			
 			// If there is no help string already in MemberInfo, try and look up Unity help
 			if (memberInfo.HelpSummaryCache==null && memberInfo.Company == "Unity") {
 				string search= getHelpUrl(memberInfo);
@@ -201,10 +196,7 @@ public static class iCS_HelpController {
 					return summary;
 				}
 			}
-			// Try and use MemberInfo Description
-			if (memberInfo.StoredDescription!=null)
-				return memberInfo.StoredDescription;
-		
+			
 			// If there is no help found yet, try and return help based on type
 			String typeHelp= getHelp(memberInfo.GetType());
 			if (!String.IsNullOrEmpty(typeHelp)) {
