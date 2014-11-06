@@ -164,13 +164,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void BuildWorkflowAssistantStyles() {
         if(myAssistantLabelStyle == null) {
             myAssistantLabelStyle= new GUIStyle(EditorStyles.whiteLabel);
-            myAssistantLabelStyle.fontSize= 30;
+            myAssistantLabelStyle.fontSize= 24;
             myAssistantLabelStyle.fontStyle= FontStyle.Bold;
             myAssistantLabelStyle.normal.textColor= Color.grey;
         }        
         if(myAssistaneButtonStyle == null) {
             myAssistaneButtonStyle= new GUIStyle(GUI.skin.button);
-            myAssistaneButtonStyle.fontSize= 30;
+            myAssistaneButtonStyle.fontSize= 24;
             myAssistaneButtonStyle.fontStyle= FontStyle.Bold;
         }        
         if(myiCanScriptLargeLogo == null) {
