@@ -60,12 +60,22 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(editorObj.IsNode) {
 			switch(pickInfo.PickedPart) {
 				case iCS_PickPartEnum.Name: {
-					ShowAssistantMessage("Double-Click to edit node name");				
+					ShowAssistantMessage("Click-and-Drag to Move Node");									
+					if(editorObj.IsNameEditable) {
+						ShowAssistantMessage("Double-Click to Edit Node Name");						
+					}
+					else {
+						ShowAssistantMessage("WARNING: The Name of this Node cannot be edited");										
+					}
 					Repaint();
 		            return;											
 				}
 				case iCS_PickPartEnum.FoldIcon: {
-		            ShowAssistantMessage("Click to Fold/Unfold node");
+					if(editorObj.IsFoldedInLayout) {
+			            ShowAssistantMessage("Click to Unfold Node");
+					} else {
+			            ShowAssistantMessage("Click to Fold Node");							
+					}
 					Repaint();
 		            return;					
 				}
@@ -75,10 +85,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		            return;										
 				}
 				default: {
-		            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
-					ShowAssistantMessage("Drag from Library to Add functions & variables");
+					if(editorObj.IsIconizedInLayout) {
+			            ShowAssistantMessage("Double-Click to Open Node");
+					}
+					else {
+						if(editorObj.IsKindOfPackage) {
+				            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
+							ShowAssistantMessage("Drag from Library to Add functions & variables");
+						}						
+					}
+					ShowAssistantMessage("Click-and-Drag to Move Node");									
 					Repaint();
-		            return;								
+		            return;					
 				}
 			}
 		}
@@ -86,21 +104,27 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(editorObj.IsPort) {
 			switch(pickInfo.PickedPart) {
 				case iCS_PickPartEnum.Name: {
-					ShowAssistantMessage("Double-Click to edit port name");				
+					if(editorObj.IsNameEditable) {
+						ShowAssistantMessage("Double-Click to Edit Port Name");				
+					}
+					else {
+						ShowAssistantMessage("WARNING: The Name of this Port cannot be edited");										
+					}
 					Repaint();
 		            return;											
 				}
 				case iCS_PickPartEnum.Value: {
-					ShowAssistantMessage("Double-Click to edit port value");				
+					ShowAssistantMessage("Double-Click to Edit Port Value");				
 					Repaint();
 		            return;																
 				}
 				default: {
-					ShowAssistantMessage("Drag port onto another port to create a data flow");
-					ShowAssistantMessage("Drag port on the edge of a package to create an interface");
-					ShowAssistantMessage("Drag and release port to quickly Create a Function");						
+					ShowAssistantMessage("Drag port on the Edge of the parent Node to Move it");
+					ShowAssistantMessage("Drag port onto another port to Create a Data Flow");
+					ShowAssistantMessage("Drag port on the Edge of a Package to Create an Interface");
+					ShowAssistantMessage("Drag-and-Release port to Popup Quick Create Menu");						
 					if(editorObj.IsInputPort & editorObj.ProducerPort == null) {
-						ShowAssistantMessage("Drag an object from the scene to initialize the port");				
+						ShowAssistantMessage("Drag object from the scene to Initialize the port");				
 					}
 					Repaint();
 		            return;
