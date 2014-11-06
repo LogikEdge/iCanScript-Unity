@@ -36,6 +36,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
 	// ----------------------------------------------------------------------
+    Rect ViewportRectForGraph {
+        get {
+            float toolbarHeight= iCS_ToolbarUtility.GetHeight();
+            return new Rect(0f, toolbarHeight, position.width, position.height-toolbarHeight);
+            }
+    }
+	// ----------------------------------------------------------------------
     public Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
 	// ----------------------------------------------------------------------
     Rect WindowRectForGraph {

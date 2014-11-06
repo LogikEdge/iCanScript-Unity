@@ -35,8 +35,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     float myCurrentTime        = 0;
     float myDeltaTime          = 0;
     bool  myNeedRepaint        = true;
-    bool  myNotificationShown  = false;
-
 	
     // ----------------------------------------------------------------------
     // Debug properties.
@@ -223,19 +221,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		
 		// -- Nothing to be drawn until we are fully initialized --
         if(!isInit || IStorage == null) {
-            // -- Tell the user that we can display without a behavior or library --
-            ShowNotification(new GUIContent("No iCanScript component selected !!!"));
-            myNotificationShown= true;
             // -- Show next step help --
             ShowNextStepHelp();
 			// -- Repaint erros/warning info --
 			DisplaySceneErrorsAndWarnings();
             return;            
-        }
-        // -- Remove any previously shown notification --
-        if(myNotificationShown) {
-            RemoveNotification();
-            myNotificationShown= false;
         }
        	// -- Update pending GUI commands --
         RunOnGUICommands();
