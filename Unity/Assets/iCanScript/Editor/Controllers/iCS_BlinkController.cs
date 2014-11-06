@@ -28,12 +28,15 @@ public static class iCS_BlinkController {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public static float SlowBlinkRatio   { get { return mySlowBlink.CurrentValue; }}
-    public static float NormalBlinkRatio { get { return myNormalBlink.CurrentValue; }}
-    public static float FastBlinkRatio   { get { return myFastBlink.CurrentValue; }}
-    public static Color SlowBlinkColor   { get { return new Color(1f,1f,1f,SlowBlinkRatio); }}
-    public static Color NormalBlinkColor { get { return new Color(1f,1f,1f,NormalBlinkRatio); }}
-    public static Color FastBlinkColor   { get { return new Color(1f,1f,1f,FastBlinkRatio); }}
+    public static float SlowBlinkRatio       { get { return mySlowBlink.CurrentValue; }}
+    public static float NormalBlinkRatio     { get { return myNormalBlink.CurrentValue; }}
+    public static float FastBlinkRatio       { get { return myFastBlink.CurrentValue; }}
+    public static Color SlowBlinkColor       { get { return new Color(1f,1f,1f,SlowBlinkRatio); }}
+    public static Color NormalBlinkColor     { get { return new Color(1f,1f,1f,NormalBlinkRatio); }}
+    public static Color FastBlinkColor       { get { return new Color(1f,1f,1f,FastBlinkRatio); }}
+    public static Color SlowBlinkHighColor   { get { return new Color(1f,1f,1f,0.5f+0.5f*SlowBlinkRatio); }}
+    public static Color NormalBlinkHighColor { get { return new Color(1f,1f,1f,0.5f+0.5f*NormalBlinkRatio); }}
+    public static Color FastBlinkHighColor   { get { return new Color(1f,1f,1f,0.5f+0.5f*FastBlinkRatio); }}
     
     // ----------------------------------------------------------------------
     static void DoAnimation() {
