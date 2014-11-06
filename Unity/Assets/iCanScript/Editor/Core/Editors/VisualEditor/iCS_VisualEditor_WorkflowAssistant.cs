@@ -6,33 +6,33 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    GUIStyle    myNextStepLabelStyle  = null;
-    GUIStyle    myNextStepButtonStyle = null;
+    GUIStyle    myAssistantLabelStyle = null;
+    GUIStyle    myAssistaneButtonStyle= null;
     Texture2D   myiCanScriptLargeLogo = null;
     Texture2D   myiCanScriptMediumLogo= null;
-    Texture2D   myHelpLogo            = null;
+    Texture2D   myAssistantLogo       = null;
     
     // ----------------------------------------------------------------------
-    void ShowNextStepHelp() {
+    void ShowWorkflowAssistant() {
         // -- Build the styles used --
-        BuildNextStepStyles();
+        BuildWorkflowAssistantStyles();
         // -- Ask user the select a game object if none selected --
         var activeGameObject= Selection.activeGameObject;
         if(activeGameObject == null) {
             ShowNextStepHelpWithBlink("Select a Game Object");
-            ShowLargeLogo();
+	        ShowTextureCenteredAt(Math3D.Middle(ViewportRectForGraph), myiCanScriptLargeLogo);
             return;
         }
         // -- Ask user to create a visual script --
         var visualScript= activeGameObject.GetComponent("iCS_MonoBehaviourImp") as iCS_MonoBehaviourImp;
         if(visualScript == null) {
             var content= new GUIContent("Create Visual Script", myiCanScriptMediumLogo);
-            var contentSize= myNextStepButtonStyle.CalcSize(content);
+            var contentSize= myAssistaneButtonStyle.CalcSize(content);
             var r= Math3D.BuildRectCenteredAt(Math3D.Middle(ViewportRectForGraph), 1.2f*contentSize.x, 1.2f*contentSize.y);
             EditorGUIUtility.AddCursorRect(r, MouseCursor.Link);
             var savedColor= GUI.color;
             GUI.color= iCS_BlinkController.NormalBlinkHighColor;
-            if(GUI.Button(r, content, myNextStepButtonStyle)) {
+            if(GUI.Button(r, content, myAssistaneButtonStyle)) {
                 EditorApplication.ExecuteMenuItem("iCanScript/Create Visual Script"); 
             }
             GUI.color= savedColor;
@@ -44,41 +44,34 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             ShowNextStepHelpWithBlink("Right-Click to Add Message Handler or Public Function\nDrag Builder from Library to Create Public Variable");
             return;
         }
-        Debug.Log("Object is=> "+pickInfo.PickedObject.Name);
     }
     // ----------------------------------------------------------------------
     void ShowNextStepHelpWithBlink(string message) {
         var r= new Rect(0,iCS_ToolbarUtility.GetHeight(),position.width,position.height);
-        var content= new GUIContent(" "+message, myHelpLogo);
+        var content= new GUIContent(" "+message, myAssistantLogo);
         var savedColor= GUI.color;
         GUI.color= iCS_BlinkController.NormalBlinkHighColor;
-        GUI.Label(r, content, myNextStepLabelStyle);
+        GUI.Label(r, content, myAssistantLabelStyle);
         GUI.color= savedColor;
         Repaint();
     }
     // ----------------------------------------------------------------------
-    void ShowLargeLogo() {
-        ShowLargeLogoCenteredAt(Math3D.Middle(ViewportRectForGraph));
+    void ShowTextureCenteredAt(Vector2 center, Texture2D texture) {
+        var r= Math3D.BuildRectCenteredAt(center, texture.width, texture.height);
+        GUI.DrawTexture(r, texture);
     }
     // ----------------------------------------------------------------------
-    void ShowLargeLogoCenteredAt(Vector2 center) {
-        Texture2D largeLogo= null;
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.LargeLogoIcon, out largeLogo);
-        var r= Math3D.BuildRectCenteredAt(center, largeLogo.width, largeLogo.height);
-        GUI.DrawTexture(r, largeLogo);
-    }
-    // ----------------------------------------------------------------------
-    void BuildNextStepStyles() {
-        if(myNextStepLabelStyle == null) {
-            myNextStepLabelStyle= new GUIStyle(EditorStyles.whiteLabel);
-            myNextStepLabelStyle.fontSize= 30;
-            myNextStepLabelStyle.fontStyle= FontStyle.Bold;
-            myNextStepLabelStyle.normal.textColor= Color.grey;
+    void BuildWorkflowAssistantStyles() {
+        if(myAssistantLabelStyle == null) {
+            myAssistantLabelStyle= new GUIStyle(EditorStyles.whiteLabel);
+            myAssistantLabelStyle.fontSize= 30;
+            myAssistantLabelStyle.fontStyle= FontStyle.Bold;
+            myAssistantLabelStyle.normal.textColor= Color.grey;
         }        
-        if(myNextStepButtonStyle == null) {
-            myNextStepButtonStyle= new GUIStyle(GUI.skin.button);
-            myNextStepButtonStyle.fontSize= 30;
-            myNextStepButtonStyle.fontStyle= FontStyle.Bold;
+        if(myAssistaneButtonStyle == null) {
+            myAssistaneButtonStyle= new GUIStyle(GUI.skin.button);
+            myAssistaneButtonStyle.fontSize= 30;
+            myAssistaneButtonStyle.fontStyle= FontStyle.Bold;
         }        
         if(myiCanScriptLargeLogo == null) {
             iCS_TextureCache.GetIcon(iCS_EditorStrings.LargeLogoIcon, out myiCanScriptLargeLogo);
@@ -86,8 +79,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(myiCanScriptMediumLogo == null) {
             iCS_TextureCache.GetIcon(iCS_EditorStrings.LogoIcon, out myiCanScriptMediumLogo);            
         }
-        if(myHelpLogo == null) {
-            iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);                        
+        if(myAssistantLogo == null) {
+            iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myAssistantLogo);                   
         }
     }
 }

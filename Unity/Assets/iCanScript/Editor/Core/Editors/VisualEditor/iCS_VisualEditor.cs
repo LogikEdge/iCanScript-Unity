@@ -222,7 +222,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// -- Nothing to be drawn until we are fully initialized --
         if(!isInit || IStorage == null) {
             // -- Show next step help --
-            ShowNextStepHelp();
+            ShowWorkflowAssistant();
 			// -- Repaint erros/warning info --
 			DisplaySceneErrorsAndWarnings();
             return;            
