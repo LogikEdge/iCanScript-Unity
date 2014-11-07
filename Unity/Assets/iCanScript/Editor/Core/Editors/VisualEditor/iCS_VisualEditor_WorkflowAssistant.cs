@@ -104,7 +104,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				default: {
 					if(editorObj.IsIconizedInLayout) {
                         if(editorObj.IsTransitionPackage) {
-    			            ShowAssistantMessage("Double-Click to Open the Transition Node & Add a Trigger");
+    			            ShowAssistantMessage("Double-Click to Open the Transition Node & Add a Trigger Condition");
                         }
                         else {
     			            ShowAssistantMessage("Double-Click to Open Node");                            
