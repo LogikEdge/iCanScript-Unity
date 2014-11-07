@@ -153,12 +153,28 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     var grandParent= parent == null ? null : parent.ParentNode;
                     if(grandParent.IsBehaviour) grandParent= null;
     				ShowAssistantMessage("Drag port on Node Edge to Move it");
+                    if(port.IsEnablePort) {
+    					ShowAssistantMessage("Enable ports Activate(true)/Deactivate(false) the Execution of its Node");      
+    					ShowAssistantMessage("Multiple Enable ports can be used.  All enable ports must be TRUE to Activate the node");      
+                        if(port.ProducerPort == null) {
+        					ShowAssistantMessage("Drag the Enable port to a Boolean port to Enable(true)/Disable(false) Execution");      
+                        }
+                    }
+                    if(port.IsTriggerPort) {
+    					ShowAssistantMessage("A Trigger port outputs TRUE/FALSE representing the Execeution of the Node");                              
+                    }
                     if(grandParent != null) {
-    					ShowAssistantMessage("Drag port onto another port to Create a Data Flow");
+                        if(port.IsDataPort) {
+        					ShowAssistantMessage("Drag port onto another port to Create a Data Flow");                            
+                        }
 					    ShowAssistantMessage("Drag port on Package Edge to Create an Interface");
                     }
-                    if(grandParent != null || port.IsInputPort) {
+                    if(grandParent != null || (port.IsInputPort && !parent.IsConstructor)) {
     					ShowAssistantMessage("Drag-and-Release port to Popup Quick Create Menu");                        
+                    }
+                    if(grandParent == null && parent.IsConstructor && port.IsOutputPort) {
+    					ShowAssistantMessage("Drag port onto another port to Create a Data Flow");
+    					ShowAssistantMessage("Drag-and-Release port inside Message Handler to Popup Quick Create Menu");                                                
                     }
 					if(editorObj.IsInputPort && editorObj.ProducerPort == null) {
                         if(!(parent.IsMessageHandler && (port.IsProposedDataPort || port.IsInstancePort))) {
