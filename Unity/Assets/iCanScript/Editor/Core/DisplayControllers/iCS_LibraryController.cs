@@ -41,7 +41,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		// Create the GUIContent as they are needed, and cache them.
 	    public GUIContent GetGUIContent() {
 	            if(myGuiContent == null) {
-					myGuiContent= new GUIContent(Name, MemberInfo.HelpSummary);
+					myGuiContent= new GUIContent(Name);
 	            }
 	            return myGuiContent;            
 	    }
@@ -121,6 +121,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	Stack<Prelude.Tree<Node>>   myIterStackNode    = null;
 	Stack<int>					myIterStackChildIdx= null;
 
+
+	iCS_TimerService.TimedAction checkMouseTimer= null; 
+
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
@@ -194,7 +197,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		myIterStackNode= new Stack<Prelude.Tree<Node>>();
 		myIterStackChildIdx = new Stack<int>();
         kGUIEmptyFoldOffset= EditorStyles.foldout.CalcSize(new GUIContent("")).x;
+		// Timer for tooltips
+		checkMouseTimer= 	 iCS_TimerService.CreateTimedAction(0.2f, CheckForHelpUnderMouse, /*isLooping=*/true);
+		checkMouseTimer.Schedule();
 	}
+	
 	
 	// =================================================================================
     // Filter & reorder.
@@ -220,13 +227,13 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 } else if(memberInfo.IsProperty) {
                     toAdd= new Node(NodeTypeEnum.Property, memberInfo.ToPropertyInfo.PropertyName, memberInfo);
                 } else if(memberInfo.IsConstructor) {
-                    toAdd= new Node(NodeTypeEnum.Constructor, memberInfo.ToConstructorInfo.FunctionSignature, memberInfo);
-                    } else if(memberInfo.IsTypeCast) {
+                    toAdd= new Node(NodeTypeEnum.Constructor, memberInfo.ToConstructorInfo.DisplayName, memberInfo);
+                } else if(memberInfo.IsTypeCast) {
                         // Don't add the typecasts in the library.
-                    } else if(memberInfo.IsMethod) {
-                    toAdd= new Node(NodeTypeEnum.Method, memberInfo.ToMethodInfo.FunctionSignature, memberInfo);                
+                } else if(memberInfo.IsMethod) {
+                    toAdd= new Node(NodeTypeEnum.Method, memberInfo.ToMethodInfo.MethodName, memberInfo);                
                 } else if(memberInfo.IsMessage) {
-                    toAdd= new Node(NodeTypeEnum.Message, memberInfo.ToMessageInfo.FunctionSignature, memberInfo);
+                    toAdd= new Node(NodeTypeEnum.Message, memberInfo.ToMessageInfo.DisplayName, memberInfo);
                 }
                 if(toAdd != null) {
                     ++myTreeSize;
@@ -544,7 +551,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
-		
+		 
 		var current= IterValue;
 		GUI.Label(pos, current.GetGUIContent(), labelStyle);
 
@@ -715,4 +722,22 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         }
         return result | FilterIn(tree.Value, searchString);
     }
+		
+    // ---------------------------------------------------------------------------------
+    void CheckForHelpUnderMouse() {
+		Node node= myTreeView.ObjectUnderMouse() as Node;
+		// Send help to the visual editor help window
+		iCS_VisualEditor visEd= iCS_EditorController.FindVisualEditor();
+		if(visEd != null) {
+			if(node == null || node.Type==NodeTypeEnum.Company || node.Type==NodeTypeEnum.Library || node.Type==NodeTypeEnum.Package) {
+				// Show Generic Library help
+				visEd.libraryHelp(null);
+			} 
+			else {
+				// Show specific Library help
+				visEd.libraryHelp(node.MemberInfo);
+			} 
+		}		
+    }
+	
 }

@@ -26,11 +26,6 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-	public new void OnEnable() { 
-        base.OnEnable();        
-		wantsMouseMove= true;
-	}
-    // ---------------------------------------------------------------------------------
     bool IsInitialized() {
         if(myController == null || myMainView == null) {
             myController= new iCS_LibraryController();
@@ -244,6 +239,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 		}
 		
     }
+	
     // ======================================================================
     // Creation Utilities
     // ---------------------------------------------------------------------------------

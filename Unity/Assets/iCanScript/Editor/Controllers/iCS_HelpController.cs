@@ -299,11 +299,11 @@ public static class iCS_HelpController {
 				else if(edObj.IsPublicVariable)
 					typeName= "Public Variable";
 				else if(edObj.IsConstructor)
-					typeName= "Builder";
+					typeName= "Variable Builder";
 				else if(edObj.IsKindOfFunction)
 					typeName= "Function";
 				else if(edObj.IsInstanceNode)
-					typeName= "Class";
+					typeName= "Class Instance";
 				else if(edObj.IsPackage)
 					typeName= "Package";
 				else
@@ -330,7 +330,34 @@ public static class iCS_HelpController {
 		return "<b>" + typeName + " " + titleColour + parentName + displayName + "</color></b>";
 	}	
 	
+	public static string GetHelpTitle(iCS_MemberInfo memberInfo) {
+		string title= memberInfo.DisplayName;
+		string typeName= null;
 	
+		if(memberInfo.IsField) {
+			typeName="Property of " + memberInfo.ParentTypeInfo.ClassName;
+		}
+		else if(memberInfo.IsProperty) {
+			typeName= "Property of " + memberInfo.ParentTypeInfo.ClassName;
+		}
+      	else if(memberInfo.IsConstructor) {
+			typeName= "Variable Builder";
+            title= memberInfo.ToConstructorInfo.FunctionSignatureMultiLine;
+        } 
+		else if(memberInfo.IsMethod) {
+			typeName="Function of " + memberInfo.ParentTypeInfo.ClassName;
+            title= memberInfo.ToMethodInfo.FunctionSignatureMultiLine;                
+        } 
+		else if(memberInfo.IsMessage) {
+			typeName="Message of " + memberInfo.ParentTypeInfo.ClassName;
+            title= memberInfo.ToMessageInfo.FunctionSignatureMultiLine;
+        }
+		else if(memberInfo.IsTypeInfo) {
+			typeName="Class Instance";
+		}
+
+		return "<b>" + typeName + " " +  titleColour + title + "</color></b>";
+	}
 	
 	// =================================================================================
 	// Open web browser for specific help

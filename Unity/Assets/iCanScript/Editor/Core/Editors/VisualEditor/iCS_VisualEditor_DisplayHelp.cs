@@ -12,6 +12,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	string      myHelpText         = null;
     Texture2D   myHelpLogo         = null;
     Texture2D   myHelpDontLogo     = null;
+	bool        myIsDynamicHeight  = false;
+    
     
     // ======================================================================
     // Dynamic Properties
@@ -32,18 +34,36 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
         HotZoneAdd(HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
     }
-    
+ 
     // =================================================================================================
     // Mouse in detected over another window, show contextual help for that window in the Visual Editor.
 	// -------------------------------------------------------------------------------------------------
 	public void helpWindowChange() {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
 		if(edWin != null) {
+			myIsDynamicHeight= false;
 			myHelpText= iCS_HelpController.getHelp(edWin.GetType());
             Repaint();		    
 		}
 	}
-		
+	   
+    // =================================================================================================
+    // Mouse in detected over a library item, show help in the Visual Editor.
+	// -------------------------------------------------------------------------------------------------
+	public void libraryHelp(iCS_MemberInfo memInfo ) {
+		EditorWindow edWin= EditorWindow.mouseOverWindow;
+		if(edWin!= null && edWin.GetType() == typeof(iCS_LibraryEditorWindow)) { 
+			if(memInfo == null) {
+				helpWindowChange();
+			} 
+			else {
+				myIsDynamicHeight= true;
+				myHelpText= iCS_HelpController.GetHelpTitle(memInfo) + "\n" + iCS_HelpController.getHelp(memInfo);
+	            Repaint();	
+			} 
+		}
+	}
+				
     // ================================================================================
     // Find object under mouse in VisualEditor, and prepare help.  Use only from onGUI.
 	// --------------------------------------------------------------------------------
@@ -54,6 +74,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(pickInfo != null) {
 			edObj= pickInfo.PickedObject;
 			if(edObj != null)
+				myIsDynamicHeight= false;
 				myHelpText= prepareHelpWindowText(edObj);
 		}
 	}
@@ -170,10 +191,36 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Display the help already populated in myHelpText.  Use only from onGUI.
 	// -----------------------------------------------------------------------
 	void DisplayHelp() {
+		if(myHelpText==null)
+			return;
+		
+		int numLines= myHelpText.Length - myHelpText.Replace(Environment.NewLine, string.Empty).Length;
+		
+		int helpHeight= 100;
+		int helpWidth= 400; 
+		
+		if(myIsDynamicHeight) {
+			helpHeight=numLines*17;
+			if(numLines<=3) helpHeight=100;
+			else if(numLines<=10) helpHeight=200;
+		}
+		
+		int helpPosX= 0;
+		int helpPosY= Screen.height-helpHeight;
+		
+		EditorWindow libEdWin= iCS_EditorController.FindLibraryEditorWindow();
+		if(libEdWin != null) {
+			if(libEdWin.position.x > position.x) {
+				// Relocate Help window closed to library window
+				helpPosX= Screen.width-helpWidth;
+			}		
+		}
+			
+		
 		if(myHelpText != null && myHelpEnabled) {
 			GUIStyle style =  EditorStyles.textArea;
 			style.richText = true;
-			GUI.Box(new Rect(Screen.width-400, Screen.height-100, 400, 100), myHelpText, style);
+			GUI.Box(new Rect(helpPosX, helpPosY, helpWidth, helpHeight), myHelpText, style);
             GUI.DrawTexture(HelpHotZone, myHelpLogo);
 		}
 	}
