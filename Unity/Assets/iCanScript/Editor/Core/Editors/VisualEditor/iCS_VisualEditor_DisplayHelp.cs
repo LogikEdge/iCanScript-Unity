@@ -14,6 +14,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     Texture2D    myHelpLogo         = null;
     Texture2D    myHelpDontLogo     = null;
 	bool         myIsDynamicHeight  = false;
+	Rect         myLibraryWindowPos = new Rect(0,0,0,0);
     
     
     // ======================================================================
@@ -59,7 +60,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			} 
 			else {
 				myIsDynamicHeight= true;
-				myHelpText= iCS_HelpController.getHelp(memInfo) + "\n\n" + iCS_HelpController.GetHelpTitle(memInfo);
+				string title= iCS_HelpController.GetHelpTitle(memInfo);
+				string help= iCS_HelpController.getHelp(memInfo);
+				string parameters= iCS_HelpController.GetHelpParameters(memInfo);
+				myHelpText= title + "\n" + (String.IsNullOrEmpty(help) ? "\n" : help + "\n\n")  + parameters;
 	            Repaint();	
 			} 
 		}
@@ -217,13 +221,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     Rect ComputeDisplayArea() {
 		int numLines= myHelpText == null ? 0 : myHelpText.Length - myHelpText.Replace(Environment.NewLine, string.Empty).Length;
 		
-		int helpHeight= 100;
+		int helpHeight= 85;
 		int helpWidth= 400; 
 		
 		if(myIsDynamicHeight) {
-			helpHeight=numLines*17;
-			if(numLines<=3) helpHeight=100;
-			else if(numLines<=10) helpHeight=200;
+			helpHeight=numLines*15;
+			if(numLines<=3) helpHeight=85;
+			else if(numLines<=10) helpHeight=170;
 		}
 		
 		float helpPosX= 0;
@@ -239,8 +243,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool IsHelpDisplayOnRightSide {
         get {
     		EditorWindow libEdWin= iCS_EditorController.FindLibraryEditorWindow();
-    		if(libEdWin == null)  return false;
-    	    return libEdWin.position.x > position.x;            
+    		if(libEdWin == null) {
+    			return false;
+    		} 
+			// Library Windows coordinates go to origin while typing, so only get coordinates when not focused.
+			EditorWindow edWin= EditorWindow.mouseOverWindow;
+			if(edWin!= null && edWin.GetType() != typeof(iCS_LibraryEditorWindow)) { 
+				myLibraryWindowPos= libEdWin.position;
+			}
+    	    return myLibraryWindowPos.x > position.x;            
         }
     }
 }

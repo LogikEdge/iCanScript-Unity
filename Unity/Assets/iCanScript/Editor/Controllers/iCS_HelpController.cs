@@ -330,6 +330,7 @@ public static class iCS_HelpController {
 		return "<b>" + typeName + " " + titleColour + parentName + displayName + "</color></b>";
 	}	
 	
+	
 	public static string GetHelpTitle(iCS_MemberInfo memberInfo) {
 		string title= "<b>"+titleColour + memberInfo.DisplayName + "</color></b>";
 		string typeName= null;
@@ -343,21 +344,34 @@ public static class iCS_HelpController {
 		}
       	else if(memberInfo.IsConstructor) {
 			typeName= "Variable Builder";
-            title= memberInfo.ToConstructorInfo.FunctionSignatureMultiLine(titleColour, "</color>");
         } 
 		else if(memberInfo.IsMethod) {
-			typeName="Function of " + className;
-            title= memberInfo.ToMethodInfo.FunctionSignatureMultiLine(titleColour, "</color>");                
+			typeName="Function of " + className;             
         } 
 		else if(memberInfo.IsMessage) {
 			typeName="Message of " + className;
-            title= memberInfo.ToMessageInfo.FunctionSignatureMultiLine(titleColour, "</color>");
         }
 		else if(memberInfo.IsTypeInfo) {
 			typeName="Class Instance";
 		}
 
 		return "<b>" + typeName + " " + title + "</b>";
+	}
+	
+	public static string GetHelpParameters(iCS_MemberInfo memberInfo) {
+		string parameters= null;
+
+      	if(memberInfo.IsConstructor) {
+            parameters= memberInfo.ToConstructorInfo.FunctionParameters(titleColour, "</color>");
+        } 
+		else if(memberInfo.IsMethod) {
+            parameters= memberInfo.ToMethodInfo.FunctionParameters(titleColour, "</color>");                
+        } 
+		else if(memberInfo.IsMessage) {
+            parameters= memberInfo.ToMessageInfo.FunctionParameters(titleColour, "</color>");
+        }
+
+		return parameters;
 	}
 	
 	
