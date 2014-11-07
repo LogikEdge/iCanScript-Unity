@@ -8,11 +8,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-	bool        myHelpEnabled      = true;
-	string      myHelpText         = null;
-    Texture2D   myHelpLogo         = null;
-    Texture2D   myHelpDontLogo     = null;
-	bool        myIsDynamicHeight  = false;
+    const string kHelpDisplayKey    ="HelpDisplayKey";
+	bool         myHelpEnabled      = true;
+	string       myHelpText         = null;
+    Texture2D    myHelpLogo         = null;
+    Texture2D    myHelpDontLogo     = null;
+	bool         myIsDynamicHeight  = false;
     
     
     // ======================================================================
@@ -32,7 +33,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void HelpInit() {
         iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);
         iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
-        HotZoneAdd(HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
+        HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
     }
  
     // =================================================================================================
@@ -85,10 +86,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     Rect HelpHotZone {
         get {
             if(myHelpLogo == null) return new Rect(0,0,0,0);
+            var displayArea= ComputeDisplayArea();
             var margin= 5f;
             var w= myHelpLogo.width;
             var h= myHelpLogo.height;
-            return new Rect(position.width-w-margin, position.height-h-margin, w, h);
+            if(!IsHelpDisplayOnRightSide && !myHelpEnabled) {
+                return new Rect(displayArea.x+margin, displayArea.yMax-h-margin, w, h);                
+            }
+            return new Rect(displayArea.xMax-w-margin, displayArea.yMax-h-margin, w, h);
         }
     }
 	// --------------------------------------------------------------------------------
@@ -101,8 +106,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// --------------------------------------------------------------------------------
     void HelpHotZoneMouseClick() {
         myHelpEnabled^= true;
+        UpdateHelpHotZone();
     }
-    
+	// --------------------------------------------------------------------------------
+    void UpdateHelpHotZone() {
+        HotZoneRemove(kHelpDisplayKey);
+        HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);        
+    }
     
 	enum Direction {Producer, Consumer};
 	
@@ -191,10 +201,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Display the help already populated in myHelpText.  Use only from onGUI.
 	// -----------------------------------------------------------------------
 	void DisplayHelp() {
-		if(myHelpText==null)
-			return;
+		if(myHelpText == null) return;
+
+        // -- Update HotZone in case it has moved --
+        UpdateHelpHotZone();
 		
-		int numLines= myHelpText.Length - myHelpText.Replace(Environment.NewLine, string.Empty).Length;
+		if(myHelpEnabled) {
+			GUIStyle style =  EditorStyles.textArea;
+			style.richText = true;
+			GUI.Box(ComputeDisplayArea(), myHelpText, style);
+            GUI.DrawTexture(HelpHotZone, myHelpLogo);
+		}
+	}
+	// -----------------------------------------------------------------------
+    Rect ComputeDisplayArea() {
+		int numLines= myHelpText == null ? 0 : myHelpText.Length - myHelpText.Replace(Environment.NewLine, string.Empty).Length;
 		
 		int helpHeight= 100;
 		int helpWidth= 400; 
@@ -205,23 +226,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			else if(numLines<=10) helpHeight=200;
 		}
 		
-		int helpPosX= 0;
-		int helpPosY= Screen.height-helpHeight;
+		float helpPosX= 0;
+		float helpPosY= position.height-helpHeight;
 		
-		EditorWindow libEdWin= iCS_EditorController.FindLibraryEditorWindow();
-		if(libEdWin != null) {
-			if(libEdWin.position.x > position.x) {
-				// Relocate Help window closed to library window
-				helpPosX= Screen.width-helpWidth;
-			}		
-		}
-			
-		
-		if(myHelpText != null && myHelpEnabled) {
-			GUIStyle style =  EditorStyles.textArea;
-			style.richText = true;
-			GUI.Box(new Rect(helpPosX, helpPosY, helpWidth, helpHeight), myHelpText, style);
-            GUI.DrawTexture(HelpHotZone, myHelpLogo);
-		}
-	}
+		if(IsHelpDisplayOnRightSide) {
+			// Relocate Help window closed to library window
+			helpPosX= position.width-helpWidth;
+		}		
+        return new Rect(helpPosX, helpPosY, helpWidth, helpHeight);       
+    }
+	// -----------------------------------------------------------------------
+    bool IsHelpDisplayOnRightSide {
+        get {
+    		EditorWindow libEdWin= iCS_EditorController.FindLibraryEditorWindow();
+    		if(libEdWin == null)  return false;
+    	    return libEdWin.position.x > position.x;            
+        }
+    }
 }

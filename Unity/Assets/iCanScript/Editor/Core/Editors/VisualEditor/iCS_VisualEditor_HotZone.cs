@@ -24,29 +24,26 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // =======================================================================
     // Fields
     // -----------------------------------------------------------------------
-    List<HotZone>   myHotZones= new List<HotZone>();
+    Dictionary<string,HotZone>   myHotZones= new Dictionary<string,HotZone>();
     
     // =======================================================================
     // HotZone Managememt
     // -----------------------------------------------------------------------
-    void HotZoneAdd(Rect area, Action onGUI, Action onMouseClick, Action onMouseOver= null) {
-        myHotZones.Add(new HotZone(area, onGUI, onMouseClick, onMouseOver));
+    void HotZoneAdd(string key, Rect area, Action onGUI, Action onMouseClick, Action onMouseOver= null) {
+        myHotZones.Add(key, new HotZone(area, onGUI, onMouseClick, onMouseOver));
     }
     // -----------------------------------------------------------------------
-    void HotZoneRemove(Rect area) {
-        for(int i= 0; i < myHotZones.Count; ++i) {
-            if(Math3D.IsEqual(myHotZones[i].Area, area)) {
-                myHotZones.RemoveAt(i);
-                return;
-            }
-        }
+    void HotZoneRemove(string key) {
+        myHotZones.Remove(key);
     }
     
     // =======================================================================
     // HotZone Processing
     // -----------------------------------------------------------------------
     void HotZoneMouseClick(Vector2 p) {
-        foreach(var hz in myHotZones) {
+        HotZone[] hotZones= new HotZone[myHotZones.Values.Count];
+        myHotZones.Values.CopyTo(hotZones, 0);
+        foreach(var hz in hotZones) {
             if(hz.Area.Contains(p) && hz.OnMouseClick != null) {
                 hz.OnMouseClick();
             }
@@ -54,7 +51,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
     // -----------------------------------------------------------------------    
     void HotZoneMouseOver(Vector2 p) {
-        foreach(var hz in myHotZones) {
+        HotZone[] hotZones= new HotZone[myHotZones.Values.Count];
+        myHotZones.Values.CopyTo(hotZones, 0);
+        foreach(var hz in hotZones) {
             if(hz.Area.Contains(p) && hz.OnMouseOver != null) {
                 hz.OnMouseOver();
             }
@@ -62,7 +61,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
     // -----------------------------------------------------------------------    
     void HotZoneGUI() {
-        foreach(var hz in myHotZones) {
+        HotZone[] hotZones= new HotZone[myHotZones.Values.Count];
+        myHotZones.Values.CopyTo(hotZones, 0);
+        foreach(var hz in hotZones) {
             if(hz.OnGUI != null) {
                 hz.OnGUI();
             }

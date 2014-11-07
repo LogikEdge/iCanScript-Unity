@@ -8,14 +8,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    bool        myIsAssistantActive     = true;
-    GUIStyle    myAssistantLabelStyle   = null;
-    GUIStyle    myAssistaneButtonStyle  = null;
-    Texture2D   myAssistantLogo         = null;
-    Texture2D   myAssistantDontLogo     = null;
-    Texture2D   myiCanScriptLargeLogo   = null;
-    Texture2D   myiCanScriptMediumLogo  = null;
-	int			myAssistantLineCount    = 0;
+    const string kWorkflowAssistantKey = "WorkflowAssistantKey";
+    bool         myIsAssistantActive   = true;
+    GUIStyle     myAssistantLabelStyle = null;
+    GUIStyle     myAssistaneButtonStyle= null;
+    Texture2D    myAssistantLogo       = null;
+    Texture2D    myAssistantDontLogo   = null;
+    Texture2D    myiCanScriptLargeLogo = null;
+    Texture2D    myiCanScriptMediumLogo= null;
+	int			 myAssistantLineCount  = 0;
     
     // ----------------------------------------------------------------------
     void ShowWorkflowAssistant() {
@@ -183,12 +184,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
     // ----------------------------------------------------------------------
     void ShowTextureCenteredAt(Vector2 center, Texture2D texture) {
+        if(texture == null) return;
         var r= Math3D.BuildRectCenteredAt(center, texture.width, texture.height);
         GUI.DrawTexture(r, texture);
     }
     // ----------------------------------------------------------------------
     Rect AssistantButtonArea {
         get {
+            if(myAssistantLogo == null) return new Rect(0,0,0,0);
             var r= ViewportRectForGraph;
             r.x+= 8f;
             r.y+= 8f;
@@ -210,6 +213,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_TextureCache.GetIcon(iCS_EditorStrings.LogoIcon, out myiCanScriptMediumLogo);            
         iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myAssistantLogo);                   
         iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myAssistantDontLogo);                   
-        HotZoneAdd(AssistantButtonArea, null, WorkflowAssistantOnMouseClick, null);
+        HotZoneAdd(kWorkflowAssistantKey, AssistantButtonArea, null, WorkflowAssistantOnMouseClick, null);
     }
 }
