@@ -10,8 +10,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
 	
 	bool myHelpEnabled= true;
-	int helpWidth= 400; 
-	int helpHeight=100;
+	bool isDynamicHeight= false;
 	string myHelpText= null;
 	
     // ======================================================================
@@ -31,9 +30,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	public void helpWindowChange() {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
 		if(edWin != null) {
+			isDynamicHeight= false;
 			myHelpText= iCS_HelpController.getHelp(edWin.GetType());
-            Repaint();	
-			helpHeight=100; 	    
+            Repaint();		    
 		}
 	}
 	
@@ -47,9 +46,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				helpWindowChange();
 			} 
 			else {
-				myHelpText= iCS_HelpController.GetHelpTitle(memInfo) + "\n\n" + iCS_HelpController.getHelp(memInfo);
+				isDynamicHeight= true;
+				myHelpText= iCS_HelpController.GetHelpTitle(memInfo) + "\n" + iCS_HelpController.getHelp(memInfo);
 	            Repaint();	
-				helpHeight=400;	 
 			} 
 		}
 	}
@@ -58,12 +57,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Find object under mouse in VisualEditor, and prepare help.  Use only from onGUI.
 	// --------------------------------------------------------------------------------
     void UpdateHelp() {	
-		helpHeight=100;
 		iCS_EditorObject edObj= null;
 		iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 		if(pickInfo != null) {
 			edObj= pickInfo.PickedObject;
 			if(edObj != null)
+				isDynamicHeight= false;
 				myHelpText= prepareHelpWindowText(edObj);
 		}
 	}
@@ -155,10 +154,34 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Display the help already populated in myHelpText.  Use only from onGUI.
 	// -----------------------------------------------------------------------
 	void DisplayHelp() {
+		
+		int numLines= myHelpText.Length - myHelpText.Replace(Environment.NewLine, string.Empty).Length;
+		
+		int helpHeight= 100;
+		int helpWidth= 400; 
+		
+		if(isDynamicHeight) {
+			helpHeight=numLines*17;
+			if(numLines<=3) helpHeight=100;
+			else if(numLines<=10) helpHeight=200;
+		}
+		
+		int helpPosX= 0;
+		int helpPosY= Screen.height-helpHeight;
+		
+		EditorWindow libEdWin= iCS_EditorController.FindLibraryEditorWindow();
+		if(libEdWin != null) {
+			if(libEdWin.position.x > position.x) {
+				// Relocate Help window closed to library window
+				helpPosX= Screen.width-helpWidth;
+			}		
+		}
+			
+		
 		if(myHelpText != null && myHelpEnabled) {
 			GUIStyle style =  EditorStyles.textArea;
 			style.richText = true;
-			GUI.Box(new Rect(Screen.width-helpWidth, Screen.height-helpHeight, helpWidth, helpHeight), myHelpText, style);
+			GUI.Box(new Rect(helpPosX, helpPosY, helpWidth, helpHeight), myHelpText, style);
 		}
 	}
 }
