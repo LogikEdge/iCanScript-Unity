@@ -117,9 +117,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             }
                             else {
     				            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
-    							ShowAssistantMessage("Drag-and-Drop from Library Window to Add variables & functions");
-                                ShowAssistantMessage("Drag-and-Drop Scene Object with Visual Script to Add its Public variables & functions");
-                                ShowAssistantMessage("Drag-and-Drop Scene Object to Add a reference");                                
+    							ShowAssistantMessage("Drag from Library Window to Add variables & functions");
+                                ShowAssistantMessage("Drag Scene Object with Visual Script to Add its Public variables & functions");
+                                ShowAssistantMessage("Drag Scene Object to Add a reference");                                
                             }
 						}						
 					}
