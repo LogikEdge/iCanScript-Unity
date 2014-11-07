@@ -68,7 +68,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
         if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
             ShowAssistantMessage("Right-Click to Add Message Handler or Public Function");
-			ShowAssistantMessage("Drag Builder from Library to Create Public Variable");
+			ShowAssistantMessage("Drag Variable Builder from Library Window to Create Public Variable");
 			Repaint();
             return;
         }
@@ -81,7 +81,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						ShowAssistantMessage("Double-Click to Edit Node Name");
 					}
 					else {
-						ShowAssistantMessage("WARNING: The Name of this Node cannot be edited");										
+						ShowAssistantMessage("WARNING: The Name of this Node cannot be changed");										
 					}
 					ShowAssistantMessage("Click-and-Drag to Move Node");
 					Repaint();
@@ -107,8 +107,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
 					else {
 						if(editorObj.IsKindOfPackage) {
-				            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
-							ShowAssistantMessage("Drag from Library to Add functions & variables");
+                            if(editorObj.IsInstanceNode) {
+                                if(editorObj.IsSelected) {                                    
+        				            ShowAssistantMessage("Use Instance Wizard to Add/Remove properties & functions");
+                                }
+                                else {
+        				            ShowAssistantMessage("Select to activate the Instance Wizard");
+                                }
+                            }
+                            else {
+    				            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
+    							ShowAssistantMessage("Drag from Library Window to Add variables & functions");
+                                ShowAssistantMessage("Drag from Hierarchy to Add a Public variables & functions");
+                                ShowAssistantMessage("Drag from Hierarchy to Add a Scene Object");                                
+                            }
 						}						
 					}
 					ShowAssistantMessage("Click-and-Drag to Move Node");									
@@ -125,7 +137,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						ShowAssistantMessage("Double-Click to Edit Port Name");				
 					}
 					else {
-						ShowAssistantMessage("WARNING: The Name of this Port cannot be edited");										
+						ShowAssistantMessage("WARNING: The Name of this Port cannot be changed");										
 					}
 					Repaint();
 		            return;											
@@ -136,10 +148,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		            return;																
 				}
 				default: {
-					ShowAssistantMessage("Drag port on the Edge of the parent Node to Move it");
-					ShowAssistantMessage("Drag port onto another port to Create a Data Flow");
-					ShowAssistantMessage("Drag port on the Edge of a Package to Create an Interface");
-					ShowAssistantMessage("Drag-and-Release port to Popup Quick Create Menu");						
+                    var port= editorObj;
+                    var parent= port.ParentNode;
+                    var grandParent= parent == null ? null : parent.ParentNode;
+                    if(grandParent.IsBehaviour) grandParent= null;
+    				ShowAssistantMessage("Drag port on Node Edge to Move it");
+                    if(grandParent != null) {
+    					ShowAssistantMessage("Drag port onto another port to Create a Data Flow");
+					    ShowAssistantMessage("Drag port on Package Edge to Create an Interface");
+                    }
+                    if(grandParent != null || port.IsInputPort) {
+    					ShowAssistantMessage("Drag-and-Release port to Popup Quick Create Menu");                        
+                    }
 					if(editorObj.IsInputPort & editorObj.ProducerPort == null) {
 						ShowAssistantMessage("Drag object from the scene to Initialize the port");				
 					}
