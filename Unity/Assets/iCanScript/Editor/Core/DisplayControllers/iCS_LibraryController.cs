@@ -730,7 +730,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		iCS_VisualEditor visEd= iCS_EditorController.FindVisualEditor();
 		if(visEd != null) {
 			if(node == null) {
-				visEd.helpWindowChange();
+				visEd.libraryHelp(null);
 			} 
 			else {
 				visEd.libraryHelp(node.MemberInfo);

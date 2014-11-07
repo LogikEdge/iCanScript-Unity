@@ -41,10 +41,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Mouse in detected over a library item, show help in the Visual Editor.
 	// -------------------------------------------------------------------------------------------------
 	public void libraryHelp(iCS_MemberInfo memInfo ) {
-		if(memInfo != null) {
-			myHelpText= iCS_HelpController.GetHelpTitle(memInfo) + "\n\n" + iCS_HelpController.getHelp(memInfo);
-            Repaint();	
-			helpHeight=400;	    
+		EditorWindow edWin= EditorWindow.mouseOverWindow;
+		if(edWin!= null && edWin.GetType() == typeof(iCS_LibraryEditorWindow)) { 
+			if(memInfo == null) {
+				helpWindowChange();
+			} 
+			else {
+				myHelpText= iCS_HelpController.GetHelpTitle(memInfo) + "\n\n" + iCS_HelpController.getHelp(memInfo);
+	            Repaint();	
+				helpHeight=400;	 
+			} 
 		}
 	}
 		

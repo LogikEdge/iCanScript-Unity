@@ -66,11 +66,11 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
 			// Build input string
 			string inputStr= "";
             if(IsInstanceFunctionBase) {
-                inputStr+= (multiLine ? "    -> " : "")+iCS_IStorage.GetInstancePortName(ClassType)+ (multiLine ? "\n" : ", ");
+                inputStr+= (multiLine ? "    in:\t" : "")+iCS_IStorage.GetInstancePortName(ClassType)+ (multiLine ? "\n" : ", ");
             }
             foreach(var param in Parameters) {
 				if(!param.type.IsByRef) {
-	                inputStr+= (multiLine ? "    -> " : "") + param.name+"<"+iCS_Types.TypeName(param.type)+">" + (multiLine ? "\n" : ", ");
+	                inputStr+= (multiLine ? "    in:\t" : "") + param.name+"<"+iCS_Types.TypeName(param.type)+">" + (multiLine ? "\n" : ", ");
 				}
             }
 			// Add inputs to signature.
@@ -82,22 +82,22 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
 			string outputStr= "";
             foreach(var param in Parameters) {
 				if(param.type.IsByRef) {
-	                outputStr+= (multiLine ? "    <- " : "") + param.name+"<"+iCS_Types.TypeName(param.type.GetElementType())+">" + (multiLine ? "\n" : ", ");
+	                outputStr+= (multiLine ? "    out:\t" : "") + param.name+"<"+iCS_Types.TypeName(param.type.GetElementType())+">" + (multiLine ? "\n" : ", ");
 					++nbOfOutputs;
 				}
             }
 			if(ReturnType != null && ReturnType != typeof(void)) {
 				++nbOfOutputs;
 				if(ReturnName != null && ReturnName != "" && ReturnName != iCS_Strings.DefaultFunctionReturnName) {
-					outputStr+= (multiLine ?  "    <- " :  "") + ReturnName;
+					outputStr+= (multiLine ?  "    out:\t" :  "") + ReturnName;
 				} else {
-					outputStr+= (multiLine ?  "    <- " :  "") + "<"+iCS_Types.TypeName(ReturnType)+">";
+					outputStr+= (multiLine ?  "    out:\t" :  "") + "<"+iCS_Types.TypeName(ReturnType)+">";
 				}
 				outputStr+= (multiLine ?  "" : ", ");
 			}
 			// Add output to signature.
 			if(nbOfOutputs >0) {
-				signature+= (multiLine ?  "" :  "->") + outputStr.Substring(0, outputStr.Length- (multiLine ?  0 : 2));
+				signature+= (multiLine ?  "" :  "out:\t") + outputStr.Substring(0, outputStr.Length- (multiLine ?  0 : 2));
 			}
 			if(nbOfOutputs > 1) {
 				signature+= (multiLine ? "" : ")");
