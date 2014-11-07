@@ -59,7 +59,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			} 
 			else {
 				myIsDynamicHeight= true;
-				myHelpText= iCS_HelpController.GetHelpTitle(memInfo) + "\n" + iCS_HelpController.getHelp(memInfo);
+				myHelpText= iCS_HelpController.getHelp(memInfo) + "\n\n" + iCS_HelpController.GetHelpTitle(memInfo);
 	            Repaint();	
 			} 
 		}
