@@ -119,7 +119,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     				            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
     							ShowAssistantMessage("Drag-and-Drop from Library Window to Add variables & functions");
                                 ShowAssistantMessage("Drag-and-Drop Scene Object with Visual Script to Add its Public variables & functions");
-                                ShowAssistantMessage("Drag-and-Drop Scene Object to Reference it");                                
+                                ShowAssistantMessage("Drag-and-Drop Scene Object to Add a reference");                                
                             }
 						}						
 					}
@@ -160,8 +160,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(grandParent != null || port.IsInputPort) {
     					ShowAssistantMessage("Drag-and-Release port to Popup Quick Create Menu");                        
                     }
-					if(editorObj.IsInputPort && editorObj.ProducerPort == null && iCS_Types.IsA<UnityEngine.Object>(editorObj.RuntimeType)) {
-						ShowAssistantMessage("Drag Scene Object to Initialize the port");				
+					if(editorObj.IsInputPort && editorObj.ProducerPort == null) {
+                        if(!(parent.IsMessageHandler && (port.IsProposedDataPort || port.IsInstancePort))) {
+                            if(port.IsSelected) {
+                                ShowAssistantMessage("Use the Inspector to Change the Value of the port");                            
+                            }
+                            else {
+                                ShowAssistantMessage("Select port to Change its Value in the Inspector");                            
+                            }
+                            if(iCS_Types.IsA<UnityEngine.Object>(editorObj.RuntimeType)) {
+    						    ShowAssistantMessage("Drag Scene Object to Initialize the port");
+                            }
+                        }
 					}
 					Repaint();
 		            return;
