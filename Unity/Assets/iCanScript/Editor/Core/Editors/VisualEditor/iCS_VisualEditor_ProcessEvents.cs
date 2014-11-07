@@ -79,6 +79,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     IsDragEnabled= true;                                                    
                 }
                 mySubEditor= null;
+                // -- Update Workflow Assistant State --
+                WorkflowAssistantMouseDown();
                 break;
             }
             case 1: { // Right mouse button
@@ -92,7 +94,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Mainly used for panning the viewport.
                 break;
             }
-        }        
+        }
     }
 	// ----------------------------------------------------------------------
     void MouseUpEvent() {

@@ -8,11 +8,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+    bool        myIsAssistantActive   = true;
     GUIStyle    myAssistantLabelStyle = null;
     GUIStyle    myAssistaneButtonStyle= null;
+    Texture2D   myAssistantLogo       = null;
+    Texture2D   myAssistantDontLogo   = null;
     Texture2D   myiCanScriptLargeLogo = null;
     Texture2D   myiCanScriptMediumLogo= null;
-    Texture2D   myAssistantLogo       = null;
 	int			myAssistantLineCount  = 0;
     
     // ----------------------------------------------------------------------
@@ -47,6 +49,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             Repaint();
             return;
         }
+        // -- Stop assistant if disabled --
+        if(AssistantButtonArea.Contains(WindowMousePosition)) {
+            if(myIsAssistantActive == false) {
+                ShowAssistantMessage("Click to Activate the Workflow Assistant");
+                ShowTextureCenteredAt(Math3D.Middle(AssistantButtonArea), myAssistantDontLogo);
+            }
+            else {
+                ShowAssistantMessage("Click to Deactivate the Workflow Assistant");                
+            }
+            return;
+        }
+        if(myIsAssistantActive == false) {
+            ShowTextureCenteredAt(Math3D.Middle(AssistantButtonArea), myAssistantLogo);
+            ShowTextureCenteredAt(Math3D.Middle(AssistantButtonArea), myAssistantDontLogo);
+            return;
+        }
+            
 		// -- Pointing on canvas --
         var pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
         if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
@@ -60,13 +79,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(editorObj.IsNode) {
 			switch(pickInfo.PickedPart) {
 				case iCS_PickPartEnum.Name: {
-					ShowAssistantMessage("Click-and-Drag to Move Node");									
 					if(editorObj.IsNameEditable) {
-						ShowAssistantMessage("Double-Click to Edit Node Name");						
+						ShowAssistantMessage("Double-Click to Edit Node Name");
 					}
 					else {
 						ShowAssistantMessage("WARNING: The Name of this Node cannot be edited");										
 					}
+					ShowAssistantMessage("Click-and-Drag to Move Node");
 					Repaint();
 		            return;											
 				}
@@ -133,6 +152,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
     }
     // ----------------------------------------------------------------------
+    void WorkflowAssistantMouseDown() {
+        // -- Determine if user wants to change workflow assistant state --
+        if(AssistantButtonArea.Contains(WindowMousePosition)) {
+            myIsAssistantActive^= true;
+        }        
+    }
+    // ----------------------------------------------------------------------
     void ShowAssistantMessageWithBlink(string message) {
 		ShowAssistantMessage(message, DisplayWithHighBlink);
     }
@@ -143,8 +169,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void ShowAssistantMessage(string message, Action<Action> displayModifier) {
         var content= new GUIContent(" "+message, myAssistantLogo);
-		var y= iCS_ToolbarUtility.GetHeight()+myAssistantLineCount*myAssistantLabelStyle.CalcHeight(content, position.width);
-        var r= new Rect(0, y, position.width, position.height);
+        var buttonArea= AssistantButtonArea;
+		var lineOffset= myAssistantLineCount*myAssistantLabelStyle.CalcHeight(content, position.width);
+        var margin= myAssistantLabelStyle.margin;
+        var padding= myAssistantLabelStyle.padding;
+        var r= new Rect(buttonArea.x-padding.left, buttonArea.y+lineOffset-margin.top-padding.top, position.width, position.height);
 		displayModifier(()=> GUI.Label(r, content, myAssistantLabelStyle));
 		++myAssistantLineCount;
     }
@@ -159,6 +188,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ShowTextureCenteredAt(Vector2 center, Texture2D texture) {
         var r= Math3D.BuildRectCenteredAt(center, texture.width, texture.height);
         GUI.DrawTexture(r, texture);
+    }
+    // ----------------------------------------------------------------------
+    Rect AssistantButtonArea {
+        get {
+            var r= ViewportRectForGraph;
+            r.x+= 8f;
+            r.y+= 8f;
+            r.width= myAssistantLogo.width;
+            r.height= myAssistantLogo.height;
+            return r;
+        }
     }
     // ----------------------------------------------------------------------
     void BuildWorkflowAssistantStyles() {
@@ -181,6 +221,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         if(myAssistantLogo == null) {
             iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myAssistantLogo);                   
+        }
+        if(myAssistantDontLogo == null) {
+            iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myAssistantDontLogo);                   
         }
     }
 }

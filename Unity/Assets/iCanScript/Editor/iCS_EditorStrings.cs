@@ -32,6 +32,11 @@ public class iCS_EditorStrings {
     public const string HelpMediumIcon       = "ics-help-24x24.png";
     public const string HelpLargeIcon        = "ics-help-32x32.png";
     public const string HelpExtraLargeIcon   = "ics-help-48x48.png";
+    public const string DontIcon_16          = "ics-dont-16x16.png";
+    public const string DontIcon_24          = "ics-dont-24x24.png";
+    public const string DontIcon_32          = "ics-dont-32x32.png";
+    public const string DontIcon_48          = "ics-dont-48x48.png";
+    public const string DontIcon_64          = "iCS-dont-64x64.png";
     
     // Textures
     public const string AALineTexture        = "iCS_LineTexture.psd";
