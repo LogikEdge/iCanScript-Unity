@@ -31,6 +31,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         
         // Register for window under mouse change
         iCS_SystemEvents.OnWindowUnderMouseChange+= helpWindowChange;
+        
+        // -- Initialize Sub-Systems --
+        QueueOnGUICommand(WorkflowAssistantInit);
+        QueueOnGUICommand(HelpInit);
 	}
 
 	// ----------------------------------------------------------------------

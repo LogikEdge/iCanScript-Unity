@@ -17,7 +17,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // USER INTERACTIONS
 	// ----------------------------------------------------------------------
     void MouseMoveEvent() {
+        // -- Update Help Information --
 		QueueOnGUICommand(UpdateHelp);
+        // -- Update Hot Zones --
+        var pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
+        if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
+            HotZoneMouseOver(WindowMousePosition);
+        }
+        // -- Canvas Processing --
         switch(Event.current.button) {
             case 2: { // Middle mouse button
                 UpdateViewportPanning();
@@ -79,8 +86,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     IsDragEnabled= true;                                                    
                 }
                 mySubEditor= null;
-                // -- Update Workflow Assistant State --
-                WorkflowAssistantMouseDown();
+                // -- Update Hot Zones --
+                var pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
+                if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
+                    HotZoneMouseClick(WindowMousePosition);
+                }
                 break;
             }
             case 1: { // Right mouse button

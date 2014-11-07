@@ -48,6 +48,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         
         // -- Show workflow assistant --
         ShowWorkflowAssistant();
+        HotZoneGUI();
         
         // Draw nodes and their connections.
         DisplayGraphNodes();

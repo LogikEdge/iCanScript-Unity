@@ -8,10 +8,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-	
-	bool myHelpEnabled= true;
-	string myHelpText= null;
-	
+	bool        myHelpEnabled      = true;
+	string      myHelpText         = null;
+    Texture2D   myHelpLogo         = null;
+    Texture2D   myHelpDontLogo     = null;
+    
     // ======================================================================
     // Dynamic Properties
     // ----------------------------------------------------------------------
@@ -23,6 +24,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 
+    // =================================================================================================
+    // Help Initialization
+	// -------------------------------------------------------------------------------------------------
+    void HelpInit() {
+        iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);
+        iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
+        HotZoneAdd(HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
+    }
+    
     // =================================================================================================
     // Mouse in detected over another window, show contextual help for that window in the Visual Editor.
 	// -------------------------------------------------------------------------------------------------
@@ -37,7 +47,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ================================================================================
     // Find object under mouse in VisualEditor, and prepare help.  Use only from onGUI.
 	// --------------------------------------------------------------------------------
-    void UpdateHelp() {	
+    void UpdateHelp() {
+        // -- Update the helkp information --
 		iCS_EditorObject edObj= null;
 		iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 		if(pickInfo != null) {
@@ -46,7 +57,32 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				myHelpText= prepareHelpWindowText(edObj);
 		}
 	}
-	
+
+    // ================================================================================
+    // Hot Zone Management
+	// --------------------------------------------------------------------------------
+    Rect HelpHotZone {
+        get {
+            if(myHelpLogo == null) return new Rect(0,0,0,0);
+            var margin= 5f;
+            var w= myHelpLogo.width;
+            var h= myHelpLogo.height;
+            return new Rect(position.width-w-margin, position.height-h-margin, w, h);
+        }
+    }
+	// --------------------------------------------------------------------------------
+    void HelpHotZoneGUI() {
+        GUI.DrawTexture(HelpHotZone, myHelpLogo);
+        if(!myHelpEnabled) {
+            GUI.DrawTexture(HelpHotZone, myHelpDontLogo);
+        }
+    }
+	// --------------------------------------------------------------------------------
+    void HelpHotZoneMouseClick() {
+        myHelpEnabled^= true;
+    }
+    
+    
 	enum Direction {Producer, Consumer};
 	
     // ======================================================================
@@ -138,6 +174,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			GUIStyle style =  EditorStyles.textArea;
 			style.richText = true;
 			GUI.Box(new Rect(Screen.width-400, Screen.height-100, 400, 100), myHelpText, style);
+            GUI.DrawTexture(HelpHotZone, myHelpLogo);
 		}
 	}
 }

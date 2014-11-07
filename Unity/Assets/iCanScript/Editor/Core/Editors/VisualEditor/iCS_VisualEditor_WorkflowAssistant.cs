@@ -8,20 +8,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    bool        myIsAssistantActive   = true;
-    GUIStyle    myAssistantLabelStyle = null;
-    GUIStyle    myAssistaneButtonStyle= null;
-    Texture2D   myAssistantLogo       = null;
-    Texture2D   myAssistantDontLogo   = null;
-    Texture2D   myiCanScriptLargeLogo = null;
-    Texture2D   myiCanScriptMediumLogo= null;
-	int			myAssistantLineCount  = 0;
+    bool        myIsAssistantActive     = true;
+    GUIStyle    myAssistantLabelStyle   = null;
+    GUIStyle    myAssistaneButtonStyle  = null;
+    Texture2D   myAssistantLogo         = null;
+    Texture2D   myAssistantDontLogo     = null;
+    Texture2D   myiCanScriptLargeLogo   = null;
+    Texture2D   myiCanScriptMediumLogo  = null;
+	int			myAssistantLineCount    = 0;
     
     // ----------------------------------------------------------------------
     void ShowWorkflowAssistant() {
-        // -- Build the styles used --
-        BuildWorkflowAssistantStyles();
-
 		// -- Restart display at the top --
 		myAssistantLineCount= 0;
 
@@ -152,7 +149,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
     }
     // ----------------------------------------------------------------------
-    void WorkflowAssistantMouseDown() {
+    void WorkflowAssistantOnMouseClick() {
         // -- Determine if user wants to change workflow assistant state --
         if(AssistantButtonArea.Contains(WindowMousePosition)) {
             myIsAssistantActive^= true;
@@ -201,29 +198,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
     // ----------------------------------------------------------------------
-    void BuildWorkflowAssistantStyles() {
-        if(myAssistantLabelStyle == null) {
-            myAssistantLabelStyle= new GUIStyle(EditorStyles.whiteLabel);
-            myAssistantLabelStyle.fontSize= 24;
-            myAssistantLabelStyle.fontStyle= FontStyle.Bold;
-            myAssistantLabelStyle.normal.textColor= Color.grey;
-        }        
-        if(myAssistaneButtonStyle == null) {
-            myAssistaneButtonStyle= new GUIStyle(GUI.skin.button);
-            myAssistaneButtonStyle.fontSize= 24;
-            myAssistaneButtonStyle.fontStyle= FontStyle.Bold;
-        }        
-        if(myiCanScriptLargeLogo == null) {
-            iCS_TextureCache.GetIcon(iCS_EditorStrings.LargeLogoIcon, out myiCanScriptLargeLogo);
-        }
-        if(myiCanScriptMediumLogo == null) {
-            iCS_TextureCache.GetIcon(iCS_EditorStrings.LogoIcon, out myiCanScriptMediumLogo);            
-        }
-        if(myAssistantLogo == null) {
-            iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myAssistantLogo);                   
-        }
-        if(myAssistantDontLogo == null) {
-            iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myAssistantDontLogo);                   
-        }
+    void WorkflowAssistantInit() {
+        myAssistantLabelStyle= new GUIStyle(EditorStyles.whiteLabel);
+        myAssistantLabelStyle.fontSize= 24;
+        myAssistantLabelStyle.fontStyle= FontStyle.Bold;
+        myAssistantLabelStyle.normal.textColor= Color.grey;
+        myAssistaneButtonStyle= new GUIStyle(GUI.skin.button);
+        myAssistaneButtonStyle.fontSize= 24;
+        myAssistaneButtonStyle.fontStyle= FontStyle.Bold;
+        iCS_TextureCache.GetIcon(iCS_EditorStrings.LargeLogoIcon, out myiCanScriptLargeLogo);
+        iCS_TextureCache.GetIcon(iCS_EditorStrings.LogoIcon, out myiCanScriptMediumLogo);            
+        iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myAssistantLogo);                   
+        iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myAssistantDontLogo);                   
+        HotZoneAdd(AssistantButtonArea, null, WorkflowAssistantOnMouseClick, null);
     }
 }
