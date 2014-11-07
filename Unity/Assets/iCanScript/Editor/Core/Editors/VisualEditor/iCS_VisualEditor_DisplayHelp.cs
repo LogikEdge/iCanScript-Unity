@@ -10,6 +10,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
 	
 	bool myHelpEnabled= true;
+	int helpWidth= 400; 
+	int helpHeight=100;
 	string myHelpText= null;
 	
     // ======================================================================
@@ -30,7 +32,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
 		if(edWin != null) {
 			myHelpText= iCS_HelpController.getHelp(edWin.GetType());
-            Repaint();		    
+            Repaint();	
+			helpHeight=100; 	    
 		}
 	}
 	
@@ -40,7 +43,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	public void libraryHelp(iCS_MemberInfo memInfo ) {
 		if(memInfo != null) {
 			myHelpText= iCS_HelpController.GetHelpTitle(memInfo) + "\n\n" + iCS_HelpController.getHelp(memInfo);
-            Repaint();		    
+            Repaint();	
+			helpHeight=400;	    
 		}
 	}
 		
@@ -48,6 +52,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Find object under mouse in VisualEditor, and prepare help.  Use only from onGUI.
 	// --------------------------------------------------------------------------------
     void UpdateHelp() {	
+		helpHeight=100;
 		iCS_EditorObject edObj= null;
 		iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 		if(pickInfo != null) {
@@ -147,7 +152,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(myHelpText != null && myHelpEnabled) {
 			GUIStyle style =  EditorStyles.textArea;
 			style.richText = true;
-			GUI.Box(new Rect(Screen.width-400, Screen.height-100, 400, 100), myHelpText, style);
+			GUI.Box(new Rect(Screen.width-helpWidth, Screen.height-helpHeight, helpWidth, helpHeight), myHelpText, style);
 		}
 	}
 }

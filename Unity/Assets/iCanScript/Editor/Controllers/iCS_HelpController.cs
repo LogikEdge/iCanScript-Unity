@@ -332,16 +332,17 @@ public static class iCS_HelpController {
 	
 	public static string GetHelpTitle(iCS_MemberInfo memberInfo) {
 		string title=memberInfo.DisplayName;
-		
+	
       	if(memberInfo.IsConstructor) {
-            title= memberInfo.ToConstructorInfo.FunctionSignature;
+            title= memberInfo.ToConstructorInfo.FunctionSignatureMultiLine;
         } 
 		else if(memberInfo.IsMethod) {
-            title= memberInfo.ToMethodInfo.FunctionSignature;                
+            title= memberInfo.ToMethodInfo.FunctionSignatureMultiLine;                
         } 
 		else if(memberInfo.IsMessage) {
-            title= memberInfo.ToMessageInfo.FunctionSignature;
+            title= memberInfo.ToMessageInfo.FunctionSignatureMultiLine;
         }
+
 		
 		return "<b>" + titleColour + title + "</color></b>";
 	}

@@ -50,49 +50,61 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public string FunctionSignature {
         get {
-            string signature= DisplayName;
+			return getFunctionSignature(false);
+		}
+    }
+	
+    public string FunctionSignatureMultiLine {
+        get {
+			return getFunctionSignature(true);
+		}
+    }
+	
+    public string getFunctionSignature(bool multiLine) {
+            string signature= DisplayName + (multiLine ? "\n" : "");
+				
 			// Build input string
 			string inputStr= "";
             if(IsInstanceFunctionBase) {
-                inputStr+= iCS_IStorage.GetInstancePortName(ClassType)+", ";
+                inputStr+= (multiLine ? "    -> " : "")+iCS_IStorage.GetInstancePortName(ClassType)+ (multiLine ? "\n" : ", ");
             }
             foreach(var param in Parameters) {
 				if(!param.type.IsByRef) {
-	                inputStr+= param.name+"<"+iCS_Types.TypeName(param.type)+">, ";
+	                inputStr+= (multiLine ? "    -> " : "") + param.name+"<"+iCS_Types.TypeName(param.type)+">" + (multiLine ? "\n" : ", ");
 				}
             }
 			// Add inputs to signature.
 			if(inputStr != "") {
-	            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
+	            signature+=  (multiLine ? "" : " (") +inputStr.Substring(0, inputStr.Length- (multiLine ?  0 : 2)) + (multiLine ? "" : ")");						
 			}
 			// Build output string
 			int nbOfOutputs= 0;
 			string outputStr= "";
             foreach(var param in Parameters) {
 				if(param.type.IsByRef) {
-	                outputStr+= param.name+"<"+iCS_Types.TypeName(param.type.GetElementType())+">, ";
+	                outputStr+= (multiLine ? "    <- " : "") + param.name+"<"+iCS_Types.TypeName(param.type.GetElementType())+">" + (multiLine ? "\n" : ", ");
 					++nbOfOutputs;
 				}
             }
 			if(ReturnType != null && ReturnType != typeof(void)) {
 				++nbOfOutputs;
 				if(ReturnName != null && ReturnName != "" && ReturnName != iCS_Strings.DefaultFunctionReturnName) {
-					outputStr+= /*" "+*/ReturnName;
+					outputStr+= (multiLine ?  "    <- " :  "") + ReturnName;
 				} else {
-					outputStr+= "<"+iCS_Types.TypeName(ReturnType)+">";
+					outputStr+= (multiLine ?  "    <- " :  "") + "<"+iCS_Types.TypeName(ReturnType)+">";
 				}
-				outputStr+= ", ";
+				outputStr+= (multiLine ?  "" : ", ");
 			}
 			// Add output to signature.
-			if(nbOfOutputs == 1) {
-				signature+="->"+outputStr.Substring(0, outputStr.Length-2);
+			if(nbOfOutputs >0) {
+				signature+= (multiLine ?  "" :  "->") + outputStr.Substring(0, outputStr.Length- (multiLine ?  0 : 2));
 			}
 			if(nbOfOutputs > 1) {
-				signature+="->("+outputStr.Substring(0, outputStr.Length-2)+")";
+				signature+= (multiLine ? "" : ")");
 			}
 			return signature;
-        }
     }
+	
     // ----------------------------------------------------------------------
     public string FunctionSignatureNoThis {
         get {
