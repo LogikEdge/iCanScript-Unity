@@ -91,6 +91,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
                     HotZoneMouseClick(WindowMousePosition);
                 }
+                else {
+                    HotZoneUnfilteredMouseClick(WindowMousePosition);
+                }
                 break;
             }
             case 1: { // Right mouse button
