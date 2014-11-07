@@ -330,7 +330,21 @@ public static class iCS_HelpController {
 		return "<b>" + typeName + " " + titleColour + parentName + displayName + "</color></b>";
 	}	
 	
-	
+	public static string GetHelpTitle(iCS_MemberInfo memberInfo) {
+		string title=memberInfo.DisplayName;
+		
+      	if(memberInfo.IsConstructor) {
+            title= memberInfo.ToConstructorInfo.FunctionSignature;
+        } 
+		else if(memberInfo.IsMethod) {
+            title= memberInfo.ToMethodInfo.FunctionSignature;                
+        } 
+		else if(memberInfo.IsMessage) {
+            title= memberInfo.ToMessageInfo.FunctionSignature;
+        }
+		
+		return "<b>" + titleColour + title + "</color></b>";
+	}
 	
 	// =================================================================================
 	// Open web browser for specific help

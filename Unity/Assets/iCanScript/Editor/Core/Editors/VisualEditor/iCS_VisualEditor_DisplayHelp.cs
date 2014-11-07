@@ -33,6 +33,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             Repaint();		    
 		}
 	}
+	
+    // =================================================================================================
+    // Mouse in detected over a library item, show help in the Visual Editor.
+	// -------------------------------------------------------------------------------------------------
+	public void libraryHelp(iCS_MemberInfo memInfo ) {
+		if(memInfo != null) {
+			myHelpText= iCS_HelpController.GetHelpTitle(memInfo) + "\n\n" + iCS_HelpController.getHelp(memInfo);
+            Repaint();		    
+		}
+	}
 		
     // ================================================================================
     // Find object under mouse in VisualEditor, and prepare help.  Use only from onGUI.
