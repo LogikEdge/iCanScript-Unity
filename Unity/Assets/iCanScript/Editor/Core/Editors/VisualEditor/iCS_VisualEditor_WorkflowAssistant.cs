@@ -103,10 +103,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				default: {
 					if(editorObj.IsIconizedInLayout) {
-			            ShowAssistantMessage("Double-Click to Open Node");
+                        if(editorObj.IsTransitionPackage) {
+    			            ShowAssistantMessage("Double-Click to Open the Transition Node & Add a Trigger");
+                        }
+                        else {
+    			            ShowAssistantMessage("Double-Click to Open Node");                            
+                        }
 					}
 					else {
 						if(editorObj.IsKindOfPackage) {
+                            if(editorObj.IsTransitionPackage) {
+    				            ShowAssistantMessage("Set the TRIGGER output to TRUE to Fire the Transition");                                
+                            }
                             if(editorObj.IsInstanceNode) {
                                 if(editorObj.IsSelected) {                                    
         				            ShowAssistantMessage("Use Instance Wizard to Add/Remove properties & functions");
@@ -116,13 +124,28 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 }
                             }
                             else {
-    				            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
+                                if(editorObj.IsOnStatePackage || editorObj.IsTransitionPackage) {
+        				            ShowAssistantMessage("Right-Click to Add Packages or State Charts");                                                                        
+                                }
+                                else {
+        				            ShowAssistantMessage("Right-Click to Add Packages, State Charts, or Control Port");                                    
+                                }
     							ShowAssistantMessage("Drag from Library Window to Add variables & functions");
                                 ShowAssistantMessage("Drag Scene Object with Visual Script to Add its Public variables & functions");
                                 ShowAssistantMessage("Drag Scene Object to Add a reference");                                
                             }
 						}						
 					}
+                    if(editorObj.IsStateChart) {
+			            ShowAssistantMessage("Right-Click to Add States or Control Ports");
+                    }
+                    if(editorObj.IsState) {
+			            ShowAssistantMessage("Right-Click to Add Sub-States or OnEntry, OnUpdate, OnUpdate Packages");
+                        ShowAssistantMessage("Click-and-Drag to Create a Transition to another State");
+                        if(!editorObj.IsEntryState) {
+    			            ShowAssistantMessage("Right-Click to set as the Entry State");                            
+                        }
+                    }
 					ShowAssistantMessage("Click-and-Drag to Move Node");									
 					Repaint();
 		            return;					
@@ -152,7 +175,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     var parent= port.ParentNode;
                     var grandParent= parent == null ? null : parent.ParentNode;
                     if(grandParent.IsBehaviour) grandParent= null;
-    				ShowAssistantMessage("Drag port on Node Edge to Move it");
+                    if(port.IsTriggerPort || (port.IsOutFixDataPort && parent.IsTransitionPackage)) {
+    					ShowAssistantMessage("Set the Trigger Port to TRUE to Fire the Transition");
+        				ShowAssistantMessage("Drag port on Node Edge to Move it");
+                        break;                              
+                    }
                     if(port.IsEnablePort) {
     					ShowAssistantMessage("Enable ports Activate(true)/Deactivate(false) the Execution of its Node");      
     					ShowAssistantMessage("Multiple Enable ports can be used.  All enable ports must be TRUE to Activate the node");      
@@ -162,6 +189,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     if(port.IsTriggerPort) {
     					ShowAssistantMessage("A Trigger port outputs TRUE/FALSE representing the Execeution of the Node");                              
+    					ShowAssistantMessage("Drag port onto another port to Create a Data or Control Flow");
                     }
                     if(grandParent != null) {
                         if(port.IsDataPort) {
@@ -189,8 +217,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             }
                         }
 					}
-					Repaint();
-		            return;
+    				ShowAssistantMessage("Drag port on Node Edge to Move it");
+                    break;
 				}
 			}
 		}
