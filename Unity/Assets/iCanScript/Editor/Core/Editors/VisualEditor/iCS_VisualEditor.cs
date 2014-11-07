@@ -213,6 +213,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // -- Draw common stuff for all editors --
         base.OnGUI();
 
+       	// -- Update pending GUI commands --
+        RunOnGUICommands();
+        
         // -- Attempt to initialize environment (if not already done) --
         bool isInit= IsInitialized();
 
@@ -227,9 +230,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			DisplaySceneErrorsAndWarnings();
             return;            
         }
-       	// -- Update pending GUI commands --
-        RunOnGUICommands();
-        
         // -- Assure that we have a library window opened --
         iCS_EditorController.OpenLibraryEditor();
         
