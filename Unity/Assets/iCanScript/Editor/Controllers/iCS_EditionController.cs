@@ -39,7 +39,7 @@ public static class iCS_EditionController {
     // ======================================================================
     // Community License Management
     // ----------------------------------------------------------------------
-    public const int MaxCommunityVisualScriptPerScene= 5;
+    public const int MaxCommunityVisualScriptPerScene= 7;
     public const int MaxCommunityNodesPerVisualScript= 50;
     public static int CommunityVisualScriptsRemaining {
         get {
