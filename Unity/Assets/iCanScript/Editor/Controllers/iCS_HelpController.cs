@@ -335,21 +335,21 @@ public static class iCS_HelpController {
 		string typeName= null;
 	
 		if(memberInfo.IsField) {
-			typeName="Property";
+			typeName="Property of " + memberInfo.ParentTypeInfo.ClassName;
 		}
 		else if(memberInfo.IsProperty) {
-			typeName= "Property";
+			typeName= "Property of " + memberInfo.ParentTypeInfo.ClassName;
 		}
       	else if(memberInfo.IsConstructor) {
 			typeName= "Variable Builder";
             title= memberInfo.ToConstructorInfo.FunctionSignatureMultiLine;
         } 
 		else if(memberInfo.IsMethod) {
-			typeName="Function";
+			typeName="Function of " + memberInfo.ParentTypeInfo.ClassName;
             title= memberInfo.ToMethodInfo.FunctionSignatureMultiLine;                
         } 
 		else if(memberInfo.IsMessage) {
-			typeName="Message";
+			typeName="Message of " + memberInfo.ParentTypeInfo.ClassName;
             title= memberInfo.ToMessageInfo.FunctionSignatureMultiLine;
         }
 		else if(memberInfo.IsTypeInfo) {
