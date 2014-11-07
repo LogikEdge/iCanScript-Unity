@@ -73,20 +73,20 @@ public static class iCS_HelpDictionary {
 		},
 		{ "iCS_VisualEditorWindow",
 			"<tcolor><b>Keyboard shortcuts (for selected):</b></color>\n" +
-			"<tcolor><b>H:</b></color> more Help\t\t\t<tcolor><b>draggg:</b></color> moves node\n" +
-			"<tcolor><b>F:</b></color> Focus in view\t\t\t<tcolor><b>ctrl-drag:</b></color> moves node outside\n" +
-			"<tcolor><b>L:</b></color> auto Layout\t\t\t<tcolor><b>shift-drag:</b></color> move copies node\n" +
-			"<tcolor><b>B:</b></color> Bookmark\t\t\t<tcolor><b>del:</b></color> deletes object\n" +
-			"<tcolor><b>G:</b></color> move to bookmark\t\t<tcolor><b>C:</b></color> Connect to bookmark\n"
+			"<tcolor><b>H:</b></color> more Help                      <tcolor><b>drag:</b></color> moves node\n" +
+			"<tcolor><b>F:</b></color> Focus in view                  <tcolor><b>ctrl-drag:</b></color> moves node outside\n" +
+			"<tcolor><b>L:</b></color> auto Layout                    <tcolor><b>shift-drag:</b></color> move copies node\n" +
+			"<tcolor><b>B:</b></color> Bookmark                       <tcolor><b>del:</b></color> deletes object\n" +
+			"<tcolor><b>G:</b></color> move to bookmark        <tcolor><b>C:</b></color> Connect to bookmark\n"
 		},
 		// Duplicate of iCS_VisualEditorWindow, 
 		{ "iCS_VisualScriptImp",
 			"<tcolor><b>Keyboard shortcuts (for selected):</b></color>\n" +
-			"<tcolor><b>H:</b></color> more Help\t\t<tcolor><b>drag:</b></color> moves node\n" +
-			"<tcolor><b>F:</b></color> Focus in view\t\t<tcolor><b>ctrl-drag:</b></color> moves node outside\n" +
-			"<tcolor><b>L:</b></color> auto Layout\t\t<tcolor><b>shift-drag:</b></color> move copies node\n" +
-			"<tcolor><b>B:</b></color> Bookmark\t\t<tcolor><b>del:</b></color> deletes object\n" +
-			"<tcolor><b>G:</b></color> move to bookmark\t<tcolor><b>C:</b></color> Connect to bookmark\n"
+			"<tcolor><b>H:</b></color> more Help                      <tcolor><b>drag:</b></color> moves node\n" +
+			"<tcolor><b>F:</b></color> Focus in view                  <tcolor><b>ctrl-drag:</b></color> moves node outside\n" +
+			"<tcolor><b>L:</b></color> auto Layout                    <tcolor><b>shift-drag:</b></color> move copies node\n" +
+			"<tcolor><b>B:</b></color> Bookmark                       <tcolor><b>del:</b></color> deletes object\n" +
+			"<tcolor><b>G:</b></color> move to bookmark        <tcolor><b>C:</b></color> Connect to bookmark\n"
 		},
 		{ "iCS_Package", 
 			"The Package is a flexible node. It can contain complex graphs and expose only those ports that are made public by the visual script designer."
