@@ -199,9 +199,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var content= new GUIContent(" "+message, myAssistantLogo);
         var buttonArea= AssistantButtonArea;
 		var lineOffset= myAssistantLineCount*myAssistantLabelStyle.CalcHeight(content, position.width);
-        var margin= myAssistantLabelStyle.margin;
         var padding= myAssistantLabelStyle.padding;
-        var r= new Rect(buttonArea.x-padding.left, buttonArea.y+lineOffset-margin.top-padding.top, position.width, position.height);
+        var r= new Rect(buttonArea.x-padding.left, buttonArea.y+lineOffset-padding.top, position.width, position.height);
 		displayModifier(()=> GUI.Label(r, content, myAssistantLabelStyle));
 		++myAssistantLineCount;
     }
