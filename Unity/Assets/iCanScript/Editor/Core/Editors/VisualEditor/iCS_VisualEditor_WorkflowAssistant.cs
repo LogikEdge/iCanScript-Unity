@@ -248,11 +248,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void WorkflowAssistantInit() {
         myAssistantLabelStyle= new GUIStyle(EditorStyles.whiteLabel);
-        myAssistantLabelStyle.fontSize= 20;
-        myAssistantLabelStyle.fontStyle= FontStyle.Bold;
+        myAssistantLabelStyle.fontSize= 19;
+        myAssistantLabelStyle.fontStyle= FontStyle.Bold; 
         myAssistantLabelStyle.normal.textColor= Color.yellow;
         myAssistaneButtonStyle= new GUIStyle(GUI.skin.button);
-        myAssistaneButtonStyle.fontSize= 20;
+        myAssistaneButtonStyle.fontSize= 19;
         myAssistaneButtonStyle.fontStyle= FontStyle.Bold;
         iCS_TextureCache.GetIcon(iCS_EditorStrings.LargeLogoIcon, out myiCanScriptLargeLogo);
         iCS_TextureCache.GetIcon(iCS_EditorStrings.LogoIcon, out myiCanScriptMediumLogo);            
