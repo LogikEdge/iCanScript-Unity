@@ -112,14 +112,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         				            ShowAssistantMessage("Use Instance Wizard to Add/Remove properties & functions");
                                 }
                                 else {
-        				            ShowAssistantMessage("Select to activate the Instance Wizard");
+        				            ShowAssistantMessage("Select to Activate the Instance Wizard");
                                 }
                             }
                             else {
     				            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
-    							ShowAssistantMessage("Drag from Library Window to Add variables & functions");
-                                ShowAssistantMessage("Drag from Hierarchy to Add a Public variables & functions");
-                                ShowAssistantMessage("Drag from Hierarchy to Add a Scene Object");                                
+    							ShowAssistantMessage("Drag-and-Drop from Library Window to Add variables & functions");
+                                ShowAssistantMessage("Drag-and-Drop Scene Object with Visual Script to Add its Public variables & functions");
+                                ShowAssistantMessage("Drag-and-Drop Scene Object to Reference it");                                
                             }
 						}						
 					}
@@ -160,8 +160,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(grandParent != null || port.IsInputPort) {
     					ShowAssistantMessage("Drag-and-Release port to Popup Quick Create Menu");                        
                     }
-					if(editorObj.IsInputPort & editorObj.ProducerPort == null) {
-						ShowAssistantMessage("Drag object from the scene to Initialize the port");				
+					if(editorObj.IsInputPort && editorObj.ProducerPort == null && iCS_Types.IsA<UnityEngine.Object>(editorObj.RuntimeType)) {
+						ShowAssistantMessage("Drag Scene Object to Initialize the port");				
 					}
 					Repaint();
 		            return;
@@ -223,11 +223,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void WorkflowAssistantInit() {
         myAssistantLabelStyle= new GUIStyle(EditorStyles.whiteLabel);
-        myAssistantLabelStyle.fontSize= 24;
+        myAssistantLabelStyle.fontSize= 20;
         myAssistantLabelStyle.fontStyle= FontStyle.Bold;
         myAssistantLabelStyle.normal.textColor= Color.grey;
         myAssistaneButtonStyle= new GUIStyle(GUI.skin.button);
-        myAssistaneButtonStyle.fontSize= 24;
+        myAssistaneButtonStyle.fontSize= 20;
         myAssistaneButtonStyle.fontStyle= FontStyle.Bold;
         iCS_TextureCache.GetIcon(iCS_EditorStrings.LargeLogoIcon, out myiCanScriptLargeLogo);
         iCS_TextureCache.GetIcon(iCS_EditorStrings.LogoIcon, out myiCanScriptMediumLogo);            
