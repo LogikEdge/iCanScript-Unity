@@ -343,21 +343,21 @@ public static class iCS_HelpController {
 		}
       	else if(memberInfo.IsConstructor) {
 			typeName= "Variable Builder";
-            title= memberInfo.ToConstructorInfo.FunctionSignatureMultiLine("<b>"+titleColour, "</color></b>");
+            title= memberInfo.ToConstructorInfo.FunctionSignatureMultiLine(titleColour, "</color>");
         } 
 		else if(memberInfo.IsMethod) {
 			typeName="Function of " + className;
-            title= memberInfo.ToMethodInfo.FunctionSignatureMultiLine("<b>"+titleColour, "</color></b>");                
+            title= memberInfo.ToMethodInfo.FunctionSignatureMultiLine(titleColour, "</color>");                
         } 
 		else if(memberInfo.IsMessage) {
 			typeName="Message of " + className;
-            title= memberInfo.ToMessageInfo.FunctionSignatureMultiLine("<b>"+titleColour, "</color></b>");
+            title= memberInfo.ToMessageInfo.FunctionSignatureMultiLine(titleColour, "</color>");
         }
 		else if(memberInfo.IsTypeInfo) {
 			typeName="Class Instance";
 		}
 
-		return typeName + " " + title;
+		return "<b>" + typeName + " " + title + "</b>";
 	}
 	
 	
