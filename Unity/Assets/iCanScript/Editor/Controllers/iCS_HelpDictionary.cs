@@ -7,10 +7,10 @@ public static class iCS_HelpDictionary {
 	public static Dictionary<string, string> typeHelp = new Dictionary<string, string>()
 	{
 	    { "Constructor", 
-			"A Builder node is used to construct and initialise a class or variable."
+			"A Variable Builder node is used to construct and initialise a class or variable."
 		},
 	    { "Instance", 
-			"Class nodes have an instance port, you can use a builder node to create an instance."
+			"Class nodes have an instance port, you can use a Variable Builder node to create an instance."
 		},
 	    { "Function", 
 			"Function nodes are used to execute behaviours."
