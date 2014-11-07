@@ -331,33 +331,35 @@ public static class iCS_HelpController {
 	}	
 	
 	public static string GetHelpTitle(iCS_MemberInfo memberInfo) {
-		string title= memberInfo.DisplayName;
+		string title= "<b>"+titleColour + memberInfo.DisplayName + "</color></b>";
 		string typeName= null;
+		string className= iCS_Types.TypeName(memberInfo.ClassType);
 	
 		if(memberInfo.IsField) {
-			typeName="Property of " + memberInfo.ParentTypeInfo.ClassName;
+			typeName="Property of " + className;
 		}
 		else if(memberInfo.IsProperty) {
-			typeName= "Property of " + memberInfo.ParentTypeInfo.ClassName;
+			typeName= "Property of " + className;
 		}
       	else if(memberInfo.IsConstructor) {
 			typeName= "Variable Builder";
-            title= memberInfo.ToConstructorInfo.FunctionSignatureMultiLine;
+            title= memberInfo.ToConstructorInfo.FunctionSignatureMultiLine(titleColour, "</color>");
         } 
 		else if(memberInfo.IsMethod) {
-			typeName="Function of " + memberInfo.ParentTypeInfo.ClassName;
-            title= memberInfo.ToMethodInfo.FunctionSignatureMultiLine;                
+			typeName="Function of " + className;
+            title= memberInfo.ToMethodInfo.FunctionSignatureMultiLine(titleColour, "</color>");                
         } 
 		else if(memberInfo.IsMessage) {
-			typeName="Message of " + memberInfo.ParentTypeInfo.ClassName;
-            title= memberInfo.ToMessageInfo.FunctionSignatureMultiLine;
+			typeName="Message of " + className;
+            title= memberInfo.ToMessageInfo.FunctionSignatureMultiLine(titleColour, "</color>");
         }
 		else if(memberInfo.IsTypeInfo) {
 			typeName="Class Instance";
 		}
 
-		return "<b>" + typeName + " " +  titleColour + title + "</color></b>";
+		return "<b>" + typeName + " " + title + "</b>";
 	}
+	
 	
 	// =================================================================================
 	// Open web browser for specific help
