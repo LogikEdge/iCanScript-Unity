@@ -729,10 +729,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		// Send help to the visual editor help window
 		iCS_VisualEditor visEd= iCS_EditorController.FindVisualEditor();
 		if(visEd != null) {
-			if(node == null) {
+			if(node == null || node.Type==NodeTypeEnum.Company || node.Type==NodeTypeEnum.Library || node.Type==NodeTypeEnum.Package) {
+				// Show Generic Library help
 				visEd.libraryHelp(null);
 			} 
 			else {
+				// Show specific Library help
 				visEd.libraryHelp(node.MemberInfo);
 			} 
 		}		
