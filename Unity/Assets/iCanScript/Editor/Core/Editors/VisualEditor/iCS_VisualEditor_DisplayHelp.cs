@@ -154,6 +154,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Display the help already populated in myHelpText.  Use only from onGUI.
 	// -----------------------------------------------------------------------
 	void DisplayHelp() {
+		if(myHelpText==null)
+			return;
 		
 		int numLines= myHelpText.Length - myHelpText.Replace(Environment.NewLine, string.Empty).Length;
 		
