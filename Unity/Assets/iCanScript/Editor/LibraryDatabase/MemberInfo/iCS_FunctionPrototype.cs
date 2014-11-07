@@ -95,8 +95,8 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
     }
 	
 	
-    public string FunctionSignatureMultiLine(string highLight, string noHighLight) {
-            string signature= highLight + DisplayName + noHighLight + "\n" ;
+    public string FunctionParameters(string highLight, string noHighLight) {
+            string signature= null;
 				
 			// Build input string
 			string inputStr= "";
