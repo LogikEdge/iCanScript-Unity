@@ -225,7 +225,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myAssistantLabelStyle= new GUIStyle(EditorStyles.whiteLabel);
         myAssistantLabelStyle.fontSize= 20;
         myAssistantLabelStyle.fontStyle= FontStyle.Bold;
-        myAssistantLabelStyle.normal.textColor= Color.grey;
+        myAssistantLabelStyle.normal.textColor= Color.yellow;
         myAssistaneButtonStyle= new GUIStyle(GUI.skin.button);
         myAssistaneButtonStyle.fontSize= 20;
         myAssistaneButtonStyle.fontStyle= FontStyle.Bold;
