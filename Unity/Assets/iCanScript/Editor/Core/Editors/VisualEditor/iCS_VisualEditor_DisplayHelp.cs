@@ -219,8 +219,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	// -----------------------------------------------------------------------
     Rect ComputeDisplayArea() {
-		int numLines= myHelpText == null ? 0 : myHelpText.Length - myHelpText.Replace(Environment.NewLine, string.Empty).Length;
-		
+		int numLines = myHelpText == null ? 0 : myHelpText.Split('\n').Length;
+
 		int helpHeight= 85;
 		int helpWidth= 400; 
 		
