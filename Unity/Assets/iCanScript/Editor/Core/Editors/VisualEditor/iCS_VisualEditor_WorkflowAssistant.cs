@@ -68,7 +68,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
         if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
             ShowAssistantMessage("Right-Click to Add Message Handler or Public Function");
-			ShowAssistantMessage("Drag Builder from Library to Create Public Variable");
+			ShowAssistantMessage("Drag Variable Builder from Library Window to Create Public Variable");
 			Repaint();
             return;
         }
@@ -81,7 +81,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						ShowAssistantMessage("Double-Click to Edit Node Name");
 					}
 					else {
-						ShowAssistantMessage("WARNING: The Name of this Node cannot be edited");										
+						ShowAssistantMessage("WARNING: The Name of this Node cannot be changed");										
 					}
 					ShowAssistantMessage("Click-and-Drag to Move Node");
 					Repaint();
@@ -107,8 +107,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
 					else {
 						if(editorObj.IsKindOfPackage) {
-				            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
-							ShowAssistantMessage("Drag from Library to Add functions & variables");
+                            if(editorObj.IsInstanceNode) {
+                                if(editorObj.IsSelected) {                                    
+        				            ShowAssistantMessage("Use Instance Wizard to Add/Remove properties & functions");
+                                }
+                                else {
+        				            ShowAssistantMessage("Select to Activate the Instance Wizard");
+                                }
+                            }
+                            else {
+    				            ShowAssistantMessage("Right-Click to Add Package, State Chart, or Control Ports");
+    							ShowAssistantMessage("Drag-and-Drop from Library Window to Add variables & functions");
+                                ShowAssistantMessage("Drag-and-Drop Scene Object with Visual Script to Add its Public variables & functions");
+                                ShowAssistantMessage("Drag-and-Drop Scene Object to Add a reference");                                
+                            }
 						}						
 					}
 					ShowAssistantMessage("Click-and-Drag to Move Node");									
@@ -125,7 +137,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						ShowAssistantMessage("Double-Click to Edit Port Name");				
 					}
 					else {
-						ShowAssistantMessage("WARNING: The Name of this Port cannot be edited");										
+						ShowAssistantMessage("WARNING: The Name of this Port cannot be changed");										
 					}
 					Repaint();
 		            return;											
@@ -136,12 +148,30 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		            return;																
 				}
 				default: {
-					ShowAssistantMessage("Drag port on the Edge of the parent Node to Move it");
-					ShowAssistantMessage("Drag port onto another port to Create a Data Flow");
-					ShowAssistantMessage("Drag port on the Edge of a Package to Create an Interface");
-					ShowAssistantMessage("Drag-and-Release port to Popup Quick Create Menu");						
-					if(editorObj.IsInputPort & editorObj.ProducerPort == null) {
-						ShowAssistantMessage("Drag object from the scene to Initialize the port");				
+                    var port= editorObj;
+                    var parent= port.ParentNode;
+                    var grandParent= parent == null ? null : parent.ParentNode;
+                    if(grandParent.IsBehaviour) grandParent= null;
+    				ShowAssistantMessage("Drag port on Node Edge to Move it");
+                    if(grandParent != null) {
+    					ShowAssistantMessage("Drag port onto another port to Create a Data Flow");
+					    ShowAssistantMessage("Drag port on Package Edge to Create an Interface");
+                    }
+                    if(grandParent != null || port.IsInputPort) {
+    					ShowAssistantMessage("Drag-and-Release port to Popup Quick Create Menu");                        
+                    }
+					if(editorObj.IsInputPort && editorObj.ProducerPort == null) {
+                        if(!(parent.IsMessageHandler && (port.IsProposedDataPort || port.IsInstancePort))) {
+                            if(port.IsSelected) {
+                                ShowAssistantMessage("Use the Inspector to Change the Value of the port");                            
+                            }
+                            else {
+                                ShowAssistantMessage("Select port to Change its Value in the Inspector");                            
+                            }
+                            if(iCS_Types.IsA<UnityEngine.Object>(editorObj.RuntimeType)) {
+    						    ShowAssistantMessage("Drag Scene Object to Initialize the port");
+                            }
+                        }
 					}
 					Repaint();
 		            return;
@@ -169,9 +199,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var content= new GUIContent(" "+message, myAssistantLogo);
         var buttonArea= AssistantButtonArea;
 		var lineOffset= myAssistantLineCount*myAssistantLabelStyle.CalcHeight(content, position.width);
-        var margin= myAssistantLabelStyle.margin;
         var padding= myAssistantLabelStyle.padding;
-        var r= new Rect(buttonArea.x-padding.left, buttonArea.y+lineOffset-margin.top-padding.top, position.width, position.height);
+        var r= new Rect(buttonArea.x-padding.left, buttonArea.y+lineOffset-padding.top, position.width, position.height);
 		displayModifier(()=> GUI.Label(r, content, myAssistantLabelStyle));
 		++myAssistantLineCount;
     }
@@ -203,11 +232,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void WorkflowAssistantInit() {
         myAssistantLabelStyle= new GUIStyle(EditorStyles.whiteLabel);
-        myAssistantLabelStyle.fontSize= 24;
+        myAssistantLabelStyle.fontSize= 20;
         myAssistantLabelStyle.fontStyle= FontStyle.Bold;
-        myAssistantLabelStyle.normal.textColor= Color.grey;
+        myAssistantLabelStyle.normal.textColor= Color.yellow;
         myAssistaneButtonStyle= new GUIStyle(GUI.skin.button);
-        myAssistaneButtonStyle.fontSize= 24;
+        myAssistaneButtonStyle.fontSize= 20;
         myAssistaneButtonStyle.fontStyle= FontStyle.Bold;
         iCS_TextureCache.GetIcon(iCS_EditorStrings.LargeLogoIcon, out myiCanScriptLargeLogo);
         iCS_TextureCache.GetIcon(iCS_EditorStrings.LogoIcon, out myiCanScriptMediumLogo);            

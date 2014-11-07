@@ -188,6 +188,7 @@ public partial class iCS_EditorObject {
 	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count && id < EngineObjects.Count && EditorObjects[id] != null; }
 	public bool	IsParentValid		{ get { return IsIdValid(ParentId); }}
 	public bool IsSourceValid		{ get { return IsIdValid(ProducerPortId); }}
+    public bool IsSelected          { get { return myIStorage.SelectedObject == this; }}
 
 	public bool IsValid {
 		get { return IsIdValid(InstanceId); }
