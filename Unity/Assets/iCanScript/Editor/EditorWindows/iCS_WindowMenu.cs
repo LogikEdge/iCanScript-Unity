@@ -3,6 +3,14 @@ using UnityEditor;
 
 public static class iCS_WindowMenu {
     // ======================================================================
+	// Quick Open Visual Editor.
+	[MenuItem("iCanScript/Open iCanScript",false,20)]
+	public static void OpeniCanScript() {
+        MenuGraphEditor();
+        MenuLibraryEditor();
+        MenuInstanceEditor();
+	}
+    // ======================================================================
 	// iCanScript Graph editor.
 	[MenuItem("iCanScript/Preferences...",false,50)]
 	public static void MenuPreferences() {
