@@ -148,3 +148,4 @@ function install_asset_store_tools {
     rsync -av $ASSET_STORE_TOOLS_DIR $STAGING_ASSETS_DIR >/dev/null
 }
 install_asset_store_tools Pro
+install_asset_store_tools Community
