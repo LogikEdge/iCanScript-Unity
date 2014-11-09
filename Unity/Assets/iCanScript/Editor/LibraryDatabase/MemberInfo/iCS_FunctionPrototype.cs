@@ -123,11 +123,7 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
             }
 			if(ReturnType != null && ReturnType != typeof(void)) {
 				++nbOfOutputs;
-				if(ReturnName != null && ReturnName != "" && ReturnName != iCS_Strings.DefaultFunctionReturnName) {
-					outputStr+= "<iCS_x=150><iCS_highlight>" + ReturnName + "</iCS_highlight>\n";
-				} else {
-					outputStr+= "<iCS_x=40>" +iCS_Types.TypeName(ReturnType) + "\n";
-				}
+				outputStr+= "<iCS_x=40>" +iCS_Types.TypeName(ReturnType) + "<iCS_x=150><iCS_highlight>" + ReturnName + "</iCS_highlight>\n";
 			}
 			// Add output to signature.
 			if(nbOfOutputs > 0) {
