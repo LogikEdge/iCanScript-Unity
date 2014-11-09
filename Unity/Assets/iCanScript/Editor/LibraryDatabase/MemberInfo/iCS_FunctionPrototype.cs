@@ -130,10 +130,9 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
 				}
 			}
 			// Add output to signature.
-			if(nbOfOutputs > 1) {
+			if(nbOfOutputs > 0) {
 				signature+="<iCS_x=10>out:"+outputStr;
 			}
-
 			return signature;
     }
 	
