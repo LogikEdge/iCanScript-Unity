@@ -132,4 +132,10 @@ public static class iCS_iCanScriptMenu {
     public static void CheckForUpdate() {
 		iCS_SoftwareUpdateController.ManualUpdateVerification();
     }
+#if COMMUNITY_EDITION
+    [MenuItem("iCanScript/Purchase...",false,1004)]
+    public static void Purchase() {
+		Application.OpenURL("http://u3d.as/content/disruptive-software/i-can-script-visual-scripting/7ji");
+	}
+#endif
 }
