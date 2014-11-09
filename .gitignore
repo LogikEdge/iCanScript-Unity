@@ -69,3 +69,5 @@ EnterpriseArchitect/iCanScript.eap
 EnterpriseArchitect/iCanScript.ldb
 bin/staging/iCanScriptEditorCommunity.dll
 bin/staging/iCanScriptEditorPro.dll
+bin/staging/iCanScriptEditorCommunity.rsp
+bin/staging/iCanScriptEditorPro.rsp

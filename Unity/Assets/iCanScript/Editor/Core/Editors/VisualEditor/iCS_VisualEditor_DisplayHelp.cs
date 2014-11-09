@@ -55,7 +55,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// -------------------------------------------------------------------------------------------------
 	public void libraryHelp(iCS_MemberInfo memInfo ) {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
-		if(edWin!= null && edWin.GetType() == typeof(iCS_LibraryEditorWindow)) { 
+		if(edWin!= null && iCS_Types.IsA<iCS_LibraryEditor>(edWin.GetType())) { 
 			if(memInfo == null) {
 				helpWindowChange();
 			} 
@@ -281,7 +281,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     		} 
 			// Library Windows coordinates go to origin while typing, so only get coordinates when not focused.
 			EditorWindow edWin= EditorWindow.mouseOverWindow;
-			if(edWin!= null && edWin.GetType() != typeof(iCS_LibraryEditorWindow)) { 
+			if(edWin!= null && !iCS_Types.IsA<iCS_LibraryEditor>(edWin.GetType())) { 
 				myLibraryWindowPos= libEdWin.position;
 			}
     	    return myLibraryWindowPos.x > position.x;            
