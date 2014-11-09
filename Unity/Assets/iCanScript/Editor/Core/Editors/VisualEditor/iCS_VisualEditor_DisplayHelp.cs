@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Text.RegularExpressions;
+using System.IO;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	
@@ -73,7 +74,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Find object under mouse in VisualEditor, and prepare help.  Use only from onGUI.
 	// --------------------------------------------------------------------------------
     void UpdateHelp() {
-        // -- Update the helkp information --
+        // -- Update the help information --
 		iCS_EditorObject edObj= null;
 		iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 		if(pickInfo != null) {
@@ -81,6 +82,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(edObj != null)
 				myIsDynamicHeight= false;
 				myHelpText= prepareHelpWindowText(edObj);
+				// If no specific help was found, show the window help.
+				if(String.IsNullOrEmpty(myHelpText))
+					helpWindowChange();
 		}
 	}
 
@@ -142,7 +146,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			
 			// Treat visible relay ports with different formating.
 			if(edObj.IsRelayPort && !edObj.ParentNode.IsInstanceNode) {
-				helpText= "<b>" + iCS_HelpController.titleColour + "Relay Port:" + "</color></b>\n\n";
+				helpText= "<iCS_highlight>" + "Relay Port:" + "</iCS_highlight>\n\n";
 				helpPart1= prepareHelpItemRelayPort(getConnectedPort(edObj, Direction.Producer));
 				helpPart2= prepareHelpItemRelayPort(getConnectedPort(edObj, Direction.Consumer));
 				divider= "<->\n";
@@ -211,9 +215,38 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         UpdateHelpHotZone();
 		
 		if(myHelpEnabled) {
-			GUIStyle style =  EditorStyles.textArea;
-			style.richText = true;
-			GUI.Box(ComputeDisplayArea(), myHelpText, style);
+			GUIStyle styleBox =  EditorStyles.textArea;
+			GUIStyle styleText=  EditorStyles.label;
+			styleText.richText = true;
+			styleText.wordWrap = true;
+			
+			GUI.Box(ComputeDisplayArea(), "", styleBox);		
+				
+			//words = sentence.Split(delimiter);	
+									
+			var displayArea= ComputeDisplayArea();
+			float yPos= displayArea.y;
+			
+			myHelpText= Regex.Replace(myHelpText, "<iCS_highlight>", (EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>") + "<b>");
+			myHelpText= Regex.Replace(myHelpText, "</iCS_highlight>", "</b></color>");
+			
+			foreach(var line in myHelpText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)) {
+				String[] subLines = Regex.Split(line,"(<iCS_x=.*?>)");
+				float xPos= displayArea.x;	
+				foreach(var subLine in subLines) {	
+					//Debug.Log(subLine);
+					Regex regex = new Regex("(<iCS_x=)(.*?)(>)");
+					Match match = regex.Match(subLine);
+					if (match.Success) {
+						xPos= displayArea.x + Convert.ToSingle(match.Groups[2].ToString());	
+					}
+					else {
+			        	GUI.Label(new Rect(xPos, yPos, displayArea.width, displayArea.height), subLine, styleText);
+					}
+				}
+				yPos=yPos+ styleText.CalcHeight(new GUIContent(line), displayArea.width)-2;
+		    }
+						
             GUI.DrawTexture(HelpHotZone, myHelpLogo);
 		}
 	}
@@ -225,8 +258,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		int helpWidth= 400; 
 		
 		if(myIsDynamicHeight) {
-			helpHeight=numLines*15;
-			if(numLines<=3) helpHeight=85;
+			helpHeight=numLines*17;
+			if(numLines<=4) helpHeight=85;
 			else if(numLines<=10) helpHeight=170;
 		}
 		

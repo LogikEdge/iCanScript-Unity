@@ -16,7 +16,6 @@ public static class iCS_HelpController {
 	static string unityHelpPath = EditorApplication.applicationContentsPath + "/Documentation/html/en/ScriptReference";
 
 	const string noHelp= "no help available" ;
-	public static string titleColour = EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>";
 	
 	// ---------------------------------------------------------------------------------
 	static iCS_HelpController() {
@@ -208,7 +207,6 @@ public static class iCS_HelpController {
 				memberInfo.HelpSummaryCache= "";	
 			}					
 			return typeHelp;
-
 		}
 		return null;
 	}
@@ -222,10 +220,7 @@ public static class iCS_HelpController {
 	{
 		string help=null;
 		iCS_HelpDictionary.typeHelp.TryGetValue(typeName, out help);
-		if(help != null) {
-			return Regex.Replace(help, "<tcolor>", titleColour);
-		}
-		return null;
+		return help;
 	}
 		
 	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj) 
@@ -327,12 +322,12 @@ public static class iCS_HelpController {
 			parentName= edObj.Parent.DisplayName + ".";
 		}
 			
-		return "<b>" + typeName + " " + titleColour + parentName + displayName + "</color></b>";
+		return "<b>" + typeName + "</b><iCS_highlight>" + parentName + displayName + "</iCS_highlight>";
 	}	
 	
 	
 	public static string GetHelpTitle(iCS_MemberInfo memberInfo) {
-		string title= "<b>"+titleColour + memberInfo.DisplayName + "</color></b>";
+		string title= "<iCS_highlight>" + memberInfo.DisplayName + "</iCS_highlight>";
 		string typeName= null;
 		string className= iCS_Types.TypeName(memberInfo.ClassType);
 	
@@ -362,13 +357,13 @@ public static class iCS_HelpController {
 		string parameters= null;
 
       	if(memberInfo.IsConstructor) {
-            parameters= memberInfo.ToConstructorInfo.FunctionParameters(titleColour, "</color>");
+            parameters= memberInfo.ToConstructorInfo.FunctionParameters();
         } 
 		else if(memberInfo.IsMethod) {
-            parameters= memberInfo.ToMethodInfo.FunctionParameters(titleColour, "</color>");                
+            parameters= memberInfo.ToMethodInfo.FunctionParameters();                
         } 
 		else if(memberInfo.IsMessage) {
-            parameters= memberInfo.ToMessageInfo.FunctionParameters(titleColour, "</color>");
+            parameters= memberInfo.ToMessageInfo.FunctionParameters();
         }
 
 		return parameters;

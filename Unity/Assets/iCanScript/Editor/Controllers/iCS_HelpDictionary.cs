@@ -45,48 +45,39 @@ public static class iCS_HelpDictionary {
 			"Enable ports are used for flow control.  When set to true, attached node will execute"
 		},		
 	    { "UnityEditor.SceneHierarchyWindow", 
-			"<tcolor><b>Scene Hierarchy tips:</b></color>\n" +
+			"<iCS_highlight>Scene Hierarchy tips:</iCS_highlight>\n" +
 			"You can drag iCanScript Objects from the Hierarchy into a message handler to add Variables and User Functions."
 		},
 		{ "UnityEditor.ProjectBrowser", 
-			"<tcolor><b>Project Browser tips:</b></color>\n" +
+			"<iCS_highlight>Project Browser tips:</iCS_highlight>\n" +
 			"Find prefabs in the Project Browser."
 		},
 		{ "UnityEditor.ConsoleWindow", 
-			"<tcolor><b>ConsoleWindow tips:</b></color>\n" +
+			"<iCS_highlight>ConsoleWindow tips:</iCS_highlight>\n" +
 			"The Console Window is where you can find details on your iCanScript errors."
 		},
 		{ "UnityEditor.InspectorWindow", 
-			"<tcolor><b>Inspector Window:</b></color>\n" +
+			"<iCS_highlight>Inspector Window:</iCS_highlight>\n" +
 			"You can edit parameters of your iCanScript Object in the inspector window under 'iCS_VisualScript (Script)'."
 		},
 		{ "iCS_InstanceEditorWindow",
-			"<tcolor><b>Instance Wizard tips:</b></color>\n" +
+			"<iCS_highlight>Instance Wizard tips:</iCS_highlight>\n" +
 			"The Instance Wizard is used to add and remove ports in a class node.  Select a class node in the visual editor to use.\n"	
 		},		
 		{ "iCS_LibraryEditorWindow",
-			"<tcolor><b>Library tips:</b></color>\n" +
+			"<iCS_highlight>Library tips:</iCS_highlight>\n" +
 			"From the library window, you can drag objects into a message handler in the Visual Editor window to create nodes.\n" +
 			"\n" +
-			"<tcolor><b>Keyboard shortcuts:</b></color>\n" +
-			"<tcolor><b>H:</b></color> additional help for selected\t <tcolor><b>Enter:</b></color> fold/unfold"
-		},
+			"<iCS_highlight>Keyboard shortcuts:</iCS_highlight>\n" +
+			"<iCS_highlight>H:</iCS_highlight> additional help for selected<iCS_x=200><iCS_highlight>Enter:</iCS_highlight> fold/unfold"
+		},																			
 		{ "iCS_VisualEditorWindow",
-			"<tcolor><b>Keyboard shortcuts (for selected):</b></color>\n" +
-			"<tcolor><b>H:</b></color> more Help\t\t<tcolor><b>drag:</b></color> moves node\n" +
-			"<tcolor><b>F:</b></color> Focus in view\t\t<tcolor><b>ctrl-drag:</b></color> moves node outside\n" +
-			"<tcolor><b>L:</b></color> auto Layout\t\t<tcolor><b>shift-drag:</b></color> move copies node\n" +
-			"<tcolor><b>B:</b></color> Bookmark\t\t<tcolor><b>del:</b></color> deletes object\n" +
-			"<tcolor><b>G:</b></color> move to bookmark\t<tcolor><b>C:</b></color> Connect to bookmark\n"
-		},
-		// Duplicate of iCS_VisualEditorWindow, 
-		{ "iCS_VisualScriptImp",
-			"<tcolor><b>Keyboard shortcuts (for selected):</b></color>\n" +
-			"<tcolor><b>H:</b></color> more Help\t\t<tcolor><b>drag:</b></color> moves node\n" +
-			"<tcolor><b>F:</b></color> Focus in view\t\t<tcolor><b>ctrl-drag:</b></color> moves node outside\n" +
-			"<tcolor><b>L:</b></color> auto Layout\t\t<tcolor><b>shift-drag:</b></color> move copies node\n" +
-			"<tcolor><b>B:</b></color> Bookmark\t\t<tcolor><b>del:</b></color> deletes object\n" +
-			"<tcolor><b>G:</b></color> move to bookmark\t<tcolor><b>C:</b></color> Connect to bookmark\n"
+			"<iCS_highlight>Keyboard shortcuts (for selected):</iCS_highlight>\n" +
+			"<iCS_highlight>H:</iCS_highlight> more Help<iCS_x=200><iCS_highlight>drag:</iCS_highlight> moves node\n" +
+			"<iCS_highlight>F:</iCS_highlight> Focus in view<iCS_x=200><iCS_highlight>ctrl-drag:</iCS_highlight> moves node outside\n" +
+			"<iCS_highlight>L:</iCS_highlight> auto Layout<iCS_x=200><iCS_highlight>shift-drag:</iCS_highlight> move copies node\n" +
+			"<iCS_highlight>B:</iCS_highlight> Bookmark<iCS_x=200><iCS_highlight>del:</iCS_highlight> deletes object\n" +
+			"<iCS_highlight>G:</iCS_highlight> move to bookmark<iCS_x=200><iCS_highlight>C:</iCS_highlight> Connect to bookmark\n"
 		},
 		{ "iCS_Package", 
 			"The Package is a flexible node. It can contain complex graphs and expose only those ports that are made public by the visual script designer."

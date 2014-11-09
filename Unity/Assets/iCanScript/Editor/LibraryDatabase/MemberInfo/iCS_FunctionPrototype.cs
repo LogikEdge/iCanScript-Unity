@@ -95,43 +95,43 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
     }
 	
 	
-    public string FunctionParameters(string highLight, string noHighLight) {
+    public string FunctionParameters() {
             string signature= null;
 				
 			// Build input string
 			string inputStr= "";
             if(IsInstanceFunctionBase) {
-                inputStr+= "\t\t" + highLight + iCS_IStorage.GetInstancePortName(ClassType)+ noHighLight + "\n" ;
+                inputStr+= "<iCS_x=150><iCS_highlight>" + iCS_IStorage.GetInstancePortName(ClassType)+ "</iCS_highlight>\n" ;
             }
             foreach(var param in Parameters) {
 				if(!param.type.IsByRef) {
-	                inputStr+= "\t"  + iCS_Types.TypeName(param.type) + "\t"+ highLight+ param.name + noHighLight + "\n";
+	                inputStr+= "<iCS_x=40>"  + iCS_Types.TypeName(param.type) + "<iCS_x=150><iCS_highlight>"+ param.name + "</iCS_highlight>\n";
 				}
             }
 			// Add inputs to signature.
 			if(inputStr != "") {
-	            signature+= "    in:" +inputStr;						
+	            signature+= "<iCS_x=10>in:" +inputStr;						
 			}
 			// Build output string
 			int nbOfOutputs= 0;
 			string outputStr= "";
             foreach(var param in Parameters) {
 				if(param.type.IsByRef) {
-	                outputStr+= "\t" + iCS_Types.TypeName(param.type.GetElementType()) +"\t" + highLight+ param.name + noHighLight + "\n";
+	                outputStr+= "<iCS_x=40>" + iCS_Types.TypeName(param.type.GetElementType()) +"<iCS_x=150><iCS_highlight>" + param.name + "</iCS_highlight>\n";
 					++nbOfOutputs;
 				}
             }
 			if(ReturnType != null && ReturnType != typeof(void)) {
 				++nbOfOutputs;
 				if(ReturnName != null && ReturnName != "" && ReturnName != iCS_Strings.DefaultFunctionReturnName) {
-					outputStr+= "\t\t" + highLight + ReturnName + noHighLight + "\n";
+					outputStr+= "<iCS_x=150><iCS_highlight>" + ReturnName + "</iCS_highlight>\n";
 				} else {
-					outputStr+= "\t" +iCS_Types.TypeName(ReturnType) + "\n";
+					outputStr+= "<iCS_x=40>" +iCS_Types.TypeName(ReturnType) + "\n";
 				}
 			}
 			// Add output to signature.
 			if(nbOfOutputs > 1) {
-				signature+="    out:"+outputStr;
+				signature+="<iCS_x=10>out:"+outputStr;
 			}
 
 			return signature;
