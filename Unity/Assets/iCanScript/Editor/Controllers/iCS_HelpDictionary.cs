@@ -73,11 +73,11 @@ public static class iCS_HelpDictionary {
 		},																			
 		{ "iCS_VisualEditorWindow",
 			"<iCS_highlight>Keyboard shortcuts (for selected):</iCS_highlight>\n" +
-			"<iCS_highlight>H:</iCS_highlight> more Help<iCS_x=200><iCS_highlight>drag:</iCS_highlight> moves node\n" +
-			"<iCS_highlight>F:</iCS_highlight> Focus in view<iCS_x=200><iCS_highlight>ctrl-drag:</iCS_highlight> moves node outside\n" +
-			"<iCS_highlight>L:</iCS_highlight> auto Layout<iCS_x=200><iCS_highlight>shift-drag:</iCS_highlight> move copies node\n" +
-			"<iCS_highlight>B:</iCS_highlight> Bookmark<iCS_x=200><iCS_highlight>del:</iCS_highlight> deletes object\n" +
-			"<iCS_highlight>G:</iCS_highlight> move to bookmark<iCS_x=200><iCS_highlight>C:</iCS_highlight> Connect to bookmark\n"
+			"<iCS_highlight>H:</iCS_highlight> more Help<iCS_x=180><iCS_highlight>drag:</iCS_highlight> moves node\n" +
+			"<iCS_highlight>F:</iCS_highlight> Focus in view<iCS_x=180><iCS_highlight>ctrl-drag:</iCS_highlight> moves node outside\n" +
+			"<iCS_highlight>L:</iCS_highlight> auto Layout<iCS_x=180><iCS_highlight>shift-drag:</iCS_highlight> move copies node\n" +
+			"<iCS_highlight>B:</iCS_highlight> Bookmark<iCS_x=180><iCS_highlight>del:</iCS_highlight> deletes object\n" +
+			"<iCS_highlight>G:</iCS_highlight> move to bookmark<iCS_x=180><iCS_highlight>C:</iCS_highlight> Connect to bookmark\n"
 		},
 		{ "iCS_Package", 
 			"The Package is a flexible node. It can contain complex graphs and expose only those ports that are made public by the visual script designer."

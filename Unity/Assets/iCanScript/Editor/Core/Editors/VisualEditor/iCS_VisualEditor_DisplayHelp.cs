@@ -230,7 +230,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			myHelpText= Regex.Replace(myHelpText, "<iCS_highlight>", (EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>") + "<b>");
 			myHelpText= Regex.Replace(myHelpText, "</iCS_highlight>", "</b></color>");
 			
-			foreach(var line in myHelpText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)) {
+			foreach(var line in myHelpText.Split(new string[] { "\n" }, StringSplitOptions.None)) {
 				String[] subLines = Regex.Split(line,"(<iCS_x=.*?>)");
 				float xPos= displayArea.x;	
 				foreach(var subLine in subLines) {	
@@ -245,7 +245,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
 				}
 				yPos=yPos+ styleText.CalcHeight(new GUIContent(line), displayArea.width)-2;
-		    }
+			}
 						
             GUI.DrawTexture(HelpHotZone, myHelpLogo);
 		}
@@ -255,7 +255,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		int numLines = myHelpText == null ? 0 : myHelpText.Split('\n').Length;
 
 		int helpHeight= 85;
-		int helpWidth= 400; 
+		int helpWidth= 420; 
 		
 		if(myIsDynamicHeight) {
 			helpHeight=numLines*17;
