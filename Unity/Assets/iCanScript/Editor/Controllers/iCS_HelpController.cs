@@ -322,7 +322,7 @@ public static class iCS_HelpController {
 			parentName= edObj.Parent.DisplayName + ".";
 		}
 			
-		return "<b>" + typeName + "</b><iCS_highlight>" + parentName + displayName + "</iCS_highlight>";
+		return "<b>" + typeName + "</b><iCS_highlight> " + parentName + displayName + "</iCS_highlight>";
 	}	
 	
 	
