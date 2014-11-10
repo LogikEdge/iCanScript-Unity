@@ -42,13 +42,9 @@ public static class iCS_WindowMenu {
  	[MenuItem("iCanScript/Editors/Library",false,902)]
  	public static void MenuLibraryEditor() {
         // -- Adjust default size when first opened --
-        var width= 1280;
-        var height= 800;
-        var r= new Rect(0.2f*width, 0.1f*height, 0.2f*width, 0.6f*height);
-        var editor= EditorWindow.GetWindowWithRect(typeof(iCS_LibraryEditorWindow), r, false, "Library");
+        var editor= EditorWindow.GetWindow(typeof(iCS_LibraryEditorWindow), false, "Library");
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
-
  	}
     // ======================================================================
  	// iCanScript ClassWizard editor Menu.

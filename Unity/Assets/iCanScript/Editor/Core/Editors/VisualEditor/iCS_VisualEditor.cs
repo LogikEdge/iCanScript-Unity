@@ -252,7 +252,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         
         // -- Update sub editor if active --
         if(mySubEditor != null) {
-//            EditorGUI.FocusTextInControl("SubEditor");
         	mySubEditor.Update();
             var ev= Event.current;
             if(ev.type == EventType.KeyDown) {
