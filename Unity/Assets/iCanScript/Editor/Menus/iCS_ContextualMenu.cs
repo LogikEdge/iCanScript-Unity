@@ -41,7 +41,8 @@ public class iCS_ContextualMenu {
     const string UnwrapPackageStr              = "- Unwrap Package";
     const string UpdateMessageHandlerPortsStr  = "+ Update Message Ports";
 	const string RemoveUnusedPortsStr          = "- Remove Unused Ports";
-    const string UserMessageHandlerStr         = "+ User Function";  
+    const string PublicFunctionStr             = "+ Public Function";
+    const string AddNodeStr                    = "+ Add Node";  
     const string SeparatorStr                  = "";
 
     // ======================================================================
@@ -90,6 +91,8 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.ClassField:        FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassProperty:     FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.FunctionCall:      FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.VariableReference: FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
@@ -109,7 +112,7 @@ public class iCS_ContextualMenu {
         if(selectedObject.IsIconizedInLayout || selectedObject.IsFoldedInLayout) return;
 
         iCS_MenuContext[] menu= new iCS_MenuContext[2];
-        menu[0]= new iCS_MenuContext(UserMessageHandlerStr);
+        menu[0]= new iCS_MenuContext(PublicFunctionStr);
         menu[1]= new iCS_MenuContext(SeparatorStr);
         // Add Unity message handlers
 		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
@@ -129,6 +132,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void MessageHandlerMenu(iCS_EditorObject messageHandler, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(messageHandler);
+//        AddNodeMenu(ref menu);
         var idx= GrowMenuBy(ref menu, 3);
         menu[idx]= new iCS_MenuContext(UpdateMessageHandlerPortsStr);
 		menu[idx+1]= new iCS_MenuContext(RemoveUnusedPortsStr);
@@ -152,12 +156,14 @@ public class iCS_ContextualMenu {
             menu[idx+1]= new iCS_MenuContext(StateChartStr);
             menu[idx+2]= new iCS_MenuContext(SeparatorStr);
         }
-        idx= GrowMenuBy(ref menu, 2);
-        menu[idx]= new iCS_MenuContext(EnablePortStr);
-        if(storage.HasTriggerPort(selectedObject)) {
-            menu[idx+1]= new iCS_MenuContext("#"+TriggerPortStr);
-        } else {
-            menu[idx+1]= new iCS_MenuContext(TriggerPortStr);                
+        if(!selectedObject.IsPublicFunction) {
+            idx= GrowMenuBy(ref menu, 2);
+            menu[idx]= new iCS_MenuContext(EnablePortStr);
+            if(storage.HasTriggerPort(selectedObject)) {
+                menu[idx+1]= new iCS_MenuContext("#"+TriggerPortStr);
+            } else {
+                menu[idx+1]= new iCS_MenuContext(TriggerPortStr);                
+            }            
         }
 		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         if(selectedObject.ObjectType == iCS_ObjectTypeEnum.Package) {
@@ -221,6 +227,7 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
+        AddEnableAndTriggerMenuItem(ref menu, selectedObject);
         if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             int idx= GrowMenuBy(ref menu, 1);
             menu[idx]= new iCS_MenuContext(StateStr); 
@@ -237,7 +244,7 @@ public class iCS_ContextualMenu {
         iCS_MenuContext[] menu= StartWithFocusMenu(selectedObject);
         if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             int len= iCS_AllowedChildren.StateChildNames.Length;
-            int idx= GrowMenuBy(ref menu, len+4);
+            int idx= GrowMenuBy(ref menu, len+3);
             menu[idx]= new iCS_MenuContext(StateStr);
             menu[idx+1]= new iCS_MenuContext(SeparatorStr);
             for(int i= 0; i < len; ++i) {
@@ -249,11 +256,12 @@ public class iCS_ContextualMenu {
                 }
             }
             menu[idx+len+2]= new iCS_MenuContext(SeparatorStr);
-            if(selectedObject.IsEntryState) {
-                menu[idx+len+3]= new iCS_MenuContext(String.Concat("#", SetAsEntryStr));
-            } else {
-                menu[idx+len+3]= new iCS_MenuContext(SetAsEntryStr);
-            }
+        }
+        int cursor= GrowMenuBy(ref menu, 1);
+        if(selectedObject.IsEntryState) {
+            menu[cursor]= new iCS_MenuContext(String.Concat("#", SetAsEntryStr));
+        } else {
+            menu[cursor]= new iCS_MenuContext(SetAsEntryStr);
         }
         AddShowInHierarchyMenuItem(ref menu);
         AddDeleteMenuItem(ref menu);
@@ -266,23 +274,35 @@ public class iCS_ContextualMenu {
         if(!selectedObject.IsIconizedInLayout) {
             // Determine if we should support output 'this' port.
             Type classType= selectedObject.RuntimeType;
-            bool shouldSupportThis= !iCS_Types.IsStaticClass(classType);
-            // Base menu items
-            menu= new iCS_MenuContext[shouldSupportThis ? 4 : 3];
-            menu[0]= new iCS_MenuContext(EnablePortStr);
-            if(storage.HasTriggerPort(selectedObject)) {
-                menu[1]= new iCS_MenuContext("#"+TriggerPortStr);
-            } else {
-                menu[1]= new iCS_MenuContext(TriggerPortStr);                
+            bool isOutInstanceSupported= true;
+            if(iCS_Types.IsStaticClass(classType) || selectedObject.IsConstructor ||
+               selectedObject.IsFunctionCall || selectedObject.IsVariableReference) {
+                isOutInstanceSupported= false;
             }
-            if(shouldSupportThis) {
+            bool isEnableSupported= !selectedObject.IsVariableReference;
+            // Base menu items
+            menu= new iCS_MenuContext[0];
+            int idx= 0;
+            if(isEnableSupported) {
+                idx= GrowMenuBy(ref menu, 1);
+                menu[idx]= new iCS_MenuContext(EnablePortStr);
+            }
+            idx= GrowMenuBy(ref menu, 1);
+            if(storage.HasTriggerPort(selectedObject)) {
+                menu[idx]= new iCS_MenuContext("#"+TriggerPortStr);
+            } else {
+                menu[idx]= new iCS_MenuContext(TriggerPortStr);                
+            }
+            if(isOutInstanceSupported) {
+                idx= GrowMenuBy(ref menu, 1);
                 if(storage.HasOutInstancePort(selectedObject)) {
-                    menu[2]= new iCS_MenuContext("#"+OutputInstancePortStr);
+                    menu[idx]= new iCS_MenuContext("#"+OutputInstancePortStr);
                 } else {
-                    menu[2]= new iCS_MenuContext(OutputInstancePortStr);                
+                    menu[idx]= new iCS_MenuContext(OutputInstancePortStr);                
                 }                
             }
-            menu[menu.Length-1]= new iCS_MenuContext(SeparatorStr);
+            idx= GrowMenuBy(ref menu, 1);
+            menu[idx]= new iCS_MenuContext(SeparatorStr);
         } else {
             menu= new iCS_MenuContext[0];
         }
@@ -331,7 +351,7 @@ public class iCS_ContextualMenu {
 		}
         // Get compatible functions.
         if(port.IsDataOrControlPort) {
-            List<iCS_MethodBaseInfo> functionMenu= null;
+            List<iCS_FunctionPrototype> functionMenu= null;
 			Type inputType= null;
 			Type outputType= null;
 			if(port.IsInputPort) {
@@ -414,6 +434,20 @@ public class iCS_ContextualMenu {
         }        
     }
 	// ----------------------------------------------------------------------
+    void AddNodeMenu(ref iCS_MenuContext[] menu) {
+        var fullMenu= iCS_LibraryDatabase.BuildExpertMenu();
+        if(fullMenu.Count == 0) return;
+        int idx= GrowMenuBy(ref menu, fullMenu.Count+1);
+        for(int i= 0; i < fullMenu.Count; ++i) {
+            menu[idx]= new iCS_MenuContext(AddNodeStr+"/"+fullMenu[i].ToMenu(), fullMenu[i]);
+            ++idx;
+        }
+        menu[idx]= new iCS_MenuContext(SeparatorStr);
+    }
+	
+    // ======================================================================
+    // Menu Creation Utilities
+	// ----------------------------------------------------------------------
 	int GrowMenuBy(ref iCS_MenuContext[] menu, int additionalSize) {
 		int sze= menu == null ? 0 : menu.Length;
 		if(additionalSize == 0) return sze;
@@ -422,7 +456,37 @@ public class iCS_ContextualMenu {
 		menu= newMenu;
 		return sze;
 	}
-	
+	// ----------------------------------------------------------------------
+    void AddSeparator(ref iCS_MenuContext[] menu) {
+        int idx= GrowMenuBy(ref menu, 1);
+        menu[idx]= new iCS_MenuContext(SeparatorStr);
+    }
+	// ----------------------------------------------------------------------
+    void AddDeleteMenuItem(ref iCS_MenuContext[] menu) {
+        int idx= GrowMenuBy(ref menu, 2);
+        menu[idx]= new iCS_MenuContext(SeparatorStr);
+        menu[idx+1]= new iCS_MenuContext(DeleteStr);
+    }
+	// ----------------------------------------------------------------------
+    void AddShowInHierarchyMenuItem(ref iCS_MenuContext[] menu) {
+        int idx= GrowMenuBy(ref menu, 2);
+        menu[idx]= new iCS_MenuContext(SeparatorStr);
+        menu[idx+1]= new iCS_MenuContext(ShowHierarchyStr);        
+    }
+	// ----------------------------------------------------------------------
+    void AddEnableAndTriggerMenuItem(ref iCS_MenuContext[] menu, iCS_EditorObject node) {
+        if(node.IsIconizedInLayout) return;
+        int idx= GrowMenuBy(ref menu, 3);
+        menu[idx]= new iCS_MenuContext(EnablePortStr);
+        var iStorage= node.IStorage;
+        if(iStorage.HasTriggerPort(node)) {
+            menu[idx+1]= new iCS_MenuContext("#"+TriggerPortStr);
+        } else {
+            menu[idx+1]= new iCS_MenuContext(TriggerPortStr);
+        }
+        menu[idx+2]= new iCS_MenuContext(SeparatorStr);
+    }
+    
     // ======================================================================
     // Menu Utilities
 	// ----------------------------------------------------------------------
@@ -449,27 +513,6 @@ public class iCS_ContextualMenu {
         }
         gMenu.ShowAsContext();
         Reset();
-    }
-	// ----------------------------------------------------------------------
-    void AddDeleteMenuItem(ref iCS_MenuContext[] existingMenu) {
-        int idx= ResizeMenu(ref existingMenu, existingMenu.Length+2);
-        existingMenu[idx]= new iCS_MenuContext(SeparatorStr);
-        existingMenu[idx+1]= new iCS_MenuContext(DeleteStr);
-    }
-	// ----------------------------------------------------------------------
-    void AddShowInHierarchyMenuItem(ref iCS_MenuContext[] existingMenu) {
-        int idx= ResizeMenu(ref existingMenu, existingMenu.Length+2);
-        existingMenu[idx]= new iCS_MenuContext(SeparatorStr);
-        existingMenu[idx+1]= new iCS_MenuContext(ShowHierarchyStr);        
-    }
-	// ----------------------------------------------------------------------
-    int ResizeMenu(ref iCS_MenuContext[] existingMenu, int newSize) {
-        int idx= existingMenu.Length;
-        if(idx > newSize) idx= newSize;
-        iCS_MenuContext[] newMenu= new iCS_MenuContext[newSize];
-        existingMenu.CopyTo(newMenu, 0);
-        existingMenu= newMenu;
-        return idx;
     }
 	// ----------------------------------------------------------------------
     iCS_MemberInfo GetReflectionDescFromMenuCommand(iCS_MenuContext menuContext) {
@@ -513,9 +556,9 @@ public class iCS_ContextualMenu {
             case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
             case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
             case UnwrapPackageStr:               iCS_UserCommands.DeleteKeepChildren(targetObject); break;
-            case UserMessageHandlerStr:          iCS_UserCommands.CreateUserMessageHandler(targetObject, globalPos); break;
+            case PublicFunctionStr:              iCS_UserCommands.CreatePublicFunction(targetObject, globalPos); break;
             default: {
-				iCS_MethodBaseInfo desc= context.Descriptor;
+				iCS_FunctionPrototype desc= context.Descriptor;
 				if(desc == null) {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
@@ -556,7 +599,7 @@ public class iCS_ContextualMenu {
     }
 
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage iStorage, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage iStorage, Vector2 globalPos, iCS_FunctionPrototype desc) {
         iCS_EditorObject newNodeParent= iStorage.GetNodeAt(globalPos);
 		if(newNodeParent == null) return null;
         if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;

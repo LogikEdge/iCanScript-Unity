@@ -18,6 +18,7 @@ public abstract class iCS_MemberInfo {
     public  iCS_TypeInfo         ParentTypeInfo  = null;
 	public  bool				 HideFromLibrary = false;
     public  string               DisplayName     = null;
+	private string               myHelpSummary   = null;
     private string               myDescription   = null;
     private string               myIconPath      = null;
 
@@ -35,15 +36,15 @@ public abstract class iCS_MemberInfo {
 		if(_parentTypeInfo != null) {
 			_parentTypeInfo.Members.Add(this);			
 		}
-
     }
 
+		
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
     public iCS_TypeInfo         ToTypeInfo          { get { return this as iCS_TypeInfo; }}
     public iCS_ConstructorInfo  ToConstructorInfo   { get { return this as iCS_ConstructorInfo; }}
-    public iCS_MethodBaseInfo   ToMethodBaseInfo    { get { return this as iCS_MethodBaseInfo; }}
+    public iCS_FunctionPrototype   ToMethodBaseInfo    { get { return this as iCS_FunctionPrototype; }}
     public iCS_MethodInfo       ToMethodInfo        { get { return this as iCS_MethodInfo; }}
     public iCS_FieldInfo        ToFieldInfo         { get { return this as iCS_FieldInfo; }}
     public iCS_PropertyInfo     ToPropertyInfo      { get { return this as iCS_PropertyInfo; }}
@@ -102,7 +103,7 @@ public abstract class iCS_MemberInfo {
     public string Description {
         get {
             if(String.IsNullOrEmpty(myDescription)) {
-                return ParentTypeInfo == null ? "" : ParentTypeInfo.Description;
+                return ParentTypeInfo == null ? "" : "Unity class "+ ParentTypeInfo.DisplayName;
             }
             return myDescription;            
         }
@@ -110,6 +111,32 @@ public abstract class iCS_MemberInfo {
             myDescription= value;
         }
     }
+	
+	public string StoredDescription {
+        get {
+            return myDescription;     
+		}
+	}
+	
+    public string HelpSummary {
+        get {
+            if(myHelpSummary == null) {
+				// Update the cached helpSummary
+                HelpSummaryCache= iCS_HelpController.getHelp(this);
+            }
+            return myHelpSummary;        
+        }
+	}
+	
+    public string HelpSummaryCache {	
+        get {
+            return myHelpSummary;        
+        }
+        set {
+           myHelpSummary= value;
+        }
+    }
+	
     public string IconPath {
         get {
             return myIconPath;            
@@ -118,4 +145,5 @@ public abstract class iCS_MemberInfo {
             myIconPath= value;
         }
     }
+
 }

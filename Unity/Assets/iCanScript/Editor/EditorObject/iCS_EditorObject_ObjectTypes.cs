@@ -16,18 +16,22 @@ public partial class iCS_EditorObject {
     public bool IsMux                       { get { return EngineObject.IsMux; }}
     public bool IsSelector                  { get { return EngineObject.IsSelector; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
+	public bool IsClassField                { get { return EngineObject.IsClassField; }}
     public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
     public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
     public bool IsState                     { get { return EngineObject.IsState; }}
 	public bool IsInstanceNode				{ get { return EngineObject.IsInstanceNode; }}
     public bool IsTransitionPackage         { get { return EngineObject.IsTransitionPackage; }}
 	public bool IsMessageHandler			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour; }}
-    public bool IsUserFunction              { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
 	public bool IsOnStatePackage        	{ get { return EngineObject.IsOnStatePackage; }}
     public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}
     public bool IsOnStateUpdatePackage  	{ get { return EngineObject.IsOnStateUpdatePackage; }}
     public bool IsOnStateExitPackage    	{ get { return EngineObject.IsOnStateExitPackage; }}
-
+    public bool IsVariableReference         { get { return EngineObject.IsVariableReference; }}
+    public bool IsFunctionCall              { get { return EngineObject.IsFunctionCall; }}
+    public bool IsPublicFunction            { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
+    public bool IsPublicVariable            { get { return IsConstructor && IsParentValid && Parent.IsBehaviour; }}
+    
     // General Ports
     public bool IsPort                      { get { return EngineObject.IsPort; }}
     public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
@@ -89,4 +93,15 @@ public partial class iCS_EditorObject {
 	public bool IsInstancePort				{ get { return EngineObject.IsInstancePort; }}
 	public bool IsInInstancePort			{ get { return EngineObject.IsInInstancePort; }}
 	public bool IsOutInstancePort			{ get { return EngineObject.IsOutInstancePort; }}
+    // Special Cases
+    public bool IsProgrammaticInstancePort  {
+        get {
+            if(IsInInstancePort && (!ParentNode.IsVariableReference && !ParentNode.IsFunctionCall) ||
+               IsOutInstancePort ||
+               (PortIndex == (int)iCS_PortIndex.Return && (ParentNode.IsConstructor || ParentNode.IsVariableReference))) {
+                   return true;
+            }
+            return false;
+        }
+    }
 }

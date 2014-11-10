@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security;
 using System.Security.Cryptography;
-using DisruptiveSoftware;
+using iCanScript.JSON;
 
 public class iCS_CSGenerateBehaviour {
 	// ----------------------------------------------------------------------
@@ -113,7 +113,7 @@ public class iCS_CSGenerateBehaviour {
     // ======================================================================
     // Method/Function code generation
 	// ----------------------------------------------------------------------
-    public static string MethodSignature(iCS_MethodBaseInfo method) {
+    public static string MethodSignature(iCS_FunctionPrototype method) {
         var storageClass= "";
         if(method.IsClassMember) storageClass= "static ";
         var returnType= "void";
@@ -131,11 +131,11 @@ public class iCS_CSGenerateBehaviour {
         return storageClass+returnType+" "+name+"("+parameters+")";
     }
 	// ----------------------------------------------------------------------
-    public static string MethodStorageClass(iCS_MethodBaseInfo method) {
+    public static string MethodStorageClass(iCS_FunctionPrototype method) {
         return method.IsClassMember ? "static" : "";
     }
 	// ----------------------------------------------------------------------
-    public static string[] MethodParameters(iCS_MethodBaseInfo method) {
+    public static string[] MethodParameters(iCS_FunctionPrototype method) {
         var methodParameters= method.Parameters;
         if(methodParameters == null) {
             return new string[0];
@@ -168,7 +168,7 @@ public class iCS_CSGenerateBehaviour {
         return new JArray(jMessageObjects);       
     }
 	// ----------------------------------------------------------------------
-    public static JObject MethodBaseInJSON(iCS_MethodBaseInfo method) {
+    public static JObject MethodBaseInJSON(iCS_FunctionPrototype method) {
         var jParamObjects= ParametersInJSON(method.Parameters);
         var jParams= new JNameValuePair("Parameters", jParamObjects);
         return new JObject(new JNameValuePair("Name", method.DisplayName), jParams);        

@@ -8,11 +8,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_IStorage    myPreviousIStorage= null;
     
     // ======================================================================
-    // Cached Properties.
-	// ----------------------------------------------------------------------
-    GUIContent myCached_RemainingTrialDaysMessage;
-    
-    // ======================================================================
     // Initialization
 	// ----------------------------------------------------------------------
     // Prepares the editor for editing a graph.  Note that the graph to edit
@@ -28,17 +23,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myGraphics      = new iCS_Graphics();
         myContextualMenu= new iCS_ContextualMenu();
         
-        // Inspect the assemblies for components.
-        if(!ourAlreadyParsed) {
-            ourAlreadyParsed= true;
-            iCS_Reflection.ParseAppDomain();
-        }
-        
         // Get snapshot for realtime clock.
         myCurrentTime= Time.realtimeSinceStartup;	
         
         // Update visual editor cache.
-        UpdateVisualEditorCache();    
+        UpdateVisualEditorCache();
+        
+        // Register for window under mouse change
+        iCS_SystemEvents.OnWindowUnderMouseChange+= helpWindowChange;
+        
+        // -- Initialize Sub-Systems --
+        QueueOnGUICommand(WorkflowAssistantInit);
+        QueueOnGUICommand(HelpInit);
 	}
 
 	// ----------------------------------------------------------------------
@@ -50,6 +46,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myGraphics      = null;
         myContextualMenu= null;
 		mySubEditor     = null;
+        
+        // Unregister for window under mouse change
+        iCS_SystemEvents.OnWindowUnderMouseChange-= helpWindowChange;
     }
 
 	// ----------------------------------------------------------------------
@@ -80,7 +79,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(iCS_Graphics.IsInitialized == false) {
             iCS_Graphics.Init(IStorage);
 		}
-        iCS_AppController.Start();
 
         // Update visual script cache.
         UpdateVisualScriptCache();
@@ -90,9 +88,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     // System level cache update.
     void UpdateVisualEditorCache() {
-        string remainingTimeMessage= "Trial: ";
-        remainingTimeMessage+= " ("+iCS_LicenseController.RemainingTrialDays.ToString()+" days remaining) ";
-        myCached_RemainingTrialDaysMessage= new GUIContent(remainingTimeMessage);        
     }
     
 	// ----------------------------------------------------------------------

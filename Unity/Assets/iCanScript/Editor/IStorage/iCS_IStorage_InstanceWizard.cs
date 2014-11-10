@@ -231,9 +231,9 @@ public partial class iCS_IStorage {
             c=> {
                 if(c.IsPort) {
                     if(port.IsInputPort) {
-                        if(c.ProviderPort == port) result= c.Parent;
+                        if(c.ProducerPort == port) result= c.Parent;
                     } else {
-                        if(port.ProviderPort == c) result= c.Parent;
+                        if(port.ProducerPort == c) result= c.Parent;
                     }                    
                 }
             }
@@ -261,7 +261,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void InstanceWizardDestroyPortIfNotConnected(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
         iCS_EditorObject port= InstanceWizardGetPort(module, portName, objType);
-        if(port != null && port.ProviderPort == null && FindAConnectedPort(port) == null) {
+        if(port != null && port.ProducerPort == null && FindAConnectedPort(port) == null) {
             DestroyInstance(port.InstanceId);
         }
     }
@@ -279,7 +279,7 @@ public partial class iCS_IStorage {
         return port;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject InstanceWizardFindFunction(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject InstanceWizardFindFunction(iCS_EditorObject module, iCS_FunctionPrototype desc) {
         iCS_EditorObject[] children= BuildFilteredListOfChildren(
             child=> {
                 if(child.ObjectType != desc.ObjectType || child.NbOfParams != desc.Parameters.Length) {
@@ -292,7 +292,7 @@ public partial class iCS_IStorage {
     }
 
     // ======================================================================
-    public iCS_EditorObject InstanceWizardCreate(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject InstanceWizardCreate(iCS_EditorObject module, iCS_FunctionPrototype desc) {
         if(InstanceWizardFindFunction(module, desc) != null) return null;
         Rect moduleRect= module.GlobalRect;
         iCS_EditorObject func= CreateFunction(module.InstanceId, desc);
@@ -348,7 +348,7 @@ public partial class iCS_IStorage {
         return func;
     }
     // -------------------------------------------------------------------------
-    public void InstanceWizardDestroy(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
+    public void InstanceWizardDestroy(iCS_EditorObject module, iCS_FunctionPrototype desc) {
         iCS_EditorObject func= InstanceWizardFindFunction(module, desc);
         if(func != null) DestroyInstance(func);
     }
@@ -362,7 +362,7 @@ public partial class iCS_IStorage {
         toDelete.ForEachChildPort(
             p=> {
                 if(p.IsInDataPort && !p.IsInInstancePort) {
-                    var source= p.ProviderPort;
+                    var source= p.ProducerPort;
                     if(source != null && source.ParentNode == objectInstance) {
                         portsToDestroy.Add(source);
                     }
@@ -373,7 +373,7 @@ public partial class iCS_IStorage {
         objectInstance.ForEachChildPort(
             p=> {
                 if(p.IsOutDataPort) {
-                    var source= p.ProviderPort;
+                    var source= p.ProducerPort;
                     if(source != null && source.ParentNode == toDelete) {
                         portsToDestroy.Add(p);
                     }
@@ -430,7 +430,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject InstanceWizardGetConstructor(iCS_EditorObject module) {
         iCS_EditorObject instancePort= InstanceWizardGetInputThisPort(module);
         if(instancePort == null) return null;
-        iCS_EditorObject constructorThisPort= instancePort.ProviderPort;
+        iCS_EditorObject constructorThisPort= instancePort.ProducerPort;
         if(constructorThisPort == null) return null;
         iCS_EditorObject constructor= constructorThisPort.ParentNode;
         return constructor.IsConstructor ? constructor : null;

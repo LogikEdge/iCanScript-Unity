@@ -336,6 +336,24 @@ public partial class iCS_EditorObject {
         }
     }
 
+    // Speciality Iterations ================================================
+    /// Exceutes the given action for each connected producer TypeCast node.
+    public void ForEachConnectedProducerTypeCast(Action<iCS_EditorObject> action) {
+        ForEachChildPort(
+            p=> {
+                if(p.IsInDataOrControlPort) {
+                    var producer= p.ProducerPort;
+                    if(producer != null) {
+                        var parent= producer.Parent;
+                        if(parent.IsTypeCast) {
+                            action(parent);
+                        }                        
+                    }
+                }
+            }
+        );
+    }
+
     // ======================================================================
 	// List builders.
     // ----------------------------------------------------------------------
@@ -349,6 +367,11 @@ public partial class iCS_EditorObject {
     // Build a list of child nodes that satisfies the given criteria.
 	public iCS_EditorObject[] BuildListOfChildNodes(Func<iCS_EditorObject, bool> cond) {
 		return BuildListOfChildren(c=> c.IsNode && cond(c));
+	}
+    // ----------------------------------------------------------------------
+    // Build a list of child nodes that satisfies the given criteria.
+	public iCS_EditorObject[] BuildListOfVisibleChildNodes(Func<iCS_EditorObject, bool> cond) {
+		return BuildListOfChildren(c=> c.IsNode && !c.IsHidden && cond(c));
 	}
     // ----------------------------------------------------------------------
     // Build a list of ports that satisfies the given criteria.
@@ -392,5 +415,35 @@ public partial class iCS_EditorObject {
             commonParent= l1[i];
         }
         return commonParent;
+    }
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject GetParentStateChart() {
+        var parent= ParentNode;
+        while(parent != null && !parent.IsStateChart) {
+            parent= parent.ParentNode;
+        }
+        return parent;
+    }
+    // ----------------------------------------------------------------------
+    // Return the first visible node.
+    public iCS_EditorObject GetLeafVisibleNode() {
+        var firstVisible= this;
+        while(firstVisible.IsVisibleInLayout == false) {
+            firstVisible= firstVisible.ParentNode;
+        }
+        return firstVisible;
+    }
+    // ----------------------------------------------------------------------
+    // Return the first visible node.
+    public iCS_EditorObject GetRootInvisibleNode() {
+        var rootInvisible= this;
+        if(rootInvisible.IsVisibleInLayout) {
+            Debug.LogWarning("iCanScript: Unable to find root invisible node");
+            return rootInvisible;
+        }
+        for(var tmp= rootInvisible.ParentNode; tmp != null && !tmp.IsVisibleInLayout; tmp= tmp.ParentNode) {
+            rootInvisible= tmp;
+        }
+        return rootInvisible;
     }
 }

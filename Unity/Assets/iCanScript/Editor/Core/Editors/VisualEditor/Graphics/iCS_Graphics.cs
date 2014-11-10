@@ -1,8 +1,3 @@
-/*
-    TODO: re-examine tooltip implementation since the current one triples the frame rate.
-*/
-//#define SHOW_TOOLTIP
-
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -131,7 +126,7 @@ public partial class iCS_Graphics {
         return Scale*(v-new Vector3(Translation.x, Translation.y, 0));
     }
 	// ----------------------------------------------------------------------
-    Rect TranslateAndScale(Rect r) {
+    public Rect TranslateAndScale(Rect r) {
         Vector2 pos= TranslateAndScale(new Vector2(r.x, r.y));
         return new Rect(pos.x, pos.y, Scale*r.width, Scale*r.height);
     }
@@ -144,12 +139,6 @@ public partial class iCS_Graphics {
         if(titleStyle == null) titleStyle= TitleStyle;
         Rect adjPos= TranslateAndScale(pos);
         DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, title, titleStyle);
-#if SHOW_TOOLTIP
-        string tooltip= title.tooltip;
-        if(tooltip != null && tooltip != "") {
-            GUI.Label(adjPos, new GUIContent("", tooltip), LabelStyle);
-        }
-#endif
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -189,9 +178,13 @@ public partial class iCS_Graphics {
 
     // ----------------------------------------------------------------------
     void DrawMinimizedTransitionModule(Vector2 dir, Vector2 p, Color nodeColor) {
+        DrawArrowHead(dir, p, nodeColor, 9f, new Color(0,0,0));
+	}
+    // ----------------------------------------------------------------------
+    void DrawArrowHead(Vector2 dir, Vector2 p, Color nodeColor, float arrowSize, Color outlineColor) {
         Vector3 center= TranslateAndScale(p);
         Vector3 tangent= Vector3.Cross(dir, Vector3.forward);
-        float size= 9f*Scale;
+        float size= arrowSize*Scale;
         Vector3 head= size*dir;
         Vector3 bottom= size*tangent;
         
@@ -200,8 +193,8 @@ public partial class iCS_Graphics {
         vectors[1]= center-head+bottom;
         vectors[2]= center-0.6f*head;
         vectors[3]= center-head-bottom;
-        Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0.25f, 0.25f, 0.25f));
+        Handles.color= GUI.color;
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, outlineColor);
 	}
 
     // ======================================================================
@@ -453,19 +446,19 @@ public partial class iCS_Graphics {
         if(!IsVisibleInViewport(position)) return;
 
         // Draw node since all draw conditions are valid.
-        GUI.color= new Color(1f, 1f, 1f, node.DisplayAlpha);
+		float alpha= node.DisplayAlpha;
+		if(IsDisable(node)) {
+			alpha*= 0.5f;
+		}
+        GUI.color= new Color(1f, 1f, 1f, alpha);
         string title= GetNodeName(node);
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
-#if SHOW_TOOLTIP
-        string tooltip= isMouseOver ? GetNodeTooltip(node,iStorage) : null;
-#else
-        string tooltip= null;
-#endif
+		
         // Determine title style
         var shadowColor= isMouseOver || iStorage.IsSelectedOrMultiSelected(node) ? WhiteShadowColor : BlackShadowColor;
-        GUI_Box(position, new GUIContent(title, tooltip), GetNodeColor(node), backgroundColor, shadowColor);
+        GUI_Box(position, new GUIContent(title), GetNodeColor(node), backgroundColor, shadowColor);
         if(isMouseOver) {
             EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
         }
@@ -497,7 +490,11 @@ public partial class iCS_Graphics {
         Rect displayArea= new Rect(displayRect.x-100f, displayRect.y-16f, displayRect.width+200f, displayRect.height+16f);
         if(!IsVisibleInViewport(displayArea)) return;
 
-		Color alphaWhite= new Color(1f, 1f, 1f, node.DisplayAlpha);
+		float alpha= node.DisplayAlpha;
+		if(IsDisable(node)) {
+			alpha*= 0.5f;
+		}
+		Color alphaWhite= new Color(1f, 1f, 1f, alpha);
         GUI.color= alphaWhite;
         Texture icon= iCS_Icons.GetIconFor(node);
 		var position= Math3D.Middle(displayRect);
@@ -518,9 +515,6 @@ public partial class iCS_Graphics {
         }
         if(textureRect.Contains(MousePosition)) {
             EditorGUIUtility_AddCursorRect (textureRect, MouseCursor.Link);
-#if SHOW_TOOLTIP
-            GUI_Label(textureRect, new GUIContent("", GetNodeTooltip(node,iStorage)), LabelStyle);            
-#endif
         }
 		ShowTitleOver(textureRect, node);
         GUI.color= Color.white;
@@ -543,7 +537,7 @@ public partial class iCS_Graphics {
             backgroundColor= GetBackgroundColor(node);
         }
         DrawLabelBackground(labelRect, boxAlpha, backgroundColor, outlineColor);
-        GUI.Label(labelRect, new GUIContent(title, node.Tooltip), LabelStyle);		
+        GUI.Label(labelRect, new GUIContent(title), LabelStyle);		
 	}
 	
     // ======================================================================
@@ -557,7 +551,7 @@ public partial class iCS_Graphics {
         if(node.IsMessage) {
             return Prefs.MessageNodeColor;
         }
-        if(node.IsUserFunction) {
+        if(node.IsPublicFunction) {
             return Prefs.UserFunctionNodeColor;
         }
         if(node.IsEntryState) {
@@ -658,7 +652,11 @@ public partial class iCS_Graphics {
         var alpha= port.DisplayAlpha;
         if(parent.IsIconizedInLayout && parent.IsAnimated) {
             alpha= 1f-parent.AnimationTimeRatio;
-        } 
+        }
+		// Reduce alpha if port is disabled
+		if(IsDisable(port)) {
+			alpha*= 0.5f;
+		}
         GUI.color= new Color(1f,1f,1f,alpha);
         
 		// Determine port colors
@@ -673,15 +671,9 @@ public partial class iCS_Graphics {
         if(portPos.Contains(MousePosition)) {
             if(!port.IsTransitionPort) {
                 EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
-            }
-            if(!port.IsFloating) {
-#if SHOW_TOOLTIP
-        		string tooltip= GetPortTooltip(port, iStorage);
-                GUI_Label(portPos, new GUIContent("", tooltip), LabelStyle);            
-#endif
-            }            
+            }        
         }            
-        
+		
         // State transition name is handle by DrawConnection.
         if(port.IsStatePort || port.IsTransitionPort) return;         
 
@@ -756,13 +748,17 @@ public partial class iCS_Graphics {
         } else if(port.IsStatePort) {
             // State ports.
             if(port.IsOutStatePort) {
-                Handles.color= Color.white;
+				var color= GUI.color;
+				color.a*= 0.8f;
+                Handles.color= color;
                 Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);
             }
         } else if(port.IsTransitionPort) {
             // Transition ports.
             if(port.IsOutTransitionPort) {
-                Handles.color= Color.white;
+				var color= GUI.color;
+				color.a*= 0.8f;
+                Handles.color= color;
                 Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);                            
             }
         }
@@ -774,16 +770,16 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     void DrawDataPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
 		if(port.IsInputPort) {
-			if(port.IsVisualEndPort) {
-				DrawInEndPort(_center, _fillColor, isSelected);
+			if(port.IsProgrammaticInstancePort) {
+				DrawInReferencePort(_center, _fillColor, isSelected);
 			} else {
-				DrawInRelayPort(_center, _fillColor, isSelected);
+				DrawInValuePort(_center, _fillColor, isSelected);
 			}
 		} else {
-			if(port.IsVisualEndPort) {
-				DrawOutEndPort(_center, _fillColor, isSelected);
+			if(port.IsProgrammaticInstancePort) {
+				DrawOutReferencePort(_center, _fillColor, isSelected);
 			} else {
-				DrawOutRelayPort(_center, _fillColor, isSelected);
+				DrawOutValuePort(_center, _fillColor, isSelected);
 			}
 		}
     }
@@ -805,7 +801,7 @@ public partial class iCS_Graphics {
 		GUI.DrawTexture(pos, portIcon);
     }
 	// ----------------------------------------------------------------------
-    void DrawInEndPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawInValuePort(Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInEndPortIcon(_fillColor) :
 		                                 iCS_PortIcons.GetInEndPortIcon(_fillColor);
@@ -816,7 +812,7 @@ public partial class iCS_Graphics {
 		GUI.DrawTexture(pos, portIcon);
     }
 	// ----------------------------------------------------------------------
-    void DrawOutEndPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawOutValuePort(Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutEndPortIcon(_fillColor) :
 		                                 iCS_PortIcons.GetOutEndPortIcon(_fillColor);
@@ -827,7 +823,7 @@ public partial class iCS_Graphics {
 		GUI.DrawTexture(pos, portIcon);
     }
 	// ----------------------------------------------------------------------
-    void DrawInRelayPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawInReferencePort(Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInRelayPortIcon(_fillColor) :
 		                                 iCS_PortIcons.GetInRelayPortIcon(_fillColor);
@@ -838,7 +834,7 @@ public partial class iCS_Graphics {
 		GUI.DrawTexture(pos, portIcon);
     }
 	// ----------------------------------------------------------------------
-    void DrawOutRelayPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    void DrawOutReferencePort(Vector3 _center, Color _fillColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutRelayPortIcon(_fillColor) :
 		                                 iCS_PortIcons.GetOutRelayPortIcon(_fillColor);
@@ -931,28 +927,81 @@ public partial class iCS_Graphics {
     public void DrawBinding(iCS_EditorObject port, iCS_IStorage iStorage, bool highlight= false, float lineWidth= 1.5f) {
         // No connection to draw if no valid source.
         if(!port.IsSourceValid) return;
-        iCS_EditorObject portParent= port.Parent;
+        iCS_EditorObject portParent= port.ParentNode;
 
         // No connection to draw if the port is not visible.
-        if(!port.IsVisibleOnDisplay) return;
+        bool isPortVisible= port.IsVisibleOnDisplay || port.IsFloating;
+        bool isShowInvisiblePort= false;
+        if(port.IsStatePort || port.IsTransitionPort) {
+            // For state ports, we draw them if the transition module is visible.
+            var transitionPackage= port.IStorage.GetTransitionPackage(port);
+            if(transitionPackage != null) {
+                if(!transitionPackage.IsVisibleOnDisplay) return;
+                isShowInvisiblePort= true;
+            }
+            else {
+                if(isPortVisible == false) return;                
+            }
+        } else {
+            if(isPortVisible == false) return;
+        }
 
         // No connection to draw if source port is not visible.
-        iCS_EditorObject source= port.ProviderPort;
+        iCS_EditorObject source= port.VisibleProducerPort;
+		if(source == null) return;
         iCS_EditorObject sourceParent= source.Parent;
-        if(!(source.IsVisibleOnDisplay && !port.IsOutStatePort)) return;
-
+        bool isSourceVisible= source.IsVisibleOnDisplay;
+        if(isSourceVisible == false && isShowInvisiblePort == false) return;
+        if(port.IsOutStatePort) return;
+        
         // No connection to draw if outside clipping area.
-        var portPos= port.AnimatedPosition;
+        var portPos = port.AnimatedPosition;
         var sourcePos= source.AnimatedPosition;
+        if(!isPortVisible) {
+            var visibleNode= portParent.GetLeafVisibleNode();
+            var parentRect= visibleNode.GlobalRect;
+            portPos= ClosestPointOnRectOnEdge(parentRect, sourcePos, port.Edge);
+            Math3D.LineSegmentAndRectEdgeIntersection(sourcePos, portPos, parentRect, out portPos);
+        }
+        if(!isSourceVisible) {
+            var visibleNode= sourceParent.GetLeafVisibleNode();
+            var parentRect= visibleNode.GlobalRect;
+            sourcePos= Math3D.Middle(parentRect);
+            sourcePos= ClosestPointOnRectOnEdge(parentRect, portPos, source.Edge);
+            Math3D.LineSegmentAndRectEdgeIntersection(portPos, sourcePos, parentRect, out sourcePos);
+        }
         Rect displayArea= Math3D.Union(new Rect(portPos.x, portPos.y, 1f, 1f), new Rect(sourcePos.x, sourcePos.y, 1f, 1f));
         if(!IsVisibleInViewport(displayArea)) return;
 
         // Set connection alpha according to port alpha.
-        var alpha= port.DisplayAlpha*source.DisplayAlpha;
+        var alpha= 1f;
+        if(isShowInvisiblePort) {
+            alpha= Mathf.Max(port.DisplayAlpha, source.DisplayAlpha);
+        }
+        else {
+            alpha= port.DisplayAlpha*source.DisplayAlpha;
+        }
         
+		// Reduce alpha if consumer port is disable
+		if(IsDisable(port)) {
+			alpha*= 0.5f;
+		}
+		
         // Determine line color.
-        Color color= Prefs.GetTypeColor(source.RuntimeType);
-        color.a*= alpha;
+        Color sourceColor= Color.white;
+        Color portColor  = Color.white;
+        if(port.IsStatePort || port.IsTransitionPort) {
+            if(isPortVisible == false || isSourceVisible == false) {
+                sourceColor= Color.yellow;
+                portColor  = Color.yellow;
+            }
+        }
+        else {
+            sourceColor= Prefs.GetTypeColor(source.RuntimeType);            
+            portColor  = Prefs.GetTypeColor(port.RuntimeType);            
+        }
+        sourceColor.a*= alpha;
+        portColor.a  *= alpha;
         // Determine if this connection is part of the selected object.
         float highlightWidth= 2f;
         Color highlightColor= new Color(0.67f, 0.67f, 0.67f, alpha);
@@ -960,51 +1009,231 @@ public partial class iCS_Graphics {
            iStorage.IsSelectedOrMultiSelected(source) ||
            iStorage.IsSelectedOrMultiSelected(portParent) ||
            iStorage.IsSelectedOrMultiSelected(sourceParent)) {
-            highlight= true;
+           highlight= true;
         }
         // Special case for asset store images.
         if(iCS_DevToolsConfig.ShowBoldImage) {
             highlight= true;
-            highlightColor= color;
+            highlightColor= sourceColor;
         }
         // Determine if this connection is part of a drag.
         iCS_BindingParams cp= new iCS_BindingParams(port, portPos, source, sourcePos, iStorage);
+        if(highlight) {
+            DrawBezier(cp, sourceColor, portColor, highlightColor, lineWidth, highlightWidth);
+        } else {
+            sourceColor.a= 0.85f*sourceColor.a;
+            portColor.a  = 0.85f*portColor.a;
+            DrawBezier(cp, sourceColor, portColor, highlightColor, lineWidth, 0f);
+        }
+        // Show transition name for state connections.
+		if(port.IsInTransitionPort && portParent.IsIconizedInLayout) return;
+        if(port.IsInStatePort || port.IsInTransitionPort) {
+            var arrowColor= new Color(1f,1f,1f,alpha);
+            DirectionEnum dir= DirectionEnum.Up;
+            // Reposition the end to make space for the arrow
+            Vector2 normalizedEndTangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
+            normalizedEndTangent.Normalize();
+            // Show transition input port.
+            if(Mathf.Abs(normalizedEndTangent.x) > Mathf.Abs(normalizedEndTangent.y)) {
+                if(normalizedEndTangent.x > 0) {
+                    dir= DirectionEnum.Left;
+                } else {
+                    dir= DirectionEnum.Right;
+                }
+            } else {
+                if(normalizedEndTangent.y > 0) {
+                    dir= DirectionEnum.Up;
+                } else {
+                    dir= DirectionEnum.Down;
+                }
+            }                 
+            ShowArrowCenterOn(cp.End, arrowColor, dir);
+        }
+        else {
+            // Show binding direction
+            if(ShouldShowPort()) {
+                DrawArrowMiddleBezier(cp, sourceColor, highlight);
+            }
+        }
+    }
+    // ----------------------------------------------------------------------
+    void DrawBezier(iCS_BindingParams cp,
+                    Color startColor, Color endColor, Color highlightColor,
+                    float lineWidth, float highlightWidth) {
+
+        // Adjust to canvas settings
         Vector3 startPos= TranslateAndScale(cp.Start);
         Vector3 endPos= TranslateAndScale(cp.End);
         Vector3 startTangent= TranslateAndScale(cp.StartTangent);
         Vector3 endTangent= TranslateAndScale(cp.EndTangent);
-        lineWidth= Scale*lineWidth;
-        if(lineWidth < 1f) lineWidth= 1f;
-        if(highlight) {
-            highlightWidth= Scale*highlightWidth;
-            if(highlightWidth < 1f) highlightWidth= 1f;
-    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                    
-    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
-        } else {
-            color.a= 0.6f*color.a;
-    		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                    
+        lineWidth*= Scale; if(lineWidth < 1f) lineWidth= 1f;
+
+        // Simple case where the start and end point are of the same color.
+        if(startColor == endColor) {
+            if(highlightWidth != 0) {
+                highlightWidth*= Scale; if(highlightWidth < 1f) highlightWidth= 1f;
+        		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);
+            }
+            Handles.DrawBezier(startPos, endPos, startTangent, endTangent, startColor, lineTexture, lineWidth);
         }
-        // Show transition name for state connections.
-        GUI.color= new Color(1f,1f,1f,alpha);
-        if(port.IsInStatePort || port.IsInTransitionPort) {
-            // Show transition input port.
-            Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
-            tangent.Normalize();
-            if(Mathf.Abs(tangent.x) > Mathf.Abs(tangent.y)) {
-                if(tangent.x > 0) {
-                    DrawIconCenteredAt(cp.End, leftArrowHeadIcon);                            
-                } else {
-                    DrawIconCenteredAt(cp.End, rightArrowHeadIcon);
+
+        // Different colors for start & end points.  Draw two bezier curves of different colors attached in the center.
+        else {
+            Vector3 center= TranslateAndScale(cp.Center);
+            // Adjust tangent strength to half since we are creating two beziers.
+            float tangentMagnitude= 0.25f*(cp.StartTangent-cp.Start).magnitude;
+            Vector3 centerStartTangent=  TranslateAndScale(cp.Center+(cp.CenterDirection * tangentMagnitude));
+            Vector3 centerEndTangent  =  TranslateAndScale(cp.Center-(cp.CenterDirection * tangentMagnitude));
+            startTangent= startPos + 0.5f*(startTangent-startPos);
+            endTangent  = endPos   + 0.5f*(endTangent-endPos);
+            if(highlightWidth != 0) {
+                highlightWidth*= Scale; if(highlightWidth < 1f) highlightWidth= 1f;
+                Handles.DrawBezier(startPos, center, startTangent, centerEndTangent, highlightColor, lineTexture, lineWidth+highlightWidth);
+                Handles.DrawBezier(center, endPos, centerStartTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                
+            }
+            Handles.DrawBezier(startPos, center, startTangent, centerEndTangent, startColor, lineTexture, lineWidth);
+            Handles.DrawBezier(center, endPos, centerStartTangent, endTangent, endColor, lineTexture, lineWidth);
+        }
+    }
+    // ----------------------------------------------------------------------
+    public void ShowBindingArrow(iCS_EditorObject port, Vector2 pos, Vector2 tangent, Color bindingColor) {
+        DirectionEnum dir= DirectionEnum.Up;
+        switch(port.Edge) {
+            case iCS_EdgeEnum.Top:
+            case iCS_EdgeEnum.Bottom: {
+                if(tangent.y < 0) {
+                    dir= DirectionEnum.Down;                                        
                 }
-            } else {
-                if(tangent.y > 0) {
-                    DrawIconCenteredAt(cp.End, upArrowHeadIcon);
-                } else {
-                    DrawIconCenteredAt(cp.End, downArrowHeadIcon);
+                else {
+                    dir= DirectionEnum.Up;                    
                 }
-            }                 
+                break;
+            }
+            case iCS_EdgeEnum.Left:
+            case iCS_EdgeEnum.Right: {
+                if(tangent.x < 0) {
+                    dir= DirectionEnum.Right;
+                }
+                else {
+                    dir= DirectionEnum.Left;
+                }
+                break;
+            }
+        }
+        ShowArrowCenterOn(pos, bindingColor, dir);
+    }
+    // ----------------------------------------------------------------------
+    public Vector2 GetBindingEndPosition(iCS_EditorObject port, Vector2 endPos, Vector2 tangent) {
+        switch(port.Edge) {
+            case iCS_EdgeEnum.Top:
+            case iCS_EdgeEnum.Bottom: {
+                if(tangent.y < 0) {
+                    endPos.y-= iCS_EditorConfig.PortDiameter;
+                }
+                else {
+                    endPos.y+= iCS_EditorConfig.PortDiameter;
+                }
+                break;
+            }
+            case iCS_EdgeEnum.Left:
+            case iCS_EdgeEnum.Right: {
+                if(tangent.x < 0) {
+                    endPos.x-= iCS_EditorConfig.PortDiameter;
+                }
+                else {
+                    endPos.x+= iCS_EditorConfig.PortDiameter;
+                }
+                break;
+            }
+        }
+        return endPos;
+    }
+    // ----------------------------------------------------------------------
+    public void ShowArrowCenterOn(Vector2 graphPos, Color arrowColor, DirectionEnum dir) {
+		var savedColor= GUI.color;
+        GUI.color= arrowColor;
+        switch(dir) {
+            case DirectionEnum.Left:  DrawIconCenteredAt(graphPos, leftArrowHeadIcon); break;
+            case DirectionEnum.Right: DrawIconCenteredAt(graphPos, rightArrowHeadIcon); break;
+            case DirectionEnum.Up:    DrawIconCenteredAt(graphPos, upArrowHeadIcon); break;
+            case DirectionEnum.Down:  DrawIconCenteredAt(graphPos, downArrowHeadIcon); break;
         }
         // Reset GUI alpha.
-        GUI.color= Color.white;
+        GUI.color= savedColor;
+    }
+    // ----------------------------------------------------------------------
+    public void DrawArrowMiddleBezier(iCS_BindingParams cp, Color color, bool highlight) {
+        color.a*= 0.8f;
+        float size= highlight ? 6f : 4f;
+        DrawArrowHead(cp.CenterDirection, cp.Center, color, size, color);
+    }
+    // ----------------------------------------------------------------------
+	bool IsDisable(iCS_EditorObject obj) { return !IsEnable(obj); }
+	bool IsEnable(iCS_EditorObject obj) {
+		if(obj.IsBehaviour) return true;
+		if(iCS_UnityUtility.IsPrefab(obj.IStorage.VSMonoBehaviour.gameObject)) return true;
+		if(obj.IsInStatePort) {
+			var transitionPackage= obj.IStorage.GetTransitionPackage(obj);
+			if(transitionPackage == null) {
+				return true;
+			}
+			return IsEnable(transitionPackage);
+		}
+		if(!IsEnable(obj.ParentNode)) return false;
+		if(obj.IsPort) return !obj.IsPortDisabled;
+		bool isPlaying= Application.isPlaying;
+		if(obj.IsState) {
+			return isPlaying ? IsActiveState(obj) : true;
+		}
+		if(obj.IsTransitionPackage) {
+			var fromStatePort= obj.IStorage.GetFromStatePort(obj);
+			if(fromStatePort == null) return true;
+			var fromState= fromStatePort.ParentNode;
+			return IsEnable(fromState);
+		}
+		var enablePorts= obj.BuildListOfChildPorts(p=> p.IsEnablePort);
+		foreach(var ep in enablePorts) {
+			if(isPlaying || ep.ProducerPort == null) {
+                var portValue= ep.PortValue;
+				if(portValue != null && (bool)(ep.PortValue) == false) {
+					return false;
+				}				
+			}
+		}
+		return true;
+	}
+    // ----------------------------------------------------------------------
+    public static bool IsActiveState(iCS_EditorObject state) {
+        var stateChart= state.GetParentStateChart();
+        if(stateChart == null) return false;
+        var runtimeNodes= state.IStorage.VisualScript.RuntimeNodes;
+        var rtStateChart= runtimeNodes[stateChart.InstanceId] as iCS_StateChart;
+        var rtState     = runtimeNodes[state.InstanceId] as iCS_State;
+        return rtStateChart.IsActiveState(rtState);
+    }
+    
+    // ----------------------------------------------------------------------
+    /// Returns the closest point on the given edge
+    Vector2 ClosestPointOnRectOnEdge(Rect r, Vector2 p, iCS_EdgeEnum edge) {
+        Vector2 result= Vector2.zero;
+        switch(edge) {
+            case iCS_EdgeEnum.Left: {
+                result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.TopLeftCorner(r), Math3D.BottomLeftCorner(r), p);
+                break;
+            }
+            case iCS_EdgeEnum.Right: {
+                result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.TopRightCorner(r), Math3D.BottomRightCorner(r), p);
+                break;                    
+            }
+            case iCS_EdgeEnum.Top: {
+                result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.TopLeftCorner(r), Math3D.TopRightCorner(r), p);
+                break;
+            }
+            case iCS_EdgeEnum.Bottom: {
+                result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.BottomLeftCorner(r), Math3D.BottomRightCorner(r), p);
+                break;
+            }
+        }
+        return result;
     }
 }

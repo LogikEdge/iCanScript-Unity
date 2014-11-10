@@ -32,7 +32,7 @@ public static class iCS_GuiUtilities {
         // Extract port information
 		Type portType= port.RuntimeType;
         iCS_EditorObject parent= port.Parent;
-        iCS_EditorObject sourcePort= port.ProviderPort;
+        iCS_EditorObject sourcePort= port.ProducerPort;
         bool hasSource= sourcePort != null;
         // Get runtime object if it exists.
         var runtimeObject= iStorage.GetRuntimeObject(parent) as iCS_ISignature;
@@ -47,7 +47,7 @@ public static class iCS_GuiUtilities {
         // Display primitives.
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty, iStorage);
-        if(!isReadOnly && isDirty && !newPortValue.Equals(portValue)) {
+        if(!isReadOnly && isDirty && newPortValue != null && !newPortValue.Equals(portValue)) {
 			iCS_UserCommands.ChangePortValue(port, newPortValue);
         }
     }

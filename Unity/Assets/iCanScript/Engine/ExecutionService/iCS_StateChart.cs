@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class iCS_StateChart : iCS_Action {
+public sealed class iCS_StateChart : iCS_ActionWithSignature {
     // ======================================================================
     // Internal types
     // ----------------------------------------------------------------------
@@ -35,23 +35,31 @@ public sealed class iCS_StateChart : iCS_Action {
             return end == 0 ? null : myActiveStack[end-1];
         }
     }
+    public bool IsActiveState(iCS_State state) {
+        foreach(var s in myActiveStack) {
+            if(s == state) return true;
+        }
+        return false;
+    }
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_StateChart(iCS_VisualScriptImp visualScript, int priority)
-    : base(visualScript, priority) {
+    public iCS_StateChart(iCS_VisualScriptImp visualScript, int priority, int nbOfParams, int nbOfEnables)
+    : base(visualScript, priority, nbOfParams, nbOfEnables) {
     	myDispatcher= new iCS_ParallelDispatcher(visualScript, priority, 0, 0);
     }
 
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void Execute(int frameId) {
-        if(!IsActive) return;
-        IsStalled= true;
+    protected override void DoExecute(int frameId) {
         // Make certain that at least one active state exists.
-        if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState, frameId);
+        if(myActiveStack.Count == 0 && myEntryState != null) {
+            var entryState= myEntryState;
+            while(entryState.EntryState != null) entryState= entryState.EntryState;
+            MoveToState(entryState, frameId);
+        }
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
             ExecuteVerifyTransitions(frameId);            
@@ -114,7 +122,7 @@ public sealed class iCS_StateChart : iCS_Action {
         return null;
     }
     // ----------------------------------------------------------------------
-    public override void ForceExecute(int frameId) {
+    protected override void DoForceExecute(int frameId) {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
             ExecuteVerifyTransitions(frameId, /*forced=*/true);            
@@ -167,7 +175,9 @@ public sealed class iCS_StateChart : iCS_Action {
 	            myFiredTransition= transitions.TriggeredTransition;
 	            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
 					IsStalled= false;
-	                MoveToState(myFiredTransition.EndState, frameId);
+                    var newState= myFiredTransition.EndState;
+                    while(newState.EntryState != null) newState= newState.EntryState;
+	                MoveToState(newState, frameId);
 	                return;
 	            }
 				if(idx == myQueueIdx) {

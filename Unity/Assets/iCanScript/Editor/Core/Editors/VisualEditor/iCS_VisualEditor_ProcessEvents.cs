@@ -17,6 +17,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // USER INTERACTIONS
 	// ----------------------------------------------------------------------
     void MouseMoveEvent() {
+        // -- Update Help Information --
+		QueueOnGUICommand(UpdateHelp);
+        // -- Update Hot Zones --
+        var pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
+        if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
+            HotZoneMouseOver(WindowMousePosition);
+        }
+        // -- Canvas Processing --
         switch(Event.current.button) {
             case 2: { // Middle mouse button
                 UpdateViewportPanning();
@@ -34,6 +42,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case 0: { // Left mouse button
                 // Drag the selected node or pan the viewport if no node is selected.
                 if(IsDragEnabled) {
+                    if(iCS_EditionController.IsCommunityLimitReached) break;
                     ProcessDrag();                                                
                 } else {
                     UpdateViewportPanning();
@@ -77,6 +86,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     IsDragEnabled= true;                                                    
                 }
                 mySubEditor= null;
+                // -- Update Hot Zones --
+                var pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
+                if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
+                    HotZoneMouseClick(WindowMousePosition);
+                }
                 break;
             }
             case 1: { // Right mouse button
@@ -90,7 +104,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Mainly used for panning the viewport.
                 break;
             }
-        }        
+        }
     }
 	// ----------------------------------------------------------------------
     void MouseUpEvent() {
@@ -191,7 +205,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case iCS_PickPartEnum.Value: {
-                if(!pickedObject.IsInDataOrControlPort || pickedObject.ProviderPortId != -1) break;
+                if(!pickedObject.IsInDataOrControlPort || pickedObject.ProducerPortId != -1) break;
 				if(iCS_PortValueEditor.IsValueEditionSupported(pickedObject.RuntimeType)) {
 					mySubEditor= new iCS_PortValueEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);
 				}

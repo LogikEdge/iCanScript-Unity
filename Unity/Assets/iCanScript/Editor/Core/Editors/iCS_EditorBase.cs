@@ -34,8 +34,18 @@ public class iCS_EditorBase : EditorWindow {
     // ---------------------------------------------------------------------------------
     public void OnGUI() {
         // Stop all processing if not registered & trial period is over
-        if(iCS_LicenseController.IsCommunityOperatingMode) {
-            string message= "Your trial period is over !!!";
+        if(iCS_EditionController.IsCommunityLimitReached) {
+            string message= null;
+            var area= Math3D.Area(position);
+            if(area > 200000) {
+                message= "iCanScript Community Edition limit reached !\n\nUse the Pro Edition of iCanScript for large projects.\n\nPurchase the Pro Edition from the Unity Assets Store.";
+            }
+            else if(area > 150000){
+                message= "iCanScript Community Edition limit reached !\n\nPurchase the Pro Edition from the Unity Assets Store.";
+            }
+            else {
+                message= "iCanScript Community Edition limit reached !\n\nPlease purchase the Pro Edition.";
+            }
             ShowNotification(new GUIContent(message));
             return;
         }

@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 
+namespace iCanScript {
+    
 public static class iCS_Debug {	
 	public enum Flags { CodeGeneration };
 
@@ -26,4 +28,34 @@ public static class iCS_Debug {
 			fnc("iCanScript: "+s);			
 		}
 	}
+    public static void Profile(string idStr, Action action) {
+        var time= Time.realtimeSinceStartup;
+        action();
+        Debug.Log("Profile: "+idStr+"=> "+(Time.realtimeSinceStartup-time));
+    }
+    public static void Profile(string idStr, float threashold, Action action) {
+        var time= Time.realtimeSinceStartup;
+        action();
+        var deltaTime= Time.realtimeSinceStartup-time;
+        if(deltaTime >= threashold) {
+            Debug.Log("Profile: "+idStr+"=> "+deltaTime);            
+        }
+    }
+    public static T Profile<T>(string idStr, Func<T> action) {
+        var time= Time.realtimeSinceStartup;
+        T result= action();
+        Debug.Log("Profile: "+idStr+"=> "+(Time.realtimeSinceStartup-time));
+        return result;
+    }
+    public static T Profile<T>(string idStr, float threashold, Func<T> action) {
+        var time= Time.realtimeSinceStartup;
+        T result= action();
+        var deltaTime= Time.realtimeSinceStartup-time;
+        if(deltaTime >= threashold) {
+            Debug.Log("Profile: "+idStr+"=> "+deltaTime);            
+        }
+        return result;
+    }
 }
+
+} // Namespace iCanScript

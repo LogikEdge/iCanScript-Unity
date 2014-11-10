@@ -28,6 +28,8 @@ public partial class iCS_IStorage {
                 }         
             }
         }
+        if(storageVersion.IsOlderOrEqualTo(1,2,3)) {
+        }
         // Warn the user that an upgrade toke place.
         if(isUpgraded) {
 			ShowUpgradeDialog(softwareVersion);

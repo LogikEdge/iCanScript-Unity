@@ -16,6 +16,7 @@ public partial class iCS_IStorage {
     List<iCS_EditorObject>          myEditorObjects     = null;
     public  int                     ModificationId      = -1;
     public  bool                    CleanupDeadPorts    = true;
+    public  int                     NumberOfNodes       = 0;
     
     // ======================================================================
     // Properties
@@ -31,6 +32,11 @@ public partial class iCS_IStorage {
     public iCS_VisualScriptImp VisualScript {
         get {
             return iCSMonoBehaviour as iCS_VisualScriptImp;
+        }
+    }
+    public iCS_MonoBehaviourImp VSMonoBehaviour {
+        get {
+            return iCSMonoBehaviour;
         }
     }
     public iCS_EditorObject RootObject {
@@ -155,6 +161,16 @@ public partial class iCS_IStorage {
             // Force a relayout
             ForceRelayout= true;
         }
+
+        // -- Count number of nodes to limit community version --
+        if(iCS_EditionController.IsCommunityEdition) {
+            NumberOfNodes= 0;
+            ForEach(obj=> {
+                if(obj.IsNode && obj != RootObject && !obj.ParentNode.IsInstanceNode) {
+                    ++NumberOfNodes;
+                }
+            });            
+        }
     }
     
     // ----------------------------------------------------------------------
@@ -187,7 +203,7 @@ public partial class iCS_IStorage {
     public bool IsValid(iCS_EditorObject obj) {
 		return obj != null && IsIdValid(obj.InstanceId);
 	}
-    public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.ProviderPortId); }
+    public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.ProducerPortId); }
     public bool IsParentValid(iCS_EditorObject obj)  { return IsIdValid(obj.ParentId); }
     // ----------------------------------------------------------------------
 	public bool IsAnimationPlaying {
@@ -243,14 +259,18 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void CleanupUnityObjects() {
-        Storage.ClearUnityObjects();
+        // Keep a copy to repopulate for long bindings
         ForEach(
             obj=> {
-                if(obj.IsInDataOrControlPort && obj.ProviderPortId == -1 && obj.InitialValue != null) {
+                if(obj.IsInDataOrControlPort && obj.ProducerPortId == -1 && obj.InitialValue != null) {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
-                    obj.InitialValueArchive= null; 
+                    if(obj.IsFunctionCall || obj.IsVariableReference) {
+                    }
+                    else {
+                        obj.InitialValueArchive= null;
+                    }
                 }
             }
         );
@@ -261,8 +281,13 @@ public partial class iCS_IStorage {
 	// function is invoked.
     public bool Cleanup() {
         bool modified= false;
+		bool needsRelayout= false;
+        NumberOfNodes= 0;
         ForEach(
             obj=> {
+                // -- Count number of nodes to limit trial version --
+                if(obj.IsNode && obj != RootObject && !obj.ParentNode.IsInstanceNode) ++NumberOfNodes;
+                
                 // Keep a copy of the final position.
                 obj.AnimationTargetRect= obj.GlobalRect;
                 // Cleanup disconnected or dangling ports.
@@ -273,9 +298,9 @@ public partial class iCS_IStorage {
 	                        shouldRemove= true;
 	                    } else if(obj.IsParentMuxPort && IsPortDisconnected(obj) && obj.HasChildPort() == false) {
 	                        shouldRemove= true;
-	                    } else if(obj.IsChildMuxPort && obj.ProviderPort == null) {
+	                    } else if(obj.IsChildMuxPort && obj.ProducerPort == null) {
 	                        shouldRemove= true;
-	                    } else if(obj.ProviderPort == null) {
+	                    } else if(obj.ProducerPort == null) {
 							if(obj.IsChildMuxPort || obj.IsInStatePort || obj.IsInTransitionPort) {
 		                        shouldRemove= true;								
 							}
@@ -290,25 +315,32 @@ public partial class iCS_IStorage {
 	                        DestroyInstanceInternal(obj);                            
 	                        modified= true;						
 						}
-						// Convert input mux to dynamic port if no children.
+						// -- Convert input mux to dynamic port if no children. --
 						if(obj.IsInParentMuxPort) {
 	                        switch(obj.NumberOfChildPorts()) {
 	                            case 0:
-	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
+	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;
 	                                break;
 	                            case 1:
 	                                var childPorts= obj.BuildListOfChildPorts(_=> true);
-	                                obj.ProviderPort= childPorts[0].ProviderPort;
-	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;					        
+	                                obj.ProducerPort= childPorts[0].ProducerPort;
+	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;
 	                                DestroyInstanceInternal(childPorts[0]);
+                                    modified= true;
 	                                break;
 	                        }
-						}						
+						}
+                        // -- Convert any dynamic ports on public functions to proposed ports --
+                        if(obj.IsDynamicDataPort && obj.ParentNode.IsPublicFunction) {
+                            obj.ObjectType= obj.IsInDynamicDataPort ?
+                                iCS_ObjectTypeEnum.InProposedDataPort :
+                                iCS_ObjectTypeEnum.OutProposedDataPort;
+                        }
 					}
                     // Cleanup disconnected typecasts.
     				if(obj.IsTypeCast) {
 						var inDataPort= FindInChildren(obj, c=> c.IsInDataOrControlPort);
-                        if(inDataPort.ProviderPort == null &&
+                        if(inDataPort.ProducerPort == null ||
                            FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataOrControlPort)) == null) {
                            DestroyInstanceInternal(obj);
                            modified= true;
@@ -335,8 +367,30 @@ public partial class iCS_IStorage {
 						}
 					}                    
 				}
+				// Propagate variable name to instance nodes
+				if(obj.IsInstanceNode) {
+					string instanceNodeName= obj.DefaultName;
+					var thisPort= InstanceWizardGetInputThisPort(obj);
+					if(thisPort != null) {
+						var producerPort= thisPort.FirstProducerPort;
+						if(producerPort != null) {
+							var producerNode= producerPort.ParentNode;
+							if(producerNode.IsConstructor) {
+								instanceNodeName= producerNode.Name;
+							}
+						}
+					}
+					if(obj.Name != instanceNodeName) {
+						obj.Name= instanceNodeName;						
+						needsRelayout= true;
+						modified= true;
+					}
+				}
             }
         );
+		if(needsRelayout) {
+			ForcedRelayoutOfTree();
+		}
         ClearUserTransactions();        
         return modified;
     }
@@ -360,7 +414,6 @@ public partial class iCS_IStorage {
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
         iCS_EditorObject instance= Copy(srcObj, srcStorage, destParent, destStorage, globalPos, xlat);
         ReconnectCopy(srcObj, srcStorage, destStorage, xlat);
-//        instance.GlobalRect= iCS_EditorObject.BuildRect(globalPos, Vector2.zero);
         instance.CollisionOffsetFromGlobalPosition= globalPos;
         return instance;
     }
@@ -371,7 +424,7 @@ public partial class iCS_IStorage {
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
         if(newObj.IsNode) {
-            newObj.LocalAnchorFromGlobalPosition= globalPos;            
+            newObj.LocalAnchorFromGlobalPosition= globalPos;
         }
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
@@ -385,7 +438,7 @@ public partial class iCS_IStorage {
     void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_IStorage destStorage, List<Prelude.Tuple<int,int>> xlat) {
         srcStorage.ForEachRecursive(srcObj,
             child=> {
-                if(child.ProviderPortId != -1) {
+                if(child.ProducerPortId != -1) {
                     int id= -1;
                     int sourceId= -1;
                     foreach(var pair in xlat) {
@@ -393,7 +446,7 @@ public partial class iCS_IStorage {
                             id= pair.Item2;
                             if(sourceId != -1) break;
                         }
-                        if(pair.Item1 == child.ProviderPortId) {
+                        if(pair.Item1 == child.ProducerPortId) {
                             sourceId= pair.Item2;
                             if(id != -1) break;
                         }
@@ -464,7 +517,7 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateFunction(int parentId, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateFunction(int parentId, iCS_FunctionPrototype desc) {
         iCS_EditorObject instance= desc.IsInstanceMember ?
                     				CreateInstanceFunction(parentId, desc) : 
                     				CreateClassFunction(parentId, desc);
@@ -474,7 +527,7 @@ public partial class iCS_IStorage {
 		return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateClassFunction(int parentId, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateClassFunction(int parentId, iCS_FunctionPrototype desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
@@ -504,7 +557,7 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateInstanceFunction(int parentId, iCS_MethodBaseInfo desc) {
+    public iCS_EditorObject CreateInstanceFunction(int parentId, iCS_FunctionPrototype desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
@@ -609,10 +662,10 @@ public partial class iCS_IStorage {
         return GetInstancePortName(typeInfo.CompilerType);
     }
     public static string GetInstancePortName(Type type) {
-        return iCS_Types.GetName(type)+" Instance";
+        return "<"+iCS_Types.GetName(type)+">";
     }
     // ----------------------------------------------------------------------
-    public string GetDefaultNodeName(iCS_MethodBaseInfo desc) {
+    public string GetDefaultNodeName(iCS_FunctionPrototype desc) {
         var displayName= desc.DisplayName;
         if(desc.IsConstructor) {
             displayName= "Variable";

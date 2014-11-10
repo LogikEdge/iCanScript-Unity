@@ -324,7 +324,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
         return IterValue.IsNode;
     }
     // ---------------------------------------------------------------------------------
-    public void MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea) {
+    public void MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea) {		
         if(key == null) {
             return;
         }
@@ -342,6 +342,12 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
         Selected= eObj;
         FocusGraphOnSelected();
     }
+
+    // ---------------------------------------------------------------------------------
+    public void KeyDown(object key, KeyCode keyCode) {		
+
+    }
+	
     // ---------------------------------------------------------------------------------
     public void SelectPrevious() {
         myChangeSelection= -1;

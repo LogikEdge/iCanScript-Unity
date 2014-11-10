@@ -158,7 +158,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             // Toggle show root node
 			case KeyCode.R: {
-				iCS_UserCommands.ToggleShowDisplayRootNode(IStorage);
+				if(IsCommandKeyDown) {
+					SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
+				}
+				else {
+					iCS_UserCommands.ToggleShowDisplayRootNode(IStorage);
+				}
                 Event.current.Use();
 				break;
 			}
@@ -213,7 +218,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.H: {  // Show Help
                 if(SelectedObject != null) {
-                    Help.ShowHelpPage("file:///unity/ScriptReference/index.html");
+					iCS_HelpController.openDetailedHelp(SelectedObject);
                 }
                 Event.current.Use();
                 break;

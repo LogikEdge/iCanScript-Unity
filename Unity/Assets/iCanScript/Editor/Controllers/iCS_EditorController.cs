@@ -17,13 +17,17 @@ public static class iCS_EditorController {
     static iCS_EditorController() {
         myEditors= new List<iCS_EditorBase>();
     }
+    public static void Start()    {}
+    public static void Shutdown() {}
     
     // =================================================================================
     // Window management
     // ---------------------------------------------------------------------------------
     // FIXME: The relationship between proxy type and editor name needs to be cleaned up.
     public static void Add(iCS_EditorBase editor) {
-        myEditors.Add(editor);
+        if(FindIndexOf(editor) == -1) {
+            myEditors.Add(editor);            
+        }
     }
     public static void Remove(iCS_EditorBase editor) {
         int idx= FindIndexOf(editor);
@@ -53,19 +57,19 @@ public static class iCS_EditorController {
     
     // ======================================================================
     public static void ShowVisualEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Visual Editor");
+        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Visual Editor");
     }
     public static void ShowInstanceEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Instance Wizard");        
+        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Instance Wizard");        
     }
     public static void ShowHierarchyEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Hierarchy");                
+        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Hierarchy");                
     }
     public static void ShowLibraryEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Library");                
+        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Library");                
     }
     public static void ShowPreferences() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Preferences");                
+        EditorApplication.ExecuteMenuItem("iCanScript/Preferences...");                
     }
 
     // ======================================================================
@@ -159,5 +163,21 @@ public static class iCS_EditorController {
         var visualEditor= FindVisualEditor();
         if(visualEditor == null) return;
         visualEditor.ShowNotification(content);
+    }
+    // ======================================================================
+    public static void OpenVisualEditor() {
+        if(FindVisualEditor() == null) {
+            ShowVisualEditor();
+        }
+    }
+    public static void OpenLibraryEditor() {
+        if(FindLibraryEditor() == null) {
+            ShowLibraryEditor();
+        }
+    }
+    public static void OpenInstanceEditor() {
+        if(FindInstanceEditor() == null) {
+            ShowInstanceEditor();
+        }
     }
 }

@@ -28,9 +28,9 @@ public class iCS_EngineObject {
     public int                   LayoutPriority   = 0;
 
     // Port specific attributes ---------------------------------------------
-    public int                   SourceId           = -1;
+    public int                   SourceId           = -1;    // Proxy original node id
     public int                   PortIndex          = -1;
-	public string				 InitialValueArchive= null;
+	public string				 InitialValueArchive= null;  // Proxy original visual script tag
 
     // State specific attributes ---------------------------------------------
     public bool                  IsEntryState= false;
@@ -54,9 +54,19 @@ public class iCS_EngineObject {
         }
     }
     public string Name {
-        get { return IsNameEmpty ? ":"+TypeName : RawName; }
+        get { return IsNameEmpty ? "<"+TypeName+">" : RawName; }
         set { RawName= value; }
     }
+    // Node Specific accesors ------------------------------------------------
+    public int ProxyOriginalNodeId {
+        get { return SourceId; }
+        set { SourceId= value; }
+    }
+    public string ProxyOriginalVisualScriptTag {
+        get { return InitialValueArchive; }
+        set { InitialValueArchive= value; }
+    }
+    
     // Port Specific accesors ------------------------------------------------
     public int PortGroup {
         get { return NbOfParams; }
@@ -212,7 +222,8 @@ public class iCS_EngineObject {
     public bool IsOnStateEntryPackage      { get { return iCS_ObjectType.IsOnStateEntryPackage(this); }}
     public bool IsOnStateUpdatePackage     { get { return iCS_ObjectType.IsOnStateUpdatePackage(this); }}
     public bool IsOnStateExitPackage       { get { return iCS_ObjectType.IsOnStateExitPackage(this); }}
-
+    public bool IsVariableReference        { get { return iCS_ObjectType.IsVariableReference(this); }}
+    public bool IsFunctionCall             { get { return iCS_ObjectType.IsFunctionCall(this); }}
     // General Ports
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
     public bool IsOutputPort            { get { return iCS_ObjectType.IsOutputPort(this); }}

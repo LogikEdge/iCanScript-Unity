@@ -20,6 +20,9 @@ public struct Bool {
     public bool Not {
         [iCS_Function] get { return !myValue; }
     }
+    public bool Inverse {
+        [iCS_Function] get { return !myValue; }        
+    }
     
     [iCS_Function] public Bool(bool init= false) { myValue= init; }
     [iCS_Function] public bool And(bool b) { return myValue & b; }

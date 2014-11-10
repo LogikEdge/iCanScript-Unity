@@ -24,7 +24,7 @@ public class iCS_InstanceController {
     // Constant GUI Content
     // ---------------------------------------------------------------------------------
     GUIContent  ConstructorTitle= new GUIContent("Instance");
-    GUIContent  VariableTitle   = new GUIContent("Variables");
+    GUIContent  VariableTitle   = new GUIContent("Properties");
     GUIContent  MethodTitle     = new GUIContent("Operations");
     Vector2     ConstructorTitleSize;
     Vector2     LabelSize;

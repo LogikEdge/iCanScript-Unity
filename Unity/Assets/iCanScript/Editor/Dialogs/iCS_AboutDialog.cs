@@ -52,36 +52,19 @@ public class iCS_AboutDialog : EditorWindow {
 		// Column info
 		float column1X= kSpacer;
 		var editionTitle= new GUIContent("Edition: ");
-		var operatingModeTitle= new GUIContent("Operating Mode: ");
 		var buildDateTitle= new GUIContent("Build Date: ");
 		var userLicenseTitle= new GUIContent("User License: ");
-		var operatingModeTitleSize= GUI.skin.label.CalcSize(operatingModeTitle);
 		var buildDateTitleSize= GUI.skin.label.CalcSize(buildDateTitle);
 		var userLicenseTitleSize= GUI.skin.label.CalcSize(userLicenseTitle);
-		float column1Width= Math3D.Max(operatingModeTitleSize.x,
-									   buildDateTitleSize.x,
+		float column1Width= Math3D.Max(buildDateTitleSize.x,
 									   userLicenseTitleSize.x);
-		var labelHeight= operatingModeTitleSize.y;
+		var labelHeight= buildDateTitleSize.y;
 		
 		float column2X= column1X+column1Width+kSpacer;
 		float column2Width= position.width-column2X-kSpacer;
 		
-		// Operating Mode
-		var rOperatingMode= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
-		GUI.Label(rOperatingMode, operatingModeTitle);
-		GUIContent operatingMode= new GUIContent(iCS_LicenseController.OperatingModeAsString());
-		rOperatingMode.x= column2X; rOperatingMode.width= column2Width;
-		GUI.Label(rOperatingMode, operatingMode);
-		
-		// Build date
-		var rBuildDate= new Rect(column1X, rOperatingMode.yMax, column2Width, labelHeight);
-		GUI.Label(rBuildDate, buildDateTitle);
-		GUIContent buildDate= new GUIContent(iCS_BuildInfo.kBuildDateStr);
-		rBuildDate.x= column2X; rBuildDate.width= column2Width;
-		GUI.Label(rBuildDate, buildDate);
-		
 		// Edition
-		var rEdition= new Rect(column1X, rBuildDate.yMax, column2Width, labelHeight);
+		var rEdition= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
 		GUI.Label(rEdition, editionTitle);
 		rEdition.x= column2X; rEdition.width= column2Width;
 		GUI.Label(rEdition, iCS_EditionController.ToString());
@@ -97,10 +80,17 @@ public class iCS_AboutDialog : EditorWindow {
 		rUserLicense.x= column2X; rUserLicense.width= column2Width;
 		GUI.Label(rUserLicense, userLicense);
 
+		// Build date
+		var rBuildDate= new Rect(column1X, rUserLicense.yMax, column2Width, labelHeight);
+		GUI.Label(rBuildDate, buildDateTitle);
+		GUIContent buildDate= new GUIContent(iCS_BuildInfo.kBuildDateStr);
+		rBuildDate.x= column2X; rBuildDate.width= column2Width;
+		GUI.Label(rBuildDate, buildDate);
+		
 		// Disclamer
 		GUIContent copyright= new GUIContent("(c) copyright Disruptive Software 2014.  All rights reserved.");
 		var copyrightSize= GUI.skin.label.CalcSize(copyright);
-		var rCopyright= new Rect(column1X, rUserLicense.yMax+copyrightSize.y, copyrightSize.x, copyrightSize.y);
+		var rCopyright= new Rect(column1X, rBuildDate.yMax+copyrightSize.y, copyrightSize.x, copyrightSize.y);
 		GUI.Label(rCopyright, copyright);
 	
 		var p= position;

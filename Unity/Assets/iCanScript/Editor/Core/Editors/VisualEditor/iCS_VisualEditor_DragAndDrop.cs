@@ -24,7 +24,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(objectUnderMouse.IsNode) {
                 var draggedLibrary= GetDraggedLibrary(draggedObject);
                 var draggedEngineObject= draggedLibrary != null ? draggedLibrary.EngineObjects[0] : null;
-                // Don't accept to drag an object dirctly under Behaviour.
+                // -- Don't accept to drag an object directly under Behaviour --
                 if(objectUnderMouse.IsBehaviour) {
                     if(draggedEngineObject != null &&
                        iCS_AllowedChildren.CanAddChildNode(draggedEngineObject.Name, draggedEngineObject, objectUnderMouse, IStorage)) {
@@ -35,7 +35,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     return;
                 }
-                // Don't accept to drag object outside the root node.
+                // -- Don't accept to drag object outside the root node --
                 if(objectUnderMouse == DisplayRoot && IStorage.ShowDisplayRootNode) {
                     if(!DisplayRoot.GlobalRect.Contains(GraphMousePosition)) {
                         DragAndDrop.visualMode= DragAndDropVisualMode.Rejected;
@@ -106,7 +106,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(iCS_Types.IsA<GameObject>(dragObjType) && iCS_Types.IsA<Component>(portType)) {
                     var go= draggedObject as GameObject;
                     foreach(var component in go.GetComponents<Component>()) {
-                        if(iCS_Types.IsA(component.GetType(), portType)) {
+                        if(iCS_Types.IsA(portType, component.GetType())) {
                             iCS_UserCommands.DragAndDropSetPortValue(eObj, component);
         					// Remove data so that we don't get called multiple times (Unity bug !!!).
         		            DragAndDrop.AcceptDrag();
@@ -133,16 +133,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Allow dropping Unity object in modules.
                 if(eObj.IsKindOfPackage && draggedObject is GameObject) {
                     GameObject gameObject= draggedObject as GameObject;
-                    var instance= iCS_UserCommands.CreateGameObject(gameObject, eObj, GraphMousePosition);
-                    if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
-                        var isSceneObject= iCS_UnityUtility.IsSceneGameObject(draggedObject as GameObject);
-                        if(isSceneObject == true) {
-                            ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
-                            var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
-                            if(thisPort != null) {
-                                thisPort.PortValue= null;
-                            }
-                        }
+                    // Determine if game object contains a visual script.
+                    var vs= gameObject.GetComponent("iCS_VisualScript") as iCS_VisualScriptImp;
+                    if(vs == null || BuildPublicInterfaceMenu(gameObject, eObj, vs, GraphMousePosition) == false) {
+                        CreateGameObjectNode(gameObject, eObj, GraphMousePosition);
                     }
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.AcceptDrag();
@@ -155,8 +149,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
     }
 	// ----------------------------------------------------------------------
-    void DragAndDropExited() {
-    }
+    void DragAndDropExited() {}
 
     // ======================================================================
     // Drag & drop related utilities.
@@ -186,11 +179,25 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(iCS_Types.IsA<GameObject>(dragObjType) && iCS_Types.IsA<Component>(portType)) {
             var go= draggedObject as GameObject;
             foreach(var component in go.GetComponents<Component>()) {
-                if(iCS_Types.IsA(component.GetType(), portType)) {
+                if(iCS_Types.IsA(portType, component.GetType())) {
                     return component;
                 }
             }
         }
         return null;
+    }
+	// ----------------------------------------------------------------------
+    void CreateGameObjectNode(GameObject go, iCS_EditorObject parent, Vector2 graphMousePosition) {
+        var instance= iCS_UserCommands.CreateGameObject(go, parent, graphMousePosition);
+        if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
+            var isSceneObject= iCS_UnityUtility.IsSceneGameObject(go);
+            if(isSceneObject == true) {
+                ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
+                var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
+                if(thisPort != null) {
+                    thisPort.PortValue= null;
+                }
+            }
+        }                                
     }
 }

@@ -18,6 +18,9 @@ public enum iCS_ObjectTypeEnum {
     InstanceMessage,  ClassMessage,
     InstanceProperty, ClassProperty,
 
+    // Proxy nodes
+    VariableReference= 150, FunctionCall,
+            
     // Transition nodes
     TransitionPackage=200,
 
@@ -103,6 +106,10 @@ public static class iCS_ObjectType {
     public static bool IsOnStateUpdatePackage (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateUpdate; }
     public static bool IsOnStateExitPackage   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateExit; }
 	
+    // Proxy
+    public static bool IsVariableReference    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.VariableReference; }
+    public static bool IsFunctionCall         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.FunctionCall; }
+
     // General Ports
     public static bool IsPort                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.PortStart &&
                                                                               obj.ObjectType <= iCS_ObjectTypeEnum.PortEnd; }

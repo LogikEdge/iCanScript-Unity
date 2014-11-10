@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 // ==========================================================================
 // The iCS_VisualScriptData class is divided into an instance section and
@@ -12,7 +14,7 @@ using System.Collections.Generic;
 // The Utility section consists of class function used to manipulate the
 // visual script data.
 //
-public class iCS_VisualScriptData : iCS_IVisualScriptData {
+public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     //               VISUAL SCRIPT DATA INSTANCE SECTION
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,7 +33,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
 	public Vector2		            ScrollPosition        = Vector2.zero;
     public int                      UndoRedoId            = 0;
     public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
-    public List<Object>             UnityObjects          = new List<Object>();
+    public List<UnityEngine.Object> UnityObjects          = new List<UnityEngine.Object>();
     public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
     
 
@@ -57,7 +59,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     List<iCS_EngineObject>  iCS_IVisualScriptData.EngineObjects {
         get { return EngineObjects; }
     }
-    List<Object> iCS_IVisualScriptData.UnityObjects {
+    List<UnityEngine.Object> iCS_IVisualScriptData.UnityObjects {
         get { return UnityObjects; }
     }
     int iCS_IVisualScriptData.UndoRedoId {
@@ -140,11 +142,11 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
         ClearUnityObjects(this);
     }
     // ----------------------------------------------------------------------
-    public int AddUnityObject(Object obj) {
+    public int AddUnityObject(UnityEngine.Object obj) {
         return AddUnityObject(this, obj);
     }
     // ----------------------------------------------------------------------
-    public Object GetUnityObject(int id) {
+    public UnityEngine.Object GetUnityObject(int id) {
         return GetUnityObject(this, id);
     }
 
@@ -172,8 +174,8 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
-    public iCS_EngineObject GetFirstProviderPort(iCS_EngineObject port) {
-        return GetFirstProviderPort(this, port);
+    public iCS_EngineObject GetFirstProducerPort(iCS_EngineObject port) {
+        return GetFirstProducerPort(this, port);
     }
     // ----------------------------------------------------------------------
     // Returns the list of consumer ports.
@@ -212,6 +214,35 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     //               VISUAL SCRIPT DATA UTILITY SECTION
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    // ======================================================================
+    // Initialize / Destroy
+    // ----------------------------------------------------------------------
+    public static void DestroyEngineObject(iCS_IVisualScriptData vsd, iCS_EngineObject toDelete) {
+        // -- Disconnect all connected ports --
+        if(toDelete.IsPort) {
+            int id= toDelete.InstanceId;
+            if(id != -1) {
+                FilterWith(o=> o.IsPort && o.SourceId == id, p=> p.SourceId= -1, vsd);
+            }
+        }
+        // -- Destroy the instance --
+        toDelete.DestroyInstance();
+    }
+    // ----------------------------------------------------------------------
+    public static void AddEngineObject(iCS_IVisualScriptData vsd, iCS_EngineObject toAdd) {
+        // Try to find an available empty slot.
+        int emptySlot= P.findFirst(o=> o.InstanceId == -1, (i,o)=> i, -1, vsd.EngineObjects);
+        
+        // Grow engine object array if no free slot exists.
+        if(emptySlot != -1) {
+			toAdd.InstanceId= emptySlot;
+            vsd.EngineObjects[emptySlot]= toAdd;
+            return;
+        }
+		toAdd.InstanceId= P.length(vsd.EngineObjects);
+        vsd.EngineObjects.Add(toAdd);
+    }
     
     // ======================================================================
     // Queries
@@ -303,29 +334,24 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
         vsd.UnityObjects.Clear();
     }
     // ----------------------------------------------------------------------
-    public static int AddUnityObject(iCS_IVisualScriptData vsd, Object obj) {
+    public static int AddUnityObject(iCS_IVisualScriptData vsd, UnityEngine.Object obj) {
         if(obj == null) return -1;
 		// Search for an existing entry.
-        int id= 0;
-		int availableSlot= -1;
         var unityObjects= vsd.UnityObjects;
-		for(id= 0; id < unityObjects.Count; ++id) {
+		for(int id= 0; id < unityObjects.Count; ++id) {
 			if(unityObjects[id] == obj) {
 				return id;
 			}
 			if(unityObjects[id] == null) {
-				availableSlot= id;
+    			unityObjects[id]= obj;
+                return id;
 			}
 		}
-		if(availableSlot != -1) {
-			unityObjects[availableSlot]= obj;
-			return availableSlot;
-		}
         unityObjects.Add(obj);
-        return id;
+        return unityObjects.Count-1;
     }
     // ----------------------------------------------------------------------
-    public static Object GetUnityObject(iCS_IVisualScriptData vsd, int id) {
+    public static UnityEngine.Object GetUnityObject(iCS_IVisualScriptData vsd, int id) {
         var unityObjects= vsd.UnityObjects;
         return (id >= 0 && id < unityObjects.Count) ? unityObjects[id] : null;
     }
@@ -346,7 +372,13 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
 		return parentNode;
 	}
     // ----------------------------------------------------------------------
+    /// Returns the full name of the object including the name of the game object.
 	public static string GetFullName(iCS_IVisualScriptData vsd, UnityEngine.Object host, iCS_EngineObject obj) {
+		return host.name+"."+GetRelativeName(vsd, obj);
+	}
+    // ----------------------------------------------------------------------
+    /// Returns the relative name of the object reference by the visual script.
+	public static string GetRelativeName(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
 		if(obj == null) return "";
 		string fullName= "";
 		for(; obj != null; obj= GetParentNode(vsd, obj)) {
@@ -354,9 +386,9 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "."+fullName);                
             }
 		}
-		return host.name+"."+fullName;
+		return fullName;
 	}
-	
+    
     // ======================================================================
     // Connection Queries
     // ----------------------------------------------------------------------
@@ -367,8 +399,8 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
-    public static iCS_EngineObject GetFirstProviderPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
-        if(port == null) return null;
+    public static iCS_EngineObject GetFirstProducerPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+        if(port == null || port.InstanceId == -1) return null;
         int linkLength= 0;
         for(iCS_EngineObject sourcePort= GetSourcePort(vsd, port); sourcePort != null; sourcePort= GetSourcePort(vsd, port)) {
             port= sourcePort;
@@ -377,7 +409,7 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
                 return null;                
             }
         }
-        return port;
+        return IsValid(port, vsd) ? port : null;
     }
     // ----------------------------------------------------------------------
     // Returns the list of consumer ports.
@@ -428,4 +460,22 @@ public class iCS_VisualScriptData : iCS_IVisualScriptData {
 		return parent != null && parent.IsKindOfPackage;
 	}
     
+    // ======================================================================
+    // General Queries
+    // ----------------------------------------------------------------------
+    public static iCS_EngineObject[] GetChildPorts(iCS_IVisualScriptData vsd, iCS_EngineObject node) {
+        List<iCS_EngineObject> childPorts= new List<iCS_EngineObject>();
+        FilterWith(p=> p.IsPort && p.ParentId == node.InstanceId, childPorts.Add, vsd);
+        return childPorts.ToArray();
+    }
+    // ----------------------------------------------------------------------
+    public static iCS_EngineObject GetChildPortWithIndex(iCS_IVisualScriptData vsd, iCS_EngineObject node, int index) {
+        iCS_EngineObject port= null;
+        FilterWith(p=> p.IsPort && p.ParentId == node.InstanceId && p.PortIndex == index, fp=> port= fp, vsd);
+        return port;
+    }
+    // ----------------------------------------------------------------------
+    public static iCS_EngineObject GetInInstancePort(iCS_IVisualScriptData vsd, iCS_EngineObject node) {
+        return GetChildPortWithIndex(vsd, node, (int)iCS_PortIndex.InInstance);
+    }
 }

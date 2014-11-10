@@ -12,6 +12,107 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Object creation
 	// ----------------------------------------------------------------------
+    public static iCS_EditorObject CreateReferenceToVariable(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject realObject) {
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        iCS_IVisualScriptData vsd= vs;
+        OpenTransaction(iStorage);
+        iCS_EditorObject variableReference= null;
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    variableReference= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.VariableReference, null);
+                    variableReference.IsNameEditable= false;
+                    var ports= iCS_VisualScriptData.GetChildPorts(vsd, realObject);
+                    var proxyId= variableReference.InstanceId;
+                    // Copy all output ports.
+                    foreach(var p in ports) {
+                        if(p.IsOutDataPort && !p.IsControlPort) {
+                            var objectType= p.ObjectType;
+                            if(p.IsInDynamicDataPort || p.IsInProposedDataPort) {
+                                objectType= iCS_ObjectTypeEnum.InFixDataPort;
+                            }
+                            if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
+                                objectType= iCS_ObjectTypeEnum.OutFixDataPort;
+                            }
+                            var newPort= iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, objectType, p.PortIndex);
+                            newPort.InitialValueArchive= p.InitialValueArchive;
+                            iStorage.LoadInitialPortValueFromArchive(newPort);
+                        }
+                    }
+                    // Instance visual script port to support dynamic connection
+                    var gameObjectPort= iStorage.CreateInInstancePort(proxyId, typeof(GameObject));
+                    gameObjectPort.PortValue= vs.gameObject;
+                    variableReference.ProxyOriginalNodeId= realObject.InstanceId;
+                    variableReference.ProxyOriginalVisualScriptTag= vs.tag;
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(variableReference == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        CloseTransaction(iStorage, "Create Variable Proxy: "+name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(variableReference);
+        return variableReference;
+    }
+	// ----------------------------------------------------------------------
+    public static iCS_EditorObject CreateFunctionCall(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_VisualScriptImp vs, iCS_EngineObject userFunction) {
+        if(parent == null) return null;
+        var iStorage= parent.IStorage;
+        iCS_IVisualScriptData vsd= vs;
+        OpenTransaction(iStorage);
+        iCS_EditorObject functionCall= null;
+        try {
+            iStorage.AnimateGraph(null,
+                _=> {
+                    functionCall= _CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.FunctionCall, null);
+                    functionCall.IsNameEditable= false;
+                    var ports= iCS_VisualScriptData.GetChildPorts(vsd, userFunction);
+                    var usrFncCallId= functionCall.InstanceId;
+                    // Copy all output ports.
+                    foreach(var p in ports) {
+                        if(!p.IsControlPort) {
+                            var objectType= p.ObjectType;
+                            if(p.IsInDynamicDataPort || p.IsInProposedDataPort) {
+                                objectType= iCS_ObjectTypeEnum.InFixDataPort;
+                            }
+                            if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
+                                objectType= iCS_ObjectTypeEnum.OutFixDataPort;
+                            }
+                            var newPort= iStorage.CreatePort(p.Name, usrFncCallId, p.RuntimeType, objectType, p.PortIndex);
+                            newPort.IsNameEditable= false;
+                            newPort.InitialValueArchive= p.InitialValueArchive;
+                            iStorage.LoadInitialPortValueFromArchive(newPort);
+                        }
+                    }
+                    // Instance visual script port to support dynamic connection
+                    var gameObjectPort= iStorage.CreateInInstancePort(usrFncCallId, typeof(GameObject));
+                    gameObjectPort.PortValue= vs.gameObject;
+                    functionCall.ProxyOriginalNodeId= userFunction.InstanceId;
+                    functionCall.ProxyOriginalVisualScriptTag= vs.tag;
+                    iStorage.ForcedRelayoutOfTree();
+                }
+            );
+        }
+        catch(System.Exception) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        if(functionCall == null) {
+            CancelTransaction(iStorage);
+            return null;
+        }
+        CloseTransaction(iStorage, "Create Function Call: "+name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(functionCall);
+        return functionCall;
+    }
+	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
 #if DEBUG
         Debug.Log("iCanScript: CreatePackage => "+name);
@@ -31,6 +132,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create "+name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -68,6 +170,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create StateChart");
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(stateChart);
         return stateChart;        
     }
 	// ----------------------------------------------------------------------
@@ -100,6 +203,7 @@ public static partial class iCS_UserCommands {
             return null;            
         }
         CloseTransaction(iStorage, "Create State");
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(state);
         return state;        
     }
 	// ----------------------------------------------------------------------
@@ -137,11 +241,12 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create "+name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(msgHandler);
         return msgHandler;
     }
     // ----------------------------------------------------------------------
-    public static iCS_EditorObject CreateUserMessageHandler(iCS_EditorObject parent, Vector2 globalPos) {
-        return CreatePackage(parent, globalPos, "UserFunction");    
+    public static iCS_EditorObject CreatePublicFunction(iCS_EditorObject parent, Vector2 globalPos) {
+        return CreatePackage(parent, globalPos, "PublicFunction");    
     }
 	// ----------------------------------------------------------------------
 	// OK
@@ -164,6 +269,7 @@ public static partial class iCS_UserCommands {
         package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnEntry;
         CloseTransaction(iStorage, "Create "+package.Name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -187,6 +293,7 @@ public static partial class iCS_UserCommands {
         package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnUpdate;
         CloseTransaction(iStorage, "Create "+package.Name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -210,11 +317,12 @@ public static partial class iCS_UserCommands {
         package.IsNameEditable= false;            
         package.Tooltip= iCS_ObjectTooltips.OnExit;
         CloseTransaction(iStorage, "Create "+package.Name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
     // OK
-    public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+    public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos, iCS_FunctionPrototype desc) {
 #if DEBUG
         Debug.Log("iCanScript: Create Function => "+desc.DisplayName);
 #endif
@@ -243,6 +351,7 @@ public static partial class iCS_UserCommands {
             return null;            
         }
         CloseTransaction(iStorage, "Create "+name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(function);
         return function;        
     }
 
@@ -273,7 +382,7 @@ public static partial class iCS_UserCommands {
             transitionPackage.SetInitialPosition(globalPos);
             transitionPackage.Iconize();
             // Attempt to proper edge for transition ports.
-            var outTransitionPort= toStatePort.ProviderPort;
+            var outTransitionPort= toStatePort.ProducerPort;
             var inTransitionPort= iStorage.GetInTransitionPort(transitionPackage);
             var diff= toStatePortPos-fromStatePortPos;
             if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y)) {
@@ -319,10 +428,10 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create Transition");            
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(transitionPackage);
         return transitionPackage;
     }
     // -------------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject CreateEnablePort(iCS_EditorObject parent) {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
@@ -348,10 +457,10 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create Enable Port");
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(port);
         return port;
     }
     // -------------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject CreateTriggerPort(iCS_EditorObject parent) {
         if(parent == null) return null;
         if(!IsCreationAllowed()) return null;
@@ -377,6 +486,7 @@ public static partial class iCS_UserCommands {
             return null;            
         }
         CloseTransaction(iStorage, "Create Trigger Port");
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(port);
         return port;
     }
     // -------------------------------------------------------------------------
@@ -404,6 +514,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create 'this' Port");
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(port);
         return port;
     }
     
@@ -411,7 +522,6 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Instance Object creation.
 	// ----------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject CreateObjectInstance(iCS_EditorObject parent, Vector2 globalPos, Type instanceType) {
         if(instanceType == null) return null;
         if(!IsCreationAllowed()) return null;
@@ -443,13 +553,13 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create "+name);            
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(instance);
         return instance;
     }
 
     // ======================================================================
     // Node Wrapping in package.
 	// ----------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject WrapInPackage(iCS_EditorObject obj) {
         if(obj == null || !obj.CanHavePackageAsParent()) return null;
         if(!IsCreationAllowed()) return null;
@@ -473,10 +583,10 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Wrap : "+obj.Name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
-    // OK
     public static iCS_EditorObject WrapMultiSelectionInPackage(iCS_IStorage iStorage) {
         if(iStorage == null) return null;
         if(!IsCreationAllowed()) return null;
@@ -518,6 +628,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Wrap Selection");
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 
@@ -558,6 +669,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create "+go.name);
+		iCS_SystemEvents.AnnounceVisualScriptElementAdded(instance);
         return instance;
     }
     
@@ -585,7 +697,8 @@ public static partial class iCS_UserCommands {
                 }
             );            
         }
-        catch(System.Exception) {
+        catch(System.Exception e) {
+            Debug.Log(e.Message);
             CancelTransaction(iStorage);
             return null;
         }

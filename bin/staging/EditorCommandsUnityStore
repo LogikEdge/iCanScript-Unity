@@ -1,7 +1,0 @@
-/target:library
-/out:iCanScriptEditorUnityStore.dll
-/reference:/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll
-/reference:/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll
-/reference:iCanScriptEngine.dll
-
-

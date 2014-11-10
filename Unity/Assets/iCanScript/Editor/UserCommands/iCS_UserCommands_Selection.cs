@@ -22,7 +22,6 @@ public static partial class iCS_UserCommands {
             return;
         }
         CloseTransaction(iStorage, "Select "+obj.Name);
-        iCS_EditorController.RepaintInstanceEditor();
 	}
     // ----------------------------------------------------------------------
 	public static void ToggleMultiSelection(iCS_EditorObject obj) {

@@ -70,6 +70,7 @@ public partial class iCS_Graphics {
 		GUI.DrawTextureWithTexCoords(pos, nodeTexture, kBottomRightTileCoord);
 
         // Show title.
+		GUI.color= Color.white;
         if(!ShouldShowTitle()) return;
         Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.5f*(tileSize-shadowSize));
         Vector2 titleSize= titleStyle.CalcSize(title);

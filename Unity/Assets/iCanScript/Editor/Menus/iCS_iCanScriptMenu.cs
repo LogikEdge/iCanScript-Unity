@@ -3,9 +3,16 @@ using UnityEditor;
 
 public static class iCS_iCanScriptMenu {
     // ======================================================================
+    // About...
+    [MenuItem("iCanScript/About...",false,10)]
+    public static void About() {
+        var aboutDialog= iCS_AboutDialog.CreateInstance<iCS_AboutDialog>();
+        aboutDialog.ShowUtility();
+    }
+
+    // ======================================================================
 	// Create a behavior to selected game object.
-	[MenuItem("Edit/", false, 100)]
-	[MenuItem("Edit/iCanScript/Create Visual Script", false, 101)]
+	[MenuItem("iCanScript/Create Visual Script", false, 101)]
 	public static void CreateVisualScript() {
         var gameObject= Selection.activeGameObject;
         if(gameObject == null) return;
@@ -14,7 +21,7 @@ public static class iCS_iCanScriptMenu {
     		gameObject.AddComponent("iCS_VisualScript");
 		}
 	}
-	[MenuItem("Edit/iCanScript/Create Visual Script", true, 101)]
+	[MenuItem("iCanScript/Create Visual Script", true, 101)]
 	public static bool ValidateCreateVisualScript() {
 		if(Selection.activeGameObject == null) return false;
 		var visualScript = Selection.activeGameObject.GetComponent<iCS_VisualScriptImp>();
@@ -23,24 +30,12 @@ public static class iCS_iCanScriptMenu {
 
     // ======================================================================
     // Navigation
-    [MenuItem("Edit/iCanScript/Center Visual Script",false,121)]
-    public static void FocusOnVisualScript() {
-        iCS_VisualEditor visualEditor= iCS_EditorController.FindVisualEditor();
-        if(visualEditor != null) visualEditor.CenterAndScaleOnRoot();
-    }
-    [MenuItem("Edit/iCanScript/Center Visual Script",true,121)]
-    public static bool ValidateFocusOnVisualScript() {
-        var focusedWindow= EditorWindow.focusedWindow;
-        if(focusedWindow == null) return false;
-        if((focusedWindow as iCS_VisualEditor) == null) return false;
-        return true;
-    }
-    [MenuItem("Edit/iCanScript/Center Selected",false,122)]
+    [MenuItem("iCanScript/Frame Selected",false,201)]
     public static void FocusOnSelected() {
         iCS_VisualEditor graphEditor= iCS_EditorController.FindVisualEditor();
         if(graphEditor != null) graphEditor.CenterAndScaleOnSelected();
     }
-    [MenuItem("Edit/iCanScript/Center Selected",true,122)]
+    [MenuItem("iCanScript/Frame Selected",true,201)]
     public static bool ValidateFocusOnSelected() {
         var focusedWindow= EditorWindow.focusedWindow;
         if(focusedWindow == null) return false;
@@ -49,7 +44,7 @@ public static class iCS_iCanScriptMenu {
     }
     // ======================================================================
     // Export Storage
-    [MenuItem("Edit/iCanScript/Export...",false,900)]
+    [MenuItem("iCanScript/Export...",false,300)]
     public static void ExportStorage() {
         var transform= Selection.activeTransform;
         if(transform == null) return;
@@ -64,7 +59,7 @@ public static class iCS_iCanScriptMenu {
         iCS_VisualScriptImportExport.Export(storage, path);
         Debug.Log("iCanScript: Export completed => "+path);
     } 
-    [MenuItem("Edit/iCanScript/Export...",true,900)]
+    [MenuItem("iCanScript/Export...",true,300)]
     public static bool ValidateExportStorage() {
         var transform= Selection.activeTransform;
         if(transform == null) return false;
@@ -75,7 +70,7 @@ public static class iCS_iCanScriptMenu {
     }
     // ======================================================================
     // Import Storage
-    [MenuItem("Edit/iCanScript/Import...",false,901)]
+    [MenuItem("iCanScript/Import...",false,301)]
     public static void ImportStorage() {
         var transform= Selection.activeTransform;
         if(transform == null) return;
@@ -98,7 +93,7 @@ public static class iCS_iCanScriptMenu {
         if(visualEditor.IStorage.iCSMonoBehaviour != monoBehaviour) return;
         visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
     }
-    [MenuItem("Edit/iCanScript/Import...",true,901)]
+    [MenuItem("iCanScript/Import...",true,301)]
     public static bool ValidateImportStorage() {
         var transform= Selection.activeTransform;
         if(transform == null) return false;
@@ -108,34 +103,39 @@ public static class iCS_iCanScriptMenu {
         return visualEditor != null;
     }
     // ======================================================================
-    // Support Access
-    [MenuItem("Help/iCanScript/About...",false,10)]
-    public static void About() {
-        var aboutDialog= iCS_AboutDialog.CreateInstance<iCS_AboutDialog>();
-        aboutDialog.ShowUtility();
-    }
-    [MenuItem("Help/iCanScript/Home Page",false,51)]
-    public static void HomePage() {
-        Application.OpenURL("http://www.icanscript.com");
-    }
-    [MenuItem("Help/iCanScript/Helpdesk and Community",false,52)]
-    public static void Helpdesk() {
-        Application.OpenURL("http://helpdesk.icanscript.com");
-    }
-    [MenuItem("Help/iCanScript/Submit a ticket",false,53)]
-    public static void ReleaseNotes() {
-        Application.OpenURL("http://helpdesk.icanscript.com/support/tickets/new");
-    }
-    // ======================================================================
     // Tutorials Access
-    [MenuItem("Help/iCanScript/Space Shooter Tutorial on YouTube",false,70)]
+    [MenuItem("iCanScript/Tutorials/Space Shooter Tutorial on YouTube",false,999)]
     public static void SpaceShooterTutorialPlaylist() {        
         Application.OpenURL("http://www.youtube.com/playlist?list=PLbRggLFpBWUQA7RgHO_eIZvl56W4A53Vj");
     }
     // ======================================================================
+    // Support Access
+    [MenuItem("iCanScript/Support/iCanScript Website",false,1000)]
+    public static void HomePage() {
+        Application.OpenURL("http://www.icanscript.com");
+    }
+    [MenuItem("iCanScript/Support/Submit a ticket",false,1001)]
+    public static void ReleaseNotes() {
+        Application.OpenURL("http://helpdesk.icanscript.com/support/tickets/new");
+    }
+    [MenuItem("iCanScript/Support/Knowledge Base",false,1002)]
+    public static void Helpdesk() {
+        Application.OpenURL("http://icanscript.com/helpdesk/knowledge-base/index.html");
+    }
+    [MenuItem("iCanScript/Support/Forum",false,1002)]
+    public static void Forum() {
+        Application.OpenURL("http://icanscript.com/helpdesk/community/index.html");
+    }
+    // ======================================================================
     // Purchase
-    [MenuItem("Help/iCanScript/Check for Updates...",false,91)]
+    [MenuItem("iCanScript/Check for Updates...",false,1003)]
     public static void CheckForUpdate() {
 		iCS_SoftwareUpdateController.ManualUpdateVerification();
     }
+#if COMMUNITY_EDITION
+    [MenuItem("iCanScript/Purchase...",false,1004)]
+    public static void Purchase() {
+		Application.OpenURL("http://u3d.as/content/disruptive-software/i-can-script-visual-scripting/7ji");
+	}
+#endif
 }

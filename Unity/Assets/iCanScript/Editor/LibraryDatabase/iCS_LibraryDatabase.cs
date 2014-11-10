@@ -10,7 +10,7 @@ public class iCS_LibraryDatabase {
     // Properties
     // ----------------------------------------------------------------------
     public static List<iCS_TypeInfo>        types    = new List<iCS_TypeInfo>();
-    public static List<iCS_MethodBaseInfo>  Functions= new List<iCS_MethodBaseInfo>();
+    public static List<iCS_FunctionPrototype>  Functions= new List<iCS_FunctionPrototype>();
     public static bool                      IsSorted = false;
     
     // ======================================================================
@@ -18,36 +18,7 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     public static void QSort() {
         if(IsSorted) return;
-        int reorderCnt= 0;
-        int cmpCnt= 0;
-        int len= Functions.Count;
-        int step= (len >> 1) + (len & 1);
-        while(step != 0) {
-            int i= 0;
-            int j= step;
-            while(j < len) {
-                ++cmpCnt;
-                if(CompareFunctionNames(Functions[i], Functions[j]) > 0) {
-                    ++reorderCnt;
-                    var tmp= Functions[i];
-                    Functions[i]= Functions[j];
-                    Functions[j]= tmp;
-                    int k= i-step;
-                    while(k >= 0) {
-                        ++cmpCnt;
-                        if(CompareFunctionNames(Functions[k], Functions[k+step]) < 0) break;
-                        ++reorderCnt;
-                        tmp= Functions[k];
-                        Functions[k]= Functions[k+step];
-                        Functions[k+step]= tmp;
-                        k-= step;
-                    }
-                }
-                ++i;
-                ++j;
-            }
-            step >>= 1;
-        }
+        Functions.Sort(CompareFunctionNames);
         IsSorted= true;
     }
 
@@ -68,21 +39,27 @@ public class iCS_LibraryDatabase {
             result= d1.Library.CompareTo(d2.Library);
             if(result != 0) return result;            
         }
+        result= iCS_Types.TypeName(d1.ClassType).CompareTo(iCS_Types.TypeName(d2.ClassType));
+        if(result != 0) return result;
         return d1.DisplayName.CompareTo(d2.DisplayName);
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> BuildExpertMenu() {
+    public static List<iCS_FunctionPrototype> BuildExpertMenu() {
         return AllFunctions();
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> AllFunctions() {
+    public static List<iCS_FunctionPrototype> AllFunctions() {
         QSort();
         return Functions;
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> BuildNormalMenu() {
+    public static List<iCS_FunctionPrototype> AllFunctionsUnsorted() {
+        return Functions;
+    }
+    // ----------------------------------------------------------------------
+    public static List<iCS_FunctionPrototype> BuildNormalMenu() {
         QSort();
-        var menu= new List<iCS_MethodBaseInfo>();
+        var menu= new List<iCS_FunctionPrototype>();
         foreach(var desc in Functions) {
             Type classType= desc.ClassType;
             if(iCS_Types.IsStaticClass(classType)) {
@@ -151,8 +128,8 @@ public class iCS_LibraryDatabase {
 	    return properties.ToArray();
 	}
     // ----------------------------------------------------------------------
-	public static iCS_MethodBaseInfo[] GetPropertiesAndFields(Type compilerType) {
-	    var variables= new List<iCS_MethodBaseInfo>();
+	public static iCS_FunctionPrototype[] GetPropertiesAndFields(Type compilerType) {
+	    var variables= new List<iCS_FunctionPrototype>();
 	    foreach(var v in GetMembers(compilerType)) {
 	        if(v.IsField || v.IsProperty) {
 	            variables.Add(v.ToMethodBaseInfo);
@@ -178,12 +155,33 @@ public class iCS_LibraryDatabase {
                 messages.Add(m.ToMessageInfo);
             }
         }
+        P.sort(messages, (a,b)=> { return string.Compare(a.DisplayName, b.DisplayName); });
         return messages.ToArray();
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> BuildMenuForMembersOfType(Type classType, Type inputType, Type outputType) {
+    public static bool IsInherited(iCS_MemberInfo memberInfo) {
+        var methodInfo= memberInfo.ToMethodInfo;
+        if(methodInfo != null) {
+            return methodInfo.Method.DeclaringType != methodInfo.ClassType;
+        }
+        var messageInfo= memberInfo.ToMessageInfo;
+        if(messageInfo != null) {
+            var parentTypeInfo= messageInfo.ParentTypeInfo;
+            var baseType= parentTypeInfo.BaseType;
+            foreach(var m in GetMembers(baseType)) {
+                if(m.IsMessage) {
+                    if(m.DisplayName == messageInfo.DisplayName) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    // ----------------------------------------------------------------------
+    public static List<iCS_FunctionPrototype> BuildMenuForMembersOfType(Type classType, Type inputType, Type outputType) {
         QSort();
-        var menu= new List<iCS_MethodBaseInfo>();
+        var menu= new List<iCS_FunctionPrototype>();
 		classType= iCS_Types.GetElementType(classType);
 		inputType= iCS_Types.GetElementType(inputType);
 		outputType= iCS_Types.GetElementType(outputType);
@@ -230,9 +228,9 @@ public class iCS_LibraryDatabase {
 		return menu;
 	}
     // ----------------------------------------------------------------------
-    public static List<iCS_MethodBaseInfo> BuildMenu(Type inputType, Type outputType) {
+    public static List<iCS_FunctionPrototype> BuildMenu(Type inputType, Type outputType) {
         QSort();
-        var menu= new List<iCS_MethodBaseInfo>();
+        var menu= new List<iCS_FunctionPrototype>();
 		inputType= iCS_Types.GetElementType(inputType);
         for(int i= 0; i < Functions.Count; ++i) {
             // Filter functions according to input or output filter.
@@ -297,15 +295,31 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given editor object.
     public static iCS_MemberInfo GetAssociatedDescriptor(iCS_EditorObject edObj) {
-        if(edObj.IsPort || edObj.IsPackage) {
+		
+		if(edObj==null) {
+			return null;
+		}
+		
+        if( edObj.IsPort || (edObj.IsPackage && !edObj.IsInstanceNode)) {
             return null;
-        }
+		}
+		
         var runtimeType= edObj.RuntimeType;
         var engineObject= edObj.EngineObject;
         int numberOfOutputPorts= edObj.NumberOfChildOutputPorts();
         foreach(var t in types) {
+
             if(t.CompilerType == runtimeType) {
-                foreach(var member in t.Members) {
+                foreach(var member in t.Members) {		
+					if(edObj.IsInstanceNode) {
+						return member.ParentTypeInfo;
+					}
+					if(edObj.IsMessageHandler) {
+						var memberInfo= member as iCS_MemberInfo;
+						if(engineObject.Name == memberInfo.DisplayName) {
+							return member;
+						}
+					}
                     if(member is iCS_MethodInfo) {
                         var methodInfo= member as iCS_MethodInfo;
                         if(engineObject.MethodName == methodInfo.MethodName) {
@@ -328,6 +342,7 @@ public class iCS_LibraryDatabase {
         }
         return null;        
     }
+	
     // ----------------------------------------------------------------------
     // Returns the class type associated with the given company/package.
     public static Type GetClassType(string classPath) {
@@ -428,7 +443,7 @@ public class iCS_LibraryDatabase {
                             iCS_ObjectTypeEnum.InstanceFunction :
                             iCS_ObjectTypeEnum.ClassFunction;
         var record= new iCS_MethodInfo(objectType, classInfo,
-                                       displayName, description, iconPath,
+                                       ImproveDisplayName(displayName), description, iconPath,
             						   parameters, functionReturn,
             						   storageClass, methodInfo);
 		AddDataBaseRecord(record);
@@ -501,4 +516,18 @@ public class iCS_LibraryDatabase {
             IsSorted= false;	            
         }
 	}
+
+    // ======================================================================
+    // Fix operator display names
+    // ----------------------------------------------------------------------
+    static string ImproveDisplayName(string displayName) {
+        if(displayName.StartsWith("op_") == false) return displayName;
+        if(displayName == "op_Equality")     return "operator ==";
+        if(displayName == "op_Inequality")   return "operator !=";
+        if(displayName == "op_Addition")     return "operator +";
+        if(displayName == "op_Subtraction")  return "operator -";
+        if(displayName == "op_Multiply")     return "operator *";
+        if(displayName == "op_Division")     return "operator /";
+        return displayName;
+    }
 }

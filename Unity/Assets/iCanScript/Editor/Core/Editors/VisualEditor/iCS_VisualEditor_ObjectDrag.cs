@@ -40,7 +40,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void BreakDataConnectionDrag() {
-        var originalSource= DragOriginalPort.ProviderPort;
+        var originalSource= DragOriginalPort.ProducerPort;
         if(originalSource != null && originalSource != DragObject) {
             DragFixPort= originalSource;
             IStorage.SetSource(DragObject, DragFixPort);
@@ -128,7 +128,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             iCS_EditorObject inStatePort= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
             outStatePort.LocalAnchorFromGlobalPosition= pos;
             inStatePort.LocalAnchorFromGlobalPosition= pos;
-            inStatePort.ProviderPortId= outStatePort.InstanceId;
+            inStatePort.ProducerPortId= outStatePort.InstanceId;
             DragFixPort= outStatePort;
             DragObject= inStatePort;
             DragStartDisplayPosition= pos;
@@ -244,6 +244,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void EndDrag() {
 		ProcessDrag();
         OnEndRelayoutOfTree();
+        IStorage.CleanupDeadPorts= true;
         
         // End the drag according to the drag type.
         try {
@@ -411,6 +412,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 									fixPortIsBindingTo= false;																				
 								}									
 							}
+                            // -- public Function should use "proposed ports" instead of dynamic ports --
+                            if(newPortParent.IsPublicFunction) {
+                                newPortType= newPortType == iCS_ObjectTypeEnum.InDynamicDataPort ?
+                                    iCS_ObjectTypeEnum.InProposedDataPort :
+                                    iCS_ObjectTypeEnum.OutProposedDataPort;
+                            }
                             iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, newPortType);
                             newPort.LocalAnchorFromGlobalPosition= dragPortPos;
                             newPort.PortValue= DragFixPort.PortValue;
@@ -454,7 +461,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 							CHANGED : CODE REVIEW NEEDED => Cleanup of disconnected child multiplexer port.
 						*/
 						// Cleanup child Mux port if it is disconnected.
-						if(DragOriginalPort.IsChildMuxPort && DragOriginalPort.ProviderPort == null) {
+						if(DragOriginalPort.IsChildMuxPort && DragOriginalPort.ProducerPort == null) {
 							IStorage.DestroyInstance(DragOriginalPort);
 						}
                     }                    
@@ -463,16 +470,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.TransitionCreation:
                     iCS_EditorObject destState= GetNodeAtMousePosition();
                     if(destState != null && destState.IsState) {
-                        iCS_EditorObject outStatePort= IStorage[DragObject.ProviderPortId];
+                        iCS_EditorObject outStatePort= IStorage[DragObject.ProducerPortId];
                         outStatePort.IsFloating= false;
                         outStatePort.IsSticky= false;
                         var toPosition= DragObject.GlobalPosition;
-                        DragObject.ProviderPortId= -1;
+                        DragObject.ProducerPortId= -1;
                         IStorage.DestroyInstance(DragObject);
                         iCS_UserCommands.CreateTransition(outStatePort, destState, toPosition);
                     } else {
-                        IStorage.DestroyInstance(DragObject.ProviderPortId);
-                        DragObject.ProviderPortId= -1;
+                        IStorage.DestroyInstance(DragObject.ProducerPortId);
+                        DragObject.ProducerPortId= -1;
                         IStorage.DestroyInstance(DragObject);
                     }
                     break;
@@ -493,7 +500,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         DragOriginalPort= null;
         DragFixPort     = null;
         IsDragEnabled   = false;
-        IStorage.CleanupDeadPorts= true;                    
     }
 
 	// ----------------------------------------------------------------------
@@ -520,7 +526,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(DragObject != DragOriginalPort) return;
 			if(DragOriginalPort.IsInputPort) {
 				// Create the appropriate drag port.
-				var sourcePort= DragOriginalPort.ProviderPort;
+				var sourcePort= DragOriginalPort.ProducerPort;
 				if(sourcePort != null) {	// Disconnect if the port is connected.
 					RemoveDragPort();
 					var sourceParent= sourcePort.ParentNode;
@@ -561,7 +567,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					// Nothing to do if already properly connected.
 					if(DragObject != DragOriginalPort &&
 					   DragFixPort == DragOriginalPort &&
-					   DragObject.ProviderPort == DragFixPort) {
+					   DragObject.ProducerPort == DragFixPort) {
 						return;
 					}
 					RemoveDragPort();
@@ -576,12 +582,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				else {		// Outside parent node
 					// Nothing to do if already properly connected.
 					if(DragObject != DragOriginalPort &&
-					   ((DragFixPort != DragOriginalPort && DragObject.ProviderPort == DragFixPort) ||
-					    (DragFixPort == DragOriginalPort && DragOriginalPort.ProviderPort == DragObject))) {
+					   ((DragFixPort != DragOriginalPort && DragObject.ProducerPort == DragFixPort) ||
+					    (DragFixPort == DragOriginalPort && DragOriginalPort.ProducerPort == DragObject))) {
 						return;
 					}
 					RemoveDragPort();
-					var sourcePort= DragOriginalPort.ProviderPort;
+					var sourcePort= DragOriginalPort.ProducerPort;
 					if(sourcePort != null) {
 						var sourceParent= sourcePort.ParentNode;
 			            var newPort= IStorage.CreatePort(sourcePort.Name,
@@ -608,12 +614,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				if(isInside) {	// Inside parent node
 					// Nothing to do if already properly connected.
                     if(DragObject != DragOriginalPort &&
-                       (DragFixPort != DragOriginalPort && DragObject.ProviderPort == DragFixPort) ||
-                       (DragFixPort == DragOriginalPort && DragOriginalPort.ProviderPort == DragObject)) {
+                       (DragFixPort != DragOriginalPort && DragObject.ProducerPort == DragFixPort) ||
+                       (DragFixPort == DragOriginalPort && DragOriginalPort.ProducerPort == DragObject)) {
                         return;    
                     }
 					RemoveDragPort();
-					var sourcePort= DragOriginalPort.ProviderPort;
+					var sourcePort= DragOriginalPort.ProducerPort;
 					if(sourcePort != null) {
 						var sourceParent= sourcePort.ParentNode;
 			            var newPort= IStorage.CreatePort(sourcePort.Name,
@@ -639,7 +645,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					// Nothing to do if already properly connected.
 					if(DragObject != DragOriginalPort &&
 					   DragFixPort == DragOriginalPort &&
-					   DragObject.ProviderPort == DragOriginalPort) {
+					   DragObject.ProducerPort == DragOriginalPort) {
 						return;
 					}
 					RemoveDragPort();
@@ -671,6 +677,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             CreateDragPort();
             return;
 		}                      
+        // Determine new edge
+        var currentEdge= port.Edge;
+        var newEdge= port.GetClosestEdge(newPosition-Math3D.Middle(parentRect));
+        if(newEdge != currentEdge) {
+            port.LocalAnchorFromGlobalPosition= newPosition;            
+        }
         // No reordering necessary if this is the only port on this edge.
         var sameEdgePorts= P.filter(p=> p != port, port.BuildListOfPortsOnSameEdge());
 		var nbOfPortsOnEdge= sameEdgePorts.Length;

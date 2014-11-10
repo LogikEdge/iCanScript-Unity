@@ -9,9 +9,9 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     // Types
     // ---------------------------------------------------------------------------------
     class ControlPair {
-        public iCS_MethodBaseInfo   Component= null;
-        public bool                 IsActive= false;
-        public ControlPair(iCS_MethodBaseInfo component, bool isActive= false) {
+        public iCS_FunctionPrototype    Component= null;
+        public bool                     IsActive= false;
+        public ControlPair(iCS_FunctionPrototype component, bool isActive= false) {
             Component= component;
             IsActive= isActive;
         }
@@ -19,8 +19,8 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     class VariablePair {
         public ControlPair InputControlPair= null;
         public ControlPair OutputControlPair= null;
-        public VariablePair(iCS_MethodBaseInfo inputComponent, bool inputActive, iCS_MethodBaseInfo outputComponent, bool outputActive) {
-            InputControlPair= new ControlPair(inputComponent, inputActive);
+        public VariablePair(iCS_FunctionPrototype inputComponent, bool inputActive, iCS_FunctionPrototype outputComponent, bool outputActive) {
+            InputControlPair = new ControlPair(inputComponent, inputActive);
             OutputControlPair= new ControlPair(outputComponent, outputActive);
         }
     };

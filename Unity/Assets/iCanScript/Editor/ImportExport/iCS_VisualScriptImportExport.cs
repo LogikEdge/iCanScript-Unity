@@ -4,7 +4,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.IO;
-using DisruptiveSoftware;
+using iCanScript.JSON;
 
 public static class iCS_VisualScriptImportExport {
 	// =================================================================================

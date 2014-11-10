@@ -74,6 +74,7 @@ public sealed class iCS_State : iCS_Object {
                     myOnExitAction= package;
                 }
                 else {
+    				if(_object.EngineObject.IsTransitionPackage) return;
                     Debug.LogWarning("iCanScript: Only OnEntry, OnUpdate, and OnExit modules can be added to a iCS_State");
                 }
             },
@@ -102,6 +103,7 @@ public sealed class iCS_State : iCS_Object {
                     myOnExitAction= null;
                 }
                 else {
+    				if(_object.EngineObject.IsTransitionPackage) return;
                     Debug.LogWarning("iCanScript: Only OnEntry, OnUpdate, and OnExit modules can be removed from a iCS_State");
                 }
             },

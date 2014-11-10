@@ -7,26 +7,23 @@ using UnityEngine;
 using System;
 
 /// <summary>
-/// Contains all attributes needed to describe a variable.  The Variable type will
+/// Contains all attributes needed to describe a variable.  The _Variable_ type will
 /// be used has base type for parameters and return values.
 /// </summary>
-public class iCS_Variable {
+public class iCS_Variable : iCS_VariablePrototype {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	public string               name        = null;
-	public Type                 type        = null;
 	public System.Object        initialValue= null;
 
     // ======================================================================
     // Constructor/Destructor
     // ----------------------------------------------------------------------
 	public iCS_Variable() {}
-	    public iCS_Variable(string _name, Type _type, System.Object _initialValue) {
-	        name        = _name;
-	        type        = _type;
-	        initialValue= _initialValue;
-	    }
+    public iCS_Variable(string _name, Type _type, System.Object _initialValue)
+    : base(_name, _type) {
+        initialValue= _initialValue;
+    }
 	    
     // ======================================================================
     // Common object methods.
@@ -34,8 +31,8 @@ public class iCS_Variable {
 	public override string ToString() {
 	    return "{"+ToStringWithoutBraces()+"}";
 	}
-	public string ToStringWithoutBraces() {
-	    var str= name+":"+type;
+	public new string ToStringWithoutBraces() {
+	    var str= base.ToStringWithoutBraces();
 	    if(initialValue != null) {
     	    str+= "= "+initialValue.ToString();	    
 	    }

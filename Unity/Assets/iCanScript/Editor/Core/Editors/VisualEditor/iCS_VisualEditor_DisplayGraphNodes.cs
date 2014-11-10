@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Pref=iCS_PreferencesController;
+using System;
 
 /*
     TODO: Cleanup conditional tree descent VS full tree descent when drawing graph.
@@ -45,6 +46,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Draw editor grid.
 	    DrawGrid();			
         
+        // -- Show workflow assistant --
+        ShowWorkflowAssistant();
+        HotZoneGUI();
+        
         // Draw nodes and their connections.
         DisplayGraphNodes();
 
@@ -54,7 +59,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(IsDragStarted) DrawScrollZone();
 
 		// Show toolbar
-		Toolbar();			
+		Toolbar();
+        
+        // Show errors/warnings
+        DisplayErrorsAndWarnings();
 	}
 	
 	// ----------------------------------------------------------------------
@@ -86,7 +94,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             node=> {
                 if(node.IsNode) {
-					if(node.IsBehaviour) return;
+					if(node.IsBehaviour || node.IsHidden) return;
 					if(node == rootNode && !IStorage.ShowDisplayRootNode) return;
                     if(node.IsFloating && floatingRootNode == null) {
                         floatingRootNode= node;
@@ -107,6 +115,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             child=> {
                 if(child.IsNode) {
+                    if(child.IsHidden) return;
 					if( child.IsIconizedInLayout ) {
 						myGraphics.DrawMinimizedNode(child, IStorage);						
 					}
@@ -121,7 +130,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         );
     }
-
+	
     // ======================================================================
     // Connections
 	// ----------------------------------------------------------------------
@@ -130,7 +139,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             child=> {
 				if(child.IsPort) {
 					var parent= child.ParentNode;
-                    var source= child.ProviderPort;
+                    var source= child.ProducerPort;
                     var srcParent= source != null ? source.ParentNode : null;
                     if(!IStorage.ShowDisplayRootNode) {
                         if(parent == rootNode) {

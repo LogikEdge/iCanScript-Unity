@@ -59,6 +59,7 @@ public static class iCS_TypeCasts {
     [iCS_TypeCast] public static Rigidbody2D         ToRigidBody2D(GameObject go)         { return go.rigidbody2D; }
     [iCS_TypeCast] public static Transform           ToTransform(GameObject go)           { return go.transform; }
     [iCS_TypeCast] public static CharacterController ToCharacterController(GameObject go) { return go.GetComponent(typeof(CharacterController)) as CharacterController; }
+    [iCS_TypeCast] public static MonoBehaviour       ToMonoBehaviour(GameObject go)       { return go.GetComponent(typeof(MonoBehaviour)) as MonoBehaviour; }
     
     // To GameObject from components
     [iCS_TypeCast] public static GameObject          ToGameObject(Component c)            { return c.gameObject; }

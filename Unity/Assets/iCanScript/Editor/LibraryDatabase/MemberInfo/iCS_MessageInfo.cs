@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class iCS_MessageInfo : iCS_MethodBaseInfo {
+public class iCS_MessageInfo : iCS_FunctionPrototype {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

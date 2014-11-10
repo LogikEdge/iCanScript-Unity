@@ -24,7 +24,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     iCS_ContextualMenu  myContextualMenu = null;
     iCS_Graphics        myGraphics       = null;
-//    iCS_ObjectInspector myObjectInspector= null;
 
     // ----------------------------------------------------------------------
     Vector2 GridOffset= Vector2.zero;
@@ -36,11 +35,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     float myCurrentTime        = 0;
     float myDeltaTime          = 0;
     bool  myNeedRepaint        = true;
-    bool  myNotificationShown  = false;
 	
-    // ----------------------------------------------------------------------
-    static bool	ourAlreadyParsed  = false;
-
     // ----------------------------------------------------------------------
     // Debug properties.
 #if SHOW_FRAME_RATE
@@ -215,48 +210,48 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// Handles all event messages.
 	// ----------------------------------------------------------------------
 	public new void OnGUI() {
-        // Draw common stuff for all editors
+        // -- Draw common stuff for all editors --
         base.OnGUI();
 
-        // Attempt to initialize environment (if not already done).
+       	// -- Update pending GUI commands --
+        RunOnGUICommands();
+        
+        // -- Attempt to initialize environment (if not already done) --
         bool isInit= IsInitialized();
-
-		// Nothing to be drawn until we are fully initialized.
-        if(!isInit || IStorage == null) {
-            // Tell the user that we can display without a behavior or library.
-            ShowNotification(new GUIContent("No iCanScript component selected !!!"));
-            myNotificationShown= true;
-            return;            
-        }
-        // Remove any previously shown notification.
-        if(myNotificationShown) {
-            RemoveNotification();
-            myNotificationShown= false;
-        }
-       	
-        // Update GUI time.
-        myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
-        myCurrentTime= Time.realtimeSinceStartup;
 
 		// Update mouse info.
 		UpdateMouse();
 		
-        // Load Editor Skin.
+		// -- Nothing to be drawn until we are fully initialized --
+        if(!isInit || IStorage == null) {
+            // -- Show next step help --
+            ShowWorkflowAssistant();
+			// -- Repaint erros/warning info --
+			DisplaySceneErrorsAndWarnings();
+            return;            
+        }
+        // -- Assure that we have a library window opened --
+        iCS_EditorController.OpenLibraryEditor();
+        
+        // -- Update GUI time --
+        myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
+        myCurrentTime= Time.realtimeSinceStartup;
+
+        // -- Load Editor Skin --
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
-		// Update pending menu commands
+		// -- Update pending menu commands --
 		myContextualMenu.OnGUI();
 		
-        // Process all visual editor events including Repaint.
+        // -- Process all visual editor events including Repaint --
         if(IsMouseInToolbar && Event.current.type != EventType.Repaint) {
             Toolbar();
         } else {
              ProcessEvents();            
         }
         
-        // Update sub editor if active.
+        // -- Update sub editor if active --
         if(mySubEditor != null) {
-//            EditorGUI.FocusTextInControl("SubEditor");
         	mySubEditor.Update();
             var ev= Event.current;
             if(ev.type == EventType.KeyDown) {
@@ -268,17 +263,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         }
 
-        // Process scroll zone.
+        // -- Process scroll zone --
         ProcessScrollZone();
         
-        // Debug information.
+        // -- Debug information --
 #if SHOW_FRAME_RATE || SHOW_FRAME_TIME
         FrameRateDebugInfo();
 #endif
-
-		// Simulate OnPostRender.
+		
+		// -- Simulate OnPostRender --
 		OnPostRender();
 	}
+
 
 	// ----------------------------------------------------------------------
     // Processes all events.
@@ -287,8 +283,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var ev= Event.current;
         switch(ev.type) {
             case EventType.Repaint: {
-                // Draw Graph.
+                // Draw Graph.				
                 DrawGraph();
+				DisplayHelp();
                 break;                
             }
             case EventType.Layout: {
@@ -299,8 +296,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case EventType.MouseMove: {
-                MouseMoveEvent();
-                Event.current.Use();                        
+                MouseMoveEvent(); 
+				Event.current.Use();  
                 break;
             }
             case EventType.MouseDrag: {
@@ -355,7 +352,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			case EventType.ValidateCommand: {
                 // Accept undo/redo.
 			    if(ev.commandName == "UndoRedoPerformed") {
-//                    Debug.Log("iCanScript: Display Root before Undo => "+IStorage.iCSMonoBehaviour.Storage.DisplayRoot);
                     ev.Use();
 			    }
 			    break;
@@ -363,7 +359,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			case EventType.ExecuteCommand: {
                 // Rebuild engine objects on undo/redo.
 			    if(ev.commandName == "UndoRedoPerformed") {
-//                    Debug.Log("iCanScript: Display Root after Undo => "+IStorage.iCSMonoBehaviour.Storage.DisplayRoot);
                     IStorage.SynchronizeAfterUndoRedo();
                     ev.Use();
 			        break;
@@ -377,7 +372,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
         }
     }
-    
+	
     // ======================================================================
     // Debug information.
     // ----------------------------------------------------------------------

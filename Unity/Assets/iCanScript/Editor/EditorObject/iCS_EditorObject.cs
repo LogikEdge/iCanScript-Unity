@@ -93,7 +93,14 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
     public string Name {
-		get { return EngineObject.Name; }
+		get {
+            if(IsDataPort) {
+                if(IsProgrammaticInstancePort) {
+                    return "<"+iCS_Types.TypeName(RuntimeType)+" &>";
+                }                
+            }
+            return EngineObject.Name;
+        }
 		set {
             var engineObject= EngineObject;
             if(engineObject.Name == value) return;
@@ -180,7 +187,8 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count && id < EngineObjects.Count && EditorObjects[id] != null; }
 	public bool	IsParentValid		{ get { return IsIdValid(ParentId); }}
-	public bool IsSourceValid		{ get { return IsIdValid(ProviderPortId); }}
+	public bool IsSourceValid		{ get { return IsIdValid(ProducerPortId); }}
+    public bool IsSelected          { get { return myIStorage.SelectedObject == this; }}
 
 	public bool IsValid {
 		get { return IsIdValid(InstanceId); }
@@ -238,7 +246,6 @@ public partial class iCS_EditorObject {
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
-//		editorObject.IsDirty= true;
         RunOnCreated(editorObject);
 		return editorObject;
 	}
@@ -255,8 +262,11 @@ public partial class iCS_EditorObject {
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
         editorObject.LocalSize= toClone.LocalSize;
-//		editorObject.IsDirty= true;
         RunOnCreated(editorObject);
+        if(editorObject.IsInDataOrControlPort && toClone.ProducerPortId == -1) {
+            editorObject.InitialValue= toClone.IStorage.GetInitialPortValueFromArchive(toClone);
+            editorObject.IStorage.StoreInitialPortValueInArchive(editorObject);
+        }
 		return editorObject;
     }
 
@@ -271,8 +281,8 @@ public partial class iCS_EditorObject {
         if(IsPort) {
             myIStorage.ForEach(
                 child=> {
-                    if(child.IsPort && child.ProviderPortId == InstanceId) {
-                        child.ProviderPortId= -1;
+                    if(child.IsPort && child.ProducerPortId == InstanceId) {
+                        child.ProducerPortId= -1;
                     }                    
                 }
             );
@@ -363,7 +373,7 @@ public partial class iCS_EditorObject {
 		for(int i= 0; i < iStorage.EngineObjects.Count; ++i) {
             iCS_EditorObject editorObj= null;
             var engineObj= iStorage.EngineObjects[i];
-		    if(engineObj.InstanceId != -1) {
+		    if(iCS_VisualScriptData.IsValid(engineObj, iStorage.PersistentStorage)) {
 		        editorObj= new iCS_EditorObject(i, iStorage);
 		    }
 	        iStorage.EditorObjects.Add(editorObj);

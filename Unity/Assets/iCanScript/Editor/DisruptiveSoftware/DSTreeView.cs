@@ -13,6 +13,7 @@ public class DSTreeView : DSView {
     int                             myActiveDictionary    = 0;
     List<Dictionary<object,bool>>   myIsFoldedDictionaries= null;
     Dictionary<object,Rect>         myRowInfo             = null;
+	Vector2 						lastMousePosition	  = new Vector2(0,0);
 
     // ======================================================================
     // Properties
@@ -193,31 +194,37 @@ public class DSTreeView : DSView {
 			}			
 		}
     }
+	
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
-     	Vector2 mousePosition= Event.current.mousePosition;
+     	lastMousePosition= Event.current.mousePosition;
 		switch(Event.current.type) {
-            case EventType.ScrollWheel: {
-                break;
-            }
             case EventType.MouseDown: {
                 foreach(var keyValue in myRowInfo) {
                     Rect area= keyValue.Value;
-                    if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
-                        var mouseInScreenPoint= GUIUtility.GUIToScreenPoint(mousePosition);
+                    if(area.y < lastMousePosition.y && area.yMax > lastMousePosition.y) {
+                        var mouseInScreenPoint= GUIUtility.GUIToScreenPoint(lastMousePosition);
                         var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(area.x, area.y));
                         var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, area.width, area.height);
-                        myDataSource.MouseDownOn(keyValue.Key, mouseInScreenPoint, areaInScreenPosition);
-                        Event.current.Use();
+                        myDataSource.MouseDownOn(keyValue.Key, mouseInScreenPoint, areaInScreenPosition);						
+//                        Event.current.Use();
                         return;
                     }
                 }
 				break;
 			}
-            case EventType.MouseUp: {
-				break;
-			}
         }   
     }
+
+	public object ObjectUnderMouse() {
+        foreach(var keyValue in myRowInfo) {
+		   Rect area= keyValue.Value;
+		   // Verticle position in iCSLibraryController.DisplayCurrentObject is moved up by 1.  Need to do same here, or we can misread above entry.
+		   if(area.y-2 < lastMousePosition.y && area.yMax-1 > lastMousePosition.y && area.x < lastMousePosition.x && area.xMax > lastMousePosition.x) {
+			   return keyValue.Key;	
+		   }
+		}
+		return null;
+	}
 
 }
