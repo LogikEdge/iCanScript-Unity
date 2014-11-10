@@ -14,7 +14,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	string       myHelpText         = null;
     Texture2D    myHelpLogo         = null;
     Texture2D    myHelpDontLogo     = null;
-	bool         myIsDynamicHeight  = false;
+	bool         myIsLibraryHelp  = false;
 	Rect         myLibraryWindowPos = new Rect(0,0,0,0);
     
     
@@ -44,7 +44,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	public void helpWindowChange() {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
 		if(edWin != null) {
-			myIsDynamicHeight= false;
+			myIsLibraryHelp= false;
 			myHelpText= iCS_HelpController.getHelp(edWin.GetType());
             Repaint();		    
 		}
@@ -60,7 +60,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				helpWindowChange();
 			} 
 			else {
-				myIsDynamicHeight= true;
+				myIsLibraryHelp= true;
 				string title= iCS_HelpController.GetHelpTitle(memInfo);
 				string help= iCS_HelpController.getHelp(memInfo);
 				string parameters= iCS_HelpController.GetHelpParameters(memInfo);
@@ -80,7 +80,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(pickInfo != null) {
 			edObj= pickInfo.PickedObject;
 			if(edObj != null)
-				myIsDynamicHeight= false;
+				myIsLibraryHelp= false;
 				myHelpText= prepareHelpWindowText(edObj);
 				// If no specific help was found, show the window help.
 				if(String.IsNullOrEmpty(myHelpText))
@@ -214,7 +214,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // -- Update HotZone in case it has moved --
         UpdateHelpHotZone();
 		
-		if(myHelpEnabled) {
+		if(myHelpEnabled || myIsLibraryHelp) {
 			GUIStyle styleBox =  EditorStyles.textArea;
 			GUIStyle styleText=  EditorStyles.label;
 			styleText.richText = true;
@@ -257,7 +257,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		int helpHeight= 85;
 		int helpWidth= 420; 
 		
-		if(myIsDynamicHeight) {
+		if(myIsLibraryHelp) {
 			helpHeight=numLines*17;
 			if(numLines<=4) helpHeight=85;
 			else if(numLines<=10) helpHeight=170;
