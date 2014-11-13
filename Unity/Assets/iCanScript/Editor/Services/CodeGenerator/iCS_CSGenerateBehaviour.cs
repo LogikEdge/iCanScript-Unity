@@ -12,11 +12,18 @@ using iCanScript.JSON;
 public class iCS_CSGenerateBehaviour {
 	// ----------------------------------------------------------------------
     public static void UpdateBehaviourCode() {
-        // Retrieve all messages needed by behaviour.
+        // -- Retrieve all messages needed by behaviour --
         var messages= GetMessagesForBehaviour();
-        
-        // Build class name and file path.
-        var fileName= iCS_EditorStrings.DefaultBehaviourFilePath;
+
+        // -- Default file path --
+        var fileName= iCS_EditorStrings.DefaultBehaviourFilePath;        
+
+		// -- Rebuild Behaviour source file --
+		UpdateBehaviourCode(messages, fileName);
+	}
+	// ----------------------------------------------------------------------
+    public static void UpdateBehaviourCode(iCS_MessageInfo[] messages, string fileName) {
+        // Build class name from file path.
         var className= Path.GetFileNameWithoutExtension(fileName);
         
         // Build behaviour code.
