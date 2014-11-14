@@ -62,4 +62,38 @@ public static class iCS_WindowMenu {
         editor.hideFlags= HideFlags.DontSave;
  	}
 
+	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	// TODO: TO BE OBSOLETED ONCE THE VIDEOS ARE REDONE.
+    // ======================================================================
+	// iCanScript Graph editor.
+	[MenuItem("Window/iCanScript/Preferences...")]
+	public static void OldMenuPreferences() {
+		MenuPreferences();
+	}
+    // ======================================================================
+	// iCanScript Graph editor.
+	[MenuItem("Window/iCanScript/Visual Editor")]
+	public static void OldMenuGraphEditor() {
+		MenuGraphEditor();
+	}
+    // ======================================================================
+ 	// iCanScript Hierarchy editor Menu.
+ 	[MenuItem("Window/iCanScript/Tree View")]
+ 	public static void OldMenuTreeViewEditor() {
+		MenuTreeViewEditor();
+ 	}
+    // ======================================================================
+ 	// iCanScript Project editor Menu.
+ 	[MenuItem("Window/iCanScript/Library")]
+ 	public static void OldMenuLibraryEditor() {
+		MenuLibraryEditor();
+ 	}
+    // ======================================================================
+ 	// iCanScript ClassWizard editor Menu.
+ 	[MenuItem("Window/iCanScript/Instance Wizard")]
+ 	public static void OldMenuInstanceEditor() {
+		MenuLibraryEditor();
+ 	}
+
+
 }
