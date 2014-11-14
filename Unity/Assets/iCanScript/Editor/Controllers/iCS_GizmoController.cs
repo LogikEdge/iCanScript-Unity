@@ -14,14 +14,16 @@ public static class iCS_GizmoController {
           
     // ---------------------------------------------------------------------------------
     static iCS_GizmoController() {
-        InstallGizmo();
+		iCS_SystemEvents.OnEditorStarted+= InstallGizmo;
     }
     
     // ---------------------------------------------------------------------------------
     public static void Start() {}
         
     // ---------------------------------------------------------------------------------
-    public static void Shutdown() {}
+    public static void Shutdown() {
+		iCS_SystemEvents.OnEditorStarted-= InstallGizmo;
+    }
     
     // ---------------------------------------------------------------------------------
     static void InstallGizmo() {
@@ -36,8 +38,8 @@ public static class iCS_GizmoController {
         string gizmoDest= unityGizmosFolder+"/"+GizmoIcon;
         if(iCS_Strings.IsEmpty(AssetDatabase.ValidateMoveAsset(gizmoSrc, gizmoDest))) {
             AssetDatabase.CopyAsset(gizmoSrc,gizmoDest);
-            Debug.Log("iCanScript: Installing the iCanScript Gizmo graphic file.");            
-        }         
+            Debug.Log("iCanScript: Installing the iCanScript Gizmo graphic file.");            				
+        }         			
     }
 
     // ---------------------------------------------------------------------------------
@@ -50,6 +52,6 @@ public static class iCS_GizmoController {
             for(int intensity= 5; intensity >= 0; --intensity) {
                 Gizmos.DrawIcon(p, GizmoIcon);                
             }
-        }
+        }			
     }
 }
