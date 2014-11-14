@@ -81,7 +81,7 @@ public static class iCS_SceneController {
         if(logo == null) return;
         var heightDiff= r.height-logo.height;
         if(heightDiff <= 0f) heightDiff= 0f;
-        var iconRect= new Rect(r.xMax-ourLogo.width, r.y+0.5f*heightDiff, logo.width, logo.height);
+        var iconRect= new Rect(r.xMax-logo.width, r.y+0.5f*heightDiff, logo.width, logo.height);
         
         // -- Get the associated the game object --
         var unityObject= EditorUtility.InstanceIDToObject(instanceId);

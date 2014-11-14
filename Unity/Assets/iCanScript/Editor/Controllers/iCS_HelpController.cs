@@ -11,7 +11,7 @@ using iCanScript.JSON;
 
 
 public static class iCS_HelpController {
-	static private string unityHelpIndex;
+	static private string unityHelpIndex= null;
 	static private Dictionary<string, string> unityHelpSummary= new Dictionary<string, string>();
 	static string unityHelpPath = EditorApplication.applicationContentsPath + "/Documentation/html/en/ScriptReference";
 

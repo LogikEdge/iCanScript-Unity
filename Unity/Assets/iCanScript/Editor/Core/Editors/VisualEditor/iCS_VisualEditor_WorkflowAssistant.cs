@@ -41,7 +41,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             var savedColor= GUI.color;
             GUI.color= iCS_BlinkController.NormalBlinkHighColor;
             if(GUI.Button(r, content, myAssistaneButtonStyle)) {
-                EditorApplication.ExecuteMenuItem("iCanScript/Create Visual Script"); 
+                iCS_iCanScriptMenu.CreateVisualScript();
             }
             GUI.color= savedColor;
             Repaint();
