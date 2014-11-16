@@ -37,7 +37,6 @@ public static class iCS_UnityClasses {
                                            iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
                                            string iconPath= null, string description= null) {
         if(iconPath == null) iconPath= kUnityIcon;
-        if(description == null) description= "Event: "+messageName+" on "+classType.Name;
         iCS_LibraryDatabase.AddMessage(classType, messageName, storageClass, parameters, functionReturn, description, iconPath);
     }
     // ----------------------------------------------------------------------
