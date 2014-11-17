@@ -231,7 +231,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 } else if(memberInfo.IsTypeCast) {
                         // Don't add the typecasts in the library.
                 } else if(memberInfo.IsMethod) {
-                    toAdd= new Node(NodeTypeEnum.Method, memberInfo.ToMethodInfo.MethodName, memberInfo);                
+                    toAdd= new Node(NodeTypeEnum.Method, memberInfo.ToMethodInfo.DisplayName, memberInfo);                
                 } else if(memberInfo.IsMessage) {
                     toAdd= new Node(NodeTypeEnum.Message, memberInfo.ToMessageInfo.DisplayName, memberInfo);
                 }
