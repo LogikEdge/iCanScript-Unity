@@ -26,8 +26,8 @@ public static class iCS_EditionController {
     public static bool IsDevEdition         { get { return false; }}
 #else
     public static bool IsProEdition         { get { return false; }}
-    public static bool IsCommunityEdition   { get { return true; }}
-    public static bool IsDevEdition         { get { return false;  }}
+    public static bool IsCommunityEdition   { get { return false; }}
+    public static bool IsDevEdition         { get { return true;  }}
 #endif
 #endif
     public new static string ToString() {
@@ -44,7 +44,7 @@ public static class iCS_EditionController {
     public const int MaxCommunityNodesPerVisualScript= 50;
     public static int CommunityVisualScriptsRemaining {
         get {
-            if(EditorApplication.isPlaying) reyturn MaxCommunityVisualScriptPerScene;
+            if(EditorApplication.isPlaying) return MaxCommunityVisualScriptPerScene;
             return MaxCommunityVisualScriptPerScene-iCS_SceneController.NumberOfVisualScriptsInOrReferencedByScene;
         }
     }
