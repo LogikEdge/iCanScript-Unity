@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System;
 using System.Collections;
 
@@ -61,7 +62,7 @@ public static class iCS_EditionController {
     }
     public static bool IsCommunityLimitReached {
         get {
-            if(!IsCommunityEdition) return false;
+            if(!IsCommunityEdition || EditorApplication.isPlaying) return false;
             return CommunityVisualScriptsRemaining < 0 || CommunityNodesRemaining < 0;
         }
     }
