@@ -26,8 +26,8 @@ public static class iCS_EditionController {
     public static bool IsDevEdition         { get { return false; }}
 #else
     public static bool IsProEdition         { get { return false; }}
-    public static bool IsCommunityEdition   { get { return false; }}
-    public static bool IsDevEdition         { get { return true;  }}
+    public static bool IsCommunityEdition   { get { return true; }}
+    public static bool IsDevEdition         { get { return false;  }}
 #endif
 #endif
     public new static string ToString() {
@@ -44,21 +44,23 @@ public static class iCS_EditionController {
     public const int MaxCommunityNodesPerVisualScript= 50;
     public static int CommunityVisualScriptsRemaining {
         get {
+            if(EditorApplication.isPlaying) reyturn MaxCommunityVisualScriptPerScene;
             return MaxCommunityVisualScriptPerScene-iCS_SceneController.NumberOfVisualScriptsInOrReferencedByScene;
         }
     }
     public static float CommunityPercentVisualScriptsRemaining {
-        get { return (float)(CommunityVisualScriptsRemaining) / MaxCommunityVisualScriptPerScene; }
+        get { return EditorApplication.isPlaying ? 1.0f : (float)(CommunityVisualScriptsRemaining) / MaxCommunityVisualScriptPerScene; }
     }
     public static int CommunityNodesRemaining {
         get {
+            if(EditorApplication.isPlaying) return MaxCommunityNodesPerVisualScript;
             var iStorage= iCS_VisualScriptDataController.IStorage;
             if(iStorage == null) return MaxCommunityNodesPerVisualScript;
             return MaxCommunityNodesPerVisualScript-iStorage.NumberOfNodes;
         }
     }
     public static float CommunityPercentNodesRemaining {
-        get { return (float)(CommunityNodesRemaining) / MaxCommunityNodesPerVisualScript;}
+        get { return EditorApplication.isPlaying ? 1.0f : (float)(CommunityNodesRemaining) / MaxCommunityNodesPerVisualScript;}
     }
     public static bool IsCommunityLimitReached {
         get {
