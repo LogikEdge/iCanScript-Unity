@@ -38,7 +38,6 @@ public static class iCS_GizmoController {
         string gizmoDest= unityGizmosFolder+"/"+GizmoIcon;
         if(iCS_Strings.IsEmpty(AssetDatabase.ValidateMoveAsset(gizmoSrc, gizmoDest))) {
             AssetDatabase.CopyAsset(gizmoSrc,gizmoDest);
-            Debug.Log("iCanScript: Installing the iCanScript Gizmo graphic file.");            				
         }         			
     }
 
