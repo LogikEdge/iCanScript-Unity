@@ -60,7 +60,8 @@ public class iCS_ClassFunction : iCS_FunctionBase {
                     }
                 }
             }
-            Debug.LogWarning("iCanScript: Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.Message);
+            var msg= "Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.Message;
+			iCS_ErrorControllerProxy.AddError("Runtime", msg, VisualScript, InstanceId);
             MarkAsCurrent(frameId);
         }
 //#endif        
