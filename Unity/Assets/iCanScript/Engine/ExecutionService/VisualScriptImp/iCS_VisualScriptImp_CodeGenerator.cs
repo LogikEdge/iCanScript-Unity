@@ -22,7 +22,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 				if(EngineObjects[i].InstanceId == -1) continue;
 				if(EngineObjects[i].InstanceId != i) {
 					sanityNeeded= true;
-					Debug.LogWarning("iCanScript: Sanity Check: Object: "+i+" has an invalid instance id of: "+EngineObjects[i].InstanceId);
+					Debug.LogWarning("iCanScript: Sanity Check: Object: "+name+"["+i+"] has an invalid instance id of: "+EngineObjects[i].InstanceId);
 					EngineObjects[i].Reset();
 					continue;
 				}
