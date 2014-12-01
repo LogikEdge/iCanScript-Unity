@@ -220,7 +220,14 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                var userFunction= GetUserFunctionAction(node);
+						        var vs= GetVisualScriptFromReferenceNode(node);
+                                var userFunction= GetRuntimeNodeFromReferenceNode(node, vs) as iCS_ActionWithSignature;
+								if(userFunction == null) {
+									if(vs == this) {
+										needAdditionalPass= true;
+										continue;
+									}
+								}
                                 if(IsReferenceNodeUsingDynamicBinding(node)) {
                                     var userFunctionCall= new iCS_DynamicUserFunctionCall(this, priority, nbParams, nbEnables);
                                     myRuntimeNodes[node.InstanceId]= userFunctionCall;
