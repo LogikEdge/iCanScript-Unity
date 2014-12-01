@@ -48,6 +48,11 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 						EngineObjects[i].Reset();
 						Debug.LogWarning("iCanScript Sanity: Port: "+parentId+" is the parent of: "+i);
 						continue;										
+					}
+					// Parent must be valid.
+					if(!IsInBounds(EngineObjects[parentId].InstanceId)) {
+						Debug.LogWarning("iCanScript Sanity: Parent not valid: "+name+"["+i+"]");
+						continue;
 					}				
 				}
 			}
