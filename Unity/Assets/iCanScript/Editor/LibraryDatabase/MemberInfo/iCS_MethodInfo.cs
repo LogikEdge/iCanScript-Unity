@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-public class iCS_MethodInfo : iCS_FunctionPrototype {
+public class iCS_MethodInfo : iCS_FunctionPrototype, IEquatable<iCS_MethodInfo> {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -32,4 +32,13 @@ public class iCS_MethodInfo : iCS_FunctionPrototype {
         Method        = _methodBase;
     }
 
+    // ======================================================================
+    // Creation/Destruction
+    // ----------------------------------------------------------------------
+	public bool Equals(iCS_MethodInfo other) {
+		if(!base.Equals(other)) return false;
+		if(Method != other.Method) return false;
+		if(DeclaringType != other.DeclaringType) return false;
+		return true;
+	}
 }

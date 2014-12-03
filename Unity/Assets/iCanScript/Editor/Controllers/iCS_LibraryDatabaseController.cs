@@ -10,7 +10,8 @@ public class iCS_LibraryDatabaseController {
 	static iCS_LibraryDatabaseController() {
         // Extract nodes from the active assemblies.
         iCS_Reflection.ParseAppDomain();
-//        AddClass("dbAccess");
+//        AddClass("iCS_EngineObject");
+//        AddClass("iCS_EngineObject");
 	}
     
     /// Start the application controller.

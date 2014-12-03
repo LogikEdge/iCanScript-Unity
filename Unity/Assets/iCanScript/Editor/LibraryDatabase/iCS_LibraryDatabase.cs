@@ -11,21 +11,23 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     public static List<iCS_TypeInfo>        	types    = new List<iCS_TypeInfo>();
     public static List<iCS_FunctionPrototype>	Functions= new List<iCS_FunctionPrototype>();
-    public static bool                      	IsSorted = false;
     
+    // ======================================================================
+    // Utility Type
+    // ----------------------------------------------------------------------
+	class FunctionComparer : IComparer<iCS_FunctionPrototype> {
+		public int Compare(iCS_FunctionPrototype x, iCS_FunctionPrototype y) {
+			return CompareFunctionNames(x, y);
+		}
+	};
+	static FunctionComparer	myFunctionComparer= new FunctionComparer();
+	
     // ======================================================================
     // DataBase functionality
     // ----------------------------------------------------------------------
-    public static void QSort() {
-        if(IsSorted) return;
-        Functions.Sort(CompareFunctionNames);
-        IsSorted= true;
-    }
-
-    // ----------------------------------------------------------------------
     // Returns 0 if equal, negative if first is smaller and
     // positive if first is greather.
-    public static int CompareFunctionNames(iCS_MemberInfo d1, iCS_MemberInfo d2) {
+    public static int CompareFunctionNames(iCS_FunctionPrototype d1, iCS_FunctionPrototype d2) {
         if(d1.Company == null && d2.Company != null) return -1;
         if(d1.Company != null && d2.Company == null) return 1;
         int result;
@@ -41,15 +43,23 @@ public class iCS_LibraryDatabase {
         }
         result= iCS_Types.TypeName(d1.ClassType).CompareTo(iCS_Types.TypeName(d2.ClassType));
         if(result != 0) return result;
-        return d1.DisplayName.CompareTo(d2.DisplayName);
-    }
+        result= d1.DisplayName.CompareTo(d2.DisplayName);
+		if(result != 0) return result;
+		result= d1.InterfaceTypesAsString().CompareTo(d2.InterfaceTypesAsString());
+		if(result != 0) return result;
+		if(d1.IsMethod && d2.IsMethod) {
+			var m1= d1.ToMethodInfo;
+			var m2= d2.ToMethodInfo;
+			return iCS_Types.TypeName(m1.DeclaringType).CompareTo(iCS_Types.TypeName(m2.DeclaringType));
+		}
+		return 0;
+	}
     // ----------------------------------------------------------------------
     public static List<iCS_FunctionPrototype> BuildExpertMenu() {
         return AllFunctions();
     }
     // ----------------------------------------------------------------------
     public static List<iCS_FunctionPrototype> AllFunctions() {
-        QSort();
         return Functions;
     }
     // ----------------------------------------------------------------------
@@ -58,7 +68,6 @@ public class iCS_LibraryDatabase {
     }
     // ----------------------------------------------------------------------
     public static List<iCS_FunctionPrototype> BuildNormalMenu() {
-        QSort();
         var menu= new List<iCS_FunctionPrototype>();
         foreach(var desc in Functions) {
             Type classType= desc.ClassType;
@@ -180,7 +189,6 @@ public class iCS_LibraryDatabase {
     }
     // ----------------------------------------------------------------------
     public static List<iCS_FunctionPrototype> BuildMenuForMembersOfType(Type classType, Type inputType, Type outputType) {
-        QSort();
         var menu= new List<iCS_FunctionPrototype>();
 		classType= iCS_Types.GetElementType(classType);
 		inputType= iCS_Types.GetElementType(inputType);
@@ -229,7 +237,6 @@ public class iCS_LibraryDatabase {
 	}
     // ----------------------------------------------------------------------
     public static List<iCS_FunctionPrototype> BuildMenu(Type inputType, Type outputType) {
-        QSort();
         var menu= new List<iCS_FunctionPrototype>();
 		inputType= iCS_Types.GetElementType(inputType);
         for(int i= 0; i < Functions.Count; ++i) {
@@ -512,12 +519,15 @@ public class iCS_LibraryDatabase {
     // Adds a new database record.
     public static void AddDataBaseRecord(iCS_MemberInfo record) {
         if(record.IsFunctionPrototype) {
-			if(Functions.Exists(other=> record.Equals(other))) {
-				Debug.Log("Found existing=> "+record.DisplayName);
+			var function= record.ToFunctionPrototypeInfo;
+			var insertIdx= Functions.BinarySearch(function, myFunctionComparer);
+			if(insertIdx >= 0 && Functions.Count > 0) {
+//				Debug.Log("Function Found at=> "+insertIdx);
 			}
-            Functions.Add(record.ToFunctionPrototypeInfo);
-            IsSorted= false;	            
-        }
+			else {
+				Functions.Insert(~insertIdx, function);
+			}			
+		}
 	}
 
     // ======================================================================
