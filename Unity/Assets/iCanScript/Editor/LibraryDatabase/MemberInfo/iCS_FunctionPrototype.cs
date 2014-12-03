@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-public class iCS_FunctionPrototype : iCS_MemberInfo {
+public class iCS_FunctionPrototype : iCS_MemberInfo, IEquatable<iCS_FunctionPrototype> {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -280,4 +280,14 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
     public override string ToString() {
         return FunctionPath+memberSeparator+FunctionSignature;            
     }
+	
+    // ======================================================================
+    // IEquatable Implementation
+    // ----------------------------------------------------------------------
+	public bool Equals(iCS_FunctionPrototype other) {
+		if(!base.Equals(other)) return false;
+		if(StorageClass != other.StorageClass) return false;
+		if(Parameters != other.Parameters) return false;
+		return true;
+	}
 }

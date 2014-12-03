@@ -9,9 +9,9 @@ public class iCS_LibraryDatabase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public static List<iCS_TypeInfo>        types    = new List<iCS_TypeInfo>();
-    public static List<iCS_FunctionPrototype>  Functions= new List<iCS_FunctionPrototype>();
-    public static bool                      IsSorted = false;
+    public static List<iCS_TypeInfo>        	types    = new List<iCS_TypeInfo>();
+    public static List<iCS_FunctionPrototype>	Functions= new List<iCS_FunctionPrototype>();
+    public static bool                      	IsSorted = false;
     
     // ======================================================================
     // DataBase functionality
@@ -132,7 +132,7 @@ public class iCS_LibraryDatabase {
 	    var variables= new List<iCS_FunctionPrototype>();
 	    foreach(var v in GetMembers(compilerType)) {
 	        if(v.IsField || v.IsProperty) {
-	            variables.Add(v.ToMethodBaseInfo);
+	            variables.Add(v.ToFunctionPrototypeInfo);
 	        }
 	    }
 	    return variables.ToArray();
@@ -511,8 +511,11 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     // Adds a new database record.
     public static void AddDataBaseRecord(iCS_MemberInfo record) {
-        if(record.IsMethodBase) {
-            Functions.Add(record.ToMethodBaseInfo);
+        if(record.IsFunctionPrototype) {
+			if(Functions.Exists(other=> record.Equals(other))) {
+				Debug.Log("Found existing=> "+record.DisplayName);
+			}
+            Functions.Add(record.ToFunctionPrototypeInfo);
             IsSorted= false;	            
         }
 	}
