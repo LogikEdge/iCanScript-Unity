@@ -22,7 +22,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 				if(EngineObjects[i].InstanceId == -1) continue;
 				if(EngineObjects[i].InstanceId != i) {
 					sanityNeeded= true;
-					Debug.LogWarning("iCanScript: Sanity Check: Object: "+i+" has an invalid instance id of: "+EngineObjects[i].InstanceId);
+					Debug.LogWarning("iCanScript: Sanity Check: Object: "+name+"["+i+"] has an invalid instance id of: "+EngineObjects[i].InstanceId);
 					EngineObjects[i].Reset();
 					continue;
 				}
@@ -48,6 +48,11 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 						EngineObjects[i].Reset();
 						Debug.LogWarning("iCanScript Sanity: Port: "+parentId+" is the parent of: "+i);
 						continue;										
+					}
+					// Parent must be valid.
+					if(!IsInBounds(EngineObjects[parentId].InstanceId)) {
+						Debug.LogWarning("iCanScript Sanity: Parent not valid: "+name+"["+i+"]");
+						continue;
 					}				
 				}
 			}
@@ -215,7 +220,14 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                var userFunction= GetUserFunctionAction(node);
+						        var vs= GetVisualScriptFromReferenceNode(node);
+                                var userFunction= GetRuntimeNodeFromReferenceNode(node, vs) as iCS_ActionWithSignature;
+								if(userFunction == null) {
+									if(vs == this) {
+										needAdditionalPass= true;
+										continue;
+									}
+								}
                                 if(IsReferenceNodeUsingDynamicBinding(node)) {
                                     var userFunctionCall= new iCS_DynamicUserFunctionCall(this, priority, nbParams, nbEnables);
                                     myRuntimeNodes[node.InstanceId]= userFunctionCall;

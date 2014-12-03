@@ -41,19 +41,27 @@ public class iCS_ClassFunction : iCS_FunctionBase {
 //#if UNITY_EDITOR
         }
         catch(Exception e) {
-            Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
             string thisName= (InInstance == null ? "null" : InInstance.ToString());
             string parametersAsStr= "";
             int nbOfParams= Parameters.Length;
             if(nbOfParams != 0) {
                 for(int i= 0; i < nbOfParams; ++i) {
-                    parametersAsStr+= Parameters[i].ToString();
+					var p= Parameters[i];
+					var paramStr= p.ToString();
+					if(p is String) {
+						paramStr= "\""+paramStr+"\"";
+					}
+					if(p is Char) {
+						paramStr= "\'"+paramStr+"\'";
+					}
+					parametersAsStr+= paramStr;
                     if(i != nbOfParams-1) {
                         parametersAsStr+=", ";
                     }
                 }
             }
-            Debug.LogWarning("iCanScript: while invoking => "+thisName+"."+Name+"("+parametersAsStr+")");
+            var msg= "Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.Message;
+			iCS_ErrorControllerProxy.AddError("Runtime", msg, VisualScript, InstanceId);
             MarkAsCurrent(frameId);
         }
 //#endif        
