@@ -8,15 +8,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    const string kWorkflowAssistantKey = "WorkflowAssistantKey";
-    bool         myIsAssistantActive   = true;
-    GUIStyle     myAssistantLabelStyle = null;
-    GUIStyle     myAssistaneButtonStyle= null;
-    Texture2D    myAssistantLogo       = null;
-    Texture2D    myAssistantDontLogo   = null;
-    Texture2D    myiCanScriptLargeLogo = null;
-    Texture2D    myiCanScriptMediumLogo= null;
-	int			 myAssistantLineCount  = 0;
+    const string 		kWorkflowAssistantKey = "WorkflowAssistantKey";
+    bool         		myIsAssistantActive   = true;
+    GUIStyle     		myAssistantLabelStyle = null;
+    GUIStyle     		myAssistaneButtonStyle= null;
+    Texture2D    		myAssistantLogo       = null;
+    Texture2D    		myAssistantDontLogo   = null;
+    Texture2D    		myiCanScriptLargeLogo = null;
+    Texture2D    		myiCanScriptMediumLogo= null;
+	int			 		myAssistantLineCount  = 0;
+	iCS_EditorObject	myPickedObject        = null;
     
     // ----------------------------------------------------------------------
     void ShowWorkflowAssistant() {
@@ -69,7 +70,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
             ShowAssistantMessage("Right-Click to Add Message Handler or Public Function");
 			ShowAssistantMessage("Drag Variable Builder from Library Window to Create Public Variable");
-			Repaint();
+			UpdateWorkflowAssistant(null);
             return;
         }
 		// -- Pointing at a node --
@@ -84,7 +85,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						ShowAssistantMessage("WARNING: The Name of this Node cannot be changed");										
 					}
 					ShowAssistantMessage("Click-and-Drag to Move Node");
-					Repaint();
+					UpdateWorkflowAssistant(editorObj);
 		            return;											
 				}
 				case iCS_PickPartEnum.FoldIcon: {
@@ -93,12 +94,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					} else {
 			            ShowAssistantMessage("Click to Fold Node");							
 					}
-					Repaint();
+					UpdateWorkflowAssistant(editorObj);
 		            return;					
 				}
 				case iCS_PickPartEnum.MinimizeIcon: {
 		            ShowAssistantMessage("Click to Iconize node");
-					Repaint();
+					UpdateWorkflowAssistant(editorObj);
 		            return;										
 				}
 				default: {
@@ -147,7 +148,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                     }
 					ShowAssistantMessage("Click-and-Drag to Move Node");									
-					Repaint();
+					UpdateWorkflowAssistant(editorObj);
 		            return;					
 				}
 			}
@@ -162,12 +163,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					else {
 						ShowAssistantMessage("WARNING: The Name of this Port cannot be changed");										
 					}
-					Repaint();
+					UpdateWorkflowAssistant(editorObj);
 		            return;											
 				}
 				case iCS_PickPartEnum.Value: {
 					ShowAssistantMessage("Double-Click to Edit Port Value");				
-					Repaint();
+					UpdateWorkflowAssistant(editorObj);
 		            return;																
 				}
 				default: {
@@ -218,11 +219,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
 					}
     				ShowAssistantMessage("Drag port on Node Edge to Move it");
+					UpdateWorkflowAssistant(editorObj);
                     break;
 				}
 			}
 		}
     }
+    // ----------------------------------------------------------------------
+	void UpdateWorkflowAssistant(iCS_EditorObject pickedObject) {
+		if(pickedObject != myPickedObject) {
+			myPickedObject= pickedObject;
+			Repaint();
+		}
+	}
     // ----------------------------------------------------------------------
     void WorkflowAssistantOnMouseClick() {
         // -- Determine if user wants to change workflow assistant state --
