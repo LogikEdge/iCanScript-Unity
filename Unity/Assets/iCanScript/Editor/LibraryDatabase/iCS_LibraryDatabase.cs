@@ -512,11 +512,11 @@ public class iCS_LibraryDatabase {
     // Adds a new database record.
     public static void AddDataBaseRecord(iCS_MemberInfo record) {
         if(record.IsFunctionPrototype) {
-			if(Functions.Exists(other=> record.Equals(other))) {
-				Debug.Log("Found existing=> "+record.DisplayName);
+			var function= record.ToFunctionPrototypeInfo;
+			if(!Functions.Exists(other=> function.Equals(other))) {
+	            Functions.Add(function);
+	            IsSorted= false;	            
 			}
-            Functions.Add(record.ToFunctionPrototypeInfo);
-            IsSorted= false;	            
         }
 	}
 
