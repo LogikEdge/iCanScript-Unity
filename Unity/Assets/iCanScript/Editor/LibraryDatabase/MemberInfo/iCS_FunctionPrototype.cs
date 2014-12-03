@@ -94,7 +94,32 @@ public class iCS_FunctionPrototype : iCS_MemberInfo, IEquatable<iCS_FunctionProt
         }
     }
 	
+    // ----------------------------------------------------------------------
+	public string InterfaceTypesAsString() {
+		string result= "(";
+		bool addSeparator= false;
+        foreach(var param in Parameters) {
+			if(!param.type.IsByRef) {
+                result+= (addSeparator ? ", " : "")+iCS_Types.TypeName(param.type);
+				addSeparator= true;
+			}
+        }
+		result+= ")->(";
+		addSeparator= false;
+        foreach(var param in Parameters) {
+			if(param.type.IsByRef) {
+                result+= (addSeparator ? ", " : "")+iCS_Types.TypeName(param.type);
+				addSeparator= true;
+			}
+        }
+		if(ReturnType != null && ReturnType != typeof(void)) {
+			result+= (addSeparator ? ", " : "")+iCS_Types.TypeName(ReturnType);
+		}
+		result+= ")";
+		return result;
+	}
 	
+    // ----------------------------------------------------------------------
     public string FunctionParameters() {
             string signature= null;
 				
@@ -287,7 +312,12 @@ public class iCS_FunctionPrototype : iCS_MemberInfo, IEquatable<iCS_FunctionProt
 	public bool Equals(iCS_FunctionPrototype other) {
 		if(!base.Equals(other)) return false;
 		if(StorageClass != other.StorageClass) return false;
-		if(Parameters != other.Parameters) return false;
+		if(FunctionReturn.type != other.FunctionReturn.type) return false;
+		var paramLen= Parameters.Length;
+		if(paramLen != other.Parameters.Length) return false;
+		for(int i= 0; i < paramLen; ++i) {
+			if(Parameters[i].type != other.Parameters[i].type) return false;
+		}
 		return true;
 	}
 }

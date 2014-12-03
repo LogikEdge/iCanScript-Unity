@@ -466,14 +466,14 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 	}
 
 
-//	void OnWillRenderObject()
-//	{
-//		if(allVisualScripts != null) {
-//			foreach(var vs in allVisualScripts) {
-//				vs.RunMessage("OnWillRenderObject");
-//			}
-//		}
-//	}
+	void OnWillRenderObject()
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage("OnWillRenderObject");
+			}
+		}
+	}
 
 
 	void ParticleCollision(GameObject gameObject)
