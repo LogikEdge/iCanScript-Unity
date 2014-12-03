@@ -7,7 +7,11 @@ public static class iCS_ErrorController {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    static iCS_ErrorController()    {}
+    static iCS_ErrorController()    {
+    	iCS_ErrorControllerProxy._Clear     = Clear;
+		iCS_ErrorControllerProxy._AddError  = AddError;
+		iCS_ErrorControllerProxy._AddWarning= AddWarning;
+    }
     public static void Start()      {}
     public static void Shutdown()   {}
 

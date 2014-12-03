@@ -22,7 +22,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         return connection;
     }
     // ----------------------------------------------------------------------
-    iCS_ActionWithSignature GetUserFunctionAction(iCS_EngineObject userFunctionCall) {
+    iCS_ActionWithSignature GetPublicFunctionAction(iCS_EngineObject userFunctionCall) {
         var runtimeNode= GetRuntimeNodeFromReferenceNode(userFunctionCall);
         if(runtimeNode == null) {
             Debug.LogWarning("iCanScript: Unable to find user function=> "+userFunctionCall.Name);
@@ -33,12 +33,16 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     object GetRuntimeNodeFromReferenceNode(iCS_EngineObject referenceNode) {
         var vs= GetVisualScriptFromReferenceNode(referenceNode);
+		return GetRuntimeNodeFromReferenceNode(referenceNode, vs);
+    }
+    // ----------------------------------------------------------------------
+    object GetRuntimeNodeFromReferenceNode(iCS_EngineObject referenceNode, iCS_VisualScriptImp vs) {
         if(vs == null) {
-            Debug.LogWarning("iCanScript: Unable to find user function=> "+referenceNode.Name);
+            Debug.LogWarning("iCanScript: Unable to find visual script with public function=> "+referenceNode.Name);
             return null;
         }
         var runtimeNodeId  = referenceNode.ProxyOriginalNodeId;
-        return vs.RuntimeNodes[runtimeNodeId];
+		return vs.RuntimeNodes[runtimeNodeId];
     }
     // ----------------------------------------------------------------------
     public iCS_EngineObject GetEngineObjectFromReferenceNode(iCS_EngineObject referenceNode) {

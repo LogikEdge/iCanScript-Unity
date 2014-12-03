@@ -121,8 +121,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	Stack<Prelude.Tree<Node>>   myIterStackNode    = null;
 	Stack<int>					myIterStackChildIdx= null;
 
+	// Library Help
+	iCS_MemberInfo					myHelpMemberInfo = null;
+	iCS_TimerService.TimedAction 	myCheckMouseTimer= null; 
 
-	iCS_TimerService.TimedAction checkMouseTimer= null; 
 
     // =================================================================================
     // Properties
@@ -198,8 +200,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		myIterStackChildIdx = new Stack<int>();
         kGUIEmptyFoldOffset= EditorStyles.foldout.CalcSize(new GUIContent("")).x;
 		// Timer for tooltips
-		checkMouseTimer= 	 iCS_TimerService.CreateTimedAction(0.2f, CheckForHelpUnderMouse, /*isLooping=*/true);
-		checkMouseTimer.Schedule();
+		myCheckMouseTimer= iCS_TimerService.CreateTimedAction(0.2f, CheckForHelpUnderMouse, /*isLooping=*/true);
+		myCheckMouseTimer.Schedule();
 	}
 	
 	
@@ -731,11 +733,18 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		if(visEd != null) {
 			if(node == null || node.Type==NodeTypeEnum.Company || node.Type==NodeTypeEnum.Library || node.Type==NodeTypeEnum.Package) {
 				// Show Generic Library help
-				visEd.libraryHelp(null);
+				if(myHelpMemberInfo != null) {
+					myHelpMemberInfo= null;
+					visEd.libraryHelp(null);
+				}
 			} 
 			else {
 				// Show specific Library help
-				visEd.libraryHelp(node.MemberInfo);
+				var memberInfo= node.MemberInfo;
+				if(myHelpMemberInfo != memberInfo) {
+					myHelpMemberInfo= memberInfo;
+					visEd.libraryHelp(node.MemberInfo);
+				}
 			} 
 		}		
     }
