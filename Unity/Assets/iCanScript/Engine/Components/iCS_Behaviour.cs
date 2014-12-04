@@ -1,4 +1,4 @@
-//{"ContentHash" : "96A1B63E312C706E12DDBE642F72E78D"}
+//{"ContentHash" : "D29B0A1235A6F199C5B6105672A96094"}
 /////////////////////////////////////////////////////////////////
 //  iCS_Behaviour.cs
 //
@@ -506,5 +506,12 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 		}
 	}
 
-
+	void Invoke(string methodName)
+	{
+		if(allVisualScripts != null) {
+			foreach(var vs in allVisualScripts) {
+				vs.RunMessage(methodName);
+			}
+		}
+	}
 }
