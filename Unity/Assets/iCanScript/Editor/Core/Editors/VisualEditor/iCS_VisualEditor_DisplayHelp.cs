@@ -14,7 +14,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	string       myHelpText         = null;
     Texture2D    myHelpLogo         = null;
     Texture2D    myHelpDontLogo     = null;
-	bool         myIsLibraryHelp  = false;
+	bool         myIsLibraryHelp    = false;
 	Rect         myLibraryWindowPos = new Rect(0,0,0,0);
     
     
@@ -119,7 +119,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// --------------------------------------------------------------------------------
     void UpdateHelpHotZone() {
         HotZoneRemove(kHelpDisplayKey);
-        HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);        
+        HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null, myHelpEnabled);
     }
     
 	enum Direction {Producer, Consumer};
