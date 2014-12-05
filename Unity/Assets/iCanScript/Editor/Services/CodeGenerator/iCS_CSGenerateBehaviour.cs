@@ -68,7 +68,15 @@ public class iCS_CSGenerateBehaviour {
                "\t}\n";
     }
     static string GenerateBehaviourClassTrailer(string className) {
-        return "\n}\n";
+        return "\tvoid Invoke(string methodName)\n"+
+               "\t{\n"+
+               "\t\tif(allVisualScripts != null) {\n"+
+               "\t\t\tforeach(var vs in allVisualScripts) {\n"+
+               "\t\t\t\tvs.RunMessage(methodName);\n"+
+               "\t\t\t}\n"+
+               "\t\t}\n"+
+               "\t}\n"+            
+               "\n}\n";
     }
 	// ----------------------------------------------------------------------
     public static string BehaviourMessageProxy(string className, iCS_MessageInfo[] messages) {
