@@ -76,7 +76,7 @@ public class iCS_CSGenerateBehaviour {
                "\t\t\t}\n"+
                "\t\t}\n"+
                "\t}\n"+            
-               "}\n";
+               "\n}\n";
     }
 	// ----------------------------------------------------------------------
     public static string BehaviourMessageProxy(string className, iCS_MessageInfo[] messages) {
