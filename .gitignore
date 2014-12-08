@@ -71,3 +71,6 @@ Unity/Assets/iCanScript/tmtags.meta
 Unity/Assets/iCanScript/tmtagsHistory
 Unity/Assets/iCanScript/tmtagsHistory.meta
 Unity/Library/*
+bin/staging/upgradeFiles
+bin/staging/iCanScriptUpgrade.dll
+bin/staging/iCanScriptUpgrade.rsp
