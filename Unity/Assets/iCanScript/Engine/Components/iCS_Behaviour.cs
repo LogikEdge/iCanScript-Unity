@@ -1,4 +1,4 @@
-//{"ContentHash" : "3C2126C504ACE0ED0958338C3810DCF7"}
+//{"ContentHash" : "DC0C75C518331C68DD748A2CE74E661A"}
 /////////////////////////////////////////////////////////////////
 //  iCS_Behaviour.cs
 //
@@ -391,16 +391,6 @@ public sealed class iCS_Behaviour : MonoBehaviour {
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
 				vs.RunMessage("OnPreRender");
-			}
-		}
-	}
-
-
-	void OnRenderImage(RenderTexture source, RenderTexture destination)
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnRenderImage", source, destination);
 			}
 		}
 	}
