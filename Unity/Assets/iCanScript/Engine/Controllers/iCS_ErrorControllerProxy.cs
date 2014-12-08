@@ -18,6 +18,7 @@ public static class iCS_ErrorControllerProxy {
 	public static void AddError(string serviceId, string message, iCS_VisualScriptImp vs, int objectId) {
 		if(_AddError != null) {
 			_AddError(serviceId, message, vs, objectId);
+            Debug.LogWarning("iCanScript: ERROR: "+message);
 		}
 		else {
             Debug.LogWarning("iCanScript: ERROR: "+message);
@@ -26,6 +27,7 @@ public static class iCS_ErrorControllerProxy {
 	public static void AddWarning(string serviceId, string message, iCS_VisualScriptImp vs, int objectId) {
 		if(_AddWarning != null) {
 			_AddWarning(serviceId, message, vs, objectId);
+            Debug.LogWarning("iCanScript: WARNING: "+message);
 		}
 		else {
             Debug.LogWarning("iCanScript: WARNING: "+message);
