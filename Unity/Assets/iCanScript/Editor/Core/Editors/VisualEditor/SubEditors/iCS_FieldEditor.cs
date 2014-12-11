@@ -346,7 +346,48 @@ public class iCS_FieldEditor : iCS_ISubEditor {
                 case KeyCode.Escape: {
                     myValueAsString= myInitialValueAsString;
                     myCursor= 0;
+                    Event.current.Use();
                     return true;
+                }
+                case KeyCode.Home: {
+                    if(Application.platform == RuntimePlatform.WindowsEditor) {
+                        myCursor= 0;
+                        mySelectionLength= 0;
+                        Event.current.Use();
+                        return true;
+                    }
+                    goto default;                    
+                }
+                case KeyCode.End: {
+                    if(Application.platform == RuntimePlatform.WindowsEditor) {
+                        myCursor= myValueAsString.Length;
+                        mySelectionLength= 0;
+                        Event.current.Use();
+                        return true;
+                    }
+                    goto default;
+                }
+                case KeyCode.A: {
+                    if(Application.platform == RuntimePlatform.OSXEditor) {
+                        if(Event.current.control) {
+                            myCursor= 0;
+                            mySelectionLength= 0;
+                            Event.current.Use();
+                            return true;
+                        }
+                    } 
+                    goto default;                                       
+                }
+                case KeyCode.E: {
+                    if(Application.platform == RuntimePlatform.OSXEditor) {
+                        if(Event.current.control) {
+                            myCursor= myValueAsString.Length;
+                            mySelectionLength= 0;
+                            Event.current.Use();
+                            return true;
+                        }
+                    }
+                    goto default; 
                 }
                 default: {
                     if(ev.isKey) {
