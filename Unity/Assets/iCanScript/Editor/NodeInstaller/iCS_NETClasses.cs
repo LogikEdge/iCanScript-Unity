@@ -8,8 +8,10 @@ public static class iCS_NETClasses {
     public static void PopulateDataBase() {
         DecodeNETClassInfo(typeof(string));
         DecodeNETClassInfo(typeof(char));
+        DecodeNETClassInfo(typeof(int));
+        DecodeNETClassInfo(typeof(float));
         DecodeNETClassInfo(typeof(Array));
-        DecodeNETClassInfo(typeof(Path));        
+        DecodeNETClassInfo(typeof(Path));
     }
 
     // ----------------------------------------------------------------------

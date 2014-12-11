@@ -20,7 +20,7 @@ public static class iCS_UpgradeController {
     // ======================================================================
     // Code cleanup
     // ----------------------------------------------------------------------
-	pubic static void CleanupAfterImport() {
+	public static void CleanupAfterImport() {
 		string kEditorCommunityDLL= "Assets/iCanScript/Editor/iCanScriptEditorCommunity.dll";
 		string kEditorProDLL      = Application.dataPath+"/iCanScript/Editor/iCanScriptEditorPro.dll";
 		if(File.Exists(kEditorProDLL)) {
