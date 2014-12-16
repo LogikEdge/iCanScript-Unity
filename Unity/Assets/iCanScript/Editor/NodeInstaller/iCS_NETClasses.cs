@@ -12,6 +12,8 @@ public static class iCS_NETClasses {
         DecodeNETClassInfo(typeof(float));
         DecodeNETClassInfo(typeof(Array));
         DecodeNETClassInfo(typeof(Path));
+        DecodeNETClassInfo(typeof(File));
+        DecodeNETClassInfo(typeof(Directory));
     }
 
     // ----------------------------------------------------------------------
