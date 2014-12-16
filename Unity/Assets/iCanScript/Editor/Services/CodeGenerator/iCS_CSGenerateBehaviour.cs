@@ -68,7 +68,7 @@ public class iCS_CSGenerateBehaviour {
                "\t}\n";
     }
     static string GenerateBehaviourClassTrailer(string className) {
-        return "\tvoid Invoke(string methodName)\n"+
+        return "\tvoid InvokeVisualScript(string methodName)\n"+
                "\t{\n"+
                "\t\tif(allVisualScripts != null) {\n"+
                "\t\t\tforeach(var vs in allVisualScripts) {\n"+

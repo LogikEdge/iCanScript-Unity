@@ -56,7 +56,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         }
     }
     // ----------------------------------------------------------------------
-    public void Invoke(string methodName) {
+    public void InvokeVisualScript(string methodName) {
         RunMessage(methodName);
     }
     // ----------------------------------------------------------------------
