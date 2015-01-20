@@ -47,13 +47,19 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             if(nbOfParams != 0) {
                 for(int i= 0; i < nbOfParams; ++i) {
 					var p= Parameters[i];
-					var paramStr= p.ToString();
-					if(p is String) {
-						paramStr= "\""+paramStr+"\"";
-					}
-					if(p is Char) {
-						paramStr= "\'"+paramStr+"\'";
-					}
+                    string paramStr= "";
+                    if(p == null) {
+                        paramStr= "null";
+                    }
+                    else {
+    					paramStr+= p.ToString();
+    					if(p is String) {
+    						paramStr= "\""+paramStr+"\"";
+    					}
+    					if(p is Char) {
+    						paramStr= "\'"+paramStr+"\'";
+    					}                        
+                    }
 					parametersAsStr+= paramStr;
                     if(i != nbOfParams-1) {
                         parametersAsStr+=", ";

@@ -95,7 +95,9 @@ public static partial class iCS_UserCommands {
                     node.ClearLayoutPriority();
                     var visualEditor= iCS_EditorController.FindVisualEditor();
                     if(visualEditor != null) {
-                        visualEditor.SmartFocusOn(node);
+                        var focusNode= node.Parent;
+                        if(focusNode == null) focusNode= node;
+                        visualEditor.SmartFocusOn(focusNode);
                     }
                 }
             );
