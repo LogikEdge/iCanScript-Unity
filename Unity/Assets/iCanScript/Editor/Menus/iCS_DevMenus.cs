@@ -76,6 +76,10 @@ public static class iCS_DevMenus {
     }
     // ======================================================================
     // Sanity Check
+	[MenuItem("iCanScript/DevTools/Restart AppController",false,2000)]
+	public static void MenuRestartAppController() {
+        iCS_AppController.Start();
+	}
 	[MenuItem("iCanScript/DevTools/Sanity Check Selection",false,2020)]
 	public static void MenuSanityCheck() {
 		iCS_IStorage storage= iCS_VisualScriptDataController.IStorage;

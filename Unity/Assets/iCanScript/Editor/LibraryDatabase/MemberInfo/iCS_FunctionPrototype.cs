@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections;
@@ -89,6 +90,100 @@ public class iCS_FunctionPrototype : iCS_MemberInfo, IEquatable<iCS_FunctionProt
 			}
 			if(nbOfOutputs > 1) {
 				signature+="->("+outputStr.Substring(0, outputStr.Length-2)+")";
+			}
+			return signature;
+        }
+    }
+	
+    // ----------------------------------------------------------------------
+    public string FunctionSignatureNoParameterNames {
+        get {
+            string signature= (EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>")+"<b>"+DisplayName+"</b></color>";
+			// Build input string
+			string inputStr= "";
+            if(IsInstanceFunctionBase) {
+                inputStr+= iCS_Types.TypeName(ClassType)+", ";
+            }
+            foreach(var param in Parameters) {
+				if(!param.type.IsByRef) {
+	                inputStr+= iCS_Types.TypeName(param.type)+", ";
+				}
+            }
+			// Add inputs to signature.
+			if(inputStr != "") {
+	            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
+			}
+			// Build output string
+			int nbOfOutputs= 0;
+			string outputStr= "";
+            foreach(var param in Parameters) {
+				if(param.type.IsByRef) {
+	                outputStr+= iCS_Types.TypeName(param.type.GetElementType())+", ";
+					++nbOfOutputs;
+				}
+            }
+			if(ReturnType != null && ReturnType != typeof(void)) {
+				++nbOfOutputs;
+				outputStr+= iCS_Types.TypeName(ReturnType);
+                outputStr+= ", ";
+			}
+			// Add output to signature.
+			if(nbOfOutputs == 1) {
+				signature+="->"+outputStr.Substring(0, outputStr.Length-2);
+			}
+			if(nbOfOutputs > 1) {
+				signature+="->("+outputStr.Substring(0, outputStr.Length-2)+")";
+			}
+			return signature;
+        }
+    }
+	
+    // ----------------------------------------------------------------------
+    public string FunctionSignatureInputTypes {
+        get {
+			// Build input string
+            string signature= "";
+			string inputStr= "";
+            if(IsInstanceFunctionBase) {
+                inputStr+= iCS_Types.TypeName(ClassType)+", ";
+            }
+            foreach(var param in Parameters) {
+				if(!param.type.IsByRef) {
+	                inputStr+= iCS_Types.TypeName(param.type)+", ";
+				}
+            }
+			// Add inputs to signature.
+			if(inputStr != "") {
+	            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
+			}
+			return signature;
+        }
+    }
+	
+    // ----------------------------------------------------------------------
+    public string FunctionSignatureOutputTypes {
+        get {
+			// Build output string
+            string signature= "";
+			int nbOfOutputs= 0;
+			string outputStr= "";
+            foreach(var param in Parameters) {
+				if(param.type.IsByRef) {
+	                outputStr+= iCS_Types.TypeName(param.type.GetElementType())+", ";
+					++nbOfOutputs;
+				}
+            }
+			if(ReturnType != null && ReturnType != typeof(void)) {
+				++nbOfOutputs;
+				outputStr+= iCS_Types.TypeName(ReturnType);
+                outputStr+= ", ";
+			}
+			// Add output to signature.
+			if(nbOfOutputs == 1) {
+				signature+=outputStr.Substring(0, outputStr.Length-2);
+			}
+			if(nbOfOutputs > 1) {
+				signature+="("+outputStr.Substring(0, outputStr.Length-2)+")";
 			}
 			return signature;
         }

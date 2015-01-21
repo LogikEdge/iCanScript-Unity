@@ -215,6 +215,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	    ActiveTree= BuildTreeNode(allFunctions);
     }
 	Prelude.Tree<Node> BuildTreeNode(List<iCS_FunctionPrototype> functions) {
+        var displayNameHeader= (EditorGUIUtility.isProSkin ? "<color=cyan><b>" : "<color=blue><b>");
+        var displayNameTrailer= "</b></color>";
+        var inputTypesHeader= (EditorGUIUtility.isProSkin ? "<color=lime><i>" : "<color=green><i>");
+        var inputTypesTrailer= "</i></color>";
+        var outputTypesHeader= (EditorGUIUtility.isProSkin ? "<color=yellow><i>" : "<color=brown><i>");
+        var outputTypesTrailer= "</i></color>";
         if(functions.Count == 0) return null;
         var myTreeSize= 0;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
@@ -225,17 +231,25 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 var parentTree= GetParentTree(memberInfo, tree, ref myTreeSize);
                 Node toAdd= null;
                 if(memberInfo.IsField) {
-                    toAdd= new Node(NodeTypeEnum.Field, memberInfo.ToFieldInfo.FieldName, memberInfo);
+                    var name= displayNameHeader+memberInfo.ToFieldInfo.FieldName+displayNameTrailer;
+                    toAdd= new Node(NodeTypeEnum.Field, name, memberInfo);
                 } else if(memberInfo.IsProperty) {
-                    toAdd= new Node(NodeTypeEnum.Property, memberInfo.ToPropertyInfo.PropertyName, memberInfo);
+                    var name= displayNameHeader+memberInfo.ToPropertyInfo.PropertyName+displayNameTrailer;
+                    toAdd= new Node(NodeTypeEnum.Property, name, memberInfo);
                 } else if(memberInfo.IsConstructor) {
-                    toAdd= new Node(NodeTypeEnum.Constructor, memberInfo.ToConstructorInfo.DisplayName, memberInfo);
+                    var name= displayNameHeader+memberInfo.DisplayName+displayNameTrailer;
+                    name+= inputTypesHeader+memberInfo.FunctionSignatureInputTypes+inputTypesTrailer;
+                    name+= "->"+outputTypesHeader+memberInfo.FunctionSignatureOutputTypes+outputTypesTrailer;
+                    toAdd= new Node(NodeTypeEnum.Constructor, name, memberInfo);
                 } else if(memberInfo.IsTypeCast) {
                         // Don't add the typecasts in the library.
                 } else if(memberInfo.IsMethod) {
-                    toAdd= new Node(NodeTypeEnum.Method, memberInfo.ToMethodInfo.DisplayName, memberInfo);                
+                    var name= displayNameHeader+memberInfo.DisplayName+displayNameTrailer;
+                    name+= inputTypesHeader+memberInfo.FunctionSignatureInputTypes+inputTypesTrailer;
+                    name+= "->"+outputTypesHeader+memberInfo.FunctionSignatureOutputTypes+outputTypesTrailer;
+                    toAdd= new Node(NodeTypeEnum.Method, name, memberInfo);                
                 } else if(memberInfo.IsMessage) {
-                    toAdd= new Node(NodeTypeEnum.Message, memberInfo.ToMessageInfo.DisplayName, memberInfo);
+                    toAdd= new Node(NodeTypeEnum.Message, memberInfo.FunctionSignatureNoParameterNames, memberInfo);
                 }
                 if(toAdd != null) {
                     ++myTreeSize;
@@ -540,6 +554,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
         // Show selected outline.
         GUIStyle labelStyle= EditorStyles.label;
+        labelStyle.richText= true;
 	
 		if(IsSelected) {
             mySelectedArea= frameArea;
