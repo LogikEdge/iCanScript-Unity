@@ -16,7 +16,7 @@ public static class iCS_PublicInterfaceController {
             Debug.LogError("iCanScript: Please move PublicInterfaceController after the SceneController in AppController");
         }
         // -- Events to refresh scene content information --
-        iCS_SystemEvents.OnSceneChanged    += OnSceneLoad;
+        iCS_SystemEvents.OnSceneChanged    += OnSceneChange;
         iCS_SystemEvents.OnHierarchyChanged+= OnSceneLoad;
         iCS_SystemEvents.OnProjectChanged  += OnSceneLoad;
         // -- Events to refresh visual script information --
@@ -46,6 +46,10 @@ public static class iCS_PublicInterfaceController {
     // ======================================================================
     // PROCESS EVENTS
     // ----------------------------------------------------------------------
+    static void OnSceneChange() {
+        RebuildAndValidatePublicInterfaceInfo();
+        OnSceneLoad();
+    }
     static void OnSceneLoad() {
         var timedAction= iCS_TimerService.CreateTimedAction(2f, RebuildAndValidatePublicInterfaceInfo);
         timedAction.Schedule();

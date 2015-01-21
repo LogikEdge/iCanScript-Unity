@@ -52,7 +52,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
             return null;
         }
         var objectId= referenceNode.ProxyOriginalNodeId;
-        return vs.EngineObjects[objectId];
+        return objectId == -1 ? null : vs.EngineObjects[objectId];
     }
     // ----------------------------------------------------------------------
     public bool IsReferenceNodeUsingDynamicBinding(iCS_EngineObject referenceNode) {

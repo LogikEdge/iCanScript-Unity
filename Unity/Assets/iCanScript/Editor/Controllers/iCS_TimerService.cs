@@ -13,6 +13,7 @@ public static class iCS_TimerService {
         EditorApplication.update+= PeriodicUpdate;
     }
     public static void Start() {}
+    public static void Restart() { Shutdown(); EditorApplication.update+= PeriodicUpdate; }
     public static void Shutdown() {
         EditorApplication.update-= PeriodicUpdate;
     }
