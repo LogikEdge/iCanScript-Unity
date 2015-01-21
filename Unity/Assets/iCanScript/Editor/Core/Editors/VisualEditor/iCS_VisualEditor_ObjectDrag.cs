@@ -457,12 +457,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 								break;
 							}
                         }
-						/*
-							CHANGED : CODE REVIEW NEEDED => Cleanup of disconnected child multiplexer port.
-						*/
 						// Cleanup child Mux port if it is disconnected.
 						if(DragOriginalPort.IsChildMuxPort && DragOriginalPort.ProducerPort == null) {
+                            var muxParent= DragOriginalPort.Parent;
 							IStorage.DestroyInstance(DragOriginalPort);
+                            if(muxParent != null && muxParent.IsParentMuxPort) {
+                                IStorage.CleanupMuxPort(muxParent);                                
+                            }
 						}
                     }                    
                     iCS_UserCommands.EndPortConnection(DragOriginalPort);
