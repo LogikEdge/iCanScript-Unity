@@ -10,8 +10,9 @@ public static class iCS_BlinkController {
     // ----------------------------------------------------------------------
     static iCS_BlinkController()    {
         myAnimationTimer.Schedule();
+        iCS_SystemEvents.OnSceneChanged+= RestartTimer;
     }
-    public static void Start()      {}
+    public static void Start() {}
     public static void Shutdown() {
         myAnimationTimer.Stop();
     }
@@ -37,6 +38,10 @@ public static class iCS_BlinkController {
     public static Color NormalBlinkHighColor { get { return new Color(1f,1f,1f,0.5f+0.5f*NormalBlinkRatio); }}
     public static Color FastBlinkHighColor   { get { return new Color(1f,1f,1f,0.5f+0.5f*FastBlinkRatio); }}
     
+    // ----------------------------------------------------------------------
+    public static void RestartTimer() {
+        myAnimationTimer.Schedule();
+    }
     // ----------------------------------------------------------------------
     static void DoAnimation() {
 		// -- Restart the alpha animation --

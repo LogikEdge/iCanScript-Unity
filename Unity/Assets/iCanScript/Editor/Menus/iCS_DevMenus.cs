@@ -14,6 +14,11 @@ public static class iCS_DevMenus {
     // Snapshot definitions
 	const string ScreenShotsFolder= "/../../../ScreenShots";
     
+	[MenuItem("iCanScript/DevTools/RestartControllers",false,2000)]
+	public static void MenuRestartControllers() {
+        iCS_BlinkController.RestartTimer();
+	}
+
     // ======================================================================
     // Visual Editor Snapshot
 	[MenuItem("iCanScript/DevTools/Visual Editor Snapshot",false,2000)]
@@ -76,10 +81,6 @@ public static class iCS_DevMenus {
     }
     // ======================================================================
     // Sanity Check
-	[MenuItem("iCanScript/DevTools/Restart AppController",false,2000)]
-	public static void MenuRestartAppController() {
-        iCS_TimerService.Restart();
-	}
 	[MenuItem("iCanScript/DevTools/Sanity Check Selection",false,2020)]
 	public static void MenuSanityCheck() {
 		iCS_IStorage storage= iCS_VisualScriptDataController.IStorage;

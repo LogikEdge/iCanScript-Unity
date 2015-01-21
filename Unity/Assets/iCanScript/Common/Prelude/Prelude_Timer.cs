@@ -24,6 +24,9 @@ public static partial class Prelude {
         public bool IsElapsed {
             get { return CurrentTime() >= myElapseTime; }
         }
+        public float DeltaTime {
+            get { return myDeltaTime; }
+        }
         public float RemainingTime {
             get { return myElapseTime-CurrentTime(); }
         }
@@ -40,6 +43,11 @@ public static partial class Prelude {
         public void RestartNoDrift(float deltaTime) {
             myDeltaTime= deltaTime;
             RestartNoDrift();
+        }
+        public void SanityCheck() {
+            if(RemainingTime > myDeltaTime) {
+                Restart();
+            }
         }
     }
 }

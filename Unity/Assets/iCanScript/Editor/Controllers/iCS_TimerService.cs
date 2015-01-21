@@ -13,7 +13,6 @@ public static class iCS_TimerService {
         EditorApplication.update+= PeriodicUpdate;
     }
     public static void Start() {}
-    public static void Restart() { Shutdown(); EditorApplication.update+= PeriodicUpdate; }
     public static void Shutdown() {
         EditorApplication.update-= PeriodicUpdate;
     }
@@ -60,6 +59,7 @@ public static class iCS_TimerService {
         public void  Restart(float time) { myTimer.Restart(time); iCS_TimerService.Restart(this); }
         public void  Stop()              { iCS_TimerService.Stop(this); }
 		public float RemainingTime		 { get { return myTimer.RemainingTime; }}
+        public void  SanityCheck()       { myTimer.SanityCheck(); }
     }
     
     // ======================================================================
