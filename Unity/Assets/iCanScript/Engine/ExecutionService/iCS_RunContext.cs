@@ -1,11 +1,13 @@
 //#define EXECUTION_TRACE
 using UnityEngine;
+using System.Collections.Generic;
 
 public class iCS_RunContext {
     // ======================================================================
     // Fields
     int          myFrameId= 0;
     iCS_Action   myAction= null;
+    List<iCS_Action>    myStalledActions= new List<iCS_Action>();
     
     // ======================================================================
     // Properties
@@ -46,7 +48,29 @@ public class iCS_RunContext {
     // Attempt to resolve deadlock by using previous frame data.  This
     // is realized by temporarly deactivating a node that needs to produce
     // data for this frame.
+    //
+    // Prefered order of resolution:
+    // 0) Waiting on external message handler or public function
+    // 1) Waiting on Mux
+    // 2) Waiting on Data
+    // 3) Waiting on Enable(s)
     void ResolveDeadLock(int attempts) {
+        // Attempt to recover in the same order as last time
+        if(attempts == 0) {
+            var cnt= myStalledActions.Count;
+            if(cnt != 0) {
+                for(int i= 0; i < cnt; ++i) {
+                    var node= myStalledActions[i];
+                    if(node.IsStalled) {
+                        node.IsActive= false;
+                        myAction.Execute(myFrameId);
+                        node.IsActive= true;                        
+                        if(!myAction.IsStalled) return;
+                    }
+                }
+                myStalledActions.Clear();
+            }
+        }
         // Force execution if to many nested attempts to resolve deadlock
         if(attempts > 10) {
 //#if UNITY_EDITOR
@@ -66,6 +90,7 @@ public class iCS_RunContext {
                 Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+")");
             }
 //#endif
+            myStalledActions.Add(node);
             node.IsActive= false;
             myAction.Execute(myFrameId);
             if(myAction.IsStalled) {
