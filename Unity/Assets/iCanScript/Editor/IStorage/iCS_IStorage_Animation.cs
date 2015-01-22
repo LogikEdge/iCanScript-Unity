@@ -9,7 +9,7 @@ public partial class iCS_IStorage {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-    public P.TimeRatio            myAnimationTime= new P.TimeRatio();
+    public P.TimeRatio            myAnimationTime= new P.TimeRatio(iCS_TimerService.EditorTime);
     public List<iCS_EditorObject> myAnimatedObjects= new List<iCS_EditorObject>();
     public bool[]                 myWasPresent;
     public bool[]                 myWasVisible;

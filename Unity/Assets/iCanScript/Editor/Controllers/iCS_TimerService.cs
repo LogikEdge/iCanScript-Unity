@@ -18,6 +18,12 @@ public static class iCS_TimerService {
     }
     
     // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+    public static float EditorTime() { return (float)EditorApplication.timeSinceStartup; }
+    public static float EngineTime() { return Time.realtimeSinceStartup; }
+    
+    // ======================================================================
     public static TimedAction CreateTimedAction(float time, Action action, bool isLooping= false) {
         return new TimedAction(time, action, isLooping);
     }
@@ -47,7 +53,7 @@ public static class iCS_TimerService {
         
         public TimedAction(float delay, Action action, bool isLooping= false) {
             myAction   = action;
-            myTimer    = new P.Timer(delay);
+            myTimer    = new P.Timer(delay, EditorTime);
             myIsLooping= isLooping;
         }
         public bool  IsElapsed           { get { return myTimer.IsElapsed; }}
