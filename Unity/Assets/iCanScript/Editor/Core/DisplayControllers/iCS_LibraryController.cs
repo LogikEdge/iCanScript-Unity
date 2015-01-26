@@ -554,7 +554,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
         // Show selected outline.
         GUIStyle labelStyle= EditorStyles.label;
-        labelStyle.richText= true;
 	
 		if(IsSelected) {
             mySelectedArea= frameArea;
@@ -562,6 +561,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
             labelStyle= EditorStyles.whiteLabel;
 		}
+        // Enable RTF
+        labelStyle.richText= true;
 	
 		bool result= ShouldUseFoldout() ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
         var content= GetContent();
