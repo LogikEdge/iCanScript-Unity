@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-public class iCS_FunctionPrototype : iCS_MemberInfo {
+public class iCS_FunctionPrototype : iCS_MemberInfo, IEquatable<iCS_FunctionPrototype> {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -94,7 +95,126 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
         }
     }
 	
+    // ----------------------------------------------------------------------
+    public string FunctionSignatureNoParameterNames {
+        get {
+            string signature= (EditorGUIUtility.isProSkin ? "<color=cyan>" : "<color=blue>")+"<b>"+DisplayName+"</b></color>";
+			// Build input string
+			string inputStr= "";
+            if(IsInstanceFunctionBase) {
+                inputStr+= iCS_Types.TypeName(ClassType)+", ";
+            }
+            foreach(var param in Parameters) {
+				if(!param.type.IsByRef) {
+	                inputStr+= iCS_Types.TypeName(param.type)+", ";
+				}
+            }
+			// Add inputs to signature.
+			if(inputStr != "") {
+	            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
+			}
+			// Build output string
+			int nbOfOutputs= 0;
+			string outputStr= "";
+            foreach(var param in Parameters) {
+				if(param.type.IsByRef) {
+	                outputStr+= iCS_Types.TypeName(param.type.GetElementType())+", ";
+					++nbOfOutputs;
+				}
+            }
+			if(ReturnType != null && ReturnType != typeof(void)) {
+				++nbOfOutputs;
+				outputStr+= iCS_Types.TypeName(ReturnType);
+                outputStr+= ", ";
+			}
+			// Add output to signature.
+			if(nbOfOutputs == 1) {
+				signature+="->"+outputStr.Substring(0, outputStr.Length-2);
+			}
+			if(nbOfOutputs > 1) {
+				signature+="->("+outputStr.Substring(0, outputStr.Length-2)+")";
+			}
+			return signature;
+        }
+    }
 	
+    // ----------------------------------------------------------------------
+    public string FunctionSignatureInputTypes {
+        get {
+			// Build input string
+            string signature= "";
+			string inputStr= "";
+            if(IsInstanceFunctionBase) {
+                inputStr+= iCS_Types.TypeName(ClassType)+", ";
+            }
+            foreach(var param in Parameters) {
+				if(!param.type.IsByRef) {
+	                inputStr+= iCS_Types.TypeName(param.type)+", ";
+				}
+            }
+			// Add inputs to signature.
+			if(inputStr != "") {
+	            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
+			}
+			return signature;
+        }
+    }
+	
+    // ----------------------------------------------------------------------
+    public string FunctionSignatureOutputTypes {
+        get {
+			// Build output string
+            string signature= "";
+			int nbOfOutputs= 0;
+			string outputStr= "";
+            foreach(var param in Parameters) {
+				if(param.type.IsByRef) {
+	                outputStr+= iCS_Types.TypeName(param.type.GetElementType())+", ";
+					++nbOfOutputs;
+				}
+            }
+			if(ReturnType != null && ReturnType != typeof(void)) {
+				++nbOfOutputs;
+				outputStr+= iCS_Types.TypeName(ReturnType);
+                outputStr+= ", ";
+			}
+			// Add output to signature.
+			if(nbOfOutputs == 1) {
+				signature+=outputStr.Substring(0, outputStr.Length-2);
+			}
+			if(nbOfOutputs > 1) {
+				signature+="("+outputStr.Substring(0, outputStr.Length-2)+")";
+			}
+			return signature;
+        }
+    }
+	
+    // ----------------------------------------------------------------------
+	public string InterfaceTypesAsString() {
+		string result= "(";
+		bool addSeparator= false;
+        foreach(var param in Parameters) {
+			if(!param.type.IsByRef) {
+                result+= (addSeparator ? ", " : "")+iCS_Types.TypeName(param.type);
+				addSeparator= true;
+			}
+        }
+		result+= ")->(";
+		addSeparator= false;
+        foreach(var param in Parameters) {
+			if(param.type.IsByRef) {
+                result+= (addSeparator ? ", " : "")+iCS_Types.TypeName(param.type);
+				addSeparator= true;
+			}
+        }
+		if(ReturnType != null && ReturnType != typeof(void)) {
+			result+= (addSeparator ? ", " : "")+iCS_Types.TypeName(ReturnType);
+		}
+		result+= ")";
+		return result;
+	}
+	
+    // ----------------------------------------------------------------------
     public string FunctionParameters() {
             string signature= null;
 				
@@ -280,4 +400,19 @@ public class iCS_FunctionPrototype : iCS_MemberInfo {
     public override string ToString() {
         return FunctionPath+memberSeparator+FunctionSignature;            
     }
+	
+    // ======================================================================
+    // IEquatable Implementation
+    // ----------------------------------------------------------------------
+	public bool Equals(iCS_FunctionPrototype other) {
+		if(!base.Equals(other)) return false;
+		if(StorageClass != other.StorageClass) return false;
+		if(FunctionReturn.type != other.FunctionReturn.type) return false;
+		var paramLen= Parameters.Length;
+		if(paramLen != other.Parameters.Length) return false;
+		for(int i= 0; i < paramLen; ++i) {
+			if(Parameters[i].type != other.Parameters[i].type) return false;
+		}
+		return true;
+	}
 }

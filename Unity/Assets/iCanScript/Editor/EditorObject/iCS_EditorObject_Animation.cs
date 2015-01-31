@@ -9,7 +9,7 @@ public partial class iCS_EditorObject {
 	// Fields
     // ----------------------------------------------------------------------
 	public P.Animate<Rect> myAnimatedRect=
-		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio), iCS_TimerService.EditorTime);
     
     // ======================================================================
     // Properties

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using P= Prelude;
 
 public class iCS_ScrollView {
     // ======================================================================
@@ -9,7 +10,7 @@ public class iCS_ScrollView {
     Rect    Canvas        = new Rect(0,0,0,0);  // In graph coordonates
     Vector2 ScrollPosition= Vector2.zero;       // Offset in canvas
 
-    Prelude.Animate<Vector2>    ScrollPositionAnimation= new Prelude.Animate<Vector2>();
+    P.Animate<Vector2>    ScrollPositionAnimation= new P.Animate<Vector2>(iCS_TimerService.EditorTime);
     
     // ======================================================================
     // Properties

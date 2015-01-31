@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Pref=iCS_PreferencesController;
 using System;
+using P= Prelude;
 
 /*
     TODO: Cleanup conditional tree descent VS full tree descent when drawing graph.
@@ -10,8 +11,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields.
     // ----------------------------------------------------------------------
-    Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
-    Prelude.Animate<float>      myAnimatedScale         = new Prelude.Animate<float>();
+    P.Animate<Vector2>    myAnimatedScrollPosition= new P.Animate<Vector2>(iCS_TimerService.EditorTime);
+    P.Animate<float>      myAnimatedScale         = new P.Animate<float>(iCS_TimerService.EditorTime);
 
     // ======================================================================
     // Properties.

@@ -26,6 +26,7 @@ EDITOR_DIR=$PRODUCT_DIR/Editor
 ENGINE_DIR=$PRODUCT_DIR/Engine
 EDITOR_PUBLIC_NODE_INSTALLER_DIR=$EDITOR_DIR/NodeInstaller
 EDITOR_PUBLIC_EDITOR_WINDOWS_DIR=$EDITOR_DIR/EditorWindows
+EDITOR_UPGRADE_FUNCTIONALITY_DIR=$EDITOR_DIR/0-Upgrade
 ENGINE_PUBLIC_COMPONENTS_DIR=$ENGINE_DIR/Components
 ENGINE_PUBLIC_NODES_DIR=$ENGINE_DIR/Nodes
 DEMO_SCENES_DIR=$PRODUCT_DIR/Demo_Scenes
@@ -46,6 +47,7 @@ find $PRODUCT_DIR -name "*.cs" | grep -v -f _editorFiles - >_engineFiles
 # Build list of files to exclude from the editor space (compile)
 find $EDITOR_PUBLIC_NODE_INSTALLER_DIR -name "*.cs" >editorFilesToExclude
 find $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR -name "*.cs" >>editorFilesToExclude
+find $EDITOR_UPGRADE_FUNCTIONALITY_DIR -name "*.cs" >>editorFilesToExclude
 # Build list of files to exclude from the engine space (compile)
 find $ENGINE_PUBLIC_COMPONENTS_DIR -name "*.cs" >engineFilesToExclude
 find $ENGINE_PUBLIC_NODES_DIR -name "*.cs" >>engineFilesToExclude
@@ -53,12 +55,14 @@ find $DEMO_SCENES_DIR >>engineFilesToExclude
 # Exclude editor & engine files from compile
 grep -v -f editorFilesToExclude _editorFiles >editorFiles
 grep -v -f engineFilesToExclude _engineFiles >engineFiles
+find $EDITOR_UPGRADE_FUNCTIONALITY_DIR -name "*.cs" >upgradeFiles
 
 # ============================================================================
 # Create compiler response files.
 cat EditorCommandsCommunity editorFiles >iCanScriptEditorCommunity.rsp
 cat EditorCommandsPro editorFiles >iCanScriptEditorPro.rsp
 cat EngineCommands engineFiles >iCanScriptEngine.rsp
+cat UpgradeCommands upgradeFiles >iCanScriptUpgrade.rsp
 
 # ============================================================================
 # Compile libraries.
@@ -69,6 +73,8 @@ $GMCS @iCanScriptEngine.rsp
 echo "Compiling editor code..."
 $GMCS -d:COMMUNITY_EDITION @iCanScriptEditorCommunity.rsp
 $GMCS -d:PRO_EDITION @iCanScriptEditorPro.rsp
+echo "Compiling upgrade code..."
+$GMCS @iCanScriptUpgrade.rsp
 
 # ============================================================================
 # Run obfuscator.
@@ -106,6 +112,7 @@ function build_edition {
     #echo "Installing into" $STAGING_PRODUCT_DIR "..."
     cp iCanScriptEngine.dll $STAGING_ENGINE_DIR
     cp iCanScriptEditor$1.dll $STAGING_EDITOR_DIR
+    cp iCanScriptUpgrade.dll $STAGING_EDITOR_DIR
 
     # ========================================================================
     # Install documentation

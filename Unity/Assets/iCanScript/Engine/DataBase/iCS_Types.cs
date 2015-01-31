@@ -112,6 +112,7 @@ public static class iCS_Types {
     }
 	// ----------------------------------------------------------------------
 	public static Type RemoveRefOrPointer(Type type) {
+        if(type == null) return null;
         if(type.IsByRef || type.IsPointer) type= GetElementType(type);		
 		return type;
 	}

@@ -121,8 +121,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	Stack<Prelude.Tree<Node>>   myIterStackNode    = null;
 	Stack<int>					myIterStackChildIdx= null;
 
+	// Library Help
+	iCS_MemberInfo					myHelpMemberInfo = null;
+	iCS_TimerService.TimedAction 	myCheckMouseTimer= null; 
 
-	iCS_TimerService.TimedAction checkMouseTimer= null; 
 
     // =================================================================================
     // Properties
@@ -198,8 +200,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		myIterStackChildIdx = new Stack<int>();
         kGUIEmptyFoldOffset= EditorStyles.foldout.CalcSize(new GUIContent("")).x;
 		// Timer for tooltips
-		checkMouseTimer= 	 iCS_TimerService.CreateTimedAction(0.2f, CheckForHelpUnderMouse, /*isLooping=*/true);
-		checkMouseTimer.Schedule();
+		myCheckMouseTimer= iCS_TimerService.CreateTimedAction(0.2f, CheckForHelpUnderMouse, /*isLooping=*/true);
+		myCheckMouseTimer.Schedule();
 	}
 	
 	
@@ -213,6 +215,12 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	    ActiveTree= BuildTreeNode(allFunctions);
     }
 	Prelude.Tree<Node> BuildTreeNode(List<iCS_FunctionPrototype> functions) {
+        var displayNameHeader= (EditorGUIUtility.isProSkin ? "<color=cyan><b>" : "<color=blue><b>");
+        var displayNameTrailer= "</b></color>";
+        var inputTypesHeader= (EditorGUIUtility.isProSkin ? "<color=lime><i>" : "<color=green><i>");
+        var inputTypesTrailer= "</i></color>";
+        var outputTypesHeader= (EditorGUIUtility.isProSkin ? "<color=yellow><i>" : "<color=brown><i>");
+        var outputTypesTrailer= "</i></color>";
         if(functions.Count == 0) return null;
         var myTreeSize= 0;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
@@ -223,17 +231,25 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 var parentTree= GetParentTree(memberInfo, tree, ref myTreeSize);
                 Node toAdd= null;
                 if(memberInfo.IsField) {
-                    toAdd= new Node(NodeTypeEnum.Field, memberInfo.ToFieldInfo.FieldName, memberInfo);
+                    var name= displayNameHeader+memberInfo.ToFieldInfo.FieldName+displayNameTrailer;
+                    toAdd= new Node(NodeTypeEnum.Field, name, memberInfo);
                 } else if(memberInfo.IsProperty) {
-                    toAdd= new Node(NodeTypeEnum.Property, memberInfo.ToPropertyInfo.PropertyName, memberInfo);
+                    var name= displayNameHeader+memberInfo.ToPropertyInfo.PropertyName+displayNameTrailer;
+                    toAdd= new Node(NodeTypeEnum.Property, name, memberInfo);
                 } else if(memberInfo.IsConstructor) {
-                    toAdd= new Node(NodeTypeEnum.Constructor, memberInfo.ToConstructorInfo.DisplayName, memberInfo);
+                    var name= displayNameHeader+memberInfo.DisplayName+displayNameTrailer;
+                    name+= inputTypesHeader+memberInfo.FunctionSignatureInputTypes+inputTypesTrailer;
+                    name+= "->"+outputTypesHeader+memberInfo.FunctionSignatureOutputTypes+outputTypesTrailer;
+                    toAdd= new Node(NodeTypeEnum.Constructor, name, memberInfo);
                 } else if(memberInfo.IsTypeCast) {
                         // Don't add the typecasts in the library.
                 } else if(memberInfo.IsMethod) {
-                    toAdd= new Node(NodeTypeEnum.Method, memberInfo.ToMethodInfo.MethodName, memberInfo);                
+                    var name= displayNameHeader+memberInfo.DisplayName+displayNameTrailer;
+                    name+= inputTypesHeader+memberInfo.FunctionSignatureInputTypes+inputTypesTrailer;
+                    name+= "->"+outputTypesHeader+memberInfo.FunctionSignatureOutputTypes+outputTypesTrailer;
+                    toAdd= new Node(NodeTypeEnum.Method, name, memberInfo);                
                 } else if(memberInfo.IsMessage) {
-                    toAdd= new Node(NodeTypeEnum.Message, memberInfo.ToMessageInfo.DisplayName, memberInfo);
+                    toAdd= new Node(NodeTypeEnum.Message, memberInfo.FunctionSignatureNoParameterNames, memberInfo);
                 }
                 if(toAdd != null) {
                     ++myTreeSize;
@@ -545,6 +561,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
             labelStyle= EditorStyles.whiteLabel;
 		}
+        // Enable RTF
+        labelStyle.richText= true;
 	
 		bool result= ShouldUseFoldout() ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
         var content= GetContent();
@@ -731,11 +749,18 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		if(visEd != null) {
 			if(node == null || node.Type==NodeTypeEnum.Company || node.Type==NodeTypeEnum.Library || node.Type==NodeTypeEnum.Package) {
 				// Show Generic Library help
-				visEd.libraryHelp(null);
+				if(myHelpMemberInfo != null) {
+					myHelpMemberInfo= null;
+					visEd.libraryHelp(null);
+				}
 			} 
 			else {
 				// Show specific Library help
-				visEd.libraryHelp(node.MemberInfo);
+				var memberInfo= node.MemberInfo;
+				if(myHelpMemberInfo != memberInfo) {
+					myHelpMemberInfo= memberInfo;
+					visEd.libraryHelp(node.MemberInfo);
+				}
 			} 
 		}		
     }

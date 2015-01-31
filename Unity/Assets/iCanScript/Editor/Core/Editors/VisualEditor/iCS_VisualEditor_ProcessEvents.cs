@@ -70,6 +70,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         SelectedObjectBeforeMouseDown= SelectedObject;
         switch(Event.current.button) {
             case 0: { // Left mouse button
+                // -- Update Hot Zones --
+                var pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
+                if(HotZoneMouseClick(WindowMousePosition, pickInfo)) {
+                    break;
+                }
+                // -- Update Selected Object --
                 DetermineSelectedObject();                    
                 if(SelectedObject != null && DisplayRoot.IsParentOf(SelectedObject)) {
 					if(SelectedObject.IsNode && IsDisplayRootKeyDown && IsDoubleClick &&
@@ -86,11 +92,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     IsDragEnabled= true;                                                    
                 }
                 mySubEditor= null;
-                // -- Update Hot Zones --
-                var pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
-                if(pickInfo == null || pickInfo.PickedObject.IsBehaviour) {
-                    HotZoneMouseClick(WindowMousePosition);
-                }
                 break;
             }
             case 1: { // Right mouse button

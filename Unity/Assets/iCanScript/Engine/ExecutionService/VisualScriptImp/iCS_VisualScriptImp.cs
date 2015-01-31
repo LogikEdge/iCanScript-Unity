@@ -56,6 +56,10 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         }
     }
     // ----------------------------------------------------------------------
+    public void InvokeVisualScript(string methodName) {
+        RunMessage(methodName);
+    }
+    // ----------------------------------------------------------------------
     // Run message with one parameter.
     public void RunMessage(string messageName, object p1) {
         iCS_RunContext runContext;

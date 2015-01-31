@@ -92,7 +92,7 @@ public static class iCS_WindowMenu {
  	// iCanScript ClassWizard editor Menu.
  	[MenuItem("Window/iCanScript/Instance Wizard")]
  	public static void OldMenuInstanceEditor() {
-		MenuLibraryEditor();
+		MenuInstanceEditor();
  	}
 
 

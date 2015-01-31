@@ -132,8 +132,9 @@ public static class iCS_HelpController {
 		if(edObj != null) {
 			// Get the EditorObject tooltip if there is one.
 			string help= edObj.Tooltip;
-			if(!String.IsNullOrEmpty(help))
+			if(!String.IsNullOrEmpty(help)) {
 				return help;
+			}
 					
 			// otherwise try and get help based on the MemberInfo,
 			help= getHelp(getAssociatedHelpMemberInfo(edObj));
@@ -176,8 +177,9 @@ public static class iCS_HelpController {
 	{
 		if(memberInfo != null) {
 			// Return help string if there is already one in the memberInfo
-			if (memberInfo.HelpSummaryCache != null)
+			if (memberInfo.HelpSummaryCache != null) {
 				return memberInfo.HelpSummaryCache;
+			}
 			
 			// Try and use MemberInfo Description
 			if (!String.IsNullOrEmpty(memberInfo.StoredDescription)) {
@@ -205,7 +207,7 @@ public static class iCS_HelpController {
 			{
 				// Mark cache as empty string (vs null), so we do not search again 
 				memberInfo.HelpSummaryCache= "";	
-			}					
+			}				
 			return typeHelp;
 		}
 		return null;
@@ -253,7 +255,7 @@ public static class iCS_HelpController {
 			iCS_MemberInfo memberInfo=null;
 			
 			// Try and Get Member Info from GetAssociatedDescriptor 
-			if(edObj.IsKindOfFunction) {
+			if(edObj.IsKindOfFunction || edObj.IsMessageHandler) {
 				memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
 			}
 			

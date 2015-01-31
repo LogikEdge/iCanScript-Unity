@@ -30,14 +30,16 @@ public partial class iCS_IStorage {
 			DestroyInstance(aChild);
 			if(source != null) {
 				port.ObjectType= port.IsOutMuxPort ? iCS_ObjectTypeEnum.OutDynamicDataPort : iCS_ObjectTypeEnum.InDynamicDataPort;
-				SetSource(port, source);				
+				SetSource(port, source);
+                RecalculatePortIndexes(port.ParentNode);
 			} else {
 				DestroyInstance(port);
 			}
 			return;
 		}
-		// Adjust the indexes of the child ports.
+		// Adjust the indexes of parent & child ports.
         int idx= 0;
+        port.PortIndex= (int)iCS_PortIndex.Return;
         port.ForEachChildPort(
             c=> {
                 c.PortIndex= idx++;

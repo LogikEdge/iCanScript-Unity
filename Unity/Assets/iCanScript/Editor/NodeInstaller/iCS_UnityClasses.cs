@@ -37,7 +37,6 @@ public static class iCS_UnityClasses {
                                            iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
                                            string iconPath= null, string description= null) {
         if(iconPath == null) iconPath= kUnityIcon;
-        if(description == null) description= "Event: "+messageName+" on "+classType.Name;
         iCS_LibraryDatabase.AddMessage(classType, messageName, storageClass, parameters, functionReturn, description, iconPath);
     }
     // ----------------------------------------------------------------------
@@ -146,11 +145,14 @@ public static class iCS_UnityClasses {
             //var animatorIKParameters= new iCS_Parameter[1]{new iCS_Parameter("layerIndex", typeof(int), 0)};
             //InstallMonoBehaviourMessage("OnAnimatorIK", animatorIKParameters, kInMailIcon);         
 
-            var renderImageParameters= new iCS_Parameter[2]{
-                new iCS_Parameter("source", typeof(RenderTexture)),
-                new iCS_Parameter("destination", typeof(RenderTexture))
-            };
-            InstallMonoBehaviourMessage("OnRenderImage", renderImageParameters, kInMailIcon);
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// DEACTIVATED UNTIL FULL CODE GENERATION
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//            var renderImageParameters= new iCS_Parameter[2]{
+//                new iCS_Parameter("source", typeof(RenderTexture)),
+//                new iCS_Parameter("destination", typeof(RenderTexture))
+//            };
+//            InstallMonoBehaviourMessage("OnRenderImage", renderImageParameters, kInMailIcon);
 
             var audioFilterReadParameters= new iCS_Parameter[2]{
                 new iCS_Parameter("data", typeof(float[])),

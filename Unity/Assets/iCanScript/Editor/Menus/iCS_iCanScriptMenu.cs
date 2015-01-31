@@ -114,17 +114,21 @@ public static class iCS_iCanScriptMenu {
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com");
     }
+    [MenuItem("iCanScript/Support/HowTo",false,1001)]
+    public static void Learn() {
+        Application.OpenURL("http://www.icanscript.com/learn2");
+    }
     [MenuItem("iCanScript/Support/Submit a ticket",false,1001)]
     public static void ReleaseNotes() {
-        Application.OpenURL("http://helpdesk.icanscript.com/support/tickets/new");
+        Application.OpenURL("http://www.icanscript.com/support");
     }
     [MenuItem("iCanScript/Support/Knowledge Base",false,1002)]
     public static void Helpdesk() {
-        Application.OpenURL("http://icanscript.com/helpdesk/knowledge-base/index.html");
+        Application.OpenURL("http://www.icanscript.com/support");
     }
     [MenuItem("iCanScript/Support/Forum",false,1002)]
     public static void Forum() {
-        Application.OpenURL("http://icanscript.com/helpdesk/community/index.html");
+        Application.OpenURL("http://www.icanscript.com/forum");
     }
     // ======================================================================
     // Purchase

@@ -26,6 +26,10 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
+    public new void OnEnable() {
+		base.OnEnable();
+		minSize= new Vector2(270f, 270f);
+    }
     bool IsInitialized() {
         if(myController == null || myMainView == null) {
             myController= new iCS_LibraryController();
@@ -253,7 +257,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {
-        return iStorage.CreateFunction(-1, desc.ToMethodBaseInfo);            
+        return iStorage.CreateFunction(-1, desc.ToFunctionPrototypeInfo);            
     }    
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {

@@ -138,7 +138,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         return id == 0 ? this : myRuntimeNodes[id];
     }
     // ----------------------------------------------------------------------
-    public void ClearGeneratedCode() {
+    void ClearGeneratedCode() {
         myRuntimeNodes= new object[0];
         myPublicInterfaces.Clear();
         Reset();
@@ -400,7 +400,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         } while(needAdditionalPass);
     }
     // ----------------------------------------------------------------------
-    public void ConnectRuntimeNodes(ref List<CompileError> compileErrors, ref List<CompileWarning> compileWarnings) {
+    void ConnectRuntimeNodes(ref List<CompileError> compileErrors, ref List<CompileWarning> compileWarnings) {
         foreach(var port in EngineObjects) {
 			if(port == null) continue;
 			if(port.InstanceId == -1) continue;

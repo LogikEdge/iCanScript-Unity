@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class iCS_MemberInfo {
+public abstract class iCS_MemberInfo : IEquatable<iCS_MemberInfo> {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
@@ -42,27 +42,27 @@ public abstract class iCS_MemberInfo {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public iCS_TypeInfo         ToTypeInfo          { get { return this as iCS_TypeInfo; }}
-    public iCS_ConstructorInfo  ToConstructorInfo   { get { return this as iCS_ConstructorInfo; }}
-    public iCS_FunctionPrototype   ToMethodBaseInfo    { get { return this as iCS_FunctionPrototype; }}
-    public iCS_MethodInfo       ToMethodInfo        { get { return this as iCS_MethodInfo; }}
-    public iCS_FieldInfo        ToFieldInfo         { get { return this as iCS_FieldInfo; }}
-    public iCS_PropertyInfo     ToPropertyInfo      { get { return this as iCS_PropertyInfo; }}
-    public iCS_MessageInfo      ToMessageInfo       { get { return this as iCS_MessageInfo; }}
-	public iCS_TypeCastInfo		ToTypeCastInfo		{ get { return this as iCS_TypeCastInfo; }}
+    public iCS_TypeInfo         	ToTypeInfo          	{ get { return this as iCS_TypeInfo; }}
+    public iCS_ConstructorInfo  	ToConstructorInfo   	{ get { return this as iCS_ConstructorInfo; }}
+    public iCS_FunctionPrototype	ToFunctionPrototypeInfo	{ get { return this as iCS_FunctionPrototype; }}
+    public iCS_MethodInfo       	ToMethodInfo        	{ get { return this as iCS_MethodInfo; }}
+    public iCS_FieldInfo        	ToFieldInfo         	{ get { return this as iCS_FieldInfo; }}
+    public iCS_PropertyInfo     	ToPropertyInfo      	{ get { return this as iCS_PropertyInfo; }}
+    public iCS_MessageInfo      	ToMessageInfo       	{ get { return this as iCS_MessageInfo; }}
+	public iCS_TypeCastInfo			ToTypeCastInfo			{ get { return this as iCS_TypeCastInfo; }}
     // ----------------------------------------------------------------------
     public bool isGlobalScope          { get { return ParentTypeInfo == null; }}
     // ----------------------------------------------------------------------
     public bool IsTypeInfo             { get { return ToTypeInfo != null; }}
     public bool IsConstructor          { get { return ToConstructorInfo != null; }}
-    public bool IsMethodBase           { get { return ToMethodBaseInfo != null; }}
+    public bool IsFunctionPrototype    { get { return ToFunctionPrototypeInfo != null; }}
     public bool IsMethod               { get { return ToMethodInfo != null; }}
     public bool IsField                { get { return ToFieldInfo != null; }}
     public bool IsMessage              { get { return ToMessageInfo != null; }}
     public bool IsProperty             { get { return ToPropertyInfo != null; }}
 	public bool IsTypeCast			   { get { return ToTypeCastInfo != null; }}
-    public bool IsInstanceFunctionBase { get { return IsMethodBase && ToMethodBaseInfo.IsInstanceMember; }}
-    public bool IsClassFunctionBase    { get { return IsMethodBase && ToMethodBaseInfo.IsClassMember; }}
+    public bool IsInstanceFunctionBase { get { return IsFunctionPrototype && ToFunctionPrototypeInfo.IsInstanceMember; }}
+    public bool IsClassFunctionBase    { get { return IsFunctionPrototype && ToFunctionPrototypeInfo.IsClassMember; }}
     public bool IsInstanceFunction     { get { return IsMethod && ToMethodInfo.IsInstanceMember; }}
     public bool IsClassFunction        { get { return IsMethod && ToMethodInfo.IsClassMember; }}
     public bool IsInstanceMessage      { get { return IsMessage && ToMessageInfo.IsInstanceMember; }}
@@ -103,7 +103,13 @@ public abstract class iCS_MemberInfo {
     public string Description {
         get {
             if(String.IsNullOrEmpty(myDescription)) {
-                return ParentTypeInfo == null ? "" : "Unity class "+ ParentTypeInfo.DisplayName;
+				if(ParentTypeInfo==null) return "";
+				if(IsMessage) {
+					return "Event: " + DisplayName +  " on " + ParentTypeInfo.DisplayName;
+				}
+				else {
+                	return "Unity class "+ ParentTypeInfo.DisplayName;
+				}	
             }
             return myDescription;            
         }
@@ -146,4 +152,13 @@ public abstract class iCS_MemberInfo {
         }
     }
 
+    // ======================================================================
+    // IEquatable Interface
+    // ----------------------------------------------------------------------
+	public bool Equals(iCS_MemberInfo other) {
+		if(ObjectType != other.ObjectType) return false;
+		if(DisplayName != other.DisplayName) return false;
+		if(ParentTypeInfo != other.ParentTypeInfo) return false;
+		return true;
+	}
 }

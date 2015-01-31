@@ -10,8 +10,9 @@ public static class iCS_BlinkController {
     // ----------------------------------------------------------------------
     static iCS_BlinkController()    {
         myAnimationTimer.Schedule();
+        iCS_SystemEvents.OnSceneChanged+= RestartTimer;
     }
-    public static void Start()      {}
+    public static void Start() {}
     public static void Shutdown() {
         myAnimationTimer.Stop();
     }
@@ -20,9 +21,9 @@ public static class iCS_BlinkController {
     // Fields
     // ----------------------------------------------------------------------
     static TS.TimedAction   myAnimationTimer= TS.CreateTimedAction(0.05f, DoAnimation, /*isLooping=*/true);
-    static P.Animate<float> mySlowBlink     = new P.Animate<float>();
-    static P.Animate<float> myNormalBlink   = new P.Animate<float>();
-    static P.Animate<float> myFastBlink     = new P.Animate<float>();
+    static P.Animate<float> mySlowBlink     = new P.Animate<float>(iCS_TimerService.EditorTime);
+    static P.Animate<float> myNormalBlink   = new P.Animate<float>(iCS_TimerService.EditorTime);
+    static P.Animate<float> myFastBlink     = new P.Animate<float>(iCS_TimerService.EditorTime);
 
     // ======================================================================
     // Fields
@@ -37,6 +38,10 @@ public static class iCS_BlinkController {
     public static Color NormalBlinkHighColor { get { return new Color(1f,1f,1f,0.5f+0.5f*NormalBlinkRatio); }}
     public static Color FastBlinkHighColor   { get { return new Color(1f,1f,1f,0.5f+0.5f*FastBlinkRatio); }}
     
+    // ----------------------------------------------------------------------
+    public static void RestartTimer() {
+        myAnimationTimer.Schedule();
+    }
     // ----------------------------------------------------------------------
     static void DoAnimation() {
 		// -- Restart the alpha animation --
