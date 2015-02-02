@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 using TS=iCS_TimerService;
+using TimedAction= Prelude.TimerService.TimedAction;
 
 public static class iCS_BlinkController {
     // ======================================================================
@@ -20,7 +21,7 @@ public static class iCS_BlinkController {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    static TS.TimedAction   myAnimationTimer= TS.CreateTimedAction(0.05f, DoAnimation, /*isLooping=*/true);
+    static TimedAction      myAnimationTimer= TS.CreateTimedAction(0.05f, DoAnimation, /*isLooping=*/true);
     static P.Animate<float> mySlowBlink     = new P.Animate<float>(iCS_TimerService.EditorTime);
     static P.Animate<float> myNormalBlink   = new P.Animate<float>(iCS_TimerService.EditorTime);
     static P.Animate<float> myFastBlink     = new P.Animate<float>(iCS_TimerService.EditorTime);

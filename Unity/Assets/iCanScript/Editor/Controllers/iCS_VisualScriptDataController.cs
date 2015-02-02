@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
+using TimedAction= Prelude.TimerService.TimedAction;
 
 public static class iCS_VisualScriptDataController {
     // =================================================================================
@@ -80,10 +81,10 @@ public static class iCS_VisualScriptDataController {
     // =================================================================================
     // Save & Undo
     // ---------------------------------------------------------------------------------
-    static iCS_TimerService.TimedAction     mySaveTimer= null;
-    static iCS_IStorage                     mySaveIStorage= null;
-    static string                           mySaveUndoMessage= null;
-    static TransactionType                  mySaveTransactionType= TransactionType.None;
+    static TimedAction      mySaveTimer= null;
+    static iCS_IStorage     mySaveIStorage= null;
+    static string           mySaveUndoMessage= null;
+    static TransactionType  mySaveTransactionType= TransactionType.None;
     
     public static void SaveWithUndo(iCS_IStorage iStorage, string undoMessage, TransactionType transactionType) {
         if(mySaveIStorage != null && mySaveIStorage != iStorage) {

@@ -5,15 +5,16 @@ using System.Collections.Generic;
 using P=Prelude;
 using TS=iCS_TimerService;
 using EC=iCS_ErrorController;
+using TimedAction= Prelude.TimerService.TimedAction;
 
 public partial class iCS_VisualEditor {
 	// =======================================================================
 	// Fields
 	// -----------------------------------------------------------------------
 	const  float			kMargins            = 4f;
-		   TS.TimedAction	ourErrorRepaintTimer= null;
+		   TimedAction	    ourErrorRepaintTimer= null;
 	static bool				showErrorDetails    = false;
-		   TS.TimedAction	showErrorDetailTimer= null;	
+		   TimedAction	    showErrorDetailTimer= null;	
 	
 	// =======================================================================
     // Errors/Warning display functionality
@@ -45,7 +46,7 @@ public partial class iCS_VisualEditor {
 		if(r.Contains(WindowMousePosition)) {
 			showErrorDetails= true;
 			if(showErrorDetailTimer == null) {
-				showErrorDetailTimer= new TS.TimedAction(1f, ()=> { showErrorDetails= false; IsHelpEnabled= true; });
+				showErrorDetailTimer= TS.CreateTimedAction(1f, ()=> { showErrorDetails= false; IsHelpEnabled= true; });
 				showErrorDetailTimer.Schedule();
 			}
 			else {

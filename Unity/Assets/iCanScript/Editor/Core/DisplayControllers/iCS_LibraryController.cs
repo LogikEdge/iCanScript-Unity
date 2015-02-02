@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
+using TimedAction= Prelude.TimerService.TimedAction;
 
 public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
@@ -122,8 +123,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	Stack<int>					myIterStackChildIdx= null;
 
 	// Library Help
-	iCS_MemberInfo					myHelpMemberInfo = null;
-	iCS_TimerService.TimedAction 	myCheckMouseTimer= null; 
+	iCS_MemberInfo	myHelpMemberInfo = null;
+	TimedAction     myCheckMouseTimer= null; 
 
 
     // =================================================================================

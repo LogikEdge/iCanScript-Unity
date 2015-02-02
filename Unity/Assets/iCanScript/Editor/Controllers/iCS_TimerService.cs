@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
+using TimedAction= Prelude.TimerService.TimedAction;
 
 public static class iCS_TimerService {
     // ======================================================================
@@ -17,64 +18,34 @@ public static class iCS_TimerService {
         EditorApplication.update-= PeriodicUpdate;
     }
     
-    // ======================================================================
+    //======================================================================
     // Properties
     // ----------------------------------------------------------------------
     public static float EditorTime() { return (float)EditorApplication.timeSinceStartup; }
     public static float EngineTime() { return Time.realtimeSinceStartup; }
-    
+
     // ======================================================================
-    public static TimedAction CreateTimedAction(float time, Action action, bool isLooping= false) {
-        return new TimedAction(time, action, isLooping);
+    public static P.TimerService.TimedAction CreateTimedAction(float time, Action action, bool isLooping= false) {
+        return myTimerService.CreateTimedAction(time, action, isLooping);
     }
     public static void Schedule(TimedAction timedAction) {
-        if(timedAction == null) return;
-        if(!IsActive(timedAction)) {
-            myTimers.Add(timedAction);            
-        }
+        myTimerService.Schedule(timedAction);
     }
     public static void Restart(TimedAction timedAction) {
-        if(!IsActive(timedAction)) {
-            myTimers.Add(timedAction);
-        }
+        myTimerService.Restart(timedAction);
     }
     public static void Stop(TimedAction timedAction) {
-        myTimers.Remove(timedAction);
+        myTimerService.Stop(timedAction);
     }
     public static bool IsActive(TimedAction timedAction) {
-        return myTimers.Contains(timedAction);
+        return myTimerService.IsActive(timedAction);
     }
     
     // ======================================================================
-    public class TimedAction {
-        P.Timer myTimer;
-        Action  myAction;
-        bool    myIsLooping;
-        
-        public TimedAction(float delay, Action action, bool isLooping= false) {
-            myAction   = action;
-            myTimer    = new P.Timer(delay, EditorTime);
-            myIsLooping= isLooping;
-        }
-        public bool  IsElapsed           { get { return myTimer.IsElapsed; }}
-        public bool  IsActive            { get { return iCS_TimerService.IsActive(this); }}
-        public bool  IsLooping           { get { return myIsLooping; }}
-        public void  RunAction()         { myAction(); }
-        public void  Schedule()          { iCS_TimerService.Schedule(this); }
-        public void  Restart()           { myTimer.Restart(); iCS_TimerService.Restart(this); }
-        public void  Restart(float time) { myTimer.Restart(time); iCS_TimerService.Restart(this); }
-        public void  Stop()              { iCS_TimerService.Stop(this); }
-		public float RemainingTime		 { get { return myTimer.RemainingTime; }}
-        public void  SanityCheck()       { myTimer.SanityCheck(); }
-    }
-    
-    // ======================================================================
-    static List<TimedAction>    myTimers= new List<TimedAction>();
+    static P.TimerService myTimerService= new P.TimerService(EditorTime);
 
     // ======================================================================
     static void PeriodicUpdate() {
-        var elapsedTimers= P.filter(t=> t.IsElapsed, myTimers);
-        P.forEach(t=> { if(t.IsLooping) { t.Restart(); } else { myTimers.Remove(t);}}, elapsedTimers);
-        P.forEach(t=> { t.RunAction(); }, elapsedTimers);
+        myTimerService.Update();
     }
 }
