@@ -15,6 +15,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     object[]                            myRuntimeNodes    = new object[0];
     List<int>                           myPublicInterfaces= new List<int>();
     Dictionary<string,iCS_RunContext>   myMessageContexts = new Dictionary<string,iCS_RunContext>();
+    P.TimerService                      myTimerService    = new P.TimerService();
     
 
     // ======================================================================
@@ -48,6 +49,11 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     // Run messages without parameter.
     public void RunMessage(string messageName) {
+        // Run timer service on Update
+        if(messageName == "Update") {
+            myTimerService.Update();
+        }
+        // Run the context.
         iCS_RunContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
 //            var rtMessage= runContext.Action as iCS_Message;
@@ -58,6 +64,9 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     public void InvokeVisualScript(string methodName) {
         RunMessage(methodName);
+    }
+    public void InvokeVisualScript(string methodName, float delay) {
+        myTimerService.CreateTimedAction(delay, ()=> RunMessage(methodName)).Schedule();
     }
     // ----------------------------------------------------------------------
     // Run message with one parameter.

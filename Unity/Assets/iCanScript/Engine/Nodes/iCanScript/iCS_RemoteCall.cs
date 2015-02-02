@@ -6,6 +6,12 @@ using System.Collections.Generic;
 [iCS_Class(Company="iCanScript", Library="Communication")]
 public static class iCS_RemoteCall {
     [iCS_Function]
+    public static void InvokeVisualScript(iCS_VisualScriptImp targetVisualScript, string functionName, float delay= 0f) {
+        targetVisualScript.InvokeVisualScript(functionName, delay);
+    }
+    
+    // ------------------------------------------------------------------------
+    [iCS_Function]
     public static Component FindWithTag(string tag, string componentType) {
         var go= GameObject.FindWithTag(tag);
         if(go == null) {
