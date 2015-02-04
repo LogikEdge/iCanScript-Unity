@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public static class iCS_CodeGenerator {
+public static class iCS_CodeGenerationService {
     // ======================================================================
 	// Start Code generator service.
     // ----------------------------------------------------------------------
-	static iCS_CodeGenerator() {
+	static iCS_CodeGenerationService() {
         iCS_EditorObject.OnNodeCreated     += OnNodeCreated;
         iCS_EditorObject.OnWillDestroyNode += OnWillDestroyNode;
         iCS_SystemEvents.OnHierarchyChanged+= OnHierarchyChanged;
