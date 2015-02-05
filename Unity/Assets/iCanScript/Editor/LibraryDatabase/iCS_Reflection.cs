@@ -38,42 +38,6 @@ public class iCS_Reflection {
         return result.ToArray();
     }
     
-//    // ----------------------------------------------------------------------
-//    // Returns the list of defined input fields.
-//    public static List<FieldInfo> GetInPortFields(Type objType) {
-//        List<FieldInfo> list= new List<FieldInfo>();
-//        foreach(var field in objType.GetFields()) {
-//            foreach(var attribute in field.GetCustomAttributes(true)) {
-//                if((attribute is iCS_InPortAttribute)) {
-//                    list.Add(field);
-//                }
-//            }
-//        }        
-//        return list;
-//    }
-//    // ----------------------------------------------------------------------
-//    // Returns the list of defined output fields.
-//    public static List<FieldInfo> GetOutPortFields(Type objType) {
-//        List<FieldInfo> list= new List<FieldInfo>();
-//        foreach(var field in objType.GetFields()) {
-//            foreach(var attribute in field.GetCustomAttributes(true)) {
-//                if((attribute is iCS_OutPortAttribute)) {
-//                    list.Add(field);
-//                }
-//            }
-//        }        
-//        return list;
-//    }
-//    // ----------------------------------------------------------------------
-//    // Returns the type of the given port.
-//    public static Type GetPortFieldType(iCS_EditorObject port, iCS_EditorObject portParent) {
-//        FieldInfo fieldInfo= portParent.RuntimeType.GetField(port.Name);
-//        if(fieldInfo == null) {
-//            Debug.LogWarning("iCanScript: Invalid port name");            
-//        }
-//        return fieldInfo.FieldType;
-//    }
-
     // ----------------------------------------------------------------------
     // Scan the application for uCode attributes.
     public static void ParseAppDomain() {
