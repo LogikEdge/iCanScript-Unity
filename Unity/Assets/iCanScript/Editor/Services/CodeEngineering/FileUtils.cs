@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace CodeEngineering {
 
-    public static class iCS_CG_FileMgmt {
+    public static class FileUtils {
         // ----------------------------------------------------------------------
         // Create code generation folder (if it does not exist)
         public static void CreateCodeGenerationFolder(string folderPath) {

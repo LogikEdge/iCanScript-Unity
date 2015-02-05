@@ -9,7 +9,7 @@ namespace CodeEngineering {
         // ----------------------------------------------------------------------
     	static iCS_CodeGenerationService() {
             // Create default code generation path.
-            iCS_CG_FileMgmt.CreateCodeGenerationFolder("VisualScripts");
+            FileUtils.CreateCodeGenerationFolder("VisualScripts");
             
             // Install events.
             iCS_EditorObject.OnNodeCreated     += OnNodeCreated;
