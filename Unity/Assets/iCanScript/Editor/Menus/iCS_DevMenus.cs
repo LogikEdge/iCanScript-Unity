@@ -14,11 +14,16 @@ public static class iCS_DevMenus {
     // Snapshot definitions
 	const string ScreenShotsFolder= "/../../../ScreenShots";
     
-	[MenuItem("iCanScript/DevTools/RestartControllers",false,2000)]
-	public static void MenuRestartControllers() {
-        iCS_BlinkController.RestartTimer();
-	}
-
+    // ======================================================================
+    // Code Generation Tests
+	[MenuItem("iCanScript/DevTools/Generate Code",false,2000)]
+    public static void GenerateCode() {
+        var className= iCS_CG_FileMgmt.MakeUniqueClassName("VisualScript");
+        Debug.Log("Class Name=> "+className);
+        var code= "namespace iCanScript { public class "+className+" {}; }";
+        iCS_CG_FileMgmt.WriteGeneratedCode("VisualScripts", className+".cs", code);
+    }
+    
     // ======================================================================
     // Visual Editor Snapshot
 	[MenuItem("iCanScript/DevTools/Visual Editor Snapshot",false,2000)]
