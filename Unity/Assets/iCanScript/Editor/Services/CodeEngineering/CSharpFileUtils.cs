@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace iCanScriptEditor { namespace CodeEngineering {
 
-    public static class FileUtils {
+    public static class CSharpFileUtils {
 
         // ----------------------------------------------------------------------
         // Make Unique Class Name

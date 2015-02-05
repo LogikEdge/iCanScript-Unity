@@ -18,10 +18,10 @@ public static class iCS_DevMenus {
     // Code Generation Tests
 	[MenuItem("iCanScript/DevTools/Generate Code",false,2000)]
     public static void GenerateCode() {
-        var className= FileUtils.MakeUniqueClassName("VisualScript");
+        var className= CSharpFileUtils.MakeUniqueClassName("VisualScript");
         Debug.Log("Class Name=> "+className);
         var code= "namespace iCanScript { public class "+className+" {}; }";
-        FileUtils.WriteCSharpFile("VisualScripts", className, code);
+        CSharpFileUtils.WriteCSharpFile("VisualScripts", className, code);
     }
     
     // ======================================================================
