@@ -3,11 +3,11 @@ using System.Collections;
 
 namespace iCanScriptEditor { namespace CodeEngineering {
     
-    public static class CodeEngineeringService {
+    public static class CodeEngineeringController {
         // ======================================================================
     	// Start Code generator service.
         // ----------------------------------------------------------------------
-    	static CodeEngineeringService() {
+    	static CodeEngineeringController() {
             // Create default code generation path.
             iCanScriptEditor.FileUtils.CreateAssetFolder("VisualScripts");
             

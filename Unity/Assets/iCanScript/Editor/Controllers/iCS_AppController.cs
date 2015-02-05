@@ -21,7 +21,7 @@ public static class iCS_AppController {
 		iCS_SoftwareUpdateController.Start();
         iCS_GizmoController.Start();
         iCS_LibraryDatabaseController.Start();
-		CodeEngineering.CodeEngineeringService.Start();
+		CodeEngineering.CodeEngineeringController.Start();
         iCS_VisualScriptDataController.Start();
         iCS_EditorController.Start();
         iCS_SceneController.Start();
@@ -39,7 +39,7 @@ public static class iCS_AppController {
         iCS_SceneController.Shutdown();
         iCS_EditorController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
-        CodeEngineering.CodeEngineeringService.Shutdown();
+        CodeEngineering.CodeEngineeringController.Shutdown();
         iCS_LibraryDatabaseController.Shutdown();
         iCS_GizmoController.Shutdown();
         iCS_SystemEvents.Shutdown();
