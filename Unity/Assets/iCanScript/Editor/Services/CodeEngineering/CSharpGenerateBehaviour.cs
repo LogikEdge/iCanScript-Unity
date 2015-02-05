@@ -34,7 +34,7 @@ namespace iCanScriptEditor { namespace CodeEngineering {
     
             // Extract file manifest hash value
             JObject jsonHeader= null;
-            jsonHeader= CSharpFileTemplates.ExtractJSON(iCS_TextFileUtility.ReadFile(fileName));
+            jsonHeader= CSharpFileTemplates.ExtractJSON(TextFileUtils.ReadFile(fileName));
             string fileManifestHash= null;
             if(jsonHeader != null) {
                 JString jsonContentHashValue= jsonHeader.GetValueFor("ContentHash") as JString;
@@ -49,7 +49,7 @@ namespace iCanScriptEditor { namespace CodeEngineering {
             if(string.Compare(codeManifestHash, fileManifestHash) != 0) {
                 Debug.Log("iCanScript: Rebuilding Behaviour code ...");
                 var jsonManifestHash= new JObject(new JNameValuePair("ContentHash", codeManifestHash));
-                iCS_TextFileUtility.WriteFile(fileName, CSharpFileTemplates.PrependJSON(jsonManifestHash, code));            
+                TextFileUtils.WriteFile(fileName, CSharpFileTemplates.PrependJSON(jsonManifestHash, code));            
             }
         }
         

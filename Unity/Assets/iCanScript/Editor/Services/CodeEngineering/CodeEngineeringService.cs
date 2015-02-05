@@ -9,7 +9,7 @@ namespace iCanScriptEditor { namespace CodeEngineering {
         // ----------------------------------------------------------------------
     	static CodeEngineeringService() {
             // Create default code generation path.
-            FileUtils.CreateCodeGenerationFolder("VisualScripts");
+            iCanScriptEditor.FileUtils.CreateAssetFolder("VisualScripts");
             
             // Install events.
             iCS_EditorObject.OnNodeCreated     += OnNodeCreated;

@@ -21,7 +21,7 @@ public static class iCS_DevMenus {
         var className= FileUtils.MakeUniqueClassName("VisualScript");
         Debug.Log("Class Name=> "+className);
         var code= "namespace iCanScript { public class "+className+" {}; }";
-        FileUtils.WriteGeneratedCode("VisualScripts", className+".cs", code);
+        FileUtils.WriteCSharpFile("VisualScripts", className, code);
     }
     
     // ======================================================================

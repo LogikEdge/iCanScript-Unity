@@ -8,16 +8,7 @@ using System.Collections;
 namespace iCanScriptEditor { namespace CodeEngineering {
 
     public static class FileUtils {
-        // ----------------------------------------------------------------------
-        // Create code generation folder (if it does not exist)
-        public static void CreateCodeGenerationFolder(string folderPath) {
-            string systemAssetPath= Application.dataPath;
-            string systemCodeGenerationFolder= systemAssetPath+"/"+folderPath;
-            if(!Directory.Exists(systemCodeGenerationFolder)) {
-                AssetDatabase.CreateFolder("Assets",folderPath);
-            }        
-        }
-    
+
         // ----------------------------------------------------------------------
         // Make Unique Class Name
         public static string MakeUniqueClassName(string desiredClassName, int id= 0) {
@@ -26,25 +17,22 @@ namespace iCanScriptEditor { namespace CodeEngineering {
             if(id != 0) {
                 className+= "_"+id;
             }
-            // Scan UnityEngine assembly for a name collision.
+            // Search all assemblies...
             foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-                // Install all public type of the Unity Engine assembly
-    //            if(assembly.FullName.StartsWith("UnityEngine")) {
-                    foreach(var classType in assembly.GetTypes()) {
-                        if(classType.Name == className) {
-                            Debug.Log("Class name=> "+classType.FullName+" Assembly=> "+assembly.FullName);
-                            return MakeUniqueClassName(desiredClassName, id+1);
-                        }
-                    }                
-    //            }
+            // Search for an existing class with the same name.
+                foreach(var classType in assembly.GetTypes()) {
+                    if(classType.Name == className) {
+                        return MakeUniqueClassName(desiredClassName, id+1);
+                    }
+                }                
             }
             return className;
         }
     
         // ----------------------------------------------------------------------
         // Write generated code to given file.
-        public static void WriteGeneratedCode(string folderPath, string className, string code) {
-            iCS_TextFileUtility.WriteFile("Assets/"+folderPath+"/"+className, code);
+        public static void WriteCSharpFile(string folderPath, string className, string code) {
+            TextFileUtils.WriteFile("Assets/"+folderPath+"/"+className+".cs", code);
         }
     }
 
