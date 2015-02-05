@@ -1,13 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-namespace CodeEngineering {
+namespace iCanScriptEditor { namespace CodeEngineering {
     
-    public static class iCS_CodeGenerationService {
+    public static class CodeEngineeringService {
         // ======================================================================
     	// Start Code generator service.
         // ----------------------------------------------------------------------
-    	static iCS_CodeGenerationService() {
+    	static CodeEngineeringService() {
             // Create default code generation path.
             FileUtils.CreateCodeGenerationFolder("VisualScripts");
             
@@ -31,7 +31,7 @@ namespace CodeEngineering {
     
         // ----------------------------------------------------------------------
         static void OnEditorStarted() {
-            iCS_CSGenerateBehaviour.UpdateBehaviourCode();        
+            CSharpGenerateBehaviour.UpdateBehaviourCode();        
         }
         
         // ----------------------------------------------------------------------
@@ -46,4 +46,4 @@ namespace CodeEngineering {
         }
     }
 
-}
+}}

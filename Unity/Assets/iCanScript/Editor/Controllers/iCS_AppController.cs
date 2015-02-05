@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
+namespace iCanScriptEditor {
+    
 /// The AppController controls the Start and Shutdown of all sub-systems.
 [InitializeOnLoad]
 public static class iCS_AppController {
@@ -19,7 +21,7 @@ public static class iCS_AppController {
 		iCS_SoftwareUpdateController.Start();
         iCS_GizmoController.Start();
         iCS_LibraryDatabaseController.Start();
-		CodeEngineering.iCS_CodeGenerationService.Start();
+		CodeEngineering.CodeEngineeringService.Start();
         iCS_VisualScriptDataController.Start();
         iCS_EditorController.Start();
         iCS_SceneController.Start();
@@ -37,7 +39,7 @@ public static class iCS_AppController {
         iCS_SceneController.Shutdown();
         iCS_EditorController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
-        CodeEngineering.iCS_CodeGenerationService.Shutdown();
+        CodeEngineering.CodeEngineeringService.Shutdown();
         iCS_LibraryDatabaseController.Shutdown();
         iCS_GizmoController.Shutdown();
         iCS_SystemEvents.Shutdown();
@@ -49,4 +51,6 @@ public static class iCS_AppController {
         iCS_SystemEvents.Shutdown();
 		iCS_ErrorController.Shutdown();
     }
+}
+
 }

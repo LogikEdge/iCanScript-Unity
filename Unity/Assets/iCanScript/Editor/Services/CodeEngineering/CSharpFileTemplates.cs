@@ -4,9 +4,9 @@ using System.Text;
 using System.Collections;
 using iCanScript.JSON;
 
-namespace CodeEngineering {
+namespace iCanScriptEditor { namespace CodeEngineering {
     
-    public static class iCS_CSFileTemplates {
+    public static class CSharpFileTemplates {
         // ----------------------------------------------------------------------
         public static string FileHeader(string fileName, string className, JObject json= null, string author= null) {
             var id = json != null ?
@@ -44,4 +44,4 @@ namespace CodeEngineering {
         }
     }
 
-}
+}}

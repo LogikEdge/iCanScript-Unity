@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Collections;
 
-namespace CodeEngineering {
+namespace iCanScriptEditor { namespace CodeEngineering {
 
     public static class FileUtils {
         // ----------------------------------------------------------------------
@@ -48,4 +48,4 @@ namespace CodeEngineering {
         }
     }
 
-} // CodeEnginering
+}}

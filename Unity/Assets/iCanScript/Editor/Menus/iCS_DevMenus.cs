@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.IO;
-using iCanScript;
+using iCanScriptEditor.CodeEngineering;
 
 #if COMMUNITY_EDITION
 #else
@@ -18,10 +18,10 @@ public static class iCS_DevMenus {
     // Code Generation Tests
 	[MenuItem("iCanScript/DevTools/Generate Code",false,2000)]
     public static void GenerateCode() {
-        var className= CodeEngineering.FileUtils.MakeUniqueClassName("VisualScript");
+        var className= FileUtils.MakeUniqueClassName("VisualScript");
         Debug.Log("Class Name=> "+className);
         var code= "namespace iCanScript { public class "+className+" {}; }";
-        CodeEngineering.FileUtils.WriteGeneratedCode("VisualScripts", className+".cs", code);
+        FileUtils.WriteGeneratedCode("VisualScripts", className+".cs", code);
     }
     
     // ======================================================================

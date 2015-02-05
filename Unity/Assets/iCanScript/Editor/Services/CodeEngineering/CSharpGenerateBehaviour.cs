@@ -9,9 +9,9 @@ using System.Security;
 using System.Security.Cryptography;
 using iCanScript.JSON;
 
-namespace CodeEngineering {
+namespace iCanScriptEditor { namespace CodeEngineering {
     
-    public class iCS_CSGenerateBehaviour {
+    public class CSharpGenerateBehaviour {
     	// ----------------------------------------------------------------------
         public static void UpdateBehaviourCode() {
             // -- Retrieve all messages needed by behaviour --
@@ -34,7 +34,7 @@ namespace CodeEngineering {
     
             // Extract file manifest hash value
             JObject jsonHeader= null;
-            jsonHeader= iCS_CSFileTemplates.ExtractJSON(iCS_TextFileUtility.ReadFile(fileName));
+            jsonHeader= CSharpFileTemplates.ExtractJSON(iCS_TextFileUtility.ReadFile(fileName));
             string fileManifestHash= null;
             if(jsonHeader != null) {
                 JString jsonContentHashValue= jsonHeader.GetValueFor("ContentHash") as JString;
@@ -49,7 +49,7 @@ namespace CodeEngineering {
             if(string.Compare(codeManifestHash, fileManifestHash) != 0) {
                 Debug.Log("iCanScript: Rebuilding Behaviour code ...");
                 var jsonManifestHash= new JObject(new JNameValuePair("ContentHash", codeManifestHash));
-                iCS_TextFileUtility.WriteFile(fileName, iCS_CSFileTemplates.PrependJSON(jsonManifestHash, code));            
+                iCS_TextFileUtility.WriteFile(fileName, CSharpFileTemplates.PrependJSON(jsonManifestHash, code));            
             }
         }
         
@@ -82,7 +82,7 @@ namespace CodeEngineering {
         }
     	// ----------------------------------------------------------------------
         public static string BehaviourMessageProxy(string className, iCS_MessageInfo[] messages) {
-            var fileHeader= iCS_CSFileTemplates.FileHeader(className+".cs", className);
+            var fileHeader= CSharpFileTemplates.FileHeader(className+".cs", className);
             var imports= GenerateBehaviourClassImports(className);
             var classHeader= GenerateBehaviourClassHeader(className);
             var classTrailer= GenerateBehaviourClassTrailer(className);
@@ -225,4 +225,4 @@ namespace CodeEngineering {
         
     }
 
-}
+}}
