@@ -5,6 +5,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScriptEditor;
 
 public static partial class iCS_UserCommands {
     // ======================================================================
@@ -59,6 +60,6 @@ public static partial class iCS_UserCommands {
         // Force redraw of Inspector Window.
         EditorUtility.SetDirty(iStorage.iCSMonoBehaviour);
 		// Annouce that an undo occured.
-		iCS_SystemEvents.AnnouceVisualScriptUndo(iStorage);
+		SystemEvents.AnnouceVisualScriptUndo(iStorage);
     }
 }

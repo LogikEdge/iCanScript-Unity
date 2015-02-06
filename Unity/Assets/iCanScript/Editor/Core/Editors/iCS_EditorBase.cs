@@ -34,7 +34,7 @@ public class iCS_EditorBase : EditorWindow {
     // ---------------------------------------------------------------------------------
     public void OnGUI() {
         // Stop all processing if not registered & trial period is over
-        if(iCS_EditionController.IsCommunityLimitReached) {
+        if(iCanScriptEditor.EditionController.IsCommunityLimitReached) {
             string message= null;
             var area= Math3D.Area(position);
             if(area > 200000) {

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
+using iCanScriptEditor;
 
 public enum TransactionType { None, Graph, Navigation, Field };
 
@@ -129,7 +130,7 @@ public partial class iCS_IStorage {
         EditorUtility.SetDirty(iCSMonoBehaviour);
         ++ModificationId;
         iCS_EditorController.RepaintAllEditors();
-        iCS_SystemEvents.AnnouceVisualScriptSaved(this);
+        SystemEvents.AnnouceVisualScriptSaved(this);
     }
     // ----------------------------------------------------------------------
     public void GenerateEditorData() {
@@ -165,6 +166,6 @@ public partial class iCS_IStorage {
         var selectedObject= SelectedObject;
         SelectedObject= selectedObject;
         myLastTransactionType= TransactionType.None;
-        iCS_SystemEvents.AnnouceVisualScriptReloaded(this);
+        SystemEvents.AnnouceVisualScriptReloaded(this);
     }
 }

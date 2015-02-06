@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
+using iCanScriptEditor;
 
 /*
     TODO: Should show frameId in header bar.
@@ -140,18 +141,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
     // -----------------------------------------------------------------------
     void ShowTrialInformation(ref Rect r) {
-        if(iCS_EditionController.IsCommunityEdition) {
+        if(EditionController.IsCommunityEdition) {
             // -- Display trial remaining information --
             GUIStyle style= EditorStyles.textField;
             style.richText= true;
             style.fontStyle= FontStyle.Bold;
             style.fontSize= (int)(style.fontSize*1.1f);
-            var nbOfVisualScriptRemaining= iCS_EditionController.CommunityVisualScriptsRemaining;
-            var nbOfNodesRemaining= iCS_EditionController.CommunityNodesRemaining;
+            var nbOfVisualScriptRemaining= EditionController.CommunityVisualScriptsRemaining;
+            var nbOfNodesRemaining= EditionController.CommunityNodesRemaining;
             var visualScriptsMessage= "Visual Scripts Remaining= "+nbOfVisualScriptRemaining;
             var nodesMessage="Nodes Remaining= "+nbOfNodesRemaining;
-            var percentVisualScriptsRemaining= iCS_EditionController.CommunityPercentVisualScriptsRemaining;
-            var percentNodesRemaining        = iCS_EditionController.CommunityPercentNodesRemaining;
+            var percentVisualScriptsRemaining= EditionController.CommunityPercentVisualScriptsRemaining;
+            var percentNodesRemaining        = EditionController.CommunityPercentNodesRemaining;
             if(percentVisualScriptsRemaining <= 0.4f) {
                 if(percentVisualScriptsRemaining <= 0.2f) {
                     visualScriptsMessage= "<color=red>"+visualScriptsMessage+"</color>";

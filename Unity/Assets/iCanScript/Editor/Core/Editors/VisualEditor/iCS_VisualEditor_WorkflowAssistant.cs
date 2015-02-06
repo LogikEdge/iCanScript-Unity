@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using P=Prelude;
+using iCanScriptEditor;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
@@ -40,7 +41,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             var r= Math3D.BuildRectCenteredAt(Math3D.Middle(ViewportRectForGraph), 1.2f*contentSize.x, 1.2f*contentSize.y);
             EditorGUIUtility.AddCursorRect(r, MouseCursor.Link);
             var savedColor= GUI.color;
-            GUI.color= iCS_BlinkController.NormalBlinkHighColor;
+            GUI.color= BlinkController.NormalBlinkHighColor;
             if(GUI.Button(r, content, myAssistaneButtonStyle)) {
                 iCS_iCanScriptMenu.CreateVisualScript();
             }
@@ -260,7 +261,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
 	void DisplayWithHighBlink(Action displayFnc) {
         var savedColor= GUI.color;
-        GUI.color= iCS_BlinkController.NormalBlinkHighColor;
+        GUI.color= BlinkController.NormalBlinkHighColor;
 		displayFnc();
         GUI.color= savedColor;		
 	}

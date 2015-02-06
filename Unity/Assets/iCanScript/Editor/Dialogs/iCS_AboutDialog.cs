@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScriptEditor;
 
 public class iCS_AboutDialog : EditorWindow {
     // ======================================================================
@@ -67,12 +68,12 @@ public class iCS_AboutDialog : EditorWindow {
 		var rEdition= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
 		GUI.Label(rEdition, editionTitle);
 		rEdition.x= column2X; rEdition.width= column2Width;
-		GUI.Label(rEdition, iCS_EditionController.ToString());
+		GUI.Label(rEdition, EditionController.ToString());
 
 		// User License
 		var rUserLicense= new Rect(column1X, rEdition.yMax, column1Width, labelHeight);
 		GUI.Label(rUserLicense, userLicenseTitle);
-		var userLicense= iCS_LicenseController.LicenseAsString();
+		var userLicense= LicenseController.LicenseAsString();
 		if(string.IsNullOrEmpty(userLicense)) {
 			userLicense= "None";
 		}

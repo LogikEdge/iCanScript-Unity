@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
+using iCanScriptEditor;
 
 // ===========================================================================
 // Graph editor event processing.
@@ -42,7 +43,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case 0: { // Left mouse button
                 // Drag the selected node or pan the viewport if no node is selected.
                 if(IsDragEnabled) {
-                    if(iCS_EditionController.IsCommunityLimitReached) break;
+                    if(EditionController.IsCommunityLimitReached) break;
                     ProcessDrag();                                                
                 } else {
                     UpdateViewportPanning();

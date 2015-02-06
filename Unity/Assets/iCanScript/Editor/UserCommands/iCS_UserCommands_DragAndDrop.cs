@@ -5,6 +5,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScriptEditor;
 
 public static partial class iCS_UserCommands {
     // ======================================================================
@@ -62,7 +63,7 @@ public static partial class iCS_UserCommands {
             return;
         }
 		if(pasted != null) {
-			iCS_SystemEvents.AnnounceVisualScriptElementAdded(pasted);			
+			SystemEvents.AnnounceVisualScriptElementAdded(pasted);			
 		}
         CloseTransaction(iStorage, "Add Prefab "+sourceRoot.Name);
     }

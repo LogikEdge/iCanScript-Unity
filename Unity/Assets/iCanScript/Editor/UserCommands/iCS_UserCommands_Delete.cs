@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using P=Prelude;
+using iCanScriptEditor;
 
 public static partial class iCS_UserCommands {
     // ======================================================================
@@ -28,7 +29,7 @@ public static partial class iCS_UserCommands {
         		iStorage.AnimateGraph(null,
                     _=> {
                         iStorage.SelectedObject= obj.ParentNode;
-						iCS_SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
+						SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
                         iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);
                         iStorage.ForcedRelayoutOfTree();
                     }
@@ -49,7 +50,7 @@ public static partial class iCS_UserCommands {
                     // Move the selection to the parent node
                     var parent= obj.ParentNode;
                     iStorage.SelectedObject= parent;
-					iCS_SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
+					SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
                     iStorage.DestroyInstance(obj.InstanceId);
                     iStorage.ForcedRelayoutOfTree();
                 }
@@ -87,7 +88,7 @@ public static partial class iCS_UserCommands {
                         var parent= obj.ParentNode;
                         iStorage.SelectedObject= parent;
 
-						iCS_SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
+						SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
 
                         if(obj.IsInstanceNodePort) {
                     		iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);                        
@@ -123,7 +124,7 @@ public static partial class iCS_UserCommands {
                     iStorage.SelectedObject= parent;
                 
                     P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
-					iCS_SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
+					SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
                     iStorage.DestroyInstance(obj.InstanceId);
                     P.zipWith((n,p) => { n.LocalAnchorFromGlobalPosition= p; }, childNodes, childPos);
                     iStorage.ForcedRelayoutOfTree();

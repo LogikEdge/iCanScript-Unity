@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using iCanScriptEditor;
 
 public static class iCS_iCanScriptMenu {
     // ======================================================================
@@ -134,7 +135,7 @@ public static class iCS_iCanScriptMenu {
     // Purchase
     [MenuItem("iCanScript/Check for Updates...",false,1003)]
     public static void CheckForUpdate() {
-		iCS_SoftwareUpdateController.ManualUpdateVerification();
+		SoftwareUpdateController.ManualUpdateVerification();
     }
 #if COMMUNITY_EDITION
     [MenuItem("iCanScript/Purchase...",false,1004)]

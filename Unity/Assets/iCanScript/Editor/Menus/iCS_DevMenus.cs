@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.IO;
+using iCanScriptEditor;
 using iCanScriptEditor.CodeEngineering;
 
 #if COMMUNITY_EDITION
@@ -98,7 +99,7 @@ public static class iCS_DevMenus {
     // Trigger Periodic Software Update Verification
 	[MenuItem("iCanScript/DevTools/Invoke Periodic Software Update Verification",false,2021)]
 	public static void MenuPeriodicSoftwareUpdateVerification() {
-		iCS_SoftwareUpdateController.PeriodicUpdateVerification();
+		SoftwareUpdateController.PeriodicUpdateVerification();
 	}	
     // ======================================================================
     // Extract some info.

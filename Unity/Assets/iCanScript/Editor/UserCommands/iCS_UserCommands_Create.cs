@@ -7,6 +7,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using P=Prelude;
+using iCanScriptEditor;
 
 public static partial class iCS_UserCommands {
     // ======================================================================
@@ -58,7 +59,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create Variable Proxy: "+name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(variableReference);
+		SystemEvents.AnnounceVisualScriptElementAdded(variableReference);
         return variableReference;
     }
 	// ----------------------------------------------------------------------
@@ -109,7 +110,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create Function Call: "+name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(functionCall);
+		SystemEvents.AnnounceVisualScriptElementAdded(functionCall);
         return functionCall;
     }
 	// ----------------------------------------------------------------------
@@ -132,7 +133,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create "+name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
+		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -170,7 +171,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create StateChart");
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(stateChart);
+		SystemEvents.AnnounceVisualScriptElementAdded(stateChart);
         return stateChart;        
     }
 	// ----------------------------------------------------------------------
@@ -203,7 +204,7 @@ public static partial class iCS_UserCommands {
             return null;            
         }
         CloseTransaction(iStorage, "Create State");
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(state);
+		SystemEvents.AnnounceVisualScriptElementAdded(state);
         return state;        
     }
 	// ----------------------------------------------------------------------
@@ -241,7 +242,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create "+name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(msgHandler);
+		SystemEvents.AnnounceVisualScriptElementAdded(msgHandler);
         return msgHandler;
     }
     // ----------------------------------------------------------------------
@@ -269,7 +270,7 @@ public static partial class iCS_UserCommands {
         package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnEntry;
         CloseTransaction(iStorage, "Create "+package.Name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
+		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -293,7 +294,7 @@ public static partial class iCS_UserCommands {
         package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnUpdate;
         CloseTransaction(iStorage, "Create "+package.Name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
+		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -317,7 +318,7 @@ public static partial class iCS_UserCommands {
         package.IsNameEditable= false;            
         package.Tooltip= iCS_ObjectTooltips.OnExit;
         CloseTransaction(iStorage, "Create "+package.Name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
+		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -351,7 +352,7 @@ public static partial class iCS_UserCommands {
             return null;            
         }
         CloseTransaction(iStorage, "Create "+name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(function);
+		SystemEvents.AnnounceVisualScriptElementAdded(function);
         return function;        
     }
 
@@ -428,7 +429,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create Transition");            
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(transitionPackage);
+		SystemEvents.AnnounceVisualScriptElementAdded(transitionPackage);
         return transitionPackage;
     }
     // -------------------------------------------------------------------------
@@ -457,7 +458,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create Enable Port");
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(port);
+		SystemEvents.AnnounceVisualScriptElementAdded(port);
         return port;
     }
     // -------------------------------------------------------------------------
@@ -486,7 +487,7 @@ public static partial class iCS_UserCommands {
             return null;            
         }
         CloseTransaction(iStorage, "Create Trigger Port");
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(port);
+		SystemEvents.AnnounceVisualScriptElementAdded(port);
         return port;
     }
     // -------------------------------------------------------------------------
@@ -514,7 +515,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create 'this' Port");
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(port);
+		SystemEvents.AnnounceVisualScriptElementAdded(port);
         return port;
     }
     
@@ -553,7 +554,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create "+name);            
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(instance);
+		SystemEvents.AnnounceVisualScriptElementAdded(instance);
         return instance;
     }
 
@@ -583,7 +584,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Wrap : "+obj.Name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
+		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 	// ----------------------------------------------------------------------
@@ -628,7 +629,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Wrap Selection");
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(package);
+		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
 
@@ -669,7 +670,7 @@ public static partial class iCS_UserCommands {
             return null;
         }
         CloseTransaction(iStorage, "Create "+go.name);
-		iCS_SystemEvents.AnnounceVisualScriptElementAdded(instance);
+		SystemEvents.AnnounceVisualScriptElementAdded(instance);
         return instance;
     }
     

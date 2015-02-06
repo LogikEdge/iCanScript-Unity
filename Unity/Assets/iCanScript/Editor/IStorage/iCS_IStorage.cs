@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
+using iCanScriptEditor;
 
 public partial class iCS_IStorage {
     // ======================================================================
@@ -163,7 +164,7 @@ public partial class iCS_IStorage {
         }
 
         // -- Count number of nodes to limit community version --
-        if(iCS_EditionController.IsCommunityEdition) {
+        if(EditionController.IsCommunityEdition) {
             NumberOfNodes= 0;
             ForEach(obj=> {
                 if(obj.IsNode && obj != RootObject && !obj.ParentNode.IsInstanceNode) {

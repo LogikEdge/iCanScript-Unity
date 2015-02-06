@@ -12,22 +12,11 @@ namespace iCanScriptEditor { namespace CodeEngineering {
             iCanScriptEditor.FileUtils.CreateAssetFolder("VisualScripts");
             
             // Install events.
-            iCS_EditorObject.OnNodeCreated     += OnNodeCreated;
-            iCS_EditorObject.OnWillDestroyNode += OnWillDestroyNode;
-            iCS_SystemEvents.OnHierarchyChanged+= OnHierarchyChanged;
-            iCS_SystemEvents.OnEditorStarted   += OnEditorStarted;				
+            SystemEvents.OnHierarchyChanged+= OnHierarchyChanged;
+            SystemEvents.OnEditorStarted   += OnEditorStarted;				
     	}
     	public static void Start() {}
         public static void Shutdown() {}
-    
-        // ----------------------------------------------------------------------
-        // Generate code according to created node.
-        static void OnNodeCreated(iCS_EditorObject node) {
-        }
-        // ----------------------------------------------------------------------
-        // Generate code according to node destruction.
-        static void OnWillDestroyNode(iCS_EditorObject node) {
-        }
     
         // ----------------------------------------------------------------------
         static void OnEditorStarted() {

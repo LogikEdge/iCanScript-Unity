@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 
-public static class iCS_ErrorControllerProxy {
+public static class ErrorControllerProxy {
 	// ==========================================================================
 	// Interface Callbacks
 	public static Action<string>									_Clear     = null;

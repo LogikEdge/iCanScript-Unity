@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using iCanScriptEditor;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
@@ -30,7 +31,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         UpdateVisualEditorCache();
         
         // Register for window under mouse change
-        iCS_SystemEvents.OnWindowUnderMouseChange+= helpWindowChange;
+        SystemEvents.OnWindowUnderMouseChange+= helpWindowChange;
         
         // -- Initialize Sub-Systems --
         QueueOnGUICommand(WorkflowAssistantInit);
@@ -48,7 +49,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		mySubEditor     = null;
         
         // Unregister for window under mouse change
-        iCS_SystemEvents.OnWindowUnderMouseChange-= helpWindowChange;
+        SystemEvents.OnWindowUnderMouseChange-= helpWindowChange;
     }
 
 	// ----------------------------------------------------------------------

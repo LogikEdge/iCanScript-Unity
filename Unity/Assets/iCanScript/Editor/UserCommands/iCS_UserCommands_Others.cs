@@ -5,7 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using Pref= iCS_PreferencesController;
-
+using iCanScriptEditor;
 
 public static partial class iCS_UserCommands {
     // ======================================================================
@@ -67,7 +67,7 @@ public static partial class iCS_UserCommands {
         }
         CloseTransaction(iStorage, "Change name => "+name, TransactionType.Field);
         iCS_EditorController.RepaintEditorsWithLabels();
-		iCS_SystemEvents.AnnounceVisualScriptElementNameChanged(obj);
+		SystemEvents.AnnounceVisualScriptElementNameChanged(obj);
     }
     // ----------------------------------------------------------------------
     public static void ChangeTooltip(iCS_EditorObject obj, string tooltip) {

@@ -4,8 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 using TS=iCS_TimerService;
-using EC=iCS_ErrorController;
+using EC=iCanScriptEditor.ErrorController;
 using TimedAction= Prelude.TimerService.TimedAction;
+using iCanScriptEditor;
 
 public partial class iCS_VisualEditor {
 	// =======================================================================
@@ -21,7 +22,7 @@ public partial class iCS_VisualEditor {
 	// -----------------------------------------------------------------------
     void DisplayErrorsAndWarnings() {
         // -- Nothing to display if no error/warning exists --
-        if(!iCS_ErrorController.IsErrorOrWarning) return;
+        if(!ErrorController.IsErrorOrWarning) return;
         // -- Update the repaint timer --
         UpdateErrorRepaintTimer();
         // -- Show scene errors/warnings --
@@ -33,13 +34,13 @@ public partial class iCS_VisualEditor {
 	// -----------------------------------------------------------------------
 	void DisplaySceneErrorsAndWarnings() {
 		// -- Nothing to show if no errors/warnings detected --
-        if(!iCS_ErrorController.IsErrorOrWarning) return;
+        if(!iCanScriptEditor.ErrorController.IsErrorOrWarning) return;
 		
         // -- Display scene error/warning icon --
-		var nbOfErrors  = iCS_ErrorController.NumberOfErrors;
-        var nbOfWarnings= iCS_ErrorController.NumberOfWarnings;
+		var nbOfErrors  = ErrorController.NumberOfErrors;
+        var nbOfWarnings= ErrorController.NumberOfWarnings;
         var r= GetSceneErrorWarningIconRect();
-        var icon= nbOfErrors != 0 ? iCS_ErrorController.ErrorIcon : iCS_ErrorController.WarningIcon;
+        var icon= nbOfErrors != 0 ? ErrorController.ErrorIcon : ErrorController.WarningIcon;
         DisplayErrorOrWarningIconWithAlpha(r, icon);
         
         // -- Initiate the display of the scene error/warning details when mouse is over the icon --
@@ -64,15 +65,15 @@ public partial class iCS_VisualEditor {
 			if(r.Contains(WindowMousePosition)) {
 				showErrorDetailTimer.Restart();
 			}
-            DisplayErrorAndWarningDetails(r, iCS_ErrorController.Errors, iCS_ErrorController.Warnings);
+            DisplayErrorAndWarningDetails(r, ErrorController.Errors, ErrorController.Warnings);
 		}
 	}
 
 	// -----------------------------------------------------------------------
     void DisplayVisualScriptErrorsAndWarnings() {
         // -- Get errors/warnings for this visual script --
-        var errors  = iCS_ErrorController.GetErrorsFor(VisualScript);
-        var warnings= iCS_ErrorController.GetWarningsFor(VisualScript);
+        var errors  = ErrorController.GetErrorsFor(VisualScript);
+        var warnings= ErrorController.GetWarningsFor(VisualScript);
 
         // -- Filter out invalid objects --
         errors  = P.filter(e=> IStorage.IsValid(e.ObjectId), errors);
@@ -95,7 +96,7 @@ public partial class iCS_VisualEditor {
             // -- Display the appropriate error/warning icon --
             var r= Math3D.BuildRectCenteredAt(pos, 32f, 32f);
             r= myGraphics.TranslateAndScale(r);
-            var icon= nodeErrors.Count != 0 ? iCS_ErrorController.ErrorIcon : iCS_ErrorController.WarningIcon;
+            var icon= nodeErrors.Count != 0 ? ErrorController.ErrorIcon : ErrorController.WarningIcon;
             DisplayErrorOrWarningIconWithAlpha(r, icon);
             // -- Display error/warning details --
             if(r.Contains(WindowMousePosition)) {
@@ -113,12 +114,12 @@ public partial class iCS_VisualEditor {
 	// -----------------------------------------------------------------------
     void DisplayErrorOrWarningIconWithAlpha(Rect r, Texture2D icon) {
         var savedColor= GUI.color;
-		GUI.color= iCS_ErrorController.BlendColor;
+		GUI.color= ErrorController.BlendColor;
 		GUI.DrawTexture(r, icon, ScaleMode.ScaleToFit);
 		GUI.color= savedColor;
     }
 	// -----------------------------------------------------------------------
-    void DisplayErrorAndWarningDetails(Rect r, List<iCS_ErrorController.ErrorWarning> errors, List<iCS_ErrorController.ErrorWarning> warnings) {
+    void DisplayErrorAndWarningDetails(Rect r, List<iCanScriptEditor.ErrorController.ErrorWarning> errors, List<iCanScriptEditor.ErrorController.ErrorWarning> warnings) {
         // -- Draw background box --
         var savedColor= GUI.color;
         var outlineRect= new Rect(r.x-2, r.y-2, r.width+4, r.height+4);
@@ -135,13 +136,13 @@ public partial class iCS_VisualEditor {
         // -- Show Error first than Warnings --
 		float y= 0;
 		GUI.BeginScrollView(r, Vector2.zero, new Rect(0,0,r.width,r.height));
-        var content= new GUIContent("", iCS_ErrorController.SmallErrorIcon);
+        var content= new GUIContent("", ErrorController.SmallErrorIcon);
 		foreach(var e in errors) {
 			content.text= e.Message;
 			GUI.Label(new Rect(0, y, r.width, r.height), content, style);
 			y+= 16;
 		}
-        content.image= iCS_ErrorController.SmallWarningIcon;
+        content.image= ErrorController.SmallWarningIcon;
 		foreach(var w in warnings) {
 			content.text= w.Message;
 			GUI.Label(new Rect(0, y, r.width, r.height), content, style);
@@ -166,7 +167,7 @@ public partial class iCS_VisualEditor {
     // Utilities
 	// -----------------------------------------------------------------------
     void UpdateErrorRepaintTimer() {
-        if(!iCS_ErrorController.IsErrorOrWarning) {
+        if(!ErrorController.IsErrorOrWarning) {
             if(ourErrorRepaintTimer != null) {
                 ourErrorRepaintTimer.Stop();                
             }

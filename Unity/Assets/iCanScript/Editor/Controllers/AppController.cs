@@ -6,26 +6,26 @@ namespace iCanScriptEditor {
     
 /// The AppController controls the Start and Shutdown of all sub-systems.
 [InitializeOnLoad]
-public static class iCS_AppController {
+public static class AppController {
     // ======================================================================
     // Initialization all sub-systems
     // ----------------------------------------------------------------------
-	static iCS_AppController() {
+	static AppController() {
         // Start all sub-systems.
-		iCS_ErrorController.Start();
-        iCS_SystemEvents.Start();
+		ErrorController.Start();
+        SystemEvents.Start();
         iCS_TimerService.Start();
-        iCS_BlinkController.Start();
-        iCS_EditionController.Start();
-        iCS_LicenseController.Start();
-		iCS_SoftwareUpdateController.Start();
-        iCS_GizmoController.Start();
+        BlinkController.Start();
+        EditionController.Start();
+        LicenseController.Start();
+		SoftwareUpdateController.Start();
+        GizmoController.Start();
         iCS_LibraryDatabaseController.Start();
 		CodeEngineering.CodeEngineeringController.Start();
         iCS_VisualScriptDataController.Start();
         iCS_EditorController.Start();
-        iCS_SceneController.Start();
-        iCS_PublicInterfaceController.Start();
+        SceneController.Start();
+        PublicInterfaceController.Start();
 		iCS_HelpController.Start();	
 	}
     
@@ -35,21 +35,20 @@ public static class iCS_AppController {
     public static void Shutdown() {
         // Shutdown all subsystems.
 		iCS_HelpController.Shutdown();
-        iCS_PublicInterfaceController.Start();
-        iCS_SceneController.Shutdown();
+        PublicInterfaceController.Start();
+        SceneController.Shutdown();
         iCS_EditorController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
         CodeEngineering.CodeEngineeringController.Shutdown();
         iCS_LibraryDatabaseController.Shutdown();
-        iCS_GizmoController.Shutdown();
-        iCS_SystemEvents.Shutdown();
-        iCS_SoftwareUpdateController.Shutdown();
-        iCS_LicenseController.Shutdown();
-        iCS_EditionController.Shutdown();
-        iCS_BlinkController.Shutdown();
+        GizmoController.Shutdown();
+        SoftwareUpdateController.Shutdown();
+        LicenseController.Shutdown();
+        EditionController.Shutdown();
+        BlinkController.Shutdown();
         iCS_TimerService.Shutdown();
-        iCS_SystemEvents.Shutdown();
-		iCS_ErrorController.Shutdown();
+        SystemEvents.Shutdown();
+		ErrorController.Shutdown();
     }
 }
 
