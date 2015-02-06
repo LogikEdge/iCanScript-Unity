@@ -10,6 +10,13 @@ namespace iCanScriptEditor { namespace CodeEngineering {
     public static class CSharpFileUtils {
 
         // ----------------------------------------------------------------------
+        // Generate a default source file name
+        public static void GenerateDefaultSourceFile(iCS_VisualScriptData vsd) {
+            if(vsd.SourceFile != null) return;
+//            vsd.SourceFile= MakeUniqueClassName(vsd.name);
+        }
+        
+        // ----------------------------------------------------------------------
         // Make Unique Class Name
         public static string MakeUniqueClassName(string desiredClassName, int id= 0) {
             // Build name

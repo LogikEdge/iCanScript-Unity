@@ -2,17 +2,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Utilities;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
-    List<Action> OnGUICommandQueue= new List<Action>();
+    ActionQueue  OnGUICommandQueue= new ActionQueue();
 
     // ======================================================================
     // ----------------------------------------------------------------------
     void RunOnGUICommands() {
-		OnGUICommandQueue.ForEach(f=> f());
-		OnGUICommandQueue.Clear();
+		OnGUICommandQueue.RunQueuedActions();
     }
     public void QueueOnGUICommand(Action fnc) {
-        OnGUICommandQueue.Add(fnc);
+        OnGUICommandQueue.QueueAction(fnc);
     }
 }

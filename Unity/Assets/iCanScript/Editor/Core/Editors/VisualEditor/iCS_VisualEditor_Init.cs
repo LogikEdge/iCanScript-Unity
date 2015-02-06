@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using iCanScriptEditor;
+using iCanScriptEditor.CodeEngineering;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
@@ -74,6 +75,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragType= DragTypeEnum.None;
             mySubEditor= null;
             IStorage.ForceRelayout= true;
+            // Generate initial source file
+            CSharpFileUtils.GenerateDefaultSourceFile(IStorage.Storage);
         }
         
 		// Don't run if graphic sub-system did not initialise.
