@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
 using TimedAction= Prelude.TimerService.TimedAction;
+using iCanScriptEditor;
 
 public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
@@ -681,7 +682,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     }
     // ---------------------------------------------------------------------------------
     public void Help() {
-		iCS_HelpController.openDetailedHelp( mySelected.MemberInfo );
+		HelpController.openDetailedHelp( mySelected.MemberInfo );
     }
     // ---------------------------------------------------------------------------------
     public void ToggleFoldUnfoldSelected() {

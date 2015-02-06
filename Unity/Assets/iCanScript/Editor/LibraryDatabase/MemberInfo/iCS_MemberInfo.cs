@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScriptEditor;
 
 public abstract class iCS_MemberInfo : IEquatable<iCS_MemberInfo> {
     // ======================================================================
@@ -128,7 +129,7 @@ public abstract class iCS_MemberInfo : IEquatable<iCS_MemberInfo> {
         get {
             if(myHelpSummary == null) {
 				// Update the cached helpSummary
-                HelpSummaryCache= iCS_HelpController.getHelp(this);
+                HelpSummaryCache= HelpController.getHelp(this);
             }
             return myHelpSummary;        
         }

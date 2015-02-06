@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScriptEditor;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ======================================================================
@@ -218,7 +219,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.H: {  // Show Help
                 if(SelectedObject != null) {
-					iCS_HelpController.openDetailedHelp(SelectedObject);
+					HelpController.openDetailedHelp(SelectedObject);
                 }
                 Event.current.Use();
                 break;

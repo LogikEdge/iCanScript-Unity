@@ -20,13 +20,13 @@ public static class AppController {
         LicenseController.Start();
 		SoftwareUpdateController.Start();
         GizmoController.Start();
-        iCS_LibraryDatabaseController.Start();
+        LibraryDatabaseController.Start();
 		CodeEngineering.CodeEngineeringController.Start();
         iCS_VisualScriptDataController.Start();
         iCS_EditorController.Start();
         SceneController.Start();
         PublicInterfaceController.Start();
-		iCS_HelpController.Start();	
+		HelpController.Start();	
 	}
     
     /// Start the application controller.
@@ -34,13 +34,13 @@ public static class AppController {
     /// Shutdowns the application controller.
     public static void Shutdown() {
         // Shutdown all subsystems.
-		iCS_HelpController.Shutdown();
+		HelpController.Shutdown();
         PublicInterfaceController.Start();
         SceneController.Shutdown();
         iCS_EditorController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
         CodeEngineering.CodeEngineeringController.Shutdown();
-        iCS_LibraryDatabaseController.Shutdown();
+        LibraryDatabaseController.Shutdown();
         GizmoController.Shutdown();
         SoftwareUpdateController.Shutdown();
         LicenseController.Shutdown();

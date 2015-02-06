@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Text.RegularExpressions;
 using System.IO;
+using iCanScriptEditor;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	
@@ -45,7 +46,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
 		if(edWin != null) {
 			myIsLibraryHelp= false;
-			myHelpText= iCS_HelpController.getHelp(edWin.GetType());
+			myHelpText= HelpController.getHelp(edWin.GetType());
             Repaint();		    
 		}
 	}
@@ -61,9 +62,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			} 
 			else {
 				myIsLibraryHelp= true;
-				string title= iCS_HelpController.GetHelpTitle(memInfo);
-				string help= iCS_HelpController.getHelp(memInfo);
-				string parameters= iCS_HelpController.GetHelpParameters(memInfo);
+				string title= HelpController.GetHelpTitle(memInfo);
+				string help= HelpController.getHelp(memInfo);
+				string parameters= HelpController.GetHelpParameters(memInfo);
 				myHelpText= title + "\n" + (String.IsNullOrEmpty(help) ? "\n" : help + "\n\n")  + parameters;
 	            Repaint();	
 			} 
@@ -187,8 +188,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// Prepare help text for a single item, to be combined by prepareHelpWindowText.
 	string prepareHelpItem(iCS_EditorObject edObj) {
 		string helpText= null;
-		string title= iCS_HelpController.GetHelpTitle(edObj, true, false);
-		string help=  iCS_HelpController.getHelp(edObj);
+		string title= HelpController.GetHelpTitle(edObj, true, false);
+		string help=  HelpController.getHelp(edObj);
 	
 		if (!String.IsNullOrEmpty(title)) {
 			helpText= title + "\n";
@@ -202,7 +203,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	
 	// Prepare help text for a single item, to be combined by prepareHelpWindowText.
 	string prepareHelpItemRelayPort(iCS_EditorObject edObj) {
-		return iCS_HelpController.GetHelpTitle(edObj, true, true) + "\n";
+		return HelpController.GetHelpTitle(edObj, true, true) + "\n";
 	}
 
     // =======================================================================
