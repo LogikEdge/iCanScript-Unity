@@ -18,6 +18,8 @@ namespace iCanScriptEditor { namespace CodeEngineering {
     	public static void Start() {}
         public static void Shutdown() {}
     
+        // ======================================================================
+    	// Event handling
         // ----------------------------------------------------------------------
         static void OnEditorStarted() {
             CSharpGenerateBehaviour.UpdateBehaviourCode();        

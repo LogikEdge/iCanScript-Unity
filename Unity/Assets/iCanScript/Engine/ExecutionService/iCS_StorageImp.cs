@@ -10,6 +10,7 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+                      public string                   SourceFile            = null;
     [HideInInspector] public int			          MajorVersion          = iCS_Config.MajorVersion;
     [HideInInspector] public int    		          MinorVersion          = iCS_Config.MinorVersion;
     [HideInInspector] public int    		          BugFixVersion         = iCS_Config.BugFixVersion;
@@ -29,10 +30,10 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
-//    string iCS_IVisualScriptData.HostName {
-//        get { return name; }
-//        set { name= value; }
-//    }
+    string iCS_IVisualScriptData.SourceFile {
+        get { return SourceFile; }
+        set { SourceFile= value; }
+    }
     int iCS_IVisualScriptData.MajorVersion {
         get { return MajorVersion; }
         set { MajorVersion= value; }

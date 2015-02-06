@@ -21,7 +21,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-//    public UnityEngine.Object       HostObject         = null;
+    public string                   SourceFile            = null;
     public int			            MajorVersion          = iCS_Config.MajorVersion;
     public int    		            MinorVersion          = iCS_Config.MinorVersion;
     public int    		            BugFixVersion         = iCS_Config.BugFixVersion;
@@ -44,6 +44,10 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
  //       get { return HostObject != null ? HostObject.name : ""; }
  //       set { if(HostObject != null) HostObject.name= value; }
  //   }
+    string iCS_IVisualScriptData.SourceFile {
+        get { return SourceFile; }
+        set { SourceFile= value; }
+    }
     int iCS_IVisualScriptData.MajorVersion {
         get { return MajorVersion; }
         set { MajorVersion= value; }
@@ -267,6 +271,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ----------------------------------------------------------------------
     public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
 //        to.HostName     = from.HostName;
+        to.SourceFile   = from.SourceFile;
         to.MajorVersion = from.MajorVersion;
         to.MinorVersion = from.MinorVersion;
         to.BugFixVersion= from.BugFixVersion;

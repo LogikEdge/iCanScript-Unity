@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public interface iCS_IVisualScriptData {
 	// Editor Interface
+    string                  SourceFile             { get; set; }
     int                     DisplayRoot            { get; set; }
     int                     SelectedObject         { get; set; }
     Vector2                 SelectedObjectPosition { get; set; }
