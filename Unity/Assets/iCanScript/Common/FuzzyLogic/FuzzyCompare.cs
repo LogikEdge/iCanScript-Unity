@@ -9,9 +9,9 @@ namespace FuzzyLogic {
         // ----------------------------------------------------------------------
         public static float GetScore(string search, string dest) {
             // Local function to compute damping factor
-            Func<int,float> dampingFactor= (distance)=> {
+            Func<float,float> dampingFactor= (distance)=> {
                 distance= Mathf.Abs(distance);
-                if(distance > 5) distance= 5;
+                if(distance > 10f) distance= 10f;
                 return 1f-(distance/100f);
             };
             // Convert to uppercase.
@@ -30,7 +30,7 @@ namespace FuzzyLogic {
                 var found= false;
                 for(int j= destCursor+1; j < destLen; ++j) {
                     if(dest[j] == c) {
-                        score+= 2f * dampingFactor(j-destCursor+1) * dampingFactor(i-j);
+                        score+= 2f * dampingFactor(j-destCursor+1) * dampingFactor(0.5f*(i-j));
                         destCursor= j;
                         found= true;
                         break;
@@ -40,7 +40,7 @@ namespace FuzzyLogic {
                 if(found == false) {
                     for(int j= destCursor; j >= 0; --j) {
                         if(dest[j] == c) {
-                            score+= 1f * dampingFactor(j-destCursor+1) * dampingFactor(i-j);
+                            score+= 1f * dampingFactor(j-destCursor+1) * dampingFactor(0.35f*(i-j));
                             destCursor= j;
                             found= true;
                             break;

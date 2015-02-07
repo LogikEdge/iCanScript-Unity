@@ -116,6 +116,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     P.Tree<Node>                myUnfilteredTree   = null;
     P.Tree<Node>                myActiveTree       = null;
     int                         myActiveTreeSize   = 0;
+    float                       mySearchThreashold = 0.87f;
     // Used to move selection up/down
     Node                        myLastDisplayed  = null;
     int                         myChangeSelection= 0;
@@ -267,7 +268,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     /// Rebuilds the active tree using the existing search criterias.
     public void RebuildActiveTree() {
         BuildTreeFrom(UnfilteredTree);
-        if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
+        if(!iCS_Strings.IsEmpty(mySearchString)) {
             string upperSearchStr= mySearchString.ToUpper();
             ShowAllFiltered(upperSearchStr);
         }        
@@ -370,7 +371,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     bool NameMatches(string name, string matchString) {
         if(iCS_Strings.IsEmpty(matchString)) return true;
-        return FuzzyLogic.FuzzyString.GetScore(matchString, name) > 0.85f;
+        return FuzzyLogic.FuzzyString.GetScore(matchString, name) > mySearchThreashold;
 //        var result= name.ToUpper().IndexOf(matchString);
 //        return result >= 0;
     }
@@ -467,8 +468,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     bool FilterIn(iCS_MemberInfo desc, string upperSearchStr) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, desc.DisplayName) > 0.85f) return true;
-        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, desc.ParentTypeInfo.DisplayName) > 0.85f) return true;
+        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, desc.DisplayName) > mySearchThreashold) return true;
+        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, desc.ParentTypeInfo.DisplayName) > mySearchThreashold) return true;
 //        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
 //        if(desc.ParentTypeInfo.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
@@ -477,7 +478,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     bool FilterIn(Node node, string upperSearchStr) {
         if(node == null) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, node.Name) > 0.85f) return true;
+        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, node.Name) > mySearchThreashold) return true;
 //        if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
@@ -699,53 +700,62 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(ActiveTree == null) return;
         var children= ActiveTree.Children;
         if(children == null) return;
-        bool result= false;
         foreach(var child in children) {
-            result |= ShowAllFilteredFrom(child, searchString);
+            ShowAllFilteredFrom(child, searchString);
         }
-        if(result) myTreeView.Unfold(ActiveTree.Value);
+        if(children.Count != 0) {
+            myTreeView.Unfold(ActiveTree.Value);
+        }
+        else {
+            myTreeView.Fold(ActiveTree.Value);            
+        }
     }
-    bool ShowAllFilteredFrom(Prelude.Tree<Node> tree, string searchString) {
-        if(tree == null) return false;
-        bool result= false;
+    void ShowAllFilteredFrom(Prelude.Tree<Node> tree, string searchString) {
+        if(tree == null) return;
         var children= tree.Children;
-        var myTreeSize= NumberOfItems;
+        // Ask children to unfold (if permitted)
         if(children != null) {
             foreach(var child in children) {
-                result |= ShowAllFilteredFrom(child, searchString);
-            }            
-            // Don't unfold everthing if we have too many search results.
-            if(result) {
-                switch(tree.Value.Type) {
-                    case NodeTypeEnum.Root:
-                    case NodeTypeEnum.Company:
-                    case NodeTypeEnum.Library:
-                    case NodeTypeEnum.Package: {
-                        myTreeView.Unfold(tree.Value);                    
-                        break;                        
-                    }
-                    case NodeTypeEnum.Class: {
-                        if(SearchCriteria_1.ShowClasses == true &&
-                           SearchCriteria_1.ShowFunctions == false && SearchCriteria_1.ShowVariables == false) {
-                            myTreeView.Fold(tree.Value);                                                
-                            break;
-                        }
-                        if(myTreeSize < 3000) {
-                            myTreeView.Unfold(tree.Value);                                                
-                        }
-                        else {
-                            myTreeView.Fold(tree.Value);
-                        }
-                        break;
-                    }
-                    default: {
-                        myTreeView.Unfold(tree.Value);                                                
-                        break;
-                    }
-                }
+                ShowAllFilteredFrom(child, searchString);
             }
         }
-        return result | FilterIn(tree.Value, searchString);
+        // Don't unfold everthing if we have too many search results.
+        var myTreeSize= NumberOfItems;
+        switch(tree.Value.Type) {
+            case NodeTypeEnum.Root:
+            case NodeTypeEnum.Company: {
+                myTreeView.Unfold(tree.Value);                    
+                break;                                                
+            }
+            case NodeTypeEnum.Library: {
+                if(myTreeSize < 1000) {
+                    myTreeView.Unfold(tree.Value);                    
+                }
+                else {
+                    myTreeView.Fold(tree.Value);
+                }
+                break;                        
+            }
+            case NodeTypeEnum.Package:
+            case NodeTypeEnum.Class: {
+                if(SearchCriteria_1.ShowClasses == true &&
+                   SearchCriteria_1.ShowFunctions == false && SearchCriteria_1.ShowVariables == false) {
+                    myTreeView.Fold(tree.Value);                                                
+                    break;
+                }
+                if(myTreeSize < 500) {
+                    myTreeView.Unfold(tree.Value);                                                
+                }
+                else {
+                    myTreeView.Fold(tree.Value);
+                }
+                break;
+            }
+            default: {
+                myTreeView.Unfold(tree.Value);                                                
+                break;
+            }
+        }
     }
 		
     // ---------------------------------------------------------------------------------
