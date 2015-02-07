@@ -21,7 +21,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public string                   SourceFile            = null;
+    public string                   SourceFileGUID        = null;
     public int			            MajorVersion          = iCS_Config.MajorVersion;
     public int    		            MinorVersion          = iCS_Config.MinorVersion;
     public int    		            BugFixVersion         = iCS_Config.BugFixVersion;
@@ -40,13 +40,9 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
- //   string iCS_IVisualScriptData.HostName {
- //       get { return HostObject != null ? HostObject.name : ""; }
- //       set { if(HostObject != null) HostObject.name= value; }
- //   }
-    string iCS_IVisualScriptData.SourceFile {
-        get { return SourceFile; }
-        set { SourceFile= value; }
+    string iCS_IVisualScriptData.SourceFileGUID {
+        get { return SourceFileGUID; }
+        set { SourceFileGUID= value; }
     }
     int iCS_IVisualScriptData.MajorVersion {
         get { return MajorVersion; }
@@ -270,12 +266,11 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
 
     // ----------------------------------------------------------------------
     public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
-//        to.HostName     = from.HostName;
-        to.SourceFile   = from.SourceFile;
-        to.MajorVersion = from.MajorVersion;
-        to.MinorVersion = from.MinorVersion;
-        to.BugFixVersion= from.BugFixVersion;
-        to.UndoRedoId   = from.UndoRedoId;
+        to.SourceFileGUID= from.SourceFileGUID;
+        to.MajorVersion  = from.MajorVersion;
+        to.MinorVersion  = from.MinorVersion;
+        to.BugFixVersion = from.BugFixVersion;
+        to.UndoRedoId    = from.UndoRedoId;
         
         // Resize destination engine object array.
         var fromEngineObjects= from.EngineObjects;

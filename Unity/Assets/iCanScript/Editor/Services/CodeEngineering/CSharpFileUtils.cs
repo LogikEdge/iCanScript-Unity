@@ -12,20 +12,13 @@ namespace iCanScriptEditor { namespace CodeEngineering {
         // ----------------------------------------------------------------------
         // Verify the consistancy of the source file
         public static void VerifyAndCorrectSourceFile(iCS_IStorage iStorage) {
-            if(String.IsNullOrEmpty(iStorage.Storage.SourceFile)) {
-                iStorage.Storage.SourceFile= MakeUniqueClassName(iStorage[0].name);
+            if(String.IsNullOrEmpty(iStorage.Storage.SourceFileGUID)) {
+                iStorage[0].Name= MakeUniqueClassName(iStorage[0].Name);
                 // TODO: Queue creation of source file
             }
             // TODO: verify the existance of the source file and create it
         }
-        
-        // ----------------------------------------------------------------------
-        // Generate a default source file name
-        public static void GenerateDefaultSourceFile(iCS_VisualScriptData vsd) {
-            if(vsd.SourceFile != null) return;
-//            vsd.SourceFile= MakeUniqueClassName(vsd.name);
-        }
-        
+                
         // ----------------------------------------------------------------------
         // Make Unique Class Name
         public static string MakeUniqueClassName(string desiredClassName, int id= 0) {
