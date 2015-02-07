@@ -369,8 +369,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     bool NameMatches(string name, string matchString) {
-        var result= name.ToUpper().IndexOf(matchString);
-        return result >= 0;
+        if(iCS_Strings.IsEmpty(matchString)) return true;
+        return FuzzyLogic.FuzzyString.GetScore(matchString, name) > 0.85f;
+//        var result= name.ToUpper().IndexOf(matchString);
+//        return result >= 0;
     }
     // ---------------------------------------------------------------------------------
     int FindInTreeChildren(string name, Prelude.Tree<Node> tree) {
@@ -465,15 +467,18 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     bool FilterIn(iCS_MemberInfo desc, string upperSearchStr) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        if(desc.ParentTypeInfo.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, desc.DisplayName) > 0.85f) return true;
+        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, desc.ParentTypeInfo.DisplayName) > 0.85f) return true;
+//        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+//        if(desc.ParentTypeInfo.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     // ---------------------------------------------------------------------------------
     bool FilterIn(Node node, string upperSearchStr) {
         if(node == null) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, node.Name) > 0.85f) return true;
+//        if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     

@@ -117,4 +117,13 @@ public static partial class Prelude {
         }
         return result;
     }
+    // ----------------------------------------------------------------------
+    // take :: Int->[a]->[a]
+    public static A[] take<A>(int nbItems, A[] lst) {
+        if(nbItems > lst.Length) nbItems= lst.Length;
+        var result= new A[nbItems];
+        Array.Copy(lst, result, nbItems);
+        return result;
+    }
+    
 }
