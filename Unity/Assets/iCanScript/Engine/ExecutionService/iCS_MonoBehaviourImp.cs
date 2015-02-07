@@ -6,7 +6,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // Storage
     // ----------------------------------------------------------------------
-                      public string                   SourceFileGUID        = null;
+    [HideInInspector] public string                   SourceFileGUID        = null;
     [HideInInspector] public int			          MajorVersion          = iCS_Config.MajorVersion;
     [HideInInspector] public int    		          MinorVersion          = iCS_Config.MinorVersion;
     [HideInInspector] public int    		          BugFixVersion         = iCS_Config.BugFixVersion;
