@@ -7,17 +7,19 @@ namespace iCanScript { namespace Utilities {
     
     public class ActionQueue {
         // ======================================================================
-        // Fields
+        // A list of queued action.
         // ----------------------------------------------------------------------
         List<Action> myQueue= new List<Action>();
 
         // ----------------------------------------------------------------------
-        // Queue a command for later execution.
+        // Queue an action for later execution.
+        // ----------------------------------------------------------------------
         public void QueueAction(Action fnc) {
             myQueue.Add(fnc);
         }
         // ----------------------------------------------------------------------
-        // Execute all queued commands
+        // Execute all queued actions then empty queue.
+        // ----------------------------------------------------------------------
         public void RunQueuedActions() {
     		myQueue.ForEach(f=> f());
     		myQueue.Clear();

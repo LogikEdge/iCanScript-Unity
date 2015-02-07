@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
 using iCanScriptEditor;
+using iCanScriptEditor.CodeEngineering;
 
 public enum TransactionType { None, Graph, Navigation, Field };
 
@@ -167,5 +168,6 @@ public partial class iCS_IStorage {
         SelectedObject= selectedObject;
         myLastTransactionType= TransactionType.None;
         SystemEvents.AnnouceVisualScriptReloaded(this);
+        CSharpFileUtils.VerifyAndCorrectSourceFile(this);
     }
 }

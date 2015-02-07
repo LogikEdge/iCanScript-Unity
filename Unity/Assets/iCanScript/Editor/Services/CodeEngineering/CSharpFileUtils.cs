@@ -10,6 +10,16 @@ namespace iCanScriptEditor { namespace CodeEngineering {
     public static class CSharpFileUtils {
 
         // ----------------------------------------------------------------------
+        // Verify the consistancy of the source file
+        public static void VerifyAndCorrectSourceFile(iCS_IStorage iStorage) {
+            if(String.IsNullOrEmpty(iStorage.Storage.SourceFile)) {
+                iStorage.Storage.SourceFile= MakeUniqueClassName(iStorage[0].name);
+                // TODO: Queue creation of source file
+            }
+            // TODO: verify the existance of the source file and create it
+        }
+        
+        // ----------------------------------------------------------------------
         // Generate a default source file name
         public static void GenerateDefaultSourceFile(iCS_VisualScriptData vsd) {
             if(vsd.SourceFile != null) return;
