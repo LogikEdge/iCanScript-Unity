@@ -75,7 +75,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void DetectUndoRedo() {
 //        // Regenerate internal structures if undo/redo was performed.
-//        if(PersistentStorage.UndoRedoId != Storage.UndoRedoId) {
+//        if(EngineStorage.UndoRedoId != Storage.UndoRedoId) {
 //			SynchronizeAfterUndoRedo();
 //        }        
     }
@@ -126,7 +126,7 @@ public partial class iCS_IStorage {
         // Keep a copy of the selected object global position.
         Storage.SelectedObjectPosition= SelectedObject.GlobalPosition;
         // Tell Unity that our storage has changed.
-        iCS_StorageImp.CopyFromTo(Storage, PersistentStorage);
+        iCS_StorageImp.CopyFromTo(Storage, EngineStorage);
         // Commit Undo transaction and forces redraw of inspector window.
         EditorUtility.SetDirty(iCSMonoBehaviour);
         ++ModificationId;
@@ -140,7 +140,7 @@ public partial class iCS_IStorage {
             Storage= new iCS_VisualScriptData(iCSMonoBehaviour);
         }
         try {
-            iCS_VisualScriptData.CopyFromTo(PersistentStorage, Storage);            
+            iCS_VisualScriptData.CopyFromTo(EngineStorage, Storage);            
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Unable to copy engine storage: "+e.Message);

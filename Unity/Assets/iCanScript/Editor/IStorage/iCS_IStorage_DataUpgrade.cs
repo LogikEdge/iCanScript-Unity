@@ -15,13 +15,13 @@ public partial class iCS_IStorage {
 			v1_1_2_Upgrade();
 			SaveCurrentScene();            
         }
-		iCS_Version storageVersion= new iCS_Version(PersistentStorage.MajorVersion, PersistentStorage.MinorVersion, PersistentStorage.BugFixVersion);
+		iCS_Version storageVersion= new iCS_Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
         // POST-PROCESING ====================================================
         // v1.2.0 Needs to convert "this" port name to "type instance"
 		if(storageVersion.IsOlderThen(1,2,0)) {
-            foreach(var obj in PersistentStorage.EngineObjects) {
+            foreach(var obj in EngineStorage.EngineObjects) {
                 if(obj.IsDataPort && obj.RawName == "this" && obj.RuntimeType != null) {
                     obj.RawName= GetInstancePortName(obj.RuntimeType);
                     isUpgraded= true;
@@ -35,9 +35,9 @@ public partial class iCS_IStorage {
 			ShowUpgradeDialog(softwareVersion);
         }
 		// Update storage version identifiers
-		PersistentStorage.MajorVersion = iCS_Config.MajorVersion;
-		PersistentStorage.MinorVersion = iCS_Config.MinorVersion;
-		PersistentStorage.BugFixVersion= iCS_Config.BugFixVersion;
+		EngineStorage.MajorVersion = iCS_Config.MajorVersion;
+		EngineStorage.MinorVersion = iCS_Config.MinorVersion;
+		EngineStorage.BugFixVersion= iCS_Config.BugFixVersion;
 	}
 
     // ----------------------------------------------------------------------

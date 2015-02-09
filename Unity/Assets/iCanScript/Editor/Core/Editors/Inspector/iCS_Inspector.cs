@@ -143,7 +143,7 @@ public class iCS_Inspector : Editor {
         // Draw selected object.
         EditorGUI.indentLevel= 0;
         if(mySelectedObject == null) {
-            EditorGUILayout.LabelField("No Visual Script object selected.  Script size= "+myIStorage.PersistentStorage.EngineObjects.Count);
+            EditorGUILayout.LabelField("No Visual Script object selected.  Script size= "+myIStorage.EngineStorage.EngineObjects.Count);
             return;
         }
 

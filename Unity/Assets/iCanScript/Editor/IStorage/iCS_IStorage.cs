@@ -24,7 +24,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
     public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
-    public iCS_IVisualScriptData PersistentStorage {
+    public iCS_IVisualScriptData EngineStorage {
         get { return iCSMonoBehaviour; }
     }
     public GameObject HostGameObject {
@@ -50,7 +50,7 @@ public partial class iCS_IStorage {
         set {
             Storage.DisplayRoot= value;
             if(!IsUserTransactionActive) {
-                PersistentStorage.DisplayRoot= value;
+                EngineStorage.DisplayRoot= value;
             }
         }
     }
@@ -72,18 +72,18 @@ public partial class iCS_IStorage {
             return obj;
         }
         set {
-            // Keep PersistentStorage & Storage in sync since DisplayRoot is not comprised in the Undo.
+            // Keep EngineStorage & Storage in sync since DisplayRoot is not comprised in the Undo.
             if(value == null || !IsIdValid(value.InstanceId)) {
                 Storage.DisplayRoot= 0;
                 if(!IsUserTransactionActive) {
-                    PersistentStorage.DisplayRoot= 0;                    
+                    EngineStorage.DisplayRoot= 0;                    
                 }
                 return;
             }
             if(!value.IsNode) return;
             Storage.DisplayRoot= value.InstanceId;
             if(!IsUserTransactionActive) {
-                PersistentStorage.DisplayRoot= value.InstanceId;
+                EngineStorage.DisplayRoot= value.InstanceId;
             }
         }
     } 
@@ -102,7 +102,7 @@ public partial class iCS_IStorage {
 	    set {
             Storage.ScrollPosition= value;
             if(!IsUserTransactionActive) {
-                PersistentStorage.ScrollPosition= value;
+                EngineStorage.ScrollPosition= value;
             }
         }
 	}
@@ -111,7 +111,7 @@ public partial class iCS_IStorage {
         set {
             Storage.GuiScale= value;
             if(!IsUserTransactionActive) {
-                PersistentStorage.GuiScale= value;
+                EngineStorage.GuiScale= value;
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿//#define DEBUG
+//#define DEBUG
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -951,7 +951,7 @@ namespace iCanScriptEditor {
         }
         // ----------------------------------------------------------------------
         static void ChangeInterfaceName(VSPublicGroups groups, iCS_EditorObject obj) {
-            var objVs= obj.IStorage.PersistentStorage;
+            var objVs= obj.IStorage.EngineStorage;
     		// -- Try to find the original group --
     		LinkedGroup myGroup= null;
     		groups.ForEach(
