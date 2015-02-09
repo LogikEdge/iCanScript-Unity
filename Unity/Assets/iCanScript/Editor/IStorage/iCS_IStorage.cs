@@ -13,7 +13,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
             bool                    myForceRelayout     = true;
     public  iCS_MonoBehaviourImp    iCSMonoBehaviour    = null;
-    public  iCS_VisualScriptData    Storage             = null;
+    public  iCS_VisualScriptData    EditorStorage       = null;
     List<iCS_EditorObject>          myEditorObjects     = null;
     public  int                     ModificationId      = -1;
     public  bool                    CleanupDeadPorts    = true;
@@ -24,6 +24,10 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
     public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
+    public iCS_VisualScriptData Storage {
+        get { return EditorStorage; }
+        set { EditorStorage= value; }
+    }
     public iCS_IVisualScriptData EngineStorage {
         get { return iCSMonoBehaviour; }
     }
