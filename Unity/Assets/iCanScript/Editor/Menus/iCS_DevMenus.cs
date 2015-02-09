@@ -16,42 +16,15 @@ public static class iCS_DevMenus {
     // Snapshot definitions
 	const string ScreenShotsFolder= "/../../../ScreenShots";
     
-    // ======================================================================
-    // Smart search test.
-	[MenuItem("iCanScript/DevTools/Test Fuzzy Search",false,2000)]
-    public static void TestFuzzySearch() {
-//        var array= new string[]{"fred", "barney", "michel", "audreanne", "abc", "lyne", "afrdsc", "abcdef"};
-        var array= P.map(t=> t.Name, iCS_Reflection.AllTypesWithDefaultConstructor).ToArray();
-//        var scores= iCanScript.Utilities.SmartCompare.GetScores("abc", array);
-//        for(int i= 0; i < scores.Length; ++i) {
-//            Debug.Log("Score: "+scores[i]*100f+" => "+array[i]);
-//        }           
-        var result= FuzzyLogic.FuzzyString.SortAndTake_("v", array, 0);
-        Debug.Log("v=> "+result.Length+"/"+array.Length);
-        result= FuzzyLogic.FuzzyString.SortAndTake_("v3", array, 0);
-        Debug.Log("v3=> "+result.Length+"/"+array.Length);
-//        result= FuzzyLogic.FuzzyCompare.SortAndTake_("gam", array, 0);
-//        Debug.Log("gam=> "+result.Length+"/"+array.Length);
-//        result= FuzzyLogic.FuzzyCompare.SortAndTake_("game", array, 0);
-//        Debug.Log("game=> "+result.Length+"/"+array.Length);
-//        result= FuzzyLogic.FuzzyCompare.SortAndTake_("gameo", array, 0);
-//        Debug.Log("gameo=> "+result.Length+"/"+array.Length);
-//        result= FuzzyLogic.FuzzyCompare.SortAndTake_("gameob", array, 0);
-//        Debug.Log("gameob=> "+result.Length+"/"+array.Length);
-        foreach(var s in result) {
-            Debug.Log(s);
-        }   
-    }
-
-    // ======================================================================
-    // Code Generation Tests
-	[MenuItem("iCanScript/DevTools/Generate Code",false,2000)]
-    public static void GenerateCode() {
-        var className= CSharpFileUtils.MakeUniqueClassName("VisualScript");
-        Debug.Log("Class Name=> "+className);
-        var code= "namespace iCanScript { public class "+className+" {}; }";
-        CSharpFileUtils.WriteCSharpFile("VisualScripts", className, code);
-    }
+//    // ======================================================================
+//    // Code Generation Tests
+//	[MenuItem("iCanScript/DevTools/Generate Code",false,2000)]
+//    public static void GenerateCode() {
+//        var className= CSharpFileUtils.MakeUniqueClassName("VisualScript");
+//        Debug.Log("Class Name=> "+className);
+//        var code= "namespace iCanScript { public class "+className+" {}; }";
+//        CSharpFileUtils.WriteCSharpFile("VisualScripts", className, code);
+//    }
     
     // ======================================================================
     // Visual Editor Snapshot
