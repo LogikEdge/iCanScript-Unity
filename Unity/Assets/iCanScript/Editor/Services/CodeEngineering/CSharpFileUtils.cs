@@ -12,10 +12,10 @@ namespace iCanScriptEditor { namespace CodeEngineering {
         // ----------------------------------------------------------------------
         // Verify the consistancy of the source file
         public static void VerifyAndCorrectSourceFile(iCS_IStorage iStorage) {
-            if(String.IsNullOrEmpty(iStorage.Storage.SourceFileGUID)) {
-                iStorage[0].Name= MakeUniqueClassName(iStorage[0].Name);
-                // TODO: Queue creation of source file
-            }
+//            if(String.IsNullOrEmpty(iStorage.Storage.SourceFileGUID)) {
+//                iStorage[0].Name= MakeUniqueClassName(iStorage[0].Name);
+//                // TODO: Queue creation of source file
+//            }
             // TODO: verify the existance of the source file and create it
         }
                 
