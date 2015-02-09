@@ -47,7 +47,7 @@ public static class iCS_GuiUtilities {
         // Display primitives.
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty, iStorage);
-        if(!isReadOnly && isDirty && newPortValue != null && !newPortValue.Equals(portValue)) {
+        if(!isReadOnly && isDirty && newPortValue != null /*&& !newPortValue.Equals(portValue)*/) {
 			iCS_UserCommands.ChangePortValue(port, newPortValue);
         }
     }
@@ -93,7 +93,6 @@ public static class iCS_GuiUtilities {
 	                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
 	                    array= newArray;
 	                    isDirty= true;							
-						return array;
 					}
                 }					
 			} 
