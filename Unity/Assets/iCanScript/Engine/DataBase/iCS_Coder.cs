@@ -367,7 +367,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     string EncodeString(string value) {
-        return value;
+        return value == null ? "" : value;
     }
 	// ----------------------------------------------------------------------
     public void EncodeString(string key, string value) {
