@@ -121,9 +121,7 @@ public static class iCS_DevMenus {
     }    
     [MenuItem("iCanScript/DevTools/Toggle Show User Transactions", false, 2051)]
     public static void ToggleShowUserTransactions() {
-		iCS_IStorage iStorage= iCS_VisualScriptDataController.IStorage;
-		if(iStorage == null) return;
-        iStorage.ShowUserTransaction= iStorage.ShowUserTransaction ^ true;
+        UserTransactionController.ShowUserTransaction= UserTransactionController.ShowUserTransaction ^ true;
     }    
 }
 #endif

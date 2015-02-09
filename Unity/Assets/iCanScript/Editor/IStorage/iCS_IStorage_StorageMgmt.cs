@@ -14,60 +14,30 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public bool             ShowUserTransaction         = false;
-    public int              UserTransactionCount        = 0;
-    public TransactionType  myLastTransactionType       = TransactionType.None;
-    public int              myFirstNavigationUndoGroupId= 0;
-    public int              myFirstFieldUndoGroupId     = 0;
-           int              myCurrentTransactionGroupId = 0;
+           UserTransactionController  myUserTransactionController = new UserTransactionController();
+    public TransactionType            myLastTransactionType       = TransactionType.None;
+    public int                        myFirstNavigationUndoGroupId= 0;
+    public int                        myFirstFieldUndoGroupId     = 0;
+           int                        myCurrentUndoGroupId        = 0;
     
     // ======================================================================
     // User transaction management
     // ----------------------------------------------------------------------
     public bool IsUserTransactionActive {
-        get { return UserTransactionCount != 0; }
+        get { return myUserTransactionController.IsUserTransactionActive; }
     }
     public void ClearUserTransactions() {
-        if(UserTransactionCount != 0) {
-            UserTransactionCount= 0;
-            Debug.LogWarning("iCanScript: Internal Error: User transaction was forced closed.");            
-        }
+        myUserTransactionController.ClearUserTransactions();
     }
     public void OpenUserTransaction() {
-        if(UserTransactionCount == 0) {
-            Undo.IncrementCurrentGroup();
-            myCurrentTransactionGroupId= Undo.GetCurrentGroup();
-        }
-        ++UserTransactionCount;
-//        Debug.Log("Open: User Transaction Count=> "+UserTransactionCount);
+        myUserTransactionController.OpenUserTransaction();
+        myCurrentUndoGroupId= Undo.GetCurrentGroup();
     }
     public void CloseUserTransaction(string undoMessage= "", TransactionType transactionType= TransactionType.Graph) {
-        if(UserTransactionCount <= 0) {
-            Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
-            UserTransactionCount= 0;
-            return;
-        }
-        if(UserTransactionCount > 0) {
-            --UserTransactionCount;
-        }
-        if(UserTransactionCount == 0) {
-            // Perform graph cleanup once objects & layout are stable.
-            UpdateExecutionPriority();
-            for(int retries= 0; retries < 10 && Cleanup(); ++retries);
-            // Schedule saving this copy of the visual script.
-            iCS_VisualScriptDataController.SaveWithUndo(this, undoMessage, transactionType);
-        }
-//        Debug.Log("Close: User Transaction Count=> "+UserTransactionCount);
+        myUserTransactionController.CloseUserTransaction(this, undoMessage, transactionType);
     }
     public void CancelUserTransaction() {
-        if(UserTransactionCount <= 0) {
-            Debug.LogWarning("iCanScript: Internal Error: Unbalanced user transaction.");
-            return;
-        }
-        if(UserTransactionCount > 0) {
-            --UserTransactionCount;
-        }        
-//        Debug.Log("Cancel: User Transaction Count=> "+UserTransactionCount);
+        myUserTransactionController.CancelUserTransaction();
     }
     
     // ======================================================================
@@ -87,14 +57,14 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SaveWithUndo(string undoMessage, TransactionType transactionType) {
         // Start recording changes for Undo.
-        if(ShowUserTransaction) {
+        if(UserTransactionController.ShowUserTransaction) {
             Debug.Log("iCanScript: Saving=> "+undoMessage);            
         }
         ++Storage.UndoRedoId;
         // Collapse undo group for same transaction.
         var currentGroupId= Undo.GetCurrentGroup();
-        if(currentGroupId != myCurrentTransactionGroupId) {
-            Undo.CollapseUndoOperations(myCurrentTransactionGroupId);
+        if(currentGroupId != myCurrentUndoGroupId) {
+            Undo.CollapseUndoOperations(myCurrentUndoGroupId);
         }
         // Prepare to record modification to group.
         Undo.RecordObject(iCSMonoBehaviour, undoMessage);
