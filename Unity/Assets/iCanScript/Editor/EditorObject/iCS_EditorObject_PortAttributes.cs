@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScriptEngine;
 using P=Prelude;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -13,6 +14,14 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public object	InitialValue= null;
 
+    // ======================================================================
+	// Port iteration signature
+	// ----------------------------------------------------------------------
+    public PortIterationSignatureEnum PortIterationSignature {
+        get { return EngineObject.PortIterationSignature; }
+        set { EngineObject.PortIterationSignature= value; }
+    }
+    
     // ======================================================================
 	// Port source related attributes.
 	// ----------------------------------------------------------------------

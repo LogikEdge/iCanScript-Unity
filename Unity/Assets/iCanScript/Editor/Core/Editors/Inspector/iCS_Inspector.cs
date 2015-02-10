@@ -1,10 +1,8 @@
 //#define BUFFERED_INPUT
 using UnityEngine;
 using UnityEditor;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is used to edit iCS_Behaviour components.
@@ -41,6 +39,7 @@ public class iCS_Inspector : Editor {
     iCS_BufferedTextField myTooltipEditor= new iCS_BufferedTextField();
 #endif
 
+    
     // ======================================================================
     // Properties
 	// ----------------------------------------------------------------------
@@ -57,15 +56,10 @@ public class iCS_Inspector : Editor {
 
 	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
-    // Test
-//    SerializedProperty serializedProp= null;
 	public void OnEnable ()
 	{
         // The state of the inspector is non-persistant.
         hideFlags= HideFlags.DontSave;
-        
-        // Attempt to use serialized properties.
-//        serializedProp= serializedObject.FindProperty("EngineObjects");
 	}
 	
 	// ----------------------------------------------------------------------
@@ -95,48 +89,6 @@ public class iCS_Inspector : Editor {
     }
     
 	// ----------------------------------------------------------------------
-    // Test to attempt to use serialized properties
-//    void Serialize(SerializedProperty p, Type type, int indent= 0) {
-//        if(p == null || type == null) return;
-//        // Serialize type known by Unity
-//        EditorGUI.indentLevel= indent;
-//        if(p.propertyType != SerializedPropertyType.Generic) {
-//            EditorGUILayout.PropertyField(p, new GUIContent (p.displayName));            
-//            return;
-//        }
-//        // Determine if we have some child field to display.
-//        var fieldInfo= new List<FieldInfo>();
-//		foreach(var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
-//            bool shouldInspect= true;
-//            if(field.IsPublic) {
-//                foreach(var attribute in field.GetCustomAttributes(true)) {
-//                    if(attribute is System.NonSerializedAttribute) { shouldInspect= false; break; }
-//                    if(attribute is HideInInspector) { shouldInspect= false; break; }
-//                }
-//            } else {
-//                shouldInspect= false;
-//                foreach(var attribute in field.GetCustomAttributes(true)) {
-//                    if(attribute is SerializeField) shouldInspect= true;
-//                    if(attribute is HideInInspector) { shouldInspect= false; break; }
-//                }                
-//            }
-//            if(shouldInspect) {
-//                fieldInfo.Add(field);
-//            }
-//		}        
-//        // Display compound property
-//        if(fieldInfo.Count == 0) {
-//            EditorGUILayout.PropertyField(p, new GUIContent (p.displayName));
-//        }
-//        else {
-//            EditorGUILayout.Foldout(true, p.name);
-//    		foreach(var field in fieldInfo) {
-//                Serialize(p.FindPropertyRelative(field.Name), field.FieldType, indent+1);
-//    		}        
-//        }
-//    }
-    
-	// ----------------------------------------------------------------------
     // Paint to inspector for the selected object (see editor).
 	public override void OnInspectorGUI ()
 	{
@@ -150,15 +102,6 @@ public class iCS_Inspector : Editor {
         
         // Restore inspector skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
-        
-        // Test to attempt to use serialized properties
-//        serializedObject.Update();
-//        var selectedProp= serializedProp.GetArrayElementAtIndex(myIStorage.Storage.SelectedObject);
-//        do {
-//            EditorGUI.indentLevel= selectedProp.depth;
-//            EditorGUILayout.PropertyField(selectedProp, new GUIContent (selectedProp.displayName));
-//        } while(selectedProp.Next(true));
-//        serializedObject.ApplyModifiedProperties();
         
         // Draw inspector window
         EditorGUI.indentLevel= 0;
@@ -381,6 +324,7 @@ public class iCS_Inspector : Editor {
         iCS_EditorObject parent= port.Parent;
         EditorGUILayout.LabelField("Parent", parent.Name);
         EditorGUILayout.LabelField("Port Index", port.PortIndex.ToString());
+        EditorGUILayout.EnumPopup("Iteration", port.PortIterationSignature);
         iCS_GuiUtilities.OnInspectorDataPortGUI(port, myIStorage, 1, myFoldoutDB);        
     }
 

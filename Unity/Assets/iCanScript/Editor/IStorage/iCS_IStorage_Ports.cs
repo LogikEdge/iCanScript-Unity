@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScriptEngine;
 
 public partial class iCS_IStorage {    
     // =========================================================================
@@ -147,6 +148,7 @@ public partial class iCS_IStorage {
         }
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         port.PortIndex= index;
+        port.PortIterationSignature= PortIterationSignatureEnum.Dont_iterate;
         if(parent.IsPort) {
 //            port.LocalOffset= parent.LocalOffset;
             port.CollisionOffset= parent.CollisionOffset;

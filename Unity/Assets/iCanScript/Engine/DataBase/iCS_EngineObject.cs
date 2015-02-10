@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScriptEngine;
 
 [Serializable]
 public class iCS_EngineObject {
@@ -16,7 +17,7 @@ public class iCS_EngineObject {
     public bool                  IsNameEditable     = true;
     public string                QualifiedType      = "";
 	public Vector2				 LocalAnchorPosition= Vector2.zero;
-    public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded;
+    public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded; // PortIterationSignature
 	public float				 Scale              = 1.0f;  // Used for children scale
 
 	// Node specific attributes ---------------------------------------------
@@ -94,6 +95,10 @@ public class iCS_EngineObject {
     public float PortPositionRatio {
         get { return LocalAnchorPosition.y; }
         set { LocalAnchorPosition.y= value; }
+    }
+    public PortIterationSignatureEnum PortIterationSignature {
+        get { return (PortIterationSignatureEnum)(int)DisplayOption; }
+        set { DisplayOption= (iCS_DisplayOptionEnum)(int)value; }
     }
 
     // ======================================================================
