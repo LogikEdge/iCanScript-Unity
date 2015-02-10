@@ -100,6 +100,11 @@ public static class iCS_Types {
 
 	// ----------------------------------------------------------------------
     public static bool CanBeConnectedWithoutConversion(Type outType, Type inType) {
+        // Accept all .NET native array connections.
+        if(inType == typeof(System.Array) && outType.IsArray) {
+            return true;
+        }
+        // Otherwise verify to type compatibility.
         Type inDataType= GetElementType(inType);
         Type outDataType= GetElementType(outType);
         return IsA(inDataType, outDataType);
