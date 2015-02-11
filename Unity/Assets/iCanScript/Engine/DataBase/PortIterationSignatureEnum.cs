@@ -1,4 +1,5 @@
-﻿namespace iCanScriptEngine {
+﻿namespace iCanScript { namespace Engine {
+
     [System.Serializable]
     public enum PortIterationSignatureEnum {
         /* x */                 Dont_iterate= 0,
@@ -12,4 +13,5 @@
         /* [s1,s2..e] */        Iterate_using_steps_and_ending_at= 8,
         /* [s1,s2..size-n] */   Iterate_using_steps_and_ending_at_index_from_end= 9
     }    
-}
+
+}}

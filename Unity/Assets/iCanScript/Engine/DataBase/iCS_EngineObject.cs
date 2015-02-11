@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScriptEngine;
+using iCanScript.Engine;
 
 [Serializable]
 public class iCS_EngineObject {

@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScriptEngine;
+using iCanScript.Engine;
 
 public partial class iCS_IStorage {    
     // =========================================================================
