@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Subspace;
 
 public class iCS_Connection {
     // ======================================================================
@@ -12,7 +13,7 @@ public class iCS_Connection {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public iCS_Action Action {
+    public SSAction Action {
         get { return mySignature != null ? mySignature.GetAction() : null; }
     }
     public iCS_SignatureDataSource Signature {

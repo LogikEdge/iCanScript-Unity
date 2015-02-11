@@ -1,13 +1,14 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Subspace;
 
 public class iCS_SignatureDataSource {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     // .NET Signature
-    iCS_Object          myObjectWithSignature   = null;
+    SSObject            myObjectWithSignature   = null;
     object              myInInstance            = null;  
     iCS_Connection      myInInstanceConnection  = null;
     object[]            myParameters            = null;
@@ -67,7 +68,7 @@ public class iCS_SignatureDataSource {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_SignatureDataSource(int nbOfParameters, int nbOfEnables, iCS_Object obj) {
+    public iCS_SignatureDataSource(int nbOfParameters, int nbOfEnables, SSObject obj) {
         myParameters = new object[nbOfParameters];
         myParameterConnections= new iCS_Connection[nbOfParameters];
         for(int i= 0; i < nbOfParameters; ++i) {

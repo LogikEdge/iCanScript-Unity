@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
 public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected List<iCS_Action> myExecuteQueue= new List<iCS_Action>();
+    protected List<SSAction> myExecuteQueue= new List<SSAction>();
     protected int              myQueueIdx = 0;
     
     // ======================================================================
@@ -28,7 +29,7 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
         }
         int cursor= myQueueIdx;
         if(cursor < myExecuteQueue.Count) {
-            iCS_Action action= myExecuteQueue[myQueueIdx];
+            SSAction action= myExecuteQueue[myQueueIdx];
             if(!action.IsCurrent(frameId)) {
                 producerPort= action.GetStalledProducerPort(frameId);
                 if(producerPort != null) {
@@ -42,7 +43,7 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // ----------------------------------------------------------------------
     protected override void DoForceExecute(int frameId) {
         if(myQueueIdx < myExecuteQueue.Count) {
-            iCS_Action action= myExecuteQueue[myQueueIdx];
+            SSAction action= myExecuteQueue[myQueueIdx];
             action.ForceExecute(frameId);            
             if(action.IsCurrent(frameId)) {
                 ++myQueueIdx;
@@ -70,11 +71,11 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // ======================================================================
     // Queue Management
     // ----------------------------------------------------------------------
-    public void AddChild(iCS_Action action) {
+    public void AddChild(SSAction action) {
         myExecuteQueue.Add(action);
         action.Parent= this;
     }
-    public void RemoveChild(iCS_Action action) {
+    public void RemoveChild(SSAction action) {
         myExecuteQueue.Remove(action);
         action.Parent= null;
     }

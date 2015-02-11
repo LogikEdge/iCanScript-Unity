@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
 public sealed class iCS_StateChart : iCS_ActionWithSignature {
     // ======================================================================
@@ -221,7 +222,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
-            iCS_Action action= state.OnUpdateAction;
+            SSAction action= state.OnUpdateAction;
 			// Update is not needed or already ran.  Just move to the next state...
 			if(action == null || action.IsCurrent(frameId)) {
 				if(idx == myQueueIdx) {
@@ -262,7 +263,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
-            iCS_Action action= state.OnUpdateAction;
+            SSAction action= state.OnUpdateAction;
 			// Update is not needed or already ran.  Just move to the next state...
 			if(action != null && !action.IsCurrent(frameId)) {
                 var producerPort= action.GetStalledProducerPort(frameId);
@@ -282,7 +283,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
 		for(; myQueueIdx >= 0; --myQueueIdx) {
             iCS_State state= myActiveStack[myQueueIdx];
             if(state == myTransitionParent) break;
-            iCS_Action action= state.OnExitAction;
+            SSAction action= state.OnExitAction;
 			if(action != null && !action.IsCurrent(frameId)) {
 				if(forced) {
 	                action.ForceExecute(frameId);            
@@ -306,7 +307,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
-            iCS_Action action= state.OnExitAction;
+            SSAction action= state.OnExitAction;
 			// Update is not needed or already ran.  Just move to the next state...
 			if(action != null && !action.IsCurrent(frameId)) {
                 var producerPort= action.GetStalledProducerPort(frameId);
@@ -324,7 +325,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
         int end= myActiveStack.Count;
 		for(; myQueueIdx < end; ++myQueueIdx) {
             iCS_State state= myActiveStack[myQueueIdx];
-            iCS_Action action= state.OnEntryAction;
+            SSAction action= state.OnEntryAction;
 			if(action != null && !action.IsCurrent(frameId)) {
 				if(forced) {
 	                action.ForceExecute(frameId);            
@@ -349,7 +350,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
-            iCS_Action action= state.OnEntryAction;
+            SSAction action= state.OnEntryAction;
 			// Update is not needed or already ran.  Just move to the next state...
 			if(action != null && !action.IsCurrent(frameId)) {
                 var producerPort= action.GetStalledProducerPort(frameId);
@@ -409,7 +410,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
     // ======================================================================
     // Child Management
     // ----------------------------------------------------------------------
-    public void AddChild(iCS_Object _object) {
+    public void AddChild(SSObject _object) {
         Prelude.choice<iCS_State, iCS_Mux>(_object,
         	(state)=> {
 	            if(myChildren.Count == 0) myEntryState= state;
@@ -424,7 +425,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
 			}
 		);
     }
-    public void RemoveChild(iCS_Object _object) {
+    public void RemoveChild(SSObject _object) {
         Prelude.choice<iCS_State, iCS_Mux>(_object,
         	(state)=> {
 	            if(state == myEntryState) myEntryState= null;

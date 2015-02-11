@@ -3,8 +3,9 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
-public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
+public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -71,7 +72,7 @@ public abstract class iCS_ActionWithSignature : iCS_Action, iCS_ISignature {
     // Implement ISignature delegate.
     // ----------------------------------------------------------------------
     public iCS_SignatureDataSource GetSignatureDataSource() { return mySignature; }
-    public iCS_Action GetAction() { return this; }
+    public SSAction GetAction() { return this; }
     
     // ======================================================================
     // Execution

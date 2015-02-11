@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Engine;
+using Subspace;
 using P=Prelude;
 using CompileError  =Prelude.Tuple<int,string>;
 using CompileWarning=Prelude.Tuple<int,string>;
@@ -148,7 +149,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     public void GenerateRuntimeNodes(ref List<CompileError> compileErrors, ref List<CompileWarning> compileWarnings) {
         // Allocate runtime node array (if not already done).
         if(EngineObjects.Count != myRuntimeNodes.Length) {
-            myRuntimeNodes= new iCS_Object[EngineObjects.Count];
+            myRuntimeNodes= new SSObject[EngineObjects.Count];
 			for(int i= 0; i < myRuntimeNodes.Length; ++i) myRuntimeNodes[i]= null;
         }
         bool needAdditionalPass= false;

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is used to edit iCS_Behaviour components.
@@ -215,7 +216,7 @@ public class iCS_Inspector : Editor {
 	// ----------------------------------------------------------------------
     void InspectNode(iCS_EditorObject node) {
         // Show runtime frame id.
-        var runtimeObject= myIStorage.GetRuntimeObject(node) as iCS_Action;
+        var runtimeObject= myIStorage.GetRuntimeObject(node) as SSAction;
         if(runtimeObject != null) {
             EditorGUILayout.LabelField("FrameId", runtimeObject.FrameId.ToString());
         }

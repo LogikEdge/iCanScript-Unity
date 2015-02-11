@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
 public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
@@ -15,7 +16,7 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
     protected override void DoExecute(int frameId) {
         bool stalled= true;
         while(myQueueIdx < myExecuteQueue.Count) {
-            iCS_Action action= myExecuteQueue[myQueueIdx];
+            SSAction action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
                 // Verify if the child is a staled dispatcher.

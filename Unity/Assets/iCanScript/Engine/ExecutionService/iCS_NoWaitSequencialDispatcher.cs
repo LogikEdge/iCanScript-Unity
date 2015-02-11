@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
 public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
@@ -16,7 +17,7 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
         // Attempt to execute child functions.
         bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {
-            iCS_Action action= myExecuteQueue[i];
+            SSAction action= myExecuteQueue[i];
             bool didExecute= action.IsCurrent(frameId);
             if(!didExecute) {
                 action.Execute(frameId);                

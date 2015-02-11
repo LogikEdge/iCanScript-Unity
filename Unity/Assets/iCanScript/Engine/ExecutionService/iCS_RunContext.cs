@@ -1,18 +1,19 @@
 //#define EXECUTION_TRACE
 using UnityEngine;
 using System.Collections.Generic;
+using Subspace;
 
 public class iCS_RunContext {
     // ======================================================================
     // Fields
-    int          myFrameId= 0;
-    iCS_Action   myAction= null;
-    List<iCS_Action>    myStalledActions= new List<iCS_Action>();
+    int             myFrameId= 0;
+    SSAction        myAction= null;
+    List<SSAction>  myStalledActions= new List<SSAction>();
     
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public iCS_Action Action {
+    public SSAction Action {
         get { return myAction; }
         set { myAction= value; myFrameId= 0; }
     }
@@ -23,7 +24,7 @@ public class iCS_RunContext {
     // ======================================================================
     // Methods
     // ----------------------------------------------------------------------
-    public iCS_RunContext(iCS_Action action) {
+    public iCS_RunContext(SSAction action) {
         Action= action;
         if(Action != null) {
             Action.IsActive= false;

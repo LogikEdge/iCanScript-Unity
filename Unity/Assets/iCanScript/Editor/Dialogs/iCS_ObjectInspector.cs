@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
 public class iCS_ObjectInspector : EditorWindow {
     // ======================================================================
@@ -115,7 +116,7 @@ public class iCS_ObjectInspector : EditorWindow {
     void InspectNode(iCS_EditorObject node) {
         // Show runtime frame id.
         var iStorage= node.IStorage;
-        var runtimeObject= iStorage.GetRuntimeObject(node) as iCS_Action;
+        var runtimeObject= iStorage.GetRuntimeObject(node) as SSAction;
         if(runtimeObject != null) {
             EditorGUILayout.LabelField("FrameId", runtimeObject.FrameId.ToString());
         }

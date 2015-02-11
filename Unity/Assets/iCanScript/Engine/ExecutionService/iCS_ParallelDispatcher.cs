@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
 public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
@@ -17,7 +18,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
         int queueSize= myExecuteQueue.Count;
         while(myQueueIdx < queueSize) {
             // Attempt to execute child function.
-            iCS_Action action= myExecuteQueue[myQueueIdx];
+            SSAction action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
 				

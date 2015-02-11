@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
-public class iCS_VerifyTransitions : iCS_Action {
+public class iCS_VerifyTransitions : SSAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

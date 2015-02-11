@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using Subspace;
 
-public class iCS_Transition : iCS_Action {
+public class iCS_Transition : SSAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

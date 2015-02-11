@@ -1,15 +1,16 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
-public sealed class iCS_State : iCS_Object {
+public sealed class iCS_State : SSObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     public iCS_State             myEntryState    = null;
-    public iCS_Action            myOnEntryAction = null;
-    public iCS_Action            myOnUpdateAction= null;
-    public iCS_Action            myOnExitAction  = null;
+    public SSAction              myOnEntryAction = null;
+    public SSAction              myOnUpdateAction= null;
+    public SSAction              myOnExitAction  = null;
     public iCS_State             myParentState   = null;
     public List<iCS_State>       myChildren      = new List<iCS_State>();
            iCS_VerifyTransitions myTransitions   = null;
@@ -19,9 +20,9 @@ public sealed class iCS_State : iCS_Object {
     // ----------------------------------------------------------------------
     public iCS_State             ParentState    { get { return myParentState; } }
     public iCS_State             EntryState     { get { return myEntryState; }     set { myEntryState= value; }}
-    public iCS_Action            OnEntryAction  { get { return myOnEntryAction; }  set { myOnEntryAction= value; }}
-    public iCS_Action            OnUpdateAction { get { return myOnUpdateAction; } set { myOnUpdateAction= value; }}
-    public iCS_Action            OnExitAction   { get { return myOnExitAction; }   set { myOnExitAction= value; }}
+    public SSAction              OnEntryAction  { get { return myOnEntryAction; }  set { myOnEntryAction= value; }}
+    public SSAction              OnUpdateAction { get { return myOnUpdateAction; } set { myOnUpdateAction= value; }}
+    public SSAction              OnExitAction   { get { return myOnExitAction; }   set { myOnExitAction= value; }}
     public iCS_VerifyTransitions Transitions    { get { return myTransitions; }}
     
     // ======================================================================
@@ -54,7 +55,7 @@ public sealed class iCS_State : iCS_Object {
     // ======================================================================
     // Child Management
     // ----------------------------------------------------------------------
-    public void AddChild(iCS_Object _object) {
+    public void AddChild(SSObject _object) {
         Prelude.choice<iCS_State, iCS_Transition, iCS_Package>(_object,
             (state)=> {
                 state.myParentState= this;
@@ -83,7 +84,7 @@ public sealed class iCS_State : iCS_Object {
             }
         );
     }
-    public void RemoveChild(iCS_Object _object) {
+    public void RemoveChild(SSObject _object) {
         Prelude.choice<iCS_State, iCS_Transition, iCS_Package>(_object,
             (state)=> {
                 if(state == myEntryState) myEntryState= null;
