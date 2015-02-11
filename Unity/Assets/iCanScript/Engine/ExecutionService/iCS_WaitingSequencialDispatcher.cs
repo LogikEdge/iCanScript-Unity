@@ -13,12 +13,12 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
+    protected override void DoExecute(int runId) {
         bool stalled= true;
         while(myQueueIdx < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
-            action.Execute(frameId);            
-            if(!action.IsCurrent(frameId)) {
+            action.Execute(runId);            
+            if(!action.IsCurrent(runId)) {
                 // Verify if the child is a staled dispatcher.
                 if(!action.IsStalled) {
                     stalled= false;
@@ -30,6 +30,6 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
             ++myQueueIdx;
         }
         // Reset iterators for next frame.
-        ResetIterator(frameId);
+        ResetIterator(runId);
     }
 }

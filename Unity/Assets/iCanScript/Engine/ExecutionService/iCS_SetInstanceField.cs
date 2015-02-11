@@ -14,27 +14,27 @@ public class iCS_SetInstanceField : iCS_FieldBase {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
-        if(!IsThisReady(frameId) || !IsParameterReady(0, frameId)) {
+    protected override void DoExecute(int runId) {
+        if(!IsThisReady(runId) || !IsParameterReady(0, runId)) {
             IsStalled= true;
             return;
         }
-        DoForceExecute(frameId);
+        DoForceExecute(runId);
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int frameId) {
+    protected override void DoForceExecute(int runId) {
         // Execute function
         UpdateParameter(0);
 //#if UNITY_EDITOR
         try {
 //#endif
             myFieldInfo.SetValue(InInstance, Parameters[0]);
-            MarkAsExecuted(frameId);
+            MarkAsExecuted(runId);
 //#if UNITY_EDITOR
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
-            MarkAsCurrent(frameId);
+            MarkAsCurrent(runId);
         }
 //#endif
     }

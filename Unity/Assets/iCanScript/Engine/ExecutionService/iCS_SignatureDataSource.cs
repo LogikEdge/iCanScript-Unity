@@ -191,13 +191,13 @@ public class iCS_SignatureDataSource {
     // ----------------------------------------------------------------------
     // Return true if the enable state can be assertained with the isEnabled
     // output parameter set appropriatly.  Otherwise, false is returned.
-	public bool GetIsEnabledIfReady(int frameId, out bool isEnabled) {
+	public bool GetIsEnabledIfReady(int runId, out bool isEnabled) {
         bool needToWait= false;
 	    int len= myEnables.Length;
         for(int i= 0; i < len; ++i) {
             var connection= myEnableConnections[i];
             if(connection != null) {
-                if(connection.IsCurrent(frameId)) {
+                if(connection.IsCurrent(runId)) {
                     if((bool)connection.Value == false) {
                         isEnabled= false;
                         return true;
@@ -246,15 +246,15 @@ public class iCS_SignatureDataSource {
     // =========================================================================
     // This Queries
     // -------------------------------------------------------------------------
-    // Return 'true' if instance pointer is ready for the given frameId.
+    // Return 'true' if instance pointer is ready for the given runId.
     // The 'This' object is also updated if the connection is ready.
-    public bool IsThisReady(int frameId) {
+    public bool IsThisReady(int runId) {
         if(myInInstanceConnection == null) return true;
-        return myInInstanceConnection.IsReady(frameId);
+        return myInInstanceConnection.IsReady(runId);
     }
     
 	// -------------------------------------------------------------------------
-    public bool IsParameterReady(int idx, int frameId) {
+    public bool IsParameterReady(int idx, int runId) {
 //#if UNITY_EDITOR
         if(idx >= myParameters.Length) {
             Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
@@ -263,7 +263,7 @@ public class iCS_SignatureDataSource {
 //#endif
         var connection= myParameterConnections[idx];
         if(connection == null) return true;
-        return connection.IsReady(frameId);
+        return connection.IsReady(runId);
     }
     // ----------------------------------------------------------------------
     // Forces the update of the given parameter.
@@ -291,13 +291,13 @@ public class iCS_SignatureDataSource {
         return myParameters[idx];
     }
 	// -------------------------------------------------------------------------
-    public iCS_Connection GetStalledProducerPort(int frameId, bool enablesOnly= false) {
+    public iCS_Connection GetStalledProducerPort(int runId, bool enablesOnly= false) {
         // Let's first verify the enables.
         int len= myEnableConnections.Length;
         for(int i= 0; i < len; ++i) {
             var connection= myEnableConnections[i];
             if(connection != null) {
-                if(!connection.IsReady(frameId)) {
+                if(!connection.IsReady(runId)) {
                     return connection;
                 }
             }
@@ -306,7 +306,7 @@ public class iCS_SignatureDataSource {
             return null;
         }
         // Verify intance connection
-        if(myInInstanceConnection != null && !myInInstanceConnection.IsReady(frameId)) {
+        if(myInInstanceConnection != null && !myInInstanceConnection.IsReady(runId)) {
             return myInInstanceConnection;
         }
         // Verify parameter connections
@@ -314,7 +314,7 @@ public class iCS_SignatureDataSource {
         for(int i= 0; i < len; ++i) {
             var connection= myParameterConnections[i];
             if(connection != null) {
-                if(!connection.IsReady(frameId)) {
+                if(!connection.IsReady(runId)) {
                     return connection;
                 }
             }

@@ -13,14 +13,14 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
+    protected override void DoExecute(int runId) {
 		int swapCursor= myQueueIdx;
         int queueSize= myExecuteQueue.Count;
         while(myQueueIdx < queueSize) {
             // Attempt to execute child function.
             SSAction action= myExecuteQueue[myQueueIdx];
-            action.Execute(frameId);            
-            if(!action.IsCurrent(frameId)) {
+            action.Execute(runId);            
+            if(!action.IsCurrent(runId)) {
 				
                 // Update the stalled flag
                 IsStalled &= action.IsStalled;
@@ -36,10 +36,10 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
 			swapCursor= myQueueIdx;
             IsStalled= false;
         }
-        ResetIterator(frameId);            
+        ResetIterator(runId);            
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int frameId) {
+    protected override void DoForceExecute(int runId) {
         // Sort stalled action according to layout rule.
         int best= myQueueIdx;
         int queueSize= myExecuteQueue.Count;
@@ -52,6 +52,6 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
             Swap(myQueueIdx, best);
         }
         // Force execute the selected action.
-        base.DoForceExecute(frameId);
+        base.DoForceExecute(runId);
     }
 }

@@ -5,7 +5,7 @@ using Prefs= iCS_PreferencesController;
 using iCanScript.Editor;
 
 /*
-    TODO: Should show frameId in header bar.
+    TODO: Should show runId in header bar.
 */
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // =======================================================================

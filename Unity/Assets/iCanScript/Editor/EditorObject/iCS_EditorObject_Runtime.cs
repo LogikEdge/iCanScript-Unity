@@ -17,7 +17,7 @@ public partial class iCS_EditorObject {
 			if(Prefs.ShowRuntimeFrameId && IsNode && Application.isPlaying) {
 				var action= GetRuntimeObject as SSAction;
 				if(action != null) {
-					name+= " ("+action.ExecutionFrameId+")";
+					name+= " ("+action.ExecutionRunId+")";
 				}
 			}
 			return name;
@@ -34,14 +34,14 @@ public partial class iCS_EditorObject {
 	public int GetCurrentFrameId {
 		get {
 			var action= GetRuntimeObject as SSAction;
-			return action != null ? action.CurrentFrameId : 0;
+			return action != null ? action.CurrentRunId : 0;
 		}
 	}
     // ----------------------------------------------------------------------
 	public int GetExecutionFrameId {
 		get {
 			var action= GetRuntimeObject as SSAction;
-			return action != null ? action.ExecutionFrameId : 0;
+			return action != null ? action.ExecutionRunId : 0;
 		}
 	}
 }

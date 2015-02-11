@@ -13,19 +13,19 @@ public class iCS_ClassFunction : iCS_FunctionBase {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
+    protected override void DoExecute(int runId) {
         // Wait until all inputs are ready.
         var end= ParametersEnd;
         for(int i= ParametersStart; i <= end; ++i) {
-            if(IsParameterReady(i, frameId) == false) {
+            if(IsParameterReady(i, runId) == false) {
                 return;
             }
         }
         // Execute associated function.
-        DoForceExecute(frameId);
+        DoForceExecute(runId);
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int frameId) {
+    protected override void DoForceExecute(int runId) {
 //#if UNITY_EDITOR
         try {
 //#endif
@@ -37,7 +37,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             
             // Execute function
             ReturnValue= myMethodBase.Invoke(InInstance, Parameters);            
-            MarkAsExecuted(frameId);
+            MarkAsExecuted(runId);
 //#if UNITY_EDITOR
         }
         catch(Exception e) {
@@ -68,7 +68,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             }
             var msg= "Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.Message;
 			ErrorControllerProxy.AddError("Runtime", msg, VisualScript, InstanceId);
-            MarkAsCurrent(frameId);
+            MarkAsCurrent(runId);
         }
 //#endif        
     }

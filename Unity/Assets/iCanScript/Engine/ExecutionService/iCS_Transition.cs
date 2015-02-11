@@ -31,35 +31,35 @@ public class iCS_Transition : SSAction {
     // ======================================================================
     // Update
     // ----------------------------------------------------------------------
-    public override void Execute(int frameId) {
+    public override void Execute(int runId) {
         if(!IsActive) return;
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
-            myTransitionPackage.Execute(frameId);            
-            if(!myTriggerFunction.IsCurrent(frameId)) {
+            myTransitionPackage.Execute(runId);            
+            if(!myTriggerFunction.IsCurrent(runId)) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;
             }
             myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
         }
-        MarkAsExecuted(frameId);
+        MarkAsExecuted(runId);
     }
     // ----------------------------------------------------------------------
-    public override iCS_Connection GetStalledProducerPort(int frameId) {
-        if(IsCurrent(frameId)) return null;
-        return myTransitionPackage.GetStalledProducerPort(frameId);
+    public override iCS_Connection GetStalledProducerPort(int runId) {
+        if(IsCurrent(runId)) return null;
+        return myTransitionPackage.GetStalledProducerPort(runId);
     }
     // ----------------------------------------------------------------------
-    public override void ForceExecute(int frameId) {
+    public override void ForceExecute(int runId) {
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
-            myTransitionPackage.ForceExecute(frameId);            
-            if(!myTransitionPackage.IsCurrent(frameId)) {
+            myTransitionPackage.ForceExecute(runId);            
+            if(!myTransitionPackage.IsCurrent(runId)) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;
             }
             myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
         }
-        MarkAsExecuted(frameId);
+        MarkAsExecuted(runId);
     }
 }

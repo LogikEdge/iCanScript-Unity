@@ -11,27 +11,27 @@ namespace Subspace {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        int         myCurrentFrameId  = 0;
-        int         myExecutedFrameId= 0;
+        int         myCurrentRunId  = 0;
+        int         myExecutedRunId= 0;
         bool        myIsStalled= false;
         bool        myIsActive= true;
         bool        myPortsAreAlwaysCurrent= false;
-        SSAction    myParent= null;
 
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
-        public int  FrameId             { get { return CurrentFrameId; }}
-        public int  CurrentFrameId      { get { return myCurrentFrameId; }}
-        public int  ExecutionFrameId    { get { return myExecutedFrameId; }}
-        public bool IsStalled           { get { return myIsStalled; } set { myIsStalled= value; }}
-        public SSAction   Parent        { get { return myParent; } set { myParent= value; }}
+        public int      RunId               { get { return CurrentRunId; }}
+        public int      CurrentRunId        { get { return myCurrentRunId; }}
+        public int      ExecutionRunId      { get { return myExecutedRunId; }}
+        public bool     IsStalled           { get { return myIsStalled; } set { myIsStalled= value; }}
+        public SSAction ParentAction        { get { return myParent as SSAction; } set { myParent= value; }}
         public bool IsActive            {
             get {
                 if(myIsActive == false) {
                     return false;
                 }
-                return myParent == null ? true : myParent.IsActive;
+                var pAction= ParentAction;
+                return pAction == null ? true : pAction.IsActive;
             }
             set { myIsActive= value; }
         }
@@ -46,19 +46,19 @@ namespace Subspace {
         // ======================================================================
         // Execution
         // ----------------------------------------------------------------------
-        public abstract void            Execute(int frameId);
-        public abstract void            ForceExecute(int frameId);
-        public abstract iCS_Connection  GetStalledProducerPort(int frameId);
+        public abstract void            Execute(int runId);
+        public abstract void            ForceExecute(int runId);
+        public abstract iCS_Connection  GetStalledProducerPort(int runId);
     
         // ----------------------------------------------------------------------
-        public bool IsCurrent(int frameId)      { return myCurrentFrameId == frameId; }
-        public bool DidExecute(int frameId)     { return myExecutedFrameId == frameId; }
-        public void MarkAsCurrent(int frameId)  { myCurrentFrameId= frameId; myIsStalled= false; }
-        public void MarkAsExecuted(int frameId) { myExecutedFrameId= frameId; MarkAsCurrent(frameId); }
+        public bool IsCurrent(int runId)      { return myCurrentRunId == runId; }
+        public bool DidExecute(int runId)     { return myExecutedRunId == runId; }
+        public void MarkAsCurrent(int runId)  { myCurrentRunId= runId; myIsStalled= false; }
+        public void MarkAsExecuted(int runId) { myExecutedRunId= runId; MarkAsCurrent(runId); }
 
         // ----------------------------------------------------------------------
-        public bool ArePortsCurrent(int frameId)    { return IsCurrent(frameId) || ArePortsAlwaysCurrent || !IsActive; }
-        public bool ArePortsExecuted(int frameId)   { return DidExecute(frameId); }
+        public bool ArePortsCurrent(int runId)    { return IsCurrent(runId) || ArePortsAlwaysCurrent || !IsActive; }
+        public bool ArePortsExecuted(int runId)   { return DidExecute(runId); }
     }
     
 }

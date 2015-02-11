@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 
@@ -22,13 +22,13 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
+    protected override void DoExecute(int runId) {
 //#if UNITY_EDITOR
         try {
 //#endif
             // Skip all the processing if we don't have an target action to execute.
             if(myUserAction == null) {
-                MarkAsCurrent(frameId);
+                MarkAsCurrent(runId);
                 return;
             }
             
@@ -36,7 +36,7 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             var parameterStart= ParametersStart;
             var parameterEnd= ParametersEnd;
             for(int i= parameterStart; i <= parameterEnd; ++i) {
-                if(IsParameterReady(i, frameId) == false) {
+                if(IsParameterReady(i, runId) == false) {
                     return;
                 }
             }
@@ -59,7 +59,7 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             myUserAction.IsActive= true;
             if(!isActionOwner) {
                 isActionOwner= true;
-                actionFrameId= myUserAction.FrameId+1;
+                actionFrameId= myUserAction.RunId+1;
             }
             myUserAction.Execute(actionFrameId);
             // Copy output ports
@@ -71,12 +71,12 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             if(myUserAction.DidExecute(actionFrameId)) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsExecuted(frameId);
+                MarkAsExecuted(runId);
             }
             else if(myUserAction.IsCurrent(actionFrameId)){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsCurrent(frameId);
+                MarkAsCurrent(runId);
             }            
 //#if UNITY_EDITOR
         }
@@ -98,13 +98,13 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent(frameId);
+            MarkAsCurrent(runId);
         }
 //#endif
     }
     // ----------------------------------------------------------------------
     // TODO: UserFunction.DoForceExecute()
-    protected override void DoForceExecute(int frameId) {
+    protected override void DoForceExecute(int runId) {
 //#if UNITY_EDITOR
         try {
 //#endif
@@ -112,7 +112,7 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             var parameterStart= ParametersStart;
             var parameterEnd= ParametersEnd;
             for(int i= parameterStart; i <= parameterEnd; ++i) {
-                if(IsParameterReady(i, frameId) == false) {
+                if(IsParameterReady(i, runId) == false) {
                     return;
                 }
             }
@@ -135,7 +135,7 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             myUserAction.IsActive= true;
             if(!isActionOwner) {
                 isActionOwner= true;
-                actionFrameId= myUserAction.FrameId+1;
+                actionFrameId= myUserAction.RunId+1;
             }
             myUserAction.ForceExecute(actionFrameId);
             // Copy output ports
@@ -148,12 +148,12 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
             if(myUserAction.DidExecute(actionFrameId)) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsExecuted(frameId);
+                MarkAsExecuted(runId);
             }
             else if(myUserAction.IsCurrent(actionFrameId)){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsCurrent(frameId);
+                MarkAsCurrent(runId);
             }            
 //#if UNITY_EDITOR
         }
@@ -175,7 +175,7 @@ public class iCS_UserFunctionCall : iCS_ActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent(frameId);
+            MarkAsCurrent(runId);
         }
 //#endif
     }

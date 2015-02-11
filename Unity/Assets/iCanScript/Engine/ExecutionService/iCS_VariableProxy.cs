@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class iCS_VariableProxy : iCS_ActionWithSignature {
@@ -17,12 +17,12 @@ public class iCS_VariableProxy : iCS_ActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
-        MarkAsExecuted(frameId);            
+    protected override void DoExecute(int runId) {
+        MarkAsExecuted(runId);            
     }
 
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int frameId) {
-        MarkAsExecuted(frameId);            
+    protected override void DoForceExecute(int runId) {
+        MarkAsExecuted(runId);            
     }
 }

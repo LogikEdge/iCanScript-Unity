@@ -19,19 +19,19 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override iCS_Connection GetStalledProducerPort(int frameId) {
-        if(IsCurrent(frameId)) {
+    public override iCS_Connection GetStalledProducerPort(int runId) {
+        if(IsCurrent(runId)) {
             return null;
         }
-        var producerPort= mySignature.GetStalledProducerPort(frameId, /*enablesOnly=*/true);
+        var producerPort= mySignature.GetStalledProducerPort(runId, /*enablesOnly=*/true);
         if(producerPort != null) {
             return producerPort;
         }
         int cursor= myQueueIdx;
         if(cursor < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
-            if(!action.IsCurrent(frameId)) {
-                producerPort= action.GetStalledProducerPort(frameId);
+            if(!action.IsCurrent(runId)) {
+                producerPort= action.GetStalledProducerPort(runId);
                 if(producerPort != null) {
                     return producerPort;
                 }
@@ -41,11 +41,11 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     }
 
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int frameId) {
+    protected override void DoForceExecute(int runId) {
         if(myQueueIdx < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
-            action.ForceExecute(frameId);            
-            if(action.IsCurrent(frameId)) {
+            action.ForceExecute(runId);            
+            if(action.IsCurrent(runId)) {
                 ++myQueueIdx;
                 IsStalled= false;
             } else {
@@ -53,7 +53,7 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
             }
         }
         if(myQueueIdx >= myExecuteQueue.Count) {
-            ResetIterator(frameId);
+            ResetIterator(runId);
         }
     }
     // ----------------------------------------------------------------------
@@ -63,9 +63,9 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
         myExecuteQueue[idx2]= tmp;
     }
     // ----------------------------------------------------------------------
-    protected void ResetIterator(int frameId) {
+    protected void ResetIterator(int runId) {
         myQueueIdx= 0;
-        MarkAsExecuted(frameId);        
+        MarkAsExecuted(runId);        
     }
     
     // ======================================================================
@@ -73,10 +73,10 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // ----------------------------------------------------------------------
     public void AddChild(SSAction action) {
         myExecuteQueue.Add(action);
-        action.Parent= this;
+        action.ParentAction= this;
     }
     public void RemoveChild(SSAction action) {
         myExecuteQueue.Remove(action);
-        action.Parent= null;
+        action.ParentAction= null;
     }
 }

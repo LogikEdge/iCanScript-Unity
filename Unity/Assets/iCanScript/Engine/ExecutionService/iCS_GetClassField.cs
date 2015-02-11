@@ -13,22 +13,22 @@ public class iCS_GetClassField : iCS_FieldBase {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
-        DoForceExecute(frameId);
+    protected override void DoExecute(int runId) {
+        DoForceExecute(runId);
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int frameId) {
+    protected override void DoForceExecute(int runId) {
 //#if UNITY_EDITOR
         try {
 //#endif
             // Execute function
             ReturnValue= myFieldInfo.GetValue(InInstance);
-            MarkAsExecuted(frameId);
+            MarkAsExecuted(runId);
 //#if UNITY_EDITOR
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception thrown in  "+FullName+" => "+e.Message);
-            MarkAsCurrent(frameId);
+            MarkAsCurrent(runId);
         }
 //#endif        
     }

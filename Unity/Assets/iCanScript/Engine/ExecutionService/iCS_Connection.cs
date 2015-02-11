@@ -48,15 +48,15 @@ public class iCS_Connection {
         get { return Signature.GetValue(PortIndex); }
         set { Signature.SetValue(PortIndex, value); }
     }
-    public bool IsReady(int frameId)    {
+    public bool IsReady(int runId)    {
         if(myIsAlwaysReady || !IsConnected) return true;
-        return Action.ArePortsCurrent(frameId);
+        return Action.ArePortsCurrent(runId);
     }
-    public bool IsCurrent(int frameId) {
-    	return Action.ArePortsCurrent(frameId);
+    public bool IsCurrent(int runId) {
+    	return Action.ArePortsCurrent(runId);
     }
-    public bool DidExecute(int frameId) {
-    	return Action.ArePortsExecuted(frameId);
+    public bool DidExecute(int runId) {
+    	return Action.ArePortsExecuted(runId);
     }
  
  

@@ -12,18 +12,18 @@ public class iCS_Mux : iCS_ActionWithSignature {
     // Execution (not used)
     // ----------------------------------------------------------------------
     // FIXME: Mux should prefer running over current frame nodes.
-    protected override void DoExecute(int frameId) {
+    protected override void DoExecute(int runId) {
         // Take the first valid connection.
         foreach(var connection in ParameterConnections) {
-            if(connection.DidExecute(frameId)) {
+            if(connection.DidExecute(runId)) {
                 ReturnValue= connection.Value;
-                MarkAsExecuted(frameId);
+                MarkAsExecuted(runId);
                 return;
             }
         }
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int frameId) {
+    protected override void DoForceExecute(int runId) {
         // Take the last that has executed.
 		int smallestDistance= 100000;
 		iCS_Connection bestConnection= null;
@@ -31,9 +31,9 @@ public class iCS_Mux : iCS_ActionWithSignature {
 			if(connection == null) continue;
 			var action= connection.Action;
 			if(action == null) continue;
-			int frameIdDistance= frameId-action.ExecutionFrameId;
-			if(frameIdDistance < smallestDistance) {
-				smallestDistance= frameIdDistance;
+			int runIdDistance= runId-action.ExecutionRunId;
+			if(runIdDistance < smallestDistance) {
+				smallestDistance= runIdDistance;
 				bestConnection= connection;
 			}
         }
@@ -41,6 +41,6 @@ public class iCS_Mux : iCS_ActionWithSignature {
 		if(bestConnection != null) {
             ReturnValue= bestConnection.Value;			
 		}
-        MarkAsCurrent(frameId);
+        MarkAsCurrent(runId);
     }
 }

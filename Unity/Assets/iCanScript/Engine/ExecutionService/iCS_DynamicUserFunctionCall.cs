@@ -22,27 +22,27 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
+    protected override void DoExecute(int runId) {
 //#if UNITY_EDITOR
         try {
 //#endif
             // Wait until this port is ready.
-            if(IsThisReady(frameId)) {
+            if(IsThisReady(runId)) {
                 // Fetch the user action.
                 var gameObject= InInstance as GameObject;
                 if(gameObject == null) {
                     Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
-                    MarkAsCurrent(frameId);
+                    MarkAsCurrent(runId);
                 }
                 var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
                 if(vs == null) {
                     Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
-                    MarkAsCurrent(frameId);
+                    MarkAsCurrent(runId);
                 }
                 var variableObject= vs.GetPublicInterfaceFromName(Name);
                 if(variableObject == null) {
                     Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
-                    MarkAsCurrent(frameId);
+                    MarkAsCurrent(runId);
                 }
                 var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as iCS_ActionWithSignature;
     
@@ -50,7 +50,7 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
                 var parameterStart= ParametersStart;
                 var parameterEnd= ParametersEnd;
                 for(int i= parameterStart; i <= parameterEnd; ++i) {
-                    if(IsParameterReady(i, frameId) == false) {
+                    if(IsParameterReady(i, runId) == false) {
                         return;
                     }
                 }
@@ -73,7 +73,7 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
                 myUserAction.IsActive= true;
                 if(!isActionOwner) {
                     isActionOwner= true;
-                    actionFrameId= myUserAction.FrameId+1;
+                    actionFrameId= myUserAction.RunId+1;
                 }
                 myUserAction.Execute(actionFrameId);
                 // Copy output ports
@@ -85,12 +85,12 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
                 if(myUserAction.DidExecute(actionFrameId)) {
                     isActionOwner= false;
                     myUserAction.IsActive= false;
-                    MarkAsExecuted(frameId);
+                    MarkAsExecuted(runId);
                 }
                 else if(myUserAction.IsCurrent(actionFrameId)){
                     isActionOwner= false;
                     myUserAction.IsActive= false;
-                    MarkAsCurrent(frameId);
+                    MarkAsCurrent(runId);
                 }            
             }
 //#if UNITY_EDITOR
@@ -113,13 +113,13 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent(frameId);
+            MarkAsCurrent(runId);
         }
 //#endif
     }
 
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int frameId) {
+    protected override void DoForceExecute(int runId) {
 //#if UNITY_EDITOR
         try {
 //#endif
@@ -127,17 +127,17 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
             var gameObject= InInstance as GameObject;
             if(gameObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
-                MarkAsCurrent(frameId);
+                MarkAsCurrent(runId);
             }
             var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
             if(vs == null) {
                 Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
-                MarkAsCurrent(frameId);
+                MarkAsCurrent(runId);
             }
             var variableObject= vs.GetPublicInterfaceFromName(Name);
             if(variableObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
-                MarkAsCurrent(frameId);
+                MarkAsCurrent(runId);
             }
             var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as iCS_ActionWithSignature;
 
@@ -162,7 +162,7 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
             myUserAction.IsActive= true;
             if(!isActionOwner) {
                 isActionOwner= true;
-                actionFrameId= myUserAction.FrameId+1;
+                actionFrameId= myUserAction.RunId+1;
             }
             myUserAction.Execute(actionFrameId);
             // Copy output ports
@@ -174,12 +174,12 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
             if(myUserAction.DidExecute(actionFrameId)) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsExecuted(frameId);
+                MarkAsExecuted(runId);
             }
             else if(myUserAction.IsCurrent(actionFrameId)){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsCurrent(frameId);
+                MarkAsCurrent(runId);
             }            
 //#if UNITY_EDITOR
         }
@@ -201,7 +201,7 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent(frameId);
+            MarkAsCurrent(runId);
         }
 //#endif
     }

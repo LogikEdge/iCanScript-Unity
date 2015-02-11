@@ -50,14 +50,14 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
     }
     public int ParametersStart  { get { return mySignature.ParametersStart; }}
     public int ParametersEnd    { get { return mySignature.ParametersEnd; }}
-    public bool IsParameterReady(int idx, int frameId) {
-        return mySignature.IsParameterReady(idx, frameId);
+    public bool IsParameterReady(int idx, int runId) {
+        return mySignature.IsParameterReady(idx, runId);
     }
     public void UpdateParameter(int idx) {
         mySignature.UpdateParameter(idx);
     }
-    public bool IsThisReady(int frameId) {
-        return mySignature.IsThisReady(frameId);
+    public bool IsThisReady(int runId) {
+        return mySignature.IsThisReady(runId);
     }
     
     // ======================================================================
@@ -77,20 +77,20 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void Execute(int frameId) {
+    public override void Execute(int runId) {
         // Don't execute if action disabled.
         if(!IsActive) {
             return;
         }
 //        if(VisualScript.IsTraceEnabled) {
-//            Debug.Log("Executing=> "+FullName+" ("+frameId+")");            
+//            Debug.Log("Executing=> "+FullName+" ("+runId+")");            
 //        }        
 
         // Clear the output trigger flag.
         mySignature.Trigger= false;
         // Wait until the enables can be resolved.
         bool isEnabled;
-        if(!mySignature.GetIsEnabledIfReady(frameId, out isEnabled)) {
+        if(!mySignature.GetIsEnabledIfReady(runId, out isEnabled)) {
 			IsStalled= true;
 //            if(VisualScript.IsTraceEnabled) {
 //                Debug.Log("Executing=> "+FullName+" is waiting on the enables");
@@ -99,20 +99,20 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
 		}
 		// Skip execution if this action is disabled.
         if(isEnabled == false) {
-            MarkAsCurrent(frameId);
+            MarkAsCurrent(runId);
             if(VisualScript.IsTraceEnabled) {
-                Debug.Log("Executing=> "+FullName+" is disabled"+" ("+frameId+")");
+                Debug.Log("Executing=> "+FullName+" is disabled"+" ("+runId+")");
             }
             return;
         }
         // Invoke derived class to execute normally.
         IsStalled= true;
-        DoExecute(frameId);
+        DoExecute(runId);
         if(VisualScript.IsTraceEnabled) {    
-            if(DidExecute(frameId)) {
-                Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+frameId+")");
+            if(DidExecute(runId)) {
+                Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+runId+")");
             }
-//            else if(IsCurrent(frameId)){
+//            else if(IsCurrent(runId)){
 //                Debug.Log("Executing=> "+FullName+" is Current");
 //            }
 //            else {
@@ -121,21 +121,21 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
         }
     }
     // ----------------------------------------------------------------------
-    public override iCS_Connection GetStalledProducerPort(int frameId) {
-        if(IsCurrent(frameId)) {
+    public override iCS_Connection GetStalledProducerPort(int runId) {
+        if(IsCurrent(runId)) {
             return null;
         }
-        return mySignature.GetStalledProducerPort(frameId);
+        return mySignature.GetStalledProducerPort(runId);
     }
     // ----------------------------------------------------------------------
-    public override void ForceExecute(int frameId) {
+    public override void ForceExecute(int runId) {
 //#if UNITY_EDITOR
         if(VisualScript.IsTraceEnabled) {
-            var stalledPort= GetStalledProducerPort(frameId);
+            var stalledPort= GetStalledProducerPort(runId);
             var stalledPortName= stalledPort == null ? "" : stalledPort.PortFullName;
             if(stalledPort != null) {
                 var stalledNode= stalledPort.Action;
-                Debug.LogWarning("Force execute=> "+FullName+" STALLED PORT=> "+stalledPortName+" STALLED PORT NODE STATE=> "+stalledNode.IsCurrent(frameId));            
+                Debug.LogWarning("Force execute=> "+FullName+" STALLED PORT=> "+stalledPortName+" STALLED PORT NODE STATE=> "+stalledNode.IsCurrent(runId));            
                 var stalledNodeParentId= stalledNode.ParentId;
                 if(stalledNodeParentId > 1) {
                     var stalledNodeParent= VisualScript.RuntimeNodes[stalledNodeParentId] as iCS_ActionWithSignature;
@@ -149,22 +149,22 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
 //#endif
         // Force verify enables.
         if(mySignature.GetIsEnabled() == false) {
-            MarkAsCurrent(frameId);
+            MarkAsCurrent(runId);
             return;
         }
         // Invoke derived class to force execute.
         IsStalled= true;
-        DoForceExecute(frameId);
+        DoForceExecute(runId);
     }
     // ----------------------------------------------------------------------
     // Override the execute marker to set the output trigger.
-    public new void MarkAsExecuted(int frameId) {
+    public new void MarkAsExecuted(int runId) {
         mySignature.Trigger= true;
-        base.MarkAsExecuted(frameId);
+        base.MarkAsExecuted(runId);
     }
     // =========================================================================
     // Functions to override to provide specific behaviours.
     // ----------------------------------------------------------------------
-    protected abstract void DoExecute(int frameId);
-    protected abstract void DoForceExecute(int frameId);
+    protected abstract void DoExecute(int runId);
+    protected abstract void DoForceExecute(int runId);
 }

@@ -13,23 +13,23 @@ public class iCS_Constructor : iCS_ClassFunction {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
+    protected override void DoExecute(int runId) {
         if(ReturnValue == null) {
-            base.DoExecute(frameId);
+            base.DoExecute(runId);
         } else {
-            MarkAsExecuted(frameId);
+            MarkAsExecuted(runId);
         }
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int frameId) {
+    protected override void DoForceExecute(int runId) {
         if(ReturnValue == null) {
-            base.DoForceExecute(frameId);
+            base.DoForceExecute(runId);
             if(ReturnValue != null) {
                 // TODO: Should remove variable creation for execution queue once done.
                 ArePortsAlwaysCurrent= true;
             }
         } else {
-            MarkAsExecuted(frameId);
+            MarkAsExecuted(runId);
         }
     }
     
