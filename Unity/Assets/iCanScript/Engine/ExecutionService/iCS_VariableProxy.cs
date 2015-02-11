@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using Subspace;
 
-public class iCS_VariableProxy : iCS_ActionWithSignature {
+public class iCS_VariableProxy : SSActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

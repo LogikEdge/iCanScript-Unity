@@ -150,13 +150,13 @@ public partial class iCS_EditorObject {
 			if(!IsDataOrControlPort) return null;
 			var port= FirstProducerPort;
 			// Get value from port group (ex: ParentMuxPort).
-			var funcBase= myIStorage.GetRuntimeObject(port) as iCS_ISignature;
+			var funcBase= myIStorage.GetRuntimeObject(port) as ISignature;
 			if(funcBase != null) {
 			    object returnValue= funcBase.GetSignatureDataSource().ReturnValue;
 				return returnValue;
 			}
             // Get value from parent node.
-    		funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_ISignature;                
+    		funcBase= myIStorage.GetRuntimeObject(port.Parent) as ISignature;                
             if(funcBase == null) {
                 return port.InitialPortValue;
             }
@@ -181,7 +181,7 @@ public partial class iCS_EditorObject {
 		set {
 	        if(!IsInDataOrControlPort) return;
 	        // Set the return value for a port group (ex: MuxPort).
-			var funcBase= myIStorage.GetRuntimeObject(this) as iCS_ISignature;
+			var funcBase= myIStorage.GetRuntimeObject(this) as ISignature;
 	        if(funcBase != null) {
 	            funcBase.GetSignatureDataSource().ReturnValue= value;
 	            return;
@@ -198,7 +198,7 @@ public partial class iCS_EditorObject {
 	        iCS_EditorObject parent= Parent;
 	        if(parent == null) return;
 	        // Get runtime object if it exists.
-	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as iCS_ISignature;
+	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as ISignature;
 	        if(runtimeObject == null) return;
 	        runtimeObject.GetSignatureDataSource().SetValue(PortIndex, value);			
 		}

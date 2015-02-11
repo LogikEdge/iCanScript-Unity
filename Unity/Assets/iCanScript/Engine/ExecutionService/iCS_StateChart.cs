@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Subspace;
 
-public sealed class iCS_StateChart : iCS_ActionWithSignature {
+public sealed class iCS_StateChart : SSActionWithSignature {
     // ======================================================================
     // Internal types
     // ----------------------------------------------------------------------
@@ -84,7 +84,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
     }
     // ----------------------------------------------------------------------
     // TODO: GetStalledProducerPort
-    public override iCS_Connection GetStalledProducerPort(int runId) {
+    public override Connection GetStalledProducerPort(int runId) {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
             var producerPort= GetStalledProducerPortInTransitions(runId);            
@@ -200,7 +200,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
         myExecutionState= ExecutionState.RunningUpdate;
     }
     // ----------------------------------------------------------------------
-    iCS_Connection GetStalledProducerPortInTransitions(int runId) {
+    Connection GetStalledProducerPortInTransitions(int runId) {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
@@ -259,7 +259,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
         MarkAsExecuted(runId);
     }
     // ----------------------------------------------------------------------
-    iCS_Connection GetStalledProducerPortOnUpdate(int runId) {
+    Connection GetStalledProducerPortOnUpdate(int runId) {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
@@ -303,7 +303,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
 		UpdateActiveStack();
     }
     // ----------------------------------------------------------------------
-    iCS_Connection GetStalledProducerPortOnExit(int runId) {
+    Connection GetStalledProducerPortOnExit(int runId) {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
@@ -346,7 +346,7 @@ public sealed class iCS_StateChart : iCS_ActionWithSignature {
         myQueueIdx= 0;        
     }
     // ----------------------------------------------------------------------
-    iCS_Connection GetStalledProducerPortOnEntry(int runId) {
+    Connection GetStalledProducerPortOnEntry(int runId) {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];

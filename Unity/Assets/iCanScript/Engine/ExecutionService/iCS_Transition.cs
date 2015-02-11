@@ -8,7 +8,7 @@ public class iCS_Transition : SSAction {
     // ----------------------------------------------------------------------
     iCS_Package             myTransitionPackage;
     iCS_State               myEndState;
-    iCS_ActionWithSignature myTriggerFunction;
+    SSActionWithSignature   myTriggerFunction;
     int                     myTriggerPortIdx;
     bool                    myIsTriggered= false;
 
@@ -21,7 +21,7 @@ public class iCS_Transition : SSAction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Transition(iCS_VisualScriptImp visualScript, iCS_State endState, iCS_Package transitionPackage, iCS_ActionWithSignature triggerFunc, int portIdx, int priority) : base(visualScript, priority) {
+    public iCS_Transition(iCS_VisualScriptImp visualScript, iCS_State endState, iCS_Package transitionPackage, SSActionWithSignature triggerFunc, int portIdx, int priority) : base(visualScript, priority) {
         myTransitionPackage= transitionPackage;
         myEndState         = endState;
         myTriggerPortIdx   = portIdx;
@@ -45,7 +45,7 @@ public class iCS_Transition : SSAction {
         MarkAsExecuted(runId);
     }
     // ----------------------------------------------------------------------
-    public override iCS_Connection GetStalledProducerPort(int runId) {
+    public override Connection GetStalledProducerPort(int runId) {
         if(IsCurrent(runId)) return null;
         return myTransitionPackage.GetStalledProducerPort(runId);
     }

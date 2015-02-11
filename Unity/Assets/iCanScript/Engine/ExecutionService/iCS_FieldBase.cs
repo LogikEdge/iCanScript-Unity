@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Reflection;
 using System.Collections;
+using Subspace;
 
-public abstract class iCS_FieldBase : iCS_ActionWithSignature {
+public abstract class iCS_FieldBase : SSActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

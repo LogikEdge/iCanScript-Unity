@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using Subspace;
 
-public class iCS_Mux : iCS_ActionWithSignature {
+public class iCS_Mux : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
@@ -26,7 +27,7 @@ public class iCS_Mux : iCS_ActionWithSignature {
     protected override void DoForceExecute(int runId) {
         // Take the last that has executed.
 		int smallestDistance= 100000;
-		iCS_Connection bestConnection= null;
+		Connection bestConnection= null;
         foreach(var connection in ParameterConnections) {
 			if(connection == null) continue;
 			var action= connection.Action;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Subspace;
 
-public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
+public abstract class iCS_Dispatcher : SSActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -19,7 +19,7 @@ public abstract class iCS_Dispatcher : iCS_ActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override iCS_Connection GetStalledProducerPort(int runId) {
+    public override Connection GetStalledProducerPort(int runId) {
         if(IsCurrent(runId)) {
             return null;
         }

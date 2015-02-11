@@ -62,7 +62,7 @@ public class iCS_VerifyTransitions : SSAction {
         }
     }
     // ----------------------------------------------------------------------
-    public override iCS_Connection GetStalledProducerPort(int runId) {
+    public override Connection GetStalledProducerPort(int runId) {
         for(int cursor= myQueueIdx; cursor < myTransitions.Count; ++cursor) {
             iCS_Transition transition= myTransitions[cursor];
             if(!transition.IsCurrent(runId)) {

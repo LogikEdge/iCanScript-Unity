@@ -1,19 +1,20 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Subspace;
 
-public class iCS_UserFunctionCall : iCS_ActionWithSignature {
+public class iCS_UserFunctionCall : SSActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected iCS_ActionWithSignature   myUserAction = null;
-              bool                      isActionOwner= false;
-              int                       actionFrameId= 0;
+    protected SSActionWithSignature myUserAction = null;
+              bool                  isActionOwner= false;
+              int                   actionFrameId= 0;
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_UserFunctionCall(iCS_ActionWithSignature userAction, iCS_VisualScriptImp visualScript, int priority,
+    public iCS_UserFunctionCall(SSActionWithSignature userAction, iCS_VisualScriptImp visualScript, int priority,
                                 int nbOfParameters, int nbOfEnables)
     : base(visualScript, priority, nbOfParameters, nbOfEnables) {
         myUserAction= userAction;

@@ -3,32 +3,33 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 using P=Prelude;
 using CompileError  =Prelude.Tuple<int,string>;
 using CompileWarning=Prelude.Tuple<int,string>;
 
 public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
-    iCS_Connection BuildVariableProxyConnection(iCS_EngineObject proxyNode, iCS_EngineObject proxyPort, iCS_EngineObject consumerPort) {
+    Connection BuildVariableProxyConnection(iCS_EngineObject proxyNode, iCS_EngineObject proxyPort, iCS_EngineObject consumerPort) {
         var runtimeNode= GetRuntimeNodeFromReferenceNode(proxyNode);
         if(runtimeNode == null) {
             Debug.LogWarning("Unable to find port proxy node=> "+proxyNode.Name);
             return null;
         }
-		iCS_Connection connection= null;
+		Connection connection= null;
         bool isAlwaysReady= true;
         bool isControlPort= proxyPort.IsControlPort;
-		connection= new iCS_Connection(runtimeNode as iCS_ISignature, proxyPort.PortIndex, isAlwaysReady, isControlPort);
+		connection= new Connection(runtimeNode as ISignature, proxyPort.PortIndex, isAlwaysReady, isControlPort);
         return connection;
     }
     // ----------------------------------------------------------------------
-    iCS_ActionWithSignature GetPublicFunctionAction(iCS_EngineObject userFunctionCall) {
+    SSActionWithSignature GetPublicFunctionAction(iCS_EngineObject userFunctionCall) {
         var runtimeNode= GetRuntimeNodeFromReferenceNode(userFunctionCall);
         if(runtimeNode == null) {
             Debug.LogWarning("iCanScript: Unable to find user function=> "+userFunctionCall.Name);
             return null;                   
         }
-        return runtimeNode as iCS_ActionWithSignature;
+        return runtimeNode as SSActionWithSignature;
     }
     // ----------------------------------------------------------------------
     object GetRuntimeNodeFromReferenceNode(iCS_EngineObject referenceNode) {
@@ -84,7 +85,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         return vs;
     }
     // ----------------------------------------------------------------------
-    iCS_Connection BuildUserFunctionOutputConnection(iCS_EngineObject port, iCS_EngineObject referenceNode, iCS_UserFunctionCall userFunctionCall) {
+    Connection BuildUserFunctionOutputConnection(iCS_EngineObject port, iCS_EngineObject referenceNode, iCS_UserFunctionCall userFunctionCall) {
         var vs= GetVisualScriptFromReferenceNode(referenceNode);
         if(vs == null) {
             return null;
@@ -96,10 +97,10 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         var sourcePort= iCS_VisualScriptData.GetFirstProducerPort(vs, userFunctionPort);
         var sourcePortParent= vs.GetParentNode(sourcePort);
         var runtimeNode= vs.RuntimeNodes[sourcePortParent.InstanceId];
-		iCS_Connection connection= null;
+		Connection connection= null;
         bool isAlwaysReady= false;
         bool isControlPort= false;
-		connection= new iCS_Connection(runtimeNode as iCS_ISignature, sourcePort.PortIndex, isAlwaysReady, isControlPort);
+		connection= new Connection(runtimeNode as ISignature, sourcePort.PortIndex, isAlwaysReady, isControlPort);
         userFunctionCall.SetConnection(port.PortIndex, connection);
         return connection;        
     }

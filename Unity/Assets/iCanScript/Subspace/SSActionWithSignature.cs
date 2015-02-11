@@ -5,11 +5,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Subspace;
 
-public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
+public abstract class SSActionWithSignature : SSAction, ISignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected iCS_SignatureDataSource mySignature = null;
+    protected SignatureDataSource mySignature = null;
     
     // ======================================================================
     // Accessors
@@ -35,7 +35,7 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
         get { return mySignature.ReturnValue; }
         set { mySignature.ReturnValue= value; }
     }
-    public void SetConnection(int idx, iCS_Connection connection) {
+    public void SetConnection(int idx, Connection connection) {
         mySignature.SetConnection(idx, connection);
     }
     public object this[int idx] {
@@ -45,7 +45,7 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
     public object[] Parameters {
         get { return mySignature.Parameters; }
     }
-    public iCS_Connection[] ParameterConnections {
+    public Connection[] ParameterConnections {
         get { return mySignature.ParameterConnections; }
     }
     public int ParametersStart  { get { return mySignature.ParametersStart; }}
@@ -63,15 +63,15 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ActionWithSignature(iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
+    public SSActionWithSignature(iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
     : base(visualScript, priority) {
-        mySignature= new iCS_SignatureDataSource(nbOfParameters, nbOfEnables, this);
+        mySignature= new SignatureDataSource(nbOfParameters, nbOfEnables, this);
     }
     
     // ======================================================================
     // Implement ISignature delegate.
     // ----------------------------------------------------------------------
-    public iCS_SignatureDataSource GetSignatureDataSource() { return mySignature; }
+    public SignatureDataSource GetSignatureDataSource() { return mySignature; }
     public SSAction GetAction() { return this; }
     
     // ======================================================================
@@ -121,7 +121,7 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
         }
     }
     // ----------------------------------------------------------------------
-    public override iCS_Connection GetStalledProducerPort(int runId) {
+    public override Connection GetStalledProducerPort(int runId) {
         if(IsCurrent(runId)) {
             return null;
         }
@@ -138,7 +138,7 @@ public abstract class iCS_ActionWithSignature : SSAction, iCS_ISignature {
                 Debug.LogWarning("Force execute=> "+FullName+" STALLED PORT=> "+stalledPortName+" STALLED PORT NODE STATE=> "+stalledNode.IsCurrent(runId));            
                 var stalledNodeParentId= stalledNode.ParentId;
                 if(stalledNodeParentId > 1) {
-                    var stalledNodeParent= VisualScript.RuntimeNodes[stalledNodeParentId] as iCS_ActionWithSignature;
+                    var stalledNodeParent= VisualScript.RuntimeNodes[stalledNodeParentId] as SSActionWithSignature;
                     if(stalledNodeParent != null) {
                         Debug.LogWarning("STALLED PORT NODE PARENT ENABLE=> "+stalledNodeParent.FullName+"("+stalledNodeParent.mySignature.GetIsEnabled()+")");
                     }

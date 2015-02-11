@@ -153,7 +153,7 @@ public class iCS_ObjectInspector : EditorWindow {
         );
 
         // Show inputs.
-        var runtimeObject= iStorage.GetRuntimeObject(node) as iCS_ISignature;
+        var runtimeObject= iStorage.GetRuntimeObject(node) as ISignature;
         if(inPorts.Count > 0) {
             int indentLevel= 1;
             if(runtimeObject != null) {

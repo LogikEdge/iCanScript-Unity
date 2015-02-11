@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using Subspace;
 
-public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
+public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected iCS_ActionWithSignature   myUserAction= null;
-              bool                      isActionOwner= false;
-              int                       actionFrameId= 0;
+    protected SSActionWithSignature myUserAction= null;
+              bool                  isActionOwner= false;
+              int                   actionFrameId= 0;
 
     // ======================================================================
     // Creation/Destruction
@@ -44,7 +45,7 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
                     Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
                     MarkAsCurrent(runId);
                 }
-                var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as iCS_ActionWithSignature;
+                var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
     
                 // Wait until all inputs are ready.
                 var parameterStart= ParametersStart;
@@ -139,7 +140,7 @@ public class iCS_DynamicUserFunctionCall : iCS_ActionWithSignature {
                 Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
                 MarkAsCurrent(runId);
             }
-            var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as iCS_ActionWithSignature;
+            var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
 
             // Fetch all parameters.
             var parameterStart= ParametersStart;

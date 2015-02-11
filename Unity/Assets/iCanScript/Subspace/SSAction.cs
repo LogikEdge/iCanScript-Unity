@@ -16,6 +16,7 @@ namespace Subspace {
         bool        myIsStalled= false;
         bool        myIsActive= true;
         bool        myPortsAreAlwaysCurrent= false;
+		protected SSRunState myRunState= SSRunState.WAITING;
 
         // ======================================================================
         // Accessors
@@ -48,7 +49,7 @@ namespace Subspace {
         // ----------------------------------------------------------------------
         public abstract void            Execute(int runId);
         public abstract void            ForceExecute(int runId);
-        public abstract iCS_Connection  GetStalledProducerPort(int runId);
+        public abstract Connection      GetStalledProducerPort(int runId);
     
         // ----------------------------------------------------------------------
         public bool IsCurrent(int runId)      { return myCurrentRunId == runId; }
