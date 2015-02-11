@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 
 public static class iCS_TextureCache {
     // ======================================================================

@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 
 public class iCS_Reflection {
     // ======================================================================

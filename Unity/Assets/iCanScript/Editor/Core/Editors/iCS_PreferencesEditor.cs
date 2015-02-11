@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 using Prefs=iCS_PreferencesController;
 
 public class iCS_PreferencesEditor : iCS_EditorBase {

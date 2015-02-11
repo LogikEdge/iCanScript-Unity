@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using iCanScript.Engine;
 
 public static class iCS_EditorConfig {
     // ======================================================================

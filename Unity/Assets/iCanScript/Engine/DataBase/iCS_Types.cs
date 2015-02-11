@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using iCanScript.Engine;
 
 public static class iCS_Types {
     // ----------------------------------------------------------------------

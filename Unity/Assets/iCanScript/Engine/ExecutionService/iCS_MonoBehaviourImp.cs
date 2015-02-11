@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using iCanScript.Engine;
 
 [AddComponentMenu("")]
 public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {

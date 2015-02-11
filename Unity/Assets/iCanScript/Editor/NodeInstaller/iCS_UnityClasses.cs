@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using iCanScript.Engine;
 
 // ======================================================================
 // This file installs predefined Unity3d classes and messages.

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScript.Engine;
 
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------

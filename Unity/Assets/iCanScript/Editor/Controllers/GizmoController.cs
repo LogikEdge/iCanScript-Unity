@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Collections;
+using iCanScript.Engine;
 
 namespace iCanScriptEditor {
     

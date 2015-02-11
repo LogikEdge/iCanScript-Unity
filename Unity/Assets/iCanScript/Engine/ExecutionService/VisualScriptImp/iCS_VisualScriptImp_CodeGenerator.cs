@@ -5,6 +5,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 using P=Prelude;
 using CompileError  =Prelude.Tuple<int,string>;
 using CompileWarning=Prelude.Tuple<int,string>;

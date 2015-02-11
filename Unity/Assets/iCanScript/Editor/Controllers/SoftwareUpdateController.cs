@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using iCanScript.JSON;
+using iCanScript.Engine;
 using P=Prelude;
 using Prefs=iCS_PreferencesController;
 
