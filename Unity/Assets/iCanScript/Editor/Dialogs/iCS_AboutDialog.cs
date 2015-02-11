@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using iCanScriptEditor;
+using iCanScript.Editor;
 
 public class iCS_AboutDialog : EditorWindow {
     // ======================================================================

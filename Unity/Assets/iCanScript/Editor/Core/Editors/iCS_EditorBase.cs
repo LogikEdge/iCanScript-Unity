@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections;
+using iCanScript.Editor;
 
 public class iCS_EditorBase : EditorWindow {
     // =================================================================================
@@ -34,7 +35,7 @@ public class iCS_EditorBase : EditorWindow {
     // ---------------------------------------------------------------------------------
     public void OnGUI() {
         // Stop all processing if not registered & trial period is over
-        if(iCanScriptEditor.EditionController.IsCommunityLimitReached) {
+        if(EditionController.IsCommunityLimitReached) {
             string message= null;
             var area= Math3D.Area(position);
             if(area > 200000) {

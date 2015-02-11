@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
-using iCanScriptEditor;
+using iCanScript.Editor;
 
 // ===========================================================================
 // Graph editor event processing.

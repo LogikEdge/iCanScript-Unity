@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections;
 using iCanScript.Engine;
 
-namespace iCanScriptEditor {
+namespace iCanScript { namespace Editor {
     
     public static class GizmoController {
         // =================================================================================
@@ -58,4 +58,4 @@ namespace iCanScriptEditor {
         }
     }
     
-}
+}}

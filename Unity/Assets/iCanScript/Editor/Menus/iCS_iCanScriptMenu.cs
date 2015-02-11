@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using iCanScriptEditor;
+using iCanScript.Editor;
 
 public static class iCS_iCanScriptMenu {
     // ======================================================================

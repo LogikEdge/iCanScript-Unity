@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
 using TimedAction= Prelude.TimerService.TimedAction;
-using iCanScriptEditor;
+using iCanScript.Editor;
 
 public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================

@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections;
 using iCanScript.JSON;
 
-namespace iCanScriptEditor { namespace CodeEngineering {
+namespace iCanScript.Editor.CodeEngineering {
     
     public static class CSharpFileTemplates {
         // ----------------------------------------------------------------------
@@ -35,7 +35,7 @@ namespace iCanScriptEditor { namespace CodeEngineering {
     
             // Attempt to extract the json object.
             try {
-                JObject jObject= JSON.GetRootObject(fileHeader);
+                JObject jObject= JSON.JSON.GetRootObject(fileHeader);
                 return jObject;
             }
             catch(Exception) {
@@ -44,4 +44,4 @@ namespace iCanScriptEditor { namespace CodeEngineering {
         }
     }
 
-}}
+}

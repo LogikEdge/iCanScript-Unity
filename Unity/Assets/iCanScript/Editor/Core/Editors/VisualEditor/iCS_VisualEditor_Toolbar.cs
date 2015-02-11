@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
-using iCanScriptEditor;
+using iCanScript.Editor;
 
 /*
     TODO: Should show frameId in header bar.

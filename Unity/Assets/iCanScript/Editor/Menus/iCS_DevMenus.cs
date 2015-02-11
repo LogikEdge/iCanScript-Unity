@@ -3,8 +3,8 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.IO;
-using iCanScriptEditor;
-using iCanScriptEditor.CodeEngineering;
+using iCanScript.Editor;
+using iCanScript.Editor.CodeEngineering;
 using P=Prelude;
 
 #if COMMUNITY_EDITION

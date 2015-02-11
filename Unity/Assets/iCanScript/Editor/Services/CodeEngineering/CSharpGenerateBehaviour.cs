@@ -9,7 +9,7 @@ using System.Security;
 using System.Security.Cryptography;
 using iCanScript.JSON;
 
-namespace iCanScriptEditor { namespace CodeEngineering {
+namespace iCanScript { namespace Editor { namespace CodeEngineering {
     
     public class CSharpGenerateBehaviour {
     	// ----------------------------------------------------------------------
@@ -225,4 +225,4 @@ namespace iCanScriptEditor { namespace CodeEngineering {
         
     }
 
-}}
+}}}

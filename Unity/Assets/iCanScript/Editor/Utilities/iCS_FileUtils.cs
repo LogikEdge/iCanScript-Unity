@@ -3,7 +3,7 @@ using UnityEditor;
 using System.IO;
 using System.Collections;
 
-namespace iCanScriptEditor {
+namespace iCanScript { namespace Editor {
     
     public static class FileUtils {
 
@@ -88,4 +88,4 @@ namespace iCanScriptEditor {
     	}
     }
     
-}
+}}

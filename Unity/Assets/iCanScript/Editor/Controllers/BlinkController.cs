@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 using TS=iCS_TimerService;
 using TimedAction= Prelude.TimerService.TimedAction;
 
-namespace iCanScriptEditor {
+namespace iCanScript { namespace Editor {
     
     public static class BlinkController {
         // ======================================================================
@@ -64,4 +64,4 @@ namespace iCanScriptEditor {
         }
     }
     
-}
+}}

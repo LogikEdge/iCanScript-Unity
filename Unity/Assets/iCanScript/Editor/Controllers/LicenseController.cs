@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using iCanScript.Engine;
 
-namespace iCanScriptEditor {
+namespace iCanScript { namespace Editor {
     
     public static class LicenseController {
         // ======================================================================
@@ -204,4 +204,4 @@ namespace iCanScriptEditor {
         }
     }
     
-}
+}}

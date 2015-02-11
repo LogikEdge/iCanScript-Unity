@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
-using iCanScriptEditor;
+using iCanScript.Editor;
 
 public partial class iCS_IStorage {
     // ======================================================================

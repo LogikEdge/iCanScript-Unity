@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScriptEditor;
+using iCanScript.Editor;
 
 public abstract class iCS_MemberInfo : IEquatable<iCS_MemberInfo> {
     // ======================================================================

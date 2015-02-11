@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Collections;
 
-namespace iCanScriptEditor { namespace CodeEngineering {
+namespace iCanScript { namespace Editor { namespace CodeEngineering {
 
     public static class CSharpFileUtils {
 
@@ -46,4 +46,4 @@ namespace iCanScriptEditor { namespace CodeEngineering {
         }
     }
 
-}}
+}}}

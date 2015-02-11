@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Editor;
 using P=Prelude;
 using TS=iCS_TimerService;
-using EC=iCanScriptEditor.ErrorController;
+using EC=iCanScript.Editor.ErrorController;
 using TimedAction= Prelude.TimerService.TimedAction;
-using iCanScriptEditor;
 
 public partial class iCS_VisualEditor {
 	// =======================================================================
@@ -34,7 +34,7 @@ public partial class iCS_VisualEditor {
 	// -----------------------------------------------------------------------
 	void DisplaySceneErrorsAndWarnings() {
 		// -- Nothing to show if no errors/warnings detected --
-        if(!iCanScriptEditor.ErrorController.IsErrorOrWarning) return;
+        if(!ErrorController.IsErrorOrWarning) return;
 		
         // -- Display scene error/warning icon --
 		var nbOfErrors  = ErrorController.NumberOfErrors;
@@ -119,7 +119,7 @@ public partial class iCS_VisualEditor {
 		GUI.color= savedColor;
     }
 	// -----------------------------------------------------------------------
-    void DisplayErrorAndWarningDetails(Rect r, List<iCanScriptEditor.ErrorController.ErrorWarning> errors, List<iCanScriptEditor.ErrorController.ErrorWarning> warnings) {
+    void DisplayErrorAndWarningDetails(Rect r, List<ErrorController.ErrorWarning> errors, List<ErrorController.ErrorWarning> warnings) {
         // -- Draw background box --
         var savedColor= GUI.color;
         var outlineRect= new Rect(r.x-2, r.y-2, r.width+4, r.height+4);

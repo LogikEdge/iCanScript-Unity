@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-namespace iCanScriptEditor {
+namespace iCanScript { namespace Editor {
 
     public class UserTransactionController {
         // ======================================================================
@@ -71,4 +71,4 @@ namespace iCanScriptEditor {
 
     }
     
-}
+}}

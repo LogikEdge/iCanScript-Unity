@@ -9,7 +9,7 @@ using iCanScript.Engine;
 using P=Prelude;
 using Prefs=iCS_PreferencesController;
 
-namespace iCanScriptEditor {
+namespace iCanScript.Editor {
     
     public static class SoftwareUpdateController {
     	// =================================================================================
@@ -143,7 +143,7 @@ namespace iCanScriptEditor {
     		JNumber jMinor = null;
     		JNumber jBugFix= null;
             try {
-    			JObject rootObject= JSON.GetRootObject(download.text);
+    			JObject rootObject= JSON.JSON.GetRootObject(download.text);
                 JObject latestVersion=  rootObject.GetValueFor("iCanScript") as JObject;
     			if(!latestVersion.isNull) {
     				jMajor = latestVersion.GetValueFor("major") as JNumber;

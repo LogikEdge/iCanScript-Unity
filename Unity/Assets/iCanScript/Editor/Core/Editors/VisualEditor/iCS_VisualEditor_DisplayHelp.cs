@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.Text.RegularExpressions;
 using System.IO;
-using iCanScriptEditor;
+using iCanScript.Editor;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	

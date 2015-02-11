@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-namespace iCanScriptEditor {
+namespace iCanScript { namespace Editor {
     
     public static class PublicInterfaceController {
         // ======================================================================
@@ -1001,4 +1001,4 @@ namespace iCanScriptEditor {
         }
     }
     
-}
+}}

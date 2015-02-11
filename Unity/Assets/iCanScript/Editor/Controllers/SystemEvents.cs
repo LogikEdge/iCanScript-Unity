@@ -5,7 +5,7 @@ using System.Collections;
 using ActionVisualScript= System.Action<iCS_IStorage>;
 using ActionEditorObject= System.Action<iCS_EditorObject>;
 
-namespace iCanScriptEditor {
+namespace iCanScript { namespace Editor {
     
     public static class SystemEvents {
         // ======================================================================
@@ -235,4 +235,4 @@ namespace iCanScriptEditor {
         }
     }
 
-}
+}}

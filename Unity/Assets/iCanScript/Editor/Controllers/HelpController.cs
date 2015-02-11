@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 using System.Collections;
 using System;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using iCanScript.JSON;
 
 
-namespace iCanScriptEditor {
+namespace iCanScript.Editor {
     
     public static class HelpController {
     	static private string unityHelpIndex= null;
@@ -88,7 +88,7 @@ namespace iCanScriptEditor {
     	{
     		JArray  arrayOfEntries;
     		try {
-    			JObject rootObject= JSON.GetRootObject(unityHelpIndex);	
+    			JObject rootObject= JSON.JSON.GetRootObject(unityHelpIndex);	
     			arrayOfEntries= rootObject.GetValueFor("info") as JArray;
     		}
     		catch {

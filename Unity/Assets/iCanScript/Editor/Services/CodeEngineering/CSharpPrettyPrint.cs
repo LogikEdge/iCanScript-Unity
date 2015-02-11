@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace iCanScriptEditor { namespace CodeEngineering {
+namespace iCanScript { namespace Editor { namespace CodeEngineering {
     
     public class CSharpPrettyPrint {
         // ----------------------------------------------------------------------
@@ -10,4 +10,4 @@ namespace iCanScriptEditor { namespace CodeEngineering {
         }
     }
 
-}}
+}}}

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System;
 using UnityEditor;
 
-namespace iCanScriptEditor {
+namespace iCanScript { namespace Editor {
     
     public static class HelpDictionary {
     	
@@ -88,4 +88,4 @@ namespace iCanScriptEditor {
     
     }
     
-}
+}}

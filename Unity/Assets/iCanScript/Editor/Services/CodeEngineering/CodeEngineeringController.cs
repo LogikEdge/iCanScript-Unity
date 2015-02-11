@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace iCanScriptEditor { namespace CodeEngineering {
+namespace iCanScript.Editor.CodeEngineering {
     
     public static class CodeEngineeringController {
         // ======================================================================
@@ -9,7 +9,7 @@ namespace iCanScriptEditor { namespace CodeEngineering {
         // ----------------------------------------------------------------------
     	static CodeEngineeringController() {
             // Create default code generation path.
-            iCanScriptEditor.FileUtils.CreateAssetFolder("VisualScripts");
+            FileUtils.CreateAssetFolder("VisualScripts");
             
             // Install events.
             SystemEvents.OnHierarchyChanged+= OnHierarchyChanged;
@@ -37,4 +37,4 @@ namespace iCanScriptEditor { namespace CodeEngineering {
         }
     }
 
-}}
+}

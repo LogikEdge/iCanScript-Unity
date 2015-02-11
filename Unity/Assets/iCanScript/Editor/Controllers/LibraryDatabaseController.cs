@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Reflection;
 using System.Collections;
 
-namespace iCanScriptEditor {
+namespace iCanScript { namespace Editor {
     
     public class LibraryDatabaseController {
         // ======================================================================
@@ -85,4 +85,4 @@ namespace iCanScriptEditor {
         
     }
     
-}
+}}

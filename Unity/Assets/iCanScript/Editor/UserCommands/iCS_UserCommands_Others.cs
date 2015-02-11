@@ -5,7 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using Pref= iCS_PreferencesController;
-using iCanScriptEditor;
+using iCanScript.Editor;
 
 public static partial class iCS_UserCommands {
     // ======================================================================
