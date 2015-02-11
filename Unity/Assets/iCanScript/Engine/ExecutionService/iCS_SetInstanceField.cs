@@ -29,7 +29,6 @@ public class iCS_SetInstanceField : iCS_FieldBase {
         try {
 //#endif
             myFieldInfo.SetValue(InInstance, Parameters[0]);
-            OutInstance= InInstance;
             MarkAsExecuted(frameId);
 //#if UNITY_EDITOR
         }

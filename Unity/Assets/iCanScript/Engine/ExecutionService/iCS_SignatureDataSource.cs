@@ -7,16 +7,12 @@ public class iCS_SignatureDataSource {
     // Properties
     // ----------------------------------------------------------------------
     // .NET Signature
-//#if UNITY_EDITOR
     iCS_Object          myObjectWithSignature   = null;
-//#endif
     object              myInInstance            = null;  
     iCS_Connection      myInInstanceConnection  = null;
     object[]            myParameters            = null;
     iCS_Connection[]    myParameterConnections  = null;
     object              myReturnValue           = null;
-    // Extended Signature
-    object              myOutInstance           = null;
     // Controls
     bool                myTrigger               = false;
     bool[]              myEnables               = null;
@@ -38,8 +34,7 @@ public class iCS_SignatureDataSource {
         set { myReturnValue= value; }
     }
     public object OutInstance {
-        get { return myOutInstance; }
-        set { myOutInstance= value; }
+        get { return myInInstance; }
     }
     public bool Trigger {
         get { return myTrigger; }
@@ -102,7 +97,7 @@ public class iCS_SignatureDataSource {
     // Returns one of the signature outputs.
     public object GetValue(int idx) {
         if(idx == (int)iCS_PortIndex.Return) return ReturnValue;
-		if(idx == (int)iCS_PortIndex.OutInstance) return OutInstance;
+		if(idx == (int)iCS_PortIndex.OutInstance) return InInstance;
 		if(idx == (int)iCS_PortIndex.Trigger) return Trigger;
         if(idx == (int)iCS_PortIndex.InInstance) return InInstance;
 		if(idx < myParameters.Length) return GetParameter(idx);
@@ -135,10 +130,6 @@ public class iCS_SignatureDataSource {
             InInstance= value;
             return;
         }
-		if(idx == (int)iCS_PortIndex.OutInstance) {
-			OutInstance= value;
-			return;
-		}
 		if(idx == (int)iCS_PortIndex.Trigger) {
 			Trigger= (bool)value;
 			return;
