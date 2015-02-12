@@ -18,7 +18,6 @@ public class iCS_EngineObject {
     public string                QualifiedType      = "";
 	public Vector2				 LocalAnchorPosition= Vector2.zero;
     public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded; // PortIterationSignature
-	public float				 Scale              = 1.0f;  // Used for children scale
 
 	// Node specific attributes ---------------------------------------------
 	public string				 MethodName       = null;
@@ -160,7 +159,6 @@ public class iCS_EngineObject {
         to.QualifiedType= QualifiedType;
         to.RawName= RawName;
         to.LocalAnchorPosition= LocalAnchorPosition;
-        to.Scale= Scale;
         to.DisplayOption= DisplayOption;
         to.IsNameEditable= IsNameEditable;
         to.MethodName= MethodName;
@@ -185,7 +183,6 @@ public class iCS_EngineObject {
 		RawName= "";
         LocalAnchorPosition= Vector2.zero;
         LayoutPriority= 0;
-		Scale= 1.0f;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;
 		// Node
