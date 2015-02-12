@@ -6,9 +6,10 @@ using Subspace;
 public class iCS_RunContext {
     // ======================================================================
     // Fields
-    int             myFrameId= 0;
-    SSAction        myAction= null;
-    List<SSAction>  myStalledActions= new List<SSAction>();
+    int                 myFrameId= 0;
+    iCS_VisualScriptImp myVisualScript= null;
+    SSAction            myAction= null;
+    List<SSAction>      myStalledActions= new List<SSAction>();
     
     // ======================================================================
     // Properties
@@ -24,10 +25,11 @@ public class iCS_RunContext {
     // ======================================================================
     // Methods
     // ----------------------------------------------------------------------
-    public iCS_RunContext(SSAction action) {
-        Action= action;
-        if(Action != null) {
-            Action.IsActive= false;
+    public iCS_RunContext(iCS_VisualScriptImp vs, SSAction action) {
+        myVisualScript= vs;
+        myAction= action;
+        if(myAction != null) {
+            myAction.IsActive= false;
         }
     }
 
@@ -75,7 +77,7 @@ public class iCS_RunContext {
         // Force execution if to many nested attempts to resolve deadlock
         if(attempts > 10) {
 //#if UNITY_EDITOR
-            if(myAction.VisualScript.IsTraceEnabled) {
+            if(myVisualScript.IsTraceEnabled) {
                 Debug.LogWarning("TOO MANY ATTEMPTS TO RESOLVE DEADLOCKS...FORCING EXECUTION");
             }
 //#endif
@@ -87,7 +89,7 @@ public class iCS_RunContext {
         if(stalledProducerPort != null) {
             var node= stalledProducerPort.Action;
 //#if UNITY_EDITOR
-            if(myAction.VisualScript.IsTraceEnabled) {
+            if(myVisualScript.IsTraceEnabled) {
                 Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+")");
             }
 //#endif
@@ -99,14 +101,14 @@ public class iCS_RunContext {
             }
             node.IsActive= true;
 //#if UNITY_EDITOR
-            if(myAction.VisualScript.IsTraceEnabled) {
+            if(myVisualScript.IsTraceEnabled) {
                 Debug.LogWarning("Activating=> "+node.FullName+" ("+myFrameId+")");
             }
 //#endif
         }                    
         else {
 //#if UNITY_EDITOR
-            if(myAction.VisualScript.IsTraceEnabled) {
+            if(myVisualScript.IsTraceEnabled) {
                 Debug.LogWarning("DID NOT FIND STALLED PORT BUT MESSAGE HANDLER IS STALLED !!!");
             }
 //#endif

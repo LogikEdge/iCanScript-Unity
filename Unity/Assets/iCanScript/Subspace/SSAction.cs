@@ -11,16 +11,17 @@ namespace Subspace {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        int         myCurrentRunId  = 0;
-        int         myExecutedRunId= 0;
-        bool        myIsStalled= false;
-        bool        myIsActive= true;
-        bool        myPortsAreAlwaysCurrent= false;
-		protected SSRunState myRunState= SSRunState.WAITING;
+        int     myPriority     = 0;
+        int     myCurrentRunId = 0;
+        int     myExecutedRunId= 0;
+        bool    myIsStalled    = false;
+        bool    myIsActive     = true;
+        bool    myPortsAreAlwaysCurrent= false;
 
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
+        public int      Priority            { get { return myPriority; } set { myPriority= value; }}
         public int      RunId               { get { return CurrentRunId; }}
         public int      CurrentRunId        { get { return myCurrentRunId; }}
         public int      ExecutionRunId      { get { return myExecutedRunId; }}
@@ -41,8 +42,10 @@ namespace Subspace {
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSAction(iCS_VisualScriptImp visualScript, int priority)
-        : base(visualScript, priority) {}
+        public SSAction(int instanceId, string name, iCS_VisualScriptImp visualScript, int priority)
+        : base(instanceId, name, visualScript) {
+            myPriority= priority;
+        }
      
         // ======================================================================
         // Execution

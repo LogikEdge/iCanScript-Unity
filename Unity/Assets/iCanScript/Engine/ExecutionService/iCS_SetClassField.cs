@@ -7,8 +7,8 @@ public class iCS_SetClassField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetClassField(FieldInfo fieldInfo, iCS_VisualScriptImp visualScript, int priority, int nbOfEnables)
-    : base(fieldInfo, visualScript, priority, 1, nbOfEnables) {}
+    public iCS_SetClassField(int instanceId, string name, FieldInfo fieldInfo, iCS_VisualScriptImp visualScript, int priority, int nbOfEnables)
+    : base(instanceId, name, fieldInfo, visualScript, priority, 1, nbOfEnables) {}
     
     // ======================================================================
     // Execution

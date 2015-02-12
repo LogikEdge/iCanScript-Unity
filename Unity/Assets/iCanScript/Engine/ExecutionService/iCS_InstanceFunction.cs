@@ -7,8 +7,8 @@ public class iCS_InstanceFunction : iCS_ClassFunction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_InstanceFunction(MethodBase methodBase, iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
-    : base(methodBase, visualScript, priority, nbOfParameters, nbOfEnables) {
+    public iCS_InstanceFunction(int instanceId, string name, MethodBase methodBase, iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
+    : base(instanceId, name, methodBase, visualScript, priority, nbOfParameters, nbOfEnables) {
     }
     
     // ======================================================================

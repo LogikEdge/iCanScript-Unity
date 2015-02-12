@@ -14,9 +14,9 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_UserFunctionCall(SSActionWithSignature userAction, iCS_VisualScriptImp visualScript, int priority,
+    public iCS_UserFunctionCall(int instanceId, string name, SSActionWithSignature userAction, iCS_VisualScriptImp visualScript, int priority,
                                 int nbOfParameters, int nbOfEnables)
-    : base(visualScript, priority, nbOfParameters, nbOfEnables) {
+    : base(instanceId, name, visualScript, priority, nbOfParameters, nbOfEnables) {
         myUserAction= userAction;
     }
 

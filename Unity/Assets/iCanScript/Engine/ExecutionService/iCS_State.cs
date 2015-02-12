@@ -28,9 +28,9 @@ public sealed class iCS_State : SSObject {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_State(iCS_VisualScriptImp visualScript, int priority)
-    : base(visualScript, priority) {
-        myTransitions= new iCS_VerifyTransitions(visualScript, priority);
+    public iCS_State(int instanceId, string name, iCS_VisualScriptImp visualScript)
+    : base(instanceId, name, visualScript) {
+        myTransitions= new iCS_VerifyTransitions(instanceId, name, visualScript, instanceId);
     }
     
     // ======================================================================

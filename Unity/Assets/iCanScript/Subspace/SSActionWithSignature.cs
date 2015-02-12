@@ -207,8 +207,8 @@ namespace Subspace {
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSActionWithSignature(iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
-        : base(visualScript, priority) {
+        public SSActionWithSignature(int instanceId, string name, iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
+        : base(instanceId, name, visualScript, priority) {
             myParameters = new object[nbOfParameters];
             myParameterConnections= new Connection[nbOfParameters];
             for(int i= 0; i < nbOfParameters; ++i) {

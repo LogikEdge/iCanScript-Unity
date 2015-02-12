@@ -7,8 +7,8 @@ public class iCS_GetInstanceField : iCS_GetClassField {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_GetInstanceField(FieldInfo fieldInfo, iCS_VisualScriptImp visualScript, int priority, int nbOfEnables)
-    : base(fieldInfo, visualScript, priority, nbOfEnables) {
+    public iCS_GetInstanceField(int instanceId, string name, FieldInfo fieldInfo, iCS_VisualScriptImp visualScript, int priority, int nbOfEnables)
+    : base(instanceId, name, fieldInfo, visualScript, priority, nbOfEnables) {
     }
 
     // ======================================================================

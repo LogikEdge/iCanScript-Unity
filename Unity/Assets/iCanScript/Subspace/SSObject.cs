@@ -7,65 +7,27 @@ namespace Subspace {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        protected SSObject    myParent= null;
-		/// <summary>
-		/// ====================================================================== Fields --
-		/// --------------------------------------------------------------------
-		/// </summary>
-        public iCS_VisualScriptImp  VisualScript    { get; set; }
+        protected int       myInstanceId= -1;
+        protected string    myName      = null;
+        protected SSObject  myParent    = null;
+        protected iCS_VisualScriptImp  VisualScript    { get; set; }
 
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        public int InstanceId {
-            get {
-                if(VisualScript != null) {
-                    var runtimeNodes= VisualScript.RuntimeNodes;
-                    for(int i= 0; i < runtimeNodes.Length; ++i) {
-                        if(runtimeNodes[i] == this) {
-                            return i;
-                        }
-                    }                
-                }
-                return -1;
-            }
-        }
+        public int      InstanceId  { get { return myInstanceId; }}
+        public string   Name        { get { return myName; }}
+        public SSObject Parent      { get { return myParent; }}
+        public int      ParentId    { get { return myParent.InstanceId; }}
+        public string   FullName    { get { return GetFullName("."); }}
+
         public iCS_EngineObject EngineObject {
             get {
                 int id= InstanceId;
                 return id != -1 ? VisualScript.EngineObjects[InstanceId] : null;
             }
         }
-        public string Name {
-            get {
-                var eObj= EngineObject;
-                return eObj != null ? eObj.Name : "unnamed";
-            }
-        }
-        public int ParentId {
-            get {
-                var eObj= EngineObject;
-                return eObj != null ? EngineObject.ParentId : -1;
-            }
-        }
-        public iCS_EngineObject ParentObject {
-            get {
-                var parentId= ParentId;
-                return parentId != -1 ? VisualScript.EngineObjects[parentId] : null;
-            }
-        }
-        public string ParentName {
-            get {
-                return ParentObject != null ? ParentObject.Name : "unnamed";
-            }
-        }
-        public string FullName {
-            get {
-    			return VisualScript.GetFullName(EngineObject);
-            }
-        }
         public string           TypeName        { get { return GetType().Name; }}
-        public int              Priority        { get; set; }
 
     //#if UNITY_EDITOR
         public iCS_EngineObject GetPortWithIndex(int idx) {
@@ -85,17 +47,22 @@ namespace Subspace {
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSObject(iCS_VisualScriptImp visualScript, int priority) {
-            Priority= priority;
+        public SSObject(int instanceId, string name, iCS_VisualScriptImp visualScript) {
+            myInstanceId= instanceId;
+            myName      = name;
             VisualScript= visualScript;
         }
 
+        // ----------------------------------------------------------------------
+        // Returns the absolute name using the given separator between levels.
+        public string GetFullName(string separator= ".") {
+            var parentName= myParent != null ? myParent.GetFullName(separator) : "";
+            return parentName+separator+myName;
+        }
+
+        // ----------------------------------------------------------------------
         public override string ToString() {
-    //#if UNITY_EDITOR
             return Name;
-    //#else
-    //        return TypeName;
-    //#endif
         }
     }
     
