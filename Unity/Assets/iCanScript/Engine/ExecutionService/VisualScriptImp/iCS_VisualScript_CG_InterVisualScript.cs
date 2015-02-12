@@ -19,7 +19,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		Connection connection= null;
         bool isAlwaysReady= true;
         bool isControlPort= proxyPort.IsControlPort;
-		connection= new Connection(runtimeNode as ISignature, proxyPort.PortIndex, isAlwaysReady, isControlPort);
+		connection= new Connection(runtimeNode as SSActionWithSignature, proxyPort.PortIndex, isAlwaysReady, isControlPort);
         return connection;
     }
     // ----------------------------------------------------------------------
@@ -100,7 +100,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		Connection connection= null;
         bool isAlwaysReady= false;
         bool isControlPort= false;
-		connection= new Connection(runtimeNode as ISignature, sourcePort.PortIndex, isAlwaysReady, isControlPort);
+		connection= new Connection(runtimeNode as SSActionWithSignature, sourcePort.PortIndex, isAlwaysReady, isControlPort);
         userFunctionCall.SetConnection(port.PortIndex, connection);
         return connection;        
     }

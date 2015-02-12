@@ -7,7 +7,7 @@ using Subspace;
 
 namespace Subspace {
 
-    public abstract class SSActionWithSignature : SSAction, ISignature {
+    public abstract class SSActionWithSignature : SSAction {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
@@ -71,7 +71,7 @@ namespace Subspace {
         }
     
         // ======================================================================
-        // Implement ISignature delegate.
+        // Implement SSActionWithSignature delegate.
         // ----------------------------------------------------------------------
         public SignatureDataSource GetSignatureDataSource() { return mySignature; }
         public SSAction GetAction() { return this; }

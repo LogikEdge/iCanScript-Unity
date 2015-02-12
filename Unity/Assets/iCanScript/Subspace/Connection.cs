@@ -8,7 +8,7 @@ namespace Subspace {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        ISignature  mySignature    = null;
+        SSActionWithSignature  mySignature    = null;
         int         myPortIndex    = -1;
         bool        myIsAlwaysReady= false;
 
@@ -39,7 +39,7 @@ namespace Subspace {
         // Creation/Destruction
         // ----------------------------------------------------------------------
         public Connection() { }
-        public Connection(ISignature signature, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
+        public Connection(SSActionWithSignature signature, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
             mySignature    = signature;
             myPortIndex    = portIndex;
             myIsAlwaysReady= isAlwaysReady;

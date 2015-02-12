@@ -417,7 +417,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         }
                         case iCS_ObjectTypeEnum.InChildMuxPort:
     					case iCS_ObjectTypeEnum.OutChildMuxPort: {
-    						var rtMuxPort= myRuntimeNodes[port.ParentId] as ISignature;
+    						var rtMuxPort= myRuntimeNodes[port.ParentId] as SSActionWithSignature;
     						if(rtMuxPort == null) break;
                             iCS_EngineObject sourcePort= GetSourceEndPort(port);
     						Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
@@ -669,13 +669,13 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
 	Connection BuildConnection(iCS_EngineObject port) {
 		Connection connection= null;
-        var rtPortGroup= myRuntimeNodes[port.InstanceId] as ISignature;
+        var rtPortGroup= myRuntimeNodes[port.InstanceId] as SSActionWithSignature;
 		if(rtPortGroup != null) {
 			connection= new Connection(rtPortGroup, (int)iCS_PortIndex.Return);	
 		} else {
             bool isAlwaysReady= port.IsInputPort;
             bool isControlPort= port.IsControlPort;
-			connection= new Connection(myRuntimeNodes[port.ParentId] as ISignature, port.PortIndex, isAlwaysReady, isControlPort);
+			connection= new Connection(myRuntimeNodes[port.ParentId] as SSActionWithSignature, port.PortIndex, isAlwaysReady, isControlPort);
 		}
 		return connection;
 	}
