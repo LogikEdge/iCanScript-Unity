@@ -22,6 +22,7 @@ namespace Subspace {
         Connection[]        myEnableConnections     = null;
     
         // ======================================================================
+        // Filler when enables or connections not used.
         static bool[]           ourEmptyEnables    = new bool[0];
         static Connection[]     ourEmptyConnections= new Connection[0];
     
@@ -44,8 +45,6 @@ namespace Subspace {
             get { return GetValue(idx); }
             set { SetValue(idx, value); }
         }
-        public int ParametersStart { get { return 0; }}
-        public int ParametersEnd   { get { return myParameters.Length-1; }}
         public object[] Parameters {
             get { return myParameters; }
         }

@@ -187,14 +187,6 @@ public partial class iCS_EditorObject {
 	            funcBase.ReturnValue= value;
 	            return;
 	        }
-//	        // Propagate value for module port.
-//	        if(IsKindOfPackagePort) {
-//	            iCS_EditorObject[] connectedPorts= ConsumerPorts;
-//	            foreach(var cp in connectedPorts) {
-//	                cp.RuntimePortValue= value;
-//	            }
-//	            return;
-//	        }
 	        if(PortIndex < 0) return;
 	        iCS_EditorObject parent= Parent;
 	        if(parent == null) return;

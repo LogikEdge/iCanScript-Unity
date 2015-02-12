@@ -46,8 +46,6 @@ namespace Subspace {
         public Connection[] ParameterConnections {
             get { return mySignature.ParameterConnections; }
         }
-        public int ParametersStart  { get { return mySignature.ParametersStart; }}
-        public int ParametersEnd    { get { return mySignature.ParametersEnd; }}
         public bool IsParameterReady(int idx, int runId) {
             return mySignature.IsParameterReady(idx, runId);
         }

@@ -48,21 +48,20 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
     
                 // Wait until all inputs are ready.
-                var parameterStart= ParametersStart;
-                var parameterEnd= ParametersEnd;
-                for(int i= parameterStart; i <= parameterEnd; ++i) {
+                var parameterLen= Parameters.Length;
+                for(int i= 0; i < parameterLen; ++i) {
                     if(IsParameterReady(i, runId) == false) {
                         return;
                     }
                 }
                 // Fetch all parameters.
-                for(int i= parameterStart; i <= parameterEnd; ++i) {
+                for(int i= 0; i < parameterLen; ++i) {
                     UpdateParameter(i);
                 }
                 // Copy input ports
                 var parameters= Parameters;
                 var userActionParameters= myUserAction.Parameters;
-                for(int i= parameterStart; i <= parameterEnd; ++i) {
+                for(int i= 0; i < parameterLen; ++i) {
                     userActionParameters[i]= parameters[i];
                 }
                 // Wait unitil user function becomes available
@@ -78,7 +77,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 }
                 myUserAction.Execute(actionFrameId);
                 // Copy output ports
-                for(int i= parameterStart; i <= parameterEnd; ++i) {
+                for(int i= 0; i < parameterLen; ++i) {
     				UpdateParameter(i);
     			}
                 // Reflection the action run status.
@@ -143,15 +142,14 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
             var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
 
             // Fetch all parameters.
-            var parameterStart= ParametersStart;
-            var parameterEnd= ParametersEnd;
-            for(int i= parameterStart; i <= parameterEnd; ++i) {
+            var parameterLen= Parameters.Length;
+            for(int i= 0; i < parameterLen; ++i) {
                 UpdateParameter(i);
             }
             // Copy input ports
             var parameters= Parameters;
             var userActionParameters= myUserAction.Parameters;
-            for(int i= parameterStart; i <= parameterEnd; ++i) {
+            for(int i= 0; i < parameterLen; ++i) {
                 userActionParameters[i]= parameters[i];
             }
             // Wait unitil user function becomes available
@@ -167,7 +165,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
             }
             myUserAction.Execute(actionFrameId);
             // Copy output ports
-            for(int i= parameterStart; i <= parameterEnd; ++i) {
+            for(int i= 0; i < parameterLen; ++i) {
 				UpdateParameter(i);
 			}
             // Reflection the action run status.

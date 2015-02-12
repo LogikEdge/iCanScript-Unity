@@ -56,8 +56,6 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         // Run the context.
         iCS_RunContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
-//            var rtMessage= runContext.Action as iCS_Message;
-//            rtMessage.GetSignatureDataSource().This= this;
             runContext.Run();
         }
     }
