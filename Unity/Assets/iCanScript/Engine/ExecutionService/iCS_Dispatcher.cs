@@ -23,10 +23,12 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
         if(IsCurrent(runId)) {
             return null;
         }
-        var producerPort= mySignature.GetStalledProducerPort(runId, /*enablesOnly=*/true);
+        // Get the dispatcher stalled enable ports.
+        var producerPort= GetStalledEnablePort(runId);
         if(producerPort != null) {
             return producerPort;
         }
+        // Get any child stalled ports.
         int cursor= myQueueIdx;
         if(cursor < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];

@@ -11,57 +11,221 @@ namespace Subspace {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        protected SignatureDataSource mySignature = null;
+        // .NET Signature
+        object              myThis                 = null;  
+        Connection          myThisConnection       = null;
+        object[]            myParameters           = null;
+        Connection[]        myParameterConnections = null;
+        object              myReturnValue          = null;
+        // Controls
+        bool                myTrigger              = false;
+        bool[]              myEnables              = null;
+        Connection[]        myEnableConnections    = null;
+    
+        // ======================================================================
+        // Filler when enables or connections not used.
+        static bool[]           ourEmptyEnables    = new bool[0];
+        static Connection[]     ourEmptyConnections= new Connection[0];
     
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
         public object This {
-            get { return mySignature.This; }
-        }
-        public bool Trigger {
-            get { return mySignature.Trigger; }
-            set { mySignature.Trigger= value; }
-        }
-        public object GetValue(int portIdx) {
-            return mySignature.GetValue(portIdx);
-        }
-        public void SetValue(int portIdx, object value) {
-            mySignature.SetValue(portIdx, value);
+            get { return myThisConnection == null ? myThis : myThisConnection.Value; }
         }
         public object ReturnValue {
-            get { return mySignature.ReturnValue; }
-            set { mySignature.ReturnValue= value; }
+            get { return myReturnValue; }
+            set { myReturnValue= value; }
         }
-        public void SetConnection(int portIdx, Connection connection) {
-            mySignature.SetConnection(portIdx, connection);
+        public bool Trigger {
+            get { return myTrigger; }
+            set { myTrigger= value; }
         }
         public object this[int portIdx] {
-            get { return mySignature[portIdx]; }
-            set { mySignature[portIdx]= value; }
+            get { return GetValue(portIdx); }
+            set { SetValue(portIdx, value); }
         }
         public object[] Parameters {
-            get { return mySignature.Parameters; }
+            get { return myParameters; }
         }
         public Connection[] ParameterConnections {
-            get { return mySignature.ParameterConnections; }
+            get { return myParameterConnections; }
+        }
+        public void SetConnection(int portIdx, Connection connection) {
+            if(portIdx < myParameterConnections.Length) {
+        		myParameterConnections[portIdx]= connection;            
+                return;
+            }
+            if(portIdx == (int)iCS_PortIndex.InInstance) {
+                myThisConnection= connection;
+                return;
+            }
+    		if(myEnableConnections != null && portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
+    			var i= portIdx-(int)iCS_PortIndex.EnablesStart;
+    			if(i < myEnableConnections.Length) {
+    				myEnableConnections[i]= connection;
+    			}
+    			return;
+    		}
+            Debug.LogWarning("iCanScript: Trying to set a signature connection with wrong index: "+portIdx);
         }
         public bool IsParameterReady(int idx, int runId) {
-            return mySignature.IsParameterReady(idx, runId);
+            if(idx >= myParameters.Length) {
+                Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
+                return false;
+            }
+            var connection= myParameterConnections[idx];
+            if(connection == null) return true;
+            return connection.IsReady(runId);
         }
-        public void UpdateParameter(int idx) {
-            mySignature.UpdateParameter(idx);
+        public object UpdateParameter(int idx) {
+            if(idx >= myParameters.Length) {
+                Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
+                return null;
+            }
+            var connection= myParameterConnections[idx];
+            if(connection != null) {
+                myParameters[idx]= connection.Value;
+            }
+            return myParameters[idx];
         }
         public bool IsThisReady(int runId) {
-            return mySignature.IsThisReady(runId);
+            if(myThisConnection == null) return true;
+            return myThisConnection.IsReady(runId);
+        }
+        // =========================================================================
+        // Enables Query
+        // ----------------------------------------------------------------------
+        // Return true if the enable state can be assertained with the isEnabled
+        // output parameter set appropriatly.  Otherwise, false is returned.
+    	public bool GetIsEnabledIfReady(int runId, out bool isEnabled) {
+            bool needToWait= false;
+    	    int len= myEnables.Length;
+            for(int i= 0; i < len; ++i) {
+                var connection= myEnableConnections[i];
+                if(connection != null) {
+                    if(connection.IsCurrent(runId)) {
+                        if((bool)connection.Value == false) {
+                            isEnabled= false;
+                            return true;
+                        }
+                    }
+                    else {
+                        needToWait= true;
+                    }
+                } else {
+                    if(myEnables[i] == false) {
+                        isEnabled= false;
+                        return true;
+                    }
+                }
+            }
+            if(!needToWait) {
+                isEnabled= true;
+                return true;
+            }
+            isEnabled= false;
+    	    return false;
+    	}
+    	// ----------------------------------------------------------------------
+        public bool GetIsEnabled() {
+            int len= myEnables.Length;
+            for(int i= 0; i < len; ++i) {
+                var connection= myEnableConnections[i];
+                if(connection == null) {
+                    if(myEnables[i] == false) {
+                        return false;
+                    }
+                } else {
+    				var v= connection.Value;
+    				if(v == null) {
+    					Debug.LogWarning("iCanScript: Invalid connection for enabled sourced from: "+connection.Action.FullName);
+    					continue;
+    				}
+                    if(/*v != null && */(bool)v == false) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     
+
+        // ======================================================================
+        // Functions to configure and access the signature parameters and 
+        // return values.
+    	// -------------------------------------------------------------------------
+        // Returns one of the signature outputs.
+        public object GetValue(int portIdx) {
+            if(portIdx == (int)iCS_PortIndex.Return) return ReturnValue;
+    		if(portIdx == (int)iCS_PortIndex.OutInstance) return This;
+    		if(portIdx == (int)iCS_PortIndex.Trigger) return Trigger;
+            if(portIdx == (int)iCS_PortIndex.InInstance) return This;
+    		if(portIdx < myParameters.Length) return myParameters[portIdx];
+    		if(portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
+                int i= portIdx-(int)iCS_PortIndex.EnablesStart;
+                if(i < myEnables.Length) {
+                    var connection= myEnableConnections[i];
+                    return connection == null ? myEnables[i] : myEnableConnections[i].Value;
+                }
+    		}
+    		throw new System.Exception("Invalid signature access: ["+portIdx+"]");
+    	}
+    	// -------------------------------------------------------------------------
+        // Sets the value of the object in the signature.  This should be called
+        // by the compiler to initialize the signature.
+        public void SetValue(int portIdx, object value) {
+            if(portIdx < myParameters.Length)  {
+                myParameters[portIdx]= value;
+                return;
+            }
+            if(portIdx == (int)iCS_PortIndex.Return) {
+                myReturnValue= value;
+                return;
+            }
+            if(portIdx == (int)iCS_PortIndex.InInstance) {
+                myThis= value;
+                return;
+            }
+    		if(portIdx == (int)iCS_PortIndex.Trigger) {
+    			myTrigger= (bool)value;
+    			return;
+    		}
+    		if(portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
+                var i= portIdx-(int)iCS_PortIndex.EnablesStart;
+    			myEnables[i]= (bool)value;
+    			return;
+    		}
+    		throw new System.Exception("Invalid signature access: "+GetPortFullName(portIdx));
+    	}
+        public string GetPortFullName(int idx) {
+            var port= GetPortWithIndex(idx);
+            var portName= port == null ? "["+idx+"]" : port.Name;
+            return FullName+"."+portName;
+        }
+
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
         public SSActionWithSignature(iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
         : base(visualScript, priority) {
-            mySignature= new SignatureDataSource(nbOfParameters, nbOfEnables, this);
+            myParameters = new object[nbOfParameters];
+            myParameterConnections= new Connection[nbOfParameters];
+            for(int i= 0; i < nbOfParameters; ++i) {
+                myParameters[i]= null;
+                myParameterConnections[i]= null;
+            }
+            if(nbOfEnables == 0) {
+                myEnables= ourEmptyEnables;
+                myEnableConnections= ourEmptyConnections;            
+            } else {
+                myEnables= new bool[nbOfEnables];
+                myEnableConnections= new Connection[nbOfEnables];
+                for(int i= 0; i < nbOfEnables; ++i) {
+                    myEnables[i]= true;
+                    myEnableConnections[i]= null;
+                }
+            }
         }
     
         // ======================================================================
@@ -77,10 +241,10 @@ namespace Subspace {
     //        }        
 
             // Clear the output trigger flag.
-            mySignature.Trigger= false;
+            myTrigger= false;
             // Wait until the enables can be resolved.
             bool isEnabled;
-            if(!mySignature.GetIsEnabledIfReady(runId, out isEnabled)) {
+            if(!GetIsEnabledIfReady(runId, out isEnabled)) {
     			IsStalled= true;
     //            if(VisualScript.IsTraceEnabled) {
     //                Debug.Log("Executing=> "+FullName+" is waiting on the enables");
@@ -111,11 +275,47 @@ namespace Subspace {
             }
         }
         // ----------------------------------------------------------------------
+        public Connection GetStalledEnablePort(int runId) {
+            if(IsCurrent(runId)) {
+                return null;
+            }
+            // Let's first verify the enables.
+            int len= myEnableConnections.Length;
+            for(int i= 0; i < len; ++i) {
+                var connection= myEnableConnections[i];
+                if(connection != null) {
+                    if(!connection.IsReady(runId)) {
+                        return connection;
+                    }
+                }
+            }
+            return null;
+        }
+        // ----------------------------------------------------------------------
         public override Connection GetStalledProducerPort(int runId) {
             if(IsCurrent(runId)) {
                 return null;
             }
-            return mySignature.GetStalledProducerPort(runId);
+            // Let's first verify the enables.
+            var stalledEnable= GetStalledEnablePort(runId);
+            if(stalledEnable != null) {
+                return stalledEnable;
+            }
+            // Verify intance connection
+            if(myThisConnection != null && !myThisConnection.IsReady(runId)) {
+                return myThisConnection;
+            }
+            // Verify parameter connections
+            var len= myParameterConnections.Length;
+            for(int i= 0; i < len; ++i) {
+                var connection= myParameterConnections[i];
+                if(connection != null) {
+                    if(!connection.IsReady(runId)) {
+                        return connection;
+                    }
+                }
+            }
+            return null;
         }
         // ----------------------------------------------------------------------
         public override void ForceExecute(int runId) {
@@ -130,7 +330,7 @@ namespace Subspace {
                     if(stalledNodeParentId > 1) {
                         var stalledNodeParent= VisualScript.RuntimeNodes[stalledNodeParentId] as SSActionWithSignature;
                         if(stalledNodeParent != null) {
-                            Debug.LogWarning("STALLED PORT NODE PARENT ENABLE=> "+stalledNodeParent.FullName+"("+stalledNodeParent.mySignature.GetIsEnabled()+")");
+                            Debug.LogWarning("STALLED PORT NODE PARENT ENABLE=> "+stalledNodeParent.FullName+"("+stalledNodeParent.GetIsEnabled()+")");
                         }
                     }
                 }
@@ -138,7 +338,7 @@ namespace Subspace {
             }
     //#endif
             // Force verify enables.
-            if(mySignature.GetIsEnabled() == false) {
+            if(GetIsEnabled() == false) {
                 MarkAsCurrent(runId);
                 return;
             }
@@ -149,7 +349,7 @@ namespace Subspace {
         // ----------------------------------------------------------------------
         // Override the execute marker to set the output trigger.
         public new void MarkAsExecuted(int runId) {
-            mySignature.Trigger= true;
+            myTrigger= true;
             base.MarkAsExecuted(runId);
         }
         // =========================================================================
