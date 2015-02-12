@@ -74,13 +74,9 @@ public sealed class iCS_State : SSObject {
                 else if(package.Name == iCS_Strings.OnExit) {
                     myOnExitAction= package;
                 }
-                else {
-    				if(_object.EngineObject.IsTransitionPackage) return;
-                    Debug.LogWarning("iCanScript: Only OnEntry, OnUpdate, and OnExit modules can be added to a iCS_State");
-                }
             },
             (otherwise)=> {
-                Debug.LogWarning("iCanScript: Invalid child type "+_object.TypeName+" being added to state "+Name);
+                Debug.LogWarning("iCanScript: Invalid child type "+_object.GetType().Name+" being added to state "+Name);
             }
         );
     }
@@ -103,13 +99,9 @@ public sealed class iCS_State : SSObject {
                 else if(package == myOnExitAction) {
                     myOnExitAction= null;
                 }
-                else {
-    				if(_object.EngineObject.IsTransitionPackage) return;
-                    Debug.LogWarning("iCanScript: Only OnEntry, OnUpdate, and OnExit modules can be removed from a iCS_State");
-                }
             },
             (otherwise)=> {
-                Debug.LogWarning("iCanScript: Invalid child type "+_object.TypeName+" being removed from state "+Name);
+                Debug.LogWarning("iCanScript: Invalid child type "+_object.GetType().Name+" being removed from state "+Name);
             }
         );
     }

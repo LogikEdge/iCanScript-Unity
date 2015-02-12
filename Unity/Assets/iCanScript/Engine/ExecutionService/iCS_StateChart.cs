@@ -420,8 +420,6 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 				myDispatcher.AddChild(mux);
 			},
 			(otherwise)=> {
-				if(_object.EngineObject.IsTransitionPackage) return;
-				Debug.LogWarning("iCanScript: Code Generation: Code from "+_object.Name+" added to State Chart "+this.Name+" is ignored.");			
 			}
 		);
     }
@@ -435,8 +433,6 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 				myDispatcher.RemoveChild(mux);
 			},
 			(otherwise)=> {
-				if(_object.EngineObject.IsTransitionPackage) return;
-				Debug.LogWarning("iCanScript: Code Generation: Code from "+_object.Name+" added to State Chart "+this.Name+" is ignored.");			
 			}
 		);
     }

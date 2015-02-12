@@ -196,12 +196,10 @@ namespace Subspace {
     			myEnables[i]= (bool)value;
     			return;
     		}
-    		throw new System.Exception("Invalid signature access: "+GetPortFullName(portIdx));
+    		throw new System.Exception("Attempting to access a port that does not exists: "+GetPortFullName(portIdx));
     	}
         public string GetPortFullName(int idx) {
-            var port= GetPortWithIndex(idx);
-            var portName= port == null ? "["+idx+"]" : port.Name;
-            return FullName+"."+portName;
+            return FullName+"["+idx+"]";
         }
 
         // ======================================================================

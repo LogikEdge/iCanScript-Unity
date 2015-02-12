@@ -15,22 +15,9 @@ namespace Subspace {
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
-        public SSAction Action {
-            get { return myAction; }
-        }
-        public int PortIndex {
-            get { return myPortIndex; }
-        }
-    //#if UNITY_EDITOR
-        public string PortFullName {
-            get {
-                var nodeName= Action.FullName;
-                var port= Action.GetPortWithIndex(myPortIndex);
-                var portName= port == null ? "["+myPortIndex+"]" : port.Name;
-                return nodeName+"."+portName;            
-            }
-        }
-    //#endif
+        public SSAction Action          { get { return myAction; }}
+        public int      PortIndex       { get { return myPortIndex; }}
+        public string   PortFullName    { get { return Action.FullName+"["+myPortIndex+"]"; }}
     
         // ======================================================================
         // Creation/Destruction
@@ -60,3 +47,4 @@ namespace Subspace {
      }
     
 }
+
