@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 namespace Subspace {
+    
     public class SSObject {
         // ======================================================================
         // Fields

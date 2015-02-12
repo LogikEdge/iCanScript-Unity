@@ -1,8 +1,10 @@
-using Subspace;
+namespace Subspace {
 
-// -------------------------------------------------------------------------
-// Parameter Protocol
-public interface ISignature {
-    SignatureDataSource GetSignatureDataSource();
-    SSAction            GetAction();
+    // -------------------------------------------------------------------------
+    // Parameter Protocol
+    public interface ISignature {
+        SignatureDataSource GetSignatureDataSource();
+        SSAction            GetAction();
+    }
+    
 }

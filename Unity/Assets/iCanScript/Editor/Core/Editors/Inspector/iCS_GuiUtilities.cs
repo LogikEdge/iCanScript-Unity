@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 
 public static class iCS_GuiUtilities {
     class GUIFieldInfo {
