@@ -23,22 +23,22 @@ namespace Subspace {
             get { return mySignature.Trigger; }
             set { mySignature.Trigger= value; }
         }
-        public object GetValue(int idx) {
-            return mySignature.GetValue(idx);
+        public object GetValue(int portIdx) {
+            return mySignature.GetValue(portIdx);
         }
-        public void SetValue(int idx, object value) {
-            mySignature.SetValue(idx, value);
+        public void SetValue(int portIdx, object value) {
+            mySignature.SetValue(portIdx, value);
         }
         public object ReturnValue {
             get { return mySignature.ReturnValue; }
             set { mySignature.ReturnValue= value; }
         }
-        public void SetConnection(int idx, Connection connection) {
-            mySignature.SetConnection(idx, connection);
+        public void SetConnection(int portIdx, Connection connection) {
+            mySignature.SetConnection(portIdx, connection);
         }
-        public object this[int idx] {
-            get { return mySignature[idx]; }
-            set { mySignature[idx]= value; }
+        public object this[int portIdx] {
+            get { return mySignature[portIdx]; }
+            set { mySignature[portIdx]= value; }
         }
         public object[] Parameters {
             get { return mySignature.Parameters; }
