@@ -20,9 +20,6 @@ namespace Subspace {
             get { return mySignature.InInstance; }
             set { mySignature.InInstance= value; }
         }
-        public object OutInstance {
-            get { return mySignature.OutInstance; }
-        }
         public bool Trigger {
             get { return mySignature.Trigger; }
             set { mySignature.Trigger= value; }

@@ -36,9 +36,6 @@ namespace Subspace {
             get { return myReturnValue; }
             set { myReturnValue= value; }
         }
-        public object OutInstance {
-            get { return myInInstance; }
-        }
         public bool Trigger {
             get { return myTrigger; }
             set { myTrigger= value; }
