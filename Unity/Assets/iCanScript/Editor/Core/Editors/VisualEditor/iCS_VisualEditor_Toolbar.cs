@@ -63,10 +63,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             iCS_ToolbarUtility.Separator(ref r);
     		
             // Enable Traces.
-            bool enableTrace= VisualScript.IsTraceEnabled;
+            bool enableTrace= VisualScript.Context.IsTraceEnabled;
             bool newEnableTrace= iCS_ToolbarUtility.Toggle(ref r, enableTrace, spacer, spacer);
             if(newEnableTrace != enableTrace) {
-                VisualScript.IsTraceEnabled= newEnableTrace;
+                VisualScript.Context.IsTraceEnabled= newEnableTrace;
             }            
             iCS_ToolbarUtility.MiniLabel(ref r, "Trace", 0,0);
             iCS_ToolbarUtility.Separator(ref r);

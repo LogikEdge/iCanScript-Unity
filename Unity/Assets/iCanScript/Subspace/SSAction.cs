@@ -42,8 +42,8 @@ namespace Subspace {
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSAction(int instanceId, string name, iCS_VisualScriptImp visualScript, int priority)
-        : base(instanceId, name, visualScript) {
+        public SSAction(int instanceId, string name, SSContext context, int priority)
+        : base(instanceId, name, context) {
             myPriority= priority;
         }
      

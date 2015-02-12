@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using Subspace;
 using P=Prelude;
 
 [AddComponentMenu("")]
@@ -11,7 +12,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // Properties
     // ----------------------------------------------------------------------
     [System.NonSerialized]
-    public bool                         IsTraceEnabled    = false;
+    SSContext                           myContext         = null;
     object[]                            myRuntimeNodes    = new object[0];
     List<int>                           myPublicInterfaces= new List<int>();
     Dictionary<string,iCS_RunContext>   myMessageContexts = new Dictionary<string,iCS_RunContext>();
@@ -25,6 +26,12 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     public List<iCS_EngineObject> PublicInterfaces    { get { return P.map(id=> EngineObjects[id], myPublicInterfaces); }}
     public List<iCS_EngineObject> PublicVariables     { get { return P.filter(pi=> pi.IsConstructor, PublicInterfaces); }}
     public List<iCS_EngineObject> PublicUserFunctions { get { return P.filter(pi=> pi.IsPackage, PublicInterfaces); }}
+    public SSContext              Context {
+        get {
+            if(myContext == null) myContext= new SSContext(this);
+            return myContext;
+        }
+    }
     public int UpdateFrameId {
         get {
             iCS_RunContext updateContext= null;
@@ -150,7 +157,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         iCS_Package message= obj as iCS_Package;
         if(message == null) return;
         if(!myMessageContexts.ContainsKey(messageName)) {
-            myMessageContexts.Add(messageName, new iCS_RunContext(this, message));
+            myMessageContexts.Add(messageName, new iCS_RunContext(message));
         }
     }
     // ----------------------------------------------------------------------

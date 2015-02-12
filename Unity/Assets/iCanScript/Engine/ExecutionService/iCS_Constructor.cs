@@ -2,13 +2,14 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using System.Collections;
+using Subspace;
 
 public class iCS_Constructor : iCS_ClassFunction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Constructor(int instanceId, string name, MethodBase methodBase, iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
-    : base(instanceId, name, methodBase, visualScript, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_Constructor(int instanceId, string name, MethodBase methodBase, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
+    : base(instanceId, name, methodBase, context, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution

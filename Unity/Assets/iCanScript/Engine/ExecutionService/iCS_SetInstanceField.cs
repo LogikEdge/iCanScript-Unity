@@ -2,13 +2,14 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using System.Collections;
+using Subspace;
 
 public class iCS_SetInstanceField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetInstanceField(int instanceId, string name, FieldInfo fieldInfo, iCS_VisualScriptImp visualScript, int priority, int nbOfEnables)
-    : base(instanceId, name, fieldInfo, visualScript, priority, 1, nbOfEnables) {
+    public iCS_SetInstanceField(int instanceId, string name, FieldInfo fieldInfo, SSContext context, int priority, int nbOfEnables)
+    : base(instanceId, name, fieldInfo, context, priority, 1, nbOfEnables) {
     }
 
     // ======================================================================

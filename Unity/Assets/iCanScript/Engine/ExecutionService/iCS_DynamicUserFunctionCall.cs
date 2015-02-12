@@ -14,9 +14,9 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_DynamicUserFunctionCall(int instanceId, string name ,iCS_VisualScriptImp visualScript, int priority,
+    public iCS_DynamicUserFunctionCall(int instanceId, string name ,SSContext context, int priority,
                                        int nbOfParameters, int nbOfEnables)
-    : base(instanceId, name, visualScript, priority, nbOfParameters, nbOfEnables) {
+    : base(instanceId, name, context, priority, nbOfParameters, nbOfEnables) {
         Debug.Log("Creating a dynamic user function call");
     }
 

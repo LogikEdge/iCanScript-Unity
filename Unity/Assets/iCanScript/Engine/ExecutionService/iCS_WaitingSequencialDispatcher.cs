@@ -7,8 +7,8 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_WaitingSequencialDispatcher(int instanceId, string name, iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
-    : base(instanceId, name, visualScript, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_WaitingSequencialDispatcher(int instanceId, string name, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
+    : base(instanceId, name, context, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution

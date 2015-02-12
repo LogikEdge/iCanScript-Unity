@@ -6,8 +6,8 @@ public class iCS_Mux : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Mux(int instanceId, string name, iCS_VisualScriptImp visualScript, int priority, int nbOfParameters)
-    : base(instanceId,name, visualScript, priority, nbOfParameters, 0) {}
+    public iCS_Mux(int instanceId, string name, SSContext context, int priority, int nbOfParameters)
+    : base(instanceId,name, context, priority, nbOfParameters, 0) {}
 
     // ======================================================================
     // Execution (not used)

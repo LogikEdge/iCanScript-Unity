@@ -7,7 +7,6 @@ public class iCS_RunContext {
     // ======================================================================
     // Fields
     int                 myFrameId= 0;
-    iCS_VisualScriptImp myVisualScript= null;
     SSAction            myAction= null;
     List<SSAction>      myStalledActions= new List<SSAction>();
     
@@ -25,8 +24,7 @@ public class iCS_RunContext {
     // ======================================================================
     // Methods
     // ----------------------------------------------------------------------
-    public iCS_RunContext(iCS_VisualScriptImp vs, SSAction action) {
-        myVisualScript= vs;
+    public iCS_RunContext(SSAction action) {
         myAction= action;
         if(myAction != null) {
             myAction.IsActive= false;
@@ -77,7 +75,7 @@ public class iCS_RunContext {
         // Force execution if to many nested attempts to resolve deadlock
         if(attempts > 10) {
 //#if UNITY_EDITOR
-            if(myVisualScript.IsTraceEnabled) {
+            if(myAction.Context.IsTraceEnabled) {
                 Debug.LogWarning("TOO MANY ATTEMPTS TO RESOLVE DEADLOCKS...FORCING EXECUTION");
             }
 //#endif
@@ -89,7 +87,7 @@ public class iCS_RunContext {
         if(stalledProducerPort != null) {
             var node= stalledProducerPort.Action;
 //#if UNITY_EDITOR
-            if(myVisualScript.IsTraceEnabled) {
+            if(myAction.Context.IsTraceEnabled) {
                 Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+")");
             }
 //#endif
@@ -101,14 +99,14 @@ public class iCS_RunContext {
             }
             node.IsActive= true;
 //#if UNITY_EDITOR
-            if(myVisualScript.IsTraceEnabled) {
+            if(myAction.Context.IsTraceEnabled) {
                 Debug.LogWarning("Activating=> "+node.FullName+" ("+myFrameId+")");
             }
 //#endif
         }                    
         else {
 //#if UNITY_EDITOR
-            if(myVisualScript.IsTraceEnabled) {
+            if(myAction.Context.IsTraceEnabled) {
                 Debug.LogWarning("DID NOT FIND STALLED PORT BUT MESSAGE HANDLER IS STALLED !!!");
             }
 //#endif

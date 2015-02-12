@@ -205,8 +205,8 @@ namespace Subspace {
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSActionWithSignature(int instanceId, string name, iCS_VisualScriptImp visualScript, int priority, int nbOfParameters, int nbOfEnables)
-        : base(instanceId, name, visualScript, priority) {
+        public SSActionWithSignature(int instanceId, string name, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
+        : base(instanceId, name, context, priority) {
             myParameters = new object[nbOfParameters];
             myParameterConnections= new Connection[nbOfParameters];
             for(int i= 0; i < nbOfParameters; ++i) {
@@ -252,7 +252,7 @@ namespace Subspace {
     		// Skip execution if this action is disabled.
             if(isEnabled == false) {
                 MarkAsCurrent(runId);
-                if(VisualScript.IsTraceEnabled) {
+                if(Context.IsTraceEnabled) {
                     Debug.Log("Executing=> "+FullName+" is disabled"+" ("+runId+")");
                 }
                 return;
@@ -260,7 +260,7 @@ namespace Subspace {
             // Invoke derived class to execute normally.
             IsStalled= true;
             DoExecute(runId);
-            if(VisualScript.IsTraceEnabled) {    
+            if(Context.IsTraceEnabled) {    
                 if(DidExecute(runId)) {
                     Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+runId+")");
                 }
@@ -318,18 +318,15 @@ namespace Subspace {
         // ----------------------------------------------------------------------
         public override void ForceExecute(int runId) {
     //#if UNITY_EDITOR
-            if(VisualScript.IsTraceEnabled) {
+            if(Context.IsTraceEnabled) {
                 var stalledPort= GetStalledProducerPort(runId);
                 var stalledPortName= stalledPort == null ? "" : stalledPort.PortFullName;
                 if(stalledPort != null) {
                     var stalledNode= stalledPort.Action;
                     Debug.LogWarning("Force execute=> "+FullName+" STALLED PORT=> "+stalledPortName+" STALLED PORT NODE STATE=> "+stalledNode.IsCurrent(runId));            
-                    var stalledNodeParentId= stalledNode.ParentId;
-                    if(stalledNodeParentId > 1) {
-                        var stalledNodeParent= VisualScript.RuntimeNodes[stalledNodeParentId] as SSActionWithSignature;
-                        if(stalledNodeParent != null) {
-                            Debug.LogWarning("STALLED PORT NODE PARENT ENABLE=> "+stalledNodeParent.FullName+"("+stalledNodeParent.GetIsEnabled()+")");
-                        }
+                    var stalledNodeParent= stalledNode.Parent as SSActionWithSignature;
+                    if(stalledNodeParent != null) {
+                        Debug.LogWarning("STALLED PORT NODE PARENT ENABLE=> "+stalledNodeParent.FullName+"("+stalledNodeParent.GetIsEnabled()+")");
                     }
                 }
                 Debug.LogWarning("Force Execute=> "+FullName);
