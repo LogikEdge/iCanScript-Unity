@@ -15,8 +15,8 @@ public class iCS_ClassFunction : iCS_FunctionBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int runId) {
         // Wait until all inputs are ready.
-        var end= ParametersEnd;
-        for(int i= ParametersStart; i <= end; ++i) {
+        var len= Parameters.Length;
+        for(int i= 0; i < len; ++i) {
             if(IsParameterReady(i, runId) == false) {
                 return;
             }
@@ -30,18 +30,18 @@ public class iCS_ClassFunction : iCS_FunctionBase {
         try {
 //#endif
             // Fetch all parameters.
-            var end= ParametersEnd;
-            for(int i= ParametersStart; i <= end; ++i) {
+            var len= Parameters.Length;
+            for(int i= 0; i < len; ++i) {
                 UpdateParameter(i);
             }
             
             // Execute function
-            ReturnValue= myMethodBase.Invoke(InInstance, Parameters);            
+            ReturnValue= myMethodBase.Invoke(This, Parameters);            
             MarkAsExecuted(runId);
 //#if UNITY_EDITOR
         }
         catch(Exception e) {
-            string thisName= (InInstance == null ? "null" : InInstance.ToString());
+            string thisName= (This == null ? "null" : This.ToString());
             string parametersAsStr= "";
             int nbOfParams= Parameters.Length;
             if(nbOfParams != 0) {

@@ -36,7 +36,7 @@ public static class iCS_GuiUtilities {
         iCS_EditorObject sourcePort= port.ProducerPort;
         bool hasSource= sourcePort != null;
         // Get runtime object if it exists.
-        var runtimeObject= iStorage.GetRuntimeObject(parent) as ISignature;
+        var runtimeObject= iStorage.GetRuntimeObject(parent) as SSActionWithSignature;
         // Determine if we are allowed to modify port value.
         bool isReadOnly= !(!hasSource && (port.IsInputPort || port.IsKindOfPackagePort));
         // Nothing to display if we don't have a runtime object and we are in readonly.

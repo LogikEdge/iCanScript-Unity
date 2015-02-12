@@ -8,7 +8,7 @@ namespace Subspace {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        ISignature  mySignature    = null;
+        SSActionWithSignature  myAction    = null;
         int         myPortIndex    = -1;
         bool        myIsAlwaysReady= false;
 
@@ -16,10 +16,7 @@ namespace Subspace {
         // Accessors
         // ----------------------------------------------------------------------
         public SSAction Action {
-            get { return mySignature != null ? mySignature.GetAction() : null; }
-        }
-        public SignatureDataSource Signature {
-            get { return mySignature != null ? mySignature.GetSignatureDataSource() : null; }
+            get { return myAction; }
         }
         public int PortIndex {
             get { return myPortIndex; }
@@ -39,16 +36,16 @@ namespace Subspace {
         // Creation/Destruction
         // ----------------------------------------------------------------------
         public Connection() { }
-        public Connection(ISignature signature, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
-            mySignature    = signature;
+        public Connection(SSActionWithSignature action, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
+            myAction       = action;
             myPortIndex    = portIndex;
             myIsAlwaysReady= isAlwaysReady;
         }
 
-        public bool IsConnected             { get{ return mySignature != null; }}
+        public bool IsConnected             { get{ return myAction != null; }}
         public object Value                 {
-            get { return Signature.GetValue(PortIndex); }
-            set { Signature.SetValue(PortIndex, value); }
+            get { return myAction.GetValue(PortIndex); }
+            set { myAction.SetValue(PortIndex, value); }
         }
         public bool IsReady(int runId)    {
             if(myIsAlwaysReady || !IsConnected) return true;

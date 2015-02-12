@@ -151,18 +151,18 @@ public partial class iCS_EditorObject {
 			if(!IsDataOrControlPort) return null;
 			var port= FirstProducerPort;
 			// Get value from port group (ex: ParentMuxPort).
-			var funcBase= myIStorage.GetRuntimeObject(port) as ISignature;
+			var funcBase= myIStorage.GetRuntimeObject(port) as SSActionWithSignature;
 			if(funcBase != null) {
-			    object returnValue= funcBase.GetSignatureDataSource().ReturnValue;
+			    object returnValue= funcBase.ReturnValue;
 				return returnValue;
 			}
             // Get value from parent node.
-    		funcBase= myIStorage.GetRuntimeObject(port.Parent) as ISignature;                
+    		funcBase= myIStorage.GetRuntimeObject(port.Parent) as SSActionWithSignature;                
             if(funcBase == null) {
                 return port.InitialPortValue;
             }
             try {
-    			return funcBase.GetSignatureDataSource().GetValue(port.PortIndex);			                
+    			return funcBase.GetValue(port.PortIndex);			                
             }
             catch(System.Exception) {
                 Debug.LogWarning("iCanScript: Unable to get runtime value for port => "+port.FullName);
@@ -182,26 +182,18 @@ public partial class iCS_EditorObject {
 		set {
 	        if(!IsInDataOrControlPort) return;
 	        // Set the return value for a port group (ex: MuxPort).
-			var funcBase= myIStorage.GetRuntimeObject(this) as ISignature;
+			var funcBase= myIStorage.GetRuntimeObject(this) as SSActionWithSignature;
 	        if(funcBase != null) {
-	            funcBase.GetSignatureDataSource().ReturnValue= value;
+	            funcBase.ReturnValue= value;
 	            return;
 	        }
-//	        // Propagate value for module port.
-//	        if(IsKindOfPackagePort) {
-//	            iCS_EditorObject[] connectedPorts= ConsumerPorts;
-//	            foreach(var cp in connectedPorts) {
-//	                cp.RuntimePortValue= value;
-//	            }
-//	            return;
-//	        }
 	        if(PortIndex < 0) return;
 	        iCS_EditorObject parent= Parent;
 	        if(parent == null) return;
 	        // Get runtime object if it exists.
-	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as ISignature;
+	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as SSActionWithSignature;
 	        if(runtimeObject == null) return;
-	        runtimeObject.GetSignatureDataSource().SetValue(PortIndex, value);			
+	        runtimeObject.SetValue(PortIndex, value);			
 		}
 	}
 }

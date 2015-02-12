@@ -23,7 +23,7 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
         // Wait until this port is ready.
         if(IsThisReady(runId)) {
             // Try to connect with the visual script.
-            var gameObject= InInstance as GameObject;
+            var gameObject= This as GameObject;
             if(gameObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
                 MarkAsCurrent(runId);
@@ -47,7 +47,7 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
     // ----------------------------------------------------------------------
     protected override void DoForceExecute(int runId) {
         // Try to connect with the visual script.
-        var gameObject= InInstance as GameObject;
+        var gameObject= This as GameObject;
         if(gameObject == null) {
             Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
             MarkAsCurrent(runId);

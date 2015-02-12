@@ -7,7 +7,7 @@ using Subspace;
 
 namespace Subspace {
 
-    public abstract class SSActionWithSignature : SSAction, ISignature {
+    public abstract class SSActionWithSignature : SSAction {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
@@ -16,33 +16,29 @@ namespace Subspace {
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
-        public object InInstance {
-            get { return mySignature.InInstance; }
-            set { mySignature.InInstance= value; }
-        }
-        public object OutInstance {
-            get { return mySignature.OutInstance; }
+        public object This {
+            get { return mySignature.This; }
         }
         public bool Trigger {
             get { return mySignature.Trigger; }
             set { mySignature.Trigger= value; }
         }
-        public object GetValue(int idx) {
-            return mySignature.GetValue(idx);
+        public object GetValue(int portIdx) {
+            return mySignature.GetValue(portIdx);
         }
-        public void SetValue(int idx, object value) {
-            mySignature.SetValue(idx, value);
+        public void SetValue(int portIdx, object value) {
+            mySignature.SetValue(portIdx, value);
         }
         public object ReturnValue {
             get { return mySignature.ReturnValue; }
             set { mySignature.ReturnValue= value; }
         }
-        public void SetConnection(int idx, Connection connection) {
-            mySignature.SetConnection(idx, connection);
+        public void SetConnection(int portIdx, Connection connection) {
+            mySignature.SetConnection(portIdx, connection);
         }
-        public object this[int idx] {
-            get { return mySignature[idx]; }
-            set { mySignature[idx]= value; }
+        public object this[int portIdx] {
+            get { return mySignature[portIdx]; }
+            set { mySignature[portIdx]= value; }
         }
         public object[] Parameters {
             get { return mySignature.Parameters; }
@@ -50,8 +46,6 @@ namespace Subspace {
         public Connection[] ParameterConnections {
             get { return mySignature.ParameterConnections; }
         }
-        public int ParametersStart  { get { return mySignature.ParametersStart; }}
-        public int ParametersEnd    { get { return mySignature.ParametersEnd; }}
         public bool IsParameterReady(int idx, int runId) {
             return mySignature.IsParameterReady(idx, runId);
         }
@@ -69,12 +63,6 @@ namespace Subspace {
         : base(visualScript, priority) {
             mySignature= new SignatureDataSource(nbOfParameters, nbOfEnables, this);
         }
-    
-        // ======================================================================
-        // Implement ISignature delegate.
-        // ----------------------------------------------------------------------
-        public SignatureDataSource GetSignatureDataSource() { return mySignature; }
-        public SSAction GetAction() { return this; }
     
         // ======================================================================
         // Execution

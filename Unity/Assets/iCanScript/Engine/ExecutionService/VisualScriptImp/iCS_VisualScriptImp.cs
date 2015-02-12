@@ -56,8 +56,6 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         // Run the context.
         iCS_RunContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
-//            var rtMessage= runContext.Action as iCS_Message;
-//            rtMessage.GetSignatureDataSource().This= this;
             runContext.Run();
         }
     }
@@ -75,7 +73,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             var rtMessage= runContext.Action as iCS_Message;
             if(rtMessage != null) {
-                rtMessage.GetSignatureDataSource().SetParameter(0, p1);
+                rtMessage.Parameters[0]= p1;
                 runContext.Run();
             }
         }
@@ -87,8 +85,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             var rtMessage= runContext.Action as iCS_Message;
             if(rtMessage != null) {
-                rtMessage.GetSignatureDataSource().SetParameter(0, p1);
-                rtMessage.GetSignatureDataSource().SetParameter(1, p2);
+                rtMessage.Parameters[0]= p1;
+                rtMessage.Parameters[1]= p2;
                 runContext.Run();
             }
         }
