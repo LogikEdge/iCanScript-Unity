@@ -67,12 +67,6 @@ namespace Subspace {
         }
     
         // ======================================================================
-        // Implement SSActionWithSignature delegate.
-        // ----------------------------------------------------------------------
-        public SignatureDataSource GetSignatureDataSource() { return mySignature; }
-//        public SSAction GetAction() { return this; }
-    
-        // ======================================================================
         // Execution
         // ----------------------------------------------------------------------
         public override void Execute(int runId) {

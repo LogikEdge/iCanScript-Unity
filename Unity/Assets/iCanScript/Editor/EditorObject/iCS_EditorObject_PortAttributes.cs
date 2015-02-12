@@ -153,7 +153,7 @@ public partial class iCS_EditorObject {
 			// Get value from port group (ex: ParentMuxPort).
 			var funcBase= myIStorage.GetRuntimeObject(port) as SSActionWithSignature;
 			if(funcBase != null) {
-			    object returnValue= funcBase.GetSignatureDataSource().ReturnValue;
+			    object returnValue= funcBase.ReturnValue;
 				return returnValue;
 			}
             // Get value from parent node.
@@ -162,7 +162,7 @@ public partial class iCS_EditorObject {
                 return port.InitialPortValue;
             }
             try {
-    			return funcBase.GetSignatureDataSource().GetValue(port.PortIndex);			                
+    			return funcBase.GetValue(port.PortIndex);			                
             }
             catch(System.Exception) {
                 Debug.LogWarning("iCanScript: Unable to get runtime value for port => "+port.FullName);
@@ -184,7 +184,7 @@ public partial class iCS_EditorObject {
 	        // Set the return value for a port group (ex: MuxPort).
 			var funcBase= myIStorage.GetRuntimeObject(this) as SSActionWithSignature;
 	        if(funcBase != null) {
-	            funcBase.GetSignatureDataSource().ReturnValue= value;
+	            funcBase.ReturnValue= value;
 	            return;
 	        }
 //	        // Propagate value for module port.
@@ -201,7 +201,7 @@ public partial class iCS_EditorObject {
 	        // Get runtime object if it exists.
 	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as SSActionWithSignature;
 	        if(runtimeObject == null) return;
-	        runtimeObject.GetSignatureDataSource().SetValue(PortIndex, value);			
+	        runtimeObject.SetValue(PortIndex, value);			
 		}
 	}
 }

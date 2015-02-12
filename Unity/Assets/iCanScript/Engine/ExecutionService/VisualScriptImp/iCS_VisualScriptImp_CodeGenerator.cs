@@ -421,7 +421,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     						if(rtMuxPort == null) break;
                             iCS_EngineObject sourcePort= GetSourceEndPort(port);
     						Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
-    						rtMuxPort.GetSignatureDataSource().SetConnection(port.PortIndex, connection);
+    						rtMuxPort.SetConnection(port.PortIndex, connection);
     						break;
     					}
                         case iCS_ObjectTypeEnum.InStatePort: {
