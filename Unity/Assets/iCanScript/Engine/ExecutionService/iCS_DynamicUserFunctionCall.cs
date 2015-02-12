@@ -30,7 +30,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
             // Wait until this port is ready.
             if(IsThisReady(runId)) {
                 // Fetch the user action.
-                var gameObject= InInstance as GameObject;
+                var gameObject= This as GameObject;
                 if(gameObject == null) {
                     Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
                     MarkAsCurrent(runId);
@@ -98,7 +98,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
-            string thisName= (InInstance == null ? "null" : InInstance.ToString());
+            string thisName= (This == null ? "null" : This.ToString());
             string parametersAsStr= "";
             int nbOfParams= Parameters.Length;
             if(nbOfParams != 0) {
@@ -125,7 +125,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
         try {
 //#endif
             // Fetch the user action.
-            var gameObject= InInstance as GameObject;
+            var gameObject= This as GameObject;
             if(gameObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
                 MarkAsCurrent(runId);
@@ -186,7 +186,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
-            string thisName= (InInstance == null ? "null" : InInstance.ToString());
+            string thisName= (This == null ? "null" : This.ToString());
             string parametersAsStr= "";
             int nbOfParams= Parameters.Length;
             if(nbOfParams != 0) {

@@ -28,7 +28,7 @@ public class iCS_SetInstanceField : iCS_FieldBase {
 //#if UNITY_EDITOR
         try {
 //#endif
-            myFieldInfo.SetValue(InInstance, Parameters[0]);
+            myFieldInfo.SetValue(This, Parameters[0]);
             MarkAsExecuted(runId);
 //#if UNITY_EDITOR
         }

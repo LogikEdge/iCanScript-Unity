@@ -83,7 +83,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
-            string thisName= (InInstance == null ? "null" : InInstance.ToString());
+            string thisName= (This == null ? "null" : This.ToString());
             string parametersAsStr= "";
             int nbOfParams= Parameters.Length;
             if(nbOfParams != 0) {
@@ -160,7 +160,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
-            string thisName= (InInstance == null ? "null" : InInstance.ToString());
+            string thisName= (This == null ? "null" : This.ToString());
             string parametersAsStr= "";
             int nbOfParams= Parameters.Length;
             if(nbOfParams != 0) {

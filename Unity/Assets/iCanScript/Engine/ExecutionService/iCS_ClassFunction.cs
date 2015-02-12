@@ -36,12 +36,12 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             }
             
             // Execute function
-            ReturnValue= myMethodBase.Invoke(InInstance, Parameters);            
+            ReturnValue= myMethodBase.Invoke(This, Parameters);            
             MarkAsExecuted(runId);
 //#if UNITY_EDITOR
         }
         catch(Exception e) {
-            string thisName= (InInstance == null ? "null" : InInstance.ToString());
+            string thisName= (This == null ? "null" : This.ToString());
             string parametersAsStr= "";
             int nbOfParams= Parameters.Length;
             if(nbOfParams != 0) {

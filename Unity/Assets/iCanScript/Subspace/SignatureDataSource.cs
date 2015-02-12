@@ -11,8 +11,8 @@ namespace Subspace {
         // ----------------------------------------------------------------------
         // .NET Signature
         SSObject            myObjectWithSignature   = null;
-        object              myInInstance            = null;  
-        Connection          myInInstanceConnection  = null;
+        object              myThis                  = null;  
+        Connection          myThisConnection        = null;
         object[]            myParameters            = null;
         Connection[]        myParameterConnections  = null;
         object              myReturnValue           = null;
@@ -28,9 +28,9 @@ namespace Subspace {
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
-        public object InInstance {
-            set { myInInstance= value; }
-            get { return myInInstanceConnection == null ? myInInstance : myInInstanceConnection.Value; }
+        public object This {
+            set { myThis= value; }
+            get { return myThisConnection == null ? myThis : myThisConnection.Value; }
         }
         public object ReturnValue {
             get { return myReturnValue; }
@@ -97,9 +97,9 @@ namespace Subspace {
         // Returns one of the signature outputs.
         public object GetValue(int idx) {
             if(idx == (int)iCS_PortIndex.Return) return ReturnValue;
-    		if(idx == (int)iCS_PortIndex.OutInstance) return InInstance;
+    		if(idx == (int)iCS_PortIndex.OutInstance) return This;
     		if(idx == (int)iCS_PortIndex.Trigger) return Trigger;
-            if(idx == (int)iCS_PortIndex.InInstance) return InInstance;
+            if(idx == (int)iCS_PortIndex.InInstance) return This;
     		if(idx < myParameters.Length) return GetParameter(idx);
     		if(idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
                 int i= idx-(int)iCS_PortIndex.EnablesStart;
@@ -127,7 +127,7 @@ namespace Subspace {
                 return;
             }
             if(idx == (int)iCS_PortIndex.InInstance) {
-                InInstance= value;
+                This= value;
                 return;
             }
     		if(idx == (int)iCS_PortIndex.Trigger) {
@@ -170,7 +170,7 @@ namespace Subspace {
                 return;
             }
             if(idx == (int)iCS_PortIndex.InInstance) {
-                myInInstanceConnection= connection;
+                myThisConnection= connection;
                 return;
             }
     		if(myEnableConnections != null && idx >= (int)iCS_PortIndex.EnablesStart && idx <= (int)iCS_PortIndex.EnablesEnd) {
@@ -248,8 +248,8 @@ namespace Subspace {
         // Return 'true' if instance pointer is ready for the given runId.
         // The 'This' object is also updated if the connection is ready.
         public bool IsThisReady(int runId) {
-            if(myInInstanceConnection == null) return true;
-            return myInInstanceConnection.IsReady(runId);
+            if(myThisConnection == null) return true;
+            return myThisConnection.IsReady(runId);
         }
     
     	// -------------------------------------------------------------------------
@@ -305,8 +305,8 @@ namespace Subspace {
                 return null;
             }
             // Verify intance connection
-            if(myInInstanceConnection != null && !myInInstanceConnection.IsReady(runId)) {
-                return myInInstanceConnection;
+            if(myThisConnection != null && !myThisConnection.IsReady(runId)) {
+                return myThisConnection;
             }
             // Verify parameter connections
             len= myParameterConnections.Length;

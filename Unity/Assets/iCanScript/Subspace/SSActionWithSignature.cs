@@ -16,8 +16,8 @@ namespace Subspace {
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
-        public object InInstance {
-            get { return mySignature.InInstance; }
+        public object This {
+            get { return mySignature.This; }
         }
         public bool Trigger {
             get { return mySignature.Trigger; }
