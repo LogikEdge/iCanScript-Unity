@@ -18,7 +18,6 @@ namespace Subspace {
         // ----------------------------------------------------------------------
         public object InInstance {
             get { return mySignature.InInstance; }
-            set { mySignature.InInstance= value; }
         }
         public bool Trigger {
             get { return mySignature.Trigger; }
@@ -71,7 +70,7 @@ namespace Subspace {
         // Implement SSActionWithSignature delegate.
         // ----------------------------------------------------------------------
         public SignatureDataSource GetSignatureDataSource() { return mySignature; }
-        public SSAction GetAction() { return this; }
+//        public SSAction GetAction() { return this; }
     
         // ======================================================================
         // Execution

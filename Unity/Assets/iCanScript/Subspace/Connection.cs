@@ -16,7 +16,7 @@ namespace Subspace {
         // Accessors
         // ----------------------------------------------------------------------
         public SSAction Action {
-            get { return mySignature != null ? mySignature.GetAction() : null; }
+            get { return mySignature; }
         }
         public SignatureDataSource Signature {
             get { return mySignature != null ? mySignature.GetSignatureDataSource() : null; }
