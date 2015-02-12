@@ -68,7 +68,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
                 }
             }
             var msg= "Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.Message;
-			ErrorControllerProxy.AddError("Runtime", msg, Context.VisualScript, InstanceId);
+			ErrorControllerProxy.AddError("Runtime", msg, Context.UserData as iCS_VisualScriptImp, InstanceId);
             MarkAsCurrent(runId);
         }
 //#endif        

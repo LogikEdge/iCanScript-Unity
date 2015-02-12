@@ -39,6 +39,7 @@ namespace Subspace {
         }
 
         // ----------------------------------------------------------------------
+        // Allow for printing using standard IO stream.
         public override string ToString() {
             return Name;
         }

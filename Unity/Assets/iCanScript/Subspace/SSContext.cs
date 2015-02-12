@@ -5,7 +5,6 @@
 //  Created on:      12-Feb-2015 11:01:08 AM
 //  Original author: Reinual
 ///////////////////////////////////////////////////////////
-
 using System;
 using System.Collections.Generic;
 
@@ -16,8 +15,8 @@ namespace Subspace {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        iCS_VisualScriptImp myVisualScript= null;
-    	bool                myIsTraceEnabled = false;
+        Object myUserData= null;
+    	bool   myIsTraceEnabled = false;
 
         // ======================================================================
         // Properties
@@ -26,15 +25,15 @@ namespace Subspace {
             get { return myIsTraceEnabled; }
             set { myIsTraceEnabled= value; }
         }
-        public iCS_VisualScriptImp VisualScript {
-            get { return myVisualScript; }
+        public Object UserData {
+            get { return myUserData; }
         }
         
         // ======================================================================
         // Constructor/Destructor
         // ----------------------------------------------------------------------
-        public SSContext(iCS_VisualScriptImp visualScript) {
-            myVisualScript= visualScript;
+        public SSContext(Object userData= null) {
+            myUserData= userData;
         }
         
     }//end SSContext    
