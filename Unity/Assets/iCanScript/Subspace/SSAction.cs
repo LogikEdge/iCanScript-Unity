@@ -45,8 +45,8 @@ namespace Subspace {
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSAction(int instanceId, string name, SSObject parent, SSContext context, int priority)
-        : base(instanceId, name, parent, context) {
+        public SSAction(string name, SSObject parent, SSContext context, int priority)
+        : base(name, parent, context) {
             myPriority= priority;
         }
      

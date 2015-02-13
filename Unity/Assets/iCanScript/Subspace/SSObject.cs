@@ -7,7 +7,6 @@ namespace Subspace {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        protected int       myInstanceId= -1;
         protected string    myName      = null;
         protected SSObject  myParent    = null;
         protected SSContext myContext   = null;
@@ -15,17 +14,15 @@ namespace Subspace {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        public int          InstanceId  { get { return myInstanceId; }}
         public string       Name        { get { return myName; }}
-        public string       FullName    { get { return GetFullName("."); }}
+        public string       FullName    { get { return GetFullName("/"); }}
         public SSObject     Parent      { get { return myParent; }}
         public SSContext    Context     { get { return myContext; }}
     
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSObject(int instanceId, string name, SSObject parent, SSContext context) {
-            myInstanceId= instanceId;
+        public SSObject(string name, SSObject parent, SSContext context) {
             myName      = name;
 			myParent    = parent;
             myContext   = context;

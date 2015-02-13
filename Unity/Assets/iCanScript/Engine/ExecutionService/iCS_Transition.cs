@@ -21,8 +21,8 @@ public class iCS_Transition : SSAction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Transition(int instanceId, string name, SSObject parent, SSContext context, iCS_State endState, iCS_Package transitionPackage, SSActionWithSignature triggerFunc, int portIdx, int priority)
-    : base(instanceId, name, parent, context, priority) {
+    public iCS_Transition(string name, SSObject parent, SSContext context, iCS_State endState, iCS_Package transitionPackage, SSActionWithSignature triggerFunc, int portIdx, int priority)
+    : base(name, parent, context, priority) {
         myTransitionPackage= transitionPackage;
         myEndState         = endState;
         myTriggerPortIdx   = portIdx;

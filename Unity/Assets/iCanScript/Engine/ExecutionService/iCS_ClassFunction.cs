@@ -8,8 +8,8 @@ public class iCS_ClassFunction : iCS_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ClassFunction(int instanceId, string name, SSObject parent, MethodBase methodBase, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-    : base(instanceId, name, parent, methodBase, context, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_ClassFunction(string name, SSObject parent, MethodBase methodBase, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
+    : base(name, parent, methodBase, context, priority, nbOfParameters, nbOfEnables) {}
 
     // ======================================================================
     // Execution
@@ -68,7 +68,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
                 }
             }
             var msg= "Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.Message;
-			ErrorControllerProxy.AddError("Runtime", msg, Context.UserData as iCS_VisualScriptImp, InstanceId);
+            Context.ReportError(msg, this);
             MarkAsCurrent(runId);
         }
 //#endif        

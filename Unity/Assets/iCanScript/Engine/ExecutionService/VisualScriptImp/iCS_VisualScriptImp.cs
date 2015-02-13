@@ -28,7 +28,11 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     public List<iCS_EngineObject> PublicUserFunctions { get { return P.filter(pi=> pi.IsPackage, PublicInterfaces); }}
     public SSContext              Context {
         get {
-            if(myContext == null) myContext= new SSContext(this);
+            if(myContext == null) {
+                myContext= new SSContext(this);
+                myContext.ErrorDelegate  = RuntimeErrorDelegate;
+                myContext.WarningDelegate= RuntimeWarningDelegate;
+            }
             return myContext;
         }
     }
@@ -49,6 +53,17 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
             }
             return 0;
         }
+    }
+    void RuntimeErrorDelegate(string msg, SSObject obj) {
+        int instanceId= GetInstanceId(obj);
+		ErrorControllerProxy.AddError("Runtime", msg, Context.UserData as iCS_VisualScriptImp, instanceId);   
+    }
+    void RuntimeWarningDelegate(string msg, SSObject obj) {
+        int instanceId= GetInstanceId(obj);
+		ErrorControllerProxy.AddWarning("Runtime", msg, myContext.UserData as iCS_VisualScriptImp, instanceId);        
+    }
+    int GetInstanceId(SSObject obj) {
+        return Array.FindIndex(myRuntimeNodes, x=> obj.Equals(x));        
     }
     
     // ======================================================================

@@ -13,8 +13,8 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Dispatcher(int instanceId, string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-    : base(instanceId, name, parent, context, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_Dispatcher(string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
+    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {}
 
     // ======================================================================
     // Execution

@@ -15,18 +15,29 @@ namespace Subspace {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        Object myUserData	   = null;
-    	bool   myIsTraceEnabled= false;
+        Object                      myUserData	     = null;
+    	bool                        myIsTraceEnabled = false;
+        Action<string, SSObject>    myErrorDelegate  = null;
+        Action<string, SSObject>    myWarningDelegate= null;
 
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
+        public Object UserData {
+            get { return myUserData; }
+            set { myUserData= value; }
+        }
         public bool IsTraceEnabled {
             get { return myIsTraceEnabled; }
             set { myIsTraceEnabled= value; }
         }
-        public Object UserData {
-            get { return myUserData; }
+        public Action<string, SSObject> ErrorDelegate {
+            get { return myErrorDelegate; }
+            set { myErrorDelegate= value; }
+        }
+        public Action<string, SSObject> WarningDelegate {
+            get { return myWarningDelegate; }
+            set { myWarningDelegate= value; }
         }
         
         // ======================================================================
@@ -34,6 +45,20 @@ namespace Subspace {
         // ----------------------------------------------------------------------
         public SSContext(Object userData= null) {
             myUserData= userData;
+        }
+        
+        // ======================================================================
+        // Error/Warning Report
+        // ----------------------------------------------------------------------
+        public void ReportError(string msg, SSObject obj) {
+            if(myErrorDelegate != null) {
+                myErrorDelegate(msg, obj);
+            }
+        }
+        public void ReportWarning(string msg, SSObject obj) {
+            if(myWarningDelegate != null) {
+                myWarningDelegate(msg, obj);
+            }
         }
         
     }//end SSContext    

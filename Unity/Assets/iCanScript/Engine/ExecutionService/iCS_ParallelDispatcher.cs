@@ -7,8 +7,8 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ParallelDispatcher(int instanceId, string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-    : base(instanceId, name, parent, context, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_ParallelDispatcher(string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
+    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution

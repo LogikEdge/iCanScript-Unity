@@ -187,6 +187,9 @@ namespace Subspace {
                 myThis= value;
                 return;
             }
+            if(portIdx == (int)iCS_PortIndex.OutInstance) {
+                return;
+            }
     		if(portIdx == (int)iCS_PortIndex.Trigger) {
     			myTrigger= (bool)value;
     			return;
@@ -198,15 +201,52 @@ namespace Subspace {
     		}
     		throw new System.Exception("Attempting to access a port that does not exists: "+GetPortFullName(portIdx));
     	}
-        public string GetPortFullName(int idx) {
-            return FullName+"["+idx+"]";
+        public string GetPortFullName(int portIdx) {
+            string portName= "(parameter: "+portIdx+")";
+            switch((iCS_PortIndex)portIdx) {
+                case iCS_PortIndex.InInstance: {
+                    var function= this as iCS_FunctionBase;
+                    if(function != null) {
+                        portName= "(in: <"+function.methodBase.DeclaringType.Name+" &>)";
+                    }
+                    else {
+                        portName= "(in: this)";                        
+                    }
+                    break;
+                }
+                case iCS_PortIndex.OutInstance: {
+                    var function= this as iCS_FunctionBase;
+                    if(function != null) {
+                        portName= "(out: <"+function.methodBase.DeclaringType.Name+" &>)";
+                    }
+                    else {
+                        portName= "(out: this)";                        
+                    }
+                    break;
+                }
+                case iCS_PortIndex.Return: {
+                    portName= "(return)";
+                    break;
+                }
+                case iCS_PortIndex.Trigger: {
+                    portName= "(trigger)";
+                    break;
+                }
+                default: {
+                    if(portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
+                        portName= "(enable)";
+                    }
+                    break;
+                }
+            } 
+            return FullName+portName;
         }
 
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSActionWithSignature(int instanceId, string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-        : base(instanceId, name, parent, context, priority) {
+        public SSActionWithSignature(string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
+        : base(name, parent, context, priority) {
             myParameters = new object[nbOfParameters];
             myParameterConnections= new Connection[nbOfParameters];
             for(int i= 0; i < nbOfParameters; ++i) {

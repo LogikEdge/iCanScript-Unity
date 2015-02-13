@@ -11,9 +11,9 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_DynamicVariableProxy(int instanceId, string name, SSObject parent, SSContext context, int priority,
+    public iCS_DynamicVariableProxy(string name, SSObject parent, SSContext context, int priority,
                                     int nbOfParameters, int nbOfEnables)
-    : base(instanceId, name, parent, context, priority, nbOfParameters, nbOfEnables) {
+    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {
     }
 
     // ======================================================================
