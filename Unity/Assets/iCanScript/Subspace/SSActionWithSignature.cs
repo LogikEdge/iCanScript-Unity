@@ -24,8 +24,8 @@ namespace Subspace {
     
         // ======================================================================
         // Filler when enables or connections not used.
-        static bool[]           ourEmptyEnables    = new bool[0];
-        static Connection[]     ourEmptyConnections= new Connection[0];
+        static bool[]       ourEmptyEnables    = new bool[0];
+        static Connection[]	ourEmptyConnections= new Connection[0];
     
         // ======================================================================
         // Accessors
@@ -157,11 +157,11 @@ namespace Subspace {
     	// -------------------------------------------------------------------------
         // Returns one of the signature outputs.
         public object GetValue(int portIdx) {
-            if(portIdx == (int)iCS_PortIndex.Return) return ReturnValue;
+    		if(portIdx < myParameters.Length) return myParameters[portIdx];
     		if(portIdx == (int)iCS_PortIndex.OutInstance) return This;
+            if(portIdx == (int)iCS_PortIndex.Return) return ReturnValue;
     		if(portIdx == (int)iCS_PortIndex.Trigger) return Trigger;
             if(portIdx == (int)iCS_PortIndex.InInstance) return This;
-    		if(portIdx < myParameters.Length) return myParameters[portIdx];
     		if(portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
                 int i= portIdx-(int)iCS_PortIndex.EnablesStart;
                 if(i < myEnables.Length) {
@@ -317,7 +317,6 @@ namespace Subspace {
         }
         // ----------------------------------------------------------------------
         public override void ForceExecute(int runId) {
-    //#if UNITY_EDITOR
             if(Context.IsTraceEnabled) {
                 var stalledPort= GetStalledProducerPort(runId);
                 var stalledPortName= stalledPort == null ? "" : stalledPort.PortFullName;
@@ -331,7 +330,6 @@ namespace Subspace {
                 }
                 Debug.LogWarning("Force Execute=> "+FullName);
             }
-    //#endif
             // Force verify enables.
             if(GetIsEnabled() == false) {
                 MarkAsCurrent(runId);

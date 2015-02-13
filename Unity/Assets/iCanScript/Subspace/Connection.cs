@@ -8,7 +8,7 @@ namespace Subspace {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        SSActionWithSignature   myAction    = null;
+        SSActionWithSignature   myAction       = null;
         int                     myPortIndex    = -1;
         bool                    myIsAlwaysReady= false;
 
@@ -19,9 +19,9 @@ namespace Subspace {
         public int      PortIndex       { get { return myPortIndex; }}
         public string   PortFullName    { get { return Action.FullName+"["+myPortIndex+"]"; }}
     
-        /// <summary>
+        // ======================================================================
         /// Creation/Destruction
-        /// <summary>
+        // ----------------------------------------------------------------------
         public Connection() { }
         public Connection(SSActionWithSignature action, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
             myAction       = action;

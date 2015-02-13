@@ -15,8 +15,8 @@ namespace Subspace {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        Object myUserData= null;
-    	bool   myIsTraceEnabled = false;
+        Object myUserData	   = null;
+    	bool   myIsTraceEnabled= false;
 
         // ======================================================================
         // Properties

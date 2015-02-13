@@ -37,7 +37,10 @@ namespace Subspace {
             }
             set { myIsActive= value; }
         }
-        public bool ArePortsAlwaysCurrent { get { return myPortsAreAlwaysCurrent; } set { myPortsAreAlwaysCurrent= value; }}
+        public bool ArePortsAlwaysCurrent {
+			get { return myPortsAreAlwaysCurrent; }
+			set { myPortsAreAlwaysCurrent= value; }
+		}
     
         // ======================================================================
         // Creation/Destruction
