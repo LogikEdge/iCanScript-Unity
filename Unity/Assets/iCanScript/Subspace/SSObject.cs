@@ -19,7 +19,7 @@ namespace Subspace {
         public string       Name        { get { return myName; }}
         public string       FullName    { get { return GetFullName("."); }}
         public SSObject     Parent      { get { return myParent; }}
-        public int          ParentId    { get { return myParent.InstanceId; }}
+//        public int          ParentId    { get { return myParent.InstanceId; }}
         public SSContext    Context     { get { return myContext; }}
     
         // ======================================================================
@@ -32,14 +32,14 @@ namespace Subspace {
         }
 
         // ----------------------------------------------------------------------
-        // Returns the absolute name using the given separator between levels.
+        /// Returns the absolute name using the given separator between levels.
         public string GetFullName(string separator= ".") {
             var parentName= myParent != null ? myParent.GetFullName(separator) : "";
             return parentName+separator+myName;
         }
 
         // ----------------------------------------------------------------------
-        // Allow for printing using standard IO stream.
+        /// Allow for printing using standard IO stream.
         public override string ToString() {
             return Name;
         }
