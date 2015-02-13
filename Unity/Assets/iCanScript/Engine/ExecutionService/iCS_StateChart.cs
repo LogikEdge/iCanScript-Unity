@@ -46,9 +46,9 @@ public sealed class iCS_StateChart : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_StateChart(int instanceId, string name, SSContext context, int priority, int nbOfParams, int nbOfEnables)
-    : base(instanceId, name, context, priority, nbOfParams, nbOfEnables) {
-    	myDispatcher= new iCS_ParallelDispatcher(instanceId, name, context, priority, 0, 0);
+    public iCS_StateChart(int instanceId, string name, SSObject parent, SSContext context, int priority, int nbOfParams, int nbOfEnables)
+    : base(instanceId, name, parent, context, priority, nbOfParams, nbOfEnables) {
+    	myDispatcher= new iCS_ParallelDispatcher(instanceId, name, this, context, priority, 0, 0);
     }
 
     // ======================================================================

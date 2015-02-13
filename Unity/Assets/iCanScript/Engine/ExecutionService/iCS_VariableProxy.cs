@@ -10,9 +10,9 @@ public class iCS_VariableProxy : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_VariableProxy(int instanceId, string name, SSContext context, int priority,
+    public iCS_VariableProxy(int instanceId, string name, SSObject parent, SSContext context, int priority,
                              int nbOfParameters, int nbOfEnables)
-    : base(instanceId, name, context, priority, nbOfParameters, nbOfEnables) {
+    : base(instanceId, name, parent, context, priority, nbOfParameters, nbOfEnables) {
     }
 
     // ======================================================================

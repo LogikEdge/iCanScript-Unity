@@ -12,9 +12,9 @@ public abstract class iCS_FunctionBase : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_FunctionBase(int instanceId, string name, MethodBase methodBase, SSContext context, int priority,
+    public iCS_FunctionBase(int instanceId, string name, SSObject parent, MethodBase methodBase, SSContext context, int priority,
                             int nbOfParameters, int nbOfEnables)
-    : base(instanceId, name, context, priority, nbOfParameters, nbOfEnables) {
+    : base(instanceId, name, parent, context, priority, nbOfParameters, nbOfEnables) {
         myMethodBase= methodBase;
     }
 }

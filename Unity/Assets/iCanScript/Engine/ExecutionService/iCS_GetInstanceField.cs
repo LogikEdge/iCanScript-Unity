@@ -8,8 +8,8 @@ public class iCS_GetInstanceField : iCS_GetClassField {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_GetInstanceField(int instanceId, string name, FieldInfo fieldInfo, SSContext context, int priority, int nbOfEnables)
-    : base(instanceId, name, fieldInfo, context, priority, nbOfEnables) {
+    public iCS_GetInstanceField(int instanceId, string name, SSObject parent, FieldInfo fieldInfo, SSContext context, int priority, int nbOfEnables)
+    : base(instanceId, name, parent, fieldInfo, context, priority, nbOfEnables) {
     }
 
     // ======================================================================

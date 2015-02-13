@@ -19,15 +19,15 @@ namespace Subspace {
         public string       Name        { get { return myName; }}
         public string       FullName    { get { return GetFullName("."); }}
         public SSObject     Parent      { get { return myParent; }}
-//        public int          ParentId    { get { return myParent.InstanceId; }}
         public SSContext    Context     { get { return myContext; }}
     
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSObject(int instanceId, string name, SSContext context) {
+        public SSObject(int instanceId, string name, SSObject parent, SSContext context) {
             myInstanceId= instanceId;
             myName      = name;
+			myParent    = parent;
             myContext   = context;
         }
 

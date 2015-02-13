@@ -205,8 +205,8 @@ namespace Subspace {
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSActionWithSignature(int instanceId, string name, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-        : base(instanceId, name, context, priority) {
+        public SSActionWithSignature(int instanceId, string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
+        : base(instanceId, name, parent, context, priority) {
             myParameters = new object[nbOfParameters];
             myParameterConnections= new Connection[nbOfParameters];
             for(int i= 0; i < nbOfParameters; ++i) {

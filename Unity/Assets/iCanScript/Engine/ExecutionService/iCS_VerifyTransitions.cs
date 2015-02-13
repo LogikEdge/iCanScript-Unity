@@ -19,8 +19,8 @@ public class iCS_VerifyTransitions : SSAction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_VerifyTransitions(int instanceId, string name, SSContext context, int priority)
-    : base(instanceId, name, context, priority) {}
+    public iCS_VerifyTransitions(int instanceId, string name, SSObject parent, SSContext context, int priority)
+    : base(instanceId, name, parent, context, priority) {}
 
     // ======================================================================
     // Execution

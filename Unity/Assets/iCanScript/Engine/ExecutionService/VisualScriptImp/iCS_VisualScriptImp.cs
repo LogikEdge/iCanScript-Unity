@@ -13,7 +13,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     [System.NonSerialized]
     SSContext                           myContext         = null;
-    object[]                            myRuntimeNodes    = new object[0];
+    SSObject[]                          myRuntimeNodes    = new SSObject[0];
     List<int>                           myPublicInterfaces= new List<int>();
     Dictionary<string,iCS_RunContext>   myMessageContexts = new Dictionary<string,iCS_RunContext>();
     P.TimerService                      myTimerService    = new P.TimerService();
@@ -22,7 +22,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public object[]  RuntimeNodes     { get { return myRuntimeNodes; }}
+    public SSObject[]  RuntimeNodes     { get { return myRuntimeNodes; }}
     public List<iCS_EngineObject> PublicInterfaces    { get { return P.map(id=> EngineObjects[id], myPublicInterfaces); }}
     public List<iCS_EngineObject> PublicVariables     { get { return P.filter(pi=> pi.IsConstructor, PublicInterfaces); }}
     public List<iCS_EngineObject> PublicUserFunctions { get { return P.filter(pi=> pi.IsPackage, PublicInterfaces); }}
