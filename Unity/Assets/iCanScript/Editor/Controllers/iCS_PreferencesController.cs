@@ -690,7 +690,7 @@ public static class iCS_PreferencesController {
         kStateNodeColor             = Color.cyan;
         kPackageNodeColor           = Color.yellow;
         kInstanceNodeColor          = new Color(1f, 0.5f, 0f);
-        kConstructorNodeColor       = new Color(1f, 0.25f, 0.5f);
+        kConstructorNodeColor       = new Color(1f, 0.25f, 0.75f);
         kFunctionNodeColor          = Color.green;
         kMessageNodeColor           = new Color(c(0x36), c(0x8a), c(0xff));
         kUserFunctionNodeColor      = new Color(c(0x80), c(0xff), c(0x80));
