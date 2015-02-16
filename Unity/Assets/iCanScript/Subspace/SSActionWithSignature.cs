@@ -69,14 +69,14 @@ namespace Subspace {
     		}
             Debug.LogWarning("iCanScript: Trying to set a signature connection with wrong index: "+portIdx);
         }
-        public bool IsParameterReady(int idx, int runId) {
+        public bool IsParameterReady(int idx) {
             if(idx >= myParameters.Length) {
                 Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
                 return false;
             }
             var connection= myParameterConnections[idx];
             if(connection == null) return true;
-            return connection.IsReady(runId);
+            return connection.IsReady;
         }
         public object UpdateParameter(int idx) {
             if(idx >= myParameters.Length) {
@@ -89,22 +89,24 @@ namespace Subspace {
             }
             return myParameters[idx];
         }
-        public bool IsThisReady(int runId) {
-            if(myThisConnection == null) return true;
-            return myThisConnection.IsReady(runId);
+        public bool IsThisReady {
+            get {
+                if(myThisConnection == null) return true;
+                return myThisConnection.IsReady;
+            }
         }
         // =========================================================================
         // Enables Query
         // ----------------------------------------------------------------------
         // Return true if the enable state can be assertained with the isEnabled
         // output parameter set appropriatly.  Otherwise, false is returned.
-    	public bool GetIsEnabledIfReady(int runId, out bool isEnabled) {
+    	public bool GetIsEnabledIfReady(out bool isEnabled) {
             bool needToWait= false;
     	    int len= myEnables.Length;
             for(int i= 0; i < len; ++i) {
                 var connection= myEnableConnections[i];
                 if(connection != null) {
-                    if(connection.IsCurrent(runId)) {
+                    if(connection.IsCurrent) {
                         if((bool)connection.Value == false) {
                             isEnabled= false;
                             return true;
@@ -282,7 +284,7 @@ namespace Subspace {
             myTrigger= false;
             // Wait until the enables can be resolved.
             bool isEnabled;
-            if(!GetIsEnabledIfReady(myContext.RunId, out isEnabled)) {
+            if(!GetIsEnabledIfReady(out isEnabled)) {
     			IsStalled= true;
     //            if(VisualScript.IsTraceEnabled) {
     //                Debug.Log("Executing=> "+FullName+" is waiting on the enables");
@@ -313,7 +315,7 @@ namespace Subspace {
             }
         }
         // ----------------------------------------------------------------------
-        public Connection GetStalledEnablePort(int runId) {
+        public Connection GetStalledEnablePort() {
             if(IsCurrent) {
                 return null;
             }
@@ -322,7 +324,7 @@ namespace Subspace {
             for(int i= 0; i < len; ++i) {
                 var connection= myEnableConnections[i];
                 if(connection != null) {
-                    if(!connection.IsReady(runId)) {
+                    if(!connection.IsReady) {
                         return connection;
                     }
                 }
@@ -335,12 +337,12 @@ namespace Subspace {
                 return null;
             }
             // Let's first verify the enables.
-            var stalledEnable= GetStalledEnablePort(myContext.RunId);
+            var stalledEnable= GetStalledEnablePort();
             if(stalledEnable != null) {
                 return stalledEnable;
             }
             // Verify intance connection
-            if(myThisConnection != null && !myThisConnection.IsReady(myContext.RunId)) {
+            if(myThisConnection != null && !myThisConnection.IsReady) {
                 return myThisConnection;
             }
             // Verify parameter connections
@@ -348,7 +350,7 @@ namespace Subspace {
             for(int i= 0; i < len; ++i) {
                 var connection= myParameterConnections[i];
                 if(connection != null) {
-                    if(!connection.IsReady(myContext.RunId)) {
+                    if(!connection.IsReady) {
                         return connection;
                     }
                 }

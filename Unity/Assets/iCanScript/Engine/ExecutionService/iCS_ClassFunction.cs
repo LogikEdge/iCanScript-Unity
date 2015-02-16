@@ -18,7 +18,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
         // Wait until all inputs are ready.
         var len= Parameters.Length;
         for(int i= 0; i < len; ++i) {
-            if(IsParameterReady(i, myContext.RunId) == false) {
+            if(IsParameterReady(i) == false) {
                 return;
             }
         }

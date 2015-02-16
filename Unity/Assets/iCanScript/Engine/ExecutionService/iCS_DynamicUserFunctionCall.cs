@@ -27,7 +27,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
         try {
 //#endif
             // Wait until this port is ready.
-            if(IsThisReady(myContext.RunId)) {
+            if(IsThisReady) {
                 // Fetch the user action.
                 var gameObject= This as GameObject;
                 if(gameObject == null) {
@@ -49,7 +49,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 // Wait until all inputs are ready.
                 var parameterLen= Parameters.Length;
                 for(int i= 0; i < parameterLen; ++i) {
-                    if(IsParameterReady(i, myContext.RunId) == false) {
+                    if(IsParameterReady(i) == false) {
                         return;
                     }
                 }

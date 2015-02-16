@@ -21,7 +21,7 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
     // ----------------------------------------------------------------------
     protected override void DoEvaluate() {
         // Wait until this port is ready.
-        if(IsThisReady(myContext.RunId)) {
+        if(IsThisReady) {
             // Try to connect with the visual script.
             var gameObject= This as GameObject;
             if(gameObject == null) {

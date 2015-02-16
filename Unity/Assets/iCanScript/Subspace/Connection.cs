@@ -37,17 +37,19 @@ namespace Subspace {
             set { myAction.SetValue(PortIndex, value); }
         }
         /// Returns **TRUE** if the value is available for this _runId_.
-        public bool IsReady(int runId)    {
-            if(myIsAlwaysReady || !IsConnected) return true;
-            return Action.ArePortsCurrent;
+        public bool IsReady    {
+            get {
+                if(myIsAlwaysReady || !IsConnected) return true;
+                return Action.ArePortsCurrent;                
+            }
         }
         /// Returns **TRUE** if the connected _SSAction_ has been evaluated or executed for this _runId_.
-        public bool IsCurrent(int runId) {
-        	return Action.ArePortsCurrent;
+        public bool IsCurrent {
+        	get { return Action.ArePortsCurrent; }
         }
         /// Returns **TRUE** if the connected _SSAction_ has ran for this _runId_.
-        public bool DidExecute(int runId) {
-        	return Action.ArePortsExecuted;
+        public bool DidExecute {
+        	get { return Action.ArePortsExecuted; }
         }
      }
     

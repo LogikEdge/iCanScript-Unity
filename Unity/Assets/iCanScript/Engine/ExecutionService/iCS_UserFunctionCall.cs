@@ -35,7 +35,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             // Wait until all inputs are ready.
             var parameterLen= Parameters.Length;
             for(int i= 0; i < parameterLen; ++i) {
-                if(IsParameterReady(i, myContext.RunId) == false) {
+                if(IsParameterReady(i) == false) {
                     return;
                 }
             }
@@ -110,7 +110,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             // Wait until all inputs are ready.
             var parameterLen= Parameters.Length;
             for(int i= 0; i < parameterLen; ++i) {
-                if(IsParameterReady(i, myContext.RunId) == false) {
+                if(IsParameterReady(i) == false) {
                     return;
                 }
             }

@@ -24,7 +24,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
             return null;
         }
         // Get the dispatcher stalled enable ports.
-        var producerPort= GetStalledEnablePort(myContext.RunId);
+        var producerPort= GetStalledEnablePort();
         if(producerPort != null) {
             return producerPort;
         }

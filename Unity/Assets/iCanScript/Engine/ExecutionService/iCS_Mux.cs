@@ -16,7 +16,7 @@ public class iCS_Mux : SSActionWithSignature {
     protected override void DoEvaluate() {
         // Take the first valid connection.
         foreach(var connection in ParameterConnections) {
-            if(connection.DidExecute(myContext.RunId)) {
+            if(connection.DidExecute) {
                 ReturnValue= connection.Value;
                 MarkAsExecuted();
                 return;

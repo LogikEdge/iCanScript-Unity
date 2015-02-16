@@ -16,7 +16,7 @@ public class iCS_GetInstanceField : iCS_GetClassField {
     // Execution
     // ----------------------------------------------------------------------
     protected override void DoEvaluate() {
-        if(IsThisReady(myContext.RunId)) {
+        if(IsThisReady) {
             base.DoEvaluate();
         }
     }

@@ -15,7 +15,7 @@ public class iCS_SetClassField : iCS_FieldBase {
     // Execution
     // ----------------------------------------------------------------------
     protected override void DoEvaluate() {
-        if(!IsParameterReady(0, myContext.RunId)) {
+        if(!IsParameterReady(0)) {
             IsStalled= true;
             return;
         }
