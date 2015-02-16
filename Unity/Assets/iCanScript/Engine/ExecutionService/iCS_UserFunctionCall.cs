@@ -29,7 +29,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
 //#endif
             // Skip all the processing if we don't have an target action to execute.
             if(myUserAction == null) {
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
                 return;
             }
             
@@ -71,12 +71,12 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             if(myUserAction.DidExecute()) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsExecuted(runId);
+                MarkAsExecuted();
             }
             else if(myUserAction.IsCurrent){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
             }            
 //#if UNITY_EDITOR
         }
@@ -98,7 +98,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent(runId);
+            MarkAsCurrent();
         }
 //#endif
     }
@@ -147,12 +147,12 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             if(myUserAction.DidExecute()) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsExecuted(runId);
+                MarkAsExecuted();
             }
             else if(myUserAction.IsCurrent){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
             }            
 //#if UNITY_EDITOR
         }
@@ -174,7 +174,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent(runId);
+            MarkAsCurrent();
         }
 //#endif
     }

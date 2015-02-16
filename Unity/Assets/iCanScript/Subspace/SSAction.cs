@@ -58,10 +58,10 @@ namespace Subspace {
         public abstract Connection      GetStalledProducerPort(int runId);
     
         // ----------------------------------------------------------------------
-        public bool IsCurrent                 { get { return myCurrentRunId == myContext.RunId; }}
-        public bool DidExecute()              { return myExecutedRunId == myContext.RunId; }
-        public void MarkAsCurrent(int runId)  { myCurrentRunId= runId; myIsStalled= false; }
-        public void MarkAsExecuted(int runId) { myExecutedRunId= runId; MarkAsCurrent(runId); }
+        public bool IsCurrent           { get { return myCurrentRunId == myContext.RunId; }}
+        public bool DidExecute()        { return myExecutedRunId == myContext.RunId; }
+        public void MarkAsCurrent()     { myCurrentRunId= myContext.RunId; myIsStalled= false; }
+        public void MarkAsExecuted()    { myExecutedRunId= myContext.RunId; MarkAsCurrent(); }
 
         // ----------------------------------------------------------------------
         public bool ArePortsCurrent(int runId)    { return IsCurrent || ArePortsAlwaysCurrent || !IsActive; }

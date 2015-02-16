@@ -18,7 +18,7 @@ public class iCS_Mux : SSActionWithSignature {
         foreach(var connection in ParameterConnections) {
             if(connection.DidExecute(runId)) {
                 ReturnValue= connection.Value;
-                MarkAsExecuted(runId);
+                MarkAsExecuted();
                 return;
             }
         }
@@ -42,6 +42,6 @@ public class iCS_Mux : SSActionWithSignature {
 		if(bestConnection != null) {
             ReturnValue= bestConnection.Value;			
 		}
-        MarkAsCurrent(runId);
+        MarkAsCurrent();
     }
 }

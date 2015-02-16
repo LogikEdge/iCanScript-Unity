@@ -67,7 +67,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
     // ----------------------------------------------------------------------
     protected void ResetIterator(int runId) {
         myQueueIdx= 0;
-        MarkAsExecuted(runId);        
+        MarkAsExecuted();        
     }
     
     // ======================================================================

@@ -291,7 +291,7 @@ namespace Subspace {
     		}
     		// Skip execution if this action is disabled.
             if(isEnabled == false) {
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
                 if(Context.IsTraceEnabled) {
                     Debug.Log("Executing=> "+FullName+" is disabled"+" ("+runId+")");
                 }
@@ -372,7 +372,7 @@ namespace Subspace {
             }
             // Force verify enables.
             if(GetIsEnabled() == false) {
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
                 return;
             }
             // Invoke derived class to force execute.
@@ -381,9 +381,9 @@ namespace Subspace {
         }
         // ----------------------------------------------------------------------
         // Override the execute marker to set the output trigger.
-        public new void MarkAsExecuted(int runId) {
+        public new void MarkAsExecuted() {
             myTrigger= true;
-            base.MarkAsExecuted(runId);
+            base.MarkAsExecuted();
         }
         // =========================================================================
         // Functions to override to provide specific behaviours.

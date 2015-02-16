@@ -18,7 +18,7 @@ public class iCS_Constructor : iCS_ClassFunction {
         if(ReturnValue == null) {
             base.DoExecute(runId);
         } else {
-            MarkAsExecuted(runId);
+            MarkAsExecuted();
         }
     }
     // ----------------------------------------------------------------------
@@ -30,7 +30,7 @@ public class iCS_Constructor : iCS_ClassFunction {
                 ArePortsAlwaysCurrent= true;
             }
         } else {
-            MarkAsExecuted(runId);
+            MarkAsExecuted();
         }
     }
     

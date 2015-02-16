@@ -43,7 +43,7 @@ public class iCS_Transition : SSAction {
             }
             myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
         }
-        MarkAsExecuted(runId);
+        MarkAsExecuted();
     }
     // ----------------------------------------------------------------------
     public override Connection GetStalledProducerPort(int runId) {
@@ -61,6 +61,6 @@ public class iCS_Transition : SSAction {
             }
             myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
         }
-        MarkAsExecuted(runId);
+        MarkAsExecuted();
     }
 }

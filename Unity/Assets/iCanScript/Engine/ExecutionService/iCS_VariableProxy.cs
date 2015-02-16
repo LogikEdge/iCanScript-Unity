@@ -19,11 +19,11 @@ public class iCS_VariableProxy : SSActionWithSignature {
     // Execution
     // ----------------------------------------------------------------------
     protected override void DoExecute(int runId) {
-        MarkAsExecuted(runId);            
+        MarkAsExecuted();            
     }
 
     // ----------------------------------------------------------------------
     protected override void DoForceExecute(int runId) {
-        MarkAsExecuted(runId);            
+        MarkAsExecuted();            
     }
 }

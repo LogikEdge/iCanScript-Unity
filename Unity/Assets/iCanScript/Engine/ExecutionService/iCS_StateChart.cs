@@ -256,7 +256,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
         myQueueIdx= 0;
         myExecutionState= ExecutionState.VerifyingTransition;
         myFiredTransition= null;            
-        MarkAsExecuted(runId);
+        MarkAsExecuted();
     }
     // ----------------------------------------------------------------------
     Connection GetStalledProducerPortOnUpdate(int runId) {

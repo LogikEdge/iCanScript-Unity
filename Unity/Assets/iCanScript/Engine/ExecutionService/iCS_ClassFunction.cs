@@ -38,7 +38,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             
             // Execute function
             ReturnValue= myMethodBase.Invoke(This, Parameters);            
-            MarkAsExecuted(runId);
+            MarkAsExecuted();
 //#if UNITY_EDITOR
         }
         catch(Exception e) {
@@ -69,7 +69,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             }
             var msg= "Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.Message;
             Context.ReportError(msg, this);
-            MarkAsCurrent(runId);
+            MarkAsCurrent();
         }
 //#endif        
     }

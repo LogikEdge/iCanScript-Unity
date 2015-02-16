@@ -33,17 +33,17 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 var gameObject= This as GameObject;
                 if(gameObject == null) {
                     Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
-                    MarkAsCurrent(runId);
+                    MarkAsCurrent();
                 }
                 var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
                 if(vs == null) {
                     Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
-                    MarkAsCurrent(runId);
+                    MarkAsCurrent();
                 }
                 var variableObject= vs.GetPublicInterfaceFromName(Name);
                 if(variableObject == null) {
                     Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
-                    MarkAsCurrent(runId);
+                    MarkAsCurrent();
                 }
                 var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
     
@@ -85,12 +85,12 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 if(myUserAction.DidExecute()) {
                     isActionOwner= false;
                     myUserAction.IsActive= false;
-                    MarkAsExecuted(runId);
+                    MarkAsExecuted();
                 }
                 else if(myUserAction.IsCurrent){
                     isActionOwner= false;
                     myUserAction.IsActive= false;
-                    MarkAsCurrent(runId);
+                    MarkAsCurrent();
                 }            
             }
 //#if UNITY_EDITOR
@@ -113,7 +113,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent(runId);
+            MarkAsCurrent();
         }
 //#endif
     }
@@ -127,17 +127,17 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
             var gameObject= This as GameObject;
             if(gameObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
             }
             var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
             if(vs == null) {
                 Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
             }
             var variableObject= vs.GetPublicInterfaceFromName(Name);
             if(variableObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
             }
             var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
 
@@ -173,12 +173,12 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
             if(myUserAction.DidExecute()) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsExecuted(runId);
+                MarkAsExecuted();
             }
             else if(myUserAction.IsCurrent){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
             }            
 //#if UNITY_EDITOR
         }
@@ -200,7 +200,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent(runId);
+            MarkAsCurrent();
         }
 //#endif
     }

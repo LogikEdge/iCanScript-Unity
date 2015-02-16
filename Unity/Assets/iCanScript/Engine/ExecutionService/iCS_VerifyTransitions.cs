@@ -102,7 +102,7 @@ public class iCS_VerifyTransitions : SSAction {
     // ----------------------------------------------------------------------
     void ResetIterator(int runId) {
         myQueueIdx= 0;
-        MarkAsExecuted(runId);
+        MarkAsExecuted();
     }
     
     // ======================================================================

@@ -26,21 +26,21 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
             var gameObject= This as GameObject;
             if(gameObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
             }
             var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
             if(vs == null) {
                 Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
             }
             var variableObject= vs.GetPublicInterfaceFromName(Name);
             if(variableObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
-                MarkAsCurrent(runId);
+                MarkAsCurrent();
             }
             var variable= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
             ReturnValue= variable.ReturnValue;
-            MarkAsExecuted(runId);            
+            MarkAsExecuted();            
         }
     }
 
@@ -50,20 +50,20 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
         var gameObject= This as GameObject;
         if(gameObject == null) {
             Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
-            MarkAsCurrent(runId);
+            MarkAsCurrent();
         }
         var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
         if(vs == null) {
             Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
-            MarkAsCurrent(runId);
+            MarkAsCurrent();
         }
         var variableObject= vs.GetPublicInterfaceFromName(Name);
         if(variableObject == null) {
             Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
-            MarkAsCurrent(runId);
+            MarkAsCurrent();
         }
         var variable= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
         ReturnValue= variable.ReturnValue;
-        MarkAsExecuted(runId);            
+        MarkAsExecuted();            
     }
 }

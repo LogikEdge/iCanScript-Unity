@@ -24,12 +24,12 @@ public class iCS_GetClassField : iCS_FieldBase {
 //#endif
             // Execute function
             ReturnValue= myFieldInfo.GetValue(This);
-            MarkAsExecuted(runId);
+            MarkAsExecuted();
 //#if UNITY_EDITOR
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception thrown in  "+FullName+" => "+e.Message);
-            MarkAsCurrent(runId);
+            MarkAsCurrent();
         }
 //#endif        
     }
