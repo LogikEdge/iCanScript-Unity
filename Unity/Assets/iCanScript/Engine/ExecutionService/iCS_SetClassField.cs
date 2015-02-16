@@ -8,8 +8,8 @@ public class iCS_SetClassField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetClassField(string name, SSObject parent, FieldInfo fieldInfo, SSContext context, int priority, int nbOfEnables)
-    : base(name, parent, fieldInfo, context, priority, 1, nbOfEnables) {}
+    public iCS_SetClassField(string name, SSObject parent, FieldInfo fieldInfo, int priority, int nbOfEnables)
+    : base(name, parent, fieldInfo, priority, 1, nbOfEnables) {}
     
     // ======================================================================
     // Execution

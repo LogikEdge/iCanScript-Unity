@@ -7,8 +7,8 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ParallelDispatcher(string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_ParallelDispatcher(string name, SSObject parent, int priority, int nbOfParameters, int nbOfEnables)
+    : base(name, parent, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution
@@ -20,7 +20,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
             // Attempt to execute child function.
             SSAction action= myExecuteQueue[myQueueIdx];
             action.Execute(runId);            
-            if(!action.IsCurrent(runId)) {
+            if(!action.IsCurrent) {
 				
                 // Update the stalled flag
                 IsStalled &= action.IsStalled;

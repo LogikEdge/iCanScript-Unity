@@ -12,9 +12,9 @@ public abstract class iCS_FieldBase : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_FieldBase(string name, SSObject parent, FieldInfo fieldInfo, SSContext context, int priority,
+    public iCS_FieldBase(string name, SSObject parent, FieldInfo fieldInfo, int priority,
                          int nbOfParameters, int nbOfEnables)
-    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {
+    : base(name, parent, priority, nbOfParameters, nbOfEnables) {
         myFieldInfo= fieldInfo;
     }
 }

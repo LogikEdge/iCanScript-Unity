@@ -45,8 +45,8 @@ namespace Subspace {
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSAction(string name, SSObject parent, SSContext context, int priority)
-        : base(name, parent, context) {
+        public SSAction(string name, SSObject parent, int priority)
+        : base(name, parent) {
             myPriority= priority;
         }
      
@@ -58,14 +58,14 @@ namespace Subspace {
         public abstract Connection      GetStalledProducerPort(int runId);
     
         // ----------------------------------------------------------------------
-        public bool IsCurrent(int runId)      { return myCurrentRunId == runId; }
-        public bool DidExecute(int runId)     { return myExecutedRunId == runId; }
+        public bool IsCurrent                 { get { return myCurrentRunId == myContext.RunId; }}
+        public bool DidExecute()              { return myExecutedRunId == myContext.RunId; }
         public void MarkAsCurrent(int runId)  { myCurrentRunId= runId; myIsStalled= false; }
         public void MarkAsExecuted(int runId) { myExecutedRunId= runId; MarkAsCurrent(runId); }
 
         // ----------------------------------------------------------------------
-        public bool ArePortsCurrent(int runId)    { return IsCurrent(runId) || ArePortsAlwaysCurrent || !IsActive; }
-        public bool ArePortsExecuted(int runId)   { return DidExecute(runId); }
+        public bool ArePortsCurrent(int runId)    { return IsCurrent || ArePortsAlwaysCurrent || !IsActive; }
+        public bool ArePortsExecuted(int runId)   { return DidExecute(); }
     }
     
 }

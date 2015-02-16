@@ -15,8 +15,8 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_UserFunctionCall(string name, SSObject parent, SSActionWithSignature userAction,
-							    SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {
+							    int priority, int nbOfParameters, int nbOfEnables)
+    : base(name, parent, priority, nbOfParameters, nbOfEnables) {
         myUserAction= userAction;
     }
 
@@ -68,12 +68,12 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
 			}
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute(actionFrameId)) {
+            if(myUserAction.DidExecute()) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted(runId);
             }
-            else if(myUserAction.IsCurrent(actionFrameId)){
+            else if(myUserAction.IsCurrent){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsCurrent(runId);
@@ -144,12 +144,12 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             ReturnValue= myUserAction.ReturnValue;
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute(actionFrameId)) {
+            if(myUserAction.DidExecute()) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted(runId);
             }
-            else if(myUserAction.IsCurrent(actionFrameId)){
+            else if(myUserAction.IsCurrent){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsCurrent(runId);

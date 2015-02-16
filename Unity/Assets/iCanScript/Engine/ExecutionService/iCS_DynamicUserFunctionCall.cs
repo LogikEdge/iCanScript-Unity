@@ -14,9 +14,9 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_DynamicUserFunctionCall(string name, SSObject parent, SSContext context, int priority,
+    public iCS_DynamicUserFunctionCall(string name, SSObject parent, int priority,
                                        int nbOfParameters, int nbOfEnables)
-    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {
+    : base(name, parent, priority, nbOfParameters, nbOfEnables) {
         Debug.Log("Creating a dynamic user function call");
     }
 
@@ -82,12 +82,12 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     			}
                 // Reflection the action run status.
                 IsStalled= myUserAction.IsStalled;
-                if(myUserAction.DidExecute(actionFrameId)) {
+                if(myUserAction.DidExecute()) {
                     isActionOwner= false;
                     myUserAction.IsActive= false;
                     MarkAsExecuted(runId);
                 }
-                else if(myUserAction.IsCurrent(actionFrameId)){
+                else if(myUserAction.IsCurrent){
                     isActionOwner= false;
                     myUserAction.IsActive= false;
                     MarkAsCurrent(runId);
@@ -170,12 +170,12 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
 			}
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute(actionFrameId)) {
+            if(myUserAction.DidExecute()) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted(runId);
             }
-            else if(myUserAction.IsCurrent(actionFrameId)){
+            else if(myUserAction.IsCurrent){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsCurrent(runId);

@@ -7,8 +7,8 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_NoWaitSequencialDispatcher(string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_NoWaitSequencialDispatcher(string name, SSObject parent, int priority, int nbOfParameters, int nbOfEnables)
+    : base(name, parent, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution
@@ -18,10 +18,10 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
         bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {
             SSAction action= myExecuteQueue[i];
-            bool didExecute= action.IsCurrent(runId);
+            bool didExecute= action.IsCurrent;
             if(!didExecute) {
                 action.Execute(runId);                
-                if(action.IsCurrent(runId)) {
+                if(action.IsCurrent) {
                     didExecute= true;
                     stalled= false;
                 } else {

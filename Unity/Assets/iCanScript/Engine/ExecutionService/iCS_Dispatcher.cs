@@ -13,14 +13,14 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Dispatcher(string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_Dispatcher(string name, SSObject parent, int priority, int nbOfParameters, int nbOfEnables)
+    : base(name, parent, priority, nbOfParameters, nbOfEnables) {}
 
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     public override Connection GetStalledProducerPort(int runId) {
-        if(IsCurrent(runId)) {
+        if(IsCurrent) {
             return null;
         }
         // Get the dispatcher stalled enable ports.
@@ -32,7 +32,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
         int cursor= myQueueIdx;
         if(cursor < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
-            if(!action.IsCurrent(runId)) {
+            if(!action.IsCurrent) {
                 producerPort= action.GetStalledProducerPort(runId);
                 if(producerPort != null) {
                     return producerPort;
@@ -47,7 +47,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
         if(myQueueIdx < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
             action.ForceExecute(runId);            
-            if(action.IsCurrent(runId)) {
+            if(action.IsCurrent) {
                 ++myQueueIdx;
                 IsStalled= false;
             } else {

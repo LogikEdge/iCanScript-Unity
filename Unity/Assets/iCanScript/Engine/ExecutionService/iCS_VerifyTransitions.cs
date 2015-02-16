@@ -19,8 +19,8 @@ public class iCS_VerifyTransitions : SSAction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_VerifyTransitions(string name, SSObject parent, SSContext context, int priority)
-    : base(name, parent, context, priority) {}
+    public iCS_VerifyTransitions(string name, SSObject parent, int priority)
+    : base(name, parent, priority) {}
 
     // ======================================================================
     // Execution
@@ -33,7 +33,7 @@ public class iCS_VerifyTransitions : SSAction {
         for(int cursor= myQueueIdx; cursor < end; ++cursor) {
             // Attempt to execute child function.
             iCS_Transition transition= myTransitions[cursor];
-            if(transition.IsCurrent(runId)) {
+            if(transition.IsCurrent) {
                 if(cursor == myQueueIdx) {
                     ++myQueueIdx;                    
                 }
@@ -41,7 +41,7 @@ public class iCS_VerifyTransitions : SSAction {
             }
             transition.Execute(runId);            
             // Move to next child if sucessfully executed.
-            if(transition.IsCurrent(runId)) {
+            if(transition.IsCurrent) {
                 if(transition.DidTrigger) {
                     myTriggeredTransition= transition;
                     ResetIterator(runId);
@@ -65,7 +65,7 @@ public class iCS_VerifyTransitions : SSAction {
     public override Connection GetStalledProducerPort(int runId) {
         for(int cursor= myQueueIdx; cursor < myTransitions.Count; ++cursor) {
             iCS_Transition transition= myTransitions[cursor];
-            if(!transition.IsCurrent(runId)) {
+            if(!transition.IsCurrent) {
                 var result= transition.GetStalledProducerPort(runId);
                 if(result != null) {
                     return result;
@@ -80,7 +80,7 @@ public class iCS_VerifyTransitions : SSAction {
         if(myQueueIdx < myTransitions.Count) {
             iCS_Transition transition= myTransitions[myQueueIdx];
             transition.ForceExecute(runId);            
-            if(transition.IsCurrent(runId)) {
+            if(transition.IsCurrent) {
                 if(transition.DidTrigger) {
                     myTriggeredTransition= transition;
                     ResetIterator(runId);

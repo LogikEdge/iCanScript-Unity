@@ -7,8 +7,8 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_WaitingSequencialDispatcher(string name, SSObject parent, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-    : base(name, parent, context, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_WaitingSequencialDispatcher(string name, SSObject parent, int priority, int nbOfParameters, int nbOfEnables)
+    : base(name, parent, priority, nbOfParameters, nbOfEnables) {}
     
     // ======================================================================
     // Execution
@@ -18,7 +18,7 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
         while(myQueueIdx < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
             action.Execute(runId);            
-            if(!action.IsCurrent(runId)) {
+            if(!action.IsCurrent) {
                 // Verify if the child is a staled dispatcher.
                 if(!action.IsStalled) {
                     stalled= false;

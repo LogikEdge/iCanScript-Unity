@@ -8,8 +8,8 @@ public class iCS_SetInstanceField : iCS_FieldBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetInstanceField(string name, SSObject parent, FieldInfo fieldInfo, SSContext context, int priority, int nbOfEnables)
-    : base(name, parent, fieldInfo, context, priority, 1, nbOfEnables) {
+    public iCS_SetInstanceField(string name, SSObject parent, FieldInfo fieldInfo, int priority, int nbOfEnables)
+    : base(name, parent, fieldInfo, priority, 1, nbOfEnables) {
     }
 
     // ======================================================================

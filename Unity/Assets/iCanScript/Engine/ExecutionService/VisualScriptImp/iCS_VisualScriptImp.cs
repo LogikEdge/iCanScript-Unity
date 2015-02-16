@@ -127,6 +127,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         iCS_VSContext awakeContext= null;
         myMessageContexts.TryGetValue("Awake", out awakeContext);
         if(awakeContext != null) {
+            awakeContext.Action.Context.RunId= -2;
             awakeContext.Action.IsActive= true;
             do {
                 awakeContext.Action.Execute(-2);
@@ -134,7 +135,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                     Debug.LogError("The Awake() of "+name+" is stalled. Please remove any dependent processing !!!");
                     return;
                 }
-            } while(!awakeContext.Action.IsCurrent(-2));
+            } while(!awakeContext.Action.IsCurrent);
             awakeContext.Action.IsActive= false;
         }
     }
@@ -146,6 +147,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         iCS_VSContext startContext= null;
         myMessageContexts.TryGetValue("Start", out startContext);
         if(startContext != null) {
+            startContext.Action.Context.RunId= -2;
             startContext.Action.IsActive= true;
             do {
                 startContext.Action.Execute(-2);
@@ -153,7 +155,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                     Debug.LogError("The Start() of "+name+" is stalled. Please remove any dependent processing !!!");
                     return;
                 }
-            } while(!startContext.Action.IsCurrent(-2));
+            } while(!startContext.Action.IsCurrent);
             startContext.Action.IsActive= false;
         }
     }
@@ -172,10 +174,12 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         iCS_Package message= obj as iCS_Package;
         if(message == null) return;
         if(!myMessageContexts.ContainsKey(messageName)) {
+            // Build a specific context for all public functions.
             var context= new SSContext(this);
-            myContext.ErrorDelegate  = RuntimeErrorDelegate;
-            myContext.WarningDelegate= RuntimeWarningDelegate;
-            myMessageContexts.Add(messageName, new iCS_VSContext(message, context));
+            context.ErrorDelegate  = RuntimeErrorDelegate;
+            context.WarningDelegate= RuntimeWarningDelegate;
+            message.Context= context;
+            myMessageContexts.Add(messageName, new iCS_VSContext(message));
         }
     }
     // ----------------------------------------------------------------------

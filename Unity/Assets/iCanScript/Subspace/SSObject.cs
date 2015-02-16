@@ -17,15 +17,15 @@ namespace Subspace {
         public string       Name        { get { return myName; }}
         public string       FullName    { get { return GetFullName("/"); }}
         public SSObject     Parent      { get { return myParent; }}
-        public SSContext    Context     { get { return myContext; }}
+        public SSContext    Context     { get { return myContext; } set { myContext= value; }}
     
         // ======================================================================
         // Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSObject(string name, SSObject parent, SSContext context) {
-            myName      = name;
-			myParent    = parent;
-            myContext   = context;
+        public SSObject(string name, SSObject parent) {
+            myName   = name;
+			myParent = parent;
+            myContext= myParent != null ? myParent.Context : new SSContext();
         }
 
         // ----------------------------------------------------------------------

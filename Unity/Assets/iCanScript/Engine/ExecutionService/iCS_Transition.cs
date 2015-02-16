@@ -21,8 +21,8 @@ public class iCS_Transition : SSAction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Transition(string name, SSObject parent, SSContext context, iCS_State endState, iCS_Package transitionPackage, SSActionWithSignature triggerFunc, int portIdx, int priority)
-    : base(name, parent, context, priority) {
+    public iCS_Transition(string name, SSObject parent, iCS_State endState, iCS_Package transitionPackage, SSActionWithSignature triggerFunc, int portIdx, int priority)
+    : base(name, parent, priority) {
         myTransitionPackage= transitionPackage;
         myEndState         = endState;
         myTriggerPortIdx   = portIdx;
@@ -37,7 +37,7 @@ public class iCS_Transition : SSAction {
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
             myTransitionPackage.Execute(runId);            
-            if(!myTriggerFunction.IsCurrent(runId)) {
+            if(!myTriggerFunction.IsCurrent) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;
             }
@@ -47,7 +47,7 @@ public class iCS_Transition : SSAction {
     }
     // ----------------------------------------------------------------------
     public override Connection GetStalledProducerPort(int runId) {
-        if(IsCurrent(runId)) return null;
+        if(IsCurrent) return null;
         return myTransitionPackage.GetStalledProducerPort(runId);
     }
     // ----------------------------------------------------------------------
@@ -55,7 +55,7 @@ public class iCS_Transition : SSAction {
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
             myTransitionPackage.ForceExecute(runId);            
-            if(!myTransitionPackage.IsCurrent(runId)) {
+            if(!myTransitionPackage.IsCurrent) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;
             }

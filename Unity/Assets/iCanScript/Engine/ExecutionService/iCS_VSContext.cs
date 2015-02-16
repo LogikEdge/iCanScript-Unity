@@ -6,8 +6,6 @@ using Subspace;
 public class iCS_VSContext {
     // ======================================================================
     // Fields
-    SSContext           myContext= null;
-//    int                 myFrameId= 0;
     SSAction            myAction= null;
     List<SSAction>      myStalledActions= new List<SSAction>();
     
@@ -19,14 +17,13 @@ public class iCS_VSContext {
         set { myAction= value; }
     }
     public int FrameId {
-        get { return myContext.RunId; }
+        get { return myAction.Context.RunId; }
     }
     
     // ======================================================================
     // Methods
     // ----------------------------------------------------------------------
-    public iCS_VSContext(SSAction action, SSContext context) {
-        myContext= context;
+    public iCS_VSContext(SSAction action) {
         myAction= action;
         if(myAction != null) {
             myAction.IsActive= false;
@@ -37,14 +34,14 @@ public class iCS_VSContext {
     // Executes the run context (if it is valid)
     public void Run() {
         if(myAction == null) return;
-        myContext.RunId= myContext.RunId+1;
+        myAction.Context.RunId= myAction.Context.RunId+1;
         myAction.IsActive= true;
         do {
-            myAction.Execute(myContext.RunId);                                
+            myAction.Execute(myAction.Context.RunId);                                
             if(myAction.IsStalled) {
                 ResolveDeadLock(0);
             }
-        } while(!myAction.IsCurrent(myContext.RunId));
+        } while(!myAction.IsCurrent);
         myAction.IsActive= false;
     }
     // ----------------------------------------------------------------------
@@ -66,7 +63,7 @@ public class iCS_VSContext {
                     var node= myStalledActions[i];
                     if(node.IsStalled) {
                         node.IsActive= false;
-                        myAction.Execute(myContext.RunId);
+                        myAction.Execute(myAction.Context.RunId);
                         node.IsActive= true;                        
                         if(!myAction.IsStalled) return;
                     }
@@ -81,28 +78,28 @@ public class iCS_VSContext {
                 Debug.LogWarning("TOO MANY ATTEMPTS TO RESOLVE DEADLOCKS...FORCING EXECUTION");
             }
 //#endif
-            myAction.ForceExecute(myContext.RunId);
+            myAction.ForceExecute(myAction.Context.RunId);
             return;
         }
         // Get a producer port being waited on.
-        var stalledProducerPort= myAction.GetStalledProducerPort(myContext.RunId);
+        var stalledProducerPort= myAction.GetStalledProducerPort(myAction.Context.RunId);
         if(stalledProducerPort != null) {
             var node= stalledProducerPort.Action;
 //#if UNITY_EDITOR
             if(myAction.Context.IsTraceEnabled) {
-                Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myContext.RunId+")");
+                Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myAction.Context.RunId+")");
             }
 //#endif
             myStalledActions.Add(node);
             node.IsActive= false;
-            myAction.Execute(myContext.RunId);
+            myAction.Execute(myAction.Context.RunId);
             if(myAction.IsStalled) {
                 ResolveDeadLock(attempts+1);
             }
             node.IsActive= true;
 //#if UNITY_EDITOR
             if(myAction.Context.IsTraceEnabled) {
-                Debug.LogWarning("Activating=> "+node.FullName+" ("+myContext.RunId+")");
+                Debug.LogWarning("Activating=> "+node.FullName+" ("+myAction.Context.RunId+")");
             }
 //#endif
         }                    
@@ -112,7 +109,7 @@ public class iCS_VSContext {
                 Debug.LogWarning("DID NOT FIND STALLED PORT BUT MESSAGE HANDLER IS STALLED !!!");
             }
 //#endif
-            myAction.ForceExecute(myContext.RunId);                    
+            myAction.ForceExecute(myAction.Context.RunId);                    
         }
     }
 }

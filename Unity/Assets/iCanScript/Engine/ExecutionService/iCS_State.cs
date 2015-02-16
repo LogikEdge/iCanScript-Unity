@@ -28,9 +28,9 @@ public sealed class iCS_State : SSObject {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_State(string name, SSObject parent, SSContext context)
-    : base(name, parent, context) {
-        myTransitions= new iCS_VerifyTransitions(name, this, context, 0);
+    public iCS_State(string name, SSObject parent)
+    : base(name, parent) {
+        myTransitions= new iCS_VerifyTransitions(name, this, 0);
     }
     
     // ======================================================================

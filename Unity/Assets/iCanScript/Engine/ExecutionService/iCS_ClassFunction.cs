@@ -8,8 +8,8 @@ public class iCS_ClassFunction : iCS_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ClassFunction(string name, SSObject parent, MethodBase methodBase, SSContext context, int priority, int nbOfParameters, int nbOfEnables)
-    : base(name, parent, methodBase, context, priority, nbOfParameters, nbOfEnables) {}
+    public iCS_ClassFunction(string name, SSObject parent, MethodBase methodBase, int priority, int nbOfParameters, int nbOfEnables)
+    : base(name, parent, methodBase, priority, nbOfParameters, nbOfEnables) {}
 
     // ======================================================================
     // Execution
