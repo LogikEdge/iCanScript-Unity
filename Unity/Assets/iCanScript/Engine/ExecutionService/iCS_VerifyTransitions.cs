@@ -25,7 +25,7 @@ public class iCS_VerifyTransitions : SSAction {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void Execute() {
+    public override void Evaluate() {
         if(!IsActive) return;
         IsStalled= true;
         myTriggeredTransition= null;
@@ -39,7 +39,7 @@ public class iCS_VerifyTransitions : SSAction {
                 }
                 continue;
             }
-            transition.Execute();            
+            transition.Evaluate();            
             // Move to next child if sucessfully executed.
             if(transition.IsCurrent) {
                 if(transition.DidTrigger) {

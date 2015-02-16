@@ -32,11 +32,11 @@ public class iCS_Transition : SSAction {
     // ======================================================================
     // Update
     // ----------------------------------------------------------------------
-    public override void Execute() {
+    public override void Evaluate() {
         if(!IsActive) return;
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
-            myTransitionPackage.Execute();            
+            myTransitionPackage.Evaluate();            
             if(!myTriggerFunction.IsCurrent) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;

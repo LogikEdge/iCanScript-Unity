@@ -79,7 +79,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
         }
 		// Attempt to execute all other functions (packge like)
 		if(!myDispatcher.IsCurrent) {
-			myDispatcher.Execute();			
+			myDispatcher.Evaluate();			
 		}
     }
     // ----------------------------------------------------------------------
@@ -170,7 +170,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 			if(forced) {
 	            transitions.ForceExecute();					
 			} else {
-	            transitions.Execute();						
+	            transitions.Evaluate();						
 			}
             if(transitions.IsCurrent) {
 	            myFiredTransition= transitions.TriggeredTransition;
@@ -235,7 +235,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 			if(forced) {
 				action.ForceExecute();
 			} else {
-                action.Execute();            						
+                action.Evaluate();            						
 			}
             if(action.IsCurrent) {
 				if(idx == myQueueIdx) {
@@ -288,7 +288,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 				if(forced) {
 	                action.ForceExecute();            
 				} else {
-	                action.Execute();		
+	                action.Evaluate();		
 				}
                 if(action.IsCurrent) {
 					IsStalled= false;
@@ -330,7 +330,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 				if(forced) {
 	                action.ForceExecute();            
 				} else {
-	                action.Execute();            						
+	                action.Evaluate();            						
 				}
                 if(action.IsCurrent) {
 					IsStalled= false;

@@ -37,7 +37,7 @@ public class iCS_VSContext {
         myAction.Context.RunId= myAction.Context.RunId+1;
         myAction.IsActive= true;
         do {
-            myAction.Execute();                                
+            myAction.Evaluate();                                
             if(myAction.IsStalled) {
                 ResolveDeadLock(0);
             }
@@ -63,7 +63,7 @@ public class iCS_VSContext {
                     var node= myStalledActions[i];
                     if(node.IsStalled) {
                         node.IsActive= false;
-                        myAction.Execute();
+                        myAction.Evaluate();
                         node.IsActive= true;                        
                         if(!myAction.IsStalled) return;
                     }
@@ -92,7 +92,7 @@ public class iCS_VSContext {
 //#endif
             myStalledActions.Add(node);
             node.IsActive= false;
-            myAction.Execute();
+            myAction.Evaluate();
             if(myAction.IsStalled) {
                 ResolveDeadLock(attempts+1);
             }

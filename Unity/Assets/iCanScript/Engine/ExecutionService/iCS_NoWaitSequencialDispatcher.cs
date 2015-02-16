@@ -20,7 +20,7 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
             SSAction action= myExecuteQueue[i];
             bool didExecute= action.IsCurrent;
             if(!didExecute) {
-                action.Execute();                
+                action.Evaluate();                
                 if(action.IsCurrent) {
                     didExecute= true;
                     stalled= false;

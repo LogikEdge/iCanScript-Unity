@@ -19,7 +19,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
         while(myQueueIdx < queueSize) {
             // Attempt to execute child function.
             SSAction action= myExecuteQueue[myQueueIdx];
-            action.Execute();            
+            action.Evaluate();            
             if(!action.IsCurrent) {
 				
                 // Update the stalled flag

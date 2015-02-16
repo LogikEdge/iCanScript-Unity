@@ -269,7 +269,7 @@ namespace Subspace {
         // ======================================================================
         // Execution
         // ----------------------------------------------------------------------
-        public override void Execute() {
+        public override void Evaluate() {
             // Don't execute if action disabled.
             if(!IsActive) {
                 return;

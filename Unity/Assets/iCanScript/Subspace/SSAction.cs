@@ -53,7 +53,7 @@ namespace Subspace {
         // ======================================================================
         // Execution
         // ----------------------------------------------------------------------
-        public abstract void            Execute();
+        public abstract void            Evaluate();
         public abstract void            ForceExecute();
         public abstract Connection      GetStalledProducerPort();
     

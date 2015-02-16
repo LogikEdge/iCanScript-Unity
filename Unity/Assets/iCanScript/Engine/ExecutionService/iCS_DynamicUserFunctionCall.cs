@@ -74,7 +74,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                     isActionOwner= true;
                     myUserAction.Context.RunId= myUserAction.Context.RunId+1;
                 }
-                myUserAction.Execute();
+                myUserAction.Evaluate();
                 // Copy output ports
                 for(int i= 0; i < parameterLen; ++i) {
     				UpdateParameter(i);
@@ -162,7 +162,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 isActionOwner= true;
                 myUserAction.Context.RunId= myUserAction.Context.RunId+1;
             }
-            myUserAction.Execute();
+            myUserAction.Evaluate();
             // Copy output ports
             for(int i= 0; i < parameterLen; ++i) {
 				UpdateParameter(i);
