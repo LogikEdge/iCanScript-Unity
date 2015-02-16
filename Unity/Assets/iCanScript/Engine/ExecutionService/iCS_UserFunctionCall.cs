@@ -67,7 +67,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
 			}
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute()) {
+            if(myUserAction.DidExecute) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted();
@@ -143,7 +143,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             ReturnValue= myUserAction.ReturnValue;
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute()) {
+            if(myUserAction.DidExecute) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted();

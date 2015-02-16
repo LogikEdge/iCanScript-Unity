@@ -301,7 +301,7 @@ namespace Subspace {
             IsStalled= true;
             DoEvaluate();
             if(Context.IsTraceEnabled) {    
-                if(DidExecute()) {
+                if(DidExecute) {
                     Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+myContext.RunId+")");
                 }
     //            else if(IsCurrent(runId)){

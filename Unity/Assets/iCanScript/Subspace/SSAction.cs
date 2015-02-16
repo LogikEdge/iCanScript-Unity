@@ -59,13 +59,13 @@ namespace Subspace {
     
         // ----------------------------------------------------------------------
         public bool IsCurrent           { get { return myCurrentRunId == myContext.RunId; }}
-        public bool DidExecute()        { return myExecutedRunId == myContext.RunId; }
+        public bool DidExecute          { get { return myExecutedRunId == myContext.RunId; }}
         public void MarkAsCurrent()     { myCurrentRunId= myContext.RunId; myIsStalled= false; }
         public void MarkAsExecuted()    { myExecutedRunId= myContext.RunId; MarkAsCurrent(); }
 
         // ----------------------------------------------------------------------
         public bool ArePortsCurrent    { get { return IsCurrent || ArePortsAlwaysCurrent || !IsActive; }}
-        public bool ArePortsExecuted   { get { return DidExecute(); }}
+        public bool ArePortsExecuted   { get { return DidExecute; }}
     }
     
 }
