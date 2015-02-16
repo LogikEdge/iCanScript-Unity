@@ -198,6 +198,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         switch(node.ObjectType) {
                             case iCS_ObjectTypeEnum.Behaviour: {
                                 var behaviour= new SSObject(this.name, null);
+                                behaviour.Context.ErrorDelegate  = RuntimeErrorDelegate;
+                                behaviour.Context.WarningDelegate= RuntimeWarningDelegate;
                                 myRuntimeNodes[node.InstanceId]= behaviour;
                                 break;
                             }
@@ -311,36 +313,19 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 if( methodBase == null ) {
                                     continue;
                                 }
-                                // Special case for public variables.  They are created in the Start message handler.
-                                if(iCS_VisualScriptData.IsPublicVariable(this, node)) {
-                                    // FIXME: Possible duplicate creation of Start message handler.
-                                    myPublicInterfaces.Add(node.InstanceId);                                    
-                                    // Create a start message handler (if it does not exist)
-                                    if(!myMessageContexts.ContainsKey("Start")) {
-                                        var behaviour= myRuntimeNodes[0];
-                                        var startMessageHandler= new iCS_Package("Start", behaviour, priority, 0, 0);
-                                        InvokeAddChildIfExists(behaviour, startMessageHandler);
-                                        parent= startMessageHandler;
-                                    }
-                                    else {
-                                        iCS_VSContext startContext= null;
-                                        myMessageContexts.TryGetValue("Start", out startContext);
-                                        if(startContext != null) {
-                                            parent= startContext.Action;
-                                        }
-                                        else {
-                                            Debug.LogWarning("iCanScript: Start message handler wrongly initialized!!! Contact support.");
-                                            parent= null;
-                                        }
-                                    }
-                                }
                                 // Build constructor with proper parent.
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
                                 iCS_Constructor func= new iCS_Constructor(node.Name, parent, methodBase, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= func;
-                                InvokeAddChildIfExists(parent, func);
+                                // Special case for public variables.  They are created in the Start message handler.
+                                if(iCS_VisualScriptData.IsPublicVariable(this, node)) {
+                                    myPublicVariables.Add(node.InstanceId);
+                                }
+                                else {
+                                    InvokeAddChildIfExists(parent, func);                                    
+                                }
                                 break;
                             }
                             case iCS_ObjectTypeEnum.TypeCast:

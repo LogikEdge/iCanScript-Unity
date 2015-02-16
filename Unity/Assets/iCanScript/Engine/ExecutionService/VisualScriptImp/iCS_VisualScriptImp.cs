@@ -15,6 +15,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     SSContext                           myContext         = null;
     SSObject[]                          myRuntimeNodes    = new SSObject[0];
     List<int>                           myPublicInterfaces= new List<int>();
+    List<int>                           myPublicVariables = new List<int>();
     Dictionary<string,iCS_VSContext>    myMessageContexts = new Dictionary<string,iCS_VSContext>();
     P.TimerService                      myTimerService    = new P.TimerService();
     
@@ -144,6 +145,13 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // is invoked after Awake and before any Update call.
     void Start() {
         ConnectRuntimeObjects();
+        // Build public variables
+        foreach(var i in myPublicVariables) {
+            var constructor= myRuntimeNodes[i] as SSAction;
+            constructor.Evaluate();
+        }
+        myPublicVariables.Clear();
+        // Run the Start message handler.
         iCS_VSContext startContext= null;
         myMessageContexts.TryGetValue("Start", out startContext);
         if(startContext != null) {
