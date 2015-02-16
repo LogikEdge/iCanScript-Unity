@@ -9,7 +9,6 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     // ----------------------------------------------------------------------
     protected SSActionWithSignature myUserAction= null;
               bool                  isActionOwner= false;
-              int                   actionFrameId= 0;
 
     // ======================================================================
     // Creation/Destruction
@@ -23,12 +22,12 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int runId) {
+    protected override void DoExecute() {
 //#if UNITY_EDITOR
         try {
 //#endif
             // Wait until this port is ready.
-            if(IsThisReady(runId)) {
+            if(IsThisReady(myContext.RunId)) {
                 // Fetch the user action.
                 var gameObject= This as GameObject;
                 if(gameObject == null) {
@@ -50,7 +49,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 // Wait until all inputs are ready.
                 var parameterLen= Parameters.Length;
                 for(int i= 0; i < parameterLen; ++i) {
-                    if(IsParameterReady(i, runId) == false) {
+                    if(IsParameterReady(i, myContext.RunId) == false) {
                         return;
                     }
                 }
@@ -64,7 +63,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 for(int i= 0; i < parameterLen; ++i) {
                     userActionParameters[i]= parameters[i];
                 }
-                // Wait unitil user function becomes available
+                // Wait until user function becomes available
                 if(!isActionOwner && myUserAction.IsActive == true) {
                     IsStalled= false;
                     return;
@@ -73,9 +72,9 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 myUserAction.IsActive= true;
                 if(!isActionOwner) {
                     isActionOwner= true;
-                    actionFrameId= myUserAction.RunId+1;
+                    myUserAction.Context.RunId= myUserAction.Context.RunId+1;
                 }
-                myUserAction.Execute(actionFrameId);
+                myUserAction.Execute();
                 // Copy output ports
                 for(int i= 0; i < parameterLen; ++i) {
     				UpdateParameter(i);
@@ -119,7 +118,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     }
 
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int runId) {
+    protected override void DoForceExecute() {
 //#if UNITY_EDITOR
         try {
 //#endif
@@ -161,9 +160,9 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
             myUserAction.IsActive= true;
             if(!isActionOwner) {
                 isActionOwner= true;
-                actionFrameId= myUserAction.RunId+1;
+                myUserAction.Context.RunId= myUserAction.Context.RunId+1;
             }
-            myUserAction.Execute(actionFrameId);
+            myUserAction.Execute();
             // Copy output ports
             for(int i= 0; i < parameterLen; ++i) {
 				UpdateParameter(i);

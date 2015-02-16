@@ -54,68 +54,68 @@ public sealed class iCS_StateChart : SSActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int runId) {
+    protected override void DoExecute() {
         // Make certain that at least one active state exists.
         if(myActiveStack.Count == 0 && myEntryState != null) {
             var entryState= myEntryState;
             while(entryState.EntryState != null) entryState= entryState.EntryState;
-            MoveToState(entryState, runId);
+            MoveToState(entryState, myContext.RunId);
         }
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
-            ExecuteVerifyTransitions(runId);            
+            ExecuteVerifyTransitions(myContext.RunId);            
         }
         // Execute state exit functions.
         if(myExecutionState == ExecutionState.RunningExit) {
-            ExecuteExits(runId);
+            ExecuteExits(myContext.RunId);
         }
         // Execute state entry functions.
         if(myExecutionState == ExecutionState.RunningEntry) {
-            ExecuteEntries(runId);
+            ExecuteEntries(myContext.RunId);
         }
         // Execute state update functions.
         if(myExecutionState == ExecutionState.RunningUpdate) {
-            ExecuteUpdates(runId);
+            ExecuteUpdates(myContext.RunId);
         }
 		// Attempt to execute all other functions (packge like)
 		if(!myDispatcher.IsCurrent) {
-			myDispatcher.Execute(runId);			
+			myDispatcher.Execute();			
 		}
     }
     // ----------------------------------------------------------------------
     // TODO: GetStalledProducerPort
-    public override Connection GetStalledProducerPort(int runId) {
+    public override Connection GetStalledProducerPort() {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
-            var producerPort= GetStalledProducerPortInTransitions(runId);            
+            var producerPort= GetStalledProducerPortInTransitions(myContext.RunId);            
             if(producerPort != null) {
                 return producerPort;
             }
         }
         // Execute state exit functions.
         if(myExecutionState == ExecutionState.RunningExit) {
-            var producerPort= GetStalledProducerPortOnExit(runId);
+            var producerPort= GetStalledProducerPortOnExit(myContext.RunId);
             if(producerPort != null) {
                 return producerPort;
             }
         }
         // Execute state entry functions.
         if(myExecutionState == ExecutionState.RunningEntry) {
-            var producerPort= GetStalledProducerPortOnEntry(runId);
+            var producerPort= GetStalledProducerPortOnEntry(myContext.RunId);
             if(producerPort != null) {
                 return producerPort;
             }
         }
         // Execute state update functions.
         if(myExecutionState == ExecutionState.RunningUpdate) {
-            var producerPort= GetStalledProducerPortOnUpdate(runId);
+            var producerPort= GetStalledProducerPortOnUpdate(myContext.RunId);
             if(producerPort != null) {
                 return producerPort;
             }
         }
 		// Execute all other functions (packge like)
 		if(!myDispatcher.IsCurrent) {
-			var producerPort= myDispatcher.GetStalledProducerPort(runId);			
+			var producerPort= myDispatcher.GetStalledProducerPort();			
             if(producerPort != null) {
                 return producerPort;
             }
@@ -123,26 +123,26 @@ public sealed class iCS_StateChart : SSActionWithSignature {
         return null;
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int runId) {
+    protected override void DoForceExecute() {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
-            ExecuteVerifyTransitions(runId, /*forced=*/true);            
+            ExecuteVerifyTransitions(myContext.RunId, /*forced=*/true);            
         }
         // Execute state exit functions.
         if(myExecutionState == ExecutionState.RunningExit) {
-            ExecuteExits(runId, /*forced=*/true);
+            ExecuteExits(myContext.RunId, /*forced=*/true);
         }
         // Execute state entry functions.
         if(myExecutionState == ExecutionState.RunningEntry) {
-            ExecuteEntries(runId, /*forced=*/true);
+            ExecuteEntries(myContext.RunId, /*forced=*/true);
         }
         // Execute state update functions.
         if(myExecutionState == ExecutionState.RunningUpdate) {
-            ExecuteUpdates(runId, /*forced=*/true);
+            ExecuteUpdates(myContext.RunId, /*forced=*/true);
         }
 		// Execute all other functions (packge like)
 		if(!myDispatcher.IsCurrent) {
-			myDispatcher.ForceExecute(runId);			
+			myDispatcher.ForceExecute();			
 		}
     }
     
@@ -168,9 +168,9 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 			}
 			// Verify transition.
 			if(forced) {
-	            transitions.ForceExecute(runId);					
+	            transitions.ForceExecute();					
 			} else {
-	            transitions.Execute(runId);						
+	            transitions.Execute();						
 			}
             if(transitions.IsCurrent) {
 	            myFiredTransition= transitions.TriggeredTransition;
@@ -207,7 +207,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             iCS_VerifyTransitions transitions= state.Transitions;
 			// Transition has already been tested.  Just move on to next one.
 			if(!transitions.IsCurrent) {
-                var producerPort= transitions.GetStalledProducerPort(runId);
+                var producerPort= transitions.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;
                 }
@@ -233,9 +233,9 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 			}
 			// Run the update action.
 			if(forced) {
-				action.ForceExecute(runId);
+				action.ForceExecute();
 			} else {
-                action.Execute(runId);            						
+                action.Execute();            						
 			}
             if(action.IsCurrent) {
 				if(idx == myQueueIdx) {
@@ -266,7 +266,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             SSAction action= state.OnUpdateAction;
 			// Update is not needed or already ran.  Just move to the next state...
 			if(action != null && !action.IsCurrent) {
-                var producerPort= action.GetStalledProducerPort(runId);
+                var producerPort= action.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;
                 }
@@ -286,9 +286,9 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             SSAction action= state.OnExitAction;
 			if(action != null && !action.IsCurrent) {
 				if(forced) {
-	                action.ForceExecute(runId);            
+	                action.ForceExecute();            
 				} else {
-	                action.Execute(runId);		
+	                action.Execute();		
 				}
                 if(action.IsCurrent) {
 					IsStalled= false;
@@ -310,7 +310,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             SSAction action= state.OnExitAction;
 			// Update is not needed or already ran.  Just move to the next state...
 			if(action != null && !action.IsCurrent) {
-                var producerPort= action.GetStalledProducerPort(runId);
+                var producerPort= action.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;
                 }
@@ -328,9 +328,9 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             SSAction action= state.OnEntryAction;
 			if(action != null && !action.IsCurrent) {
 				if(forced) {
-	                action.ForceExecute(runId);            
+	                action.ForceExecute();            
 				} else {
-	                action.Execute(runId);            						
+	                action.Execute();            						
 				}
                 if(action.IsCurrent) {
 					IsStalled= false;
@@ -353,7 +353,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             SSAction action= state.OnEntryAction;
 			// Update is not needed or already ran.  Just move to the next state...
 			if(action != null && !action.IsCurrent) {
-                var producerPort= action.GetStalledProducerPort(runId);
+                var producerPort= action.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;
                 }

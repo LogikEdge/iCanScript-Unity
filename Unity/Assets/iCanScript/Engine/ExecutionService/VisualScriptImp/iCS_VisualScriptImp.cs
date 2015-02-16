@@ -130,7 +130,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
             awakeContext.Action.Context.RunId= -2;
             awakeContext.Action.IsActive= true;
             do {
-                awakeContext.Action.Execute(-2);
+                awakeContext.Action.Execute();
                 if(awakeContext.Action.IsStalled) {
                     Debug.LogError("The Awake() of "+name+" is stalled. Please remove any dependent processing !!!");
                     return;
@@ -150,7 +150,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
             startContext.Action.Context.RunId= -2;
             startContext.Action.IsActive= true;
             do {
-                startContext.Action.Execute(-2);
+                startContext.Action.Execute();
                 if(startContext.Action.IsStalled) {
                     Debug.LogError("The Start() of "+name+" is stalled. Please remove any dependent processing !!!");
                     return;

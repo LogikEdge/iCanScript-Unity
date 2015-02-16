@@ -39,15 +39,15 @@ namespace Subspace {
         /// Returns **TRUE** if the value is available for this _runId_.
         public bool IsReady(int runId)    {
             if(myIsAlwaysReady || !IsConnected) return true;
-            return Action.ArePortsCurrent(runId);
+            return Action.ArePortsCurrent;
         }
         /// Returns **TRUE** if the connected _SSAction_ has been evaluated or executed for this _runId_.
         public bool IsCurrent(int runId) {
-        	return Action.ArePortsCurrent(runId);
+        	return Action.ArePortsCurrent;
         }
         /// Returns **TRUE** if the connected _SSAction_ has ran for this _runId_.
         public bool DidExecute(int runId) {
-        	return Action.ArePortsExecuted(runId);
+        	return Action.ArePortsExecuted;
         }
      }
     

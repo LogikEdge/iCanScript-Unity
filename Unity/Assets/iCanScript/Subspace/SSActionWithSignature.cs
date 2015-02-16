@@ -269,7 +269,7 @@ namespace Subspace {
         // ======================================================================
         // Execution
         // ----------------------------------------------------------------------
-        public override void Execute(int runId) {
+        public override void Execute() {
             // Don't execute if action disabled.
             if(!IsActive) {
                 return;
@@ -282,7 +282,7 @@ namespace Subspace {
             myTrigger= false;
             // Wait until the enables can be resolved.
             bool isEnabled;
-            if(!GetIsEnabledIfReady(runId, out isEnabled)) {
+            if(!GetIsEnabledIfReady(myContext.RunId, out isEnabled)) {
     			IsStalled= true;
     //            if(VisualScript.IsTraceEnabled) {
     //                Debug.Log("Executing=> "+FullName+" is waiting on the enables");
@@ -292,17 +292,17 @@ namespace Subspace {
     		// Skip execution if this action is disabled.
             if(isEnabled == false) {
                 MarkAsCurrent();
-                if(Context.IsTraceEnabled) {
-                    Debug.Log("Executing=> "+FullName+" is disabled"+" ("+runId+")");
+                if(myContext.IsTraceEnabled) {
+                    Debug.Log("Executing=> "+FullName+" is disabled"+" ("+myContext.RunId+")");
                 }
                 return;
             }
             // Invoke derived class to execute normally.
             IsStalled= true;
-            DoExecute(runId);
+            DoExecute();
             if(Context.IsTraceEnabled) {    
                 if(DidExecute()) {
-                    Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+runId+")");
+                    Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+myContext.RunId+")");
                 }
     //            else if(IsCurrent(runId)){
     //                Debug.Log("Executing=> "+FullName+" is Current");
@@ -330,17 +330,17 @@ namespace Subspace {
             return null;
         }
         // ----------------------------------------------------------------------
-        public override Connection GetStalledProducerPort(int runId) {
+        public override Connection GetStalledProducerPort() {
             if(IsCurrent) {
                 return null;
             }
             // Let's first verify the enables.
-            var stalledEnable= GetStalledEnablePort(runId);
+            var stalledEnable= GetStalledEnablePort(myContext.RunId);
             if(stalledEnable != null) {
                 return stalledEnable;
             }
             // Verify intance connection
-            if(myThisConnection != null && !myThisConnection.IsReady(runId)) {
+            if(myThisConnection != null && !myThisConnection.IsReady(myContext.RunId)) {
                 return myThisConnection;
             }
             // Verify parameter connections
@@ -348,7 +348,7 @@ namespace Subspace {
             for(int i= 0; i < len; ++i) {
                 var connection= myParameterConnections[i];
                 if(connection != null) {
-                    if(!connection.IsReady(runId)) {
+                    if(!connection.IsReady(myContext.RunId)) {
                         return connection;
                     }
                 }
@@ -356,9 +356,9 @@ namespace Subspace {
             return null;
         }
         // ----------------------------------------------------------------------
-        public override void ForceExecute(int runId) {
+        public override void ForceExecute() {
             if(Context.IsTraceEnabled) {
-                var stalledPort= GetStalledProducerPort(runId);
+                var stalledPort= GetStalledProducerPort();
                 var stalledPortName= stalledPort == null ? "" : stalledPort.PortFullName;
                 if(stalledPort != null) {
                     var stalledNode= stalledPort.Action;
@@ -377,7 +377,7 @@ namespace Subspace {
             }
             // Invoke derived class to force execute.
             IsStalled= true;
-            DoForceExecute(runId);
+            DoForceExecute();
         }
         // ----------------------------------------------------------------------
         // Override the execute marker to set the output trigger.
@@ -388,8 +388,8 @@ namespace Subspace {
         // =========================================================================
         // Functions to override to provide specific behaviours.
         // ----------------------------------------------------------------------
-        protected abstract void DoExecute(int runId);
-        protected abstract void DoForceExecute(int runId);
+        protected abstract void DoExecute();
+        protected abstract void DoForceExecute();
     }
     
 }

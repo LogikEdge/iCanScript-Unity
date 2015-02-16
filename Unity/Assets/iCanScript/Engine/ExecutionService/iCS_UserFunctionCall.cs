@@ -9,7 +9,6 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
     // ----------------------------------------------------------------------
     protected SSActionWithSignature myUserAction = null;
               bool                  isActionOwner= false;
-              int                   actionFrameId= 0;
 
     // ======================================================================
     // Creation/Destruction
@@ -23,7 +22,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int runId) {
+    protected override void DoExecute() {
 //#if UNITY_EDITOR
         try {
 //#endif
@@ -36,7 +35,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             // Wait until all inputs are ready.
             var parameterLen= Parameters.Length;
             for(int i= 0; i < parameterLen; ++i) {
-                if(IsParameterReady(i, runId) == false) {
+                if(IsParameterReady(i, myContext.RunId) == false) {
                     return;
                 }
             }
@@ -59,9 +58,9 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             myUserAction.IsActive= true;
             if(!isActionOwner) {
                 isActionOwner= true;
-                actionFrameId= myUserAction.RunId+1;
+                myUserAction.Context.RunId= myUserAction.Context.RunId+1;
             }
-            myUserAction.Execute(actionFrameId);
+            myUserAction.Execute();
             // Copy output ports
             for(int i= 0; i < parameterLen; ++i) {
 				UpdateParameter(i);
@@ -104,14 +103,14 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
     }
     // ----------------------------------------------------------------------
     // TODO: UserFunction.DoForceExecute()
-    protected override void DoForceExecute(int runId) {
+    protected override void DoForceExecute() {
 //#if UNITY_EDITOR
         try {
 //#endif
             // Wait until all inputs are ready.
             var parameterLen= Parameters.Length;
             for(int i= 0; i < parameterLen; ++i) {
-                if(IsParameterReady(i, runId) == false) {
+                if(IsParameterReady(i, myContext.RunId) == false) {
                     return;
                 }
             }
@@ -134,9 +133,9 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             myUserAction.IsActive= true;
             if(!isActionOwner) {
                 isActionOwner= true;
-                actionFrameId= myUserAction.RunId+1;
+                myUserAction.Context.RunId= myUserAction.Context.RunId+1;
             }
-            myUserAction.ForceExecute(actionFrameId);
+            myUserAction.ForceExecute();
             // Copy output ports
             for(int i= 0; i < parameterLen; ++i) {
 				UpdateParameter(i);

@@ -25,7 +25,7 @@ public class iCS_VerifyTransitions : SSAction {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void Execute(int runId) {
+    public override void Execute() {
         if(!IsActive) return;
         IsStalled= true;
         myTriggeredTransition= null;
@@ -39,12 +39,12 @@ public class iCS_VerifyTransitions : SSAction {
                 }
                 continue;
             }
-            transition.Execute(runId);            
+            transition.Execute();            
             // Move to next child if sucessfully executed.
             if(transition.IsCurrent) {
                 if(transition.DidTrigger) {
                     myTriggeredTransition= transition;
-                    ResetIterator(runId);
+                    ResetIterator(myContext.RunId);
                     return;
                 }
                 IsStalled= false;
@@ -58,15 +58,15 @@ public class iCS_VerifyTransitions : SSAction {
         }
         // Reset iterators for next frame.
         if(myQueueIdx >= end) {
-            ResetIterator(runId);            
+            ResetIterator(myContext.RunId);            
         }
     }
     // ----------------------------------------------------------------------
-    public override Connection GetStalledProducerPort(int runId) {
+    public override Connection GetStalledProducerPort() {
         for(int cursor= myQueueIdx; cursor < myTransitions.Count; ++cursor) {
             iCS_Transition transition= myTransitions[cursor];
             if(!transition.IsCurrent) {
-                var result= transition.GetStalledProducerPort(runId);
+                var result= transition.GetStalledProducerPort();
                 if(result != null) {
                     return result;
                 }
@@ -75,15 +75,15 @@ public class iCS_VerifyTransitions : SSAction {
         return null;        
     }
     // ----------------------------------------------------------------------
-    public override void ForceExecute(int runId) {
+    public override void ForceExecute() {
         myTriggeredTransition= null;
         if(myQueueIdx < myTransitions.Count) {
             iCS_Transition transition= myTransitions[myQueueIdx];
-            transition.ForceExecute(runId);            
+            transition.ForceExecute();            
             if(transition.IsCurrent) {
                 if(transition.DidTrigger) {
                     myTriggeredTransition= transition;
-                    ResetIterator(runId);
+                    ResetIterator(myContext.RunId);
                     return;
                 }
                 ++myQueueIdx;
@@ -96,7 +96,7 @@ public class iCS_VerifyTransitions : SSAction {
             }
         }
         if(myQueueIdx >= myTransitions.Count) {
-            ResetIterator(runId);
+            ResetIterator(myContext.RunId);
         }
     }
     // ----------------------------------------------------------------------

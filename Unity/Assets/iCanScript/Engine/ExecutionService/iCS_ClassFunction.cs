@@ -14,19 +14,19 @@ public class iCS_ClassFunction : iCS_FunctionBase {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int runId) {
+    protected override void DoExecute() {
         // Wait until all inputs are ready.
         var len= Parameters.Length;
         for(int i= 0; i < len; ++i) {
-            if(IsParameterReady(i, runId) == false) {
+            if(IsParameterReady(i, myContext.RunId) == false) {
                 return;
             }
         }
         // Execute associated function.
-        DoForceExecute(runId);
+        DoForceExecute();
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int runId) {
+    protected override void DoForceExecute() {
 //#if UNITY_EDITOR
         try {
 //#endif

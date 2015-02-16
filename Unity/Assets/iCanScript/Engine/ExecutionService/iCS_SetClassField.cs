@@ -14,15 +14,15 @@ public class iCS_SetClassField : iCS_FieldBase {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int runId) {
-        if(!IsParameterReady(0, runId)) {
+    protected override void DoExecute() {
+        if(!IsParameterReady(0, myContext.RunId)) {
             IsStalled= true;
             return;
         }
-        DoForceExecute(runId);
+        DoForceExecute();
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int runId) {
+    protected override void DoForceExecute() {
         // Execute function
         UpdateParameter(0);
 //#if UNITY_EDITOR

@@ -15,9 +15,9 @@ public class iCS_InstanceFunction : iCS_ClassFunction {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int runId) {
-        if(IsThisReady(runId)) {
-            base.DoExecute(runId);
+    protected override void DoExecute() {
+        if(IsThisReady(myContext.RunId)) {
+            base.DoExecute();
         }
     }
 }

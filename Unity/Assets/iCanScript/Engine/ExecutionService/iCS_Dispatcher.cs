@@ -19,12 +19,12 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override Connection GetStalledProducerPort(int runId) {
+    public override Connection GetStalledProducerPort() {
         if(IsCurrent) {
             return null;
         }
         // Get the dispatcher stalled enable ports.
-        var producerPort= GetStalledEnablePort(runId);
+        var producerPort= GetStalledEnablePort(myContext.RunId);
         if(producerPort != null) {
             return producerPort;
         }
@@ -33,7 +33,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
         if(cursor < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
             if(!action.IsCurrent) {
-                producerPort= action.GetStalledProducerPort(runId);
+                producerPort= action.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;
                 }
@@ -43,10 +43,10 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
     }
 
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int runId) {
+    protected override void DoForceExecute() {
         if(myQueueIdx < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
-            action.ForceExecute(runId);            
+            action.ForceExecute();            
             if(action.IsCurrent) {
                 ++myQueueIdx;
                 IsStalled= false;
@@ -55,7 +55,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
             }
         }
         if(myQueueIdx >= myExecuteQueue.Count) {
-            ResetIterator(runId);
+            ResetIterator(myContext.RunId);
         }
     }
     // ----------------------------------------------------------------------

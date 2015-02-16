@@ -32,11 +32,11 @@ public class iCS_Transition : SSAction {
     // ======================================================================
     // Update
     // ----------------------------------------------------------------------
-    public override void Execute(int runId) {
+    public override void Execute() {
         if(!IsActive) return;
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
-            myTransitionPackage.Execute(runId);            
+            myTransitionPackage.Execute();            
             if(!myTriggerFunction.IsCurrent) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;
@@ -46,15 +46,15 @@ public class iCS_Transition : SSAction {
         MarkAsExecuted();
     }
     // ----------------------------------------------------------------------
-    public override Connection GetStalledProducerPort(int runId) {
+    public override Connection GetStalledProducerPort() {
         if(IsCurrent) return null;
-        return myTransitionPackage.GetStalledProducerPort(runId);
+        return myTransitionPackage.GetStalledProducerPort();
     }
     // ----------------------------------------------------------------------
-    public override void ForceExecute(int runId) {
+    public override void ForceExecute() {
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
-            myTransitionPackage.ForceExecute(runId);            
+            myTransitionPackage.ForceExecute();            
             if(!myTransitionPackage.IsCurrent) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;

@@ -37,7 +37,7 @@ public class iCS_VSContext {
         myAction.Context.RunId= myAction.Context.RunId+1;
         myAction.IsActive= true;
         do {
-            myAction.Execute(myAction.Context.RunId);                                
+            myAction.Execute();                                
             if(myAction.IsStalled) {
                 ResolveDeadLock(0);
             }
@@ -63,7 +63,7 @@ public class iCS_VSContext {
                     var node= myStalledActions[i];
                     if(node.IsStalled) {
                         node.IsActive= false;
-                        myAction.Execute(myAction.Context.RunId);
+                        myAction.Execute();
                         node.IsActive= true;                        
                         if(!myAction.IsStalled) return;
                     }
@@ -78,11 +78,11 @@ public class iCS_VSContext {
                 Debug.LogWarning("TOO MANY ATTEMPTS TO RESOLVE DEADLOCKS...FORCING EXECUTION");
             }
 //#endif
-            myAction.ForceExecute(myAction.Context.RunId);
+            myAction.ForceExecute();
             return;
         }
         // Get a producer port being waited on.
-        var stalledProducerPort= myAction.GetStalledProducerPort(myAction.Context.RunId);
+        var stalledProducerPort= myAction.GetStalledProducerPort();
         if(stalledProducerPort != null) {
             var node= stalledProducerPort.Action;
 //#if UNITY_EDITOR
@@ -92,7 +92,7 @@ public class iCS_VSContext {
 //#endif
             myStalledActions.Add(node);
             node.IsActive= false;
-            myAction.Execute(myAction.Context.RunId);
+            myAction.Execute();
             if(myAction.IsStalled) {
                 ResolveDeadLock(attempts+1);
             }
@@ -109,7 +109,7 @@ public class iCS_VSContext {
                 Debug.LogWarning("DID NOT FIND STALLED PORT BUT MESSAGE HANDLER IS STALLED !!!");
             }
 //#endif
-            myAction.ForceExecute(myAction.Context.RunId);                    
+            myAction.ForceExecute();                    
         }
     }
 }

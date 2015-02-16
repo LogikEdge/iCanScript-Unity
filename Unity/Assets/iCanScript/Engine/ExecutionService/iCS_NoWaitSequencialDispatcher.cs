@@ -13,14 +13,14 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int runId) {
+    protected override void DoExecute() {
         // Attempt to execute child functions.
         bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {
             SSAction action= myExecuteQueue[i];
             bool didExecute= action.IsCurrent;
             if(!didExecute) {
-                action.Execute(runId);                
+                action.Execute();                
                 if(action.IsCurrent) {
                     didExecute= true;
                     stalled= false;
@@ -41,6 +41,6 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
             return;
         }
         // Reset iterators for next frame.
-        ResetIterator(runId);
+        ResetIterator(myContext.RunId);
     }
 }

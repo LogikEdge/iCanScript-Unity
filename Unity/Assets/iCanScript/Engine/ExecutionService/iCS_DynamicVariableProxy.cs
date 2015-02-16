@@ -19,9 +19,9 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int runId) {
+    protected override void DoExecute() {
         // Wait until this port is ready.
-        if(IsThisReady(runId)) {
+        if(IsThisReady(myContext.RunId)) {
             // Try to connect with the visual script.
             var gameObject= This as GameObject;
             if(gameObject == null) {
@@ -45,7 +45,7 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
     }
 
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute(int runId) {
+    protected override void DoForceExecute() {
         // Try to connect with the visual script.
         var gameObject= This as GameObject;
         if(gameObject == null) {
