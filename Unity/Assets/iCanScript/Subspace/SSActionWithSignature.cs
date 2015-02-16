@@ -356,7 +356,7 @@ namespace Subspace {
             return null;
         }
         // ----------------------------------------------------------------------
-        public override void ForceExecute() {
+        public override void Execute() {
             if(Context.IsTraceEnabled) {
                 var stalledPort= GetStalledProducerPort();
                 var stalledPortName= stalledPort == null ? "" : stalledPort.PortFullName;

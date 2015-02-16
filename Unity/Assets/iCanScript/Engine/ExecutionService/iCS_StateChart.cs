@@ -142,7 +142,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
         }
 		// Execute all other functions (packge like)
 		if(!myDispatcher.IsCurrent) {
-			myDispatcher.ForceExecute();			
+			myDispatcher.Execute();			
 		}
     }
     
@@ -168,7 +168,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 			}
 			// Verify transition.
 			if(forced) {
-	            transitions.ForceExecute();					
+	            transitions.Execute();					
 			} else {
 	            transitions.Evaluate();						
 			}
@@ -233,7 +233,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 			}
 			// Run the update action.
 			if(forced) {
-				action.ForceExecute();
+				action.Execute();
 			} else {
                 action.Evaluate();            						
 			}
@@ -286,7 +286,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             SSAction action= state.OnExitAction;
 			if(action != null && !action.IsCurrent) {
 				if(forced) {
-	                action.ForceExecute();            
+	                action.Execute();            
 				} else {
 	                action.Evaluate();		
 				}
@@ -328,7 +328,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             SSAction action= state.OnEntryAction;
 			if(action != null && !action.IsCurrent) {
 				if(forced) {
-	                action.ForceExecute();            
+	                action.Execute();            
 				} else {
 	                action.Evaluate();            						
 				}

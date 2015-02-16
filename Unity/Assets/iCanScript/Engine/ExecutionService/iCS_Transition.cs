@@ -51,10 +51,10 @@ public class iCS_Transition : SSAction {
         return myTransitionPackage.GetStalledProducerPort();
     }
     // ----------------------------------------------------------------------
-    public override void ForceExecute() {
+    public override void Execute() {
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
-            myTransitionPackage.ForceExecute();            
+            myTransitionPackage.Execute();            
             if(!myTransitionPackage.IsCurrent) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;

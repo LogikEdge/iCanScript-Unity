@@ -78,7 +78,7 @@ public class iCS_VSContext {
                 Debug.LogWarning("TOO MANY ATTEMPTS TO RESOLVE DEADLOCKS...FORCING EXECUTION");
             }
 //#endif
-            myAction.ForceExecute();
+            myAction.Execute();
             return;
         }
         // Get a producer port being waited on.
@@ -109,7 +109,7 @@ public class iCS_VSContext {
                 Debug.LogWarning("DID NOT FIND STALLED PORT BUT MESSAGE HANDLER IS STALLED !!!");
             }
 //#endif
-            myAction.ForceExecute();                    
+            myAction.Execute();                    
         }
     }
 }

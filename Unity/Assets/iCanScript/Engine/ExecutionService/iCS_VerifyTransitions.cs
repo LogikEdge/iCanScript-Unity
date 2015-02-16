@@ -75,11 +75,11 @@ public class iCS_VerifyTransitions : SSAction {
         return null;        
     }
     // ----------------------------------------------------------------------
-    public override void ForceExecute() {
+    public override void Execute() {
         myTriggeredTransition= null;
         if(myQueueIdx < myTransitions.Count) {
             iCS_Transition transition= myTransitions[myQueueIdx];
-            transition.ForceExecute();            
+            transition.Execute();            
             if(transition.IsCurrent) {
                 if(transition.DidTrigger) {
                     myTriggeredTransition= transition;
