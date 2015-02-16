@@ -54,7 +54,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
         // Make certain that at least one active state exists.
         if(myActiveStack.Count == 0 && myEntryState != null) {
             var entryState= myEntryState;
@@ -123,7 +123,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
         return null;
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute() {
+    protected override void DoExecute() {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
             ExecuteVerifyTransitions(myContext.RunId, /*forced=*/true);            

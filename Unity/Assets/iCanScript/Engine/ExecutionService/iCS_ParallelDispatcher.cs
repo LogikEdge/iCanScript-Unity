@@ -13,7 +13,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
 		int swapCursor= myQueueIdx;
         int queueSize= myExecuteQueue.Count;
         while(myQueueIdx < queueSize) {
@@ -39,7 +39,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
         ResetIterator(myContext.RunId);            
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute() {
+    protected override void DoExecute() {
         // Sort stalled action according to layout rule.
         int best= myQueueIdx;
         int queueSize= myExecuteQueue.Count;
@@ -52,6 +52,6 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
             Swap(myQueueIdx, best);
         }
         // Force execute the selected action.
-        base.DoForceExecute();
+        base.DoExecute();
     }
 }

@@ -13,7 +13,7 @@ public class iCS_Mux : SSActionWithSignature {
     // Execution (not used)
     // ----------------------------------------------------------------------
     // FIXME: Mux should prefer running over current frame nodes.
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
         // Take the first valid connection.
         foreach(var connection in ParameterConnections) {
             if(connection.DidExecute(myContext.RunId)) {
@@ -24,7 +24,7 @@ public class iCS_Mux : SSActionWithSignature {
         }
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute() {
+    protected override void DoExecute() {
         // Take the last that has executed.
 		int smallestDistance= 100000;
 		Connection bestConnection= null;

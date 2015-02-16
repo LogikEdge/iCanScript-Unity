@@ -299,7 +299,7 @@ namespace Subspace {
             }
             // Invoke derived class to execute normally.
             IsStalled= true;
-            DoExecute();
+            DoEvaluate();
             if(Context.IsTraceEnabled) {    
                 if(DidExecute()) {
                     Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+myContext.RunId+")");
@@ -377,7 +377,7 @@ namespace Subspace {
             }
             // Invoke derived class to force execute.
             IsStalled= true;
-            DoForceExecute();
+            DoExecute();
         }
         // ----------------------------------------------------------------------
         // Override the execute marker to set the output trigger.
@@ -388,8 +388,8 @@ namespace Subspace {
         // =========================================================================
         // Functions to override to provide specific behaviours.
         // ----------------------------------------------------------------------
+        protected abstract void DoEvaluate();
         protected abstract void DoExecute();
-        protected abstract void DoForceExecute();
     }
     
 }

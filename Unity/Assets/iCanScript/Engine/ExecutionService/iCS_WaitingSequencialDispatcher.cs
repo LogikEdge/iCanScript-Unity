@@ -13,7 +13,7 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
         bool stalled= true;
         while(myQueueIdx < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];

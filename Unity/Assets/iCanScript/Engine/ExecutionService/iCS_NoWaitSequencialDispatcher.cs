@@ -13,7 +13,7 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
         // Attempt to execute child functions.
         bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {

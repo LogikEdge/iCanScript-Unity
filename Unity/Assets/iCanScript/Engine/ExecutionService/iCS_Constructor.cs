@@ -14,17 +14,17 @@ public class iCS_Constructor : iCS_ClassFunction {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
         if(ReturnValue == null) {
-            base.DoExecute();
+            base.DoEvaluate();
         } else {
             MarkAsExecuted();
         }
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute() {
+    protected override void DoExecute() {
         if(ReturnValue == null) {
-            base.DoForceExecute();
+            base.DoExecute();
             if(ReturnValue != null) {
                 // TODO: Should remove variable creation for execution queue once done.
                 ArePortsAlwaysCurrent= true;

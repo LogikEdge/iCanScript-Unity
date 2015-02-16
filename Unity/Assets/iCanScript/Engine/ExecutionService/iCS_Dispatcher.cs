@@ -43,7 +43,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
     }
 
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute() {
+    protected override void DoExecute() {
         if(myQueueIdx < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
             action.Execute();            

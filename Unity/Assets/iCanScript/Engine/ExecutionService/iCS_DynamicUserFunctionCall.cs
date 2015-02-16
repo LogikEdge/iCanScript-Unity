@@ -22,7 +22,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
 //#if UNITY_EDITOR
         try {
 //#endif
@@ -118,7 +118,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     }
 
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute() {
+    protected override void DoExecute() {
 //#if UNITY_EDITOR
         try {
 //#endif

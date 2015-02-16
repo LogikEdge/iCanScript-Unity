@@ -15,15 +15,15 @@ public class iCS_SetInstanceField : iCS_FieldBase {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
         if(!IsThisReady(myContext.RunId) || !IsParameterReady(0, myContext.RunId)) {
             IsStalled= true;
             return;
         }
-        DoForceExecute();
+        DoExecute();
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute() {
+    protected override void DoExecute() {
         // Execute function
         UpdateParameter(0);
 //#if UNITY_EDITOR

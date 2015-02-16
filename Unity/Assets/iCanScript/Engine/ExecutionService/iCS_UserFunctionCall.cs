@@ -22,7 +22,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
 //#if UNITY_EDITOR
         try {
 //#endif
@@ -102,8 +102,8 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
 //#endif
     }
     // ----------------------------------------------------------------------
-    // TODO: UserFunction.DoForceExecute()
-    protected override void DoForceExecute() {
+    // TODO: UserFunction.DoExecute()
+    protected override void DoExecute() {
 //#if UNITY_EDITOR
         try {
 //#endif

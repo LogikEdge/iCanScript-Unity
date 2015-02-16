@@ -14,7 +14,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
+    protected override void DoEvaluate() {
         // Wait until all inputs are ready.
         var len= Parameters.Length;
         for(int i= 0; i < len; ++i) {
@@ -23,10 +23,10 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             }
         }
         // Execute associated function.
-        DoForceExecute();
+        DoExecute();
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute() {
+    protected override void DoExecute() {
 //#if UNITY_EDITOR
         try {
 //#endif

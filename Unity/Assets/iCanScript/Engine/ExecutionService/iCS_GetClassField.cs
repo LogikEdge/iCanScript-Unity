@@ -14,11 +14,11 @@ public class iCS_GetClassField : iCS_FieldBase {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute() {
-        DoForceExecute();
+    protected override void DoEvaluate() {
+        DoExecute();
     }
     // ----------------------------------------------------------------------
-    protected override void DoForceExecute() {
+    protected override void DoExecute() {
 //#if UNITY_EDITOR
         try {
 //#endif
