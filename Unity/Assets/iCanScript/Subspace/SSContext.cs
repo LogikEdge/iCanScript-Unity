@@ -15,6 +15,7 @@ namespace Subspace {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
+        int                         myRunId          = 0;
         Object                      myUserData	     = null;
     	bool                        myIsTraceEnabled = false;
         Action<string, SSObject>    myErrorDelegate  = null;
@@ -23,6 +24,10 @@ namespace Subspace {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
+        public int RunId {
+            get { return myRunId; }
+            set { myRunId= value;}
+        }
         public Object UserData {
             get { return myUserData; }
             set { myUserData= value; }

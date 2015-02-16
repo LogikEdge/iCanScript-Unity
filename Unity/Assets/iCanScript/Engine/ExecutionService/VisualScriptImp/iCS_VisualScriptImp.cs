@@ -172,7 +172,10 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         iCS_Package message= obj as iCS_Package;
         if(message == null) return;
         if(!myMessageContexts.ContainsKey(messageName)) {
-            myMessageContexts.Add(messageName, new iCS_VSContext(message));
+            var context= new SSContext(this);
+            myContext.ErrorDelegate  = RuntimeErrorDelegate;
+            myContext.WarningDelegate= RuntimeWarningDelegate;
+            myMessageContexts.Add(messageName, new iCS_VSContext(message, context));
         }
     }
     // ----------------------------------------------------------------------

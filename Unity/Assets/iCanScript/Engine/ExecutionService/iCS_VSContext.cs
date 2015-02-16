@@ -6,7 +6,8 @@ using Subspace;
 public class iCS_VSContext {
     // ======================================================================
     // Fields
-    int                 myFrameId= 0;
+    SSContext           myContext= null;
+//    int                 myFrameId= 0;
     SSAction            myAction= null;
     List<SSAction>      myStalledActions= new List<SSAction>();
     
@@ -15,16 +16,17 @@ public class iCS_VSContext {
     // ----------------------------------------------------------------------
     public SSAction Action {
         get { return myAction; }
-        set { myAction= value; myFrameId= 0; }
+        set { myAction= value; }
     }
     public int FrameId {
-        get { return myFrameId; }
+        get { return myContext.RunId; }
     }
     
     // ======================================================================
     // Methods
     // ----------------------------------------------------------------------
-    public iCS_VSContext(SSAction action) {
+    public iCS_VSContext(SSAction action, SSContext context) {
+        myContext= context;
         myAction= action;
         if(myAction != null) {
             myAction.IsActive= false;
@@ -35,14 +37,14 @@ public class iCS_VSContext {
     // Executes the run context (if it is valid)
     public void Run() {
         if(myAction == null) return;
-        ++myFrameId;
+        myContext.RunId= myContext.RunId+1;
         myAction.IsActive= true;
         do {
-            myAction.Execute(myFrameId);                                
+            myAction.Execute(myContext.RunId);                                
             if(myAction.IsStalled) {
                 ResolveDeadLock(0);
             }
-        } while(!myAction.IsCurrent(myFrameId));
+        } while(!myAction.IsCurrent(myContext.RunId));
         myAction.IsActive= false;
     }
     // ----------------------------------------------------------------------
@@ -64,7 +66,7 @@ public class iCS_VSContext {
                     var node= myStalledActions[i];
                     if(node.IsStalled) {
                         node.IsActive= false;
-                        myAction.Execute(myFrameId);
+                        myAction.Execute(myContext.RunId);
                         node.IsActive= true;                        
                         if(!myAction.IsStalled) return;
                     }
@@ -79,28 +81,28 @@ public class iCS_VSContext {
                 Debug.LogWarning("TOO MANY ATTEMPTS TO RESOLVE DEADLOCKS...FORCING EXECUTION");
             }
 //#endif
-            myAction.ForceExecute(myFrameId);
+            myAction.ForceExecute(myContext.RunId);
             return;
         }
         // Get a producer port being waited on.
-        var stalledProducerPort= myAction.GetStalledProducerPort(myFrameId);
+        var stalledProducerPort= myAction.GetStalledProducerPort(myContext.RunId);
         if(stalledProducerPort != null) {
             var node= stalledProducerPort.Action;
 //#if UNITY_EDITOR
             if(myAction.Context.IsTraceEnabled) {
-                Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myFrameId+")");
+                Debug.LogWarning("Deactivating=> "+node.FullName+" ("+myContext.RunId+")");
             }
 //#endif
             myStalledActions.Add(node);
             node.IsActive= false;
-            myAction.Execute(myFrameId);
+            myAction.Execute(myContext.RunId);
             if(myAction.IsStalled) {
                 ResolveDeadLock(attempts+1);
             }
             node.IsActive= true;
 //#if UNITY_EDITOR
             if(myAction.Context.IsTraceEnabled) {
-                Debug.LogWarning("Activating=> "+node.FullName+" ("+myFrameId+")");
+                Debug.LogWarning("Activating=> "+node.FullName+" ("+myContext.RunId+")");
             }
 //#endif
         }                    
@@ -110,7 +112,7 @@ public class iCS_VSContext {
                 Debug.LogWarning("DID NOT FIND STALLED PORT BUT MESSAGE HANDLER IS STALLED !!!");
             }
 //#endif
-            myAction.ForceExecute(myFrameId);                    
+            myAction.ForceExecute(myContext.RunId);                    
         }
     }
 }
