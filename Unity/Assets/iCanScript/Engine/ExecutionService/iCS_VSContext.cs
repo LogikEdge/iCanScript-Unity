@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Subspace;
 
-public class iCS_RunContext {
+public class iCS_VSContext {
     // ======================================================================
     // Fields
     int                 myFrameId= 0;
@@ -24,7 +24,7 @@ public class iCS_RunContext {
     // ======================================================================
     // Methods
     // ----------------------------------------------------------------------
-    public iCS_RunContext(SSAction action) {
+    public iCS_VSContext(SSAction action) {
         myAction= action;
         if(myAction != null) {
             myAction.IsActive= false;

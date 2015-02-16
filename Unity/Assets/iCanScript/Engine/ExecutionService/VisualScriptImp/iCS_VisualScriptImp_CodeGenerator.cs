@@ -324,7 +324,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                         AddChildWithName(parent, "Start");
                                     }
                                     else {
-                                        iCS_RunContext startContext= null;
+                                        iCS_VSContext startContext= null;
                                         myMessageContexts.TryGetValue("Start", out startContext);
                                         if(startContext != null) {
                                             parent= startContext.Action;

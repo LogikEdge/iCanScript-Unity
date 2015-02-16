@@ -15,7 +15,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     SSContext                           myContext         = null;
     SSObject[]                          myRuntimeNodes    = new SSObject[0];
     List<int>                           myPublicInterfaces= new List<int>();
-    Dictionary<string,iCS_RunContext>   myMessageContexts = new Dictionary<string,iCS_RunContext>();
+    Dictionary<string,iCS_VSContext>    myMessageContexts = new Dictionary<string,iCS_VSContext>();
     P.TimerService                      myTimerService    = new P.TimerService();
     
 
@@ -38,7 +38,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     }
     public int UpdateFrameId {
         get {
-            iCS_RunContext updateContext= null;
+            iCS_VSContext updateContext= null;
             if(myMessageContexts.TryGetValue("Update", out updateContext)) {
                 return updateContext.FrameId;
             }
@@ -47,7 +47,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     }
     public int FixedUpdateFrameId {
         get {
-            iCS_RunContext fixedUpdateContext= null;
+            iCS_VSContext fixedUpdateContext= null;
             if(myMessageContexts.TryGetValue("FixedUpdate", out fixedUpdateContext)) {
                 return fixedUpdateContext.FrameId;
             }
@@ -76,7 +76,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
             myTimerService.Update();
         }
         // Run the context.
-        iCS_RunContext runContext;
+        iCS_VSContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             runContext.Run();
         }
@@ -91,7 +91,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     // Run message with one parameter.
     public void RunMessage(string messageName, object p1) {
-        iCS_RunContext runContext;
+        iCS_VSContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             var rtMessage= runContext.Action as iCS_Message;
             if(rtMessage != null) {
@@ -103,7 +103,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     // Run message with two parameters.
     public void RunMessage(string messageName, object p1, object p2) {
-        iCS_RunContext runContext;
+        iCS_VSContext runContext;
         if(myMessageContexts.TryGetValue(messageName, out runContext)) {
             var rtMessage= runContext.Action as iCS_Message;
             if(rtMessage != null) {
@@ -116,7 +116,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     
     // ----------------------------------------------------------------------
     void Reset() {
-        myMessageContexts= new Dictionary<string,iCS_RunContext>();
+        myMessageContexts= new Dictionary<string,iCS_VSContext>();
     }
     
     // ----------------------------------------------------------------------
@@ -124,7 +124,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     void Awake() {
 //        base.Awake();  // This generates an internal compiler error
         GenerateRuntimeObjects();        
-        iCS_RunContext awakeContext= null;
+        iCS_VSContext awakeContext= null;
         myMessageContexts.TryGetValue("Awake", out awakeContext);
         if(awakeContext != null) {
             awakeContext.Action.IsActive= true;
@@ -143,7 +143,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // is invoked after Awake and before any Update call.
     void Start() {
         ConnectRuntimeObjects();
-        iCS_RunContext startContext= null;
+        iCS_VSContext startContext= null;
         myMessageContexts.TryGetValue("Start", out startContext);
         if(startContext != null) {
             startContext.Action.IsActive= true;
@@ -172,7 +172,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         iCS_Package message= obj as iCS_Package;
         if(message == null) return;
         if(!myMessageContexts.ContainsKey(messageName)) {
-            myMessageContexts.Add(messageName, new iCS_RunContext(message));
+            myMessageContexts.Add(messageName, new iCS_VSContext(message));
         }
     }
     // ----------------------------------------------------------------------
