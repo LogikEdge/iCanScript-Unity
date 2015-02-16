@@ -30,6 +30,6 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
             ++myQueueIdx;
         }
         // Reset iterators for next frame.
-        ResetIterator(myContext.RunId);
+        ResetIterator();
     }
 }

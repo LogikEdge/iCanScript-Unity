@@ -55,7 +55,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
             }
         }
         if(myQueueIdx >= myExecuteQueue.Count) {
-            ResetIterator(myContext.RunId);
+            ResetIterator();
         }
     }
     // ----------------------------------------------------------------------
@@ -65,7 +65,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
         myExecuteQueue[idx2]= tmp;
     }
     // ----------------------------------------------------------------------
-    protected void ResetIterator(int runId) {
+    protected void ResetIterator() {
         myQueueIdx= 0;
         MarkAsExecuted();        
     }

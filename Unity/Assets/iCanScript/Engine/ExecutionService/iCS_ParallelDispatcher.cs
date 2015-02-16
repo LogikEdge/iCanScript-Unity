@@ -36,7 +36,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
 			swapCursor= myQueueIdx;
             IsStalled= false;
         }
-        ResetIterator(myContext.RunId);            
+        ResetIterator();            
     }
     // ----------------------------------------------------------------------
     protected override void DoExecute() {

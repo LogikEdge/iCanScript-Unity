@@ -41,6 +41,6 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
             return;
         }
         // Reset iterators for next frame.
-        ResetIterator(myContext.RunId);
+        ResetIterator();
     }
 }
