@@ -44,7 +44,7 @@ public class iCS_VerifyTransitions : SSAction {
             if(transition.IsCurrent) {
                 if(transition.DidTrigger) {
                     myTriggeredTransition= transition;
-                    ResetIterator(myContext.RunId);
+                    ResetIterator();
                     return;
                 }
                 IsStalled= false;
@@ -58,7 +58,7 @@ public class iCS_VerifyTransitions : SSAction {
         }
         // Reset iterators for next frame.
         if(myQueueIdx >= end) {
-            ResetIterator(myContext.RunId);            
+            ResetIterator();            
         }
     }
     // ----------------------------------------------------------------------
@@ -83,7 +83,7 @@ public class iCS_VerifyTransitions : SSAction {
             if(transition.IsCurrent) {
                 if(transition.DidTrigger) {
                     myTriggeredTransition= transition;
-                    ResetIterator(myContext.RunId);
+                    ResetIterator();
                     return;
                 }
                 ++myQueueIdx;
@@ -96,11 +96,11 @@ public class iCS_VerifyTransitions : SSAction {
             }
         }
         if(myQueueIdx >= myTransitions.Count) {
-            ResetIterator(myContext.RunId);
+            ResetIterator();
         }
     }
     // ----------------------------------------------------------------------
-    void ResetIterator(int runId) {
+    void ResetIterator() {
         myQueueIdx= 0;
         MarkAsExecuted();
     }

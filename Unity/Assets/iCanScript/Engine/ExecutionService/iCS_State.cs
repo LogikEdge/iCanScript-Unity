@@ -36,17 +36,17 @@ public sealed class iCS_State : SSObject {
     // ======================================================================
     // Update
     // ----------------------------------------------------------------------
-    public void OnEntry(int runId) {
+    public void OnEntry() {
         if(myOnEntryAction != null) {
             myOnEntryAction.Evaluate();
         }
     }
-    public void OnUpdate(int runId) {
+    public void OnUpdate() {
         if(myOnUpdateAction != null) {
             myOnUpdateAction.Evaluate();
         }
     }
-    public void OnExit(int runId) {
+    public void OnExit() {
         if(myOnExitAction != null) {
             myOnExitAction.Evaluate();
         }
