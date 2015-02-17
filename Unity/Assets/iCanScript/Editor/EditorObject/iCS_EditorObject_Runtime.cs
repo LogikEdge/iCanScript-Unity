@@ -31,13 +31,6 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public int GetCurrentFrameId {
-		get {
-			var action= GetRuntimeObject as SSAction;
-			return action != null ? action.EvaluatedRunId : 0;
-		}
-	}
-    // ----------------------------------------------------------------------
 	public int GetExecutionFrameId {
 		get {
 			var action= GetRuntimeObject as SSAction;
