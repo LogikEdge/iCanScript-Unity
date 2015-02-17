@@ -18,7 +18,7 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
         while(myQueueIdx < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
             action.Evaluate();            
-            if(!action.IsCurrent) {
+            if(!action.IsEvaluated) {
                 // Verify if the child is a staled dispatcher.
                 if(!action.IsStalled) {
                     stalled= false;

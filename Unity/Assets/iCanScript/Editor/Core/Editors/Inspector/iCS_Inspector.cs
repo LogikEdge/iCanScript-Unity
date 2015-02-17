@@ -218,7 +218,7 @@ public class iCS_Inspector : Editor {
         // Show runtime frame id.
         var runtimeObject= myIStorage.GetRuntimeObject(node) as SSAction;
         if(runtimeObject != null) {
-            EditorGUILayout.LabelField("RunId", runtimeObject.RunId.ToString());
+            EditorGUILayout.LabelField("RunId", runtimeObject.EvaluatedRunId.ToString());
         }
         // Show Iconic image configuration.
         Texture2D iconicTexture= iCS_TextureCache.GetIconFromGUID(node.IconGUID);

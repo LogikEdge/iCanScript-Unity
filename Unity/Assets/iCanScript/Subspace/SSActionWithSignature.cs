@@ -293,7 +293,7 @@ namespace Subspace {
     		}
     		// Skip execution if this action is disabled.
             if(isEnabled == false) {
-                MarkAsCurrent();
+                MarkAsEvaluated();
                 if(myContext.IsTraceEnabled) {
                     Debug.Log("Executing=> "+FullName+" is disabled"+" ("+myContext.RunId+")");
                 }
@@ -303,7 +303,7 @@ namespace Subspace {
             IsStalled= true;
             DoEvaluate();
             if(Context.IsTraceEnabled) {    
-                if(DidExecute) {
+                if(IsExecuted) {
                     Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+myContext.RunId+")");
                 }
     //            else if(IsCurrent(runId)){
@@ -316,7 +316,7 @@ namespace Subspace {
         }
         // ----------------------------------------------------------------------
         public Connection GetStalledEnablePort() {
-            if(IsCurrent) {
+            if(IsEvaluated) {
                 return null;
             }
             // Let's first verify the enables.
@@ -333,7 +333,7 @@ namespace Subspace {
         }
         // ----------------------------------------------------------------------
         public override Connection GetStalledProducerPort() {
-            if(IsCurrent) {
+            if(IsEvaluated) {
                 return null;
             }
             // Let's first verify the enables.
@@ -364,7 +364,7 @@ namespace Subspace {
                 var stalledPortName= stalledPort == null ? "" : stalledPort.PortFullName;
                 if(stalledPort != null) {
                     var stalledNode= stalledPort.Action;
-                    Debug.LogWarning("Force execute=> "+FullName+" STALLED PORT=> "+stalledPortName+" STALLED PORT NODE STATE=> "+stalledNode.IsCurrent);            
+                    Debug.LogWarning("Force execute=> "+FullName+" STALLED PORT=> "+stalledPortName+" STALLED PORT NODE STATE=> "+stalledNode.IsEvaluated);            
                     var stalledNodeParent= stalledNode.Parent as SSActionWithSignature;
                     if(stalledNodeParent != null) {
                         Debug.LogWarning("STALLED PORT NODE PARENT ENABLE=> "+stalledNodeParent.FullName+"("+stalledNodeParent.GetIsEnabled()+")");
@@ -374,7 +374,7 @@ namespace Subspace {
             }
             // Force verify enables.
             if(GetIsEnabled() == false) {
-                MarkAsCurrent();
+                MarkAsEvaluated();
                 return;
             }
             // Invoke derived class to force execute.

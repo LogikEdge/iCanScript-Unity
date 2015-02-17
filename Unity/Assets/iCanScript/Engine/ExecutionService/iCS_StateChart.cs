@@ -78,7 +78,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             ExecuteUpdates();
         }
 		// Attempt to execute all other functions (packge like)
-		if(!myDispatcher.IsCurrent) {
+		if(!myDispatcher.IsEvaluated) {
 			myDispatcher.Evaluate();			
 		}
     }
@@ -114,7 +114,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             }
         }
 		// Execute all other functions (packge like)
-		if(!myDispatcher.IsCurrent) {
+		if(!myDispatcher.IsEvaluated) {
 			var producerPort= myDispatcher.GetStalledProducerPort();			
             if(producerPort != null) {
                 return producerPort;
@@ -141,7 +141,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             ExecuteUpdates(/*forced=*/true);
         }
 		// Execute all other functions (packge like)
-		if(!myDispatcher.IsCurrent) {
+		if(!myDispatcher.IsEvaluated) {
 			myDispatcher.Execute();			
 		}
     }
@@ -159,7 +159,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             iCS_State state= myActiveStack[idx];
             iCS_VerifyTransitions transitions= state.Transitions;
 			// Transition has already been tested.  Just move on to next one.
-			if(transitions.IsCurrent) {
+			if(transitions.IsEvaluated) {
 				if(idx == myQueueIdx) {
 					++myQueueIdx;
 				}					
@@ -172,7 +172,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 			} else {
 	            transitions.Evaluate();						
 			}
-            if(transitions.IsCurrent) {
+            if(transitions.IsEvaluated) {
 	            myFiredTransition= transitions.TriggeredTransition;
 	            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
 					IsStalled= false;
@@ -206,7 +206,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             iCS_State state= myActiveStack[idx];
             iCS_VerifyTransitions transitions= state.Transitions;
 			// Transition has already been tested.  Just move on to next one.
-			if(!transitions.IsCurrent) {
+			if(!transitions.IsEvaluated) {
                 var producerPort= transitions.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;
@@ -224,7 +224,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             iCS_State state= myActiveStack[idx];
             SSAction action= state.OnUpdateAction;
 			// Update is not needed or already ran.  Just move to the next state...
-			if(action == null || action.IsCurrent) {
+			if(action == null || action.IsEvaluated) {
 				if(idx == myQueueIdx) {
 					++myQueueIdx;
 				}
@@ -237,7 +237,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 			} else {
                 action.Evaluate();            						
 			}
-            if(action.IsCurrent) {
+            if(action.IsEvaluated) {
 				if(idx == myQueueIdx) {
 					++myQueueIdx;
 				}
@@ -265,7 +265,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             iCS_State state= myActiveStack[idx];
             SSAction action= state.OnUpdateAction;
 			// Update is not needed or already ran.  Just move to the next state...
-			if(action != null && !action.IsCurrent) {
+			if(action != null && !action.IsEvaluated) {
                 var producerPort= action.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;
@@ -284,13 +284,13 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             iCS_State state= myActiveStack[myQueueIdx];
             if(state == myTransitionParent) break;
             SSAction action= state.OnExitAction;
-			if(action != null && !action.IsCurrent) {
+			if(action != null && !action.IsEvaluated) {
 				if(forced) {
 	                action.Execute();            
 				} else {
 	                action.Evaluate();		
 				}
-                if(action.IsCurrent) {
+                if(action.IsEvaluated) {
 					IsStalled= false;
 				} else {
                     IsStalled&= action.IsStalled;
@@ -309,7 +309,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             iCS_State state= myActiveStack[idx];
             SSAction action= state.OnExitAction;
 			// Update is not needed or already ran.  Just move to the next state...
-			if(action != null && !action.IsCurrent) {
+			if(action != null && !action.IsEvaluated) {
                 var producerPort= action.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;
@@ -326,13 +326,13 @@ public sealed class iCS_StateChart : SSActionWithSignature {
 		for(; myQueueIdx < end; ++myQueueIdx) {
             iCS_State state= myActiveStack[myQueueIdx];
             SSAction action= state.OnEntryAction;
-			if(action != null && !action.IsCurrent) {
+			if(action != null && !action.IsEvaluated) {
 				if(forced) {
 	                action.Execute();            
 				} else {
 	                action.Evaluate();            						
 				}
-                if(action.IsCurrent) {
+                if(action.IsEvaluated) {
 					IsStalled= false;
 				} else {
                     IsStalled&= action.IsStalled;
@@ -352,7 +352,7 @@ public sealed class iCS_StateChart : SSActionWithSignature {
             iCS_State state= myActiveStack[idx];
             SSAction action= state.OnEntryAction;
 			// Update is not needed or already ran.  Just move to the next state...
-			if(action != null && !action.IsCurrent) {
+			if(action != null && !action.IsEvaluated) {
                 var producerPort= action.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;

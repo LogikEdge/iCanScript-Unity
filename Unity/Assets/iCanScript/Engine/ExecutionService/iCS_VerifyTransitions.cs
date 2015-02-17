@@ -33,7 +33,7 @@ public class iCS_VerifyTransitions : SSAction {
         for(int cursor= myQueueIdx; cursor < end; ++cursor) {
             // Attempt to execute child function.
             iCS_Transition transition= myTransitions[cursor];
-            if(transition.IsCurrent) {
+            if(transition.IsEvaluated) {
                 if(cursor == myQueueIdx) {
                     ++myQueueIdx;                    
                 }
@@ -41,7 +41,7 @@ public class iCS_VerifyTransitions : SSAction {
             }
             transition.Evaluate();            
             // Move to next child if sucessfully executed.
-            if(transition.IsCurrent) {
+            if(transition.IsEvaluated) {
                 if(transition.DidTrigger) {
                     myTriggeredTransition= transition;
                     ResetIterator();
@@ -65,7 +65,7 @@ public class iCS_VerifyTransitions : SSAction {
     public override Connection GetStalledProducerPort() {
         for(int cursor= myQueueIdx; cursor < myTransitions.Count; ++cursor) {
             iCS_Transition transition= myTransitions[cursor];
-            if(!transition.IsCurrent) {
+            if(!transition.IsEvaluated) {
                 var result= transition.GetStalledProducerPort();
                 if(result != null) {
                     return result;
@@ -80,7 +80,7 @@ public class iCS_VerifyTransitions : SSAction {
         if(myQueueIdx < myTransitions.Count) {
             iCS_Transition transition= myTransitions[myQueueIdx];
             transition.Execute();            
-            if(transition.IsCurrent) {
+            if(transition.IsEvaluated) {
                 if(transition.DidTrigger) {
                     myTriggeredTransition= transition;
                     ResetIterator();

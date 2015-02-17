@@ -41,7 +41,7 @@ public class iCS_VSContext {
             if(myAction.IsStalled) {
                 ResolveDeadLock(0);
             }
-        } while(!myAction.IsCurrent);
+        } while(!myAction.IsEvaluated);
         myAction.IsActive= false;
     }
     // ----------------------------------------------------------------------

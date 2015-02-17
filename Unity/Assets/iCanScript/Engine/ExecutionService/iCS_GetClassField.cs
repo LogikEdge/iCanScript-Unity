@@ -29,7 +29,7 @@ public class iCS_GetClassField : iCS_FieldBase {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception thrown in  "+FullName+" => "+e.Message);
-            MarkAsCurrent();
+            MarkAsEvaluated();
         }
 //#endif        
     }

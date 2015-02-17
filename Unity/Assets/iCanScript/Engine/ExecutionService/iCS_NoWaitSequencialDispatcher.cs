@@ -18,10 +18,10 @@ public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
         bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {
             SSAction action= myExecuteQueue[i];
-            bool didExecute= action.IsCurrent;
+            bool didExecute= action.IsEvaluated;
             if(!didExecute) {
                 action.Evaluate();                
-                if(action.IsCurrent) {
+                if(action.IsEvaluated) {
                     didExecute= true;
                     stalled= false;
                 } else {

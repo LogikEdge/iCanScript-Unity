@@ -28,7 +28,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
 //#endif
             // Skip all the processing if we don't have an target action to execute.
             if(myUserAction == null) {
-                MarkAsCurrent();
+                MarkAsEvaluated();
                 return;
             }
             
@@ -67,15 +67,15 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
 			}
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute) {
+            if(myUserAction.IsExecuted) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted();
             }
-            else if(myUserAction.IsCurrent){
+            else if(myUserAction.IsEvaluated){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsCurrent();
+                MarkAsEvaluated();
             }            
 //#if UNITY_EDITOR
         }
@@ -97,7 +97,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent();
+            MarkAsEvaluated();
         }
 //#endif
     }
@@ -143,15 +143,15 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
             ReturnValue= myUserAction.ReturnValue;
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute) {
+            if(myUserAction.IsExecuted) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted();
             }
-            else if(myUserAction.IsCurrent){
+            else if(myUserAction.IsEvaluated){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsCurrent();
+                MarkAsEvaluated();
             }            
 //#if UNITY_EDITOR
         }
@@ -173,7 +173,7 @@ public class iCS_UserFunctionCall : SSActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent();
+            MarkAsEvaluated();
         }
 //#endif
     }

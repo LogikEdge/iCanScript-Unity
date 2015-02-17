@@ -136,7 +136,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                     Debug.LogError("The Awake() of "+name+" is stalled. Please remove any dependent processing !!!");
                     return;
                 }
-            } while(!awakeContext.Action.IsCurrent);
+            } while(!awakeContext.Action.IsEvaluated);
             awakeContext.Action.IsActive= false;
         }
     }
@@ -163,7 +163,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                     Debug.LogError("The Start() of "+name+" is stalled. Please remove any dependent processing !!!");
                     return;
                 }
-            } while(!startContext.Action.IsCurrent);
+            } while(!startContext.Action.IsEvaluated);
             startContext.Action.IsActive= false;
         }
     }

@@ -37,7 +37,7 @@ public class iCS_Transition : SSAction {
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
             myTransitionPackage.Evaluate();            
-            if(!myTriggerFunction.IsCurrent) {
+            if(!myTriggerFunction.IsEvaluated) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;
             }
@@ -47,7 +47,7 @@ public class iCS_Transition : SSAction {
     }
     // ----------------------------------------------------------------------
     public override Connection GetStalledProducerPort() {
-        if(IsCurrent) return null;
+        if(IsEvaluated) return null;
         return myTransitionPackage.GetStalledProducerPort();
     }
     // ----------------------------------------------------------------------
@@ -55,7 +55,7 @@ public class iCS_Transition : SSAction {
         myIsTriggered= false;
         if(myTransitionPackage != null && myTriggerFunction != null) {
             myTransitionPackage.Execute();            
-            if(!myTransitionPackage.IsCurrent) {
+            if(!myTransitionPackage.IsEvaluated) {
                 IsStalled= myTransitionPackage.IsStalled;
                 return;
             }

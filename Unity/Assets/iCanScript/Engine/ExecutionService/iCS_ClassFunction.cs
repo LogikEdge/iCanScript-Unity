@@ -69,7 +69,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
             }
             var msg= "Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.Message;
             Context.ReportError(msg, this);
-            MarkAsCurrent();
+            MarkAsEvaluated();
         }
 //#endif        
     }

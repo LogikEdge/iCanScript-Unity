@@ -20,7 +20,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
     // Execution
     // ----------------------------------------------------------------------
     public override Connection GetStalledProducerPort() {
-        if(IsCurrent) {
+        if(IsEvaluated) {
             return null;
         }
         // Get the dispatcher stalled enable ports.
@@ -32,7 +32,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
         int cursor= myQueueIdx;
         if(cursor < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
-            if(!action.IsCurrent) {
+            if(!action.IsEvaluated) {
                 producerPort= action.GetStalledProducerPort();
                 if(producerPort != null) {
                     return producerPort;
@@ -47,7 +47,7 @@ public abstract class iCS_Dispatcher : SSActionWithSignature {
         if(myQueueIdx < myExecuteQueue.Count) {
             SSAction action= myExecuteQueue[myQueueIdx];
             action.Execute();            
-            if(action.IsCurrent) {
+            if(action.IsEvaluated) {
                 ++myQueueIdx;
                 IsStalled= false;
             } else {

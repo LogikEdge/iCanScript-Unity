@@ -11,20 +11,19 @@ namespace Subspace {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        int     myPriority     = 0;
-        int     myCurrentRunId = 0;
-        int     myExecutedRunId= 0;
-        bool    myIsStalled    = false;
-        bool    myIsActive     = true;
+        int     myPriority      = 0;
+        int     myEvaluatedRunId= 0;
+        int     myExecutedRunId = 0;
+        bool    myIsStalled     = false;
+        bool    myIsActive      = true;
         bool    myPortsAreAlwaysCurrent= false;
 
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
         public int      Priority            { get { return myPriority; } set { myPriority= value; }}
-        public int      RunId               { get { return CurrentRunId; }}
-        public int      CurrentRunId        { get { return myCurrentRunId; }}
-        public int      ExecutionRunId      { get { return myExecutedRunId; }}
+        public int      EvaluatedRunId      { get { return myEvaluatedRunId; }}
+        public int      ExecutedRunId       { get { return myExecutedRunId; }}
         public bool     IsStalled           { get { return myIsStalled; } set { myIsStalled= value; }}
         public SSAction ParentAction        { get { return myParent as SSAction; } set { myParent= value; }}
         public bool IsActive            {
@@ -58,14 +57,16 @@ namespace Subspace {
         public abstract Connection      GetStalledProducerPort();
     
         // ----------------------------------------------------------------------
-        public bool IsCurrent           { get { return myCurrentRunId == myContext.RunId; }}
-        public bool DidExecute          { get { return myExecutedRunId == myContext.RunId; }}
-        public void MarkAsCurrent()     { myCurrentRunId= myContext.RunId; myIsStalled= false; }
-        public void MarkAsExecuted()    { myExecutedRunId= myContext.RunId; MarkAsCurrent(); }
+        public bool IsWaiting           { get { return myEvaluatedRunId != myContext.RunId; }}
+        public bool IsDisabled          { get { return IsEvaluated && !IsExecuted; }}
+        public bool IsEvaluated         { get { return myEvaluatedRunId == myContext.RunId; }}
+        public bool IsExecuted          { get { return myExecutedRunId == myContext.RunId; }}
+        public void MarkAsEvaluated()   { myEvaluatedRunId= myContext.RunId; myIsStalled= false; }
+        public void MarkAsExecuted()    { myExecutedRunId= myContext.RunId; MarkAsEvaluated(); }
 
         // ----------------------------------------------------------------------
-        public bool ArePortsCurrent    { get { return IsCurrent || ArePortsAlwaysCurrent || !IsActive; }}
-        public bool ArePortsExecuted   { get { return DidExecute; }}
+        public bool ArePortsCurrent    { get { return IsEvaluated || ArePortsAlwaysCurrent || !IsActive; }}
+        public bool ArePortsExecuted   { get { return IsExecuted; }}
     }
     
 }

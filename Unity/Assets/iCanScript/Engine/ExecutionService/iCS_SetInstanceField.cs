@@ -35,7 +35,7 @@ public class iCS_SetInstanceField : iCS_FieldBase {
         }
         catch(Exception e) {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
-            MarkAsCurrent();
+            MarkAsEvaluated();
         }
 //#endif
     }

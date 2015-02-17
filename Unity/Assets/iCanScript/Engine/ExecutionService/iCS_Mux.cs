@@ -32,7 +32,7 @@ public class iCS_Mux : SSActionWithSignature {
 			if(connection == null) continue;
 			var action= connection.Action;
 			if(action == null) continue;
-			int runIdDistance= myContext.RunId-action.ExecutionRunId;
+			int runIdDistance= myContext.RunId-action.ExecutedRunId;
 			if(runIdDistance < smallestDistance) {
 				smallestDistance= runIdDistance;
 				bestConnection= connection;
@@ -42,6 +42,6 @@ public class iCS_Mux : SSActionWithSignature {
 		if(bestConnection != null) {
             ReturnValue= bestConnection.Value;			
 		}
-        MarkAsCurrent();
+        MarkAsEvaluated();
     }
 }

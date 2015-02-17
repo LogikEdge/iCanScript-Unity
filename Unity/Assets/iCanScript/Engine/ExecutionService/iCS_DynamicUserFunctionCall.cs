@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using Subspace;
@@ -32,17 +32,17 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 var gameObject= This as GameObject;
                 if(gameObject == null) {
                     Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
-                    MarkAsCurrent();
+                    MarkAsEvaluated();
                 }
                 var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
                 if(vs == null) {
                     Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
-                    MarkAsCurrent();
+                    MarkAsEvaluated();
                 }
                 var variableObject= vs.GetPublicInterfaceFromName(Name);
                 if(variableObject == null) {
                     Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
-                    MarkAsCurrent();
+                    MarkAsEvaluated();
                 }
                 var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
     
@@ -81,15 +81,15 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
     			}
                 // Reflection the action run status.
                 IsStalled= myUserAction.IsStalled;
-                if(myUserAction.DidExecute) {
+                if(myUserAction.IsExecuted) {
                     isActionOwner= false;
                     myUserAction.IsActive= false;
                     MarkAsExecuted();
                 }
-                else if(myUserAction.IsCurrent){
+                else if(myUserAction.IsEvaluated){
                     isActionOwner= false;
                     myUserAction.IsActive= false;
-                    MarkAsCurrent();
+                    MarkAsEvaluated();
                 }            
             }
 //#if UNITY_EDITOR
@@ -112,7 +112,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent();
+            MarkAsEvaluated();
         }
 //#endif
     }
@@ -126,17 +126,17 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
             var gameObject= This as GameObject;
             if(gameObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
-                MarkAsCurrent();
+                MarkAsEvaluated();
             }
             var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
             if(vs == null) {
                 Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
-                MarkAsCurrent();
+                MarkAsEvaluated();
             }
             var variableObject= vs.GetPublicInterfaceFromName(Name);
             if(variableObject == null) {
                 Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
-                MarkAsCurrent();
+                MarkAsEvaluated();
             }
             var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
 
@@ -169,15 +169,15 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
 			}
             // Reflection the action run status.
             IsStalled= myUserAction.IsStalled;
-            if(myUserAction.DidExecute) {
+            if(myUserAction.IsExecuted) {
                 isActionOwner= false;
                 myUserAction.IsActive= false;
                 MarkAsExecuted();
             }
-            else if(myUserAction.IsCurrent){
+            else if(myUserAction.IsEvaluated){
                 isActionOwner= false;
                 myUserAction.IsActive= false;
-                MarkAsCurrent();
+                MarkAsEvaluated();
             }            
 //#if UNITY_EDITOR
         }
@@ -199,7 +199,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 isActionOwner= false;
                 myUserAction.IsActive= false;                
             }
-            MarkAsCurrent();
+            MarkAsEvaluated();
         }
 //#endif
     }
