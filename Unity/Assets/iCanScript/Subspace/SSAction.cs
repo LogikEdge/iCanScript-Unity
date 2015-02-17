@@ -65,8 +65,8 @@ namespace Subspace {
         public void MarkAsExecuted()    { myExecutedRunId= myContext.RunId; MarkAsEvaluated(); }
 
         // ----------------------------------------------------------------------
-        public bool ArePortsCurrent    { get { return IsEvaluated || ArePortsAlwaysCurrent || !IsActive; }}
-        public bool ArePortsExecuted   { get { return IsExecuted; }}
+        public bool ArePortsEvaluated   { get { return IsEvaluated || ArePortsAlwaysCurrent || !IsActive; }}
+        public bool ArePortsExecuted    { get { return IsExecuted; }}
     }
     
 }
