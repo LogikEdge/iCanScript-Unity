@@ -223,7 +223,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
 						        var vs= GetVisualScriptFromReferenceNode(node);
-                                var userFunction= GetRuntimeNodeFromReferenceNode(node, vs) as SSActionWithSignature;
+                                var userFunction= GetRuntimeNodeFromReferenceNode(node, vs) as SSNodeAction;
 								if(userFunction == null) {
 									if(vs == this) {
 										needAdditionalPass= true;
@@ -353,9 +353,9 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
     							var inDataPorts= GetChildInParameters(node);
-                                SSActionWithSignature rtField= inDataPorts.Length == 0 ?
-                                    new iCS_GetInstanceField(node.Name, parent, fieldInfo, priority, nbEnables) as SSActionWithSignature:
-                                    new iCS_SetInstanceField(node.Name, parent, fieldInfo, priority, nbEnables) as SSActionWithSignature;                                
+                                SSNodeAction rtField= inDataPorts.Length == 0 ?
+                                    new iCS_GetInstanceField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction:
+                                    new iCS_SetInstanceField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction;                                
                                 myRuntimeNodes[node.InstanceId]= rtField;
                                 InvokeAddChildIfExists(parent, rtField);
                                 break;
@@ -370,9 +370,9 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
     							var inDataPorts= GetChildInParameters(node);
-                                SSActionWithSignature rtField= inDataPorts.Length == 0 ?
-                                    new iCS_GetClassField(node.Name, parent, fieldInfo, priority, nbEnables) as SSActionWithSignature:
-                                    new iCS_SetClassField(node.Name, parent, fieldInfo, priority, nbEnables) as SSActionWithSignature;                                
+                                SSNodeAction rtField= inDataPorts.Length == 0 ?
+                                    new iCS_GetClassField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction:
+                                    new iCS_SetClassField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction;                                
                                 myRuntimeNodes[node.InstanceId]= rtField;
                                 InvokeAddChildIfExists(parent, rtField);
                                 break;                            
@@ -406,7 +406,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         }
                         case iCS_ObjectTypeEnum.InChildMuxPort:
     					case iCS_ObjectTypeEnum.OutChildMuxPort: {
-    						var rtMuxPort= myRuntimeNodes[port.ParentId] as SSActionWithSignature;
+    						var rtMuxPort= myRuntimeNodes[port.ParentId] as SSNodeAction;
     						if(rtMuxPort == null) break;
                             iCS_EngineObject sourcePort= GetSourceEndPort(port);
     						Connection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
@@ -421,7 +421,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             iCS_EngineObject outStatePort= null;
                             GetTransitionPackageParts(transitionPackage, out triggerPort, out outStatePort);
 							triggerPort= GetSourceEndPort(triggerPort);
-                            SSActionWithSignature triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as SSActionWithSignature;
+                            SSNodeAction triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as SSNodeAction;
                             int triggerIdx= triggerPort.PortIndex;
                             iCS_Transition transition= new iCS_Transition(transitionPackage.Name,
 																		myRuntimeNodes[transitionPackage.ParentId],
@@ -436,7 +436,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         
                         // Control flow ports.
                         case iCS_ObjectTypeEnum.TriggerPort: {
-                            var action= myRuntimeNodes[port.ParentId] as SSActionWithSignature;
+                            var action= myRuntimeNodes[port.ParentId] as SSNodeAction;
                             action.Trigger= false;
                             break;
                         }
@@ -537,7 +537,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 								}
 							}
                             // Set data port.
-                            SSActionWithSignature parentObj= myRuntimeNodes[port.ParentId] as SSActionWithSignature;
+                            SSNodeAction parentObj= myRuntimeNodes[port.ParentId] as SSNodeAction;
                             parentObj[port.PortIndex]= initValue;
                             if(!(parentObj is iCS_Message)) {
                                 parentObj.SetConnection(port.PortIndex, connection);                                
@@ -659,13 +659,13 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
 	Connection BuildConnection(iCS_EngineObject port) {
 		Connection connection= null;
-        var rtPortGroup= myRuntimeNodes[port.InstanceId] as SSActionWithSignature;
+        var rtPortGroup= myRuntimeNodes[port.InstanceId] as SSNodeAction;
 		if(rtPortGroup != null) {
 			connection= new Connection(rtPortGroup, (int)iCS_PortIndex.Return);	
 		} else {
             bool isAlwaysReady= port.IsInputPort;
             bool isControlPort= port.IsControlPort;
-			connection= new Connection(myRuntimeNodes[port.ParentId] as SSActionWithSignature, port.PortIndex, isAlwaysReady, isControlPort);
+			connection= new Connection(myRuntimeNodes[port.ParentId] as SSNodeAction, port.PortIndex, isAlwaysReady, isControlPort);
 		}
 		return connection;
 	}

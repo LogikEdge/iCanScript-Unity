@@ -3,11 +3,11 @@ using System;
 using System.Collections;
 using Subspace;
 
-public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
+public class iCS_DynamicUserFunctionCall : SSNodeAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected SSActionWithSignature myUserAction= null;
+    protected SSNodeAction myUserAction= null;
               bool                  isActionOwner= false;
 
     // ======================================================================
@@ -44,7 +44,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                     Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
                     MarkAsEvaluated();
                 }
-                var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
+                var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSNodeAction;
     
                 // Wait until all inputs are ready.
                 var parameterLen= Parameters.Length;
@@ -138,7 +138,7 @@ public class iCS_DynamicUserFunctionCall : SSActionWithSignature {
                 Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
                 MarkAsEvaluated();
             }
-            var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
+            var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSNodeAction;
 
             // Fetch all parameters.
             var parameterLen= Parameters.Length;

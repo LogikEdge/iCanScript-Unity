@@ -151,13 +151,13 @@ public partial class iCS_EditorObject {
 			if(!IsDataOrControlPort) return null;
 			var port= FirstProducerPort;
 			// Get value from port group (ex: ParentMuxPort).
-			var funcBase= myIStorage.GetRuntimeObject(port) as SSActionWithSignature;
+			var funcBase= myIStorage.GetRuntimeObject(port) as SSNodeAction;
 			if(funcBase != null) {
 			    object returnValue= funcBase.ReturnValue;
 				return returnValue;
 			}
             // Get value from parent node.
-    		funcBase= myIStorage.GetRuntimeObject(port.Parent) as SSActionWithSignature;                
+    		funcBase= myIStorage.GetRuntimeObject(port.Parent) as SSNodeAction;                
             if(funcBase == null) {
                 return port.InitialPortValue;
             }
@@ -182,7 +182,7 @@ public partial class iCS_EditorObject {
 		set {
 	        if(!IsInDataOrControlPort) return;
 	        // Set the return value for a port group (ex: MuxPort).
-			var funcBase= myIStorage.GetRuntimeObject(this) as SSActionWithSignature;
+			var funcBase= myIStorage.GetRuntimeObject(this) as SSNodeAction;
 	        if(funcBase != null) {
 	            funcBase.ReturnValue= value;
 	            return;
@@ -191,7 +191,7 @@ public partial class iCS_EditorObject {
 	        iCS_EditorObject parent= Parent;
 	        if(parent == null) return;
 	        // Get runtime object if it exists.
-	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as SSActionWithSignature;
+	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as SSNodeAction;
 	        if(runtimeObject == null) return;
 	        runtimeObject.SetValue(PortIndex, value);			
 		}

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Subspace;
 
-public class iCS_Mux : SSActionWithSignature {
+public class iCS_Mux : SSNodeAction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------

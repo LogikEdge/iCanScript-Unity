@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Subspace;
 
-public sealed class iCS_StateChart : SSActionWithSignature {
+public sealed class iCS_StateChart : SSNodeAction {
     // ======================================================================
     // Internal types
     // ----------------------------------------------------------------------

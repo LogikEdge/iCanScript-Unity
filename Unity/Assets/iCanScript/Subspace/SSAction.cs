@@ -16,16 +16,25 @@ namespace Subspace {
         int     myExecutedRunId = 0;
         bool    myIsStalled     = false;
         bool    myIsActive      = true;
-        bool    myPortsAreAlwaysCurrent= false;
 
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
-        public int      Priority            { get { return myPriority; } set { myPriority= value; }}
-        public int      EvaluatedRunId      { get { return myEvaluatedRunId; }}
-        public int      ExecutedRunId       { get { return myExecutedRunId; }}
-        public bool     IsStalled           { get { return myIsStalled; } set { myIsStalled= value; }}
-        public SSAction ParentAction        { get { return myParent as SSAction; } set { myParent= value; }}
+        public int  Priority            { get { return myPriority; } set { myPriority= value; }}
+        public int  EvaluatedRunId      { get { return myEvaluatedRunId; }}
+        public int  ExecutedRunId       { get { return myExecutedRunId; }}
+
+        // ----------------------------------------------------------------------
+        public bool IsWaiting           { get { return myEvaluatedRunId != myContext.RunId; }}
+        public bool IsDisabled          { get { return IsEvaluated && !IsExecuted; }}
+        public bool IsEvaluated         { get { return myEvaluatedRunId == myContext.RunId; }}
+        public bool IsExecuted          { get { return myExecutedRunId == myContext.RunId; }}
+        public void MarkAsEvaluated()   { myEvaluatedRunId= myContext.RunId; myIsStalled= false; }
+        public void MarkAsExecuted()    { myExecutedRunId= myContext.RunId; MarkAsEvaluated(); }
+
+        // ----------------------------------------------------------------------
+        public SSAction ParentAction    { get { return myParent as SSAction; } set { myParent= value; }}
+        public bool     IsStalled       { get { return myIsStalled; } set { myIsStalled= value; }}
         public bool IsActive            {
             get {
                 if(myIsActive == false) {
@@ -36,10 +45,6 @@ namespace Subspace {
             }
             set { myIsActive= value; }
         }
-        public bool ArePortsAlwaysCurrent {
-			get { return myPortsAreAlwaysCurrent; }
-			set { myPortsAreAlwaysCurrent= value; }
-		}
     
         // ======================================================================
         // Creation/Destruction
@@ -56,17 +61,6 @@ namespace Subspace {
         public abstract void            Execute();
         public abstract Connection      GetStalledProducerPort();
     
-        // ----------------------------------------------------------------------
-        public bool IsWaiting           { get { return myEvaluatedRunId != myContext.RunId; }}
-        public bool IsDisabled          { get { return IsEvaluated && !IsExecuted; }}
-        public bool IsEvaluated         { get { return myEvaluatedRunId == myContext.RunId; }}
-        public bool IsExecuted          { get { return myExecutedRunId == myContext.RunId; }}
-        public void MarkAsEvaluated()   { myEvaluatedRunId= myContext.RunId; myIsStalled= false; }
-        public void MarkAsExecuted()    { myExecutedRunId= myContext.RunId; MarkAsEvaluated(); }
-
-        // ----------------------------------------------------------------------
-        public bool ArePortsEvaluated   { get { return IsEvaluated || ArePortsAlwaysCurrent || !IsActive; }}
-        public bool ArePortsExecuted    { get { return IsExecuted; }}
     }
     
 }

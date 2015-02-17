@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Collections;
 using Subspace;
 
-public abstract class iCS_FunctionBase : SSActionWithSignature {
+public abstract class iCS_FunctionBase : SSNodeAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

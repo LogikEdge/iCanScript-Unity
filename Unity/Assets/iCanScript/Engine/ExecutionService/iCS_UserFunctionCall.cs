@@ -3,17 +3,17 @@ using System;
 using System.Collections;
 using Subspace;
 
-public class iCS_UserFunctionCall : SSActionWithSignature {
+public class iCS_UserFunctionCall : SSNodeAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected SSActionWithSignature myUserAction = null;
+    protected SSNodeAction myUserAction = null;
               bool                  isActionOwner= false;
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_UserFunctionCall(string name, SSObject parent, SSActionWithSignature userAction,
+    public iCS_UserFunctionCall(string name, SSObject parent, SSNodeAction userAction,
 							    int priority, int nbOfParameters, int nbOfEnables)
     : base(name, parent, priority, nbOfParameters, nbOfEnables) {
         myUserAction= userAction;

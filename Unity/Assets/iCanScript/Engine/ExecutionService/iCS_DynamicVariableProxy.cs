@@ -2,11 +2,11 @@ using UnityEngine;
 using System.Collections;
 using Subspace;
 
-public class iCS_DynamicVariableProxy : SSActionWithSignature {
+public class iCS_DynamicVariableProxy : SSNodeAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected SSActionWithSignature   myUserAction= null;
+    protected SSNodeAction   myUserAction= null;
 
     // ======================================================================
     // Creation/Destruction
@@ -38,7 +38,7 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
                 Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
                 MarkAsEvaluated();
             }
-            var variable= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
+            var variable= vs.RuntimeNodes[variableObject.InstanceId] as SSNodeAction;
             ReturnValue= variable.ReturnValue;
             MarkAsExecuted();            
         }
@@ -62,7 +62,7 @@ public class iCS_DynamicVariableProxy : SSActionWithSignature {
             Debug.LogWarning("iCanScript: Unable to find variable: "+FullName+" in visual script of game object: "+gameObject.name);
             MarkAsEvaluated();
         }
-        var variable= vs.RuntimeNodes[variableObject.InstanceId] as SSActionWithSignature;
+        var variable= vs.RuntimeNodes[variableObject.InstanceId] as SSNodeAction;
         ReturnValue= variable.ReturnValue;
         MarkAsExecuted();            
     }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Subspace;
 
-public abstract class iCS_Dispatcher : SSActionWithSignature {
+public abstract class iCS_Dispatcher : SSNodeAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

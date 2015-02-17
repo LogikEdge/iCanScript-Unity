@@ -253,7 +253,7 @@ public class iCS_Inspector : Editor {
         );
 
         // Show inputs.
-        var runtimeObject= myIStorage.GetRuntimeObject(node) as SSActionWithSignature;
+        var runtimeObject= myIStorage.GetRuntimeObject(node) as SSNodeAction;
         if(inPorts.Count > 0) {
             int indentLevel= 1;
             if(runtimeObject != null) {

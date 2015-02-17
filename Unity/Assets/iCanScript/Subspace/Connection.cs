@@ -8,22 +8,22 @@ namespace Subspace {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        SSActionWithSignature   myAction       = null;
-        int                     myPortIndex    = -1;
-        bool                    myIsAlwaysReady= false;
+        SSNodeAction   myAction       = null;
+        int            myPortIndex    = -1;
+        bool           myIsAlwaysReady= false;
 
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
-        public SSAction Action          { get { return myAction; }}
-        public int      PortIndex       { get { return myPortIndex; }}
-        public string   PortFullName    { get { return Action.FullName+"["+myPortIndex+"]"; }}
+        public SSNodeAction Action          { get { return myAction; }}
+        public int          PortIndex       { get { return myPortIndex; }}
+        public string       PortFullName    { get { return Action.FullName+"["+myPortIndex+"]"; }}
     
         // ======================================================================
         /// Creation/Destruction
         // ----------------------------------------------------------------------
         public Connection() { }
-        public Connection(SSActionWithSignature action, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
+        public Connection(SSNodeAction action, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
             myAction       = action;
             myPortIndex    = portIndex;
             myIsAlwaysReady= isAlwaysReady;

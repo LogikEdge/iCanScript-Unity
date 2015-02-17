@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Subspace;
 
-public class iCS_VariableProxy : SSActionWithSignature {
+public class iCS_VariableProxy : SSNodeAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

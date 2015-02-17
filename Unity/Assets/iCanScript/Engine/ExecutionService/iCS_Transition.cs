@@ -6,11 +6,11 @@ public class iCS_Transition : SSAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_Package             myTransitionPackage;
-    iCS_State               myEndState;
-    SSActionWithSignature   myTriggerFunction;
-    int                     myTriggerPortIdx;
-    bool                    myIsTriggered= false;
+    iCS_Package    myTransitionPackage;
+    iCS_State      myEndState;
+    SSNodeAction   myTriggerFunction;
+    int            myTriggerPortIdx;
+    bool           myIsTriggered= false;
 
     // ======================================================================
     // Properties
@@ -21,7 +21,7 @@ public class iCS_Transition : SSAction {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Transition(string name, SSObject parent, iCS_State endState, iCS_Package transitionPackage, SSActionWithSignature triggerFunc, int portIdx, int priority)
+    public iCS_Transition(string name, SSObject parent, iCS_State endState, iCS_Package transitionPackage, SSNodeAction triggerFunc, int portIdx, int priority)
     : base(name, parent, priority) {
         myTransitionPackage= transitionPackage;
         myEndState         = endState;

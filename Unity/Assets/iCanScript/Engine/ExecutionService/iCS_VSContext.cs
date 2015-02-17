@@ -3,16 +3,16 @@ using UnityEngine;
 using System.Collections.Generic;
 using Subspace;
 
-public class iCS_VSContext {
+public class iCS_RunContext {
     // ======================================================================
     // Fields
-    SSAction            myAction= null;
+    SSNodeAction        myAction= null;
     List<SSAction>      myStalledActions= new List<SSAction>();
     
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public SSAction Action {
+    public SSNodeAction Action {
         get { return myAction; }
         set { myAction= value; }
     }
@@ -23,7 +23,7 @@ public class iCS_VSContext {
     // ======================================================================
     // Methods
     // ----------------------------------------------------------------------
-    public iCS_VSContext(SSAction action) {
+    public iCS_RunContext(SSNodeAction action) {
         myAction= action;
         if(myAction != null) {
             myAction.IsActive= false;
