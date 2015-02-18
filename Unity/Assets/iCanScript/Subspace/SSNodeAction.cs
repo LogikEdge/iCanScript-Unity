@@ -15,14 +15,14 @@ namespace Subspace {
 
         // .NET Signature
         object              myThis                 = null;  
-        SSPullBinding        myThisConnection       = null;
+        SSPullBinding       myThisConnection       = null;
         object[]            myParameters           = null;
-        SSPullBinding[]      myParameterConnections = null;
+        SSPullBinding[]     myParameterConnections = null;
         object              myReturnValue          = null;
         // Controls
         bool                myTrigger              = false;
         bool[]              myEnables              = null;
-        SSPullBinding[]      myEnableConnections    = null;
+        SSPullBinding[]     myEnableConnections    = null;
     
         // ======================================================================
         // Filler when enables or connections not used.

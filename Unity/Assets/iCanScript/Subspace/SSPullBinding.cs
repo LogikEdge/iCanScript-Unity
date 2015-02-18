@@ -31,8 +31,6 @@ namespace Subspace {
             myIsAlwaysReady= isAlwaysReady;
         }
 
-        /// Returns **TRUE** if this connection is connect to an _SSAction_.
-        public bool IsConnected             { get{ return myAction != null; }}
         /// Get/Sets the value associated with the connection.
         public object Value                 {
             get { return myAction.GetValue(PortIndex); }
@@ -41,7 +39,7 @@ namespace Subspace {
         /// Returns **TRUE** if the value is available for this _runId_.
         public bool IsReady    {
             get {
-                if(myIsAlwaysReady || !IsConnected) return true;
+                if(myIsAlwaysReady) return true;
                 return Action.ArePortsEvaluated;                
             }
         }
