@@ -411,7 +411,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     						var rtMuxPort= myRuntimeNodes[port.ParentId] as SSNodeAction;
     						if(rtMuxPort == null) break;
                             iCS_EngineObject sourcePort= GetSourceEndPort(port);
-    						SSConnection connection= sourcePort != port ? BuildConnection(sourcePort) : null;
+    						SSBinding connection= sourcePort != port ? BuildConnection(sourcePort) : null;
     						rtMuxPort.SetConnection(port.PortIndex, connection);
     						break;
     					}
@@ -478,7 +478,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             // Build connection.
                             iCS_EngineObject sourcePort= GetSourceEndPort(port);
                             // Special case for proxy ports.  The connection will be made on the original port.
-                            SSConnection connection= null;
+                            SSBinding connection= null;
                             var sourceParent= GetParentNode(sourcePort);
                             if(sourceParent.IsVariableReference) {
                                 connection= BuildVariableProxyConnection(sourceParent, sourcePort, port);
@@ -659,15 +659,15 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
 	}
     // ----------------------------------------------------------------------
-	SSConnection BuildConnection(iCS_EngineObject port) {
-		SSConnection connection= null;
+	SSBinding BuildConnection(iCS_EngineObject port) {
+		SSBinding connection= null;
         var rtPortGroup= myRuntimeNodes[port.InstanceId] as SSNodeAction;
 		if(rtPortGroup != null) {
-			connection= new SSConnection(rtPortGroup, (int)iCS_PortIndex.Return);	
+			connection= new SSBinding(rtPortGroup, (int)iCS_PortIndex.Return);	
 		} else {
             bool isAlwaysReady= port.IsInputPort;
             bool isControlPort= port.IsControlPort;
-			connection= new SSConnection(myRuntimeNodes[port.ParentId] as SSNodeAction, port.PortIndex, isAlwaysReady, isControlPort);
+			connection= new SSBinding(myRuntimeNodes[port.ParentId] as SSNodeAction, port.PortIndex, isAlwaysReady, isControlPort);
 		}
 		return connection;
 	}

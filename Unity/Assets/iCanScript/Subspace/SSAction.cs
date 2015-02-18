@@ -56,7 +56,7 @@ namespace Subspace {
         // ======================================================================
         // Execution
         // ----------------------------------------------------------------------
-        public abstract SSConnection      GetStalledProducerPort();
+        public abstract SSBinding      GetStalledProducerPort();
     
     }
     

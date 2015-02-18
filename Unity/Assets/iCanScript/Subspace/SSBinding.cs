@@ -4,7 +4,7 @@ using Subspace;
 
 namespace Subspace {
 
-    public class SSConnection {
+    public class SSBinding {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
@@ -22,8 +22,8 @@ namespace Subspace {
         // ======================================================================
         /// Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSConnection() { }
-        public SSConnection(SSNodeAction action, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
+        public SSBinding() { }
+        public SSBinding(SSNodeAction action, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false) {
             myAction       = action;
             myPortIndex    = portIndex;
             myIsAlwaysReady= isAlwaysReady;
