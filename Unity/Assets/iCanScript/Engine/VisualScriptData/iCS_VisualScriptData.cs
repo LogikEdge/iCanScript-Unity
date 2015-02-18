@@ -170,8 +170,8 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // Connection Queries
     // ----------------------------------------------------------------------
     // Returns the immediate source of the port.
-    public iCS_EngineObject GetSourcePort(iCS_EngineObject port) {
-        return GetSourcePort(this, port);
+    public iCS_EngineObject GetProducerPort(iCS_EngineObject port) {
+        return GetProducerPort(this, port);
     }
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.
@@ -394,7 +394,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // Connection Queries
     // ----------------------------------------------------------------------
     // Returns the immediate source of the port.
-    public static iCS_EngineObject GetSourcePort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+    public static iCS_EngineObject GetProducerPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
         if(port == null || port.SourceId == -1) return null;
         return vsd.EngineObjects[port.SourceId];
     }
@@ -403,7 +403,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     public static iCS_EngineObject GetFirstProducerPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
         if(port == null || port.InstanceId == -1) return null;
         int linkLength= 0;
-        for(iCS_EngineObject sourcePort= GetSourcePort(vsd, port); sourcePort != null; sourcePort= GetSourcePort(vsd, port)) {
+        for(iCS_EngineObject sourcePort= GetProducerPort(vsd, port); sourcePort != null; sourcePort= GetProducerPort(vsd, port)) {
             port= sourcePort;
             if(++linkLength > 1000) {
                 Debug.LogWarning("iCanScript: Circular port connection detected on: "+GetParentNode(vsd, port).Name+"."+port.Name);
@@ -419,7 +419,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         var consumerPorts= new List<iCS_EngineObject>();
         var engineObjects= vsd.EngineObjects;
         foreach(var obj in engineObjects) {
-            if(obj.IsPort && GetSourcePort(vsd, obj) == port) {
+            if(obj.IsPort && GetProducerPort(vsd, obj) == port) {
                 consumerPorts.Add(obj);
             }
         }
@@ -438,7 +438,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     public static bool HasASource(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
-        var source= GetSourcePort(vsd, port);
+        var source= GetProducerPort(vsd, port);
         return source != null && source != port; 
     }
     // ----------------------------------------------------------------------

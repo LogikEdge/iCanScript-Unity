@@ -142,8 +142,8 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // Connection Queries
     // ----------------------------------------------------------------------
     // Returns the immediate source of the port.
-    public iCS_EngineObject GetSourcePort(iCS_EngineObject port) {
-        return iCS_VisualScriptData.GetSourcePort(this, port);
+    public iCS_EngineObject GetProducerPort(iCS_EngineObject port) {
+        return iCS_VisualScriptData.GetProducerPort(this, port);
     }
     // ----------------------------------------------------------------------
     // Returns the endport source of a connection.

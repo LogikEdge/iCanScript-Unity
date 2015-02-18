@@ -410,19 +410,19 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     					case iCS_ObjectTypeEnum.OutChildMuxPort: {
     						var rtMuxPort= myRuntimeNodes[port.ParentId] as SSNodeAction;
     						if(rtMuxPort == null) break;
-                            iCS_EngineObject sourcePort= GetSourceEndPort(port);
-    						SSBinding connection= sourcePort != port ? BuildConnection(sourcePort) : null;
+                            iCS_EngineObject producerPort= GetProducerEndPort(port);
+    						SSPullBinding connection= producerPort != port ? BuildPullBinding(producerPort, port) : null;
     						rtMuxPort.SetConnection(port.PortIndex, connection);
     						break;
     					}
                         case iCS_ObjectTypeEnum.InStatePort: {
                             iCS_EngineObject endState= GetParent(port);
-							iCS_EngineObject outTransitionPort= GetSourcePort(port);
+							iCS_EngineObject outTransitionPort= GetProducerPort(port);
                             iCS_EngineObject transitionPackage= GetParentNode(outTransitionPort);
                             iCS_EngineObject triggerPort= null;
                             iCS_EngineObject outStatePort= null;
                             GetTransitionPackageParts(transitionPackage, out triggerPort, out outStatePort);
-							triggerPort= GetSourceEndPort(triggerPort);
+							triggerPort= GetProducerEndPort(triggerPort);
                             SSNodeAction triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as SSNodeAction;
                             int triggerIdx= triggerPort.PortIndex;
                             iCS_Transition transition= new iCS_Transition(transitionPackage.Name,
@@ -476,18 +476,18 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
                             // Build connection.
-                            iCS_EngineObject sourcePort= GetSourceEndPort(port);
+                            iCS_EngineObject producerPort= GetProducerEndPort(port);
                             // Special case for proxy ports.  The connection will be made on the original port.
-                            SSBinding connection= null;
-                            var sourceParent= GetParentNode(sourcePort);
-                            if(sourceParent.IsVariableReference) {
-                                connection= BuildVariableProxyConnection(sourceParent, sourcePort, port);
+                            SSPullBinding connection= null;
+                            var producerNode= GetParentNode(producerPort);
+                            if(producerNode.IsVariableReference) {
+                                connection= BuildVariableProxyConnection(producerNode, producerPort, port);
                             }
     						else {
-                                connection= sourcePort != port ? BuildConnection(sourcePort) : null;
+                                connection= producerPort != port ? BuildPullBinding(producerPort, port) : null;
                             }
                             // Build initial value.
-    						object initValue= GetInitialValue(sourcePort);
+    						object initValue= GetInitialValue(producerPort);
 							// Automatically build instance object if not specified.
 							if(connection == null && initValue == null && port.PortIndex == (int)iCS_PortIndex.InInstance) {
 								if(!parentNode.IsMessage && !parentNode.IsVariableReference && !parentNode.IsFunctionCall) {
@@ -569,7 +569,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
             }
             if(edObj.IsInTransitionPort) {
                 if(GetParent(edObj) == transitionPackage) {
-                    outStatePort= GetSourcePort(edObj);
+                    outStatePort= GetProducerPort(edObj);
                 }
             }
         }
@@ -659,17 +659,18 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
 	}
     // ----------------------------------------------------------------------
-	SSBinding BuildConnection(iCS_EngineObject port) {
-		SSBinding connection= null;
-        var rtPortGroup= myRuntimeNodes[port.InstanceId] as SSNodeAction;
+	SSPullBinding BuildPullBinding(iCS_EngineObject producerPort, iCS_EngineObject consumerPort) {
+		SSPullBinding binding= null;
+        var consumerNode= myRuntimeNodes[consumerPort.ParentId];
+        var rtPortGroup= myRuntimeNodes[producerPort.InstanceId] as SSNodeAction;
 		if(rtPortGroup != null) {
-			connection= new SSBinding(rtPortGroup, (int)iCS_PortIndex.Return);	
+			binding= new SSPullBinding(consumerPort.Name, consumerNode, rtPortGroup, (int)iCS_PortIndex.Return);	
 		} else {
-            bool isAlwaysReady= port.IsInputPort;
-            bool isControlPort= port.IsControlPort;
-			connection= new SSBinding(myRuntimeNodes[port.ParentId] as SSNodeAction, port.PortIndex, isAlwaysReady, isControlPort);
+            bool isAlwaysReady= producerPort.IsInputPort;
+            bool isControlPort= producerPort.IsControlPort;
+			binding= new SSPullBinding(consumerPort.Name, consumerNode, myRuntimeNodes[producerPort.ParentId] as SSNodeAction, producerPort.PortIndex, isAlwaysReady, isControlPort);
 		}
-		return connection;
+		return binding;
 	}
     
     // ======================================================================

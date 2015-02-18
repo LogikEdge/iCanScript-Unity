@@ -2,13 +2,11 @@
 using System.Collections;
 
 namespace Subspace {
-
-    public class SSBinding : SSObject {
+    public class SSPushBinding : SSBinding {
         // ======================================================================
         /// Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSBinding(string name, SSObject parent)
+        public SSPushBinding(string name, SSObject parent)
             : base(name, parent) {}
     }
-    
 }

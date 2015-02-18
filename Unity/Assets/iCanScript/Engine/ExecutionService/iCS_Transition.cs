@@ -46,7 +46,7 @@ public class iCS_Transition : SSAction {
         MarkAsExecuted();
     }
     // ----------------------------------------------------------------------
-    public override SSBinding GetStalledProducerPort() {
+    public override SSPullBinding GetStalledProducerPort() {
         if(IsEvaluated) return null;
         return myTransitionPackage.GetStalledProducerPort();
     }

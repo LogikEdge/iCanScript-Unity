@@ -15,19 +15,19 @@ namespace Subspace {
 
         // .NET Signature
         object              myThis                 = null;  
-        SSBinding        myThisConnection       = null;
+        SSPullBinding        myThisConnection       = null;
         object[]            myParameters           = null;
-        SSBinding[]      myParameterConnections = null;
+        SSPullBinding[]      myParameterConnections = null;
         object              myReturnValue          = null;
         // Controls
         bool                myTrigger              = false;
         bool[]              myEnables              = null;
-        SSBinding[]      myEnableConnections    = null;
+        SSPullBinding[]      myEnableConnections    = null;
     
         // ======================================================================
         // Filler when enables or connections not used.
         static bool[]           ourEmptyEnables    = new bool[0];
-        static SSBinding[]	ourEmptyConnections= new SSBinding[0];
+        static SSPullBinding[]	ourEmptyConnections= new SSPullBinding[0];
     
         // ======================================================================
         // Accessors
@@ -50,10 +50,10 @@ namespace Subspace {
         public object[] Parameters {
             get { return myParameters; }
         }
-        public SSBinding[] ParameterConnections {
+        public SSPullBinding[] ParameterConnections {
             get { return myParameterConnections; }
         }
-        public void SetConnection(int portIdx, SSBinding connection) {
+        public void SetConnection(int portIdx, SSPullBinding connection) {
             if(portIdx < myParameterConnections.Length) {
         		myParameterConnections[portIdx]= connection;            
                 return;
@@ -262,7 +262,7 @@ namespace Subspace {
         public SSNodeAction(string name, SSObject parent, int priority, int nbOfParameters, int nbOfEnables)
         : base(name, parent, priority) {
             myParameters = new object[nbOfParameters];
-            myParameterConnections= new SSBinding[nbOfParameters];
+            myParameterConnections= new SSPullBinding[nbOfParameters];
             for(int i= 0; i < nbOfParameters; ++i) {
                 myParameters[i]= null;
                 myParameterConnections[i]= null;
@@ -272,7 +272,7 @@ namespace Subspace {
                 myEnableConnections= ourEmptyConnections;            
             } else {
                 myEnables= new bool[nbOfEnables];
-                myEnableConnections= new SSBinding[nbOfEnables];
+                myEnableConnections= new SSPullBinding[nbOfEnables];
                 for(int i= 0; i < nbOfEnables; ++i) {
                     myEnables[i]= true;
                     myEnableConnections[i]= null;
@@ -327,7 +327,7 @@ namespace Subspace {
             }
         }
         // ----------------------------------------------------------------------
-        public SSBinding GetStalledEnablePort() {
+        public SSPullBinding GetStalledEnablePort() {
             if(IsEvaluated) {
                 return null;
             }
@@ -344,7 +344,7 @@ namespace Subspace {
             return null;
         }
         // ----------------------------------------------------------------------
-        public override SSBinding GetStalledProducerPort() {
+        public override SSPullBinding GetStalledProducerPort() {
             if(IsEvaluated) {
                 return null;
             }

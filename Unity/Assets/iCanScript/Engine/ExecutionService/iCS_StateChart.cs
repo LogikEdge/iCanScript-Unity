@@ -84,7 +84,7 @@ public sealed class iCS_StateChart : SSNodeAction {
     }
     // ----------------------------------------------------------------------
     // TODO: GetStalledProducerPort
-    public override SSBinding GetStalledProducerPort() {
+    public override SSPullBinding GetStalledProducerPort() {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
             var producerPort= GetStalledProducerPortInTransitions();            
@@ -200,7 +200,7 @@ public sealed class iCS_StateChart : SSNodeAction {
         myExecutionState= ExecutionState.RunningUpdate;
     }
     // ----------------------------------------------------------------------
-    SSBinding GetStalledProducerPortInTransitions() {
+    SSPullBinding GetStalledProducerPortInTransitions() {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
@@ -259,7 +259,7 @@ public sealed class iCS_StateChart : SSNodeAction {
         MarkAsExecuted();
     }
     // ----------------------------------------------------------------------
-    SSBinding GetStalledProducerPortOnUpdate() {
+    SSPullBinding GetStalledProducerPortOnUpdate() {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
@@ -303,7 +303,7 @@ public sealed class iCS_StateChart : SSNodeAction {
 		UpdateActiveStack();
     }
     // ----------------------------------------------------------------------
-    SSBinding GetStalledProducerPortOnExit() {
+    SSPullBinding GetStalledProducerPortOnExit() {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
@@ -346,7 +346,7 @@ public sealed class iCS_StateChart : SSNodeAction {
         myQueueIdx= 0;        
     }
     // ----------------------------------------------------------------------
-    SSBinding GetStalledProducerPortOnEntry() {
+    SSPullBinding GetStalledProducerPortOnEntry() {
         int end= myActiveStack.Count;
 		for(int idx= myQueueIdx; idx < end; ++idx) {
             iCS_State state= myActiveStack[idx];
