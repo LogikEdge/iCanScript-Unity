@@ -3,11 +3,11 @@ using System.Collections;
 
 namespace Subspace {
     
-    /// =========================================================================
-    // An action is the base class of the execution.  It includes a frame
-    // identifier that is used to indicate if the action has been run.  This
-    // indicator is the bases for the execution synchronization.
-    public abstract class SSAction : SSObject {
+    // =========================================================================
+    /// An action is the base class of the execution.  It includes a frame
+    /// identifier that is used to indicate if the action has been run.  This
+    /// indicator is the bases for the execution synchronization.
+    public abstract class SSAction : SSActionBase {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
@@ -25,12 +25,11 @@ namespace Subspace {
         public int  ExecutedRunId       { get { return myExecutedRunId; }}
 
         // ----------------------------------------------------------------------
-        public bool IsWaiting           { get { return myEvaluatedRunId != myContext.RunId; }}
-        public bool IsDisabled          { get { return IsEvaluated && !IsExecuted; }}
-        public bool IsEvaluated         { get { return myEvaluatedRunId == myContext.RunId; }}
-        public bool IsExecuted          { get { return myExecutedRunId == myContext.RunId; }}
-        public void MarkAsEvaluated()   { myEvaluatedRunId= myContext.RunId; myIsStalled= false; }
-        public void MarkAsExecuted()    { myExecutedRunId= myContext.RunId; MarkAsEvaluated(); }
+        public bool IsWaiting           { get { return myEvaluatedRunId != Context.RunId; }}
+        public bool IsEvaluated         { get { return myEvaluatedRunId == Context.RunId; }}
+        public bool IsExecuted          { get { return myExecutedRunId == Context.RunId; }}
+        public void MarkAsEvaluated()   { myEvaluatedRunId= Context.RunId; myIsStalled= false; }
+        public void MarkAsExecuted()    { myExecutedRunId= Context.RunId; MarkAsEvaluated(); }
 
         // ----------------------------------------------------------------------
         public SSAction ParentAction    { get { return myParent as SSAction; } set { myParent= value; }}
@@ -57,8 +56,6 @@ namespace Subspace {
         // ======================================================================
         // Execution
         // ----------------------------------------------------------------------
-        public abstract void            Evaluate();
-        public abstract void            Execute();
         public abstract Connection      GetStalledProducerPort();
     
     }

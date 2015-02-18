@@ -198,8 +198,10 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         switch(node.ObjectType) {
                             case iCS_ObjectTypeEnum.Behaviour: {
                                 var behaviour= new SSObject(this.name, null);
-                                behaviour.Context.ErrorDelegate  = RuntimeErrorDelegate;
-                                behaviour.Context.WarningDelegate= RuntimeWarningDelegate;
+                                var context= new SSContext(this);
+                                context.ErrorDelegate  = RuntimeErrorDelegate;
+                                context.WarningDelegate= RuntimeWarningDelegate;
+                                behaviour.Context= context;
                                 myRuntimeNodes[node.InstanceId]= behaviour;
                                 break;
                             }

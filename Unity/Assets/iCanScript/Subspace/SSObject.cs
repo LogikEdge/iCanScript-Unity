@@ -3,13 +3,20 @@ using System.Collections;
 
 namespace Subspace {
     
+    // ==========================================================================
+    /// Defines the base class for all Objects in Subspace.
+    ///
+    /// All objects in Subspace are part of a hierarchy and have a parent.  In
+    /// addition, all objects referer a SSContext to share information within
+    /// the group of objects it belongs to.  By default, the parent SSContext
+    /// is used.
     public class SSObject {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
         protected string    myName      = null;
         protected SSObject  myParent    = null;
-        protected SSContext myContext   = null;
+        private   SSContext myContext   = null;
 
         // ======================================================================
         // Properties
@@ -17,7 +24,10 @@ namespace Subspace {
         public string       Name        { get { return myName; }}
         public string       FullName    { get { return GetFullName("/"); }}
         public SSObject     Parent      { get { return myParent; }}
-        public SSContext    Context     { get { return myContext; } set { myContext= value; }}
+        public SSContext    Context     {
+            get { return myContext ?? myParent.Context; }
+            set { myContext= value; }
+        }
     
         // ======================================================================
         // Creation/Destruction
@@ -25,7 +35,6 @@ namespace Subspace {
         public SSObject(string name, SSObject parent) {
             myName   = name;
 			myParent = parent;
-            myContext= myParent != null ? myParent.Context : new SSContext();
         }
 
         // ----------------------------------------------------------------------

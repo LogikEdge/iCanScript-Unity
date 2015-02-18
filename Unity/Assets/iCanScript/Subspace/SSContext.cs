@@ -51,6 +51,18 @@ namespace Subspace {
         public SSContext(Object userData= null) {
             myUserData= userData;
         }
+        public SSContext Clone() {
+            var clone= new SSContext();
+            clone.CopyFrom(this);
+            return clone;
+        }
+        public void CopyFrom(SSContext theOther) {
+            myRunId          = theOther.myRunId;
+            myUserData	     = theOther.myUserData;
+        	myIsTraceEnabled = theOther.myIsTraceEnabled;
+            myErrorDelegate  = theOther.myErrorDelegate;
+            myWarningDelegate= theOther.myWarningDelegate;
+        }
         
         // ======================================================================
         // Error/Warning Report

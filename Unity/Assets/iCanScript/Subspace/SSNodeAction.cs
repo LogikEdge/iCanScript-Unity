@@ -306,8 +306,8 @@ namespace Subspace {
     		// Skip execution if this action is disabled.
             if(isEnabled == false) {
                 MarkAsEvaluated();
-                if(myContext.IsTraceEnabled) {
-                    Debug.Log("Executing=> "+FullName+" is disabled"+" ("+myContext.RunId+")");
+                if(Context.IsTraceEnabled) {
+                    Debug.Log("Executing=> "+FullName+" is disabled"+" ("+Context.RunId+")");
                 }
                 return;
             }
@@ -316,7 +316,7 @@ namespace Subspace {
             DoEvaluate();
             if(Context.IsTraceEnabled) {    
                 if(IsExecuted) {
-                    Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+myContext.RunId+")");
+                    Debug.Log("Executing=> "+FullName+" was executed sucessfully"+" ("+Context.RunId+")");
                 }
     //            else if(IsCurrent(runId)){
     //                Debug.Log("Executing=> "+FullName+" is Current");

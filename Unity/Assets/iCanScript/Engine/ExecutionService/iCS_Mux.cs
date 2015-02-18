@@ -32,7 +32,7 @@ public class iCS_Mux : SSNodeAction {
 			if(connection == null) continue;
 			var action= connection.Action;
 			if(action == null) continue;
-			int runIdDistance= myContext.RunId-action.ExecutedRunId;
+			int runIdDistance= Context.RunId-action.ExecutedRunId;
 			if(runIdDistance < smallestDistance) {
 				smallestDistance= runIdDistance;
 				bestConnection= connection;
