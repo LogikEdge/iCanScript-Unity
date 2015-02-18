@@ -6,7 +6,7 @@ public class iCS_Package : iCS_ParallelDispatcher {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public int Repetition= 1;
+    public int myIteration= 1;
     
     // ======================================================================
     // Creation/Destruction
@@ -17,10 +17,18 @@ public class iCS_Package : iCS_ParallelDispatcher {
     // ======================================================================
     // Iteration
     // ----------------------------------------------------------------------
-    public override void Evaluate() {
-        base.Evaluate();
-    }
-    public override void Execute() {
-        base.Execute();
+    protected override void DoEvaluate() {
+        if(myIteration > 1 && (myParent is iCS_Message) == true) {
+//            var packageContext= Context.Clone();
+//            packageContext.RunId+= 1000;
+//            Context= packageContext;
+            Context.RunId+= myIteration-1;
+            for(int i= 1; i < myIteration; ++i) {
+                base.DoEvaluate();
+                Context.RunId-= 1;
+            }
+//            Context= null;
+        }
+        base.DoEvaluate();
     }
 }

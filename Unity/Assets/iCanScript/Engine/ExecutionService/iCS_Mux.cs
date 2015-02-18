@@ -27,7 +27,7 @@ public class iCS_Mux : SSNodeAction {
     protected override void DoExecute() {
         // Take the last that has executed.
 		int smallestDistance= 100000;
-		Connection bestConnection= null;
+		SSConnection bestConnection= null;
         foreach(var connection in ParameterConnections) {
 			if(connection == null) continue;
 			var action= connection.Action;

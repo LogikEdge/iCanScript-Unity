@@ -19,7 +19,7 @@ public abstract class iCS_Dispatcher : SSNodeAction {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override Connection GetStalledProducerPort() {
+    public override SSConnection GetStalledProducerPort() {
         if(IsEvaluated) {
             return null;
         }
