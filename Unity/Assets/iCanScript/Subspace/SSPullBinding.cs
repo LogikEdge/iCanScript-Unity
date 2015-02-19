@@ -44,7 +44,7 @@ namespace Subspace {
             }
         }
         /// Returns **TRUE** if the connected _SSAction_ has been evaluated or executed for this _runId_.
-        public bool IsCurrent {
+        public bool IsEvaluated {
         	get { return Action.ArePortsEvaluated; }
         }
         /// Returns **TRUE** if the connected _SSAction_ has ran for this _runId_.

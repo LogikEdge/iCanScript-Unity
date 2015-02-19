@@ -14,26 +14,26 @@ namespace Subspace {
         bool    myPortsAreAlwaysCurrent= false;
 
         // .NET Signature
-        object              myThis                 = null;  
-        SSPullBinding       myThisConnection       = null;
-        object[]            myParameters           = null;
-        SSPullBinding[]     myParameterConnections = null;
-        object              myReturnValue          = null;
+        object              myThis             = null;  
+        SSPullBinding       myThisBinding      = null;
+        object[]            myParameters       = null;
+        SSPullBinding[]     myParameterBindings= null;
+        object              myReturnValue      = null;
         // Controls
-        bool                myTrigger              = false;
-        bool[]              myEnables              = null;
-        SSPullBinding[]     myEnableConnections    = null;
+        bool                myTrigger          = false;
+        bool[]              myEnables          = null;
+        SSPullBinding[]     myEnableBindings   = null;
     
         // ======================================================================
         // Filler when enables or connections not used.
-        static bool[]           ourEmptyEnables    = new bool[0];
-        static SSPullBinding[]	ourEmptyConnections= new SSPullBinding[0];
+        static bool[]           ourEmptyEnables = new bool[0];
+        static SSPullBinding[]	ourEmptyBindings= new SSPullBinding[0];
     
         // ======================================================================
         // Accessors
         // ----------------------------------------------------------------------
         public object This {
-            get { return myThisConnection == null ? myThis : myThisConnection.Value; }
+            get { return myThisBinding == null ? myThis : myThisBinding.Value; }
         }
         public object ReturnValue {
             get { return myReturnValue; }
@@ -51,21 +51,21 @@ namespace Subspace {
             get { return myParameters; }
         }
         public SSPullBinding[] ParameterConnections {
-            get { return myParameterConnections; }
+            get { return myParameterBindings; }
         }
         public void SetConnection(int portIdx, SSPullBinding connection) {
-            if(portIdx < myParameterConnections.Length) {
-        		myParameterConnections[portIdx]= connection;            
+            if(portIdx < myParameterBindings.Length) {
+        		myParameterBindings[portIdx]= connection;            
                 return;
             }
             if(portIdx == (int)iCS_PortIndex.InInstance) {
-                myThisConnection= connection;
+                myThisBinding= connection;
                 return;
             }
-    		if(myEnableConnections != null && portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
+    		if(myEnableBindings != null && portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
     			var i= portIdx-(int)iCS_PortIndex.EnablesStart;
-    			if(i < myEnableConnections.Length) {
-    				myEnableConnections[i]= connection;
+    			if(i < myEnableBindings.Length) {
+    				myEnableBindings[i]= connection;
     			}
     			return;
     		}
@@ -76,7 +76,7 @@ namespace Subspace {
                 Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
                 return false;
             }
-            var connection= myParameterConnections[idx];
+            var connection= myParameterBindings[idx];
             if(connection == null) return true;
             return connection.IsReady;
         }
@@ -85,7 +85,7 @@ namespace Subspace {
                 Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
                 return null;
             }
-            var connection= myParameterConnections[idx];
+            var connection= myParameterBindings[idx];
             if(connection != null) {
                 myParameters[idx]= connection.Value;
             }
@@ -93,8 +93,8 @@ namespace Subspace {
         }
         public bool IsThisReady {
             get {
-                if(myThisConnection == null) return true;
-                return myThisConnection.IsReady;
+                if(myThisBinding == null) return true;
+                return myThisBinding.IsReady;
             }
         }
 
@@ -116,9 +116,9 @@ namespace Subspace {
             bool needToWait= false;
     	    int len= myEnables.Length;
             for(int i= 0; i < len; ++i) {
-                var connection= myEnableConnections[i];
+                var connection= myEnableBindings[i];
                 if(connection != null) {
-                    if(connection.IsCurrent) {
+                    if(connection.IsEvaluated) {
                         if((bool)connection.Value == false) {
                             isEnabled= false;
                             return true;
@@ -145,7 +145,7 @@ namespace Subspace {
         public bool GetIsEnabled() {
             int len= myEnables.Length;
             for(int i= 0; i < len; ++i) {
-                var connection= myEnableConnections[i];
+                var connection= myEnableBindings[i];
                 if(connection == null) {
                     if(myEnables[i] == false) {
                         return false;
@@ -179,8 +179,8 @@ namespace Subspace {
     		if(portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
                 int i= portIdx-(int)iCS_PortIndex.EnablesStart;
                 if(i < myEnables.Length) {
-                    var connection= myEnableConnections[i];
-                    return connection == null ? myEnables[i] : myEnableConnections[i].Value;
+                    var connection= myEnableBindings[i];
+                    return connection == null ? myEnables[i] : myEnableBindings[i].Value;
                 }
     		}
     		throw new System.Exception("Invalid signature access: ["+portIdx+"]");
@@ -262,20 +262,20 @@ namespace Subspace {
         public SSNodeAction(string name, SSObject parent, int priority, int nbOfParameters, int nbOfEnables)
         : base(name, parent, priority) {
             myParameters = new object[nbOfParameters];
-            myParameterConnections= new SSPullBinding[nbOfParameters];
+            myParameterBindings= new SSPullBinding[nbOfParameters];
             for(int i= 0; i < nbOfParameters; ++i) {
                 myParameters[i]= null;
-                myParameterConnections[i]= null;
+                myParameterBindings[i]= null;
             }
             if(nbOfEnables == 0) {
                 myEnables= ourEmptyEnables;
-                myEnableConnections= ourEmptyConnections;            
+                myEnableBindings= ourEmptyBindings;            
             } else {
                 myEnables= new bool[nbOfEnables];
-                myEnableConnections= new SSPullBinding[nbOfEnables];
+                myEnableBindings= new SSPullBinding[nbOfEnables];
                 for(int i= 0; i < nbOfEnables; ++i) {
                     myEnables[i]= true;
-                    myEnableConnections[i]= null;
+                    myEnableBindings[i]= null;
                 }
             }
         }
@@ -332,9 +332,9 @@ namespace Subspace {
                 return null;
             }
             // Let's first verify the enables.
-            int len= myEnableConnections.Length;
+            int len= myEnableBindings.Length;
             for(int i= 0; i < len; ++i) {
-                var connection= myEnableConnections[i];
+                var connection= myEnableBindings[i];
                 if(connection != null) {
                     if(!connection.IsReady) {
                         return connection;
@@ -354,13 +354,13 @@ namespace Subspace {
                 return stalledEnable;
             }
             // Verify intance connection
-            if(myThisConnection != null && !myThisConnection.IsReady) {
-                return myThisConnection;
+            if(myThisBinding != null && !myThisBinding.IsReady) {
+                return myThisBinding;
             }
             // Verify parameter connections
-            var len= myParameterConnections.Length;
+            var len= myParameterBindings.Length;
             for(int i= 0; i < len; ++i) {
-                var connection= myParameterConnections[i];
+                var connection= myParameterBindings[i];
                 if(connection != null) {
                     if(!connection.IsReady) {
                         return connection;
