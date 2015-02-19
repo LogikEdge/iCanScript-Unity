@@ -111,15 +111,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // DATABASE CONVERSION
     // ======================================================================
-    // OLD STORAGE (TO BE REMOVED)
-    // ----------------------------------------------------------------------
-    [HideInInspector] public iCS_StorageImp myStorage= null;
-    public void v1_1_2_Upgrade() {
-        if(myStorage != null) {
-            iCS_VisualScriptData.CopyFromTo(myStorage, this);
-        }
-        myStorage= null;
-    }
+	// None.
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
 
@@ -127,7 +119,6 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // Initialization
     // ----------------------------------------------------------------------
     void Awake() {
-        v1_1_2_Upgrade();
     }
 
  }

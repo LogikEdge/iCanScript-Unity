@@ -9,13 +9,10 @@ public partial class iCS_IStorage {
         bool isUpgraded= false;
         
         // PRE-PROCESSING ====================================================
-        // v1.1.2: used a seperate ScriptableObject for storage
+        // Use this are to perform pre-processing data conversion.
 		iCS_Version softwareVersion= iCS_Version.Current;
-        if(iCSMonoBehaviour.myStorage != null) {
-			ShowUpgradeDialog(softwareVersion); 
-			v1_1_2_Upgrade();
-			SaveCurrentScene();            
-        }
+
+		// Extract the version of the storage.
 		iCS_Version storageVersion= new iCS_Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
@@ -41,12 +38,6 @@ public partial class iCS_IStorage {
 		EngineStorage.BugFixVersion= iCS_Config.BugFixVersion;
 	}
 
-    // ----------------------------------------------------------------------
-	// Convert module under behaviour to message.
-    public void v1_1_2_Upgrade() {
-        iCSMonoBehaviour.v1_1_2_Upgrade();
-    }
-    
     // ----------------------------------------------------------------------
 	void ShowUpgradeDialog(iCS_Version softwareVersion) {
 		EditorUtility.DisplayDialog("iCanScript Data Upgrade Required", "Your visual scripts were created with an earlier version of iCanScript.\n\nAn upgrade to v"+softwareVersion.ToString()+" will be performed in memory.\nPlease save your scenes to complete the upgrade.", "Ok");
