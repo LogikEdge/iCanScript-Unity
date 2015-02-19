@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using Subspace;
 
 namespace Subspace {
 
@@ -22,7 +21,6 @@ namespace Subspace {
         // ======================================================================
         /// Creation/Destruction
         // ----------------------------------------------------------------------
-        public SSPullBinding(string name, SSObject parent) : base(name, parent) {}
         public SSPullBinding(string name, SSObject parent,
                              SSNodeAction action, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false)
         : base(name, parent) {
