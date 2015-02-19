@@ -418,6 +418,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         case iCS_ObjectTypeEnum.OutStatePort: {
                             break;
                         }
+						// TODO: Revise MUX port bindings...should not be special processing.
                         case iCS_ObjectTypeEnum.InChildMuxPort:
     					case iCS_ObjectTypeEnum.OutChildMuxPort: {
     						var rtMuxPort= myRuntimeNodes[port.ParentId] as SSNodeAction;
@@ -495,7 +496,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 connection= BuildVariableProxyConnection(producerNode, producerPort, port);
                             }
     						else {
-                                connection= producerPort != port ? BuildBinding(producerPort, port) : null;
+                                connection= producerPort != port ? BuildBinding(port) : null;
                             }
                             // Build initial value.
     						object initValue= GetInitialValue(producerPort);
@@ -669,19 +670,19 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
 		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
 	}
-    // ----------------------------------------------------------------------
-	SSBinding BuildBinding(iCS_EngineObject producerPort, iCS_EngineObject consumerPort) {
-		SSBinding binding= null;
-        var consumerNode= myRuntimeNodes[consumerPort.ParentId];
-        var rtPortGroup= myRuntimeNodes[producerPort.InstanceId] as SSNodeAction;
-		if(rtPortGroup != null) {
-			binding= new SSBinding(consumerPort.Name, consumerNode, rtPortGroup, (int)iCS_PortIndex.Return);	
-		} else {
-            bool isAlwaysReady= producerPort.IsInputPort;
-			binding= new SSBinding(consumerPort.Name, consumerNode, myRuntimeNodes[producerPort.ParentId] as SSNodeAction, producerPort.PortIndex, isAlwaysReady);
-		}
-		return binding;
-	}
+//    // ----------------------------------------------------------------------
+//	SSBinding BuildBinding(iCS_EngineObject producerPort, iCS_EngineObject consumerPort) {
+//		SSBinding binding= null;
+//        var consumerNode= myRuntimeNodes[consumerPort.ParentId];
+//        var rtPortGroup= myRuntimeNodes[producerPort.InstanceId] as SSNodeAction;
+//		if(rtPortGroup != null) {
+//			binding= new SSBinding(consumerPort.Name, consumerNode, rtPortGroup, (int)iCS_PortIndex.Return);	
+//		} else {
+//            bool isAlwaysReady= producerPort.IsInputPort;
+//			binding= new SSBinding(consumerPort.Name, consumerNode, myRuntimeNodes[producerPort.ParentId] as SSNodeAction, producerPort.PortIndex, isAlwaysReady);
+//		}
+//		return binding;
+//	}
     // ----------------------------------------------------------------------
 	SSBinding BuildBinding(iCS_EngineObject consumerPort) {
 		SSBinding binding= null;
