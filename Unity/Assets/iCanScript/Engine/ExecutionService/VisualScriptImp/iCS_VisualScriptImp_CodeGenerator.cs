@@ -411,7 +411,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     						var rtMuxPort= myRuntimeNodes[port.ParentId] as SSNodeAction;
     						if(rtMuxPort == null) break;
                             iCS_EngineObject producerPort= GetProducerEndPort(port);
-    						SSPullBinding connection= producerPort != port ? BuildPullBinding(producerPort, port) : null;
+    						SSBinding connection= producerPort != port ? BuildPullBinding(producerPort, port) : null;
     						rtMuxPort.SetConnection(port.PortIndex, connection);
     						break;
     					}
@@ -478,7 +478,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             // Build connection.
                             iCS_EngineObject producerPort= GetProducerEndPort(port);
                             // Special case for proxy ports.  The connection will be made on the original port.
-                            SSPullBinding connection= null;
+                            SSBinding connection= null;
                             var producerNode= GetParentNode(producerPort);
                             if(producerNode.IsVariableReference) {
                                 connection= BuildVariableProxyConnection(producerNode, producerPort, port);
@@ -659,15 +659,15 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
 	}
     // ----------------------------------------------------------------------
-	SSPullBinding BuildPullBinding(iCS_EngineObject producerPort, iCS_EngineObject consumerPort) {
-		SSPullBinding binding= null;
+	SSBinding BuildPullBinding(iCS_EngineObject producerPort, iCS_EngineObject consumerPort) {
+		SSBinding binding= null;
         var consumerNode= myRuntimeNodes[consumerPort.ParentId];
         var rtPortGroup= myRuntimeNodes[producerPort.InstanceId] as SSNodeAction;
 		if(rtPortGroup != null) {
-			binding= new SSPullBinding(consumerPort.Name, consumerNode, rtPortGroup, (int)iCS_PortIndex.Return);	
+			binding= new SSBinding(consumerPort.Name, consumerNode, rtPortGroup, (int)iCS_PortIndex.Return);	
 		} else {
             bool isAlwaysReady= producerPort.IsInputPort;
-			binding= new SSPullBinding(consumerPort.Name, consumerNode, myRuntimeNodes[producerPort.ParentId] as SSNodeAction, producerPort.PortIndex, isAlwaysReady);
+			binding= new SSBinding(consumerPort.Name, consumerNode, myRuntimeNodes[producerPort.ParentId] as SSNodeAction, producerPort.PortIndex, isAlwaysReady);
 		}
 		return binding;
 	}

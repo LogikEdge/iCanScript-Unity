@@ -56,7 +56,7 @@ namespace Subspace {
         // ======================================================================
         // Execution
         // ----------------------------------------------------------------------
-        public abstract SSPullBinding      GetStalledProducerPort();
+        public abstract SSBinding      GetStalledProducerPort();
     
     }
     

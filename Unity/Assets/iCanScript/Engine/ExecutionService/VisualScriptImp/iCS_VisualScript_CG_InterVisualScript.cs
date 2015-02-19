@@ -10,16 +10,16 @@ using CompileWarning=Prelude.Tuple<int,string>;
 
 public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
-    SSPullBinding BuildVariableProxyConnection(iCS_EngineObject proxyNode, iCS_EngineObject proxyPort, iCS_EngineObject consumerPort) {
+    SSBinding BuildVariableProxyConnection(iCS_EngineObject proxyNode, iCS_EngineObject proxyPort, iCS_EngineObject consumerPort) {
         var runtimeNode= GetRuntimeNodeFromReferenceNode(proxyNode);
         if(runtimeNode == null) {
             Debug.LogWarning("Unable to find port proxy node=> "+proxyNode.Name);
             return null;
         }
-		SSPullBinding connection= null;
+		SSBinding connection= null;
         bool isAlwaysReady= true;
         var consumerNode= myRuntimeNodes[consumerPort.ParentId];
-		connection= new SSPullBinding(consumerPort.Name, consumerNode, runtimeNode as SSNodeAction, proxyPort.PortIndex, isAlwaysReady);
+		connection= new SSBinding(consumerPort.Name, consumerNode, runtimeNode as SSNodeAction, proxyPort.PortIndex, isAlwaysReady);
         return connection;
     }
     // ----------------------------------------------------------------------
@@ -85,7 +85,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         return vs;
     }
     // ----------------------------------------------------------------------
-    SSPullBinding BuildUserFunctionOutputConnection(iCS_EngineObject port, iCS_EngineObject referenceNode, iCS_UserFunctionCall userFunctionCall) {
+    SSBinding BuildUserFunctionOutputConnection(iCS_EngineObject port, iCS_EngineObject referenceNode, iCS_UserFunctionCall userFunctionCall) {
         var vs= GetVisualScriptFromReferenceNode(referenceNode);
         if(vs == null) {
             return null;
@@ -97,10 +97,10 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         var sourcePort= iCS_VisualScriptData.GetFirstProducerPort(vs, userFunctionPort);
         var sourcePortParent= vs.GetParentNode(sourcePort);
         var runtimeNode= vs.RuntimeNodes[sourcePortParent.InstanceId];
-		SSPullBinding connection= null;
+		SSBinding connection= null;
         bool isAlwaysReady= false;
         var portNode= myRuntimeNodes[port.ParentId];
-		connection= new SSPullBinding(port.Name, portNode, runtimeNode as SSNodeAction, sourcePort.PortIndex, isAlwaysReady);
+		connection= new SSBinding(port.Name, portNode, runtimeNode as SSNodeAction, sourcePort.PortIndex, isAlwaysReady);
         userFunctionCall.SetConnection(port.PortIndex, connection);
         return connection;        
     }
