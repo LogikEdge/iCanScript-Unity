@@ -37,8 +37,7 @@ namespace Subspace {
         /// Returns **TRUE** if the value is available for this _runId_.
         public bool IsReady    {
             get {
-                if(myIsAlwaysReady) return true;
-                return Action.ArePortsEvaluated;                
+                return myIsAlwaysReady || IsEvaluated;
             }
         }
         /// Returns **TRUE** if the connected _SSAction_ has been evaluated or executed for this _runId_.
