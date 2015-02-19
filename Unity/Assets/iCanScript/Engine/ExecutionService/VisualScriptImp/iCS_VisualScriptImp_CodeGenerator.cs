@@ -674,8 +674,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 	SSBinding BuildBinding(iCS_EngineObject consumerPort) {
 		SSBinding binding= null;
         var consumerNode= myRuntimeNodes[consumerPort.ParentId];
-		var producerPort= GetProducerEndPort(consumerPort);
-        var rtPortGroup= myRuntimeNodes[producerPort.InstanceId] as SSNodeAction;
+		var producerPort= FindProducerPortToBindTo(consumerPort);
+        var rtPortGroup = myRuntimeNodes[producerPort.InstanceId] as SSNodeAction;
 		if(rtPortGroup != null) {
 			binding= new SSBinding(consumerPort.Name, consumerNode, rtPortGroup, (int)iCS_PortIndex.Return);	
 		} else {
@@ -684,7 +684,20 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		}
 		return binding;
 	}
-    
+    // ----------------------------------------------------------------------
+    iCS_EngineObject FindProducerPortToBindTo(iCS_EngineObject consumerPort) {
+		return GetProducerEndPort(consumerPort);
+//		if(!consumerPort.IsSourceValid) return consumerPort;
+//		for(var producerPort= GetProducerPort(consumerPort);
+//		    producerPort.IsSourceValid;
+//			producerPort= GetProducerPort(producerPort)) {
+//				if(GetParentNode(producerPort).IsIterator) {
+//					break;
+//				}
+//		}
+//		return consumerPort;
+    }
+	
     // ======================================================================
     // Child Management Utilities
     // ----------------------------------------------------------------------
