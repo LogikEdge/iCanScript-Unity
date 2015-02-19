@@ -18,9 +18,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         }
 		SSPullBinding connection= null;
         bool isAlwaysReady= true;
-        bool isControlPort= proxyPort.IsControlPort;
         var consumerNode= myRuntimeNodes[consumerPort.ParentId];
-		connection= new SSPullBinding(consumerPort.Name, consumerNode, runtimeNode as SSNodeAction, proxyPort.PortIndex, isAlwaysReady, isControlPort);
+		connection= new SSPullBinding(consumerPort.Name, consumerNode, runtimeNode as SSNodeAction, proxyPort.PortIndex, isAlwaysReady);
         return connection;
     }
     // ----------------------------------------------------------------------
@@ -100,9 +99,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         var runtimeNode= vs.RuntimeNodes[sourcePortParent.InstanceId];
 		SSPullBinding connection= null;
         bool isAlwaysReady= false;
-        bool isControlPort= false;
         var portNode= myRuntimeNodes[port.ParentId];
-		connection= new SSPullBinding(port.Name, portNode, runtimeNode as SSNodeAction, sourcePort.PortIndex, isAlwaysReady, isControlPort);
+		connection= new SSPullBinding(port.Name, portNode, runtimeNode as SSNodeAction, sourcePort.PortIndex, isAlwaysReady);
         userFunctionCall.SetConnection(port.PortIndex, connection);
         return connection;        
     }

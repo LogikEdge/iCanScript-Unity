@@ -667,8 +667,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 			binding= new SSPullBinding(consumerPort.Name, consumerNode, rtPortGroup, (int)iCS_PortIndex.Return);	
 		} else {
             bool isAlwaysReady= producerPort.IsInputPort;
-            bool isControlPort= producerPort.IsControlPort;
-			binding= new SSPullBinding(consumerPort.Name, consumerNode, myRuntimeNodes[producerPort.ParentId] as SSNodeAction, producerPort.PortIndex, isAlwaysReady, isControlPort);
+			binding= new SSPullBinding(consumerPort.Name, consumerNode, myRuntimeNodes[producerPort.ParentId] as SSNodeAction, producerPort.PortIndex, isAlwaysReady);
 		}
 		return binding;
 	}

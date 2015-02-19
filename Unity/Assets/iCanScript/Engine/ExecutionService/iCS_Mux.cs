@@ -16,7 +16,7 @@ public class iCS_Mux : SSNodeAction {
     protected override void DoEvaluate() {
         // Take the first valid connection.
         foreach(var connection in ParameterConnections) {
-            if(connection.DidExecute) {
+            if(connection.IsExecuted) {
                 ReturnValue= connection.Value;
                 MarkAsExecuted();
                 return;

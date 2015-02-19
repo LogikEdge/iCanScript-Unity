@@ -16,13 +16,13 @@ namespace Subspace {
         // ----------------------------------------------------------------------
         public SSNodeAction Action          { get { return myAction; }}
         public int          PortIndex       { get { return myPortIndex; }}
-        public string       PortFullName    { get { return Action.FullName+"["+myPortIndex+"]"; }}
+        public string       PortFullName    { get { return Action.FullName+"["+Name+"]"; }}
     
         // ======================================================================
         /// Creation/Destruction
         // ----------------------------------------------------------------------
         public SSPullBinding(string name, SSObject parent,
-                             SSNodeAction action, int portIndex, bool isAlwaysReady= false, bool isControlFlow= false)
+                             SSNodeAction action, int portIndex, bool isAlwaysReady= false)
         : base(name, parent) {
             myAction       = action;
             myPortIndex    = portIndex;
@@ -46,7 +46,7 @@ namespace Subspace {
         	get { return Action.ArePortsEvaluated; }
         }
         /// Returns **TRUE** if the connected _SSAction_ has ran for this _runId_.
-        public bool DidExecute {
+        public bool IsExecuted {
         	get { return Action.ArePortsExecuted; }
         }
      }
