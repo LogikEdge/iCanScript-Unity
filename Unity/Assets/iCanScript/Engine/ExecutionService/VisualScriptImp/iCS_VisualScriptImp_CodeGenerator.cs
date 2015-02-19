@@ -295,6 +295,18 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 }
                                 break;
                             }
+                            case iCS_ObjectTypeEnum.Iterator: {
+                                int nbParams;
+                                int nbEnables;
+                                GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
+                                var module= new iCS_Iterator(node.Name, parent, priority, nbParams, nbEnables);                                
+                                myRuntimeNodes[node.InstanceId]= module;
+                                InvokeAddChildIfExists(parent, module);                                
+                                if(iCS_VisualScriptData.IsPublicFunction(this, node)) {
+                                    myPublicInterfaces.Add(node.InstanceId);
+                                }
+                                break;
+                            }
                             case iCS_ObjectTypeEnum.InstanceFunction: {
                                 // Create method.
                                 var methodBase= GetMethodBase( node, ref compileErrors );

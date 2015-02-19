@@ -137,6 +137,10 @@ public static partial class iCS_UserCommands {
         return package;
     }
 	// ----------------------------------------------------------------------
+	public static iCS_EditorObject CreateIterator(iCS_EditorObject parent, Vector2 globalPos, string name) {
+		return CreatePackage(parent, globalPos, name, iCS_ObjectTypeEnum.Iterator);
+	}
+	// ----------------------------------------------------------------------
     // OK
     public static iCS_EditorObject CreateStateChart(iCS_EditorObject parent, Vector2 globalPos, string name) {
 #if DEBUG
