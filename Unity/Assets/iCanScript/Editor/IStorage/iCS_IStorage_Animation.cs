@@ -116,7 +116,7 @@ public partial class iCS_IStorage {
                         }
                         else {
                             parent= GetFirstNotPresentParentNode(parent);
-                            pos= parent.GlobalPosition;                            
+                            pos= parent.GlobalPosition;                                                            
                         }
                         var r= new Rect(pos.x, pos.y, 0, 0);
                         obj.ResetAnimationRect(r);                        
@@ -160,6 +160,6 @@ public partial class iCS_IStorage {
             }
             parent= grandParent;
         }
-        return null;
+        return EditorObjects[0];
     }
 }

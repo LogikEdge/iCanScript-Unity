@@ -698,13 +698,15 @@ public static class iCS_PreferencesController {
         kSelectedBackgroundColor    = new Color(c(116), c(116), c(116));
         
         // Type colors
-        kBoolTypeColor      = Color.white;
+//        kBoolTypeColor      = Color.white;
+        kBoolTypeColor      = Color.red;
         kIntTypeColor       = Color.magenta;
         kFloatTypeColor     = Color.cyan;
         kVector2TypeColor   = Color.yellow;
         kVector3TypeColor   = Color.green;
         kVector4TypeColor   = new Color(c(64), c(160), c(255));
-        kStringTypeColor    = new Color(c(255), c(128), 0);
+//        kStringTypeColor    = new Color(c(255), c(128), 0);
+        kStringTypeColor    = Color.red;
         kGameObjectTypeColor= new Color(0, c(128), c(255));
         kDefaultTypeColor   = new Color(c(219), c(249), c(194));		
 	}
