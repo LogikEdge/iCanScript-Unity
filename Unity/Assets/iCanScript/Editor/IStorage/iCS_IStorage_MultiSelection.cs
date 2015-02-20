@@ -109,6 +109,8 @@ public partial class iCS_IStorage {
     public iCS_EditorObject[] FilterMultiSelectionForMove() {
         return FilterMultiSelectionUnderSameParent();
     }
+    // =========================================================================
+    // Multi-selection Node Drag
 	// -------------------------------------------------------------------------
     public void StartMultiSelectionNodeDrag() {
         myMultiSelectNodeDragObjects= FilterMultiSelectionForMove();
@@ -119,7 +121,7 @@ public partial class iCS_IStorage {
         }
     }
 	// -------------------------------------------------------------------------
-    public void MoveMultiSelectedNodesBy(Vector2 delta) {
+    public void DragMultiSelectedNodesBy(Vector2 delta) {
         var len= myMultiSelectNodeDragObjects.Length;
         for(int i= 0; i < len; ++i) {
             var newPos= myMultiSelectNodeDragStartPosition[i]+delta;
@@ -131,6 +133,47 @@ public partial class iCS_IStorage {
         // Remove sticky on parent nodes.
         foreach(var node in myMultiSelectNodeDragObjects) {
             node.EndNodeDrag();                    
+        }
+        myMultiSelectNodeDragObjects= null;
+        myMultiSelectNodeDragStartPosition= null;
+    }
+    // =========================================================================
+    // Multi-selection Node Relocate
+	// -------------------------------------------------------------------------
+    public void StartMultiSelectionNodeRelocation() {
+        myMultiSelectNodeDragObjects= FilterMultiSelectionForMove();
+        var len= myMultiSelectNodeDragObjects.Length;
+        myMultiSelectNodeDragStartPosition= new Vector2[len];
+        for(int i= 0; i < len; ++i) {
+            myMultiSelectNodeDragObjects[i].StartNodeRelocate();
+            myMultiSelectNodeDragStartPosition[i]= myMultiSelectNodeDragObjects[i].GlobalPosition;
+        }
+    }
+	// -------------------------------------------------------------------------
+    public void RelocateMultiSelectedNodesBy(Vector2 delta) {
+        var len= myMultiSelectNodeDragObjects.Length;
+        for(int i= 0; i < len; ++i) {
+            var newPos= myMultiSelectNodeDragStartPosition[i]+delta;
+            myMultiSelectNodeDragObjects[i].NodeRelocateTo(newPos);
+        }
+    }
+	// -------------------------------------------------------------------------
+    public void EndMultiSelectionNodeRelocation() {
+        // Remove sticky on parent nodes.
+        foreach(var node in myMultiSelectNodeDragObjects) {
+            node.EndNodeRelocate();
+        }
+        myMultiSelectNodeDragObjects= null;
+        myMultiSelectNodeDragStartPosition= null;
+    }
+	// -------------------------------------------------------------------------
+    public void CancelMultiSelectionNodeRelocation() {
+        // Remove sticky on parent nodes.
+        var len= myMultiSelectNodeDragObjects.Length;
+        for(int i= 0; i < len; ++i) {
+            var node= myMultiSelectNodeDragObjects[i];
+            node.LocalAnchorFromGlobalPosition= myMultiSelectNodeDragStartPosition[i];
+            node.EndNodeRelocate();
         }
         myMultiSelectNodeDragObjects= null;
         myMultiSelectNodeDragStartPosition= null;
