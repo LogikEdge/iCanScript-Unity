@@ -10,7 +10,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
-    enum DragTypeEnum { None, PortConnection, PortRelocation, NodeDrag, NodeRelocation, TransitionCreation, MultiSelectionNodeDrag };
+    enum DragTypeEnum {
+        None,
+        PortConnection,
+        PortRelocation,
+        NodeDrag,
+        NodeRelocation,
+        TransitionCreation,
+        MultiSelectionNodeDrag,
+        MultiSelectionNodeRelocation
+     };
 
 
     // ======================================================================
@@ -100,10 +109,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 DragObject= node;
                 DragStartDisplayPosition= node.GlobalPosition;                                                                    
                 if(IsFloatingKeyDown && !node.IsTransitionPackage) {
-                    iCS_UserCommands.StartNodeRelocation(node);
-                    DragType= DragTypeEnum.NodeRelocation;                                        
-                    DragStartLocalAnchorPosition= node.LocalAnchorPosition;
-					node.StartNodeRelocate();
+                    if(IStorage.IsMultiSelectionActive) {
+                        iCS_UserCommands.StartMultiSelectionNodeRelocation(IStorage);
+                        DragType= DragTypeEnum.MultiSelectionNodeRelocation;
+                        IStorage.StartMultiSelectionNodeRelocation();
+                    }
+                    else {
+                        iCS_UserCommands.StartNodeRelocation(node);
+                        DragType= DragTypeEnum.NodeRelocation;                                        
+                        DragStartLocalAnchorPosition= node.LocalAnchorPosition;
+    					node.StartNodeRelocate();                            
+                    }
                 } else {
                     if(IStorage.IsMultiSelectionActive) {
                         iCS_UserCommands.StartMultiSelectionNodeDrag(IStorage);
@@ -160,10 +176,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 DragObject.NodeDragTo(newPosition);
                 break;
             case DragTypeEnum.MultiSelectionNodeDrag:
-                IStorage.MoveMultiSelectedNodesBy(deltaMouse);
+                IStorage.DragMultiSelectedNodesBy(deltaMouse);
                 break;
             case DragTypeEnum.NodeRelocation:
                 DragObject.NodeRelocateTo(newPosition);
+                break;
+            case DragTypeEnum.MultiSelectionNodeRelocation:
+                IStorage.RelocateMultiSelectedNodesBy(deltaMouse);
                 break;
             case DragTypeEnum.PortRelocation: {
 				// Consider port relocation when dragging on parent edge.
@@ -171,8 +190,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case DragTypeEnum.PortConnection: {
-                // Update port position.
-//                DragObject.GlobalPosition= newPosition;
                 // Determine if we should go back to port relocation. (IsPositionOnEdge)
                 var originalPortParent= DragOriginalPort.ParentNode;
                 var localPosition= newPosition-originalPortParent.GlobalPosition;
@@ -190,7 +207,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
                     Vector2 closestPortPos= closestPort.GlobalPosition;
                     if(Vector2.Distance(closestPortPos, mousePosInGraph) < iCS_EditorConfig.PortDiameter) {
-//                        DragObject.GlobalPosition= closestPortPos;
                         DragObject.CollisionOffsetFromGlobalPosition= closestPortPos;
                     }                    
                 }
@@ -202,7 +218,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case DragTypeEnum.TransitionCreation:
                 // Update port position.
-//                DragObject.GlobalPosition= newPosition;
                 DragObject.CollisionOffsetFromGlobalPosition= newPosition;
 				// Update fix port edge & position.
 				var fixPortParentNode= DragFixPort.ParentNode;
@@ -277,7 +292,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             IStorage.AnimateGraph(null,
                                 _=> {
                                     node.LocalAnchorPosition= DragStartLocalAnchorPosition;
-//                                    node.GlobalPosition= DragStartDisplayPosition;
                                     node.CollisionOffsetFromGlobalPosition= DragStartDisplayPosition;
                                 }
                             );
@@ -287,6 +301,41 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     iCS_UserCommands.CancelNodeRelocation(node);
                     // Remove sticky on parent nodes.
                     DragObject.EndNodeRelocate();
+                    break;
+                }
+                case DragTypeEnum.MultiSelectionNodeRelocation: {
+                    // Verify if new parent can accept all selected nodes
+                    iCS_EditorObject node= DragObject;
+                    iCS_EditorObject oldParent= node.Parent;
+                    if(oldParent != null) {
+                        iCS_EditorObject newParent= null;
+                        var selectedNodes= IStorage.FilterMultiSelectionForMove();
+                        foreach(var n in selectedNodes) {
+                            var foundParent= GetValidParentNodeUnder(GraphMousePosition, n);
+                            if(foundParent != null) {
+                                if(newParent == null) {
+                                    newParent= foundParent;
+                                }
+                                else {
+                                    if(foundParent != newParent) {
+                                        if(foundParent.IsParentOf(newParent)) {
+                                            newParent= foundParent;
+                                        }
+                                        else if(newParent.IsParentOf(foundParent) == false) {
+                                            newParent= null;
+                                            break;
+                                        } 
+                                    }
+                                }
+                            }
+                        }
+                        if(newParent != null) {
+                            IStorage.EndMultiSelectionNodeRelocation();
+                            iCS_UserCommands.EndMultiSelectionNodeRelocation(selectedNodes, oldParent, newParent);
+                            break;
+                        }
+                    }
+                    iCS_UserCommands.CancelMultiSelectionNodeRelocation(IStorage);
                     break;
                 }
                 case DragTypeEnum.PortRelocation:

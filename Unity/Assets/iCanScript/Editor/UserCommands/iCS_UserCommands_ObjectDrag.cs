@@ -21,6 +21,9 @@ public static partial class iCS_UserCommands {
     public static void EndMultiSelectionDrag(iCS_IStorage iStorage) {
         CloseTransaction(iStorage, "Multi-Selection Node Drag");
     }
+    // ======================================================================
+    // Node Relocation
+	// ----------------------------------------------------------------------
     public static void StartNodeRelocation(iCS_EditorObject node) {
         var iStorage= node.IStorage;
         OpenTransaction(iStorage);
@@ -43,7 +46,42 @@ public static partial class iCS_UserCommands {
     public static void CancelNodeRelocation(iCS_EditorObject node) {
         CancelTransaction(node.IStorage);
     }
-
+    public static void StartMultiSelectionNodeRelocation(iCS_IStorage iStorage) {
+        OpenTransaction(iStorage);
+        // Keep a copy of the original position.
+        var selectedNodes= iStorage.FilterMultiSelectionForMove();
+        foreach(var node in selectedNodes) {
+            node.AnimationTargetRect= node.GlobalRect;
+        }
+    }
+    public static void EndMultiSelectionNodeRelocation(iCS_EditorObject[] selectedNodes, iCS_EditorObject oldParent, iCS_EditorObject newParent) {
+        var iStorage= newParent.IStorage;
+        iStorage.AnimateGraph(null,
+            _=> {
+                foreach(var node in selectedNodes) {
+                    var globalPosition= node.GlobalPosition;
+                    if(oldParent != newParent) {
+                        iStorage.ChangeParent(node, newParent); 
+                    }
+                    node.LocalAnchorFromGlobalPosition= globalPosition;
+    				iStorage.AutoLayoutPortOnNode(node);                    
+                }
+                iStorage.ForcedRelayoutOfTree();
+            }
+        );
+        CloseTransaction(iStorage, "Multi-Selection Node Relocation");
+    }
+    public static void CancelMultiSelectionNodeRelocation(iCS_IStorage iStorage) {
+        // Animate node back to its original position.
+        iStorage.AnimateGraph(null,
+            _=> {
+                iStorage.CancelMultiSelectionNodeRelocation();
+                iStorage.ForcedRelayoutOfTree();
+            }
+        );        
+        CancelTransaction(iStorage);
+    }
+    
 	// ----------------------------------------------------------------------
 	// We are not certain if we shoud be animating or not..
     public static void StartPortDrag(iCS_EditorObject port) {

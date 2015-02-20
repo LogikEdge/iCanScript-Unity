@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
-using Pref=iCS_PreferencesController;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using Pref=iCS_PreferencesController;
 using P= Prelude;
 
 /*
@@ -79,57 +80,57 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     
 	// ----------------------------------------------------------------------
     void DisplayGraphNodes() {
-        var floatingNormalNode= DisplayNonFloatingNormalNode(DisplayRoot);
+        var floatingNodes= DisplayNonFloatingNormalNode(DisplayRoot);
         DisplayConnections(DisplayRoot);
         DisplayPortsAndMinimizedNodes(DisplayRoot);
         // Display floating nodes.
-        if(floatingNormalNode != null) {
-            DisplayFloatingNormalNode(floatingNormalNode);            
-        }
+        DisplayFloatingNormalNodes(floatingNodes);            
     }
     
     // ======================================================================
     // Normal nodes
 	// ----------------------------------------------------------------------
-    iCS_EditorObject DisplayNonFloatingNormalNode(iCS_EditorObject rootNode, iCS_EditorObject floatingRootNode= null) {
+    iCS_EditorObject[] DisplayNonFloatingNormalNode(iCS_EditorObject rootNode, iCS_EditorObject floatingRootNode= null) {
+        var floatingNodes= new List<iCS_EditorObject>();
         IStorage.ForEachRecursiveDepthLast(rootNode,
             node=> {
                 if(node.IsNode) {
 					if(node.IsBehaviour || node.IsHidden) return;
 					if(node == rootNode && !IStorage.ShowDisplayRootNode) return;
-                    if(node.IsFloating && floatingRootNode == null) {
-                        floatingRootNode= node;
-                    } else {
-						if( !node.IsParentFloating ) {
-                            if(node == rootNode) {
-                            }
+                    if(node == rootNode) {}
+                    if( !node.IsParentFloating ) {
+                        if(node.IsFloating) {
+                            floatingNodes.Add(node);
+                        } else {
 	                        myGraphics.DrawNormalNode(node, IStorage);							
-						}
+                        }                        
                     }
                 }
             }
         );
-        return floatingRootNode;
+        return floatingNodes.ToArray();
     }
 	// ----------------------------------------------------------------------
-    void DisplayFloatingNormalNode(iCS_EditorObject rootNode) {
-        IStorage.ForEachRecursiveDepthLast(rootNode,
-            child=> {
-                if(child.IsNode) {
-                    if(child.IsHidden) return;
-					if( child.IsIconizedInLayout ) {
-						myGraphics.DrawMinimizedNode(child, IStorage);						
-					}
-					else {
-						myGraphics.DrawNormalNode(child, IStorage);
-					}
-				}
-                if(child.IsPort) {
-					myGraphics.DrawPort(child, IStorage);
-					myGraphics.DrawBinding(child, IStorage);
-				}
-            }
-        );
+    void DisplayFloatingNormalNodes(iCS_EditorObject[] floatingNodes) {
+        foreach(var rootNode in floatingNodes) {
+            IStorage.ForEachRecursiveDepthLast(rootNode,
+                child=> {
+                    if(child.IsNode) {
+                        if(child.IsHidden) return;
+    					if( child.IsIconizedInLayout ) {
+    						myGraphics.DrawMinimizedNode(child, IStorage);						
+    					}
+    					else {
+    						myGraphics.DrawNormalNode(child, IStorage);
+    					}
+    				}
+                    if(child.IsPort) {
+    					myGraphics.DrawPort(child, IStorage);
+    					myGraphics.DrawBinding(child, IStorage);
+    				}
+                }
+            );            
+        }
     }
 	
     // ======================================================================
