@@ -35,6 +35,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			iCS_UserCommands.ToggleMultiSelection(newSelected);
 		}
 		else {
+            // Don't change selection if already selected.
+            if(IStorage.IsSelectedOrMultiSelected(newSelected)) {
+                return newSelected;
+            }
 	        iCS_UserCommands.Select(newSelected, IStorage);
             UpdateSelected();
 		}

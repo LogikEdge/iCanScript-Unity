@@ -686,16 +686,16 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 	}
     // ----------------------------------------------------------------------
     iCS_EngineObject FindProducerPortToBindTo(iCS_EngineObject consumerPort) {
-		return GetProducerEndPort(consumerPort);
-//		if(!consumerPort.IsSourceValid) return consumerPort;
-//		for(var producerPort= GetProducerPort(consumerPort);
-//		    producerPort.IsSourceValid;
-//			producerPort= GetProducerPort(producerPort)) {
-//				if(GetParentNode(producerPort).IsIterator) {
-//					break;
-//				}
-//		}
-//		return consumerPort;
+		if(!consumerPort.IsSourceValid) return consumerPort;
+        var producerPort= GetProducerPort(consumerPort);
+    	for(;
+		    producerPort.IsSourceValid;
+			producerPort= GetProducerPort(producerPort)) {
+				if(GetParentNode(producerPort).IsIterator) {
+					break;
+				}
+		}
+		return producerPort;
     }
 	
     // ======================================================================
