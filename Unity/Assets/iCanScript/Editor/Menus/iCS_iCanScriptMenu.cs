@@ -19,7 +19,7 @@ public static class iCS_iCanScriptMenu {
         if(gameObject == null) return;
 		var visualScript= gameObject.GetComponent<iCS_VisualScriptImp>();
 		if(visualScript == null) {
-    		gameObject.AddComponent("iCS_VisualScript");
+    		gameObject.AddComponent<iCS_VisualScript>();
 		}
 	}
 	[MenuItem("iCanScript/Create Visual Script", true, 101)]
