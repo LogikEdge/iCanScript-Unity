@@ -86,9 +86,9 @@ public class DoneLiftTrigger : MonoBehaviour
 			transform.Translate(Vector3.up * liftSpeed * Time.deltaTime);
 			
 			// If the audio clip isn't playing...
-			if(!audio.isPlaying)
+			if(!GetComponent<AudioSource>().isPlaying)
 				// ... play the clip.
-				audio.Play();
+				GetComponent<AudioSource>().Play();
 			
 			// If the timer is greater than the amount of time before the level should end...
 			if(timer >= timeToEndLevel)
