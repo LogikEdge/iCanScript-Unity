@@ -22,14 +22,12 @@ public static class iCS_MenuUtility {
         if(hasVisualScript) {
 			// Remove duplicate Behaviours.
 			MonoBehaviour iCSBehaviour= null;
-            var monoBehaviours= gameObject.GetComponents<MonoBehaviour>();
+            var monoBehaviours= gameObject.GetComponents<iCS_BehaviourProxy>();
 			foreach(var mb in monoBehaviours) {
-				if(mb.GetType().Name == behaviourClassName) {
-					if(iCSBehaviour == null) {
-						iCSBehaviour= mb;
-					} else {
-		                Object.DestroyImmediate(mb);						
-					}
+				if(iCSBehaviour == null) {
+					iCSBehaviour= mb;
+				} else {
+	                Object.DestroyImmediate(mb);						
 				}
 			}
             // Add behaviour if not already present.
@@ -38,7 +36,7 @@ public static class iCS_MenuUtility {
             }
         } else {
             // Remove behaviour.
-            var behaviourComponent= gameObject.GetComponent(behaviourClassName);
+            var behaviourComponent= gameObject.GetComponent<iCS_BehaviourProxy>();
             if(behaviourComponent != null) {
                 Object.DestroyImmediate(behaviourComponent);
             }
