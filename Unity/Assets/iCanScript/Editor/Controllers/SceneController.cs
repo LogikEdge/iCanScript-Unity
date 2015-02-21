@@ -89,22 +89,11 @@ namespace iCanScript { namespace Editor {
             var unityObject= EditorUtility.InstanceIDToObject(instanceId);
             var go= unityObject as GameObject;
             if(go != null) {
-                if(go.GetComponent("iCS_VisualScriptImp") != null) {
+                if(go.GetComponent<iCS_VisualScriptImp>() != null) {
                     // -- Assure that we have a visual editor opened --
                     iCS_EditorController.OpenVisualEditor();
                     // -- Draw iCanScript logo next to hierarchy item --
                     GUI.DrawTexture(iconRect, logo);
-                }
-                else {
-                    if(IsVisualScriptInChild(go)) {
-    //                    GUI.backgroundColor= Color.green;
-    //                    GUI.Box(iconRect,"",EditorStyles.miniButton);
-    //                    GUI.backgroundColor= Color.white;
-                        // -- Draw transparent logo --
-    //                    GUI.color= new Color(1f, 1f, 1f, 0.5f);
-    //                    GUI.DrawTexture(iconRect, logo);
-    //                    GUI.color= Color.white;
-                    }
                 }
             }
         }
@@ -114,7 +103,7 @@ namespace iCanScript { namespace Editor {
             for(int i= 0; i < childCount; ++i) {
                 var child= t.GetChild(i).gameObject;
                 if(child != null) {
-                    if(child.GetComponent("iCS_VisualScriptImp") != null) {
+                    if(child.GetComponent<iCS_VisualScriptImp>() != null) {
                         return true;
                     }
                     var result= IsVisualScriptInChild(child);
@@ -182,7 +171,7 @@ namespace iCanScript { namespace Editor {
     		return P.removeDuplicates(
     			P.fold(
     				(acc,go)=> {
-    	                var goVs= go.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
+    	                var goVs= go.GetComponent<iCS_VisualScriptImp>() as iCS_VisualScriptImp;
     	                if(goVs != null) {
     	                    acc.Add(goVs);
     	                }
@@ -197,17 +186,16 @@ namespace iCanScript { namespace Editor {
         // ======================================================================
         // VALIDATE SCENE VISUAL SCRIPTS
         // ----------------------------------------------------------------------
-    	const string kiCS_Behaviour= iCS_EditorStrings.DefaultBehaviourClassName;
     	static void SceneSanityCheck() {
     //		Debug.Log("SceneSanityCheck is running");
     		foreach(var vs in VisualScriptsInOrReferencedByScene) {
     			var go= vs.gameObject;
     			CleanupEmptyComponents(go);
     			if(go == null) continue;
-    			var behaviourScript= vs.gameObject.GetComponent(kiCS_Behaviour);
+    			var behaviourScript= vs.gameObject.GetComponent("iCS_Behaviour");
     			if(behaviourScript == null) {
     //				Debug.LogWarning("iCanScript: iCS_Behaviour script has been disconnected from=> "+go.name+".  Attempting to reconnect...");
-    				go.AddComponent(kiCS_Behaviour);
+    				go.AddComponent("iCS_Behaviour");
     			}
     		}
     	}

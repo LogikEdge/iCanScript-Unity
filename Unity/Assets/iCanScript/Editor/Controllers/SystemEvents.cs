@@ -11,6 +11,7 @@ namespace iCanScript { namespace Editor {
         // ======================================================================
         // Callbacks
         // ----------------------------------------------------------------------
+        // Events related to Unity operating states.
         public static Action    OnEditorStarted         = null;   ///< Event: Editor has started
         public static Action    OnSceneChanged          = null;   ///< Event: Scene has changed
         public static Action    OnHierarchyChanged      = null;   ///< Event: Hierarchy has changed
@@ -21,13 +22,15 @@ namespace iCanScript { namespace Editor {
         public static Action    OnEngineStopped         = null;   ///< Event: Engine stopping
         public static Action    OnEnginePaused          = null;   ///< Event: Engine paused
         public static Action    OnWindowUnderMouseChange= null;   ///< Event: Mouse is hovering a new window
-        // Events related to visual script edition
+        // Events related to visual script edition.
         public static ActionVisualScript OnVisualScriptSaved               = null;  ///< Event: Changes to the Visual Script where saved
         public static ActionVisualScript OnVisualScriptReloaded            = null;  ///< Event: Visual Script was reloaded
         public static ActionVisualScript OnVisualScriptUndo                = null;  ///< Event: Undo performed on Visual Script
         public static ActionEditorObject OnVisualScriptElementAdded        = null;  ///< Event: Element added to visual script
         public static ActionEditorObject OnVisualScriptElementWillBeRemoved= null;  ///< Event: Element removed from visual script
         public static ActionEditorObject OnVisualScriptElementNameChanged  = null;  ///< Event: Visual script element name change
+        // Events related to scene changes.
+        public static Action    OnSceneVisualScriptListChange= null;    ///< Event: Additon or removal of a visual script in scene
         
         // ======================================================================
         // State fields
@@ -87,6 +90,9 @@ namespace iCanScript { namespace Editor {
         }
         public static void AnnounceVisualScriptElementNameChanged(iCS_EditorObject element) {
             Invoke(OnVisualScriptElementNameChanged, element);
+        }
+        public static void AnnounceSceneVisualScriptListChange() {
+            Invoke(OnSceneVisualScriptListChange);
         }
         
         // ======================================================================

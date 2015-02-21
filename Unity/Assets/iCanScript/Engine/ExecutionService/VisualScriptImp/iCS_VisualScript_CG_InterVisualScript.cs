@@ -69,14 +69,14 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         if(gameObjectPort != null) {
             var gameObject= GetInitialValue(gameObjectPort) as GameObject;
             if(gameObject != null) {
-                vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
+                vs= gameObject.GetComponent<iCS_VisualScriptImp>();
             }
         }
         if(vs == null) {
             var tag= referenceNode.ProxyOriginalVisualScriptTag;
             var go= GameObject.FindWithTag(tag);
             if(go != null) {
-                vs= go.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;   
+                vs= go.GetComponent<iCS_VisualScriptImp>();   
             }                
         }
         if(vs == null) {

@@ -34,7 +34,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             return;
         }
         // -- Ask user to create a visual script --
-        var visualScript= activeGameObject.GetComponent("iCS_MonoBehaviourImp") as iCS_MonoBehaviourImp;
+        var visualScript= activeGameObject.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         if(visualScript == null) {
             var content= new GUIContent("Create Visual Script", myiCanScriptMediumLogo);
             var contentSize= myAssistaneButtonStyle.CalcSize(content);

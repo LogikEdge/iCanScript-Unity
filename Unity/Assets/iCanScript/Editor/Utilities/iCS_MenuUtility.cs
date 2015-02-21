@@ -18,7 +18,7 @@ public static class iCS_MenuUtility {
     public static void UpdateBehaviourComponent(GameObject gameObject) {
         if(gameObject == null) return;
         var behaviourClassName= iCS_EditorStrings.DefaultBehaviourClassName;
-        bool hasVisualScript= gameObject.GetComponent("iCS_VisualScript") != null;
+        bool hasVisualScript= gameObject.GetComponent<iCS_VisualScriptImp>() != null;
         if(hasVisualScript) {
 			// Remove duplicate Behaviours.
 			MonoBehaviour iCSBehaviour= null;

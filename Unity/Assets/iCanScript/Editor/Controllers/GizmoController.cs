@@ -50,7 +50,7 @@ namespace iCanScript { namespace Editor {
             var go= visualScript.gameObject;
             var p= go.transform.position;
             Gizmos.DrawIcon(p, GizmoIcon);
-            if(go.renderer != null) {
+            if(go.GetComponent<Renderer>() != null) {
                 for(int intensity= 5; intensity >= 0; --intensity) {
                     Gizmos.DrawIcon(p, GizmoIcon);                
                 }
