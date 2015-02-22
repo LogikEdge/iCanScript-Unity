@@ -76,7 +76,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
             var tag= referenceNode.ProxyOriginalVisualScriptTag;
             var go= GameObject.FindWithTag(tag);
             if(go != null) {
-                vs= go.GetComponent<iCS_VisualScriptImp>();   
+                vs= go.GetComponent<iCS_VisualScriptImp>();
             }                
         }
         if(vs == null) {
