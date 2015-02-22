@@ -93,7 +93,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				// Transform into Unity drag & drop protocol. 
                 GameObject go= new GameObject(node.Name+iCS_EditorStrings.SnippetTag);
                 go.hideFlags = HideFlags.HideAndDontSave;
-                iCS_LibraryImp library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
+                iCS_LibraryImp library= iCS_DynamicCall.AddLibrary(go);
                 iCS_IStorage iStorage= new iCS_IStorage(library);
                 var newNode= iStorage.Copy(node, IStorage, null, Vector2.zero, iStorage);
                 newNode.ReduceChildrenAnchorPosition();

@@ -8,21 +8,31 @@ public static class iCS_DynamicCall {
     // ----------------------------------------------------------------------
     /// Adds a viusal script on the givne GameObject.
     /// @param go   The GameObject on which to add a new viusal script.
-    public static void AddVisualScript(GameObject go) {
+    public static iCS_VisualScriptImp AddVisualScript(GameObject go) {
         if(myAddVisualScriptFnc == null) {
-            myAddVisualScriptFnc= new DynamicInvoke("iCS_MenuInterface", "AddVisualScript");
+            myAddVisualScriptFnc= new DynamicInvoke("iCS_DynamicInterface", "AddVisualScript");
         }
-        myAddVisualScriptFnc.Invoke(null, go);
+        return myAddVisualScriptFnc.Invoke(null, go) as iCS_VisualScriptImp;
     }
     static DynamicInvoke    myAddVisualScriptFnc= null;
     // ----------------------------------------------------------------------
     /// Adds an iCS behaviour component on the givne GameObject.
     /// @param go   The GameObject on which to add a new iCS behaviour.
-    public static void AddBehaviour(GameObject go) {
+    public static iCS_BehaviourImp AddBehaviour(GameObject go) {
         if(myAddBehaviourFnc == null) {
-            myAddBehaviourFnc= new DynamicInvoke("iCS_MenuInterface", "AddBehaviour");
+            myAddBehaviourFnc= new DynamicInvoke("iCS_DynamicInterface", "AddBehaviour");
         }
-        myAddBehaviourFnc.Invoke(null, go);
+        return myAddBehaviourFnc.Invoke(null, go) as iCS_BehaviourImp;
     }
     static DynamicInvoke    myAddBehaviourFnc= null;
+    // ----------------------------------------------------------------------
+    /// Adds an iCS Library component on the givne GameObject.
+    /// @param go   The GameObject on which to add a new iCS library.
+    public static iCS_LibraryImp AddLibrary(GameObject go) {
+        if(myAddLibraryFnc == null) {
+            myAddLibraryFnc= new DynamicInvoke("iCS_DynamicInterface", "AddLibrary");
+        }
+        return myAddLibraryFnc.Invoke(null, go) as iCS_LibraryImp;
+    }
+    static DynamicInvoke    myAddLibraryFnc= null;
 }

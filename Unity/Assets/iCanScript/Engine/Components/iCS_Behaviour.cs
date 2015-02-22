@@ -1,4 +1,4 @@
-//{"ContentHash" : "22C4061FA9C15B8735A4E359BBD7799E"}
+//{"ContentHash" : "0F363D27B379B5A91FA77F517364FB25"}
 /////////////////////////////////////////////////////////////////
 //  iCS_Behaviour.cs
 //
@@ -8,7 +8,7 @@
 using UnityEngine;
 
 [AddComponentMenu("")]
-public sealed class iCS_Behaviour : iCS_BehaviourProxy {
+public sealed class iCS_Behaviour : iCS_BehaviourImp {
 	iCS_VisualScript[]   allVisualScripts= null;
 
 	void Start()

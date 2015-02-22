@@ -192,7 +192,7 @@ namespace iCanScript { namespace Editor {
     			var go= vs.gameObject;
     			CleanupEmptyComponents(go);
     			if(go == null) continue;
-    			var behaviourScript= vs.gameObject.GetComponent<iCS_BehaviourProxy>();
+    			var behaviourScript= vs.gameObject.GetComponent<iCS_BehaviourImp>();
     			if(behaviourScript == null) {
     //				Debug.LogWarning("iCanScript: iCS_Behaviour script has been disconnected from=> "+go.name+".  Attempting to reconnect...");
                     iCS_DynamicCall.AddBehaviour(go);

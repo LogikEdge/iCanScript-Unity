@@ -62,7 +62,7 @@ namespace iCanScript { namespace Editor { namespace CodeEngineering {
     	// ----------------------------------------------------------------------
         static string GenerateBehaviourClassHeader(string className) {
             return "\n[AddComponentMenu(\"\")]\n"+
-    			   "public sealed class "+className+" : iCS_BehaviourProxy {\n"+
+    			   "public sealed class "+className+" : iCS_BehaviourImp {\n"+
                    "\tiCS_VisualScript[]   allVisualScripts= null;\n\n"+
                    "\tvoid Start()\n"+
                    "\t{\n"+

@@ -194,7 +194,8 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         // Build drag object.
         GameObject go= new GameObject(node.Name);
         go.hideFlags = HideFlags.HideAndDontSave;
-        var library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
+//        var library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
+        var library= iCS_DynamicCall.AddLibrary(go);
         iCS_IStorage iStorage= new iCS_IStorage(library);
         CreateInstance(node, iStorage);
         iStorage.SaveStorage();
