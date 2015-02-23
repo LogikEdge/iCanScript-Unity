@@ -44,9 +44,10 @@ public class iCS_ClassFunction : iCS_FunctionBase {
         }
         catch(Exception e) {
             string thisName= (This == null ? "null" : This.ToString());
-            string parametersAsStr= "";
+            string parametersAsStr= "null";
             int nbOfParams= P.length(Parameters);
             if(nbOfParams != 0) {
+                parametersAsStr= "";
                 for(int i= 0; i < nbOfParams; ++i) {
 					var p= Parameters[i];
                     string paramStr= "";
