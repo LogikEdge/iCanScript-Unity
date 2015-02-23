@@ -529,7 +529,7 @@ public partial class iCS_IStorage {
                     				CreateClassFunction(parentId, desc);
 
 		instance.MethodName= desc.MethodName;
-		instance.NbOfParams= desc.Parameters != null ? desc.Parameters.Length : 0;
+		instance.NbOfParams= P.length(desc.Parameters);
 		return instance;
     }
     // ----------------------------------------------------------------------
@@ -544,7 +544,7 @@ public partial class iCS_IStorage {
         // Create parameter ports.
 		iCS_EditorObject port= null;
 		int parameterIdx= 0;
-        for(; parameterIdx < desc.Parameters.Length; ++parameterIdx) {
+        for(; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
             var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
@@ -572,7 +572,7 @@ public partial class iCS_IStorage {
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
 		iCS_EditorObject port= null;
-        for(int parameterIdx= 0; parameterIdx < desc.Parameters.Length; ++parameterIdx) {
+        for(int parameterIdx= 0; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
             var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
@@ -603,7 +603,7 @@ public partial class iCS_IStorage {
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
 		iCS_EditorObject port= null;
-        for(int parameterIdx= 0; parameterIdx < desc.Parameters.Length; ++parameterIdx) {
+        for(int parameterIdx= 0; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
             var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
