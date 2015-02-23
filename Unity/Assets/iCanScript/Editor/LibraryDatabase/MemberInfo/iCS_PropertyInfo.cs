@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using System.Collections;
+using P=Prelude;
 
 public class iCS_PropertyInfo : iCS_MethodInfo {
     // ======================================================================
@@ -17,7 +18,7 @@ public class iCS_PropertyInfo : iCS_MethodInfo {
     public string PropertyName { get { return DisplayName.Substring(4); }}
     public Type type {
         get {
-            return IsGet ? FunctionReturn.type : Parameters[Parameters.Length-1].type;
+            return IsGet ? FunctionReturn.type : Parameters[P.length(Parameters)-1].type;
         }
     }
     

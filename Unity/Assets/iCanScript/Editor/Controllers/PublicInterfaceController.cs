@@ -686,8 +686,8 @@ namespace iCanScript { namespace Editor {
     	/// Compare function interfaces
     	static bool CompareFunctionInterface(iCS_EngineObject[] interface1, iCS_VisualScriptImp vs, iCS_EngineObject obj) {
     		var interface2= GetFunctionInterface(vs, obj);
-    		var len= interface1.Length;
-    		if(len != interface2.Length) return false;
+    		var len= P.length(interface1);
+    		if(len != P.length(interface2)) return false;
     		for(int i= 0; i < len; ++i) {
     			var a= interface1[i];
     			var b= interface2[i];

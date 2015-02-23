@@ -2,13 +2,14 @@ using UnityEngine;
 using System;
 using System.Collections;
 using Subspace;
+using P=Prelude;
 
 public class iCS_DynamicUserFunctionCall : SSNodeAction {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
     protected SSNodeAction myUserAction= null;
-              bool                  isActionOwner= false;
+              bool         isActionOwner= false;
 
     // ======================================================================
     // Creation/Destruction
@@ -47,7 +48,7 @@ public class iCS_DynamicUserFunctionCall : SSNodeAction {
                 var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSNodeAction;
     
                 // Wait until all inputs are ready.
-                var parameterLen= Parameters.Length;
+                var parameterLen= P.length(Parameters);
                 for(int i= 0; i < parameterLen; ++i) {
                     if(IsParameterReady(i) == false) {
                         return;
@@ -98,7 +99,7 @@ public class iCS_DynamicUserFunctionCall : SSNodeAction {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
             string thisName= (This == null ? "null" : This.ToString());
             string parametersAsStr= "";
-            int nbOfParams= Parameters.Length;
+            int nbOfParams= P.length(Parameters);
             if(nbOfParams != 0) {
                 for(int i= 0; i < nbOfParams; ++i) {
                     parametersAsStr+= Parameters[i].ToString();
@@ -141,7 +142,7 @@ public class iCS_DynamicUserFunctionCall : SSNodeAction {
             var myUserAction= vs.RuntimeNodes[variableObject.InstanceId] as SSNodeAction;
 
             // Fetch all parameters.
-            var parameterLen= Parameters.Length;
+            var parameterLen= P.length(Parameters);
             for(int i= 0; i < parameterLen; ++i) {
                 UpdateParameter(i);
             }
@@ -185,7 +186,7 @@ public class iCS_DynamicUserFunctionCall : SSNodeAction {
             Debug.LogWarning("iCanScript: Exception throw in  "+FullName+" => "+e.Message);
             string thisName= (This == null ? "null" : This.ToString());
             string parametersAsStr= "";
-            int nbOfParams= Parameters.Length;
+            int nbOfParams= P.length(Parameters);
             if(nbOfParams != 0) {
                 for(int i= 0; i < nbOfParams; ++i) {
                     parametersAsStr+= Parameters[i].ToString();

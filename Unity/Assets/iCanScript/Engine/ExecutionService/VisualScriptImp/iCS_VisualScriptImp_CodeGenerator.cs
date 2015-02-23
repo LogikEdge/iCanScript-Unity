@@ -136,7 +136,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     }
     // ----------------------------------------------------------------------
     public SSObject GetRuntimeObject(int id) {
-        if(id < 0 || id >= myRuntimeNodes.Length) return null;
+        if(id < 0 || id >= P.length(myRuntimeNodes)) return null;
         return myRuntimeNodes[id];
     }
     // ----------------------------------------------------------------------
@@ -148,9 +148,9 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     public void GenerateRuntimeNodes(ref List<CompileError> compileErrors, ref List<CompileWarning> compileWarnings) {
         // Allocate runtime node array (if not already done).
-        if(EngineObjects.Count != myRuntimeNodes.Length) {
-            myRuntimeNodes= new SSObject[EngineObjects.Count];
-			for(int i= 0; i < myRuntimeNodes.Length; ++i) myRuntimeNodes[i]= null;
+        if(EngineObjects.Count != P.length(myRuntimeNodes)) {
+            myRuntimeNodes= new SSObject[P.length(EngineObjects)];
+			for(int i= 0; i < P.length(myRuntimeNodes); ++i) myRuntimeNodes[i]= null;
         }
         bool needAdditionalPass= false;
         do {
@@ -367,7 +367,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
     							var inDataPorts= GetChildInParameters(node);
-                                SSNodeAction rtField= inDataPorts.Length == 0 ?
+                                SSNodeAction rtField= P.length(inDataPorts) == 0 ?
                                     new iCS_GetInstanceField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction:
                                     new iCS_SetInstanceField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction;                                
                                 myRuntimeNodes[node.InstanceId]= rtField;
@@ -384,7 +384,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
     							var inDataPorts= GetChildInParameters(node);
-                                SSNodeAction rtField= inDataPorts.Length == 0 ?
+                                SSNodeAction rtField= P.length(inDataPorts) == 0 ?
                                     new iCS_GetClassField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction:
                                     new iCS_SetClassField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction;                                
                                 myRuntimeNodes[node.InstanceId]= rtField;
@@ -709,7 +709,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         MethodInfo methodInfo= objType.GetMethod(iCS_Strings.AddChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         if(methodInfo == null) return null;
         ParameterInfo[] parameters= methodInfo.GetParameters();
-        if(parameters.Length != 1) return null;
+        if(P.length(parameters) != 1) return null;
         return methodInfo;
     }
     public void InvokeAddChildIfExists(object parent, object child) {
@@ -728,7 +728,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
         MethodInfo methodInfo= objType.GetMethod(iCS_Strings.RemoveChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         if(methodInfo == null) return null;
         ParameterInfo[] parameters= methodInfo.GetParameters();
-        if(parameters.Length != 1) return null;
+        if(P.length(parameters) != 1) return null;
         return methodInfo;
     }
     public void InvokeRemoveChildIfExists(object parent, object child) {

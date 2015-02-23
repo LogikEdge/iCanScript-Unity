@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.Reflection;
@@ -408,8 +408,8 @@ public class iCS_FunctionPrototype : iCS_MemberInfo, IEquatable<iCS_FunctionProt
 		if(!base.Equals(other)) return false;
 		if(StorageClass != other.StorageClass) return false;
 		if(FunctionReturn.type != other.FunctionReturn.type) return false;
-		var paramLen= Parameters.Length;
-		if(paramLen != other.Parameters.Length) return false;
+		var paramLen= P.length(Parameters);
+		if(paramLen != P.length(other.Parameters)) return false;
 		for(int i= 0; i < paramLen; ++i) {
 			if(Parameters[i].type != other.Parameters[i].type) return false;
 		}

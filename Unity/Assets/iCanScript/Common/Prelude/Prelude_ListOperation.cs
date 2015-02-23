@@ -2,12 +2,13 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 public static partial class Prelude {
     // ----------------------------------------------------------------------
     // isEmpty    :: [a]->bool
     // isNotEmpty :: [a]->bool
-    public static bool isEmpty<A>(A[] lst)    { return lst.Length == 0; }
+    public static bool isEmpty<A>(A[] lst)    { return P.length(lst) == 0; }
     public static bool isNotEmpty<A>(A[] lst) { return !isEmpty(lst); }
 
     // ----------------------------------------------------------------------
@@ -18,15 +19,15 @@ public static partial class Prelude {
     // concat :: a->[a]->[a]
     // concat :: [a]->a->[a]
     public static A[] concat<A>(A a, A[] lst) {
-        A[] newLst= new A[lst.Length+1];
+        A[] newLst= new A[length(lst)+1];
         newLst[0]= a;
-        for(int i= 0; i < lst.Length; ++i) newLst[i+1]= lst[i];
+        for(int i= 0; i < length(lst); ++i) newLst[i+1]= lst[i];
         return newLst;
     }
     public static A[] concat<A>(A[] lst, A a) {
-        A[] newLst= new A[lst.Length+1];
-        for(int i= 0; i < lst.Length; ++i) newLst[i]= lst[i];
-        newLst[lst.Length]= a;
+        A[] newLst= new A[length(lst)+1];
+        for(int i= 0; i < length(lst); ++i) newLst[i]= lst[i];
+        newLst[length(lst)]= a;
         return newLst;
     }
     
@@ -35,11 +36,11 @@ public static partial class Prelude {
     // last :: [a]->a
     // tail :: [a]->[a]
     public static A head<A>(A[] lst) { return lst[0]; }
-    public static A last<A>(A[] lst) { return lst[lst.Length-1]; }
+    public static A last<A>(A[] lst) { return lst[length(lst)-1]; }
     public static A[] tail<A>(A[] lst)  {
         if(isEmpty(lst)) return new A[0];
-        A[] newLst= new A[lst.Length-1];
-        for(int i= 1; i < lst.Length; ++i) {
+        A[] newLst= new A[length(lst)-1];
+        for(int i= 1; i < length(lst); ++i) {
             newLst[i-1]= lst[i];
         }
         return newLst;
@@ -48,13 +49,13 @@ public static partial class Prelude {
     // ----------------------------------------------------------------------
     // insertAt :: a->Int->[a]->[a]
     public static A[] insertAt<A>(A a, int idx, A[] lst) {
-        var newLst= new A[lst.Length+1];
+        var newLst= new A[length(lst)+1];
         if(idx > 0) {
             Array.Copy(lst, newLst, idx);
         }
         newLst[idx]= a;
-        if(idx < lst.Length) {
-            Array.Copy(lst, idx, newLst, idx+1, lst.Length-idx);
+        if(idx < length(lst)) {
+            Array.Copy(lst, idx, newLst, idx+1, length(lst)-idx);
         }
         return newLst;
     }
@@ -120,7 +121,7 @@ public static partial class Prelude {
     // ----------------------------------------------------------------------
     // take :: Int->[a]->[a]
     public static A[] take<A>(int nbItems, A[] lst) {
-        if(nbItems > lst.Length) nbItems= lst.Length;
+        if(nbItems > length(lst)) nbItems= length(lst);
         var result= new A[nbItems];
         Array.Copy(lst, result, nbItems);
         return result;

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using Subspace;
+using P=Prelude;
 
 namespace Subspace {
 
@@ -23,11 +24,6 @@ namespace Subspace {
         bool            myTrigger          = false;
         bool[]          myEnables          = null;
         SSBinding[]     myEnableBindings   = null;
-    
-        // ======================================================================
-        // Filler when enables or connections not used.
-        static bool[]       ourEmptyEnables = new bool[0];
-        static SSBinding[]	ourEmptyBindings= new SSBinding[0];
     
         // ======================================================================
         // Accessors
@@ -54,7 +50,7 @@ namespace Subspace {
             get { return myParameterBindings; }
         }
         public void SetConnection(int portIdx, SSBinding connection) {
-            if(portIdx < myParameterBindings.Length) {
+            if(portIdx < P.length(myParameterBindings)) {
         		myParameterBindings[portIdx]= connection;            
                 return;
             }
@@ -64,7 +60,7 @@ namespace Subspace {
             }
     		if(myEnableBindings != null && portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
     			var i= portIdx-(int)iCS_PortIndex.EnablesStart;
-    			if(i < myEnableBindings.Length) {
+    			if(i < P.length(myEnableBindings)) {
     				myEnableBindings[i]= connection;
     			}
     			return;
@@ -72,7 +68,7 @@ namespace Subspace {
             Debug.LogWarning("iCanScript: Trying to set a signature connection with wrong index: "+portIdx);
         }
         public bool IsParameterReady(int idx) {
-            if(idx >= myParameters.Length) {
+            if(idx >= P.length(Parameters)) {
                 Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
                 return false;
             }
@@ -81,7 +77,7 @@ namespace Subspace {
             return connection.IsReady;
         }
         public object UpdateParameter(int idx) {
-            if(idx >= myParameters.Length) {
+            if(idx >= P.length(Parameters)) {
                 Debug.LogWarning("iCanScript: Trying to access a signature parameter with wrong index: "+idx);
                 return null;
             }
@@ -114,7 +110,7 @@ namespace Subspace {
         // output parameter set appropriatly.  Otherwise, false is returned.
     	public bool GetIsEnabledIfReady(out bool isEnabled) {
             bool needToWait= false;
-    	    int len= myEnables.Length;
+    	    int len= P.length(myEnables);
             for(int i= 0; i < len; ++i) {
                 var connection= myEnableBindings[i];
                 if(connection != null) {
@@ -143,7 +139,7 @@ namespace Subspace {
     	}
     	// ----------------------------------------------------------------------
         public bool GetIsEnabled() {
-            int len= myEnables.Length;
+            int len= P.length(myEnables);
             for(int i= 0; i < len; ++i) {
                 var connection= myEnableBindings[i];
                 if(connection == null) {
@@ -171,14 +167,14 @@ namespace Subspace {
     	// -------------------------------------------------------------------------
         // Returns one of the signature outputs.
         public object GetValue(int portIdx) {
-    		if(portIdx < myParameters.Length) return myParameters[portIdx];
+    		if(portIdx < P.length(myParameters)) return myParameters[portIdx];
     		if(portIdx == (int)iCS_PortIndex.OutInstance) return This;
             if(portIdx == (int)iCS_PortIndex.Return) return ReturnValue;
     		if(portIdx == (int)iCS_PortIndex.Trigger) return Trigger;
             if(portIdx == (int)iCS_PortIndex.InInstance) return This;
     		if(portIdx >= (int)iCS_PortIndex.EnablesStart && portIdx <= (int)iCS_PortIndex.EnablesEnd) {
                 int i= portIdx-(int)iCS_PortIndex.EnablesStart;
-                if(i < myEnables.Length) {
+                if(i < P.length(myEnables)) {
                     var connection= myEnableBindings[i];
                     return connection == null ? myEnables[i] : myEnableBindings[i].Value;
                 }
@@ -189,7 +185,7 @@ namespace Subspace {
         // Sets the value of the object in the signature.  This should be called
         // by the compiler to initialize the signature.
         public void SetValue(int portIdx, object value) {
-            if(portIdx < myParameters.Length)  {
+            if(portIdx < P.length(myParameters))  {
                 myParameters[portIdx]= value;
                 return;
             }
@@ -261,16 +257,15 @@ namespace Subspace {
         // ----------------------------------------------------------------------
         public SSNodeAction(string name, SSObject parent, int priority, int nbOfParameters, int nbOfEnables)
         : base(name, parent, priority) {
-            myParameters = new object[nbOfParameters];
-            myParameterBindings= new SSBinding[nbOfParameters];
-            for(int i= 0; i < nbOfParameters; ++i) {
-                myParameters[i]= null;
-                myParameterBindings[i]= null;
+            if(nbOfParameters != 0) {
+                myParameters = new object[nbOfParameters];
+                myParameterBindings= new SSBinding[nbOfParameters];
+                for(int i= 0; i < nbOfParameters; ++i) {
+                    myParameters[i]= null;
+                    myParameterBindings[i]= null;
+                }                
             }
-            if(nbOfEnables == 0) {
-                myEnables= ourEmptyEnables;
-                myEnableBindings= ourEmptyBindings;            
-            } else {
+            if(nbOfEnables != 0) {
                 myEnables= new bool[nbOfEnables];
                 myEnableBindings= new SSBinding[nbOfEnables];
                 for(int i= 0; i < nbOfEnables; ++i) {
@@ -332,7 +327,7 @@ namespace Subspace {
                 return null;
             }
             // Let's first verify the enables.
-            int len= myEnableBindings.Length;
+            int len= P.length(myEnableBindings);
             for(int i= 0; i < len; ++i) {
                 var connection= myEnableBindings[i];
                 if(connection != null) {
@@ -358,7 +353,7 @@ namespace Subspace {
                 return myThisBinding;
             }
             // Verify parameter connections
-            var len= myParameterBindings.Length;
+            var len= P.length(myParameterBindings);
             for(int i= 0; i < len; ++i) {
                 var connection= myParameterBindings[i];
                 if(connection != null) {

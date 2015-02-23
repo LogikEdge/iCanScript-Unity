@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Engine;
+using P=Prelude;
 
 [Serializable]
 public class iCS_EngineObject {
@@ -342,7 +343,7 @@ public class iCS_EngineObject {
 	public Type[] GetParamTypes(List<iCS_EngineObject> engineObjects) {
 		iCS_EngineObject[] ports= GetChildPortsExcludingControlPorts(engineObjects);
 		Type[] result= new Type[NbOfParams];
-		for(int i= 0; i < result.Length; ++i) {
+		for(int i= 0; i < P.length(result); ++i) {
 			result[i]= ports[i].RuntimeType;
 		}
 		return result;	        

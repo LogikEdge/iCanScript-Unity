@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Engine;
+using P=Prelude;
 
 public class iCS_ContextualMenu {
     // ======================================================================
@@ -119,7 +120,7 @@ public class iCS_ContextualMenu {
         menu[1]= new iCS_MenuContext(SeparatorStr);
         // Add Unity message handlers
 		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
-        int len= messages.Length;
+        int len= P.length(messages);
 		int idx= GrowMenuBy(ref menu, len);
         for(int i= 0; i < len; ++i) {
 			var message= messages[i];

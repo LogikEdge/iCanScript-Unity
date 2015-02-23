@@ -8,6 +8,7 @@ using System.Text;
 using System.Security;
 using System.Security.Cryptography;
 using iCanScript.JSON;
+using P=Prelude;
 
 namespace iCanScript { namespace Editor { namespace CodeEngineering {
     
@@ -108,7 +109,7 @@ namespace iCanScript { namespace Editor { namespace CodeEngineering {
     	// ----------------------------------------------------------------------
         public static string GenerateMessageBody(iCS_MessageInfo message) {
             var parameters= message.Parameters;
-            var len= parameters.Length;
+            var len= P.length(parameters);
             var msgParamStr= "";
             for(int i= 0; i < len; ++i) {
                 msgParamStr+= parameters[i].name;
@@ -144,7 +145,7 @@ namespace iCanScript { namespace Editor { namespace CodeEngineering {
     				parameters+= TypeName(p.type)+" "+p.name+", ";
                 }            
             }
-            if(parameters.Length != 0) parameters= parameters.Substring(0, parameters.Length-2);
+            if(P.length(parameters) != 0) parameters= parameters.Substring(0, parameters.Length-2);
             return storageClass+returnType+" "+name+"("+parameters+")";
         }
     	// ----------------------------------------------------------------------
@@ -157,7 +158,7 @@ namespace iCanScript { namespace Editor { namespace CodeEngineering {
             if(methodParameters == null) {
                 return new string[0];
             }
-            var len= methodParameters.Length;
+            var len= P.length(methodParameters);
             var parameters= new string[len];
             for(int i= 0; i < len; ++i) {
                 var p= methodParameters[i];
