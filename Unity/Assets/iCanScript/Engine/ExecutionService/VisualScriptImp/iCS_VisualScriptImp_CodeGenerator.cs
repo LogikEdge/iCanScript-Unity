@@ -487,6 +487,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         case iCS_ObjectTypeEnum.EnablePort: {
                             // Don't generate any port data for ports on a proxy node
                             var parentNode= GetParentNode(port);
+                            // Don't generate ports on states
+                            if(parentNode.IsState || parentNode.IsStateChart) break;
                             // Build connection.
                             iCS_EngineObject producerPort= GetProducerEndPort(port);
                             // Special case for proxy ports.  The connection will be made on the original port.
