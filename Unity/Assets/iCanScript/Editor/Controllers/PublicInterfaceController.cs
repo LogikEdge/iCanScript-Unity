@@ -779,7 +779,7 @@ namespace iCanScript { namespace Editor {
             var identicalPorts= P.filter(p1=>  P.or(p2=> ArePortsIdentical(p1,p2), ps1), ps2);
             var nonIdentical1 = P.filter(p1=> !P.or(p2=> ArePortsIdentical(p1,p2), identicalPorts), ps1);
             var nonIdentical2 = P.filter(p1=> !P.or(p2=> ArePortsIdentical(p1,p2), identicalPorts), ps2);
-    		return P.Tuple.Create(nonIdentical1, nonIdentical2);
+    		return P.Tuple<iCS_EngineObject[], iCS_EngineObject[]>.Create(nonIdentical1, nonIdentical2);
     	}
         // ----------------------------------------------------------------------
         static bool ArePortsIdentical(iCS_EngineObject p1, iCS_EngineObject p2) {
