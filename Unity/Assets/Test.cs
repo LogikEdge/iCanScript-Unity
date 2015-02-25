@@ -8,7 +8,15 @@ public class Test : MonoBehaviour
     // Declare a delegate that will be used to execute the completed 
     // dynamic method.  
 //    private delegate Vector3 MethodInvoker();
-    private delegate R       iCS_Delegate<R>();
+    private delegate R	iCS_Delegate<R>();
+    private delegate R	iCS_Delegate<P1, R>(P1 p1);
+    private delegate R	iCS_Delegate<P1, P2, R>(P1 p1, P2 p2);
+    private delegate R	iCS_Delegate<P1, P2, P3, R>(P1 p1, P2 p2, P3 p3);
+    private delegate R	iCS_Delegate<P1, P2, P3, P4, R>(P1 p1, P2 p2, P3 p3, P4 p4);
+    private delegate R	iCS_Delegate<P1, P2, P3, P4, P5, R>(P1 p1, P2 p2, P3 p3, P4 p4, P5 p5);
+    private delegate R	iCS_Delegate<P1, P2, P3, P4, P5, P6, R>(P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6);
+	
+	
     private delegate Vector3 MethodInvoker();
 
     static iCS_Delegate<Vector3> hi= null;
@@ -24,10 +32,9 @@ public class Test : MonoBehaviour
         // Create a delegate that represents the dynamic method. This 
         // action completes the method, and any further attempts to 
         // change the method will cause an exception.
-        var delegateType= typeof(iCS_Delegate<>).MakeGenericType(new Type[]{methodInfo.ReturnType});
-        hi = Compile(methodInfo, delegateType) as iCS_Delegate<Vector3>;
+        hi = Compile(methodInfo) as iCS_Delegate<Vector3>;
    }
-   static Delegate Compile(MethodInfo methodInfo, Type delegateType) {
+   static Delegate Compile(MethodInfo methodInfo) {
         // Create a dynamic method with the name "Hello", a return type
         // of int, and two parameters whose types are specified by the 
         // array helloArgs. Create the method in the module that 
@@ -45,34 +52,31 @@ public class Test : MonoBehaviour
         // Create a delegate that represents the dynamic method. This 
         // action completes the method, and any further attempts to 
         // change the method will cause an exception.
-        return newMethod.CreateDelegate(delegateType);
+        return newMethod.CreateDelegate(typeof(iCS_Delegate<Vector3>));
    }
    static Type GetDelegateType(MethodInfo methodInfo) {
        var parameters= methodInfo.GetParameters();
        var len= parameters.Length;
-       var genericTypes= new Types[len+1];
+       var genericTypes= new Type[len+1];
        for(int i= 0; i < len; ++i) {
            genericTypes[i]= parameters[i].ParameterType;
        }
-       genericTypes[len]= methodInfo.returnType;
+       genericTypes[len]= methodInfo.ReturnType;
        Type baseType= null;
        switch(len) {
-           case 0: {
-               baseType= typeof(iCS_Delegate<>);
-               break;
-           }
-           case 1:
-           case 2:
-           case 3:
-           case 4:
-           case 5:
-           case 6:
+           case 0: { baseType= typeof(iCS_Delegate<>);  break; }
+           case 1: { baseType= typeof(iCS_Delegate<,>); break; }
+           case 2: { baseType= typeof(iCS_Delegate<,,>); break; }
+           case 3: { baseType= typeof(iCS_Delegate<,,,>); break; }
+           case 4: { baseType= typeof(iCS_Delegate<,,,,>); break; }
+           case 5: { baseType= typeof(iCS_Delegate<,,,,,>); break; }
+           case 6: { baseType= typeof(iCS_Delegate<,,,,,,>); break; }
        }
        return baseType.MakeGenericType(genericTypes);
    }
    public void Update() {
         // Use the delegate to execute the dynamic method. Save and 
         // print the return value. 
-       v3= hi();
+//       v3= hi();
    }
 }
