@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using Subspace;
+using P=Prelude;
 
 public class iCS_ClassFunction : iCS_FunctionBase {
     // ======================================================================
@@ -16,7 +17,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
     // ----------------------------------------------------------------------
     protected override void DoEvaluate() {
         // Wait until all inputs are ready.
-        var len= Parameters.Length;
+        var len= P.length(Parameters);
         for(int i= 0; i < len; ++i) {
             if(IsParameterReady(i) == false) {
                 return;
@@ -31,7 +32,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
         try {
 //#endif
             // Fetch all parameters.
-            var len= Parameters.Length;
+            var len= P.length(Parameters);
             for(int i= 0; i < len; ++i) {
                 UpdateParameter(i);
             }
@@ -43,9 +44,10 @@ public class iCS_ClassFunction : iCS_FunctionBase {
         }
         catch(Exception e) {
             string thisName= (This == null ? "null" : This.ToString());
-            string parametersAsStr= "";
-            int nbOfParams= Parameters.Length;
+            string parametersAsStr= "null";
+            int nbOfParams= P.length(Parameters);
             if(nbOfParams != 0) {
+                parametersAsStr= "";
                 for(int i= 0; i < nbOfParams; ++i) {
 					var p= Parameters[i];
                     string paramStr= "";
@@ -67,7 +69,7 @@ public class iCS_ClassFunction : iCS_FunctionBase {
                     }
                 }
             }
-            var msg= "Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.Message;
+            var msg= "Exception thrown in=> "+FullName+"("+thisName+", "+parametersAsStr+") EXCEPTION=> "+e.GetType()+" MSG=> "+e.Message;
             Context.ReportError(msg, this);
             MarkAsEvaluated();
         }

@@ -42,24 +42,24 @@ public static class iCS_TypeCasts {
     [iCS_TypeCast] public static Vector4 ToVector4(Vector3 v)   { return v; }
 
     // To ... (usefull automatic conversions)
-    [iCS_TypeCast] public static Animation           ToAnimation(GameObject go)           { return go.animation; }
-    [iCS_TypeCast] public static AudioSource         ToAudioSource(GameObject go)         { return go.audio; }
-    [iCS_TypeCast] public static Camera              ToCamera(GameObject go)              { return go.camera; }
-    [iCS_TypeCast] public static Collider            ToCollider(GameObject go)            { return go.collider; }
-    [iCS_TypeCast] public static Collider2D          ToCollider2D(GameObject go)          { return go.collider2D; }
-    [iCS_TypeCast] public static ConstantForce       ToConstantForce(GameObject go)       { return go.constantForce; }
-    [iCS_TypeCast] public static GUIText             ToGUIText(GameObject go)             { return go.guiText; }
-    [iCS_TypeCast] public static GUITexture          ToGUITexture(GameObject go)          { return go.guiTexture; }
-    [iCS_TypeCast] public static HingeJoint          ToHingeJoint(GameObject go)          { return go.hingeJoint; }
-    [iCS_TypeCast] public static Light               ToLight(GameObject go)               { return go.light; }
-    [iCS_TypeCast] public static NetworkView         ToNetworkView(GameObject go)         { return go.networkView; }
-    [iCS_TypeCast] public static ParticleEmitter     ToParticleEmitter(GameObject go)     { return go.particleEmitter; }
-    [iCS_TypeCast] public static Renderer            ToRenderer(GameObject go)            { return go.renderer; }
-    [iCS_TypeCast] public static Rigidbody           ToRigidBody(GameObject go)           { return go.rigidbody; }
-    [iCS_TypeCast] public static Rigidbody2D         ToRigidBody2D(GameObject go)         { return go.rigidbody2D; }
-    [iCS_TypeCast] public static Transform           ToTransform(GameObject go)           { return go.transform; }
-    [iCS_TypeCast] public static CharacterController ToCharacterController(GameObject go) { return go.GetComponent(typeof(CharacterController)) as CharacterController; }
-    [iCS_TypeCast] public static MonoBehaviour       ToMonoBehaviour(GameObject go)       { return go.GetComponent(typeof(MonoBehaviour)) as MonoBehaviour; }
+    [iCS_TypeCast] public static Animation           ToAnimation(GameObject go)           { return go.GetComponent<Animation>(); }
+    [iCS_TypeCast] public static AudioSource         ToAudioSource(GameObject go)         { return go.GetComponent<AudioSource>(); }
+    [iCS_TypeCast] public static Camera              ToCamera(GameObject go)              { return go.GetComponent<Camera>(); }
+    [iCS_TypeCast] public static Collider            ToCollider(GameObject go)            { return go.GetComponent<Collider>(); }
+    [iCS_TypeCast] public static Collider2D          ToCollider2D(GameObject go)          { return go.GetComponent<Collider2D>(); }
+    [iCS_TypeCast] public static ConstantForce       ToConstantForce(GameObject go)       { return go.GetComponent<ConstantForce>(); }
+    [iCS_TypeCast] public static GUIText             ToGUIText(GameObject go)             { return go.GetComponent<GUIText>(); }
+    [iCS_TypeCast] public static GUITexture          ToGUITexture(GameObject go)          { return go.GetComponent<GUITexture>(); }
+    [iCS_TypeCast] public static HingeJoint          ToHingeJoint(GameObject go)          { return go.GetComponent<HingeJoint>(); }
+    [iCS_TypeCast] public static Light               ToLight(GameObject go)               { return go.GetComponent<Light>(); }
+    [iCS_TypeCast] public static NetworkView         ToNetworkView(GameObject go)         { return go.GetComponent<NetworkView>(); }
+    [iCS_TypeCast] public static ParticleEmitter     ToParticleEmitter(GameObject go)     { return go.GetComponent<ParticleEmitter>(); }
+    [iCS_TypeCast] public static Renderer            ToRenderer(GameObject go)            { return go.GetComponent<Renderer>(); }
+    [iCS_TypeCast] public static Rigidbody           ToRigidBody(GameObject go)           { return go.GetComponent<Rigidbody>(); }
+    [iCS_TypeCast] public static Rigidbody2D         ToRigidBody2D(GameObject go)         { return go.GetComponent<Rigidbody2D>(); }
+    [iCS_TypeCast] public static Transform           ToTransform(GameObject go)           { return go.GetComponent<Transform>(); }
+    [iCS_TypeCast] public static CharacterController ToCharacterController(GameObject go) { return go.GetComponent<CharacterController>(); }
+    [iCS_TypeCast] public static MonoBehaviour       ToMonoBehaviour(GameObject go)       { return go.GetComponent<MonoBehaviour>(); }
     
     // To GameObject from components
     [iCS_TypeCast] public static GameObject          ToGameObject(Component c)            { return c.gameObject; }

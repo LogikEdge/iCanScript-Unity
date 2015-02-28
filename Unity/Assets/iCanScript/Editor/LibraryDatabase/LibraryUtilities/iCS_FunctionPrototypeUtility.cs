@@ -120,7 +120,7 @@ public static class iCS_FunctionPrototypeUtility {
     /// Determine if the parameter port is of the same compiler type.
     public static bool IsParameterTypeEquivalent(iCS_FunctionPrototype prototype, iCS_EditorObject port) {
         int paramIdx= (int)port.PortIndex;
-        if(paramIdx < 0 || paramIdx >= prototype.Parameters.Length) {
+        if(paramIdx < 0 || paramIdx >= P.length(prototype.Parameters)) {
             return false;
         }
         return port.RuntimeType == prototype.Parameters[paramIdx].type;
@@ -158,7 +158,7 @@ public static class iCS_FunctionPrototypeUtility {
                 return false;
             }
         }
-        return nbOfPortsValidated == prototype.Parameters.Length;
+        return nbOfPortsValidated == P.length(prototype.Parameters);
     }
 }
 

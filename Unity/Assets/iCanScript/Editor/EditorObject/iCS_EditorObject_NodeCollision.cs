@@ -21,7 +21,7 @@ public partial class iCS_EditorObject {
         // Resolve collisions.
         ResolveCollisionOnChildrenImp(children, ref childRect);
         // Update child position.
-		for(int i= 0; i < children.Length; ++i) {
+		for(int i= 0; i < P.length(children); ++i) {
             children[i].CollisionOffset= PositionFrom(childRect[i])-childPos[i];
 		}
     }
@@ -35,7 +35,7 @@ public partial class iCS_EditorObject {
 			iCS_EditorObject lowest= null;
 	        for(int i= 0; i < children.Length-1; ++i) {
 				var c1= children[i];
-	            for(int j= i+1; j < children.Length; ++j) {
+	            for(int j= i+1; j < P.length(children); ++j) {
 					var c2= children[j];
 	                if(c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i],
 															  ref childRect[j])) {

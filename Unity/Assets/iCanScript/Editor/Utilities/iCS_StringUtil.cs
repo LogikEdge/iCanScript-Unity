@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using P=Prelude;
 
 public static class iCS_StringUtil {
 	public static float FuzzyCompare(string s1, string s2) {
-		int l1= s1.Length;
-		int l2= s2.Length;
+		int l1= P.length(s1);
+		int l2= P.length(s2);
 		bool[] used= new bool[l2];
 		for(int i= 0; i < l2; ++i) {
 			used[i]= false;

@@ -134,7 +134,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(eObj.IsKindOfPackage && draggedObject is GameObject) {
                     GameObject gameObject= draggedObject as GameObject;
                     // Determine if game object contains a visual script.
-                    var vs= gameObject.GetComponent("iCS_VisualScript") as iCS_VisualScriptImp;
+                    var vs= gameObject.GetComponent<iCS_VisualScriptImp>();
                     if(vs == null || BuildPublicInterfaceMenu(gameObject, eObj, vs, GraphMousePosition) == false) {
                         CreateGameObjectNode(gameObject, eObj, GraphMousePosition);
                     }

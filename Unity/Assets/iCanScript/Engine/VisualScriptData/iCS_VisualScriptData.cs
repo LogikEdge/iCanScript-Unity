@@ -443,7 +443,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     public static bool HasADestination(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
-        return GetConsumerPorts(vsd, port).Length != 0;
+        return P.length(GetConsumerPorts(vsd, port)) != 0;
     }
     
     // ======================================================================

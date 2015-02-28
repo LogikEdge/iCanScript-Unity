@@ -10,6 +10,7 @@ public static partial class Prelude {
     // Returns the length of a list or array.
     public static int length<T>(T[] a)      { return a == null ? 0 : a.Length; }
     public static int length<T>(List<T> l)  { return l == null ? 0 : l.Count; }
+    public static int length(string s)      { return s == null ? 0 : s.Length; }
     
     // ======================================================================
     //  C# Currying fix

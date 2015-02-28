@@ -203,7 +203,7 @@ public class iCS_LibraryDatabase {
                     case iCS_ObjectTypeEnum.InstanceField: {
 			            bool shouldInclude= false;
 			            if(inputType != null) {
-			                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+			                for(int j= 0; !shouldInclude && j < P.length(func.Parameters); ++j) {
 			                    var param= func.Parameters[j];
 			                    if(param.direction != iCS_ParamDirection.Out) {
 									if(param.type == inputType) {
@@ -215,7 +215,7 @@ public class iCS_LibraryDatabase {
 						}
 			            if(!shouldInclude && outputType != null) {
 			                if(func.ReturnType == outputType) shouldInclude= true;
-			                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+			                for(int j= 0; !shouldInclude && j < P.length(func.Parameters); ++j) {
 			                    var param= func.Parameters[j];
 			                    if(param.direction != iCS_ParamDirection.In) {
 			                        if(outputType == param.type) {
@@ -253,7 +253,7 @@ public class iCS_LibraryDatabase {
                         }
                     }
                 }
-                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+                for(int j= 0; !shouldInclude && j < P.length(func.Parameters); ++j) {
                     var param= func.Parameters[j];
                     if(param.direction != iCS_ParamDirection.Out) {
 						if(param.type == inputType) {
@@ -275,7 +275,7 @@ public class iCS_LibraryDatabase {
                     }
                 }
                 if(func.ReturnType == outputType) shouldInclude= true;
-                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+                for(int j= 0; !shouldInclude && j < P.length(func.Parameters); ++j) {
                     var param= func.Parameters[j];
                     if(param.direction != iCS_ParamDirection.In) {
                         if(outputType == param.type) {

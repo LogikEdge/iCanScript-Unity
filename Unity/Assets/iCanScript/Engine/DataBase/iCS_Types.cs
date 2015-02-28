@@ -1,6 +1,7 @@
 //#define DEBUG
 using UnityEngine;
 using System;
+using System.Reflection;
 using System.Collections;
 using iCanScript.Engine;
 
@@ -142,6 +143,31 @@ public static class iCS_Types {
         if(type == typeof(bool)) return "bool";
         if(type == typeof(void)) return "void";
         return RemoveProductPrefix(type.Name);
+    }
+    // ----------------------------------------------------------------------
+    public static Type FindType(string name) {
+        foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+            foreach(var classType in assembly.GetTypes()) {
+                if(classType.Name == name) {
+                    return classType;
+                }
+            }
+        }
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    public static MethodInfo FindFunction(string typeName, string functionName) {
+        var interfaceType= iCS_Types.FindType(typeName);
+        if(interfaceType == null) {
+            Debug.LogWarning("iCanScript: unable to find type=> "+typeName+" <= in application.");
+            return null;
+        }
+        MethodInfo methodInfo= interfaceType.GetMethod(functionName,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        if(methodInfo == null) {
+            Debug.LogWarning("iCanScript: unable to find function: "+functionName);
+            return null;
+        }
+        return methodInfo;
     }
     // ----------------------------------------------------------------------
     public static Type TypeFromAssemblyQualifiedName(string assemblyQualifiedName) {

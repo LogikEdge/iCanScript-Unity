@@ -1,4 +1,4 @@
-//{"ContentHash" : "0561D1835F9BA9BC38B98BAC1D870A5E"}
+//{"ContentHash" : "0F363D27B379B5A91FA77F517364FB25"}
 /////////////////////////////////////////////////////////////////
 //  iCS_Behaviour.cs
 //
@@ -8,7 +8,7 @@
 using UnityEngine;
 
 [AddComponentMenu("")]
-public sealed class iCS_Behaviour : MonoBehaviour {
+public sealed class iCS_Behaviour : iCS_BehaviourImp {
 	iCS_VisualScript[]   allVisualScripts= null;
 
 	void Start()

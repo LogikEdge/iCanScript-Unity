@@ -40,8 +40,8 @@ public class DoneDoorAnimation : MonoBehaviour
 				else
 				{
 					// If the player doesn't have the key play the access denied audio clip.
-					audio.clip = accessDeniedClip;
-					audio.Play();
+					GetComponent<AudioSource>().clip = accessDeniedClip;
+					GetComponent<AudioSource>().Play();
 				}
 			}
 			else
@@ -74,11 +74,11 @@ public class DoneDoorAnimation : MonoBehaviour
 		anim.SetBool(hash.openBool,count > 0);
 		
 		// If the door is opening or closing...
-		if(anim.IsInTransition(0) && !audio.isPlaying)
+		if(anim.IsInTransition(0) && !GetComponent<AudioSource>().isPlaying)
 		{
 			// ... play the door swish audio clip.
-			audio.clip = doorSwishClip;
-			audio.Play();
+			GetComponent<AudioSource>().clip = doorSwishClip;
+			GetComponent<AudioSource>().Play();
 		}
 	}
 }

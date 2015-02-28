@@ -28,7 +28,7 @@ public class iCS_DynamicVariableProxy : SSNodeAction {
                 Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
                 MarkAsEvaluated();
             }
-            var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
+            var vs= gameObject.GetComponent<iCS_VisualScriptImp>() as iCS_VisualScriptImp;
             if(vs == null) {
                 Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
                 MarkAsEvaluated();
@@ -52,7 +52,7 @@ public class iCS_DynamicVariableProxy : SSNodeAction {
             Debug.LogWarning("iCanScript: Unable to find game object with variable: "+FullName);
             MarkAsEvaluated();
         }
-        var vs= gameObject.GetComponent(typeof(iCS_VisualScriptImp)) as iCS_VisualScriptImp;
+        var vs= gameObject.GetComponent<iCS_VisualScriptImp>() as iCS_VisualScriptImp;
         if(vs == null) {
             Debug.LogWarning("iCanScript: Unable to find visual script that contains variable: "+FullName+" in game object: "+gameObject.name);
             MarkAsEvaluated();

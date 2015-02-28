@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEditor;
+using System;
+using System.Reflection;
 using System.IO;
 using System.Collections;
 using P=Prelude;
@@ -9,7 +11,7 @@ public static class iCS_MenuUtility {
     public static void RemoveVisualScriptFrom(iCS_VisualScriptImp visualScript) {
         // Destroy the given component.
         var gameObject= visualScript.gameObject;
-        Object.DestroyImmediate(visualScript);
+        UnityEngine.Object.DestroyImmediate(visualScript);
 
         // Also remove the Behaviour class if no visual script remain on this object.
         UpdateBehaviourComponent(gameObject);
@@ -17,30 +19,27 @@ public static class iCS_MenuUtility {
     // ----------------------------------------------------------------------
     public static void UpdateBehaviourComponent(GameObject gameObject) {
         if(gameObject == null) return;
-        var behaviourClassName= iCS_EditorStrings.DefaultBehaviourClassName;
-        bool hasVisualScript= gameObject.GetComponent("iCS_VisualScript") != null;
+        bool hasVisualScript= gameObject.GetComponent<iCS_VisualScriptImp>() != null;
         if(hasVisualScript) {
 			// Remove duplicate Behaviours.
 			MonoBehaviour iCSBehaviour= null;
-            var monoBehaviours= gameObject.GetComponents<MonoBehaviour>();
+            var monoBehaviours= gameObject.GetComponents<iCS_BehaviourImp>();
 			foreach(var mb in monoBehaviours) {
-				if(mb.GetType().Name == behaviourClassName) {
-					if(iCSBehaviour == null) {
-						iCSBehaviour= mb;
-					} else {
-		                Object.DestroyImmediate(mb);						
-					}
+				if(iCSBehaviour == null) {
+					iCSBehaviour= mb;
+				} else {
+	                UnityEngine.Object.DestroyImmediate(mb);						
 				}
 			}
             // Add behaviour if not already present.
             if(iCSBehaviour == null) {
-                gameObject.AddComponent(behaviourClassName);
+                iCS_DynamicCall.AddBehaviour(gameObject);
             }
         } else {
             // Remove behaviour.
-            var behaviourComponent= gameObject.GetComponent(behaviourClassName);
+            var behaviourComponent= gameObject.GetComponent<iCS_BehaviourImp>();
             if(behaviourComponent != null) {
-                Object.DestroyImmediate(behaviourComponent);
+                UnityEngine.Object.DestroyImmediate(behaviourComponent);
             }
         }
     }

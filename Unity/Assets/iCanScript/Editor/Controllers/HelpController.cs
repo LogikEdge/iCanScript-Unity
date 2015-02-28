@@ -41,7 +41,7 @@ namespace iCanScript.Editor {
     			fileStream = new StreamReader (unityHelpPath + "/index.js");
     		}
     		catch {
-    			Debug.Log("iCanScript: unable to open Unity help.");
+    			Debug.LogWarning("iCanScript: unable to open Unity help.");
     			return;
     		}
     		
@@ -92,7 +92,7 @@ namespace iCanScript.Editor {
     			arrayOfEntries= rootObject.GetValueFor("info") as JArray;
     		}
     		catch {
-    			Debug.Log("iCanScript: Error reading unity help index as JSON format");
+    			Debug.LogWarning("iCanScript: Error reading unity help index as JSON format");
     			return;
     		}
     		

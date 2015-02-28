@@ -686,8 +686,8 @@ namespace iCanScript { namespace Editor {
     	/// Compare function interfaces
     	static bool CompareFunctionInterface(iCS_EngineObject[] interface1, iCS_VisualScriptImp vs, iCS_EngineObject obj) {
     		var interface2= GetFunctionInterface(vs, obj);
-    		var len= interface1.Length;
-    		if(len != interface2.Length) return false;
+    		var len= P.length(interface1);
+    		if(len != P.length(interface2)) return false;
     		for(int i= 0; i < len; ++i) {
     			var a= interface1[i];
     			var b= interface2[i];
@@ -779,7 +779,7 @@ namespace iCanScript { namespace Editor {
             var identicalPorts= P.filter(p1=>  P.or(p2=> ArePortsIdentical(p1,p2), ps1), ps2);
             var nonIdentical1 = P.filter(p1=> !P.or(p2=> ArePortsIdentical(p1,p2), identicalPorts), ps1);
             var nonIdentical2 = P.filter(p1=> !P.or(p2=> ArePortsIdentical(p1,p2), identicalPorts), ps2);
-    		return P.Tuple.Create(nonIdentical1, nonIdentical2);
+    		return new P.Tuple<iCS_EngineObject[], iCS_EngineObject[]>(nonIdentical1, nonIdentical2);
     	}
         // ----------------------------------------------------------------------
         static bool ArePortsIdentical(iCS_EngineObject p1, iCS_EngineObject p2) {
