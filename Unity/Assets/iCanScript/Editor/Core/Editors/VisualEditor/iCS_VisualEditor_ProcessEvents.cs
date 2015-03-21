@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
 using iCanScript.Editor;
+using iCanScript.Editor.CodeEngineering;
 
 // ===========================================================================
 // Graph editor event processing.
@@ -100,6 +101,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     DetermineSelectedObject();                    
                 }
                 myShowDynamicMenu= true;
+                UT_CSharpGenerator.GenerateTestCSharpFile();
                 break;
             }
             case 2: { // Middle mouse button

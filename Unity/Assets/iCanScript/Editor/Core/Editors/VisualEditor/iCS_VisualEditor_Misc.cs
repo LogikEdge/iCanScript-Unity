@@ -215,7 +215,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         // A conversion is required.
 		if(iCS_Types.CanBeConnectedWithUpConversion(outType, inType)) {
-			if(EditorUtility.DisplayDialog("Up Conversion Connection", "Are you sure you want to generate a conversion from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)+"?", "Generate Conversion", "Abort")) {
+			if(EditorUtility.DisplayDialog("Up Conversion Connection", "Are you sure you want to generate a conversion from <color=red>"+iCS_Types.TypeName(outType)+"</color> to "+iCS_Types.TypeName(inType)+"?", "Generate Conversion", "Abort")) {
                 return true;
 			}
             return false;

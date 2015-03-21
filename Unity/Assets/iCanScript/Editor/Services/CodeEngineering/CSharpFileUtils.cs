@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Collections;
 
-namespace iCanScript { namespace Editor { namespace CodeEngineering {
+namespace iCanScript.Editor.CodeEngineering {
 
     public static class CSharpFileUtils {
 
@@ -46,4 +46,4 @@ namespace iCanScript { namespace Editor { namespace CodeEngineering {
         }
     }
 
-}}}
+}

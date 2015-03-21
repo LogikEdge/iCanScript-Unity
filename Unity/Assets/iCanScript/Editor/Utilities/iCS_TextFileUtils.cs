@@ -39,7 +39,7 @@ namespace iCanScript { namespace Editor {
     	// Write the given text into the file at the given path.
         public static bool WriteFile(string fileName, string fileData) {
     		var systemPath= FileUtils.ToSystemPath(fileName);
-    		var unityPath = FileUtils.ToUnityAssetPath(fileName);
+//    		var unityPath = FileUtils.ToUnityAssetPath(fileName);
     
             StreamWriter sw= null;
             try {
@@ -47,7 +47,8 @@ namespace iCanScript { namespace Editor {
                 sw.Write(fileData.ToCharArray());
                 sw.Close();
                 // Create an asset that Unity will recognize...
-                AssetDatabase.ImportAsset(unityPath);
+                AssetDatabase.Refresh();
+//                AssetDatabase.ImportAsset(unityPath);
                 return true;
             }
             catch(System.Exception) {
