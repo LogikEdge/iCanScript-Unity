@@ -2,14 +2,15 @@
 using System;
 using System.Text;
 using System.Collections;
-using CodeGenerator= iCanScript.Editor.CodeEngineering.CSharpGenerator.CodeGenerator;
-using AccessType= iCanScript.Editor.CodeEngineering.CSharpGenerator.AccessType;
-using ScopeType= iCanScript.Editor.CodeEngineering.CSharpGenerator.ScopeType;
-
 
 namespace iCanScript.Editor.CodeEngineering {
 
 public static class CodeProducer {
+    // -------------------------------------------------------------------
+    public delegate string CodeGenerator(int indent);
+    public enum AccessType { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
+    public enum ScopeType  { STATIC, NONSTATIC, VIRTUAL };
+    
 	// -------------------------------------------------------------------------
     public static void GenerateCodeFor(iCS_IStorage iStorage) {
         var namespaceName= "iCanScript.Engine.GeneratedCode";

@@ -2,16 +2,15 @@
 using System;
 using System.Text;
 using System.Collections;
+using CodeGenerator= iCanScript.Editor.CodeEngineering.CodeProducer.CodeGenerator;
+using AccessType= iCanScript.Editor.CodeEngineering.CodeProducer.AccessType;
+using ScopeType= iCanScript.Editor.CodeEngineering.CodeProducer.ScopeType;
 
 namespace iCanScript.Editor.CodeEngineering {
 
     public static class CSharpGenerator {
         // -------------------------------------------------------------------
         const int ourTabSize= 4;
-        // -------------------------------------------------------------------
-        public delegate string CodeGenerator(int indent);
-        public enum AccessType { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
-        public enum ScopeType  { STATIC, NONSTATIC, VIRTUAL };
         
         // -------------------------------------------------------------------
         public static string GenerateUsingDirectives(string[] usingDirectives) {
