@@ -82,6 +82,15 @@ namespace iCanScript.Editor.CodeEngineering {
             result.Append(" ");
             result.Append(functionName);
             result.Append("(");
+			int len= paramTypes.Length;
+			for(int i= 0; i < len; ++i) {
+				result.Append(paramTypes[i]);
+				result.Append(" ");
+				result.Append(paramNames[i]);
+				if(i+1 != len) {
+					result.Append(", ");
+				}
+			}
             result.Append(") {\n");
             result.Append(functionBody(indentSize+1));
             result.Append("\n");
@@ -135,8 +144,11 @@ namespace iCanScript.Editor.CodeEngineering {
             return ""; 
         }
 		public static string ToTypeName(Type type) {
-			if(type == typeof(int)) return "int";
-			if(type == typeof(uint)) return "uint";
+			if(type == typeof(void))   return "void";
+			if(type == typeof(int))    return "int";
+			if(type == typeof(uint))   return "uint";
+			if(type == typeof(bool))   return "bool";
+			if(type == typeof(string)) return "string";
 			return type.Name;
 		}
         // -------------------------------------------------------------------

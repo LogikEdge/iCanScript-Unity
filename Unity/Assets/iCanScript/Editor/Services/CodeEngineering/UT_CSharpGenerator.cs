@@ -12,9 +12,10 @@ namespace iCanScript.Editor.CodeEngineering {
 
     public class UT_CSharpGenerator : UnitTest {
         
-        public static void GenerateTestCSharpFile() {
+		// -------------------------------------------------------------------------
+        public static void GenerateTestCSharpFile(iCS_IStorage iStorage) {
             var namespaceName= "iCanScript.Engine.GeneratedCode";
-            var className= iCS_TextUtility.ToClassName("Fred");
+            var className= iCS_TextUtility.ToClassName(iStorage.HostGameObject.name);
 
             // Generate using directives.
             var usingDirectives= CSharpGenerator.GenerateUsingDirectives(new string[]{"UnityEngine"});
@@ -22,7 +23,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Define function to define class
             CodeGenerator classGenerator=
                 (indent)=> {
-                    return CSharpGenerator.GenerateClass(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, className, typeof(MonoBehaviour), GenerateClassBody);
+                    return CSharpGenerator.GenerateClass(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, className, typeof(MonoBehaviour), (i)=> GenerateClassBody(i, iStorage));
                 };
 
             // Generate namespace.
@@ -31,17 +32,67 @@ namespace iCanScript.Editor.CodeEngineering {
             // Write final code to file.
             CSharpFileUtils.WriteCSharpFile("", className, usingDirectives+code);
         }
-		public static string GenerateClassBody(int indent) {
-			var result= new StringBuilder(CSharpGenerator.GenerateVariable(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, typeof(int), "x", "3"));
-			result.Append(CSharpGenerator.GenerateVariable(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, typeof(Vector3), "v3", null));
+
+		// -------------------------------------------------------------------------
+		public static string GenerateClassBody(int indent, iCS_IStorage iStorage) {
+			var result= new StringBuilder(GenerateVariables(indent, iStorage));
 			result.Append("\n");
-			result.Append(GenerateFunctions(indent));
+			result.Append(GenerateFunctions(indent, iStorage));
 			return result.ToString();
 		}
-        public static string GenerateFunctions(int indent) {
-            var result= "";
-            result= CSharpGenerator.GenerateFunction(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, "void", "Update", new string[0], new string[0], (_)=>"");
-            return result;
+
+		// -------------------------------------------------------------------------
+		public static string GenerateVariables(int indent, iCS_IStorage iStorage) {
+            var result= new StringBuilder();
+			// Find root variables.
+			iStorage[0].ForEachChildNode(
+				n=> {
+					if(n.IsConstructor) {
+						result.Append(CSharpGenerator.GenerateVariable(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, n.RuntimeType, n.Name, null));						
+					}
+				}
+			);
+			return result.ToString();
+		}
+		// -------------------------------------------------------------------------
+        public static string GenerateFunctions(int indent, iCS_IStorage iStorage) {
+            var result= new StringBuilder();
+			// Find root functions.
+			iStorage[0].ForEachChildNode(
+				n=> {
+					if(n.IsMessage || n.IsPublicFunction) {
+						// Find return type.
+						var returnType= typeof(void);
+						var nbParams= 0;
+						n.ForEachChildPort(
+							p=> {
+								if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
+									if(p.PortIndex+1 > nbParams) {
+										nbParams= p.PortIndex+1;
+									}
+								}
+								if(p.PortIndex == (int)iCS_PortIndex.Return) {
+									returnType= p.RuntimeType;
+								}
+							}
+						);
+						// Build parameters
+						var paramTypes= new Type[nbParams];
+						var paramNames= new String[nbParams];
+						n.ForEachChildPort(
+							p=> {
+								var i= p.PortIndex;
+								if(i < (int)iCS_PortIndex.ParametersEnd) {
+									paramTypes[i]= p.RuntimeType;
+									paramNames[i]= p.Name;
+								}
+							}
+						);
+						result.Append(CSharpGenerator.GenerateFunction(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, returnType, n.Name, paramTypes, paramNames, (_)=>""));						
+					}
+				}
+			);
+            return result.ToString();
         }
     }
 
