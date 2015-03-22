@@ -11,7 +11,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         public delegate string CodeGenerator(int indent);
         public enum AccessType { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
-        public enum ScopeType  { STATIC, NONSTATIC };
+        public enum ScopeType  { STATIC, NONSTATIC, VIRTUAL };
         
         // -------------------------------------------------------------------
         public static string GenerateUsingDirectives(string[] usingDirectives) {
@@ -120,15 +120,19 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         public static string ToAccessString(AccessType accessType) {
             switch(accessType) {
-                case AccessType.PUBLIC: return "public";
-                case AccessType.PRIVATE: return "private";
+                case AccessType.PUBLIC:    return "public";
+                case AccessType.PRIVATE:   return "private";
                 case AccessType.PROTECTED: return "protected";
-                case AccessType.INTERNAL: return "internal";
+                case AccessType.INTERNAL:  return "internal";
             }
             return "public";
         }
         public static string ToScopeString(ScopeType scopeType) {
-            return scopeType == ScopeType.STATIC ? "static" : ""; 
+			switch(scopeType) {
+				case ScopeType.STATIC:  return "static";
+				case ScopeType.VIRTUAL: return "virtual";
+			}
+            return ""; 
         }
 		public static string ToTypeName(Type type) {
 			if(type == typeof(int)) return "int";
