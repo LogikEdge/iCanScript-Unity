@@ -35,7 +35,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         public static string GenerateClass(int indentSize, AccessType accessType, ScopeType scopeType,
                                            string className, Type baseClass, CodeGenerator classBody) {
-            return GenerateClass(indentSize, accessType, scopeType, className, baseClass.Name, classBody);
+            return GenerateClass(indentSize, accessType, scopeType, className, ToTypeName(baseClass), classBody);
         }
         public static string GenerateClass(int indentSize, AccessType accessType, ScopeType scopeType,
                                            string className, string baseClass, CodeGenerator classBody) {
@@ -64,9 +64,9 @@ namespace iCanScript.Editor.CodeEngineering {
                                               CodeGenerator functionBody) {
             var paramTypeStrings= new String[paramTypes.Length];
             for(int i= 0; i < paramTypes.Length; ++i) {
-                paramTypeStrings[i]= paramTypes[i].Name;
+                paramTypeStrings[i]= ToTypeName(paramTypes[i]);
             }
-            return GenerateFunction(indentSize, accessType, scopeType, returnType.Name, functionName, paramTypeStrings, paramNames, functionBody);
+            return GenerateFunction(indentSize, accessType, scopeType, ToTypeName(returnType), functionName, paramTypeStrings, paramNames, functionBody);
         }
         public static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
                                               string returnType, string functionName,
@@ -92,7 +92,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
 		public static string GenerateVariable(int indentSize, AccessType accessType, ScopeType scopeType,
 											  Type variableType, string variableName, string initializer) {
-			var typeName= iCS_Types.GetName(variableType);
+			var typeName= ToTypeName(variableType);
 			return GenerateVariable(indentSize, accessType, scopeType, typeName, variableName, initializer);
 		}
 		public static string GenerateVariable(int indentSize, AccessType accessType, ScopeType scopeType,
@@ -130,6 +130,11 @@ namespace iCanScript.Editor.CodeEngineering {
         public static string ToScopeString(ScopeType scopeType) {
             return scopeType == ScopeType.STATIC ? "static" : ""; 
         }
+		public static string ToTypeName(Type type) {
+			if(type == typeof(int)) return "int";
+			if(type == typeof(uint)) return "uint";
+			return type.Name;
+		}
         // -------------------------------------------------------------------
         public static void WriteFile(string path, string fileName, string code) {
             TextFileUtils.WriteFile("Assets/"+path+"/"+fileName+".cs", code);
