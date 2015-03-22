@@ -210,9 +210,13 @@ namespace iCanScript.Editor.CodeEngineering {
                     return "my"+typeName;
                 }
             }
-            return eObj.Name;
+            return ToValidIdent(eObj.Name);
         }
         public static string ToGeneratedNodeName(iCS_EditorObject node) {
+            var methodName= ToMethodName(node);
+            if(!string.IsNullOrEmpty(methodName)) {
+                return methodName+node.InstanceId;
+            }
             return "node"+node.InstanceId;
         }
         public static string ToGeneratedPortName(iCS_EditorObject port) {
@@ -221,12 +225,35 @@ namespace iCanScript.Editor.CodeEngineering {
             if(parent.IsConstructor) {
                 return ToVariableName(parent);
             }
+            // Try with port name.
+            if(!string.IsNullOrEmpty(port.RawName)) {
+                return ToValidIdent(port.Name);                
+            }
             // Generate unique port name.
             var generatedParentName= ToGeneratedNodeName(parent);
             if(port.PortIndex == (int)iCS_PortIndex.Return) {
-                return "ret_"+generatedParentName;
+                return "out_"+generatedParentName;
             }
             return "p"+port.PortIndex+"_"+generatedParentName;
+        }
+        public static string ToValidIdent(string str) {
+            var result= new StringBuilder();
+            for(int cursor= 0; cursor < str.Length; ++cursor) {
+                var c= str[cursor];
+                if(Char.IsLetterOrDigit(c) || c == '_') {
+                    result.Append(c);
+                }
+                else {
+                    switch(c) {
+                        case '+': result.Append("_plus_"); break;
+                        case '-': result.Append("_minus_"); break;
+                        case '*': result.Append("_mul_"); break;
+                        case '/': result.Append("_div_"); break;
+                        default: result.Append('_'); break;
+                    }
+                }
+            }
+            return result.ToString();
         }
         // -------------------------------------------------------------------
         public static void WriteFile(string path, string fileName, string code) {

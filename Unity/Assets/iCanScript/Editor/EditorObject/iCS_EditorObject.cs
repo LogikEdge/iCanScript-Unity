@@ -135,7 +135,13 @@ public partial class iCS_EditorObject {
                     // TODO: Support retreiving the initial port name.
                 }
             }
-            return defaultName+"<"+iCS_Types.TypeName(iCS_Types.RemoveRefOrPointer(RuntimeType))+">";            
+            return defaultName+TypeLabel;            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public string TypeLabel {
+        get {
+            return "<"+iCS_Types.TypeName(iCS_Types.RemoveRefOrPointer(RuntimeType))+">";
         }
     }
     // ----------------------------------------------------------------------
