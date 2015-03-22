@@ -61,37 +61,65 @@ namespace iCanScript.Editor.CodeEngineering {
 			iStorage[0].ForEachChildNode(
 				n=> {
 					if(n.IsMessage || n.IsPublicFunction) {
-						// Find return type.
-						var returnType= typeof(void);
-						var nbParams= 0;
-						n.ForEachChildPort(
-							p=> {
-								if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
-									if(p.PortIndex+1 > nbParams) {
-										nbParams= p.PortIndex+1;
-									}
-								}
-								if(p.PortIndex == (int)iCS_PortIndex.Return) {
-									returnType= p.RuntimeType;
-								}
-							}
-						);
-						// Build parameters
-						var paramTypes= new Type[nbParams];
-						var paramNames= new String[nbParams];
-						n.ForEachChildPort(
-							p=> {
-								var i= p.PortIndex;
-								if(i < (int)iCS_PortIndex.ParametersEnd) {
-									paramTypes[i]= p.RuntimeType;
-									paramNames[i]= p.Name;
-								}
-							}
-						);
-						result.Append(CSharpGenerator.GenerateFunction(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, returnType, n.Name, paramTypes, paramNames, (_)=>""));						
+                        result.Append(GenerateFunction(indent, n));
 					}
 				}
 			);
+            return result.ToString();
+        }
+		// -------------------------------------------------------------------------
+        public static string GenerateFunction(int indent, iCS_EditorObject eObj) {
+            var result= new StringBuilder();
+			// Find return type.
+			var returnType= typeof(void);
+			var nbParams= 0;
+			eObj.ForEachChildPort(
+				p=> {
+					if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
+						if(p.PortIndex+1 > nbParams) {
+							nbParams= p.PortIndex+1;
+						}
+					}
+					if(p.PortIndex == (int)iCS_PortIndex.Return) {
+						returnType= p.RuntimeType;
+					}
+				}
+			);
+			// Build parameters
+			var paramTypes= new Type[nbParams];
+			var paramNames= new String[nbParams];
+			eObj.ForEachChildPort(
+				p=> {
+					var i= p.PortIndex;
+					if(i < (int)iCS_PortIndex.ParametersEnd) {
+						paramTypes[i]= p.RuntimeType;
+						paramNames[i]= p.Name;
+					}
+				}
+			);
+			result.Append(
+                CSharpGenerator.GenerateFunction(indent,
+                                                 AccessType.PUBLIC,
+                                                 ScopeType.NONSTATIC,
+                                                 returnType,
+                                                 eObj.Name,
+                                                 paramTypes,
+                                                 paramNames,
+                                                 (i)=> GenerateFunctionBody(i, eObj)));						
+            return result.ToString();
+        }
+		// -------------------------------------------------------------------------
+        public static string GenerateFunctionBody(int indent, iCS_EditorObject eObj) {
+            var result= new StringBuilder();
+            eObj.ForEachChildNode(
+                n=> {
+                    if(n.IsKindOfFunction) {
+                        var functionName= n.Name;
+                        result.Append(CSharpGenerator.GenerateFunctionCall(indent, functionName));
+                        result.Append(";\n");
+                    }
+                }
+            );
             return result.ToString();
         }
     }

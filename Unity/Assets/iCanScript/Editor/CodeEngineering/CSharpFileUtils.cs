@@ -42,7 +42,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // ----------------------------------------------------------------------
         // Write generated code to given file.
         public static void WriteCSharpFile(string folderPath, string className, string code) {
-            TextFileUtils.WriteFile("Assets/"+folderPath+"/"+className+".cs", code);
+            TextFileUtils.WriteFile("Assets/"+folderPath+"/"+className+".txt", code);
         }
     }
 

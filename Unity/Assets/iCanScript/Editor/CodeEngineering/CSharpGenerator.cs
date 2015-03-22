@@ -123,6 +123,14 @@ namespace iCanScript.Editor.CodeEngineering {
 			return result.ToString();
 		}
         // -------------------------------------------------------------------
+        public static string GenerateFunctionCall(int indentSize, string functionName) {
+			string indent= ToIndent(indentSize);
+            StringBuilder result= new StringBuilder(indent);
+            result.Append(functionName);
+            result.Append("()");
+            return result.ToString();
+        }
+        // -------------------------------------------------------------------
         public static string ToIndent(int indent) {
             return new String(' ', indent*ourTabSize);
         }
