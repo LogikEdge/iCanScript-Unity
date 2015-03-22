@@ -122,11 +122,33 @@ namespace iCanScript.Editor.CodeEngineering {
 			return result.ToString();
 		}
         // -------------------------------------------------------------------
-        public static string GenerateFunctionCall(int indentSize, string functionName) {
-			string indent= ToIndent(indentSize);
-            StringBuilder result= new StringBuilder(indent);
+        public static string GenerateFunctionCall(int indentSize, string functionName, string[] paramValues) {
+            StringBuilder result= new StringBuilder();
             result.Append(functionName);
-            result.Append("()");
+            result.Append("(");
+            var len= paramValues.Length;
+            for(int i= 0; i < len; ++i) {
+                result.Append(paramValues[i]);
+                if(i+1 < len) {
+                    result.Append(", ");                    
+                }
+            }
+            result.Append(")");
+            return result.ToString();
+        }
+        // -------------------------------------------------------------------
+        public static string GenerateAllocator(Type type, string[] paramValues) {
+            var result= new StringBuilder(" new ");
+            result.Append(ToTypeName(type));
+            result.Append("(");
+            int len= paramValues.Length;
+            for(int i= 0; i < len; ++i) {
+                result.Append(paramValues[i]);
+                if(i+1 < len) {
+                    result.Append(", ");
+                }
+            }
+            result.Append(")");
             return result.ToString();
         }
         // -------------------------------------------------------------------
@@ -158,6 +180,54 @@ namespace iCanScript.Editor.CodeEngineering {
 			if(type == typeof(string)) return "string";
 			return type.Name;
 		}
+        public static string ToValueString(System.Object obj) {
+            if(obj == null) return "null";
+            if(obj is bool) {
+                return ((bool)obj) ? "true" : "false";
+            }
+            if(obj is string) {
+                return "\""+obj.ToString()+"\"";
+            }
+            if(obj is char) {
+                return "\'"+obj.ToString()+"\'";
+            }
+            return obj.ToString();
+        }
+        public static string ToMethodName(iCS_EditorObject eObj) {
+            var n= eObj.MethodName;
+            if(n == ".ctor") {
+                return eObj.RuntimeType.Name;
+            }
+            return n;
+        }
+        public static string ToVariableName(iCS_EditorObject eObj) {
+            if(eObj.IsConstructor) {
+                if(eObj.Name == eObj.DefaultName) {
+                    var typeName= ToTypeName(eObj.RuntimeType);
+                    if(typeName.StartsWith("iCS_")) {
+                        typeName= typeName.Substring(4);
+                    }
+                    return "my"+typeName;
+                }
+            }
+            return eObj.Name;
+        }
+        public static string ToGeneratedNodeName(iCS_EditorObject node) {
+            return "node"+node.InstanceId;
+        }
+        public static string ToGeneratedPortName(iCS_EditorObject port) {
+            // Return variable name if parent is a constructor.
+            var parent= port.ParentNode;
+            if(parent.IsConstructor) {
+                return ToVariableName(parent);
+            }
+            // Generate unique port name.
+            var generatedParentName= ToGeneratedNodeName(parent);
+            if(port.PortIndex == (int)iCS_PortIndex.Return) {
+                return "ret_"+generatedParentName;
+            }
+            return "p"+port.PortIndex+"_"+generatedParentName;
+        }
         // -------------------------------------------------------------------
         public static void WriteFile(string path, string fileName, string code) {
             TextFileUtils.WriteFile("Assets/"+path+"/"+fileName+".cs", code);
