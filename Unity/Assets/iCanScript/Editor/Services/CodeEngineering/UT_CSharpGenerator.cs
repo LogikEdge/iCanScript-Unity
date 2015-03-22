@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Text;
 using System.Collections;
 using CodeGenerator= iCanScript.Editor.CodeEngineering.CSharpGenerator.CodeGenerator;
 using AccessType= iCanScript.Editor.CodeEngineering.CSharpGenerator.AccessType;
@@ -21,7 +22,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Define function to define class
             CodeGenerator classGenerator=
                 (indent)=> {
-                    return CSharpGenerator.GenerateClass(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, className, typeof(MonoBehaviour), GenerateFunctions);
+                    return CSharpGenerator.GenerateClass(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, className, typeof(MonoBehaviour), GenerateClassBody);
                 };
 
             // Generate namespace.
@@ -30,6 +31,13 @@ namespace iCanScript.Editor.CodeEngineering {
             // Write final code to file.
             CSharpFileUtils.WriteCSharpFile("", className, usingDirectives+code);
         }
+		public static string GenerateClassBody(int indent) {
+			var result= new StringBuilder(CSharpGenerator.GenerateVariable(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, typeof(int), "x", "3"));
+			result.Append(CSharpGenerator.GenerateVariable(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, typeof(Vector3), "v3", null));
+			result.Append("\n");
+			result.Append(GenerateFunctions(indent));
+			return result.ToString();
+		}
         public static string GenerateFunctions(int indent) {
             var result= "";
             result= CSharpGenerator.GenerateFunction(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, "void", "Update", new string[0], new string[0], (_)=>"");

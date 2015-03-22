@@ -90,6 +90,30 @@ namespace iCanScript.Editor.CodeEngineering {
             return result.ToString();
         }
         // -------------------------------------------------------------------
+		public static string GenerateVariable(int indentSize, AccessType accessType, ScopeType scopeType,
+											  Type variableType, string variableName, string initializer) {
+			var typeName= iCS_Types.GetName(variableType);
+			return GenerateVariable(indentSize, accessType, scopeType, typeName, variableName, initializer);
+		}
+		public static string GenerateVariable(int indentSize, AccessType accessType, ScopeType scopeType,
+											  string variableType, string variableName, string initializer) {
+			string indent= ToIndent(indentSize);
+            StringBuilder result= new StringBuilder(indent);
+            result.Append(ToAccessString(accessType));
+            result.Append(" ");
+            result.Append(ToScopeString(scopeType));
+            result.Append(" ");
+			result.Append(variableType);
+			result.Append(" ");
+			result.Append(variableName);
+			if(!String.IsNullOrEmpty(initializer)) {
+				result.Append("= ");
+				result.Append(initializer);
+			}
+			result.Append(";\n");
+			return result.ToString();
+		}
+        // -------------------------------------------------------------------
         public static string ToIndent(int indent) {
             return new String(' ', indent*ourTabSize);
         }
