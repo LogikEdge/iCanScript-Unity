@@ -2,9 +2,9 @@
 using System;
 using System.Text;
 using System.Collections;
-using CodeGenerator= iCanScript.Editor.CodeEngineering.CodeProducer.CodeGenerator;
-using AccessType= iCanScript.Editor.CodeEngineering.CodeProducer.AccessType;
-using ScopeType= iCanScript.Editor.CodeEngineering.CodeProducer.ScopeType;
+using CodeProducer= iCanScript.Editor.CodeEngineering.CodeGenerator.CodeProducer;
+using AccessType= iCanScript.Editor.CodeEngineering.CodeGenerator.AccessType;
+using ScopeType= iCanScript.Editor.CodeEngineering.CodeGenerator.ScopeType;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -23,7 +23,7 @@ namespace iCanScript.Editor.CodeEngineering {
             return result.ToString();
         }
         // -------------------------------------------------------------------
-        public static string GenerateNamespace(string namespaceName, CodeGenerator namespaceBody) {
+        public static string GenerateNamespace(string namespaceName, CodeProducer namespaceBody) {
             StringBuilder result= new StringBuilder("\nnamespace ");
             result.Append(namespaceName);
             result.Append(" {\n");
@@ -33,11 +33,11 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         // -------------------------------------------------------------------
         public static string GenerateClass(int indentSize, AccessType accessType, ScopeType scopeType,
-                                           string className, Type baseClass, CodeGenerator classBody) {
+                                           string className, Type baseClass, CodeProducer classBody) {
             return GenerateClass(indentSize, accessType, scopeType, className, ToTypeName(baseClass), classBody);
         }
         public static string GenerateClass(int indentSize, AccessType accessType, ScopeType scopeType,
-                                           string className, string baseClass, CodeGenerator classBody) {
+                                           string className, string baseClass, CodeProducer classBody) {
             string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder("\n"+indent);
             result.Append(ToAccessString(accessType));
@@ -60,7 +60,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
                                               Type returnType, string functionName,
                                               Type[] paramTypes, string[] paramNames,
-                                              CodeGenerator functionBody) {
+                                              CodeProducer functionBody) {
             var paramTypeStrings= new String[paramTypes.Length];
             for(int i= 0; i < paramTypes.Length; ++i) {
                 paramTypeStrings[i]= ToTypeName(paramTypes[i]);
@@ -70,7 +70,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
                                               string returnType, string functionName,
                                               string[] paramTypes, string[] paramNames,
-                                              CodeGenerator functionBody) {
+                                              CodeProducer functionBody) {
             string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder("\n"+indent);
             result.Append(ToAccessString(accessType));

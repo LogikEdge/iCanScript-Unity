@@ -5,9 +5,9 @@ using System.Collections;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-public static class CodeProducer {
+public static class CodeGenerator {
     // -------------------------------------------------------------------
-    public delegate string CodeGenerator(int indent);
+    public delegate string CodeProducer(int indent);
     public enum AccessType { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
     public enum ScopeType  { STATIC, NONSTATIC, VIRTUAL };
     
@@ -20,7 +20,7 @@ public static class CodeProducer {
         var usingDirectives= CSharpGenerator.GenerateUsingDirectives(new string[]{"UnityEngine"});
 
         // Define function to define class
-        CodeGenerator classGenerator=
+        CodeProducer classGenerator=
             (indent)=> {
                 return CSharpGenerator.GenerateClass(indent, AccessType.PUBLIC, ScopeType.NONSTATIC, className, typeof(MonoBehaviour), (i)=> GenerateClassBody(i, iStorage));
             };

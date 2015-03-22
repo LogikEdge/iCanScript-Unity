@@ -11,7 +11,7 @@ namespace iCanScript.Editor.CodeEngineering {
         
 		// -------------------------------------------------------------------------
         public static void GenerateTestCSharpFile(iCS_IStorage iStorage) {
-            CodeProducer.GenerateCodeFor(iStorage);
+            CodeGenerator.GenerateCodeFor(iStorage);
         }
     }
 
