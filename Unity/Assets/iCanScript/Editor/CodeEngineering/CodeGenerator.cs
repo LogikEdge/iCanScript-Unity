@@ -290,6 +290,12 @@ public static class CodeGenerator {
 		}
 		return result.ToArray();
 	}
+	// -------------------------------------------------------------------------
+	// Verifies that no input port is binded to a node in the given node list.
+	//
+	// @param node		The node on which to validate input port dependencies.
+	// @param allNodes	List of nodes that should not be producing data for _'node'_
+	//
 	static bool IsIndependentFrom(iCS_EditorObject node, List<iCS_EditorObject> allNodes) {
 		var childPorts= node.BuildListOfChildPorts(p=> p.IsInputPort);
 		foreach(var p in childPorts) {
