@@ -79,7 +79,7 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
 	public iCS_EditorObject[] ConsumerPorts {
 		get {
-			return Filter(c=> c.IsPort && c.ProducerPortId == InstanceId).ToArray();
+			return EditorObjects[0].Filter(c=> c.IsPort && c.ProducerPortId == InstanceId).ToArray();
 		}
 	}
 	// ----------------------------------------------------------------------

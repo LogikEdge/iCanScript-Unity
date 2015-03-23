@@ -137,15 +137,13 @@ public static class CodeGenerator {
         return result.ToString();
     }
 	// -------------------------------------------------------------------------
-    public static string GenerateFunctionBody(int indent, iCS_EditorObject eObj) {
+    public static string GenerateFunctionBody(int indent, iCS_EditorObject node) {
         var result= new StringBuilder();
-        eObj.ForEachChildNode(
-            n=> {
-                if(n.IsKindOfFunction && !n.IsConstructor) {
-                    result.Append(GenerateFunctionCall(indent, n));
-                }
-            }
-        );
+		var functionNodes= GetFunctionBodyParts(node);
+		functionNodes= SortDependencies(functionNodes);
+		foreach(var n in functionNodes) {
+            result.Append(GenerateFunctionCall(indent, n));			
+		}
         return result.ToString();
     }
 	// -------------------------------------------------------------------------
@@ -262,6 +260,53 @@ public static class CodeGenerator {
     static iCS_EditorObject[] GetClassNonStaticVariables(iCS_IStorage iStorage) {
 		return iStorage[0].Filter(n=> n.IsConstructor).ToArray();
     }
+	// -------------------------------------------------------------------------
+	static iCS_EditorObject[] GetFunctionBodyParts(iCS_EditorObject node) {
+		var functionBodyParts= node.FilterChildRecursive(
+			p=> {
+				if(p.IsKindOfFunction && !p.IsConstructor) return true;
+				return false;
+			}
+		);
+		return functionBodyParts.ToArray();
+	}
+	// -------------------------------------------------------------------------
+	static iCS_EditorObject[] SortDependencies(iCS_EditorObject[] nodes) {
+		var remainingNodes= new List<iCS_EditorObject>(nodes);
+		var result= new List<iCS_EditorObject>();
+		int i= 0;
+		while(i < remainingNodes.Count) {
+			if(IsIndependentFrom(remainingNodes[i], remainingNodes)) {
+				result.Add(remainingNodes[i]);
+				remainingNodes.RemoveAt(i);
+				i= 0;				
+			}			
+			else {
+				++i;
+			}
+		}
+		if(i != 0) {
+			Debug.LogWarning("Circular dependency found!!!");
+		}
+		return result.ToArray();
+	}
+	static bool IsIndependentFrom(iCS_EditorObject node, List<iCS_EditorObject> allNodes) {
+		var childPorts= node.BuildListOfChildPorts(p=> p.IsInputPort);
+		foreach(var p in childPorts) {
+			var producerPort= p.FirstProducerPort;
+			if(producerPort != null && producerPort != p) {
+				var producerNode= producerPort.ParentNode;
+				if(producerNode != node) {
+					foreach(var n in allNodes) {
+						if(n == producerNode) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
 }
 
 }
