@@ -202,15 +202,19 @@ public static class CodeGenerator {
     // =========================================================================
     // Utilities
 	// -------------------------------------------------------------------------
+    static void ForEachParameter(iCS_EditorObject node, Action<iCS_EditorObject> fnc) {
+        node.ForEachChildPort(
+    		p=> {
+    			if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
+                    fnc(p);
+    			}
+    		}        
+        );
+    }
+	// -------------------------------------------------------------------------
     static iCS_EditorObject[] GetParameters(iCS_EditorObject node) {
         var parameters= new List<iCS_EditorObject>();
-		node.ForEachChildPort(
-			p=> {
-				if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
-                    parameters.Add(p);
-				}
-			}
-		);
+        ForEachParameter(node, p=> parameters.Add(p));
         return parameters.ToArray();
     }
 	// -------------------------------------------------------------------------

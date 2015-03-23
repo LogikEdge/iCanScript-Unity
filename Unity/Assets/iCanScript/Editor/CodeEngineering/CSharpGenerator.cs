@@ -249,6 +249,8 @@ namespace iCanScript.Editor.CodeEngineering {
                         case '-': result.Append("_minus_"); break;
                         case '*': result.Append("_mul_"); break;
                         case '/': result.Append("_div_"); break;
+                        case '&': result.Append("_and_"); break;
+                        case '|': result.Append("_or_"); break;
                         default: result.Append('_'); break;
                     }
                 }
