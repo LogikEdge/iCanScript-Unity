@@ -3,22 +3,26 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using AccessType= iCanScript.Editor.CodeEngineering.CodeInfo.AccessType;
-using ScopeType= iCanScript.Editor.CodeEngineering.CodeInfo.ScopeType;
 
 namespace iCanScript.Editor.CodeEngineering {
 
 public class CodeGenerator {
     // -------------------------------------------------------------------
+    public enum CodeType     { CLASS, FUNCTION, VARIABLE, PARAMETER };
+    public enum AccessType   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
+    public enum ScopeType    { STATIC, NONSTATIC, VIRTUAL };
+    public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
+    
+    // -------------------------------------------------------------------
     public delegate string CodeProducer(int indent);
 
     // -------------------------------------------------------------------
-    CodeInfoArray   myCodeInfos= null;
+    CodeGeneratorNameManager   myNameMgr= null;
     
 	// -------------------------------------------------------------------------
     public void GenerateCodeFor(iCS_IStorage iStorage) {
         // Prepare generated name array.
-        myCodeInfos= new CodeInfoArray(iStorage);
+        myNameMgr= new CodeGeneratorNameManager(iStorage);
         
         // Define namespace & class name based on GameObject name.
         var namespaceName= "iCanScript.Engine.GeneratedCode";
@@ -52,6 +56,7 @@ public class CodeGenerator {
 	public string GenerateVariables(int indent, iCS_IStorage iStorage) {
         var result= new StringBuilder();
 		// Generate static variables.
+        var classNode= iStorage[0];
         var allConstructors= GetClassStaticVariables(iStorage);
         foreach(var n in allConstructors) {
             var nbOfParams= GetNbOfParameters(n);
@@ -66,7 +71,8 @@ public class CodeGenerator {
             );
             var initializer= CSharpGenerator.GenerateAllocator(n.RuntimeType, initValues);
             var accessType= n.ParentId == 0 ? AccessType.PUBLIC : AccessType.PRIVATE;
-            var variableName= CSharpGenerator.ToVariableName(n);
+            myNameMgr.SetCodeParent(n, classNode);
+            var variableName= myNameMgr.GetNameFor(n);
 			result.Append(CSharpGenerator.GenerateVariable(indent, accessType, ScopeType.STATIC, n.RuntimeType, variableName, initializer));
         }
 		// Generate non-static variables.
@@ -84,7 +90,8 @@ public class CodeGenerator {
             );
             var initializer= CSharpGenerator.GenerateAllocator(n.RuntimeType, initValues);
             var accessType= n.ParentId == 0 ? AccessType.PUBLIC : AccessType.PRIVATE;
-            var variableName= CSharpGenerator.ToVariableName(n);
+            myNameMgr.SetCodeParent(n, classNode);
+            var variableName= myNameMgr.GetNameFor(n);
 			result.Append(CSharpGenerator.GenerateVariable(indent, accessType, ScopeType.NONSTATIC, n.RuntimeType, variableName, initializer));
         }
 		return result.ToString();
@@ -128,7 +135,7 @@ public class CodeGenerator {
 				var i= p.PortIndex;
 				if(i < (int)iCS_PortIndex.ParametersEnd) {
 					paramTypes[i]= p.RuntimeType;
-					paramNames[i]= p.Name;
+					paramNames[i]= myNameMgr.GetNameFor(p);
 				}
 			}
 		);
@@ -194,7 +201,7 @@ public class CodeGenerator {
             if(p.IsInputPort) {
                 var producer= p.FirstProducerPort;
                 if(producer != null && producer != p) {
-                    paramStrings[p.PortIndex]= CSharpGenerator.ToGeneratedPortName(producer);
+                    paramStrings[p.PortIndex]= myNameMgr.GetNameFor(producer);
                 }
                 else {
                     var v= p.InitialValue;
@@ -202,7 +209,7 @@ public class CodeGenerator {
                 }
             }
             else {
-                paramStrings[p.PortIndex]= "out "+CSharpGenerator.ToGeneratedPortName(p);
+                paramStrings[p.PortIndex]= "out "+myNameMgr.GetNameFor(p);
             }
         }
         // Determine function prefix.
@@ -230,9 +237,15 @@ public class CodeGenerator {
         else {
             var thisPort= GetThisPort(node);
             if(thisPort != null) {
-                var producer= thisPort.FirstProducerPort;
-                if(producer != null && producer != thisPort) {
-                    result.Append(CSharpGenerator.ToGeneratedPortName(producer));
+                var producerPort= thisPort.FirstProducerPort;
+                if(producerPort != null && producerPort != thisPort) {
+                    var producerNode= producerPort.ParentNode;
+                    if(producerNode.IsConstructor) {
+                        result.Append(myNameMgr.GetNameFor(producerNode));                                                
+                    }
+                    else {
+                        result.Append(myNameMgr.GetNameFor(producerPort));                        
+                    }
                     result.Append(".");
                 }
             }

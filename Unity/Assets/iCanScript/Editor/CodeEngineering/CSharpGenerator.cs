@@ -3,8 +3,8 @@ using System;
 using System.Text;
 using System.Collections;
 using CodeProducer= iCanScript.Editor.CodeEngineering.CodeGenerator.CodeProducer;
-using AccessType= iCanScript.Editor.CodeEngineering.CodeInfo.AccessType;
-using ScopeType= iCanScript.Editor.CodeEngineering.CodeInfo.ScopeType;
+using AccessType= iCanScript.Editor.CodeEngineering.CodeGenerator.AccessType;
+using ScopeType= iCanScript.Editor.CodeEngineering.CodeGenerator.ScopeType;
 
 namespace iCanScript.Editor.CodeEngineering {
 
