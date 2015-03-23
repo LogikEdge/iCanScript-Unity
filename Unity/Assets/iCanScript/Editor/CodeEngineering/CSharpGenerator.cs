@@ -182,6 +182,7 @@ namespace iCanScript.Editor.CodeEngineering {
 		}
         public static string ToValueString(System.Object obj) {
             if(obj == null) return "null";
+            var objType= obj.GetType();
             if(obj is bool) {
                 return ((bool)obj) ? "true" : "false";
             }
@@ -190,6 +191,9 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             if(obj is char) {
                 return "\'"+obj.ToString()+"\'";
+            }
+            if(objType.IsEnum) {
+                return ToTypeName(obj.GetType())+"."+obj.ToString();
             }
             return obj.ToString();
         }
