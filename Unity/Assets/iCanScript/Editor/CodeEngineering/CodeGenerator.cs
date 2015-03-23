@@ -3,17 +3,24 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using AccessType= iCanScript.Editor.CodeEngineering.CodeInfo.AccessType;
+using ScopeType= iCanScript.Editor.CodeEngineering.CodeInfo.ScopeType;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-public static class CodeGenerator {
+public class CodeGenerator {
     // -------------------------------------------------------------------
     public delegate string CodeProducer(int indent);
-    public enum AccessType { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
-    public enum ScopeType  { STATIC, NONSTATIC, VIRTUAL };
+
+    // -------------------------------------------------------------------
+    CodeInfoArray   myCodeInfos= null;
     
 	// -------------------------------------------------------------------------
-    public static void GenerateCodeFor(iCS_IStorage iStorage) {
+    public void GenerateCodeFor(iCS_IStorage iStorage) {
+        // Prepare generated name array.
+        myCodeInfos= new CodeInfoArray(iStorage);
+        
+        // Define namespace & class name based on GameObject name.
         var namespaceName= "iCanScript.Engine.GeneratedCode";
         var className= iCS_TextUtility.ToClassName(iStorage.HostGameObject.name);
 
@@ -34,7 +41,7 @@ public static class CodeGenerator {
     }
 
 	// -------------------------------------------------------------------------
-	public static string GenerateClassBody(int indent, iCS_IStorage iStorage) {
+	public string GenerateClassBody(int indent, iCS_IStorage iStorage) {
 		var result= new StringBuilder(GenerateVariables(indent, iStorage));
 		result.Append("\n");
 		result.Append(GenerateFunctions(indent, iStorage));
@@ -42,7 +49,7 @@ public static class CodeGenerator {
 	}
 
 	// -------------------------------------------------------------------------
-	public static string GenerateVariables(int indent, iCS_IStorage iStorage) {
+	public string GenerateVariables(int indent, iCS_IStorage iStorage) {
         var result= new StringBuilder();
 		// Generate static variables.
         var allConstructors= GetClassStaticVariables(iStorage);
@@ -83,7 +90,7 @@ public static class CodeGenerator {
 		return result.ToString();
 	}
 	// -------------------------------------------------------------------------
-    public static string GenerateFunctions(int indent, iCS_IStorage iStorage) {
+    public string GenerateFunctions(int indent, iCS_IStorage iStorage) {
         var result= new StringBuilder();
 		// Find root functions.
 		iStorage[0].ForEachChildNode(
@@ -96,7 +103,7 @@ public static class CodeGenerator {
         return result.ToString();
     }
 	// -------------------------------------------------------------------------
-    public static string GenerateFunction(int indent, iCS_EditorObject eObj) {
+    public string GenerateFunction(int indent, iCS_EditorObject eObj) {
         var result= new StringBuilder();
 		// Find return type.
 		var returnType= typeof(void);
@@ -137,7 +144,7 @@ public static class CodeGenerator {
         return result.ToString();
     }
 	// -------------------------------------------------------------------------
-    public static string GenerateFunctionBody(int indent, iCS_EditorObject node) {
+    public string GenerateFunctionBody(int indent, iCS_EditorObject node) {
         var result= new StringBuilder();
 		var functionNodes= GetFunctionBodyParts(node);
 		functionNodes= SortDependencies(functionNodes);
@@ -147,14 +154,37 @@ public static class CodeGenerator {
         return result.ToString();
     }
 	// -------------------------------------------------------------------------
-    public static string GenerateFunctionCall(int indentSize, iCS_EditorObject node) {
-        var result= new StringBuilder(CSharpGenerator.ToIndent(indentSize));
+    /// Generate a function call to the given node.
+    ///
+    /// @param indentSize   Indent for the generated source code.
+    /// @param node The node representing the function to call.
+    ///
+    /// @return The source code fragment to call the given function.
+    ///
+    /// @todo   Assure that local variable created have a unique name.
+    /// @todo   Auto-create class variable for external link to objects.
+    /// @todo   Support properties.
+    ///
+    public string GenerateFunctionCall(int indentSize, iCS_EditorObject node) {
+        var indent= CSharpGenerator.ToIndent(indentSize);
+        var result= new StringBuilder(indent);
         // Declare return variable.
         var returnPort= GetReturnPort(node);
         if(returnPort != null && returnPort.EndConsumerPorts.Length != 0) {
             result.Append("var ");
             result.Append(CSharpGenerator.ToGeneratedPortName(returnPort));
             result.Append("= ");
+        }
+        // Simplified situation for property get.
+        var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
+        var functionName= CSharpGenerator.ToMethodName(node);
+        if(IsPropertyGet(memberInfo)) {
+            // Determine function prefix.
+            result.Append(FunctionCallPrefix(memberInfo, node));
+            // Generate function call.
+            result.Append(CSharpGenerator.ToPropertyName(functionName));
+            result.Append(";\n");
+            return result.ToString();
         }
         // Determine parameters.
         var parameters= GetParameters(node);
@@ -172,12 +202,28 @@ public static class CodeGenerator {
                 }
             }
             else {
-                paramStrings[p.PortIndex]= "Outch!";
+                paramStrings[p.PortIndex]= "out "+CSharpGenerator.ToGeneratedPortName(p);
             }
         }
         // Determine function prefix.
-        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
-        if(desc != null && desc.IsClassFunctionBase) {
+        result.Append(FunctionCallPrefix(memberInfo, node));
+        // Special case for property set.
+        if(IsPropertySet(memberInfo)) {
+            result.Append(CSharpGenerator.ToPropertyName(functionName));
+            result.Append("= ");
+            result.Append(paramStrings[0]);
+        }
+        // Generate function call.        
+        else {
+            result.Append(CSharpGenerator.GenerateFunctionCall(indentSize, functionName, paramStrings));            
+        }
+        result.Append(";\n");
+        return result.ToString();
+    }
+	// -------------------------------------------------------------------------
+    string FunctionCallPrefix(iCS_MemberInfo memberInfo, iCS_EditorObject node) {
+        var result= new StringBuilder();
+        if(memberInfo != null && memberInfo.IsClassFunctionBase) {
             result.Append(CSharpGenerator.ToTypeName(node.RuntimeType));
             result.Append(".");
         }
@@ -191,15 +237,16 @@ public static class CodeGenerator {
                 }
             }
         }
-        // Generate function call.
-        var functionName= CSharpGenerator.ToMethodName(node);
-        result.Append(CSharpGenerator.GenerateFunctionCall(indentSize, functionName, paramStrings));
-        result.Append(";\n");
         return result.ToString();
     }
     // =========================================================================
     // Utilities
 	// -------------------------------------------------------------------------
+    /// Iterates through the parameters of the given node.
+    ///
+    /// @param node The parent node of the parameter ports to iterate on.
+    /// @param fnc  The action to run for each parameter port.
+    ///
     static void ForEachParameter(iCS_EditorObject node, Action<iCS_EditorObject> fnc) {
         node.ForEachChildPort(
     		p=> {
@@ -210,12 +257,30 @@ public static class CodeGenerator {
         );
     }
 	// -------------------------------------------------------------------------
+    /// Returns a list of parameters for the given node.
+    ///
+    /// @param node The node from which to extract the parameter ports.
+    ///
+    /// @return List of existing parameter ports.
+    ///
+    /// @note Parameters are expected to be continuous from port index 0 to
+    ///       _'nbOfParameters'_.
+    ///
     static iCS_EditorObject[] GetParameters(iCS_EditorObject node) {
         var parameters= new List<iCS_EditorObject>();
         ForEachParameter(node, p=> parameters.Add(p));
         return parameters.ToArray();
     }
 	// -------------------------------------------------------------------------
+    /// Returns the number of function parameters for the given node.
+    ///
+    /// @param node The node from which to get the parameter ports.
+    ///
+    /// @return The number of parameter ports that exists on the _'node'_.
+    ///
+    /// @note Parameters are expected to be continuous from port index 0 to
+    ///       _'nbOfParameters'_.
+    ///
     static int GetNbOfParameters(iCS_EditorObject node) {
 		var nbParams= 0;
 		node.ForEachChildPort(
@@ -230,6 +295,12 @@ public static class CodeGenerator {
         return nbParams;        
     }
 	// -------------------------------------------------------------------------
+    /// Returns the function return port.
+    ///
+    /// @param node The node in which to search for a return port.
+    ///
+    /// @return _'null'_ is return if no return port is found.
+    ///
     static iCS_EditorObject GetReturnPort(iCS_EditorObject node) {
         iCS_EditorObject result= null;
         node.ForEachChildPort(
@@ -242,6 +313,12 @@ public static class CodeGenerator {
         return result;
     }
 	// -------------------------------------------------------------------------
+    /// Returns the input port representing the _'self'_ connection.
+    ///
+    /// @param node The node in which to search for the _'self'_ port.
+    ///
+    /// @return _'null'_ is returned if the port is not found.
+    ///
     static iCS_EditorObject GetThisPort(iCS_EditorObject node) {
         iCS_EditorObject result= null;
         node.ForEachChildPort(
@@ -254,13 +331,27 @@ public static class CodeGenerator {
         return result;
     }
 	// -------------------------------------------------------------------------
+    /// Returns a list of variable instances that are static member of the class.
+    ///
+    /// @param iStorage The visual script editor storage of the class.
+    /// 
     static iCS_EditorObject[] GetClassStaticVariables(iCS_IStorage iStorage) {
         return new iCS_EditorObject[0];
     }
+	// -------------------------------------------------------------------------
+    /// Returns a list of variable instances that are non-static memebers
+    /// of the class.
+    ///
+    /// @param iStorage The visual script editor storage of the class.
+    /// 
     static iCS_EditorObject[] GetClassNonStaticVariables(iCS_IStorage iStorage) {
 		return iStorage[0].Filter(n=> n.IsConstructor).ToArray();
     }
 	// -------------------------------------------------------------------------
+    /// Returns list of nodes required for code generation
+    ///
+    /// @param node Root node from which the code will be generated.
+    ///
 	static iCS_EditorObject[] GetFunctionBodyParts(iCS_EditorObject node) {
 		var functionBodyParts= node.FilterChildRecursive(
 			p=> {
@@ -271,6 +362,12 @@ public static class CodeGenerator {
 		return functionBodyParts.ToArray();
 	}
 	// -------------------------------------------------------------------------
+    /// Sorts a list a nodes so that the order is from _'producer'_ to _'consumer'_.
+    ///
+    /// @param nodes    List of nodes to be sorted.
+    ///
+    /// @todo   Resolve circular dependencies.
+    ///
 	static iCS_EditorObject[] SortDependencies(iCS_EditorObject[] nodes) {
 		var remainingNodes= new List<iCS_EditorObject>(nodes);
 		var result= new List<iCS_EditorObject>();
@@ -291,11 +388,12 @@ public static class CodeGenerator {
 		return result.ToArray();
 	}
 	// -------------------------------------------------------------------------
-	// Verifies that no input port is binded to a node in the given node list.
-	//
-	// @param node		The node on which to validate input port dependencies.
-	// @param allNodes	List of nodes that should not be producing data for _'node'_
-	//
+	/// Verifies that no input port is binded to a node that is included in the
+    /// given node list.
+	///
+	/// @param node		The node on which to validate input port dependencies.
+	/// @param allNodes	List of nodes that should not be producing data for _'node'_
+	///
 	static bool IsIndependentFrom(iCS_EditorObject node, List<iCS_EditorObject> allNodes) {
 		var childPorts= node.BuildListOfChildPorts(p=> p.IsInputPort);
 		foreach(var p in childPorts) {
@@ -313,6 +411,20 @@ public static class CodeGenerator {
 		}
 		return true;
 	}
+	// -------------------------------------------------------------------------
+    /// Returns _'true'_ if the node is a property get function.
+    static bool IsPropertyGet(iCS_MemberInfo memberInfo) {
+        var propertyInfo= memberInfo.ToPropertyInfo;
+        if(propertyInfo == null) return false;
+        return propertyInfo.IsGet;
+    }
+	// -------------------------------------------------------------------------
+    /// Returns _'false'_ if the node is a property get function.
+    static bool IsPropertySet(iCS_MemberInfo memberInfo) {
+        var propertyInfo= memberInfo.ToPropertyInfo;
+        if(propertyInfo == null) return false;
+        return propertyInfo.IsSet;
+    }
 }
 
 }

@@ -3,8 +3,8 @@ using System;
 using System.Text;
 using System.Collections;
 using CodeProducer= iCanScript.Editor.CodeEngineering.CodeGenerator.CodeProducer;
-using AccessType= iCanScript.Editor.CodeEngineering.CodeGenerator.AccessType;
-using ScopeType= iCanScript.Editor.CodeEngineering.CodeGenerator.ScopeType;
+using AccessType= iCanScript.Editor.CodeEngineering.CodeInfo.AccessType;
+using ScopeType= iCanScript.Editor.CodeEngineering.CodeInfo.ScopeType;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -92,7 +92,6 @@ namespace iCanScript.Editor.CodeEngineering {
 			}
             result.Append(") {\n");
             result.Append(functionBody(indentSize+1));
-            result.Append("\n");
             result.Append(indent);
             result.Append("}\n");
             return result.ToString();
@@ -173,11 +172,13 @@ namespace iCanScript.Editor.CodeEngineering {
             return ""; 
         }
 		public static string ToTypeName(Type type) {
+            type= iCS_Types.RemoveRefOrPointer(type);
 			if(type == typeof(void))   return "void";
 			if(type == typeof(int))    return "int";
 			if(type == typeof(uint))   return "uint";
 			if(type == typeof(bool))   return "bool";
 			if(type == typeof(string)) return "string";
+            if(type == typeof(float))  return "float";
 			return type.Name;
 		}
         public static string ToValueString(System.Object obj) {
@@ -260,6 +261,9 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
             }
             return result.ToString();
+        }
+        public static string ToPropertyName(string propertyFunctionName) {
+            return propertyFunctionName.Substring(4);
         }
         // -------------------------------------------------------------------
         public static void WriteFile(string path, string fileName, string code) {
