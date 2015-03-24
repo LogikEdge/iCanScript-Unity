@@ -352,9 +352,9 @@ public static class iCS_GuiUtilities {
             return newValue;
         }
         if(valueElementType == typeof(Color)) {
-            Color value= (Vector4)currentValue;
+            Color value= (Color)currentValue;
             Color newValue= value;
-            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.Vector4Field(n,v), foldoutDB, true)) {
+            if(ModalEdit(niceName, name, ref newValue, compositeParent, (n,v)=> EditorGUILayout.ColorField(n,v), foldoutDB, true)) {
                 if(Math3D.IsNotEqual(newValue.r, value.r) ||
                    Math3D.IsNotEqual(newValue.g, value.g) ||
                    Math3D.IsNotEqual(newValue.b, value.b) ||

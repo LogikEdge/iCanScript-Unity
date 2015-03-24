@@ -228,6 +228,18 @@ public partial class iCS_EditorObject {
 		);
 	}
 	// ----------------------------------------------------------------------
+	public List<iCS_EditorObject> FilterChildRecursive(Func<iCS_EditorObject,bool> cond) {
+		var filtered= new List<iCS_EditorObject>();
+		ForEachChildRecursiveDepthFirst(
+			c=> {
+				if(cond(c)) {
+					filtered.Add(c);
+				}
+			}
+		);
+		return filtered;
+	}
+	// ----------------------------------------------------------------------
     public void ForEachRecursiveDepthFirst(Action<iCS_EditorObject> fnc) {
         ForEachRecursiveDepthFirst((_,__)=> true, fnc);
     }

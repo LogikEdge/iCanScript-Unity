@@ -101,7 +101,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     DetermineSelectedObject();                    
                 }
                 myShowDynamicMenu= true;
-                UT_CSharpGenerator.GenerateTestCSharpFile();
+                UT_CSharpGenerator.GenerateTestCSharpFile(IStorage);
                 break;
             }
             case 2: { // Middle mouse button
