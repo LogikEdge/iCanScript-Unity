@@ -40,6 +40,10 @@ namespace iCanScript.Editor.CodeEngineering {
                                            string className, string baseClass, CodeProducer classBody) {
             string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder("\n"+indent);
+            if(accessType == AccessType.PUBLIC) {
+                result.Append("[iCS_Class(Library=\"Visual Script\")]\n");
+                result.Append(indent);
+            }
             result.Append(ToAccessString(accessType));
             result.Append(" ");
             result.Append(ToScopeString(scopeType));
@@ -60,19 +64,31 @@ namespace iCanScript.Editor.CodeEngineering {
         public static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
                                               Type returnType, string functionName,
                                               Type[] paramTypes, string[] paramNames,
-                                              CodeProducer functionBody) {
+                                              CodeProducer functionBody,
+                                              iCS_EditorObject vsObj= null) {
             var paramTypeStrings= new String[paramTypes.Length];
             for(int i= 0; i < paramTypes.Length; ++i) {
                 paramTypeStrings[i]= ToTypeName(paramTypes[i]);
             }
-            return GenerateFunction(indentSize, accessType, scopeType, ToTypeName(returnType), functionName, paramTypeStrings, paramNames, functionBody);
+            return GenerateFunction(indentSize, accessType, scopeType, ToTypeName(returnType), functionName, paramTypeStrings, paramNames, functionBody, vsObj);
         }
         public static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
                                               string returnType, string functionName,
                                               string[] paramTypes, string[] paramNames,
-                                              CodeProducer functionBody) {
+                                              CodeProducer functionBody,
+                                              iCS_EditorObject vsObj= null) {
             string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder("\n"+indent);
+            if(accessType == AccessType.PUBLIC) {
+                result.Append("[iCS_Function");
+                if(vsObj != null && !string.IsNullOrEmpty(vsObj.Tooltip)) {
+                    result.Append("(Tooltip=\"");
+                    result.Append(vsObj.Tooltip);
+                    result.Append("\")");
+                }
+                result.Append("]\n");
+                result.Append(indent);
+            }
             result.Append(ToAccessString(accessType));
             result.Append(" ");
             result.Append(ToScopeString(scopeType));
@@ -106,6 +122,10 @@ namespace iCanScript.Editor.CodeEngineering {
 											  string variableType, string variableName, string initializer) {
 			string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder(indent);
+            if(accessType == AccessType.PUBLIC) {
+                result.Append("[iCS_InOutPort]\n");
+                result.Append(indent);
+            }
             result.Append(ToAccessString(accessType));
             result.Append(" ");
             result.Append(ToScopeString(scopeType));

@@ -147,7 +147,8 @@ public class CodeGenerator {
                                              eObj.Name,
                                              paramTypes,
                                              paramNames,
-                                             (i)=> GenerateFunctionBody(i, eObj)));						
+                                             (i)=> GenerateFunctionBody(i, eObj),
+                                             eObj));						
         return result.ToString();
     }
 	// -------------------------------------------------------------------------
