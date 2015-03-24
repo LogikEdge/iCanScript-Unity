@@ -11,66 +11,95 @@ namespace iCanScript.Editor.CodeEngineering {
 
 public class CodeGeneratorNameManager {
     // -----------------------------------------------------------------------
-    string[] myNames;
-    int[]    myParentCode;
+    string[] myNames;           ///< Array of generated code fragment names
+    int[]    myParentCode;      ///< Array of parent code fragment IDs
         
     // -----------------------------------------------------------------------
+    /// Builds an instance of a name manager for the given visual script.
+    ///
+    /// @param iStorage Storage of the visual script for which to generate names
+    ///
     public CodeGeneratorNameManager(iCS_IStorage iStorage) {
         Init(iStorage);
     }
     // -----------------------------------------------------------------------
+    /// Initializes the internal structures of the name manager.
+    ///
+    /// @param iStorage Storage of the visual script for which to generate names
+    ///
     public void Init(iCS_IStorage iStorage) {
         int len= iStorage.EditorObjects.Count;
         myNames= new string[len];
         myParentCode= new int[len];
         for(int i= 0; i < len; i++) {
             myNames[i]= null;
-            var eObj= iStorage[i];
-            myParentCode[i]= (eObj != null ? eObj.ParentId : -1);
+            var vsObj= iStorage[i];
+            myParentCode[i]= (vsObj != null ? vsObj.ParentId : -1);
         }
     }
     // -----------------------------------------------------------------------
-    public string GetNameFor(iCS_EditorObject eObj) {
-        int i= eObj.InstanceId;
+    /// Builds or returns the pre-built code name for the given viusal script
+    /// object.
+    ///
+    /// @param vsObj Visual Script object for which to return a code name.
+    ///
+    public string GetNameFor(iCS_EditorObject vsObj) {
+        int i= vsObj.InstanceId;
         if(myNames[i] == null) {
             string name= null;
-            if(eObj.IsPort) {
-                name= GeneratePortName(eObj);
+            if(vsObj.IsPort) {
+                name= GeneratePortName(vsObj);
             }
-            else if(eObj.IsConstructor) {
-                name= MakeNameUnique(CSharpGenerator.ToVariableName(eObj), eObj);
+            else if(vsObj.IsConstructor) {
+                name= MakeNameUnique(CSharpGenerator.ToVariableName(vsObj), vsObj);
             }
             else {
-                name= MakeNameUnique(CSharpGenerator.ToGeneratedNodeName(eObj), eObj);
+                name= MakeNameUnique(CSharpGenerator.ToGeneratedNodeName(vsObj), vsObj);
             }
             myNames[i]= name;
         }
         return myNames[i];
     }
     // -----------------------------------------------------------------------
-    public void SetCodeParent(iCS_EditorObject eObj, iCS_EditorObject parent) {
-        myParentCode[eObj.InstanceId]= parent.InstanceId;
+    /// Changes the code parent for the given visual script object.
+    ///
+    /// The code parent is initializes to be equivalent to the visual script
+    /// parent object.  However, when generating the code, it is possible that
+    /// the code would be generated in a different execution scope.  Use this
+    /// method to change the code generation parent when needed.
+    ///
+    /// @param vsObj    Visual Script object on which to change the code parent
+    /// @param parent   The new code parent for the given visual script object
+    ///
+    public void SetCodeParent(iCS_EditorObject vsObj, iCS_EditorObject parent) {
+        myParentCode[vsObj.InstanceId]= parent.InstanceId;
     }
     // -----------------------------------------------------------------------
-    public string MakeNameUnique(string proposedName, iCS_EditorObject eObj) {
-        while(IsExisting(proposedName, eObj)) {
-            proposedName= proposedName+"_"+eObj.InstanceId;
+    /// Creates a unique code name from the proposedName.
+    ///
+    /// @param proposedName The desired name for the code fragment associated
+    ///                     with the visual script object.
+    /// @param vsObj    Visual Script object of the code fragment.
+    ///
+    public string MakeNameUnique(string proposedName, iCS_EditorObject vsObj) {
+        while(IsExisting(proposedName, vsObj)) {
+            proposedName= proposedName+"_"+vsObj.InstanceId;
         }
         return proposedName;
     }
     // -----------------------------------------------------------------------
-    public bool IsExisting(string name) {
-        for(int i= 0; i < P.length(myNames); ++i) {
-            var n= myNames[i];
-            if(n != null && n == name) {
-                return true;
-            }
-        }
-        return false;
-    }
-    // -----------------------------------------------------------------------
-    public bool IsExisting(string name, iCS_EditorObject eObj) {
-        var id= eObj.InstanceId;
+    /// Determines if the given _'name'_ already exists in the code scope.
+    ///
+    /// This algorithm first seeks for a name collison in the code scope.
+    /// The name collision is detected if the names are the same and:
+    /// - the parent code is the same or;
+    /// - the name exists in one of the code parent scope.
+    ///
+    /// @param name The proposed name of the code fragment
+    /// @param vsObj The visual script object of the cod efragment
+    ///
+    public bool IsExisting(string name, iCS_EditorObject vsObj) {
+        var id= vsObj.InstanceId;
         var parents= GetCodeParents(id);
         for(int i= 0; i < P.length(myNames); ++i) {
             var compareName= myParentCode[id] == myParentCode[i];
@@ -87,11 +116,20 @@ public class CodeGeneratorNameManager {
         return false;
     }
     // -----------------------------------------------------------------------
+    /// Generates a code unique name for the given _'port'_.
+    ///
+    /// @param port The visual script port for which to generate a unique name.
+    ///
     public string GeneratePortName(iCS_EditorObject port) {
         var name= CSharpGenerator.ToGeneratedPortName(port);
         return MakeNameUnique(name, port);
     }
     // -----------------------------------------------------------------------
+    /// Determines if the given instance ID exists a list of instance IDs.
+    ///
+    /// @param id   The ID to serach for
+    /// @param lst  The array of instance IDs being searched
+    ///
     public bool IsIncludedIn(int id, int[] lst) {
         foreach(var i in lst) {
             if(id == i) return true;
