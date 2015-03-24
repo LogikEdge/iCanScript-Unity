@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using P=Prelude;
 using CodeType    = iCanScript.Editor.CodeEngineering.CodeGenerator.CodeType;
 using AccessType  = iCanScript.Editor.CodeEngineering.CodeGenerator.AccessType;
 using ScopeType   = iCanScript.Editor.CodeEngineering.CodeGenerator.ScopeType;
@@ -51,17 +53,35 @@ public class CodeGeneratorNameManager {
     }
     // -----------------------------------------------------------------------
     public string MakeNameUnique(string proposedName, iCS_EditorObject eObj) {
-        while(IsExisting(proposedName)) {
+        while(IsExisting(proposedName, eObj)) {
             proposedName= proposedName+"_"+eObj.InstanceId;
         }
         return proposedName;
     }
     // -----------------------------------------------------------------------
     public bool IsExisting(string name) {
-        for(int i= 0; i < myNames.Length; ++i) {
+        for(int i= 0; i < P.length(myNames); ++i) {
             var n= myNames[i];
             if(n != null && n == name) {
                 return true;
+            }
+        }
+        return false;
+    }
+    // -----------------------------------------------------------------------
+    public bool IsExisting(string name, iCS_EditorObject eObj) {
+        var id= eObj.InstanceId;
+        var parents= GetCodeParents(id);
+        for(int i= 0; i < P.length(myNames); ++i) {
+            var compareName= myParentCode[id] == myParentCode[i];
+            if(compareName == false) {
+                compareName= IsIncludedIn(i, parents);
+            }
+            if(compareName) {
+                var n= myNames[i];
+                if(n != null && n == name) {
+                    return true;
+                }                
             }
         }
         return false;
@@ -72,28 +92,55 @@ public class CodeGeneratorNameManager {
         return MakeNameUnique(name, port);
     }
     // -----------------------------------------------------------------------
-    public bool IsClassScope(iCS_EditorObject eObj) {
-        if(eObj.InstanceId == 0) return true;
-        if(myParentCode[eObj.InstanceId] == 0) return true;
+    public bool IsIncludedIn(int id, int[] lst) {
+        foreach(var i in lst) {
+            if(id == i) return true;
+        }
         return false;
     }
     // -----------------------------------------------------------------------
-    public bool IsLocalScope(iCS_EditorObject eObj) {
-        // Find parent node.
-        var parentNode= eObj;
-        while(myParentCode[parentNode.InstanceId] > 1) {
-            parentNode= parentNode.ParentNode;
-        }
-        // Search in parent node for the given object.
-        bool found= false;
-        parentNode.ForEachChildRecursiveDepthLast(
-            o=> {
-                if(eObj == o) {
-                    found= true;
-                }
+    /// Returns a list of the common code parents.
+    ///
+    /// @param instanceId1 Instance ID of the first code object
+    /// @param instanceId2 Instance ID of the second code object
+    /// 
+    public int[] GetCommonCodeParents(int instanceId1, int instanceId2) {
+        var parents2= GetCodeParents(instanceId2);
+        return GetCommonCodeParents(instanceId1, parents2);
+    }
+    // -----------------------------------------------------------------------
+    /// Returns a list of the common code parents.
+    ///
+    /// @param instanceId1 Instance ID of the first code object
+    /// @param parents List of code parent of the second code object
+    /// 
+    public int[] GetCommonCodeParents(int instanceId1, int[] parents2) {
+        var parents1= GetCodeParents(instanceId1);
+        var maxLen= Mathf.Min(P.length(parents1), P.length(parents2));
+        int len= 0;
+        for(; len < maxLen; ++len) {
+            if(parents1[len] != parents2[len]) {
+                break;
             }
-        );
-        return found;
+        }
+        return P.take(len, parents1);
+    }
+    // -----------------------------------------------------------------------
+    /// Returns the list of code parents starting from the class.
+    ///
+    /// @param id   The starting instance ID from which to extract parent list
+    ///
+    public int[] GetCodeParents(int instanceId) {
+        /// Cummulate parent including the given instance ID.
+        var result= new List<int>();
+        while(instanceId > 0) {
+            result.Add(instanceId);
+            instanceId= myParentCode[instanceId];
+        }
+        // Always add the class instance ID.
+        result.Add(0);
+        result.Reverse();
+        return result.ToArray();
     }
 }
 
