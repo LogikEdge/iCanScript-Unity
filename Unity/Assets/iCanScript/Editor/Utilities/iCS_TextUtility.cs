@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System;
 using System.Text;
@@ -25,7 +26,7 @@ public static class iCS_TextUtility {
 
     // ---------------------------------------------------------------------------------
     // Converts the given string to a C# class name.
-    public static string ToClassName(string proposedName) {
+    public static string ToCSharpName(string proposedName) {
         StringBuilder fileName= new StringBuilder();
         foreach(var c in proposedName) {
             if(!Char.IsWhiteSpace(c)) {
@@ -40,4 +41,67 @@ public static class iCS_TextUtility {
 	public static string ToASCII(string inputString) {
 		return Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(inputString));
 	}
+
+    // ---------------------------------------------------------------------------------
+    public static string NicifyName(string name) {
+        var result= new StringBuilder();
+        bool upperNext= true;
+        bool wasUpperCase= false;
+        bool wasLetter= false;
+        bool wasDigit= false;
+        for(int i= 0; i < name.Length; ++i) {
+            var c= name[i];
+            if(upperNext) {
+                c= Char.ToUpper(c);
+                upperNext= false;
+            }
+            if(c == '_' || Char.IsSeparator(c)) {
+                upperNext= true;
+                wasUpperCase= false;
+                wasLetter= false;
+                wasDigit= false;
+            }
+            else if(Char.IsDigit(c)) {
+                if(!wasDigit && result.Length != 0) {
+                    result.Append(' ');
+                }
+                result.Append(c);
+                upperNext= true;
+                wasUpperCase= false;
+                wasLetter= false;
+                wasDigit= true;
+            }
+            else if(Char.IsLetter(c)) {
+                // Add space seperator
+                if(!wasLetter && result.Length != 0) {
+                    result.Append(' ');
+                }
+                else if(Char.IsUpper(c)) {
+                    if(!wasUpperCase && result.Length != 0) {
+                        result.Append(' ');
+                    }
+                }                    
+                if(Char.IsUpper(c)) {
+                    wasUpperCase= true;
+                }
+                else {
+                    wasUpperCase= false;
+                }
+                result.Append(c);
+                wasLetter= true;
+                wasDigit= false;
+            }
+            else {
+                if(result.Length != 0) {
+                    result.Append(' ');                    
+                }
+                result.Append(c);
+                upperNext= true;
+                wasUpperCase= false;
+                wasLetter= false;
+                wasDigit= false;
+            }
+        }
+        return result.ToString();
+    }
 }

@@ -21,7 +21,7 @@ public partial class iCS_Graphics {
 #if SHOW_POSITION
         return node.NodeTitle+" GP:"+node.GlobalPosition+" CO:"+node.CollisionOffset+" WO:"+node.WrappingOffset;
 #else
-        return node.NodeTitle;
+        return iCS_TextUtility.NicifyName(node.NodeTitle);
 #endif
 	}
     // ----------------------------------------------------------------------

@@ -527,7 +527,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
 	void ShowTitleOver(Rect pos, iCS_EditorObject node) {
         if(!ShouldShowTitle()) return;
-        string title= node.DisplayName;
+        string title= GetNodeName(node);
 //        string title= GetNodeName(node); // Name too long with stereotype
         Vector2 labelSize= GetNodeNameSize(node);
 		pos.y-=5f;	// Put title a bit higher.

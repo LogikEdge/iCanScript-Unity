@@ -409,6 +409,7 @@ public class iCS_Reflection {
         if(parameters.Length == 1 && returnType.type == typeof(void) && displayName.StartsWith("set_")) {
             isProperty= true;
             accessor= iCS_AccessorType.Set;
+            parameters[0].name= ObjectNames.NicifyVariableName(displayName.Substring(4));
         }
         if(isProperty) {
 			returnType.name= displayName.Substring(4);

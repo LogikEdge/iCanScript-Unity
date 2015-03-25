@@ -26,7 +26,7 @@ public class CodeGenerator {
         
         // Define namespace & class name based on GameObject name.
         var namespaceName= "iCanScript.Engine.GeneratedCode";
-        var className= iCS_TextUtility.ToClassName(iStorage.HostGameObject.name);
+        var className= iCS_TextUtility.ToCSharpName(iStorage.HostGameObject.name);
 
         // Generate using directives.
         var usingDirectives= CSharpGenerator.GenerateUsingDirectives(new string[]{"UnityEngine"});
