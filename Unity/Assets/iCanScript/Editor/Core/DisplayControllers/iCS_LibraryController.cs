@@ -234,11 +234,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 var parentTree= GetParentTree(memberInfo, tree, ref myTreeSize);
                 Node toAdd= null;
                 if(memberInfo.IsField) {
-                    var niceName= iCS_TextUtility.NicifyName(memberInfo.ToFieldInfo.FieldName);
+                    var niceName= iCS_TextUtility.NicifyName(memberInfo.ToFieldInfo.DisplayName);
                     var name= displayNameHeader+niceName+displayNameTrailer;
                     toAdd= new Node(NodeTypeEnum.Field, name, memberInfo);
                 } else if(memberInfo.IsProperty) {
-                    var niceName= iCS_TextUtility.NicifyName(memberInfo.ToPropertyInfo.PropertyName);
+                    var niceName= iCS_TextUtility.NicifyName(memberInfo.ToPropertyInfo.DisplayName);
                     var name= displayNameHeader+niceName+displayNameTrailer;
                     toAdd= new Node(NodeTypeEnum.Property, name, memberInfo);
                 } else if(memberInfo.IsConstructor) {
