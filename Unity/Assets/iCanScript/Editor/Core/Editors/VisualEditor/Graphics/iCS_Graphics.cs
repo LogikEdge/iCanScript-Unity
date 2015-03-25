@@ -686,12 +686,16 @@ public partial class iCS_Graphics {
         if(ShouldDisplayPortName(port)) {
 	        Rect portNamePos= GetPortNameGUIPosition(port);
             var boxAlpha= 0.35f;
+            var backgroundColor= Color.clear;
             var outlineColor= Color.clear;
             if(isSelectedPort) {
                 boxAlpha= 1f;
                 outlineColor= portColor;
             }
-            DrawLabelBackground(portNamePos, boxAlpha, Color.clear, outlineColor);
+            if(parent.IsKindOfPackage && parent.IsUnfoldedInLayout) {
+                backgroundColor= Color.black;
+            }
+            DrawLabelBackground(portNamePos, boxAlpha, backgroundColor, outlineColor);
 	        string name= GetPortName(port);
 	        GUI.Label(portNamePos, name, LabelStyle);                                            	
         }
