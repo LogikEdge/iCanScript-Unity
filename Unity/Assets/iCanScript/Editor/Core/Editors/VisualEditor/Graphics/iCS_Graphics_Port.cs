@@ -138,7 +138,9 @@ public partial class iCS_Graphics {
     bool ShouldDisplayPortValue(iCS_EditorObject port) {
         if(!ShouldShowLabel()) return false;
         if(ShouldDisplayPortName(port) == false) return false;
-		if(port.IsParentMuxPort && Application.isPlaying && Prefs.ShowRuntimePortValue) {
+        bool isPlaying= Application.isPlaying;
+        if(isPlaying == false && port.IsSourceValid) return false;
+		if(port.IsParentMuxPort && isPlaying && Prefs.ShowRuntimePortValue) {
 			return true;
 		}
         if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
