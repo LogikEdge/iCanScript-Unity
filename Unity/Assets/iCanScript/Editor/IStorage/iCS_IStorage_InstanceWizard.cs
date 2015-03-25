@@ -302,9 +302,10 @@ public partial class iCS_IStorage {
                 string modulePortName= port.Name;
                 if(!port.IsInstancePort) {
                     if(desc.IsField) {
-                        modulePortName= (desc as iCS_FieldInfo).FieldName;
+                        var fieldInfo= desc as iCS_FieldInfo;
+                        modulePortName= (fieldInfo.IsGet ? "get_" : "set_")+fieldInfo.FieldName;
                     } else if(desc.IsProperty) {
-                        modulePortName= (desc as iCS_PropertyInfo).PropertyName;
+                        modulePortName= (desc as iCS_PropertyInfo).MethodName;
                     } else {
                         modulePortName+= "."+desc.DisplayName;                    
                     }
