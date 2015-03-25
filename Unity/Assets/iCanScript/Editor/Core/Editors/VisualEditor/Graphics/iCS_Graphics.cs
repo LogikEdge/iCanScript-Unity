@@ -250,7 +250,7 @@ public partial class iCS_Graphics {
         LabelStyle.onFocused.textColor= labelColor;
         LabelStyle.onActive.textColor= labelColor;
         LabelStyle.fontStyle= FontStyle.Bold;
-        LabelStyle.fontSize= 11;
+        LabelStyle.fontSize= kLabelFontSize;
     }
     // ----------------------------------------------------------------------
     void BuildTitleStyle() {
@@ -265,7 +265,7 @@ public partial class iCS_Graphics {
         TitleStyle.onFocused.textColor= titleColor;
         TitleStyle.onActive.textColor= titleColor;
         TitleStyle.fontStyle= FontStyle.Bold;
-        TitleStyle.fontSize= 12;
+        TitleStyle.fontSize= kTitleFontSize;
     }
     // ----------------------------------------------------------------------
     void BuildStereotypeStyle() {
@@ -393,7 +393,7 @@ public partial class iCS_Graphics {
         var backdropColor= Color.grey;
         backdropColor.a= 0.3f;
         backdropStyle.normal.textColor= backdropColor;
-        var backdrop= new GUIContent("iCanScript");
+        var backdrop= new GUIContent("iCanScript2");
         var backdropSize= backdropStyle.CalcSize(backdrop);
         var spacer= 20f;
         var backdropRect= new Rect(screenArea.width-(backdropSize.x+spacer),
@@ -718,7 +718,7 @@ public partial class iCS_Graphics {
         }
 
         // Display port value (if applicable).
-        if(ShouldDisplayPortValue(port)) {    
+        if(false && ShouldDisplayPortValue(port)) {    
             if(!port.IsFloating && !port.IsEnablePort) {
     			EditorGUIUtility.LookLikeControls();
                 Rect portValuePos= GetPortValueGUIPosition(port);
