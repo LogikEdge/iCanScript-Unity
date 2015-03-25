@@ -41,7 +41,7 @@ public class CodeGenerator {
         var code= CSharpGenerator.GenerateNamespace(namespaceName, classGenerator);
 
         // Write final code to file.
-        CSharpFileUtils.WriteCSharpFile("", className, usingDirectives+code);
+        CSharpFileUtils.WriteCSharpFile("iCanScript Generated Code", className, usingDirectives+code);
     }
 
 	// -------------------------------------------------------------------------
