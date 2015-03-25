@@ -386,6 +386,23 @@ public partial class iCS_Graphics {
                 Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
             }            
         }
+        // Show iCanScript backdrop.
+        var backdropStyle= new GUIStyle();
+        backdropStyle.fontSize= (int)(screenArea.width/20);
+        backdropStyle.fontStyle= FontStyle.Bold;
+        var backdropColor= Color.grey;
+        backdropColor.a= 0.3f;
+        backdropStyle.normal.textColor= backdropColor;
+        var backdrop= new GUIContent("iCanScript");
+        var backdropSize= backdropStyle.CalcSize(backdrop);
+        var spacer= 20f;
+        var backdropRect= new Rect(screenArea.width-(backdropSize.x+spacer),
+                                    screenArea.height-(backdropSize.y+spacer),
+                                    backdropSize.x,
+                                    backdropSize.y);
+//        GUI.color= new Color(1f, 1f, 1f, 0.3f);
+        GUI.Label(backdropRect, backdrop, backdropStyle);
+        
         // Draw guides for asset store big image
         if(iCS_DevToolsConfig.ShowAssetStoreBigImageFrame) {
             Rect liveRect;
