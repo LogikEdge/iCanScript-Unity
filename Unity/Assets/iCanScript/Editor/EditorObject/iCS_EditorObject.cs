@@ -96,7 +96,8 @@ public partial class iCS_EditorObject {
 		get {
             if(IsDataPort) {
                 if(IsProgrammaticInstancePort) {
-                    return "<"+iCS_Types.TypeName(RuntimeType)+" &>";
+                    return "Target";
+//                    return "<"+iCS_Types.TypeName(RuntimeType)+" &>";
                 }                
             }
             return EngineObject.Name;
@@ -182,7 +183,8 @@ public partial class iCS_EditorObject {
     public string NodeTitle {
         get {
             if(iCS_PreferencesController.ShowNodeStereotype) {
-                return DisplayName+" <"+Stereotype+">";
+                return DisplayName;
+//                return DisplayName+" <"+Stereotype+">";
             }
             return DisplayName;
         }

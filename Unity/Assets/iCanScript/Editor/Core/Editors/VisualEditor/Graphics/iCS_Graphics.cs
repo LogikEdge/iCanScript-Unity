@@ -324,7 +324,11 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  GRID
     // ----------------------------------------------------------------------
-    public void DrawGrid(Rect screenArea, Vector2 offset, Color backgroundColor, Color gridColor, float gridSpacing) {
+    public void DrawGrid(Rect screenArea, Vector2 offset) {
+        var backgroundColor = Prefs.CanvasBackgroundColor;
+        var minorGridColor  = Prefs.MinorGridColor;
+        var majorGridColor  = Prefs.MajorGridColor;
+        var minorGridSpacing= Prefs.GridSpacing;
         if(iCS_DevToolsConfig.UseBackgroundImage) {
             Texture2D background= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/background.png");
             var backgroundRect= new Rect(0,0,background.width, background.height);
@@ -340,43 +344,44 @@ public partial class iCS_Graphics {
             Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
 
             // Draw grid lines.
-            if(gridSpacing*Scale < 2) return;
+            if(minorGridSpacing*Scale < 2) return;
         
             float xOffset= -Translation.x-offset.x;
             float yOffset= -Translation.y-offset.y;
-            float gridSpacing5= 5f*gridSpacing;
-            float x= (xOffset)-gridSpacing*Mathf.Floor((xOffset)/gridSpacing);
-            float y= (yOffset)-gridSpacing*Mathf.Floor((yOffset)/gridSpacing);
-            float x5= (xOffset)-gridSpacing5*Mathf.Floor((xOffset)/gridSpacing5);
-            float y5= (yOffset)-gridSpacing5*Mathf.Floor((yOffset)/gridSpacing5);
+            float majorGridSpacing= 10f*minorGridSpacing;
+            float x= (xOffset)-minorGridSpacing*Mathf.Floor((xOffset)/minorGridSpacing);
+            float y= (yOffset)-minorGridSpacing*Mathf.Floor((yOffset)/minorGridSpacing);
+            float x10= (xOffset)-majorGridSpacing*Mathf.Floor((xOffset)/majorGridSpacing);
+            float y10= (yOffset)-majorGridSpacing*Mathf.Floor((yOffset)/majorGridSpacing);
         
             // Scale grid
             x*= Scale;
             y*= Scale;
-            x5*= Scale;
-            y5*=Scale;
-            gridSpacing*= Scale;
-            gridSpacing5*= Scale;
+            x10*= Scale;
+            y10*= Scale;
+            minorGridSpacing*= Scale;
+            majorGridSpacing*= Scale;
         
             if(Scale < 1f) {
-                gridColor.a *= Scale;
+                minorGridColor.a *= Scale;
+                majorGridColor.a *= Scale;
             }
-            Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.5f*gridColor.a);
-            for(; x < screenArea.width; x+= gridSpacing) {
-                if(Mathf.Abs(x-x5) < 1f) {
-                    Handles.color= gridColor;
-                    x5+= gridSpacing5;
+            minorGridColor= new Color(minorGridColor.r, minorGridColor.g, minorGridColor.b, 0.5f*minorGridColor.a);
+            for(; x < screenArea.width; x+= minorGridSpacing) {
+                if(Mathf.Abs(x-x10) < 1f) {
+                    Handles.color= majorGridColor;
+                    x10+= majorGridSpacing;
                 } else {
-                    Handles.color= gridColor2;                
+                    Handles.color= minorGridColor;                
                 }
                 Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,screenArea.height,0));            
             }
-            for(; y < screenArea.height; y+= gridSpacing) {
-                if(Mathf.Abs(y-y5) < 1f) {
-                    Handles.color= gridColor;
-                    y5+= gridSpacing5;
+            for(; y < screenArea.height; y+= minorGridSpacing) {
+                if(Mathf.Abs(y-y10) < 1f) {
+                    Handles.color= majorGridColor;
+                    y10+= majorGridSpacing;
                 } else {
-                    Handles.color= gridColor2;                
+                    Handles.color= minorGridColor;                
                 }
                 Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
             }            
@@ -681,12 +686,12 @@ public partial class iCS_Graphics {
         if(ShouldDisplayPortName(port)) {
 	        Rect portNamePos= GetPortNameGUIPosition(port);
             var boxAlpha= 0.35f;
-            var outlineColor= Color.black;
+            var outlineColor= Color.clear;
             if(isSelectedPort) {
                 boxAlpha= 1f;
                 outlineColor= portColor;
             }
-            DrawLabelBackground(portNamePos, boxAlpha, Color.black, outlineColor);
+            DrawLabelBackground(portNamePos, boxAlpha, Color.clear, outlineColor);
 	        string name= GetPortName(port);
 	        GUI.Label(portNamePos, name, LabelStyle);                                            	
         }

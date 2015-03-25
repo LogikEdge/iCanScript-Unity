@@ -262,23 +262,25 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     void Canvas() {
         // Column 2
-        Rect[] pos= new Rect[3];
+        Rect[] pos= new Rect[4];
         pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
         for(int i= 1; i < pos.Length; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
         GUI.Label(pos[0], "Grid Spacing");
-        GUI.Label(pos[1], "Grid Color");
-        GUI.Label(pos[2], "Background Color");
+        GUI.Label(pos[1], "Minor Grid Color");
+        GUI.Label(pos[2], "Major Grid Color");
+        GUI.Label(pos[3], "Background Color");
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
         Prefs.GridSpacing= EditorGUI.FloatField(pos[0], Prefs.GridSpacing);
-        Prefs.GridColor= EditorGUI.ColorField(pos[1], Prefs.GridColor);
-        Prefs.CanvasBackgroundColor= EditorGUI.ColorField(pos[2], Prefs.CanvasBackgroundColor);
+        Prefs.MinorGridColor= EditorGUI.ColorField(pos[1], Prefs.MinorGridColor);
+        Prefs.MajorGridColor= EditorGUI.ColorField(pos[2], Prefs.MajorGridColor);
+        Prefs.CanvasBackgroundColor= EditorGUI.ColorField(pos[3], Prefs.CanvasBackgroundColor);
 		
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {

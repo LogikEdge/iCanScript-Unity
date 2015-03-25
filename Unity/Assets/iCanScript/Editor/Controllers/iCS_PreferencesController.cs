@@ -50,14 +50,16 @@ public static class iCS_PreferencesController {
 	// Default Values
 	//
     static  Color   kCanvasBackgroundColor;
-    static  Color   kGridColor;
-    const   float   kGridSpacing = 40.0f;
+    static  Color   kMinorGridColor;
+    static  Color   kMajorGridColor;
+    const   float   kGridSpacing = 10.0f;
 
 	//
 	// Database access keys
 	//
     const   string  kCanvasBackgroundColorKey= "iCS_CanvasBackgroundColor";
-    const   string  kGridColorKey            = "iCS_GridColor";
+    const   string  kMinorGridColorKey       = "iCS_MinorGridColor";
+    const   string  kMajorGridColorKey       = "iCS_MajorGridColor";
     const   string  kGridSpacingKey          = "iCS_GridSpacing";
 	
 	//
@@ -67,7 +69,8 @@ public static class iCS_PreferencesController {
 		CanvasBackgroundColor= kCanvasBackgroundColor;
 	}
 	public static void ResetGridColor() {
-		GridColor= kGridColor;
+		MinorGridColor= kMinorGridColor;
+		MajorGridColor= kMajorGridColor;
 	}
 	public static void ResetGridSpacing() {
 		GridSpacing= kGridSpacing;
@@ -80,9 +83,13 @@ public static class iCS_PreferencesController {
         get { return LoadColor(kCanvasBackgroundColorKey, kCanvasBackgroundColor); }
         set { SaveColor(kCanvasBackgroundColorKey, value); }
     }
-    public static Color GridColor {
-        get { return LoadColor(kGridColorKey, kGridColor); }
-        set { SaveColor(kGridColorKey, value); }
+    public static Color MinorGridColor {
+        get { return LoadColor(kMinorGridColorKey, kMinorGridColor); }
+        set { SaveColor(kMinorGridColorKey, value); }
+    }
+    public static Color MajorGridColor {
+        get { return LoadColor(kMajorGridColorKey, kMajorGridColor); }
+        set { SaveColor(kMajorGridColorKey, value); }
     }
     public static float GridSpacing {
         get { return EditorPrefs.GetFloat(kGridSpacingKey, kGridSpacing); }
@@ -679,8 +686,9 @@ public static class iCS_PreferencesController {
         var c= new Func<int,float>(i=> ((float)i)/255f);
 
         // Canvas colors
-        kCanvasBackgroundColor= new Color(c(9), c(69), c(167));
-        kGridColor            = new Color(c(160), c(160), c(160));
+        kCanvasBackgroundColor= new Color(c(40), c(44), c(51));
+        kMinorGridColor       = new Color(c(75), c(75), c(75));
+        kMajorGridColor       = Color.black;
 		
         // Node colors
         kNodeTitleColor             = Color.black;
@@ -695,7 +703,7 @@ public static class iCS_PreferencesController {
         kMessageNodeColor           = new Color(c(0x36), c(0x8a), c(0xff));
         kUserFunctionNodeColor      = new Color(c(0x80), c(0xff), c(0x80));
         kBackgroundColor            = new Color(c(41), c(41), c(41));
-        kSelectedBackgroundColor    = new Color(c(116), c(116), c(116));
+        kSelectedBackgroundColor    = new Color(c(77), c(77), c(77));
         
         // Type colors
         kBoolTypeColor      = Color.white;
