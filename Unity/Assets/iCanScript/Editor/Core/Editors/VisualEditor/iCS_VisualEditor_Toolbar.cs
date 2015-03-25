@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
 using iCanScript.Editor;
+using iCanScript.Editor.CodeEngineering;
 
 /*
     TODO: Should show runId in header bar.
@@ -100,6 +101,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             CenterAtWithScale(pivot, newScale);
 		}
 		iCS_ToolbarUtility.Separator(ref r, true);
+        if(iCS_ToolbarUtility.Button(ref r, 100, true, "Generate C#", spacer, spacer, true)) {
+            var codeGenerator= new CodeGenerator();
+            codeGenerator.GenerateCodeFor(IStorage);
+        }
 
 //		// Show current bookmark.
 //		string bookmarkString= "Bookmark: ";
