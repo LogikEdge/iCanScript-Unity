@@ -96,8 +96,8 @@ public partial class iCS_EditorObject {
 		get {
             if(IsDataPort) {
                 if(IsProgrammaticInstancePort) {
-//                    return "Target";
-                    return "<"+iCS_Types.TypeName(RuntimeType)+" &>";
+                    return "Target";
+//                    return "<"+iCS_Types.TypeName(RuntimeType)+" &>";
                 }                
             }
             return EngineObject.Name;

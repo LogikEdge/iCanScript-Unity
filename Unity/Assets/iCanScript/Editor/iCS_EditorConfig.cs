@@ -12,9 +12,11 @@ public static class iCS_EditorConfig {
     public const float kMinIconicSize   = 12f;
     public const float kMinIconicArea   = kMinIconicSize*kMinIconicSize;
     public const float kNodeCornerRadius= 8f;
-    public const float kNodeTitleHeight = 2f*kNodeCornerRadius;
     public const int   kLabelFontSize   = 11;
-    public const int   kTitleFontSize   = 12;
+    public const int   kTitleFontSize   = 13;
+    public const int   kSubTitleFontSize= 0;
+    public const float kTitlePadding    = 4;
+    public const float kNodeTitleHeight = kTitleFontSize+kSubTitleFontSize+2*kTitlePadding;
 
     // ----------------------------------------------------------------------
 	public const float NodeShadowSize= 5.0f;

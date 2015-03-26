@@ -72,8 +72,17 @@ public partial class iCS_Graphics {
         // Show title.
 		GUI.color= Color.white;
         if(!ShouldShowTitle()) return;
-        Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.5f*(tileSize-shadowSize));
         Vector2 titleSize= titleStyle.CalcSize(title);
-        GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), title, titleStyle);
+        var scale= titleSize.y / iCS_EditorConfig.kTitleFontSize;
+        var titleLeft  = r.x+scale*iCS_EditorConfig.kIconicSize;
+        var titleTop   = r.y;
+        var subTitleTop= titleTop+titleSize.y;
+        var titleWidth = r.width-titleLeft;
+        GUI.Label(new Rect(titleLeft, titleTop, titleWidth, r.height), title, titleStyle);
+        var subTitleStyle= new GUIStyle(titleStyle);
+        subTitleStyle.fontSize= (int)((float)subTitleStyle.fontSize*0.8f);
+        subTitleStyle.fontStyle= FontStyle.Italic;
+        subTitleStyle.normal.textColor= new Color(0.2f, 0.2f, 0.2f);
+        GUI.Label(new Rect(titleLeft, subTitleTop, titleWidth, r.height), "Target is a Fred", subTitleStyle);
 	}
 }

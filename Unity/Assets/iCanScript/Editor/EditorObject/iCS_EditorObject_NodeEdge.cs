@@ -5,16 +5,17 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public float NodeTitleHeight {
         get {
-            return 0.75f*iCS_EditorConfig.NodeTitleHeight;
+            return iCS_EditorConfig.NodeTitleHeight;
         }
     }
     // ----------------------------------------------------------------------
 	public float NodeTitleWidth {
 		get {
-			var titleWidth= iCS_EditorConfig.GetNodeTitleWidth(NodeTitle);
+            var niceTitle= iCS_TextUtility.NicifyName(NodeTitle);
+			var titleWidth= iCS_EditorConfig.GetNodeTitleWidth(niceTitle);
 			var iconsWidth= 2f*iCS_BuiltinTextures.kMinimizeIconSize;
 			var spacer= iCS_EditorConfig.kTitleFontSize;
-			return titleWidth+iconsWidth+spacer;
+			return titleWidth+iconsWidth+2*spacer;
 		}
 	}
     // ----------------------------------------------------------------------

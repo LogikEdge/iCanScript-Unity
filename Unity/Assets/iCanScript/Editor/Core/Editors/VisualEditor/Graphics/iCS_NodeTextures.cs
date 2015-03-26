@@ -6,8 +6,8 @@ public static class iCS_NodeTextures {
     // ======================================================================
     // CONSTANTS
     // ----------------------------------------------------------------------
-    const float kNodeCornerRadius= 8f;
-    const float kNodeTitleHeight = 2f*kNodeCornerRadius;
+    const float kNodeCornerRadius= iCS_EditorConfig.kNodeCornerRadius;
+    const float kNodeTitleHeight = iCS_EditorConfig.kNodeTitleHeight;
 	const float kShadowAlpha     = 0.4f;
 
     // ======================================================================
@@ -75,7 +75,7 @@ public static class iCS_NodeTextures {
 	public static void BuildNodeTemplate(float scale) {
         float radius= kNodeCornerRadius*scale;
 		int radiusInt    = (int)(radius+0.5f);
-		int extraTitleheightInt= (int)(0.75f*radius+0.5f);
+		int extraTitleheightInt= (int)(kNodeTitleHeight*scale+0.5f);
 
 		// We don't need to rebuild node textures if nothing has changed.
 		if(radiusInt == myRadius && extraTitleheightInt == myExtraTitleHeight) {
