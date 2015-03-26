@@ -14,8 +14,15 @@ public partial class iCS_EditorObject {
     bool            myIsFloating     = false;
     List<int>		myChildren       = new List<int>();
     bool            myIsSticky       = false;
-    string          mySubTitleName   = null;
-    Vector2         mySubTitleNameSize;
+
+    // ======================================================================
+    // Cache
+    // ----------------------------------------------------------------------
+    Type    cachedRuntimeType     = null;
+    string  cachedNodeSubTitle    = null;
+    Vector2 cachedNodeSubTitleSize= Vector2.zero;
+//    string  cachedDisplayName     = null;
+//    Vector2 cachedDisplayNameSize = Vector2.zero;
 
     // ======================================================================
     // Conversion Utilities
@@ -84,7 +91,12 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public Type RuntimeType {
-		get { return EngineObject.RuntimeType; }
+		get {
+            if(cachedRuntimeType == null) {
+                cachedRuntimeType= EngineObject.RuntimeType;
+            }
+            return cachedRuntimeType;
+        }
 	}
     // ----------------------------------------------------------------------
     public string RawName {
@@ -166,25 +178,25 @@ public partial class iCS_EditorObject {
         get { return DisplayName; }
     }
     // ----------------------------------------------------------------------
+    /// Builds and returns the Node SubTitle text.
     public string NodeSubTitle {
         get {
-            if(mySubTitleName == null) {
+            if(cachedNodeSubTitle == null) {
+                cachedNodeSubTitleSize= Vector2.zero;
                 if(IsConstructor) {
-                    mySubTitleName= BuildIsASubTitle("Self", RuntimeType);
+                    cachedNodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
                 }
                 else if(IsKindOfFunction || IsMessageHandler || IsInstanceNode) {
-                    mySubTitleName= BuildIsASubTitle("Target", RuntimeType);
+                    cachedNodeSubTitle= BuildIsASubTitle("Target", RuntimeType);
                 }
                 else if(IsKindOfPackage) {
-                    mySubTitleName= "Node is a Package";
+                    cachedNodeSubTitle= "Node is a Package";
                 }
                 else {
-                    mySubTitleName= "";
+                    cachedNodeSubTitle= null;
                 }
-                var guiContent= new GUIContent(mySubTitleName);
-                mySubTitleNameSize= iCS_Layout.DefaultSubTitleStyle.CalcSize(guiContent);
             }
-            return mySubTitleName;
+            return cachedNodeSubTitle ?? "";
         }
     }
     string BuildIsASubTitle(string name, Type type) {
@@ -198,7 +210,18 @@ public partial class iCS_EditorObject {
         result.Append(typeName);
         return result.ToString();        
     }
-    
+    // ----------------------------------------------------------------------
+    /// Returns the rendering dimension of the Node SubTitle text.
+    public Vector2 NodeSubTitleSize {
+        get {
+            if(Math3D.IsZero(cachedNodeSubTitleSize)) {
+                var guiContent= new GUIContent(NodeSubTitle);
+                cachedNodeSubTitleSize= iCS_Layout.DefaultSubTitleStyle.CalcSize(guiContent);
+            }
+            return cachedNodeSubTitleSize;
+        }
+    }    
+        
     // ======================================================================
     // High-Level Properties
     // ----------------------------------------------------------------------
