@@ -162,26 +162,8 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-    public string Stereotype {
-        get {
-            if(!IsNode) return null;
-            if(IsMessageHandler)    return "MessageHandler";
-            if(IsConstructor)       return "Builder";
-            if(IsTypeCast)          return "TypeCast";
-            if(IsInstanceNode)      return "Instance";
-            if(IsStateChart)        return "StateChart";
-            if(IsState)             return "State";
-            if(IsTransitionPackage) return "Trigger";
-            if(IsKindOfFunction)    return "Function";
-            if(IsKindOfPackage)     return "Package";
-            return "";
-        }
-    }
-    // ----------------------------------------------------------------------
     public string NodeTitle {
-        get {
-            return DisplayName;
-        }
+        get { return DisplayName; }
     }
     // ----------------------------------------------------------------------
     public string NodeSubTitle {
