@@ -52,28 +52,8 @@ public static class iCS_EditorConfig {
 	}	
 	
     // ======================================================================
-    public static GUIStyle NodeStyle        { get { return GUI.skin.button; }}
     public static GUIStyle PortLabelStyle   { get { return GUI.skin.label; }}
     
-    // ======================================================================
-	// Node title dimensions.
-    public static Vector2 GetNodeTitleSize(string _label) {
-        return NodeStyle.CalcSize(new GUIContent(_label));
-    }
-    public static float GetNodeTitleWidth(string _label) {
-		var size= GetNodeTitleSize(_label);
-        return size.x;
-    }
-    public static float NodeTitleHeight {
-        get {
-            if(_NodeTitleHeight == 0f) {
-				_NodeTitleHeight= GetNodeTitleSize("A").y;
-			}
-            return _NodeTitleHeight;
-        }
-    }
-    static float _NodeTitleHeight= 0f;
-
     // ======================================================================
     // Port label dimensions.
     public static Vector2 GetPortLabelSize(string _label) {

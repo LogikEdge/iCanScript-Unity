@@ -191,7 +191,7 @@ public partial class iCS_EditorObject {
             if(IsConstructor) {
                 return BuildIsASubTitle("Self", RuntimeType);
             }
-            if(IsKindOfFunction || IsMessageHandler) {
+            if(IsKindOfFunction || IsMessageHandler || IsInstanceNode) {
                 return BuildIsASubTitle("Target", RuntimeType);
             }
             if(IsKindOfPackage) return "Node is a Package";

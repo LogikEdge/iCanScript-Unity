@@ -159,9 +159,6 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void SetNodeLayoutRect(Rect r) {
-//		// Update parent node anchor positions.
-//		var center= Math3D.Middle(r);
-//		WrappingPosition= center;
 		// Update layout size.
 		LocalSize= new Vector2(r.width, r.height);        
     }

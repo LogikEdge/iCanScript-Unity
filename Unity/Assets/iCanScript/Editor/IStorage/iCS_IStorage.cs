@@ -487,7 +487,7 @@ public partial class iCS_IStorage {
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         if(instance.IsInstanceNode) {
             InstanceWizardCompleteCreation(instance);
-            instance.RawName= "<"+iCS_Types.TypeName(iCS_Types.RemoveRefOrPointer(runtimeType))+">";
+            instance.RawName= "Property Accessor";
             instance.IsNameEditable= false;
         }
         return instance;
@@ -668,7 +668,7 @@ public partial class iCS_IStorage {
         return GetInstancePortName(typeInfo.CompilerType);
     }
     public static string GetInstancePortName(Type type) {
-        return "<"+iCS_Types.GetName(type)+">";
+        return "Target";
     }
     // ----------------------------------------------------------------------
     public string GetDefaultNodeName(iCS_FunctionPrototype desc) {
@@ -676,7 +676,7 @@ public partial class iCS_IStorage {
         if(desc.IsConstructor) {
             displayName= "Variable";
         }
-        var defaultName= displayName+"<"+iCS_Types.TypeName(desc.ClassType)+">";
+        var defaultName= displayName;
         return defaultName;
     }
 }

@@ -6,7 +6,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public float NodeTitleHeight {
         get {
-            return iCS_EditorConfig.NodeTitleHeight;
+            return iCS_EditorConfig.kNodeTitleHeight;
         }
     }
     // ----------------------------------------------------------------------
@@ -14,6 +14,9 @@ public partial class iCS_EditorObject {
 		get {
             var niceTitle= iCS_TextUtility.NicifyName(NodeTitle);
 			var titleWidth= iCS_Layout.DefaultTitleStyle.CalcSize(new GUIContent(niceTitle)).x;
+            var subTitle= NodeSubTitle;
+            var subTitleWidth= iCS_Layout.DefaultSubTitleStyle.CalcSize(new GUIContent(subTitle)).x;
+            titleWidth= Mathf.Max(titleWidth, subTitleWidth);
 			var iconsWidth= iCS_EditorConfig.kNodeTitleIconSize+iCS_BuiltinTextures.kMinimizeIconSize;
 			var spacer= iCS_EditorConfig.kTitleFontSize;
 			return titleWidth+iconsWidth+2*spacer;
