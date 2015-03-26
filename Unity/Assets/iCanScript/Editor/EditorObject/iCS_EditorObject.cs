@@ -13,6 +13,7 @@ public partial class iCS_EditorObject {
     bool            myIsFloating     = false;
     List<int>		myChildren       = new List<int>();
     bool            myIsSticky       = false;
+    string          mySubTitleName   = null;
 
     // ======================================================================
     // Conversion Utilities
@@ -179,7 +180,6 @@ public partial class iCS_EditorObject {
         get {
             if(iCS_PreferencesController.ShowNodeStereotype) {
                 return DisplayName;
-//                return DisplayName+" <"+Stereotype+">";
             }
             return DisplayName;
         }
@@ -188,14 +188,19 @@ public partial class iCS_EditorObject {
     public string NodeSubTitle {
         get {
             if(!IsNode) return null;
-            if(IsConstructor) {
-                return BuildIsASubTitle("Self", RuntimeType);
+            if(mySubTitleName == null) {
+                if(IsConstructor) {
+                    mySubTitleName= BuildIsASubTitle("Self", RuntimeType);
+                }
+                else if(IsKindOfFunction || IsMessageHandler || IsInstanceNode) {
+                    mySubTitleName= BuildIsASubTitle("Target", RuntimeType);
+                }
+                else if(IsKindOfPackage) {
+                    mySubTitleName= "Node is a Package";
+                }
+                return "";
             }
-            if(IsKindOfFunction || IsMessageHandler || IsInstanceNode) {
-                return BuildIsASubTitle("Target", RuntimeType);
-            }
-            if(IsKindOfPackage) return "Node is a Package";
-            return "";
+            return mySubTitleName;
         }
     }
     string BuildIsASubTitle(string name, Type type) {
