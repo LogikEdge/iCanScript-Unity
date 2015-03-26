@@ -30,7 +30,9 @@ namespace iCanScript.Editor {
     Vector2 GetNodeNameSize(iCS_EditorObject node) {
         string nodeName= GetNodeName(node);
         GUIContent content= new GUIContent(nodeName);
-        return node.IsIconizedOnDisplay ? iCS_Layout.LabelStyle.CalcSize(content) : iCS_Layout.TitleStyle.CalcSize(content);
+        return node.IsIconizedOnDisplay ?
+            Layout.DynamicLabelStyle.CalcSize(content):
+            Layout.DynamicTitleStyle.CalcSize(content);
     }
     // ----------------------------------------------------------------------
     // Returns the non-scaled x,y with the scaled size.

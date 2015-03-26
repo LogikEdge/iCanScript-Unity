@@ -13,7 +13,7 @@ public partial class iCS_EditorObject {
 	public float NodeTitleWidth {
 		get {
             var niceTitle= iCS_TextUtility.NicifyName(NodeTitle);
-			var titleWidth= iCS_Layout.UnscaledTitleStyle.CalcSize(new GUIContent(niceTitle)).x;
+			var titleWidth= iCS_Layout.DefaultTitleStyle.CalcSize(new GUIContent(niceTitle)).x;
 			var iconsWidth= iCS_EditorConfig.kNodeTitleIconSize+iCS_BuiltinTextures.kMinimizeIconSize;
 			var spacer= iCS_EditorConfig.kTitleFontSize;
 			return titleWidth+iconsWidth+2*spacer;

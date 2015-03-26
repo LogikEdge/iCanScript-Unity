@@ -26,8 +26,8 @@ namespace iCanScript.Editor {
     	GUIStyle GuiStyle {
             get {
                 return myTarget.IsPort || myTarget.IsIconizedOnDisplay ?
-                            iCS_Layout.LabelStyle :
-                            iCS_Layout.TitleStyle;
+                            myGraphics.Layout.DynamicLabelStyle :
+                            myGraphics.Layout.DynamicTitleStyle;
             }
         }
     	

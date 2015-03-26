@@ -3,7 +3,7 @@ using System.Collections;
 using Prefs= iCS_PreferencesController;
 
 namespace iCanScript.Editor {
-    public static class iCS_Layout {
+    public class iCS_Layout {
         // ======================================================================
         // CONSTANTS
         // ----------------------------------------------------------------------
@@ -14,12 +14,15 @@ namespace iCanScript.Editor {
         // FIELDS
         // -------------------------------------------------------------------
         // These are all the GUI styles needed to layout a node
-        public static GUIStyle  LabelStyle        = null;
-        public static GUIStyle  TitleStyle        = null;
-        public static GUIStyle  MessageTitleStyle = null;
-        public static GUIStyle  ValueStyle        = null;
-        public static GUIStyle  SubTitleStyle     = null;
-        public static GUIStyle  UnscaledTitleStyle= null;
+        public static GUIStyle  DefaultTitleStyle   = null;
+        public static GUIStyle  DefaultSubTitleStyle= null;
+        public static GUIStyle  DefaultLabelStyle   = null;
+        public static GUIStyle  DefaultValueStyle   = null;
+        
+        public GUIStyle  DynamicTitleStyle   = null;
+        public GUIStyle  DynamicSubTitleStyle= null;
+        public GUIStyle  DynamicLabelStyle   = null;
+        public GUIStyle  DynamicValueStyle   = null;
 
         // ======================================================================
         // FUNCTIONS
@@ -32,155 +35,198 @@ namespace iCanScript.Editor {
         /// Initializes the iCanScript Layout objects.
         public static void Init() {
             // Build default GUI Styles.
-            InitLabelStyle();
             InitTitleStyle();
-            InitMessageTitleStyle();
-            InitValueStyle();
             InitSubTitleStyle();
-            InitUnscaledTitleStyle();
+            InitLabelStyle();
+            InitValueStyle();
         }
         // ----------------------------------------------------------------------
-        /// Adjusts all layout elements that depend on the visual scale.
-        public static void AdjustForScale(float scale) {
-            LabelStyle.fontSize       = (int)(kLabelFontSize*scale);
-            TitleStyle.fontSize       = (int)(kTitleFontSize*scale);
-            MessageTitleStyle.fontSize= (int)(kTitleFontSize*scale);
-            ValueStyle.fontSize       = (int)(kLabelFontSize*scale);
-            SubTitleStyle.fontSize    = (int)(0.8f*kTitleFontSize*scale);
+        /// Refreshes the dynamic layout objects.
+        public void Refresh(float scale= 1f) {
+            // Build default GUI Styles.
+            RefreshLabelStyle(scale);
+            RefreshTitleStyle(scale);
+            RefreshValueStyle(scale);
+            RefreshSubTitleStyle(scale);
         }
         
         // ======================================================================
         // Build and update GUI styles
         // ----------------------------------------------------------------------
-        /// Initializes the _'port'_ label GUI style.
-        public static void InitLabelStyle() {
-            Color labelColor= Prefs.NodeLabelColor;
+        /// Initializes the default _'node'_ title GUI style.
+        public static void InitTitleStyle() {
             // Allocate on first initialization.
-            if(LabelStyle == null) {
-                LabelStyle= new GUIStyle();
-            }
-            // Return if no change detected.
-            else if(labelColor == LabelStyle.normal.textColor) {
-                return;
+            if(DefaultTitleStyle == null) {
+                DefaultTitleStyle= new GUIStyle();
             }
             // Initialise all attribute of the style.
-            LabelStyle.normal.textColor= labelColor;
-            LabelStyle.hover.textColor= labelColor;
-            LabelStyle.focused.textColor= labelColor;
-            LabelStyle.active.textColor= labelColor;
-            LabelStyle.onNormal.textColor= labelColor;
-            LabelStyle.onHover.textColor= labelColor;
-            LabelStyle.onFocused.textColor= labelColor;
-            LabelStyle.onActive.textColor= labelColor;
-            LabelStyle.fontStyle= FontStyle.Bold;
-            LabelStyle.fontSize= kLabelFontSize;
-        }
-        // ----------------------------------------------------------------------
-        /// Initializes the _'node'_ title GUI style.
-        public static void InitTitleStyle() {
             Color titleColor= Prefs.NodeTitleColor;
-            // Allocate on first initialization.
-            if(TitleStyle == null) {
-                TitleStyle= new GUIStyle();
-            }
-            // Return if no change detected.
-            else if(titleColor == TitleStyle.normal.textColor) {
-                return;
-            }
-            TitleStyle.normal.textColor= titleColor;
-            TitleStyle.hover.textColor= titleColor;
-            TitleStyle.focused.textColor= titleColor;
-            TitleStyle.active.textColor= titleColor;
-            TitleStyle.onNormal.textColor= titleColor;
-            TitleStyle.onHover.textColor= titleColor;
-            TitleStyle.onFocused.textColor= titleColor;
-            TitleStyle.onActive.textColor= titleColor;
-            TitleStyle.fontStyle= FontStyle.Bold;
-            TitleStyle.fontSize= kTitleFontSize;
+            DefaultTitleStyle.normal.textColor= titleColor;
+            DefaultTitleStyle.hover.textColor= titleColor;
+            DefaultTitleStyle.focused.textColor= titleColor;
+            DefaultTitleStyle.active.textColor= titleColor;
+            DefaultTitleStyle.onNormal.textColor= titleColor;
+            DefaultTitleStyle.onHover.textColor= titleColor;
+            DefaultTitleStyle.onFocused.textColor= titleColor;
+            DefaultTitleStyle.onActive.textColor= titleColor;
+            DefaultTitleStyle.fontStyle= FontStyle.Bold;
+            DefaultTitleStyle.fontSize= kTitleFontSize;
         }
         // ----------------------------------------------------------------------
-        /// Initializes the _'node'_ title GUI style.
-        public static void InitUnscaledTitleStyle() {
+        /// Refreshes the dynamic _'node'_ title GUI style.
+        public void RefreshTitleStyle(float scale) {
+            // Allocate on first initialization.
+            if(DynamicTitleStyle == null) {
+                DynamicTitleStyle= new GUIStyle();
+            }
+            // Refresh color attributes.
             Color titleColor= Prefs.NodeTitleColor;
-            // Allocate on first initialization.
-            if(UnscaledTitleStyle == null) {
-                UnscaledTitleStyle= new GUIStyle();
+            if(titleColor != DynamicTitleStyle.normal.textColor) {
+                DynamicTitleStyle.normal.textColor= titleColor;
+                DynamicTitleStyle.hover.textColor= titleColor;
+                DynamicTitleStyle.focused.textColor= titleColor;
+                DynamicTitleStyle.active.textColor= titleColor;
+                DynamicTitleStyle.onNormal.textColor= titleColor;
+                DynamicTitleStyle.onHover.textColor= titleColor;
+                DynamicTitleStyle.onFocused.textColor= titleColor;
+                DynamicTitleStyle.onActive.textColor= titleColor;                
             }
-            // Return if no change detected.
-            else if(titleColor == UnscaledTitleStyle.normal.textColor) {
-                return;
-            }
-            UnscaledTitleStyle.normal.textColor= titleColor;
-            UnscaledTitleStyle.hover.textColor= titleColor;
-            UnscaledTitleStyle.focused.textColor= titleColor;
-            UnscaledTitleStyle.active.textColor= titleColor;
-            UnscaledTitleStyle.onNormal.textColor= titleColor;
-            UnscaledTitleStyle.onHover.textColor= titleColor;
-            UnscaledTitleStyle.onFocused.textColor= titleColor;
-            UnscaledTitleStyle.onActive.textColor= titleColor;
-            UnscaledTitleStyle.fontStyle= FontStyle.Bold;
-            UnscaledTitleStyle.fontSize= kTitleFontSize;
+            // Refresh font style.
+            DynamicTitleStyle.fontStyle= FontStyle.Bold;
+            // Refresh font size.
+            DynamicTitleStyle.fontSize= (int)(kTitleFontSize*scale);
         }
         // ----------------------------------------------------------------------
-        /// Initializes the event handler node title GUI style.
-        public static void InitMessageTitleStyle() {
-            Color messageTitleColor= Color.red;
-            // Allocate on first initialization.
-            if(MessageTitleStyle == null) {
-                MessageTitleStyle= new GUIStyle(TitleStyle);
-            }
-            MessageTitleStyle.normal.textColor= messageTitleColor;
-        }
-        // ----------------------------------------------------------------------
-        /// Initializes the _'port'_ value GUI style.
-        public static void InitValueStyle() {
-            Color valueColor= Prefs.NodeValueColor;
-            // Allocate on first initialization.
-            if(ValueStyle == null) {
-                ValueStyle= new GUIStyle();
-            }
-            // Return if no change detected.
-            else if(valueColor == ValueStyle.normal.textColor) {
-                return;
-            }
-            ValueStyle.normal.textColor= valueColor;
-            ValueStyle.hover.textColor= valueColor;
-            ValueStyle.focused.textColor= valueColor;
-            ValueStyle.active.textColor= valueColor;
-            ValueStyle.onNormal.textColor= valueColor;
-            ValueStyle.onHover.textColor= valueColor;
-            ValueStyle.onFocused.textColor= valueColor;
-            ValueStyle.onActive.textColor= valueColor;
-            ValueStyle.fontStyle= FontStyle.Bold;
-            ValueStyle.fontSize= 11;
-        }
-        // ----------------------------------------------------------------------
-        /// Initializes the _'node'_ sub-title GUI style.
+        /// Initializes the default _'node'_ sub-title GUI style.
         public static void InitSubTitleStyle() {
-//            Color c= Prefs.NodeTitleColor;
-//            Color subTitleColor= new Color(Mathf.Abs(c.r-0.2f),
-//                                           Mathf.Abs(c.g-0.2f),
-//                                           Mathf.Abs(c.b-0.2f));
+            // Allocate on first initialization.
+            if(DefaultSubTitleStyle == null) {
+                DefaultSubTitleStyle= new GUIStyle(DefaultTitleStyle);
+            }
+            // Initialise all attribute of the style.
             Color subTitleColor= Prefs.NodeTitleColor;
             subTitleColor.a= 0.7f;
+            DefaultSubTitleStyle.normal.textColor   = subTitleColor;
+            DefaultSubTitleStyle.hover.textColor    = subTitleColor;
+            DefaultSubTitleStyle.focused.textColor  = subTitleColor;
+            DefaultSubTitleStyle.active.textColor   = subTitleColor;
+            DefaultSubTitleStyle.onNormal.textColor = subTitleColor;
+            DefaultSubTitleStyle.onHover.textColor  = subTitleColor;
+            DefaultSubTitleStyle.onFocused.textColor= subTitleColor;
+            DefaultSubTitleStyle.onActive.textColor = subTitleColor;
+            DefaultSubTitleStyle.fontStyle= FontStyle.Italic;
+            DefaultSubTitleStyle.fontSize= (int)(0.8f*kTitleFontSize);
+        }
+        // ----------------------------------------------------------------------
+        /// Refreshes the dynamic _'node'_ sub-title GUI style.
+        public void RefreshSubTitleStyle(float scale) {
             // Allocate on first initialization.
-            if(SubTitleStyle == null) {
-                SubTitleStyle= new GUIStyle(TitleStyle);
+            if(DynamicSubTitleStyle == null) {
+                DynamicSubTitleStyle= new GUIStyle(DynamicTitleStyle);
             }
-            // Return if no change detected.
-            else if(subTitleColor == SubTitleStyle.normal.textColor) {
-                return;
+            // Refresh color attributes.
+            Color subTitleColor= Prefs.NodeTitleColor;
+            subTitleColor.a= 0.7f;
+            if(subTitleColor != DynamicSubTitleStyle.normal.textColor) {
+                DynamicSubTitleStyle.normal.textColor   = subTitleColor;
+                DynamicSubTitleStyle.hover.textColor    = subTitleColor;
+                DynamicSubTitleStyle.focused.textColor  = subTitleColor;
+                DynamicSubTitleStyle.active.textColor   = subTitleColor;
+                DynamicSubTitleStyle.onNormal.textColor = subTitleColor;
+                DynamicSubTitleStyle.onHover.textColor  = subTitleColor;
+                DynamicSubTitleStyle.onFocused.textColor= subTitleColor;
+                DynamicSubTitleStyle.onActive.textColor = subTitleColor;                
             }
-            SubTitleStyle.normal.textColor   = subTitleColor;
-            SubTitleStyle.hover.textColor    = subTitleColor;
-            SubTitleStyle.focused.textColor  = subTitleColor;
-            SubTitleStyle.active.textColor   = subTitleColor;
-            SubTitleStyle.onNormal.textColor = subTitleColor;
-            SubTitleStyle.onHover.textColor  = subTitleColor;
-            SubTitleStyle.onFocused.textColor= subTitleColor;
-            SubTitleStyle.onActive.textColor = subTitleColor;
-            SubTitleStyle.fontStyle= FontStyle.Italic;
-            SubTitleStyle.fontSize= (int)(0.8f*kTitleFontSize);
+            DynamicSubTitleStyle.fontStyle= FontStyle.Italic;
+            DynamicSubTitleStyle.fontSize= (int)(scale*0.8f*kTitleFontSize);
+        }
+        // ----------------------------------------------------------------------
+        /// Initializes the default _'port'_ label GUI style.
+        public static void InitLabelStyle() {
+            // Allocate on first initialization.
+            if(DefaultLabelStyle == null) {
+                DefaultLabelStyle= new GUIStyle();
+            }
+            // Initialise all attribute of the style.
+            Color labelColor= Prefs.NodeLabelColor;
+            DefaultLabelStyle.normal.textColor= labelColor;
+            DefaultLabelStyle.hover.textColor= labelColor;
+            DefaultLabelStyle.focused.textColor= labelColor;
+            DefaultLabelStyle.active.textColor= labelColor;
+            DefaultLabelStyle.onNormal.textColor= labelColor;
+            DefaultLabelStyle.onHover.textColor= labelColor;
+            DefaultLabelStyle.onFocused.textColor= labelColor;
+            DefaultLabelStyle.onActive.textColor= labelColor;
+            DefaultLabelStyle.fontStyle= FontStyle.Bold;
+            DefaultLabelStyle.fontSize= (int)(kLabelFontSize);
+        }
+        // ----------------------------------------------------------------------
+        /// Refreshed the dynamic _'port'_ label GUI style.
+        public void RefreshLabelStyle(float scale) {
+            // Allocate on first initialization.
+            if(DynamicLabelStyle == null) {
+                DynamicLabelStyle= new GUIStyle(DefaultLabelStyle);
+            }
+            // Refresh color attributes.
+            Color labelColor= Prefs.NodeLabelColor;
+            if(labelColor != DynamicLabelStyle.normal.textColor) {
+                DynamicLabelStyle.normal.textColor= labelColor;
+                DynamicLabelStyle.hover.textColor= labelColor;
+                DynamicLabelStyle.focused.textColor= labelColor;
+                DynamicLabelStyle.active.textColor= labelColor;
+                DynamicLabelStyle.onNormal.textColor= labelColor;
+                DynamicLabelStyle.onHover.textColor= labelColor;
+                DynamicLabelStyle.onFocused.textColor= labelColor;
+                DynamicLabelStyle.onActive.textColor= labelColor;                
+            }
+            // Refresh font style.
+            DynamicLabelStyle.fontStyle= FontStyle.Bold;
+            // Refresh font size.
+            DynamicLabelStyle.fontSize= (int)(kLabelFontSize*scale);
+        }
+        // ----------------------------------------------------------------------
+        /// Initializes the default _'port'_ value GUI style.
+        public static void InitValueStyle() {
+            // Allocate on first initialization.
+            if(DefaultValueStyle == null) {
+                DefaultValueStyle= new GUIStyle();
+            }
+            // Initialise all attribute of the style.
+            Color valueColor= Prefs.NodeValueColor;
+            DefaultValueStyle.normal.textColor= valueColor;
+            DefaultValueStyle.hover.textColor= valueColor;
+            DefaultValueStyle.focused.textColor= valueColor;
+            DefaultValueStyle.active.textColor= valueColor;
+            DefaultValueStyle.onNormal.textColor= valueColor;
+            DefaultValueStyle.onHover.textColor= valueColor;
+            DefaultValueStyle.onFocused.textColor= valueColor;
+            DefaultValueStyle.onActive.textColor= valueColor;
+            DefaultValueStyle.fontStyle= FontStyle.Bold;
+            DefaultValueStyle.fontSize= (int)(kLabelFontSize);
+        }
+        // ----------------------------------------------------------------------
+        /// Initializes the default _'port'_ value GUI style.
+        public void RefreshValueStyle(float scale) {
+            // Allocate on first initialization.
+            if(DynamicValueStyle == null) {
+                DynamicValueStyle= new GUIStyle();
+            }
+            // Refresh color attributes.
+            Color valueColor= Prefs.NodeValueColor;
+            if(valueColor != DynamicValueStyle.normal.textColor) {
+                DynamicValueStyle.normal.textColor= valueColor;
+                DynamicValueStyle.hover.textColor= valueColor;
+                DynamicValueStyle.focused.textColor= valueColor;
+                DynamicValueStyle.active.textColor= valueColor;
+                DynamicValueStyle.onNormal.textColor= valueColor;
+                DynamicValueStyle.onHover.textColor= valueColor;
+                DynamicValueStyle.onFocused.textColor= valueColor;
+                DynamicValueStyle.onActive.textColor= valueColor;                
+            }
+            // Refresh font style.
+            DynamicValueStyle.fontStyle= FontStyle.Bold;
+            // Refresh font size.
+            DynamicValueStyle.fontSize= (int)(kLabelFontSize*scale);
         }
         
     }

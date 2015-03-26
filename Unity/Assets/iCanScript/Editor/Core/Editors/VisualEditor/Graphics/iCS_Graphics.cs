@@ -31,16 +31,15 @@ public partial class iCS_Graphics {
     static Texture2D    rightArrowHeadIcon= null;
 	
     // ----------------------------------------------------------------------
-//    public GUIStyle    LabelStyle              = null;
-//    public GUIStyle    TitleStyle              = null;
-//    public GUIStyle    MessageTitleStyle       = null;
-//    public GUIStyle    ValueStyle              = null;
     public Texture2D   StateMaximizeIcon       = null;
     public Texture2D   ModuleMaximizeIcon      = null;
     public Texture2D   EntryStateMaximizeIcon  = null;
     public Texture2D   ConstructionMaximizeIcon= null;
     public Texture2D   FunctionMaximizeIcon    = null;
     public Texture2D   DefaultMaximizeIcon     = null;
+
+    // ----------------------------------------------------------------------
+    public iCS_Layout  Layout= new iCS_Layout();
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
@@ -75,17 +74,14 @@ public partial class iCS_Graphics {
         selectedObject= selObj;
 
         // Rebuild label style to match user preferences.
-        iCS_Layout.Init();
+        Layout.Refresh(scale);
         
-        // Set font size according to scale.
-        iCS_Layout.AdjustForScale(scale);
-
         // Special case for asset store images
         if(iCS_DevToolsConfig.ShowBoldImage) {
-            iCS_Layout.LabelStyle.fontSize= (int)(iCS_Layout.LabelStyle.fontSize*1.2f);
-            iCS_Layout.ValueStyle.fontSize= (int)(iCS_Layout.ValueStyle.fontSize*1.2f);
-            iCS_Layout.LabelStyle.fontStyle= FontStyle.Bold;
-            iCS_Layout.ValueStyle.fontStyle= FontStyle.Bold;
+            Layout.DynamicLabelStyle.fontSize= (int)(Layout.DynamicLabelStyle.fontSize*1.2f);
+            Layout.DynamicValueStyle.fontSize= (int)(Layout.DynamicValueStyle.fontSize*1.2f);
+            Layout.DynamicLabelStyle.fontStyle= FontStyle.Bold;
+            Layout.DynamicValueStyle.fontStyle= FontStyle.Bold;
         }                
     }
     public void End(iCS_IStorage iStorage) {
@@ -128,10 +124,9 @@ public partial class iCS_Graphics {
         return new Vector2(Scale*(x-Translation.x), Scale*(y-Translation.y));
     }
     // ----------------------------------------------------------------------
-    void GUI_Box(Rect pos, GUIContent title, Color nodeColor, Color backgroundColor, Color shadowColor, GUIStyle titleStyle= null) {
-        if(titleStyle == null) titleStyle= iCS_Layout.TitleStyle;
+    void GUI_Box(Rect pos, GUIContent title, Color nodeColor, Color backgroundColor, Color shadowColor) {
         Rect adjPos= TranslateAndScale(pos);
-        DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, title, titleStyle);
+        DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, title);
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -484,7 +479,7 @@ public partial class iCS_Graphics {
             backgroundColor= GetBackgroundColor(node);
         }
         DrawLabelBackground(labelRect, boxAlpha, backgroundColor, outlineColor);
-        GUI.Label(labelRect, new GUIContent(title), iCS_Layout.LabelStyle);		
+        GUI.Label(labelRect, new GUIContent(title), Layout.DynamicLabelStyle);		
 	}
 	
     // ======================================================================
@@ -639,7 +634,7 @@ public partial class iCS_Graphics {
             }
             DrawLabelBackground(portNamePos, boxAlpha, backgroundColor, outlineColor);
 	        string name= GetPortName(port);
-	        GUI.Label(portNamePos, name, iCS_Layout.LabelStyle);                                            	
+	        GUI.Label(portNamePos, name, Layout.DynamicLabelStyle);                                            	
         }
 
         // Display port value (if applicable).
@@ -650,7 +645,7 @@ public partial class iCS_Graphics {
         		if(Math3D.IsNotZero(portValuePos.width)) {
                     DrawLabelBackground(portValuePos, 0.35f, Color.black, Color.black);
             		string valueAsStr= GetPortValueAsString(port);
-        			GUI.Label(portValuePos, valueAsStr, iCS_Layout.ValueStyle);			
+        			GUI.Label(portValuePos, valueAsStr, Layout.DynamicValueStyle);			
         		}            				
     
 //                /*

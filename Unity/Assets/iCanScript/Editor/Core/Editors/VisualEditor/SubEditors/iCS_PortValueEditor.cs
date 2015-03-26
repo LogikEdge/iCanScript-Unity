@@ -16,7 +16,7 @@ namespace iCanScript.Editor {
         // Property.
     	// ----------------------------------------------------------------------
     	Rect 	 Position { get { return myGraphics.GetPortValueGUIPosition(myPort); }}
-    	GUIStyle GuiStyle { get { return iCS_Layout.ValueStyle; }}
+    	GUIStyle GuiStyle { get { return myGraphics.Layout.DynamicValueStyle; }}
     
         // ======================================================================
     	// Use to determine which value type is supported.
