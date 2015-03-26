@@ -18,7 +18,6 @@ public static class iCS_EditorConfig {
     public const float kTitlePadding     = 4;
     public const float kNodeTitleHeight  = kTitleFontSize+kSubTitleFontSize+2*kTitlePadding;
     public const float kNodeTitleIconSize= 32f;
-    public const float kMinimumPortSeparation= kLabelFontSize;
     
     // ----------------------------------------------------------------------
 	public const float NodeShadowSize= 5.0f;
@@ -28,14 +27,15 @@ public static class iCS_EditorConfig {
     public const  float   PortDiameter      = 2.0f * PortRadius;
     public const  float   SelectedPortFactor= 1.5f;
     public static Vector2 PortSize;
+    public const float kMinimumPortSeparation= SelectedPortFactor*PortDiameter;
 
     // ----------------------------------------------------------------------
     public const  float MarginSize = 2*PortDiameter;
-    public const  float PaddingSize= PortDiameter;
+    public const  float kPaddingSize= PortDiameter;
 
     // ----------------------------------------------------------------------
     public const float EditorWindowMarginSize = MarginSize;
-    public const float EditorWindowPaddingSize= PaddingSize;
+    public const float EditorWindowPaddingSize= kPaddingSize;
     public const float EditorWindowToolbarHeight= 16.0f;
     public const float EditorWindowMinX= EditorWindowMarginSize;
     public const float EditorWindowMinY= EditorWindowMarginSize + EditorWindowToolbarHeight;

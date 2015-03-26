@@ -264,47 +264,47 @@ public partial class iCS_Graphics {
             Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
 
             // Draw grid lines.
-            if(minorGridSpacing*Scale < 2) return;
-        
-            float xOffset= -Translation.x-offset.x;
-            float yOffset= -Translation.y-offset.y;
-            float majorGridSpacing= 10f*minorGridSpacing;
-            float x= (xOffset)-minorGridSpacing*Mathf.Floor((xOffset)/minorGridSpacing);
-            float y= (yOffset)-minorGridSpacing*Mathf.Floor((yOffset)/minorGridSpacing);
-            float x10= (xOffset)-majorGridSpacing*Mathf.Floor((xOffset)/majorGridSpacing);
-            float y10= (yOffset)-majorGridSpacing*Mathf.Floor((yOffset)/majorGridSpacing);
-        
-            // Scale grid
-            x*= Scale;
-            y*= Scale;
-            x10*= Scale;
-            y10*= Scale;
-            minorGridSpacing*= Scale;
-            majorGridSpacing*= Scale;
-        
-            if(Scale < 1f) {
-                minorGridColor.a *= Scale;
-                majorGridColor.a *= Scale;
-            }
-            minorGridColor= new Color(minorGridColor.r, minorGridColor.g, minorGridColor.b, 0.5f*minorGridColor.a);
-            for(; x < screenArea.width; x+= minorGridSpacing) {
-                if(Mathf.Abs(x-x10) < 1f) {
-                    Handles.color= majorGridColor;
-                    x10+= majorGridSpacing;
-                } else {
-                    Handles.color= minorGridColor;                
+            if(minorGridSpacing*Scale >= 2) {        
+                float xOffset= -Translation.x-offset.x;
+                float yOffset= -Translation.y-offset.y;
+                float majorGridSpacing= 10f*minorGridSpacing;
+                float x= (xOffset)-minorGridSpacing*Mathf.Floor((xOffset)/minorGridSpacing);
+                float y= (yOffset)-minorGridSpacing*Mathf.Floor((yOffset)/minorGridSpacing);
+                float x10= (xOffset)-majorGridSpacing*Mathf.Floor((xOffset)/majorGridSpacing);
+                float y10= (yOffset)-majorGridSpacing*Mathf.Floor((yOffset)/majorGridSpacing);
+            
+                // Scale grid
+                x*= Scale;
+                y*= Scale;
+                x10*= Scale;
+                y10*= Scale;
+                minorGridSpacing*= Scale;
+                majorGridSpacing*= Scale;
+            
+                if(Scale < 1f) {
+                    minorGridColor.a *= Scale;
+                    majorGridColor.a *= Scale;
                 }
-                Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,screenArea.height,0));            
-            }
-            for(; y < screenArea.height; y+= minorGridSpacing) {
-                if(Mathf.Abs(y-y10) < 1f) {
-                    Handles.color= majorGridColor;
-                    y10+= majorGridSpacing;
-                } else {
-                    Handles.color= minorGridColor;                
+                minorGridColor= new Color(minorGridColor.r, minorGridColor.g, minorGridColor.b, 0.5f*minorGridColor.a);
+                for(; x < screenArea.width; x+= minorGridSpacing) {
+                    if(Mathf.Abs(x-x10) < 1f) {
+                        Handles.color= majorGridColor;
+                        x10+= majorGridSpacing;
+                    } else {
+                        Handles.color= minorGridColor;                
+                    }
+                    Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,screenArea.height,0));            
                 }
-                Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
-            }            
+                for(; y < screenArea.height; y+= minorGridSpacing) {
+                    if(Mathf.Abs(y-y10) < 1f) {
+                        Handles.color= majorGridColor;
+                        y10+= majorGridSpacing;
+                    } else {
+                        Handles.color= minorGridColor;                
+                    }
+                    Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
+                }            
+            }
         }
         // Show iCanScript backdrop.
         var backdropStyle= new GUIStyle();

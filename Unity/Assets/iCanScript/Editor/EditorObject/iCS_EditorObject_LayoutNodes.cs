@@ -108,13 +108,12 @@ public partial class iCS_EditorObject {
     // Revised: feb 10, 2014
     Rect NodeRectFromChildrenRectWithMargins(Rect childRect) {
         // Get padding for all sides.
-		float topPadding= NodeTopPadding;
-		float bottomPadding= NodeBottomPadding;
 		float leftPadding= NodeLeftPadding;
 		float rightPadding= NodeRightPadding;
         // Determine size of node.
+        // NOTE: Node drawing engine forces to have at least 2 Node Title Height.
         float width = childRect.width+leftPadding+rightPadding;
-        float height= childRect.height+topPadding+bottomPadding;
+        float height= childRect.height+2*NodeTitleHeight;
 		// Assure minimum size for title and ports.
 		var titleHeight= NodeTitleHeight;
 		var titleWidth= NodeTitleWidth;
@@ -141,7 +140,7 @@ public partial class iCS_EditorObject {
 		    y= pos.y-0.5f*height;		    
 		} else {
 		    x= childRect.x-leftPadding-xOffset;
-		    y= childRect.y-topPadding-yOffset;
+		    y= childRect.y-NodeTitleHeight-yOffset;
 		}
 		var r= new Rect(x, y, width, height);
         return r;

@@ -25,20 +25,20 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public float NodeTopPadding {
         get {
-            return NodeTitleHeight+iCS_EditorConfig.PaddingSize;
+            return NodeTitleHeight+iCS_EditorConfig.kPaddingSize;
         }
     }
     // ----------------------------------------------------------------------
     public float NodeBottomPadding {
         get {
-            return iCS_EditorConfig.PaddingSize;            
+            return iCS_EditorConfig.kPaddingSize;            
         }
     }
     // ----------------------------------------------------------------------
     public float NodeLeftPadding {
         get {
-            float paddingBy2= 0.5f*iCS_EditorConfig.PaddingSize;
-            float leftPadding= iCS_EditorConfig.PaddingSize;
+            float paddingBy2= 0.5f*iCS_EditorConfig.kPaddingSize;
+            float leftPadding= iCS_EditorConfig.kPaddingSize;
             ForEachLeftChildPort(
                 port=> {
                     if(!port.IsStatePort && !port.IsFloating) {
@@ -55,8 +55,8 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public float NodeRightPadding {
         get {
-            float paddingBy2= 0.5f*iCS_EditorConfig.PaddingSize;
-            float rightPadding= iCS_EditorConfig.PaddingSize;
+            float paddingBy2= 0.5f*iCS_EditorConfig.kPaddingSize;
+            float rightPadding= iCS_EditorConfig.kPaddingSize;
             ForEachRightChildPort(
                 port=> {
                     if(!port.IsStatePort && !port.IsFloating) {

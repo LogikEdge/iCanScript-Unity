@@ -75,7 +75,7 @@ public static class iCS_NodeTextures {
 	public static void BuildNodeTemplate(float scale) {
         float radius= kNodeCornerRadius*scale;
 		int radiusInt    = (int)(radius+0.5f);
-		int extraTitleheightInt= (int)(kNodeTitleHeight*scale+0.5f);
+		int extraTitleheightInt= (int)(kNodeTitleHeight*scale+0.5f)-radiusInt;
 
 		// We don't need to rebuild node textures if nothing has changed.
 		if(radiusInt == myRadius && extraTitleheightInt == myExtraTitleHeight) {
