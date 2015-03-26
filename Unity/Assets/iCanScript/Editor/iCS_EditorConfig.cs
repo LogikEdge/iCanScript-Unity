@@ -14,10 +14,12 @@ public static class iCS_EditorConfig {
     public const float kNodeCornerRadius = 8f;
     public const int   kLabelFontSize    = 11;
     public const int   kTitleFontSize    = 13;
-    public const int   kSubTitleFontSize = 0;
+    public const int   kSubTitleFontSize = (int)(0.8f*(float)kTitleFontSize);
     public const float kTitlePadding     = 4;
     public const float kNodeTitleHeight  = kTitleFontSize+kSubTitleFontSize+2*kTitlePadding;
     public const float kNodeTitleIconSize= 32f;
+    public const float kMinimumPortSeparation= kLabelFontSize;
+    
     // ----------------------------------------------------------------------
 	public const float NodeShadowSize= 5.0f;
 	
@@ -51,24 +53,6 @@ public static class iCS_EditorConfig {
 		}
 	}	
 	
-    // ======================================================================
-    public static GUIStyle PortLabelStyle   { get { return GUI.skin.label; }}
-    
-    // ======================================================================
-    // Port label dimensions.
-    public static Vector2 GetPortLabelSize(string _label) {
-        return PortLabelStyle.CalcSize(new GUIContent(_label));
-    }
-    public static float MinimumPortSeparation {
-        get {
-            if(_MinimumPortSeparation == 0f) {
-				_MinimumPortSeparation= GetPortLabelSize("A").y;
-			}
-            return _MinimumPortSeparation;
-        }
-    }
-    static float _MinimumPortSeparation= 0f;
- 
     // ======================================================================
     static iCS_EditorConfig() {
         PortSize= new Vector2(PortDiameter, PortDiameter);

@@ -19,7 +19,7 @@ public partial class iCS_EditorObject {
             titleWidth= Mathf.Max(titleWidth, subTitleWidth);
 			var iconsWidth= iCS_EditorConfig.kNodeTitleIconSize+iCS_BuiltinTextures.kMinimizeIconSize;
 			var spacer= iCS_EditorConfig.kTitleFontSize;
-			return titleWidth+iconsWidth+2*spacer;
+			return titleWidth+iconsWidth+spacer;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -42,7 +42,8 @@ public partial class iCS_EditorObject {
             ForEachLeftChildPort(
                 port=> {
                     if(!port.IsStatePort && !port.IsFloating) {
-                        Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(port.Name);
+                        var portName= iCS_TextUtility.NicifyName(port.Name);
+                        Vector2 labelSize= iCS_Layout.DefaultLabelSize(portName);
                         float nameSize= paddingBy2+labelSize.x+iCS_EditorConfig.PortDiameter;
                         if(leftPadding < nameSize) leftPadding= nameSize;
                     }
@@ -59,7 +60,8 @@ public partial class iCS_EditorObject {
             ForEachRightChildPort(
                 port=> {
                     if(!port.IsStatePort && !port.IsFloating) {
-                        Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(port.Name);
+                        var portName= iCS_TextUtility.NicifyName(port.Name);
+                        Vector2 labelSize= iCS_Layout.DefaultLabelSize(portName);
                         float nameSize= paddingBy2+labelSize.x+iCS_EditorConfig.PortDiameter;
                         if(rightPadding < nameSize) rightPadding= nameSize;
                     }

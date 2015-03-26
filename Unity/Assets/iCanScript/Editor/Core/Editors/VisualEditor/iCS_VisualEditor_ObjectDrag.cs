@@ -769,7 +769,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 
         // Use full node range if no collision exists.
-        float minSeparation= iCS_EditorConfig.MinimumPortSeparation;
+        float minSeparation= iCS_EditorConfig.kMinimumPortSeparation;
 		float rangeRatioStart= 0f;
         float rangeRatioEnd= 1f;
 		float rangePosStart= edgePosStart;

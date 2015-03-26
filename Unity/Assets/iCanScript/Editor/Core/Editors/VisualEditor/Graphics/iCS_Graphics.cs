@@ -951,9 +951,7 @@ public partial class iCS_Graphics {
         float highlightWidth= 2f;
         Color highlightColor= new Color(0.67f, 0.67f, 0.67f, alpha);
         if(iStorage.IsSelectedOrMultiSelected(port) ||
-           iStorage.IsSelectedOrMultiSelected(source) ||
-           iStorage.IsSelectedOrMultiSelected(portParent) ||
-           iStorage.IsSelectedOrMultiSelected(sourceParent)) {
+           iStorage.IsSelectedOrMultiSelected(source)) {
            highlight= true;
         }
         // Special case for asset store images.

@@ -51,6 +51,13 @@ namespace iCanScript.Editor {
         }
         
         // ======================================================================
+        // Size utility
+        // ----------------------------------------------------------------------
+        public static Vector2 DefaultLabelSize(string str) {
+            return DefaultLabelStyle.CalcSize(new GUIContent(str));
+        }
+        
+        // ======================================================================
         // Build and update GUI styles
         // ----------------------------------------------------------------------
         /// Initializes the default _'node'_ title GUI style.

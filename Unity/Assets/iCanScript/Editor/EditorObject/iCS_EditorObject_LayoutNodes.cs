@@ -143,7 +143,7 @@ public partial class iCS_EditorObject {
 		    x= childRect.x-leftPadding-xOffset;
 		    y= childRect.y-topPadding-yOffset;
 		}
-		var r= new Rect(x, y, width,height);
+		var r= new Rect(x, y, width, height);
         return r;
     }
     
