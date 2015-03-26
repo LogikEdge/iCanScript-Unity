@@ -59,9 +59,6 @@ public static class iCS_EditorConfig {
     public static Vector2 GetPortLabelSize(string _label) {
         return PortLabelStyle.CalcSize(new GUIContent(_label));
     }
-    public static float GetPortLabelWidth(string _label) {
-        return GetPortLabelSize(_label).x;
-    }
     public static float MinimumPortSeparation {
         get {
             if(_MinimumPortSeparation == 0f) {
