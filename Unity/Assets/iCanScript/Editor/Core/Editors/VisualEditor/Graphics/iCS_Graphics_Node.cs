@@ -17,8 +17,11 @@ namespace iCanScript.Editor {
         return true;
     }
     // ----------------------------------------------------------------------
-    // Returns the scaled node name size.
-	string GetNodeName(iCS_EditorObject node) {
+    /// Returns the title of the given node.
+    ///
+    /// @param node The node object from which to extract the name
+    ///
+	string GetNodeTitle(iCS_EditorObject node) {
 #if SHOW_POSITION
         return node.NodeTitle+" GP:"+node.GlobalPosition+" CO:"+node.CollisionOffset+" WO:"+node.WrappingOffset;
 #else
@@ -26,9 +29,17 @@ namespace iCanScript.Editor {
 #endif
 	}
     // ----------------------------------------------------------------------
+    /// Return the sub-title of the given node.
+    ///
+    /// @param node The node from which to extract the sub-title
+    ///
+    string GetNodeSubTitle(iCS_EditorObject node) {
+        return node.NodeSubTitle;
+    }
+    // ----------------------------------------------------------------------
     // Returns the scaled node name size.
     Vector2 GetNodeNameSize(iCS_EditorObject node) {
-        string nodeName= GetNodeName(node);
+        string nodeName= GetNodeTitle(node);
         GUIContent content= new GUIContent(nodeName);
         return node.IsIconizedOnDisplay ?
             Layout.DynamicLabelStyle.CalcSize(content):

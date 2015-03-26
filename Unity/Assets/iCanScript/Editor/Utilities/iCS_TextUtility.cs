@@ -43,6 +43,13 @@ public static class iCS_TextUtility {
 	}
 
     // ---------------------------------------------------------------------------------
+    public static bool StartsWithAVowel(string str) {
+        switch(Char.ToUpper(str[0])) {
+            case 'A': case 'E': case 'I': case 'O': case 'U': return true;
+        }
+        return false;
+    }
+    // ---------------------------------------------------------------------------------
     public static string NicifyName(string name) {
         var result= new StringBuilder();
         bool upperNext= true;

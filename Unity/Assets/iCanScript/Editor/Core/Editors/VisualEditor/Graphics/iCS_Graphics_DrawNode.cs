@@ -21,7 +21,7 @@ public partial class iCS_Graphics {
 	static Rect  kBottomRightTileCoord= new Rect(kTilePos2, kTilePos0, kTileRatio, kTileRatio);
 
 	// ----------------------------------------------------------------------
-	void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent title) {
+	void DrawNode(Rect r, iCS_EditorObject node, Color nodeColor, Color backgroundColor, Color shadowColor) {
 		// Reajust screen position for fix size shadow.
 		float shadowSize= iCS_EditorConfig.NodeShadowSize;
 		float shadowSize2= 2f*shadowSize;
@@ -75,6 +75,8 @@ public partial class iCS_Graphics {
         if(!ShouldShowTitle()) return;
         var titleStyle   = Layout.DynamicTitleStyle;
         var subTitleStyle= Layout.DynamicSubTitleStyle;
+        var title= new GUIContent(GetNodeTitle(node));
+        var subTitle= GetNodeSubTitle(node);
         Vector2 titleSize= titleStyle.CalcSize(title);
         var scale= titleSize.y / iCS_EditorConfig.kTitleFontSize;
         var titleLeft  = r.x+scale*iCS_EditorConfig.kNodeTitleIconSize;
@@ -82,7 +84,7 @@ public partial class iCS_Graphics {
         var subTitleTop= titleTop+titleSize.y;
         var titleWidth = r.width-titleLeft;
         GUI.Label(new Rect(titleLeft, titleTop, titleWidth, r.height), title, titleStyle);
-        GUI.Label(new Rect(titleLeft, subTitleTop, titleWidth, r.height), "Target is a Fred", subTitleStyle);
+        GUI.Label(new Rect(titleLeft, subTitleTop, titleWidth, r.height), subTitle, subTitleStyle);
 	}
 }
 }

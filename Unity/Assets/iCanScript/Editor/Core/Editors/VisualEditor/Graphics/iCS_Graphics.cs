@@ -124,9 +124,9 @@ public partial class iCS_Graphics {
         return new Vector2(Scale*(x-Translation.x), Scale*(y-Translation.y));
     }
     // ----------------------------------------------------------------------
-    void GUI_Box(Rect pos, GUIContent title, Color nodeColor, Color backgroundColor, Color shadowColor) {
+    void GUI_Box(Rect pos, iCS_EditorObject node, Color nodeColor, Color backgroundColor, Color shadowColor) {
         Rect adjPos= TranslateAndScale(pos);
-        DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, title);
+        DrawNode(adjPos, node, nodeColor, backgroundColor, shadowColor);
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -393,14 +393,13 @@ public partial class iCS_Graphics {
 			alpha*= 0.5f;
 		}
         GUI.color= new Color(1f, 1f, 1f, alpha);
-        string title= GetNodeName(node);
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
 		
         // Determine title style
         var shadowColor= isMouseOver || iStorage.IsSelectedOrMultiSelected(node) ? WhiteShadowColor : BlackShadowColor;
-        GUI_Box(position, new GUIContent(title), GetNodeColor(node), backgroundColor, shadowColor);
+        GUI_Box(position, node, GetNodeColor(node), backgroundColor, shadowColor);
         if(isMouseOver) {
             EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
         }
@@ -464,7 +463,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
 	void ShowTitleOver(Rect pos, iCS_EditorObject node) {
         if(!ShouldShowTitle()) return;
-        string title= GetNodeName(node);
+        string title= GetNodeTitle(node);
 //        string title= GetNodeName(node); // Name too long with stereotype
         Vector2 labelSize= GetNodeNameSize(node);
 		pos.y-=5f;	// Put title a bit higher.

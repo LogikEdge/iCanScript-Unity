@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -96,8 +97,8 @@ public partial class iCS_EditorObject {
 		get {
             if(IsDataPort) {
                 if(IsProgrammaticInstancePort) {
+                    if(IsOutputPort) return "Self";
                     return "Target";
-//                    return "<"+iCS_Types.TypeName(RuntimeType)+" &>";
                 }                
             }
             return EngineObject.Name;
@@ -136,13 +137,7 @@ public partial class iCS_EditorObject {
                     // TODO: Support retreiving the initial port name.
                 }
             }
-            return defaultName+TypeLabel;            
-        }
-    }
-    // ----------------------------------------------------------------------
-    public string TypeLabel {
-        get {
-            return "<"+iCS_Types.TypeName(iCS_Types.RemoveRefOrPointer(RuntimeType))+">";
+            return defaultName;
         }
     }
     // ----------------------------------------------------------------------
@@ -189,7 +184,32 @@ public partial class iCS_EditorObject {
             return DisplayName;
         }
     }
-	
+    // ----------------------------------------------------------------------
+    public string NodeSubTitle {
+        get {
+            if(!IsNode) return null;
+            if(IsConstructor) {
+                return BuildIsASubTitle("Self", RuntimeType);
+            }
+            if(IsKindOfFunction || IsMessageHandler) {
+                return BuildIsASubTitle("Target", RuntimeType);
+            }
+            if(IsKindOfPackage) return "Node is a Package";
+            return "";
+        }
+    }
+    string BuildIsASubTitle(string name, Type type) {
+        var result= new StringBuilder(name);
+        result.Append(" is a");
+        var typeName= iCS_TextUtility.NicifyName(iCS_Types.TypeName(type));
+        if(iCS_TextUtility.StartsWithAVowel(typeName)) {
+            result.Append('n');
+        }
+        result.Append(" ");
+        result.Append(typeName);
+        return result.ToString();        
+    }
+    
     // ======================================================================
     // High-Level Properties
     // ----------------------------------------------------------------------
