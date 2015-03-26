@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Editor;
 
 public partial class iCS_EditorObject {
     // ======================================================================
@@ -14,6 +15,7 @@ public partial class iCS_EditorObject {
     List<int>		myChildren       = new List<int>();
     bool            myIsSticky       = false;
     string          mySubTitleName   = null;
+    Vector2         mySubTitleNameSize;
 
     // ======================================================================
     // Conversion Utilities
@@ -178,16 +180,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public string NodeTitle {
         get {
-            if(iCS_PreferencesController.ShowNodeStereotype) {
-                return DisplayName;
-            }
             return DisplayName;
         }
     }
     // ----------------------------------------------------------------------
     public string NodeSubTitle {
         get {
-            if(!IsNode) return null;
             if(mySubTitleName == null) {
                 if(IsConstructor) {
                     mySubTitleName= BuildIsASubTitle("Self", RuntimeType);
@@ -198,7 +196,11 @@ public partial class iCS_EditorObject {
                 else if(IsKindOfPackage) {
                     mySubTitleName= "Node is a Package";
                 }
-                return "";
+                else {
+                    mySubTitleName= "";
+                }
+                var guiContent= new GUIContent(mySubTitleName);
+                mySubTitleNameSize= iCS_Layout.DefaultSubTitleStyle.CalcSize(guiContent);
             }
             return mySubTitleName;
         }

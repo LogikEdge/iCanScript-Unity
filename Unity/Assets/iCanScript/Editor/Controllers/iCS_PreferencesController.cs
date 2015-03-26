@@ -114,7 +114,6 @@ public static class iCS_PreferencesController {
     const bool   kShowRuntimePortValue       = false;
     const float  kPortValueRefreshPeriod     = 0.1f;
 	const bool   kShowRuntimeFrameId         = false;
-    const bool   kShowNodeStereotype         = false;
 
 	//
 	// Database access keys
@@ -128,7 +127,6 @@ public static class iCS_PreferencesController {
     const string kShowRuntimePortValueKey    = "iCS_ShowRuntimePortValue";
     const string kPortValueRefreshPeriodKey  = "iCS_PortValueRefresh";
     const string kShowRuntimeFrameIdKey      = "iCS_ShowRuntimeFrameId";
-    const string kShowNodeStereotypeKey      = "iCS_ShowNodeStereotype";
 
 	//
 	// Reset to default value functions
@@ -160,9 +158,6 @@ public static class iCS_PreferencesController {
 	public static void ResetShowRuntimeFrameId() {
 		ShowRuntimeFrameId= kShowRuntimeFrameId;    	
 	}
-    public static void ResetShowNodeStereotype() {
-        ShowNodeStereotype= kShowNodeStereotype;
-    }
 
 	//
 	// Accessors
@@ -243,14 +238,6 @@ public static class iCS_PreferencesController {
         }
         set {
             EditorPrefs.SetBool(kShowRuntimeFrameIdKey, value);
-        }
-    }
-    public static bool ShowNodeStereotype {
-        get {
-            return EditorPrefs.GetBool(kShowNodeStereotypeKey, kShowNodeStereotype);
-        }
-        set {
-            EditorPrefs.SetBool(kShowNodeStereotypeKey, value);
         }
     }
 
