@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using iCanScript.Editor;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties.
@@ -96,4 +97,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void UpdateVisualScriptCache() {
         
     }
+}
 }

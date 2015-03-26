@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Engine;
+using iCanScript.Editor;
 using P=Prelude;
 
 public class iCS_ContextualMenu {

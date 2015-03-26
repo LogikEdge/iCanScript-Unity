@@ -2,6 +2,7 @@
 using UnityEditor;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Public interface Utilities
@@ -56,4 +57,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             QueueOnGUICommand(()=> iCS_UserCommands.CreateFunctionCall(parent, globalPosition, engineObject.Name, vs, engineObject));
         }
     }
+}
 }

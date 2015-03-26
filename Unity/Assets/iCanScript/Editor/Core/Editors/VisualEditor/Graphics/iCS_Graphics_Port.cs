@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
 
+namespace iCanScript.Editor {
 // ==========================================================================
 // Port utilities.
 // ==========================================================================
@@ -86,8 +87,8 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the port name size in GUI scale.
     Vector2 GetPortNameSize(iCS_EditorObject port) {
-		if(LabelStyle == null) return Vector2.zero;
-        return LabelStyle.CalcSize(new GUIContent(GetPortName(port)));
+		if(iCS_Layout.LabelStyle == null) return Vector2.zero;
+        return iCS_Layout.LabelStyle.CalcSize(new GUIContent(GetPortName(port)));
     }
     // ----------------------------------------------------------------------
     // Returns the port name position in graph coordinate and GUI scale size.
@@ -162,9 +163,9 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the port value display size in GUI scale.
     Vector2 GetPortValueSize(iCS_EditorObject port) {
-        if(ValueStyle == null) return Vector2.zero;
+        if(iCS_Layout.ValueStyle == null) return Vector2.zero;
 		string valueAsStr= GetPortValueAsString(port);
-		return iCS_Strings.IsNotEmpty(valueAsStr) ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
+		return iCS_Strings.IsNotEmpty(valueAsStr) ? iCS_Layout.ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
     }
     // ----------------------------------------------------------------------
     // Returns the port value position in graph coordinate and GUI scale size.
@@ -194,4 +195,6 @@ public partial class iCS_Graphics {
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
 	}
+}
+
 }

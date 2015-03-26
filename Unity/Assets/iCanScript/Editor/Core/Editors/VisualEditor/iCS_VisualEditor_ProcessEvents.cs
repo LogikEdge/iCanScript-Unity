@@ -6,6 +6,7 @@ using Prefs= iCS_PreferencesController;
 using iCanScript.Editor;
 using iCanScript.Editor.CodeEngineering;
 
+namespace iCanScript.Editor {
 // ===========================================================================
 // Graph editor event processing.
 // ===========================================================================
@@ -230,4 +231,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public void PanViewportBy(Vector2 additionalPan) {
         ScrollPosition-= additionalPan;
     }
+}
 }

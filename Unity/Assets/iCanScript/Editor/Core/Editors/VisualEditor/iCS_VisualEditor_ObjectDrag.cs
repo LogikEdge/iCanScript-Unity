@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using P=Prelude;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Types
@@ -944,4 +945,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         SetNewDataConnection(thisPort, sourcePort);
 #endif
     }
+}
 }

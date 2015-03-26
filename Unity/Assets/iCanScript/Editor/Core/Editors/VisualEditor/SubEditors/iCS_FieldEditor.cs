@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public class iCS_FieldEditor : iCS_ISubEditor {
     // =================================================================================
     // Fields
@@ -410,4 +411,5 @@ public class iCS_FieldEditor : iCS_ISubEditor {
         }
         return false;
     }
+}
 }

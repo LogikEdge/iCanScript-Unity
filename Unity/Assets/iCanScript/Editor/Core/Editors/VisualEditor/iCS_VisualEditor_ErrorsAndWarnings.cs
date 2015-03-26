@@ -8,6 +8,7 @@ using TS=iCS_TimerService;
 using EC=iCanScript.Editor.ErrorController;
 using TimedAction= Prelude.TimerService.TimedAction;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor {
 	// =======================================================================
 	// Fields
@@ -181,4 +182,5 @@ public partial class iCS_VisualEditor {
             }
         }
     }
+}
 }

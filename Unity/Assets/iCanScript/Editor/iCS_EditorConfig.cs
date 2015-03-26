@@ -6,18 +6,18 @@ public static class iCS_EditorConfig {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
-    public const float kInitialScale    = 1f;
-    public const float kIconicSize      = 32f;
-    public const float kIconicArea      = kIconicSize*kIconicSize;
-    public const float kMinIconicSize   = 12f;
-    public const float kMinIconicArea   = kMinIconicSize*kMinIconicSize;
-    public const float kNodeCornerRadius= 8f;
-    public const int   kLabelFontSize   = 11;
-    public const int   kTitleFontSize   = 13;
-    public const int   kSubTitleFontSize= 0;
-    public const float kTitlePadding    = 4;
-    public const float kNodeTitleHeight = kTitleFontSize+kSubTitleFontSize+2*kTitlePadding;
-
+    public const float kInitialScale     = 1f;
+    public const float kIconicSize       = 32f;
+    public const float kIconicArea       = kIconicSize*kIconicSize;
+    public const float kMinIconicSize    = 12f;
+    public const float kMinIconicArea    = kMinIconicSize*kMinIconicSize;
+    public const float kNodeCornerRadius = 8f;
+    public const int   kLabelFontSize    = 11;
+    public const int   kTitleFontSize    = 13;
+    public const int   kSubTitleFontSize = 0;
+    public const float kTitlePadding     = 4;
+    public const float kNodeTitleHeight  = kTitleFontSize+kSubTitleFontSize+2*kTitlePadding;
+    public const float kNodeTitleIconSize= 32f;
     // ----------------------------------------------------------------------
 	public const float NodeShadowSize= 5.0f;
 	

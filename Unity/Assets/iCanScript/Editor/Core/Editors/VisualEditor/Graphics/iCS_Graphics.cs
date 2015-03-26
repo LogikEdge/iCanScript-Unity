@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
 
+namespace iCanScript.Editor {
 public partial class iCS_Graphics {
     // ======================================================================
     // Constants
@@ -30,11 +31,10 @@ public partial class iCS_Graphics {
     static Texture2D    rightArrowHeadIcon= null;
 	
     // ----------------------------------------------------------------------
-    public GUIStyle    LabelStyle              = null;
-    public GUIStyle    TitleStyle              = null;
-    public GUIStyle    MessageTitleStyle       = null;
-    public GUIStyle    ValueStyle              = null;
-    public GUIStyle    StereotypeStyle         = null;
+//    public GUIStyle    LabelStyle              = null;
+//    public GUIStyle    TitleStyle              = null;
+//    public GUIStyle    MessageTitleStyle       = null;
+//    public GUIStyle    ValueStyle              = null;
     public Texture2D   StateMaximizeIcon       = null;
     public Texture2D   ModuleMaximizeIcon      = null;
     public Texture2D   EntryStateMaximizeIcon  = null;
@@ -75,24 +75,26 @@ public partial class iCS_Graphics {
         selectedObject= selObj;
 
         // Rebuild label style to match user preferences.
-        BuildLabelStyle();
-        BuildTitleStyle();
-        BuildMessageTitleStyle();
-        BuildValueStyle();
-        BuildStereotypeStyle();
+        iCS_Layout.InitTitleStyle();
+        iCS_Layout.InitMessageTitleStyle();
+        iCS_Layout.InitLabelStyle();
+        iCS_Layout.InitValueStyle();
+//        BuildLabelStyle();
+//        BuildTitleStyle();
+//        BuildMessageTitleStyle();
+//        BuildValueStyle();
         
         // Set font size according to scale.
-        LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
-        TitleStyle.fontSize= (int)(kTitleFontSize*Scale);
-        ValueStyle.fontSize= (int)(kLabelFontSize*Scale);
-        StereotypeStyle.fontSize= (int)(kTitleFontSize*Scale);
+        iCS_Layout.LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
+        iCS_Layout.TitleStyle.fontSize= (int)(kTitleFontSize*Scale);
+        iCS_Layout.ValueStyle.fontSize= (int)(kLabelFontSize*Scale);
 
         // Special case for asset store images
         if(iCS_DevToolsConfig.ShowBoldImage) {
-            LabelStyle.fontSize= (int)(LabelStyle.fontSize*1.2f);
-            ValueStyle.fontSize= (int)(ValueStyle.fontSize*1.2f);
-            LabelStyle.fontStyle= FontStyle.Bold;
-            ValueStyle.fontStyle= FontStyle.Bold;
+            iCS_Layout.LabelStyle.fontSize= (int)(iCS_Layout.LabelStyle.fontSize*1.2f);
+            iCS_Layout.ValueStyle.fontSize= (int)(iCS_Layout.ValueStyle.fontSize*1.2f);
+            iCS_Layout.LabelStyle.fontStyle= FontStyle.Bold;
+            iCS_Layout.ValueStyle.fontStyle= FontStyle.Bold;
         }                
     }
     public void End(iCS_IStorage iStorage) {
@@ -136,7 +138,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     void GUI_Box(Rect pos, GUIContent title, Color nodeColor, Color backgroundColor, Color shadowColor, GUIStyle titleStyle= null) {
-        if(titleStyle == null) titleStyle= TitleStyle;
+        if(titleStyle == null) titleStyle= iCS_Layout.TitleStyle;
         Rect adjPos= TranslateAndScale(pos);
         DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, title, titleStyle);
     }
@@ -237,74 +239,74 @@ public partial class iCS_Graphics {
         IsInitialized= true;
         return IsInitialized;
     }
-    // ----------------------------------------------------------------------
-    void BuildLabelStyle() {
-        Color labelColor= Prefs.NodeLabelColor;
-        if(LabelStyle == null) LabelStyle= new GUIStyle();
-        LabelStyle.normal.textColor= labelColor;
-        LabelStyle.hover.textColor= labelColor;
-        LabelStyle.focused.textColor= labelColor;
-        LabelStyle.active.textColor= labelColor;
-        LabelStyle.onNormal.textColor= labelColor;
-        LabelStyle.onHover.textColor= labelColor;
-        LabelStyle.onFocused.textColor= labelColor;
-        LabelStyle.onActive.textColor= labelColor;
-        LabelStyle.fontStyle= FontStyle.Bold;
-        LabelStyle.fontSize= kLabelFontSize;
-    }
-    // ----------------------------------------------------------------------
-    void BuildTitleStyle() {
-        Color titleColor= Prefs.NodeTitleColor;
-        if(TitleStyle == null) TitleStyle= new GUIStyle();
-        TitleStyle.normal.textColor= titleColor;
-        TitleStyle.hover.textColor= titleColor;
-        TitleStyle.focused.textColor= titleColor;
-        TitleStyle.active.textColor= titleColor;
-        TitleStyle.onNormal.textColor= titleColor;
-        TitleStyle.onHover.textColor= titleColor;
-        TitleStyle.onFocused.textColor= titleColor;
-        TitleStyle.onActive.textColor= titleColor;
-        TitleStyle.fontStyle= FontStyle.Bold;
-        TitleStyle.fontSize= kTitleFontSize;
-    }
-    // ----------------------------------------------------------------------
-    void BuildStereotypeStyle() {
-        Color titleColor= Prefs.NodeTitleColor;
-        if(StereotypeStyle == null) StereotypeStyle= new GUIStyle();
-        StereotypeStyle.normal.textColor= titleColor;
-        StereotypeStyle.hover.textColor= titleColor;
-        StereotypeStyle.focused.textColor= titleColor;
-        StereotypeStyle.active.textColor= titleColor;
-        StereotypeStyle.onNormal.textColor= titleColor;
-        StereotypeStyle.onHover.textColor= titleColor;
-        StereotypeStyle.onFocused.textColor= titleColor;
-        StereotypeStyle.onActive.textColor= titleColor;
-        StereotypeStyle.fontStyle= FontStyle.Bold;
-        StereotypeStyle.fontSize= 12;
-    }
-    // ----------------------------------------------------------------------
-    void BuildMessageTitleStyle() {
-        Color messageTitleColor= Color.red;
-        if(MessageTitleStyle == null) {
-            MessageTitleStyle= new GUIStyle(TitleStyle);
-        }
-        MessageTitleStyle.normal.textColor= messageTitleColor;
-    }
-    // ----------------------------------------------------------------------
-    void BuildValueStyle() {
-        Color valueColor= Prefs.NodeValueColor;
-        if(ValueStyle == null) ValueStyle= new GUIStyle();
-        ValueStyle.normal.textColor= valueColor;
-        ValueStyle.hover.textColor= valueColor;
-        ValueStyle.focused.textColor= valueColor;
-        ValueStyle.active.textColor= valueColor;
-        ValueStyle.onNormal.textColor= valueColor;
-        ValueStyle.onHover.textColor= valueColor;
-        ValueStyle.onFocused.textColor= valueColor;
-        ValueStyle.onActive.textColor= valueColor;
-        ValueStyle.fontStyle= FontStyle.Bold;
-        ValueStyle.fontSize= 11;
-    }
+//    // ----------------------------------------------------------------------
+//    void BuildLabelStyle() {
+//        Color labelColor= Prefs.NodeLabelColor;
+//        if(LabelStyle == null) LabelStyle= new GUIStyle();
+//        LabelStyle.normal.textColor= labelColor;
+//        LabelStyle.hover.textColor= labelColor;
+//        LabelStyle.focused.textColor= labelColor;
+//        LabelStyle.active.textColor= labelColor;
+//        LabelStyle.onNormal.textColor= labelColor;
+//        LabelStyle.onHover.textColor= labelColor;
+//        LabelStyle.onFocused.textColor= labelColor;
+//        LabelStyle.onActive.textColor= labelColor;
+//        LabelStyle.fontStyle= FontStyle.Bold;
+//        LabelStyle.fontSize= kLabelFontSize;
+//    }
+//    // ----------------------------------------------------------------------
+//    void BuildTitleStyle() {
+//        Color titleColor= Prefs.NodeTitleColor;
+//        if(TitleStyle == null) TitleStyle= new GUIStyle();
+//        TitleStyle.normal.textColor= titleColor;
+//        TitleStyle.hover.textColor= titleColor;
+//        TitleStyle.focused.textColor= titleColor;
+//        TitleStyle.active.textColor= titleColor;
+//        TitleStyle.onNormal.textColor= titleColor;
+//        TitleStyle.onHover.textColor= titleColor;
+//        TitleStyle.onFocused.textColor= titleColor;
+//        TitleStyle.onActive.textColor= titleColor;
+//        TitleStyle.fontStyle= FontStyle.Bold;
+//        TitleStyle.fontSize= kTitleFontSize;
+//    }
+//    // ----------------------------------------------------------------------
+//    void BuildStereotypeStyle() {
+//        Color titleColor= Prefs.NodeTitleColor;
+//        if(StereotypeStyle == null) StereotypeStyle= new GUIStyle();
+//        StereotypeStyle.normal.textColor= titleColor;
+//        StereotypeStyle.hover.textColor= titleColor;
+//        StereotypeStyle.focused.textColor= titleColor;
+//        StereotypeStyle.active.textColor= titleColor;
+//        StereotypeStyle.onNormal.textColor= titleColor;
+//        StereotypeStyle.onHover.textColor= titleColor;
+//        StereotypeStyle.onFocused.textColor= titleColor;
+//        StereotypeStyle.onActive.textColor= titleColor;
+//        StereotypeStyle.fontStyle= FontStyle.Bold;
+//        StereotypeStyle.fontSize= 12;
+//    }
+//    // ----------------------------------------------------------------------
+//    void BuildMessageTitleStyle() {
+//        Color messageTitleColor= Color.red;
+//        if(MessageTitleStyle == null) {
+//            MessageTitleStyle= new GUIStyle(TitleStyle);
+//        }
+//        MessageTitleStyle.normal.textColor= messageTitleColor;
+//    }
+//    // ----------------------------------------------------------------------
+//    void BuildValueStyle() {
+//        Color valueColor= Prefs.NodeValueColor;
+//        if(ValueStyle == null) ValueStyle= new GUIStyle();
+//        ValueStyle.normal.textColor= valueColor;
+//        ValueStyle.hover.textColor= valueColor;
+//        ValueStyle.focused.textColor= valueColor;
+//        ValueStyle.active.textColor= valueColor;
+//        ValueStyle.onNormal.textColor= valueColor;
+//        ValueStyle.onHover.textColor= valueColor;
+//        ValueStyle.onFocused.textColor= valueColor;
+//        ValueStyle.onActive.textColor= valueColor;
+//        ValueStyle.fontStyle= FontStyle.Bold;
+//        ValueStyle.fontSize= 11;
+//    }
     // ----------------------------------------------------------------------
     public void DrawIconCenteredAt(Vector2 point, Texture2D icon) {
         if(icon == null) return;
@@ -559,7 +561,7 @@ public partial class iCS_Graphics {
             backgroundColor= GetBackgroundColor(node);
         }
         DrawLabelBackground(labelRect, boxAlpha, backgroundColor, outlineColor);
-        GUI.Label(labelRect, new GUIContent(title), LabelStyle);		
+        GUI.Label(labelRect, new GUIContent(title), iCS_Layout.LabelStyle);		
 	}
 	
     // ======================================================================
@@ -714,7 +716,7 @@ public partial class iCS_Graphics {
             }
             DrawLabelBackground(portNamePos, boxAlpha, backgroundColor, outlineColor);
 	        string name= GetPortName(port);
-	        GUI.Label(portNamePos, name, LabelStyle);                                            	
+	        GUI.Label(portNamePos, name, iCS_Layout.LabelStyle);                                            	
         }
 
         // Display port value (if applicable).
@@ -725,7 +727,7 @@ public partial class iCS_Graphics {
         		if(Math3D.IsNotZero(portValuePos.width)) {
                     DrawLabelBackground(portValuePos, 0.35f, Color.black, Color.black);
             		string valueAsStr= GetPortValueAsString(port);
-        			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
+        			GUI.Label(portValuePos, valueAsStr, iCS_Layout.ValueStyle);			
         		}            				
     
 //                /*
@@ -1262,4 +1264,6 @@ public partial class iCS_Graphics {
         }
         return result;
     }
+}
+
 }

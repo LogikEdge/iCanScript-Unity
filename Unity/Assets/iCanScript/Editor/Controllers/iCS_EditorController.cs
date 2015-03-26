@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace iCanScript.Editor {
 public static class iCS_EditorController {
     // =================================================================================
     // Fields
@@ -180,4 +181,5 @@ public static class iCS_EditorController {
             ShowInstanceEditor();
         }
     }
+}
 }

@@ -4,10 +4,11 @@ using UnityEditor;
 using System;
 using System.Collections;
 
+namespace iCanScript.Editor {
 // ==========================================================================
 // Node utilities.
 // ==========================================================================
-public partial class iCS_Graphics {
+    public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     bool ShouldDisplayNodeName(iCS_EditorObject node) {
         if(!ShouldShowTitle()) return false;
@@ -29,7 +30,7 @@ public partial class iCS_Graphics {
     Vector2 GetNodeNameSize(iCS_EditorObject node) {
         string nodeName= GetNodeName(node);
         GUIContent content= new GUIContent(nodeName);
-        return node.IsIconizedOnDisplay ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
+        return node.IsIconizedOnDisplay ? iCS_Layout.LabelStyle.CalcSize(content) : iCS_Layout.TitleStyle.CalcSize(content);
     }
     // ----------------------------------------------------------------------
     // Returns the non-scaled x,y with the scaled size.
@@ -53,4 +54,5 @@ public partial class iCS_Graphics {
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
     }
 	
+}
 }

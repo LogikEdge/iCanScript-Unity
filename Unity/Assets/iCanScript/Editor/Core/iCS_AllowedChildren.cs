@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public static class iCS_AllowedChildren {
     public static readonly string[]    StateChildNames= null;
     public static readonly string[]     StateChildTooltips= null;
@@ -116,4 +117,5 @@ public static class iCS_AllowedChildren {
         }
         return false;
     }
+}
 }

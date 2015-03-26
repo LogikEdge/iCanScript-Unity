@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public partial class iCS_Graphics {
     // ======================================================================
     // Constants
@@ -74,7 +75,7 @@ public partial class iCS_Graphics {
         if(!ShouldShowTitle()) return;
         Vector2 titleSize= titleStyle.CalcSize(title);
         var scale= titleSize.y / iCS_EditorConfig.kTitleFontSize;
-        var titleLeft  = r.x+scale*iCS_EditorConfig.kIconicSize;
+        var titleLeft  = r.x+scale*iCS_EditorConfig.kNodeTitleIconSize;
         var titleTop   = r.y;
         var subTitleTop= titleTop+titleSize.y;
         var titleWidth = r.width-titleLeft;
@@ -85,4 +86,5 @@ public partial class iCS_Graphics {
         subTitleStyle.normal.textColor= new Color(0.2f, 0.2f, 0.2f);
         GUI.Label(new Rect(titleLeft, subTitleTop, titleWidth, r.height), "Target is a Fred", subTitleStyle);
 	}
+}
 }

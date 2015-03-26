@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace iCanScript.Editor {
 public class iCS_TreeViewController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
@@ -430,4 +431,5 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
         }
         return result | FilterIn(tree.Value);
     }
+}
 }

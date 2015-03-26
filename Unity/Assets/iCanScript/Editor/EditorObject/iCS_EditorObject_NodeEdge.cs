@@ -13,7 +13,7 @@ public partial class iCS_EditorObject {
 		get {
             var niceTitle= iCS_TextUtility.NicifyName(NodeTitle);
 			var titleWidth= iCS_EditorConfig.GetNodeTitleWidth(niceTitle);
-			var iconsWidth= 2f*iCS_BuiltinTextures.kMinimizeIconSize;
+			var iconsWidth= iCS_EditorConfig.kNodeTitleIconSize+iCS_BuiltinTextures.kMinimizeIconSize;
 			var spacer= iCS_EditorConfig.kTitleFontSize;
 			return titleWidth+iconsWidth+2*spacer;
 		}

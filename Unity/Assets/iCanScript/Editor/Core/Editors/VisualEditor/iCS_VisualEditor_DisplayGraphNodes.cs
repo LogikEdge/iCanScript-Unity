@@ -8,6 +8,7 @@ using P= Prelude;
 /*
     TODO: Cleanup conditional tree descent VS full tree descent when drawing graph.
 */
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields.
@@ -208,4 +209,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         return scale;
     }
+}
 }

@@ -4,6 +4,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using Subspace;
+using iCanScript.Editor;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is used to edit iCS_Behaviour components.

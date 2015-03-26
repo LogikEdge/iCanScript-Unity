@@ -8,6 +8,7 @@ using iCanScript.Editor.CodeEngineering;
 /*
     TODO: Should show runId in header bar.
 */
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // =======================================================================
     // Toolbar Constants
@@ -189,4 +190,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //            }
         }        
     }
+}
 }

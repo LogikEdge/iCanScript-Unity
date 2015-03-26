@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties.
@@ -540,4 +541,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             iCS_EditorController.OpenInstanceEditor();
         }
     }
+}
 }

@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 
+namespace iCanScript.Editor {
 // ===========================================================================
 // Unity Drag & Drop.
 // ===========================================================================
@@ -200,4 +201,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         }                                
     }
+}
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using iCanScript.Engine;
 using Prefs=iCS_PreferencesController;
 
+namespace iCanScript.Editor {
 public class iCS_PreferencesEditor : iCS_EditorBase {
     // =================================================================================
     // Constants
@@ -571,4 +572,5 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     Texture2D LoadIconFromGUID(string iconGuid) {
         return iCS_TextureCache.GetIconFromGUID(iconGuid);
     }
+}
 }

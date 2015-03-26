@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace iCanScript.Editor {
 public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
     // ======================================================================
     // Fields
@@ -73,4 +74,5 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
 	public bool Update() {
 		return false;
 	}
+}
 }

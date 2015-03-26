@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Subspace;
 
+namespace iCanScript.Editor {
 public static class iCS_GuiUtilities {
     class GUIFieldInfo {
         public bool    Foldout= false;
@@ -438,4 +439,5 @@ public static class iCS_GuiUtilities {
     public static void UnsupportedFeature() {
         Debug.LogWarning("The selected feature is unsupported in the current version of iCanScript.  Feature is planned for a later version.  Thanks for your patience.");
     }
+}
 }

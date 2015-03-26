@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Prefs= iCS_PreferencesController;
 
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Constants
@@ -393,4 +394,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 #endif			    
 	}
 #endif
+}
 }
