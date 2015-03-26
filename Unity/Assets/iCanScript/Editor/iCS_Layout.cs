@@ -18,6 +18,7 @@ namespace iCanScript.Editor {
         public static GUIStyle  TitleStyle       = null;
         public static GUIStyle  MessageTitleStyle= null;
         public static GUIStyle  ValueStyle       = null;
+        public static GUIStyle  SubTitleStyle    = null;
 
         // ======================================================================
         // FUNCTIONS
@@ -34,12 +35,22 @@ namespace iCanScript.Editor {
             TitleStyle       = null;
             MessageTitleStyle= null;
             ValueStyle       = null;
+            SubTitleStyle    = null;
             InitLabelStyle();
             InitTitleStyle();
             InitMessageTitleStyle();
-            InitValueStyle();            
+            InitValueStyle();
+            InitSubTitleStyle();
         }
-
+        // ----------------------------------------------------------------------
+        public static void AdjustForScale(float scale) {
+            LabelStyle.fontSize       = (int)(kLabelFontSize*scale);
+            TitleStyle.fontSize       = (int)(kTitleFontSize*scale);
+            MessageTitleStyle.fontSize= (int)(kTitleFontSize*scale);
+            ValueStyle.fontSize       = (int)(kLabelFontSize*scale);
+            SubTitleStyle.fontSize    = (int)(kTitleFontSize*0.8f*scale);
+        }
+        
         // ======================================================================
         // Build and update GUI styles
         // ----------------------------------------------------------------------
@@ -95,6 +106,17 @@ namespace iCanScript.Editor {
             ValueStyle.onActive.textColor= valueColor;
             ValueStyle.fontStyle= FontStyle.Bold;
             ValueStyle.fontSize= 11;
+        }
+        // ----------------------------------------------------------------------
+        public static void InitSubTitleStyle() {
+            Color subTitleColor= Prefs.NodeTitleColor;
+            subTitleColor.a= 0.75f;
+            if(SubTitleStyle == null) {
+                SubTitleStyle= new GUIStyle(TitleStyle);
+            }
+            SubTitleStyle.normal.textColor= subTitleColor;
+            SubTitleStyle.fontStyle= FontStyle.Italic;
+            SubTitleStyle.fontSize= (int)(kTitleFontSize*0.8f);
         }
         
     }
