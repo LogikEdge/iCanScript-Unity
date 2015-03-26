@@ -80,11 +80,11 @@ public partial class iCS_Graphics {
         var subTitleTop= titleTop+titleSize.y;
         var titleWidth = r.width-titleLeft;
         GUI.Label(new Rect(titleLeft, titleTop, titleWidth, r.height), title, titleStyle);
-        var subTitleStyle= new GUIStyle(titleStyle);
-        subTitleStyle.fontSize= (int)((float)subTitleStyle.fontSize*0.8f);
-        subTitleStyle.fontStyle= FontStyle.Italic;
-        subTitleStyle.normal.textColor= new Color(0.2f, 0.2f, 0.2f);
-        GUI.Label(new Rect(titleLeft, subTitleTop, titleWidth, r.height), "Target is a Fred", subTitleStyle);
+//        var subTitleStyle= new GUIStyle(titleStyle);
+//        subTitleStyle.fontSize= (int)((float)subTitleStyle.fontSize*0.8f);
+//        subTitleStyle.fontStyle= FontStyle.Italic;
+//        subTitleStyle.normal.textColor= new Color(0.2f, 0.2f, 0.2f);
+        GUI.Label(new Rect(titleLeft, subTitleTop, titleWidth, r.height), "Target is a Fred", iCS_Layout.SubTitleStyle);
 	}
 }
 }
