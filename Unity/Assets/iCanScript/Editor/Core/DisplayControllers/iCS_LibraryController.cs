@@ -234,15 +234,15 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 var parentTree= GetParentTree(memberInfo, tree, ref myTreeSize);
                 Node toAdd= null;
                 if(memberInfo.IsField) {
-                    var niceName= iCS_TextUtility.NicifyName(memberInfo.ToFieldInfo.DisplayName);
+                    var niceName= iCS_ObjectNames.ToDisplayName(memberInfo.ToFieldInfo.DisplayName);
                     var name= displayNameHeader+niceName+displayNameTrailer;
                     toAdd= new Node(NodeTypeEnum.Field, name, memberInfo);
                 } else if(memberInfo.IsProperty) {
-                    var niceName= iCS_TextUtility.NicifyName(memberInfo.ToPropertyInfo.DisplayName);
+                    var niceName= iCS_ObjectNames.ToDisplayName(memberInfo.ToPropertyInfo.DisplayName);
                     var name= displayNameHeader+niceName+displayNameTrailer;
                     toAdd= new Node(NodeTypeEnum.Property, name, memberInfo);
                 } else if(memberInfo.IsConstructor) {
-                    var niceName= iCS_TextUtility.NicifyName(memberInfo.DisplayName);
+                    var niceName= iCS_ObjectNames.ToDisplayName(memberInfo.DisplayName);
                     var name= displayNameHeader+niceName+displayNameTrailer;
                     name+= inputTypesHeader+memberInfo.FunctionSignatureInputTypes+inputTypesTrailer;
                     name+= "->"+outputTypesHeader+memberInfo.FunctionSignatureOutputTypes+outputTypesTrailer;
@@ -250,7 +250,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 } else if(memberInfo.IsTypeCast) {
                         // Don't add the typecasts in the library.
                 } else if(memberInfo.IsMethod) {
-                    var niceName= iCS_TextUtility.NicifyName(memberInfo.DisplayName);
+                    var niceName= iCS_ObjectNames.ToDisplayName(memberInfo.DisplayName);
                     var name= displayNameHeader+niceName+displayNameTrailer;
                     name+= inputTypesHeader+memberInfo.FunctionSignatureInputTypes+inputTypesTrailer;
                     name+= "->"+outputTypesHeader+memberInfo.FunctionSignatureOutputTypes+outputTypesTrailer;
@@ -411,7 +411,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 			var compilerType= desc.ParentTypeInfo.CompilerType;
 	        string className= iCS_Types.TypeName(compilerType);
 	        if(!iCS_Strings.IsEmpty(className)) {
-                className= iCS_TextUtility.NicifyName(className);
+                className= iCS_ObjectNames.ToDisplayName(className);
 	            var idx= FindInTreeChildren(className, tree);
 	            if(idx < 0) {
 					var nodeType= iCS_Types.IsStaticClass(compilerType) ? NodeTypeEnum.Package : NodeTypeEnum.Class;

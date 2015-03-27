@@ -26,6 +26,8 @@ public partial class iCS_EditorObject {
     string  cachedNodeSubTitle    = null;
     Vector2 cachedNodeSubTitleSize= Vector2.zero;
     string  cachedCodeName        = null;
+    string  cachedDisplayName     = null;
+    Vector2 cachedDisplayNameSize = Vector2.zero;
 
     // ======================================================================
     // Conversion Utilities
@@ -101,31 +103,87 @@ public partial class iCS_EditorObject {
             return cachedRuntimeType;
         }
 	}
-//    // ----------------------------------------------------------------------
-//    /// Returns the name as per the underlying code.
-//    public string CodeName {
-//        get {
-//            if(cachedCodeName == null) {
-//                if(IsPackage) {
-//                    cachedCodeName= "Package";
-//                }
-//                else if(IsConstructor) {
-//                    cachedCodeName= iCS_Types.TypeName(RuntimeType);
-//                }
-//                else if(IsNode) {
-//                    var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-//                    if(desc != null) {
-//                        var funcInfo= desc.ToFunctionPrototypeInfo;
-//                        cachedCodeName= funcInfo.MethodName;
-//                    }
-//                }
-//                else {
-//                    //cachedCodeName= EngineObject.Name;
-//                }
-//            }
-//            return cachedCodeName ?? "";
-//        }
-//    }
+
+    // ======================================================================
+    // ----------------------------------------------------------------------
+    /// Returns the name as per the underlying code.
+    public string CodeName {
+        get {
+            if(cachedCodeName == null) {
+                if(IsPort) {
+                    if(IsDataPort && IsProgrammaticInstancePort) {
+                        cachedDisplayName= "this";
+                    }
+                    else {
+                        cachedDisplayName= EngineObject.RawName;                        
+                    }
+                }
+                else if(IsNode) {
+                    if(IsConstructor) {
+                        cachedCodeName= iCS_Types.TypeName(RuntimeType);
+                    }
+                    else if(IsPackage) {
+                        cachedCodeName= "Package";
+                    }
+                    else if(IsStateChart) {
+                        cachedCodeName= "StateChart";
+                    }
+                    else if(IsState) {
+                        cachedCodeName= "State";
+                    }
+                    else {
+                        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+                        if(desc != null) {
+                            var funcInfo= desc.ToFunctionPrototypeInfo;
+                            if(desc is iCS_MessageInfo) {
+                                cachedCodeName= funcInfo.DisplayName;
+                            }
+                            else {
+                                cachedCodeName= funcInfo.MethodName;                            
+                            }
+                        }
+                        else {
+                            cachedCodeName= "UnknownNodeCodeName";
+                        }
+                    }                    
+                }
+                else {
+                    cachedCodeName= "null";
+                }
+            }
+            return cachedCodeName ?? "";
+        }
+    }
+    // ======================================================================
+    // ----------------------------------------------------------------------
+    /// Returns the user visible name of the object.
+    public string DisplayName2 {
+        get {
+            if(cachedDisplayName == null) {
+                if(IsDataPort && IsProgrammaticInstancePort) {
+                    cachedDisplayName= IsOutputPort ? "Self" : "Target";
+                }
+                else if(IsInstanceNode) {
+                    cachedDisplayName= "Property Accessor";
+                }
+                else {
+                    cachedDisplayName= Name;
+                    if(string.IsNullOrEmpty(cachedDisplayName)) {
+                        cachedDisplayName= CodeName;
+                    }
+                }
+                cachedDisplayName= iCS_ObjectNames.ToDisplayName(cachedDisplayName);
+            }
+            return cachedDisplayName;
+        }
+        set {
+            var engineObject= EngineObject;
+            if(engineObject.Name == value) return;
+		    engineObject.Name= value;
+            ResetNameCaches();
+        }
+    }
+
     // ----------------------------------------------------------------------
 	public string DisplayName {
 		get {
@@ -187,6 +245,8 @@ public partial class iCS_EditorObject {
     void ResetNameCaches() {
         cachedNodeTitle= null;
         cachedNodeTitleSize= Vector2.zero;
+        cachedDisplayName    = null;
+        cachedDisplayNameSize= Vector2.zero;
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
@@ -216,7 +276,7 @@ public partial class iCS_EditorObject {
         get {
             // Fill the node title cache.
             if(cachedNodeTitle == null) {
-                cachedNodeTitle= iCS_TextUtility.NicifyName(DisplayName);
+                cachedNodeTitle= iCS_ObjectNames.ToDisplayName(DisplayName);
             }
             // Add frame id if running
 			if(Prefs.ShowRuntimeFrameId && Application.isPlaying) {
@@ -272,7 +332,7 @@ public partial class iCS_EditorObject {
     string BuildIsASubTitle(string name, Type type) {
         var result= new StringBuilder(name, 64);
         result.Append(" is a");
-        var typeName= iCS_TextUtility.NicifyName(iCS_Types.TypeName(type));
+        var typeName= iCS_ObjectNames.ToDisplayName(iCS_Types.TypeName(type));
         if(iCS_TextUtility.StartsWithAVowel(typeName)) {
             result.Append('n');
         }
