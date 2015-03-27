@@ -254,7 +254,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 return ToVariableName(parent);
             }
             // Try with port name.
-            if(!string.IsNullOrEmpty(port.RawName)) {
+            if(!string.IsNullOrEmpty(port.Name)) {
                 var name= ToValidIdent(port.Name);
                 return Char.ToLower(name[0])+name.Substring(1);
             }

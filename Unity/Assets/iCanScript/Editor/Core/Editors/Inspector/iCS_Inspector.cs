@@ -151,8 +151,8 @@ public class iCS_Inspector : Editor {
 
         EditorGUI.indentLevel= 0;
         // Display selected object name.
-        string name= SelectedObject.RawName;
-        if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).RawName;
+        string name= SelectedObject.Name;
+        if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).Name;
         if(name == null || name == "") name= EmptyStr;
         if(mySelectedObject.IsNameEditable) {
 #if BUFFERED_INPUT
@@ -161,7 +161,7 @@ public class iCS_Inspector : Editor {
             );
 #else
             GUI.changed= false;
-            var newName= EditorGUILayout.TextField("Name", SelectedObject.RawName);
+            var newName= EditorGUILayout.TextField("Name", SelectedObject.Name);
             if(GUI.changed) {
                 iCS_UserCommands.ChangeName(SelectedObject, newName);
             }

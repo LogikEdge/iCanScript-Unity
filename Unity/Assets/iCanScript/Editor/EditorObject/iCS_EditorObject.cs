@@ -19,10 +19,11 @@ public partial class iCS_EditorObject {
     // Cache
     // ----------------------------------------------------------------------
     Type    cachedRuntimeType     = null;
+    string  cachedNodeTitle       = null;
+    Vector2 cachedNodeTitleSize   = Vector2.zero;
     string  cachedNodeSubTitle    = null;
     Vector2 cachedNodeSubTitleSize= Vector2.zero;
-//    string  cachedDisplayName     = null;
-//    Vector2 cachedDisplayNameSize = Vector2.zero;
+    string  cachedCodeName        = null;
 
     // ======================================================================
     // Conversion Utilities
@@ -98,15 +99,31 @@ public partial class iCS_EditorObject {
             return cachedRuntimeType;
         }
 	}
-    // ----------------------------------------------------------------------
-    public string RawName {
-		get { return EngineObject.RawName; }
-		set {
-            var engineObject= EngineObject;
-            if(engineObject.RawName == value) return;
-		    engineObject.RawName= value;
-		}
-	}
+//    // ----------------------------------------------------------------------
+//    /// Returns the name as per the underlying code.
+//    public string CodeName {
+//        get {
+//            if(cachedCodeName == null) {
+//                if(IsPackage) {
+//                    cachedCodeName= "Package";
+//                }
+//                else if(IsConstructor) {
+//                    cachedCodeName= iCS_Types.TypeName(RuntimeType);
+//                }
+//                else if(IsNode) {
+//                    var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+//                    if(desc != null) {
+//                        var funcInfo= desc.ToFunctionPrototypeInfo;
+//                        cachedCodeName= funcInfo.MethodName;
+//                    }
+//                }
+//                else {
+//                    //cachedCodeName= EngineObject.Name;
+//                }
+//            }
+//            return cachedCodeName ?? "";
+//        }
+//    }
     // ----------------------------------------------------------------------
     public string Name {
 		get {
@@ -122,6 +139,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
             if(engineObject.Name == value) return;
 		    engineObject.Name= value;
+            ResetNameCaches();
 		}
 	}
     // ----------------------------------------------------------------------
@@ -156,6 +174,12 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
+    /// This functions resets all name related caches.
+    void ResetNameCaches() {
+        cachedNodeTitle= null;
+        cachedNodeTitleSize= Vector2.zero;
+    }
+    // ----------------------------------------------------------------------
     public bool IsNameEditable {
 		get { return EngineObject.IsNameEditable && !IsMessageHandler; }
 		set {
@@ -175,8 +199,24 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
     public string NodeTitle {
-        get { return DisplayName; }
+        get {
+            if(cachedNodeTitle == null) {
+                cachedNodeTitle= iCS_TextUtility.NicifyName(DisplayName);
+            }
+            return cachedNodeTitle;
+        }
     }
+    // ----------------------------------------------------------------------
+    public Vector2 NodeTitleSize {
+        get {
+            if(Math3D.IsZero(cachedNodeTitleSize)) {
+                var titleContent= new GUIContent(NodeTitle);
+                cachedNodeTitleSize= iCS_Layout.DefaultTitleStyle.CalcSize(titleContent);
+            }
+            return cachedNodeTitleSize;
+        }
+    }
+
     // ----------------------------------------------------------------------
     /// Builds and returns the Node SubTitle text.
     public string NodeSubTitle {
@@ -199,6 +239,13 @@ public partial class iCS_EditorObject {
             return cachedNodeSubTitle ?? "";
         }
     }
+
+    // ----------------------------------------------------------------------
+    /// Builds a standard IsA type of node subtitle string.
+    ///
+    /// @param name The name to be used that _"is a"_.
+    /// @param type The type of the _"is a"_.
+    ///
     string BuildIsASubTitle(string name, Type type) {
         var result= new StringBuilder(name);
         result.Append(" is a");
@@ -210,6 +257,7 @@ public partial class iCS_EditorObject {
         result.Append(typeName);
         return result.ToString();        
     }
+
     // ----------------------------------------------------------------------
     /// Returns the rendering dimension of the Node SubTitle text.
     public Vector2 NodeSubTitleSize {

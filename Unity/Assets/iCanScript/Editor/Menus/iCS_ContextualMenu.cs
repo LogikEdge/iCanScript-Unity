@@ -710,10 +710,10 @@ public class iCS_ContextualMenu {
 		float bestScore= -1f;
 		iCS_EditorObject bestPort= null;
 		string refName= refPort.Name;
-		if(string.IsNullOrEmpty(refPort.RawName)) refName= refPort.ParentNode.Name;
+		if(string.IsNullOrEmpty(refPort.Name)) refName= refPort.ParentNode.Name;
 		foreach(var p in otherPorts) {
 			string pName= p.Name;
-			if(string.IsNullOrEmpty(p.RawName)) pName= p.ParentNode.Name;
+			if(string.IsNullOrEmpty(p.Name)) pName= p.ParentNode.Name;
 			var score= iCS_StringUtil.FuzzyCompare(refName, pName);
 			if(score > bestScore) {
 				bestScore= score;

@@ -17,25 +17,21 @@ public class iCS_PortTooltipEditor : iCS_ISubEditor {
     
     public iCS_PortTooltipEditor(iCS_EditorObject target) {
         myTarget= target;
-        myOriginalName= myTarget.RawName;
+        myOriginalName= myTarget.Name;
         myOriginalTooltip= myTarget.Tooltip;
     }
     
-//    void OnEnable() {
-//        position= new Rect(Screen.width/2, Screen.height/2, 250, 75);
-//    }
     
     public bool Update() {
         if(myTarget == null) {
             Debug.LogWarning("iCanScript: Port Editor invoked before it is initialized.");
-//			Close();
             return false;
         }
-        string name= myTarget.RawName;
+        string name= myTarget.Name;
         if(name == null || name == "") name= EmptyStr;
         if(myTarget.IsNameEditable) {
             name= EditorGUILayout.TextField("Name", name);
-            if(name != EmptyStr && name != myTarget.RawName) {
+            if(name != EmptyStr && name != myTarget.Name) {
                 myTarget.Name= name;
             }                    
         } else {
@@ -51,12 +47,10 @@ public class iCS_PortTooltipEditor : iCS_ISubEditor {
 
         GUILayout.BeginHorizontal(); {
             if(GUILayout.Button("Cancel")) {
-                myTarget.RawName= myOriginalName;
+                myTarget.Name= myOriginalName;
                 myTarget.Tooltip= myOriginalTooltip;
-//                Close();
             }
             if(GUILayout.Button("Save")) {
-//                Close();
             }
         }
         GUILayout.EndHorizontal();

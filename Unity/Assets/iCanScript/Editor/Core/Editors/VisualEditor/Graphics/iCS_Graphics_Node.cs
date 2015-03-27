@@ -1,4 +1,3 @@
-//#define SHOW_POSITION
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -22,11 +21,7 @@ namespace iCanScript.Editor {
     /// @param node The node object from which to extract the name
     ///
 	string GetNodeTitle(iCS_EditorObject node) {
-#if SHOW_POSITION
-        return node.NodeTitle+" GP:"+node.GlobalPosition+" CO:"+node.CollisionOffset+" WO:"+node.WrappingOffset;
-#else
-        return iCS_TextUtility.NicifyName(node.NodeTitle);
-#endif
+        return node.NodeTitle;
 	}
     // ----------------------------------------------------------------------
     /// Return the sub-title of the given node.

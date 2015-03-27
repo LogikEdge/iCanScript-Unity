@@ -37,7 +37,7 @@ namespace iCanScript.Editor {
         public iCS_ObjectNameEditor(iCS_EditorObject target, iCS_Graphics graphics, Vector2 pickPoint) {
             myTarget= target;
     		myGraphics= graphics;
-    		myEditor= new iCS_FieldEditor(Position, iCS_PreferencesEditor.RemoveProductPrefix(target.RawName), typeof(string), GuiStyle, pickPoint);
+    		myEditor= new iCS_FieldEditor(Position, iCS_PreferencesEditor.RemoveProductPrefix(target.Name), typeof(string), GuiStyle, pickPoint);
         }
         
         // ======================================================================

@@ -42,7 +42,7 @@ public class iCS_EngineObject {
     public bool   IsValid         { get { return InstanceId != -1; }}
     public bool   IsParentValid   { get { return ParentId != -1; }}
     public bool   IsSourceValid   { get { return SourceId != -1; }}
-    public bool   IsNameEmpty     { get { return RawName == null || RawName == ""; }}
+    public bool   IsNameEmpty     { get { return string.IsNullOrEmpty(RawName); }}
     public string TypeName        { get { return iCS_Types.TypeName(RuntimeType);}} 
     public Type   RuntimeType     {
         get {
@@ -55,7 +55,7 @@ public class iCS_EngineObject {
         }
     }
     public string Name {
-        get { return IsNameEmpty ? TypeName : RawName; }
+        get { return RawName; }
         set { RawName= value; }
     }
     // Node Specific accesors ------------------------------------------------

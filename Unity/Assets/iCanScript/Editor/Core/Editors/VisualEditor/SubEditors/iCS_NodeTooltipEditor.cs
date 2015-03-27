@@ -19,7 +19,7 @@ public class iCS_NodeTooltipEditor : iCS_ISubEditor {
     public iCS_NodeTooltipEditor(iCS_EditorObject target, iCS_IStorage iStorage) {
 		myIStorage= iStorage;
 		myTarget= target;
-        myOriginalName= myTarget.RawName;
+        myOriginalName= myTarget.Name;
         myOriginalTooltip= myTarget.Tooltip;
     }
     
@@ -33,11 +33,11 @@ public class iCS_NodeTooltipEditor : iCS_ISubEditor {
 //			Close();
             return false;
         }
-        string name= myTarget.RawName;
+        string name= myTarget.Name;
         if(name == null || name == "") name= EmptyStr;
         if(myTarget.IsNameEditable) {
             name= EditorGUILayout.TextField("Name", name);
-            if(name != EmptyStr && name != myTarget.RawName) {
+            if(name != EmptyStr && name != myTarget.Name) {
                 myTarget.Name= name;
             }                    
         } else {
@@ -53,7 +53,7 @@ public class iCS_NodeTooltipEditor : iCS_ISubEditor {
 
         GUILayout.BeginHorizontal(); {
             if(GUILayout.Button("Cancel")) {
-                myTarget.RawName= myOriginalName;
+                myTarget.Name= myOriginalName;
                 myTarget.Tooltip= myOriginalTooltip;
 //                Close();
             }

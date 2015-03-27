@@ -77,12 +77,12 @@ public class iCS_ObjectInspector : EditorWindow {
             EditorGUILayout.LabelField("Initial Name", myObject.DefaultName);
         }
         // Display object name.
-        string name= myObject.RawName;
-        if(myObject.IsOutStatePort) name= iStorage.FindAConnectedPort(myObject).RawName;
+        string name= myObject.Name;
+        if(myObject.IsOutStatePort) name= iStorage.FindAConnectedPort(myObject).Name;
         if(string.IsNullOrEmpty(name)) name= EmptyStr;
         if(myObject.IsNameEditable) {
             GUI.changed= false;
-            var newName= EditorGUILayout.TextField("Name", myObject.RawName);
+            var newName= EditorGUILayout.TextField("Name", myObject.Name);
             if(GUI.changed) {
                 iCS_UserCommands.ChangeName(myObject, newName);
             }

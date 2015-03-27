@@ -275,7 +275,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
     void ProcessNameChange(Rect pos, Rect frameArea) {
         var rect= new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f);
         GUI.changed= false;
-        var newName= EditorGUI.TextField(rect, IterValue.RawName);
+        var newName= EditorGUI.TextField(rect, IterValue.Name);
         if(GUI.changed) {
             iCS_UserCommands.ChangeName(IterValue, newName);            
         }

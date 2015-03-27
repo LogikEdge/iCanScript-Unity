@@ -487,7 +487,7 @@ public partial class iCS_IStorage {
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         if(instance.IsInstanceNode) {
             InstanceWizardCompleteCreation(instance);
-            instance.RawName= "Property Accessor";
+            instance.Name= "Property Accessor";
             instance.IsNameEditable= false;
         }
         return instance;
