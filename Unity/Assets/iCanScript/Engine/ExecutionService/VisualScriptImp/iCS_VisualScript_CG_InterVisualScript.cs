@@ -13,20 +13,20 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     SSBinding BuildVariableProxyConnection(iCS_EngineObject proxyNode, iCS_EngineObject proxyPort, iCS_EngineObject consumerPort) {
         var runtimeNode= GetRuntimeNodeFromReferenceNode(proxyNode);
         if(runtimeNode == null) {
-            Debug.LogWarning("Unable to find port proxy node=> "+proxyNode.Name);
+            Debug.LogWarning("Unable to find port proxy node=> "+proxyNode.RawName);
             return null;
         }
 		SSBinding connection= null;
         bool isAlwaysReady= true;
         var consumerNode= myRuntimeNodes[consumerPort.ParentId];
-		connection= new SSBinding(consumerPort.Name, consumerNode, runtimeNode as SSNodeAction, proxyPort.PortIndex, isAlwaysReady);
+		connection= new SSBinding(consumerPort.RawName, consumerNode, runtimeNode as SSNodeAction, proxyPort.PortIndex, isAlwaysReady);
         return connection;
     }
     // ----------------------------------------------------------------------
     SSNodeAction GetPublicFunctionAction(iCS_EngineObject userFunctionCall) {
         var runtimeNode= GetRuntimeNodeFromReferenceNode(userFunctionCall);
         if(runtimeNode == null) {
-            Debug.LogWarning("iCanScript: Unable to find user function=> "+userFunctionCall.Name);
+            Debug.LogWarning("iCanScript: Unable to find user function=> "+userFunctionCall.RawName);
             return null;                   
         }
         return runtimeNode as SSNodeAction;
@@ -39,7 +39,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     object GetRuntimeNodeFromReferenceNode(iCS_EngineObject referenceNode, iCS_VisualScriptImp vs) {
         if(vs == null) {
-            Debug.LogWarning("iCanScript: Unable to find visual script with public function=> "+referenceNode.Name);
+            Debug.LogWarning("iCanScript: Unable to find visual script with public function=> "+referenceNode.RawName);
             return null;
         }
         var runtimeNodeId  = referenceNode.ProxyOriginalNodeId;
@@ -49,7 +49,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     public iCS_EngineObject GetEngineObjectFromReferenceNode(iCS_EngineObject referenceNode) {
         var vs= GetVisualScriptFromReferenceNode(referenceNode);
         if(vs == null) {
-            Debug.LogWarning("iCanScript: Unable to find user function=> "+referenceNode.Name);
+            Debug.LogWarning("iCanScript: Unable to find user function=> "+referenceNode.RawName);
             return null;
         }
         var objectId= referenceNode.ProxyOriginalNodeId;
@@ -100,7 +100,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		SSBinding connection= null;
         bool isAlwaysReady= false;
         var portNode= myRuntimeNodes[port.ParentId];
-		connection= new SSBinding(port.Name, portNode, runtimeNode as SSNodeAction, sourcePort.PortIndex, isAlwaysReady);
+		connection= new SSBinding(port.RawName, portNode, runtimeNode as SSNodeAction, sourcePort.PortIndex, isAlwaysReady);
         userFunctionCall.SetConnection(port.PortIndex, connection);
         return connection;        
     }
@@ -108,7 +108,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     public iCS_EngineObject GetPublicInterfaceFromName(string name) {
         var publicInterfaces= PublicInterfaces;
         foreach(var pi in publicInterfaces) {
-            if(pi.Name == name) {
+            if(pi.RawName == name) {
                 return pi;
             }
         }

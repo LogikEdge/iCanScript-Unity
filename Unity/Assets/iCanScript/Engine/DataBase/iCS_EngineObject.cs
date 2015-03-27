@@ -54,10 +54,6 @@ public class iCS_EngineObject {
             return ty;
         }
     }
-    public string Name {
-        get { return RawName; }
-        set { RawName= value; }
-    }
     // Node Specific accesors ------------------------------------------------
     public int ProxyOriginalNodeId {
         get { return SourceId; }
@@ -109,7 +105,7 @@ public class iCS_EngineObject {
         ObjectType= objectType;
         InstanceId= id;
         ParentId= parentId;
-        Name= name;
+        RawName= name;
         QualifiedType= type.AssemblyQualifiedName;
         LocalAnchorPosition= Vector2.zero;
         if(IsDataOrControlPort) {
@@ -134,7 +130,7 @@ public class iCS_EngineObject {
     }
     // ----------------------------------------------------------------------
     public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent) {
-        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);
+        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.RawName, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;

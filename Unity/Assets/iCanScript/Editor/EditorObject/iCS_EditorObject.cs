@@ -110,6 +110,7 @@ public partial class iCS_EditorObject {
     public string CodeName {
         get {
             if(cachedCodeName == null) {
+				var name= EngineObject.RawName;
                 if(IsPort) {
                     if(IsDataPort && IsProgrammaticInstancePort) {
                         cachedDisplayName= "this";
@@ -178,8 +179,8 @@ public partial class iCS_EditorObject {
         }
         set {
             var engineObject= EngineObject;
-            if(engineObject.Name == value) return;
-		    engineObject.Name= value;
+            if(engineObject.RawName == value) return;
+		    engineObject.RawName= value;
             ResetNameCaches();
         }
     }
@@ -200,12 +201,12 @@ public partial class iCS_EditorObject {
                     return "Target";
                 }                
             }
-            return EngineObject.Name;
+            return EngineObject.RawName;
         }
 		set {
             var engineObject= EngineObject;
-            if(engineObject.Name == value) return;
-		    engineObject.Name= value;
+            if(engineObject.RawName == value) return;
+		    engineObject.RawName= value;
             ResetNameCaches();
 		}
 	}

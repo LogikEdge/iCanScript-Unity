@@ -171,7 +171,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                         if(parent == null) {
                             needAdditionalPass= true;
                         } else {
-        					var mux= new iCS_Mux(node.Name, parent, priority, GetNbOfChildMuxPorts(node));
+        					var mux= new iCS_Mux(node.RawName, parent, priority, GetNbOfChildMuxPorts(node));
         					myRuntimeNodes[node.InstanceId]= mux;
                             InvokeAddChildIfExists(parent, mux);                        
                         }
@@ -210,12 +210,12 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
                                 if(IsReferenceNodeUsingDynamicBinding(node)) {
-                                    iCS_DynamicVariableProxy variableProxy= new iCS_DynamicVariableProxy(node.Name, parent, priority, nbParams, nbEnables);
+                                    iCS_DynamicVariableProxy variableProxy= new iCS_DynamicVariableProxy(node.RawName, parent, priority, nbParams, nbEnables);
                                     myRuntimeNodes[node.InstanceId]= variableProxy;
                                     InvokeAddChildIfExists(parent, variableProxy);                                
                                 }
                                 else {
-                                    iCS_VariableProxy variableProxy= new iCS_VariableProxy(node.Name, parent, priority, nbParams, nbEnables);
+                                    iCS_VariableProxy variableProxy= new iCS_VariableProxy(node.RawName, parent, priority, nbParams, nbEnables);
                                     myRuntimeNodes[node.InstanceId]= variableProxy;
                                 }
                                 break;
@@ -233,12 +233,12 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 									}
 								}
                                 if(IsReferenceNodeUsingDynamicBinding(node)) {
-                                    var userFunctionCall= new iCS_DynamicUserFunctionCall(node.Name, parent, priority, nbParams, nbEnables);
+                                    var userFunctionCall= new iCS_DynamicUserFunctionCall(node.RawName, parent, priority, nbParams, nbEnables);
                                     myRuntimeNodes[node.InstanceId]= userFunctionCall;
                                     InvokeAddChildIfExists(parent, userFunctionCall);
                                 }
                                 else {
-                                    var userFunctionCall= new iCS_UserFunctionCall(node.Name, parent, userFunction, priority, nbParams, nbEnables);                                
+                                    var userFunctionCall= new iCS_UserFunctionCall(node.RawName, parent, userFunction, priority, nbParams, nbEnables);                                
                                     myRuntimeNodes[node.InstanceId]= userFunctionCall;
                                     InvokeAddChildIfExists(parent, userFunctionCall);            
                                 }
@@ -248,13 +248,13 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                iCS_StateChart stateChart= new iCS_StateChart(node.Name, parent, priority, nbParams, nbEnables);
+                                iCS_StateChart stateChart= new iCS_StateChart(node.RawName, parent, priority, nbParams, nbEnables);
                                 myRuntimeNodes[node.InstanceId]= stateChart;
                                 InvokeAddChildIfExists(parent, stateChart);
                                 break;
                             }
                             case iCS_ObjectTypeEnum.State: {
-                                iCS_State state= new iCS_State(node.Name, parent);
+                                iCS_State state= new iCS_State(node.RawName, parent);
                                 myRuntimeNodes[node.InstanceId]= state;
                                 InvokeAddChildIfExists(parent, state);
                                 if(node.IsEntryState) {
@@ -273,7 +273,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                iCS_Message message= new iCS_Message(node.Name, parent, priority, nbParams);                                
+                                iCS_Message message= new iCS_Message(node.RawName, parent, priority, nbParams);                                
                                 // Insert node in the generated code (this will also add the VS & Subspace contexts)
                                 myRuntimeNodes[node.InstanceId]= message;
                                 InvokeAddChildIfExists(parent, message);
@@ -287,7 +287,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                var module= new iCS_Package(node.Name, parent, priority, nbParams, nbEnables);                                
+                                var module= new iCS_Package(node.RawName, parent, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= module;
                                 InvokeAddChildIfExists(parent, module);                                
                                 if(iCS_VisualScriptData.IsPublicFunction(this, node)) {
@@ -299,7 +299,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                var module= new iCS_Iterator(node.Name, parent, priority, nbParams, nbEnables);                                
+                                var module= new iCS_Iterator(node.RawName, parent, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= module;
                                 InvokeAddChildIfExists(parent, module);                                
                                 if(iCS_VisualScriptData.IsPublicFunction(this, node)) {
@@ -309,14 +309,14 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             }
                             case iCS_ObjectTypeEnum.InstanceFunction: {
                                 // Create method.
-                                var methodBase= GetMethodBase( node, ref compileErrors );
+                                var methodBase= GetMethodBase(node, ref compileErrors );
                                 if( methodBase == null ) {
                                     continue;
                                 }
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                var method= new iCS_InstanceFunction(node.Name, parent, methodBase, priority, nbParams, nbEnables);                                
+                                var method= new iCS_InstanceFunction(node.RawName, parent, methodBase, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= method;
                                 InvokeAddChildIfExists(parent, method);
                                 break;                            
@@ -331,7 +331,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                iCS_Constructor func= new iCS_Constructor(node.Name, parent, methodBase, priority, nbParams, nbEnables);                                
+                                iCS_Constructor func= new iCS_Constructor(node.RawName, parent, methodBase, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= func;
                                 // Special case for public variables.  They are created in the Start message handler.
                                 if(iCS_VisualScriptData.IsPublicVariable(this, node)) {
@@ -345,14 +345,14 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                             case iCS_ObjectTypeEnum.TypeCast:
                             case iCS_ObjectTypeEnum.ClassFunction: {
                                 // Create function.
-                                var methodBase= GetMethodBase( node, ref compileErrors );
+                                var methodBase= GetMethodBase(node, ref compileErrors );
                                 if( methodBase == null ) {
                                     continue;
                                 }
                                 int nbParams;
                                 int nbEnables;
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
-                                var func= new iCS_ClassFunction(node.Name, parent, methodBase, priority, nbParams, nbEnables);                                
+                                var func= new iCS_ClassFunction(node.RawName, parent, methodBase, priority, nbParams, nbEnables);                                
                                 myRuntimeNodes[node.InstanceId]= func;
                                 InvokeAddChildIfExists(parent, func);
                                 break;
@@ -368,15 +368,15 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
     							var inDataPorts= GetChildInParameters(node);
                                 SSNodeAction rtField= P.length(inDataPorts) == 0 ?
-                                    new iCS_GetInstanceField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction:
-                                    new iCS_SetInstanceField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction;                                
+                                    new iCS_GetInstanceField(node.RawName, parent, fieldInfo, priority, nbEnables) as SSNodeAction:
+                                    new iCS_SetInstanceField(node.RawName, parent, fieldInfo, priority, nbEnables) as SSNodeAction;                                
                                 myRuntimeNodes[node.InstanceId]= rtField;
                                 InvokeAddChildIfExists(parent, rtField);
                                 break;
                             }
                             case iCS_ObjectTypeEnum.ClassField: {
                                 // Create function.
-    							FieldInfo fieldInfo= GetFieldInfo( node, ref compileErrors );
+    							FieldInfo fieldInfo= GetFieldInfo(node, ref compileErrors );
                                 if( fieldInfo == null ) {
                                     continue;
                                 }
@@ -385,8 +385,8 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                 GetNbOfParameterAndEnablePorts(node, out nbParams, out nbEnables);
     							var inDataPorts= GetChildInParameters(node);
                                 SSNodeAction rtField= P.length(inDataPorts) == 0 ?
-                                    new iCS_GetClassField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction:
-                                    new iCS_SetClassField(node.Name, parent, fieldInfo, priority, nbEnables) as SSNodeAction;                                
+                                    new iCS_GetClassField(node.RawName, parent, fieldInfo, priority, nbEnables) as SSNodeAction:
+                                    new iCS_SetClassField(node.RawName, parent, fieldInfo, priority, nbEnables) as SSNodeAction;                                
                                 myRuntimeNodes[node.InstanceId]= rtField;
                                 InvokeAddChildIfExists(parent, rtField);
                                 break;                            
@@ -399,7 +399,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                     }
                 }
                 catch(System.Exception exception) {
-                    Debug.LogWarning("iCanScript: Exception in node code generation: "+node.Name+": "+exception.Message);                    
+                    Debug.LogWarning("iCanScript: Exception in node code generation: "+node.RawName+": "+exception.Message);                    
                 }
             }
         } while(needAdditionalPass);
@@ -437,7 +437,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 							triggerPort= GetProducerEndPort(triggerPort);
                             SSNodeAction triggerFunc= IsOutPackagePort(triggerPort) ? null : myRuntimeNodes[triggerPort.ParentId] as SSNodeAction;
                             int triggerIdx= triggerPort.PortIndex;
-                            iCS_Transition transition= new iCS_Transition(transitionPackage.Name,
+                            iCS_Transition transition= new iCS_Transition(transitionPackage.RawName,
 																		myRuntimeNodes[transitionPackage.ParentId],
                                                                         myRuntimeNodes[endState.InstanceId] as iCS_State,
                                                                         myRuntimeNodes[transitionPackage.InstanceId] as iCS_Package,
@@ -523,12 +523,12 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 									initValue= gameObject;
 								}
 								else {
-									var propInfo= typeof(GameObject).GetProperty(port.Name);
+									var propInfo= typeof(GameObject).GetProperty(port.RawName);
 									if(propInfo != null) {
 										initValue= propInfo.GetValue(gameObject, null);
 									}
 									else {
-										var fieldInfo= typeof(GameObject).GetField(port.Name);
+										var fieldInfo= typeof(GameObject).GetField(port.RawName);
 										if(fieldInfo != null) {
 											initValue= fieldInfo.GetValue(gameObject);
 										}
@@ -539,14 +539,14 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
                                                     continue;
                                                 }
                                                 var componentType= component.GetType();
-                                                if(componentType.Name == port.Name) {
+                                                if(componentType.Name == port.RawName) {
                                                     initValue= component;
                                                     found= true;
                                                     break;
                                                 }
                                             }
                                             if(!found) {
-                                                compileErrors.Add( new CompileError(parentNode.InstanceId, "Unable to find Component: "+port.Name+" of: "+gameObject.name+" for Message Handler: "+parentNode.Name) );                                                
+                                                compileErrors.Add( new CompileError(parentNode.InstanceId, "Unable to find Component: "+port.RawName+" of: "+gameObject.name+" for Message Handler: "+parentNode.RawName) );                                                
                                             }
 										}
 									}
@@ -591,7 +591,7 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     }
     // ----------------------------------------------------------------------
 	bool IsTransitionTriggerPort(iCS_EngineObject port) {
-        return port.IsOutFixDataPort && port.RuntimeType == typeof(bool) && port.Name == "trigger";		
+        return port.IsOutFixDataPort && port.RuntimeType == typeof(bool) && port.RawName == "trigger";		
 	}
 
     // ======================================================================
@@ -679,10 +679,10 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
 		var producerPort= FindProducerPortToBindTo(consumerPort);
         var rtPortGroup = myRuntimeNodes[producerPort.InstanceId] as SSNodeAction;
 		if(rtPortGroup != null) {
-			binding= new SSBinding(consumerPort.Name, consumerNode, rtPortGroup, (int)iCS_PortIndex.Return);	
+			binding= new SSBinding(consumerPort.RawName, consumerNode, rtPortGroup, (int)iCS_PortIndex.Return);	
 		} else {
             bool isAlwaysReady= producerPort.IsInputPort;
-			binding= new SSBinding(consumerPort.Name, consumerNode, myRuntimeNodes[producerPort.ParentId] as SSNodeAction, producerPort.PortIndex, isAlwaysReady);
+			binding= new SSBinding(consumerPort.RawName, consumerNode, myRuntimeNodes[producerPort.ParentId] as SSNodeAction, producerPort.PortIndex, isAlwaysReady);
 		}
 		return binding;
 	}

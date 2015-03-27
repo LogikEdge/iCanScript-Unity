@@ -323,7 +323,7 @@ public class iCS_LibraryDatabase {
 					}
 					if(edObj.IsMessageHandler) {
 						var memberInfo= member as iCS_MemberInfo;
-						if(engineObject.Name == memberInfo.DisplayName) {
+						if(engineObject.RawName == memberInfo.DisplayName) {
 							return member;
 						}
 					}

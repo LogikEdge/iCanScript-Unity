@@ -283,7 +283,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             newParent= IStorage.DisplayRoot;
         }
         if(newParent.InstanceId == node.ParentId) return newParent;
-        if(!iCS_AllowedChildren.CanAddChildNode(node.Name, node, newParent, IStorage)) {
+        if(!iCS_AllowedChildren.CanAddChildNode(node.RawName, node, newParent, IStorage)) {
             newParent= null;
         }
         return newParent;

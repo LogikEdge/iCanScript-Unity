@@ -65,7 +65,7 @@ public static partial class iCS_UserCommands {
 		if(pasted != null) {
 			SystemEvents.AnnounceVisualScriptElementAdded(pasted);			
 		}
-        CloseTransaction(iStorage, "Add Prefab "+sourceRoot.Name);
+        CloseTransaction(iStorage, "Add Prefab "+sourceRoot.RawName);
     }
 	// ----------------------------------------------------------------------
     public static void DragAndDropSetPortValue(iCS_EditorObject port, UnityEngine.Object value) {
