@@ -78,7 +78,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return;
         }
-        CloseTransaction(iStorage, "Set port "+port.Name);
+        CloseTransaction(iStorage, "Set port "+port.DisplayName);
     }
 
 }

@@ -40,7 +40,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return;
         }
-        CloseTransaction(iStorage, "Unfold "+node.Name);
+        CloseTransaction(iStorage, "Unfold "+node.DisplayName);
     }
 	// ----------------------------------------------------------------------
     // OK
@@ -73,13 +73,13 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return;
         }
-        CloseTransaction(iStorage, "Fold "+node.Name);
+        CloseTransaction(iStorage, "Fold "+node.DisplayName);
     }
 	// ----------------------------------------------------------------------
     // OK
     public static void Iconize(iCS_EditorObject node) {
 #if DEBUG
-        Debug.Log("iCanScript: Iconize => "+node.Name);
+        Debug.Log("iCanScript: Iconize => "+node.DisplayName);
 #endif        
         if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Iconized) {
             return;
@@ -108,7 +108,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return;
         }
-        CloseTransaction(iStorage, "Iconize "+node.Name);
+        CloseTransaction(iStorage, "Iconize "+node.DisplayName);
     }
 	// ----------------------------------------------------------------------
     public static void FocusOn(iCS_EditorObject obj) {
@@ -117,7 +117,7 @@ public static partial class iCS_UserCommands {
             var iStorage= obj.IStorage;
             OpenTransaction(iStorage);
             visualEditor.CenterAndScaleOn(obj);
-            CloseTransaction(iStorage, "Focus on "+obj.Name);
+            CloseTransaction(iStorage, "Focus on "+obj.DisplayName);
         }
     }
 	// ----------------------------------------------------------------------
@@ -127,7 +127,7 @@ public static partial class iCS_UserCommands {
             var iStorage= obj.IStorage;
             OpenTransaction(iStorage);
             visualEditor.SmartFocusOn(obj);
-            CloseTransaction(iStorage, "Focus on "+obj.Name);
+            CloseTransaction(iStorage, "Focus on "+obj.DisplayName);
         }
     }
 }

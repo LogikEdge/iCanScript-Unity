@@ -40,7 +40,7 @@ public partial class iCS_EditorObject {
             ForEachLeftChildPort(
                 port=> {
                     if(!port.IsStatePort && !port.IsFloating) {
-                        var portName= iCS_ObjectNames.ToDisplayName(port.Name);
+                        var portName= port.DisplayName;
                         Vector2 labelSize= iCS_Layout.DefaultLabelSize(portName);
                         float nameSize= paddingBy2+labelSize.x+iCS_EditorConfig.PortDiameter;
                         if(leftPadding < nameSize) leftPadding= nameSize;
@@ -58,7 +58,7 @@ public partial class iCS_EditorObject {
             ForEachRightChildPort(
                 port=> {
                     if(!port.IsStatePort && !port.IsFloating) {
-                        var portName= iCS_ObjectNames.ToDisplayName(port.Name);
+                        var portName= port.DisplayName;
                         Vector2 labelSize= iCS_Layout.DefaultLabelSize(portName);
                         float nameSize= paddingBy2+labelSize.x+iCS_EditorConfig.PortDiameter;
                         if(rightPadding < nameSize) rightPadding= nameSize;

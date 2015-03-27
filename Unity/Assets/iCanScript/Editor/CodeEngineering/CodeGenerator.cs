@@ -144,7 +144,7 @@ public class CodeGenerator {
                                              AccessType.PUBLIC,
                                              ScopeType.NONSTATIC,
                                              returnType,
-                                             eObj.Name,
+                                             eObj.CodeName,
                                              paramTypes,
                                              paramNames,
                                              (i)=> GenerateFunctionBody(i, eObj),

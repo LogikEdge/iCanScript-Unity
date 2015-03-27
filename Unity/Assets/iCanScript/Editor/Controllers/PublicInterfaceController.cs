@@ -197,7 +197,7 @@ namespace iCanScript { namespace Editor {
             public void Add(iCS_EditorObject element) {
                 var vs= element.IStorage.VisualScript;
                 if(element.IsPublicVariable || element.IsPublicFunction) {
-                    Add(new ReferenceToDefinition(vs, element.Name));
+                    Add(new ReferenceToDefinition(vs, element.DisplayName));
                 }
                 else {
                     Add(new ReferenceToEngineObject(vs, element.InstanceId));                
@@ -226,7 +226,7 @@ namespace iCanScript { namespace Editor {
             public void Remove(iCS_EditorObject element) {
                 var vs= element.IStorage.VisualScript;
                 if(element.IsPublicVariable || element.IsPublicFunction) {
-                    Remove(new ReferenceToDefinition(vs, element.Name));
+                    Remove(new ReferenceToDefinition(vs, element.DisplayName));
                 }
                 else {
                     Remove(new ReferenceToEngineObject(vs, element.InstanceId));
@@ -933,7 +933,7 @@ namespace iCanScript { namespace Editor {
         		// -- New functions follow existing interface --
         		var isVirgin= obj.NbOfChildNodes == 0;
         		if(isVirgin) {
-        			var group= ourPublicFunctionGroups.Find(obj.Name);
+        			var group= ourPublicFunctionGroups.Find(obj.DisplayName);
         			if(group != null) {
         				ReferenceToDefinition toFollow= null;
         				toFollow= P.find(def=> def.EngineObject != engObj, group.Definitions);
@@ -970,7 +970,7 @@ namespace iCanScript { namespace Editor {
     				if(def != null) {
     					var eng= def.EngineObject;
     					if(eng != null) {
-    						eng.RawName= obj.Name;
+    						eng.RawName= obj.DisplayName;
                             UpdateUnityAndEditors(def.VisualScript);
     					}
     				}
@@ -979,7 +979,7 @@ namespace iCanScript { namespace Editor {
     				if(r != null) {
     					var eng= r.EngineObject;
     					if(eng != null) {
-    						eng.RawName= obj.Name;
+    						eng.RawName= obj.DisplayName;
                             UpdateUnityAndEditors(r.VisualScript);
     					}
     				}

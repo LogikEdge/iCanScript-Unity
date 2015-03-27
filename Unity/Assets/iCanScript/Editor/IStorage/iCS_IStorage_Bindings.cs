@@ -243,7 +243,7 @@ public partial class iCS_IStorage {
 				newPort= sourcePort;
 			}
 			else {
-				newPort= CreatePort(inPort.Name, inGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+				newPort= CreatePort(inPort.DisplayName, inGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
 	            SetSource(inPort, newPort, conversion);
 				SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
 			}
@@ -274,7 +274,7 @@ public partial class iCS_IStorage {
 			   )
 			) {}
 			else {
-				newPort= CreatePort(outPort.Name, outGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+				newPort= CreatePort(outPort.DisplayName, outGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 	            SetSource(newPort, outPort, conversion);
 				SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
 			}
@@ -315,7 +315,7 @@ public partial class iCS_IStorage {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= CreatePort(inputPort.Name, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            iCS_EditorObject newPort= CreatePort(inputPort.DisplayName, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -341,7 +341,7 @@ public partial class iCS_IStorage {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            iCS_EditorObject newPort= CreatePort(inputPort.DisplayName, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -361,7 +361,7 @@ public partial class iCS_IStorage {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= CreatePort(inputPort.Name, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+	            iCS_EditorObject newPort= CreatePort(inputPort.DisplayName, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
 				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -462,7 +462,7 @@ public partial class iCS_IStorage {
 		foreach(var p in matchingPorts) {
 			if(p.IsOutputPort) return p;
 		}
-		Debug.LogWarning("iCanScript: Invalid circular connection of input ports on: "+node.Name);
+		Debug.LogWarning("iCanScript: Invalid circular connection of input ports on: "+node.DisplayName);
 		return matchingPorts[0];
 	}
     // ----------------------------------------------------------------------

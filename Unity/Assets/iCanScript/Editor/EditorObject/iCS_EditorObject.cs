@@ -206,7 +206,7 @@ public partial class iCS_EditorObject {
                     cachedDisplayName= "Property Accessor";
                 }
                 else {
-                    cachedDisplayName= Name;
+                    cachedDisplayName= EngineObject.RawName;
                     if(string.IsNullOrEmpty(cachedDisplayName)) {
                         cachedDisplayName= CodeName;
                     }
@@ -223,24 +223,6 @@ public partial class iCS_EditorObject {
         }
     }
 
-    // ----------------------------------------------------------------------
-    public string Name {
-		get {
-            if(IsDataPort) {
-                if(IsProgrammaticInstancePort) {
-                    if(IsOutputPort) return "Self";
-                    return "Target";
-                }                
-            }
-            return EngineObject.RawName;
-        }
-		set {
-            var engineObject= EngineObject;
-            if(engineObject.RawName == value) return;
-		    engineObject.RawName= value;
-            ResetNameCaches();
-		}
-	}
     // ----------------------------------------------------------------------
     public string FullName {
         get { return Storage.GetFullName(iCSMonoBehaviour, EngineObject); }

@@ -19,7 +19,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject[] allConnections= port.ConsumerPorts;
         for(int i= 0; i < allConnections.Length-1; ++i) {
             for(int j= i+1; j < allConnections.Length; ++j) {
-                if(allConnections[i].ParentId == allConnections[j].ParentId && allConnections[i].Name == allConnections[j].Name) {
+                if(allConnections[i].ParentId == allConnections[j].ParentId && allConnections[i].DisplayName == allConnections[j].DisplayName) {
                     iCS_EditorObject[] portsToRelocate= allConnections[j].ConsumerPorts;
                     foreach(var toRelocate in portsToRelocate) {
                         SetSource(toRelocate, allConnections[i]);

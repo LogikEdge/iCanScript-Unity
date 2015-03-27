@@ -46,15 +46,15 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     static string GetPortName(iCS_EditorObject port) {
         Type portValueType= GetPortValueType(port);
-        var name= iCS_ObjectNames.ToDisplayName(port.Name);
+        var name= port.DisplayName;
         return portValueType.IsArray ? "["+name+"]" : name;
     }
     // ----------------------------------------------------------------------
 	static string GetPortPath(iCS_EditorObject port, iCS_IStorage iStorage) {
 		iCS_EditorObject parent= port.Parent;
-		string path= parent.Name;
+		string path= parent.DisplayName;
 		for(parent= parent.Parent; parent != null && parent != iStorage[0]; parent= parent.Parent) {
-			path+= "."+parent.Name;			
+			path+= "."+parent.DisplayName;			
 		}
 		return path;
 	}

@@ -61,7 +61,9 @@ public partial class iCS_IStorage {
         foreach(var cp in currentProposedPorts) {
             bool found= false;
             foreach(var np in neededPorts) {
-                if(np.Name == cp.Name && np.PortType == cp.ObjectType && np.ValueType == cp.RuntimeType) {
+                if(iCS_ObjectNames.ToDisplayName(np.Name) == cp.DisplayName &&
+				   np.PortType == cp.ObjectType &&
+				   np.ValueType == cp.RuntimeType) {
                     found= true;
                 }
             }
@@ -75,7 +77,7 @@ public partial class iCS_IStorage {
     
     // ----------------------------------------------------------------------
     public bool DoesPortExist(iCS_EditorObject node, string portName, Type valueType, iCS_ObjectTypeEnum portType) {
-        return node.UntilMatchingChild(p=> p.Name == portName && p.ObjectType == portType && p.RuntimeType == valueType);
+        return node.UntilMatchingChild(p=> p.DisplayName == portName && p.ObjectType == portType && p.RuntimeType == valueType);
     }
     // ----------------------------------------------------------------------
     public int NextAvailablePortIdx(int startingPortId= 0) {

@@ -363,7 +363,7 @@ public partial class iCS_IStorage {
 									hasInTransitionPort= true;
 								} else if(c.IsOutTransitionPort) {
 									hasOutTransitionPort= true;
-								} else if(c.IsOutFixDataPort && c.Name == "trigger") {
+								} else if(c.IsOutFixDataPort && c.IsTriggerPort) {
 									hasTriggerPort= true;
 								}
 							}
@@ -382,12 +382,12 @@ public partial class iCS_IStorage {
 						if(producerPort != null) {
 							var producerNode= producerPort.ParentNode;
 							if(producerNode.IsConstructor) {
-								instanceNodeName= producerNode.Name;
+								instanceNodeName= producerNode.DisplayName;
 							}
 						}
 					}
-					if(obj.Name != instanceNodeName) {
-						obj.Name= instanceNodeName;						
+					if(obj.DisplayName != instanceNodeName) {
+						obj.DisplayName= instanceNodeName;						
 						needsRelayout= true;
 						modified= true;
 					}
@@ -487,7 +487,7 @@ public partial class iCS_IStorage {
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         if(instance.IsInstanceNode) {
             InstanceWizardCompleteCreation(instance);
-            instance.Name= "Property Accessor";
+            instance.DisplayName= "Property Accessor";
             instance.IsNameEditable= false;
         }
         return instance;

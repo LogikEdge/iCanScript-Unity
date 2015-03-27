@@ -147,7 +147,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
 		if(y.IsOutputPort && !x.IsOutputPort) return 1;
 		if(x.IsInstanceNode && !y.IsInstanceNode) return -1;
 		if(y.IsInstanceNode && !x.IsInstanceNode) return 1;
-		return String.Compare(x.Name, y.Name);
+		return String.Compare(x.DisplayName, y.DisplayName);
 	}
     // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_EditorObject eObj) {
@@ -160,7 +160,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
         }
         // Filter according to string.
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
-        if(eObj.Name.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
+        if(eObj.DisplayName.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
         return false;
     }
 
@@ -238,7 +238,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
             var emptySize= EditorStyles.foldout.CalcSize(new GUIContent(""));
     		myFoldOffset= emptySize.x;
 		}
-        var nameSize= EditorStyles.label.CalcSize(new GUIContent(IterValue.Name));
+        var nameSize= EditorStyles.label.CalcSize(new GUIContent(IterValue.DisplayName));
         return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, kIconHeight);
 	}
     // ---------------------------------------------------------------------------------
@@ -275,7 +275,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
     void ProcessNameChange(Rect pos, Rect frameArea) {
         var rect= new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f);
         GUI.changed= false;
-        var newName= EditorGUI.TextField(rect, IterValue.Name);
+        var newName= EditorGUI.TextField(rect, IterValue.DisplayName);
         if(GUI.changed) {
             iCS_UserCommands.ChangeName(IterValue, newName);            
         }
@@ -317,7 +317,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
                 icon= iCS_BuiltinTextures.OutTransitionPortIcon;                
             }
         }
-        return new GUIContent(current.Name, icon); 
+        return new GUIContent(current.DisplayName, icon); 
     }
     // ---------------------------------------------------------------------------------
     bool ShouldUseFoldout() {

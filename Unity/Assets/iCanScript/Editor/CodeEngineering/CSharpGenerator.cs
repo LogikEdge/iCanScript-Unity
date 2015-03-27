@@ -228,7 +228,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         public static string ToVariableName(iCS_EditorObject eObj) {
             if(eObj.IsConstructor) {
-                if(string.IsNullOrEmpty(eObj.Name)) {
+                if(string.IsNullOrEmpty(eObj.DisplayName)) {
                     var typeName= ToTypeName(eObj.RuntimeType);
                     if(typeName.StartsWith("iCS_")) {
                         typeName= typeName.Substring(4);
@@ -236,7 +236,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     return "my"+typeName;
                 }
             }
-            var variableName= ToValidIdent(eObj.Name);
+            var variableName= ToValidIdent(eObj.DisplayName);
             variableName= Char.ToLower(variableName[0])+variableName.Substring(1);
             return variableName;
         }
@@ -254,8 +254,8 @@ namespace iCanScript.Editor.CodeEngineering {
                 return ToVariableName(parent);
             }
             // Try with port name.
-            if(!string.IsNullOrEmpty(port.Name)) {
-                var name= ToValidIdent(port.Name);
+            if(!string.IsNullOrEmpty(port.DisplayName)) {
+                var name= ToValidIdent(port.DisplayName);
                 return Char.ToLower(name[0])+name.Substring(1);
             }
             // Generate unique port name.

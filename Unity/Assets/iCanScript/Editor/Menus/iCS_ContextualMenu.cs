@@ -709,11 +709,11 @@ public class iCS_ContextualMenu {
 		if(otherPorts.Length == 0) return null;
 		float bestScore= -1f;
 		iCS_EditorObject bestPort= null;
-		string refName= refPort.Name;
-		if(string.IsNullOrEmpty(refPort.Name)) refName= refPort.ParentNode.Name;
+		string refName= refPort.DisplayName;
+		if(string.IsNullOrEmpty(refPort.DisplayName)) refName= refPort.ParentNode.DisplayName;
 		foreach(var p in otherPorts) {
-			string pName= p.Name;
-			if(string.IsNullOrEmpty(p.Name)) pName= p.ParentNode.Name;
+			string pName= p.DisplayName;
+			if(string.IsNullOrEmpty(p.DisplayName)) pName= p.ParentNode.DisplayName;
 			var score= iCS_StringUtil.FuzzyCompare(refName, pName);
 			if(score > bestScore) {
 				bestScore= score;

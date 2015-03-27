@@ -98,7 +98,7 @@ public class iCS_InstanceController {
 		myLayoutView.AddSubview(myOperationsController.View, new RectOffset(0, 0, 0, 0), DSView.AnchorEnum.Center);
 		
 		// Build class wizard title view.
-        string instanceTitle= myTarget.Name;
+        string instanceTitle= myTarget.DisplayName;
         GUIContent instanceEditorTitle= new GUIContent(instanceTitle);
 		myMainView= new DSTitleView(new RectOffset(0,0,0,0), false, instanceEditorTitle, DSView.AnchorEnum.Center, true);
 		myMainView.SetSubview(myLayoutView);
