@@ -166,18 +166,24 @@ public partial class iCS_EditorObject {
                         cachedCodeName= string.IsNullOrEmpty(name) ? "Package" : name;
                     }
                     else {
-                        var funcInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(this).ToFunctionPrototypeInfo;
-                        if(funcInfo != null) {
-                            if(funcInfo is iCS_MessageInfo) {
-                                cachedCodeName= funcInfo.DisplayName;
-                            }
-                            else {
-                                cachedCodeName= funcInfo.MethodName;                            
-                            }
-                        }
-                        else {
-                            cachedCodeName= string.IsNullOrEmpty(name) ? "null" : name;
-                        }
+                        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+						if(desc != null) {
+	                        var funcInfo= desc.ToFunctionPrototypeInfo;
+	                        if(funcInfo != null) {
+	                            if(funcInfo is iCS_MessageInfo) {
+	                                cachedCodeName= funcInfo.DisplayName;
+	                            }
+	                            else {
+	                                cachedCodeName= funcInfo.MethodName;                            
+	                            }
+	                        }
+	                        else {
+	                            cachedCodeName= string.IsNullOrEmpty(name) ? "null" : name;
+	                        }							
+						}
+						else {
+                            cachedCodeName= string.IsNullOrEmpty(name) ? "null" : name;							
+						}
                     }
                 }
                 else {
