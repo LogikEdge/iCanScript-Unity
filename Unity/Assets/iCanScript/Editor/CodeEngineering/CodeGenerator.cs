@@ -46,7 +46,7 @@ public class CodeGenerator {
 
 	// -------------------------------------------------------------------------
 	public string GenerateClassBody(int indent, iCS_IStorage iStorage) {
-		var result= new StringBuilder(GenerateVariables(indent, iStorage));
+		var result= new StringBuilder(GenerateVariables(indent, iStorage), 2048);
 		result.Append("\n");
 		result.Append(GenerateFunctions(indent, iStorage));
 		return result.ToString();
@@ -54,7 +54,7 @@ public class CodeGenerator {
 
 	// -------------------------------------------------------------------------
 	public string GenerateVariables(int indent, iCS_IStorage iStorage) {
-        var result= new StringBuilder();
+        var result= new StringBuilder(128);
 		// Generate static variables.
         var classNode= iStorage[0];
         var allConstructors= GetClassStaticVariables(iStorage);
@@ -98,7 +98,7 @@ public class CodeGenerator {
 	}
 	// -------------------------------------------------------------------------
     public string GenerateFunctions(int indent, iCS_IStorage iStorage) {
-        var result= new StringBuilder();
+        var result= new StringBuilder(1024);
 		// Find root functions.
 		iStorage[0].ForEachChildNode(
 			n=> {
@@ -111,7 +111,7 @@ public class CodeGenerator {
     }
 	// -------------------------------------------------------------------------
     public string GenerateFunction(int indent, iCS_EditorObject eObj) {
-        var result= new StringBuilder();
+        var result= new StringBuilder(1024);
 		// Find return type.
 		var returnType= typeof(void);
 		var nbParams= 0;
@@ -153,7 +153,7 @@ public class CodeGenerator {
     }
 	// -------------------------------------------------------------------------
     public string GenerateFunctionBody(int indent, iCS_EditorObject node) {
-        var result= new StringBuilder();
+        var result= new StringBuilder(512);
 		var functionNodes= GetFunctionBodyParts(node);
 		functionNodes= SortDependencies(functionNodes);
 		foreach(var n in functionNodes) {
@@ -175,7 +175,7 @@ public class CodeGenerator {
     ///
     public string GenerateFunctionCall(int indentSize, iCS_EditorObject node) {
         var indent= CSharpGenerator.ToIndent(indentSize);
-        var result= new StringBuilder(indent);
+        var result= new StringBuilder(indent, 128);
         // Declare return variable.
         var returnPort= GetReturnPort(node);
         if(returnPort != null && returnPort.EndConsumerPorts.Length != 0) {
@@ -230,7 +230,7 @@ public class CodeGenerator {
     }
 	// -------------------------------------------------------------------------
     string FunctionCallPrefix(iCS_MemberInfo memberInfo, iCS_EditorObject node) {
-        var result= new StringBuilder();
+        var result= new StringBuilder(32);
         if(memberInfo != null && memberInfo.IsClassFunctionBase) {
             result.Append(CSharpGenerator.ToTypeName(node.RuntimeType));
             result.Append(".");

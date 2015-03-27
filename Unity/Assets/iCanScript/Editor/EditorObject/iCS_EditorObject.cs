@@ -129,6 +129,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public string DisplayName {
 		get {
+            if(IsInstanceNode) return "Property Accessor";
 			return Name;
 		}
 	}
