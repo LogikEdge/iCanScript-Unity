@@ -247,33 +247,6 @@ public partial class iCS_EditorObject {
         get { return Storage.GetFullName(iCSMonoBehaviour, EngineObject); }
     }
     // ----------------------------------------------------------------------
-    public string DefaultName {
-        get {
-            var defaultName= Name;
-            if(IsPackage) {
-                defaultName= "";                
-            }
-            else if(IsConstructor) {
-                defaultName= "Variable";
-            }
-            else {
-                if(IsNode) {
-                    var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-                    if(desc != null) {
-                        defaultName= desc.DisplayName;
-                    }
-                    else {
-                        defaultName= EngineObject.MethodName;                        
-                    }
-                }
-                else {
-                    // TODO: Support retreiving the initial port name.
-                }
-            }
-            return defaultName;
-        }
-    }
-    // ----------------------------------------------------------------------
     /// This functions resets all name related caches.
     void ResetNameCaches() {
 		cachedCodeName       = null;

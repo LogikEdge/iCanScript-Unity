@@ -175,7 +175,7 @@ public class iCS_Inspector : Editor {
 //        EditorGUILayout.Vector2Field("Wrapping Offset", mySelectedObject.WrappingOffset);
         // Display selected object initial name.
         if(SelectedObject.IsNode) {
-            EditorGUILayout.LabelField("Initial Name", mySelectedObject.DefaultName);
+            EditorGUILayout.LabelField("Initial Name", iCS_ObjectNames.ToDisplayName(mySelectedObject.CodeName));
         }
         // Display object id.
         EditorGUILayout.LabelField("id", SelectedObject.InstanceId.ToString());

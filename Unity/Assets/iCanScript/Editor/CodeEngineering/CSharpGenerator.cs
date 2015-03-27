@@ -228,7 +228,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         public static string ToVariableName(iCS_EditorObject eObj) {
             if(eObj.IsConstructor) {
-                if(eObj.Name == eObj.DefaultName) {
+                if(string.IsNullOrEmpty(eObj.Name)) {
                     var typeName= ToTypeName(eObj.RuntimeType);
                     if(typeName.StartsWith("iCS_")) {
                         typeName= typeName.Substring(4);

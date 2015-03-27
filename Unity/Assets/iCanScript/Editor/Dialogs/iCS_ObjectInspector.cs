@@ -70,11 +70,11 @@ public class iCS_ObjectInspector : EditorWindow {
         // Display object id.
         EditorGUILayout.LabelField("id", myObject.InstanceId.ToString());
         // Display object type.
-        var typeName= ObjectNames.NicifyVariableName(myObject.ObjectType.ToString());
+        var typeName= iCS_ObjectNames.ToDisplayName(myObject.ObjectType.ToString());
         EditorGUILayout.LabelField("Type", typeName);
         // Display object initial name.
         if(myObject.IsNode) {
-            EditorGUILayout.LabelField("Initial Name", myObject.DefaultName);
+            EditorGUILayout.LabelField("Initial Name", iCS_ObjectNames.ToDisplayName(myObject.CodeName));
         }
         // Display object name.
         string name= myObject.Name;

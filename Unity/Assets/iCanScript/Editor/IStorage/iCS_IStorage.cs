@@ -375,7 +375,7 @@ public partial class iCS_IStorage {
 				}
 				// Propagate variable name to instance nodes
 				if(obj.IsInstanceNode) {
-					string instanceNodeName= obj.DefaultName;
+					string instanceNodeName= obj.CodeName;
 					var thisPort= InstanceWizardGetInputThisPort(obj);
 					if(thisPort != null) {
 						var producerPort= thisPort.FirstProducerPort;
