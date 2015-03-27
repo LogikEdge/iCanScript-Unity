@@ -196,7 +196,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // ----------------------------------------------------------------------
     /// Returns the user visible name of the object.
-    public string DisplayName2 {
+    public string DisplayName {
         get {
             if(cachedDisplayName == null) {
                 if(IsDataPort && IsProgrammaticInstancePort) {
@@ -223,13 +223,6 @@ public partial class iCS_EditorObject {
         }
     }
 
-    // ----------------------------------------------------------------------
-	public string DisplayName {
-		get {
-            if(IsInstanceNode) return "Property Accessor";
-			return Name;
-		}
-	}
     // ----------------------------------------------------------------------
     public string Name {
 		get {
