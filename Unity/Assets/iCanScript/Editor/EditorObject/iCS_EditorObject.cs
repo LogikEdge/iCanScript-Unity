@@ -4,6 +4,8 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
+using Subspace;
+using Prefs= iCS_PreferencesController;
 
 public partial class iCS_EditorObject {
     // ======================================================================
@@ -125,6 +127,12 @@ public partial class iCS_EditorObject {
 //        }
 //    }
     // ----------------------------------------------------------------------
+	public string DisplayName {
+		get {
+			return Name;
+		}
+	}
+    // ----------------------------------------------------------------------
     public string Name {
 		get {
             if(IsDataPort) {
@@ -198,11 +206,25 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
+    /// Returns the node title string.
+    ///
+    /// The frame ID is appended to the node title string if the application
+    /// is running and show frame ID option is selected.
+    ///
     public string NodeTitle {
         get {
+            // Fill the node title cache.
             if(cachedNodeTitle == null) {
                 cachedNodeTitle= iCS_TextUtility.NicifyName(DisplayName);
             }
+            // Add frame id if running
+			if(Prefs.ShowRuntimeFrameId && Application.isPlaying) {
+				var action= GetRuntimeObject as SSAction;
+				if(action != null) {
+					return cachedNodeTitle+" ("+action.ExecutedRunId+")";
+				}
+			}
+            // Return editor node title.
             return cachedNodeTitle;
         }
     }

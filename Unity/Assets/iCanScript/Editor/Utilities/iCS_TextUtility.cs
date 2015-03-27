@@ -51,7 +51,7 @@ public static class iCS_TextUtility {
     }
     // ---------------------------------------------------------------------------------
     public static string NicifyName(string name) {
-        var result= new StringBuilder();
+        var result= new StringBuilder(128);
         bool upperNext= true;
         bool wasUpperCase= false;
         bool wasLetter= false;
