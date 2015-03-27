@@ -113,30 +113,62 @@ public partial class iCS_EditorObject {
 				var name= EngineObject.RawName;
                 if(IsPort) {
                     if(IsDataPort && IsProgrammaticInstancePort) {
-                        cachedDisplayName= "this";
+                        cachedCodeName= "this";
                     }
-                    else {
-                        cachedDisplayName= EngineObject.RawName;                        
+                    else if(IsTriggerPort) {
+                    	cachedCodeName= "trigger";
+                    }
+					else if(IsEnablePort) {
+						cachedCodeName= "enable";
+					}
+					else {
+                        cachedCodeName= EngineObject.RawName;
+						if(string.IsNullOrEmpty(cachedCodeName)) {
+							var parent= ParentNode;
+							if(parent != null) {
+		                        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+								if(desc != null) {
+		                            var funcInfo= desc.ToFunctionPrototypeInfo;
+								    if(funcInfo != null) {
+										var parameters= funcInfo.Parameters;
+										if(parameters != null && PortIndex < parameters.Length) {
+											cachedCodeName= parameters[PortIndex].name;
+										}
+										else if(IsReturnPort) {
+											if(funcInfo.FunctionReturn != null) {
+												cachedCodeName= funcInfo.FunctionReturn.name;
+											}
+										}
+									}
+								}
+							}								
+						}                       
+						if(string.IsNullOrEmpty(cachedCodeName)) {
+							cachedCodeName= IsReturnPort ? "output" : "p";
+						}
                     }
                 }
                 else if(IsNode) {
+					cachedCodeName= name;
                     if(IsConstructor) {
                         cachedCodeName= iCS_Types.TypeName(RuntimeType);
                     }
-                    else if(IsPackage) {
-                        cachedCodeName= "Package";
-                    }
+					else if(IsTransitionPackage) {
+                        cachedCodeName= string.IsNullOrEmpty(name) ? "StateTransition" : name;						
+					}
                     else if(IsStateChart) {
-                        cachedCodeName= "StateChart";
+                        cachedCodeName= string.IsNullOrEmpty(name) ? "StateChart" : name;
                     }
                     else if(IsState) {
-                        cachedCodeName= "State";
+                        cachedCodeName= string.IsNullOrEmpty(name) ? "State" : name;
+                    }
+                    else if(IsPackage) {
+                        cachedCodeName= string.IsNullOrEmpty(name) ? "Package" : name;
                     }
                     else {
-                        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-                        if(desc != null) {
-                            var funcInfo= desc.ToFunctionPrototypeInfo;
-                            if(desc is iCS_MessageInfo) {
+                        var funcInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(this).ToFunctionPrototypeInfo;
+                        if(funcInfo != null) {
+                            if(funcInfo is iCS_MessageInfo) {
                                 cachedCodeName= funcInfo.DisplayName;
                             }
                             else {
@@ -144,15 +176,15 @@ public partial class iCS_EditorObject {
                             }
                         }
                         else {
-                            cachedCodeName= "UnknownNodeCodeName";
+                            cachedCodeName= string.IsNullOrEmpty(name) ? "null" : name;
                         }
-                    }                    
+                    }
                 }
                 else {
-                    cachedCodeName= "null";
+                    cachedCodeName= string.IsNullOrEmpty(name) ? "null" : name;
                 }
             }
-            return cachedCodeName ?? "";
+            return cachedCodeName ?? "null";
         }
     }
     // ======================================================================
@@ -244,8 +276,9 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     /// This functions resets all name related caches.
     void ResetNameCaches() {
-        cachedNodeTitle= null;
-        cachedNodeTitleSize= Vector2.zero;
+		cachedCodeName       = null;
+        cachedNodeTitle      = null;
+        cachedNodeTitleSize  = Vector2.zero;
         cachedDisplayName    = null;
         cachedDisplayNameSize= Vector2.zero;
     }

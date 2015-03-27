@@ -21,8 +21,7 @@ namespace iCanScript.Editor {
     /// @param node The node object from which to extract the name
     ///
 	string GetNodeTitle(iCS_EditorObject node) {
-//        return node.NodeTitle;
-        return iCS_ObjectNames.ToPrivateStaticFieldName(node.CodeName);
+        return node.NodeTitle;
 	}
     // ----------------------------------------------------------------------
     /// Return the sub-title of the given node.
