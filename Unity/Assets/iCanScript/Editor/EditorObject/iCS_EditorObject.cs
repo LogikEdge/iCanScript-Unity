@@ -269,7 +269,7 @@ public partial class iCS_EditorObject {
     /// @param type The type of the _"is a"_.
     ///
     string BuildIsASubTitle(string name, Type type) {
-        var result= new StringBuilder(name);
+        var result= new StringBuilder(name, 64);
         result.Append(" is a");
         var typeName= iCS_TextUtility.NicifyName(iCS_Types.TypeName(type));
         if(iCS_TextUtility.StartsWithAVowel(typeName)) {
