@@ -106,11 +106,11 @@ public partial class iCS_Graphics {
                 break;
             case iCS_EdgeEnum.Top:            
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y-= iCS_EditorConfig.PortDiameter+0.8f*(labelSize.y/Scale) /**(1+TopBottomLabelOffset(port, iStorage))*/;
+                labelPos.y-= iCS_EditorConfig.PortDiameter+0.8f*(labelSize.y/Scale);
                 break;
             case iCS_EdgeEnum.Bottom:
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y+= iCS_EditorConfig.PortDiameter;/*+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, iStorage)-0.2f*labelSize.y/Scale*/;
+                labelPos.y+= iCS_EditorConfig.PortDiameter;
                 break;
         }
         return new Rect(labelPos.x, labelPos.y, labelSize.x, labelSize.y);	    
