@@ -22,7 +22,7 @@ namespace iCanScript.Editor {
     ///
 	string GetNodeTitle(iCS_EditorObject node) {
 //        return node.NodeTitle;
-        return node.CodeName;
+        return iCS_ObjectNames.ToPrivateStaticFieldName(node.CodeName);
 	}
     // ----------------------------------------------------------------------
     /// Return the sub-title of the given node.
