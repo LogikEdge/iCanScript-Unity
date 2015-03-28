@@ -60,8 +60,8 @@ public static class iCS_EditorController {
     public static void ShowVisualEditor() {
         EditorApplication.ExecuteMenuItem("iCanScript/Editors/Visual Editor");
     }
-    public static void ShowInstanceEditor() {
-        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Instance Wizard");        
+    public static void ShowPropertyEditor() {
+        EditorApplication.ExecuteMenuItem("iCanScript/Editors/Property Wizard");        
     }
     public static void ShowHierarchyEditor() {
         EditorApplication.ExecuteMenuItem("iCanScript/Editors/Hierarchy");                
@@ -89,7 +89,7 @@ public static class iCS_EditorController {
         return FindWindow<iCS_VisualEditor>();
     } 
     public static EditorWindow FindInstanceEditorWindow() {
-        return FindWindow<iCS_InstanceEditor>();
+        return FindWindow<iCS_PropertyEditor>();
     }
     public static EditorWindow FindTreeViewEditorWindow() {
         return FindWindow<iCS_TreeViewEditor>();
@@ -101,8 +101,8 @@ public static class iCS_EditorController {
     public static iCS_VisualEditor FindVisualEditor() {
         return FindWindow(typeof(iCS_VisualEditor)) as iCS_VisualEditor;
     } 
-    public static iCS_InstanceEditor FindInstanceEditor() {
-        return FindWindow(typeof(iCS_InstanceEditor)) as iCS_InstanceEditor;
+    public static iCS_PropertyEditor FindPropertyEditor() {
+        return FindWindow(typeof(iCS_PropertyEditor)) as iCS_PropertyEditor;
     }
     public static iCS_TreeViewEditor FindTreeViewEditor() {
         return FindWindow(typeof(iCS_TreeViewEditor)) as iCS_TreeViewEditor;
@@ -120,8 +120,8 @@ public static class iCS_EditorController {
 			editor.Repaint();			
 		}
 	}
-    public static void RepaintInstanceEditor() {
-		var editor= FindInstanceEditor();
+    public static void RepaintPropertyEditor() {
+		var editor= FindPropertyEditor();
 		if(editor != null) {
 			editor.Repaint();			
 		}
@@ -176,9 +176,9 @@ public static class iCS_EditorController {
             ShowLibraryEditor();
         }
     }
-    public static void OpenInstanceEditor() {
-        if(FindInstanceEditor() == null) {
-            ShowInstanceEditor();
+    public static void OpenPropertyEditor() {
+        if(FindPropertyEditor() == null) {
+            ShowPropertyEditor();
         }
     }
 }

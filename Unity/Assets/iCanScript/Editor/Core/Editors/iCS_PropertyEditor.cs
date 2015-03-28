@@ -4,12 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_InstanceEditor : iCS_EditorBase {
+public class iCS_PropertyEditor : iCS_EditorBase {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
     DSCellView              myMainView         = null;
-    iCS_InstanceController  myController       = null;
+    iCS_PropertyController  myController       = null;
     bool                    myNotificationShown= false;
     
     // =================================================================================
@@ -39,7 +39,7 @@ public class iCS_InstanceEditor : iCS_EditorBase {
 		// Update main view if selection has changed.
         if(myMainView == null || myController == null ||
            (myController != null && (myController.Target != targetObject || myController.IStorage != IStorage))) {
-               myController= new iCS_InstanceController(targetObject, IStorage);            
+               myController= new iCS_PropertyController(targetObject, IStorage);            
                myMainView  = new DSCellView(new RectOffset(0,0,kSpacer,0), true, myController.View);
         }		
         return true;

@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_InstanceController {
+public class iCS_PropertyController {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ public class iCS_InstanceController {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_InstanceController(iCS_EditorObject target, iCS_IStorage storage) {
+    public iCS_PropertyController(iCS_EditorObject target, iCS_IStorage storage) {
         // Update main state variables.
         myTarget= target;
         myStorage= storage;

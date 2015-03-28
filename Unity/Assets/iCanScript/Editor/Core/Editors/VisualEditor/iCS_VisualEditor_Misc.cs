@@ -538,7 +538,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void UpdateSelected() {
         if(SelectedObject != null && SelectedObject.IsInstanceNode) {
-            iCS_EditorController.OpenInstanceEditor();
+            iCS_EditorController.OpenPropertyEditor();
         }
     }
 }
