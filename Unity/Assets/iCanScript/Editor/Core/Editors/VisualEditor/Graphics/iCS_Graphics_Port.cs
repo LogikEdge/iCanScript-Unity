@@ -45,9 +45,7 @@ public partial class iCS_Graphics {
     // Port name utilities.
     // ----------------------------------------------------------------------
     static string GetPortName(iCS_EditorObject port) {
-        Type portValueType= GetPortValueType(port);
-        var name= port.DisplayName;
-        return portValueType.IsArray ? "["+name+"]" : name;
+        return port.DisplayName;
     }
     // ----------------------------------------------------------------------
 	static string GetPortPath(iCS_EditorObject port, iCS_IStorage iStorage) {

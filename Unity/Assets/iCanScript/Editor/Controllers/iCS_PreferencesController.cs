@@ -62,6 +62,14 @@ public static class iCS_PreferencesController {
     const   string  kMajorGridColorKey       = "iCS_MajorGridColor";
     const   string  kGridSpacingKey          = "iCS_GridSpacing";
 	
+    //
+    // Cached Values
+    //
+    static  Color   c_CanvasBackgroundColor;
+    static  Color   c_MinorGridColor;
+    static  Color   c_MajorGridColor;
+    static  float   c_GridSpacing = 10.0f;
+    
 	//
 	// Reset to default value functions
 	//
@@ -80,22 +88,23 @@ public static class iCS_PreferencesController {
 	// Accessors
 	//
     public static Color CanvasBackgroundColor {
-        get { return LoadColor(kCanvasBackgroundColorKey, kCanvasBackgroundColor); }
-        set { SaveColor(kCanvasBackgroundColorKey, value); }
+        get { return c_CanvasBackgroundColor; }
+        set { SaveColor(kCanvasBackgroundColorKey, value); c_CanvasBackgroundColor= value; }
     }
     public static Color MinorGridColor {
-        get { return LoadColor(kMinorGridColorKey, kMinorGridColor); }
-        set { SaveColor(kMinorGridColorKey, value); }
+        get { return c_MinorGridColor; }
+        set { SaveColor(kMinorGridColorKey, value); c_MinorGridColor= value; }
     }
     public static Color MajorGridColor {
-        get { return LoadColor(kMajorGridColorKey, kMajorGridColor); }
-        set { SaveColor(kMajorGridColorKey, value); }
+        get { return c_MajorGridColor; }
+        set { SaveColor(kMajorGridColorKey, value); c_MajorGridColor= value; }
     }
     public static float GridSpacing {
-        get { return EditorPrefs.GetFloat(kGridSpacingKey, kGridSpacing); }
+        get { return c_GridSpacing; }
         set {
             if(value < 5.0f) return;
             EditorPrefs.SetFloat(kGridSpacingKey, value);
+            c_GridSpacing= value;
         }
     }
 
@@ -706,7 +715,12 @@ public static class iCS_PreferencesController {
         kCanvasBackgroundColor= new Color(c(40), c(44), c(51));
         kMinorGridColor       = new Color(c(75), c(75), c(75));
         kMajorGridColor       = Color.black;
-		
+		// Initialise Canvas cached values
+        c_CanvasBackgroundColor = LoadColor(kCanvasBackgroundColorKey, kCanvasBackgroundColor);
+        c_MinorGridColor        = LoadColor(kMinorGridColorKey, kMinorGridColor);
+        c_MajorGridColor        = LoadColor(kMajorGridColorKey, kMajorGridColor);
+        c_GridSpacing           = EditorPrefs.GetFloat(kGridSpacingKey, kGridSpacing);
+        
         // Node colors
         kNodeTitleColor             = Color.black;
         kNodeLabelColor             = Color.white;
@@ -721,7 +735,7 @@ public static class iCS_PreferencesController {
         kUserFunctionNodeColor      = new Color(c(0x80), c(0xff), c(0x80));
         kBackgroundColor            = new Color(c(41), c(41), c(41));
         kSelectedBackgroundColor    = new Color(c(77), c(77), c(77));
-        // Node c_ colors
+        // Node cached colors
         c_NodeTitleColor         = LoadColor(kNodeTitleColorKey, kNodeTitleColor);
         c_NodeLabelColor         = LoadColor(kNodeLabelColorKey, kNodeLabelColor);
         c_NodeValueColor         = LoadColor(kNodeValueColorKey, kNodeValueColor);
@@ -746,7 +760,7 @@ public static class iCS_PreferencesController {
         kStringTypeColor    = new Color(c(255), c(128), 0);
         kGameObjectTypeColor= new Color(0, c(128), c(255));
         kDefaultTypeColor   = new Color(c(219), c(249), c(194));		
-        // Type c_ colors
+        // Type cached colors
         c_BoolTypeColor      = LoadColor(kBoolTypeColorKey, kBoolTypeColor);
         c_IntTypeColor       = LoadColor(kIntTypeColorKey, kIntTypeColor);
         c_FloatTypeColor     = LoadColor(kFloatTypeColorKey, kFloatTypeColor);

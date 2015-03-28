@@ -249,6 +249,8 @@ public partial class iCS_Graphics {
         var minorGridColor  = Prefs.MinorGridColor;
         var majorGridColor  = Prefs.MajorGridColor;
         var minorGridSpacing= Prefs.GridSpacing;
+        var screenWidth     = screenArea.width;
+        var screenHeight    = screenArea.height;
         if(iCS_DevToolsConfig.UseBackgroundImage) {
             Texture2D background= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/background.png");
             var backgroundRect= new Rect(0,0,background.width, background.height);
@@ -257,9 +259,9 @@ public partial class iCS_Graphics {
         else {
             // Draw background.
             Vector3[] vect= { new Vector3(0,0,0),
-                              new Vector3(screenArea.width, 0, 0),
-                              new Vector3(screenArea.width,screenArea.height,0),
-                              new Vector3(0,screenArea.height,0)};
+                              new Vector3(screenWidth, 0, 0),
+                              new Vector3(screenWidth,screenHeight,0),
+                              new Vector3(0,screenHeight,0)};
             Handles.color= Color.white;
             Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
 
@@ -286,29 +288,41 @@ public partial class iCS_Graphics {
                     majorGridColor.a *= Scale;
                 }
                 minorGridColor= new Color(minorGridColor.r, minorGridColor.g, minorGridColor.b, 0.5f*minorGridColor.a);
-                for(; x < screenArea.width; x+= minorGridSpacing) {
+                var startPoint= new Vector3(0,0,0);
+                var endPoint  = new Vector3(0,screenHeight,0);
+                Handles.color= minorGridColor;
+                for(; x < screenWidth; x+= minorGridSpacing) {
+                    startPoint.x= x;
+                    endPoint.x  = x;
                     if(Mathf.Abs(x-x10) < 1f) {
-                        Handles.color= majorGridColor;
                         x10+= majorGridSpacing;
-                    } else {
-                        Handles.color= minorGridColor;                
-                    }
-                    Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,screenArea.height,0));            
-                }
-                for(; y < screenArea.height; y+= minorGridSpacing) {
-                    if(Mathf.Abs(y-y10) < 1f) {
                         Handles.color= majorGridColor;
-                        y10+= majorGridSpacing;
+                        Handles.DrawLine(startPoint, endPoint);
+                        Handles.color= minorGridColor;
                     } else {
-                        Handles.color= minorGridColor;                
+                        Handles.DrawLine(startPoint, endPoint);
                     }
-                    Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
+                }
+                startPoint.x= 0;
+                endPoint.x  = screenWidth;
+                Handles.color= minorGridColor;
+                for(; y < screenHeight; y+= minorGridSpacing) {
+                    startPoint.y= y;
+                    endPoint.y  = y;
+                    if(Mathf.Abs(y-y10) < 1f) {
+                        y10+= majorGridSpacing;
+                        Handles.color= majorGridColor;
+                        Handles.DrawLine(startPoint, endPoint);
+                        Handles.color= minorGridColor;
+                    } else {
+                        Handles.DrawLine(startPoint, endPoint);
+                    }
                 }            
             }
         }
         // Show iCanScript backdrop.
         var backdropStyle= new GUIStyle();
-        backdropStyle.fontSize= (int)(screenArea.width/20);
+        backdropStyle.fontSize= (int)(screenWidth/20);
         backdropStyle.fontStyle= FontStyle.Bold;
         var backdropColor= Color.grey;
         backdropColor.a= 0.3f;
@@ -316,8 +330,8 @@ public partial class iCS_Graphics {
         var backdrop= new GUIContent("iCanScript2");
         var backdropSize= backdropStyle.CalcSize(backdrop);
         var spacer= 20f;
-        var backdropRect= new Rect(screenArea.width-(backdropSize.x+spacer),
-                                    screenArea.height-(backdropSize.y+spacer),
+        var backdropRect= new Rect(screenWidth-(backdropSize.x+spacer),
+                                    screenHeight-(backdropSize.y+spacer),
                                     backdropSize.x,
                                     backdropSize.y);
 //        GUI.color= new Color(1f, 1f, 1f, 0.3f);
