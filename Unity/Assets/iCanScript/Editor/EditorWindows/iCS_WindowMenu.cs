@@ -55,7 +55,7 @@ public static class iCS_WindowMenu {
  	}
     // ======================================================================
  	// iCanScript ClassWizard editor Menu.
- 	[MenuItem("iCanScript/Editors/Property Wizard",false,903)]
+ 	[MenuItem("iCanScript/Editors/Property Editor",false,903)]
  	public static void MenuInstanceEditor() {
         var editor= EditorWindow.GetWindow(typeof(iCS_PropertyEditorWindow), false, "Property");
         EditorWindow.DontDestroyOnLoad(editor);
