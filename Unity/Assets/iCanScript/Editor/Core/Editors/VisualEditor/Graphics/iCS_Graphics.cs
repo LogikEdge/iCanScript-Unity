@@ -1117,16 +1117,18 @@ public partial class iCS_Graphics {
 			var fromState= fromStatePort.ParentNode;
 			return IsEnable(fromState);
 		}
-		var enablePorts= obj.BuildListOfChildPorts(p=> p.IsEnablePort);
-		foreach(var ep in enablePorts) {
-			if(isPlaying || ep.ProducerPort == null) {
-                var portValue= ep.PortValue;
-				if(portValue != null && (bool)(ep.PortValue) == false) {
-					return false;
-				}				
-			}
-		}
-		return true;
+        bool isEnabled= true;
+		obj.ForEachChildPort(
+            p=> {
+    			if(p.IsEnablePort && (isPlaying || p.ProducerPort == null)) {
+                    var portValue= p.PortValue;
+    				if(portValue != null && (bool)(portValue) == false) {
+    					isEnabled= false;
+    				}				
+    			}
+            }
+        );
+		return isEnabled;
 	}
     // ----------------------------------------------------------------------
     public static bool IsActiveState(iCS_EditorObject state) {

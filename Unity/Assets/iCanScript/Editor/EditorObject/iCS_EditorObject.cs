@@ -20,14 +20,14 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Cache
     // ----------------------------------------------------------------------
-    Type    cachedRuntimeType     = null;
-    string  cachedNodeTitle       = null;
-    Vector2 cachedNodeTitleSize   = Vector2.zero;
-    string  cachedNodeSubTitle    = null;
-    Vector2 cachedNodeSubTitleSize= Vector2.zero;
-    string  cachedCodeName        = null;
-    string  cachedDisplayName     = null;
-    Vector2 cachedDisplayNameSize = Vector2.zero;
+    Type    c_RuntimeType     = null;
+    string  c_NodeTitle       = null;
+    Vector2 c_NodeTitleSize   = Vector2.zero;
+    string  c_NodeSubTitle    = null;
+    Vector2 c_NodeSubTitleSize= Vector2.zero;
+    string  c_CodeName        = null;
+    string  c_DisplayName     = null;
+    Vector2 c_DisplayNameSize = Vector2.zero;
 
     // ======================================================================
     // Conversion Utilities
@@ -97,10 +97,10 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Type RuntimeType {
 		get {
-            if(cachedRuntimeType == null) {
-                cachedRuntimeType= EngineObject.RuntimeType;
+            if(c_RuntimeType == null) {
+                c_RuntimeType= EngineObject.RuntimeType;
             }
-            return cachedRuntimeType;
+            return c_RuntimeType;
         }
 	}
 
@@ -109,21 +109,21 @@ public partial class iCS_EditorObject {
     /// Returns the name as per the underlying code.
     public string CodeName {
         get {
-            if(cachedCodeName == null) {
+            if(c_CodeName == null) {
 				var name= EngineObject.RawName;
                 if(IsPort) {
                     if(IsDataPort && IsProgrammaticInstancePort) {
-                        cachedCodeName= "this";
+                        c_CodeName= "this";
                     }
                     else if(IsTriggerPort) {
-                    	cachedCodeName= "trigger";
+                    	c_CodeName= "trigger";
                     }
 					else if(IsEnablePort) {
-						cachedCodeName= "enable";
+						c_CodeName= "enable";
 					}
 					else {
-                        cachedCodeName= EngineObject.RawName;
-						if(string.IsNullOrEmpty(cachedCodeName)) {
+                        c_CodeName= EngineObject.RawName;
+						if(string.IsNullOrEmpty(c_CodeName)) {
 							var parent= ParentNode;
 							if(parent != null) {
 		                        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
@@ -132,38 +132,38 @@ public partial class iCS_EditorObject {
 								    if(funcInfo != null) {
 										var parameters= funcInfo.Parameters;
 										if(parameters != null && PortIndex < parameters.Length) {
-											cachedCodeName= parameters[PortIndex].name;
+											c_CodeName= parameters[PortIndex].name;
 										}
 										else if(IsReturnPort) {
 											if(funcInfo.FunctionReturn != null) {
-												cachedCodeName= funcInfo.FunctionReturn.name;
+												c_CodeName= funcInfo.FunctionReturn.name;
 											}
 										}
 									}
 								}
 							}								
 						}                       
-						if(string.IsNullOrEmpty(cachedCodeName)) {
-							cachedCodeName= IsReturnPort ? "output" : "p";
+						if(string.IsNullOrEmpty(c_CodeName)) {
+							c_CodeName= IsReturnPort ? "output" : "p";
 						}
                     }
                 }
                 else if(IsNode) {
-					cachedCodeName= name;
+					c_CodeName= name;
                     if(IsConstructor) {
-                        cachedCodeName= iCS_Types.TypeName(RuntimeType);
+                        c_CodeName= iCS_Types.TypeName(RuntimeType);
                     }
 					else if(IsTransitionPackage) {
-                        cachedCodeName= string.IsNullOrEmpty(name) ? "StateTransition" : name;						
+                        c_CodeName= string.IsNullOrEmpty(name) ? "StateTransition" : name;						
 					}
                     else if(IsStateChart) {
-                        cachedCodeName= string.IsNullOrEmpty(name) ? "StateChart" : name;
+                        c_CodeName= string.IsNullOrEmpty(name) ? "StateChart" : name;
                     }
                     else if(IsState) {
-                        cachedCodeName= string.IsNullOrEmpty(name) ? "State" : name;
+                        c_CodeName= string.IsNullOrEmpty(name) ? "State" : name;
                     }
                     else if(IsPackage) {
-                        cachedCodeName= string.IsNullOrEmpty(name) ? "Package" : name;
+                        c_CodeName= string.IsNullOrEmpty(name) ? "Package" : name;
                     }
                     else {
                         var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
@@ -171,26 +171,26 @@ public partial class iCS_EditorObject {
 	                        var funcInfo= desc.ToFunctionPrototypeInfo;
 	                        if(funcInfo != null) {
 	                            if(funcInfo is iCS_MessageInfo) {
-	                                cachedCodeName= funcInfo.DisplayName;
+	                                c_CodeName= funcInfo.DisplayName;
 	                            }
 	                            else {
-	                                cachedCodeName= funcInfo.MethodName;                            
+	                                c_CodeName= funcInfo.MethodName;                            
 	                            }
 	                        }
 	                        else {
-	                            cachedCodeName= string.IsNullOrEmpty(name) ? "null" : name;
+	                            c_CodeName= string.IsNullOrEmpty(name) ? "null" : name;
 	                        }							
 						}
 						else {
-                            cachedCodeName= string.IsNullOrEmpty(name) ? "null" : name;							
+                            c_CodeName= string.IsNullOrEmpty(name) ? "null" : name;							
 						}
                     }
                 }
                 else {
-                    cachedCodeName= string.IsNullOrEmpty(name) ? "null" : name;
+                    c_CodeName= string.IsNullOrEmpty(name) ? "null" : name;
                 }
             }
-            return cachedCodeName ?? "null";
+            return c_CodeName ?? "null";
         }
     }
     // ======================================================================
@@ -198,22 +198,22 @@ public partial class iCS_EditorObject {
     /// Returns the user visible name of the object.
     public string DisplayName {
         get {
-            if(cachedDisplayName == null) {
+            if(c_DisplayName == null) {
                 if(IsDataPort && IsProgrammaticInstancePort) {
-                    cachedDisplayName= IsOutputPort ? "Self" : "Target";
+                    c_DisplayName= IsOutputPort ? "Self" : "Target";
                 }
                 else if(IsInstanceNode) {
-                    cachedDisplayName= "Property Accessor";
+                    c_DisplayName= "Property Accessor";
                 }
                 else {
-                    cachedDisplayName= EngineObject.RawName;
-                    if(string.IsNullOrEmpty(cachedDisplayName)) {
-                        cachedDisplayName= CodeName;
+                    c_DisplayName= EngineObject.RawName;
+                    if(string.IsNullOrEmpty(c_DisplayName)) {
+                        c_DisplayName= CodeName;
                     }
                 }
-                cachedDisplayName= iCS_ObjectNames.ToDisplayName(cachedDisplayName);
+                c_DisplayName= iCS_ObjectNames.ToDisplayName(c_DisplayName);
             }
-            return cachedDisplayName;
+            return c_DisplayName;
         }
         set {
             var engineObject= EngineObject;
@@ -230,11 +230,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     /// This functions resets all name related caches.
     void ResetNameCaches() {
-		cachedCodeName       = null;
-        cachedNodeTitle      = null;
-        cachedNodeTitleSize  = Vector2.zero;
-        cachedDisplayName    = null;
-        cachedDisplayNameSize= Vector2.zero;
+		c_CodeName       = null;
+        c_NodeTitle      = null;
+        c_NodeTitleSize  = Vector2.zero;
+        c_DisplayName    = null;
+        c_DisplayNameSize= Vector2.zero;
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
@@ -263,28 +263,28 @@ public partial class iCS_EditorObject {
     public string NodeTitle {
         get {
             // Fill the node title cache.
-            if(cachedNodeTitle == null) {
-                cachedNodeTitle= iCS_ObjectNames.ToDisplayName(DisplayName);
+            if(c_NodeTitle == null) {
+                c_NodeTitle= iCS_ObjectNames.ToDisplayName(DisplayName);
             }
             // Add frame id if running
 			if(Prefs.ShowRuntimeFrameId && Application.isPlaying) {
 				var action= GetRuntimeObject as SSAction;
 				if(action != null) {
-					return cachedNodeTitle+" ("+action.ExecutedRunId+")";
+					return c_NodeTitle+" ("+action.ExecutedRunId+")";
 				}
 			}
             // Return editor node title.
-            return cachedNodeTitle;
+            return c_NodeTitle;
         }
     }
     // ----------------------------------------------------------------------
     public Vector2 NodeTitleSize {
         get {
-            if(Math3D.IsZero(cachedNodeTitleSize)) {
+            if(Math3D.IsZero(c_NodeTitleSize)) {
                 var titleContent= new GUIContent(NodeTitle);
-                cachedNodeTitleSize= iCS_Layout.DefaultTitleStyle.CalcSize(titleContent);
+                c_NodeTitleSize= iCS_Layout.DefaultTitleStyle.CalcSize(titleContent);
             }
-            return cachedNodeTitleSize;
+            return c_NodeTitleSize;
         }
     }
 
@@ -292,22 +292,22 @@ public partial class iCS_EditorObject {
     /// Builds and returns the Node SubTitle text.
     public string NodeSubTitle {
         get {
-            if(cachedNodeSubTitle == null) {
-                cachedNodeSubTitleSize= Vector2.zero;
+            if(c_NodeSubTitle == null) {
+                c_NodeSubTitleSize= Vector2.zero;
                 if(IsConstructor) {
-                    cachedNodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
+                    c_NodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
                 }
                 else if(IsKindOfFunction || IsMessageHandler || IsInstanceNode) {
-                    cachedNodeSubTitle= BuildIsASubTitle("Target", RuntimeType);
+                    c_NodeSubTitle= BuildIsASubTitle("Target", RuntimeType);
                 }
                 else if(IsKindOfPackage) {
-                    cachedNodeSubTitle= "Node is a Package";
+                    c_NodeSubTitle= "Node is a Package";
                 }
                 else {
-                    cachedNodeSubTitle= null;
+                    c_NodeSubTitle= null;
                 }
             }
-            return cachedNodeSubTitle ?? "";
+            return c_NodeSubTitle ?? "";
         }
     }
 
@@ -333,11 +333,11 @@ public partial class iCS_EditorObject {
     /// Returns the rendering dimension of the Node SubTitle text.
     public Vector2 NodeSubTitleSize {
         get {
-            if(Math3D.IsZero(cachedNodeSubTitleSize)) {
+            if(Math3D.IsZero(c_NodeSubTitleSize)) {
                 var guiContent= new GUIContent(NodeSubTitle);
-                cachedNodeSubTitleSize= iCS_Layout.DefaultSubTitleStyle.CalcSize(guiContent);
+                c_NodeSubTitleSize= iCS_Layout.DefaultSubTitleStyle.CalcSize(guiContent);
             }
-            return cachedNodeSubTitleSize;
+            return c_NodeSubTitleSize;
         }
     }    
         

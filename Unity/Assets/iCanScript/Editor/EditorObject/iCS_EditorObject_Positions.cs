@@ -172,10 +172,6 @@ public partial class iCS_EditorObject {
 		get {
 			return BuildRect(GlobalPosition, LocalSize);
 		}
-//		set {
-//			GlobalPosition= PositionFrom(value);
-//			LocalSize= SizeFrom(value);
-//		}
 	}
 	
 	// ======================================================================

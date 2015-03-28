@@ -279,6 +279,23 @@ public static class iCS_PreferencesController {
     const string   kBackgroundColorKey            = "iCS_BackgroundColor";         
     const string   kSelectedBackgroundColorKey    = "iCS_SelectedBackgroundColor";         
 
+    //
+    // Chached Values
+    //
+    static Color   c_NodeTitleColor;
+    static Color   c_NodeLabelColor;
+    static Color   c_NodeValueColor;
+    static Color   c_EntryStateNodeColor;
+    static Color   c_StateNodeColor;
+    static Color   c_PackageNodeColor;
+    static Color   c_InstanceNodeColor;
+    static Color   c_ConstructorNodeColor;
+    static Color   c_FunctionNodeColor;
+    static Color   c_MessageNodeColor;
+    static Color   c_UserFunctionNodeColor;
+    static Color   c_BackgroundColor;
+    static Color   c_SelectedBackgroundColor;            
+    
 	//
 	// Reset to default value functions
 	//
@@ -326,56 +343,56 @@ public static class iCS_PreferencesController {
 	// Accessors
 	//
     public static Color NodeTitleColor {
-        get { return LoadColor(kNodeTitleColorKey, kNodeTitleColor); }
-        set { SaveColor(kNodeTitleColorKey, value); }
+        get { return c_NodeTitleColor; }
+        set { SaveColor(kNodeTitleColorKey, value); c_NodeTitleColor= value; }
     }
     public static Color NodeLabelColor {
-        get { return LoadColor(kNodeLabelColorKey, kNodeLabelColor); }
-        set { SaveColor(kNodeLabelColorKey, value); }
+        get { return c_NodeLabelColor; }
+        set { SaveColor(kNodeLabelColorKey, value); c_NodeLabelColor= value; }
     }
     public static Color NodeValueColor {
-        get { return LoadColor(kNodeValueColorKey, kNodeValueColor); }
-        set { SaveColor(kNodeValueColorKey, value); }
+        get { return c_NodeValueColor; }
+        set { SaveColor(kNodeValueColorKey, value); c_NodeValueColor= value; }
     }
     public static Color PackageNodeColor {
-        get { return LoadColor(kPackageNodeColorKey, kPackageNodeColor); }
-        set { SaveColor(kPackageNodeColorKey, value); }
+        get { return c_PackageNodeColor; }
+        set { SaveColor(kPackageNodeColorKey, value); c_PackageNodeColor= value; }
     }
     public static Color FunctionNodeColor {
-        get { return LoadColor(kFunctionNodeColorKey, kFunctionNodeColor); }
-        set { SaveColor(kFunctionNodeColorKey, value); }
+        get { return c_FunctionNodeColor; }
+        set { SaveColor(kFunctionNodeColorKey, value); c_FunctionNodeColor= value; }
     }
     public static Color ConstructorNodeColor {
-        get { return LoadColor(kConstructorNodeColorKey, kConstructorNodeColor); }
-        set { SaveColor(kConstructorNodeColorKey, value); }
+        get { return c_ConstructorNodeColor; }
+        set { SaveColor(kConstructorNodeColorKey, value); c_ConstructorNodeColor= value; }
     }
     public static Color InstanceNodeColor {
-        get { return LoadColor(kInstanceNodeColorKey, kInstanceNodeColor); }
-        set { SaveColor(kInstanceNodeColorKey, value); }
+        get { return c_InstanceNodeColor; }
+        set { SaveColor(kInstanceNodeColorKey, value); c_InstanceNodeColor= value; }
     }
     public static Color MessageNodeColor {
-        get { return LoadColor(kMessageNodeColorKey, kMessageNodeColor); }
-        set { SaveColor(kMessageNodeColorKey, value); }        
+        get { return c_MessageNodeColor; }
+        set { SaveColor(kMessageNodeColorKey, value); c_MessageNodeColor= value; }        
     }
     public static Color UserFunctionNodeColor {
-        get { return LoadColor(kUserFunctionNodeColorKey, kUserFunctionNodeColor); }
-        set { SaveColor(kUserFunctionNodeColorKey, value); }        
+        get { return c_UserFunctionNodeColor; }
+        set { SaveColor(kUserFunctionNodeColorKey, value); c_UserFunctionNodeColor= value; }        
     }
     public static Color StateNodeColor {
-        get { return LoadColor(kStateNodeColorKey, kStateNodeColor); }
-        set { SaveColor(kStateNodeColorKey, value); }
+        get { return c_StateNodeColor; }
+        set { SaveColor(kStateNodeColorKey, value); c_StateNodeColor= value; }
     }
     public static Color EntryStateNodeColor {
-        get { return LoadColor(kEntryStateNodeColorKey, kEntryStateNodeColor); }
-        set { SaveColor(kEntryStateNodeColorKey, value); }
+        get { return c_EntryStateNodeColor; }
+        set { SaveColor(kEntryStateNodeColorKey, value); c_EntryStateNodeColor= value; }
     }
     public static Color BackgroundColor {
-        get { return LoadColor(kBackgroundColorKey, kBackgroundColor); }
-        set { SaveColor(kBackgroundColorKey, value); }
+        get { return c_BackgroundColor; }
+        set { SaveColor(kBackgroundColorKey, value); c_BackgroundColor= value; }
     }
     public static Color SelectedBackgroundColor {
-        get { return LoadColor(kSelectedBackgroundColorKey, kSelectedBackgroundColor); }
-        set { SaveColor(kSelectedBackgroundColorKey, value); }
+        get { return c_SelectedBackgroundColor; }
+        set { SaveColor(kSelectedBackgroundColorKey, value); c_SelectedBackgroundColor= value; }
     }
 
 
@@ -408,6 +425,19 @@ public static class iCS_PreferencesController {
     const string kGameObjectTypeColorKey= "iCS_GameObjectTypeColor";
     const string kDefaultTypeColorKey   = "iCS_DefaultTypeColor";
 
+    //
+    // Cached Values
+    //
+    static Color c_BoolTypeColor;
+    static Color c_IntTypeColor;
+    static Color c_FloatTypeColor;
+    static Color c_Vector2TypeColor;
+    static Color c_Vector3TypeColor;
+    static Color c_Vector4TypeColor;
+    static Color c_StringTypeColor;
+    static Color c_GameObjectTypeColor;
+    static Color c_DefaultTypeColor;
+    
 	//
 	// Reset to default value functions
 	//
@@ -443,40 +473,40 @@ public static class iCS_PreferencesController {
 	// Accessors
 	//
     public static Color BoolTypeColor {
-        get { return LoadColor(kBoolTypeColorKey, kBoolTypeColor); }
-        set { SaveColor(kBoolTypeColorKey, value); }
+        get { return c_BoolTypeColor; }
+        set { SaveColor(kBoolTypeColorKey, value); c_BoolTypeColor= value; }
     }
     public static Color IntTypeColor {
-        get { return LoadColor(kIntTypeColorKey, kIntTypeColor); }
-        set { SaveColor(kIntTypeColorKey, value); }
+        get { return c_IntTypeColor; }
+        set { SaveColor(kIntTypeColorKey, value); c_IntTypeColor= value; }
     }
     public static Color FloatTypeColor {
-        get { return LoadColor(kFloatTypeColorKey, kFloatTypeColor); }
-        set { SaveColor(kFloatTypeColorKey, value); }
+        get { return c_FloatTypeColor; }
+        set { SaveColor(kFloatTypeColorKey, value); c_FloatTypeColor= value; }
     }
     public static Color StringTypeColor {
-        get { return LoadColor(kStringTypeColorKey, kStringTypeColor);} 
-        set { SaveColor(kStringTypeColorKey, value); }
+        get { return c_StringTypeColor; } 
+        set { SaveColor(kStringTypeColorKey, value); c_StringTypeColor= value; }
     }
     public static Color Vector2TypeColor {
-        get { return LoadColor(kVector2TypeColorKey, kVector2TypeColor); }
-        set { SaveColor(kVector2TypeColorKey, value); }
+        get { return c_Vector2TypeColor; }
+        set { SaveColor(kVector2TypeColorKey, value); c_Vector2TypeColor= value; }
     }
     public static Color Vector3TypeColor {
-        get { return LoadColor(kVector3TypeColorKey, kVector3TypeColor); }
-        set { SaveColor(kVector3TypeColorKey, value); }
+        get { return c_Vector3TypeColor; }
+        set { SaveColor(kVector3TypeColorKey, value); c_Vector3TypeColor= value; }
     }
     public static Color Vector4TypeColor {
-        get { return LoadColor(kVector4TypeColorKey, kVector4TypeColor); }
-        set { SaveColor(kVector4TypeColorKey, value); }
+        get { return c_Vector4TypeColor; }
+        set { SaveColor(kVector4TypeColorKey, value); c_Vector4TypeColor= value; }
     }
     public static Color GameObjectTypeColor {
-        get { return LoadColor(kGameObjectTypeColorKey, kGameObjectTypeColor); }
-        set { SaveColor(kGameObjectTypeColorKey, value); }
+        get { return c_GameObjectTypeColor; }
+        set { SaveColor(kGameObjectTypeColorKey, value); c_GameObjectTypeColor= value; }
     }
     public static Color DefaultTypeColor {
-        get { return LoadColor(kDefaultTypeColorKey, kDefaultTypeColor); }
-        set { SaveColor(kDefaultTypeColorKey, value); }
+        get { return c_DefaultTypeColor; }
+        set { SaveColor(kDefaultTypeColorKey, value); c_DefaultTypeColor= value; }
     }
 
 	//
@@ -691,19 +721,41 @@ public static class iCS_PreferencesController {
         kUserFunctionNodeColor      = new Color(c(0x80), c(0xff), c(0x80));
         kBackgroundColor            = new Color(c(41), c(41), c(41));
         kSelectedBackgroundColor    = new Color(c(77), c(77), c(77));
+        // Node c_ colors
+        c_NodeTitleColor         = LoadColor(kNodeTitleColorKey, kNodeTitleColor);
+        c_NodeLabelColor         = LoadColor(kNodeLabelColorKey, kNodeLabelColor);
+        c_NodeValueColor         = LoadColor(kNodeValueColorKey, kNodeValueColor);
+        c_PackageNodeColor       = LoadColor(kPackageNodeColorKey, kPackageNodeColor);
+        c_FunctionNodeColor      = LoadColor(kFunctionNodeColorKey, kFunctionNodeColor);
+        c_ConstructorNodeColor   = LoadColor(kConstructorNodeColorKey, kConstructorNodeColor);
+        c_InstanceNodeColor      = LoadColor(kInstanceNodeColorKey, kInstanceNodeColor);
+        c_MessageNodeColor       = LoadColor(kMessageNodeColorKey, kMessageNodeColor);
+        c_UserFunctionNodeColor  = LoadColor(kUserFunctionNodeColorKey, kUserFunctionNodeColor);
+        c_StateNodeColor         = LoadColor(kStateNodeColorKey, kStateNodeColor);
+        c_EntryStateNodeColor    = LoadColor(kEntryStateNodeColorKey, kEntryStateNodeColor);
+        c_BackgroundColor        = LoadColor(kBackgroundColorKey, kBackgroundColor);
+        c_SelectedBackgroundColor= LoadColor(kSelectedBackgroundColorKey, kSelectedBackgroundColor);
         
         // Type colors
         kBoolTypeColor      = Color.white;
-//        kBoolTypeColor      = Color.red;
         kIntTypeColor       = Color.magenta;
         kFloatTypeColor     = Color.cyan;
         kVector2TypeColor   = Color.yellow;
         kVector3TypeColor   = Color.green;
         kVector4TypeColor   = new Color(c(64), c(160), c(255));
         kStringTypeColor    = new Color(c(255), c(128), 0);
-//        kStringTypeColor    = Color.red;
         kGameObjectTypeColor= new Color(0, c(128), c(255));
         kDefaultTypeColor   = new Color(c(219), c(249), c(194));		
+        // Type c_ colors
+        c_BoolTypeColor      = LoadColor(kBoolTypeColorKey, kBoolTypeColor);
+        c_IntTypeColor       = LoadColor(kIntTypeColorKey, kIntTypeColor);
+        c_FloatTypeColor     = LoadColor(kFloatTypeColorKey, kFloatTypeColor);
+        c_StringTypeColor    = LoadColor(kStringTypeColorKey, kStringTypeColor);
+        c_Vector2TypeColor   = LoadColor(kVector2TypeColorKey, kVector2TypeColor);
+        c_Vector3TypeColor   = LoadColor(kVector3TypeColorKey, kVector3TypeColor);
+        c_Vector4TypeColor   = LoadColor(kVector4TypeColorKey, kVector4TypeColor);
+        c_GameObjectTypeColor= LoadColor(kGameObjectTypeColorKey, kGameObjectTypeColor);
+        c_DefaultTypeColor   = LoadColor(kDefaultTypeColorKey, kDefaultTypeColor);
 	}
 	
 	// =================================================================================
