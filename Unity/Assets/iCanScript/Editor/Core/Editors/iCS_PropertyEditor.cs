@@ -27,12 +27,14 @@ public class iCS_PropertyEditor : iCS_EditorBase {
 		editor.ShowUtility();
 	}
 	public void Update() {
-		if(IStorage != null) {
-			var selectedObj= IStorage.SelectedObject;
-			if(selectedObj == null || !selectedObj.IsInstanceNode) {
-				IStorage= null;
-				Close();
-			}
+		if(IStorage == null) {
+			Close();
+			return;
+		}
+		var selectedObj= IStorage.SelectedObject;
+		if(selectedObj == null || !selectedObj.IsInstanceNode) {
+			IStorage= null;
+			Close();
 		}
 	}
 	
@@ -62,6 +64,8 @@ public class iCS_PropertyEditor : iCS_EditorBase {
            (myController != null && (myController.Target != targetObject || myController.IStorage != IStorage))) {
                myController= new iCS_PropertyController(targetObject, IStorage);            
                myMainView  = new DSCellView(new RectOffset(0,0,kSpacer,0), true, myController.View);
+			   ResizeToFit();
+			   ResizeToFit();
         }		
         return true;
     }
@@ -91,4 +95,10 @@ public class iCS_PropertyEditor : iCS_EditorBase {
         
         myMainView.Display(new Rect(0,0,position.width, position.height));
     }
+    // ---------------------------------------------------------------------------------
+	/// Resizes the editor panel to fit the content.
+	void ResizeToFit() {
+		var displaySize= myMainView.GetSizeToDisplay(position);
+		position= new Rect(position.x, position.y, displaySize.x, displaySize.y);		
+	}
 }

@@ -23,6 +23,37 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
             InputControlPair = new ControlPair(inputComponent, inputActive);
             OutputControlPair= new ControlPair(outputComponent, outputActive);
         }
+		public ControlPair GetAControlPair {
+			get {
+				if(InputControlPair != null && InputControlPair.Component != null) {
+					return InputControlPair;
+				}
+				return OutputControlPair;
+			}
+		}
+		public string RawName {
+			get {
+				var variableInfo= GetAControlPair.Component;
+	            if(variableInfo.IsField) {
+	                return variableInfo.ToFieldInfo.FieldName;
+				}
+	            return variableInfo.ToPropertyInfo.PropertyName;
+			}
+		}
+		public string DisplayName {
+			get { return iCS_ObjectNames.ToDisplayName(RawName); }
+		}
+		public Type VariableType {
+			get {
+				var variableInfo= GetAControlPair.Component;
+		        return variableInfo.IsField ? variableInfo.ToFieldInfo.type : variableInfo.ToPropertyInfo.type;				
+			}
+		}
+		public string DisplayTypeName {
+			get {
+				return iCS_ObjectNames.ToDisplayName(VariableType.Name);
+			}
+		}
     };
 
     // =================================================================================
@@ -113,10 +144,17 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     // Helpers
     // ---------------------------------------------------------------------------------
     string GetVariableName(iCS_MemberInfo variableInfo) {
-        return variableInfo.IsField ? variableInfo.ToFieldInfo.FieldName : variableInfo.ToPropertyInfo.PropertyName;
+        var name= variableInfo.IsField ? variableInfo.ToFieldInfo.FieldName : variableInfo.ToPropertyInfo.PropertyName;
+		return iCS_ObjectNames.ToDisplayName(name);
     }
 	string GetVariableName(VariablePair pair) {
-		return GetVariableName(GetAComponent(pair));
+		return pair.DisplayName;
+	}
+	string GetTypeName(iCS_MemberInfo variableInfo) {
+		return null;
+	}
+	string GetTypeName(VariablePair pair) {
+		return GetTypeName(GetAComponent(pair));
 	}
     Type GetVariableType(iCS_MemberInfo variableInfo) {
         return variableInfo.IsField ? variableInfo.ToFieldInfo.type : variableInfo.ToPropertyInfo.type;
@@ -129,22 +167,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     }
     VariablePair GetVariablePair(string name, List<VariablePair> lst) {
         foreach(var pair in lst) {
-            iCS_MemberInfo inputComponent= pair.InputControlPair.Component;
-            if(inputComponent != null) {
-                if(inputComponent.IsField) {
-                    if(inputComponent.ToFieldInfo.FieldName == name) return pair;
-                } else {
-                    if(inputComponent.ToPropertyInfo.PropertyName == name) return pair;
-                }
-            }
-            iCS_MemberInfo outputComponent= pair.OutputControlPair.Component;
-            if(outputComponent != null) {
-                if(outputComponent.IsField) {
-                    if(outputComponent.ToFieldInfo.FieldName == name) return pair;
-                } else {
-                    if(outputComponent.ToPropertyInfo.PropertyName == name) return pair;
-                }                
-            }
+			if(pair.DisplayName == name) return pair;
         }
         return null;
     }
@@ -163,8 +186,8 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
             return myCheckBoxSize;
         }
         VariablePair variablePair= myVariables[row];
-        string name= GetVariableName(variablePair);
-        string typeName= iCS_Types.TypeName(GetVariableType(myVariables[row]));
+        string name= variablePair.DisplayName;
+        string typeName= variablePair.DisplayTypeName;
         ControlPair inputControlPair= variablePair.InputControlPair;
         ControlPair outputControlPair= variablePair.OutputControlPair;
         GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
@@ -180,8 +203,8 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     public void DisplayObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row, Rect position) {
 		if(myClassType == null) return;
         VariablePair variablePair= myVariables[row];
-        string name= GetVariableName(variablePair);
-        string typeName= iCS_Types.TypeName(GetVariableType(myVariables[row]));
+        string name= variablePair.DisplayName;
+        string typeName= variablePair.DisplayTypeName;
         ControlPair inputControlPair= variablePair.InputControlPair;
         ControlPair outputControlPair= variablePair.OutputControlPair;
 
