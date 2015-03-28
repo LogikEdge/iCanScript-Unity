@@ -9,7 +9,9 @@ public partial class iCS_EditorObject {
     public float AvailableHeightForPorts {
         get {
             if(!IsVisibleInLayout) return 0f;
-			if(IsTransitionPackage && IsIconizedInLayout) return 0f;
+			if(IsIconizedInLayout) {
+				return IsTransitionPackage ? 0 : LocalSize.y;
+			}
             return FoldedOrUnfoldedVerticalPortsBottom-FoldedOrUnfoldedVerticalPortsTop;
         }
     }
@@ -18,7 +20,9 @@ public partial class iCS_EditorObject {
     public float AvailableWidthForPorts {
         get {
             if(!IsVisibleInLayout) return 0f;
-			if(IsTransitionPackage && IsIconizedInLayout) return 0f;
+			if(IsIconizedInLayout) {
+				return IsTransitionPackage ? 0f : LocalSize.x;				
+			}
             return FoldedOrUnfoldedHorizontalPortsRight-FoldedOrUnfoldedHorizontalPortsLeft;
         }
     }
