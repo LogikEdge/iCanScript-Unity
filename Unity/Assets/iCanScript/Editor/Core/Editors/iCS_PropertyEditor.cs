@@ -11,7 +11,7 @@ public class iCS_PropertyEditor : iCS_EditorBase {
     DSCellView              myMainView         = null;
     iCS_PropertyController  myController       = null;
     bool                    myNotificationShown= false;
-    
+	
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
@@ -20,6 +20,27 @@ public class iCS_PropertyEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
+	public static void Init(iCS_IStorage iStorage) {
+		// Get existing open window or if none, make a new one:
+		var editor = (iCS_PropertyEditor)EditorWindow.GetWindow (typeof (iCS_PropertyEditor));
+		editor.IStorage= iStorage;
+		editor.ShowUtility();
+	}
+	public void Update() {
+		if(IStorage != null) {
+			var selectedObj= IStorage.SelectedObject;
+			if(selectedObj == null || !selectedObj.IsInstanceNode) {
+				IStorage= null;
+				Close();
+			}
+		}
+	}
+	
+    // ---------------------------------------------------------------------------------
+	public new void OnEnable() {
+		base.OnEnable();
+		title= "Property";
+	}
     public new void OnDisable() {
         base.OnDisable();
         myMainView= null;

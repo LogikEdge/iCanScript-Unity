@@ -16,13 +16,6 @@ public class iCS_PropertyController {
 	iCS_ClassVariablesController	myVariablesController = null;
 
     // =================================================================================
-    // Constant GUI Content
-    // ---------------------------------------------------------------------------------
-    GUIContent  VariableTitle   = new GUIContent("Properties");
-    Vector2     LabelSize;
-    float       LabelHeight;
-    
-    // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
     const int   kSpacer= 8;
@@ -38,10 +31,10 @@ public class iCS_PropertyController {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_PropertyController(iCS_EditorObject target, iCS_IStorage storage) {
+    public iCS_PropertyController(iCS_EditorObject target, iCS_IStorage iStorage) {
         // Update main state variables.
         myTarget= target;
-        myStorage= storage;
+        myStorage= iStorage;
         if(!IsValid) return;
         
         BuildViews();
@@ -49,7 +42,8 @@ public class iCS_PropertyController {
     
     // ---------------------------------------------------------------------------------
     void BuildViews() {    
-		myVariablesController = new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, VariableTitle, myTarget);
+		var typeName= new GUIContent(iCS_ObjectNames.ToDisplayName(iCS_Types.TypeName(myTarget.RuntimeType)));
+		myVariablesController = new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, typeName, myTarget);
 
 		// Build class wizard layout view.
 		myLayoutView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), false);
