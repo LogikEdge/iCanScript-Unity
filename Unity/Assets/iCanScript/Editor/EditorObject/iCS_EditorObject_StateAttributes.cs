@@ -12,7 +12,6 @@ public partial class iCS_EditorObject {
 			var engineObject= EngineObject;
 			if(engineObject.IsEntryState == value) return;
 			engineObject.IsEntryState= value;
-//			IsDirty= true;
 		}
 	}
 }
