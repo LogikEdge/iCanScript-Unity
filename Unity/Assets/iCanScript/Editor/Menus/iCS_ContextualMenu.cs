@@ -352,7 +352,7 @@ public class iCS_ContextualMenu {
 			// Add shortcut to instance node creation.
 			menu= new iCS_MenuContext[2];
 			menu[0]= new iCS_MenuContext(ObjectInstanceStr);
-            menu[0].Command= "+ <"+iCS_Types.TypeName(portType)+" Instance>";
+            menu[0].Command= "+ Create Property Accessor";
 	        menu[1]= new iCS_MenuContext(SeparatorStr);
 		}
         // Get compatible functions.
