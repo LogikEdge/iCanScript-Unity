@@ -20,7 +20,7 @@ public static partial class iCS_UserCommands {
         iStorage.ForcedRelayoutOfTree();
         iStorage.ResetAllAnimationPositions();
         SendDisplayRootChange(iStorage);
-        CloseTransaction(iStorage, "Set Display Root=> "+obj.Name);
+        CloseTransaction(iStorage, "Set Display Root=> "+obj.DisplayName);
     }
     // ----------------------------------------------------------------------
     // Change the display root to the parent of the selected object.

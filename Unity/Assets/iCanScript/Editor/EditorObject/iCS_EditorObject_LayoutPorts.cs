@@ -79,7 +79,7 @@ public partial class iCS_EditorObject {
         // We can't resolve collision if we don't have enough space to put all ports.
         // In such a situation, we simply distribute the ports has best we can on the
         // available size.
-        float minSeparation= iCS_EditorConfig.MinimumPortSeparation;
+        float minSeparation= iCS_EditorConfig.kMinimumPortSeparation;
         if(minSeparation*(nbPorts-1) >= availableLength) {
             var step= availableLength/(nbPorts-1);
             for(int i= 0; i < nbPorts; ++i) {

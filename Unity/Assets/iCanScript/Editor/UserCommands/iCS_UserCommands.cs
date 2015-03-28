@@ -4,6 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScript.Editor;
 using P=Prelude;
 
 public static partial class iCS_UserCommands {

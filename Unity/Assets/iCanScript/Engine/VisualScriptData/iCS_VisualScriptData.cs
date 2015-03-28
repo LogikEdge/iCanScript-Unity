@@ -384,7 +384,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
 		string fullName= "";
 		for(; obj != null; obj= GetParentNode(vsd, obj)) {
             if( !obj.IsBehaviour ) {
-    			fullName= obj.Name+(string.IsNullOrEmpty(fullName) ? "" : "/"+fullName);                
+    			fullName= obj.RawName+(string.IsNullOrEmpty(fullName) ? "" : "/"+fullName);                
             }
 		}
 		return fullName;
@@ -406,7 +406,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         for(iCS_EngineObject sourcePort= GetProducerPort(vsd, port); sourcePort != null; sourcePort= GetProducerPort(vsd, port)) {
             port= sourcePort;
             if(++linkLength > 1000) {
-                Debug.LogWarning("iCanScript: Circular port connection detected on: "+GetParentNode(vsd, port).Name+"."+port.Name);
+                Debug.LogWarning("iCanScript: Circular port connection detected on: "+GetParentNode(vsd, port).RawName+"."+port.RawName);
                 return null;                
             }
         }

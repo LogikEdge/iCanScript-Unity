@@ -36,7 +36,7 @@ public static partial class iCS_UserCommands {
                             if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
                                 objectType= iCS_ObjectTypeEnum.OutFixDataPort;
                             }
-                            var newPort= iStorage.CreatePort(p.Name, proxyId, p.RuntimeType, objectType, p.PortIndex);
+                            var newPort= iStorage.CreatePort(p.RawName, proxyId, p.RuntimeType, objectType, p.PortIndex);
                             newPort.InitialValueArchive= p.InitialValueArchive;
                             iStorage.LoadInitialPortValueFromArchive(newPort);
                         }
@@ -86,7 +86,7 @@ public static partial class iCS_UserCommands {
                             if(p.IsOutDynamicDataPort || p.IsOutProposedDataPort) {
                                 objectType= iCS_ObjectTypeEnum.OutFixDataPort;
                             }
-                            var newPort= iStorage.CreatePort(p.Name, usrFncCallId, p.RuntimeType, objectType, p.PortIndex);
+                            var newPort= iStorage.CreatePort(p.RawName, usrFncCallId, p.RuntimeType, objectType, p.PortIndex);
                             newPort.IsNameEditable= false;
                             newPort.InitialValueArchive= p.InitialValueArchive;
                             iStorage.LoadInitialPortValueFromArchive(newPort);
@@ -273,7 +273,7 @@ public static partial class iCS_UserCommands {
         }
         package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnEntry;
-        CloseTransaction(iStorage, "Create "+package.Name);
+        CloseTransaction(iStorage, "Create "+package.DisplayName);
 		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
@@ -297,7 +297,7 @@ public static partial class iCS_UserCommands {
         }
         package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnUpdate;
-        CloseTransaction(iStorage, "Create "+package.Name);
+        CloseTransaction(iStorage, "Create "+package.DisplayName);
 		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
@@ -321,7 +321,7 @@ public static partial class iCS_UserCommands {
         }
         package.IsNameEditable= false;            
         package.Tooltip= iCS_ObjectTooltips.OnExit;
-        CloseTransaction(iStorage, "Create "+package.Name);
+        CloseTransaction(iStorage, "Create "+package.DisplayName);
 		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }
@@ -587,7 +587,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        CloseTransaction(iStorage, "Wrap : "+obj.Name);
+        CloseTransaction(iStorage, "Wrap : "+obj.DisplayName);
 		SystemEvents.AnnounceVisualScriptElementAdded(package);
         return package;
     }

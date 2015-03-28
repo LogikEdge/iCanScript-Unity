@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public partial class iCS_Graphics {
     // ======================================================================
     // Constants
@@ -20,7 +21,8 @@ public partial class iCS_Graphics {
 	static Rect  kBottomRightTileCoord= new Rect(kTilePos2, kTilePos0, kTileRatio, kTileRatio);
 
 	// ----------------------------------------------------------------------
-	void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent title, GUIStyle titleStyle) {
+	void DrawNode(Rect r, iCS_EditorObject node, Color nodeColor, Color backgroundColor, Color shadowColor) {
+        backgroundColor.a= 0.2f;
 		// Reajust screen position for fix size shadow.
 		float shadowSize= iCS_EditorConfig.NodeShadowSize;
 		float shadowSize2= 2f*shadowSize;
@@ -34,6 +36,7 @@ public partial class iCS_Graphics {
 		float middleWidth = screenPos.width -tileSize2;
 		float middleHeight= screenPos.height-tileSize2;
 
+        // Draw node title
 		Rect pos= new Rect(screenPos.x, screenPos.y, tileSize, tileSize);
 		GUI.DrawTextureWithTexCoords(pos, nodeTexture, kTopLeftTileCoord);
 		pos.x= pos.xMax;
@@ -42,6 +45,7 @@ public partial class iCS_Graphics {
 		pos.x= pos.xMax;
 		pos.width= tileSize;
 		GUI.DrawTextureWithTexCoords(pos, nodeTexture, kTopRightTileCoord);
+        // Draw node center
 		if(middleHeight > 0f) {
             float heightRatio= middleHeight >= tileSize ? kTileRatio-0.01f : middleHeight/(3f*tileSize);
     		pos= new Rect(screenPos.x, pos.yMax,tileSize,middleHeight);
@@ -59,7 +63,7 @@ public partial class iCS_Graphics {
             coord.height= heightRatio;
 			GUI.DrawTextureWithTexCoords(pos, nodeTexture, coord);			
 		}
-
+        // Draw node bottom
 		pos= new Rect(screenPos.x, pos.yMax, tileSize, tileSize);
 		GUI.DrawTextureWithTexCoords(pos, nodeTexture, kBottomLeftTileCoord);
 		pos.x= pos.xMax;
@@ -72,8 +76,18 @@ public partial class iCS_Graphics {
         // Show title.
 		GUI.color= Color.white;
         if(!ShouldShowTitle()) return;
-        Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.5f*(tileSize-shadowSize));
+        var titleStyle   = Layout.DynamicTitleStyle;
+        var subTitleStyle= Layout.DynamicSubTitleStyle;
+        var title= new GUIContent(GetNodeTitle(node));
+        var subTitle= GetNodeSubTitle(node);
         Vector2 titleSize= titleStyle.CalcSize(title);
-        GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), title, titleStyle);
+        var scale= titleSize.y / iCS_EditorConfig.kTitleFontSize;
+        var titleLeft  = r.x+scale*iCS_EditorConfig.kNodeTitleIconSize;
+        var titleTop   = r.y;
+        var subTitleTop= titleTop+titleSize.y;
+        var titleWidth = r.width-titleLeft;
+        GUI.Label(new Rect(titleLeft, titleTop, titleWidth, r.height), title, titleStyle);
+        GUI.Label(new Rect(titleLeft, subTitleTop, titleWidth, r.height), subTitle, subTitleStyle);
 	}
+}
 }

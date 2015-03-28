@@ -5,6 +5,7 @@ using System.Collections;
 using P=Prelude;
 using iCanScript.Editor;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
@@ -298,4 +299,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myAssistantDontLogo);                   
         HotZoneAdd(kWorkflowAssistantKey, AssistantButtonArea, null, WorkflowAssistantOnMouseClick, null);
     }
+}
 }

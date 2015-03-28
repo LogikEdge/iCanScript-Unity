@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 using Prefs=iCS_PreferencesController;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void SmartFocusOn(iCS_EditorObject obj) {
@@ -171,4 +172,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myAnimatedScale.Start(startScale, targetScale, deltaTime,
 							  (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
 	}
+}
 }

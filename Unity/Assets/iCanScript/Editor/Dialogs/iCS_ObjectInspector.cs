@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Subspace;
 
+namespace iCanScript.Editor {
 public class iCS_ObjectInspector : EditorWindow {
     // ======================================================================
     // Constants.
@@ -36,7 +37,7 @@ public class iCS_ObjectInspector : EditorWindow {
     }
     public void Init(iCS_EditorObject theObject, Vector2 pos) {
         myObject= theObject;
-        title= theObject.Name;
+        title= theObject.DisplayName;
         position= new Rect(pos.x, pos.y, 300, 200);
         ShowAuxWindow();
     }
@@ -51,7 +52,7 @@ public class iCS_ObjectInspector : EditorWindow {
         if(myObject == null) return;
 
         // Update the title
-        title= "Inspector :: "+myObject.Name;
+        title= "Inspector :: "+myObject.DisplayName;
         
         // Use inspector skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
@@ -69,19 +70,19 @@ public class iCS_ObjectInspector : EditorWindow {
         // Display object id.
         EditorGUILayout.LabelField("id", myObject.InstanceId.ToString());
         // Display object type.
-        var typeName= ObjectNames.NicifyVariableName(myObject.ObjectType.ToString());
+        var typeName= iCS_ObjectNames.ToDisplayName(myObject.ObjectType.ToString());
         EditorGUILayout.LabelField("Type", typeName);
         // Display object initial name.
         if(myObject.IsNode) {
-            EditorGUILayout.LabelField("Initial Name", myObject.DefaultName);
+            EditorGUILayout.LabelField("Initial Name", iCS_ObjectNames.ToDisplayName(myObject.CodeName));
         }
         // Display object name.
-        string name= myObject.RawName;
-        if(myObject.IsOutStatePort) name= iStorage.FindAConnectedPort(myObject).RawName;
+        string name= myObject.DisplayName;
+        if(myObject.IsOutStatePort) name= iStorage.FindAConnectedPort(myObject).DisplayName;
         if(string.IsNullOrEmpty(name)) name= EmptyStr;
         if(myObject.IsNameEditable) {
             GUI.changed= false;
-            var newName= EditorGUILayout.TextField("Name", myObject.RawName);
+            var newName= EditorGUILayout.TextField("Name", myObject.DisplayName);
             if(GUI.changed) {
                 iCS_UserCommands.ChangeName(myObject, newName);
             }
@@ -200,8 +201,8 @@ public class iCS_ObjectInspector : EditorWindow {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in outPorts) {
                     iCS_EditorObject inPort= iStorage.FindAConnectedPort(port);
-                    EditorGUILayout.LabelField("Name", inPort.Name);                        
-                    EditorGUILayout.LabelField("State", inPort.Parent.Name);                    
+                    EditorGUILayout.LabelField("Name", inPort.DisplayName);                        
+                    EditorGUILayout.LabelField("State", inPort.Parent.DisplayName);                    
                 }
             }
         }
@@ -212,9 +213,9 @@ public class iCS_ObjectInspector : EditorWindow {
             if(myShowInputs) {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in inPorts) {
-                    EditorGUILayout.LabelField("Name", port.Name);                        
+                    EditorGUILayout.LabelField("Name", port.DisplayName);                        
                     iCS_EditorObject outPort= port.ProducerPort;
-                    EditorGUILayout.LabelField("State", outPort.Parent.Name);                    
+                    EditorGUILayout.LabelField("State", outPort.Parent.DisplayName);                    
                 }
             }
         }
@@ -224,10 +225,11 @@ public class iCS_ObjectInspector : EditorWindow {
     // Inspects the selected port.
     void InspectPort(iCS_EditorObject port) {
         iCS_EditorObject parent= port.Parent;
-        EditorGUILayout.LabelField("Parent", parent.Name);
+        EditorGUILayout.LabelField("Parent", parent.DisplayName);
         EditorGUILayout.LabelField("Port Index", port.PortIndex.ToString());
         iCS_GuiUtilities.OnInspectorDataPortGUI(port, port.IStorage, 1, myFoldoutDB);        
     }
 
 }
 
+}

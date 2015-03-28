@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Utilities;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     ActionQueue  OnGUICommandQueue= new ActionQueue();
 
@@ -15,4 +16,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public void QueueOnGUICommand(Action fnc) {
         OnGUICommandQueue.QueueAction(fnc);
     }
+}
 }

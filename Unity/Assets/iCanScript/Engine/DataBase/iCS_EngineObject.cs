@@ -42,7 +42,7 @@ public class iCS_EngineObject {
     public bool   IsValid         { get { return InstanceId != -1; }}
     public bool   IsParentValid   { get { return ParentId != -1; }}
     public bool   IsSourceValid   { get { return SourceId != -1; }}
-    public bool   IsNameEmpty     { get { return RawName == null || RawName == ""; }}
+    public bool   IsNameEmpty     { get { return string.IsNullOrEmpty(RawName); }}
     public string TypeName        { get { return iCS_Types.TypeName(RuntimeType);}} 
     public Type   RuntimeType     {
         get {
@@ -53,10 +53,6 @@ public class iCS_EngineObject {
             }
             return ty;
         }
-    }
-    public string Name {
-        get { return IsNameEmpty ? "<"+TypeName+">" : RawName; }
-        set { RawName= value; }
     }
     // Node Specific accesors ------------------------------------------------
     public int ProxyOriginalNodeId {
@@ -109,7 +105,7 @@ public class iCS_EngineObject {
         ObjectType= objectType;
         InstanceId= id;
         ParentId= parentId;
-        Name= name;
+        RawName= name;
         QualifiedType= type.AssemblyQualifiedName;
         LocalAnchorPosition= Vector2.zero;
         if(IsDataOrControlPort) {
@@ -134,7 +130,7 @@ public class iCS_EngineObject {
     }
     // ----------------------------------------------------------------------
     public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent) {
-        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);
+        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.RawName, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
@@ -217,6 +213,7 @@ public class iCS_EngineObject {
     public bool IsConstructor              { get { return iCS_ObjectType.IsConstructor(this); }}
     public bool IsClassFunction            { get { return iCS_ObjectType.IsClassFunction(this); }}
     public bool IsInstanceFunction         { get { return iCS_ObjectType.IsInstanceFunction(this); }}
+	public bool IsField					   { get { return iCS_ObjectType.IsField(this); }}
     public bool IsClassField               { get { return iCS_ObjectType.IsClassField(this); }}
     public bool IsInstanceField            { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast                 { get { return iCS_ObjectType.IsTypeCast(this); }}
@@ -244,6 +241,7 @@ public class iCS_EngineObject {
     public bool IsParameterPort     	{ get { return iCS_ObjectType.IsParameterPort(this); }}
     public bool IsInParameterPort   	{ get { return iCS_ObjectType.IsInParameterPort(this); }}
     public bool IsOutParameterPort  	{ get { return iCS_ObjectType.IsOutParameterPort(this); }}
+	public bool IsReturnPort            { get { return iCS_ObjectType.IsReturnPort(this); }}
     // Fix Data Flow Ports
     public bool IsFixDataPort          	{ get { return iCS_ObjectType.IsFixDataPort(this); }}
     public bool IsInFixDataPort         { get { return iCS_ObjectType.IsInFixDataPort(this); }}

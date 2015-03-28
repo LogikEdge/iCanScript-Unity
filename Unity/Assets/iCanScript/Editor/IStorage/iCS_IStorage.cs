@@ -363,7 +363,7 @@ public partial class iCS_IStorage {
 									hasInTransitionPort= true;
 								} else if(c.IsOutTransitionPort) {
 									hasOutTransitionPort= true;
-								} else if(c.IsOutFixDataPort && c.Name == "trigger") {
+								} else if(c.IsOutFixDataPort && c.IsTriggerPort) {
 									hasTriggerPort= true;
 								}
 							}
@@ -375,19 +375,19 @@ public partial class iCS_IStorage {
 				}
 				// Propagate variable name to instance nodes
 				if(obj.IsInstanceNode) {
-					string instanceNodeName= obj.DefaultName;
+					string instanceNodeName= obj.CodeName;
 					var thisPort= InstanceWizardGetInputThisPort(obj);
 					if(thisPort != null) {
 						var producerPort= thisPort.FirstProducerPort;
 						if(producerPort != null) {
 							var producerNode= producerPort.ParentNode;
 							if(producerNode.IsConstructor) {
-								instanceNodeName= producerNode.Name;
+								instanceNodeName= producerNode.DisplayName;
 							}
 						}
 					}
-					if(obj.Name != instanceNodeName) {
-						obj.Name= instanceNodeName;						
+					if(obj.DisplayName != instanceNodeName) {
+						obj.DisplayName= instanceNodeName;						
 						needsRelayout= true;
 						modified= true;
 					}
@@ -487,7 +487,7 @@ public partial class iCS_IStorage {
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         if(instance.IsInstanceNode) {
             InstanceWizardCompleteCreation(instance);
-            instance.RawName= "<"+iCS_Types.TypeName(iCS_Types.RemoveRefOrPointer(runtimeType))+">";
+            instance.DisplayName= "Property Accessor";
             instance.IsNameEditable= false;
         }
         return instance;
@@ -668,7 +668,7 @@ public partial class iCS_IStorage {
         return GetInstancePortName(typeInfo.CompilerType);
     }
     public static string GetInstancePortName(Type type) {
-        return "<"+iCS_Types.GetName(type)+">";
+        return "Target";
     }
     // ----------------------------------------------------------------------
     public string GetDefaultNodeName(iCS_FunctionPrototype desc) {
@@ -676,7 +676,7 @@ public partial class iCS_IStorage {
         if(desc.IsConstructor) {
             displayName= "Variable";
         }
-        var defaultName= displayName+"<"+iCS_Types.TypeName(desc.ClassType)+">";
+        var defaultName= displayName;
         return defaultName;
     }
 }

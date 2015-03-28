@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // SCROLL ZONE
@@ -122,4 +123,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Color arrowColor= new Color(1f,1f,1f,0.5f);
         Handles.DrawSolidRectangleWithOutline(tv, arrowColor, arrowColor);
     }
+}
 }

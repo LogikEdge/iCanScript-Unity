@@ -77,6 +77,7 @@ namespace iCanScript.Editor.CodeEngineering {
                                               string[] paramTypes, string[] paramNames,
                                               CodeProducer functionBody,
                                               iCS_EditorObject vsObj= null) {
+            functionName= ToCSharpName(functionName);
             string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder("\n"+indent);
             if(accessType == AccessType.PUBLIC) {
@@ -218,16 +219,16 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             return obj.ToString();
         }
-        public static string ToMethodName(iCS_EditorObject eObj) {
-            var n= eObj.MethodName;
+        public static string ToMethodName(iCS_EditorObject vsObj) {
+            var n= vsObj.MethodName;
             if(n == ".ctor") {
-                return eObj.RuntimeType.Name;
+                return vsObj.RuntimeType.Name;
             }
-            return n;
+            return iCS_TextUtility.ToCSharpName(n);
         }
         public static string ToVariableName(iCS_EditorObject eObj) {
             if(eObj.IsConstructor) {
-                if(eObj.Name == eObj.DefaultName) {
+                if(string.IsNullOrEmpty(eObj.DisplayName)) {
                     var typeName= ToTypeName(eObj.RuntimeType);
                     if(typeName.StartsWith("iCS_")) {
                         typeName= typeName.Substring(4);
@@ -235,7 +236,9 @@ namespace iCanScript.Editor.CodeEngineering {
                     return "my"+typeName;
                 }
             }
-            return ToValidIdent(eObj.Name);
+            var variableName= ToValidIdent(eObj.DisplayName);
+            variableName= Char.ToLower(variableName[0])+variableName.Substring(1);
+            return variableName;
         }
         public static string ToGeneratedNodeName(iCS_EditorObject node) {
             var methodName= ToMethodName(node);
@@ -251,8 +254,9 @@ namespace iCanScript.Editor.CodeEngineering {
                 return ToVariableName(parent);
             }
             // Try with port name.
-            if(!string.IsNullOrEmpty(port.RawName)) {
-                return ToValidIdent(port.Name);                
+            if(!string.IsNullOrEmpty(port.DisplayName)) {
+                var name= ToValidIdent(port.DisplayName);
+                return Char.ToLower(name[0])+name.Substring(1);
             }
             // Generate unique port name.
             var generatedParentName= ToGeneratedNodeName(parent);
@@ -270,6 +274,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
                 else {
                     switch(c) {
+                        case ' ': break;
                         case '+': result.Append("_plus_"); break;
                         case '-': result.Append("_minus_"); break;
                         case '*': result.Append("_mul_"); break;
@@ -284,6 +289,9 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         public static string ToPropertyName(string propertyFunctionName) {
             return propertyFunctionName.Substring(4);
+        }
+        public static string ToCSharpName(string s) {
+            return iCS_TextUtility.ToCSharpName(s);
         }
         // -------------------------------------------------------------------
         public static void WriteFile(string path, string fileName, string code) {

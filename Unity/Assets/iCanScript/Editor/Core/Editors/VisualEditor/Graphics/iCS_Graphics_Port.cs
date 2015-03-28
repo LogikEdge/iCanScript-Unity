@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
 
+namespace iCanScript.Editor {
 // ==========================================================================
 // Port utilities.
 // ==========================================================================
@@ -44,15 +45,14 @@ public partial class iCS_Graphics {
     // Port name utilities.
     // ----------------------------------------------------------------------
     static string GetPortName(iCS_EditorObject port) {
-        Type portValueType= GetPortValueType(port);
-        return portValueType.IsArray ? "["+port.Name+"]" : port.Name;
+        return port.DisplayName;
     }
     // ----------------------------------------------------------------------
 	static string GetPortPath(iCS_EditorObject port, iCS_IStorage iStorage) {
 		iCS_EditorObject parent= port.Parent;
-		string path= parent.Name;
+		string path= parent.DisplayName;
 		for(parent= parent.Parent; parent != null && parent != iStorage[0]; parent= parent.Parent) {
-			path+= "."+parent.Name;			
+			path+= "."+parent.DisplayName;			
 		}
 		return path;
 	}
@@ -85,8 +85,8 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the port name size in GUI scale.
     Vector2 GetPortNameSize(iCS_EditorObject port) {
-		if(LabelStyle == null) return Vector2.zero;
-        return LabelStyle.CalcSize(new GUIContent(GetPortName(port)));
+		if(Layout.DynamicLabelStyle == null) return Vector2.zero;
+        return Layout.DynamicLabelStyle.CalcSize(new GUIContent(GetPortName(port)));
     }
     // ----------------------------------------------------------------------
     // Returns the port name position in graph coordinate and GUI scale size.
@@ -104,11 +104,11 @@ public partial class iCS_Graphics {
                 break;
             case iCS_EdgeEnum.Top:            
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y-= iCS_EditorConfig.PortDiameter+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, iStorage));
+                labelPos.y-= iCS_EditorConfig.PortDiameter+0.8f*(labelSize.y/Scale);
                 break;
             case iCS_EdgeEnum.Bottom:
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y+= iCS_EditorConfig.PortDiameter+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, iStorage)-0.2f*labelSize.y/Scale;
+                labelPos.y+= iCS_EditorConfig.PortDiameter;
                 break;
         }
         return new Rect(labelPos.x, labelPos.y, labelSize.x, labelSize.y);	    
@@ -137,7 +137,9 @@ public partial class iCS_Graphics {
     bool ShouldDisplayPortValue(iCS_EditorObject port) {
         if(!ShouldShowLabel()) return false;
         if(ShouldDisplayPortName(port) == false) return false;
-		if(port.IsParentMuxPort && Application.isPlaying && Prefs.ShowRuntimePortValue) {
+        bool isPlaying= Application.isPlaying;
+        if(isPlaying == false && port.IsSourceValid) return false;
+		if(port.IsParentMuxPort && isPlaying && Prefs.ShowRuntimePortValue) {
 			return true;
 		}
         if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
@@ -159,9 +161,11 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the port value display size in GUI scale.
     Vector2 GetPortValueSize(iCS_EditorObject port) {
-        if(ValueStyle == null) return Vector2.zero;
+        if(Layout.DynamicValueStyle == null) return Vector2.zero;
 		string valueAsStr= GetPortValueAsString(port);
-		return iCS_Strings.IsNotEmpty(valueAsStr) ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
+		return iCS_Strings.IsNotEmpty(valueAsStr) ?
+            Layout.DynamicValueStyle.CalcSize(new GUIContent(valueAsStr)):
+            Vector2.zero;        
     }
     // ----------------------------------------------------------------------
     // Returns the port value position in graph coordinate and GUI scale size.
@@ -191,4 +195,6 @@ public partial class iCS_Graphics {
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
 	}
+}
+
 }

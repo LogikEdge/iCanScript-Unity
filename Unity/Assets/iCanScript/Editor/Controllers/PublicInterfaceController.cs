@@ -197,7 +197,7 @@ namespace iCanScript { namespace Editor {
             public void Add(iCS_EditorObject element) {
                 var vs= element.IStorage.VisualScript;
                 if(element.IsPublicVariable || element.IsPublicFunction) {
-                    Add(new ReferenceToDefinition(vs, element.Name));
+                    Add(new ReferenceToDefinition(vs, element.DisplayName));
                 }
                 else {
                     Add(new ReferenceToEngineObject(vs, element.InstanceId));                
@@ -226,7 +226,7 @@ namespace iCanScript { namespace Editor {
             public void Remove(iCS_EditorObject element) {
                 var vs= element.IStorage.VisualScript;
                 if(element.IsPublicVariable || element.IsPublicFunction) {
-                    Remove(new ReferenceToDefinition(vs, element.Name));
+                    Remove(new ReferenceToDefinition(vs, element.DisplayName));
                 }
                 else {
                     Remove(new ReferenceToEngineObject(vs, element.InstanceId));
@@ -337,7 +337,7 @@ namespace iCanScript { namespace Editor {
     			{ get { return VisualScript.GetEngineObjectFromReferenceNode(EngineObject); }}
             public string Name {
                 get {
-                    return EngineObject.Name;
+                    return EngineObject.RawName;
                 }
             }
             public string RelativeName {
@@ -459,7 +459,7 @@ namespace iCanScript { namespace Editor {
                     var publicVariables= iCS_VisualScriptData.FindPublicVariableDefinitions(vs);
                     P.forEach(
                         pv=> {
-                            result.Add(new ReferenceToDefinition(vs, pv.Name));
+                            result.Add(new ReferenceToDefinition(vs, pv.RawName));
                         },
                         publicVariables
                     );
@@ -475,7 +475,7 @@ namespace iCanScript { namespace Editor {
                     P.forEach(
                         pf=> {
                             iCS_PortUtility.RepairPorts(vs, pf);
-                            result.Add(new ReferenceToDefinition(vs, pf.Name));
+                            result.Add(new ReferenceToDefinition(vs, pf.RawName));
                         },
                         publicFunctions
                     );
@@ -595,7 +595,7 @@ namespace iCanScript { namespace Editor {
                             var refNode= o.EngineObject;
                             if(vs.IsReferenceNodeUsingDynamicBinding(refNode)) return;
                             var defNode= vs.GetEngineObjectFromReferenceNode(refNode);
-                            if(defNode == null || defNode.Name != refNode.Name) {
+                            if(defNode == null || defNode.RawName != refNode.RawName) {
                                 var refName= o.FullName;
                                 var errorMessage= "Not able to find suitable variable defintion for variable reference=> <b><color=orange>"+refName+"</color></b>.";
             					ErrorController.AddError(kServiceId, errorMessage, o.VisualScript, o.EngineObject.InstanceId);
@@ -664,7 +664,7 @@ namespace iCanScript { namespace Editor {
                             var refNode= o.EngineObject;
                             if(vs.IsReferenceNodeUsingDynamicBinding(refNode)) return;
                             var defNode= vs.GetEngineObjectFromReferenceNode(refNode);
-                            if(defNode == null || defNode.Name != refNode.Name) {
+                            if(defNode == null || defNode.RawName != refNode.RawName) {
                                 var refName= o.FullName;
                                 var errorMessage= "Not able to find suitable function defintion for function call=> <b><color=orange>"+refName+"</color></b>.";
             					ErrorController.AddError(kServiceId, errorMessage, o.VisualScript, o.EngineObject.InstanceId);
@@ -692,7 +692,7 @@ namespace iCanScript { namespace Editor {
     			var a= interface1[i];
     			var b= interface2[i];
     			if(a.PortIndex != b.PortIndex) return false;
-    			if(a.Name != b.Name) return false;
+    			if(a.RawName != b.RawName) return false;
     			if(a.QualifiedType != b.QualifiedType) return false;
     		}
     		return true;
@@ -765,7 +765,7 @@ namespace iCanScript { namespace Editor {
     
     		// -- Simple port rename --
     		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
-    			dstPort.Name= srcPort.Name;
+    			dstPort.RawName= srcPort.RawName;
     			ReplicatePortsOnFunctionCall(P.tail(srcPorts), P.tail(dstPorts), vs, node);
     			return;
     		}			
@@ -785,18 +785,18 @@ namespace iCanScript { namespace Editor {
         static bool ArePortsIdentical(iCS_EngineObject p1, iCS_EngineObject p2) {
     		if(!ArePortsTypeIdentical(p1, p2)) return false;
             if(p1.PortIndex != p2.PortIndex) return false;
-            return p1.Name == p2.Name;
+            return p1.RawName == p2.RawName;
         }
         // ----------------------------------------------------------------------
         static bool ArePortsIdenticalExceptName(iCS_EngineObject p1, iCS_EngineObject p2) {
     		if(!ArePortsTypeIdentical(p1, p2)) return false;
             if(p1.PortIndex != p2.PortIndex) return false;
-            return p1.Name != p2.Name;
+            return p1.RawName != p2.RawName;
         }
         // ----------------------------------------------------------------------
         static bool ArePortsIdenticalExceptIndex(iCS_EngineObject p1, iCS_EngineObject p2) {
     		if(!ArePortsTypeIdentical(p1, p2)) return false;
-            if(p1.Name != p2.Name) return false;
+            if(p1.RawName != p2.RawName) return false;
             return p1.PortIndex != p2.PortIndex;
         }
         // ----------------------------------------------------------------------
@@ -902,7 +902,7 @@ namespace iCanScript { namespace Editor {
     
     		// -- Simple port rename --
     		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
-    			dstPort.Name= srcPort.Name;
+    			dstPort.RawName= srcPort.RawName;
     			ReplicatePortsOnFunction(P.tail(srcPorts), P.tail(dstPorts), vs, node);
     			return;
     		}			
@@ -933,7 +933,7 @@ namespace iCanScript { namespace Editor {
         		// -- New functions follow existing interface --
         		var isVirgin= obj.NbOfChildNodes == 0;
         		if(isVirgin) {
-        			var group= ourPublicFunctionGroups.Find(obj.Name);
+        			var group= ourPublicFunctionGroups.Find(obj.DisplayName);
         			if(group != null) {
         				ReferenceToDefinition toFollow= null;
         				toFollow= P.find(def=> def.EngineObject != engObj, group.Definitions);
@@ -970,7 +970,7 @@ namespace iCanScript { namespace Editor {
     				if(def != null) {
     					var eng= def.EngineObject;
     					if(eng != null) {
-    						eng.Name= obj.Name;
+    						eng.RawName= obj.DisplayName;
                             UpdateUnityAndEditors(def.VisualScript);
     					}
     				}
@@ -979,7 +979,7 @@ namespace iCanScript { namespace Editor {
     				if(r != null) {
     					var eng= r.EngineObject;
     					if(eng != null) {
-    						eng.Name= obj.Name;
+    						eng.RawName= obj.DisplayName;
                             UpdateUnityAndEditors(r.VisualScript);
     					}
     				}

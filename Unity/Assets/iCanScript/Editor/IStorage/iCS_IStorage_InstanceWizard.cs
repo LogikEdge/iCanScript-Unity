@@ -210,7 +210,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject result= null;
         UntilMatchingChildPort(module,
             port=> {
-                if(port.Name == portName && port.ObjectType == objType) {
+                if(port.DisplayName == portName && port.ObjectType == objType) {
                     if(portId != -1 && port.PortIndex != portId) {
                         return false;
                     }
@@ -299,12 +299,13 @@ public partial class iCS_IStorage {
         func.SetInitialPosition(new Vector2(0.5f*(moduleRect.x+moduleRect.xMax), moduleRect.yMax));
         ForEachChildDataPort(func,
             port=> {
-                string modulePortName= port.Name;
+                string modulePortName= port.DisplayName;
                 if(!port.IsInstancePort) {
                     if(desc.IsField) {
-                        modulePortName= (desc as iCS_FieldInfo).FieldName;
+                        var fieldInfo= desc as iCS_FieldInfo;
+                        modulePortName= (fieldInfo.IsGet ? "get_" : "set_")+fieldInfo.FieldName;
                     } else if(desc.IsProperty) {
-                        modulePortName= (desc as iCS_PropertyInfo).PropertyName;
+                        modulePortName= (desc as iCS_PropertyInfo).MethodName;
                     } else {
                         modulePortName+= "."+desc.DisplayName;                    
                     }
@@ -316,7 +317,7 @@ public partial class iCS_IStorage {
                         if(classPort != null) {
                             SetSource(port, classPort);
                         } else {
-                            Debug.LogWarning("iCanScript: Unable to find 'this' input port in class module: "+module.Name);
+                            Debug.LogWarning("iCanScript: Unable to find 'this' input port in class module: "+module.DisplayName);
                         }
                     } else {
                         iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicDataPort);

@@ -4,6 +4,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using Subspace;
+using iCanScript.Editor;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is used to edit iCS_Behaviour components.
@@ -150,8 +151,8 @@ public class iCS_Inspector : Editor {
 
         EditorGUI.indentLevel= 0;
         // Display selected object name.
-        string name= SelectedObject.RawName;
-        if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).RawName;
+        string name= SelectedObject.DisplayName;
+        if(mySelectedObject.IsOutStatePort) name= myIStorage.FindAConnectedPort(SelectedObject).DisplayName;
         if(name == null || name == "") name= EmptyStr;
         if(mySelectedObject.IsNameEditable) {
 #if BUFFERED_INPUT
@@ -160,7 +161,7 @@ public class iCS_Inspector : Editor {
             );
 #else
             GUI.changed= false;
-            var newName= EditorGUILayout.TextField("Name", SelectedObject.RawName);
+            var newName= EditorGUILayout.TextField("Name", SelectedObject.DisplayName);
             if(GUI.changed) {
                 iCS_UserCommands.ChangeName(SelectedObject, newName);
             }
@@ -174,7 +175,7 @@ public class iCS_Inspector : Editor {
 //        EditorGUILayout.Vector2Field("Wrapping Offset", mySelectedObject.WrappingOffset);
         // Display selected object initial name.
         if(SelectedObject.IsNode) {
-            EditorGUILayout.LabelField("Initial Name", mySelectedObject.DefaultName);
+            EditorGUILayout.LabelField("Initial Name", iCS_ObjectNames.ToDisplayName(mySelectedObject.CodeName));
         }
         // Display object id.
         EditorGUILayout.LabelField("id", SelectedObject.InstanceId.ToString());
@@ -299,8 +300,8 @@ public class iCS_Inspector : Editor {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in outPorts) {
                     iCS_EditorObject inPort= myIStorage.FindAConnectedPort(port);
-                    EditorGUILayout.LabelField("Name", inPort.Name);                        
-                    EditorGUILayout.LabelField("State", inPort.Parent.Name);                    
+                    EditorGUILayout.LabelField("Name", inPort.DisplayName);                        
+                    EditorGUILayout.LabelField("State", inPort.Parent.DisplayName);                    
                 }
             }
         }
@@ -311,9 +312,9 @@ public class iCS_Inspector : Editor {
             if(myShowInputs) {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in inPorts) {
-                    EditorGUILayout.LabelField("Name", port.Name);                        
+                    EditorGUILayout.LabelField("Name", port.DisplayName);                        
                     iCS_EditorObject outPort= port.ProducerPort;
-                    EditorGUILayout.LabelField("State", outPort.Parent.Name);                    
+                    EditorGUILayout.LabelField("State", outPort.Parent.DisplayName);                    
                 }
             }
         }
@@ -323,7 +324,7 @@ public class iCS_Inspector : Editor {
     // Inspects the selected port.
     void InspectPort(iCS_EditorObject port) {
         iCS_EditorObject parent= port.Parent;
-        EditorGUILayout.LabelField("Parent", parent.Name);
+        EditorGUILayout.LabelField("Parent", parent.DisplayName);
         EditorGUILayout.LabelField("Port Index", port.PortIndex.ToString());
         EditorGUILayout.EnumPopup("Iteration", port.PortIterationSignature);
         iCS_GuiUtilities.OnInspectorDataPortGUI(port, myIStorage, 1, myFoldoutDB);        

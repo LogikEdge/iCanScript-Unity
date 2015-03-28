@@ -234,20 +234,24 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 var parentTree= GetParentTree(memberInfo, tree, ref myTreeSize);
                 Node toAdd= null;
                 if(memberInfo.IsField) {
-                    var name= displayNameHeader+memberInfo.ToFieldInfo.FieldName+displayNameTrailer;
+                    var niceName= iCS_ObjectNames.ToDisplayName(memberInfo.ToFieldInfo.DisplayName);
+                    var name= displayNameHeader+niceName+displayNameTrailer;
                     toAdd= new Node(NodeTypeEnum.Field, name, memberInfo);
                 } else if(memberInfo.IsProperty) {
-                    var name= displayNameHeader+memberInfo.ToPropertyInfo.PropertyName+displayNameTrailer;
+                    var niceName= iCS_ObjectNames.ToDisplayName(memberInfo.ToPropertyInfo.DisplayName);
+                    var name= displayNameHeader+niceName+displayNameTrailer;
                     toAdd= new Node(NodeTypeEnum.Property, name, memberInfo);
                 } else if(memberInfo.IsConstructor) {
-                    var name= displayNameHeader+memberInfo.DisplayName+displayNameTrailer;
+                    var niceName= iCS_ObjectNames.ToDisplayName(memberInfo.DisplayName);
+                    var name= displayNameHeader+niceName+displayNameTrailer;
                     name+= inputTypesHeader+memberInfo.FunctionSignatureInputTypes+inputTypesTrailer;
                     name+= "->"+outputTypesHeader+memberInfo.FunctionSignatureOutputTypes+outputTypesTrailer;
                     toAdd= new Node(NodeTypeEnum.Constructor, name, memberInfo);
                 } else if(memberInfo.IsTypeCast) {
                         // Don't add the typecasts in the library.
                 } else if(memberInfo.IsMethod) {
-                    var name= displayNameHeader+memberInfo.DisplayName+displayNameTrailer;
+                    var niceName= iCS_ObjectNames.ToDisplayName(memberInfo.DisplayName);
+                    var name= displayNameHeader+niceName+displayNameTrailer;
                     name+= inputTypesHeader+memberInfo.FunctionSignatureInputTypes+inputTypesTrailer;
                     name+= "->"+outputTypesHeader+memberInfo.FunctionSignatureOutputTypes+outputTypesTrailer;
                     toAdd= new Node(NodeTypeEnum.Method, name, memberInfo);                
@@ -300,7 +304,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             }
             case NodeTypeEnum.Class: {
                 if(SearchCriteria_1.ShowClasses) {
-                    if(NameMatches(node.Name, upperSearchStr)) {
+                    if(NameMatches(node.MemberInfo.DisplayName, upperSearchStr)) {
                 		tree= new Prelude.Tree<Node>(baseTree.Value);
                     }
                 }
@@ -407,6 +411,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 			var compilerType= desc.ParentTypeInfo.CompilerType;
 	        string className= iCS_Types.TypeName(compilerType);
 	        if(!iCS_Strings.IsEmpty(className)) {
+                className= iCS_ObjectNames.ToDisplayName(className);
 	            var idx= FindInTreeChildren(className, tree);
 	            if(idx < 0) {
 					var nodeType= iCS_Types.IsStaticClass(compilerType) ? NodeTypeEnum.Package : NodeTypeEnum.Class;
@@ -478,7 +483,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     bool FilterIn(Node node, string upperSearchStr) {
         if(node == null) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, node.Name) > mySearchThreashold) return true;
+        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, node.MemberInfo.DisplayName) > mySearchThreashold) return true;
 //        if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }

@@ -105,7 +105,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     public static iCS_EngineObject FindPublicVariableDefinitionWithName(iCS_IVisualScriptData vsd, string name) {
         var publicVariables= FindPublicVariableDefinitions(vsd);
         foreach(var v in publicVariables) {
-            if(v.Name == name) return v;
+            if(v.RawName == name) return v;
         }
         return null;
     }
@@ -114,7 +114,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     public static iCS_EngineObject FindFunctionDefinitionWithName(iCS_IVisualScriptData vsd, string name) {
         var publicFunctions= FindFunctionDefinitions(vsd);
         foreach(var v in publicFunctions) {
-            if(v.Name == name) return v;
+            if(v.RawName == name) return v;
         }
         return null;
     }

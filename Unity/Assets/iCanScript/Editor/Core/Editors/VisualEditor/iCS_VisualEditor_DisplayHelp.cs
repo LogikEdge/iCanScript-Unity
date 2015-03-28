@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using iCanScript.Editor;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	
     // ======================================================================
@@ -294,4 +295,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     	    return myLibraryWindowPos.x > position.x;            
         }
     }
+}
 }

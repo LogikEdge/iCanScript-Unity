@@ -2,6 +2,7 @@
 using UnityEditor;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Public interface Utilities
@@ -20,7 +21,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     gMenu.AddSeparator("Variables");
                 }
                 hasVariable= true;
-                gMenu.AddItem(new GUIContent("+ "+pv.Name), false,
+                gMenu.AddItem(new GUIContent("+ "+pv.RawName), false,
                               o=> CreateReferenceToVariable(vs, o), pv); 
             }
             bool hasUserFunction= false;
@@ -30,7 +31,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     gMenu.AddSeparator("User Functions");
                 }
                 hasUserFunction= true;
-                gMenu.AddItem(new GUIContent("+ "+puf.Name), false,
+                gMenu.AddItem(new GUIContent("+ "+puf.RawName), false,
                               o=> CreateFunctionCall(vs, o), puf); 
             }
             gMenu.ShowAsContext();
@@ -44,7 +45,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var globalPosition= GraphMousePosition;
         var parent= IStorage.GetNodeAt(globalPosition);
         if(parent != null) {
-            QueueOnGUICommand(()=> iCS_UserCommands.CreateReferenceToVariable(parent, globalPosition, engineObject.Name, vs, engineObject));
+            QueueOnGUICommand(()=> iCS_UserCommands.CreateReferenceToVariable(parent, globalPosition, engineObject.RawName, vs, engineObject));
         }
     }
 	// ----------------------------------------------------------------------
@@ -53,7 +54,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var globalPosition= GraphMousePosition;
         var parent= IStorage.GetNodeAt(globalPosition);
         if(parent != null) {
-            QueueOnGUICommand(()=> iCS_UserCommands.CreateFunctionCall(parent, globalPosition, engineObject.Name, vs, engineObject));
+            QueueOnGUICommand(()=> iCS_UserCommands.CreateFunctionCall(parent, globalPosition, engineObject.RawName, vs, engineObject));
         }
     }
+}
 }

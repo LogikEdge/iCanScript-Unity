@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace iCanScript.Editor {
 public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
     // ======================================================================
     // Fields
@@ -22,7 +23,7 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
 	static int bla= 0;
     public void Init(iCS_EditorObject thePort, Vector2 pos) {
         myPort= thePort;
-        title= thePort.Name;
+        title= thePort.DisplayName;
 //		myInitialValue= thePort.PortValue;
         position= new Rect(pos.x, pos.y, 300, 200);
 		switch(bla) {
@@ -73,4 +74,5 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
 	public bool Update() {
 		return false;
 	}
+}
 }

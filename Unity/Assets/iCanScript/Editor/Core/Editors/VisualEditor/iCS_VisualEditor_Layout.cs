@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties.
@@ -59,4 +60,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }    
     }
     
+}
 }

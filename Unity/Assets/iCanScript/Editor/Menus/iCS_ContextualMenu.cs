@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Engine;
+using iCanScript.Editor;
 using P=Prelude;
 
 public class iCS_ContextualMenu {
@@ -351,7 +352,7 @@ public class iCS_ContextualMenu {
 			// Add shortcut to instance node creation.
 			menu= new iCS_MenuContext[2];
 			menu[0]= new iCS_MenuContext(ObjectInstanceStr);
-            menu[0].Command= "+ <"+iCS_Types.TypeName(portType)+" Instance>";
+            menu[0].Command= "+ Create Property Accessor";
 	        menu[1]= new iCS_MenuContext(SeparatorStr);
 		}
         // Get compatible functions.
@@ -708,11 +709,11 @@ public class iCS_ContextualMenu {
 		if(otherPorts.Length == 0) return null;
 		float bestScore= -1f;
 		iCS_EditorObject bestPort= null;
-		string refName= refPort.Name;
-		if(string.IsNullOrEmpty(refPort.RawName)) refName= refPort.ParentNode.Name;
+		string refName= refPort.DisplayName;
+		if(string.IsNullOrEmpty(refPort.DisplayName)) refName= refPort.ParentNode.DisplayName;
 		foreach(var p in otherPorts) {
-			string pName= p.Name;
-			if(string.IsNullOrEmpty(p.RawName)) pName= p.ParentNode.Name;
+			string pName= p.DisplayName;
+			if(string.IsNullOrEmpty(p.DisplayName)) pName= p.ParentNode.DisplayName;
 			var score= iCS_StringUtil.FuzzyCompare(refName, pName);
 			if(score > bestScore) {
 				bestScore= score;

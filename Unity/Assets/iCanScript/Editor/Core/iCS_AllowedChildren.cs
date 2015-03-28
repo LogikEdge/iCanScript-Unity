@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public static class iCS_AllowedChildren {
     public static readonly string[]    StateChildNames= null;
     public static readonly string[]     StateChildTooltips= null;
@@ -46,7 +47,7 @@ public static class iCS_AllowedChildren {
             }
 			var typeInfo= iCS_LibraryDatabase.GetTypeInfo(parent.IsBehaviour ? typeof(MonoBehaviour) : parent.RuntimeType);
 			if(typeInfo == null) {
-				Debug.LogWarning("iCanScript: Unable to find type information for: "+parent.Name);
+				Debug.LogWarning("iCanScript: Unable to find type information for: "+parent.DisplayName);
 				return false;
 			}
             if(parent.IsBehaviour && childType == iCS_ObjectTypeEnum.Package) {
@@ -101,7 +102,7 @@ public static class iCS_AllowedChildren {
         return storage.UntilMatchingChild(parent,
             child=> {
                 if(child.IsNode) {
-                    return child.Name == childName;
+                    return child.DisplayName == childName;
                 }
                 return false;
             }
@@ -116,4 +117,5 @@ public static class iCS_AllowedChildren {
         }
         return false;
     }
+}
 }

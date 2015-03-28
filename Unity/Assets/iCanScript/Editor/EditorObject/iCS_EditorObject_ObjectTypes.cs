@@ -16,6 +16,7 @@ public partial class iCS_EditorObject {
     public bool IsMux                       { get { return EngineObject.IsMux; }}
     public bool IsSelector                  { get { return EngineObject.IsSelector; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
+	public bool IsField						{ get { return EngineObject.IsField; }}
 	public bool IsClassField                { get { return EngineObject.IsClassField; }}
     public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
     public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
@@ -54,6 +55,7 @@ public partial class iCS_EditorObject {
     public bool IsParameterPort         	{ get { return EngineObject.IsParameterPort; }}
     public bool IsInParameterPort       	{ get { return EngineObject.IsInParameterPort; }}
     public bool IsOutParameterPort      	{ get { return EngineObject.IsOutParameterPort; }}
+	public bool IsReturnPort                { get { return EngineObject.IsReturnPort; }}
     // Fix Data Flow Ports
     public bool IsFixDataPort               { get { return EngineObject.IsFixDataPort; }}
     public bool IsInFixDataPort             { get { return EngineObject.IsInFixDataPort; }}

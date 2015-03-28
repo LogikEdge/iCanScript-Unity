@@ -27,7 +27,7 @@ public static partial class iCS_UserCommands {
             }
         );
         state.IsEntryState= true;
-        var name= state.Name;
+        var name= state.DisplayName;
         CloseTransaction(iStorage, "Set As Entry "+name);
         return state;
     }
@@ -42,16 +42,16 @@ public static partial class iCS_UserCommands {
     public static void ChangeName(iCS_EditorObject obj, string name) {
         if(name == null) return;
         name.Trim();
-        if(string.Compare(obj.RawName, name) == 0) return;
+        if(string.Compare(obj.DisplayName, name) == 0) return;
         var iStorage= obj.IStorage;
         if(obj.IsNode && string.IsNullOrEmpty(name)) {
-            name= obj.DefaultName;
+            name= iCS_ObjectNames.ToDisplayName(obj.CodeName);
         }
         OpenTransaction(iStorage);
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-                    obj.Name= name;
+                    obj.DisplayName= name;
                     if(obj.IsNode) {
                         iStorage.ForcedRelayoutOfTree();
                     }
@@ -75,14 +75,14 @@ public static partial class iCS_UserCommands {
         if(string.IsNullOrEmpty(tooltip)) {
             OpenTransaction(iStorage);
             obj.Tooltip= null;
-            CloseTransaction(iStorage, "Change tooltip for "+obj.Name, TransactionType.Field);
+            CloseTransaction(iStorage, "Change tooltip for "+obj.DisplayName, TransactionType.Field);
             return;
         }
         tooltip.Trim();
         if(string.Compare(obj.Tooltip, tooltip) == 0) return;
         OpenTransaction(iStorage);
         obj.Tooltip= tooltip;
-        CloseTransaction(iStorage, "Change tooltip for "+obj.Name, TransactionType.Field);
+        CloseTransaction(iStorage, "Change tooltip for "+obj.DisplayName, TransactionType.Field);
     }
     // ----------------------------------------------------------------------
 	public static void ChangePortValue(iCS_EditorObject port, object newValue) {
@@ -95,7 +95,7 @@ public static partial class iCS_UserCommands {
 		catch(System.Exception) {
 			CancelTransaction(iStorage);
 		}
-        iCS_UserCommands.CloseTransaction(iStorage, "Change port value => "+port.Name, TransactionType.Field);
+        iCS_UserCommands.CloseTransaction(iStorage, "Change port value => "+port.DisplayName, TransactionType.Field);
         iCS_EditorController.RepaintEditorsWithValues();
 	}
     // ----------------------------------------------------------------------
@@ -116,7 +116,7 @@ public static partial class iCS_UserCommands {
             return;
         }
         // Save result.
-        CloseTransaction(iStorage, "AutoLayout Port => "+port.Name);
+        CloseTransaction(iStorage, "AutoLayout Port => "+port.DisplayName);
     }
     // ----------------------------------------------------------------------
     public static void AutoLayoutPortsOnNode(iCS_EditorObject node) {
@@ -136,7 +136,7 @@ public static partial class iCS_UserCommands {
             return;
         }
         // Save result.
-        CloseTransaction(iStorage, "AutoLayout Ports on=> "+node.Name);
+        CloseTransaction(iStorage, "AutoLayout Ports on=> "+node.DisplayName);
     }
     // ----------------------------------------------------------------------
     public static void UpdateMessageHandlerPorts(iCS_EditorObject messageHandler) {
@@ -155,7 +155,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return;
         }
-        CloseTransaction(iStorage, "Update Ports=> "+messageHandler.Name);
+        CloseTransaction(iStorage, "Update Ports=> "+messageHandler.DisplayName);
     }
     // ----------------------------------------------------------------------
     public static void SetScrollPosition(iCS_IStorage iStorage, Vector2 newPosition) {

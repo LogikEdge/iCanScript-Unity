@@ -138,11 +138,11 @@ namespace iCanScript { namespace Editor { namespace CodeEngineering {
             if(method.FunctionReturn != null) {
                 returnType= TypeName(method.FunctionReturn.type);
             }
-            var name= method.DisplayName;
+            var name= iCS_TextUtility.ToCSharpName(method.DisplayName);
             var parameters="";
             if(method.Parameters != null) {
                 foreach(var p in method.Parameters) {
-    				parameters+= TypeName(p.type)+" "+p.name+", ";
+    				parameters+= TypeName(p.type)+" "+iCS_TextUtility.ToCSharpName(p.name)+", ";
                 }            
             }
             if(P.length(parameters) != 0) parameters= parameters.Substring(0, parameters.Length-2);
@@ -162,7 +162,7 @@ namespace iCanScript { namespace Editor { namespace CodeEngineering {
             var parameters= new string[len];
             for(int i= 0; i < len; ++i) {
                 var p= methodParameters[i];
-                parameters[i]= TypeName(p.type)+" "+p.name;
+                parameters[i]= TypeName(p.type)+" "+iCS_TextUtility.ToCSharpName(p.name);
             }
             return parameters;           
         }

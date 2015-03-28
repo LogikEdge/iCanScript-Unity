@@ -17,7 +17,7 @@ public static partial class iCS_UserCommands {
 #endif
         if(obj == null || obj == obj.IStorage.DisplayRoot) return;
         if(!IsDeletionAllowed()) return;
-        var name= obj.Name;
+        var name= obj.DisplayName;
         if(!obj.CanBeDeleted()) {
             ShowNotification("Fix port=> \""+name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
             return;
@@ -81,7 +81,7 @@ public static partial class iCS_UserCommands {
                 _=> {
                     foreach(var obj in selectedObjects) {
                         if(!obj.CanBeDeleted()) {
-                            ShowNotification("Fix port=> \""+obj.Name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
+                            ShowNotification("Fix port=> \""+obj.DisplayName+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
                             continue;
                         }
                         // Move the selection to the parent node
@@ -135,7 +135,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return;
         }
-        CloseTransaction(iStorage, "Delete "+obj.Name);
+        CloseTransaction(iStorage, "Delete "+obj.DisplayName);
     }
     // ----------------------------------------------------------------------
     public static void RemoveUnusedPorts(iCS_EditorObject messageHandler) {
@@ -154,7 +154,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return;
         }
-        CloseTransaction(iStorage, "Remove Unused Ports=> "+messageHandler.Name);
+        CloseTransaction(iStorage, "Remove Unused Ports=> "+messageHandler.DisplayName);
 	}
 
 }

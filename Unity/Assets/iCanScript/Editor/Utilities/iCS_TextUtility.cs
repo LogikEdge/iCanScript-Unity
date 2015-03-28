@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System;
 using System.Text;
@@ -25,7 +26,7 @@ public static class iCS_TextUtility {
 
     // ---------------------------------------------------------------------------------
     // Converts the given string to a C# class name.
-    public static string ToClassName(string proposedName) {
+    public static string ToCSharpName(string proposedName) {
         StringBuilder fileName= new StringBuilder();
         foreach(var c in proposedName) {
             if(!Char.IsWhiteSpace(c)) {
@@ -40,4 +41,12 @@ public static class iCS_TextUtility {
 	public static string ToASCII(string inputString) {
 		return Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(inputString));
 	}
+
+    // ---------------------------------------------------------------------------------
+    public static bool StartsWithAVowel(string str) {
+        switch(Char.ToUpper(str[0])) {
+            case 'A': case 'E': case 'I': case 'O': case 'U': return true;
+        }
+        return false;
+    }
 }

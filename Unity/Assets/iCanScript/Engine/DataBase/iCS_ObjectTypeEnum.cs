@@ -161,6 +161,7 @@ public static class iCS_ObjectType {
 	                                                                          obj.PortIndex <= (int)iCS_PortIndex.ParametersEnd; }
 	public static bool IsInParameterPort	  (iCS_EngineObject obj) { return IsInputPort(obj) && IsParameterPort(obj); }
 	public static bool IsOutParameterPort     (iCS_EngineObject obj) { return IsOutputPort(obj) && IsParameterPort(obj); }
+	public static bool IsReturnPort			  (iCS_EngineObject obj) { return IsOutFixDataPort(obj) && obj.PortIndex == (int)iCS_PortIndex.Return; }
 
     // Control Ports
     public static bool IsControlPort          (iCS_EngineObject obj) { return IsEnablePort(obj) || IsTriggerPort(obj); }

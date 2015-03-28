@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 
+namespace iCanScript.Editor {
 // ===========================================================================
 // Unity Drag & Drop.
 // ===========================================================================
@@ -27,7 +28,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // -- Don't accept to drag an object directly under Behaviour --
                 if(objectUnderMouse.IsBehaviour) {
                     if(draggedEngineObject != null &&
-                       iCS_AllowedChildren.CanAddChildNode(draggedEngineObject.Name, draggedEngineObject, objectUnderMouse, IStorage)) {
+                       iCS_AllowedChildren.CanAddChildNode(draggedEngineObject.RawName, draggedEngineObject, objectUnderMouse, IStorage)) {
        		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;                        
                     }
                     else {
@@ -56,7 +57,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                          iCS_IVisualScriptData storage= library;
                          if(storage.EngineObjects.Count > 0) {
                              var engineObject= storage.EngineObjects[0];
-                             if(iCS_AllowedChildren.CanAddChildNode(engineObject.Name, engineObject.ObjectType, objectUnderMouse, IStorage)) {
+                             if(iCS_AllowedChildren.CanAddChildNode(engineObject.RawName, engineObject.ObjectType, objectUnderMouse, IStorage)) {
                                  DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
                                  return;
                              }
@@ -200,4 +201,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         }                                
     }
+}
 }

@@ -22,7 +22,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public float GetPortRatioFromLocalAnchorPosition(Vector2 pos) {
-        var parent= Parent;
+        var parent= ParentNode;
 		float offset;
 		float availableSize;
         if(IsOnVerticalEdge) {

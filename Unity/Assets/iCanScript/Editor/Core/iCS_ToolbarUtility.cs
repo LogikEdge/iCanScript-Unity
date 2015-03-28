@@ -173,6 +173,18 @@ public static class iCS_ToolbarUtility {
         return newValue;
     }
 	// ----------------------------------------------------------------------
+    public static bool Button(ref Rect toolbarRect, float width, bool value, string text, float leftMargin, float rightMargin, bool isRightJustified= false) {
+		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
+        if(r.width < 1f) return value;
+        if(r.width < 1f) return value;
+        if(!value) {
+            GUI.color= new Color(1f,1f,1f,0.35f);            
+        }
+        var newValue= GUI.Button(r, text, myButtonStyle);
+        GUI.color= Color.white;            
+        return newValue;
+    }
+	// ----------------------------------------------------------------------
     public static int Toolbar(ref Rect toolbarRect, float width, int value, string[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
