@@ -390,7 +390,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		float frameTime= Time.realtimeSinceStartup- myCurrentTime;
 		if(frameTime > myMaxFrameTime) myMaxFrameTime= frameTime;
 		myAverageFrameTime= (myAverageFrameTime*9f+frameTime)/10f;
-		Debug.Log("VisualEditor: frame time: "+myAverageFrameTime+" max frame time: "+myMaxFrameTime);
+		Debug.Log("VisualEditor: Frame Time: Average=> "+myAverageFrameTime+" Current=> "+frameTime+" Max=> "+myMaxFrameTime);
 #endif			    
 	}
 #endif
