@@ -417,8 +417,9 @@ public class CodeGenerator {
         // Skip common contexts 
         int i= 0;
         var len= currentEnablePorts.Length;
-        for(; i < len && currentEnablePorts[i] == newEnablePorts[i]; ++i);
         var newLen= newEnablePorts.Length;
+        var minLen= Mathf.Min(len, newLen);
+        for(; i < minLen && currentEnablePorts[i] == newEnablePorts[i]; ++i);
         if(i == newLen) return "";
         // Generate opening code.
         var result= new StringBuilder(32);
