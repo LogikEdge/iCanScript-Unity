@@ -61,6 +61,21 @@ public class CodeGeneratorNameManager {
         return myNames[i];
     }
     // -----------------------------------------------------------------------
+    /// Builds or returns the pre-built local variable name for the given
+    /// viusal script object.
+    ///
+    /// @param vsObj Visual Script object for which to return a code name.
+    ///
+    public string ToLocalVariableName(iCS_EditorObject vsObj) {
+        int i= vsObj.InstanceId;
+        if(myNames[i] == null) {
+            string name= vsObj.CodeName;
+            name= iCS_ObjectNames.ToLocalVariableName(name);
+            myNames[i]= MakeNameUnique(name, vsObj);
+        }
+        return myNames[i];
+    }
+    // -----------------------------------------------------------------------
     /// Changes the code parent for the given visual script object.
     ///
     /// The code parent is initializes to be equivalent to the visual script

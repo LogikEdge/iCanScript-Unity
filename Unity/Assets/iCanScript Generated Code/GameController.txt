@@ -1,0 +1,45 @@
+using UnityEngine;
+
+namespace iCanScript.Engine.GeneratedCode {
+
+    [iCS_Class(Library="Visual Script")]
+    public  class GameController : MonoBehaviour {
+        private  iCS_PulseGenerator variable_PulseGenerator_=  new iCS_PulseGenerator();
+        private  iCS_Oscillator variable_Oscillator_=  new iCS_Oscillator();
+        private  Int variable_Int_=  new Int(0);
+
+
+        [iCS_Function]
+        public  void Update(Bool boolInstance) {
+            text= "";
+            text= "";
+            var endTime= iCS_Timer.StartTimer(1);
+            var _Float= Random.RandomRange(xMin, xMax);
+            var output= iCS_FromTo.ToVector(_Float, y, z);
+            var _Object= Object.Instantiate(Asteroid (UnityEngine.GameObject), output, (0.0, 0.0, 0.0, 0.0));
+            var output= iCS_Math.Mul(hazardCount, spawnWait);
+            var out= variable_Oscillator_.Oscillate(output, waveWait, active, out invOut);
+            var pulse= variable_PulseGenerator_.GeneratePulse(spawnWait, out, true);
+            text= "Game Over";
+            text= "Press 'R' to restart";
+            var _Bool= Input.GetKeyDown(KeyCode.R);
+            var _Int32= Application.loadedLevel;
+            Application.LoadLevel(_Int32);
+        }
+
+        [iCS_Function]
+        public  void AddScore() {
+            var value_plus_B= variable_Int_.AddAndUpdate(10);
+            var string= iCS_TypeCasts.ToString(value_plus_B);
+            var _String= string.Concat("Score:", string);
+            text= _String;
+        }
+
+        [iCS_Function]
+        public  void GameOver(Bool boolInstance) {
+            boolInstance.Value= true;
+        }
+
+    }
+
+}

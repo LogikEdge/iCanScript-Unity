@@ -176,17 +176,12 @@ public class CodeGenerator {
     public string GenerateFunctionCall(int indentSize, iCS_EditorObject node) {
         var indent= CSharpGenerator.ToIndent(indentSize);
         var result= new StringBuilder(indent, 128);
-        // Declare return variable.
-        var returnPort= GetReturnPort(node);
-        if(returnPort != null && returnPort.EndConsumerPorts.Length != 0) {
-            result.Append("var ");
-            result.Append(CSharpGenerator.ToGeneratedPortName(returnPort));
-            result.Append("= ");
-        }
         // Simplified situation for property get.
         var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
         var functionName= CSharpGenerator.ToMethodName(node);
         if(IsPropertyGet(memberInfo)) {
+            // Declare return variable.
+            result.Append(DeclareReturnVariable(node));
             // Determine function prefix.
             result.Append(FunctionCallPrefix(memberInfo, node));
             // Generate function call.
@@ -197,12 +192,13 @@ public class CodeGenerator {
         // Determine parameters.
         var parameters= GetParameters(node);
         var pLen= parameters.Length;
-        var paramStrings= new string[pLen];        
+        var paramStrings= new string[pLen];
+        var outputParams= new List<iCS_EditorObject>();
         foreach(var p in parameters) {
             if(p.IsInputPort) {
                 var producer= p.FirstProducerPort;
                 if(producer != null && producer != p) {
-                    paramStrings[p.PortIndex]= myNameMgr.GetNameFor(producer);
+                    paramStrings[p.PortIndex]= myNameMgr.ToLocalVariableName(producer);
                 }
                 else {
                     var v= p.InitialValue;
@@ -210,19 +206,27 @@ public class CodeGenerator {
                 }
             }
             else {
-                paramStrings[p.PortIndex]= "out "+myNameMgr.GetNameFor(p);
+                outputParams.Add(p);
+                paramStrings[p.PortIndex]= "out "+myNameMgr.ToLocalVariableName(p);
             }
         }
-        // Determine function prefix.
-        result.Append(FunctionCallPrefix(memberInfo, node));
         // Special case for property set.
         if(IsPropertySet(memberInfo)) {
+            // Determine function prefix.
+            result.Append(FunctionCallPrefix(memberInfo, node));
             result.Append(CSharpGenerator.ToPropertyName(functionName));
             result.Append("= ");
             result.Append(paramStrings[0]);
         }
         // Generate function call.        
         else {
+            // Declare the output parameters.
+            result.Append(DeclarelocalVariablesForOutputParameters(indentSize, outputParams));
+            // Declare return variable.
+            result.Append(DeclareReturnVariable(node));
+            // Determine function prefix.
+            result.Append(FunctionCallPrefix(memberInfo, node));
+            // Declare function call.
             result.Append(CSharpGenerator.GenerateFunctionCall(indentSize, functionName, paramStrings));            
         }
         result.Append(";\n");
@@ -253,6 +257,50 @@ public class CodeGenerator {
         }
         return result.ToString();
     }
+
+    // =========================================================================
+    // Code snippet decalartion
+	// -------------------------------------------------------------------------
+    /// Declares the return value formated as "localVariable= ".
+    ///
+    /// @param node The node for which the return value will be declared.
+    /// @return The return value decalartion.
+    ///
+    string DeclareReturnVariable(iCS_EditorObject node) {
+        // No return variable necessary
+        var returnPort= GetReturnPort(node);
+        if(returnPort == null || returnPort.EndConsumerPorts.Length == 0) {
+            return "";
+        }
+        // Build return variable for the given node.
+        var result= new StringBuilder(32);
+        result.Append("var ");
+        result.Append(myNameMgr.ToLocalVariableName(returnPort));
+        result.Append("= ");
+        return result.ToString();
+    }
+	// -------------------------------------------------------------------------
+    /// Declares all output variable that will be used as output variable for a
+    /// function call.
+    ///
+    /// @param indentSize The size of the indent at the beginning of a variable
+    ///                   declaration.
+    /// @param outParams List of ports that are output variable for function call.
+    /// @return The formatted output variables declaration string.
+    ///
+    string DeclarelocalVariablesForOutputParameters(int indentSize, List<iCS_EditorObject> outputParams) {
+        if(outputParams.Count == 0) return "";
+        var result= new StringBuilder(128);
+        foreach(var p in outputParams) {
+            result.Append(CSharpGenerator.ToTypeName(p.RuntimeType));
+            result.Append(" ");
+            result.Append(myNameMgr.ToLocalVariableName(p));
+            result.Append(";\n");
+            result.Append(CSharpGenerator.ToIndent(indentSize));
+        }
+        return result.ToString();
+    }
+
     // =========================================================================
     // Utilities
 	// -------------------------------------------------------------------------
@@ -439,6 +487,7 @@ public class CodeGenerator {
         if(propertyInfo == null) return false;
         return propertyInfo.IsSet;
     }
+
 }
 
 }
