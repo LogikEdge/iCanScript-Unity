@@ -529,6 +529,7 @@ public class CodeGenerator {
             GetEnablePorts(enablePorts, funcNode);
             funcNode= funcNode.ParentNode;
         }
+        enablePorts.Reverse();
         return enablePorts.ToArray();
     }
 	// -------------------------------------------------------------------------
