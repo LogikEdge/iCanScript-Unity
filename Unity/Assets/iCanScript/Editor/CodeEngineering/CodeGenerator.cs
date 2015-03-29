@@ -152,13 +152,44 @@ public class CodeGenerator {
         return result.ToString();
     }
 	// -------------------------------------------------------------------------
-    public string GenerateFunctionBody(int indent, iCS_EditorObject node) {
+    public string GenerateFunctionBody(int indentSize, iCS_EditorObject node) {
         var result= new StringBuilder(512);
 		var functionNodes= GetFunctionBodyParts(node);
 		functionNodes= SortDependencies(functionNodes);
 		foreach(var n in functionNodes) {
-            result.Append(GenerateFunctionCall(indent, n));			
+            result.Append(GenerateEnableCode(indentSize, n, (i)=> GenerateFunctionCall(i, n)));
+//            result.Append(GenerateFunctionCall(indentSize, n));			
 		}
+        return result.ToString();
+    }
+	// -------------------------------------------------------------------------
+    /// Generates the IF-STATEMENT associated with the active enable ports.
+    ///
+    /// @param indentSize   Indent for the generated source code.
+    /// @param funcNode Visual script node of the function call.
+    /// @param funcCallGenerator The code generator for the function call.
+    public string GenerateEnableCode(int indentSize,
+                                     iCS_EditorObject funcNode,
+                                     CodeProducer funcCallGenerator) {
+        var enablePorts= GetAssociatedEnablePorts(funcNode);
+        if(enablePorts.Length == 0) {
+            return funcCallGenerator(indentSize);
+        }
+        var result= new StringBuilder(512);
+        if(enablePorts.Length != 0) {
+            result.Append(CSharpGenerator.ToIndent(indentSize));
+            result.Append("if(");
+            foreach(var e in enablePorts) {
+                result.Append(myNameMgr.GetNameFor(e.FirstProducerPort));
+                if(e != enablePorts[enablePorts.Length-1]) {
+                    result.Append(" && ");                        
+                }
+            }
+            result.Append(") {\n");
+        }
+        result.Append(funcCallGenerator(indentSize+1));
+        result.Append(CSharpGenerator.ToIndent(indentSize));
+        result.Append("}\n");
         return result.ToString();
     }
 	// -------------------------------------------------------------------------
@@ -401,6 +432,37 @@ public class CodeGenerator {
             }
         );
         return result;
+    }
+	// -------------------------------------------------------------------------
+    /// Returns the list of enable ports that affects the function call
+    ///
+    /// @param funcNode Visual script representing the function call.
+    /// @return Array of all enable ports that affects the function call.
+    ///
+    static iCS_EditorObject[] GetAssociatedEnablePorts(iCS_EditorObject funcNode) {
+        var enablePorts= new List<iCS_EditorObject>();
+        while(funcNode != null) {
+            GetEnablePorts(enablePorts, funcNode);
+            funcNode= funcNode.ParentNode;
+        }
+        return enablePorts.ToArray();
+    }
+	// -------------------------------------------------------------------------
+    /// Appends to the given list the enable ports on the given node.
+    ///
+    /// @param lst The list to append to.
+    /// @param node The node from which to extract the enable ports.
+    /// @return The input list is updated with the found enable ports.
+    ///
+    static List<iCS_EditorObject> GetEnablePorts(List<iCS_EditorObject> lst, iCS_EditorObject node) {
+        node.ForEachChildPort(
+            p=> {
+                if(p.IsEnablePort) {
+                    lst.Add(p);
+                }
+            }
+        );
+        return lst;
     }
 	// -------------------------------------------------------------------------
     /// Returns a list of variable instances that are static member of the class.
