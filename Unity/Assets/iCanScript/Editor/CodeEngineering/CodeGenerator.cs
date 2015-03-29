@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -156,42 +157,43 @@ public class CodeGenerator {
         var result= new StringBuilder(512);
 		var functionNodes= GetFunctionBodyParts(node);
 		functionNodes= SortDependencies(functionNodes);
-		foreach(var n in functionNodes) {
-            result.Append(GenerateEnableCode(indentSize, n, (i)=> GenerateFunctionCall(i, n)));
-//            result.Append(GenerateFunctionCall(indentSize, n));			
-		}
-        return result.ToString();
-    }
-	// -------------------------------------------------------------------------
-    /// Generates the IF-STATEMENT associated with the active enable ports.
-    ///
-    /// @param indentSize   Indent for the generated source code.
-    /// @param funcNode Visual script node of the function call.
-    /// @param funcCallGenerator The code generator for the function call.
-    public string GenerateEnableCode(int indentSize,
-                                     iCS_EditorObject funcNode,
-                                     CodeProducer funcCallGenerator) {
-        var enablePorts= GetAssociatedEnablePorts(funcNode);
-        if(enablePorts.Length == 0) {
-            return funcCallGenerator(indentSize);
-        }
-        var result= new StringBuilder(512);
-        if(enablePorts.Length != 0) {
-            result.Append(CSharpGenerator.ToIndent(indentSize));
-            result.Append("if(");
-            foreach(var e in enablePorts) {
-                result.Append(myNameMgr.GetNameFor(e.FirstProducerPort));
-                if(e != enablePorts[enablePorts.Length-1]) {
-                    result.Append(" && ");                        
-                }
+        var conditionalContexts= GetConditionalContexts(functionNodes);
+        var len= functionNodes.Length;
+        iCS_EditorObject[] currentConditionalContext= new iCS_EditorObject[0];
+        for(int i= 0; i < len; ++i) {
+            var cond= conditionalContexts[i];
+            if(!IsSameConditionalContext(cond, currentConditionalContext)) {
+                result.Append(GenerateEndConditionalFragment(ref indentSize, cond, currentConditionalContext));
+                result.Append(GenerateOpenConditionalFragment(ref indentSize, cond, currentConditionalContext));
+                currentConditionalContext= cond;
             }
-            result.Append(") {\n");
+            var fc= functionNodes[i];
+            result.Append(GenerateFunctionCall(indentSize, fc));
         }
-        result.Append(funcCallGenerator(indentSize+1));
-        result.Append(CSharpGenerator.ToIndent(indentSize));
-        result.Append("}\n");
+        var closingConditionalContext= new iCS_EditorObject[0];
+        result.Append(GenerateEndConditionalFragment(ref indentSize, closingConditionalContext, currentConditionalContext));
         return result.ToString();
     }
+//	// -------------------------------------------------------------------------
+//    /// Generates the IF-STATEMENT associated with the active enable ports.
+//    ///
+//    /// @param indentSize   Indent for the generated source code.
+//    /// @param funcNode Visual script node of the function call.
+//    /// @param funcCallGenerator The code generator for the function call.
+//    public string GenerateConditionalCode(ref int indentSize,
+//                                     iCS_EditorObject funcNode,
+//                                     CodeProducer funcCallGenerator) {
+//        var enablePorts= GetEnablePortsRecursive(funcNode);
+//        if(IsSameConditionalContext(enablePorts)) {
+//            return funcCallGenerator(indentSize);
+//        }
+//        var result= new StringBuilder(512);
+//        result.Append(GenerateEndConditionalFragment(ref indentSize, enablePorts));
+//        result.Append(GenerateOpenConditionalFragment(ref indentSize, enablePorts));
+//        myEnablePortsContext= enablePorts;
+//        result.Append(funcCallGenerator(indentSize+1));
+//        return result.ToString();
+//    }
 	// -------------------------------------------------------------------------
     /// Generate a function call to the given node.
     ///
@@ -264,6 +266,12 @@ public class CodeGenerator {
         return result.ToString();
     }
 	// -------------------------------------------------------------------------
+    /// Generates the function call prefix code fragment.
+    ///
+    /// @param memberInfo The member information of the function to call.
+    /// @param node Visual script function call node.
+    /// @return The code fragment to prepend to the function call.
+    ///
     string FunctionCallPrefix(iCS_MemberInfo memberInfo, iCS_EditorObject node) {
         var result= new StringBuilder(32);
         if(memberInfo != null && memberInfo.IsClassFunctionBase) {
@@ -340,6 +348,82 @@ public class CodeGenerator {
             result.Append(CSharpGenerator.ToIndent(indentSize));
         }
         return result.ToString();
+    }
+    
+    // =========================================================================
+    // Conditional code generation
+	// -------------------------------------------------------------------------
+    /// Determine if the current and the given enable context is the same.
+    ///
+    /// @param newEnablePorts List for the new enable ports context.
+    /// @param currentEnablePorts List of active enable ports.
+    /// @return _true_ if the same enable port context;  _false_ otherwise.
+    ///
+    bool IsSameConditionalContext(iCS_EditorObject[] newEnablePorts, iCS_EditorObject[] currentEnablePorts) {
+        var len= newEnablePorts.Length;
+        if(len != currentEnablePorts.Length) return false;
+        for(int i= 0; i < len; ++i) {
+            if(newEnablePorts[i] != currentEnablePorts[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+	// -------------------------------------------------------------------------
+    /// Closes the conditional context up until we reach a common parent
+    /// context given by the new condition.
+    ///
+    /// @param newEnablePorts The new enable port context.
+    /// @param currentEnablePorts List of active enable ports.
+    /// @return The closing conditional code snippet.
+    ///
+    string GenerateEndConditionalFragment(ref int indentSize,
+                                          iCS_EditorObject[] newEnablePorts,
+                                          iCS_EditorObject[] currentEnablePorts) {
+        // Skip common contexts 
+        int i= 0;
+        var len= currentEnablePorts.Length;
+        var newLen= newEnablePorts.Length;
+        var minLen= Mathf.Min(len, newLen);
+        for(; i < minLen && currentEnablePorts[i] == newEnablePorts[i]; ++i);
+        if(i >= len) return "";
+        // Generate closing code.
+        var result= new StringBuilder(32);
+        for(; i < len; ++i) {
+            --indentSize;
+            result.Append(CSharpGenerator.ToIndent(indentSize));
+            result.Append("}\n");
+        }
+        return result.ToString();
+    }
+	// -------------------------------------------------------------------------
+    /// Opens the conditional context up until we reach the common parent
+    /// context given by the given condition.
+    ///
+    /// @param newEnablePorts The new enable port context.
+    /// @param currentEnablePorts List of active enable ports.
+    /// @return The open enable port context code snippet.
+    ///
+    string GenerateOpenConditionalFragment(ref int indentSize,
+                                           iCS_EditorObject[] newEnablePorts,
+                                           iCS_EditorObject[] currentEnablePorts) {
+        // Skip common contexts 
+        int i= 0;
+        var len= currentEnablePorts.Length;
+        for(; i < len && currentEnablePorts[i] == newEnablePorts[i]; ++i);
+        var newLen= newEnablePorts.Length;
+        if(i == newLen) return "";
+        // Generate opening code.
+        var result= new StringBuilder(32);
+        for(; i < newLen; ++i) {
+            var e= newEnablePorts[i];
+            result.Append(CSharpGenerator.ToIndent(indentSize));
+            result.Append("if(");
+            result.Append(myNameMgr.GetNameFor(e.FirstProducerPort));
+            result.Append(") {\n");
+            ++indentSize;
+        }
+        return result.ToString();        
     }
 
     // =========================================================================
@@ -439,7 +523,7 @@ public class CodeGenerator {
     /// @param funcNode Visual script representing the function call.
     /// @return Array of all enable ports that affects the function call.
     ///
-    static iCS_EditorObject[] GetAssociatedEnablePorts(iCS_EditorObject funcNode) {
+    static iCS_EditorObject[] GetEnablePortsRecursive(iCS_EditorObject funcNode) {
         var enablePorts= new List<iCS_EditorObject>();
         while(funcNode != null) {
             GetEnablePorts(enablePorts, funcNode);
@@ -546,6 +630,17 @@ public class CodeGenerator {
 		return true;
 	}
 	// -------------------------------------------------------------------------
+    /// Builds of list of conditional contexts associated with the list of
+    /// function calls.
+    ///
+    /// @param funcCalls List of function calls.
+    /// @return List of conditional context associated with the list of function
+    ///         calls.
+    ///
+    iCS_EditorObject[][] GetConditionalContexts(iCS_EditorObject[] funcCalls) {
+        return P.map(fc=> GetEnablePortsRecursive(fc), funcCalls);
+    }
+    // -------------------------------------------------------------------------
     /// Returns _'true'_ if the node is a property get function.
     static bool IsPropertyGet(iCS_MemberInfo memberInfo) {
         var propertyInfo= memberInfo.ToPropertyInfo;
