@@ -249,7 +249,9 @@ namespace iCanScript.Editor {
     					// contained in edObj
     				}
     				else if (edObj.IsInputPort) {
-    					edObj= edObj.EndConsumerPorts[0].Parent;
+                        var consumerPorts= edObj.EndConsumerPorts;
+                        var aConsumer= consumerPorts.Length != 0 ? consumerPorts[0] : edObj;
+    					edObj= aConsumer.Parent;
     				}
     				else if (edObj.IsOutputPort) {
     					edObj= edObj.FirstProducerPort.Parent;

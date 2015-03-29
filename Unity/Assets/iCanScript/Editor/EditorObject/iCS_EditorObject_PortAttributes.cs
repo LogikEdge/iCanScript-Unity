@@ -79,7 +79,9 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
 	public iCS_EditorObject[] ConsumerPorts {
 		get {
-			return EditorObjects[0].Filter(c=> c.IsPort && c.ProducerPortId == InstanceId).ToArray();
+			return EditorObjects[0].Filter(
+                c=> c != this && c.IsPort && c.ProducerPortId == InstanceId
+            ).ToArray();
 		}
 	}
 	// ----------------------------------------------------------------------
@@ -87,6 +89,10 @@ public partial class iCS_EditorObject {
 		get {
 			var result= new List<iCS_EditorObject>();
 			BuildListOfEndConsumerPorts(ref result);
+            // Remove our self from result.
+            if(result.Count == 1 && result[0] == this) {
+                result.RemoveAt(0);
+            }
 			return result.ToArray();
 		}
 	}

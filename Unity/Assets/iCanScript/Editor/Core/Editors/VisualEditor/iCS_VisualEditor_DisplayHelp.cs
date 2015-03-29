@@ -184,7 +184,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
 		}
 		else if(direction == Direction.Consumer) {
-			port= edObj.EndConsumerPorts[0];
+            var consumerPorts= edObj.EndConsumerPorts;
+			port= consumerPorts.Length != 0 ? consumerPorts[0] : port;
 			if(port.ParentNode.ParentNode.IsInstanceNode) {
 				port= port.ProducerPort;
 			}

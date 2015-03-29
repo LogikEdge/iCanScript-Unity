@@ -34,8 +34,25 @@ public class CodeGeneratorNameManager {
         for(int i= 0; i < len; i++) {
             myNames[i]= null;
             var vsObj= iStorage[i];
-            myParentCode[i]= (vsObj != null ? vsObj.ParentId : -1);
+            var parentCode= FindDefaultCodeParent(vsObj);
+            myParentCode[i]= (parentCode != null ? parentCode.InstanceId : -1);
         }
+    }
+    // -----------------------------------------------------------------------
+    /// Returns the default code parent for the given vidual script object.
+    ///
+    /// @param vsObj    The visual object for whom to find the code parent.
+    /// @return The code parent if found.  _null_ is returned otherwise.
+    ///
+    iCS_EditorObject FindDefaultCodeParent(iCS_EditorObject vsObj) {
+        if(vsObj == null) return null;
+        var iStorage= vsObj.IStorage;
+        var rootObj= iStorage.EditorObjects[0];
+        var parentNode= vsObj.ParentNode;
+        while(parentNode != null && parentNode != rootObj && !parentNode.IsPublicFunction) {
+            parentNode= parentNode.ParentNode;
+        }
+        return parentNode;
     }
     // -----------------------------------------------------------------------
     /// Builds or returns the pre-built code name for the given viusal script

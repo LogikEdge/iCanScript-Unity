@@ -269,9 +269,19 @@ public class CodeGenerator {
     string DeclareReturnVariable(iCS_EditorObject node) {
         // No return variable necessary
         var returnPort= GetReturnPort(node);
-        if(returnPort == null || returnPort.EndConsumerPorts.Length == 0) {
+        if(returnPort == null) return "";
+        var consumerPorts= returnPort.EndConsumerPorts;
+        if(consumerPorts.Length == 0) {
             return "";
         }
+        // Don't need to generate return variable if no real consumer
+        var hasConsumer= false;
+        foreach(var c in consumerPorts) {
+            if(c.IsEnablePort || c.ParentNode.IsKindOfFunction) {
+                hasConsumer= true;
+            }
+        }
+        if(hasConsumer == false) return "";
         // Build return variable for the given node.
         var result= new StringBuilder(32);
         result.Append("var ");
