@@ -393,6 +393,13 @@ public class CodeGenerator {
             --indentSize;
             result.Append(CSharpGenerator.ToIndent(indentSize));
             result.Append("}\n");
+            // Consume the multiple conditions ored together.
+            while(i != len-1) {
+                if(currentEnablePorts[i].ParentNode != currentEnablePorts[i+1].ParentNode) {
+                    break;
+                }
+                ++i;
+            }
         }
         return result.ToString();
     }
@@ -420,6 +427,16 @@ public class CodeGenerator {
             result.Append(CSharpGenerator.ToIndent(indentSize));
             result.Append("if(");
             result.Append(myNameMgr.GetNameFor(e.FirstProducerPort));
+            // OR all enable ports on same node.
+            while(i != newLen-1) {
+                if(e.ParentNode != newEnablePorts[i+1].ParentNode) {
+                    break;
+                }
+                result.Append(" || ");
+                ++i;
+                e= newEnablePorts[i];
+                result.Append(myNameMgr.GetNameFor(e.FirstProducerPort));
+            }
             result.Append(") {\n");
             ++indentSize;
         }
