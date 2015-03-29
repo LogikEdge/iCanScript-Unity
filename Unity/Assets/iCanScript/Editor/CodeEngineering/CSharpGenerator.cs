@@ -10,9 +10,6 @@ namespace iCanScript.Editor.CodeEngineering {
 
     public static class CSharpGenerator {
         // -------------------------------------------------------------------
-        const int ourTabSize= 4;
-        
-        // -------------------------------------------------------------------
         public static string GenerateUsingDirectives(string[] usingDirectives) {
             StringBuilder result= new StringBuilder("");
             foreach(var u in usingDirectives) {
@@ -171,11 +168,17 @@ namespace iCanScript.Editor.CodeEngineering {
             result.Append(")");
             return result.ToString();
         }
-        // -------------------------------------------------------------------
+    	// -------------------------------------------------------------------------
+        /// Returns a white space charater stringf matching the given indent size.
+        ///
+        /// @param indentSize The number of indent to add.
+        /// @see The _indentSize_ is a factor of ourTabSize;
+        ///
+        const int ourTabSize= 4;
         public static string ToIndent(int indent) {
             return new String(' ', indent*ourTabSize);
         }
-        // -------------------------------------------------------------------
+    	// -------------------------------------------------------------------------
         public static string ToAccessString(AccessType accessType) {
             switch(accessType) {
                 case AccessType.PUBLIC:    return "public";
@@ -185,6 +188,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             return "public";
         }
+        // -------------------------------------------------------------------
         public static string ToScopeString(ScopeType scopeType) {
 			switch(scopeType) {
 				case ScopeType.STATIC:  return "static";

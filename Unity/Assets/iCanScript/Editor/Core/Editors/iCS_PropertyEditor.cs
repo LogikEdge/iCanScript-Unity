@@ -4,14 +4,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_InstanceEditor : iCS_EditorBase {
+public class iCS_PropertyEditor : iCS_EditorBase {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
     DSCellView              myMainView         = null;
-    iCS_InstanceController  myController       = null;
+    iCS_PropertyController  myController       = null;
     bool                    myNotificationShown= false;
-    
+	
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
@@ -20,6 +20,29 @@ public class iCS_InstanceEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
+	public static void Init(iCS_IStorage iStorage) {
+		// Get existing open window or if none, make a new one:
+		var editor = (iCS_PropertyEditor)EditorWindow.GetWindow (typeof (iCS_PropertyEditor));
+		editor.IStorage= iStorage;
+		editor.ShowUtility();
+	}
+	public void Update() {
+		if(IStorage == null) {
+			Close();
+			return;
+		}
+		var selectedObj= IStorage.SelectedObject;
+		if(selectedObj == null || !selectedObj.IsInstanceNode) {
+			IStorage= null;
+			Close();
+		}
+	}
+	
+    // ---------------------------------------------------------------------------------
+	public new void OnEnable() {
+		base.OnEnable();
+		title= "Property";
+	}
     public new void OnDisable() {
         base.OnDisable();
         myMainView= null;
@@ -39,8 +62,10 @@ public class iCS_InstanceEditor : iCS_EditorBase {
 		// Update main view if selection has changed.
         if(myMainView == null || myController == null ||
            (myController != null && (myController.Target != targetObject || myController.IStorage != IStorage))) {
-               myController= new iCS_InstanceController(targetObject, IStorage);            
+               myController= new iCS_PropertyController(targetObject, IStorage);            
                myMainView  = new DSCellView(new RectOffset(0,0,kSpacer,0), true, myController.View);
+			   ResizeToFit();
+			   ResizeToFit();
         }		
         return true;
     }
@@ -70,4 +95,10 @@ public class iCS_InstanceEditor : iCS_EditorBase {
         
         myMainView.Display(new Rect(0,0,position.width, position.height));
     }
+    // ---------------------------------------------------------------------------------
+	/// Resizes the editor panel to fit the content.
+	void ResizeToFit() {
+		var displaySize= myMainView.GetSizeToDisplay(position);
+		position= new Rect(position.x, position.y, displaySize.x, displaySize.y);		
+	}
 }

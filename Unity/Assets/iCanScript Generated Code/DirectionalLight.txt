@@ -1,0 +1,24 @@
+using UnityEngine;
+
+namespace iCanScript.Engine.GeneratedCode {
+
+    [iCS_Class(Library="Visual Script")]
+    public  class DirectionalLight : MonoBehaviour {
+
+
+        [iCS_Function]
+        public  void Update(GameObject gameObject, Transform transform, Light light) {
+            bool theIsSmaller;
+            bool theIsGreater;
+            bool theIsSmallerOrEqual;
+            bool theIsGreaterOrEqual;
+            var theIsEqual= iCS_Conditions.Compare(0, 0, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
+            var theOutput= iCS_Variables._string("Smaller");
+            MonoBehaviour.print(theOutput);
+            var theOutput= iCS_Variables._string("Greater");
+            MonoBehaviour.print(theOutput);
+        }
+
+    }
+
+}

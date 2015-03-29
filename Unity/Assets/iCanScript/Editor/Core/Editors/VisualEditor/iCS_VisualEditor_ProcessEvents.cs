@@ -203,8 +203,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case iCS_PickPartEnum.Name: {
                 if(pickedObject.IsNameEditable) {
     				mySubEditor= new iCS_ObjectNameEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);											
-                } else {
-                    ShowNotification(new GUIContent("The selected name cannot be changed !!!"));
                 }
                 break;
             }
