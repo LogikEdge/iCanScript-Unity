@@ -135,7 +135,7 @@ public class CodeGenerator {
 				var i= p.PortIndex;
 				if(i < (int)iCS_PortIndex.ParametersEnd) {
 					paramTypes[i]= p.RuntimeType;
-					paramNames[i]= myNameMgr.GetNameFor(p);
+					paramNames[i]= myNameMgr.ToFunctionParameterName(p);
 				}
 			}
 		);
