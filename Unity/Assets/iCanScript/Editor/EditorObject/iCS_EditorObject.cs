@@ -27,7 +27,6 @@ public partial class iCS_EditorObject {
     Vector2 c_NodeSubTitleSize= Vector2.zero;
     string  c_CodeName        = null;
     string  c_DisplayName     = null;
-    Vector2 c_DisplayNameSize = Vector2.zero;
 
     // ======================================================================
     // Conversion Utilities
@@ -150,7 +149,14 @@ public partial class iCS_EditorObject {
                 }
                 else if(IsNode) {
 					c_CodeName= name;
-                    if(IsConstructor) {
+                    if(IsBehaviour) {
+                        var endIdx= name.IndexOf(':');
+                        if(endIdx != -1) {
+                            name= name.Substring(0, endIdx);
+                        }
+                        c_CodeName= iCS_ObjectNames.ToTypeName(name);
+                    }
+                    else if(IsConstructor) {
                         c_CodeName= iCS_Types.TypeName(RuntimeType);
                     }
 					else if(IsTransitionPackage) {
@@ -234,7 +240,6 @@ public partial class iCS_EditorObject {
         c_NodeTitle      = null;
         c_NodeTitleSize  = Vector2.zero;
         c_DisplayName    = null;
-        c_DisplayNameSize= Vector2.zero;
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {

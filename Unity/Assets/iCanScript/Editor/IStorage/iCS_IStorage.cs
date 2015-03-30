@@ -473,7 +473,7 @@ public partial class iCS_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(0, name+"::Behaviour", typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
+        iCS_EditorObject.CreateInstance(0, name, typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
         this[0].LocalAnchorFromGlobalPosition= VisualEditorCenter();
 		this[0].IsNameEditable= false;
         return this[0];

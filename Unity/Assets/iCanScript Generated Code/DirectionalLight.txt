@@ -2,21 +2,47 @@ using UnityEngine;
 
 namespace iCanScript.Engine.GeneratedCode {
 
+    [iCS_Class(Library="Visual Scripts")]
+    public class DirectionalLight : MonoBehaviour {
+    }
+
+}
+using UnityEngine;
+
+namespace iCanScript.Engine.GeneratedCode {
+
     [iCS_Class(Library="Visual Script")]
     public  class DirectionalLight : MonoBehaviour {
 
 
         [iCS_Function]
-        public  void Update(GameObject gameObject, Transform transform, Light light) {
+        public  void Update() {
+        }
+
+        [iCS_Function(Tooltip="This is a great function")]
+        public  void GreatThings(float aValue, float aBias) {
             bool theIsSmaller;
             bool theIsGreater;
             bool theIsSmallerOrEqual;
             bool theIsGreaterOrEqual;
-            var theIsEqual= iCS_Conditions.Compare(0, 0, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
-            var theOutput= iCS_Variables._string("Smaller");
-            MonoBehaviour.print(theOutput);
-            var theOutput= iCS_Variables._string("Greater");
-            MonoBehaviour.print(theOutput);
+            var theIsEqual= iCS_Conditions.Compare(aValue, aBias, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
+            if(theIsSmaller) {
+                var theOutput= iCS_Variables._string("Smaller");
+                if(trigger) {
+                    MonoBehaviour.print(theOutput);
+                }
+            }
+            if(theIsGreater || theIsEqual) {
+                if(theIsGreaterOrEqual) {
+                    var theOutput_27= iCS_Variables._string("Greater");
+                }
+            }
+            MonoBehaviour.print(theOutput_38);
+            var theOutput_47= iCS_Variables._string("Condition is: ");
+            var theOutput_44= string.Concat(theOutput_47, theOutput_27);
+            if(theIsGreater || theIsEqual) {
+                MonoBehaviour.print(theOutput_44);
+            }
         }
 
     }

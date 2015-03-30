@@ -18,10 +18,25 @@ public class CodeGenerator {
     public delegate string CodeProducer(int indent);
 
     // -------------------------------------------------------------------
-    CodeGeneratorNameManager   myNameMgr= null;
+    CodeTree                   myCodeTree= null;
+    CodeGeneratorNameManager   myNameMgr = null;
     
 	// -------------------------------------------------------------------------
     public void GenerateCodeFor(iCS_IStorage iStorage) {
+        // Nothing to do if no or empty Visual Script.
+        if(iStorage == null || iStorage.EditorObjects.Count == 0) {
+            return;
+        }
+        // Build code context tree.
+        myCodeTree= new CodeTree(iStorage);
+        
+        // Generate final code.
+        var result= new StringBuilder(2048);
+        result.Append(myCodeTree.GenerateCode());
+        
+        // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // PREVIOUS CODE GENERATOR
+
         // Prepare generated name array.
         myNameMgr= new CodeGeneratorNameManager(iStorage);
         
@@ -30,7 +45,7 @@ public class CodeGenerator {
         var className= iCS_TextUtility.ToCSharpName(iStorage.HostGameObject.name);
 
         // Generate using directives.
-        var usingDirectives= CSharpGenerator.GenerateUsingDirectives(new string[]{"UnityEngine"});
+        result.Append(CSharpGenerator.GenerateUsingDirectives(new string[]{"UnityEngine"}));
 
         // Define function to define class
         CodeProducer classGenerator=
@@ -39,10 +54,10 @@ public class CodeGenerator {
             };
 
         // Generate namespace.
-        var code= CSharpGenerator.GenerateNamespace(namespaceName, classGenerator);
+        result.Append(CSharpGenerator.GenerateNamespace(namespaceName, classGenerator));
 
         // Write final code to file.
-        CSharpFileUtils.WriteCSharpFile("iCanScript Generated Code", className, usingDirectives+code);
+        CSharpFileUtils.WriteCSharpFile("iCanScript Generated Code", className, result.ToString());
     }
 
 	// -------------------------------------------------------------------------
