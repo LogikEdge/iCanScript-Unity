@@ -40,10 +40,11 @@ namespace iCanScript.Engine.GeneratedCode {
         }
 
         [iCS_Function]
-        public  void BuildLight(Color aColor, float anIntensity, float aRange) {
-            Light.color= aColor;
-            Light.intensity= anIntensity;
-            Light.range= aRange;
+        public  void BuildLight(Color aColor, float anIntensity, float aRange, Light aSelf) {
+            var theOutput= Object.Instantiate(theThis);
+            theOutput.color= aColor;
+            theOutput.intensity= anIntensity;
+            theOutput.range= aRange;
         }
     }
 
