@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class FieldDefinition : CodeContext {
+    public class VariableDefinition : CodeContext {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -23,7 +23,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param scopeType The Scope property of the field.
         /// @return The newly created field defintion.
         ///
-        public FieldDefinition(iCS_EditorObject fieldObject, AccessType accessType, ScopeType scopeType)
+        public VariableDefinition(iCS_EditorObject fieldObject, AccessType accessType, ScopeType scopeType)
         : base(CodeType.FIELD) {
             myFieldObject= fieldObject;
             myAccessType = accessType;
