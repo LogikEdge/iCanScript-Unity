@@ -24,7 +24,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created code context.
         ///
         public IfDefinition(iCS_EditorObject[] associatedObjects)
-        : base(CodeContextType.IF) {
+        : base(CodeType.IF) {
             myAssociatedObjects= associatedObjects;
         }
 

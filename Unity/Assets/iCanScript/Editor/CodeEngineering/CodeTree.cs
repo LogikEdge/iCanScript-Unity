@@ -29,7 +29,10 @@ namespace iCanScript.Editor.CodeEngineering {
             myCodeRoot.AddUsingDirective("UnityEngine");
             
             // Add the root node has the class context.
-            var classDefinition= new ClassDefinition(iStorage.EditorObjects[0], typeof(MonoBehaviour));            
+            var classDefinition= new ClassDefinition(iStorage.EditorObjects[0],
+                                                     typeof(MonoBehaviour),
+                                                     CodeContext.AccessType.PUBLIC,
+                                                     CodeContext.ScopeType.NONSTATIC);
             myCodeRoot.AddClassDefinition(classDefinition);
         }
     

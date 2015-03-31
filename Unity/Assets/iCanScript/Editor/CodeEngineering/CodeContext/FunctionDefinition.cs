@@ -24,7 +24,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created code context.
         ///
         public FunctionDefinition(iCS_EditorObject functionNode)
-        : base(CodeContextType.FUNCTION) {
+        : base(CodeType.FUNCTION) {
             myFunctionNode= functionNode;
         }
 

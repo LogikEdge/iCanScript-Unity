@@ -4,6 +4,9 @@ namespace iCanScript.Engine.GeneratedCode {
 
     [iCS_Class(Library="Visual Scripts")]
     public class DirectionalLight : MonoBehaviour {
+        private  Float p_score=  new Float(0);
+        [iCS_InOutPort]
+        public  Bool myIsGameOver=  new Bool(false);
     }
 
 }
@@ -13,6 +16,9 @@ namespace iCanScript.Engine.GeneratedCode {
 
     [iCS_Class(Library="Visual Script")]
     public  class DirectionalLight : MonoBehaviour {
+        [iCS_InOutPort]
+        public  Bool isGameOver=  new Bool(false);
+        private  Float score=  new Float(0);
 
 
         [iCS_Function]

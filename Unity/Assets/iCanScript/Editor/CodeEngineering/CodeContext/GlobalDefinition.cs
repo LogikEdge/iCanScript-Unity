@@ -29,7 +29,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created code context.
         ///
         public GlobalDefinition()
-        : base(CodeContextType.GLOBAL) {
+        : base(CodeType.GLOBAL) {
         }
 
         // -------------------------------------------------------------------
@@ -39,7 +39,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public void AddClassDefinition(ClassDefinition classDefinition) {
             myClasses.Add(classDefinition);
-            classDefinition.ParentContext= this;
+            classDefinition.Parent= this;
         }
         
         // -------------------------------------------------------------------

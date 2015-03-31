@@ -6,24 +6,17 @@ using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    // -------------------------------------------------------------------
-    /// Code context type enumeration.
-    public enum CodeContextType {
-        UNDEFINED,  ///< Undefined/initial value
-        GLOBAL,     /// Root code context
-        CLASS,      ///< Class/structure definition
-        FUNCTION,   ///< Function definition
-        IF          ///< If body
-    };
-     
     public class CodeContext {
         // ===================================================================
         // TYPES
         // -------------------------------------------------------------------
-        public enum CodeType     { CLASS, FUNCTION, VARIABLE, PARAMETER };
         public enum AccessType   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
         public enum ScopeType    { STATIC, NONSTATIC, VIRTUAL };
         public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
+        public enum CodeType     {
+            GLOBAL, CLASS, STRUCT, FIELD, PROPERTY, FUNCTION, VARIABLE, PARAMETER,
+            IF
+        };
     
         // -------------------------------------------------------------------
         public delegate string CodeProducer(int indent);
@@ -31,19 +24,19 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        CodeContext         myParentContext= null;                      ///< The parnt code context
-        CodeContextType     myContextType  = CodeContextType.UNDEFINED; ///< Type of this code context
+        CodeContext myParent  = null;            ///< The parnt code context
+        CodeType    myCodeType= CodeType.GLOBAL; ///< Type of this code context
         
         // ===================================================================
         // PROPERTIES
         // -------------------------------------------------------------------
         /// Returns the type of this code context
-        public CodeContextType ContextType {
-            get { return myContextType; }
+        public CodeType TypeOfCode {
+            get { return myCodeType; }
         }
-        public CodeContext ParentContext {
-            get { return myParentContext; }
-            set { myParentContext= value; }
+        public CodeContext Parent {
+            get { return myParent; }
+            set { myParent= value; }
         }
         
         // -------------------------------------------------------------------
@@ -53,8 +46,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parentContext The code context of the parent.
         /// @return The newly created code context.
         ///
-        public CodeContext(CodeContextType contextType) {
-            myContextType  = contextType;
+        public CodeContext(CodeType codeType) {
+            myCodeType= codeType;
         }
         
         // =========================================================================
