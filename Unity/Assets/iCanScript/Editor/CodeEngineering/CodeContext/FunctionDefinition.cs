@@ -251,7 +251,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var result= new StringBuilder(indent, 128);
             // Simplified situation for property get.
             var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
-            var functionName= CSharpGenerator.ToMethodName(node);
+            var functionName= GetPublicFunctionName(node);
             if(IsPropertyGet(memberInfo)) {
                 // Declare return variable.
                 result.Append(DeclareReturnVariable(node));
@@ -330,7 +330,7 @@ namespace iCanScript.Editor.CodeEngineering {
         string FunctionCallPrefix(iCS_MemberInfo memberInfo, iCS_EditorObject node) {
             var result= new StringBuilder(32);
             if(memberInfo != null && memberInfo.IsClassFunctionBase) {
-                result.Append(CSharpGenerator.ToTypeName(node.RuntimeType));
+                result.Append(ToTypeName(node.RuntimeType));
                 result.Append(".");
             }
             else {
@@ -396,7 +396,7 @@ namespace iCanScript.Editor.CodeEngineering {
             if(outputParams.Count == 0) return "";
             var result= new StringBuilder(128);
             foreach(var p in outputParams) {
-                result.Append(CSharpGenerator.ToTypeName(p.RuntimeType));
+                result.Append(ToTypeName(p.RuntimeType));
                 result.Append(" ");
                 result.Append(GetLocalVariableName(p));
                 result.Append(";\n");
