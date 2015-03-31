@@ -55,16 +55,14 @@ namespace iCanScript.Editor.CodeEngineering {
                 );
                 var fieldType= myFieldObject.RuntimeType;
                 var initializer= GenerateAllocatorFragment(fieldType, initValues);
-                //myNameMgr.SetCodeParent(n, classNode);
-                //var variableName= myNameMgr.GetNameFor(n);
                 string variableName;
                 if(myAccessType == AccessType.PUBLIC) {
-                    variableName= ToPublicFieldName(myFieldObject.DisplayName);
+                    variableName= ToPublicFieldName(myFieldObject);
                 }
                 else {
-                    variableName= ToPrivateFieldName(myFieldObject.DisplayName);
+                    variableName= ToPrivateFieldName(myFieldObject);
                 }
-    			result.Append(GenerateField(indentSize, myAccessType, myScopeType, fieldType, variableName, initializer));                    
+    			result.Append(GenerateVariable(indentSize, myAccessType, myScopeType, fieldType, variableName, initializer));                    
             }
             return result.ToString();
         }
@@ -72,8 +70,8 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Generate the code for a class field.
         ///
-		public static string GenerateField(int indentSize, AccessType accessType, ScopeType scopeType,
-										   Type variableType, string variableName, string initializer) {
+		public static string GenerateVariable(int indentSize, AccessType accessType, ScopeType scopeType,
+										      Type variableType, string variableName, string initializer) {
 			string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder(indent);
             if(accessType == AccessType.PUBLIC) {

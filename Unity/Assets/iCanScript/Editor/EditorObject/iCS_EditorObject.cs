@@ -131,11 +131,11 @@ public partial class iCS_EditorObject {
 								    if(funcInfo != null) {
 										var parameters= funcInfo.Parameters;
 										if(parameters != null && PortIndex < parameters.Length) {
-											c_CodeName= parameters[PortIndex].name;
+											c_CodeName= iCS_ObjectNames.ToFunctionParameterName(parameters[PortIndex].name);
 										}
 										else if(IsReturnPort) {
 											if(funcInfo.FunctionReturn != null) {
-												c_CodeName= funcInfo.FunctionReturn.name;
+												c_CodeName= iCS_ObjectNames.ToLocalVariableName(funcInfo.FunctionReturn.name);
 											}
 										}
 									}

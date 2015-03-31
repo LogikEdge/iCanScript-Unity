@@ -18,23 +18,23 @@ namespace iCanScript.Engine.GeneratedCode {
             bool theIsGreater;
             bool theIsSmallerOrEqual;
             bool theIsGreaterOrEqual;
-            var theIsEqual= iCS_Conditions.Compare(theValue, theBias, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
-            if(isSmaller) {
+            var theIsEqual= iCS_Conditions.Compare(aValue, aBias, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
+            if(theIsSmaller) {
                 var theOutput= iCS_Variables._string("Smaller");
                 if(trigger) {
                     MonoBehaviour.print(theOutput);
                 }
             }
-            if(isGreater || isEqual) {
-                if(isGreaterOrEqual) {
-                    var theOutput= iCS_Variables._string("Greater");
+            if(theIsGreater || theIsEqual) {
+                if(theIsGreaterOrEqual) {
+                    var theOutput_27= iCS_Variables._string("Greater");
                 }
             }
-            MonoBehaviour.print(theOutput);
-            var theOutput= iCS_Variables._string("Condition is: ");
-            var theOutput= string.Concat(theOutput, theOutput);
-            if(isGreater || isEqual) {
-                MonoBehaviour.print(theOutput);
+            MonoBehaviour.print(theOutput_38);
+            var theOutput_47= iCS_Variables._string("Condition is: ");
+            var theOutput_44= string.Concat(theOutput_47, theOutput_27);
+            if(theIsGreater || theIsEqual) {
+                MonoBehaviour.print(theOutput_44);
             }
         }
     }

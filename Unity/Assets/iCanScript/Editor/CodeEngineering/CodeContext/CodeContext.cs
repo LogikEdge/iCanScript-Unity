@@ -24,8 +24,9 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        CodeContext myParent  = null;            ///< The parnt code context
-        CodeType    myCodeType= CodeType.GLOBAL; ///< Type of this code context
+        CodeContext                             myParent    = null;            ///< The parnt code context
+        CodeType                                myCodeType  = CodeType.GLOBAL; ///< Type of this code context
+        Dictionary<iCS_EditorObject, string>    myLocalNames= new Dictionary<iCS_EditorObject, string>();
         
         // ===================================================================
         // PROPERTIES
@@ -64,14 +65,29 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
-        /// Returns the pre-built name for a given visual script object.
+        /// Returns or creates the pre-built name for a given visual script object.
         ///
         /// @param vsObj The visual script object to search.
         /// @return The pre-built name for the visual script object.
         ///
         public string GetNameFor(iCS_EditorObject vsObj) {
-            // TODO: Complete the 'GetNameFor(vsObj)' function.
-            return vsObj.CodeName;
+            var name= TryGetNameFor(vsObj);
+            return name ?? vsObj.CodeName;
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the pre-built name for a given visual script object.
+        ///
+        /// @param vsObj The visual script object to search.
+        /// @return The pre-built name for the visual script object.
+        ///
+        public string TryGetNameFor(iCS_EditorObject vsObj) {
+            string name= null;
+            if(myLocalNames.TryGetValue(vsObj, out name)) {
+                return name;
+            }
+            if(myParent == null) return null;
+            return myParent.TryGetNameFor(vsObj);
         }
         
     	// -------------------------------------------------------------------------
@@ -144,87 +160,144 @@ namespace iCanScript.Editor.CodeEngineering {
             return obj.ToString();
         }
         // ---------------------------------------------------------------------------------
-        /// Convert the given name to a class name.
-        ///
-        /// @param name The name to be converted.
-        /// @return The converted name.
-        ///
-        public static string ToClassName(string name) {
-            return iCS_ObjectNames.ToTypeName(name);
-        }
-        // ---------------------------------------------------------------------------------
-        /// Convert the given name to a public class field name.
-        ///
-        /// @param name The name to be converted.
-        /// @return The converted name.
-        ///
-        public static string ToPublicFieldName(string name) {
-            return iCS_ObjectNames.ToPublicFieldName(name);
-        }
-        // ---------------------------------------------------------------------------------
-        /// Convert the given name to a private class field name.
-        ///
-        /// @param name The name to be converted.
-        /// @return The converted name.
-        ///
-        public static string ToPrivateFieldName(string name) {
-            return iCS_ObjectNames.ToPrivateFieldName(name);
-        }
-        // ---------------------------------------------------------------------------------
-        /// Convert the given name to a public static class field name.
-        ///
-        /// @param name The name to be converted.
-        /// @return The converted name.
-        ///
-        public static string ToPublicStaticFieldName(string name) {
-            return iCS_ObjectNames.ToPublicStaticFieldName(name);
-        }
-        // ---------------------------------------------------------------------------------
-        /// Convert the given name to a private static class field name.
-        ///
-        /// @param name The name to be converted.
-        /// @return The converted name.
-        ///
-        public static string ToPrivateStaticFieldName(string name) {
-            return iCS_ObjectNames.ToPrivateStaticFieldName(name);
-        }
-        // ---------------------------------------------------------------------------------
-        /// Convert the given visual script object to a function parameter name.
+        /// Convert the given VS object to a class name.
         ///
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public static string ToFunctionParameterName(iCS_EditorObject vsObject) {
-            return iCS_ObjectNames.ToFunctionParameterName(vsObject.CodeName);
+        public string ToClassName(iCS_EditorObject vsObject) {
+            var name= TryGetNameFor(vsObject);
+            if(name != null) return name;
+            return MakeNameUnique(iCS_ObjectNames.ToTypeName(vsObject.CodeName), vsObject);
         }
         // ---------------------------------------------------------------------------------
-        /// Convert the given visual script object to a public function name.
+        /// Convert the given VS object to a public class field name.
         ///
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public static string ToPublicFunctionName(iCS_EditorObject vsObject) {
-            return iCS_ObjectNames.ToPublicFunctionName(vsObject.CodeName);
+        public string ToPublicFieldName(iCS_EditorObject vsObject) {
+            var name= TryGetNameFor(vsObject);
+            if(name != null) return name;
+            name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
+            return MakeNameUnique(iCS_ObjectNames.ToPublicFieldName(name), vsObject);
         }
         // ---------------------------------------------------------------------------------
-        /// Convert the given visual script objec to a private function name.
+        /// Convert the given VS object to a private class field name.
         ///
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public static string ToPrivateFunctionName(iCS_EditorObject vsObject) {
-            return iCS_ObjectNames.ToPrivateFunctionName(vsObject.CodeName);
+        public string ToPrivateFieldName(iCS_EditorObject vsObject) {
+            var name= TryGetNameFor(vsObject);
+            if(name != null) return name;
+            name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
+            return MakeNameUnique(iCS_ObjectNames.ToPrivateFieldName(name), vsObject);
         }
         // ---------------------------------------------------------------------------------
-        /// Convert the given visual script object to a functionlocal variable name.
+        /// Convert the given VS object to a public static class field name.
         ///
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public static string ToLocalVariableName(iCS_EditorObject vsObject) {
-            return iCS_ObjectNames.ToLocalVariableName(vsObject.CodeName);
+        public string ToPublicStaticFieldName(iCS_EditorObject vsObject) {
+            var name= TryGetNameFor(vsObject);
+            if(name != null) return name;
+            name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
+            return MakeNameUnique(iCS_ObjectNames.ToPublicStaticFieldName(name), vsObject);
         }
-        
+        // ---------------------------------------------------------------------------------
+        /// Convert the given VS object to a private static class field name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public string ToPrivateStaticFieldName(iCS_EditorObject vsObject) {
+            var name= TryGetNameFor(vsObject);
+            if(name != null) return name;
+            name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
+            return MakeNameUnique(iCS_ObjectNames.ToPrivateStaticFieldName(name), vsObject);
+        }
+        // ---------------------------------------------------------------------------------
+        /// Convert the given VS object to a function parameter name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public string ToFunctionParameterName(iCS_EditorObject vsObject) {
+            var name= TryGetNameFor(vsObject);
+            if(name != null) return name;
+            name= iCS_ObjectNames.ToFunctionParameterName(vsObject.CodeName);
+            return MakeNameUnique(name, vsObject);
+        }
+        // ---------------------------------------------------------------------------------
+        /// Convert the given VS object to a public function name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public string ToPublicFunctionName(iCS_EditorObject vsObject) {
+            var name= TryGetNameFor(vsObject);
+            if(name != null) return name;
+            return MakeNameUnique(iCS_ObjectNames.ToPublicFunctionName(vsObject.CodeName), vsObject);
+        }
+        // ---------------------------------------------------------------------------------
+        /// Convert the given VS objec to a private function name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public string ToPrivateFunctionName(iCS_EditorObject vsObject) {
+            var name= TryGetNameFor(vsObject);
+            if(name != null) return name;
+            return MakeNameUnique(iCS_ObjectNames.ToPrivateFunctionName(vsObject.CodeName), vsObject);
+        }
+        // ---------------------------------------------------------------------------------
+        /// Convert the given VS object to a functionlocal variable name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public string ToLocalVariableName(iCS_EditorObject vsObject) {
+            var name= TryGetNameFor(vsObject);
+            if(name != null) return name;
+            name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
+            return MakeNameUnique(iCS_ObjectNames.ToLocalVariableName(name), vsObject);
+        }
+
+        // =========================================================================
+        // UNIQUE NAME MANAGEMENT
+        // -----------------------------------------------------------------------
+        /// Creates a unique code name from the proposedName.
+        ///
+        /// @param proposedName The desired name for the code fragment associated
+        ///                     with the visual script object.
+        /// @param vsObj    Visual Script object of the code fragment.
+        ///
+        public string MakeNameUnique(string name, iCS_EditorObject vsObject) {
+            while(DoesNameAlreadyExist(name)) {
+                name= name+"_"+vsObject.InstanceId;
+            }
+            myLocalNames.Add(vsObject, name);
+            return name;
+        }
+        // -----------------------------------------------------------------------
+        /// Determines if the given _'name'_ already exists in the code scope.
+        ///
+        /// This algorithm first seeks for a name collison in the code scope.
+        /// The name collision is detected if the names are the same and:
+        /// - the parent code is the same or;
+        /// - the name exists in one of the code parent scope.
+        ///
+        /// @param name The proposed name of the code fragment
+        /// @param vsObj The visual script object of the cod efragment
+        ///
+        public bool DoesNameAlreadyExist(string name) {
+            if(myLocalNames.ContainsValue(name)) return true;
+            if(myParent == null) return false;
+            return myParent.DoesNameAlreadyExist(name);
+        }
+
         // =========================================================================
         // COMMON GENERATION UTILITIES
         // -------------------------------------------------------------------

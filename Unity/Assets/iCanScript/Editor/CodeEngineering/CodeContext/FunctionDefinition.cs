@@ -47,7 +47,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public string GenerateCode(int indentSize) {
             var result= new StringBuilder(1024);
     		// Find return type.
-    		var returnType= typeof(void);
+    		string returnType= ToTypeName(typeof(void));
     		var nbParams= 0;
     		myFunctionNode.ForEachChildPort(
     			p=> {
@@ -57,18 +57,18 @@ namespace iCanScript.Editor.CodeEngineering {
     					}
     				}
     				if(p.PortIndex == (int)iCS_PortIndex.Return) {
-    					returnType= p.RuntimeType;
+    					returnType= ToTypeName(p.RuntimeType);
     				}
     			}
     		);
     		// Build parameters
-    		var paramTypes= new Type[nbParams];
-    		var paramNames= new String[nbParams];
+    		var paramTypes= new string[nbParams];
+    		var paramNames= new string[nbParams];
     		myFunctionNode.ForEachChildPort(
     			p=> {
     				var i= p.PortIndex;
     				if(i < (int)iCS_PortIndex.ParametersEnd) {
-    					paramTypes[i]= p.RuntimeType;
+    					paramTypes[i]= ToTypeName(p.RuntimeType);
     					paramNames[i]= ToFunctionParameterName(p);
     				}
     			}
@@ -93,17 +93,6 @@ namespace iCanScript.Editor.CodeEngineering {
             return result.ToString();
         }
         // -------------------------------------------------------------------
-        public static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
-                                              Type returnType, string functionName,
-                                              Type[] paramTypes, string[] paramNames,
-                                              CodeProducer functionBody,
-                                              iCS_EditorObject vsObj= null) {
-            var paramTypeStrings= new String[paramTypes.Length];
-            for(int i= 0; i < paramTypes.Length; ++i) {
-                paramTypeStrings[i]= ToTypeName(paramTypes[i]);
-            }
-            return GenerateFunction(indentSize, accessType, scopeType, ToTypeName(returnType), functionName, paramTypeStrings, paramNames, functionBody, vsObj);
-        }
         public static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
                                               string returnType, string functionName,
                                               string[] paramTypes, string[] paramNames,
