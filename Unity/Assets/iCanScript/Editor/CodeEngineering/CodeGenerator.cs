@@ -8,38 +8,61 @@ using P=Prelude;
 namespace iCanScript.Editor.CodeEngineering {
 
     public class CodeGenerator {
+        // ===================================================================
+        // FIELDS
         // -------------------------------------------------------------------
-        public enum CodeType     { CLASS, FUNCTION, VARIABLE, PARAMETER };
-        public enum AccessType   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
-        public enum ScopeType    { STATIC, NONSTATIC, VIRTUAL };
-        public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
-        
-        // -------------------------------------------------------------------
-        public delegate string CodeProducer(int indent);
-    
-        // -------------------------------------------------------------------
-        CodeTree                   myCodeTree= null;
-        
+        GlobalDefinition    myCodeRoot= null;   ///< Code global definition.
+
     	// -------------------------------------------------------------------------
+        /// Builds global scope code definition.
+        ///
+        /// @param iStorage The VS storage to convert to code.
+        /// @return The complete visual script code.
+        ///
         public void GenerateCodeFor(iCS_IStorage iStorage) {
             // Nothing to do if no or empty Visual Script.
             if(iStorage == null || iStorage.EditorObjects.Count == 0) {
                 return;
             }
-            // Build code context tree.
-            myCodeTree= new CodeTree(iStorage);
+
+            // Build code global scope.
+            BuildGlobalDefinition(iStorage);
             
-            // Generate final code.
-            var result= new StringBuilder(2048);
-            result.Append(myCodeTree.GenerateCode());
+            // Generate code.
+            var result= GenerateCode();
             
-            // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            // PREVIOUS CODE GENERATOR
-    
-            var className= iCS_TextUtility.ToCSharpName(iStorage.HostGameObject.name);
-    
             // Write final code to file.
-            CSharpFileUtils.WriteCSharpFile("iCanScript Generated Code", className, result.ToString());
+            var fileName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
+            CSharpFileUtils.WriteCSharpFile("iCanScript Generated Code", fileName, result.ToString());
+        }
+
+        // ===================================================================
+        // INFORMATION GATHERING FUNCTIONS
+        // -------------------------------------------------------------------
+        /// Builds the definition of the global code.
+        ///
+        /// @param iStorage The VS storage to convert to code.
+        ///
+        void BuildGlobalDefinition(iCS_IStorage iStorage) {
+            // Build global context.
+            myCodeRoot= new GlobalDefinition();
+            myCodeRoot.Namespace= "iCanScript.Engine.GeneratedCode";
+            myCodeRoot.AddUsingDirective("UnityEngine");
+            
+            // Add root class defintion.
+            var classDefinition= new ClassDefinition(iStorage.EditorObjects[0],
+                                                     typeof(MonoBehaviour),
+                                                     CodeContext.AccessType.PUBLIC,
+                                                     CodeContext.ScopeType.NONSTATIC);
+            myCodeRoot.AddClassDefinition(classDefinition);
+        }
+
+        // ===================================================================
+        // CODE GENERATION FUNCTIONS
+        // -------------------------------------------------------------------
+        /// Generates the CSharp code.
+        public string GenerateCode() {
+            return myCodeRoot.GenerateCode();
         }
     
     }
