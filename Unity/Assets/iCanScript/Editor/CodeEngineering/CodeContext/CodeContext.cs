@@ -64,6 +64,17 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
+        /// Returns the pre-built name for a given visual script object.
+        ///
+        /// @param vsObj The visual script object to search.
+        /// @return The pre-built name for the visual script object.
+        ///
+        public string GetNameFor(iCS_EditorObject vsObj) {
+            // TODO: Complete the 'GetNameFor(vsObj)' function.
+            return vsObj.CodeName;
+        }
+        
+    	// -------------------------------------------------------------------------
         /// Converts the given AccessType to its string representation.
         ///
         /// @param accessType The access type to be converted.
@@ -133,8 +144,7 @@ namespace iCanScript.Editor.CodeEngineering {
             return obj.ToString();
         }
         // ---------------------------------------------------------------------------------
-        /// Convert the given name to a class name using the predefined naming
-        /// scheme.
+        /// Convert the given name to a class name.
         ///
         /// @param name The name to be converted.
         /// @return The converted name.
@@ -143,8 +153,7 @@ namespace iCanScript.Editor.CodeEngineering {
             return iCS_ObjectNames.ToTypeName(name);
         }
         // ---------------------------------------------------------------------------------
-        /// Convert the given name to a public class field name using the predefined naming
-        /// scheme.
+        /// Convert the given name to a public class field name.
         ///
         /// @param name The name to be converted.
         /// @return The converted name.
@@ -153,8 +162,7 @@ namespace iCanScript.Editor.CodeEngineering {
             return iCS_ObjectNames.ToPublicFieldName(name);
         }
         // ---------------------------------------------------------------------------------
-        /// Convert the given name to a private class field name using the predefined naming
-        /// scheme.
+        /// Convert the given name to a private class field name.
         ///
         /// @param name The name to be converted.
         /// @return The converted name.
@@ -163,24 +171,58 @@ namespace iCanScript.Editor.CodeEngineering {
             return iCS_ObjectNames.ToPrivateFieldName(name);
         }
         // ---------------------------------------------------------------------------------
-        /// Convert the given name to a public class field name using the predefined naming
-        /// scheme.
+        /// Convert the given name to a public static class field name.
         ///
         /// @param name The name to be converted.
         /// @return The converted name.
         ///
         public static string ToPublicStaticFieldName(string name) {
-            return ToPublicStaticFieldName(name);
+            return iCS_ObjectNames.ToPublicStaticFieldName(name);
         }
         // ---------------------------------------------------------------------------------
-        /// Convert the given name to a private class field name using the predefined naming
-        /// scheme.
+        /// Convert the given name to a private static class field name.
         ///
         /// @param name The name to be converted.
         /// @return The converted name.
         ///
         public static string ToPrivateStaticFieldName(string name) {
-            return ToPrivateStaticFieldName(name);
+            return iCS_ObjectNames.ToPrivateStaticFieldName(name);
+        }
+        // ---------------------------------------------------------------------------------
+        /// Convert the given visual script object to a function parameter name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public static string ToFunctionParameterName(iCS_EditorObject vsObject) {
+            return iCS_ObjectNames.ToFunctionParameterName(vsObject.CodeName);
+        }
+        // ---------------------------------------------------------------------------------
+        /// Convert the given visual script object to a public function name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public static string ToPublicFunctionName(iCS_EditorObject vsObject) {
+            return iCS_ObjectNames.ToPublicFunctionName(vsObject.CodeName);
+        }
+        // ---------------------------------------------------------------------------------
+        /// Convert the given visual script objec to a private function name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public static string ToPrivateFunctionName(iCS_EditorObject vsObject) {
+            return iCS_ObjectNames.ToPrivateFunctionName(vsObject.CodeName);
+        }
+        // ---------------------------------------------------------------------------------
+        /// Convert the given visual script object to a functionlocal variable name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public static string ToLocalVariableName(iCS_EditorObject vsObject) {
+            return iCS_ObjectNames.ToLocalVariableName(vsObject.CodeName);
         }
         
         // =========================================================================
@@ -240,6 +282,7 @@ namespace iCanScript.Editor.CodeEngineering {
             ForEachParameter(node, p=> parameters.Add(p));
             return parameters.ToArray();
         }
+
     	// -------------------------------------------------------------------------
         /// Returns the number of function parameters for the given node.
         ///

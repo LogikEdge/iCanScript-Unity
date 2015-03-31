@@ -7,6 +7,36 @@ namespace iCanScript.Engine.GeneratedCode {
         private  Float p_score=  new Float(0);
         [iCS_InOutPort]
         public  Bool myIsGameOver=  new Bool(false);
+
+        [iCS_Function]
+        public  void Update() {
+        }
+
+        [iCS_Function(Tooltip="This is a great function")]
+        public  void GreatThings(float aValue, float aBias) {
+            bool theIsSmaller;
+            bool theIsGreater;
+            bool theIsSmallerOrEqual;
+            bool theIsGreaterOrEqual;
+            var theIsEqual= iCS_Conditions.Compare(theValue, theBias, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
+            if(isSmaller) {
+                var theOutput= iCS_Variables._string("Smaller");
+                if(trigger) {
+                    MonoBehaviour.print(theOutput);
+                }
+            }
+            if(isGreater || isEqual) {
+                if(isGreaterOrEqual) {
+                    var theOutput= iCS_Variables._string("Greater");
+                }
+            }
+            MonoBehaviour.print(theOutput);
+            var theOutput= iCS_Variables._string("Condition is: ");
+            var theOutput= string.Concat(theOutput, theOutput);
+            if(isGreater || isEqual) {
+                MonoBehaviour.print(theOutput);
+            }
+        }
     }
 
 }

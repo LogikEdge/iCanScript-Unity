@@ -39,7 +39,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param field The field for which to generate code.
         /// @return The generated code for the given field.
         ///
-        public string GenerateField(int indentSize) {
+        public string GenerateCode(int indentSize) {
             var result= new StringBuilder(128);
     		// Generate non-static variables.
             if(myFieldObject.IsConstructor) {

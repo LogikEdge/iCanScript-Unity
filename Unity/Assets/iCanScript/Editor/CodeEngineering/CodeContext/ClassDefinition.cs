@@ -10,12 +10,12 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        iCS_EditorObject        myClassNode = null;  ///< VS objects associated with code context
-        Type                    myBaseClass = null;  ///< The base class for this class
-        AccessType              myAccessType= AccessType.PRIVATE;
-        ScopeType               myScopeType = ScopeType.NONSTATIC;
-        List<FieldDefinition>   myFields    = new List<FieldDefinition>();
-        List<iCS_EditorObject>  myFunctions = new List<iCS_EditorObject>();
+        iCS_EditorObject         myClassNode = null;  ///< VS objects associated with code context
+        Type                     myBaseClass = null;  ///< The base class for this class
+        AccessType               myAccessType= AccessType.PRIVATE;
+        ScopeType                myScopeType = ScopeType.NONSTATIC;
+        List<VariableDefinition> myFields    = new List<VariableDefinition>();
+        List<FunctionDefinition> myFunctions = new List<FunctionDefinition>();
         
         // ===================================================================
         // PROPERTIES
@@ -40,25 +40,47 @@ namespace iCanScript.Editor.CodeEngineering {
             myBaseClass = baseClass;
             myAccessType= accessType;
             myScopeType = scopeType;
-            // Search for child constructors
+            // Add fields
+            AddChildConstructorsAsFields();
+            // Add functions
+            AddChildFunctions();
+        }
+        
+        // -------------------------------------------------------------------
+        /// Searches for child constrcutors and adds them to class definition.
+        void AddChildConstructorsAsFields() {
             var constructors= myClassNode.FilterChildRecursive(c=> c.IsConstructor);
             foreach(var c in constructors) {
                 AccessType fieldAccess= AccessType.PRIVATE;
                 if(c.ParentId == 0) {
                     fieldAccess= AccessType.PUBLIC;
                 }
-                var field= new FieldDefinition(c, fieldAccess, ScopeType.NONSTATIC);
+                var field= new VariableDefinition(c, fieldAccess, ScopeType.NONSTATIC);
                 AddFieldDefinition(field);
-            }
+            }            
         }
-        
+
+        // -------------------------------------------------------------------
+        /// Searches for child functions and adds them to class definition.
+        void AddChildFunctions() {
+    		myClassNode.ForEachChildNode(
+    			n=> {
+    				if(n.IsMessage || n.IsPublicFunction) {
+                        var functionDefinition= new FunctionDefinition(n, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                        AddFunctionDefinition(functionDefinition);
+    				}
+    			}
+    		);            
+        }
+
         // -------------------------------------------------------------------
         /// Adds a field definition to the class.
         ///
         /// @param vsObj VS object that represents the field.
         ///
-        public void AddFieldDefinition(FieldDefinition field) {
+        public void AddFieldDefinition(VariableDefinition field) {
             myFields.Add(field);
+            field.Parent= this;
         }
         
         // -------------------------------------------------------------------
@@ -66,8 +88,9 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @param functionNode VS node that represents the function definition.
         ///
-        public void AddFunctionDefinition(iCS_EditorObject functinNode) {
+        public void AddFunctionDefinition(FunctionDefinition functinNode) {
             myFunctions.Add(functinNode);
+            functinNode.Parent= this;
         }
 
         // ===================================================================
@@ -124,22 +147,14 @@ namespace iCanScript.Editor.CodeEngineering {
             var result= new StringBuilder(1024);
             // Fields
             foreach(var f in myFields) {
-                result.Append(f.GenerateField(indentSize));
+                result.Append(f.GenerateCode(indentSize));
             }
             // Functions
             foreach(var f in myFunctions) {
-                result.Append(GenerateFunction(indentSize, f));
+                result.Append(f.GenerateCode(indentSize));
             }
             return result.ToString();
         }
 
-
-        // -------------------------------------------------------------------
-        string GenerateFunction(int indentSize, iCS_EditorObject function) {
-            var result= new StringBuilder(1024);
-            return result.ToString();            
-        }
-        
-        
     }
 }
