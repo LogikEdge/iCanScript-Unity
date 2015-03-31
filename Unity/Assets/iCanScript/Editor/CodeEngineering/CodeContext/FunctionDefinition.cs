@@ -69,16 +69,16 @@ namespace iCanScript.Editor.CodeEngineering {
     				var i= p.PortIndex;
     				if(i < (int)iCS_PortIndex.ParametersEnd) {
     					paramTypes[i]= ToTypeName(p.RuntimeType);
-    					paramNames[i]= ToFunctionParameterName(p);
+    					paramNames[i]= GetFunctionParameterName(p);
     				}
     			}
     		);
             string functionName;
             if(myAccessType == AccessType.PUBLIC) {
-                functionName= ToPublicFunctionName(myFunctionNode);
+                functionName= GetPublicFunctionName(myFunctionNode);
             }
             else {
-                functionName= ToPrivateFunctionName(myFunctionNode);
+                functionName= GetPrivateFunctionName(myFunctionNode);
             }
     		result.Append(
                 GenerateFunction(indentSize,
@@ -247,7 +247,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @todo   Support properties.
         ///
         public string GenerateFunctionCall(int indentSize, iCS_EditorObject node) {
-            var indent= CSharpGenerator.ToIndent(indentSize);
+            var indent= ToIndent(indentSize);
             var result= new StringBuilder(indent, 128);
             // Simplified situation for property get.
             var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
@@ -258,7 +258,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, node));
                 // Generate function call.
-                result.Append(CSharpGenerator.ToPropertyName(functionName));
+                result.Append(ToPropertyName(node));
                 result.Append(";\n");
                 return result.ToString();
             }
@@ -271,7 +271,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(p.IsInputPort) {
                     var producer= p.FirstProducerPort;
                     if(producer != null && producer != p) {
-                        paramStrings[p.PortIndex]= ToLocalVariableName(producer);
+                        paramStrings[p.PortIndex]= GetLocalVariableName(producer);
                     }
                     else {
                         var v= p.InitialValue;
@@ -280,14 +280,14 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
                 else {
                     outputParams.Add(p);
-                    paramStrings[p.PortIndex]= "out "+ToLocalVariableName(p);
+                    paramStrings[p.PortIndex]= "out "+GetLocalVariableName(p);
                 }
             }
             // Special case for property set.
             if(IsPropertySet(memberInfo)) {
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, node));
-                result.Append(CSharpGenerator.ToPropertyName(functionName));
+                result.Append(ToPropertyName(node));
                 result.Append("= ");
                 result.Append(paramStrings[0]);
             }
@@ -300,9 +300,24 @@ namespace iCanScript.Editor.CodeEngineering {
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, node));
                 // Declare function call.
-                result.Append(CSharpGenerator.GenerateFunctionCall(indentSize, functionName, paramStrings));            
+                result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));            
             }
             result.Append(";\n");
+            return result.ToString();
+        }
+        // -------------------------------------------------------------------
+        public static string GenerateFunctionCall(int indentSize, string functionName, string[] paramValues) {
+            StringBuilder result= new StringBuilder();
+            result.Append(functionName);
+            result.Append("(");
+            var len= paramValues.Length;
+            for(int i= 0; i < len; ++i) {
+                result.Append(paramValues[i]);
+                if(i+1 < len) {
+                    result.Append(", ");                    
+                }
+            }
+            result.Append(")");
             return result.ToString();
         }
     	// -------------------------------------------------------------------------
@@ -364,7 +379,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Build return variable for the given node.
             var result= new StringBuilder(32);
             result.Append("var ");
-            result.Append(ToLocalVariableName(returnPort));
+            result.Append(GetLocalVariableName(returnPort));
             result.Append("= ");
             return result.ToString();
         }
@@ -383,7 +398,7 @@ namespace iCanScript.Editor.CodeEngineering {
             foreach(var p in outputParams) {
                 result.Append(CSharpGenerator.ToTypeName(p.RuntimeType));
                 result.Append(" ");
-                result.Append(ToLocalVariableName(p));
+                result.Append(GetLocalVariableName(p));
                 result.Append(";\n");
                 result.Append(ToIndent(indentSize));
             }
@@ -432,7 +447,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var result= new StringBuilder(32);
             for(; i < len; ++i) {
                 --indentSize;
-                result.Append(CSharpGenerator.ToIndent(indentSize));
+                result.Append(ToIndent(indentSize));
                 result.Append("}\n");
                 // Consume the multiple conditions ored together.
                 while(i != len-1) {

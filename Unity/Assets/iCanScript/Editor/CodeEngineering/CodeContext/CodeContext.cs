@@ -165,7 +165,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public string ToClassName(iCS_EditorObject vsObject) {
+        public string GetClassName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             return MakeNameUnique(iCS_ObjectNames.ToTypeName(vsObject.CodeName), vsObject);
@@ -176,7 +176,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public string ToPublicFieldName(iCS_EditorObject vsObject) {
+        public string GetPublicFieldName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
@@ -188,7 +188,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public string ToPrivateFieldName(iCS_EditorObject vsObject) {
+        public string GetPrivateFieldName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
@@ -200,7 +200,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public string ToPublicStaticFieldName(iCS_EditorObject vsObject) {
+        public string GetPublicStaticFieldName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
@@ -212,7 +212,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public string ToPrivateStaticFieldName(iCS_EditorObject vsObject) {
+        public string GetPrivateStaticFieldName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
@@ -224,7 +224,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public string ToFunctionParameterName(iCS_EditorObject vsObject) {
+        public string GetFunctionParameterName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= iCS_ObjectNames.ToFunctionParameterName(vsObject.CodeName);
@@ -236,7 +236,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public string ToPublicFunctionName(iCS_EditorObject vsObject) {
+        public string GetPublicFunctionName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             return MakeNameUnique(iCS_ObjectNames.ToPublicFunctionName(vsObject.CodeName), vsObject);
@@ -247,7 +247,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public string ToPrivateFunctionName(iCS_EditorObject vsObject) {
+        public string GetPrivateFunctionName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             return MakeNameUnique(iCS_ObjectNames.ToPrivateFunctionName(vsObject.CodeName), vsObject);
@@ -258,13 +258,22 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramObject Visual Script object for whom to generate the name.
         /// @return The converted name.
         ///
-        public string ToLocalVariableName(iCS_EditorObject vsObject) {
+        public string GetLocalVariableName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
             return MakeNameUnique(iCS_ObjectNames.ToLocalVariableName(name), vsObject);
         }
-
+        // ---------------------------------------------------------------------------------
+        /// Convert the given VS object to a property name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public string ToPropertyName(iCS_EditorObject vsObject) {
+            return vsObject.MethodName.Substring(4);
+        }
+        
         // =========================================================================
         // UNIQUE NAME MANAGEMENT
         // -----------------------------------------------------------------------

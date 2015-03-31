@@ -103,7 +103,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public string GenerateCode(int indentSize) {
             // Determine class properties.
-            var className= ToClassName(myClassNode);
+            var className= GetClassName(myClassNode);
             
             // Generate the class outline code.
             var indent= ToIndent(indentSize);
