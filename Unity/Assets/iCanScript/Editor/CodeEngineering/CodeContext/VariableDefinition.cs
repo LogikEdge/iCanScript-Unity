@@ -57,10 +57,10 @@ namespace iCanScript.Editor.CodeEngineering {
                 var initializer= GenerateAllocatorFragment(fieldType, initValues);
                 string variableName;
                 if(myAccessType == AccessType.PUBLIC) {
-                    variableName= GetPublicFieldName(myFieldObject);
+                    variableName= Parent.GetPublicFieldName(myFieldObject);
                 }
                 else {
-                    variableName= GetPrivateFieldName(myFieldObject);
+                    variableName= Parent.GetPrivateFieldName(myFieldObject);
                 }
     			result.Append(GenerateVariable(indentSize, myAccessType, myScopeType, fieldType, variableName, initializer));                    
             }

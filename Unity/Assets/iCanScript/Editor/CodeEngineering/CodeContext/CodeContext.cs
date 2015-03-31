@@ -72,7 +72,11 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public string GetNameFor(iCS_EditorObject vsObj) {
             var name= TryGetNameFor(vsObj);
-            return name ?? vsObj.CodeName;
+            if(name == null) {
+                Debug.Log("Unable to find name for=> "+vsObj.FullName);
+                return vsObj.CodeName;
+            }
+            return name;
         }
 
     	// -------------------------------------------------------------------------
@@ -261,7 +265,8 @@ namespace iCanScript.Editor.CodeEngineering {
         public string GetLocalVariableName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
-            name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
+            bool isConstructor= vsObject.IsConstructor;
+            name= isConstructor ? vsObject.DisplayName : vsObject.CodeName;
             return MakeNameUnique(iCS_ObjectNames.ToLocalVariableName(name), vsObject);
         }
         // ---------------------------------------------------------------------------------
@@ -288,6 +293,13 @@ namespace iCanScript.Editor.CodeEngineering {
                 name= name+"_"+vsObject.InstanceId;
             }
             myLocalNames.Add(vsObject, name);
+            // Special case for constructor output.
+            if(vsObject.IsConstructor) {
+                var returnPort= GetReturnPort(vsObject);
+                if(returnPort != null) {
+                    myLocalNames.Add(returnPort, name);
+                }
+            }
             return name;
         }
         // -----------------------------------------------------------------------
@@ -387,6 +399,25 @@ namespace iCanScript.Editor.CodeEngineering {
     			}
     		);
             return nbParams;        
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the function return port.
+        ///
+        /// @param node The node in which to search for a return port.
+        ///
+        /// @return _'null'_ is return if no return port is found.
+        ///
+        public static iCS_EditorObject GetReturnPort(iCS_EditorObject node) {
+            iCS_EditorObject result= null;
+            node.ForEachChildPort(
+                p=> {
+                    if(p.PortIndex == (int)iCS_PortIndex.Return) {
+                        result= p;
+                    }
+                }
+            );
+            return result;
         }
         
     }

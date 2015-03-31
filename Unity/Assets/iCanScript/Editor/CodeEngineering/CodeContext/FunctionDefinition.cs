@@ -68,8 +68,11 @@ namespace iCanScript.Editor.CodeEngineering {
     			p=> {
     				var i= p.PortIndex;
     				if(i < (int)iCS_PortIndex.ParametersEnd) {
-    					paramTypes[i]= ToTypeName(p.RuntimeType);
     					paramNames[i]= GetFunctionParameterName(p);
+    					paramTypes[i]= ToTypeName(p.RuntimeType);
+                        if(p.IsOutputPort) {
+                            paramTypes[i]= "out "+paramTypes[i];
+                        }
     				}
     			}
     		);
@@ -269,9 +272,9 @@ namespace iCanScript.Editor.CodeEngineering {
             var outputParams= new List<iCS_EditorObject>();
             foreach(var p in parameters) {
                 if(p.IsInputPort) {
-                    var producer= p.FirstProducerPort;
-                    if(producer != null && producer != p) {
-                        paramStrings[p.PortIndex]= GetLocalVariableName(producer);
+                    var producerPort= p.FirstProducerPort;
+                    if(producerPort != null && producerPort != p) {
+                        paramStrings[p.PortIndex]= GetNameFor(producerPort);
                     }
                     else {
                         var v= p.InitialValue;
@@ -502,24 +505,6 @@ namespace iCanScript.Editor.CodeEngineering {
 
         // =========================================================================
         // Utilities
-    	// -------------------------------------------------------------------------
-        /// Returns the function return port.
-        ///
-        /// @param node The node in which to search for a return port.
-        ///
-        /// @return _'null'_ is return if no return port is found.
-        ///
-        static iCS_EditorObject GetReturnPort(iCS_EditorObject node) {
-            iCS_EditorObject result= null;
-            node.ForEachChildPort(
-                p=> {
-                    if(p.PortIndex == (int)iCS_PortIndex.Return) {
-                        result= p;
-                    }
-                }
-            );
-            return result;
-        }
     	// -------------------------------------------------------------------------
         /// Returns the input port representing the _'self'_ connection.
         ///

@@ -7,7 +7,7 @@ namespace iCanScript.Engine.GeneratedCode {
         private  Float p_score=  new Float(0);
         [iCS_InOutPort]
         public  Bool myIsGameOver=  new Bool(false);
-        private  Light p_variable=  new Light();
+        private  Light p_lightTemplate=  new Light();
 
         [iCS_Function]
         public  void Update() {
@@ -31,7 +31,7 @@ namespace iCanScript.Engine.GeneratedCode {
                     var theOutput_27= iCS_Variables.String_25("Greater");
                 }
             }
-            MonoBehaviour.Print_33(theOutput_38);
+            MonoBehaviour.Print_33(Output);
             var theOutput_47= iCS_Variables.String_45("Condition is: ");
             var theOutput_44= string.Concat(theOutput_47, theOutput_27);
             if(theIsGreater || theIsEqual) {
@@ -40,8 +40,8 @@ namespace iCanScript.Engine.GeneratedCode {
         }
 
         [iCS_Function]
-        public  void BuildLight(Color aColor, float anIntensity, float aRange, Light aSelf) {
-            var theOutput= Object.Instantiate(theThis);
+        public  void BuildLight(Color aColor, float anIntensity, float aRange, out Light aSelf) {
+            var theOutput= Object.Instantiate(p_lightTemplate);
             theOutput.color= aColor;
             theOutput.intensity= anIntensity;
             theOutput.range= aRange;
