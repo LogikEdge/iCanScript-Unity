@@ -1,13 +1,8 @@
 ﻿using UnityEngine;
-using System;
-using System.Text;
-using System.Collections;
-using System.Collections.Generic;
-using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class CodeGenerator {
+    public class CodeGenerator {    ///< @reviewed 2015-03-31
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
