@@ -5,9 +5,9 @@ namespace iCanScript.Engine.GeneratedCode {
     [iCS_Class(Library="Visual Scripts")]
     public class DirectionalLight : MonoBehaviour {
         private  Float p_score=  new Float(0);
-        private  Light p_variable=  new Light();
         [iCS_InOutPort]
         public  Bool myIsGameOver=  new Bool(false);
+        private  Light p_variable=  new Light();
 
         [iCS_Function]
         public  void Update() {
@@ -21,25 +21,29 @@ namespace iCanScript.Engine.GeneratedCode {
             bool theIsGreaterOrEqual;
             var theIsEqual= iCS_Conditions.Compare(aValue, aBias, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
             if(theIsSmaller) {
-                var theOutput= iCS_Variables._string("Smaller");
+                var theOutput= iCS_Variables.String("Smaller");
                 if(trigger) {
-                    MonoBehaviour.print(theOutput);
+                    MonoBehaviour.Print(theOutput);
                 }
             }
             if(theIsGreater || theIsEqual) {
                 if(theIsGreaterOrEqual) {
-                    var theOutput_27= iCS_Variables._string("Greater");
+                    var theOutput_27= iCS_Variables.String_25("Greater");
                 }
             }
-            MonoBehaviour.print(theOutput_38);
-            var theOutput_47= iCS_Variables._string("Condition is: ");
+            MonoBehaviour.Print_33(theOutput_38);
+            var theOutput_47= iCS_Variables.String_45("Condition is: ");
             var theOutput_44= string.Concat(theOutput_47, theOutput_27);
             if(theIsGreater || theIsEqual) {
-                MonoBehaviour.print(theOutput_44);
+                MonoBehaviour.Print_20(theOutput_44);
             }
-            Light.color= theSetColor;
-            Light.intensity= theSetIntensity;
-            Light.range= theSetRange;
+        }
+
+        [iCS_Function]
+        public  void BuildLight(Color aColor, float anIntensity, float aRange) {
+            Light.color= aColor;
+            Light.intensity= anIntensity;
+            Light.range= aRange;
         }
     }
 
