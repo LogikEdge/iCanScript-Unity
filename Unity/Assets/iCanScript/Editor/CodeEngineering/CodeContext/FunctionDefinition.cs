@@ -164,6 +164,15 @@ namespace iCanScript.Editor.CodeEngineering {
     	// -------------------------------------------------------------------------
         public string GenerateFunctionBody(int indentSize, iCS_EditorObject node) {
             var result= new StringBuilder(512);
+			// %%%%%%%%% BEGIN TEST
+			foreach(var c in myExecutionList) {
+				result.Append(c.GenerateCode(indentSize));
+			}
+			// %%%%%%%%% END TEST
+
+			
+			
+			
     		var functionNodes= GetFunctionBodyParts(node);
     		functionNodes= SortDependencies(functionNodes);
             var conditionalContexts= GetConditionalContexts(functionNodes);
