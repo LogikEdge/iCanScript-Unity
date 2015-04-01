@@ -178,7 +178,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(v2 == Vector2.one)   return "Vector2.one";
                 if(v2 == Vector2.up)    return "Vector2.up";
                 if(v2 == Vector2.right) return "Vector2.right";
-                return "new Vector2"+obj.ToString();
+                return "new Vector2("+v2.x+"f, "+v2.y+"f)";
             }
             if(obj is Vector3) {
                 Vector3 v3= (Vector3)obj;
@@ -190,13 +190,13 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(v3 == Vector3.back)    return "Vector3.back";
                 if(v3 == Vector3.down)    return "Vector3.down";
                 if(v3 == Vector3.forward) return "Vector3.forward";
-                return "new Vector3"+obj.ToString();
+                return "new Vector3("+v3.x+"f, "+v3.y+"f, "+v3.z+"f)";
             }
             if(obj is Vector4) {
                 Vector4 v4= (Vector4)obj;
                 if(v4 == Vector4.zero)    return "Vector4.zero";
                 if(v4 == Vector4.one)     return "Vector4.one";
-                return "new Vector4"+obj.ToString();                
+                return "new Vector4("+v4.x+"f, "+v4.y+"f, "+v4.z+"f, "+v4.w+"f)";                
             }
             if(objType.IsEnum) {
                 return ToTypeName(obj.GetType())+"."+obj.ToString();

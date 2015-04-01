@@ -8,7 +8,7 @@ namespace iCanScript.Engine.GeneratedCode {
         // PRIVATE FIELDS
         // -------------------------------------------------------------------------
         private  iCS_ImpulseForceGenerator p_jumpConfig=  new iCS_ImpulseForceGenerator(null, null, null, null, null, null);
-        private  iCS_DesiredVelocityForceGenerator p_roamingConfig=  new iCS_DesiredVelocityForceGenerator(null, null, new Vector3(1.0, 0.0, 1.0));
+        private  iCS_DesiredVelocityForceGenerator p_roamingConfig=  new iCS_DesiredVelocityForceGenerator(null, null, new Vector3(1f, 0f, 1f));
         private  iCS_ForceIntegrator p_forceIntegrator=  new iCS_ForceIntegrator(null, 1f, 0.995f);
 
 
