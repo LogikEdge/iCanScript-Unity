@@ -169,6 +169,35 @@ namespace iCanScript.Editor.CodeEngineering {
             if(obj is char) {
                 return "\'"+obj.ToString()+"\'";
             }
+            if(obj is float) {
+                return obj.ToString()+"f";
+            }
+            if(obj is Vector2) {
+                Vector2 v2= (Vector2)obj;
+                if(v2 == Vector2.zero)  return "Vector2.zero";
+                if(v2 == Vector2.one)   return "Vector2.one";
+                if(v2 == Vector2.up)    return "Vector2.up";
+                if(v2 == Vector2.right) return "Vector2.right";
+                return "new Vector2"+obj.ToString();
+            }
+            if(obj is Vector3) {
+                Vector3 v3= (Vector3)obj;
+                if(v3 == Vector3.zero)    return "Vector3.zero";
+                if(v3 == Vector3.one)     return "Vector3.one";
+                if(v3 == Vector3.up)      return "Vector3.up";
+                if(v3 == Vector3.right)   return "Vector3.right";
+                if(v3 == Vector3.left)    return "Vector3.left";
+                if(v3 == Vector3.back)    return "Vector3.back";
+                if(v3 == Vector3.down)    return "Vector3.down";
+                if(v3 == Vector3.forward) return "Vector3.forward";
+                return "new Vector3"+obj.ToString();
+            }
+            if(obj is Vector4) {
+                Vector4 v4= (Vector4)obj;
+                if(v4 == Vector4.zero)    return "Vector4.zero";
+                if(v4 == Vector4.one)     return "Vector4.one";
+                return "new Vector4"+obj.ToString();                
+            }
             if(objType.IsEnum) {
                 return ToTypeName(obj.GetType())+"."+obj.ToString();
             }

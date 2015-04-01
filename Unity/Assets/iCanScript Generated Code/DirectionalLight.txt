@@ -13,7 +13,7 @@ namespace iCanScript.Engine.GeneratedCode {
         // =========================================================================
         // PRIVATE FIELDS
         // -------------------------------------------------------------------------
-        private  Float p_score=  new Float(0);
+        private  Float p_score=  new Float(0f);
         private  Light p_lightTemplate=  new Light();
 
 
@@ -33,9 +33,9 @@ namespace iCanScript.Engine.GeneratedCode {
             bool theIsGreaterOrEqual;
             var theIsEqual= iCS_Conditions.Compare(aValue, aBias, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
             if(theIsSmaller) {
-                var theOutput= iCS_Variables.String("Smaller");
+                var theMyOutputString= iCS_Variables.String("Smaller");
                 if(trigger) {
-                    MonoBehaviour.Print(theOutput);
+                    MonoBehaviour.Print(theMyOutputString);
                 }
             }
             if(theIsGreater || theIsEqual) {
