@@ -25,15 +25,21 @@ namespace iCanScript.Editor.CodeEngineering {
             myEnablePorts= enables;
         }
 
+        // ===================================================================
+        // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
         /// Adds an execution child.
         ///
         /// @param child The execution child to add.
         ///
-        public void AddExecutable(CodeContext child) {
+        public override void AddExecutable(CodeContext child) {
             myExecutionList.Add(child);
             child.Parent= this;
         }
+        // -------------------------------------------------------------------
+        public override void AddVariable(VariableDefinition variableDefinition) { Debug.LogWarning("iCanScript: Trying to add a variable defintion to an if-statement definition."); }
+        public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to an if-statement definition."); }
+        public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to an if-statement definition."); }
         
         // ===================================================================
         // CODE GENERATION FUNCTIONS

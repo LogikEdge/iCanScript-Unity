@@ -11,10 +11,11 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        iCS_EditorObject  myFunctionNode = null;  ///< VS objects associated with code context
-        AccessType        myAccessType   = AccessType.PRIVATE;
-        ScopeType         myScopeType    = ScopeType.NONSTATIC;
-        List<CodeContext> myExecutionList= new List<CodeContext>();
+        iCS_EditorObject         myFunctionNode = null;  ///< VS objects associated with code context
+        AccessType               myAccessType   = AccessType.PRIVATE;
+        ScopeType                myScopeType    = ScopeType.NONSTATIC;
+        List<CodeContext>        myExecutionList= new List<CodeContext>();
+        List<VariableDefinition> myVariables    = new List<VariableDefinition>();
         
         // ===================================================================
         // PROPERTIES
@@ -43,6 +44,35 @@ namespace iCanScript.Editor.CodeEngineering {
             // Build execution list.
 			BuildExecutionList(functionNodes);
         }
+
+        // ===================================================================
+        // COMMON INTERFACE FUNCTIONS
+        // -------------------------------------------------------------------
+		/// Adds an executable child code context.
+		///
+		/// @param executable The child code context to add.
+		///
+		public override void AddExecutable(CodeContext executable) {
+			myExecutionList.Add(executable);
+			executable.Parent= this;
+		} 
+        // -------------------------------------------------------------------
+        /// Adds a local variable to the top-level context of the function.
+        ///
+        /// @param variableDefinition The local variable to add.
+        ///
+        public override void AddVariable(VariableDefinition variableDefinition) {
+            myVariables.Add(variableDefinition);
+            variableDefinition.Parent= this;
+        }
+        // -------------------------------------------------------------------
+        public override void AddType(TypeDefinition typeDefinition) {
+            Debug.LogWarning("iCanScript: Adding a type definition to function is currently not supported.");
+        }
+        public override void AddFunction(FunctionDefinition functionDefinition) {
+            Debug.LogWarning("iCanScript: Adding a nested function definition inside a function is currently not supported.");
+        }
+
         // -------------------------------------------------------------------
 		void BuildExecutionList(iCS_EditorObject[] functions) {
 			IfStatementDefinition currentIfStatement= null;
@@ -94,16 +124,6 @@ namespace iCanScript.Editor.CodeEngineering {
 			}
 		}
 
-        // -------------------------------------------------------------------
-		/// Adds an executable child code context.
-		///
-		/// @param executable The child code context to add.
-		///
-		void AddExecutable(CodeContext executable) {
-			myExecutionList.Add(executable);
-			executable.Parent= this;
-		} 
-		
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------

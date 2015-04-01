@@ -45,11 +45,11 @@ namespace iCanScript.Editor.CodeEngineering {
             myCodeRoot.AddUsingDirective("UnityEngine");
             
             // Add root class defintion.
-            var classDefinition= new ClassDefinition(iStorage.EditorObjects[0],
-                                                     typeof(MonoBehaviour),
-                                                     CodeContext.AccessType.PUBLIC,
-                                                     CodeContext.ScopeType.NONSTATIC);
-            myCodeRoot.AddClassDefinition(classDefinition);
+            var classDefinition= new TypeDefinition(iStorage.EditorObjects[0],
+                                                    typeof(MonoBehaviour),
+                                                    CodeContext.AccessType.PUBLIC,
+                                                    CodeContext.ScopeType.NONSTATIC);
+            myCodeRoot.AddType(classDefinition);
         }
 
         // ===================================================================

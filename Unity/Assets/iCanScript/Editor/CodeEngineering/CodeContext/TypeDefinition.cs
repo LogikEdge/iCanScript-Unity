@@ -7,7 +7,7 @@ using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class ClassDefinition : CodeContext {
+    public class TypeDefinition : CodeContext {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -34,8 +34,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created class definition.
         ///
-        public ClassDefinition(iCS_EditorObject classNode, Type baseClass,
-                               AccessType accessType, ScopeType scopeType)
+        public TypeDefinition(iCS_EditorObject classNode, Type baseClass,
+                              AccessType accessType, ScopeType scopeType)
         : base(CodeType.CLASS) {
             myClassNode = classNode;
             myBaseClass = baseClass;
@@ -47,6 +47,30 @@ namespace iCanScript.Editor.CodeEngineering {
             AddChildFunctions();
         }
         
+        // ===================================================================
+        // COMMON INTERFACE FUNCTIONS
+        // -------------------------------------------------------------------
+        /// Adds a field definition to the class.
+        ///
+        /// @param vsObj VS object that represents the field.
+        ///
+        public override void AddVariable(VariableDefinition field) {
+            myFields.Add(field);
+            field.Parent= this;
+        }
+        // -------------------------------------------------------------------
+        /// Adds a function definition to the class.
+        ///
+        /// @param functionDefinition VS node that represents the function definition.
+        ///
+        public override void AddFunction(FunctionDefinition functionDefinition) {
+            myFunctions.Add(functionDefinition);
+            functionDefinition.Parent= this;
+        }        
+        // -------------------------------------------------------------------
+        public override void AddExecutable(CodeContext executableDefinition)    { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a type definition."); }
+        public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to a type definition."); }
+
         // -------------------------------------------------------------------
         /// Searches for child constrcutors and adds them to class definition.
         void AddChildConstructorsAsFields() {
@@ -57,7 +81,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     fieldAccess= AccessType.PUBLIC;
                 }
                 var field= new VariableDefinition(c, fieldAccess, ScopeType.NONSTATIC);
-                AddFieldDefinition(field);
+                AddVariable(field);
             }            
         }
 
@@ -68,30 +92,10 @@ namespace iCanScript.Editor.CodeEngineering {
     			n=> {
     				if(n.IsMessage || n.IsPublicFunction) {
                         var functionDefinition= new FunctionDefinition(n, AccessType.PUBLIC, ScopeType.NONSTATIC);
-                        AddFunctionDefinition(functionDefinition);
+                        AddFunction(functionDefinition);
     				}
     			}
     		);            
-        }
-
-        // -------------------------------------------------------------------
-        /// Adds a field definition to the class.
-        ///
-        /// @param vsObj VS object that represents the field.
-        ///
-        public void AddFieldDefinition(VariableDefinition field) {
-            myFields.Add(field);
-            field.Parent= this;
-        }
-        
-        // -------------------------------------------------------------------
-        /// Adds a function definition to the class.
-        ///
-        /// @param functionNode VS node that represents the function definition.
-        ///
-        public void AddFunctionDefinition(FunctionDefinition functinNode) {
-            myFunctions.Add(functinNode);
-            functinNode.Parent= this;
         }
 
         // ===================================================================

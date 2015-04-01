@@ -14,7 +14,7 @@ namespace iCanScript.Engine.GeneratedCode {
         // PRIVATE FIELDS
         // -------------------------------------------------------------------------
         private  Float p_score=  new Float(0);
-        private  Light p_variable=  new Light();
+        private  Light p_lightTemplate=  new Light();
 
 
         // =========================================================================
@@ -53,7 +53,7 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void BuildLight(Color aColor, float anIntensity, float aRange, out Light aSelf) {
-            var theOutput= Object.Instantiate(p_variable);
+            var theOutput= Object.Instantiate(p_lightTemplate);
             theOutput.color= aColor;
             theOutput.intensity= anIntensity;
             theOutput.range= aRange;

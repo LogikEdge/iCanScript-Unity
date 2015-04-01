@@ -18,15 +18,22 @@ namespace iCanScript.Editor.CodeEngineering {
             IF, FUNCTION_CALL
         };
     
+        // ===================================================================
+        // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
+        public abstract void   AddVariable(VariableDefinition variableDefinition);
+        public abstract void   AddExecutable(CodeContext executableDefinition);
+        public abstract void   AddType(TypeDefinition typeDefinition);
+        public abstract void   AddFunction(FunctionDefinition functionDefinition);
+        public abstract string GenerateCode(int indentSize);
         public delegate string CodeProducer(int indent);
 
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        CodeContext                             myParent    = null;            ///< The parnt code context
-        CodeType                                myCodeType  = CodeType.GLOBAL; ///< Type of this code context
-        Dictionary<iCS_EditorObject, string>    myLocalNames= new Dictionary<iCS_EditorObject, string>();
+        CodeContext                          myParent    = null;            ///< The parnt code context
+        CodeType                             myCodeType  = CodeType.GLOBAL; ///< Type of this code context
+        Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
         
         // ===================================================================
         // PROPERTIES
@@ -54,7 +61,6 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
-        public abstract string GenerateCode(int indentSize);
         
         // =========================================================================
         // CONVERSION UTILITIES

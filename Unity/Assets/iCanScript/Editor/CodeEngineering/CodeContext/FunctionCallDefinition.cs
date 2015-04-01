@@ -29,6 +29,14 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         
         // ===================================================================
+        // COMMON INTERFACE FUNCTIONS
+        // -------------------------------------------------------------------
+        public override void AddVariable(VariableDefinition variableDefinition) { Debug.LogWarning("iCanScript: Trying to add a variable defintion to a function call definition."); }
+        public override void AddExecutable(CodeContext executableDefinition)    { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a function call definition."); }
+        public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to a function call definition."); }
+        public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to a function call definition."); }
+
+        // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
         public override string GenerateCode(int indentSize) {

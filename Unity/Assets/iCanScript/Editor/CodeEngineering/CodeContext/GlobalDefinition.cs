@@ -11,7 +11,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         string                myNamespace      = null;
         List<string>          myUsingDirectives= new List<string>();
-        List<ClassDefinition> myClasses        = new List<ClassDefinition>();
+        List<TypeDefinition>  myTypes          = new List<TypeDefinition>();
         
         // ===================================================================
         // PROPERTIES
@@ -30,15 +30,21 @@ namespace iCanScript.Editor.CodeEngineering {
         : base(CodeType.GLOBAL) {
         }
 
+        // ===================================================================
+        // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
         /// Adds a class definition to the global scope
         ///
-        /// @param classdefinition Class definition to add.
+        /// @param typeDefinition Type (class or struct) definition to add.
         ///
-        public void AddClassDefinition(ClassDefinition classDefinition) {
-            myClasses.Add(classDefinition);
-            classDefinition.Parent= this;
+        public override void AddType(TypeDefinition typeDefinition) {
+            myTypes.Add(typeDefinition);
+            typeDefinition.Parent= this;
         }
+        // -------------------------------------------------------------------
+        public override void AddVariable(VariableDefinition variableDefinition) { Debug.LogWarning("iCanScript: Trying to add a variable defintion to the global definition."); }
+        public override void AddExecutable(CodeContext executableDefinition)    { Debug.LogWarning("iCanScript: Trying to add a child executable definition to the global definition."); }
+        public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to a the global definition."); }
         
         // -------------------------------------------------------------------
         /// Adds a using directive to the file scope.
@@ -74,9 +80,9 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Generate for code for each class definition in the Visual Script.
         string GenerateClassDefinitions(int indentSize) {
             var result= new StringBuilder(1024);
-            foreach(var classDef in myClasses) {
+            foreach(var typeDef in myTypes) {
                 result.Append("\n");
-                result.Append(classDef.GenerateCode(indentSize));
+                result.Append(typeDef.GenerateCode(indentSize));
             }
             return result.ToString();
         }
