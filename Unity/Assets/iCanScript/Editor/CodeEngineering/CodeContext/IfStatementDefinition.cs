@@ -30,7 +30,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @param child The execution child to add.
         ///
-        public void AddExecutableChild(CodeContext child) {
+        public void AddExecutable(CodeContext child) {
             myExecutionList.Add(child);
             child.Parent= this;
         }

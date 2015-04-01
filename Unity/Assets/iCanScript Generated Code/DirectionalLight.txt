@@ -32,18 +32,6 @@ namespace iCanScript.Engine.GeneratedCode {
             bool theIsSmallerOrEqual;
             bool theIsGreaterOrEqual;
             var theIsEqual= iCS_Conditions.Compare(aValue, aBias, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
-            var theOutput= iCS_Variables.String("Smaller");
-            MonoBehaviour.Print(output);
-            var theOutput= iCS_Variables.String("Greater");
-            MonoBehaviour.Print(Output);
-            var theOutput= iCS_Variables.String("Condition is: ");
-            var theOutput= string.Concat(output, output);
-            MonoBehaviour.Print(output);
-            bool theIsSmaller;
-            bool theIsGreater;
-            bool theIsSmallerOrEqual;
-            bool theIsGreaterOrEqual;
-            var theIsEqual= iCS_Conditions.Compare(aValue, aBias, out theIsSmaller, out theIsGreater, out theIsSmallerOrEqual, out theIsGreaterOrEqual);
             if(theIsSmaller) {
                 var theOutput= iCS_Variables.String("Smaller");
                 if(trigger) {
@@ -52,23 +40,19 @@ namespace iCanScript.Engine.GeneratedCode {
             }
             if(theIsGreater || theIsEqual) {
                 if(theIsGreaterOrEqual) {
-                    var theOutput_27= iCS_Variables.String_25("Greater");
+                    var theOutput= iCS_Variables.String("Greater");
                 }
             }
-            MonoBehaviour.Print_33(Output);
-            var theOutput_47= iCS_Variables.String_45("Condition is: ");
-            var theOutput_44= string.Concat(theOutput_47, theOutput_27);
+            MonoBehaviour.Print(Output);
+            var theOutput= iCS_Variables.String("Condition is: ");
+            var theOutput_44= string.Concat(theOutput, output);
             if(theIsGreater || theIsEqual) {
-                MonoBehaviour.Print_20(theOutput_44);
+                MonoBehaviour.Print(theOutput_44);
             }
         }
 
         [iCS_Function]
         public  void BuildLight(Color aColor, float anIntensity, float aRange, out Light aSelf) {
-            var theOutput= Object.Instantiate(p_variable);
-            output.color= aColor;
-            output.intensity= anIntensity;
-            output.range= aRange;
             var theOutput= Object.Instantiate(p_variable);
             theOutput.color= aColor;
             theOutput.intensity= anIntensity;

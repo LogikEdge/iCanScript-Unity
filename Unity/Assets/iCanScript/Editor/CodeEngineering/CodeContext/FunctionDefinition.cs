@@ -36,30 +36,74 @@ namespace iCanScript.Editor.CodeEngineering {
             myAccessType  = accessType;
             myScopeType   = scopeType;
             
-            // Build list of function calls.
+            // Get list of function calls.
     		var functionNodes= GetFunctionBodyParts(node);
             // Rearrange execution order according to dependencies
     		functionNodes= SortDependencies(functionNodes);
-            // Determine the conditional context of each function call.
-            var conditionalContexts= GetConditionalContexts(functionNodes);
-            // Create function call and if statement defintions.
-            var len= functionNodes.Length;
-            iCS_EditorObject[] currentConditionalContext= new iCS_EditorObject[0];
-            for(int i= 0; i < len; ++i) {
-                var cond= conditionalContexts[i];
-                if(!IsSameConditionalContext(cond, currentConditionalContext)) {
-//                    myExecutionList.Add(new IfDefinition());
-//                    result.Append(GenerateEndConditionalFragment(ref indentSize, cond, currentConditionalContext));
-//                    result.Append(GenerateOpenConditionalFragment(ref indentSize, cond, currentConditionalContext));
-                    currentConditionalContext= cond;
-                }
-                var funcDef= new FunctionCallDefinition(functionNodes[i]);
-                myExecutionList.Add(funcDef);
-                funcDef.Parent= this;
-            }
-
+            // Build execution list.
+			BuildExecutionList(functionNodes);
         }
+        // -------------------------------------------------------------------
+		void BuildExecutionList(iCS_EditorObject[] functions) {
+			IfStatementDefinition currentIfStatement= null;
+			iCS_EditorObject[] currentEnables= new iCS_EditorObject[0];
+			var len= functions.Length;
+			for(int i= 0; i < len; ++i) {
+				var function= functions[i];
+				var functionEnables= GetEnablePortsRecursive(function);
+	            if(!IsSameConditionalContext(currentEnables, functionEnables)) {
+					var enableIdx= LengthOfSameEnables(currentEnables, functionEnables);
+					if(enableIdx < currentEnables.Length) {
+						// Terminate existing If-Statement(s)
+						var removeIdx= enableIdx;
+						while(removeIdx < currentEnables.Length) {
+							currentIfStatement= currentIfStatement.Parent as IfStatementDefinition;
+							do {
+								++removeIdx;								
+							} while(removeIdx < currentEnables.Length && currentEnables[removeIdx-1].ParentNode == currentEnables[removeIdx].ParentNode);
+						}
+					}
+					if(enableIdx < functionEnables.Length) {
+						// Add new If-Statement(s)
+						var addIdx= enableIdx;
+						while(addIdx < functionEnables.Length) {
+							var ifEnables= new List<iCS_EditorObject>();
+							do {
+								ifEnables.Add(functionEnables[addIdx]);
+								++addIdx;								
+							} while(addIdx < functionEnables.Length && functionEnables[addIdx-1].ParentNode == functionEnables[addIdx].ParentNode);
+							var newIfStatement= new IfStatementDefinition(ifEnables.ToArray());
+							if(currentIfStatement == null) {
+								AddExecutable(newIfStatement);
+							}
+							else {
+								currentIfStatement.AddExecutable(newIfStatement);
+							}
+							currentIfStatement= newIfStatement;
+						}
+					}
+					currentEnables= functionEnables;
+				}
+	            var funcDef= new FunctionCallDefinition(function);
+				if(currentIfStatement == null) {
+					AddExecutable(funcDef);
+				}
+				else {
+					currentIfStatement.AddExecutable(funcDef);
+				}				
+			}
+		}
 
+        // -------------------------------------------------------------------
+		/// Adds an executable child code context.
+		///
+		/// @param executable The child code context to add.
+		///
+		void AddExecutable(CodeContext executable) {
+			myExecutionList.Add(executable);
+			executable.Parent= this;
+		} 
+		
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
@@ -164,32 +208,9 @@ namespace iCanScript.Editor.CodeEngineering {
     	// -------------------------------------------------------------------------
         public string GenerateFunctionBody(int indentSize, iCS_EditorObject node) {
             var result= new StringBuilder(512);
-			// %%%%%%%%% BEGIN TEST
 			foreach(var c in myExecutionList) {
 				result.Append(c.GenerateCode(indentSize));
 			}
-			// %%%%%%%%% END TEST
-
-			
-			
-			
-    		var functionNodes= GetFunctionBodyParts(node);
-    		functionNodes= SortDependencies(functionNodes);
-            var conditionalContexts= GetConditionalContexts(functionNodes);
-            var len= functionNodes.Length;
-            iCS_EditorObject[] currentConditionalContext= new iCS_EditorObject[0];
-            for(int i= 0; i < len; ++i) {
-                var cond= conditionalContexts[i];
-                if(!IsSameConditionalContext(cond, currentConditionalContext)) {
-                    result.Append(GenerateEndConditionalFragment(ref indentSize, cond, currentConditionalContext));
-                    result.Append(GenerateOpenConditionalFragment(ref indentSize, cond, currentConditionalContext));
-                    currentConditionalContext= cond;
-                }
-                var fc= functionNodes[i];
-                result.Append(GenerateFunctionCall(indentSize, fc));
-            }
-            var closingConditionalContext= new iCS_EditorObject[0];
-            result.Append(GenerateEndConditionalFragment(ref indentSize, closingConditionalContext, currentConditionalContext));
             return result.ToString();
         }
 
@@ -269,177 +290,6 @@ namespace iCanScript.Editor.CodeEngineering {
         iCS_EditorObject[][] GetConditionalContexts(iCS_EditorObject[] funcCalls) {
             return P.map(fc=> GetEnablePortsRecursive(fc), funcCalls);
         }
-
-    	// -------------------------------------------------------------------------
-        /// Generate a function call to the given node.
-        ///
-        /// @param indentSize   Indent for the generated source code.
-        /// @param node The node representing the function to call.
-        ///
-        /// @return The source code fragment to call the given function.
-        ///
-        /// @todo   Assure that local variable created have a unique name.
-        /// @todo   Auto-create class variable for external link to objects.
-        /// @todo   Support properties.
-        ///
-        public string GenerateFunctionCall(int indentSize, iCS_EditorObject node) {
-            var indent= ToIndent(indentSize);
-            var result= new StringBuilder(indent, 128);
-            // Simplified situation for property get.
-            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(node);
-            var functionName= GetPublicFunctionName(node);
-            if(IsPropertyGet(memberInfo)) {
-                // Declare return variable.
-                result.Append(DeclareReturnVariable(node));
-                // Determine function prefix.
-                result.Append(FunctionCallPrefix(memberInfo, node));
-                // Generate function call.
-                result.Append(ToPropertyName(node));
-                result.Append(";\n");
-                return result.ToString();
-            }
-            // Determine parameters.
-            var parameters= GetParameters(node);
-            var pLen= parameters.Length;
-            var paramStrings= new string[pLen];
-            var outputParams= new List<iCS_EditorObject>();
-            foreach(var p in parameters) {
-                if(p.IsInputPort) {
-                    var producerPort= p.FirstProducerPort;
-                    if(producerPort != null && producerPort != p) {
-                        paramStrings[p.PortIndex]= GetNameFor(producerPort);
-                    }
-                    else {
-                        var v= p.InitialValue;
-                        paramStrings[p.PortIndex]= ToValueString(v);
-                    }
-                }
-                else {
-                    outputParams.Add(p);
-                    paramStrings[p.PortIndex]= "out "+GetLocalVariableName(p);
-                }
-            }
-            // Special case for property set.
-            if(IsPropertySet(memberInfo)) {
-                // Determine function prefix.
-                result.Append(FunctionCallPrefix(memberInfo, node));
-                result.Append(ToPropertyName(node));
-                result.Append("= ");
-                result.Append(paramStrings[0]);
-            }
-            // Generate function call.        
-            else {
-                // Declare the output parameters.
-                result.Append(DeclarelocalVariablesForOutputParameters(indentSize, outputParams));
-                // Declare return variable.
-                result.Append(DeclareReturnVariable(node));
-                // Determine function prefix.
-                result.Append(FunctionCallPrefix(memberInfo, node));
-                // Declare function call.
-                result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));            
-            }
-            result.Append(";\n");
-            return result.ToString();
-        }
-        // -------------------------------------------------------------------
-        public static string GenerateFunctionCall(int indentSize, string functionName, string[] paramValues) {
-            StringBuilder result= new StringBuilder();
-            result.Append(functionName);
-            result.Append("(");
-            var len= paramValues.Length;
-            for(int i= 0; i < len; ++i) {
-                result.Append(paramValues[i]);
-                if(i+1 < len) {
-                    result.Append(", ");                    
-                }
-            }
-            result.Append(")");
-            return result.ToString();
-        }
-    	// -------------------------------------------------------------------------
-        /// Generates the function call prefix code fragment.
-        ///
-        /// @param memberInfo The member information of the function to call.
-        /// @param node Visual script function call node.
-        /// @return The code fragment to prepend to the function call.
-        ///
-        string FunctionCallPrefix(iCS_MemberInfo memberInfo, iCS_EditorObject node) {
-            var result= new StringBuilder(32);
-            if(memberInfo != null && memberInfo.IsClassFunctionBase) {
-                result.Append(ToTypeName(node.RuntimeType));
-                result.Append(".");
-            }
-            else {
-                var thisPort= GetThisPort(node);
-                if(thisPort != null) {
-                    var producerPort= thisPort.FirstProducerPort;
-                    if(producerPort != null && producerPort != thisPort) {
-                        var producerNode= producerPort.ParentNode;
-                        if(producerNode.IsConstructor) {
-                            result.Append(GetNameFor(producerNode));                                                
-                        }
-                        else {
-                            result.Append(GetNameFor(producerPort));                        
-                        }
-                        result.Append(".");
-                    }
-                }
-            }
-            return result.ToString();
-        }
-
-        // =========================================================================
-        // Code snippet decalartion
-    	// -------------------------------------------------------------------------
-        /// Declares the return value formated as "localVariable= ".
-        ///
-        /// @param node The node for which the return value will be declared.
-        /// @return The return value decalartion.
-        ///
-        string DeclareReturnVariable(iCS_EditorObject node) {
-            // No return variable necessary
-            var returnPort= GetReturnPort(node);
-            if(returnPort == null) return "";
-            var consumerPorts= returnPort.EndConsumerPorts;
-            if(consumerPorts.Length == 0) {
-                return "";
-            }
-            // Don't need to generate return variable if no real consumer
-            var hasConsumer= false;
-            foreach(var c in consumerPorts) {
-                if(c.IsEnablePort || c.ParentNode.IsKindOfFunction) {
-                    hasConsumer= true;
-                }
-            }
-            if(hasConsumer == false) return "";
-            // Build return variable for the given node.
-            var result= new StringBuilder(32);
-            result.Append("var ");
-            result.Append(GetLocalVariableName(returnPort));
-            result.Append("= ");
-            return result.ToString();
-        }
-    	// -------------------------------------------------------------------------
-        /// Declares all output variable that will be used as output variable for a
-        /// function call.
-        ///
-        /// @param indentSize The size of the indent at the beginning of a variable
-        ///                   declaration.
-        /// @param outParams List of ports that are output variable for function call.
-        /// @return The formatted output variables declaration string.
-        ///
-        string DeclarelocalVariablesForOutputParameters(int indentSize, List<iCS_EditorObject> outputParams) {
-            if(outputParams.Count == 0) return "";
-            var result= new StringBuilder(128);
-            foreach(var p in outputParams) {
-                result.Append(ToTypeName(p.RuntimeType));
-                result.Append(" ");
-                result.Append(GetLocalVariableName(p));
-                result.Append(";\n");
-                result.Append(ToIndent(indentSize));
-            }
-            return result.ToString();
-        }
     
 
         // =========================================================================
@@ -462,42 +312,14 @@ namespace iCanScript.Editor.CodeEngineering {
             return true;
         }
     	// -------------------------------------------------------------------------
-        /// Closes the conditional context up until we reach a common parent
-        /// context given by the new condition.
-        ///
-        /// @param newEnablePorts The new enable port context.
-        /// @param currentEnablePorts List of active enable ports.
-        /// @return The closing conditional code snippet.
-        ///
-        string GenerateEndConditionalFragment(ref int indentSize,
-                                              iCS_EditorObject[] newEnablePorts,
-                                              iCS_EditorObject[] currentEnablePorts) {
-            // Skip common contexts 
-            int i= 0;
-            var len= currentEnablePorts.Length;
-            var newLen= newEnablePorts.Length;
-            var minLen= Mathf.Min(len, newLen);
-            for(; i < minLen && currentEnablePorts[i] == newEnablePorts[i]; ++i);
-            if(i >= len) return "";
-            // Generate closing code.
-            var result= new StringBuilder(32);
-            for(; i < len; ++i) {
-                --indentSize;
-                result.Append(ToIndent(indentSize));
-                result.Append("}\n");
-                // Consume the multiple conditions ored together.
-                while(i != len-1) {
-                    if(currentEnablePorts[i].ParentNode != currentEnablePorts[i+1].ParentNode) {
-                        break;
-                    }
-                    ++i;
-                }
-            }
-            return result.ToString();
-        }
-    	// -------------------------------------------------------------------------
-        int IndexOfConditionalChange(iCS_EditorObject[] enablePorts1,
-                                     iCS_EditorObject[] enablePorts2) {
+		/// Returns the length of the common portion of two enable port lists.
+		///
+		/// @param enablePorts1 The first enable port list.
+		/// @param enablePorts2 The second enable port list.
+		/// @return The length of the common portion of both input lists.
+		///
+        int LengthOfSameEnables(iCS_EditorObject[] enablePorts1,
+                                iCS_EditorObject[] enablePorts2) {
             var len1= enablePorts1.Length;
             var len2= enablePorts2.Length;
             var minLen= Mathf.Min(len1, len2);
@@ -505,67 +327,8 @@ namespace iCanScript.Editor.CodeEngineering {
             for(; i < minLen && enablePorts1[i] == enablePorts2[i]; ++i);
             return i;
         }
-    	// -------------------------------------------------------------------------
-        /// Opens the conditional context up until we reach the common parent
-        /// context given by the given condition.
-        ///
-        /// @param newEnablePorts The new enable port context.
-        /// @param currentEnablePorts List of active enable ports.
-        /// @return The open enable port context code snippet.
-        ///
-        string GenerateOpenConditionalFragment(ref int indentSize,
-                                               iCS_EditorObject[] newEnablePorts,
-                                               iCS_EditorObject[] currentEnablePorts) {
-            // Skip common contexts 
-            int i= 0;
-            var len= currentEnablePorts.Length;
-            var newLen= newEnablePorts.Length;
-            var minLen= Mathf.Min(len, newLen);
-            for(; i < minLen && currentEnablePorts[i] == newEnablePorts[i]; ++i);
-            if(i == newLen) return "";
-            // Generate opening code.
-            var result= new StringBuilder(32);
-            for(; i < newLen; ++i) {
-                var e= newEnablePorts[i];
-                result.Append(ToIndent(indentSize));
-                result.Append("if(");
-                result.Append(GetNameFor(e.FirstProducerPort));
-                // OR all enable ports on same node.
-                while(i != newLen-1) {
-                    if(e.ParentNode != newEnablePorts[i+1].ParentNode) {
-                        break;
-                    }
-                    result.Append(" || ");
-                    ++i;
-                    e= newEnablePorts[i];
-                    result.Append(GetNameFor(e.FirstProducerPort));
-                }
-                result.Append(") {\n");
-                ++indentSize;
-            }
-            return result.ToString();        
-        }
-
         // =========================================================================
         // Utilities
-    	// -------------------------------------------------------------------------
-        /// Returns the input port representing the _'self'_ connection.
-        ///
-        /// @param node The node in which to search for the _'self'_ port.
-        ///
-        /// @return _'null'_ is returned if the port is not found.
-        ///
-        static iCS_EditorObject GetThisPort(iCS_EditorObject node) {
-            iCS_EditorObject result= null;
-            node.ForEachChildPort(
-                p=> {
-                    if(p.PortIndex == (int)iCS_PortIndex.InInstance) {
-                        result= p;
-                    }
-                }
-            );
-            return result;
-        }
     	// -------------------------------------------------------------------------
         /// Returns the list of enable ports that affects the function call
         ///
@@ -598,22 +361,6 @@ namespace iCanScript.Editor.CodeEngineering {
             );
             return lst;
         }
-
-        // -------------------------------------------------------------------------
-        /// Returns _'true'_ if the node is a property get function.
-        static bool IsPropertyGet(iCS_MemberInfo memberInfo) {
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo == null) return false;
-            return propertyInfo.IsGet;
-        }
-    	// -------------------------------------------------------------------------
-        /// Returns _'false'_ if the node is a property get function.
-        static bool IsPropertySet(iCS_MemberInfo memberInfo) {
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo == null) return false;
-            return propertyInfo.IsSet;
-        }
-
 
     }
 

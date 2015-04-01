@@ -65,7 +65,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
                 else {
                     outputParams.Add(p);
-                    paramStrings[p.PortIndex]= "out "+GetLocalVariableName(p);
+                    paramStrings[p.PortIndex]= "out "+Parent.GetLocalVariableName(p);
                 }
             }
             // Special case for property set.
@@ -164,7 +164,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Build return variable for the given node.
             var result= new StringBuilder(32);
             result.Append("var ");
-            result.Append(GetLocalVariableName(returnPort));
+            result.Append(Parent.GetLocalVariableName(returnPort));
             result.Append("= ");
             return result.ToString();
         }
@@ -183,7 +183,7 @@ namespace iCanScript.Editor.CodeEngineering {
             foreach(var p in outputParams) {
                 result.Append(ToTypeName(p.RuntimeType));
                 result.Append(" ");
-                result.Append(GetLocalVariableName(p));
+                result.Append(Parent.GetLocalVariableName(p));
                 result.Append(";\n");
                 result.Append(ToIndent(indentSize));
             }
