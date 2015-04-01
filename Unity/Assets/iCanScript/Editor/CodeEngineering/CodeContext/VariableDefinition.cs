@@ -9,9 +9,9 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        iCS_EditorObject    myFieldObject= null;
-        AccessType          myAccessType = AccessType.PRIVATE;
-        ScopeType           myScopeType  = ScopeType.NONSTATIC;
+        public iCS_EditorObject    myFieldObject= null;
+        public AccessType          myAccessType = AccessType.PRIVATE;
+        public ScopeType           myScopeType  = ScopeType.NONSTATIC;
         
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -39,7 +39,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param field The field for which to generate code.
         /// @return The generated code for the given field.
         ///
-        public string GenerateCode(int indentSize) {
+        public override string GenerateCode(int indentSize) {
             var result= new StringBuilder(128);
     		// Generate non-static variables.
             if(myFieldObject.IsConstructor) {

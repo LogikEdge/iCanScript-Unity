@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class CodeContext {
+    public abstract class CodeContext {
         // ===================================================================
         // TYPES
         // -------------------------------------------------------------------
@@ -15,7 +15,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
         public enum CodeType     {
             GLOBAL, CLASS, STRUCT, FIELD, PROPERTY, FUNCTION, VARIABLE, PARAMETER,
-            IF
+            IF, FUNCTION_CALL
         };
     
         // -------------------------------------------------------------------
@@ -50,6 +50,11 @@ namespace iCanScript.Editor.CodeEngineering {
         public CodeContext(CodeType codeType) {
             myCodeType= codeType;
         }
+
+        // ===================================================================
+        // CODE GENERATION FUNCTIONS
+        // -------------------------------------------------------------------
+        public abstract string GenerateCode(int indentSize);
         
         // =========================================================================
         // CONVERSION UTILITIES
@@ -278,10 +283,10 @@ namespace iCanScript.Editor.CodeEngineering {
         public string ToPropertyName(iCS_EditorObject vsObject) {
             return vsObject.MethodName.Substring(4);
         }
-        
+
         // =========================================================================
         // UNIQUE NAME MANAGEMENT
-        // -----------------------------------------------------------------------
+        // -------------------------------------------------------------------------
         /// Creates a unique code name from the proposedName.
         ///
         /// @param proposedName The desired name for the code fragment associated
@@ -343,6 +348,35 @@ namespace iCanScript.Editor.CodeEngineering {
             return result.ToString();
         }
         
+        // ---------------------------------------------------------------------------------
+        /// Generates a code banner.
+        ///
+        /// @param indent White space string to be prepended to each line.
+        /// @param bannerText The banner text.
+        /// @return A foramtted code banner.
+        ///
+        public string GenerateCodeBanner(string indent, string bannerText) {
+            var result= new StringBuilder(indent, 256);
+            result.Append(CodeBannerTop);
+            result.Append(indent);
+            result.Append("// ");
+            result.Append(bannerText);
+            result.Append("\n");
+            result.Append(indent);
+            result.Append(CodeBannerBottom);
+            return result.ToString();
+        }
+        // ---------------------------------------------------------------------------------
+        /// Returns a double header bar for code comments.
+        public string CodeBannerTop {
+            get { return "// =========================================================================\n"; }
+        }
+        // ---------------------------------------------------------------------------------
+        /// Returns a single header bar for code comments.
+        public string CodeBannerBottom {
+            get { return "// -------------------------------------------------------------------------\n"; }
+        }
+
         // =========================================================================
         // PARAMETER UTILITIES
     	// -------------------------------------------------------------------------

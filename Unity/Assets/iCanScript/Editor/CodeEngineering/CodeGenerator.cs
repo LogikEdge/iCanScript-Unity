@@ -57,7 +57,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Generates the CSharp code.
         public string GenerateCode() {
-            return myCodeRoot.GenerateCode();
+            return myCodeRoot.GenerateCode(0);
         }
     
     }

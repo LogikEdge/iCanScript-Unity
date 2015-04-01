@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -101,7 +102,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param indentSize The indentation needed for the class definition.
         /// @return The formatted code for the class.
         ///
-        public string GenerateCode(int indentSize) {
+        public override string GenerateCode(int indentSize) {
             // Determine class properties.
             var className= GetClassName(myClassNode);
             
@@ -146,15 +147,53 @@ namespace iCanScript.Editor.CodeEngineering {
         string GenerateClassBody(int indentSize) {
             var result= new StringBuilder(1024);
             // Fields
-            foreach(var f in myFields) {
-                result.Append(f.GenerateCode(indentSize));
-            }
+            result.Append(GenerateClassFields(indentSize));
             // Functions
+            result.Append(GenerateClassFunctions(indentSize));
+            return result.ToString();
+        }
+
+        // -------------------------------------------------------------------
+        /// Generate the code for the class functions.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The class functions code.
+        ///
+        string GenerateClassFunctions(int indentSize) {
+            var result= new StringBuilder(1024);
             foreach(var f in myFunctions) {
                 result.Append(f.GenerateCode(indentSize));
             }
             return result.ToString();
         }
-
+        
+        // -------------------------------------------------------------------
+        /// Generate the code for the class fields.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The class fileds code.
+        ///
+        string GenerateClassFields(int indentSize) {
+            var indent= ToIndent(indentSize);
+            var result= new StringBuilder(1024);
+            // Fields
+            var publicFields= P.filter(f=> f.myAccessType == AccessType.PUBLIC, myFields);
+            var privateFields= P.filter(f=> f.myAccessType != AccessType.PUBLIC, myFields);
+            if(publicFields.Count != 0) {
+                result.Append(GenerateCodeBanner(indent, "PUBLIC FIELDS"));
+                foreach(var f in publicFields) {
+                    result.Append(f.GenerateCode(indentSize));
+                }
+                result.Append("\n");
+            }
+            if(privateFields.Count != 0) {
+                result.Append(GenerateCodeBanner(indent, "PRIVATE FIELDS"));
+                foreach(var f in privateFields) {
+                    result.Append(f.GenerateCode(indentSize));
+                }
+                result.Append("\n");
+            }
+            return result.ToString();
+        }
     }
 }

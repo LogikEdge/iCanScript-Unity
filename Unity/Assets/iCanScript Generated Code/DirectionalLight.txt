@@ -4,10 +4,18 @@ namespace iCanScript.Engine.GeneratedCode {
 
     [iCS_Class(Library="Visual Scripts")]
     public class DirectionalLight : MonoBehaviour {
-        private  Float p_score=  new Float(0);
+        // =========================================================================
+        // PUBLIC FIELDS
+        // -------------------------------------------------------------------------
         [iCS_InOutPort]
         public  Bool myIsGameOver=  new Bool(false);
+
+        // =========================================================================
+        // PRIVATE FIELDS
+        // -------------------------------------------------------------------------
+        private  Float p_score=  new Float(0);
         private  Light p_lightTemplate=  new Light();
+
 
         [iCS_Function]
         public  void Update() {

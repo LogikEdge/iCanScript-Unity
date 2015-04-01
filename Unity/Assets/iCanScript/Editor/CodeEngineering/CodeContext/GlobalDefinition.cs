@@ -22,12 +22,10 @@ namespace iCanScript.Editor.CodeEngineering {
             set { myNamespace= value; }
         }
 
+        // ===================================================================
+        // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
-        /// Builds a _class_ specific code context object.
-        ///
-        /// @param associatedObjects VS objects associated with this code context.
-        /// @return The newly created code context.
-        ///
+        /// Builds the code global scope.
         public GlobalDefinition()
         : base(CodeType.GLOBAL) {
         }
@@ -45,17 +43,19 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Adds a using directive to the file scope.
         ///
-        /// @param classdefinition Class definition to add.
+        /// @param usingDirective A string with a using directive.
         ///
         public void AddUsingDirective(string usingDirective) {
-            myUsingDirectives.Add(usingDirective);
+            if(!myUsingDirectives.Exists((s1)=> s1 == usingDirective)) {
+                myUsingDirectives.Add(usingDirective);
+            }
         }
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
         /// Generate for code for the Visual Script.
-        public string GenerateCode() {
+        public override string GenerateCode(int indentSize) {
             // Generate using directives.
             var result= new StringBuilder(2048);
             result.Append(GenerateUsingDirectives());

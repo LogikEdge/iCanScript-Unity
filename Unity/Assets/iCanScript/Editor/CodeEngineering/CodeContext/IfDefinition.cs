@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -7,27 +9,54 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        iCS_EditorObject[]  myAssociatedObjects= null;                  ///< VS objects associated with code context
+        iCS_EditorObject[]  myEnablePorts= null;
+        List<CodeContext>   myExecutionList= new List<CodeContext>();
         
         // ===================================================================
-        // PROPERTIES
+        // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
-        /// Returns the VS objects associated with code context
-        public iCS_EditorObject[] AssociatedObjects {
-            get { return myAssociatedObjects; }
-        }
-        
-        // -------------------------------------------------------------------
-        /// Builds a _If_ specific code context object.
+        /// Builds a _If_ code context.
         ///
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created code context.
         ///
-        public IfDefinition(iCS_EditorObject[] associatedObjects)
+        public IfDefinition(iCS_EditorObject[] enables)
         : base(CodeType.IF) {
-            myAssociatedObjects= associatedObjects;
+            myEnablePorts= enables;
         }
 
+        // -------------------------------------------------------------------
+        /// Adds an execution child.
+        ///
+        /// @param child The execution child to add.
+        ///
+        public void AddExecutableChild(CodeContext child) {
+            myExecutionList.Add(child);
+            child.Parent= this;
+        }
+        
+        // ===================================================================
+        // CODE GENERATION FUNCTIONS
+        // -------------------------------------------------------------------
+        public override string GenerateCode(int indentSize) {
+            var indent= ToIndent(indentSize);
+            var result= new StringBuilder(indent, 1024);
+            result.Append("if(");
+            var len= myEnablePorts.Length;
+            for(int i= 0; i < len; ++i) {
+                result.Append(GetNameFor(myEnablePorts[i].FirstProducerPort));
+                if(i < len-1) {
+                    result.Append(" || ");
+                }
+            }
+            result.Append(") {\n");
+            foreach(var c in myExecutionList) {
+                result.Append(c.GenerateCode(indentSize+1));
+            }
+            result.Append(indent);
+            result.Append("}\n");
+            return result.ToString();
+        }
     }
 
 }

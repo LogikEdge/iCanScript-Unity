@@ -11,9 +11,10 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        iCS_EditorObject  myFunctionNode= null;  ///< VS objects associated with code context
-        AccessType        myAccessType= AccessType.PRIVATE;
-        ScopeType         myScopeType = ScopeType.NONSTATIC;
+        iCS_EditorObject  myFunctionNode = null;  ///< VS objects associated with code context
+        AccessType        myAccessType   = AccessType.PRIVATE;
+        ScopeType         myScopeType    = ScopeType.NONSTATIC;
+        List<CodeContext> myExecutionList= new List<CodeContext>();
         
         // ===================================================================
         // PROPERTIES
@@ -26,14 +27,37 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Builds a Function specific code context object.
         ///
-        /// @param associatedObjects VS objects associated with this code context.
+        /// @param node VS objects associated with the function.
         /// @return The newly created code context.
         ///
-        public FunctionDefinition(iCS_EditorObject functionNode, AccessType accessType, ScopeType scopeType)
+        public FunctionDefinition(iCS_EditorObject node, AccessType accessType, ScopeType scopeType)
         : base(CodeType.FUNCTION) {
-            myFunctionNode= functionNode;
+            myFunctionNode= node;
             myAccessType  = accessType;
             myScopeType   = scopeType;
+            
+            // Build list of function calls.
+    		var functionNodes= GetFunctionBodyParts(node);
+            // Rearrange execution order according to dependencies
+    		functionNodes= SortDependencies(functionNodes);
+            // Determine the conditional context of each function call.
+            var conditionalContexts= GetConditionalContexts(functionNodes);
+            // Create function call and if statement defintions.
+            var len= functionNodes.Length;
+            iCS_EditorObject[] currentConditionalContext= new iCS_EditorObject[0];
+            for(int i= 0; i < len; ++i) {
+                var cond= conditionalContexts[i];
+                if(!IsSameConditionalContext(cond, currentConditionalContext)) {
+//                    myExecutionList.Add(new IfDefinition());
+//                    result.Append(GenerateEndConditionalFragment(ref indentSize, cond, currentConditionalContext));
+//                    result.Append(GenerateOpenConditionalFragment(ref indentSize, cond, currentConditionalContext));
+                    currentConditionalContext= cond;
+                }
+                var funcDef= new FunctionCallDefinition(functionNodes[i]);
+                myExecutionList.Add(funcDef);
+                funcDef.Parent= this;
+            }
+
         }
 
         // ===================================================================
@@ -44,7 +68,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param indentSize The indentation of the function.
         /// @return The generated code for the given function.
         ///
-        public string GenerateCode(int indentSize) {
+        public override string GenerateCode(int indentSize) {
             var result= new StringBuilder(1024);
     		// Find return type.
     		string returnType= ToTypeName(typeof(void));
@@ -461,6 +485,16 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
             }
             return result.ToString();
+        }
+    	// -------------------------------------------------------------------------
+        int IndexOfConditionalChange(iCS_EditorObject[] enablePorts1,
+                                     iCS_EditorObject[] enablePorts2) {
+            var len1= enablePorts1.Length;
+            var len2= enablePorts2.Length;
+            var minLen= Mathf.Min(len1, len2);
+            int i= 0;
+            for(; i < minLen && enablePorts1[i] == enablePorts2[i]; ++i);
+            return i;
         }
     	// -------------------------------------------------------------------------
         /// Opens the conditional context up until we reach the common parent

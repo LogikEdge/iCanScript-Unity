@@ -44,7 +44,7 @@ public static class iCS_ObjectNames {
     /// @return The converted name.
     ///
     public static string ToPublicFieldName(string name) {
-        string prefix= "my";
+        string prefix= "";
         NamingScheme namingScheme= NamingScheme.LOWER_CAMEL_CASE;
         return ToCodeName(namingScheme, name, prefix);
     }
