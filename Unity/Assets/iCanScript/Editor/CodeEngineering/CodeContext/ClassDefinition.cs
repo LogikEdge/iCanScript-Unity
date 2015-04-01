@@ -161,6 +161,10 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         string GenerateClassFunctions(int indentSize) {
             var result= new StringBuilder(1024);
+			if(myFunctions.Count != 0) {
+				result.Append("\n");
+	            result.Append(GenerateCodeBanner(ToIndent(indentSize), "PUBLIC FUNCTIONS"));				
+			}
             foreach(var f in myFunctions) {
                 result.Append(f.GenerateCode(indentSize));
             }

@@ -8,14 +8,18 @@ namespace iCanScript.Engine.GeneratedCode {
         // PUBLIC FIELDS
         // -------------------------------------------------------------------------
         [iCS_InOutPort]
-        public  Bool myIsGameOver=  new Bool(false);
+        public  Bool isGameOver=  new Bool(false);
 
         // =========================================================================
         // PRIVATE FIELDS
         // -------------------------------------------------------------------------
         private  Float p_score=  new Float(0);
-        private  Light p_lightTemplate=  new Light();
+        private  Light p_variable=  new Light();
 
+
+        // =========================================================================
+        // PUBLIC FUNCTIONS
+        // -------------------------------------------------------------------------
 
         [iCS_Function]
         public  void Update() {
@@ -49,7 +53,7 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void BuildLight(Color aColor, float anIntensity, float aRange, out Light aSelf) {
-            var theOutput= Object.Instantiate(p_lightTemplate);
+            var theOutput= Object.Instantiate(p_variable);
             theOutput.color= aColor;
             theOutput.intensity= anIntensity;
             theOutput.range= aRange;
