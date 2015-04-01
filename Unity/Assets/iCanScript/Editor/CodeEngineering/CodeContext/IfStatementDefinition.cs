@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class IfDefinition : CodeContext {
+    public class IfStatementDefinition : CodeContext {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -20,7 +20,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created code context.
         ///
-        public IfDefinition(iCS_EditorObject[] enables)
+        public IfStatementDefinition(iCS_EditorObject[] enables)
         : base(CodeType.IF) {
             myEnablePorts= enables;
         }
