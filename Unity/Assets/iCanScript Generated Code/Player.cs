@@ -18,6 +18,7 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void Update() {
+            var theTransform= GetComponent<Transform>();
             Vector2 theRawAnalog1;
             bool theJump;
             bool theB2;
@@ -29,7 +30,7 @@ namespace iCanScript.Engine.GeneratedCode {
             var theVelocity= iCS_FromTo.ToVector(theX, 0f, theY);
             var theAcceleration= p_jumpConfig.Update(theJump);
             p_forceIntegrator.Acceleration1= theAcceleration;
-            var theOutput= GetComponent("CharacterController") as CharacterController;
+            var theOutput= gameObject.GetComponent("CharacterController") as CharacterController;
             var theVelocity_101= theOutput.velocity;
             var theAcceleration_60= p_roamingConfig.Update(theVelocity, theVelocity_101, 1f);
             p_forceIntegrator.Acceleration2= theAcceleration_60;
@@ -40,7 +41,7 @@ namespace iCanScript.Engine.GeneratedCode {
             var theOutput_138= iCS_Math.NormalizedCross(theVelocity_101, Vector3.down);
             var theValueTimesDt= iCS_TimeUtility.ScaleByDeltaTime(theMagnitude);
             var theOutput_130= iCS_Math.Mul(theValueTimesDt, 114.59f);
-            transform.Rotate(theOutput_138, theOutput_130, Space.World);
+            theTransform.Rotate(theOutput_138, theOutput_130, Space.World);
         }
     }
 

@@ -90,8 +90,12 @@ namespace iCanScript.Editor.CodeEngineering {
         void AddChildFunctions() {
     		myClassNode.ForEachChildNode(
     			n=> {
-    				if(n.IsMessage || n.IsPublicFunction) {
+    				if(n.IsPublicFunction) {
                         var functionDefinition= new FunctionDefinition(n, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                        AddFunction(functionDefinition);
+    				}
+    				if(n.IsMessage) {
+                        var functionDefinition= new EventHandlerDefinition(n, AccessType.PUBLIC, ScopeType.NONSTATIC);
                         AddFunction(functionDefinition);
     				}
     			}

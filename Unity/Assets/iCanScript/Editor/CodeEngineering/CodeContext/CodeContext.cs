@@ -84,7 +84,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public string GetNameFor(iCS_EditorObject vsObj) {
             if(vsObj.IsInputPort) {
                 vsObj= vsObj.FirstProducerPort;
-                if(vsObj.IsInputPort) {
+                if(vsObj.IsInputPort && !(vsObj.IsInProposedDataPort && vsObj.ParentNode.IsMessageHandler)) {
                     return ToValueString(vsObj.InitialValue);
                 }
             }
@@ -387,6 +387,28 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             result.Append(")");
             return result.ToString();
+        }
+        
+        // ---------------------------------------------------------------------------------
+        /// Returns the common base for all consumers of a producer port.
+        ///
+        /// @param producerPort The producer port.
+        /// @return The common base type for all consumers.
+        ///
+        public Type GetCommonBaseTypeForProducerPort(iCS_EditorObject producerPort) {
+            var consumers= producerPort.EndConsumerPorts;
+            var consumersLen= consumers.Length;
+            if(consumersLen == 0) return typeof(void);
+            var commonType= consumers[0].RuntimeType;
+            for(int i= 1; i < consumersLen; ++i) {
+                var t= consumers[i].RuntimeType;
+                if(t != commonType) {
+                    if(iCS_Types.IsA(t, commonType)) {
+                        commonType= t;
+                    }
+                }
+            }
+            return commonType;
         }
         
         // ---------------------------------------------------------------------------------

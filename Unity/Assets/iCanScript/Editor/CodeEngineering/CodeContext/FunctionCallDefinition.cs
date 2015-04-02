@@ -52,6 +52,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 result.Append(FunctionCallPrefix(memberInfo, myNode));
                 // Generate function call.
                 result.Append(ToPropertyName(myNode));
+                result.Append(GenerateReturnTypeCastFragment(myNode));
                 result.Append(";\n");
                 return result.ToString();
             }
@@ -65,6 +66,11 @@ namespace iCanScript.Editor.CodeEngineering {
                     var producerPort= p.FirstProducerPort;
                     if(producerPort != null && producerPort != p) {
                         paramStrings[p.PortIndex]= GetNameFor(producerPort);
+                        var producerCommonType= GetCommonBaseTypeForProducerPort(producerPort);
+                        var portTypeName= ToTypeName(p.RuntimeType);
+                        if(portTypeName != ToTypeName(producerCommonType)) {
+                            paramStrings[p.PortIndex]+= " as "+portTypeName;
+                        }
                     }
                     else {
                         var v= p.InitialValue;
@@ -93,7 +99,8 @@ namespace iCanScript.Editor.CodeEngineering {
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, myNode));
                 // Declare function call.
-                result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));            
+                result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));
+                result.Append(GenerateReturnTypeCastFragment(myNode));            
             }
             result.Append(";\n");
             return result.ToString();
@@ -114,6 +121,19 @@ namespace iCanScript.Editor.CodeEngineering {
             return result.ToString();
         }
     	// -------------------------------------------------------------------------
+        /// Generate return type cast.
+        ///
+        /// @param node The function call VS node.
+        /// @return The return cast code string.
+        ///
+        string GenerateReturnTypeCastFragment(iCS_EditorObject node) {
+            var returnPort= GetReturnPort(node);
+            if(returnPort == null) return "";
+            var consumerType= GetCommonBaseTypeForProducerPort(returnPort);
+            if(consumerType == typeof(void) || consumerType == returnPort.RuntimeType) return "";
+            return " as "+ToTypeName(consumerType);
+        }
+    	// -------------------------------------------------------------------------
         /// Generates the function call prefix code fragment.
         ///
         /// @param memberInfo The member information of the function to call.
@@ -131,12 +151,23 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(thisPort != null) {
                     var producerPort= thisPort.FirstProducerPort;
                     if(producerPort != null && producerPort != thisPort) {
+                        var portRuntime= ToTypeName(thisPort.RuntimeType);
+                        var producerCommonType= GetCommonBaseTypeForProducerPort(producerPort);
+                        var producerRuntime= ToTypeName(producerCommonType);
+                        if(portRuntime != producerRuntime) {
+                            result.Append("(");
+                        }
                         var producerNode= producerPort.ParentNode;
                         if(producerNode.IsConstructor) {
                             result.Append(GetNameFor(producerNode));                                                
                         }
                         else {
                             result.Append(GetNameFor(producerPort));                        
+                        }
+                        if(portRuntime != producerRuntime) {
+                            result.Append(" as ");
+                            result.Append(portRuntime);
+                            result.Append(")");
                         }
                         result.Append(".");
                     }

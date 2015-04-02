@@ -11,11 +11,11 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        iCS_EditorObject         myFunctionNode = null;  ///< VS objects associated with code context
-        AccessType               myAccessType   = AccessType.PRIVATE;
-        ScopeType                myScopeType    = ScopeType.NONSTATIC;
-        List<CodeContext>        myExecutionList= new List<CodeContext>();
-        List<VariableDefinition> myVariables    = new List<VariableDefinition>();
+        protected iCS_EditorObject         myFunctionNode = null;  ///< VS objects associated with code context
+        protected AccessType               myAccessType   = AccessType.PRIVATE;
+        protected ScopeType                myScopeType    = ScopeType.NONSTATIC;
+        protected List<CodeContext>        myExecutionList= new List<CodeContext>();
+        protected List<VariableDefinition> myVariables    = new List<VariableDefinition>();
         
         // ===================================================================
         // PROPERTIES
@@ -25,6 +25,8 @@ namespace iCanScript.Editor.CodeEngineering {
             get { return myFunctionNode; }
         }
         
+        // ===================================================================
+        // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds a Function specific code context object.
         ///
@@ -184,7 +186,7 @@ namespace iCanScript.Editor.CodeEngineering {
             return result.ToString();
         }
         // -------------------------------------------------------------------
-        public static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
+        static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
                                               string returnType, string functionName,
                                               string[] paramTypes, string[] paramNames,
                                               CodeProducer functionBody,
