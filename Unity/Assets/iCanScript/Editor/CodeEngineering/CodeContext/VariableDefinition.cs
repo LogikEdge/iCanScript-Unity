@@ -23,8 +23,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param scopeType The Scope property of the field.
         /// @return The newly created field defintion.
         ///
-        public VariableDefinition(iCS_EditorObject fieldObject, AccessType accessType, ScopeType scopeType)
-        : base(CodeType.FIELD) {
+        public VariableDefinition(CodeType codeType, iCS_EditorObject fieldObject, AccessType accessType, ScopeType scopeType)
+        : base(codeType) {
             myFieldObject= fieldObject;
             myAccessType = accessType;
             myScopeType  = scopeType;
@@ -49,28 +49,37 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override string GenerateCode(int indentSize) {
             var result= new StringBuilder(128);
-    		// Generate non-static variables.
-            if(myFieldObject.IsConstructor) {
+            var fieldType= myFieldObject.RuntimeType;
+            string initializer= "";
+            // Generate variable from port.
+            if(myFieldObject.IsDataPort) {
+                initializer= GetNameFor(myFieldObject, /*valueInsteadOfSelf=*/true);
+            }
+    		// Generate variable from constructor.
+            else if(myFieldObject.IsConstructor) {
                 var nbOfParams= GetNbOfParameters(myFieldObject);
                 var initValues= new string[nbOfParams];
                 myFieldObject.ForEachChildPort(
                     p=> {
                         if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
-                            initValues[p.PortIndex]= GetNameFor(p);
+                            initValues[p.PortIndex]= GetNameFor(p.FirstProducerPort, /*valueInsteadOfSelf=*/true);
                         }
                     }
                 );
-                var fieldType= myFieldObject.RuntimeType;
-                var initializer= GenerateAllocatorFragment(fieldType, initValues);
-                string variableName;
-                if(myAccessType == AccessType.PUBLIC) {
-                    variableName= Parent.GetPublicFieldName(myFieldObject);
-                }
-                else {
-                    variableName= Parent.GetPrivateFieldName(myFieldObject);
-                }
-    			result.Append(GenerateVariable(indentSize, myAccessType, myScopeType, fieldType, variableName, initializer));                    
+                initializer= GenerateAllocatorFragment(fieldType, initValues);
             }
+            else {
+                Debug.LogWarning("iCanScript: Unreconized variable type");
+                return "";
+            }
+            string variableName;
+            if(myAccessType == AccessType.PUBLIC) {
+                variableName= Parent.GetPublicFieldName(myFieldObject);
+            }
+            else {
+                variableName= Parent.GetPrivateFieldName(myFieldObject);
+            }
+			result.Append(GenerateVariable(indentSize, myAccessType, myScopeType, fieldType, variableName, initializer));                    
             return result.ToString();
         }
         

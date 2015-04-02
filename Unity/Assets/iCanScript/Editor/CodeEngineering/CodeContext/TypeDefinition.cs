@@ -43,6 +43,7 @@ namespace iCanScript.Editor.CodeEngineering {
             myScopeType = scopeType;
             // Add fields
             AddChildConstructorsAsFields();
+            AddPublicInterfaces();
             // Add functions
             AddChildFunctions();
         }
@@ -80,11 +81,21 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(c.ParentId == 0) {
                     fieldAccess= AccessType.PUBLIC;
                 }
-                var field= new VariableDefinition(c, fieldAccess, ScopeType.NONSTATIC);
+                var field= new VariableDefinition(CodeType.FIELD, c, fieldAccess, ScopeType.NONSTATIC);
                 AddVariable(field);
             }            
         }
 
+        // -------------------------------------------------------------------
+        /// Searches public interfaces as class fields.
+        void AddPublicInterfaces() {
+            var publicInterfaces= myClassNode.FilterChildRecursive(c=> IsPublicClassInterface(c));
+            foreach(var c in publicInterfaces) {
+                var field= new ClassFieldDefinition(c, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                AddVariable(field);
+            }            
+        }
+        
         // -------------------------------------------------------------------
         /// Searches for child functions and adds them to class definition.
         void AddChildFunctions() {

@@ -5,6 +5,30 @@ namespace iCanScript.Engine.GeneratedCode {
     [iCS_Class(Library="Visual Scripts")]
     public class Player : MonoBehaviour {
         // =========================================================================
+        // PUBLIC FIELDS
+        // -------------------------------------------------------------------------
+        [iCS_InOutPort]
+        public  float maxSpeed= 10f;
+        [iCS_InOutPort]
+        public  Vector3 gravity= new Vector3(0f, -20f, 0f);
+        [iCS_InOutPort]
+        public  Vector3 mainImpulseAccel= Vector3.up;
+        [iCS_InOutPort]
+        public  float mainImpulseTime= 0.2f;
+        [iCS_InOutPort]
+        public  Vector3 secondaryImpulseAccel= new Vector3(0f, 5f, 0f);
+        [iCS_InOutPort]
+        public  float secondaryImpulseTime= 0.3f;
+        [iCS_InOutPort]
+        public  float retriggerDelay= 1.2f;
+        [iCS_InOutPort]
+        public  float initialVelocityBoost= 10f;
+        [iCS_InOutPort]
+        public  float maxAcceleration= 25f;
+        [iCS_InOutPort]
+        public  float maxDeceleration= 35f;
+
+        // =========================================================================
         // PRIVATE FIELDS
         // -------------------------------------------------------------------------
         private  iCS_ImpulseForceGenerator p_jumpConfig=  new iCS_ImpulseForceGenerator(Vector3.up, 0.2f, new Vector3(0f, 5f, 0f), 0.3f, 1.2f, 10f);
@@ -23,7 +47,7 @@ namespace iCanScript.Engine.GeneratedCode {
             bool theJump;
             bool theB2;
             bool theB3;
-            var theAnalog1= iCS_GameController.GameController(out theRawAnalog1, out theJump, out theB2, out theB3, 10f);
+            var theAnalog1= iCS_GameController.GameController(out theRawAnalog1, out theJump, out theB2, out theB3, maxSpeed);
             float theX;
             float theY;
             iCS_FromTo.FromVector(theAnalog1, out theX, out theY);

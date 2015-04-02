@@ -79,14 +79,23 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Returns or creates the pre-built name for a given visual script object.
         ///
         /// @param vsObj The visual script object to search.
+        /// @param valueInsteadOfSelf Forces usage of port value if port does not
+        ///                           have a producer.
         /// @return The pre-built name for the visual script object.
         ///
-        public string GetNameFor(iCS_EditorObject vsObj) {
+        public string GetNameFor(iCS_EditorObject vsObj, bool valueInsteadOfSelf= false) {
             if(vsObj.IsInputPort) {
-                vsObj= vsObj.FirstProducerPort;
-                if(vsObj.IsInputPort && !(vsObj.IsInProposedDataPort && vsObj.ParentNode.IsMessageHandler)) {
-                    return ToValueString(vsObj.InitialValue);
+                var producerPort= vsObj.FirstProducerPort;
+                if(producerPort.IsInputPort) {
+                    // Return value if we are the producer port and client want the value.
+                    if(producerPort == vsObj && valueInsteadOfSelf) {
+                        return ToValueString(producerPort.InitialValue);
+                    }
+                    if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsMessageHandler)) {
+                        return ToValueString(producerPort.InitialValue);
+                    }                    
                 }
+                vsObj= producerPort;
             }
             var name= TryGetNameFor(vsObj);
             if(name == null) {
@@ -516,7 +525,30 @@ namespace iCanScript.Editor.CodeEngineering {
             );
             return result;
         }
-        
+
+    	// -------------------------------------------------------------------------
+        /// Returns _'true'_ if port should be promoted to a public class interface.
+        ///
+        /// @param port The port to be tested.
+        /// @return TRUE if port should be promoted to a class public interface.
+        ///
+        public bool IsPublicClassInterface(iCS_EditorObject port) {
+            var parentNode= port.ParentNode;
+            if(!port.IsDynamicDataPort) return false;
+            if(!parentNode.IsKindOfPackage) return false;
+            if(parentNode.IsInstanceNode) return false;
+            if(port.IsInDataPort) {
+                var producerPort= port.ProducerPort;
+                if(producerPort != null && producerPort != port) return false;
+            }
+            else if(port.IsOutDataPort) {
+                if(port.ConsumerPorts.Length != 0) return false;
+            }
+            else {
+                return false;
+            }
+            return true;
+        }
     }
 
 }
