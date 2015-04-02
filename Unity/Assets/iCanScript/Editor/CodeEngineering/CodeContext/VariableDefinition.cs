@@ -9,7 +9,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        public iCS_EditorObject    myFieldObject= null;
+        public iCS_EditorObject    myVSObject= null;
         public AccessType          myAccessType = AccessType.PRIVATE;
         public ScopeType           myScopeType  = ScopeType.NONSTATIC;
         
@@ -23,9 +23,9 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param scopeType The Scope property of the field.
         /// @return The newly created field defintion.
         ///
-        public VariableDefinition(CodeType codeType, iCS_EditorObject fieldObject, AccessType accessType, ScopeType scopeType)
-        : base(codeType) {
-            myFieldObject= fieldObject;
+        public VariableDefinition(iCS_EditorObject vsObject, AccessType accessType, ScopeType scopeType)
+        : base(CodeType.VARIABLE) {
+            myVSObject= vsObject;
             myAccessType = accessType;
             myScopeType  = scopeType;
         }
@@ -49,17 +49,17 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override string GenerateCode(int indentSize) {
             var result= new StringBuilder(128);
-            var fieldType= myFieldObject.RuntimeType;
+            var fieldType= myVSObject.RuntimeType;
             string initializer= "";
             // Generate variable from port.
-            if(myFieldObject.IsDataPort) {
-                initializer= GetNameFor(myFieldObject, /*valueInsteadOfSelf=*/true);
+            if(myVSObject.IsDataPort) {
+                initializer= GetNameFor(myVSObject, /*valueInsteadOfSelf=*/true);
             }
     		// Generate variable from constructor.
-            else if(myFieldObject.IsConstructor) {
-                var nbOfParams= GetNbOfParameters(myFieldObject);
+            else if(myVSObject.IsConstructor) {
+                var nbOfParams= GetNbOfParameters(myVSObject);
                 var initValues= new string[nbOfParams];
-                myFieldObject.ForEachChildPort(
+                myVSObject.ForEachChildPort(
                     p=> {
                         if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
                             initValues[p.PortIndex]= GetNameFor(p.FirstProducerPort, /*valueInsteadOfSelf=*/true);
@@ -73,11 +73,17 @@ namespace iCanScript.Editor.CodeEngineering {
                 return "";
             }
             string variableName;
-            if(myAccessType == AccessType.PUBLIC) {
-                variableName= Parent.GetPublicFieldName(myFieldObject);
+            if(Parent is TypeDefinition) {
+                if(myAccessType == AccessType.PUBLIC) {
+                    variableName= Parent.GetPublicFieldName(myVSObject);
+                }
+                else {
+                    variableName= Parent.GetPrivateFieldName(myVSObject);
+                }                
             }
             else {
-                variableName= Parent.GetPrivateFieldName(myFieldObject);
+                variableName= Parent.GetLocalVariableName(myVSObject);
+                initializer= null;
             }
 			result.Append(GenerateVariable(indentSize, myAccessType, myScopeType, fieldType, variableName, initializer));                    
             return result.ToString();
@@ -86,18 +92,20 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Generate the code for a class field.
         ///
-		public static string GenerateVariable(int indentSize, AccessType accessType, ScopeType scopeType,
-										      Type variableType, string variableName, string initializer) {
+		public string GenerateVariable(int indentSize, AccessType accessType, ScopeType scopeType,
+									   Type variableType, string variableName, string initializer) {
 			string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder(indent);
-            if(accessType == AccessType.PUBLIC) {
-                result.Append("[iCS_InOutPort]\n");
-                result.Append(indent);
+            if(Parent is TypeDefinition) {
+                if(accessType == AccessType.PUBLIC) {
+                    result.Append("[iCS_InOutPort]\n");
+                    result.Append(indent);
+                }
+                result.Append(ToAccessString(accessType));
+                result.Append(" ");
+                result.Append(ToScopeString(scopeType));
+                result.Append(" ");                
             }
-            result.Append(ToAccessString(accessType));
-            result.Append(" ");
-            result.Append(ToScopeString(scopeType));
-            result.Append(" ");
 			result.Append(ToTypeName(variableType));
 			result.Append(" ");
 			result.Append(variableName);

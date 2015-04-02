@@ -81,7 +81,7 @@ namespace iCanScript.Editor.CodeEngineering {
 //                if(c.ParentId == 0) {
                     fieldAccess= AccessType.PUBLIC;
 //                }
-                var field= new VariableDefinition(CodeType.FIELD, c, fieldAccess, ScopeType.NONSTATIC);
+                var field= new VariableDefinition(c, fieldAccess, ScopeType.NONSTATIC);
                 AddVariable(field);
             }            
         }
@@ -91,7 +91,7 @@ namespace iCanScript.Editor.CodeEngineering {
         void AddPublicInterfaces() {
             var publicInterfaces= myClassNode.FilterChildRecursive(c=> IsPublicClassInterface(c));
             foreach(var c in publicInterfaces) {
-                var field= new ClassFieldDefinition(c, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                var field= new VariableDefinition(c, AccessType.PUBLIC, ScopeType.NONSTATIC);
                 AddVariable(field);
             }            
         }

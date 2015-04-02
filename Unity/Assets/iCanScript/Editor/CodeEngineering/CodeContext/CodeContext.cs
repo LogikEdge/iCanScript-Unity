@@ -14,19 +14,20 @@ namespace iCanScript.Editor.CodeEngineering {
         public enum ScopeType    { STATIC, NONSTATIC, VIRTUAL };
         public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
         public enum CodeType     {
-            GLOBAL, CLASS, STRUCT, FIELD, PROPERTY, FUNCTION, VARIABLE, PARAMETER,
+            GLOBAL, CLASS, STRUCT, VARIABLE, PROPERTY, FUNCTION, PARAMETER,
             IF, FUNCTION_CALL
         };
     
         // ===================================================================
         // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
-        public abstract void   AddVariable(VariableDefinition variableDefinition);
-        public abstract void   AddExecutable(CodeContext executableDefinition);
-        public abstract void   AddType(TypeDefinition typeDefinition);
-        public abstract void   AddFunction(FunctionDefinition functionDefinition);
-        public abstract string GenerateCode(int indentSize);
-        public delegate string CodeProducer(int indent);
+        public abstract void        AddVariable(VariableDefinition variableDefinition);
+        public abstract void        AddExecutable(CodeContext executableDefinition);
+        public abstract void        AddType(TypeDefinition typeDefinition);
+        public abstract void        AddFunction(FunctionDefinition functionDefinition);
+        public abstract string      GenerateCode(int indentSize);
+//        public abstract CodeContext FindDefinitionFor(iCS_EditorObject vsObj);
+        public delegate string      CodeProducer(int indent);
 
         // ===================================================================
         // FIELDS
@@ -555,6 +556,15 @@ namespace iCanScript.Editor.CodeEngineering {
                 return false;
             }
             return true;
+        }
+
+        // =========================================================================
+        // ITERATION UTILITIES
+    	// -------------------------------------------------------------------------
+        /// Returns the code root.
+        CodeContext GetRootContext() {
+            if(Parent == null) return this;
+            return Parent.GetRootContext();
         }
     }
 

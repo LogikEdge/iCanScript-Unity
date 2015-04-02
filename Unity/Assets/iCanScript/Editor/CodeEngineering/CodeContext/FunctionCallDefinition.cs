@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -14,7 +15,9 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // PROPERTIES
         // -------------------------------------------------------------------
-
+        List<VariableDefinition> myOutputVariables= new List<VariableDefinition>();
+        VariableDefinition       myReturnVariable = null;
+        
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
@@ -26,15 +29,33 @@ namespace iCanScript.Editor.CodeEngineering {
         public FunctionCallDefinition(iCS_EditorObject vsObj)
         : base(CodeType.FUNCTION_CALL) {
         	myNode= vsObj;
+            var outputPorts= GetOutputDataPorts();
+            foreach(var p in outputPorts) {
+                AddVariable(new VariableDefinition(p, AccessType.PRIVATE, ScopeType.NONSTATIC));
+            }
         }
         
         // ===================================================================
         // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
-        public override void AddVariable(VariableDefinition variableDefinition) { Debug.LogWarning("iCanScript: Trying to add a variable defintion to a function call definition."); }
         public override void AddExecutable(CodeContext executableDefinition)    { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a function call definition."); }
         public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to a function call definition."); }
         public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to a function call definition."); }
+
+        // -------------------------------------------------------------------
+        /// Adds a field definition to the class.
+        ///
+        /// @param vsObj VS object that represents the field.
+        ///
+        public override void AddVariable(VariableDefinition outputVariable) {
+            if(outputVariable.myVSObject.IsReturnPort) {
+                myReturnVariable= outputVariable;
+            }
+            else {
+                myOutputVariables.Add(outputVariable);                
+            }
+            outputVariable.Parent= this;
+        }
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS
@@ -60,7 +81,6 @@ namespace iCanScript.Editor.CodeEngineering {
             var parameters= GetParameters(myNode);
             var pLen= parameters.Length;
             var paramStrings= new string[pLen];
-            var outputParams= new List<iCS_EditorObject>();
             foreach(var p in parameters) {
                 if(p.IsInputPort) {
                     var producerPort= p.FirstProducerPort;
@@ -78,8 +98,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     }
                 }
                 else {
-                    outputParams.Add(p);
-                    paramStrings[p.PortIndex]= "out "+Parent.GetLocalVariableName(p);
+                    paramStrings[p.PortIndex]= "out "+GetNameFor(p);
                 }
             }
             // Special case for property set.
@@ -93,7 +112,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Generate function call.        
             else {
                 // Declare the output parameters.
-                result.Append(DeclarelocalVariablesForOutputParameters(indentSize, outputParams));
+                result.Append(DeclarelocalVariablesForOutputParameters(indentSize));
                 // Declare return variable.
                 result.Append(DeclareReturnVariable(myNode));
                 // Determine function prefix.
@@ -114,7 +133,7 @@ namespace iCanScript.Editor.CodeEngineering {
             for(int i= 0; i < len; ++i) {
                 result.Append(paramValues[i]);
                 if(i+1 < len) {
-                    result.Append(", ");                    
+                    result.Append(", ");
                 }
             }
             result.Append(")");
@@ -216,15 +235,10 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param outParams List of ports that are output variable for function call.
         /// @return The formatted output variables declaration string.
         ///
-        string DeclarelocalVariablesForOutputParameters(int indentSize, List<iCS_EditorObject> outputParams) {
-            if(outputParams.Count == 0) return "";
+        string DeclarelocalVariablesForOutputParameters(int indentSize) {
             var result= new StringBuilder(128);
-            foreach(var p in outputParams) {
-                result.Append(ToTypeName(p.RuntimeType));
-                result.Append(" ");
-                result.Append(Parent.GetLocalVariableName(p));
-                result.Append(";\n");
-                result.Append(ToIndent(indentSize));
+            foreach(var v in myOutputVariables) {
+                result.Append(v.GenerateCode(indentSize));
             }
             return result.ToString();
         }
@@ -264,6 +278,25 @@ namespace iCanScript.Editor.CodeEngineering {
             return propertyInfo.IsSet;
         }
 
+    	// -------------------------------------------------------------------------
+        /// Returns the list of output ports.
+        iCS_EditorObject[] GetOutputDataPorts() {
+            var parameters= GetParameters(myNode);
+            return P.filter(p=> p.IsOutDataPort, parameters);
+        }
+
+    	// -------------------------------------------------------------------------
+        void DetermineVariableIssue(iCS_EditorObject producerPort) {
+            var consumers= producerPort.EndConsumerPorts;
+            foreach(var c in consumers) {
+                if(c != producerPort) {
+                    var parent= c.ParentNode;
+                    if(parent.IsKindOfFunction) {
+//                        var definition= GetRootContext().FindDefinitionFor(parent);
+                    }
+                }
+            }
+        }
     }
 
 }
