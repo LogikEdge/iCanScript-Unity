@@ -56,7 +56,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 myFieldObject.ForEachChildPort(
                     p=> {
                         if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
-                            var v= p.InitialValue;
+                            var v= p.FirstProducerPort.InitialValue;
                             initValues[p.PortIndex]= ToValueString(v);
                         }
                     }
