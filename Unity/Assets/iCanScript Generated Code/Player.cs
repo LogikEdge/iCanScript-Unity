@@ -8,32 +8,13 @@ namespace iCanScript.Engine.GeneratedCode {
         // PUBLIC FIELDS
         // -------------------------------------------------------------------------
         [iCS_InOutPort]
+        public  iCS_ImpulseForceGenerator jumpConfig=  new iCS_ImpulseForceGenerator(Vector3.up, 0.2f, new Vector3(0f, 5f, 0f), 0.3f, 1.2f, 10f);
+        [iCS_InOutPort]
+        public  iCS_DesiredVelocityForceGenerator roamingConfig=  new iCS_DesiredVelocityForceGenerator(25f, 35f, new Vector3(1f, 0f, 1f));
+        [iCS_InOutPort]
+        public  iCS_ForceIntegrator forceIntegrator=  new iCS_ForceIntegrator(new Vector3(0f, -20f, 0f), 1f, 0.995f);
+        [iCS_InOutPort]
         public  float maxSpeed= 10f;
-        [iCS_InOutPort]
-        public  Vector3 gravity= new Vector3(0f, -20f, 0f);
-        [iCS_InOutPort]
-        public  Vector3 mainImpulseAccel= Vector3.up;
-        [iCS_InOutPort]
-        public  float mainImpulseTime= 0.2f;
-        [iCS_InOutPort]
-        public  Vector3 secondaryImpulseAccel= new Vector3(0f, 5f, 0f);
-        [iCS_InOutPort]
-        public  float secondaryImpulseTime= 0.3f;
-        [iCS_InOutPort]
-        public  float retriggerDelay= 1.2f;
-        [iCS_InOutPort]
-        public  float initialVelocityBoost= 10f;
-        [iCS_InOutPort]
-        public  float maxAcceleration= 25f;
-        [iCS_InOutPort]
-        public  float maxDeceleration= 35f;
-
-        // =========================================================================
-        // PRIVATE FIELDS
-        // -------------------------------------------------------------------------
-        private  iCS_ImpulseForceGenerator p_jumpConfig=  new iCS_ImpulseForceGenerator(Vector3.up, 0.2f, new Vector3(0f, 5f, 0f), 0.3f, 1.2f, 10f);
-        private  iCS_DesiredVelocityForceGenerator p_roamingConfig=  new iCS_DesiredVelocityForceGenerator(25f, 35f, new Vector3(1f, 0f, 1f));
-        private  iCS_ForceIntegrator p_forceIntegrator=  new iCS_ForceIntegrator(new Vector3(0f, -20f, 0f), 1f, 0.995f);
 
 
         // =========================================================================
@@ -52,14 +33,14 @@ namespace iCanScript.Engine.GeneratedCode {
             float theY;
             iCS_FromTo.FromVector(theAnalog1, out theX, out theY);
             var theVelocity= iCS_FromTo.ToVector(theX, 0f, theY);
-            var theAcceleration= p_jumpConfig.Update(theJump);
-            p_forceIntegrator.Acceleration1= theAcceleration;
+            var theAcceleration= jumpConfig.Update(theJump);
+            forceIntegrator.Acceleration1= theAcceleration;
             var theOutput= gameObject.GetComponent("CharacterController") as CharacterController;
             var theVelocity_101= theOutput.velocity;
-            var theAcceleration_60= p_roamingConfig.Update(theVelocity, theVelocity_101, 1f);
-            p_forceIntegrator.Acceleration2= theAcceleration_60;
+            var theAcceleration_60= roamingConfig.Update(theVelocity, theVelocity_101, 1f);
+            forceIntegrator.Acceleration2= theAcceleration_60;
             Vector3 theDisplacement;
-            p_forceIntegrator.Integrate(theVelocity_101, out theDisplacement);
+            forceIntegrator.Integrate(theVelocity_101, out theDisplacement);
             theOutput.Move(theDisplacement);
             var theMagnitude= theVelocity_101.magnitude;
             var theOutput_138= iCS_Math.NormalizedCross(theVelocity_101, Vector3.down);

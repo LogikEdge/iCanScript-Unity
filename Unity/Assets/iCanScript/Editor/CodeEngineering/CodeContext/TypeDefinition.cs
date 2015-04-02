@@ -78,9 +78,9 @@ namespace iCanScript.Editor.CodeEngineering {
             var constructors= myClassNode.FilterChildRecursive(c=> c.IsConstructor);
             foreach(var c in constructors) {
                 AccessType fieldAccess= AccessType.PRIVATE;
-                if(c.ParentId == 0) {
+//                if(c.ParentId == 0) {
                     fieldAccess= AccessType.PUBLIC;
-                }
+//                }
                 var field= new VariableDefinition(CodeType.FIELD, c, fieldAccess, ScopeType.NONSTATIC);
                 AddVariable(field);
             }            

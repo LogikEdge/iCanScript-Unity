@@ -540,6 +540,13 @@ namespace iCanScript.Editor.CodeEngineering {
             if(port.IsInDataPort) {
                 var producerPort= port.ProducerPort;
                 if(producerPort != null && producerPort != port) return false;
+                // Don't generate public interface if already connected to a constructor.
+                var consumers= port.EndConsumerPorts;
+                foreach(var c in consumers) {
+                    if(c.ParentNode.IsConstructor) {
+                        return false;
+                    }
+                }
             }
             else if(port.IsOutDataPort) {
                 if(port.ConsumerPorts.Length != 0) return false;

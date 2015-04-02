@@ -1,16 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 [iCS_Class(Company="iCanScript", Library="SimplePhysic")]
 public class iCS_ImpulseForceGenerator {
 	bool	IsActive;
 	float	StartTime;
-	Vector3	MainImpulse;
-	Vector3 SecondaryImpulse;
-	float	MainImpulseTime;
-	float	SecondaryImpulseTime;
-	float	RetriggerDelay;
-	float   InitialVelocityBoost;
+	public Vector3	MainImpulse;
+	public Vector3 SecondaryImpulse;
+	public float	MainImpulseTime;
+	public float	SecondaryImpulseTime;
+	public float	RetriggerDelay;
+	public float   InitialVelocityBoost;
 	
 	[iCS_Function]
 	public iCS_ImpulseForceGenerator(Vector3 mainImpulseAccel, float mainImpulseTime,
