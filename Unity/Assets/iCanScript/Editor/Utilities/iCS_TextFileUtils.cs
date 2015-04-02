@@ -36,10 +36,9 @@ namespace iCanScript { namespace Editor {
             }
         }
         // ---------------------------------------------------------------------------------
-    	// Write the given text into the file at the given path.
+    	/// Writes the given text into the file at the given path.
         public static bool WriteFile(string fileName, string fileData) {
     		var systemPath= FileUtils.ToSystemPath(fileName);
-//    		var unityPath = FileUtils.ToUnityAssetPath(fileName);
     
             StreamWriter sw= null;
             try {
@@ -48,7 +47,6 @@ namespace iCanScript { namespace Editor {
                 sw.Close();
                 // Create an asset that Unity will recognize...
                 AssetDatabase.Refresh();
-//                AssetDatabase.ImportAsset(unityPath);
                 return true;
             }
             catch(System.Exception) {
@@ -59,7 +57,21 @@ namespace iCanScript { namespace Editor {
             }
         }
         // ---------------------------------------------------------------------------------
-    	// Opens the given text file with the configured text editor.
+    	/// Deletes the given text file.
+        public static bool DeleteFile(string fileName) {
+    		var systemPath= FileUtils.ToSystemPath(fileName);    
+            try {
+                File.Delete(systemPath);
+                // Ask Unity to refresh its database.
+                AssetDatabase.Refresh();
+                return true;
+            }
+            catch(System.Exception) {
+                return false;
+            }
+        }
+        // ---------------------------------------------------------------------------------
+    	/// Opens the given text file with the configured text editor.
     	public static bool EditFile(string fileName, int lineNb= 1) {
     		var systemPath= FileUtils.ToSystemPath(fileName);
     		var unityPath = FileUtils.ToUnityAssetPath(fileName);

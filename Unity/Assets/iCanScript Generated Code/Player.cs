@@ -17,21 +17,21 @@ namespace iCanScript.Engine.GeneratedCode {
         // -------------------------------------------------------------------------
 
         [iCS_Function]
-        public  void Update(GameObject aGameObject, Transform aTransform) {
+        public  void Update() {
             Vector2 theRawAnalog1;
             bool theJump;
             bool theB2;
             bool theB3;
-            var theAnalog1= iCS_GameController.GameController(out theRawAnalog1, out theJump, out theB2, out theB3, maxSpeed);
+            var theAnalog1= iCS_GameController.GameController(out theRawAnalog1, out theJump, out theB2, out theB3, 10f);
             float theX;
             float theY;
             iCS_FromTo.FromVector(theAnalog1, out theX, out theY);
             var theVelocity= iCS_FromTo.ToVector(theX, 0f, theY);
-            var theAcceleration= p_jumpConfig.Update_38(theJump);
+            var theAcceleration= p_jumpConfig.Update(theJump);
             p_forceIntegrator.Acceleration1= theAcceleration;
-            var theOutput= aGameObject.GetComponent("CharacterController");
+            var theOutput= GetComponent("CharacterController") as CharacterController;
             var theVelocity_101= theOutput.velocity;
-            var theAcceleration_60= p_roamingConfig.Update_56(theVelocity, theVelocity_101, accelerationScale.Update);
+            var theAcceleration_60= p_roamingConfig.Update(theVelocity, theVelocity_101, 1f);
             p_forceIntegrator.Acceleration2= theAcceleration_60;
             Vector3 theDisplacement;
             p_forceIntegrator.Integrate(theVelocity_101, out theDisplacement);
@@ -40,7 +40,7 @@ namespace iCanScript.Engine.GeneratedCode {
             var theOutput_138= iCS_Math.NormalizedCross(theVelocity_101, Vector3.down);
             var theValueTimesDt= iCS_TimeUtility.ScaleByDeltaTime(theMagnitude);
             var theOutput_130= iCS_Math.Mul(theValueTimesDt, 114.59f);
-            aTransform.Rotate(theOutput_138, theOutput_130, relativeTo.Rotate);
+            transform.Rotate(theOutput_138, theOutput_130, Space.World);
         }
     }
 

@@ -31,6 +31,16 @@ namespace iCanScript.Editor.CodeEngineering {
             CSharpFileUtils.WriteCSharpFile("iCanScript Generated Code", fileName, result.ToString());
         }
 
+    	// -------------------------------------------------------------------------
+        /// Deletes the generate code files.
+        ///
+        /// @param iStorage The VS storage to convert to code.
+        ///
+        public void DeleteGeneratedFilesFor(iCS_IStorage iStorage) {
+            var fileName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
+            CSharpFileUtils.DeleteCSharpFile("iCanScript Generated Code", fileName);            
+        }
+        
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------

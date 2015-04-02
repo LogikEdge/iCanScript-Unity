@@ -82,6 +82,12 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The pre-built name for the visual script object.
         ///
         public string GetNameFor(iCS_EditorObject vsObj) {
+            if(vsObj.IsInputPort) {
+                vsObj= vsObj.FirstProducerPort;
+                if(vsObj.IsInputPort) {
+                    return ToValueString(vsObj.InitialValue);
+                }
+            }
             var name= TryGetNameFor(vsObj);
             if(name == null) {
                 Debug.Log("Unable to find name for=> "+vsObj.FullName);

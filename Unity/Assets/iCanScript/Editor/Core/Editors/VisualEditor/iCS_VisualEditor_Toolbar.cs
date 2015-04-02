@@ -101,10 +101,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             Vector2 pivot= ViewportToGraph(ViewportCenter);
             CenterAtWithScale(pivot, newScale);
 		}
-		iCS_ToolbarUtility.Separator(ref r, true);
-        if(iCS_ToolbarUtility.Button(ref r, 100, true, "Generate C#", spacer, spacer, true)) {
+        if(iCS_ToolbarUtility.Button(ref r, 100, true, "Generate C#", 0, spacer, true)) {
             var codeGenerator= new CodeGenerator();
             codeGenerator.GenerateCodeFor(IStorage);
+        }
+        if(iCS_ToolbarUtility.Button(ref r, 100, true, "Delete C#", spacer, 0, true)) {
+            var codeGenerator= new CodeGenerator();
+            codeGenerator.DeleteGeneratedFilesFor(IStorage);
         }
 
 //		// Show current bookmark.

@@ -44,7 +44,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var result= new StringBuilder(indent, 128);
             // Simplified situation for property get.
             var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(myNode);
-            var functionName= GetPublicFunctionName(myNode);
+            var functionName= memberInfo.ToFunctionPrototypeInfo.MethodName;
             if(IsPropertyGet(memberInfo)) {
                 // Declare return variable.
                 result.Append(DeclareReturnVariable(myNode));
