@@ -29,9 +29,8 @@ namespace iCanScript.Engine.GeneratedCode {
             bool theB2;
             bool theB3;
             var theAnalog1= iCS_GameController.GameController(out theRawAnalog1, out theJump, out theB2, out theB3, maxSpeed);
-            float theX;
-            float theY;
-            iCS_FromTo.FromVector(theAnalog1, out theX, out theY);
+            var theX= theAnalog1.x;
+            var theY= theAnalog1.y;
             var theVelocity= iCS_FromTo.ToVector(theX, 0f, theY);
             var theAcceleration= jumpConfig.Update(theJump);
             forceIntegrator.Acceleration1= theAcceleration;

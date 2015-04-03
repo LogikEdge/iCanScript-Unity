@@ -76,14 +76,14 @@ namespace iCanScript.Editor.CodeEngineering {
             // Simplified situation for property get.
             var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(myNode);
             var functionName= memberInfo.ToFunctionPrototypeInfo.MethodName;
-            if(IsPropertyGet(memberInfo)) {
+            if(IsFieldOrPropertyGet(memberInfo)) {
                 // Declare return variable.
                 result.Append(indent);
                 result.Append(DeclareReturnVariable(myNode));
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, myNode));
                 // Generate function call.
-                result.Append(ToPropertyName(myNode));
+                result.Append(ToFieldOrPropertyName(memberInfo));
                 result.Append(GenerateReturnTypeCastFragment(myNode));
                 result.Append(";\n");
                 return result.ToString();
@@ -116,10 +116,10 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             // Special case for property set.
             result.Append(indent);
-            if(IsPropertySet(memberInfo)) {
+            if(IsFieldOrPropertySet(memberInfo)) {
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, myNode));
-                result.Append(ToPropertyName(myNode));
+                result.Append(ToFieldOrPropertyName(memberInfo));
                 result.Append("= ");
                 result.Append(paramStrings[0]);
             }
@@ -276,20 +276,50 @@ namespace iCanScript.Editor.CodeEngineering {
             return result;
         }
     	// -------------------------------------------------------------------------
-        /// Returns _'true'_ if the node is a property get function.
-        static bool IsPropertyGet(iCS_MemberInfo memberInfo) {
+        /// Returns _'true'_ if the node is a field or property get function.
+        static bool IsFieldOrPropertyGet(iCS_MemberInfo memberInfo) {
             var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo == null) return false;
-            return propertyInfo.IsGet;
+            if(propertyInfo != null) {
+                return propertyInfo.IsGet;
+            }
+            var fieldInfo= memberInfo.ToFieldInfo;
+            if(fieldInfo != null) {
+                return fieldInfo.IsGet;
+            }
+            return false;
         }
     	// -------------------------------------------------------------------------
-        /// Returns _'false'_ if the node is a property get function.
-        static bool IsPropertySet(iCS_MemberInfo memberInfo) {
+        /// Returns _'true'_ if the node is a field or property set function.
+        static bool IsFieldOrPropertySet(iCS_MemberInfo memberInfo) {
             var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo == null) return false;
-            return propertyInfo.IsSet;
+            if(propertyInfo != null) {
+                return propertyInfo.IsSet;
+            }
+            var fieldInfo= memberInfo.ToFieldInfo;
+            if(fieldInfo != null) {
+                return fieldInfo.IsSet;
+            }
+            return false;
         }
 
+    	// -------------------------------------------------------------------------
+        /// Returns the name of the field or property.
+        ///
+        /// @param memberInfo Member information associated with field or property.
+        /// @return The name of the filed or property.
+        ///
+        string ToFieldOrPropertyName(iCS_MemberInfo memberInfo) {
+            var propertyInfo= memberInfo.ToPropertyInfo;
+            if(propertyInfo != null) {
+                return propertyInfo.MethodName.Substring(4);
+            }
+            var fieldInfo= memberInfo.ToFieldInfo;
+            if(fieldInfo != null) {
+                return fieldInfo.MethodName;
+            }
+            return null;            
+        }
+        
     	// -------------------------------------------------------------------------
         /// Returns the list of output ports.
         iCS_EditorObject[] GetOutputDataPorts() {

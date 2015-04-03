@@ -342,6 +342,16 @@ namespace iCanScript.Editor.CodeEngineering {
             return vsObject.MethodName.Substring(4);
         }
 
+        // ---------------------------------------------------------------------------------
+        /// Convert the given VS object to a field name.
+        ///
+        /// @param paramObject Visual Script object for whom to generate the name.
+        /// @return The converted name.
+        ///
+        public string ToFieldName(iCS_EditorObject vsObject) {
+            return vsObject.MethodName;
+        }
+
         // =========================================================================
         // UNIQUE NAME MANAGEMENT
         // -------------------------------------------------------------------------
