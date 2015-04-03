@@ -51,6 +51,10 @@ namespace iCanScript.Editor.CodeEngineering {
         public CodeContext(CodeType codeType, iCS_EditorObject vsObject) {
             myVSObject= vsObject;
             myCodeType= codeType;
+            var globalContext= GetGlobalContext();
+            if(globalContext != null) {
+                globalContext.Register(this, vsObject);
+            }
         }
         public virtual void ResolveDependencies() {}
         public virtual void AddVariable(VariableDefinition variableDefinition) {}
@@ -581,9 +585,10 @@ namespace iCanScript.Editor.CodeEngineering {
         // ITERATION UTILITIES
     	// -------------------------------------------------------------------------
         /// Returns the code root.
-        CodeContext GetRootContext() {
-            if(Parent == null) return this;
-            return Parent.GetRootContext();
+        GlobalDefinition GetGlobalContext() {
+            if(this is GlobalDefinition) return this as GlobalDefinition;
+            if(Parent == null) return null;
+            return Parent.GetGlobalContext();
         }
 
     	// -------------------------------------------------------------------------

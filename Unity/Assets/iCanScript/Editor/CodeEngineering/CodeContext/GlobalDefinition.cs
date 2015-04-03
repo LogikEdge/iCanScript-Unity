@@ -9,10 +9,10 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        string                myNamespace      = null;
-        List<string>          myUsingDirectives= new List<string>();
-        List<TypeDefinition>  myTypes          = new List<TypeDefinition>();
-        CodeContext[]         myAllCodeContexts= null;
+        string                myNamespace        = null;
+        List<string>          myUsingDirectives  = new List<string>();
+        List<TypeDefinition>  myTypes            = new List<TypeDefinition>();
+        CodeContext[]         myObjectToCodeTable= null;
         
         // ===================================================================
         // PROPERTIES
@@ -31,11 +31,11 @@ namespace iCanScript.Editor.CodeEngineering {
         : base(CodeType.GLOBAL, vsRootObject) {
             // Allocate visual script object to code context correspondance array.
             var visualScriptSize= vsRootObject.IStorage.EditorObjects.Count;
-            myAllCodeContexts= new CodeContext[visualScriptSize];
+            myObjectToCodeTable= new CodeContext[visualScriptSize];
             for(int i= 0; i < visualScriptSize; ++i) {
-                myAllCodeContexts[i]= null;
+                myObjectToCodeTable[i]= null;
             }
-            myAllCodeContexts[vsRootObject.InstanceId]= this;
+            myObjectToCodeTable[vsRootObject.InstanceId]= this;
             
             // Initialise attributes
 			myNamespace= namespaceName;
@@ -64,6 +64,12 @@ namespace iCanScript.Editor.CodeEngineering {
             AddType(classDefinition);			
 		}
 		
+        // -------------------------------------------------------------------
+        /// 
+        public void Register(CodeContext codeContext, iCS_EditorObject vsObject) {
+            myObjectToCodeTable[vsObject.InstanceId]= codeContext;
+        }
+        
         // -------------------------------------------------------------------
 		/// Resolves the dependencies by promoting varaibles.
 		public override void ResolveDependencies() {
