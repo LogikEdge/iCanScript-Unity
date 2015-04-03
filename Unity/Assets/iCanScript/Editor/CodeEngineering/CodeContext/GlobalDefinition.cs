@@ -26,8 +26,18 @@ namespace iCanScript.Editor.CodeEngineering {
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds the code global scope.
-        public GlobalDefinition()
+        public GlobalDefinition(iCS_IStorage iStorage, string namespaceName, string[] usingDirectives)
         : base(CodeType.GLOBAL) {
+			myNamespace= namespaceName;
+			foreach(var ud in usingDirectives) {
+				AddUsingDirective(ud);
+			}
+            // Add root class defintion.
+            var classDefinition= new TypeDefinition(iStorage.EditorObjects[0],
+                                                    typeof(MonoBehaviour),
+                                                    CodeContext.AccessType.PUBLIC,
+                                                    CodeContext.ScopeType.NONSTATIC);
+            AddType(classDefinition);
         }
 
         // ===================================================================

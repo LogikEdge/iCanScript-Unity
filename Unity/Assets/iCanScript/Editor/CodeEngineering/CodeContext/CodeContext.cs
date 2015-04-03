@@ -27,8 +27,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public abstract void    AddFunction(FunctionDefinition functionDefinition);
         public abstract string  GenerateCode(int indentSize);
         public delegate string  CodeProducer(int indent);
-//        public abstract void    BuildCodeStructure();
-//        public abstract void    AnalyseDependencies();
+//        public abstract void    ResolveDependencies();
 //        public abstract string  GenerateHeader(int indentSize);
 //        public abstract string  GenerateTypes(int indentSize);
 //        public abstract string  GenerateConstants(int indentSize);

@@ -21,10 +21,12 @@ namespace iCanScript.Editor.CodeEngineering {
             }
 
             // Build code global scope.
-            BuildGlobalDefinition(iStorage);
+            var codeGenerationNamespace= "iCanScript.Engine.GeneratedCode";
+			string[] usingDirectives= {"UnityEngine"};
+            myCodeRoot= new GlobalDefinition(iStorage, codeGenerationNamespace, usingDirectives);
             
             // Generate code.
-            var result= GenerateCode();
+            var result= myCodeRoot.GenerateCode(0);
             
             // Write final code to file.
             var fileName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
@@ -41,35 +43,6 @@ namespace iCanScript.Editor.CodeEngineering {
             CSharpFileUtils.DeleteCSharpFile("iCanScript Generated Code", fileName);            
         }
         
-        // ===================================================================
-        // INFORMATION GATHERING FUNCTIONS
-        // -------------------------------------------------------------------
-        /// Builds the definition of the global code.
-        ///
-        /// @param iStorage The VS storage to convert to code.
-        ///
-        void BuildGlobalDefinition(iCS_IStorage iStorage) {
-            // Build global context.
-            myCodeRoot= new GlobalDefinition();
-            myCodeRoot.Namespace= "iCanScript.Engine.GeneratedCode";
-            myCodeRoot.AddUsingDirective("UnityEngine");
-            
-            // Add root class defintion.
-            var classDefinition= new TypeDefinition(iStorage.EditorObjects[0],
-                                                    typeof(MonoBehaviour),
-                                                    CodeContext.AccessType.PUBLIC,
-                                                    CodeContext.ScopeType.NONSTATIC);
-            myCodeRoot.AddType(classDefinition);
-        }
-
-        // ===================================================================
-        // CODE GENERATION FUNCTIONS
-        // -------------------------------------------------------------------
-        /// Generates the CSharp code.
-        public string GenerateCode() {
-            return myCodeRoot.GenerateCode(0);
-        }
-    
     }
     
 }
