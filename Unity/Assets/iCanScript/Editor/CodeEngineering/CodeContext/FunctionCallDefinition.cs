@@ -70,26 +70,49 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
-        public override string GenerateCode(int indentSize) {
+        /// Generate the function call header code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted header code for the function call.
+        ///
+        public override string GenerateHeader(int indentSize) {
             var indent= ToIndent(indentSize);
+            var result= new StringBuilder(128);
+            // Generate function call (except for setter).        
+            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(myNode);
+            if(!IsFieldOrPropertySet(memberInfo)) {
+                // Declare the output parameters.
+                result.Append(DeclarelocalVariablesForOutputParameters(indentSize));
+                // Declare return variable.
+                result.Append(indent);
+                result.Append(DeclareReturnVariable(myNode));
+            }
+            else {
+                result.Append(indent);
+            }
+            return result.ToString();
+        }
+
+        // -------------------------------------------------------------------
+        /// Generate the function call code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted body code for the function call.
+        ///
+        public override string GenerateBody(int indentSize) {
+            // Ajust back the indentation.
             var result= new StringBuilder(128);
             // Simplified situation for property get.
             var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(myNode);
             var functionName= memberInfo.ToFunctionPrototypeInfo.MethodName;
             if(IsFieldOrPropertyGet(memberInfo)) {
-                // Declare return variable.
-                result.Append(indent);
-                result.Append(DeclareReturnVariable(myNode));
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, myNode));
                 // Generate function call.
                 result.Append(ToFieldOrPropertyName(memberInfo));
                 result.Append(GenerateReturnTypeCastFragment(myNode));
-                result.Append(";\n");
                 return result.ToString();
             }
-            // Declare the output parameters.
-            result.Append(DeclarelocalVariablesForOutputParameters(indentSize));
             // Determine parameters information.
             var parameters= GetParameters(myNode);
             var pLen= parameters.Length;
@@ -115,7 +138,6 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
             }
             // Special case for property set.
-            result.Append(indent);
             if(IsFieldOrPropertySet(memberInfo)) {
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, myNode));
@@ -125,17 +147,27 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             // Generate function call.        
             else {
-                // Declare return variable.
-                result.Append(DeclareReturnVariable(myNode));
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, myNode));
                 // Declare function call.
                 result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));
                 result.Append(GenerateReturnTypeCastFragment(myNode));            
             }
-            result.Append(";\n");
             return result.ToString();
         }
+
+        // -------------------------------------------------------------------
+        /// Generate the function call trailer code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted trailer code for the function call.
+        ///
+        public override string GenerateTrailer(int indentSize) {
+            return ";\n";
+        }
+
+        // ===================================================================
+        // CODE GENERATION UTILITIES
         // -------------------------------------------------------------------
         public static string GenerateFunctionCall(int indentSize, string functionName, string[] paramValues) {
             StringBuilder result= new StringBuilder();
