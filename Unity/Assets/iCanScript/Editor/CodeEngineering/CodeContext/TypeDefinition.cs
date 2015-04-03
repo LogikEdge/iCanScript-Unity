@@ -51,6 +51,17 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
+		/// Resolves code dependencies.
+		public override void ResolveDependencies() {
+			foreach(var f in myFields) {
+				f.ResolveDependencies();
+			}
+			foreach(var f in myFunctions) {
+				f.ResolveDependencies();
+			}
+		}
+
+        // -------------------------------------------------------------------
         /// Adds a field definition to the class.
         ///
         /// @param vsObj VS object that represents the field.

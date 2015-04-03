@@ -32,14 +32,36 @@ namespace iCanScript.Editor.CodeEngineering {
 			foreach(var ud in usingDirectives) {
 				AddUsingDirective(ud);
 			}
+
+			// Build root types
+			BuildRootTypes(iStorage);
+			
+			// Resolve dependencies.
+			ResolveDependencies();
+        }
+
+        // -------------------------------------------------------------------
+		/// Builds the root class defintions
+		///
+		/// @param iStorage The VS storage.
+		///
+		void BuildRootTypes(iCS_IStorage iStorage) {
             // Add root class defintion.
             var classDefinition= new TypeDefinition(iStorage.EditorObjects[0],
                                                     typeof(MonoBehaviour),
                                                     CodeContext.AccessType.PUBLIC,
                                                     CodeContext.ScopeType.NONSTATIC);
-            AddType(classDefinition);
-        }
-
+            AddType(classDefinition);			
+		}
+		
+        // -------------------------------------------------------------------
+		/// Resolves the dependencies by promoting varaibles.
+		public override void ResolveDependencies() {
+			foreach(var rt in myTypes) {
+				rt.ResolveDependencies();
+			}			
+		}
+		
         // ===================================================================
         // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------

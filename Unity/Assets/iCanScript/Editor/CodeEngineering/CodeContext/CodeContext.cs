@@ -25,18 +25,11 @@ namespace iCanScript.Editor.CodeEngineering {
         public abstract void    AddExecutable(CodeContext executableDefinition);
         public abstract void    AddType(TypeDefinition typeDefinition);
         public abstract void    AddFunction(FunctionDefinition functionDefinition);
-        public abstract string  GenerateCode(int indentSize);
+        public abstract void    ResolveDependencies();
         public delegate string  CodeProducer(int indent);
-//        public abstract void    ResolveDependencies();
-//        public abstract string  GenerateHeader(int indentSize);
-//        public abstract string  GenerateTypes(int indentSize);
-//        public abstract string  GenerateConstants(int indentSize);
-//        public abstract string  GeneratePublicVariables(int indentSize);
-//        public abstract string  GeneratePrivateVariables(int indentSize);
-//        public abstract string  GeneratePublicFunctions(int indentSize);
-//        public abstract string  GeneratePrivateFunctions(int indentSize);
-//        public abstract string  GenerateNestedCode(indentSize);
-//        public abstract string  GenerateTrailer(indentSize);
+        public abstract string  GenerateHeader(int indentSize);
+		public abstract string	GenerateBody(int indentSize);
+        public abstract string  GenerateTrailer(int indentSize);
 
         // ===================================================================
         // FIELDS
@@ -44,7 +37,6 @@ namespace iCanScript.Editor.CodeEngineering {
         CodeContext                          myParent    = null;            ///< The parnt code context
         CodeType                             myCodeType  = CodeType.GLOBAL; ///< Type of this code context
         Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
-//        List<VariableDefinition>             myVariables = new List<VariableDefinition>();
         
         // ===================================================================
         // PROPERTIES
@@ -58,8 +50,10 @@ namespace iCanScript.Editor.CodeEngineering {
             set { myParent= value; }
         }
         
+        // ===================================================================
+        // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
-        /// Builds a Code Context object.
+        /// Builds the core code structure.
         ///
         /// @param associatedObjects VS objects associated with this code context.
         /// @param parentContext The code context of the parent.
@@ -72,17 +66,13 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
-//        public virtual GenerateCode(int indentSize) {
-//            GenerateHeader(indentSize);
-//            GenerateTypes(indentSize+1);
-//            GenerateConstants(indentSize+1);
-//            GeneratePublicVariables(indentSize+1);
-//            GeneratePrivateVariables(indentSize+1);
-//            GeneratePublicFunctions(indentSize+1);
-//            GeneratePrivateFunctions(indentSize+1);
-//            GenerateNestedCode(indentSize+1);
-//            GenerateTrailer(indentSize);
-//        }
+        public virtual string GenerateCode(int indentSize) {
+			var result= new StringBuilder(2048);
+            result.Append(GenerateHeader(indentSize));
+            result.Append(GenerateBody(indentSize+1));
+            result.Append(GenerateTrailer(indentSize));
+			return result.ToString();
+        }
         
         // =========================================================================
         // CONVERSION UTILITIES

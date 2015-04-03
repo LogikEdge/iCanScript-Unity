@@ -28,6 +28,14 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
+		/// Resolves code dependencies.
+		public override void ResolveDependencies() {
+			foreach(var e in myExecutionList) {
+				e.ResolveDependencies();
+			}
+		}
+
+        // -------------------------------------------------------------------
         /// Adds an execution child.
         ///
         /// @param child The execution child to add.
