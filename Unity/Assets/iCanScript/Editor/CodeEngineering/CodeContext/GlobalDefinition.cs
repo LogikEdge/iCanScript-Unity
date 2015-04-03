@@ -12,6 +12,7 @@ namespace iCanScript.Editor.CodeEngineering {
         string                myNamespace      = null;
         List<string>          myUsingDirectives= new List<string>();
         List<TypeDefinition>  myTypes          = new List<TypeDefinition>();
+        CodeContext[]         myAllCodeContexts= null;
         
         // ===================================================================
         // PROPERTIES
@@ -28,6 +29,15 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds the code global scope.
         public GlobalDefinition(iCS_EditorObject vsRootObject, string namespaceName, string[] usingDirectives)
         : base(CodeType.GLOBAL, vsRootObject) {
+            // Allocate visual script object to code context correspondance array.
+            var visualScriptSize= vsRootObject.IStorage.EditorObjects.Count;
+            myAllCodeContexts= new CodeContext[visualScriptSize];
+            for(int i= 0; i < visualScriptSize; ++i) {
+                myAllCodeContexts[i]= null;
+            }
+            myAllCodeContexts[vsRootObject.InstanceId]= this;
+            
+            // Initialise attributes
 			myNamespace= namespaceName;
 			foreach(var ud in usingDirectives) {
 				AddUsingDirective(ud);

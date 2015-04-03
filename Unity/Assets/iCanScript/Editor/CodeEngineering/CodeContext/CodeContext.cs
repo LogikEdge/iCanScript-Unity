@@ -585,6 +585,16 @@ namespace iCanScript.Editor.CodeEngineering {
             if(Parent == null) return this;
             return Parent.GetRootContext();
         }
+
+    	// -------------------------------------------------------------------------
+        /// Finds the code context for the given visual script object.
+        ///
+        /// @param vsObject The visual scriptobject to search for.
+        /// @return The found code context.  _'null'_ is return if not found.
+        ///
+        public CodeContext FindCodeContext(iCS_EditorObject vsObject) {
+            return null;
+        }
     }
 
 }

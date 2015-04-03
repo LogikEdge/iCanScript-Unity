@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define OPTIMIZATION
+using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -121,7 +122,18 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(p.IsInputPort) {
                     var producerPort= p.FirstProducerPort;
                     if(producerPort != null && producerPort != p) {
+#if OPTIMIZATION
+                        var producerParent= producerPort.ParentNode;
+                        var producerCode= FindCodeContext(producerParent);
+                        if(producerCode != null && producerCode.Parent == Parent) {
+                            paramStrings[p.PortIndex]= producerCode.GenerateBody(indentSize);                            
+                        }
+                        else {
+                            paramStrings[p.PortIndex]= GetNameFor(producerPort);                            
+                        }
+#else
                         paramStrings[p.PortIndex]= GetNameFor(producerPort);
+#endif                        
                         var producerCommonType= GetCommonBaseTypeForProducerPort(producerPort);
                         var portTypeName= ToTypeName(p.RuntimeType);
                         if(portTypeName != ToTypeName(producerCommonType)) {
