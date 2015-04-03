@@ -49,5 +49,4 @@ namespace iCanScript.Engine.GeneratedCode {
             theTransform.Rotate(theOutput_138, theOutput_130, Space.World);
         }
     }
-
 }

@@ -52,7 +52,12 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
-        public override string GenerateCode(int indentSize) {
+        /// Generate the if-statement header code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted header code for the if-statement.
+        ///
+        public override string GenerateHeader(int indentSize) {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(indent, 1024);
             result.Append("if(");
@@ -64,13 +69,33 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
             }
             result.Append(") {\n");
-            foreach(var c in myExecutionList) {
-                result.Append(c.GenerateCode(indentSize+1));
-            }
-            result.Append(indent);
-            result.Append("}\n");
             return result.ToString();
         }
+
+        // -------------------------------------------------------------------
+        /// Generate the if-statement code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted body code for the if-statement.
+        ///
+        public override string GenerateBody(int indentSize) {
+            var result= new StringBuilder(1024);
+            foreach(var c in myExecutionList) {
+                result.Append(c.GenerateCode(indentSize));
+            }
+            return result.ToString();
+        }
+
+        // -------------------------------------------------------------------
+        /// Generate the if-statement trailer code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted trailer code for the if-statement.
+        ///
+        public override string GenerateTrailer(int indentSize) {
+            return ToIndent(indentSize)+"}\n";
+        }
+
     }
 
 }

@@ -73,10 +73,6 @@ namespace iCanScript.Editor.CodeEngineering {
             myTypes.Add(typeDefinition);
             typeDefinition.Parent= this;
         }
-        // -------------------------------------------------------------------
-        public override void AddVariable(VariableDefinition variableDefinition) { Debug.LogWarning("iCanScript: Trying to add a variable defintion to the global definition."); }
-        public override void AddExecutable(CodeContext executableDefinition)    { Debug.LogWarning("iCanScript: Trying to add a child executable definition to the global definition."); }
-        public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to a the global definition."); }
         
         // -------------------------------------------------------------------
         /// Adds a using directive to the file scope.
@@ -92,25 +88,36 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
-        /// Generate for code for the Visual Script.
-        public override string GenerateCode(int indentSize) {
-            // Generate using directives.
+        /// Generate the global scope header code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted header code for the global scope.
+        ///
+        public override string GenerateHeader(int indentSize) {
             var result= new StringBuilder(2048);
-            result.Append(GenerateUsingDirectives());
-
-            // Start generating the code from the namespace.
-            if(string.IsNullOrEmpty(myNamespace)) {
-                result.Append(GenerateClassDefinitions(0));
+            // Generate using directives.
+            foreach(var u in myUsingDirectives) {
+                result.Append("using ");
+                result.Append(u);
+                result.Append(";\n");
             }
-            else {
-                result.Append(GenerateNamespace(GenerateClassDefinitions));                
+            // Generate the namespace header.
+            if(!string.IsNullOrEmpty(myNamespace)) {
+                result.Append("\nnamespace ");
+                result.Append(myNamespace);
+                result.Append(" {\n");
             }
             return result.ToString();
         }
-        
+
         // -------------------------------------------------------------------
-        /// Generate for code for each class definition in the Visual Script.
-        string GenerateClassDefinitions(int indentSize) {
+        /// Generate the global scope body code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted body code for the global scope.
+        ///
+        public override string GenerateBody(int indentSize) {
+            // Generate each internal type.
             var result= new StringBuilder(1024);
             foreach(var typeDef in myTypes) {
                 result.Append("\n");
@@ -118,36 +125,19 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             return result.ToString();
         }
-        
-        // -------------------------------------------------------------------
-        /// Generate the code for the using directives.
-        ///
-        /// @param usingDirectives Array of using target strings.
-        /// @return Return the formatted code for the using diectives.
-        ///
-        string GenerateUsingDirectives() {
-            StringBuilder result= new StringBuilder("");
-            foreach(var u in myUsingDirectives) {
-                result.Append("using ");
-                result.Append(u);
-                result.Append(";\n");
-            }
-            return result.ToString();
-        }
 
         // -------------------------------------------------------------------
-        /// Generate the code for the namespace
+        /// Generate the global scope trailer code.
         ///
-        /// @param namespaceName The namespace in which to generate the code.
-        /// @return The formatted code for the namespace and its internals.
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted trailer code for the global scope.
         ///
-        string GenerateNamespace(CodeProducer namespaceBody) {
-            StringBuilder result= new StringBuilder("\nnamespace ");
-            result.Append(myNamespace);
-            result.Append(" {\n");
-            result.Append(namespaceBody(1));
-            result.Append("\n}\n");
-            return result.ToString();
+        public override string GenerateTrailer(int indentSize) {
+            // Generate the namespace trailer.
+            if(!string.IsNullOrEmpty(myNamespace)) {
+                return "}\n";
+            }
+            return "";
         }
         
     }

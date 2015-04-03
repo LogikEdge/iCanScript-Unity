@@ -48,19 +48,6 @@ namespace iCanScript.Editor.CodeEngineering {
             AddChildFunctions();
         }
         
-        // ===================================================================
-        // COMMON INTERFACE FUNCTIONS
-        // -------------------------------------------------------------------
-		/// Resolves code dependencies.
-		public override void ResolveDependencies() {
-			foreach(var f in myFields) {
-				f.ResolveDependencies();
-			}
-			foreach(var f in myFunctions) {
-				f.ResolveDependencies();
-			}
-		}
-
         // -------------------------------------------------------------------
         /// Adds a field definition to the class.
         ///
@@ -79,9 +66,6 @@ namespace iCanScript.Editor.CodeEngineering {
             myFunctions.Add(functionDefinition);
             functionDefinition.Parent= this;
         }        
-        // -------------------------------------------------------------------
-        public override void AddExecutable(CodeContext executableDefinition)    { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a type definition."); }
-        public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to a type definition."); }
 
         // -------------------------------------------------------------------
         /// Searches for child constrcutors and adds them to class definition.
@@ -127,12 +111,12 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
-        /// Generate the class code.
+        /// Generate the type header code.
         ///
         /// @param indentSize The indentation needed for the class definition.
-        /// @return The formatted code for the class.
+        /// @return The formatted header code for the type.
         ///
-        public override string GenerateCode(int indentSize) {
+        public override string GenerateHeader(int indentSize) {
             // Determine class properties.
             var className= GetClassName(myClassNode);
             
@@ -160,21 +144,16 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             // Class begin
             result.Append(" {\n");
-            // Class Body
-            result.Append(GenerateClassBody(indentSize+1));
-            // Class end
-            result.Append(indent);
-            result.Append("}\n");
             return result.ToString();
         }
-
+        
         // -------------------------------------------------------------------
-        /// Generate the class body code.
+        /// Generate the type body code.
         ///
         /// @param indentSize The indentation needed for the class definition.
-        /// @return The formatted code for the class.
+        /// @return The formatted body code for the type.
         ///
-        string GenerateClassBody(int indentSize) {
+        public override string GenerateBody(int indentSize) {
             var result= new StringBuilder(1024);
             // Fields
             result.Append(GenerateClassFields(indentSize));
@@ -183,6 +162,18 @@ namespace iCanScript.Editor.CodeEngineering {
             return result.ToString();
         }
 
+        // -------------------------------------------------------------------
+        /// Generate the type trailer code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted trailer code for the type.
+        ///
+        public override string GenerateTrailer(int indentSize) {
+            return ToIndent(indentSize)+"}\n";
+        }
+
+        // ===================================================================
+        // CODE GENERATION UTILITIES
         // -------------------------------------------------------------------
         /// Generate the code for the class functions.
         ///
