@@ -22,21 +22,20 @@ namespace iCanScript.Editor.CodeEngineering {
             get { return myNamespace; }
             set { myNamespace= value; }
         }
+		public CodeContext[] ObjectToCodeTable {
+			get { return myObjectToCodeTable; }
+		}
 
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds the code global scope.
         public GlobalDefinition(iCS_EditorObject vsRootObject, string namespaceName, string[] usingDirectives)
-        : base(CodeType.GLOBAL, vsRootObject) {
+        : base(CodeType.GLOBAL, vsRootObject, null) {
             // Allocate visual script object to code context correspondance array.
-            var visualScriptSize= vsRootObject.IStorage.EditorObjects.Count;
-            myObjectToCodeTable= new CodeContext[visualScriptSize];
-            for(int i= 0; i < visualScriptSize; ++i) {
-                myObjectToCodeTable[i]= null;
-            }
+			AllocateObjectToCodeTable();
             myObjectToCodeTable[vsRootObject.InstanceId]= this;
-            
+
             // Initialise attributes
 			myNamespace= namespaceName;
 			foreach(var ud in usingDirectives) {
@@ -57,7 +56,7 @@ namespace iCanScript.Editor.CodeEngineering {
 		///
 		void BuildRootTypes(iCS_EditorObject vsRootObject) {
             // Add root class defintion.
-            var classDefinition= new TypeDefinition(vsRootObject,
+            var classDefinition= new TypeDefinition(vsRootObject, this,
                                                     typeof(MonoBehaviour),
                                                     CodeContext.AccessType.PUBLIC,
                                                     CodeContext.ScopeType.NONSTATIC);
@@ -65,11 +64,26 @@ namespace iCanScript.Editor.CodeEngineering {
 		}
 		
         // -------------------------------------------------------------------
-        /// 
+        /// Register the association between visual script object and its code
+		/// context.
+		///
+		/// @param codeContext The VS object code context.
+		/// @param vsObject The visual script object.
+		///
         public void Register(CodeContext codeContext, iCS_EditorObject vsObject) {
+			AllocateObjectToCodeTable();
             myObjectToCodeTable[vsObject.InstanceId]= codeContext;
         }
         
+        // -------------------------------------------------------------------
+		void AllocateObjectToCodeTable() {
+			if(myObjectToCodeTable != null) return;
+            var visualScriptSize= VSObject.IStorage.EditorObjects.Count;
+            myObjectToCodeTable= new CodeContext[visualScriptSize];
+            for(int i= 0; i < visualScriptSize; ++i) {
+                myObjectToCodeTable[i]= null;
+            }
+		}
         // -------------------------------------------------------------------
 		/// Resolves the dependencies by promoting varaibles.
 		public override void ResolveDependencies() {

@@ -33,8 +33,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param node VS objects associated with the function.
         /// @return The newly created code context.
         ///
-        public FunctionDefinition(iCS_EditorObject node, AccessType accessType, ScopeType scopeType)
-        : base(CodeType.FUNCTION, node) {
+        public FunctionDefinition(iCS_EditorObject node, CodeContext parent, AccessType accessType, ScopeType scopeType)
+        : base(CodeType.FUNCTION, node, parent) {
             myFunctionNode= node;
             myAccessType  = accessType;
             myScopeType   = scopeType;
@@ -114,7 +114,7 @@ namespace iCanScript.Editor.CodeEngineering {
 								ifEnables.Add(functionEnables[addIdx]);
 								++addIdx;								
 							} while(addIdx < functionEnables.Length && functionEnables[addIdx-1].ParentNode == functionEnables[addIdx].ParentNode);
-							var newIfStatement= new IfStatementDefinition(ifEnables.ToArray());
+							var newIfStatement= new IfStatementDefinition(this, ifEnables.ToArray());
 							if(currentIfStatement == null) {
 								AddExecutable(newIfStatement);
 							}
@@ -126,7 +126,7 @@ namespace iCanScript.Editor.CodeEngineering {
 					}
 					currentEnables= functionEnables;
 				}
-	            var funcDef= new FunctionCallDefinition(function);
+	            var funcDef= new FunctionCallDefinition(function, this);
 				if(currentIfStatement == null) {
 					AddExecutable(funcDef);
 				}

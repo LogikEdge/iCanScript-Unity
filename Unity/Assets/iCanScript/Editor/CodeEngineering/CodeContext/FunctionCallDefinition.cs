@@ -27,13 +27,13 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param vsObj VS node associated with the function call.
         /// @return The newly created function call definition.
         ///
-        public FunctionCallDefinition(iCS_EditorObject vsObj)
-        : base(CodeType.FUNCTION_CALL, vsObj) {
+        public FunctionCallDefinition(iCS_EditorObject vsObj, CodeContext parent)
+        : base(CodeType.FUNCTION_CALL, vsObj, parent) {
         	myNode= vsObj;
             // Gather output parameter information.
             var outputPorts= GetOutputDataPorts();
             foreach(var p in outputPorts) {
-                AddVariable(new VariableDefinition(p, AccessType.PRIVATE, ScopeType.NONSTATIC));
+                AddVariable(new VariableDefinition(p, this, AccessType.PRIVATE, ScopeType.NONSTATIC));
             }
         }
         
@@ -126,7 +126,13 @@ namespace iCanScript.Editor.CodeEngineering {
                         var producerParent= producerPort.ParentNode;
                         var producerCode= FindCodeContext(producerParent);
                         if(producerCode != null && producerCode.Parent == Parent) {
-                            paramStrings[p.PortIndex]= producerCode.GenerateBody(indentSize);                            
+				            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
+							if(IsFieldOrPropertyGet(producerInfo)) {
+	                            paramStrings[p.PortIndex]= producerCode.GenerateBody(indentSize);								
+							}
+							else {
+	                            paramStrings[p.PortIndex]= GetNameFor(producerPort);								
+							}
                         }
                         else {
                             paramStrings[p.PortIndex]= GetNameFor(producerPort);                            

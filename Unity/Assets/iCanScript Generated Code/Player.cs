@@ -31,19 +31,19 @@ namespace iCanScript.Engine.GeneratedCode {
             var theAnalog1= iCS_GameController.GameController(out theRawAnalog1, out theJumpButton, out theB2, out theB3, maxSpeed);
             var theX= theAnalog1.x;
             var theY= theAnalog1.y;
-            var theVelocity= iCS_FromTo.ToVector(theX, 0f, theY);
+            var theVelocity= iCS_FromTo.ToVector(theAnalog1.x, 0f, theAnalog1.y);
             var theAcceleration= jumpConfig.Update(theJumpButton);
             forceIntegrator.Acceleration1= theAcceleration;
             var theOutput= gameObject.GetComponent("CharacterController") as CharacterController;
             var theVelocity_101= theOutput.velocity;
-            var theAcceleration_60= roamingConfig.Update(theVelocity, theVelocity_101, 1f);
+            var theAcceleration_60= roamingConfig.Update(theVelocity, theOutput.velocity, 1f);
             forceIntegrator.Acceleration2= theAcceleration_60;
             Vector3 theDisplacement;
-            forceIntegrator.Integrate(theVelocity_101, out theDisplacement);
+            forceIntegrator.Integrate(theOutput.velocity, out theDisplacement);
             theOutput.Move(theDisplacement);
             var theMagnitude= theVelocity_101.magnitude;
-            var theOutput_138= iCS_Math.NormalizedCross(theVelocity_101, Vector3.down);
-            var theValueTimesDt= iCS_TimeUtility.ScaleByDeltaTime(theMagnitude);
+            var theOutput_138= iCS_Math.NormalizedCross(theOutput.velocity, Vector3.down);
+            var theValueTimesDt= iCS_TimeUtility.ScaleByDeltaTime(theVelocity_101.magnitude);
             var theOutput_130= iCS_Math.Mul(theValueTimesDt, 114.59f);
             theTransform.Rotate(theOutput_138, theOutput_130, Space.World);
         }

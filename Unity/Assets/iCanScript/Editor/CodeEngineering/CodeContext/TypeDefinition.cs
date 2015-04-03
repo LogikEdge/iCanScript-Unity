@@ -34,9 +34,9 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created class definition.
         ///
-        public TypeDefinition(iCS_EditorObject typeNode, Type baseClass,
+        public TypeDefinition(iCS_EditorObject typeNode, CodeContext parent, Type baseClass,
                               AccessType accessType, ScopeType scopeType)
-        : base(CodeType.CLASS, typeNode) {
+        : base(CodeType.CLASS, typeNode, parent) {
             myClassNode = typeNode;
             myBaseClass = baseClass;
             myAccessType= accessType;
@@ -76,7 +76,7 @@ namespace iCanScript.Editor.CodeEngineering {
 //                if(c.ParentId == 0) {
                     fieldAccess= AccessType.PUBLIC;
 //                }
-                var field= new VariableDefinition(c, fieldAccess, ScopeType.NONSTATIC);
+                var field= new VariableDefinition(c, this, fieldAccess, ScopeType.NONSTATIC);
                 AddVariable(field);
             }            
         }
@@ -86,7 +86,7 @@ namespace iCanScript.Editor.CodeEngineering {
         void AddPublicInterfaces() {
             var publicInterfaces= myClassNode.FilterChildRecursive(c=> IsPublicClassInterface(c));
             foreach(var c in publicInterfaces) {
-                var field= new VariableDefinition(c, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                var field= new VariableDefinition(c, this, AccessType.PUBLIC, ScopeType.NONSTATIC);
                 AddVariable(field);
             }            
         }
@@ -97,11 +97,11 @@ namespace iCanScript.Editor.CodeEngineering {
     		myClassNode.ForEachChildNode(
     			n=> {
     				if(n.IsPublicFunction) {
-                        var functionDefinition= new FunctionDefinition(n, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                        var functionDefinition= new FunctionDefinition(n, this, AccessType.PUBLIC, ScopeType.NONSTATIC);
                         AddFunction(functionDefinition);
     				}
     				if(n.IsMessage) {
-                        var functionDefinition= new EventHandlerDefinition(n, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                        var functionDefinition= new EventHandlerDefinition(n, this, AccessType.PUBLIC, ScopeType.NONSTATIC);
                         AddFunction(functionDefinition);
     				}
     			}

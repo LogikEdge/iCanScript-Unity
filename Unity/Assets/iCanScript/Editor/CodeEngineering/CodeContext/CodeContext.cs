@@ -38,7 +38,10 @@ namespace iCanScript.Editor.CodeEngineering {
             get { return myParent; }
             set { myParent= value; }
         }
-        
+        public iCS_EditorObject VSObject {
+        	get { return myVSObject; }
+        }
+		
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
@@ -48,10 +51,15 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parentContext The code context of the parent.
         /// @return The newly created code context.
         ///
-        public CodeContext(CodeType codeType, iCS_EditorObject vsObject) {
+        public CodeContext(CodeType codeType, iCS_EditorObject vsObject, CodeContext parent) {
+			myParent  = parent;
             myVSObject= vsObject;
             myCodeType= codeType;
+			// Register new code context.
             var globalContext= GetGlobalContext();
+			if(globalContext == null) {
+				Debug.LogWarning("iCanScript: No global context for code generation");
+			}
             if(globalContext != null) {
                 globalContext.Register(this, vsObject);
             }
@@ -598,7 +606,9 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The found code context.  _'null'_ is return if not found.
         ///
         public CodeContext FindCodeContext(iCS_EditorObject vsObject) {
-            return null;
+			var globalContext= GetGlobalContext();
+			if(globalContext == null) return null;
+            return globalContext.ObjectToCodeTable[vsObject.InstanceId];
         }
     }
 

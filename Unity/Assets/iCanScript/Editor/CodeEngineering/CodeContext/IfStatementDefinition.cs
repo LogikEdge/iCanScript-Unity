@@ -20,8 +20,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created code context.
         ///
-        public IfStatementDefinition(iCS_EditorObject[] enables)
-        : base(CodeType.IF, null) {
+        public IfStatementDefinition(CodeContext parent, iCS_EditorObject[] enables)
+        : base(CodeType.IF, null, parent) {
             myEnablePorts= enables;
         }
 
