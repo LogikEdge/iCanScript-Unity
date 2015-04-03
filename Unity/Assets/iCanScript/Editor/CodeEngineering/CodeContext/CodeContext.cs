@@ -26,6 +26,9 @@ namespace iCanScript.Editor.CodeEngineering {
         public abstract void    AddType(TypeDefinition typeDefinition);
         public abstract void    AddFunction(FunctionDefinition functionDefinition);
         public abstract string  GenerateCode(int indentSize);
+        public delegate string  CodeProducer(int indent);
+//        public abstract void    BuildCodeStructure();
+//        public abstract void    AnalyseDependencies();
 //        public abstract string  GenerateHeader(int indentSize);
 //        public abstract string  GenerateTypes(int indentSize);
 //        public abstract string  GenerateConstants(int indentSize);
@@ -33,8 +36,8 @@ namespace iCanScript.Editor.CodeEngineering {
 //        public abstract string  GeneratePrivateVariables(int indentSize);
 //        public abstract string  GeneratePublicFunctions(int indentSize);
 //        public abstract string  GeneratePrivateFunctions(int indentSize);
+//        public abstract string  GenerateNestedCode(indentSize);
 //        public abstract string  GenerateTrailer(indentSize);
-        public delegate string  CodeProducer(int indent);
 
         // ===================================================================
         // FIELDS
@@ -78,6 +81,7 @@ namespace iCanScript.Editor.CodeEngineering {
 //            GeneratePrivateVariables(indentSize+1);
 //            GeneratePublicFunctions(indentSize+1);
 //            GeneratePrivateFunctions(indentSize+1);
+//            GenerateNestedCode(indentSize+1);
 //            GenerateTrailer(indentSize);
 //        }
         
