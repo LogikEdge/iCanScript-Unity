@@ -21,13 +21,20 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
-        public abstract void        AddVariable(VariableDefinition variableDefinition);
-        public abstract void        AddExecutable(CodeContext executableDefinition);
-        public abstract void        AddType(TypeDefinition typeDefinition);
-        public abstract void        AddFunction(FunctionDefinition functionDefinition);
-        public abstract string      GenerateCode(int indentSize);
-//        public abstract CodeContext FindDefinitionFor(iCS_EditorObject vsObj);
-        public delegate string      CodeProducer(int indent);
+        public abstract void    AddVariable(VariableDefinition variableDefinition);
+        public abstract void    AddExecutable(CodeContext executableDefinition);
+        public abstract void    AddType(TypeDefinition typeDefinition);
+        public abstract void    AddFunction(FunctionDefinition functionDefinition);
+        public abstract string  GenerateCode(int indentSize);
+//        public abstract string  GenerateHeader(int indentSize);
+//        public abstract string  GenerateTypes(int indentSize);
+//        public abstract string  GenerateConstants(int indentSize);
+//        public abstract string  GeneratePublicVariables(int indentSize);
+//        public abstract string  GeneratePrivateVariables(int indentSize);
+//        public abstract string  GeneratePublicFunctions(int indentSize);
+//        public abstract string  GeneratePrivateFunctions(int indentSize);
+//        public abstract string  GenerateTrailer(indentSize);
+        public delegate string  CodeProducer(int indent);
 
         // ===================================================================
         // FIELDS
@@ -35,6 +42,7 @@ namespace iCanScript.Editor.CodeEngineering {
         CodeContext                          myParent    = null;            ///< The parnt code context
         CodeType                             myCodeType  = CodeType.GLOBAL; ///< Type of this code context
         Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
+//        List<VariableDefinition>             myVariables = new List<VariableDefinition>();
         
         // ===================================================================
         // PROPERTIES
@@ -62,6 +70,16 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
+//        public virtual GenerateCode(int indentSize) {
+//            GenerateHeader(indentSize);
+//            GenerateTypes(indentSize+1);
+//            GenerateConstants(indentSize+1);
+//            GeneratePublicVariables(indentSize+1);
+//            GeneratePrivateVariables(indentSize+1);
+//            GeneratePublicFunctions(indentSize+1);
+//            GeneratePrivateFunctions(indentSize+1);
+//            GenerateTrailer(indentSize);
+//        }
         
         // =========================================================================
         // CONVERSION UTILITIES

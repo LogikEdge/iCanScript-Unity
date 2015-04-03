@@ -82,7 +82,8 @@ namespace iCanScript.Editor.CodeEngineering {
                 }                
             }
             else {
-                variableName= Parent.GetLocalVariableName(myVSObject);
+                // FIXME: should be going to common parent.
+                variableName= Parent.Parent.GetLocalVariableName(myVSObject);
                 initializer= null;
             }
 			result.Append(GenerateVariable(indentSize, myAccessType, myScopeType, fieldType, variableName, initializer));                    

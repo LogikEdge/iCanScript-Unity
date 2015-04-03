@@ -24,24 +24,24 @@ namespace iCanScript.Engine.GeneratedCode {
         [iCS_Function]
         public  void Update() {
             var theTransform= GetComponent<Transform>();
-                        Vector2 theRawAnalog1;
+            Vector2 theRawAnalog1;
             bool theJump;
             bool theB2;
             bool theB3;
-var theAnalog1= iCS_GameController.GameController(out rawAnalog1, out jump, out b2, out b3, maxSpeed);
-                        float theX;
+            var theAnalog1= iCS_GameController.GameController(out theRawAnalog1, out theJump, out theB2, out theB3, maxSpeed);
+            float theX;
             float theY;
-iCS_FromTo.FromVector(theAnalog1, out x, out y);
-            var theVelocity= iCS_FromTo.ToVector(x, 0f, y);
-            var theAcceleration= jumpConfig.Update(jump);
+            iCS_FromTo.FromVector(theAnalog1, out theX, out theY);
+            var theVelocity= iCS_FromTo.ToVector(theX, 0f, theY);
+            var theAcceleration= jumpConfig.Update(theJump);
             forceIntegrator.Acceleration1= theAcceleration;
             var theOutput= gameObject.GetComponent("CharacterController") as CharacterController;
             var theVelocity_101= theOutput.velocity;
             var theAcceleration_60= roamingConfig.Update(theVelocity, theVelocity_101, 1f);
             forceIntegrator.Acceleration2= theAcceleration_60;
-                        Vector3 theDisplacement;
-forceIntegrator.Integrate(theVelocity_101, out displacement);
-            theOutput.Move(displacement);
+            Vector3 theDisplacement;
+            forceIntegrator.Integrate(theVelocity_101, out theDisplacement);
+            theOutput.Move(theDisplacement);
             var theMagnitude= theVelocity_101.magnitude;
             var theOutput_138= iCS_Math.NormalizedCross(theVelocity_101, Vector3.down);
             var theValueTimesDt= iCS_TimeUtility.ScaleByDeltaTime(theMagnitude);

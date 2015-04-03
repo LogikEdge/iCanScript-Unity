@@ -11,12 +11,12 @@ namespace iCanScript.Editor.CodeEngineering {
         // FIELDS
         // -------------------------------------------------------------------
 		iCS_EditorObject	myNode= null;
+        List<VariableDefinition> myOutputVariables= new List<VariableDefinition>();
+        VariableDefinition       myReturnVariable = null;
 		
         // ===================================================================
         // PROPERTIES
         // -------------------------------------------------------------------
-        List<VariableDefinition> myOutputVariables= new List<VariableDefinition>();
-        VariableDefinition       myReturnVariable = null;
         
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -29,6 +29,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public FunctionCallDefinition(iCS_EditorObject vsObj)
         : base(CodeType.FUNCTION_CALL) {
         	myNode= vsObj;
+            // Gather output parameter information.
             var outputPorts= GetOutputDataPorts();
             foreach(var p in outputPorts) {
                 AddVariable(new VariableDefinition(p, AccessType.PRIVATE, ScopeType.NONSTATIC));
@@ -62,12 +63,13 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         public override string GenerateCode(int indentSize) {
             var indent= ToIndent(indentSize);
-            var result= new StringBuilder(indent, 128);
+            var result= new StringBuilder(128);
             // Simplified situation for property get.
             var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(myNode);
             var functionName= memberInfo.ToFunctionPrototypeInfo.MethodName;
             if(IsPropertyGet(memberInfo)) {
                 // Declare return variable.
+                result.Append(indent);
                 result.Append(DeclareReturnVariable(myNode));
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, myNode));
@@ -77,7 +79,9 @@ namespace iCanScript.Editor.CodeEngineering {
                 result.Append(";\n");
                 return result.ToString();
             }
-            // Determine parameters.
+            // Declare the output parameters.
+            result.Append(DeclarelocalVariablesForOutputParameters(indentSize));
+            // Determine parameters information.
             var parameters= GetParameters(myNode);
             var pLen= parameters.Length;
             var paramStrings= new string[pLen];
@@ -102,6 +106,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
             }
             // Special case for property set.
+            result.Append(indent);
             if(IsPropertySet(memberInfo)) {
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, myNode));
@@ -111,8 +116,6 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             // Generate function call.        
             else {
-                // Declare the output parameters.
-                result.Append(DeclarelocalVariablesForOutputParameters(indentSize));
                 // Declare return variable.
                 result.Append(DeclareReturnVariable(myNode));
                 // Determine function prefix.
