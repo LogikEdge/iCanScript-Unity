@@ -27,7 +27,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created function call definition.
         ///
         public FunctionCallDefinition(iCS_EditorObject vsObj)
-        : base(CodeType.FUNCTION_CALL) {
+        : base(CodeType.FUNCTION_CALL, vsObj) {
         	myNode= vsObj;
             // Gather output parameter information.
             var outputPorts= GetOutputDataPorts();

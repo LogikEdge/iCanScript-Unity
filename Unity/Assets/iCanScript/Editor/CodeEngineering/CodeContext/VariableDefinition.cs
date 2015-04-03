@@ -24,7 +24,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created field defintion.
         ///
         public VariableDefinition(iCS_EditorObject vsObject, AccessType accessType, ScopeType scopeType)
-        : base(CodeType.VARIABLE) {
+        : base(CodeType.VARIABLE, vsObject) {
             myVSObject= vsObject;
             myAccessType = accessType;
             myScopeType  = scopeType;

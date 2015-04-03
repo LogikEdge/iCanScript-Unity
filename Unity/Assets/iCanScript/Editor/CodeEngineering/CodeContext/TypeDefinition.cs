@@ -34,10 +34,10 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created class definition.
         ///
-        public TypeDefinition(iCS_EditorObject classNode, Type baseClass,
+        public TypeDefinition(iCS_EditorObject typeNode, Type baseClass,
                               AccessType accessType, ScopeType scopeType)
-        : base(CodeType.CLASS) {
-            myClassNode = classNode;
+        : base(CodeType.CLASS, typeNode) {
+            myClassNode = typeNode;
             myBaseClass = baseClass;
             myAccessType= accessType;
             myScopeType = scopeType;

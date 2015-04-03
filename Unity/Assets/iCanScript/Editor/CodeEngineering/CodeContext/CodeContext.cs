@@ -22,6 +22,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
+        iCS_EditorObject                     myVSObject  = null;            ///< Visual script associated object
         CodeContext                          myParent    = null;            ///< The parnt code context
         CodeType                             myCodeType  = CodeType.GLOBAL; ///< Type of this code context
         Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
@@ -47,7 +48,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parentContext The code context of the parent.
         /// @return The newly created code context.
         ///
-        public CodeContext(CodeType codeType) {
+        public CodeContext(CodeType codeType, iCS_EditorObject vsObject) {
+            myVSObject= vsObject;
             myCodeType= codeType;
         }
         public virtual void ResolveDependencies() {}

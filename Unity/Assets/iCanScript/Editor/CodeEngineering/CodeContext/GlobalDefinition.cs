@@ -26,15 +26,15 @@ namespace iCanScript.Editor.CodeEngineering {
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds the code global scope.
-        public GlobalDefinition(iCS_IStorage iStorage, string namespaceName, string[] usingDirectives)
-        : base(CodeType.GLOBAL) {
+        public GlobalDefinition(iCS_EditorObject vsRootObject, string namespaceName, string[] usingDirectives)
+        : base(CodeType.GLOBAL, vsRootObject) {
 			myNamespace= namespaceName;
 			foreach(var ud in usingDirectives) {
 				AddUsingDirective(ud);
 			}
 
 			// Build root types
-			BuildRootTypes(iStorage);
+			BuildRootTypes(vsRootObject);
 			
 			// Resolve dependencies.
 			ResolveDependencies();
@@ -45,9 +45,9 @@ namespace iCanScript.Editor.CodeEngineering {
 		///
 		/// @param iStorage The VS storage.
 		///
-		void BuildRootTypes(iCS_IStorage iStorage) {
+		void BuildRootTypes(iCS_EditorObject vsRootObject) {
             // Add root class defintion.
-            var classDefinition= new TypeDefinition(iStorage.EditorObjects[0],
+            var classDefinition= new TypeDefinition(vsRootObject,
                                                     typeof(MonoBehaviour),
                                                     CodeContext.AccessType.PUBLIC,
                                                     CodeContext.ScopeType.NONSTATIC);

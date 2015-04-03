@@ -21,7 +21,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created code context.
         ///
         public IfStatementDefinition(iCS_EditorObject[] enables)
-        : base(CodeType.IF) {
+        : base(CodeType.IF, null) {
             myEnablePorts= enables;
         }
 
