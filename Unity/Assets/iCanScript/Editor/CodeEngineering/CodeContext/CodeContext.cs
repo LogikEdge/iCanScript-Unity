@@ -10,6 +10,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // TYPES
         // -------------------------------------------------------------------
+        public delegate string  CodeProducer(int indent);
         public enum AccessType   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
         public enum ScopeType    { STATIC, NONSTATIC, VIRTUAL };
         public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
@@ -18,19 +19,6 @@ namespace iCanScript.Editor.CodeEngineering {
             IF, FUNCTION_CALL
         };
     
-        // ===================================================================
-        // COMMON INTERFACE FUNCTIONS
-        // -------------------------------------------------------------------
-        public abstract void    AddVariable(VariableDefinition variableDefinition);
-        public abstract void    AddExecutable(CodeContext executableDefinition);
-        public abstract void    AddType(TypeDefinition typeDefinition);
-        public abstract void    AddFunction(FunctionDefinition functionDefinition);
-        public abstract void    ResolveDependencies();
-        public delegate string  CodeProducer(int indent);
-        public abstract string  GenerateHeader(int indentSize);
-		public abstract string	GenerateBody(int indentSize);
-        public abstract string  GenerateTrailer(int indentSize);
-
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -62,6 +50,11 @@ namespace iCanScript.Editor.CodeEngineering {
         public CodeContext(CodeType codeType) {
             myCodeType= codeType;
         }
+        public virtual void ResolveDependencies() {}
+        public virtual void AddVariable(VariableDefinition variableDefinition) {}
+        public virtual void AddExecutable(CodeContext executableDefinition)    {}
+        public virtual void AddType(TypeDefinition typeDefinition)             {}
+        public virtual void AddFunction(FunctionDefinition functionDefinition) {}
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS
@@ -73,6 +66,9 @@ namespace iCanScript.Editor.CodeEngineering {
             result.Append(GenerateTrailer(indentSize));
 			return result.ToString();
         }
+        public virtual string GenerateHeader(int indentSize)  { return ""; }
+		public virtual string GenerateBody(int indentSize)    { return ""; }
+        public virtual string GenerateTrailer(int indentSize) { return ""; }
         
         // =========================================================================
         // CONVERSION UTILITIES
