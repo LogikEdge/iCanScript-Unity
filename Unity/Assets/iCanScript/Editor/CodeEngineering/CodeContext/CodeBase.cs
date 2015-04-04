@@ -61,18 +61,13 @@ namespace iCanScript.Editor.CodeEngineering {
             myCodeType= codeType;
             // Build or assign shared code Context.
             if(parent == null) {
-                myContext= new CodeContext();
+                myContext= new CodeContext(vsObject);
             }
-            myContext= parent.Context;
-            
-			// Register new code context.
-            var globalContext= GetGlobalContext();
-			if(globalContext == null) {
-				Debug.LogWarning("iCanScript: No global context for code generation");
-			}
-            if(globalContext != null) {
-                globalContext.Register(this, vsObject);
+            else {
+                myContext= parent.Context;
             }
+            // Register object <-> code association
+            myContext.Register(vsObject, this);
         }
         public virtual void ResolveDependencies() {}
         public virtual void AddVariable(VariableDefinition variableDefinition) {}
@@ -648,15 +643,13 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
-        /// Finds the code context for the given visual script object.
+        /// Finds the code base for the given visual script object.
         ///
         /// @param vsObject The visual scriptobject to search for.
         /// @return The found code context.  _'null'_ is return if not found.
         ///
         public CodeBase FindCodeBase(iCS_EditorObject vsObject) {
-			var globalContext= GetGlobalContext();
-			if(globalContext == null) return null;
-            return globalContext.ObjectToCodeTable[vsObject.InstanceId];
+            return Context.GetCodeFor(vsObject);
         }
     }
 

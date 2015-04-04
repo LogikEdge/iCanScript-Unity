@@ -12,7 +12,6 @@ namespace iCanScript.Editor.CodeEngineering {
         string                myNamespace        = null;
         List<string>          myUsingDirectives  = new List<string>();
         List<TypeDefinition>  myTypes            = new List<TypeDefinition>();
-        CodeBase[]         myObjectToCodeTable= null;
         
         // ===================================================================
         // PROPERTIES
@@ -22,9 +21,6 @@ namespace iCanScript.Editor.CodeEngineering {
             get { return myNamespace; }
             set { myNamespace= value; }
         }
-		public CodeBase[] ObjectToCodeTable {
-			get { return myObjectToCodeTable; }
-		}
 
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -32,10 +28,6 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds the code global scope.
         public GlobalDefinition(iCS_EditorObject vsRootObject, string namespaceName, string[] usingDirectives)
         : base(CodeType.GLOBAL, vsRootObject, null) {
-            // Allocate visual script object to code context correspondance array.
-			AllocateObjectToCodeTable();
-            myObjectToCodeTable[vsRootObject.InstanceId]= this;
-
             // Initialise attributes
 			myNamespace= namespaceName;
 			foreach(var ud in usingDirectives) {
@@ -63,27 +55,6 @@ namespace iCanScript.Editor.CodeEngineering {
             AddType(classDefinition);			
 		}
 		
-        // -------------------------------------------------------------------
-        /// Register the association between visual script object and its code
-		/// context.
-		///
-		/// @param codeContext The VS object code context.
-		/// @param vsObject The visual script object.
-		///
-        public void Register(CodeBase codeContext, iCS_EditorObject vsObject) {
-			AllocateObjectToCodeTable();
-            myObjectToCodeTable[vsObject.InstanceId]= codeContext;
-        }
-        
-        // -------------------------------------------------------------------
-		void AllocateObjectToCodeTable() {
-			if(myObjectToCodeTable != null) return;
-            var visualScriptSize= VSObject.IStorage.EditorObjects.Count;
-            myObjectToCodeTable= new CodeBase[visualScriptSize];
-            for(int i= 0; i < visualScriptSize; ++i) {
-                myObjectToCodeTable[i]= null;
-            }
-		}
         // -------------------------------------------------------------------
 		/// Resolves the code dependencies.
 		public override void ResolveDependencies() {
