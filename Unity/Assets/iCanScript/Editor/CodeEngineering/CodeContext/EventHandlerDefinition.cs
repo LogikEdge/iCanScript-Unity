@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ public class EventHandlerDefinition : FunctionDefinition {
         /// @param node VS objects associated with the function.
         /// @return The newly created code context.
         ///
-        public EventHandlerDefinition(iCS_EditorObject node, CodeContext parent, AccessType accessType, ScopeType scopeType)
+        public EventHandlerDefinition(iCS_EditorObject node, CodeBase parent, AccessType accessType, ScopeType scopeType)
         : base(node, parent, accessType, scopeType) {
         }
     

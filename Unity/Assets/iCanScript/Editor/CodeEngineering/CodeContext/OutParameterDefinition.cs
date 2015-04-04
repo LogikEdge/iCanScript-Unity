@@ -14,7 +14,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parent The parent code context.
         /// @return The newly created reference.
         ///
-        public OutParameterDefinition(iCS_EditorObject port, CodeContext parent)
+        public OutParameterDefinition(iCS_EditorObject port, CodeBase parent)
             : base(port, parent) {}
 
         // ===================================================================

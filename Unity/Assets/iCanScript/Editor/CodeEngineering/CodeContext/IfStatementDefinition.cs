@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class IfStatementDefinition : CodeContext {
+    public class IfStatementDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
         iCS_EditorObject[]  myEnablePorts= null;
-        List<CodeContext>   myExecutionList= new List<CodeContext>();
+        List<CodeBase>   myExecutionList= new List<CodeBase>();
         
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -20,7 +20,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created code context.
         ///
-        public IfStatementDefinition(CodeContext parent, iCS_EditorObject[] enables)
+        public IfStatementDefinition(CodeBase parent, iCS_EditorObject[] enables)
         : base(CodeType.IF, null, parent) {
             myEnablePorts= enables;
         }
@@ -40,7 +40,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @param child The execution child to add.
         ///
-        public override void AddExecutable(CodeContext child) {
+        public override void AddExecutable(CodeBase child) {
             myExecutionList.Add(child);
             child.Parent= this;
         }
@@ -50,7 +50,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @param toRemove The code context to be removed.
         ///
-        public override void Remove(CodeContext toRemove) {
+        public override void Remove(CodeBase toRemove) {
             if(myExecutionList.Remove(toRemove)) {
                 toRemove.Parent= null;
             }

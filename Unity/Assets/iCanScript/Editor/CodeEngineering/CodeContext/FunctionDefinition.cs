@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Text;
 using System.Collections;
@@ -7,14 +7,14 @@ using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class FunctionDefinition : CodeContext {
+    public class FunctionDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
         protected iCS_EditorObject         myFunctionNode = null;  ///< VS objects associated with code context
         protected AccessType               myAccessType   = AccessType.PRIVATE;
         protected ScopeType                myScopeType    = ScopeType.NONSTATIC;
-        protected List<CodeContext>        myExecutionList= new List<CodeContext>();
+        protected List<CodeBase>        myExecutionList= new List<CodeBase>();
         protected List<VariableDefinition> myVariables    = new List<VariableDefinition>();
         
         // ===================================================================
@@ -33,7 +33,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param node VS objects associated with the function.
         /// @return The newly created code context.
         ///
-        public FunctionDefinition(iCS_EditorObject node, CodeContext parent, AccessType accessType, ScopeType scopeType)
+        public FunctionDefinition(iCS_EditorObject node, CodeBase parent, AccessType accessType, ScopeType scopeType)
         : base(CodeType.FUNCTION, node, parent) {
             myFunctionNode= node;
             myAccessType  = accessType;
@@ -64,7 +64,7 @@ namespace iCanScript.Editor.CodeEngineering {
 		///
 		/// @param executable The child code context to add.
 		///
-		public override void AddExecutable(CodeContext executable) {
+		public override void AddExecutable(CodeBase executable) {
 			myExecutionList.Add(executable);
 			executable.Parent= this;
 		} 
@@ -82,7 +82,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @param toRemove The code context to be removed.
         ///
-        public override void Remove(CodeContext toRemove) {
+        public override void Remove(CodeBase toRemove) {
             if(toRemove is VariableDefinition) {
                 if(myVariables.Remove(toRemove as VariableDefinition)) {
                     toRemove.Parent= null;

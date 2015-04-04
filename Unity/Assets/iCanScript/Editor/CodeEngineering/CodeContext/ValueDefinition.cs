@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class ValueDefinition : CodeContext {
+    public class ValueDefinition : CodeBase {
     
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -14,7 +14,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parent The parent code context.
         /// @return The newly created reference.
         ///
-        public ValueDefinition(iCS_EditorObject vsObject, CodeContext parent)
+        public ValueDefinition(iCS_EditorObject vsObject, CodeBase parent)
             : base(CodeType.VALUE, vsObject, parent) {}
     
         // ===================================================================

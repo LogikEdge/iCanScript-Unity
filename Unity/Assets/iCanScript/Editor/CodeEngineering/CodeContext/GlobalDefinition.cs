@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class GlobalDefinition : CodeContext {
+    public class GlobalDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
         string                myNamespace        = null;
         List<string>          myUsingDirectives  = new List<string>();
         List<TypeDefinition>  myTypes            = new List<TypeDefinition>();
-        CodeContext[]         myObjectToCodeTable= null;
+        CodeBase[]         myObjectToCodeTable= null;
         
         // ===================================================================
         // PROPERTIES
@@ -22,7 +22,7 @@ namespace iCanScript.Editor.CodeEngineering {
             get { return myNamespace; }
             set { myNamespace= value; }
         }
-		public CodeContext[] ObjectToCodeTable {
+		public CodeBase[] ObjectToCodeTable {
 			get { return myObjectToCodeTable; }
 		}
 
@@ -58,8 +58,8 @@ namespace iCanScript.Editor.CodeEngineering {
             // Add root class defintion.
             var classDefinition= new TypeDefinition(vsRootObject, this,
                                                     typeof(MonoBehaviour),
-                                                    CodeContext.AccessType.PUBLIC,
-                                                    CodeContext.ScopeType.NONSTATIC);
+                                                    CodeBase.AccessType.PUBLIC,
+                                                    CodeBase.ScopeType.NONSTATIC);
             AddType(classDefinition);			
 		}
 		
@@ -70,7 +70,7 @@ namespace iCanScript.Editor.CodeEngineering {
 		/// @param codeContext The VS object code context.
 		/// @param vsObject The visual script object.
 		///
-        public void Register(CodeContext codeContext, iCS_EditorObject vsObject) {
+        public void Register(CodeBase codeContext, iCS_EditorObject vsObject) {
 			AllocateObjectToCodeTable();
             myObjectToCodeTable[vsObject.InstanceId]= codeContext;
         }
@@ -79,7 +79,7 @@ namespace iCanScript.Editor.CodeEngineering {
 		void AllocateObjectToCodeTable() {
 			if(myObjectToCodeTable != null) return;
             var visualScriptSize= VSObject.IStorage.EditorObjects.Count;
-            myObjectToCodeTable= new CodeContext[visualScriptSize];
+            myObjectToCodeTable= new CodeBase[visualScriptSize];
             for(int i= 0; i < visualScriptSize; ++i) {
                 myObjectToCodeTable[i]= null;
             }

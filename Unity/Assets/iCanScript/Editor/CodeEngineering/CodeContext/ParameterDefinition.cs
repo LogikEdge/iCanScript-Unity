@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class ParameterDefinition : CodeContext {
+    public class ParameterDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -20,7 +20,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parent The parent code context.
         /// @return The newly created reference.
         ///
-        public ParameterDefinition(iCS_EditorObject port, CodeContext parent, Type neededType= null)
+        public ParameterDefinition(iCS_EditorObject port, CodeBase parent, Type neededType= null)
         : base(CodeType.PARAMETER, port, parent) {
             myType= neededType;    
         }

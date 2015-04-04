@@ -7,7 +7,7 @@ using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class TypeDefinition : CodeContext {
+    public class TypeDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -34,7 +34,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created class definition.
         ///
-        public TypeDefinition(iCS_EditorObject typeNode, CodeContext parent, Type baseClass,
+        public TypeDefinition(iCS_EditorObject typeNode, CodeBase parent, Type baseClass,
                               AccessType accessType, ScopeType scopeType)
         : base(CodeType.CLASS, typeNode, parent) {
             myClassNode = typeNode;

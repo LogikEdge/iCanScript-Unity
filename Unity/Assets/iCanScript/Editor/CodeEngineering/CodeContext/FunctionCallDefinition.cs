@@ -8,12 +8,12 @@ using P=Prelude;
 namespace iCanScript.Editor.CodeEngineering {
 
     // TODO: cleanup 'myNode' since VSObject is now in base class.
-    public class FunctionCallDefinition : CodeContext {
+    public class FunctionCallDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
 		iCS_EditorObject	     myNode= null;
-        CodeContext[]            myParameters     = null;
+        CodeBase[]            myParameters     = null;
         List<VariableDefinition> myOutputVariables= new List<VariableDefinition>();
         VariableDefinition       myReturnVariable = null;
 		
@@ -29,7 +29,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param vsObj VS node associated with the function call.
         /// @return The newly created function call definition.
         ///
-        public FunctionCallDefinition(iCS_EditorObject vsObj, CodeContext parent)
+        public FunctionCallDefinition(iCS_EditorObject vsObj, CodeBase parent)
         : base(CodeType.FUNCTION_CALL, vsObj, parent) {
         	myNode= vsObj;
             BuildParameterInformation();
@@ -41,7 +41,7 @@ namespace iCanScript.Editor.CodeEngineering {
         void BuildParameterInformation() {
             var parameters= GetParameters(myNode);
             var pLen= parameters.Length;
-            myParameters= new CodeContext[pLen];
+            myParameters= new CodeBase[pLen];
             foreach(var p in parameters) {
                 int idx= p.PortIndex;
                 if(p.IsInputPort) {
@@ -80,7 +80,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
                 iCS_EditorObject producerParent;
                 if(CanReplaceParameterDefinition(code, out producerParent)) {
-                    var producerCode= FindCodeContext(producerParent);
+                    var producerCode= FindCodeBase(producerParent);
                     if(producerCode != null) {
                         producerCode.Parent.Remove(producerCode);
                         myParameters[i]= producerCode;
@@ -98,7 +98,7 @@ namespace iCanScript.Editor.CodeEngineering {
 		}
 
         // -------------------------------------------------------------------
-        bool CanReplaceParameterDefinition(CodeContext code, out iCS_EditorObject producerParent) {
+        bool CanReplaceParameterDefinition(CodeBase code, out iCS_EditorObject producerParent) {
             var producerPort= code.VSObject;
             producerParent= producerPort.ParentNode;
             var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
@@ -139,7 +139,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
         // -------------------------------------------------------------------
-        public override void AddExecutable(CodeContext executableDefinition)    { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a function call definition."); }
+        public override void AddExecutable(CodeBase executableDefinition)    { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a function call definition."); }
         public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to a function call definition."); }
         public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to a function call definition."); }
 
@@ -201,7 +201,7 @@ namespace iCanScript.Editor.CodeEngineering {
 //                    if(producerPort != null && producerPort != p) {
 //#if OPTIMIZATION
 //                        var producerParent= producerPort.ParentNode;
-//                        var producerCode= FindCodeContext(producerParent);
+//                        var producerCode= FindCodeBase(producerParent);
 //                        if(producerCode != null && producerCode.Parent == Parent) {
 //				            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
 //							if(IsFieldOrPropertyGet(producerInfo)) {

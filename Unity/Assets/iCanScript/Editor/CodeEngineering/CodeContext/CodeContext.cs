@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public abstract class CodeContext {
+    public abstract class CodeBase {
         // ===================================================================
         // TYPES
         // -------------------------------------------------------------------
@@ -23,7 +23,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // FIELDS
         // -------------------------------------------------------------------
         iCS_EditorObject                     myVSObject  = null;            ///< Visual script associated object
-        CodeContext                          myParent    = null;            ///< The parnt code context
+        CodeBase                          myParent    = null;            ///< The parnt code context
         CodeType                             myCodeType  = CodeType.GLOBAL; ///< Type of this code context
         Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
         
@@ -34,7 +34,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public CodeType TypeOfCode {
             get { return myCodeType; }
         }
-        public CodeContext Parent {
+        public CodeBase Parent {
             get { return myParent; }
             set { myParent= value; }
         }
@@ -51,7 +51,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parentContext The code context of the parent.
         /// @return The newly created code context.
         ///
-        public CodeContext(CodeType codeType, iCS_EditorObject vsObject, CodeContext parent) {
+        public CodeBase(CodeType codeType, iCS_EditorObject vsObject, CodeBase parent) {
 			myParent  = parent;
             myVSObject= vsObject;
             myCodeType= codeType;
@@ -66,10 +66,10 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         public virtual void ResolveDependencies() {}
         public virtual void AddVariable(VariableDefinition variableDefinition) {}
-        public virtual void AddExecutable(CodeContext executableDefinition)    {}
+        public virtual void AddExecutable(CodeBase executableDefinition)    {}
         public virtual void AddType(TypeDefinition typeDefinition)             {}
         public virtual void AddFunction(FunctionDefinition functionDefinition) {}
-        public virtual void Remove(CodeContext toRemove)                       {}
+        public virtual void Remove(CodeBase toRemove)                       {}
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS
@@ -643,7 +643,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param vsObject The visual scriptobject to search for.
         /// @return The found code context.  _'null'_ is return if not found.
         ///
-        public CodeContext FindCodeContext(iCS_EditorObject vsObject) {
+        public CodeBase FindCodeBase(iCS_EditorObject vsObject) {
 			var globalContext= GetGlobalContext();
 			if(globalContext == null) return null;
             return globalContext.ObjectToCodeTable[vsObject.InstanceId];
