@@ -44,10 +44,18 @@ namespace iCanScript.Editor.CodeEngineering {
             myExecutionList.Add(child);
             child.Parent= this;
         }
+
         // -------------------------------------------------------------------
-        public override void AddVariable(VariableDefinition variableDefinition) { Debug.LogWarning("iCanScript: Trying to add a variable defintion to an if-statement definition."); }
-        public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to an if-statement definition."); }
-        public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to an if-statement definition."); }
+        /// Removes a code context from the function.
+        ///
+        /// @param toRemove The code context to be removed.
+        ///
+        public override void Remove(CodeContext toRemove) {
+            if(myExecutionList.Remove(toRemove)) {
+                toRemove.Parent= null;
+            }
+        }
+        
         
         // ===================================================================
         // CODE GENERATION FUNCTIONS

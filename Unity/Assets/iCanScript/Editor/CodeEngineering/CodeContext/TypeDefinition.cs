@@ -108,6 +108,17 @@ namespace iCanScript.Editor.CodeEngineering {
     		);            
         }
 
+        // -------------------------------------------------------------------
+		/// Resolves the code dependencies.
+		public override void ResolveDependencies() {
+			foreach(var f in myFields) {
+				f.ResolveDependencies();
+			}			
+			foreach(var f in myFunctions) {
+				f.ResolveDependencies();
+			}			
+		}
+
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------

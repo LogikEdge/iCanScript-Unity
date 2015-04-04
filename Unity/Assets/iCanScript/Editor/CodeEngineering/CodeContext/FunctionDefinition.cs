@@ -52,10 +52,10 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
 		/// Resolves code dependencies.
 		public override void ResolveDependencies() {
-			foreach(var v in myVariables) {
+			foreach(var v in myVariables.ToArray()) {
 				v.ResolveDependencies();
 			}
-			foreach(var e in myExecutionList) {
+			foreach(var e in myExecutionList.ToArray()) {
 				e.ResolveDependencies();
 			}
 		}
@@ -78,13 +78,23 @@ namespace iCanScript.Editor.CodeEngineering {
             variableDefinition.Parent= this;
         }
         // -------------------------------------------------------------------
-        public override void AddType(TypeDefinition typeDefinition) {
-            Debug.LogWarning("iCanScript: Adding a type definition to function is currently not supported.");
+        /// Removes a code context from the function.
+        ///
+        /// @param toRemove The code context to be removed.
+        ///
+        public override void Remove(CodeContext toRemove) {
+            if(toRemove is VariableDefinition) {
+                if(myVariables.Remove(toRemove as VariableDefinition)) {
+                    toRemove.Parent= null;
+                }
+            }
+            else {
+                if(myExecutionList.Remove(toRemove)) {
+                    toRemove.Parent= null;
+                }
+            }
         }
-        public override void AddFunction(FunctionDefinition functionDefinition) {
-            Debug.LogWarning("iCanScript: Adding a nested function definition inside a function is currently not supported.");
-        }
-
+        
         // -------------------------------------------------------------------
 		void BuildExecutionList(iCS_EditorObject[] functions) {
 			IfStatementDefinition currentIfStatement= null;

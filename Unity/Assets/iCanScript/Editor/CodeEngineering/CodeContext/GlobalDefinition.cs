@@ -85,7 +85,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
 		}
         // -------------------------------------------------------------------
-		/// Resolves the dependencies by promoting varaibles.
+		/// Resolves the code dependencies.
 		public override void ResolveDependencies() {
 			foreach(var rt in myTypes) {
 				rt.ResolveDependencies();

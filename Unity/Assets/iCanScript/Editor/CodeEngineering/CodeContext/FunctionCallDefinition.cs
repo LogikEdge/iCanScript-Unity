@@ -7,11 +7,13 @@ using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
+    // TODO: cleanup 'myNode' since VSObject is now in base class.
     public class FunctionCallDefinition : CodeContext {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-		iCS_EditorObject	myNode= null;
+		iCS_EditorObject	     myNode= null;
+        CodeContext[]            myParameters     = null;
         List<VariableDefinition> myOutputVariables= new List<VariableDefinition>();
         VariableDefinition       myReturnVariable = null;
 		
@@ -30,11 +32,39 @@ namespace iCanScript.Editor.CodeEngineering {
         public FunctionCallDefinition(iCS_EditorObject vsObj, CodeContext parent)
         : base(CodeType.FUNCTION_CALL, vsObj, parent) {
         	myNode= vsObj;
-            // Gather output parameter information.
+            BuildParameterInformation();
+            BuildOutputParameters();
+        }
+        
+        // -------------------------------------------------------------------
+        /// Build information for parameters.
+        void BuildParameterInformation() {
+            var parameters= GetParameters(myNode);
+            var pLen= parameters.Length;
+            myParameters= new CodeContext[pLen];
+            foreach(var p in parameters) {
+                int idx= p.PortIndex;
+                if(p.IsInputPort) {
+                    var producerPort= p.FirstProducerPort;
+                    if(producerPort != null && producerPort != p) {
+                        myParameters[idx]= new ParameterDefinition(producerPort, this, p.RuntimeType);
+                    }
+                    else {
+                        myParameters[idx]= new ValueDefinition(p, this);
+                    }
+                }
+                else {
+                    myParameters[idx]= new OutParameterDefinition(p, this);
+                }
+            }            
+        }
+        // -------------------------------------------------------------------
+        /// Build output parameters.
+        void BuildOutputParameters() {
             var outputPorts= GetOutputDataPorts();
             foreach(var p in outputPorts) {
                 AddVariable(new VariableDefinition(p, this, AccessType.PRIVATE, ScopeType.NONSTATIC));
-            }
+            }            
         }
         
         // ===================================================================
@@ -42,19 +72,64 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
 		/// Resolves code dependencies.
 		public override void ResolveDependencies() {
+            // Optimize input parameters to fields/properties
+            for(int i= 0; i < myParameters.Length; ++i) {
+                var code= myParameters[i];
+                if(code is OutParameterDefinition || code is ValueDefinition) {
+                    continue;
+                }
+                iCS_EditorObject producerParent;
+                if(CanReplaceParameterDefinition(code, out producerParent)) {
+                    var producerCode= FindCodeContext(producerParent);
+                    if(producerCode != null) {
+                        producerCode.Parent.Remove(producerCode);
+                        myParameters[i]= producerCode;
+                        producerCode.Parent= this;
+                    }                        
+                }
+            }
+            // Ask output objects to resolve their own child dependencies.
 			foreach(var v in myOutputVariables) {
 				v.ResolveDependencies();
 			}
-			myReturnVariable.ResolveDependencies();
+			if(myReturnVariable != null) {
+                myReturnVariable.ResolveDependencies();
+            }
 		}
 
+        // -------------------------------------------------------------------
+        bool CanReplaceParameterDefinition(CodeContext code, out iCS_EditorObject producerParent) {
+            var producerPort= code.VSObject;
+            producerParent= producerPort.ParentNode;
+            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
+            if(producerInfo == null) return false;
+            // Accept get field/property if we are the only consumer.
+			if(IsFieldOrPropertyGet(producerInfo)) {
+                if(producerPort.ConsumerPorts.Length == 1) {
+                    return true;
+                }
+			}
+#if OPTIMIZATION
+            // Accept return value if we are the only consumer.
+            if(producerPort.PortIndex == (int)iCS_PortIndex.Return) {
+                var parameters= GetParameters(producerParent);
+                if(P.filter(p=> p.IsOutDataPort, parameters).Length == 0) {
+                    if(producerPort.ConsumerPorts.Length == 1) {
+                        return true;
+                    }                    
+                }
+            }
+#endif
+            return false;
+        }
+        
         // -------------------------------------------------------------------
         /// Adds a field definition to the class.
         ///
         /// @param vsObj VS object that represents the field.
         ///
         public override void AddVariable(VariableDefinition outputVariable) {
-            if(outputVariable.myVSObject.IsReturnPort) {
+            if(outputVariable.VSObject.IsReturnPort) {
                 myReturnVariable= outputVariable;
             }
             else {
@@ -119,41 +194,42 @@ namespace iCanScript.Editor.CodeEngineering {
             var pLen= parameters.Length;
             var paramStrings= new string[pLen];
             foreach(var p in parameters) {
-                if(p.IsInputPort) {
-                    var producerPort= p.FirstProducerPort;
-                    if(producerPort != null && producerPort != p) {
-#if OPTIMIZATION
-                        var producerParent= producerPort.ParentNode;
-                        var producerCode= FindCodeContext(producerParent);
-                        if(producerCode != null && producerCode.Parent == Parent) {
-				            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
-							if(IsFieldOrPropertyGet(producerInfo)) {
-	                            paramStrings[p.PortIndex]= producerCode.GenerateBody(indentSize);								
-							}
-							else {
-	                            paramStrings[p.PortIndex]= GetNameFor(producerPort);								
-							}
-                        }
-                        else {
-                            paramStrings[p.PortIndex]= GetNameFor(producerPort);                            
-                        }
-#else
-                        paramStrings[p.PortIndex]= GetNameFor(producerPort);
-#endif                        
-                        var producerCommonType= GetCommonBaseTypeForProducerPort(producerPort);
-                        var portTypeName= ToTypeName(p.RuntimeType);
-                        if(portTypeName != ToTypeName(producerCommonType)) {
-                            paramStrings[p.PortIndex]+= " as "+portTypeName;
-                        }
-                    }
-                    else {
-                        var v= p.InitialValue;
-                        paramStrings[p.PortIndex]= ToValueString(v);
-                    }
-                }
-                else {
-                    paramStrings[p.PortIndex]= "out "+GetNameFor(p);
-                }
+                int idx= p.PortIndex;
+                paramStrings[idx]= myParameters[idx].GenerateBody(indentSize);
+//                if(p.IsInputPort) {
+//                    var producerPort= p.FirstProducerPort;
+//                    if(producerPort != null && producerPort != p) {
+//#if OPTIMIZATION
+//                        var producerParent= producerPort.ParentNode;
+//                        var producerCode= FindCodeContext(producerParent);
+//                        if(producerCode != null && producerCode.Parent == Parent) {
+//				            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
+//							if(IsFieldOrPropertyGet(producerInfo)) {
+//	                            paramStrings[p.PortIndex]= producerCode.GenerateBody(indentSize);								
+//							}
+//							else {
+//	                            paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);								
+//							}
+//                        }
+//                        else {
+//                            paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);                            
+//                        }
+//#else
+//                        paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);
+//#endif                        
+//                        var producerCommonType= GetCommonBaseTypeForProducerPort(producerPort);
+//                        var portTypeName= ToTypeName(p.RuntimeType);
+//                        if(portTypeName != ToTypeName(producerCommonType)) {
+//                            paramStrings[p.PortIndex]+= " as "+portTypeName;
+//                        }
+//                    }
+//                    else {
+//                        paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);
+//                    }
+//                }
+//                else {
+//                    paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);
+//                }
             }
             // Special case for property set.
             if(IsFieldOrPropertySet(memberInfo)) {
@@ -230,7 +306,7 @@ namespace iCanScript.Editor.CodeEngineering {
             else {
                 var thisPort= GetThisPort(node);
                 if(thisPort != null) {
-                    var producerPort= thisPort.FirstProducerPort;
+                    var producerPort= GetCodeProducerPort(thisPort);
                     if(producerPort != null && producerPort != thisPort) {
                         var portRuntime= ToTypeName(thisPort.RuntimeType);
                         var producerCommonType= GetCommonBaseTypeForProducerPort(producerPort);
@@ -307,24 +383,6 @@ namespace iCanScript.Editor.CodeEngineering {
     
         // =========================================================================
         // Utilities
-    	// -------------------------------------------------------------------------
-        /// Returns the input port representing the _'self'_ connection.
-        ///
-        /// @param node The node in which to search for the _'self'_ port.
-        ///
-        /// @return _'null'_ is returned if the port is not found.
-        ///
-        static iCS_EditorObject GetThisPort(iCS_EditorObject node) {
-            iCS_EditorObject result= null;
-            node.ForEachChildPort(
-                p=> {
-                    if(p.PortIndex == (int)iCS_PortIndex.InInstance) {
-                        result= p;
-                    }
-                }
-            );
-            return result;
-        }
     	// -------------------------------------------------------------------------
         /// Returns _'true'_ if the node is a field or property get function.
         static bool IsFieldOrPropertyGet(iCS_MemberInfo memberInfo) {

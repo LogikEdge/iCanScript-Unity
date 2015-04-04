@@ -16,7 +16,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
         public enum CodeType     {
             GLOBAL, CLASS, STRUCT, VARIABLE, PROPERTY, FUNCTION, PARAMETER,
-            IF, FUNCTION_CALL
+            IF, FUNCTION_CALL, VALUE
         };
     
         // ===================================================================
@@ -69,6 +69,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public virtual void AddExecutable(CodeContext executableDefinition)    {}
         public virtual void AddType(TypeDefinition typeDefinition)             {}
         public virtual void AddFunction(FunctionDefinition functionDefinition) {}
+        public virtual void Remove(CodeContext toRemove)                       {}
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS
@@ -512,6 +513,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public static iCS_EditorObject[] GetParameters(iCS_EditorObject node) {
             var parameters= new List<iCS_EditorObject>();
             ForEachParameter(node, p=> parameters.Add(p));
+            parameters.Sort((a,b)=> b.PortIndex-a.PortIndex);
             return parameters.ToArray();
         }
 
@@ -587,6 +589,42 @@ namespace iCanScript.Editor.CodeEngineering {
                 return false;
             }
             return true;
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the producer port usable by the code.
+        ///
+        /// @param consumerPort The VS consumer port.
+        /// @return The producer port usable by the code.
+        ///
+        public static iCS_EditorObject GetCodeProducerPort(iCS_EditorObject consumerPort) {
+            var producerPort= consumerPort;
+            do {
+                if(producerPort.IsOutInstancePort) {
+                    producerPort= GetThisPort(producerPort.ParentNode);
+                }
+                producerPort= producerPort.FirstProducerPort;                
+            } while(producerPort != null && producerPort.IsOutInstancePort);
+            return producerPort;
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the input port representing the _'self'_ connection.
+        ///
+        /// @param node The node in which to search for the _'self'_ port.
+        ///
+        /// @return _'null'_ is returned if the port is not found.
+        ///
+        public static iCS_EditorObject GetThisPort(iCS_EditorObject node) {
+            iCS_EditorObject result= null;
+            node.ForEachChildPort(
+                p=> {
+                    if(p.PortIndex == (int)iCS_PortIndex.InInstance) {
+                        result= p;
+                    }
+                }
+            );
+            return result;
         }
 
         // =========================================================================
