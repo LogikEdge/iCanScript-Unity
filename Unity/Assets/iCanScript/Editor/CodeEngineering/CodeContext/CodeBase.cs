@@ -23,9 +23,10 @@ namespace iCanScript.Editor.CodeEngineering {
         // FIELDS
         // -------------------------------------------------------------------
         iCS_EditorObject                     myVSObject  = null;            ///< Visual script associated object
-        CodeBase                          myParent    = null;            ///< The parnt code context
+        CodeBase                             myParent    = null;            ///< The parnt code context
         CodeType                             myCodeType  = CodeType.GLOBAL; ///< Type of this code context
         Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
+        CodeContext                          myContext   = null;
         
         // ===================================================================
         // PROPERTIES
@@ -41,6 +42,9 @@ namespace iCanScript.Editor.CodeEngineering {
         public iCS_EditorObject VSObject {
         	get { return myVSObject; }
         }
+        public CodeContext Context {
+            get { return myContext; }
+        }
 		
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -55,6 +59,12 @@ namespace iCanScript.Editor.CodeEngineering {
 			myParent  = parent;
             myVSObject= vsObject;
             myCodeType= codeType;
+            // Build or assign shared code Context.
+            if(parent == null) {
+                myContext= new CodeContext();
+            }
+            myContext= parent.Context;
+            
 			// Register new code context.
             var globalContext= GetGlobalContext();
 			if(globalContext == null) {
