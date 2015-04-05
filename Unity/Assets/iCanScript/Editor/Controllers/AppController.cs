@@ -25,7 +25,6 @@ public static class AppController {
         iCS_VisualScriptDataController.Start();
         iCS_EditorController.Start();
         SceneController.Start();
-        PublicInterfaceController.Start();
 		HelpController.Start();	
 	}
     
@@ -35,7 +34,6 @@ public static class AppController {
     public static void Shutdown() {
         // Shutdown all subsystems.
 		HelpController.Shutdown();
-        PublicInterfaceController.Start();
         SceneController.Shutdown();
         iCS_EditorController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
