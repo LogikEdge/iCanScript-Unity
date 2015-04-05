@@ -11,20 +11,15 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        protected iCS_EditorObject         myFunctionNode = null;  ///< VS objects associated with code context
         protected AccessType               myAccessType   = AccessType.PRIVATE;
         protected ScopeType                myScopeType    = ScopeType.NONSTATIC;
-        protected List<CodeBase>        myExecutionList= new List<CodeBase>();
+        protected List<CodeBase>           myExecutionList= new List<CodeBase>();
         protected List<VariableDefinition> myVariables    = new List<VariableDefinition>();
         
         // ===================================================================
         // PROPERTIES
         // -------------------------------------------------------------------
-        /// Returns the VS objects associated with code context
-        public iCS_EditorObject FunctionNode {
-            get { return myFunctionNode; }
-        }
-        
+
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
@@ -35,7 +30,6 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public FunctionDefinition(iCS_EditorObject node, CodeBase parent, AccessType accessType, ScopeType scopeType)
         : base(node, parent) {
-            myFunctionNode= node;
             myAccessType  = accessType;
             myScopeType   = scopeType;
             
@@ -159,7 +153,7 @@ namespace iCanScript.Editor.CodeEngineering {
     		// Find return type.
     		string returnType= ToTypeName(typeof(void));
     		var nbParams= 0;
-    		myFunctionNode.ForEachChildPort(
+    		VSObject.ForEachChildPort(
     			p=> {
     				if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
     					if(p.PortIndex+1 > nbParams) {
@@ -174,7 +168,7 @@ namespace iCanScript.Editor.CodeEngineering {
     		// Build parameters
     		var paramTypes= new string[nbParams];
     		var paramNames= new string[nbParams];
-    		myFunctionNode.ForEachChildPort(
+    		VSObject.ForEachChildPort(
     			p=> {
     				var i= p.PortIndex;
     				if(i < (int)iCS_PortIndex.ParametersEnd) {
@@ -188,10 +182,10 @@ namespace iCanScript.Editor.CodeEngineering {
     		);
             string functionName;
             if(myAccessType == AccessType.PUBLIC) {
-                functionName= GetPublicFunctionName(myFunctionNode);
+                functionName= GetPublicFunctionName(VSObject);
             }
             else {
-                functionName= GetPrivateFunctionName(myFunctionNode);
+                functionName= GetPrivateFunctionName(VSObject);
             }
     		result.Append(
                 GenerateFunction(indentSize,
@@ -201,8 +195,8 @@ namespace iCanScript.Editor.CodeEngineering {
                                  functionName,
                                  paramTypes,
                                  paramNames,
-                                 (i)=> GenerateFunctionBody(i, myFunctionNode),
-                                 myFunctionNode));						
+                                 (i)=> GenerateFunctionBody(i, VSObject),
+                                 VSObject));						
             return result.ToString();
         }
         // -------------------------------------------------------------------

@@ -37,7 +37,7 @@ public class EventHandlerDefinition : FunctionDefinition {
             // Build parameter information 
     		var parameters= new List<iCS_EditorObject>();
             var components = new List<iCS_EditorObject>();
-    		myFunctionNode.ForEachChildPort(
+    		VSObject.ForEachChildPort(
     			p=> {
     				if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
                         if(p.IsFixDataPort) {
@@ -81,10 +81,10 @@ public class EventHandlerDefinition : FunctionDefinition {
             }
             string functionName;
             if(myAccessType == AccessType.PUBLIC) {
-                functionName= GetPublicFunctionName(myFunctionNode);
+                functionName= GetPublicFunctionName(VSObject);
             }
             else {
-                functionName= GetPrivateFunctionName(myFunctionNode);
+                functionName= GetPrivateFunctionName(VSObject);
             }
     		result.Append(
                 GenerateFunction(indentSize,
@@ -95,8 +95,8 @@ public class EventHandlerDefinition : FunctionDefinition {
                                  paramTypes,
                                  paramNames,
                                  componentsCode,
-                                 (i)=> GenerateFunctionBody(i, myFunctionNode),
-                                 myFunctionNode));						
+                                 (i)=> GenerateFunctionBody(i, VSObject),
+                                 VSObject));						
             return result.ToString();
         }
         // -------------------------------------------------------------------
