@@ -614,6 +614,17 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
+        /// Returns the consumer ports usbale by the code.
+        ///
+        /// @param producerPort The visual script producer port.
+        /// @return The consumer ports usable by the code.
+        ///
+        public iCS_EditorObject[] GetCodeConsumerPorts(iCS_EditorObject producerPort) {
+            // TODO: GetCodeConsumerPorts needs to be completed.
+            return producerPort.EndConsumerPorts;
+        }
+        
+    	// -------------------------------------------------------------------------
         /// Returns the input port representing the _'self'_ connection.
         ///
         /// @param node The node in which to search for the _'self'_ port.
@@ -650,6 +661,68 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public CodeBase FindCodeBase(iCS_EditorObject vsObject) {
             return Context.GetCodeFor(vsObject);
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the proper parent context for the given producer port.
+        ///
+        /// @param producerPort The code producer port.
+        /// @return The proper parent context for the producer port.
+        ///
+        // TODO: To be tested...
+        public CodeBase GetProperParentCodeForProducerPort(iCS_EditorObject producerPort) {
+            var consumerPorts=  GetCodeConsumerPorts(producerPort);
+            var commonParent= Context.GetCodeFor(producerPort);
+            foreach(var c in consumerPorts) {
+                commonParent= GetCommonParent(commonParent, Context.GetCodeFor(c.ParentNode));
+            }
+            return commonParent;
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the common code parent of two visual script objects.
+        ///
+        /// @param vsObject1 First visual script object.
+        /// @param vsObject2 Second visual script object.
+        /// @return The common code parent of both visual script object.
+        ///
+        public CodeBase GetCommonParent(iCS_EditorObject vsObject1, iCS_EditorObject vsObject2) {
+            var code1= Context.GetCodeFor(vsObject1);
+            var code2= Context.GetCodeFor(vsObject2);
+            return GetCommonParent(code1, code2);
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the common code parent of two Code base.
+        ///
+        /// @param code1 First code base.
+        /// @param code2 Second code base.
+        /// @return The common code parent of both visual script object.
+        ///
+        public CodeBase GetCommonParent(CodeBase code1, CodeBase code2) {
+            var parents1= GetListOfParents(code1);
+            var parents2= GetListOfParents(code2);
+            CodeBase commonParent= null;
+            int len= Mathf.Min(parents1.Length, parents2.Length);
+            for(int i= 0; i < len && parents1[i] == parents2[i]; ++i) {
+                commonParent= parents1[i];
+            }
+            return commonParent;
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the Code parent list.
+        ///
+        /// @param code The code from which to create the list.
+        /// @return The ordered list of parents.
+        ///
+        public CodeBase[] GetListOfParents(CodeBase code) {
+            var parents= new List<CodeBase>();
+            for(; code != null; code= code.Parent) {
+                parents.Add(code);
+            }
+            parents.Reverse();
+            return parents.ToArray();
         }
     }
 

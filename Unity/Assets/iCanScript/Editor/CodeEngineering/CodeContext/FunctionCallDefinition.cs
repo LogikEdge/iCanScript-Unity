@@ -12,8 +12,8 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-		iCS_EditorObject	     myNode= null;
-        CodeBase[]            myParameters     = null;
+		iCS_EditorObject	     myNode           = null;
+        CodeBase[]               myParameters     = null;
         List<VariableDefinition> myOutputVariables= new List<VariableDefinition>();
         VariableDefinition       myReturnVariable = null;
 		
@@ -64,7 +64,13 @@ namespace iCanScript.Editor.CodeEngineering {
             var outputPorts= GetOutputDataPorts();
             foreach(var p in outputPorts) {
                 AddVariable(new VariableDefinition(p, this, AccessType.PRIVATE, ScopeType.NONSTATIC));
-            }            
+            }
+            // Return value.
+            // TODO: Build proper definition for return variable.
+            var returnPort= GetReturnPort(VSObject);
+            if(returnPort != null) {
+                myReturnVariable= new VariableDefinition(returnPort, this, AccessType.PRIVATE, ScopeType.NONSTATIC);                
+            }
         }
         
         // ===================================================================
@@ -94,7 +100,15 @@ namespace iCanScript.Editor.CodeEngineering {
 			}
 			if(myReturnVariable != null) {
                 myReturnVariable.ResolveDependencies();
+
+                // TEST RETURN RELOCATION
+                var returnPort= myReturnVariable.VSObject;
+                var returnParent= GetProperParentCodeForProducerPort(returnPort);
+                if(returnParent != null && returnParent != this && returnParent != Parent) {
+                    Debug.LogWarning(returnPort.DisplayName+" needs to be relocated");
+                }
             }
+            
 		}
 
         // -------------------------------------------------------------------
@@ -196,40 +210,6 @@ namespace iCanScript.Editor.CodeEngineering {
             foreach(var p in parameters) {
                 int idx= p.PortIndex;
                 paramStrings[idx]= myParameters[idx].GenerateBody(indentSize);
-//                if(p.IsInputPort) {
-//                    var producerPort= p.FirstProducerPort;
-//                    if(producerPort != null && producerPort != p) {
-//#if OPTIMIZATION
-//                        var producerParent= producerPort.ParentNode;
-//                        var producerCode= FindCodeBase(producerParent);
-//                        if(producerCode != null && producerCode.Parent == Parent) {
-//				            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
-//							if(IsFieldOrPropertyGet(producerInfo)) {
-//	                            paramStrings[p.PortIndex]= producerCode.GenerateBody(indentSize);								
-//							}
-//							else {
-//	                            paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);								
-//							}
-//                        }
-//                        else {
-//                            paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);                            
-//                        }
-//#else
-//                        paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);
-//#endif                        
-//                        var producerCommonType= GetCommonBaseTypeForProducerPort(producerPort);
-//                        var portTypeName= ToTypeName(p.RuntimeType);
-//                        if(portTypeName != ToTypeName(producerCommonType)) {
-//                            paramStrings[p.PortIndex]+= " as "+portTypeName;
-//                        }
-//                    }
-//                    else {
-//                        paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);
-//                    }
-//                }
-//                else {
-//                    paramStrings[p.PortIndex]= myParameters[idx].GenerateBody(indentSize);
-//                }
             }
             // Special case for property set.
             if(IsFieldOrPropertySet(memberInfo)) {
