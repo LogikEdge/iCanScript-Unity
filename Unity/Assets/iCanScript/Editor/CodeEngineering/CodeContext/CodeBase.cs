@@ -664,17 +664,18 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
-        /// Returns the proper parent context for the given producer port.
+        /// Returns the proper parent context for the given producer Code.
         ///
-        /// @param producerPort The code producer port.
+        /// @param producerCode The producer port code.
         /// @return The proper parent context for the producer port.
         ///
         // TODO: To be tested...
-        public CodeBase GetProperParentCodeForProducerPort(iCS_EditorObject producerPort) {
-            var consumerPorts=  GetCodeConsumerPorts(producerPort);
-            var commonParent= Context.GetCodeFor(producerPort);
+        public CodeBase GetProperParentCodeForProducerPort(CodeBase producerPortCode) {
+            var consumerPorts=  GetCodeConsumerPorts(producerPortCode.VSObject);
+            var commonParent= producerPortCode.Parent;
             foreach(var c in consumerPorts) {
-                commonParent= GetCommonParent(commonParent, Context.GetCodeFor(c.ParentNode));
+                var consumerParent= Context.GetCodeFor(c.ParentNode).Parent;
+                commonParent= GetCommonParent(commonParent, consumerParent);
             }
             return commonParent;
         }

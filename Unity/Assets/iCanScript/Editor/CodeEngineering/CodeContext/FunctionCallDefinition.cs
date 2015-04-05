@@ -63,13 +63,13 @@ namespace iCanScript.Editor.CodeEngineering {
         void BuildOutputParameters() {
             var outputPorts= GetOutputDataPorts();
             foreach(var p in outputPorts) {
-                AddVariable(new VariableDefinition(p, this, AccessType.PRIVATE, ScopeType.NONSTATIC));
+                AddVariable(new VariableDefinition(p, Parent, AccessType.PRIVATE, ScopeType.NONSTATIC));
             }
             // Return value.
             // TODO: Build proper definition for return variable.
             var returnPort= GetReturnPort(VSObject);
             if(returnPort != null) {
-                myReturnVariable= new VariableDefinition(returnPort, this, AccessType.PRIVATE, ScopeType.NONSTATIC);                
+                myReturnVariable= new VariableDefinition(returnPort, Parent, AccessType.PRIVATE, ScopeType.NONSTATIC);                
             }
         }
         
@@ -102,9 +102,9 @@ namespace iCanScript.Editor.CodeEngineering {
                 myReturnVariable.ResolveDependencies();
 
                 // TEST RETURN RELOCATION
-                var returnPort= myReturnVariable.VSObject;
-                var returnParent= GetProperParentCodeForProducerPort(returnPort);
+                var returnParent= GetProperParentCodeForProducerPort(myReturnVariable);
                 if(returnParent != null && returnParent != this && returnParent != Parent) {
+                    var returnPort= myReturnVariable.VSObject;
                     Debug.LogWarning(returnPort.DisplayName+" needs to be relocated");
                 }
             }
