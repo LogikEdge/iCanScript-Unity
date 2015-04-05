@@ -674,8 +674,11 @@ namespace iCanScript.Editor.CodeEngineering {
             var consumerPorts=  GetCodeConsumerPorts(producerPortCode.VSObject);
             var commonParent= producerPortCode;
             foreach(var c in consumerPorts) {
-                var consumerParent= Context.GetCodeFor(c.ParentNode).Parent;
-                commonParent= GetCommonParent(commonParent, consumerParent);
+                var consumerCode= Context.GetCodeFor(c.ParentNode);
+                if(consumerCode != null) {
+                    var consumerParent= consumerCode.Parent;
+                    commonParent= GetCommonParent(commonParent, consumerParent); 
+                }
             }
             return commonParent;
         }

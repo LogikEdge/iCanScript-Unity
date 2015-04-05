@@ -51,6 +51,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param code     The associated code context.
         ///
         public void Register(iCS_EditorObject vsObject, CodeBase code) {
+            if(vsObject == null) return;
             myObjectToCodeTable[vsObject.InstanceId]= code;
         }
 

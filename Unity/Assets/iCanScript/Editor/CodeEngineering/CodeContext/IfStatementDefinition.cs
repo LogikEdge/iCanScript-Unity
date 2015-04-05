@@ -30,7 +30,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
 		/// Resolves code dependencies.
 		public override void ResolveDependencies() {
-			foreach(var e in myExecutionList) {
+			foreach(var e in myExecutionList.ToArray()) {
 				e.ResolveDependencies();
 			}
 		}
