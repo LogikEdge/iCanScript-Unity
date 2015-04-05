@@ -1,4 +1,4 @@
-﻿//#define OPTIMIZATION
+﻿#define OPTIMIZATION
 using UnityEngine;
 using System.Text;
 using System.Collections;

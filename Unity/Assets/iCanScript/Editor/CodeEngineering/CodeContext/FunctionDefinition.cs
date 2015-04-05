@@ -97,7 +97,7 @@ namespace iCanScript.Editor.CodeEngineering {
         
         // -------------------------------------------------------------------
 		void BuildExecutionList(iCS_EditorObject[] functions) {
-			IfStatementDefinition currentIfStatement= null;
+			EnableBlockDefinition currentEnableBlock= null;
 			iCS_EditorObject[] currentEnables= new iCS_EditorObject[0];
 			var len= functions.Length;
 			for(int i= 0; i < len; ++i) {
@@ -109,7 +109,7 @@ namespace iCanScript.Editor.CodeEngineering {
 						// Terminate existing If-Statement(s)
 						var removeIdx= enableIdx;
 						while(removeIdx < currentEnables.Length) {
-							currentIfStatement= currentIfStatement.Parent as IfStatementDefinition;
+							currentEnableBlock= currentEnableBlock.Parent as EnableBlockDefinition;
 							do {
 								++removeIdx;								
 							} while(removeIdx < currentEnables.Length && currentEnables[removeIdx-1].ParentNode == currentEnables[removeIdx].ParentNode);
@@ -124,24 +124,24 @@ namespace iCanScript.Editor.CodeEngineering {
 								ifEnables.Add(functionEnables[addIdx]);
 								++addIdx;								
 							} while(addIdx < functionEnables.Length && functionEnables[addIdx-1].ParentNode == functionEnables[addIdx].ParentNode);
-							var newIfStatement= new IfStatementDefinition(this, ifEnables.ToArray());
-							if(currentIfStatement == null) {
-								AddExecutable(newIfStatement);
+							var newEnableBlock= new EnableBlockDefinition(this, ifEnables.ToArray());
+							if(currentEnableBlock == null) {
+								AddExecutable(newEnableBlock);
 							}
 							else {
-								currentIfStatement.AddExecutable(newIfStatement);
+								currentEnableBlock.AddExecutable(newEnableBlock);
 							}
-							currentIfStatement= newIfStatement;
+							currentEnableBlock= newEnableBlock;
 						}
 					}
 					currentEnables= functionEnables;
 				}
 	            var funcDef= new FunctionCallDefinition(function, this);
-				if(currentIfStatement == null) {
+				if(currentEnableBlock == null) {
 					AddExecutable(funcDef);
 				}
 				else {
-					currentIfStatement.AddExecutable(funcDef);
+					currentEnableBlock.AddExecutable(funcDef);
 				}				
 			}
 		}

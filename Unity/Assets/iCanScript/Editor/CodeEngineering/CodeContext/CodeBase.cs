@@ -16,7 +16,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
         public enum CodeType     {
             GLOBAL, CLASS, STRUCT, VARIABLE, PROPERTY, FUNCTION, PARAMETER,
-            IF, FUNCTION_CALL, VALUE
+            ENABLE_BLOCK, FUNCTION_CALL, VALUE
         };
     
         // ===================================================================
@@ -119,7 +119,9 @@ namespace iCanScript.Editor.CodeEngineering {
                     if(producerPort == vsObj && valueInsteadOfSelf) {
                         return ToValueString(producerPort.InitialValue);
                     }
-                    if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsMessageHandler)) {
+                    var code= Context.GetCodeFor(producerPort);
+                    if(code == null || !(code is ParameterDefinition)) {
+//                    if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsMessageHandler)) {
                         return ToValueString(producerPort.InitialValue);
                     }                    
                 }

@@ -5,23 +5,23 @@ using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class IfStatementDefinition : CodeBase {
+    public class EnableBlockDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
         iCS_EditorObject[]  myEnablePorts= null;
-        List<CodeBase>   myExecutionList= new List<CodeBase>();
+        List<CodeBase>      myExecutionList= new List<CodeBase>();
         
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
-        /// Builds a _If_ code context.
+        /// Builds an enable code block.
         ///
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created code context.
         ///
-        public IfStatementDefinition(CodeBase parent, iCS_EditorObject[] enables)
-        : base(CodeType.IF, null, parent) {
+        public EnableBlockDefinition(CodeBase parent, iCS_EditorObject[] enables)
+        : base(CodeType.ENABLE_BLOCK, null, parent) {
             myEnablePorts= enables;
         }
 
