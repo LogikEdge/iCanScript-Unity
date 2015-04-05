@@ -425,18 +425,6 @@ namespace iCanScript.Editor.CodeEngineering {
             return P.filter(p=> p.IsOutDataPort, parameters);
         }
 
-    	// -------------------------------------------------------------------------
-        void DetermineVariableIssue(iCS_EditorObject producerPort) {
-            var consumers= producerPort.EndConsumerPorts;
-            foreach(var c in consumers) {
-                if(c != producerPort) {
-                    var parent= c.ParentNode;
-                    if(parent.IsKindOfFunction) {
-//                        var definition= GetRootContext().FindDefinitionFor(parent);
-                    }
-                }
-            }
-        }
     }
 
 }
