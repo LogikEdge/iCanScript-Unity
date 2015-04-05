@@ -63,7 +63,7 @@ public class DonePlayerHealth : MonoBehaviour
 	void PlayerDead ()
 	{
 		// If the player is in the dying state then reset the dead parameter.
-		if(anim.GetCurrentAnimatorStateInfo(0).nameHash == hash.dyingState)
+		if(anim.GetCurrentAnimatorStateInfo(0).fullPathHash == hash.dyingState)
 			anim.SetBool(hash.deadBool, false);
 		
 		// Disable the movement.

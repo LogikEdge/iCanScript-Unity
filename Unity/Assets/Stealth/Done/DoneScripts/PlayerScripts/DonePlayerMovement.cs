@@ -83,7 +83,7 @@ public class DonePlayerMovement : MonoBehaviour
 	void AudioManagement (bool shout)
 	{
 		// If the player is currently in the run state...
-		if(anim.GetCurrentAnimatorStateInfo(0).nameHash == hash.locomotionState)
+		if(anim.GetCurrentAnimatorStateInfo(0).fullPathHash == hash.locomotionState)
 		{
 			// ... and if the footsteps are not playing...
 			if(!GetComponent<AudioSource>().isPlaying)
