@@ -123,9 +123,6 @@ namespace iCanScript { namespace Editor {
             ourVisualScriptsInScene              = ScanForVisualScriptsInScene();
             ourVisualScriptsReferencesByScene    = ScanForVisualScriptsReferencedByScene();
             ourVisualScriptsInOrReferencesByScene= CombineVisualScriptsInOrReferencedByScene();
-    
-    		// -- Vaidate proper visual script setup --
-    		SceneSanityCheck();
         }
     
         // ======================================================================
@@ -183,30 +180,6 @@ namespace iCanScript { namespace Editor {
     		).ToArray();
         }
     	
-        // ======================================================================
-        // VALIDATE SCENE VISUAL SCRIPTS
-        // ----------------------------------------------------------------------
-    	static void SceneSanityCheck() {
-    //		Debug.Log("SceneSanityCheck is running");
-    		foreach(var vs in VisualScriptsInOrReferencedByScene) {
-    			var go= vs.gameObject;
-    			CleanupEmptyComponents(go);
-    			if(go == null) continue;
-    			var behaviourScript= vs.gameObject.GetComponent<iCS_BehaviourImp>();
-    			if(behaviourScript == null) {
-    //				Debug.LogWarning("iCanScript: iCS_Behaviour script has been disconnected from=> "+go.name+".  Attempting to reconnect...");
-                    iCS_DynamicCall.AddBehaviour(go);
-    			}
-    		}
-    	}
-    	static void CleanupEmptyComponents(GameObject go) {
-    		var allComponents= go.GetComponents<Component>();
-    		foreach(var c in allComponents) {
-    			if(c == null) {
-    				Debug.LogWarning("iCanScript: PLEASE REMOVE empty component found on=> "+go.name+".");
-    			}
-    		}
-    	}
     }
     
 }}

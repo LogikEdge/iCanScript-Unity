@@ -7,7 +7,7 @@ using Subspace;
 using iCanScript.Editor;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// This class is used to edit iCS_Behaviour components.
+// This class is used to edit iCS_VisualScript components.
 public class iCS_Inspector : Editor {
     // ======================================================================
     // Constants.

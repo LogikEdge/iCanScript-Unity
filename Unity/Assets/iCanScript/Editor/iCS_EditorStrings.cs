@@ -49,10 +49,6 @@ public class iCS_EditorStrings {
     public const string ConstructorHierarchyIcon= "iCS_ConstructorTag.png";
     public const string MessageHierarchyIcon    = "iCS_InMail_32x32.png";
 
-    // File references
-    public const string DefaultBehaviourClassName= "iCS_Behaviour";
-    public const string DefaultBehaviourFilePath = "Assets/iCanScript/Engine/Components/"+DefaultBehaviourClassName+".cs";
-
     // Special textual tags
     public const string SnippetTag= " (snippet)";
 }

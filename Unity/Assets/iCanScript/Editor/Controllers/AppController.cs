@@ -21,7 +21,6 @@ public static class AppController {
 		SoftwareUpdateController.Start();
         GizmoController.Start();
         LibraryDatabaseController.Start();
-		CodeEngineering.CodeEngineeringController.Start();
         iCS_VisualScriptDataController.Start();
         iCS_EditorController.Start();
         SceneController.Start();
@@ -37,7 +36,6 @@ public static class AppController {
         SceneController.Shutdown();
         iCS_EditorController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
-        CodeEngineering.CodeEngineeringController.Shutdown();
         LibraryDatabaseController.Shutdown();
         GizmoController.Shutdown();
         SoftwareUpdateController.Shutdown();

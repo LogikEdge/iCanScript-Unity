@@ -40,7 +40,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 	// ----------------------------------------------------------------------
-    // Releases all resources used by the iCS_Behaviour editor.
+    // Releases all resources used by the iCS_VisualScript editor.
     public new void OnDisable() {
         base.OnDisable();
         

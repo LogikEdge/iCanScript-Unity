@@ -700,7 +700,6 @@ public static class iCS_PreferencesController {
 	const string kBehaviourGenerationSubFolder   = "Behaviours";
     const string kCodeGenerationFilePrefix       = "";
 	const string kCodeGenerationFolderKey        = "iCS_CodeGenerationFolder";
-	const string kBehaviourGenerationSubFolderKey= "iCS_BehaviourGenerationSubFolder";
 	const string kCodeGenerationFilePrefixKey    = "iCS_CodeGenerationFilePrefix";
 #endif
 
