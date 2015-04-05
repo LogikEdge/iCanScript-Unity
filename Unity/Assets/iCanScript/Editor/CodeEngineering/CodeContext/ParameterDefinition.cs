@@ -21,7 +21,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created reference.
         ///
         public ParameterDefinition(iCS_EditorObject port, CodeBase parent, Type neededType= null)
-        : base(CodeType.PARAMETER, port, parent) {
+        : base(port, parent) {
             myType= neededType;    
         }
 

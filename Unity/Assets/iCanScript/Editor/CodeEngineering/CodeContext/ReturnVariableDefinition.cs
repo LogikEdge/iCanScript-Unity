@@ -15,7 +15,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created return variable.
         ///
         public ReturnVariableDefinition(iCS_EditorObject vsObject, CodeBase parent)
-            : base(CodeType.VARIABLE, vsObject, parent) {}
+            : base(vsObject, parent) {}
     
         // ===================================================================
         // CODE GENERATION FUNCTIONS

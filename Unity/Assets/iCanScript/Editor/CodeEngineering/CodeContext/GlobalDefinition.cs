@@ -27,7 +27,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Builds the code global scope.
         public GlobalDefinition(iCS_EditorObject vsRootObject, string namespaceName, string[] usingDirectives)
-        : base(CodeType.GLOBAL, vsRootObject, null) {
+        : base(vsRootObject, null) {
             // Initialise attributes
 			myNamespace= namespaceName;
 			foreach(var ud in usingDirectives) {

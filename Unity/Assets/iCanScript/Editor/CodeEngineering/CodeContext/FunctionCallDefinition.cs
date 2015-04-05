@@ -29,7 +29,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created function call definition.
         ///
         public FunctionCallDefinition(iCS_EditorObject vsObj, CodeBase parent)
-        : base(CodeType.FUNCTION_CALL, vsObj, parent) {
+        : base(vsObj, parent) {
             BuildParameterInformation();
             BuildOutputParameters();
         }

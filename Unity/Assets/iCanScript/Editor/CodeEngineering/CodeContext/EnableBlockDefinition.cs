@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class EnableBlockDefinition : CodeBase {
+    public class EnableBlockDefinition : ExecutionBlockDefinition {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created code context.
         ///
         public EnableBlockDefinition(CodeBase parent, iCS_EditorObject[] enables)
-        : base(CodeType.ENABLE_BLOCK, null, parent) {
+        : base(null, parent) {
             myEnablePorts= enables;
         }
 

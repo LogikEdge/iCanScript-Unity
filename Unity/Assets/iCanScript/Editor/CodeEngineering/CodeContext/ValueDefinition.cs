@@ -15,7 +15,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created reference.
         ///
         public ValueDefinition(iCS_EditorObject vsObject, CodeBase parent)
-            : base(CodeType.VALUE, vsObject, parent) {}
+            : base(vsObject, parent) {}
     
         // ===================================================================
         // CODE GENERATION FUNCTIONS

@@ -36,7 +36,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public TypeDefinition(iCS_EditorObject typeNode, CodeBase parent, Type baseClass,
                               AccessType accessType, ScopeType scopeType)
-        : base(CodeType.CLASS, typeNode, parent) {
+        : base(typeNode, parent) {
             myClassNode = typeNode;
             myBaseClass = baseClass;
             myAccessType= accessType;

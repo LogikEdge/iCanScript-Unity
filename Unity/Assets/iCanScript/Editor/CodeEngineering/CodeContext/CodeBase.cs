@@ -14,27 +14,18 @@ namespace iCanScript.Editor.CodeEngineering {
         public enum AccessType   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
         public enum ScopeType    { STATIC, NONSTATIC, VIRTUAL };
         public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
-        public enum CodeType     {
-            GLOBAL, CLASS, STRUCT, VARIABLE, PROPERTY, FUNCTION, PARAMETER,
-            ENABLE_BLOCK, FUNCTION_CALL, VALUE
-        };
     
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
         iCS_EditorObject                     myVSObject  = null;            ///< Visual script associated object
         CodeBase                             myParent    = null;            ///< The parnt code context
-        CodeType                             myCodeType  = CodeType.GLOBAL; ///< Type of this code context
         Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
         CodeContext                          myContext   = null;
         
         // ===================================================================
         // PROPERTIES
         // -------------------------------------------------------------------
-        /// Returns the type of this code context
-        public CodeType TypeOfCode {
-            get { return myCodeType; }
-        }
         public CodeBase Parent {
             get { return myParent; }
             set { myParent= value; }
@@ -55,10 +46,9 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parentContext The code context of the parent.
         /// @return The newly created code context.
         ///
-        public CodeBase(CodeType codeType, iCS_EditorObject vsObject, CodeBase parent) {
+        public CodeBase(iCS_EditorObject vsObject, CodeBase parent) {
 			myParent  = parent;
             myVSObject= vsObject;
-            myCodeType= codeType;
             // Build or assign shared code Context.
             if(parent == null) {
                 myContext= new CodeContext(vsObject);

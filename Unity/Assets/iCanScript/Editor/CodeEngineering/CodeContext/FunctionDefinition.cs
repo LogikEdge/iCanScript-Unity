@@ -34,7 +34,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created code context.
         ///
         public FunctionDefinition(iCS_EditorObject node, CodeBase parent, AccessType accessType, ScopeType scopeType)
-        : base(CodeType.FUNCTION, node, parent) {
+        : base(node, parent) {
             myFunctionNode= node;
             myAccessType  = accessType;
             myScopeType   = scopeType;
