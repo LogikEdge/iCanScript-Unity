@@ -50,8 +50,13 @@ namespace iCanScript.Editor.CodeEngineering {
             var fieldType= myVSObject.RuntimeType;
             string initializer= "";
             // Generate variable from port.
-            if(myVSObject.IsDataPort) {
-                initializer= GetNameFor(myVSObject, /*valueInsteadOfSelf=*/true);
+            if(VSObject.IsDataPort) {
+                if(VSObject.IsInDataPort) {
+                    initializer= GetNameFor(VSObject, /*valueInsteadOfSelf=*/true);                    
+                }
+                else {
+                    initializer= "default("+ToTypeName(VSObject.RuntimeType)+")";
+                }
             }
     		// Generate variable from constructor.
             else if(myVSObject.IsConstructor) {

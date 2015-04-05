@@ -672,7 +672,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // TODO: To be tested...
         public CodeBase GetProperParentCodeForProducerPort(CodeBase producerPortCode) {
             var consumerPorts=  GetCodeConsumerPorts(producerPortCode.VSObject);
-            var commonParent= producerPortCode.Parent;
+            var commonParent= producerPortCode;
             foreach(var c in consumerPorts) {
                 var consumerParent= Context.GetCodeFor(c.ParentNode).Parent;
                 commonParent= GetCommonParent(commonParent, consumerParent);

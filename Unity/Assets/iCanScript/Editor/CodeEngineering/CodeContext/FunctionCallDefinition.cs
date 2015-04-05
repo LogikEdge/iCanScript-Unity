@@ -7,15 +7,14 @@ using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    // TODO: cleanup 'myNode' since VSObject is now in base class.
+    // TODO: cleanup 'VSObject' since VSObject is now in base class.
     public class FunctionCallDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-		iCS_EditorObject	     myNode           = null;
         CodeBase[]               myParameters     = null;
         List<VariableDefinition> myOutputVariables= new List<VariableDefinition>();
-        VariableDefinition       myReturnVariable = null;
+        CodeBase                 myReturnVariable = null;
 		
         // ===================================================================
         // PROPERTIES
@@ -31,7 +30,6 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public FunctionCallDefinition(iCS_EditorObject vsObj, CodeBase parent)
         : base(CodeType.FUNCTION_CALL, vsObj, parent) {
-        	myNode= vsObj;
             BuildParameterInformation();
             BuildOutputParameters();
         }
@@ -39,7 +37,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Build information for parameters.
         void BuildParameterInformation() {
-            var parameters= GetParameters(myNode);
+            var parameters= GetParameters(VSObject);
             var pLen= parameters.Length;
             myParameters= new CodeBase[pLen];
             foreach(var p in parameters) {
@@ -69,7 +67,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // TODO: Build proper definition for return variable.
             var returnPort= GetReturnPort(VSObject);
             if(returnPort != null) {
-                myReturnVariable= new VariableDefinition(returnPort, Parent, AccessType.PRIVATE, ScopeType.NONSTATIC);                
+                myReturnVariable= new ReturnVariableDefinition(returnPort, Parent);
             }
         }
         
@@ -105,7 +103,13 @@ namespace iCanScript.Editor.CodeEngineering {
                 var returnParent= GetProperParentCodeForProducerPort(myReturnVariable);
                 if(returnParent != null && returnParent != this && returnParent != Parent) {
                     var returnPort= myReturnVariable.VSObject;
+                    if(returnParent is TypeDefinition) {
+                        var v= new VariableDefinition(returnPort, returnParent, AccessType.PRIVATE, ScopeType.NONSTATIC);
+                        returnParent.AddVariable(v);
+                        myReturnVariable= null;
+                    }
                     Debug.LogWarning(returnPort.DisplayName+" needs to be relocated");
+                    Debug.LogWarning("New parent should be=> "+returnParent.VSObject.DisplayName);
                 }
             }
             
@@ -169,13 +173,13 @@ namespace iCanScript.Editor.CodeEngineering {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(128);
             // Generate function call (except for setter).        
-            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(myNode);
+            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
             if(!IsFieldOrPropertySet(memberInfo)) {
                 // Declare the output parameters.
                 result.Append(DeclarelocalVariablesForOutputParameters(indentSize));
                 // Declare return variable.
                 result.Append(indent);
-                result.Append(DeclareReturnVariable(myNode));
+                result.Append(DeclareReturnVariable(VSObject));
             }
             else {
                 result.Append(indent);
@@ -193,18 +197,18 @@ namespace iCanScript.Editor.CodeEngineering {
             // Ajust back the indentation.
             var result= new StringBuilder(128);
             // Simplified situation for property get.
-            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(myNode);
+            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
             var functionName= memberInfo.ToFunctionPrototypeInfo.MethodName;
             if(IsFieldOrPropertyGet(memberInfo)) {
                 // Determine function prefix.
-                result.Append(FunctionCallPrefix(memberInfo, myNode));
+                result.Append(FunctionCallPrefix(memberInfo, VSObject));
                 // Generate function call.
                 result.Append(ToFieldOrPropertyName(memberInfo));
-                result.Append(GenerateReturnTypeCastFragment(myNode));
+                result.Append(GenerateReturnTypeCastFragment(VSObject));
                 return result.ToString();
             }
             // Determine parameters information.
-            var parameters= GetParameters(myNode);
+            var parameters= GetParameters(VSObject);
             var pLen= parameters.Length;
             var paramStrings= new string[pLen];
             foreach(var p in parameters) {
@@ -214,7 +218,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Special case for property set.
             if(IsFieldOrPropertySet(memberInfo)) {
                 // Determine function prefix.
-                result.Append(FunctionCallPrefix(memberInfo, myNode));
+                result.Append(FunctionCallPrefix(memberInfo, VSObject));
                 result.Append(ToFieldOrPropertyName(memberInfo));
                 result.Append("= ");
                 result.Append(paramStrings[0]);
@@ -222,10 +226,10 @@ namespace iCanScript.Editor.CodeEngineering {
             // Generate function call.        
             else {
                 // Determine function prefix.
-                result.Append(FunctionCallPrefix(memberInfo, myNode));
+                result.Append(FunctionCallPrefix(memberInfo, VSObject));
                 // Declare function call.
                 result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));
-                result.Append(GenerateReturnTypeCastFragment(myNode));            
+                result.Append(GenerateReturnTypeCastFragment(VSObject));            
             }
             return result.ToString();
         }
@@ -339,8 +343,14 @@ namespace iCanScript.Editor.CodeEngineering {
             if(hasConsumer == false) return "";
             // Build return variable for the given node.
             var result= new StringBuilder(32);
-            result.Append("var ");
-            result.Append(Parent.GetLocalVariableName(returnPort));
+            if(myReturnVariable != null) {
+                result.Append(myReturnVariable.GenerateBody(0));
+            }
+            else {
+                result.Append(GetNameFor(returnPort));
+            }
+//            result.Append("var ");
+//            result.Append(Parent.GetLocalVariableName(returnPort));
             result.Append("= ");
             return result.ToString();
         }
@@ -411,7 +421,7 @@ namespace iCanScript.Editor.CodeEngineering {
     	// -------------------------------------------------------------------------
         /// Returns the list of output ports.
         iCS_EditorObject[] GetOutputDataPorts() {
-            var parameters= GetParameters(myNode);
+            var parameters= GetParameters(VSObject);
             return P.filter(p=> p.IsOutDataPort, parameters);
         }
 
