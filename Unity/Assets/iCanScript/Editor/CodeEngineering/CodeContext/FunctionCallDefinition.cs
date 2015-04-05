@@ -7,7 +7,6 @@ using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    // TODO: cleanup 'VSObject' since VSObject is now in base class.
     public class FunctionCallDefinition : CodeBase {
         // ===================================================================
         // FIELDS
