@@ -55,6 +55,20 @@ namespace iCanScript.Editor.CodeEngineering {
             }
         }
                 
+        // -------------------------------------------------------------------
+        /// Replace the given code element by a list of elements
+        ///
+        /// @param toReplace The code to be replaced.
+        /// @param theCodeList The list to be added.
+        ///
+        public void Replace(CodeBase toReplace, List<CodeBase> theCodeList) {
+            var idx= myExecutionList.IndexOf(toReplace);
+            if(idx >= 0) {
+                myExecutionList.RemoveAt(idx);
+                myExecutionList.InsertRange(idx, theCodeList);
+            }
+        }
+        
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------

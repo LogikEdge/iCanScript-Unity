@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -105,11 +106,11 @@ namespace iCanScript.Editor.CodeEngineering {
             if(vsObj.IsInputPort) {
                 var producerPort= vsObj.FirstProducerPort;
                 if(producerPort.IsInputPort) {
-                    // Return value if we are the producer port and client want the value.
+                    // Return value if we are the producer port and client desires the value.
                     if(producerPort == vsObj && valueInsteadOfSelf) {
                         return ToValueString(producerPort.InitialValue);
                     }
-                    if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsMessageHandler)) {
+                    if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsMessageHandler) && !producerPort.IsFixDataPort) {
                         return ToValueString(producerPort.InitialValue);
                     }                    
                 }
@@ -230,6 +231,11 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(v4 == Vector4.zero)    return "Vector4.zero";
                 if(v4 == Vector4.one)     return "Vector4.one";
                 return "new Vector4("+v4.x+"f, "+v4.y+"f, "+v4.z+"f, "+v4.w+"f)";                
+            }
+            if(obj is Quaternion) {
+                Quaternion q= (Quaternion)obj;
+                if(q == Quaternion.identity) return "Quaternion.identity";
+                return "new Quaternion("+q.x+"f, "+q.y+"f, "+q.z+"f, "+q.w+"f)";
             }
             if(objType.IsEnum) {
                 return ToTypeName(obj.GetType())+"."+obj.ToString();
@@ -556,6 +562,53 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
+        /// Returns a list of input dependencies for the given node.
+        ///
+        /// @param node The node for whcih to serach for input dependencies.
+        /// @return List of all input dependencies that affects the node.
+        ///
+        public iCS_EditorObject[] GetCodeInputDependencies(iCS_EditorObject node) {
+            var inputParameters= node.BuildListOfChildPorts(p=> p.IsInputPort);
+            var enablePorts= GetEnablePortsRecursive(node);
+            return P.append(inputParameters, enablePorts);
+        }
+        
+        // =========================================================================
+        // ENABLE PORTS UTILITIES
+    	// -------------------------------------------------------------------------
+        /// Returns the list of enable ports that affects the function call
+        ///
+        /// @param funcNode Visual script representing the function call.
+        /// @return Array of all enable ports that affects the function call.
+        ///
+        static iCS_EditorObject[] GetEnablePortsRecursive(iCS_EditorObject funcNode) {
+            var enablePorts= new List<iCS_EditorObject>();
+            while(funcNode != null) {
+                GetEnablePorts(enablePorts, funcNode);
+                funcNode= funcNode.ParentNode;
+            }
+            enablePorts.Reverse();
+            return enablePorts.ToArray();
+        }
+    	// -------------------------------------------------------------------------
+        /// Appends to the given list the enable ports on the given node.
+        ///
+        /// @param lst The list to append to.
+        /// @param node The node from which to extract the enable ports.
+        /// @return The input list is updated with the found enable ports.
+        ///
+        static List<iCS_EditorObject> GetEnablePorts(List<iCS_EditorObject> lst, iCS_EditorObject node) {
+            node.ForEachChildPort(
+                p=> {
+                    if(p.IsEnablePort) {
+                        lst.Add(p);
+                    }
+                }
+            );
+            return lst;
+        }
+        
+    	// -------------------------------------------------------------------------
         /// Returns _'true'_ if port should be promoted to a public class interface.
         ///
         /// @param port The port to be tested.
@@ -637,10 +690,18 @@ namespace iCanScript.Editor.CodeEngineering {
         // ITERATION UTILITIES
     	// -------------------------------------------------------------------------
         /// Returns the code root.
-        GlobalDefinition GetGlobalContext() {
+        public GlobalDefinition GetGlobalContext() {
             if(this is GlobalDefinition) return this as GlobalDefinition;
             if(Parent == null) return null;
             return Parent.GetGlobalContext();
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the type definition.
+        public TypeDefinition GetTypeDefinition() {
+            if(this is TypeDefinition) return this as TypeDefinition;
+            if(Parent == null) return null;
+            return Parent.GetTypeDefinition();
         }
 
     	// -------------------------------------------------------------------------

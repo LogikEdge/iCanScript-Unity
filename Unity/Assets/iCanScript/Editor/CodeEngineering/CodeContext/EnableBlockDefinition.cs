@@ -24,6 +24,22 @@ namespace iCanScript.Editor.CodeEngineering {
             myEnablePorts= enables;
         }
 
+        // -------------------------------------------------------------------
+		/// Resolves code dependencies.
+		public override void ResolveDependencies() {
+            // Ask our children to resolve their dependencies.
+            base.ResolveDependencies();
+            
+            // Verify that we are not simply a sequence.
+            if(myEnablePorts.Length == 1) {
+                var producerPort= myEnablePorts[0].FirstProducerPort;
+                var parentAsExecBlock= Parent as ExecutionBlockDefinition;
+                if(producerPort.IsTriggerPort && parentAsExecBlock != null) {
+                    parentAsExecBlock.Replace(this, myExecutionList);
+                }
+            }
+        }
+        
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------

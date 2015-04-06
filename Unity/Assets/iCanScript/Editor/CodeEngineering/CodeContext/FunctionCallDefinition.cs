@@ -47,7 +47,17 @@ namespace iCanScript.Editor.CodeEngineering {
                         myParameters[idx]= new FunctionCallParameterDefinition(producerPort, this, p.RuntimeType);
                     }
                     else {
-                        myParameters[idx]= new ValueDefinition(p, this);
+                        // Generate class variable for UnityEngine.Objects
+                        var producerPortType= producerPort.RuntimeType;
+                        if(iCS_Types.IsA<UnityEngine.Object>(producerPortType)) {
+                            myParameters[idx]= new FunctionCallParameterDefinition(producerPort, this, p.RuntimeType);
+                            var typeDef= GetTypeDefinition();
+                            var v= new VariableDefinition(producerPort, typeDef, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                            typeDef.AddVariable(v);
+                        }
+                        else {
+                            myParameters[idx]= new ValueDefinition(p, this);                            
+                        }
                     }
                 }
                 else {

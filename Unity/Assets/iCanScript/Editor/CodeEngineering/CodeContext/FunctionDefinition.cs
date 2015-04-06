@@ -229,7 +229,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @todo   Resolve circular dependencies.
         ///
-    	static iCS_EditorObject[] SortDependencies(iCS_EditorObject[] nodes) {
+    	iCS_EditorObject[] SortDependencies(iCS_EditorObject[] nodes) {
     		var remainingNodes= new List<iCS_EditorObject>(nodes);
     		var result= new List<iCS_EditorObject>();
     		int i= 0;
@@ -255,8 +255,9 @@ namespace iCanScript.Editor.CodeEngineering {
     	/// @param node		The node on which to validate input port dependencies.
     	/// @param allNodes	List of nodes that should not be producing data for _'node'_
     	///
-    	static bool IsIndependentFrom(iCS_EditorObject node, List<iCS_EditorObject> allNodes) {
-    		var childPorts= node.BuildListOfChildPorts(p=> p.IsInputPort);
+    	bool IsIndependentFrom(iCS_EditorObject node, List<iCS_EditorObject> allNodes) {
+            // Get all node input ports.
+    		var childPorts= GetCodeInputDependencies(node);
     		foreach(var p in childPorts) {
     			var producerPort= p.FirstProducerPort;
     			if(producerPort != null && producerPort != p) {

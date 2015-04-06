@@ -51,7 +51,7 @@ namespace iCanScript.Editor.CodeEngineering {
             string initializer= "";
             // Generate variable from port.
             if(VSObject.IsDataPort) {
-                if(VSObject.IsInDataPort) {
+                if(VSObject.IsInDataPort && !iCS_Types.IsA<UnityEngine.Object>(VSObject.RuntimeType)) {
                     initializer= GetNameFor(VSObject, /*valueInsteadOfSelf=*/true);                    
                 }
                 else {
@@ -59,7 +59,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
             }
     		// Generate variable from constructor.
-            else if(myVSObject.IsConstructor) {
+            else if(VSObject.IsConstructor) {
                 var nbOfParams= GetNbOfParameters(myVSObject);
                 var initValues= new string[nbOfParams];
                 myVSObject.ForEachChildPort(
