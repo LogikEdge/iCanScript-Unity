@@ -8,6 +8,8 @@ namespace iCanScript.Engine.GeneratedCode {
         // PUBLIC FIELDS
         // -------------------------------------------------------------------------
         [iCS_InOutPort]
+        public  float speed= 10f;
+        [iCS_InOutPort]
         public  float left= -6f;
         [iCS_InOutPort]
         public  float right= 6f;
@@ -30,7 +32,7 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void Update() {
-            p_analog1= iCS_Math.Scale2Vector(Time.deltaTime, 10f, iCS_FromTo.ToVector(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+            p_analog1= iCS_Math.Scale2Vector(Time.deltaTime, speed, iCS_FromTo.ToVector(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         }
 
         [iCS_Function]
