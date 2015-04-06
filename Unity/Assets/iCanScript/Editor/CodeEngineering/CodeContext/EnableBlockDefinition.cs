@@ -27,7 +27,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
-        /// Generate the if-statement header code.
+        /// Generate the enable block header code.
         ///
         /// @param indentSize The indentation needed for the class definition.
         /// @return The formatted header code for the if-statement.
@@ -48,7 +48,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
         // -------------------------------------------------------------------
-        /// Generate the if-statement trailer code.
+        /// Generate the enable block trailer code.
         ///
         /// @param indentSize The indentation needed for the class definition.
         /// @return The formatted trailer code for the if-statement.

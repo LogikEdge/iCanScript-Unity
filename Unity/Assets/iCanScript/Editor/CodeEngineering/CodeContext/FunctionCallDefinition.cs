@@ -44,14 +44,14 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(p.IsInputPort) {
                     var producerPort= p.FirstProducerPort;
                     if(producerPort != null && producerPort != p) {
-                        myParameters[idx]= new ParameterDefinition(producerPort, this, p.RuntimeType);
+                        myParameters[idx]= new FunctionCallParameterDefinition(producerPort, this, p.RuntimeType);
                     }
                     else {
                         myParameters[idx]= new ValueDefinition(p, this);
                     }
                 }
                 else {
-                    myParameters[idx]= new OutParameterDefinition(p, this);
+                    myParameters[idx]= new FunctionCallOutParameterDefinition(p, this);
                 }
             }            
         }
@@ -78,7 +78,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Optimize input parameters to fields/properties
             for(int i= 0; i < myParameters.Length; ++i) {
                 var code= myParameters[i];
-                if(code is OutParameterDefinition || code is ValueDefinition) {
+                if(code is FunctionCallOutParameterDefinition || code is ValueDefinition) {
                     continue;
                 }
                 iCS_EditorObject producerParent;

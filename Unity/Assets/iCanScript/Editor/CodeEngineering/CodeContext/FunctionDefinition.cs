@@ -7,14 +7,14 @@ using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class FunctionDefinition : CodeBase {
+    public class FunctionDefinition : ExecutionBlockDefinition {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        protected AccessType               myAccessType   = AccessType.PRIVATE;
-        protected ScopeType                myScopeType    = ScopeType.NONSTATIC;
-        protected List<CodeBase>           myExecutionList= new List<CodeBase>();
-        protected List<VariableDefinition> myVariables    = new List<VariableDefinition>();
+        protected AccessType                    myAccessType    = AccessType.PRIVATE;
+        protected ScopeType                     myScopeType     = ScopeType.NONSTATIC;
+        protected FunctionParameterDefinition[] myParameters    = null;
+        protected List<VariableDefinition>      myVariables     = new List<VariableDefinition>();
         
         // ===================================================================
         // PROPERTIES
@@ -33,14 +33,25 @@ namespace iCanScript.Editor.CodeEngineering {
             myAccessType  = accessType;
             myScopeType   = scopeType;
             
-            // Get list of function calls.
-    		var functionNodes= GetFunctionBodyParts(node);
-            // Rearrange execution order according to dependencies
-    		functionNodes= SortDependencies(functionNodes);
+            // Build parameter list.
+            BuildParameterList();
+            
             // Build execution list.
+    		var functionNodes= GetFunctionBodyParts(node);
+    		functionNodes= SortDependencies(functionNodes);
 			BuildExecutionList(functionNodes);
         }
 
+        // -------------------------------------------------------------------
+        /// Builds the list of function parameters.
+        protected virtual void BuildParameterList() {
+            var parameters= GetParameters(VSObject);
+            myParameters= new FunctionParameterDefinition[parameters.Length];
+            foreach(var p in parameters) {
+                myParameters[p.PortIndex]= new FunctionParameterDefinition(p, this);
+            }
+        }
+        
         // ===================================================================
         // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
@@ -53,15 +64,6 @@ namespace iCanScript.Editor.CodeEngineering {
 				e.ResolveDependencies();
 			}
 		}
-        // -------------------------------------------------------------------
-		/// Adds an executable child code context.
-		///
-		/// @param executable The child code context to add.
-		///
-		public override void AddExecutable(CodeBase executable) {
-			myExecutionList.Add(executable);
-			executable.Parent= this;
-		} 
         // -------------------------------------------------------------------
         /// Adds a local variable to the top-level context of the function.
         ///
@@ -143,111 +145,67 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
-        /// Generate the code for a function definition.
+        /// Generate the enable block header code.
         ///
-        /// @param indentSize The indentation of the function.
-        /// @return The generated code for the given function.
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted header code for the if-statement.
         ///
-        public override string GenerateCode(int indentSize) {
-            var result= new StringBuilder(1024);
-    		// Find return type.
-    		string returnType= ToTypeName(typeof(void));
-    		var nbParams= 0;
-    		VSObject.ForEachChildPort(
-    			p=> {
-    				if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
-    					if(p.PortIndex+1 > nbParams) {
-    						nbParams= p.PortIndex+1;
-    					}
-    				}
-    				if(p.PortIndex == (int)iCS_PortIndex.Return) {
-    					returnType= ToTypeName(p.RuntimeType);
-    				}
-    			}
-    		);
-    		// Build parameters
-    		var paramTypes= new string[nbParams];
-    		var paramNames= new string[nbParams];
-    		VSObject.ForEachChildPort(
-    			p=> {
-    				var i= p.PortIndex;
-    				if(i < (int)iCS_PortIndex.ParametersEnd) {
-    					paramNames[i]= GetFunctionParameterName(p);
-    					paramTypes[i]= ToTypeName(p.RuntimeType);
-                        if(p.IsOutputPort) {
-                            paramTypes[i]= "out "+paramTypes[i];
-                        }
-    				}
-    			}
-    		);
-            string functionName;
-            if(myAccessType == AccessType.PUBLIC) {
-                functionName= GetPublicFunctionName(VSObject);
-            }
-            else {
-                functionName= GetPrivateFunctionName(VSObject);
-            }
-    		result.Append(
-                GenerateFunction(indentSize,
-                                 myAccessType,
-                                 myScopeType,
-                                 returnType,
-                                 functionName,
-                                 paramTypes,
-                                 paramNames,
-                                 (i)=> GenerateFunctionBody(i, VSObject),
-                                 VSObject));						
-            return result.ToString();
-        }
-        // -------------------------------------------------------------------
-        static string GenerateFunction(int indentSize, AccessType accessType, ScopeType scopeType,
-                                              string returnType, string functionName,
-                                              string[] paramTypes, string[] paramNames,
-                                              CodeProducer functionBody,
-                                              iCS_EditorObject vsObj= null) {
+        public override string GenerateHeader(int indentSize) {
             string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder("\n"+indent);
-            if(accessType == AccessType.PUBLIC) {
+            // Add iCanScript tag for public functions.
+            if(myAccessType == AccessType.PUBLIC) {
                 result.Append("[iCS_Function");
-                if(vsObj != null && !string.IsNullOrEmpty(vsObj.Tooltip)) {
+                if(VSObject != null && !string.IsNullOrEmpty(VSObject.Tooltip)) {
                     result.Append("(Tooltip=\"");
-                    result.Append(vsObj.Tooltip);
+                    result.Append(VSObject.Tooltip);
                     result.Append("\")");
                 }
                 result.Append("]\n");
                 result.Append(indent);
             }
-            result.Append(ToAccessString(accessType));
+            // Add Access & Scope specifiers.
+            result.Append(ToAccessString(myAccessType));
             result.Append(" ");
-            result.Append(ToScopeString(scopeType));
+            result.Append(ToScopeString(myScopeType));
+            // Add return type
             result.Append(" ");
-            result.Append(returnType);
+            var returnPort= GetReturnPort(VSObject);
+            if(returnPort == null) {
+                result.Append("void");
+            }
+            else {
+                result.Append(ToTypeName(returnPort.RuntimeType));
+            }
+            // Add function name.
             result.Append(" ");
-            result.Append(functionName);
+            if(myAccessType == AccessType.PUBLIC) {
+                result.Append(GetPublicFunctionName(VSObject));
+            }
+            else {
+                result.Append(GetPrivateFunctionName(VSObject));
+            }
+            // Add parameters.
             result.Append("(");
-			int len= paramTypes.Length;
+			int len= myParameters.Length;
 			for(int i= 0; i < len; ++i) {
-				result.Append(paramTypes[i]);
-				result.Append(" ");
-				result.Append(paramNames[i]);
+				result.Append(myParameters[i].GenerateBody(0));
 				if(i+1 != len) {
 					result.Append(", ");
 				}
 			}
             result.Append(") {\n");
-            result.Append(functionBody(indentSize+1));
-            result.Append(indent);
-            result.Append("}\n");
             return result.ToString();
         }
 
-    	// -------------------------------------------------------------------------
-        public string GenerateFunctionBody(int indentSize, iCS_EditorObject node) {
-            var result= new StringBuilder(512);
-			foreach(var c in myExecutionList) {
-				result.Append(c.GenerateCode(indentSize));
-			}
-            return result.ToString();
+        // -------------------------------------------------------------------
+        /// Generate the enable block trailer code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted trailer code for the if-statement.
+        ///
+        public override string GenerateTrailer(int indentSize) {
+            return ToIndent(indentSize)+"}\n";
         }
 
     	// -------------------------------------------------------------------------

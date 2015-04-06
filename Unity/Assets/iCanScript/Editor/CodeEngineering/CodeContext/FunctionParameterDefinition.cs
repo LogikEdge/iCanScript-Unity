@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
-using System;
 using System.Text;
 using System.Collections;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class ParameterDefinition : CodeBase {
+    public class FunctionParameterDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        Type    myType= null;
-        
+    
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
@@ -20,9 +18,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parent The parent code context.
         /// @return The newly created reference.
         ///
-        public ParameterDefinition(iCS_EditorObject port, CodeBase parent, Type neededType= null)
+        public FunctionParameterDefinition(iCS_EditorObject port, CodeBase parent)
         : base(port, parent) {
-            myType= neededType;    
         }
 
         // ===================================================================
@@ -34,15 +31,13 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The formatted body code for the parameter.
         ///
         public override string GenerateBody(int indentSize) {
-            var result= new StringBuilder(GetNameFor(VSObject), 64);
-            if(myType != null) {
-                var producerTypeName= ToTypeName(VSObject.RuntimeType);
-                var desiredTypeName= ToTypeName(myType);
-                if(producerTypeName != desiredTypeName) {
-                    result.Append(" as ");
-                    result.Append(desiredTypeName);
-                }
+            var result= new StringBuilder(64);
+            if(VSObject.IsOutDataPort) {
+                result.Append("out ");
             }
+            result.Append(ToTypeName(VSObject.RuntimeType));
+            result.Append(" ");
+            result.Append(Parent.GetFunctionParameterName(VSObject));
             return result.ToString();
         }
 

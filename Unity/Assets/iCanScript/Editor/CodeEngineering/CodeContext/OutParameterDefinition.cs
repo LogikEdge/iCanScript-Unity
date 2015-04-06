@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class OutParameterDefinition : ParameterDefinition {
+    public class FunctionCallOutParameterDefinition : FunctionCallParameterDefinition {
     
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -14,7 +14,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parent The parent code context.
         /// @return The newly created reference.
         ///
-        public OutParameterDefinition(iCS_EditorObject port, CodeBase parent)
+        public FunctionCallOutParameterDefinition(iCS_EditorObject port, CodeBase parent)
             : base(port, parent) {}
 
         // ===================================================================
