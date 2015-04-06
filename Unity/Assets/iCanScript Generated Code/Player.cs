@@ -8,13 +8,20 @@ namespace iCanScript.Engine.GeneratedCode {
         // PUBLIC FIELDS
         // -------------------------------------------------------------------------
         [iCS_InOutPort]
-        public  iCS_ImpulseForceGenerator jumpConfig=  new iCS_ImpulseForceGenerator(Vector3.up, 0.2f, new Vector3(0f, 5f, 0f), 0.3f, 1.2f, 10f);
+        public  float left= -6f;
         [iCS_InOutPort]
-        public  iCS_DesiredVelocityForceGenerator roamingConfig=  new iCS_DesiredVelocityForceGenerator(25f, 35f, new Vector3(1f, 0f, 1f));
+        public  float right= 6f;
         [iCS_InOutPort]
-        public  iCS_ForceIntegrator forceIntegrator=  new iCS_ForceIntegrator(new Vector3(0f, -20f, 0f), 1f, 0.995f);
+        public  float bottom= -4f;
         [iCS_InOutPort]
-        public  float maxSpeed= 10f;
+        public  float top= 8f;
+        [iCS_InOutPort]
+        public  float tiltFactor= -4f;
+
+        // =========================================================================
+        // PRIVATE FIELDS
+        // -------------------------------------------------------------------------
+        private  Vector2 p_analog1= default(Vector2);
 
 
         // =========================================================================
@@ -23,20 +30,17 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void Update() {
-            var theTransform= GetComponent<Transform>();
-            bool theB3;
-            bool theB2;
-            bool theJumpButton;
-            Vector2 theRawAnalog1;
-            var theAnalog1= iCS_GameController.GameController(out theRawAnalog1, out theJumpButton, out theB2, out theB3, maxSpeed);
-            forceIntegrator.Acceleration1= jumpConfig.Update(theJumpButton);
-            var theCharacter= gameObject.GetComponent("CharacterController") as CharacterController;
-            var theVelocity= theCharacter.velocity;
-            Vector3 theDisplacement;
-            forceIntegrator.Integrate(theVelocity, out theDisplacement);
-            forceIntegrator.Acceleration2= roamingConfig.Update(iCS_FromTo.ToVector(theAnalog1.x, 0f, theAnalog1.y), theVelocity, 1f);
-            theCharacter.Move(theDisplacement);
-            theTransform.Rotate(iCS_Math.NormalizedCross(theVelocity, Vector3.down), iCS_Math.Mul(iCS_TimeUtility.ScaleByDeltaTime(theVelocity.magnitude), 114.59f), Space.World);
+            p_analog1= iCS_Math.Scale2Vector(Time.deltaTime, 10f, iCS_FromTo.ToVector(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        }
+
+        [iCS_Function]
+        public  void FixedUpdate() {
+            var theRigidbody= GetComponent<Rigidbody>();
+            var thePosition= theRigidbody.position;
+            var theVelocity= theRigidbody.velocity;
+            theRigidbody.velocity= iCS_FromTo.ToVector(p_analog1.x, 0f, p_analog1.y);
+            theRigidbody.position= iCS_FromTo.ToVector(Mathf.Clamp(thePosition.x, left, right), thePosition.y, Mathf.Clamp(thePosition.z, bottom, top));
+            theRigidbody.rotation= Quaternion.Euler(0f, 0f, iCS_Math.Mul(theVelocity.x, tiltFactor));
         }
     }
 }

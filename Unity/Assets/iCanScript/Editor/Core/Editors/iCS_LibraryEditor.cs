@@ -197,6 +197,9 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 //        var library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
         var library= iCS_DynamicCall.AddLibrary(go);
         iCS_IStorage iStorage= new iCS_IStorage(library);
+        if(iStorage == null) {
+            Debug.LogWarning("iCanScript: Cannot create iStorage.");
+        }
         CreateInstance(node, iStorage);
         iStorage.SaveStorage();
         // Fill drag info.

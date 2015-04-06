@@ -6,5 +6,8 @@ public static class iCS_DynamicInterface {
     public static iCS_VisualScript AddVisualScript(GameObject go) {
         return go.AddComponent<iCS_VisualScript>();
     }
+    public static iCS_Library AddLibrary(GameObject go) {
+        return go.AddComponent<iCS_Library>();
+    }
     
 }
