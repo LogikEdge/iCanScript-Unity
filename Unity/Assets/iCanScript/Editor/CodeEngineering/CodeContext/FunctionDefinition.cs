@@ -253,25 +253,39 @@ namespace iCanScript.Editor.CodeEngineering {
         /// given node list.
     	///
     	/// @param node		The node on which to validate input port dependencies.
-    	/// @param allNodes	List of nodes that should not be producing data for _'node'_
+    	/// @param remainingNodes	List of nodes that should not be producing data for _'node'_
     	///
-    	bool IsIndependentFrom(iCS_EditorObject node, List<iCS_EditorObject> allNodes) {
-            // Get all node input ports.
-    		var childPorts= GetCodeInputDependencies(node);
-    		foreach(var p in childPorts) {
-    			var producerPort= p.FirstProducerPort;
-    			if(producerPort != null && producerPort != p) {
-    				var producerNode= producerPort.ParentNode;
-    				if(producerNode != node) {
-    					foreach(var n in allNodes) {
-    						if(n == producerNode) {
-    							return false;
-    						}
-    					}
-    				}
-    			}
-    		}
-    		return true;
+    	bool IsIndependentFrom(iCS_EditorObject node, List<iCS_EditorObject> remainingNodes) {
+            // Get all dependencies.
+            var dependencies= GetNodeCodeDependencies(node);
+            foreach(var d in dependencies) {
+                // TODO: Should consider buffering the data of circular dependencies.
+                // Ok if the dependency is on the given node.
+                if(d == node) continue;
+                // Verify that the node is not dependent on a remaining node.
+                foreach(var n in remainingNodes) {
+                    if(d == n) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+//            // Get all node input ports.
+//    		var childPorts= GetCodeInputDependencies(node);
+//    		foreach(var p in childPorts) {
+//    			var producerPort= p.FirstProducerPort;
+//    			if(producerPort != null && producerPort != p) {
+//    				var producerNode= producerPort.ParentNode;
+//    				if(producerNode != node) {
+//    					foreach(var n in remainingNodes) {
+//    						if(n == producerNode) {
+//    							return false;
+//    						}
+//    					}
+//    				}
+//    			}
+//    		}
+//    		return true;
     	}
 
     	// -------------------------------------------------------------------------
