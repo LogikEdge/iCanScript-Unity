@@ -689,14 +689,6 @@ namespace iCanScript.Editor.CodeEngineering {
         // =========================================================================
         // ITERATION UTILITIES
     	// -------------------------------------------------------------------------
-        /// Returns the code root.
-        public GlobalDefinition GetGlobalContext() {
-            if(this is GlobalDefinition) return this as GlobalDefinition;
-            if(Parent == null) return null;
-            return Parent.GetGlobalContext();
-        }
-
-    	// -------------------------------------------------------------------------
         /// Returns the type definition.
         public TypeDefinition GetTypeDefinition() {
             if(this is TypeDefinition) return this as TypeDefinition;
