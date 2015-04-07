@@ -54,7 +54,7 @@ namespace iCanScript.Editor.CodeEngineering {
             result.Append("if(");
             var len= myEnablePorts.Length;
             for(int i= 0; i < len; ++i) {
-                result.Append(GetNameFor(myEnablePorts[i].FirstProducerPort));
+                result.Append(GetNameFor(GetCodeProducerPort(myEnablePorts[i])));
                 if(i < len-1) {
                     result.Append(" || ");
                 }

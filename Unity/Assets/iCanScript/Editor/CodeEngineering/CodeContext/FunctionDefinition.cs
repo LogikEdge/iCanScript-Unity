@@ -98,7 +98,7 @@ namespace iCanScript.Editor.CodeEngineering {
 			var len= functions.Length;
 			for(int i= 0; i < len; ++i) {
 				var function= functions[i];
-				var functionEnables= GetEnablePortsRecursive(function);
+				var functionEnables= GetAllRelatedEnablePorts(function);
 	            if(!IsSameConditionalContext(currentEnables, functionEnables)) {
 					var enableIdx= LengthOfSameEnables(currentEnables, functionEnables);
 					if(enableIdx < currentEnables.Length) {
@@ -270,22 +270,6 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
             }
             return true;
-//            // Get all node input ports.
-//    		var childPorts= GetCodeInputDependencies(node);
-//    		foreach(var p in childPorts) {
-//    			var producerPort= p.FirstProducerPort;
-//    			if(producerPort != null && producerPort != p) {
-//    				var producerNode= producerPort.ParentNode;
-//    				if(producerNode != node) {
-//    					foreach(var n in remainingNodes) {
-//    						if(n == producerNode) {
-//    							return false;
-//    						}
-//    					}
-//    				}
-//    			}
-//    		}
-//    		return true;
     	}
 
     	// -------------------------------------------------------------------------
@@ -297,7 +281,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///         calls.
         ///
         iCS_EditorObject[][] GetConditionalContexts(iCS_EditorObject[] funcCalls) {
-            return P.map(fc=> GetEnablePortsRecursive(fc), funcCalls);
+            return P.map(fc=> GetAllRelatedEnablePorts(fc), funcCalls);
         }
     
 
@@ -335,40 +319,6 @@ namespace iCanScript.Editor.CodeEngineering {
             int i= 0;
             for(; i < minLen && enablePorts1[i] == enablePorts2[i]; ++i);
             return i;
-        }
-        // =========================================================================
-        // Utilities
-    	// -------------------------------------------------------------------------
-        /// Returns the list of enable ports that affects the function call
-        ///
-        /// @param funcNode Visual script representing the function call.
-        /// @return Array of all enable ports that affects the function call.
-        ///
-        static iCS_EditorObject[] GetEnablePortsRecursive(iCS_EditorObject funcNode) {
-            var enablePorts= new List<iCS_EditorObject>();
-            while(funcNode != null) {
-                GetEnablePorts(enablePorts, funcNode);
-                funcNode= funcNode.ParentNode;
-            }
-            enablePorts.Reverse();
-            return enablePorts.ToArray();
-        }
-    	// -------------------------------------------------------------------------
-        /// Appends to the given list the enable ports on the given node.
-        ///
-        /// @param lst The list to append to.
-        /// @param node The node from which to extract the enable ports.
-        /// @return The input list is updated with the found enable ports.
-        ///
-        static List<iCS_EditorObject> GetEnablePorts(List<iCS_EditorObject> lst, iCS_EditorObject node) {
-            node.ForEachChildPort(
-                p=> {
-                    if(p.IsEnablePort) {
-                        lst.Add(p);
-                    }
-                }
-            );
-            return lst;
         }
 
     }
