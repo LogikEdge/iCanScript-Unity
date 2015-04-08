@@ -12,7 +12,7 @@ public static class iCS_Variables {
 [System.Serializable]
 [iCS_Class(Company="iCanScript",Library="Variables")]
 public struct Bool {
-    public bool myValue= default(bool);
+    public bool myValue;
     
     public bool Value {
         [iCS_Function] get { return myValue; }
@@ -34,7 +34,7 @@ public struct Bool {
 [System.Serializable]
 [iCS_Class(Company="iCanScript",Library="Variables")]
 public struct Int {
-    public int myValue= default(int);
+    public int myValue;
     
     public int Value {
         [iCS_Function] get { return myValue; }
@@ -70,7 +70,7 @@ public struct Int {
 [System.Serializable]
 [iCS_Class(Company="iCanScript",Library="Variables")]
 public struct Float {
-    public float myValue= default(float);
+    public float myValue;
     
     public float Value {
         [iCS_Function] get { return myValue; }
