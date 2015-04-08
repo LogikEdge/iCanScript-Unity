@@ -20,7 +20,7 @@ public static class AppController {
         LicenseController.Start();
 		SoftwareUpdateController.Start();
         GizmoController.Start();
-        LibraryDatabaseController.Start();
+        LibraryController.Start();
         iCS_VisualScriptDataController.Start();
         iCS_EditorController.Start();
         SceneController.Start();
@@ -36,7 +36,7 @@ public static class AppController {
         SceneController.Shutdown();
         iCS_EditorController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
-        LibraryDatabaseController.Shutdown();
+        LibraryController.Shutdown();
         GizmoController.Shutdown();
         SoftwareUpdateController.Shutdown();
         LicenseController.Shutdown();

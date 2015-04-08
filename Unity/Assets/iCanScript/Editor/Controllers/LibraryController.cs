@@ -6,12 +6,12 @@ using System.Collections;
 namespace iCanScript.Editor {
     
     /// @date 2015-04-08    Code Review
-    public class LibraryDatabaseController {
+    public class LibraryController {
         // ======================================================================
         // INIT / SHUTDOWN
         // ----------------------------------------------------------------------
         /// Scans the application library and extracts the needed nodes.
-    	static LibraryDatabaseController() {
+    	static LibraryController() {
             iCS_Reflection.ParseAppDomain();
     	}        
         // ----------------------------------------------------------------------
