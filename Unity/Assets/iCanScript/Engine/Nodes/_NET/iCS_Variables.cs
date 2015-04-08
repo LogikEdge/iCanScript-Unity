@@ -9,9 +9,10 @@ public static class iCS_Variables {
 }
 
 
+[System.Serializable]
 [iCS_Class(Company="iCanScript",Library="Variables")]
 public struct Bool {
-    bool myValue;
+    public bool myValue= default(bool);
     
     public bool Value {
         [iCS_Function] get { return myValue; }
@@ -30,9 +31,10 @@ public struct Bool {
     [iCS_Function] public bool Xor(bool b) { return myValue ^ b; }
 }
 
+[System.Serializable]
 [iCS_Class(Company="iCanScript",Library="Variables")]
 public struct Int {
-    int myValue;
+    public int myValue= default(int);
     
     public int Value {
         [iCS_Function] get { return myValue; }
@@ -65,9 +67,10 @@ public struct Int {
     [iCS_Function(Name="value <= b",Return="value <= b")]  public bool IsSmallerOrEqualTo(int b) { return myValue <= b; }    
 }
 
+[System.Serializable]
 [iCS_Class(Company="iCanScript",Library="Variables")]
 public struct Float {
-    float myValue;
+    public float myValue= default(float);
     
     public float Value {
         [iCS_Function] get { return myValue; }
