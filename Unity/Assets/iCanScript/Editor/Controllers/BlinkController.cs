@@ -2,10 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
-using TS=iCS_TimerService;
 using TimedAction= Prelude.TimerService.TimedAction;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Editor {
     
     public static class BlinkController {
         // ======================================================================
@@ -23,10 +22,10 @@ namespace iCanScript { namespace Editor {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        static TimedAction      myAnimationTimer= TS.CreateTimedAction(0.05f, DoAnimation, /*isLooping=*/true);
-        static P.Animate<float> mySlowBlink     = new P.Animate<float>(iCS_TimerService.EditorTime);
-        static P.Animate<float> myNormalBlink   = new P.Animate<float>(iCS_TimerService.EditorTime);
-        static P.Animate<float> myFastBlink     = new P.Animate<float>(iCS_TimerService.EditorTime);
+        static TimedAction      myAnimationTimer= TimerService.CreateTimedAction(0.05f, DoAnimation, /*isLooping=*/true);
+        static P.Animate<float> mySlowBlink     = new P.Animate<float>(TimerService.EditorTime);
+        static P.Animate<float> myNormalBlink   = new P.Animate<float>(TimerService.EditorTime);
+        static P.Animate<float> myFastBlink     = new P.Animate<float>(TimerService.EditorTime);
     
         // ======================================================================
         // Fields
@@ -64,4 +63,4 @@ namespace iCanScript { namespace Editor {
         }
     }
     
-}}
+}

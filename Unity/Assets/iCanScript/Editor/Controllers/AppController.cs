@@ -14,7 +14,7 @@ public static class AppController {
         // Start all sub-systems.
 		ErrorController.Start();
         SystemEvents.Start();
-        iCS_TimerService.Start();
+        TimerService.Start();
         BlinkController.Start();
         EditionController.Start();
         LicenseController.Start();
@@ -42,7 +42,7 @@ public static class AppController {
         LicenseController.Shutdown();
         EditionController.Shutdown();
         BlinkController.Shutdown();
-        iCS_TimerService.Shutdown();
+        TimerService.Shutdown();
         SystemEvents.Shutdown();
 		ErrorController.Shutdown();
     }
