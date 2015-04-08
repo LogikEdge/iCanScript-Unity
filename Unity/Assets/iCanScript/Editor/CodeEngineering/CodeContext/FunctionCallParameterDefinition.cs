@@ -36,9 +36,11 @@ namespace iCanScript.Editor.CodeEngineering {
         public override string GenerateBody(int indentSize) {
             var result= new StringBuilder(GetNameFor(VSObject), 64);
             if(myType != null) {
-                var producerTypeName= ToTypeName(VSObject.RuntimeType);
                 var desiredTypeName= ToTypeName(myType);
-                if(producerTypeName != desiredTypeName) {
+                var producerType= VSObject.RuntimeType;
+//                var producerTypeName= ToTypeName(producerType);
+//                if(producerTypeName != desiredTypeName) {
+                if(!iCS_Types.IsA(myType, producerType)) {
                     result.Append(" as ");
                     result.Append(desiredTypeName);
                 }

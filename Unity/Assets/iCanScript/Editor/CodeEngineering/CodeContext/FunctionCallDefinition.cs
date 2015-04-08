@@ -130,7 +130,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
         // -------------------------------------------------------------------
-        public override void AddExecutable(CodeBase executableDefinition)    { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a function call definition."); }
+        public override void AddExecutable(CodeBase executableDefinition)       { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a function call definition."); }
         public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to a function call definition."); }
         public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to a function call definition."); }
 
@@ -322,8 +322,6 @@ namespace iCanScript.Editor.CodeEngineering {
             else {
                 result.Append(GetNameFor(returnPort));
             }
-//            result.Append("var ");
-//            result.Append(Parent.GetLocalVariableName(returnPort));
             result.Append("= ");
             return result.ToString();
         }
