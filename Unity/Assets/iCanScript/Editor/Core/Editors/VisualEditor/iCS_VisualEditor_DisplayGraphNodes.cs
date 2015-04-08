@@ -13,8 +13,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields.
     // ----------------------------------------------------------------------
-    P.Animate<Vector2>    myAnimatedScrollPosition= new P.Animate<Vector2>(iCS_TimerService.EditorTime);
-    P.Animate<float>      myAnimatedScale         = new P.Animate<float>(iCS_TimerService.EditorTime);
+    P.Animate<Vector2>    myAnimatedScrollPosition= new P.Animate<Vector2>(TimerService.EditorTime);
+    P.Animate<float>      myAnimatedScale         = new P.Animate<float>(TimerService.EditorTime);
 
     // ======================================================================
     // Properties.

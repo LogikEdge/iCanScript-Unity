@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 using TimedAction= Prelude.TimerService.TimedAction;
+using iCanScript.Editor;
 
 public static class iCS_VisualScriptDataController {
     // =================================================================================
@@ -31,7 +32,7 @@ public static class iCS_VisualScriptDataController {
     // Installation
     // ---------------------------------------------------------------------------------
     static iCS_VisualScriptDataController() {
-        mySaveTimer= iCS_TimerService.CreateTimedAction(0.5f, PerformSaveWithUndo);
+        mySaveTimer= TimerService.CreateTimedAction(0.5f, PerformSaveWithUndo);
     }
     public static void Start() {}
     public static void Shutdown() {}

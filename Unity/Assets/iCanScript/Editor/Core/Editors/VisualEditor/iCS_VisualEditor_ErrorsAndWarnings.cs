@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
 using P=Prelude;
-using TS=iCS_TimerService;
 using EC=iCanScript.Editor.ErrorController;
 using TimedAction= Prelude.TimerService.TimedAction;
 
@@ -48,7 +47,7 @@ public partial class iCS_VisualEditor {
 		if(r.Contains(WindowMousePosition)) {
 			showErrorDetails= true;
 			if(showErrorDetailTimer == null) {
-				showErrorDetailTimer= TS.CreateTimedAction(1f, ()=> { showErrorDetails= false; IsHelpEnabled= true; });
+				showErrorDetailTimer= TimerService.CreateTimedAction(1f, ()=> { showErrorDetails= false; IsHelpEnabled= true; });
 				showErrorDetailTimer.Schedule();
 			}
 			else {
@@ -175,7 +174,7 @@ public partial class iCS_VisualEditor {
         }
         else {
             if(ourErrorRepaintTimer == null) {
-                ourErrorRepaintTimer= TS.CreateTimedAction(0.06f, Repaint, /*isLooping=*/true);
+                ourErrorRepaintTimer= TimerService.CreateTimedAction(0.06f, Repaint, /*isLooping=*/true);
             }
             else if(ourErrorRepaintTimer.IsElapsed) {
                 ourErrorRepaintTimer.Restart();

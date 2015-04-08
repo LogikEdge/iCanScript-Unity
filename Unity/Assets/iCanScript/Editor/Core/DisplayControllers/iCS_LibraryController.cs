@@ -203,7 +203,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		myIterStackChildIdx = new Stack<int>();
         kGUIEmptyFoldOffset= EditorStyles.foldout.CalcSize(new GUIContent("")).x;
 		// Timer for tooltips
-		myCheckMouseTimer= iCS_TimerService.CreateTimedAction(0.2f, CheckForHelpUnderMouse, /*isLooping=*/true);
+		myCheckMouseTimer= TimerService.CreateTimedAction(0.2f, CheckForHelpUnderMouse, /*isLooping=*/true);
 		myCheckMouseTimer.Schedule();
 	}
 	
