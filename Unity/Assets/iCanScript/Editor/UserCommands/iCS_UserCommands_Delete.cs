@@ -13,7 +13,7 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     public static void DeleteObject(iCS_EditorObject obj) {
 #if DEBUG
-		Debug.Log("iCanScript: Deleting => "+obj.Name);
+		Debug.Log("iCanScript: Deleting => "+obj.DisplayName);
 #endif
         if(obj == null || obj == obj.IStorage.DisplayRoot) return;
         if(!IsDeletionAllowed()) return;

@@ -13,7 +13,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static void Unfold(iCS_EditorObject node) {
 #if DEBUG
-        Debug.Log("iCanScript: Unfold => "+node.Name);
+        Debug.Log("iCanScript: Unfold => "+node.DisplayName);
 #endif
         if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
             return;
@@ -46,7 +46,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static void Fold(iCS_EditorObject node) {
 #if DEBUG
-        Debug.Log("iCanScript: Fold => "+node.Name);
+        Debug.Log("iCanScript: Fold => "+node.DisplayName);
 #endif        
         if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Folded) {
             return;

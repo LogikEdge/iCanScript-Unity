@@ -292,7 +292,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	void RebuildDataConnection(iCS_EditorObject outputPort, iCS_EditorObject inputPort) {
 #if DEBUG
-		Debug.Log("iCanScript: RebuildDataConnection: output= "+outputPort.Name+" input= "+inputPort.Name);
+		Debug.Log("iCanScript: RebuildDataConnection: output= "+outputPort.DisplayName+" input= "+inputPort.DisplayName);
 #endif
 		// Have we completed rebuilding ... if so return.
 		if(inputPort == outputPort) return;

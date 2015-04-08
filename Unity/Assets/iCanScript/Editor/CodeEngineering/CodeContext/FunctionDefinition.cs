@@ -38,6 +38,10 @@ namespace iCanScript.Editor.CodeEngineering {
             
             // Build execution list.
     		var functionNodes= GetFunctionBodyParts(node);
+            var triggerPorts= GetTriggerPortsNeedingCode(node);
+            foreach(var t in triggerPorts) {
+                Debug.LogWarning("Trigger port needs code=> "+t.ParentNode.DisplayName);
+            }
     		functionNodes= SortDependencies(functionNodes);
 			BuildExecutionList(functionNodes);
         }
@@ -132,7 +136,14 @@ namespace iCanScript.Editor.CodeEngineering {
 					}
 					currentEnables= functionEnables;
 				}
-	            var funcDef= new FunctionCallDefinition(function, this);
+                // Allocate Code Definition
+                CodeBase funcDef= null;
+                if(function.IsKindOfFunction) {
+    	            funcDef= new FunctionCallDefinition(function, this);                    
+                }
+                else if(function.IsKindOfPackage) {
+                    funcDef= new PackageDefinition(function, this);
+                }
 				if(currentEnableBlock == null) {
 					AddExecutable(funcDef);
 				}
@@ -213,14 +224,48 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @param node Root node from which the code will be generated.
         ///
-    	static iCS_EditorObject[] GetFunctionBodyParts(iCS_EditorObject node) {
+    	iCS_EditorObject[] GetFunctionBodyParts(iCS_EditorObject node) {
     		var functionBodyParts= node.FilterChildRecursive(
     			p=> {
-    				if(p.IsKindOfFunction && !p.IsConstructor) return true;
-    				return false;
+    				return NeedToGenerateCode(p);
     			}
     		);
     		return functionBodyParts.ToArray();
+    	}
+
+    	// -------------------------------------------------------------------------
+        /// Returns _true_ if code needs to be generated for the given node.
+        ///
+        /// @param node Visual script node to check if code is needed.
+        /// @return _true_ if node needs some code generated. _false_ otherwise.
+        ///
+        bool NeedToGenerateCode(iCS_EditorObject node) {
+            if(node.IsKindOfFunction && !node.IsConstructor) return true;
+            if(node.IsKindOfPackage) {
+                var triggerPort= GetTriggerPort(node);
+                if(triggerPort != null && ShouldGenerateTriggerCode(triggerPort)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+    	// -------------------------------------------------------------------------
+        /// Returns list of trigger ports requiring code generation.
+        ///
+        /// @param node Root node from which the code will be generated.
+        /// @return The list of trigger ports that need code generation.
+        ///
+    	iCS_EditorObject[] GetTriggerPortsNeedingCode(iCS_EditorObject node) {
+    		var triggerPorts= node.FilterChildRecursive(
+    			p=> {
+    				if(p.IsTriggerPort) {
+                        return ShouldGenerateTriggerCode(p);
+                    }
+    				return false;
+    			}
+    		);
+    		return triggerPorts.ToArray();
     	}
     	// -------------------------------------------------------------------------
         /// Sorts a list a nodes so that the order is from _'producer'_ to _'consumer'_.

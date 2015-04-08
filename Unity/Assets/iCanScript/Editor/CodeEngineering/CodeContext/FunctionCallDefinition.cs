@@ -1,5 +1,4 @@
-﻿#define OPTIMIZATION
-using UnityEngine;
+﻿using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -88,17 +87,10 @@ namespace iCanScript.Editor.CodeEngineering {
             // Optimize input parameters to fields/properties
             for(int i= 0; i < myParameters.Length; ++i) {
                 var code= myParameters[i];
-                if(code is FunctionCallOutParameterDefinition || code is ValueDefinition) {
-                    continue;
-                }
-                iCS_EditorObject producerParent;
-                if(CanReplaceParameterDefinition(code, out producerParent)) {
-                    var producerCode= FindCodeBase(producerParent);
-                    if(producerCode != null) {
-                        producerCode.Parent.Remove(producerCode);
-                        myParameters[i]= producerCode;
-                        producerCode.Parent= this;
-                    }                        
+                var producerCode= OptimizeInputParameter(code);
+                if(producerCode != null) {
+                    myParameters[i]= producerCode;
+                    producerCode.Parent= this;
                 }
             }
             // Ask output objects to resolve their own child dependencies.
@@ -108,7 +100,7 @@ namespace iCanScript.Editor.CodeEngineering {
 			if(myReturnVariable != null) {
                 myReturnVariable.ResolveDependencies();
 
-                // TEST RETURN RELOCATION
+                // Return varaible relocation
                 var returnParent= GetProperParentCodeForProducerPort(myReturnVariable);
                 if(returnParent != null && returnParent != this && returnParent != Parent) {
                     var returnPort= myReturnVariable.VSObject;
@@ -117,39 +109,11 @@ namespace iCanScript.Editor.CodeEngineering {
                         returnParent.AddVariable(v);
                         myReturnVariable= null;
                     }
-                    Debug.LogWarning(returnPort.DisplayName+" needs to be relocated");
-                    Debug.LogWarning("New parent should be=> "+returnParent.VSObject.DisplayName);
                 }
             }
             
 		}
 
-        // -------------------------------------------------------------------
-        bool CanReplaceParameterDefinition(CodeBase code, out iCS_EditorObject producerParent) {
-            var producerPort= code.VSObject;
-            producerParent= producerPort.ParentNode;
-            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
-            if(producerInfo == null) return false;
-            // Accept get field/property if we are the only consumer.
-			if(IsFieldOrPropertyGet(producerInfo)) {
-                if(producerPort.ConsumerPorts.Length == 1) {
-                    return true;
-                }
-			}
-#if OPTIMIZATION
-            // Accept return value if we are the only consumer.
-            if(producerPort.PortIndex == (int)iCS_PortIndex.Return) {
-                var parameters= GetParameters(producerParent);
-                if(P.filter(p=> p.IsOutDataPort, parameters).Length == 0) {
-                    if(producerPort.ConsumerPorts.Length == 1) {
-                        return true;
-                    }                    
-                }
-            }
-#endif
-            return false;
-        }
-        
         // -------------------------------------------------------------------
         /// Adds a field definition to the class.
         ///
@@ -380,35 +344,6 @@ namespace iCanScript.Editor.CodeEngineering {
             return result.ToString();
         }
     
-        // =========================================================================
-        // Utilities
-    	// -------------------------------------------------------------------------
-        /// Returns _'true'_ if the node is a field or property get function.
-        static bool IsFieldOrPropertyGet(iCS_MemberInfo memberInfo) {
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo != null) {
-                return propertyInfo.IsGet;
-            }
-            var fieldInfo= memberInfo.ToFieldInfo;
-            if(fieldInfo != null) {
-                return fieldInfo.IsGet;
-            }
-            return false;
-        }
-    	// -------------------------------------------------------------------------
-        /// Returns _'true'_ if the node is a field or property set function.
-        static bool IsFieldOrPropertySet(iCS_MemberInfo memberInfo) {
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo != null) {
-                return propertyInfo.IsSet;
-            }
-            var fieldInfo= memberInfo.ToFieldInfo;
-            if(fieldInfo != null) {
-                return fieldInfo.IsSet;
-            }
-            return false;
-        }
-
     	// -------------------------------------------------------------------------
         /// Returns the name of the field or property.
         ///

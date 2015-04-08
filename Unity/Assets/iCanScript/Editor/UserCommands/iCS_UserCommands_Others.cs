@@ -14,7 +14,7 @@ public static partial class iCS_UserCommands {
     // OK
     public static iCS_EditorObject SetAsStateEntry(iCS_EditorObject state) {
 #if DEBUG
-        Debug.Log("iCanScript: Set As Entry State => "+state.Name);
+        Debug.Log("iCanScript: Set As Entry State => "+state.DisplayName);
 #endif
         if(state == null) return null;
         var iStorage= state.IStorage;

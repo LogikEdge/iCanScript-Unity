@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -10,6 +11,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // FIELDS
         // -------------------------------------------------------------------
         iCS_EditorObject[]  myEnablePorts= null;
+        CodeBase[]          myEnableCode = null;
         
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -22,6 +24,8 @@ namespace iCanScript.Editor.CodeEngineering {
         public EnableBlockDefinition(CodeBase parent, iCS_EditorObject[] enables)
         : base(null, parent) {
             myEnablePorts= enables;
+            myEnableCode = new CodeBase[myEnablePorts.Length];
+            for(int i= 0; i < myEnableCode.Length; ++i) myEnableCode[i]= null;
         }
 
         // -------------------------------------------------------------------
@@ -30,12 +34,23 @@ namespace iCanScript.Editor.CodeEngineering {
             // Ask our children to resolve their dependencies.
             base.ResolveDependencies();
             
-            // Verify that we are not simply a sequence.
+            // Simply reposition code for simple trigger-to-enable dependencies.
             if(myEnablePorts.Length == 1) {
                 var producerPort= myEnablePorts[0].FirstProducerPort;
                 var parentAsExecBlock= Parent as ExecutionBlockDefinition;
                 if(producerPort.IsTriggerPort && parentAsExecBlock != null) {
                     parentAsExecBlock.Replace(this, myExecutionList);
+                    return;
+                }
+            }
+            
+            // Verify if we can optimize parameter ports.
+            myEnableCode[0]= Context.GetCodeFor(GetCodeProducerPort(myEnablePorts[0]));
+            if(myEnableCode[0] != null) {
+                var replacementCode= OptimizeInputParameter(myEnableCode[0]);
+                if(replacementCode != null) {
+                    myEnableCode[0]= replacementCode;
+                    replacementCode.Parent= this;
                 }
             }
         }
@@ -54,7 +69,12 @@ namespace iCanScript.Editor.CodeEngineering {
             result.Append("if(");
             var len= myEnablePorts.Length;
             for(int i= 0; i < len; ++i) {
-                result.Append(GetNameFor(GetCodeProducerPort(myEnablePorts[i])));
+                if(myEnableCode[i] != null) {
+                    result.Append(myEnableCode[i].GenerateBody(0));
+                }
+                else {
+                    result.Append(GetNameFor(GetCodeProducerPort(myEnablePorts[i])));                    
+                }
                 if(i < len-1) {
                     result.Append(" || ");
                 }

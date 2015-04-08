@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define OPTIMIZATION
+using UnityEngine;
 using System;
 using System.Text;
 using System.Collections;
@@ -834,15 +835,6 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
             }
             return producerPort;
-//            
-//            var producerPort= consumerPort;
-//            do {
-//                if(producerPort.IsOutInstancePort) {
-//                    producerPort= GetThisPort(producerPort.ParentNode);
-//                }
-//                producerPort= producerPort.FirstProducerPort;                
-//            } while(producerPort != null && producerPort.IsOutInstancePort);
-//            return producerPort;
         }
 
     	// -------------------------------------------------------------------------
@@ -909,6 +901,134 @@ namespace iCanScript.Editor.CodeEngineering {
             return enables.ToArray();
         }
     
+        // =========================================================================
+        // TRIGGER PORTS UTILITIES
+    	// -------------------------------------------------------------------------
+        /// Returns _true_ if trigger code should be generated.
+        ///
+        /// @param triggerPort The port for which to examine.
+        /// @return _true_ if trigger code should be generated. _false_ otherwise.
+        ///
+        public bool ShouldGenerateTriggerCode(iCS_EditorObject triggerPort) {
+            // No trigger code need if nobody attached.
+            var consumers= GetCodeConsumerPorts(triggerPort);
+            if(consumers.Length == 0) return false;
+            // No trigger is parent package is empty and one or less enables
+            var triggerNode= triggerPort.ParentNode;
+            if(triggerNode.IsKindOfPackage) {
+                if(GetAllRelatedEnablePorts(triggerNode).Length <= 1) {
+                    if(GetListOfFunctions(triggerNode).Count == 0) {
+                        return false;
+                    }
+                }
+            }
+            // Need to generate code if one of the consumer is a data port.
+            foreach(var c in consumers) {
+                if(c.IsInDataPort) return true;
+            }
+            // Can't easily reposition the code if one of our clients has multiple enable ports.
+            foreach(var c in consumers) {
+                if(GetEnablePorts(c.ParentNode).Length > 1) return true;
+            }
+            // Assume we can relocate code to avoid generation of trigger code.
+            return false;
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Finds the trigger port associated with the givne node.
+        ///
+        /// @param node Visual script node to serach for a trigger port.
+        /// @return The trigger port or _null_ if not found.
+        ///
+        public iCS_EditorObject GetTriggerPort(iCS_EditorObject node) {
+            iCS_EditorObject triggerPort= null;
+            node.ForEachChild(p=> { if(p.IsTriggerPort) triggerPort= p; });
+            return triggerPort;
+        }
+
+        // =========================================================================
+        // CODE OPTIMIZATION UTILITIES
+    	// -------------------------------------------------------------------------
+        /// Proposes an input parameter optimization (if possible).
+        ///
+        /// This function attempts to replace the input parameter by inlining
+        /// the output code.  The output code is removed from its current
+        /// parent if it can be relocated.
+        ///
+        /// @param outputCode The code producing the desired output.
+        /// @return The optimized code.  _null_ is return if no optimization
+        ///         is available.
+        ///
+        public CodeBase OptimizeInputParameter(CodeBase outputCode) {
+            if(outputCode is FunctionCallOutParameterDefinition || outputCode is ValueDefinition) {
+                return null;
+            }
+            iCS_EditorObject producerParent;
+            if(CanReplaceInputParameter(outputCode, out producerParent)) {
+                var producerCode= FindCodeBase(producerParent);
+                if(producerCode != null) {
+                    producerCode.Parent.Remove(producerCode);
+                    return producerCode;
+                }
+            }
+            return null;
+        }
+        
+    	// -------------------------------------------------------------------------
+        public bool CanReplaceInputParameter(CodeBase code, out iCS_EditorObject producerParent) {
+            var producerPort= code.VSObject;
+            producerParent= producerPort.ParentNode;
+            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
+            if(producerInfo == null) return false;
+            // Accept get field/property if we are the only consumer.
+			if(IsFieldOrPropertyGet(producerInfo)) {
+                if(producerPort.ConsumerPorts.Length == 1) {
+                    return true;
+                }
+			}
+#if OPTIMIZATION
+            // Accept return value if we are the only consumer.
+            if(producerPort.PortIndex == (int)iCS_PortIndex.Return) {
+                var parameters= GetParameters(producerParent);
+                if(P.filter(p=> p.IsOutDataPort, parameters).Length == 0) {
+                    if(producerPort.ConsumerPorts.Length == 1) {
+                        return true;
+                    }                    
+                }
+            }
+#endif
+            return false;
+        }
+        
+        // =========================================================================
+        // Utilities
+    	// -------------------------------------------------------------------------
+        /// Returns _'true'_ if the node is a field or property get function.
+        public bool IsFieldOrPropertyGet(iCS_MemberInfo memberInfo) {
+            var propertyInfo= memberInfo.ToPropertyInfo;
+            if(propertyInfo != null) {
+                return propertyInfo.IsGet;
+            }
+            var fieldInfo= memberInfo.ToFieldInfo;
+            if(fieldInfo != null) {
+                return fieldInfo.IsGet;
+            }
+            return false;
+        }
+    	// -------------------------------------------------------------------------
+        /// Returns _'true'_ if the node is a field or property set function.
+        public bool IsFieldOrPropertySet(iCS_MemberInfo memberInfo) {
+            var propertyInfo= memberInfo.ToPropertyInfo;
+            if(propertyInfo != null) {
+                return propertyInfo.IsSet;
+            }
+            var fieldInfo= memberInfo.ToFieldInfo;
+            if(fieldInfo != null) {
+                return fieldInfo.IsSet;
+            }
+            return false;
+        }
+
     }
 
 }
