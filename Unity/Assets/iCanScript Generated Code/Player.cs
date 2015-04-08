@@ -10,11 +10,11 @@ namespace iCanScript.Engine.GeneratedCode {
         [iCS_InOutPort]
         public  iCS_PulseGenerator pulseGenerator=  new iCS_PulseGenerator();
         [iCS_InOutPort]
-        public  float maxSpeed= 0f;
+        public  float maxSpeed= 10f;
         [iCS_InOutPort]
-        public  Object boltTemplate= default(Object);
+        public  Object bolt= default(Object);
         [iCS_InOutPort]
-        public  Transform boltSpawnPosition= default(Transform);
+        public  Transform boltSpawnPoint= default(Transform);
         [iCS_InOutPort]
         public  float left= -6f;
         [iCS_InOutPort]
@@ -41,7 +41,7 @@ namespace iCanScript.Engine.GeneratedCode {
             var theAudioSource= GetComponent<AudioSource>();
             if(Input.GetButton("Fire1")) {
                 if(pulseGenerator.GeneratePulse(0.25f, true, true)) {
-                    Object.Instantiate(boltTemplate, boltSpawnPosition.position, boltSpawnPosition.rotation);
+                    Object.Instantiate(bolt, boltSpawnPoint.position, boltSpawnPoint.rotation);
                     theAudioSource.Play();
                 }
             }

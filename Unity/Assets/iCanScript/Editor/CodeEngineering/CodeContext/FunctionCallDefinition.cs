@@ -82,7 +82,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
-		/// Resolves code dependencies.
+		/// Resolves any dependencies that this code has.
 		public override void ResolveDependencies() {
             // Optimize input parameters to fields/properties
             for(int i= 0; i < myParameters.Length; ++i) {
@@ -114,6 +114,26 @@ namespace iCanScript.Editor.CodeEngineering {
             
 		}
 
+        // -------------------------------------------------------------------
+        /// Returns a list of all enable ports that affects this function call.
+        public override iCS_EditorObject[] GetRelatedEnablePorts() {
+            var enablePorts= new List<iCS_EditorObject>();
+            var funcNode= VSObject;
+            while(funcNode != null) {
+                enablePorts.AddRange(GetEnablePorts(funcNode));
+                funcNode= funcNode.ParentNode;
+            }
+            enablePorts.Reverse();
+            return enablePorts.ToArray();
+        }
+
+        // -------------------------------------------------------------------
+        /// Returns the list of all visual script objects this function call
+        /// depends on.
+        public override iCS_EditorObject[] GetDependencies() {
+            return GetNodeCodeDependencies(VSObject);
+        }
+        
         // -------------------------------------------------------------------
         /// Adds a field definition to the class.
         ///

@@ -37,13 +37,9 @@ namespace iCanScript.Editor.CodeEngineering {
             BuildParameterList();
             
             // Build execution list.
-    		var functionNodes= GetFunctionBodyParts(node);
-            var triggerPorts= GetTriggerPortsNeedingCode(node);
-            foreach(var t in triggerPorts) {
-                Debug.LogWarning("Trigger port needs code=> "+t.ParentNode.DisplayName);
-            }
-    		functionNodes= SortDependencies(functionNodes);
-			BuildExecutionList(functionNodes);
+    		var generatedCode= GetFunctionBodyParts(node);
+    		generatedCode= SortDependencies(generatedCode);
+			BuildExecutionList(generatedCode);
         }
 
         // -------------------------------------------------------------------
@@ -96,13 +92,13 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         
         // -------------------------------------------------------------------
-		void BuildExecutionList(iCS_EditorObject[] functions) {
+		void BuildExecutionList(CodeBase[] codeBlock) {
 			EnableBlockDefinition currentEnableBlock= null;
 			iCS_EditorObject[] currentEnables= new iCS_EditorObject[0];
-			var len= functions.Length;
+			var len= codeBlock.Length;
 			for(int i= 0; i < len; ++i) {
-				var function= functions[i];
-				var functionEnables= GetAllRelatedEnablePorts(function);
+                var code= codeBlock[i];
+				var functionEnables= code.GetRelatedEnablePorts();
 	            if(!IsSameConditionalContext(currentEnables, functionEnables)) {
 					var enableIdx= LengthOfSameEnables(currentEnables, functionEnables);
 					if(enableIdx < currentEnables.Length) {
@@ -137,18 +133,11 @@ namespace iCanScript.Editor.CodeEngineering {
 					currentEnables= functionEnables;
 				}
                 // Allocate Code Definition
-                CodeBase funcDef= null;
-                if(function.IsKindOfFunction) {
-    	            funcDef= new FunctionCallDefinition(function, this);                    
-                }
-                else if(function.IsKindOfPackage) {
-                    funcDef= new PackageDefinition(function, this);
-                }
 				if(currentEnableBlock == null) {
-					AddExecutable(funcDef);
+					AddExecutable(code);
 				}
 				else {
-					currentEnableBlock.AddExecutable(funcDef);
+					currentEnableBlock.AddExecutable(code);
 				}				
 			}
 		}
@@ -224,32 +213,24 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @param node Root node from which the code will be generated.
         ///
-    	iCS_EditorObject[] GetFunctionBodyParts(iCS_EditorObject node) {
-    		var functionBodyParts= node.FilterChildRecursive(
-    			p=> {
-    				return NeedToGenerateCode(p);
+    	CodeBase[] GetFunctionBodyParts(iCS_EditorObject node) {
+            var code= new List<CodeBase>();
+    		node.ForEachChildRecursiveDepthFirst(
+    			vsObj=> {
+                    if(vsObj.IsKindOfFunction && !vsObj.IsConstructor) {
+                        code.Add(new FunctionCallDefinition(vsObj, this));
+                    }
+                    else if(vsObj.IsTriggerPort) {
+                        if(ShouldGenerateTriggerCode(vsObj)) {
+                            code.Add(new TriggerVariableDefinition(vsObj, this));
+                            code.Add(new TriggerSetDefinition(vsObj, this));
+                        }
+                    }
     			}
     		);
-    		return functionBodyParts.ToArray();
+    		return code.ToArray();
     	}
 
-    	// -------------------------------------------------------------------------
-        /// Returns _true_ if code needs to be generated for the given node.
-        ///
-        /// @param node Visual script node to check if code is needed.
-        /// @return _true_ if node needs some code generated. _false_ otherwise.
-        ///
-        bool NeedToGenerateCode(iCS_EditorObject node) {
-            if(node.IsKindOfFunction && !node.IsConstructor) return true;
-            if(node.IsKindOfPackage) {
-                var triggerPort= GetTriggerPort(node);
-                if(triggerPort != null && ShouldGenerateTriggerCode(triggerPort)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
     	// -------------------------------------------------------------------------
         /// Returns list of trigger ports requiring code generation.
         ///
@@ -274,14 +255,14 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @todo   Resolve circular dependencies.
         ///
-    	iCS_EditorObject[] SortDependencies(iCS_EditorObject[] nodes) {
-    		var remainingNodes= new List<iCS_EditorObject>(nodes);
-    		var result= new List<iCS_EditorObject>();
+    	CodeBase[] SortDependencies(CodeBase[] codeBlock) {
+    		var remainingCode= new List<CodeBase>(codeBlock);
+    		var result= new List<CodeBase>();
     		int i= 0;
-    		while(i < remainingNodes.Count) {
-    			if(IsIndependentFrom(remainingNodes[i], remainingNodes)) {
-    				result.Add(remainingNodes[i]);
-    				remainingNodes.RemoveAt(i);
+    		while(i < remainingCode.Count) {
+    			if(IsIndependentFrom(remainingCode[i], remainingCode)) {
+    				result.Add(remainingCode[i]);
+    				remainingCode.RemoveAt(i);
     				i= 0;				
     			}			
     			else {
@@ -300,16 +281,17 @@ namespace iCanScript.Editor.CodeEngineering {
     	/// @param node		The node on which to validate input port dependencies.
     	/// @param remainingNodes	List of nodes that should not be producing data for _'node'_
     	///
-    	bool IsIndependentFrom(iCS_EditorObject node, List<iCS_EditorObject> remainingNodes) {
+    	bool IsIndependentFrom(CodeBase code, List<CodeBase> remainingCode) {
             // Get all dependencies.
-            var dependencies= GetNodeCodeDependencies(node);
+            var node= code.VSObject;
+            var dependencies= code.GetDependencies();
             foreach(var d in dependencies) {
                 // TODO: Should consider buffering the data of circular dependencies.
                 // Ok if the dependency is on the given node.
                 if(d == node) continue;
                 // Verify that the node is not dependent on a remaining node.
-                foreach(var n in remainingNodes) {
-                    if(d == n) {
+                foreach(var n in remainingCode) {
+                    if(d == n.VSObject) {
                         return false;
                     }
                 }

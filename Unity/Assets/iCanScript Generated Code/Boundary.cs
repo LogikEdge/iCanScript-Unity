@@ -11,7 +11,7 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void OnTriggerExit(Collider aColliderInfo) {
-            Object.Destroy(aColliderInfo.gameObject as Object);
+            Object.Destroy(aColliderInfo.gameObject);
         }
     }
 }

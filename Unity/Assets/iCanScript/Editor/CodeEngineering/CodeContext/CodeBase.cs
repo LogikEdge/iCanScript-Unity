@@ -61,6 +61,9 @@ namespace iCanScript.Editor.CodeEngineering {
             // Register object <-> code association
             myContext.Register(vsObject, this);
         }
+        // -------------------------------------------------------------------
+        public virtual iCS_EditorObject[] GetRelatedEnablePorts() { return new iCS_EditorObject[0]; }
+        public virtual iCS_EditorObject[] GetDependencies()       { return new iCS_EditorObject[0]; }
         public virtual void ResolveDependencies() {}
         public virtual void AddVariable(VariableDefinition variableDefinition) {}
         public virtual void AddExecutable(CodeBase executableDefinition)    {}
@@ -874,7 +877,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param funcNode Visual script representing the function call.
         /// @return Array of all enable ports that affects the function call.
         ///
-        public static iCS_EditorObject[] GetAllRelatedEnablePorts(iCS_EditorObject funcNode) {
+        public iCS_EditorObject[] GetAllRelatedEnablePorts(iCS_EditorObject funcNode) {
             var enablePorts= new List<iCS_EditorObject>();
             while(funcNode != null) {
                 enablePorts.AddRange(GetEnablePorts(funcNode));
