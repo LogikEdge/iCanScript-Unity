@@ -8,7 +8,7 @@ namespace iCanScript.Editor {
     
     public static class BlinkController {
         // ======================================================================
-        // Initialization
+        // INIT / SHUTDOWN
         // ----------------------------------------------------------------------
         static BlinkController()    {
             myAnimationTimer.Schedule();
@@ -20,7 +20,7 @@ namespace iCanScript.Editor {
         }
     
         // ======================================================================
-        // Fields
+        // PRIVATE FIELDS
         // ----------------------------------------------------------------------
         static TimedAction      myAnimationTimer= TimerService.CreateTimedAction(0.05f, DoAnimation, /*isLooping=*/true);
         static P.Animate<float> mySlowBlink     = new P.Animate<float>(TimerService.EditorTime);
@@ -28,7 +28,7 @@ namespace iCanScript.Editor {
         static P.Animate<float> myFastBlink     = new P.Animate<float>(TimerService.EditorTime);
     
         // ======================================================================
-        // Fields
+        // PUBLIC FIELDS
         // ----------------------------------------------------------------------
         public static float SlowBlinkRatio       { get { return mySlowBlink.CurrentValue; }}
         public static float NormalBlinkRatio     { get { return myNormalBlink.CurrentValue; }}

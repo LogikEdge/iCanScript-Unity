@@ -137,7 +137,7 @@ namespace iCanScript { namespace Editor {
             // Detect engine activity state.
             CheckEnginePlayingState();
             CheckEnginePausedState();
-    		// Detect if window for help has changed.
+    		// Detect for window under mouse changed.
     		CheckWindowUnderMouse();
         }
     	

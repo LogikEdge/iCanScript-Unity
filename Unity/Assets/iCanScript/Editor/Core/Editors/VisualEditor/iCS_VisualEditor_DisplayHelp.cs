@@ -31,18 +31,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 
-    // =================================================================================================
+    // ======================================================================
     // Help Initialization
-	// -------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     void HelpInit() {
         iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);
         iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
         HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
     }
  
-    // =================================================================================================
-    // Mouse in detected over another window, show contextual help for that window in the Visual Editor.
-	// -------------------------------------------------------------------------------------------------
+    // ======================================================================
+    // Mouse in detected over another window, show contextual help for that
+    // window in the Visual Editor.
+    // ----------------------------------------------------------------------
 	public void helpWindowChange() {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
 		if(edWin != null) {
@@ -52,9 +53,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 	}
 	   
-    // =================================================================================================
+    // ======================================================================
     // Mouse in detected over a library item, show help in the Visual Editor.
-	// -------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
 	public void libraryHelp(iCS_MemberInfo memInfo ) {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
 		if(edWin!= null && iCS_Types.IsA<iCS_LibraryEditor>(edWin.GetType())) { 
