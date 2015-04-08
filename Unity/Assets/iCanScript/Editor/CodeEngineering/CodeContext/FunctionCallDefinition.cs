@@ -244,7 +244,9 @@ namespace iCanScript.Editor.CodeEngineering {
             var returnPort= GetReturnPort(node);
             if(returnPort == null) return "";
             var consumerType= GetCommonBaseTypeForProducerPort(returnPort);
-            if(consumerType == typeof(void) || consumerType == returnPort.RuntimeType) return "";
+            if(consumerType == typeof(void) || iCS_Types.IsA(consumerType, returnPort.RuntimeType)) {
+                return "";
+            }
             return " as "+ToTypeName(consumerType);
         }
     	// -------------------------------------------------------------------------
