@@ -50,11 +50,12 @@ namespace iCanScript { namespace Editor {
             EditorApplication.hierarchyWindowItemOnGUI+= UnityHierarchyItemOnGui;
             
             // -- Events to refresh scene content information --
-    		SystemEvents.OnEditorStarted   += RefreshSceneInfo;
-            SystemEvents.OnSceneChanged    += RefreshSceneInfo;
-            SystemEvents.OnHierarchyChanged+= RefreshSceneInfo;
-            SystemEvents.OnProjectChanged  += RefreshSceneInfo;
-    		SystemEvents.OnCompileStarted  += RefreshSceneInfo;
+            // TODO: Remove scanning scene for iCS component on every single change.
+//    		SystemEvents.OnEditorStarted   += RefreshSceneInfo;
+//            SystemEvents.OnSceneChanged    += RefreshSceneInfo;
+//            SystemEvents.OnHierarchyChanged+= RefreshSceneInfo;
+//            SystemEvents.OnProjectChanged  += RefreshSceneInfo;
+//    		SystemEvents.OnCompileStarted  += RefreshSceneInfo;
             // -- Force an initial refresh of the scene info --
             RefreshSceneInfo();  
     	}
@@ -64,11 +65,11 @@ namespace iCanScript { namespace Editor {
         /// Shutdowns the application controller.
         public static void Shutdown() {
             // -- Remove events to refresh scene content information --
-    		SystemEvents.OnEditorStarted   -= RefreshSceneInfo;
-            SystemEvents.OnSceneChanged    -= RefreshSceneInfo;
-            SystemEvents.OnHierarchyChanged-= RefreshSceneInfo;
-            SystemEvents.OnProjectChanged  -= RefreshSceneInfo;
-    		SystemEvents.OnCompileStarted  -= RefreshSceneInfo;
+//    		SystemEvents.OnEditorStarted   -= RefreshSceneInfo;
+//            SystemEvents.OnSceneChanged    -= RefreshSceneInfo;
+//            SystemEvents.OnHierarchyChanged-= RefreshSceneInfo;
+//            SystemEvents.OnProjectChanged  -= RefreshSceneInfo;
+//    		SystemEvents.OnCompileStarted  -= RefreshSceneInfo;
     
             // -- Delegate to draw iCanScript icon in hierarchy --
             EditorApplication.hierarchyWindowItemOnGUI-= UnityHierarchyItemOnGui;
