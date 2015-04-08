@@ -6,30 +6,17 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Editor {
     
     public static class SceneController {
         // ======================================================================
         // Scene Cache
         // ----------------------------------------------------------------------
-        // Visual Scripts
-        static Texture2D                ourLogo                              = null;
-        static iCS_VisualScriptImp[]    ourVisualScriptsInScene              = null;
-        static iCS_VisualScriptImp[]    ourVisualScriptsReferencesByScene    = null;
-        static iCS_VisualScriptImp[]    ourVisualScriptsInOrReferencesByScene= null;
+        static Texture2D    ourLogo= null;
     
         // ======================================================================
         // Scene properties
         // ----------------------------------------------------------------------
-        public static iCS_VisualScriptImp[] VisualScriptsInScene {
-            get { return ourVisualScriptsInScene; }
-        }
-        public static iCS_VisualScriptImp[] VisualScriptsReferencedByScene {
-            get { return ourVisualScriptsReferencesByScene; }
-        }
-        public static iCS_VisualScriptImp[] VisualScriptsInOrReferencedByScene {
-            get { return ourVisualScriptsInOrReferencesByScene; }
-        }
         static Texture2D iCanScriptLogo {
             get {
                 if(ourLogo == null) {
@@ -38,9 +25,6 @@ namespace iCanScript { namespace Editor {
                 return ourLogo;  
             }
         }
-        public static int NumberOfVisualScriptsInOrReferencedByScene {
-            get { return VisualScriptsInOrReferencedByScene == null ? 0: VisualScriptsInOrReferencedByScene.Length; }
-        }
         
         // ======================================================================
         // Common Controller activation/deactivation
@@ -48,28 +32,12 @@ namespace iCanScript { namespace Editor {
     	static SceneController() {
             // -- Delegate to draw iCanScript icon in hierarchy --
             EditorApplication.hierarchyWindowItemOnGUI+= UnityHierarchyItemOnGui;
-            
-            // -- Events to refresh scene content information --
-    		SystemEvents.OnEditorStarted   += RefreshSceneInfo;
-            SystemEvents.OnSceneChanged    += RefreshSceneInfo;
-            SystemEvents.OnHierarchyChanged+= RefreshSceneInfo;
-            SystemEvents.OnProjectChanged  += RefreshSceneInfo;
-    		SystemEvents.OnCompileStarted  += RefreshSceneInfo;
-            // -- Force an initial refresh of the scene info --
-            RefreshSceneInfo();  
     	}
         
         /// Start the application controller.
     	public static void Start() {}
         /// Shutdowns the application controller.
         public static void Shutdown() {
-            // -- Remove events to refresh scene content information --
-    		SystemEvents.OnEditorStarted   -= RefreshSceneInfo;
-            SystemEvents.OnSceneChanged    -= RefreshSceneInfo;
-            SystemEvents.OnHierarchyChanged-= RefreshSceneInfo;
-            SystemEvents.OnProjectChanged  -= RefreshSceneInfo;
-    		SystemEvents.OnCompileStarted  -= RefreshSceneInfo;
-    
             // -- Delegate to draw iCanScript icon in hierarchy --
             EditorApplication.hierarchyWindowItemOnGUI-= UnityHierarchyItemOnGui;
         }
@@ -114,72 +82,7 @@ namespace iCanScript { namespace Editor {
             }
             return false;
         }
-        
-        // ======================================================================
-        // Update scene content changed
-        // ----------------------------------------------------------------------
-        static void RefreshSceneInfo() {
-            // -- Scan scene for visual scripts --
-            ourVisualScriptsInScene              = ScanForVisualScriptsInScene();
-            ourVisualScriptsReferencesByScene    = ScanForVisualScriptsReferencedByScene();
-            ourVisualScriptsInOrReferencesByScene= CombineVisualScriptsInOrReferencedByScene();
-        }
-    
-        // ======================================================================
-        // VISUAL SCRIPTS
-        // ----------------------------------------------------------------------
-        /// Returns all active VisualScript included in the current scene.
-        static iCS_VisualScriptImp[] ScanForVisualScriptsInScene() {
-            var allVisualScripts= UnityEngine.Object.FindObjectsOfType(typeof(iCS_VisualScriptImp));
-            return Array.ConvertAll( allVisualScripts, e=> e as iCS_VisualScriptImp );
-        }
-    
-        // ----------------------------------------------------------------------
-        /// Returns all Visual Scripts referenced in the current scene.
-    	///
-    	/// Note:	This function assumes that the visual script in the scene
-    	///			has already been fetched.
-    	///
-        static iCS_VisualScriptImp[] ScanForVisualScriptsReferencedByScene() {
-    		return P.removeDuplicates(
-    			P.fold(
-    				(acc,vs)=> P.append(acc, ScanForVisualScriptsReferencedBy(vs)),
-    				new iCS_VisualScriptImp[0],
-    				VisualScriptsInScene
-    			)
-    		);
-        }
-        
-        // ----------------------------------------------------------------------
-        /// Returns all Visual Scripts referenced in the current scene.
-    	///
-    	/// Note:	This function assumes that the visual script in and referenced
-    	///			by this scene have already been fetched.
-    	///
-        static iCS_VisualScriptImp[] CombineVisualScriptsInOrReferencedByScene() {
-            return P.removeDuplicates(P.append(VisualScriptsInScene, VisualScriptsReferencedByScene));
-        }
-        
-        // ----------------------------------------------------------------------
-        /// Returns Visual Scripts referenced by the given Visual Script.
-        static iCS_VisualScriptImp[] ScanForVisualScriptsReferencedBy(iCS_VisualScriptImp vs) {
-            var visualScripts= P.map(o=> o as iCS_VisualScriptImp, P.filter(o=> o is iCS_VisualScriptImp, vs.UnityObjects));
-            var gameObjects  = P.map(o=> o as GameObject         , P.filter(o=> o is GameObject         , vs.UnityObjects));
-    		return P.removeDuplicates(
-    			P.fold(
-    				(acc,go)=> {
-    	                var goVs= go.GetComponent<iCS_VisualScriptImp>() as iCS_VisualScriptImp;
-    	                if(goVs != null) {
-    	                    acc.Add(goVs);
-    	                }
-    					return acc;
-                    },
-    				visualScripts,
-    				gameObjects
-    			)
-    		).ToArray();
-        }
-    	
+            	
     }
     
-}}
+}
