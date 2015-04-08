@@ -213,7 +213,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				else {
 					iCS_PortValueInspector.CreateInstance(pickedObject, pickInfo.PickedPointInGUISpace);
-//					ShowNotification(new GUIContent("Please use the Inspector to edit this port value."));					
 				}
                 break;
             }
