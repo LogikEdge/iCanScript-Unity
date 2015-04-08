@@ -151,21 +151,6 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
             constructor.Evaluate();
         }
         myPublicVariables.Clear();
-//        // Run the Start message handler.
-//        iCS_RunContext startContext= null;
-//        myMessageContexts.TryGetValue("Start", out startContext);
-//        if(startContext != null) {
-//            startContext.Action.Context.RunId= -2;
-//            startContext.Action.IsActive= true;
-//            do {
-//                startContext.Action.Evaluate();
-//                if(startContext.Action.IsStalled) {
-//                    Debug.LogError("The Start() of "+name+" is stalled. Please remove any dependent processing !!!");
-//                    return;
-//                }
-//            } while(!startContext.Action.IsEvaluated);
-//            startContext.Action.IsActive= false;
-//        }
     }
         
     // ======================================================================
