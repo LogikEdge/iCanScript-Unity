@@ -47,10 +47,9 @@ namespace iCanScript.Editor.CodeEngineering {
             // Verify if we can optimize parameter ports.
             myEnableCode[0]= Context.GetCodeFor(GetCodeProducerPort(myEnablePorts[0]));
             if(myEnableCode[0] != null) {
-                var replacementCode= OptimizeInputParameter(myEnableCode[0]);
-                if(replacementCode != null) {
-                    myEnableCode[0]= replacementCode;
-                    replacementCode.Parent= this;
+                myEnableCode[0]= OptimizeInputParameter(myEnableCode[0], Parent);
+                if(myEnableCode[0] != null) {
+                    myEnableCode[0].Parent= this;
                 }
             }
         }

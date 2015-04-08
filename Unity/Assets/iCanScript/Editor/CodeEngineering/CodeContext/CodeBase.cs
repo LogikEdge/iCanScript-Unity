@@ -956,15 +956,16 @@ namespace iCanScript.Editor.CodeEngineering {
         /// parent if it can be relocated.
         ///
         /// @param outputCode The code producing the desired output.
+        /// @param allowedParent The allowed parent.
         /// @return The optimized code.  _null_ is return if no optimization
         ///         is available.
         ///
-        public CodeBase OptimizeInputParameter(CodeBase outputCode) {
+        public CodeBase OptimizeInputParameter(CodeBase outputCode, CodeBase allowedParent) {
             if(outputCode is FunctionCallOutParameterDefinition || outputCode is ValueDefinition) {
                 return null;
             }
             iCS_EditorObject producerParent;
-            if(CanReplaceInputParameter(outputCode, out producerParent)) {
+            if(CanReplaceInputParameter(outputCode, allowedParent, out producerParent)) {
                 var producerCode= FindCodeBase(producerParent);
                 if(producerCode != null) {
                     producerCode.Parent.Remove(producerCode);
@@ -975,7 +976,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         
     	// -------------------------------------------------------------------------
-        public bool CanReplaceInputParameter(CodeBase code, out iCS_EditorObject producerParent) {
+        public bool CanReplaceInputParameter(CodeBase code, CodeBase allowedParent, out iCS_EditorObject producerParent) {
             var producerPort= code.VSObject;
             producerParent= producerPort.ParentNode;
             var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
@@ -989,11 +990,13 @@ namespace iCanScript.Editor.CodeEngineering {
 #if OPTIMIZATION
             // Accept return value if we are the only consumer.
             if(producerPort.PortIndex == (int)iCS_PortIndex.Return) {
+                var producerCode= FindCodeBase(producerParent);
+                if(producerCode.Parent != allowedParent) return false;
                 var parameters= GetParameters(producerParent);
                 if(P.filter(p=> p.IsOutDataPort, parameters).Length == 0) {
                     if(producerPort.ConsumerPorts.Length == 1) {
                         return true;
-                    }                    
+                    }
                 }
             }
 #endif

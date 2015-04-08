@@ -87,7 +87,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Optimize input parameters to fields/properties
             for(int i= 0; i < myParameters.Length; ++i) {
                 var code= myParameters[i];
-                var producerCode= OptimizeInputParameter(code);
+                var producerCode= OptimizeInputParameter(code, Parent);
                 if(producerCode != null) {
                     myParameters[i]= producerCode;
                     producerCode.Parent= this;
