@@ -34,15 +34,15 @@ namespace iCanScript.Engine.GeneratedCode {
             var theTransform= GetComponent<Transform>();
             var theIsBolt= aColliderInfo.CompareTag("Bolt");
             bool theTrigger= false;
+            var theTransform_94= aColliderInfo.transform;
             if(aColliderInfo.CompareTag("Player")) {
-                var thePlayerTransform= aColliderInfo.transform;
-                Object.Instantiate(playerExplosion, thePlayerTransform.position, thePlayerTransform.rotation);
+                Object.Instantiate(playerExplosion, theTransform_94.position, theTransform_94.rotation);
                 theTrigger= true;
             }
             if(theTrigger || theIsBolt) {
+                Object.Destroy(aColliderInfo.gameObject);
                 Object.Destroy(gameObject);
                 Object.Instantiate(asteroidExplosion, theTransform.position, theTransform.rotation);
-                Object.Destroy(aColliderInfo.gameObject);
             }
         }
     }

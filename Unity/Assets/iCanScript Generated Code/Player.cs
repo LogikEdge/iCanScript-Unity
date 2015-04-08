@@ -8,13 +8,13 @@ namespace iCanScript.Engine.GeneratedCode {
         // PUBLIC FIELDS
         // -------------------------------------------------------------------------
         [iCS_InOutPort]
-        public  iCS_PulseGenerator pulseGenerator=  new iCS_PulseGenerator();
-        [iCS_InOutPort]
-        public  float maxSpeed= 10f;
+        public  iCS_PulseGenerator variableSmallerThanPulseGeneratorLargerThan=  new iCS_PulseGenerator();
         [iCS_InOutPort]
         public  Object bolt= default(Object);
         [iCS_InOutPort]
         public  Transform boltSpawnPoint= default(Transform);
+        [iCS_InOutPort]
+        public  float maxSpeed= 10f;
         [iCS_InOutPort]
         public  float left= -6f;
         [iCS_InOutPort]
@@ -40,7 +40,7 @@ namespace iCanScript.Engine.GeneratedCode {
         public  void Update() {
             var theAudioSource= GetComponent<AudioSource>();
             if(Input.GetButton("Fire1")) {
-                if(pulseGenerator.GeneratePulse(0.25f, true, true)) {
+                if(variableSmallerThanPulseGeneratorLargerThan.GeneratePulse(0.25f, true, true)) {
                     Object.Instantiate(bolt, boltSpawnPoint.position, boltSpawnPoint.rotation);
                     theAudioSource.Play();
                 }
@@ -51,9 +51,9 @@ namespace iCanScript.Engine.GeneratedCode {
         [iCS_Function]
         public  void FixedUpdate() {
             var theRigidbody= GetComponent<Rigidbody>();
+            theRigidbody.velocity= p_velocity;
             var thePosition= theRigidbody.position;
             var theVelocity= theRigidbody.velocity;
-            theRigidbody.velocity= p_velocity;
             theRigidbody.position= iCS_FromTo.ToVector(Mathf.Clamp(thePosition.x, left, right), thePosition.y, Mathf.Clamp(thePosition.z, bottom, top));
             theRigidbody.rotation= Quaternion.Euler(0f, 0f, iCS_Math.Mul(theVelocity.x, tiltFactor));
         }
