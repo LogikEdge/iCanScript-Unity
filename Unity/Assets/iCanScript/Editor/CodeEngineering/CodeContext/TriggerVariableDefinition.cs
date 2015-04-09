@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 
@@ -15,7 +15,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created reference.
         ///
         public TriggerVariableDefinition(iCS_EditorObject port, CodeBase parent)
-            : base(port, parent, AccessType.PRIVATE, ScopeType.NONSTATIC) {}
+            : base(port, parent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC) {}
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS

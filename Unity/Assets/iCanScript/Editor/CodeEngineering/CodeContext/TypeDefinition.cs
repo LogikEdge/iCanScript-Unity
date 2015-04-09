@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Text;
 using System.Collections;
@@ -13,8 +13,8 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         iCS_EditorObject         myClassNode = null;  ///< VS objects associated with code context
         Type                     myBaseClass = null;  ///< The base class for this class
-        AccessType               myAccessType= AccessType.PRIVATE;
-        ScopeType                myScopeType = ScopeType.NONSTATIC;
+        AccessSpecifier               myAccessSpecifier= AccessSpecifier.PRIVATE;
+        ScopeSpecifier                myScopeSpecifier = ScopeSpecifier.NONSTATIC;
         List<VariableDefinition> myFields    = new List<VariableDefinition>();
         List<FunctionDefinition> myFunctions = new List<FunctionDefinition>();
         
@@ -35,12 +35,12 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created class definition.
         ///
         public TypeDefinition(iCS_EditorObject typeNode, CodeBase parent, Type baseClass,
-                              AccessType accessType, ScopeType scopeType)
+                              AccessSpecifier accessType, ScopeSpecifier scopeType)
         : base(typeNode, parent) {
             myClassNode = typeNode;
             myBaseClass = baseClass;
-            myAccessType= accessType;
-            myScopeType = scopeType;
+            myAccessSpecifier= accessType;
+            myScopeSpecifier = scopeType;
             // Add fields
             AddChildConstructorsAsFields();
             AddPublicInterfaces();
@@ -73,9 +73,9 @@ namespace iCanScript.Editor.CodeEngineering {
             var constructors= myClassNode.FilterChildRecursive(c=> c.IsConstructor);
             foreach(var c in constructors) {
                 if(AreAllInputsConstant(c)) {
-                    AccessType fieldAccess= AccessType.PRIVATE;
-                    fieldAccess= AccessType.PUBLIC;
-                    var field= new VariableDefinition(c, this, fieldAccess, ScopeType.NONSTATIC);
+                    AccessSpecifier fieldAccess= AccessSpecifier.PRIVATE;
+                    fieldAccess= AccessSpecifier.PUBLIC;
+                    var field= new VariableDefinition(c, this, fieldAccess, ScopeSpecifier.NONSTATIC);
                     AddVariable(field);                    
                 }
             }            
@@ -86,7 +86,7 @@ namespace iCanScript.Editor.CodeEngineering {
         void AddPublicInterfaces() {
             var publicInterfaces= myClassNode.FilterChildRecursive(c=> IsPublicClassInterface(c));
             foreach(var c in publicInterfaces) {
-                var field= new VariableDefinition(c, this, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                var field= new VariableDefinition(c, this, AccessSpecifier.PUBLIC, ScopeSpecifier.NONSTATIC);
                 AddVariable(field);
             }            
         }
@@ -97,11 +97,11 @@ namespace iCanScript.Editor.CodeEngineering {
     		myClassNode.ForEachChildNode(
     			n=> {
     				if(n.IsPublicFunction) {
-                        var functionDefinition= new FunctionDefinition(n, this, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                        var functionDefinition= new FunctionDefinition(n, this, AccessSpecifier.PUBLIC, ScopeSpecifier.NONSTATIC);
                         AddFunction(functionDefinition);
     				}
     				if(n.IsMessage) {
-                        var functionDefinition= new EventHandlerDefinition(n, this, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                        var functionDefinition= new EventHandlerDefinition(n, this, AccessSpecifier.PUBLIC, ScopeSpecifier.NONSTATIC);
                         AddFunction(functionDefinition);
     				}
     			}
@@ -135,15 +135,15 @@ namespace iCanScript.Editor.CodeEngineering {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(indent, 1024);
             // Access Type
-            if(myAccessType == AccessType.PUBLIC) {
+            if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
                 result.Append("[iCS_Class(Library=\"Visual Scripts\")]\n");
                 result.Append(indent);
             }
-            result.Append(ToAccessString(myAccessType));
+            result.Append(ToAccessString(myAccessSpecifier));
             // Scope Type
-            if(myScopeType != ScopeType.NONSTATIC) {
+            if(myScopeSpecifier != ScopeSpecifier.NONSTATIC) {
                 result.Append(" ");
-                result.Append(ToScopeString(myScopeType));
+                result.Append(ToScopeString(myScopeSpecifier));
             }
             // Class name
             result.Append(" class ");
@@ -213,8 +213,8 @@ namespace iCanScript.Editor.CodeEngineering {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(1024);
             // Fields
-            var publicFields= P.filter(f=> f.myAccessType == AccessType.PUBLIC, myFields);
-            var privateFields= P.filter(f=> f.myAccessType != AccessType.PUBLIC, myFields);
+            var publicFields= P.filter(f=> f.myAccessSpecifier == AccessSpecifier.PUBLIC, myFields);
+            var privateFields= P.filter(f=> f.myAccessSpecifier != AccessSpecifier.PUBLIC, myFields);
             if(publicFields.Count != 0) {
                 result.Append(GenerateCodeBanner(indent, "PUBLIC FIELDS"));
                 foreach(var f in publicFields) {

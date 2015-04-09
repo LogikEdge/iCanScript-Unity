@@ -7,15 +7,18 @@ using System.Collections.Generic;
 using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
+    // ===================================================================
+    // USEFULL TYPES
+    // -------------------------------------------------------------------
+    public delegate string  CodeProducer(int indent);
+    public enum AccessSpecifier   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
+    public enum ScopeSpecifier    { STATIC, NONSTATIC, VIRTUAL };
 
     public abstract class CodeBase {
         // ===================================================================
         // TYPES
         // -------------------------------------------------------------------
         public delegate string  CodeProducer(int indent);
-        public enum AccessType   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
-        public enum ScopeType    { STATIC, NONSTATIC, VIRTUAL };
-        public enum LocationType { LOCAL_TO_FUNCTION, LOCAL_TO_CLASS };
     
         // ===================================================================
         // FIELDS
@@ -144,30 +147,30 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         
     	// -------------------------------------------------------------------------
-        /// Converts the given AccessType to its string representation.
+        /// Converts the given AccessSpecifier to its string representation.
         ///
         /// @param accessType The access type to be converted.
         /// @return The string representation of the acces type.
         ///
-        public static string ToAccessString(AccessType accessType) {
+        public static string ToAccessString(AccessSpecifier accessType) {
             switch(accessType) {
-                case AccessType.PUBLIC:    return "public";
-                case AccessType.PRIVATE:   return "private";
-                case AccessType.PROTECTED: return "protected";
-                case AccessType.INTERNAL:  return "internal";
+                case AccessSpecifier.PUBLIC:    return "public";
+                case AccessSpecifier.PRIVATE:   return "private";
+                case AccessSpecifier.PROTECTED: return "protected";
+                case AccessSpecifier.INTERNAL:  return "internal";
             }
             return "public";
         }
         // -------------------------------------------------------------------
-        /// Converts the given ScopeType to its string representation.
+        /// Converts the given ScopeSpecifier to its string representation.
         ///
         /// @param scopeType The scope type to be converted.
         /// @return The string representation of the scope type.
         ///
-        public static string ToScopeString(ScopeType scopeType) {
+        public static string ToScopeString(ScopeSpecifier scopeType) {
 			switch(scopeType) {
-				case ScopeType.STATIC:  return "static";
-				case ScopeType.VIRTUAL: return "virtual";
+				case ScopeSpecifier.STATIC:  return "static";
+				case ScopeSpecifier.VIRTUAL: return "virtual";
 			}
             return ""; 
         }

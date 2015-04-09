@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,8 +50,8 @@ namespace iCanScript.Editor.CodeEngineering {
             // Add root class defintion.
             var classDefinition= new TypeDefinition(vsRootObject, this,
                                                     typeof(MonoBehaviour),
-                                                    CodeBase.AccessType.PUBLIC,
-                                                    CodeBase.ScopeType.NONSTATIC);
+                                                    AccessSpecifier.PUBLIC,
+                                                    ScopeSpecifier.NONSTATIC);
             AddType(classDefinition);			
 		}
 		

@@ -33,6 +33,7 @@ namespace iCanScript.Editor.CodeEngineering {
             result.Append(GenerateReturnTypeCastFragment(VSObject));
             return result.ToString();
         }
+
     }
 
 }

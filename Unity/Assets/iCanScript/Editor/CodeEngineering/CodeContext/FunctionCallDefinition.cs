@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,7 +54,7 @@ namespace iCanScript.Editor.CodeEngineering {
                         if(iCS_Types.IsA<UnityEngine.Object>(producerPortType)) {
                             myParameters[idx]= new FunctionCallParameterDefinition(producerPort, this, p.RuntimeType);
                             var typeDef= GetTypeDefinition();
-                            var v= new VariableDefinition(producerPort, typeDef, AccessType.PUBLIC, ScopeType.NONSTATIC);
+                            var v= new VariableDefinition(producerPort, typeDef, AccessSpecifier.PUBLIC, ScopeSpecifier.NONSTATIC);
                             typeDef.AddVariable(v);
                         }
                         else {
@@ -72,7 +72,7 @@ namespace iCanScript.Editor.CodeEngineering {
         void BuildOutputParameters() {
             var outputPorts= GetOutputDataPorts();
             foreach(var p in outputPorts) {
-                AddVariable(new VariableDefinition(p, Parent, AccessType.PRIVATE, ScopeType.NONSTATIC));
+                AddVariable(new VariableDefinition(p, Parent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC));
             }
             // Return value.
             // TODO: Build proper definition for return variable.
@@ -108,7 +108,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(returnParent != null && returnParent != this && returnParent != Parent) {
                     var returnPort= myReturnVariable.VSObject;
                     if(returnParent is TypeDefinition) {
-                        var v= new VariableDefinition(returnPort, returnParent, AccessType.PRIVATE, ScopeType.NONSTATIC);
+                        var v= new VariableDefinition(returnPort, returnParent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC);
                         returnParent.AddVariable(v);
                         myReturnVariable= null;
                     }
