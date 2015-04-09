@@ -670,7 +670,10 @@ namespace iCanScript.Editor.CodeEngineering {
             var consumerPorts=  GetCodeConsumerPorts(producerPortCode.VSObject);
             var commonCodeBlock= producerPortCode;
             foreach(var c in consumerPorts) {
-                var consumerCode= Context.GetCodeFor(c.ParentNode);
+                var consumerCode= Context.GetCodeFor(c);
+                if(consumerCode == null) {
+                    consumerCode= Context.GetCodeFor(c.ParentNode);                    
+                }
                 if(consumerCode != null) {
                     var consumerCodeBlock= consumerCode.CodeBlock;
                     commonCodeBlock= GetCommonCodeBlock(commonCodeBlock, consumerCodeBlock); 

@@ -37,6 +37,18 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         
         // -------------------------------------------------------------------
+        /// Set the new code block for the assignment code
+        ///
+        /// @param newCodeBlock The new code block to be assigned.
+        ///
+        public override void SetCodeBlock(CodeBase newCodeBlock) {
+            myCodeBlock= newCodeBlock;
+            foreach(var p in myParameters)      { p.CodeBlock= newCodeBlock; }
+            foreach(var v in myOutputVariables) { v.CodeBlock= newCodeBlock; }
+            myReturnVariable.CodeBlock= newCodeBlock;
+        }
+
+        // -------------------------------------------------------------------
         /// Build information for parameters.
         void BuildParameterInformation() {
             var parameters= GetParameters(VSObject);
@@ -94,7 +106,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 var producerCode= OptimizeInputParameter(code, myCodeBlock);
                 if(producerCode != null) {
                     myParameters[i]= producerCode;
-                    producerCode.CodeBlock= this;
+                    producerCode.CodeBlock= myCodeBlock;
                 }
             }
             // Ask output objects to resolve their own child dependencies.
@@ -104,9 +116,9 @@ namespace iCanScript.Editor.CodeEngineering {
 			if(myReturnVariable != null) {
                 myReturnVariable.ResolveDependencies();
 
-                // Return varaible relocation
+                // Return variable relocation
                 var returnCodeBlock= GetProperCodeBlockForProducerPort(myReturnVariable);
-                if(returnCodeBlock != null && returnCodeBlock != this && returnCodeBlock != myCodeBlock) {
+                if(returnCodeBlock != null && returnCodeBlock != myCodeBlock) {
                     var returnPort= myReturnVariable.VSObject;
                     if(returnCodeBlock is TypeDefinition) {
                         var v= new VariableDefinition(returnPort, returnCodeBlock, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC);

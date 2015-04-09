@@ -14,11 +14,6 @@ namespace iCanScript.Engine.GeneratedCode {
         [iCS_InOutPort]
         public  Object brickPrefab= default(Object);
 
-        // =========================================================================
-        // PRIVATE FIELDS
-        // -------------------------------------------------------------------------
-        private  Transform p_transform= default(Transform);
-
 
         // =========================================================================
         // PUBLIC FUNCTIONS
@@ -35,8 +30,8 @@ namespace iCanScript.Engine.GeneratedCode {
             var thePosition= theTransform.position;
             Object.Instantiate(brickPrefab, thePosition, theNoRotation);
             var thePaddle= Object.Instantiate(paddlePrefab, thePosition, theNoRotation) as GameObject;
-            p_transform= thePaddle.transform;
-            aClonePaddleTR= p_transform;
+            var theTransform_25= thePaddle.transform;
+            aClonePaddleTR= theTransform_25;
             aClonePaddle= thePaddle;
         }
     }
