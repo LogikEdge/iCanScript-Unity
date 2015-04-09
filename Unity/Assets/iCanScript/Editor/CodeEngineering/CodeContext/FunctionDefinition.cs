@@ -236,6 +236,9 @@ namespace iCanScript.Editor.CodeEngineering {
                             code.Add(new TriggerSetDefinition(vsObj, this));
                         }
                     }
+                    else if(vsObj.IsOutDataPort && vsObj.ParentNode == node) {
+                        Debug.LogWarning("Should create output port assignment code");
+                    }
     			}
     		);
     		return code.ToArray();
