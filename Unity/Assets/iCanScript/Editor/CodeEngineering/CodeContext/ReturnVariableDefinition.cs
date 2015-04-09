@@ -26,7 +26,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The formatted body code for the return variable.
         ///
         public override string GenerateBody(int indentSize) {
-            return "var "+Parent.GetLocalVariableName(VSObject);
+            return "var "+CodeBlock.GetLocalVariableName(VSObject);
         }
     }
 

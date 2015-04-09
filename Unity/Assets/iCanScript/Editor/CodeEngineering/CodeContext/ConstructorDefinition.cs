@@ -11,10 +11,11 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds a function call code context.
         ///
         /// @param vsObj VS node associated with the function call.
+        /// @param codeBlock The code block this assignment belongs to.        
         /// @return The newly created function call definition.
         ///
-        public ConstructorDefinition(iCS_EditorObject vsObj, CodeBase parent)
-        : base(vsObj, parent) {}
+        public ConstructorDefinition(iCS_EditorObject vsObj, CodeBase codeBlock)
+        : base(vsObj, codeBlock) {}
         
         // ===================================================================
         // CODE GENERATION FUNCTIONS

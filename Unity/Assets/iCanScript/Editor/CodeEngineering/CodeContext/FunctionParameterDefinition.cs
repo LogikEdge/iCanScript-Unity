@@ -37,7 +37,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             result.Append(ToTypeName(VSObject.RuntimeType));
             result.Append(" ");
-            result.Append(Parent.GetFunctionParameterName(VSObject));
+            result.Append(CodeBlock.GetFunctionParameterName(VSObject));
             return result.ToString();
         }
 

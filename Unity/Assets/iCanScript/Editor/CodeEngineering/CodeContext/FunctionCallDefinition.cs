@@ -27,10 +27,11 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds a function call code context.
         ///
         /// @param vsObj VS node associated with the function call.
+        /// @param codeBlock The code block this assignment belongs to.
         /// @return The newly created function call definition.
         ///
-        public FunctionCallDefinition(iCS_EditorObject vsObj, CodeBase parent)
-        : base(vsObj, parent) {
+        public FunctionCallDefinition(iCS_EditorObject vsObj, CodeBase codeBlock)
+        : base(vsObj, codeBlock) {
             BuildParameterInformation();
             BuildOutputParameters();
         }
@@ -72,13 +73,13 @@ namespace iCanScript.Editor.CodeEngineering {
         void BuildOutputParameters() {
             var outputPorts= GetOutputDataPorts();
             foreach(var p in outputPorts) {
-                AddVariable(new VariableDefinition(p, Parent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC));
+                AddVariable(new VariableDefinition(p, myCodeBlock, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC));
             }
             // Return value.
             // TODO: Build proper definition for return variable.
             var returnPort= GetReturnPort(VSObject);
             if(returnPort != null) {
-                myReturnVariable= new ReturnVariableDefinition(returnPort, Parent);
+                myReturnVariable= new ReturnVariableDefinition(returnPort, myCodeBlock);
             }
         }
         
@@ -90,10 +91,10 @@ namespace iCanScript.Editor.CodeEngineering {
             // Optimize input parameters to fields/properties
             for(int i= 0; i < myParameters.Length; ++i) {
                 var code= myParameters[i];
-                var producerCode= OptimizeInputParameter(code, Parent);
+                var producerCode= OptimizeInputParameter(code, myCodeBlock);
                 if(producerCode != null) {
                     myParameters[i]= producerCode;
-                    producerCode.Parent= this;
+                    producerCode.CodeBlock= this;
                 }
             }
             // Ask output objects to resolve their own child dependencies.
@@ -104,12 +105,12 @@ namespace iCanScript.Editor.CodeEngineering {
                 myReturnVariable.ResolveDependencies();
 
                 // Return varaible relocation
-                var returnParent= GetProperParentCodeForProducerPort(myReturnVariable);
-                if(returnParent != null && returnParent != this && returnParent != Parent) {
+                var returnCodeBlock= GetProperCodeBlockForProducerPort(myReturnVariable);
+                if(returnCodeBlock != null && returnCodeBlock != this && returnCodeBlock != myCodeBlock) {
                     var returnPort= myReturnVariable.VSObject;
-                    if(returnParent is TypeDefinition) {
-                        var v= new VariableDefinition(returnPort, returnParent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC);
-                        returnParent.AddVariable(v);
+                    if(returnCodeBlock is TypeDefinition) {
+                        var v= new VariableDefinition(returnPort, returnCodeBlock, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC);
+                        returnCodeBlock.AddVariable(v);
                         myReturnVariable= null;
                     }
                 }
@@ -147,9 +148,9 @@ namespace iCanScript.Editor.CodeEngineering {
                 myReturnVariable= outputVariable;
             }
             else {
-                myOutputVariables.Add(outputVariable);                
+                myOutputVariables.Add(outputVariable);
             }
-            outputVariable.Parent= this;
+            outputVariable.CodeBlock= myCodeBlock;
         }
 
         // -------------------------------------------------------------------

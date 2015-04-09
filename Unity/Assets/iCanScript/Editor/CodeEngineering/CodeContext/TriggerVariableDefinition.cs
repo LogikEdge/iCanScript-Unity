@@ -35,7 +35,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public override string GenerateHeader(int indentSize) {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(indent, 128);
-            if(iCS_Types.IsA<TypeDefinition>(Parent.GetType())) {
+            if(iCS_Types.IsA<TypeDefinition>(CodeBlock.GetType())) {
                 result.Append("private ");
             }
             result.Append("bool ");
@@ -49,10 +49,10 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The formatted body code for the if-statement.
         ///
         public override string GenerateBody(int indentSize) {
-            if(iCS_Types.IsA<TypeDefinition>(Parent.GetType())) {
-                return Parent.GetPrivateFieldName(VSObject);
+            if(iCS_Types.IsA<TypeDefinition>(CodeBlock.GetType())) {
+                return CodeBlock.GetPrivateFieldName(VSObject);
             }
-            return Parent.GetLocalVariableName(VSObject);
+            return CodeBlock.GetLocalVariableName(VSObject);
         }
 
         // -------------------------------------------------------------------

@@ -10,11 +10,13 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Builds the property/field _GET_ code definition.
         ///
-        /// @param vsObj VS node associated with the property/field _GET_.
+        /// @param vsObj The visual script object associated with the _GET_
+        ///              property or field accessor.
+        /// @param codeBlock The code block in which the accessor reside.
         /// @return The newly created GET definition.
         ///
-        public GetPropertyCallDefinition(iCS_EditorObject vsObj, CodeBase parent)
-        : base(vsObj, parent) {
+        public GetPropertyCallDefinition(iCS_EditorObject vsObj, CodeBase codeBlock)
+        : base(vsObj, codeBlock) {
         }        
 
         // ===================================================================

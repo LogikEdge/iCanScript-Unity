@@ -16,18 +16,30 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Builds the property/field _GET_ code definition.
         ///
-        /// @param outParam The output parameter port.
-        /// @param parent The parent code block.
-        /// @param rightHandCode The code that generates the parameter value.
-        /// @return The newly created GET definition.
+        /// @param codeBlock The code block this assignment belongs to.
+        /// @param leftHandCode The target of the assignment.
+        /// @param rightHandCode The source of the assignment.
+        /// @return The newly created code definition.
         ///
-        public AssignmentDefinition(iCS_EditorObject vsObj, CodeBase parent,
+        public AssignmentDefinition(CodeBase codeBlock,
                                     CodeBase leftHandSize, CodeBase rightHandCode)
-        : base(null, parent) {
+        : base(null, codeBlock) {
             myLeftHandCode = leftHandSize;
             myRightHandCode= rightHandCode;
+            myLeftHandCode.CodeBlock= myRightHandCode.CodeBlock= codeBlock;
         }        
     
+        // -------------------------------------------------------------------
+        /// Set the new code block for the assignment code
+        ///
+        /// @param newCodeBlock The new code block to be assigned.
+        ///
+        public override void SetCodeBlock(CodeBase newCodeBlock) {
+            myCodeBlock= newCodeBlock;
+            myLeftHandCode.CodeBlock = newCodeBlock;
+            myRightHandCode.CodeBlock= newCodeBlock;
+        }
+        
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------

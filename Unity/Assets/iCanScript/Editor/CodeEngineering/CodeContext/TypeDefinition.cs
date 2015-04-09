@@ -55,7 +55,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void AddVariable(VariableDefinition field) {
             myFields.Add(field);
-            field.Parent= this;
+            field.CodeBlock= this;
         }
         // -------------------------------------------------------------------
         /// Adds a function definition to the class.
@@ -64,7 +64,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void AddFunction(FunctionDefinition functionDefinition) {
             myFunctions.Add(functionDefinition);
-            functionDefinition.Parent= this;
+            functionDefinition.CodeBlock= this;
         }        
 
         // -------------------------------------------------------------------

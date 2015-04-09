@@ -72,7 +72,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void AddType(TypeDefinition typeDefinition) {
             myTypes.Add(typeDefinition);
-            typeDefinition.Parent= this;
+            typeDefinition.CodeBlock= this;
         }
         
         // -------------------------------------------------------------------

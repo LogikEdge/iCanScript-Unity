@@ -17,11 +17,11 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds an execution code block.
         ///
         /// @param vsObject The visual script objects associated with this code.
-        /// @param parent   The code block parent.
+        /// @param codeBlock The code block this assignment belongs to.
         /// @return The newly created code context.
         ///
-        public ExecutionBlockDefinition(iCS_EditorObject vsObject, CodeBase parent)
-        : base(vsObject, parent) {
+        public ExecutionBlockDefinition(iCS_EditorObject vsObject, CodeBase codeBlock)
+        : base(vsObject, codeBlock) {
         }
 
         // ===================================================================
@@ -41,7 +41,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void AddExecutable(CodeBase child) {
             myExecutionList.Add(child);
-            child.Parent= this;
+            child.CodeBlock= this;
         }
 
         // -------------------------------------------------------------------
@@ -51,7 +51,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void Remove(CodeBase toRemove) {
             if(myExecutionList.Remove(toRemove)) {
-                toRemove.Parent= null;
+                toRemove.CodeBlock= null;
             }
         }
                 
@@ -66,6 +66,9 @@ namespace iCanScript.Editor.CodeEngineering {
             if(idx >= 0) {
                 myExecutionList.RemoveAt(idx);
                 myExecutionList.InsertRange(idx, theCodeList);
+                foreach(var c in theCodeList) {
+                    c.CodeBlock= this;
+                }
             }
         }
         

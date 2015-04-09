@@ -26,10 +26,11 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds a Function specific code context object.
         ///
         /// @param node VS objects associated with the function.
+        /// @param codeBlock The code block this assignment belongs to.
         /// @return The newly created code context.
         ///
-        public FunctionDefinition(iCS_EditorObject node, CodeBase parent, AccessSpecifier accessType, ScopeSpecifier scopeType)
-        : base(node, parent) {
+        public FunctionDefinition(iCS_EditorObject node, CodeBase codeBlock, AccessSpecifier accessType, ScopeSpecifier scopeType)
+        : base(node, codeBlock) {
             myAccessSpecifier  = accessType;
             myScopeSpecifier   = scopeType;
             
@@ -71,7 +72,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void AddVariable(VariableDefinition variableDefinition) {
             myVariables.Add(variableDefinition);
-            variableDefinition.Parent= this;
+            variableDefinition.CodeBlock= this;
         }
         // -------------------------------------------------------------------
         /// Removes a code context from the function.
@@ -81,12 +82,12 @@ namespace iCanScript.Editor.CodeEngineering {
         public override void Remove(CodeBase toRemove) {
             if(toRemove is VariableDefinition) {
                 if(myVariables.Remove(toRemove as VariableDefinition)) {
-                    toRemove.Parent= null;
+                    toRemove.CodeBlock= null;
                 }
             }
             else {
                 if(myExecutionList.Remove(toRemove)) {
-                    toRemove.Parent= null;
+                    toRemove.CodeBlock= null;
                 }
             }
         }
@@ -105,7 +106,7 @@ namespace iCanScript.Editor.CodeEngineering {
 						// Terminate existing If-Statement(s)
 						var removeIdx= enableIdx;
 						while(removeIdx < currentEnables.Length) {
-							currentEnableBlock= currentEnableBlock.Parent as EnableBlockDefinition;
+							currentEnableBlock= currentEnableBlock.CodeBlock as EnableBlockDefinition;
 							do {
 								++removeIdx;								
 							} while(removeIdx < currentEnables.Length && currentEnables[removeIdx-1].ParentNode == currentEnables[removeIdx].ParentNode);
@@ -241,7 +242,7 @@ namespace iCanScript.Editor.CodeEngineering {
                         if(producerPort != null) {
                             var consumerCode= new VariableReferenceDefinition(vsObj, this);
                             var producerCode= new VariableReferenceDefinition(producerPort, this);
-                            code.Add(new AssignmentDefinition(null, this, consumerCode, producerCode));
+                            code.Add(new AssignmentDefinition(this, consumerCode, producerCode));
                         }
                     }
     			}

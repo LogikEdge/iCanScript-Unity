@@ -9,23 +9,22 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        public iCS_EditorObject    myVSObject= null;
-        public AccessSpecifier          myAccessSpecifier = AccessSpecifier.PRIVATE;
-        public ScopeSpecifier           myScopeSpecifier  = ScopeSpecifier.NONSTATIC;
+        public AccessSpecifier  myAccessSpecifier = AccessSpecifier.PRIVATE;
+        public ScopeSpecifier   myScopeSpecifier  = ScopeSpecifier.NONSTATIC;
         
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds a class field description..
         ///
-        /// @param fieldObjects VS objects associated with this field.
+        /// @param port The visual script port representing the variable.
+        /// @param codeBlock The code block that contains this code.
         /// @param accessType THe Access property of the field.
         /// @param scopeType The Scope property of the field.
-        /// @return The newly created field defintion.
+        /// @return The newly created variable defintion.
         ///
-        public VariableDefinition(iCS_EditorObject vsObject, CodeBase parent, AccessSpecifier accessType, ScopeSpecifier scopeType)
-        : base(vsObject, parent) {
-            myVSObject= vsObject;
+        public VariableDefinition(iCS_EditorObject vsObject, CodeBase codeBlock, AccessSpecifier accessType, ScopeSpecifier scopeType)
+        : base(vsObject, codeBlock) {
             myAccessSpecifier = accessType;
             myScopeSpecifier  = scopeType;
         }
@@ -76,17 +75,17 @@ namespace iCanScript.Editor.CodeEngineering {
                 return "";
             }
             string variableName;
-            if(Parent is TypeDefinition) {
+            if(CodeBlock is TypeDefinition) {
                 if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
-                    variableName= Parent.GetPublicFieldName(myVSObject);
+                    variableName= CodeBlock.GetPublicFieldName(myVSObject);
                 }
                 else {
-                    variableName= Parent.GetPrivateFieldName(myVSObject);
+                    variableName= CodeBlock.GetPrivateFieldName(myVSObject);
                 }                
             }
             else {
                 // FIXME: should be going to common parent.
-                variableName= Parent.Parent.GetLocalVariableName(myVSObject);
+                variableName= CodeBlock.CodeBlock.GetLocalVariableName(myVSObject);
                 initializer= null;
             }
 			result.Append(GenerateVariable(indentSize, myAccessSpecifier, myScopeSpecifier, fieldType, variableName, initializer));                    
@@ -100,7 +99,7 @@ namespace iCanScript.Editor.CodeEngineering {
 									   Type variableType, string variableName, string initializer) {
 			string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder(indent);
-            if(Parent is TypeDefinition) {
+            if(myCodeBlock is TypeDefinition) {
                 if(accessType == AccessSpecifier.PUBLIC) {
                     result.Append("[iCS_InOutPort]\n");
                     result.Append(indent);
