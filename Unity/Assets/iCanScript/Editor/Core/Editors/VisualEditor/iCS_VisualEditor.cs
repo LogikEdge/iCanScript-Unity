@@ -274,8 +274,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		
 		// -- Simulate OnPostRender --
 		OnPostRender();
+        
+//        // -- Test library panel --
+//        libraryEditor.position= new Rect(0,0, 350, position.height);
+//        var saveColor= GUI.color;
+//        GUI.color= new Color(0,0,0,0.9f);
+//        GUI.Box(libraryEditor.position, "");
+//        GUI.color= saveColor;
+//        libraryEditor.OnGUI();
 	}
 
+//    iCS_LibraryEditor2 libraryEditor= new iCS_LibraryEditor2();
 
 	// ----------------------------------------------------------------------
     // Processes all events.
