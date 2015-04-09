@@ -191,7 +191,9 @@ namespace iCanScript.Editor.CodeEngineering {
             var result= new StringBuilder(128);
             // Simplified situation for property get.
             var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
-            var functionName= memberInfo.ToFunctionPrototypeInfo.MethodName;
+            bool isSpecial= false;
+            bool isOperator= false;
+            var functionName= FunctionName(memberInfo, out isSpecial, out isOperator);
             if(IsFieldOrPropertyGet(memberInfo)) {
                 // Determine function prefix.
                 result.Append(FunctionCallPrefix(memberInfo, VSObject));
@@ -216,12 +218,19 @@ namespace iCanScript.Editor.CodeEngineering {
                 result.Append("= ");
                 result.Append(paramStrings[0]);
             }
-            // Generate function call.        
+            // Generate function call.
             else {
                 // Determine function prefix.
-                result.Append(FunctionCallPrefix(memberInfo, VSObject));
+                if(isSpecial == false) {
+                    result.Append(FunctionCallPrefix(memberInfo, VSObject));
+                }
                 // Declare function call.
-                result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));
+                if(isOperator) {
+                    result.Append(GenerateOperator(indentSize, memberInfo, functionName, paramStrings));
+                }
+                else {
+                    result.Append(GenerateFunctionCall(indentSize, memberInfo, functionName, paramStrings));                    
+                }
                 result.Append(GenerateReturnTypeCastFragment(VSObject));            
             }
             return result.ToString();
@@ -240,7 +249,26 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION UTILITIES
         // -------------------------------------------------------------------
-        public static string GenerateFunctionCall(int indentSize, string functionName, string[] paramValues) {
+        /// Returns the method name from the member information.
+        ///
+        /// @param memberInfo The member information from which to extract the
+        ///                   method name.
+        /// @param isSpecialName Output _true_ if name is special method.
+        /// @return The method name.
+        ///
+        string FunctionName(iCS_MemberInfo memberInfo, out bool isSpecial, out bool isOperator) {
+            if(memberInfo.IsConstructor) {
+                isSpecial= true;
+                isOperator= false;
+                return ToTypeName(memberInfo.ClassType);
+            }
+            var functionName= memberInfo.ToFunctionPrototypeInfo.MethodName;
+            isSpecial= isOperator= functionName.StartsWith("op_");
+            return functionName;
+        }
+        
+        // -------------------------------------------------------------------
+        public string GenerateFunctionCall(int indentSize, iCS_MemberInfo memberInfo, string functionName, string[] paramValues) {
             StringBuilder result= new StringBuilder();
             result.Append(functionName);
             result.Append("(");
@@ -254,6 +282,46 @@ namespace iCanScript.Editor.CodeEngineering {
             result.Append(")");
             return result.ToString();
         }
+
+    	// -------------------------------------------------------------------------
+        public string GenerateOperator(int indentSize, iCS_MemberInfo memberInfo, string functionName, string[] paramValues) {
+            StringBuilder result= new StringBuilder();
+            var symbol= OperatorNameToSymbol(functionName);
+            var len= paramValues.Length;
+            switch(len) {
+                case 1: {
+                    result.Append(symbol);
+                    result.Append(paramValues[0]);
+                    break;
+                }
+                case 2: {
+                    result.Append(paramValues[0]);
+                    result.Append(" ");
+                    result.Append(symbol);
+                    result.Append(" ");
+                    result.Append(paramValues[1]);
+                    break;
+                }
+                default: {
+                    Debug.LogWarning("iCanScript: Unknown trinary operator=> "+symbol);
+                    break;
+                }
+            }
+            return result.ToString();
+        }
+
+    	// -------------------------------------------------------------------------
+        string OperatorNameToSymbol(string operatorName) {
+            if(operatorName == "op_Equality")     return "==";
+            if(operatorName == "op_Inequality")   return "!=";
+            if(operatorName == "op_Addition")     return "+";
+            if(operatorName == "op_Subtraction")  return "-";
+            if(operatorName == "op_Multiply")     return "*";
+            if(operatorName == "op_Division")     return "/";
+            Debug.LogWarning("iCanScript: Unknown operator=> "+operatorName);
+            return operatorName;
+        }
+        
     	// -------------------------------------------------------------------------
         /// Generate return type cast.
         ///

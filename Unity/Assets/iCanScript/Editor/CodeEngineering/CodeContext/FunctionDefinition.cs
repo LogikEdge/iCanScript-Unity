@@ -220,6 +220,9 @@ namespace iCanScript.Editor.CodeEngineering {
                     if(vsObj.IsKindOfFunction && !vsObj.IsConstructor) {
                         code.Add(new FunctionCallDefinition(vsObj, this));
                     }
+                    else if(vsObj.IsConstructor && !AreAllInputsConstant(vsObj)) {
+                        code.Add(new ConstructorDefinition(vsObj, this));
+                    }
                     else if(vsObj.IsTriggerPort) {
                         if(ShouldGenerateTriggerCode(vsObj)) {
                             code.Add(new TriggerVariableDefinition(vsObj, this));
