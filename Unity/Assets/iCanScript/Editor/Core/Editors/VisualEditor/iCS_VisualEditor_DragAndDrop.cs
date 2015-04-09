@@ -136,7 +136,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     GameObject gameObject= draggedObject as GameObject;
                     // Determine if game object contains a visual script.
                     var vs= gameObject.GetComponent<iCS_VisualScriptImp>();
-                    if(vs == null || BuildPublicInterfaceMenu(gameObject, eObj, vs, GraphMousePosition) == false) {
+                    if(vs == null) {
                         CreateGameObjectNode(gameObject, eObj, GraphMousePosition);
                     }
 					// Remove data so that we don't get called multiple times (Unity bug !!!).

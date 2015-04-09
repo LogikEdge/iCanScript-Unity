@@ -95,12 +95,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Refuse to connect the input of a builder node.
         var dragFixPortParentNode    = DragFixPort.ParentNode;
         var overlappingPortParentNode= overlappingPort.ParentNode;
-        if( DragFixPort.IsInputPort && dragFixPortParentNode.IsConstructor ||
-            overlappingPort.IsInputPort && overlappingPortParentNode.IsConstructor) {
-                var errorMessage= "Instance Builder nodes must be initialized with static values !!!";
-                ShowNotification(new GUIContent(errorMessage));
-                return true;
-        }
+//        if( DragFixPort.IsInputPort && dragFixPortParentNode.IsConstructor ||
+//            overlappingPort.IsInputPort && overlappingPortParentNode.IsConstructor) {
+//                var errorMessage= "Instance Builder nodes must be initialized with static values !!!";
+//                ShowNotification(new GUIContent(errorMessage));
+//                return true;
+//        }
         // Refuse invalid trigger port connections
         var connectToOutputError= new GUIContent("Cannot connect a trigger to an output !!!");
         var connectInsideError= new GUIContent("Cannot connect a trigger to a node involved in generating the trigger !!!");

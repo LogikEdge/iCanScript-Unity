@@ -1035,6 +1035,21 @@ namespace iCanScript.Editor.CodeEngineering {
             return false;
         }
 
+    	// -------------------------------------------------------------------------
+        /// Determines if all inputs to a node are constant values.
+        ///
+        /// @param node Visual script node to examine.
+        /// @return _true_ if all inputs are constant values. _false_ otherwise.
+        ///
+        public bool AreAllInputsConstant(iCS_EditorObject node) {
+            var inputs= node.BuildListOfChildPorts(p=> p.IsInputPort);
+            foreach(var p in inputs) {
+                if(p.FirstProducerPort.IsOutputPort) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
 }

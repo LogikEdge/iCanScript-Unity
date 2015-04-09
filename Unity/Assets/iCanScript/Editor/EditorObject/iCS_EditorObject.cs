@@ -112,7 +112,14 @@ public partial class iCS_EditorObject {
 				var name= EngineObject.RawName;
                 if(IsPort) {
                     if(IsDataPort && IsProgrammaticInstancePort) {
-                        c_CodeName= "this";
+                        if(ParentNode.IsConstructor) {
+                            // Use the name of the variable for constructor output.
+                            var scheme= iCS_ObjectNames.NamingScheme.LOWER_CAMEL_CASE;
+                            c_CodeName= iCS_ObjectNames.ToCodeName(scheme, ParentNode.DisplayName);
+                        }
+                        else {
+                            c_CodeName= "this";
+                        }
                     }
                     else if(IsTriggerPort) {
                     	c_CodeName= "trigger";
