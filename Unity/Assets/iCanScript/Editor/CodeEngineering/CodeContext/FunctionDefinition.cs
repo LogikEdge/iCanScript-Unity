@@ -217,7 +217,14 @@ namespace iCanScript.Editor.CodeEngineering {
             var code= new List<CodeBase>();
     		node.ForEachChildRecursiveDepthFirst(
     			vsObj=> {
-                    if(vsObj.IsKindOfFunction && !vsObj.IsConstructor) {
+                    var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(vsObj);
+                    if(IsFieldOrPropertyGet(memberInfo)) {
+                        code.Add(new GetPropertyCallDefinition(vsObj, this));
+                    }
+                    else if(IsFieldOrPropertySet(memberInfo)) {
+                        code.Add(new SetPropertyCallDefinition(vsObj, this));
+                    }
+                    else if(vsObj.IsKindOfFunction && !vsObj.IsConstructor) {
                         code.Add(new FunctionCallDefinition(vsObj, this));
                     }
                     else if(vsObj.IsConstructor && !AreAllInputsConstant(vsObj)) {

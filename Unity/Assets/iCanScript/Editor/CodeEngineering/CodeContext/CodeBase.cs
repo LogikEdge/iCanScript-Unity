@@ -1011,6 +1011,7 @@ namespace iCanScript.Editor.CodeEngineering {
     	// -------------------------------------------------------------------------
         /// Returns _'true'_ if the node is a field or property get function.
         public bool IsFieldOrPropertyGet(iCS_MemberInfo memberInfo) {
+            if(memberInfo == null) return false;
             var propertyInfo= memberInfo.ToPropertyInfo;
             if(propertyInfo != null) {
                 return propertyInfo.IsGet;
@@ -1024,6 +1025,7 @@ namespace iCanScript.Editor.CodeEngineering {
     	// -------------------------------------------------------------------------
         /// Returns _'true'_ if the node is a field or property set function.
         public bool IsFieldOrPropertySet(iCS_MemberInfo memberInfo) {
+            if(memberInfo == null) return false;
             var propertyInfo= memberInfo.ToPropertyInfo;
             if(propertyInfo != null) {
                 return propertyInfo.IsSet;

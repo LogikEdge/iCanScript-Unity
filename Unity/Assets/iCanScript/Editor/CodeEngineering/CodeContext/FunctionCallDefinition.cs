@@ -17,6 +17,9 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // PROPERTIES
         // -------------------------------------------------------------------
+        protected CodeBase[] Parameters {
+            get { return myParameters; }
+        }
         
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -165,18 +168,11 @@ namespace iCanScript.Editor.CodeEngineering {
         public override string GenerateHeader(int indentSize) {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(128);
-            // Generate function call (except for setter).        
-            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
-            if(!IsFieldOrPropertySet(memberInfo)) {
-                // Declare the output parameters.
-                result.Append(DeclarelocalVariablesForOutputParameters(indentSize));
-                // Declare return variable.
-                result.Append(indent);
-                result.Append(DeclareReturnVariable(VSObject));
-            }
-            else {
-                result.Append(indent);
-            }
+            // Declare the output parameters.
+            result.Append(DeclarelocalVariablesForOutputParameters(indentSize));
+            // Declare return variable.
+            result.Append(indent);
+            result.Append(DeclareReturnVariable(VSObject));
             return result.ToString();
         }
 
@@ -194,14 +190,6 @@ namespace iCanScript.Editor.CodeEngineering {
             bool isSpecial= false;
             bool isOperator= false;
             var functionName= FunctionName(memberInfo, out isSpecial, out isOperator);
-            if(IsFieldOrPropertyGet(memberInfo)) {
-                // Determine function prefix.
-                result.Append(FunctionCallPrefix(memberInfo, VSObject));
-                // Generate function call.
-                result.Append(ToFieldOrPropertyName(memberInfo));
-                result.Append(GenerateReturnTypeCastFragment(VSObject));
-                return result.ToString();
-            }
             // Determine parameters information.
             var parameters= GetParameters(VSObject);
             var pLen= parameters.Length;
@@ -210,29 +198,18 @@ namespace iCanScript.Editor.CodeEngineering {
                 int idx= p.PortIndex;
                 paramStrings[idx]= myParameters[idx].GenerateBody(indentSize);
             }
-            // Special case for property set.
-            if(IsFieldOrPropertySet(memberInfo)) {
-                // Determine function prefix.
-                result.Append(FunctionCallPrefix(memberInfo, VSObject));
-                result.Append(ToFieldOrPropertyName(memberInfo));
-                result.Append("= ");
-                result.Append(paramStrings[0]);
-            }
             // Generate function call.
-            else {
-                // Determine function prefix.
-                if(isSpecial == false) {
-                    result.Append(FunctionCallPrefix(memberInfo, VSObject));
-                }
-                // Declare function call.
-                if(isOperator) {
-                    result.Append(GenerateOperator(indentSize, memberInfo, functionName, paramStrings));
-                }
-                else {
-                    result.Append(GenerateFunctionCall(indentSize, memberInfo, functionName, paramStrings));                    
-                }
-                result.Append(GenerateReturnTypeCastFragment(VSObject));            
+            if(isSpecial == false) {
+                result.Append(FunctionCallPrefix(memberInfo, VSObject));
             }
+            // Declare function call.
+            if(isOperator) {
+                result.Append(GenerateOperator(indentSize, memberInfo, functionName, paramStrings));
+            }
+            else {
+                result.Append(GenerateFunctionCall(indentSize, memberInfo, functionName, paramStrings));                    
+            }
+            result.Append(GenerateReturnTypeCastFragment(VSObject));            
             return result.ToString();
         }
 
@@ -328,7 +305,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param node The function call VS node.
         /// @return The return cast code string.
         ///
-        string GenerateReturnTypeCastFragment(iCS_EditorObject node) {
+        protected string GenerateReturnTypeCastFragment(iCS_EditorObject node) {
             var returnPort= GetReturnPort(node);
             if(returnPort == null) return "";
             var consumerType= GetCommonBaseTypeForProducerPort(returnPort);
@@ -344,7 +321,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param node Visual script function call node.
         /// @return The code fragment to prepend to the function call.
         ///
-        string FunctionCallPrefix(iCS_MemberInfo memberInfo, iCS_EditorObject node) {
+        protected string FunctionCallPrefix(iCS_MemberInfo memberInfo, iCS_EditorObject node) {
             var result= new StringBuilder(32);
             if(memberInfo != null && memberInfo.IsClassFunctionBase) {
                 result.Append(ToTypeName(node.RuntimeType));
@@ -402,6 +379,12 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(c.IsEnablePort || c.ParentNode.IsKindOfFunction) {
                     hasConsumer= true;
                 }
+                else {
+                    var consumerCode= Context.GetCodeFor(c);
+                    if(consumerCode != null) {
+                        hasConsumer= true;
+                    }
+                }
             }
             if(hasConsumer == false) return "";
             // Build return variable for the given node.
@@ -415,6 +398,7 @@ namespace iCanScript.Editor.CodeEngineering {
             result.Append("= ");
             return result.ToString();
         }
+
     	// -------------------------------------------------------------------------
         /// Declares all output variable that will be used as output variable for a
         /// function call.
@@ -432,24 +416,6 @@ namespace iCanScript.Editor.CodeEngineering {
             return result.ToString();
         }
     
-    	// -------------------------------------------------------------------------
-        /// Returns the name of the field or property.
-        ///
-        /// @param memberInfo Member information associated with field or property.
-        /// @return The name of the filed or property.
-        ///
-        string ToFieldOrPropertyName(iCS_MemberInfo memberInfo) {
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo != null) {
-                return propertyInfo.MethodName.Substring(4);
-            }
-            var fieldInfo= memberInfo.ToFieldInfo;
-            if(fieldInfo != null) {
-                return fieldInfo.MethodName;
-            }
-            return null;            
-        }
-        
     	// -------------------------------------------------------------------------
         /// Returns the list of output ports.
         iCS_EditorObject[] GetOutputDataPorts() {

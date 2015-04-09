@@ -103,15 +103,15 @@ public struct Float {
     [iCS_Function(Name="value <= b",Return="value <= b")]  public bool IsSmallerOrEqualTo(float b) { return Math3D.IsSmallerOrEqual(myValue, b); }    
 }
 
-namespace System {
-    [iCS_Class(Company="NET", Library="System")]
-    public partial struct Int32 {
-        [iCS_Function]
-        public static int op_Multiply(int a, int b) { return a * b; }
-    }    
-    [iCS_Class(Company="NET", Library="System")]
-    public partial struct Float {
-        [iCS_Function]
-        public static float op_Multiply(float a, float b) { return a * b; }
-    }    
-}
+//namespace System {
+//    [iCS_Class(Company="NET", Library="System")]
+//    public partial struct Int32 {
+//        [iCS_Function]
+//        public static int op_Multiply(int a, int b) { return a * b; }
+//    }    
+//    [iCS_Class(Company="NET", Library="System")]
+//    public partial struct Float {
+//        [iCS_Function]
+//        public static float op_Multiply(float a, float b) { return a * b; }
+//    }    
+//}
