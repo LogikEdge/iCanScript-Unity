@@ -45,7 +45,9 @@ namespace iCanScript.Editor.CodeEngineering {
             myCodeBlock= newCodeBlock;
             foreach(var p in myParameters)      { p.CodeBlock= newCodeBlock; }
             foreach(var v in myOutputVariables) { v.CodeBlock= newCodeBlock; }
-            myReturnVariable.CodeBlock= newCodeBlock;
+            if(myReturnVariable != null) {
+                myReturnVariable.CodeBlock= newCodeBlock;
+            }
         }
 
         // -------------------------------------------------------------------

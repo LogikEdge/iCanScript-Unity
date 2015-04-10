@@ -21,6 +21,9 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void Update() {
+            Transform theAClonePaddleTR;
+            GameObject theAClonePaddle;
+            this.PublicFunction(out theAClonePaddle, out theAClonePaddleTR);
         }
 
         [iCS_Function]

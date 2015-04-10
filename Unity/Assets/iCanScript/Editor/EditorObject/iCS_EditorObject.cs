@@ -213,7 +213,12 @@ public partial class iCS_EditorObject {
         get {
             if(c_DisplayName == null) {
                 if(IsDataPort && IsProgrammaticInstancePort) {
-                    c_DisplayName= IsOutputPort ? "Self" : "Target";
+                    if(IsOutputPort || ParentNode.IsMessageHandler || ParentNode.IsPublicFunction) {
+                        c_DisplayName= "Self";
+                    }
+                    else {
+                        c_DisplayName= "Target";
+                    }
                 }
                 else if(IsInstanceNode) {
                     c_DisplayName= "Property Accessor";
@@ -309,7 +314,10 @@ public partial class iCS_EditorObject {
                 if(IsConstructor) {
                     c_NodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
                 }
-                else if(IsKindOfFunction || IsMessageHandler || IsInstanceNode) {
+                else if(IsMessageHandler || IsPublicFunction) {
+                    c_NodeSubTitle= "Self is a "+iCS_ObjectNames.ToDisplayName(EditorObjects[0].DisplayName);                    
+                }
+                else if(IsKindOfFunction || IsInstanceNode) {
                     c_NodeSubTitle= BuildIsASubTitle("Target", RuntimeType);
                 }
                 else if(IsKindOfPackage) {

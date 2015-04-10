@@ -185,6 +185,10 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The string representation of the type.
         ///
 		public static string ToTypeName(Type type) {
+            if(type == null) {
+                Debug.LogWarning("iCanScript: Unexpected null type.");
+                return "";
+            }
             type= iCS_Types.RemoveRefOrPointer(type);
 			if(type == typeof(void))   return "void";
 			if(type == typeof(int))    return "int";

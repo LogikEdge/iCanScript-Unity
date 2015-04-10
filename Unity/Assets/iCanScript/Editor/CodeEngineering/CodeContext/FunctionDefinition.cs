@@ -238,11 +238,14 @@ namespace iCanScript.Editor.CodeEngineering {
                         }
                     }
                     else if(vsObj.IsOutDataPort && vsObj.ParentNode == node) {
-                        var producerPort= GetCodeProducerPort(vsObj);
-                        if(producerPort != null) {
-                            var consumerCode= new VariableReferenceDefinition(vsObj, this);
-                            var producerCode= new VariableReferenceDefinition(producerPort, this);
-                            code.Add(new AssignmentDefinition(this, consumerCode, producerCode));
+                        var portVariable= Context.GetCodeFor(vsObj);
+                        if(portVariable != null) {
+                            var producerPort= GetCodeProducerPort(vsObj);
+                            if(producerPort != null) {
+                                var consumerCode= new VariableReferenceDefinition(vsObj, this);
+                                var producerCode= new VariableReferenceDefinition(producerPort, this);
+                                code.Add(new AssignmentDefinition(this, consumerCode, producerCode));
+                            }                            
                         }
                     }
     			}
