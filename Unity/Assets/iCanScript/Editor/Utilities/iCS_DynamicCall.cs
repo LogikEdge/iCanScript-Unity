@@ -16,16 +16,6 @@ public static class iCS_DynamicCall {
     }
     static DynamicInvoke    myAddVisualScriptFnc= null;
     // ----------------------------------------------------------------------
-    /// Adds an iCS behaviour component on the givne GameObject.
-    /// @param go   The GameObject on which to add a new iCS behaviour.
-    public static iCS_BehaviourImp AddBehaviour(GameObject go) {
-        if(myAddBehaviourFnc == null) {
-            myAddBehaviourFnc= new DynamicInvoke("iCS_DynamicInterface", "AddBehaviour");
-        }
-        return myAddBehaviourFnc.Invoke(null, go) as iCS_BehaviourImp;
-    }
-    static DynamicInvoke    myAddBehaviourFnc= null;
-    // ----------------------------------------------------------------------
     /// Adds an iCS Library component on the givne GameObject.
     /// @param go   The GameObject on which to add a new iCS library.
     public static iCS_LibraryImp AddLibrary(GameObject go) {
