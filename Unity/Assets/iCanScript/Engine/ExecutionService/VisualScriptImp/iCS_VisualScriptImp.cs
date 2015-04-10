@@ -123,8 +123,6 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // ----------------------------------------------------------------------
     // Awake is called when the script instance is being loaded.
     void Awake() {
-//        base.Awake();  // This generates an internal compiler error
-        GenerateRuntimeObjects();        
         iCS_RunContext awakeContext= null;
         myMessageContexts.TryGetValue("Awake", out awakeContext);
         if(awakeContext != null) {
@@ -144,7 +142,6 @@ public partial class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
     void Start() {
-        ConnectRuntimeObjects();
         // Build public variables
         foreach(var i in myPublicVariables) {
             var constructor= myRuntimeNodes[i] as SSAction;

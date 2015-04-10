@@ -9,8 +9,8 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public SSObject GetRuntimeObject {
 		get {
-	        iCS_VisualScriptImp bh= IStorage.iCSMonoBehaviour as iCS_VisualScriptImp;
-	        return bh == null ? null : (bh.GetRuntimeObject(InstanceId) as SSObject);
+            // TODO: GetRuntimeObject
+            return null;
 		}
 	}
     // ----------------------------------------------------------------------
