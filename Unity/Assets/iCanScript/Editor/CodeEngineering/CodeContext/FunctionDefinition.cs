@@ -11,10 +11,10 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        protected AccessType                    myAccessType    = AccessType.PRIVATE;
-        protected ScopeType                     myScopeType     = ScopeType.NONSTATIC;
-        protected FunctionParameterDefinition[] myParameters    = null;
-        protected List<VariableDefinition>      myVariables     = new List<VariableDefinition>();
+        protected AccessSpecifier               myAccessSpecifier= AccessSpecifier.PRIVATE;
+        protected ScopeSpecifier                myScopeSpecifier = ScopeSpecifier.NONSTATIC;
+        protected FunctionParameterDefinition[] myParameters     = null;
+        protected List<VariableDefinition>      myVariables      = new List<VariableDefinition>();
         
         // ===================================================================
         // PROPERTIES
@@ -26,12 +26,13 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds a Function specific code context object.
         ///
         /// @param node VS objects associated with the function.
+        /// @param codeBlock The code block this assignment belongs to.
         /// @return The newly created code context.
         ///
-        public FunctionDefinition(iCS_EditorObject node, CodeBase parent, AccessType accessType, ScopeType scopeType)
-        : base(node, parent) {
-            myAccessType  = accessType;
-            myScopeType   = scopeType;
+        public FunctionDefinition(iCS_EditorObject node, CodeBase codeBlock, AccessSpecifier accessType, ScopeSpecifier scopeType)
+        : base(node, codeBlock) {
+            myAccessSpecifier  = accessType;
+            myScopeSpecifier   = scopeType;
             
             // Build parameter list.
             BuildParameterList();
@@ -71,7 +72,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void AddVariable(VariableDefinition variableDefinition) {
             myVariables.Add(variableDefinition);
-            variableDefinition.Parent= this;
+            variableDefinition.CodeBlock= this;
         }
         // -------------------------------------------------------------------
         /// Removes a code context from the function.
@@ -81,12 +82,12 @@ namespace iCanScript.Editor.CodeEngineering {
         public override void Remove(CodeBase toRemove) {
             if(toRemove is VariableDefinition) {
                 if(myVariables.Remove(toRemove as VariableDefinition)) {
-                    toRemove.Parent= null;
+                    toRemove.CodeBlock= null;
                 }
             }
             else {
                 if(myExecutionList.Remove(toRemove)) {
-                    toRemove.Parent= null;
+                    toRemove.CodeBlock= null;
                 }
             }
         }
@@ -105,7 +106,7 @@ namespace iCanScript.Editor.CodeEngineering {
 						// Terminate existing If-Statement(s)
 						var removeIdx= enableIdx;
 						while(removeIdx < currentEnables.Length) {
-							currentEnableBlock= currentEnableBlock.Parent as EnableBlockDefinition;
+							currentEnableBlock= currentEnableBlock.CodeBlock as EnableBlockDefinition;
 							do {
 								++removeIdx;								
 							} while(removeIdx < currentEnables.Length && currentEnables[removeIdx-1].ParentNode == currentEnables[removeIdx].ParentNode);
@@ -154,7 +155,7 @@ namespace iCanScript.Editor.CodeEngineering {
             string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder("\n"+indent);
             // Add iCanScript tag for public functions.
-            if(myAccessType == AccessType.PUBLIC) {
+            if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
                 result.Append("[iCS_Function");
                 if(VSObject != null && !string.IsNullOrEmpty(VSObject.Tooltip)) {
                     result.Append("(Tooltip=\"");
@@ -165,9 +166,9 @@ namespace iCanScript.Editor.CodeEngineering {
                 result.Append(indent);
             }
             // Add Access & Scope specifiers.
-            result.Append(ToAccessString(myAccessType));
+            result.Append(ToAccessString(myAccessSpecifier));
             result.Append(" ");
-            result.Append(ToScopeString(myScopeType));
+            result.Append(ToScopeString(myScopeSpecifier));
             // Add return type
             result.Append(" ");
             var returnPort= GetReturnPort(VSObject);
@@ -179,7 +180,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             // Add function name.
             result.Append(" ");
-            if(myAccessType == AccessType.PUBLIC) {
+            if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
                 result.Append(GetPublicFunctionName(VSObject));
             }
             else {
@@ -217,7 +218,14 @@ namespace iCanScript.Editor.CodeEngineering {
             var code= new List<CodeBase>();
     		node.ForEachChildRecursiveDepthFirst(
     			vsObj=> {
-                    if(vsObj.IsKindOfFunction && !vsObj.IsConstructor) {
+                    var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(vsObj);
+                    if(IsFieldOrPropertyGet(memberInfo)) {
+                        code.Add(new GetPropertyCallDefinition(vsObj, this));
+                    }
+                    else if(IsFieldOrPropertySet(memberInfo)) {
+                        code.Add(new SetPropertyCallDefinition(vsObj, this));
+                    }
+                    else if(vsObj.IsKindOfFunction && !vsObj.IsConstructor) {
                         code.Add(new FunctionCallDefinition(vsObj, this));
                     }
                     else if(vsObj.IsConstructor && !AreAllInputsConstant(vsObj)) {
@@ -227,6 +235,17 @@ namespace iCanScript.Editor.CodeEngineering {
                         if(ShouldGenerateTriggerCode(vsObj)) {
                             code.Add(new TriggerVariableDefinition(vsObj, this));
                             code.Add(new TriggerSetDefinition(vsObj, this));
+                        }
+                    }
+                    else if(vsObj.IsOutDataPort && vsObj.ParentNode == node) {
+                        var portVariable= Context.GetCodeFor(vsObj);
+                        if(portVariable != null) {
+                            var producerPort= GetCodeProducerPort(vsObj);
+                            if(producerPort != null) {
+                                var consumerCode= new VariableReferenceDefinition(vsObj, this);
+                                var producerCode= new VariableReferenceDefinition(producerPort, this);
+                                code.Add(new AssignmentDefinition(this, consumerCode, producerCode));
+                            }                            
                         }
                     }
     			}

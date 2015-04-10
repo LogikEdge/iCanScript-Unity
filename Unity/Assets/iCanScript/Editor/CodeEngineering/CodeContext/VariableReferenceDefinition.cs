@@ -1,46 +1,38 @@
 ﻿using UnityEngine;
-using System.Text;
 using System.Collections;
 
 namespace iCanScript.Editor.CodeEngineering {
 
-    public class FunctionParameterDefinition : CodeBase {
+    public class VariableReferenceDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
+        iCS_EditorObject myVariable= null;
     
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
-        /// Builds a parameter definition.
+        /// Builds variable reference code definition.
         ///
-        /// @param port The VS port producing the data.
-        /// @param parent The parent code context.
-        /// @return The newly created reference.
+        /// @param variable The port referensenting the variable.
+        /// @return The newly created variable reference.
         ///
-        public FunctionParameterDefinition(iCS_EditorObject port, CodeBase parent)
-        : base(port, parent) {
-        }
+        public VariableReferenceDefinition(iCS_EditorObject variable, CodeBase parent)
+        : base(null, parent) {
+            myVariable= variable;
+        }        
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
-        /// Generate the parameter code.
+        /// Generate the function call code.
         ///
         /// @param indentSize The indentation needed for the class definition.
-        /// @return The formatted body code for the parameter.
+        /// @return The formatted body code for the function call.
         ///
         public override string GenerateBody(int indentSize) {
-            var result= new StringBuilder(64);
-            if(VSObject.IsOutDataPort) {
-                result.Append("out ");
-            }
-            result.Append(ToTypeName(VSObject.RuntimeType));
-            result.Append(" ");
-            result.Append(CodeBlock.GetFunctionParameterName(VSObject));
-            return result.ToString();
+            return GetNameFor(myVariable);
         }
-
     }
 
 }

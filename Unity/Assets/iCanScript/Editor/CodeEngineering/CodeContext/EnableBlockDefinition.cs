@@ -18,11 +18,12 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Builds an enable code block.
         ///
-        /// @param associatedObjects VS objects associated with this code context.
+        /// @param codeBlock The code block this assignment belongs to.
+        /// @param enables The enable ports that affect this code block.
         /// @return The newly created code context.
         ///
-        public EnableBlockDefinition(CodeBase parent, iCS_EditorObject[] enables)
-        : base(null, parent) {
+        public EnableBlockDefinition(CodeBase codeBlock, iCS_EditorObject[] enables)
+        : base(null, codeBlock) {
             myEnablePorts= enables;
             myEnableCode = new CodeBase[myEnablePorts.Length];
             for(int i= 0; i < myEnableCode.Length; ++i) myEnableCode[i]= null;
@@ -37,7 +38,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Simply reposition code for simple trigger-to-enable dependencies.
             if(myEnablePorts.Length == 1) {
                 var producerPort= myEnablePorts[0].FirstProducerPort;
-                var parentAsExecBlock= Parent as ExecutionBlockDefinition;
+                var parentAsExecBlock= myCodeBlock as ExecutionBlockDefinition;
                 if(producerPort.IsTriggerPort && parentAsExecBlock != null) {
                     parentAsExecBlock.Replace(this, myExecutionList);
                     return;
@@ -47,9 +48,9 @@ namespace iCanScript.Editor.CodeEngineering {
             // Verify if we can optimize parameter ports.
             myEnableCode[0]= Context.GetCodeFor(GetCodeProducerPort(myEnablePorts[0]));
             if(myEnableCode[0] != null) {
-                myEnableCode[0]= OptimizeInputParameter(myEnableCode[0], Parent);
+                myEnableCode[0]= OptimizeInputParameter(myEnableCode[0], myCodeBlock);
                 if(myEnableCode[0] != null) {
-                    myEnableCode[0].Parent= this;
+                    myEnableCode[0].CodeBlock= this;
                 }
             }
         }

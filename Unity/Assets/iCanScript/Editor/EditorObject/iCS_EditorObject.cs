@@ -7,6 +7,26 @@ using iCanScript.Editor;
 using Subspace;
 using Prefs= iCS_PreferencesController;
 
+namespace iCanScript.Editor {
+    public enum PortType {
+        Parameter, Return,
+        PublicVariable, PrivateVariable,
+        StaticPublicVariable, StaticPrivateVariable,
+        Enable, Trigger,
+        Constant,
+        Other
+    };
+    public enum NodeType {
+        Type,
+        PublicFunction, PrivateFunction,
+        StaticPublicFunction, StaticPrivateFunction,
+        Constructor, StaticConstructor,
+        FunctionCall,
+        EventHandler,
+        Other
+    };
+}
+
 public partial class iCS_EditorObject {
     // ======================================================================
     // Fields
@@ -93,6 +113,46 @@ public partial class iCS_EditorObject {
             engineObject.DisplayOption= value;
         }
     }
+    // ----------------------------------------------------------------------
+    /// Returns the port type of this object.
+    public PortType PortType {
+        get {
+            if(!IsPort) {
+                Debug.LogError("iCanScript: Requesting PortType on an object that is not a port!");
+            }
+            if(IsReturnPort)  return PortType.Return;
+            if(IsTriggerPort) return PortType.Trigger;
+            if(IsEnablePort)  return PortType.Enable;
+            var parent= ParentNode;
+            if(parent.IsMessageHandler) {
+                if(IsFixDataPort) return PortType.Parameter;
+                return PortType.PublicVariable;
+            }
+            if(parent.IsPublicFunction) {
+                return PortType.Parameter;
+            }
+            if(parent.IsKindOfFunction) {
+                return PortType.Parameter;
+            }
+            return PortType.Other;
+        }
+    }
+    // ----------------------------------------------------------------------
+    /// Returns the node type of this object.
+    public NodeType NodeType {
+        get {
+            if(!IsNode) {
+                Debug.LogError("iCanScript: Requesting NodeType on an object that is not a node!");                
+            }
+            if(InstanceId == 0)  return NodeType.Type;
+            if(IsMessageHandler) return NodeType.EventHandler;
+            if(IsConstructor)    return NodeType.Constructor;
+            if(IsPublicFunction) return NodeType.PublicFunction;
+            if(IsKindOfFunction) return NodeType.FunctionCall;
+            return NodeType.Other;
+        }
+    }
+    
     // ----------------------------------------------------------------------
     public Type RuntimeType {
 		get {
@@ -213,7 +273,12 @@ public partial class iCS_EditorObject {
         get {
             if(c_DisplayName == null) {
                 if(IsDataPort && IsProgrammaticInstancePort) {
-                    c_DisplayName= IsOutputPort ? "Self" : "Target";
+                    if(IsOutputPort || ParentNode.IsMessageHandler || ParentNode.IsPublicFunction) {
+                        c_DisplayName= "Self";
+                    }
+                    else {
+                        c_DisplayName= "Target";
+                    }
                 }
                 else if(IsInstanceNode) {
                     c_DisplayName= "Property Accessor";
@@ -309,7 +374,10 @@ public partial class iCS_EditorObject {
                 if(IsConstructor) {
                     c_NodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
                 }
-                else if(IsKindOfFunction || IsMessageHandler || IsInstanceNode) {
+                else if(IsMessageHandler || IsPublicFunction) {
+                    c_NodeSubTitle= "Self is a "+iCS_ObjectNames.ToDisplayName(EditorObjects[0].DisplayName);                    
+                }
+                else if(IsKindOfFunction || IsInstanceNode) {
                     c_NodeSubTitle= BuildIsASubTitle("Target", RuntimeType);
                 }
                 else if(IsKindOfPackage) {

@@ -19,7 +19,7 @@ public class EventHandlerDefinition : FunctionDefinition {
         /// @param node VS objects associated with the function.
         /// @return The newly created code context.
         ///
-        public EventHandlerDefinition(iCS_EditorObject node, CodeBase parent, AccessType accessType, ScopeType scopeType)
+        public EventHandlerDefinition(iCS_EditorObject node, CodeBase parent, AccessSpecifier accessType, ScopeSpecifier scopeType)
         : base(node, parent, accessType, scopeType) {
         }
     
