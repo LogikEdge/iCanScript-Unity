@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
-using Subspace;
 
 namespace iCanScript.Editor {
 public class iCS_ObjectInspector : EditorWindow {

@@ -4,7 +4,6 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
-using Subspace;
 using Prefs= iCS_PreferencesController;
 
 namespace iCanScript.Editor {

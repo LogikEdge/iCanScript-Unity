@@ -2,12 +2,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Subspace;
 using iCanScript.Editor;
 
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
-	public SSObject GetRuntimeObject {
+	public System.Object GetRuntimeObject {
 		get {
             // TODO: GetRuntimeObject
             return null;

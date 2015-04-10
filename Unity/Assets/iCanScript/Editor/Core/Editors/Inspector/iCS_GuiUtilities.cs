@@ -4,7 +4,6 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using Subspace;
 
 namespace iCanScript.Editor {
 public static class iCS_GuiUtilities {
