@@ -115,12 +115,6 @@ public class iCS_ObjectInspector : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     void InspectNode(iCS_EditorObject node) {
-        // Show runtime frame id.
-        var iStorage= node.IStorage;
-        var runtimeObject= iStorage.GetRuntimeObject(node) as SSAction;
-        if(runtimeObject != null) {
-            EditorGUILayout.LabelField("RunId", runtimeObject.EvaluatedRunId.ToString());
-        }
         // Show Iconic image configuration.
         Texture2D iconicTexture= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
         Texture2D newTexture= EditorGUILayout.ObjectField("Iconic Texture", iconicTexture, typeof(Texture2D), false) as Texture2D;
@@ -154,29 +148,10 @@ public class iCS_ObjectInspector : EditorWindow {
         );
 
         // Show inputs.
-        var runtimeObject= iStorage.GetRuntimeObject(node) as SSNodeAction;
         if(inPorts.Count > 0) {
             int indentLevel= 1;
-            if(runtimeObject != null) {
-                EditorGUI.indentLevel= indentLevel;
-                myShowInputs= EditorGUILayout.Foldout(myShowInputs, "Inputs");                
-                ++indentLevel;
-            } else {
-                myShowInputs= true;
-            }
-            if(myShowInputs) {
-                EditorGUIUtility.LookLikeControls();
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, iStorage, indentLevel, myFoldoutDB), inPorts);
-            }        
-        }
-
-        // Show outputs
-        if(outPorts.Count > 0 && runtimeObject != null) {
-            EditorGUI.indentLevel= 1;
-            myShowOutputs= EditorGUILayout.Foldout(myShowOutputs, "Outputs");
-            if(myShowOutputs) {
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, iStorage, 2, myFoldoutDB), outPorts);
-            }            
+            EditorGUIUtility.LookLikeControls();
+            Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, iStorage, indentLevel, myFoldoutDB), inPorts);
         }
     }
 

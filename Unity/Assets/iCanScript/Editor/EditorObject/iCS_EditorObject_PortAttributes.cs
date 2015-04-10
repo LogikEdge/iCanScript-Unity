@@ -156,24 +156,8 @@ public partial class iCS_EditorObject {
 		get {
 			if(!IsDataOrControlPort) return null;
 			var port= FirstProducerPort;
-			// Get value from port group (ex: ParentMuxPort).
-			var funcBase= myIStorage.GetRuntimeObject(port) as SSNodeAction;
-			if(funcBase != null) {
-			    object returnValue= funcBase.ReturnValue;
-				return returnValue;
-			}
             // Get value from parent node.
-    		funcBase= myIStorage.GetRuntimeObject(port.Parent) as SSNodeAction;                
-            if(funcBase == null) {
-                return port.InitialPortValue;
-            }
-            try {
-    			return funcBase.GetValue(port.PortIndex);			                
-            }
-            catch(System.Exception) {
-                Debug.LogWarning("iCanScript: Unable to get runtime value for port => "+port.FullName);
-                return port.InitialPortValue;
-            }
+            return port.InitialPortValue;
 		}
 		set {
 			InitialPortValue= value;
@@ -186,20 +170,7 @@ public partial class iCS_EditorObject {
             return PortValue;
 		}
 		set {
-	        if(!IsInDataOrControlPort) return;
-	        // Set the return value for a port group (ex: MuxPort).
-			var funcBase= myIStorage.GetRuntimeObject(this) as SSNodeAction;
-	        if(funcBase != null) {
-	            funcBase.ReturnValue= value;
-	            return;
-	        }
-	        if(PortIndex < 0) return;
-	        iCS_EditorObject parent= Parent;
-	        if(parent == null) return;
-	        // Get runtime object if it exists.
-	        var runtimeObject= myIStorage.GetRuntimeObject(parent) as SSNodeAction;
-	        if(runtimeObject == null) return;
-	        runtimeObject.SetValue(PortIndex, value);			
+            // TODO: Implement runtime value change for iCS2.
 		}
 	}
 }

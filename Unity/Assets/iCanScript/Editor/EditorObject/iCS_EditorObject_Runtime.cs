@@ -16,8 +16,8 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public int GetExecutionFrameId {
 		get {
-			var action= GetRuntimeObject as SSAction;
-			return action != null ? action.ExecutedRunId : 0;
+            // TODO: Implement get frame id for iCS2.
+            return 0;
 		}
 	}
 }
