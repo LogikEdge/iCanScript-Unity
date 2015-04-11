@@ -34,7 +34,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
 	public Vector2		            ScrollPosition        = Vector2.zero;
     public int                      UndoRedoId            = 0;
     public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
-    public List<UnityEngine.Object> UnityObjects          = new List<UnityEngine.Object>();
     public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
     
 

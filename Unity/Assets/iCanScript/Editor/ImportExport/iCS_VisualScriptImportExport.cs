@@ -53,11 +53,6 @@ public static class iCS_VisualScriptImportExport {
                 Debug.LogWarning("iCanScript: Unable to create instance of iCS_EngineObject");                
             }
         }
-        cache.UnityObjects.Clear();
-        cache.UnityObjects.Capacity= unityObjects.value.Length;
-        foreach(var uobj in unityObjects.value) {
-            cache.UnityObjects.Add(ReadUnityObject(uobj as JObject));
-        }
         cache.CopyTo(storage);
         return true;
     }
