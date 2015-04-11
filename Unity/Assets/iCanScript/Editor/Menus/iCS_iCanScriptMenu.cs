@@ -80,7 +80,7 @@ public static class iCS_iCanScriptMenu {
         var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         if(monoBehaviour == null) return;
         var initialPath= Application.dataPath;
-        var path= EditorUtility.OpenFilePanel("Import Visual Script", initialPath, "json");
+        var path= EditorUtility.OpenFilePanel("Import Visual Script", initialPath, "ics2");
         if(string.IsNullOrEmpty(path)) return;
         var tmpVsd= new iCS_VisualScriptData();
         if(!iCS_VisualScriptImportExport.Import(tmpVsd, path)) {

@@ -36,11 +36,6 @@ public static class iCS_VisualScriptImportExport {
             Debug.LogWarning("iCanScript: Import failure: Unable to locate engine array.");
             return false;
         }
-        JArray unityObjects= root.GetValueFor("Storage.UnityObjects") as JArray;
-        if(unityObjects == null) {
-            Debug.LogWarning("iCanScript: Import failure: Unable to locate Unity Object array.");
-            return false;
-        }
         // Initialize storage using JSON data.
         var cache= new iCS_VisualScriptData();
         cache.EngineObjects.Capacity= engineObjects.value.Length;
