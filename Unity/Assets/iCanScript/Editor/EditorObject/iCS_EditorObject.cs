@@ -4,7 +4,6 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
-using Subspace;
 using Prefs= iCS_PreferencesController;
 
 namespace iCanScript.Editor {
@@ -23,6 +22,7 @@ namespace iCanScript.Editor {
         Constructor, StaticConstructor,
         FunctionCall,
         EventHandler,
+        StateChart, State,
         Other
     };
 }
@@ -343,13 +343,6 @@ public partial class iCS_EditorObject {
             if(c_NodeTitle == null) {
                 c_NodeTitle= iCS_ObjectNames.ToDisplayName(DisplayName);
             }
-            // Add frame id if running
-			if(Prefs.ShowRuntimeFrameId && Application.isPlaying) {
-				var action= GetRuntimeObject as SSAction;
-				if(action != null) {
-					return c_NodeTitle+" ("+action.ExecutedRunId+")";
-				}
-			}
             // Return editor node title.
             return c_NodeTitle;
         }

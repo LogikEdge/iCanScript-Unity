@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
-using Subspace;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
 
@@ -220,7 +219,7 @@ public partial class iCS_IStorage {
 		return eObj.IsParentMuxPort ? eObj : (eObj.IsChildMuxPort ? eObj.Parent : null);
 	}
     // ----------------------------------------------------------------------
-    public SSObject GetRuntimeObject(iCS_EditorObject obj) {
+    public System.Object GetRuntimeObject(iCS_EditorObject obj) {
 		return obj == null ? null : obj.GetRuntimeObject;
     }
     

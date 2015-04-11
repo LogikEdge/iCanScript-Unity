@@ -4,7 +4,6 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using Subspace;
 
 namespace iCanScript.Editor {
 public static class iCS_GuiUtilities {
@@ -36,12 +35,10 @@ public static class iCS_GuiUtilities {
         iCS_EditorObject parent= port.Parent;
         iCS_EditorObject sourcePort= port.ProducerPort;
         bool hasSource= sourcePort != null;
-        // Get runtime object if it exists.
-        var runtimeObject= iStorage.GetRuntimeObject(parent) as SSNodeAction;
         // Determine if we are allowed to modify port value.
         bool isReadOnly= !(!hasSource && (port.IsInputPort || port.IsKindOfPackagePort));
         // Nothing to display if we don't have a runtime object and we are in readonly.
-        if(isReadOnly && runtimeObject == null) return;
+        if(isReadOnly) return;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
 		object portValue= port.PortValue;
         // Determine section name (used for foldout parent).

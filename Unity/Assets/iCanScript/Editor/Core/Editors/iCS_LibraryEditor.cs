@@ -43,6 +43,8 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // Display.
     // ---------------------------------------------------------------------------------
     public new void OnGUI() {
+        // Wait until mouse is over our window.
+//        if(mouseOverWindow != this) return;
 		if(!IsInitialized()) return;
 
         // -- Draw the base stuff for all windows --

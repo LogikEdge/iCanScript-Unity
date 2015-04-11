@@ -1146,12 +1146,8 @@ public partial class iCS_Graphics {
 	}
     // ----------------------------------------------------------------------
     public static bool IsActiveState(iCS_EditorObject state) {
-        var stateChart= state.GetParentStateChart();
-        if(stateChart == null) return false;
-        var runtimeNodes= state.IStorage.VisualScript.RuntimeNodes;
-        var rtStateChart= runtimeNodes[stateChart.InstanceId] as iCS_StateChart;
-        var rtState     = runtimeNodes[state.InstanceId] as iCS_State;
-        return rtStateChart.IsActiveState(rtState);
+        // TODO: Determine state chart (runtime) active state.
+        return true;
     }
     
     // ----------------------------------------------------------------------
