@@ -18,6 +18,5 @@ public interface iCS_IVisualScriptData {
     int                     MinorVersion        { get; set; }
     int                     BugFixVersion       { get; set; }
     List<iCS_EngineObject>  EngineObjects       { get; }
-    List<Object>            UnityObjects        { get; }
     int                     UndoRedoId          { get; set; } 
 }

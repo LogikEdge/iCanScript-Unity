@@ -19,7 +19,6 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
 	[HideInInspector] public Vector2		          ScrollPosition        = Vector2.zero;
     [HideInInspector] public int                      UndoRedoId            = 0;
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
-    [HideInInspector] public List<Object>             UnityObjects          = new List<Object>();
     [HideInInspector] public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
     [HideInInspector] public iCS_EngineObject         EngineObject          = null;
 
@@ -44,9 +43,6 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     }
     List<iCS_EngineObject>  iCS_IVisualScriptData.EngineObjects {
         get { return EngineObjects; }
-    }
-    List<Object> iCS_IVisualScriptData.UnityObjects {
-        get { return UnityObjects; }
     }
     int iCS_IVisualScriptData.UndoRedoId {
         get { return UndoRedoId; }

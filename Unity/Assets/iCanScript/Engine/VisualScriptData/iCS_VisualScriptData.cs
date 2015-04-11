@@ -60,9 +60,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     List<iCS_EngineObject>  iCS_IVisualScriptData.EngineObjects {
         get { return EngineObjects; }
     }
-    List<UnityEngine.Object> iCS_IVisualScriptData.UnityObjects {
-        get { return UnityObjects; }
-    }
     int iCS_IVisualScriptData.UndoRedoId {
         get { return UndoRedoId; }
         set { UndoRedoId= value; }
@@ -116,9 +113,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     public bool IsValidEngineObject(int id) {
         return IsValidEngineObject(this, id);
 	}
-    public bool IsValidUnityObject(int id)  {
-        return IsValidUnityObject(this, id);
-	}
 
     // ======================================================================
     // Duplication Utilities
@@ -136,21 +130,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         CopyEditorDataFromTo(this, to);
     }
     
-    // ======================================================================
-    // Unity Object Utilities
-    // ----------------------------------------------------------------------
-    public void ClearUnityObjects() {
-        ClearUnityObjects(this);
-    }
-    // ----------------------------------------------------------------------
-    public int AddUnityObject(UnityEngine.Object obj) {
-        return AddUnityObject(this, obj);
-    }
-    // ----------------------------------------------------------------------
-    public UnityEngine.Object GetUnityObject(int id) {
-        return GetUnityObject(this, id);
-    }
-
     // ======================================================================
     // Tree Navigation Queries
     // ----------------------------------------------------------------------
@@ -252,10 +231,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         var engineObjects= vsd.EngineObjects;
 		return id >= 0 && id < engineObjects.Count && engineObjects[id].InstanceId != -1;
 	}
-    public static bool IsValidUnityObject(iCS_IVisualScriptData vsd, int id)  {
-        var unityObjects= vsd.UnityObjects;
-		return id >= 0 && id < unityObjects.Count && unityObjects[id] != null;
-	}
 
     // ======================================================================
     // Duplication Utilities
@@ -296,25 +271,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
                 toEngineObjects[i]= fromObj.CopyTo(toEngineObjects[i]);                                
             }
         }            
-        // Resize Unity object reference array
-        var fromUnityObjects= from.UnityObjects;
-        var toUnityObjects= to.UnityObjects;
-        fromLen= fromUnityObjects.Count;
-        toLen= toUnityObjects.Count;
-        if(toLen > fromLen) {
-            toUnityObjects.RemoveRange(fromLen, toLen-fromLen);
-        }
-        toUnityObjects.Capacity= fromLen;
-        // Copy Unity Object references.
-        for(int i= 0; i < fromLen; ++i) {
-            var fromObj= fromUnityObjects[i];
-            if(toUnityObjects.Count <= i) {
-                toUnityObjects.Add(fromObj);
-            }
-            else {
-                toUnityObjects[i]= fromObj;                
-            }
-        }
     }
     // ----------------------------------------------------------------------
     public static void CopyEditorDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
@@ -328,35 +284,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         to.NavigationHistory.CopyFrom(from.NavigationHistory);                    
     }
     
-    // ======================================================================
-    // Unity Object Utilities
-    // ----------------------------------------------------------------------
-    public static void ClearUnityObjects(iCS_IVisualScriptData vsd) {
-        vsd.UnityObjects.Clear();
-    }
-    // ----------------------------------------------------------------------
-    public static int AddUnityObject(iCS_IVisualScriptData vsd, UnityEngine.Object obj) {
-        if(obj == null) return -1;
-		// Search for an existing entry.
-        var unityObjects= vsd.UnityObjects;
-		for(int id= 0; id < unityObjects.Count; ++id) {
-			if(unityObjects[id] == obj) {
-				return id;
-			}
-			if(unityObjects[id] == null) {
-    			unityObjects[id]= obj;
-                return id;
-			}
-		}
-        unityObjects.Add(obj);
-        return unityObjects.Count-1;
-    }
-    // ----------------------------------------------------------------------
-    public static UnityEngine.Object GetUnityObject(iCS_IVisualScriptData vsd, int id) {
-        var unityObjects= vsd.UnityObjects;
-        return (id >= 0 && id < unityObjects.Count) ? unityObjects[id] : null;
-    }
-
     // ======================================================================
     // Tree Navigation Queries
     // ----------------------------------------------------------------------

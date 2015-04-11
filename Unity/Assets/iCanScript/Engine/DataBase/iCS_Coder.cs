@@ -123,9 +123,9 @@ public class iCS_Coder {
 		if(value is Color)              { EncodeColor(key, (Color)value); return; }
 		if(value is Quaternion)         { EncodeQuaternion(key, (Quaternion)value); return; }
 		if(value is Matrix4x4)          { EncodeMatrix4x4(key, (Matrix4x4)value); return; }
-        // S[ecial case for Unity Object inside a storage.
+        // Special case for Unity Object inside a storage.
 		if(value is UnityEngine.Object && visualScript != null) {
-            EncodeUnityObject(key, value as UnityEngine.Object, visualScript); return;
+            return;
         }
 		// All other types.
 		foreach(var field in valueType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
@@ -503,15 +503,6 @@ public class iCS_Coder {
 	public void EncodeColor(string key, Color value) {
 		Add(key, typeof(Color), EncodeColor(value));
 	}
-	// ----------------------------------------------------------------------
-    string EncodeUnityObject(UnityEngine.Object uObj, iCS_IVisualScriptData visualScript) {
-        int id= iCS_VisualScriptData.AddUnityObject(visualScript, uObj);
-        return EncodeInt(id);
-    }
-	// ----------------------------------------------------------------------
-    public void EncodeUnityObject(string key, UnityEngine.Object uObj, iCS_IVisualScriptData visualScript) {
-        Add(key, typeof(UnityEngine.Object), EncodeUnityObject(uObj, visualScript));
-    }
     
     // ======================================================================
     // Decoding
@@ -558,7 +549,7 @@ public class iCS_Coder {
 		if(elementType == typeof(Matrix4x4))               return DecodeMatrix4x4(valueStr);
         // Special case for Unity Objects within a storage.
 		if(iCS_Types.IsA<UnityEngine.Object>(elementType) && visualScript != null) {
-            return DecodeUnityObject(valueStr, visualScript);
+            return null;
         }
 		// All other types.
         coder.Archive= valueStr;
@@ -1023,22 +1014,6 @@ public class iCS_Coder {
 		float b= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
 		float a= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
         return new Color(r,g,b,a);
-    }
-	// ----------------------------------------------------------------------
-    public UnityEngine.Object DecodeUnityObjectForKey(string key, iCS_IVisualScriptData visualScript) {
-        if(!myDictionary.ContainsKey(key)) return null;
-        Prelude.Tuple<string,string> tuple= myDictionary[key];
-        Type valueType= DecodeType(tuple.Item1);
-        if(!iCS_Types.IsA<UnityEngine.Object>(valueType)) {
-            DecodeTypeError(typeof(UnityEngine.Object).Name, valueType);
-            return null;
-        }
-        return DecodeUnityObject(tuple.Item2, visualScript);        
-    }
-	// ----------------------------------------------------------------------
-    UnityEngine.Object DecodeUnityObject(string value, iCS_IVisualScriptData visualScript) {
-        int id= DecodeInt(value);
-        return iCS_VisualScriptData.GetUnityObject(visualScript, id);
     }
 	// ----------------------------------------------------------------------
     T DecodeForKey<T>(string key, Func<string,T> decoder) {
