@@ -1,5 +1,4 @@
 using UnityEngine;
 
 [AddComponentMenu("")]
-public class iCS_VisualScriptImp : iCS_MonoBehaviourImp {
-}
+public class iCS_VisualScriptImp : iCS_MonoBehaviourImp {}
