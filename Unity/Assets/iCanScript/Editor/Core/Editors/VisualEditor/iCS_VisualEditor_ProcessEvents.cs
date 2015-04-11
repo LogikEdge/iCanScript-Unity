@@ -130,8 +130,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 } else {
                     // Fold/Unfold on double click.
                     if(SelectedObject == SelectedObjectBeforeMouseDown) {
-                        if(myClickCount >= 2) {
-                            ProcessNodeDisplayOptionEvent();
+                        if(IsShiftKeyDown) {
+                            if(myClickCount >= 2) {
+                                ProcessNodeDisplayOptionEvent();
+                            }
                         }
                         else {
                             iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
@@ -214,6 +216,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				else {
 					iCS_PortValueInspector.CreateInstance(pickedObject, pickInfo.PickedPointInGUISpace);
 				}
+                break;
+            }
+            case iCS_PickPartEnum.EditorObject: {
+                if(myClickCount >= 2) {
+                    if(pickedObject.IsPort) {
+                        PortEditor.Create(pickedObject, new Vector2(100,100));
+                    }
+                    if(pickedObject.IsNode) {
+                        NodeEditor.Create(pickedObject, new Vector2(100,100));
+                        Debug.Log("Picking node");
+                    }                    
+                }
                 break;
             }
         }
