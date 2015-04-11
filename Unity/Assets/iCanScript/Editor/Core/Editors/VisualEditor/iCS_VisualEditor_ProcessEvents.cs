@@ -225,7 +225,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     if(pickedObject.IsNode) {
                         NodeEditor.Create(pickedObject, new Vector2(100,100));
-                        Debug.Log("Picking node");
                     }                    
                 }
                 break;

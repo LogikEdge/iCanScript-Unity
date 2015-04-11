@@ -27,7 +27,7 @@ namespace iCanScript.Editor {
             if(node.IsPublicFunction) {
                 return FunctionDefinitionEditor.Create(node, screenPosition);
             }
-            var self= new NodeEditor();
+            var self= NodeEditor.CreateInstance<NodeEditor>();
             self.vsObject= node;
             self.title= "Node Editor";
             self.ShowUtility();
@@ -38,9 +38,16 @@ namespace iCanScript.Editor {
         // EDITOR ENTRY POINT
         // -------------------------------------------------------------------
         /// Edit node specific information.
-    	protected override void OnObjectSpecificGUI() {
+    	public void OnGUI() {
             var node= vsObject;
 
+            // Display node name.
+            EditName("Node Name");
+
+            // Show parent type.
+            var parentTypeName= iCS_Types.TypeName(vsObject.RuntimeType);
+            EditorGUILayout.LabelField("Member of Type", iCS_ObjectNames.ToTypeName(parentTypeName));
+                
             // Show function name (if it exists).
             if(vsObject.IsKindOfFunction) {
                 var functionName= vsObject.MethodName;
@@ -58,6 +65,8 @@ namespace iCanScript.Editor {
             if(newTexture != iconicTexture) {
                 iCS_UserCommands.ChangeIcon(node, newTexture);
             }
+            
+            EditDescription();
     	}
         
     }

@@ -43,14 +43,26 @@ namespace iCanScript.Editor {
         // ===================================================================
         // EDITOR ENTRY POINT
         // -------------------------------------------------------------------
-    	protected override void OnObjectSpecificGUI() {
-            // Port specific information.
+        /// Port specific information.
+    	public void OnGUI() {
+            // Display port name.
+            EditName("Port Name");
+
+            // Display Type information.
+            var typeName= iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(vsObject.RuntimeType));
+            if(!string.IsNullOrEmpty(typeName)) {
+                EditorGUILayout.LabelField("Value Type", typeName);
+            }
+            
             OnPortSpecificGUI();
+            
             var port= vsObject;
             iCS_EditorObject parent= port.Parent;
             EditorGUILayout.LabelField("Parent", parent.DisplayName);
             EditorGUILayout.LabelField("Port Index", port.PortIndex.ToString());
-            iCS_GuiUtilities.OnInspectorDataPortGUI(port, port.IStorage, 0, foldoutDB);        
+            iCS_GuiUtilities.OnInspectorDataPortGUI(port, port.IStorage, 0, foldoutDB);
+            
+            EditDescription();        
     	}
         
     }

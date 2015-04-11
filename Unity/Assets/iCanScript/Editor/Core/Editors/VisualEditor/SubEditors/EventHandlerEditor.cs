@@ -14,9 +14,9 @@ namespace iCanScript.Editor {
         /// @param screenPosition The screen position where the editor
         ///                       should be displayed.
         ///
-        public static EditorWindow Create(iCS_EditorObject node, Vector2 screenPosition) {
+        public static new EditorWindow Create(iCS_EditorObject node, Vector2 screenPosition) {
             if(node == null) return null;
-            var self= new EventHandlerEditor();
+            var self= EventHandlerEditor.CreateInstance<EventHandlerEditor>();
             self.vsObject= node;
             self.title= "Event Handler Editor";
             self.ShowUtility();
