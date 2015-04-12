@@ -11,8 +11,8 @@ public static class AppController {
     // Initialization all sub-systems
     // ----------------------------------------------------------------------
 	static AppController() {
-        var diff= new Diff();
-        diff= null;
+//        var diff= new Diff();
+//        diff= null;
         
         // Start all sub-systems.
 		ErrorController.Start();

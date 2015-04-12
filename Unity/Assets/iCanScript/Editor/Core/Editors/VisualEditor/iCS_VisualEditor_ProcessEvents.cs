@@ -211,7 +211,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
                 else {
                     CloseSubEditor();
-                    mySubEditor= NodeEditor.Create(pickedObject, new Vector2(100,100));                    
+                    if(pickedObject.IsIconizedInLayout) {
+                        iCS_UserCommands.Unfold(pickedObject);
+                        myClickCount= 0;
+                    }
+                    else {
+                        mySubEditor= NodeEditor.Create(pickedObject, new Vector2(100,100));
+                    }
                 }
                 break;
             }
