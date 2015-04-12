@@ -33,7 +33,7 @@ namespace iCanScript.Editor {
                 return PackagePortEditor.Create(port, screenPosition);
             }
             // Create a generic port editor.
-            var self= new PortEditor();
+            var self= PortEditor.CreateInstance<PortEditor>();
             self.vsObject= port;
             self.title= "Port Editor";
             self.ShowUtility();

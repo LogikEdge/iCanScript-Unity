@@ -14,7 +14,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-	iCS_ISubEditor		mySubEditor = null;
+	EditorWindow	mySubEditor = null;
     
     // ======================================================================
     // USER INTERACTIONS
@@ -202,30 +202,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ProcessPicking(iCS_PickInfo pickInfo) {
 		iCS_EditorObject pickedObject= pickInfo.PickedObject;
         switch(pickInfo.PickedPart) {
-            case iCS_PickPartEnum.Name: {
-                if(pickedObject.IsNameEditable) {
-    				mySubEditor= new iCS_ObjectNameEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);											
-                }
-                break;
-            }
-            case iCS_PickPartEnum.Value: {
-                if(!pickedObject.IsInDataOrControlPort || pickedObject.ProducerPortId != -1) break;
-				if(iCS_PortValueEditor.IsValueEditionSupported(pickedObject.RuntimeType)) {
-					mySubEditor= new iCS_PortValueEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);
-				}
-				else {
-					iCS_PortValueInspector.CreateInstance(pickedObject, pickInfo.PickedPointInGUISpace);
-				}
-                break;
-            }
+            case iCS_PickPartEnum.Name:
+            case iCS_PickPartEnum.Value:
             case iCS_PickPartEnum.EditorObject: {
-                if(myClickCount >= 2) {
-                    if(pickedObject.IsPort) {
-                        PortEditor.Create(pickedObject, new Vector2(100,100));
-                    }
-                    if(pickedObject.IsNode) {
-                        NodeEditor.Create(pickedObject, new Vector2(100,100));
-                    }                    
+                if(pickedObject.IsPort) {
+                    if(mySubEditor != null) mySubEditor.Close();
+                    mySubEditor= PortEditor.Create(pickedObject, new Vector2(100,100));                    
+                }
+                else {
+                    if(mySubEditor != null) mySubEditor.Close();
+                    mySubEditor= NodeEditor.Create(pickedObject, new Vector2(100,100));                    
                 }
                 break;
             }
