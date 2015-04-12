@@ -251,7 +251,7 @@ public class iCS_Inspector : Editor {
         if(inPorts.Count > 0) {
             int indentLevel= 1;
             EditorGUIUtility.LookLikeControls();
-            Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, myIStorage, indentLevel, myFoldoutDB), inPorts);
+            Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, indentLevel, myFoldoutDB), inPorts);
         }
     }
 
@@ -302,7 +302,7 @@ public class iCS_Inspector : Editor {
         EditorGUILayout.LabelField("Parent", parent.DisplayName);
         EditorGUILayout.LabelField("Port Index", port.PortIndex.ToString());
         EditorGUILayout.EnumPopup("Iteration", port.PortIterationSignature);
-        iCS_GuiUtilities.OnInspectorDataPortGUI(port, myIStorage, 1, myFoldoutDB);        
+        iCS_GuiUtilities.OnInspectorDataPortGUI(port, 1, myFoldoutDB);        
     }
 
 

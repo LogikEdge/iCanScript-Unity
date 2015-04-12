@@ -48,6 +48,12 @@ namespace iCanScript.Editor {
             }            
         }
         
+        // -------------------------------------------------------------------
+        /// Show parent information
+        protected void ShowParent() {
+            iCS_EditorObject parent= vsObject.ParentNode;
+            EditorGUILayout.LabelField("Parent", parent.DisplayName);
+        }
     }
     
 }

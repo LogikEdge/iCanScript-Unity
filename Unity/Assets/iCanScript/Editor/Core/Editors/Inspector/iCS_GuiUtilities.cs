@@ -27,7 +27,12 @@ public static class iCS_GuiUtilities {
     static void   ControlID(Dictionary<string,object> db, string key, int value)     { ((GUIFieldInfo)(db[key])).ControlID= value; }
 
     // -----------------------------------------------------------------------
-    public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage iStorage, int indentLevel, Dictionary<string,object> foldoutDB) {
+    public static void OnInspectorDataPortGUI(iCS_EditorObject port, int indentLevel, Dictionary<string,object> foldoutDB) {
+        OnInspectorDataPortGUI(port.DisplayName, port, indentLevel, foldoutDB);
+    }
+    // -----------------------------------------------------------------------
+    public static void OnInspectorDataPortGUI(string labelName, iCS_EditorObject port, int indentLevel, Dictionary<string,object> foldoutDB) {
+        var iStorage= port.IStorage;
         // Only accept data ports.
         if(!port.IsDataOrControlPort) return;
         // Extract port information
@@ -45,7 +50,7 @@ public static class iCS_GuiUtilities {
         string foldoutName= (port.IsInputPort ? "in" : "out")+"."+parent.DisplayName;
         // Display primitives.
         bool isDirty= false;
-        object newPortValue= ShowInInspector(port.DisplayName, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty, iStorage);
+        object newPortValue= ShowInInspector(labelName, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty, iStorage);
         if(!isReadOnly && isDirty && newPortValue != null /*&& !newPortValue.Equals(portValue)*/) {
 			iCS_UserCommands.ChangePortValue(port, newPortValue);
         }

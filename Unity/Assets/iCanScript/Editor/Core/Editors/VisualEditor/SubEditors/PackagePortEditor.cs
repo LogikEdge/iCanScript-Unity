@@ -32,8 +32,7 @@ namespace iCanScript.Editor {
         ///
         public static new EditorWindow Create(iCS_EditorObject port, Vector2 screenPosition) {
             if(port == null) return null;
-//            var self= EditorWindow.GetWindow(typeof(PackagePortEditor)) as PackagePortEditor;
-            var self= new PackagePortEditor();
+            var self= PackagePortEditor.CreateInstance<PackagePortEditor>();
             self.vsObject= port;
             self.title= "Package Port Editor";
             self.ShowUtility();
@@ -44,21 +43,35 @@ namespace iCanScript.Editor {
         // EDITOR ENTRY POINT
         // -------------------------------------------------------------------
         protected override void OnPortSpecificGUI() {
+            // Show code generation choices.
+            EditGeneratedVariableType();
+            
+            // Edit the value of the port.
+            EditPortValue();
+            
+            // Show port value type.
+            EditPortValueType();
+        }
+        
+        // -------------------------------------------------------------------
+        /// Edits the generated variable specification.
+        void EditGeneratedVariableType() {
             var port= vsObject;
+            var generatedVariableLabel= "Generated Variable";
             if(port.ProducerPort != null && port.ConsumerPorts.Length != 0) {
-                EditorGUILayout.EnumPopup("Port Type", PackagePassThroughPortType.PassThrough);                
+                EditorGUILayout.EnumPopup(generatedVariableLabel, PackagePassThroughPortType.PassThrough);                
             }
             else if(port.IsInDataPort) {
                 if(iCS_Types.IsA<UnityEngine.Object>(port.RuntimeType)) {
-                    EditorGUILayout.EnumPopup("Port Type", PackageUnityObjectPortType.PublicVariable);                    
+                    EditorGUILayout.EnumPopup(generatedVariableLabel, PackageUnityObjectPortType.PublicVariable);                    
                 }
                 else {
-                    EditorGUILayout.EnumPopup("Port Type", PackageInputPortType.PublicVariable);                    
+                    EditorGUILayout.EnumPopup(generatedVariableLabel, PackageInputPortType.PublicVariable);                    
                 }
             }
             else if(port.IsOutDataPort) {
-                EditorGUILayout.EnumPopup("Port Type", PackageOutputPortType.PublicVariable);                                
-            }
+                EditorGUILayout.EnumPopup(generatedVariableLabel, PackageOutputPortType.PublicVariable);                                
+            }            
         }
     }
     

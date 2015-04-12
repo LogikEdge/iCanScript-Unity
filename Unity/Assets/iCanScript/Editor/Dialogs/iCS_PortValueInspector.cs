@@ -56,7 +56,7 @@ public class iCS_PortValueInspector  : EditorWindow, iCS_ISubEditor {
     // ----------------------------------------------------------------------
     public void OnGUI() {
 		Rect r= EditorGUILayout.BeginVertical();
-        iCS_GuiUtilities.OnInspectorDataPortGUI(myPort, myPort.IStorage, 1, myFoldoutDB);
+        iCS_GuiUtilities.OnInspectorDataPortGUI(myPort, 1, myFoldoutDB);
 		EditorGUILayout.EndVertical();
 		position= new Rect(position.x, position.y, position.width, r.height);
 		ProcessEvents();
