@@ -28,7 +28,6 @@ namespace iCanScript.Editor {
         // -------------------------------------------------------------------
         /// Edit node specific information.
     	protected override void OnNodeSpecificGUI() {
-            var node= vsObject;
     	}
         
     }

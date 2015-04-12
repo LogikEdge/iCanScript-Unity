@@ -94,7 +94,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
                     IsDragEnabled= true;                                                    
                 }
-                mySubEditor= null;
+                CloseSubEditor();
                 break;
             }
             case 1: { // Right mouse button
@@ -206,11 +206,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case iCS_PickPartEnum.Value:
             case iCS_PickPartEnum.EditorObject: {
                 if(pickedObject.IsPort) {
-                    if(mySubEditor != null) mySubEditor.Close();
+                    CloseSubEditor();
                     mySubEditor= PortEditor.Create(pickedObject, new Vector2(100,100));                    
                 }
                 else {
-                    if(mySubEditor != null) mySubEditor.Close();
+                    CloseSubEditor();
                     mySubEditor= NodeEditor.Create(pickedObject, new Vector2(100,100));                    
                 }
                 break;
@@ -226,6 +226,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void PanViewportBy(Vector2 additionalPan) {
         ScrollPosition-= additionalPan;
+    }
+
+	// ----------------------------------------------------------------------
+    /// Closes the subeditor if it exists.
+    void CloseSubEditor() {
+        if(mySubEditor != null) {
+            mySubEditor.Close();
+            mySubEditor= null;
+        }
     }
 }
 }

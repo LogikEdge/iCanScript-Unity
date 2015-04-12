@@ -8,7 +8,6 @@ public static class iCS_WindowMenu {
 	public static void OpeniCanScript() {
         MenuGraphEditor();
         MenuLibraryEditor();
-        MenuInstanceEditor();
 	}
     // ======================================================================
 	// iCanScript Graph editor.
@@ -53,14 +52,6 @@ public static class iCS_WindowMenu {
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
  	}
-    // ======================================================================
- 	// iCanScript ClassWizard editor Menu.
- 	[MenuItem("iCanScript/Editors/Property Editor",false,903)]
- 	public static void MenuInstanceEditor() {
-        var editor= EditorWindow.GetWindow(typeof(iCS_PropertyEditorWindow), false, "Property");
-        EditorWindow.DontDestroyOnLoad(editor);
-        editor.hideFlags= HideFlags.DontSave;
- 	}
 
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	// TODO: TO BE OBSOLETED ONCE THE VIDEOS ARE REDONE.
@@ -88,12 +79,5 @@ public static class iCS_WindowMenu {
  	public static void OldMenuLibraryEditor() {
 		MenuLibraryEditor();
  	}
-    // ======================================================================
- 	// iCanScript ClassWizard editor Menu.
- 	[MenuItem("Window/iCanScript/Instance Wizard")]
- 	public static void OldMenuInstanceEditor() {
-		MenuInstanceEditor();
- 	}
-
 
 }

@@ -16,6 +16,8 @@ namespace iCanScript.Editor {
         // -------------------------------------------------------------------
         protected iCS_EditorObject  vsObject= null;
         
+        // ===================================================================
+        // COMMON UTILITIES
         // -------------------------------------------------------------------
         /// Edits the name of the visual script object.
         ///

@@ -97,7 +97,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public new void OnSelectionChange() {
         base.OnSelectionChange();
         myNeedRepaint= true;
-        mySubEditor= null;
+        CloseSubEditor();
     }
     // ======================================================================
     // Update all message ports when hierarchy has changed

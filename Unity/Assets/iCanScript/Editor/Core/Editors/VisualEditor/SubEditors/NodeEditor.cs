@@ -27,6 +27,9 @@ namespace iCanScript.Editor {
             if(node.IsPublicFunction) {
                 return FunctionDefinitionEditor.Create(node, screenPosition);
             }
+            if(node.IsInstanceNode) {
+                return PropertyEditor.Create(node, screenPosition);
+            }
             var self= NodeEditor.CreateInstance<NodeEditor>();
             self.vsObject= node;
             self.title= "Node Editor";
