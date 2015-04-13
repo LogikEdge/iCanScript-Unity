@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System;
 using System.Collections;
 using iCanScript.Engine;
 
@@ -116,73 +115,51 @@ namespace iCanScript.Editor {
         // -------------------------------------------------------------------
         /// Converts from a standard PortType.
         InputPortType ToInputPortType() {
-            switch(vsObject.portType) {
-                case PortType.PublicVariable: {
-                    return InputPortType.PublicVariable;
-                }
-                case PortType.PrivateVariable: {
-                    return InputPortType.PrivateVariable;
-                }
-                case PortType.StaticPublicVariable: {
-                    return InputPortType.StaticPublicVariable;
-                }
-                case PortType.StaticPrivateVariable: {
-                    return InputPortType.StaticPrivateVariable;
-                }
-                case PortType.Constant: {
-                    return InputPortType.Constant;
-                }
-                default: {
-                    return InputPortType.PrivateVariable;
-                }
-            }
+			return ConvertEnum(vsObject.portType, InputPortType.PublicVariable);
+//            switch(vsObject.portType) {
+//                case PortType.PublicVariable: {
+//                    return InputPortType.PublicVariable;
+//                }
+//                case PortType.PrivateVariable: {
+//                    return InputPortType.PrivateVariable;
+//                }
+//                case PortType.StaticPublicVariable: {
+//                    return InputPortType.StaticPublicVariable;
+//                }
+//                case PortType.StaticPrivateVariable: {
+//                    return InputPortType.StaticPrivateVariable;
+//                }
+//                case PortType.Constant: {
+//                    return InputPortType.Constant;
+//                }
+//                default: {
+//                    return InputPortType.PrivateVariable;
+//                }
+//            }
         }
         // -------------------------------------------------------------------
         /// Converts from a standard PortType.
         OutputPortType ToOutputPortType() {
-            switch(vsObject.portType) {
-                case PortType.PublicVariable: {
-                    return OutputPortType.PublicVariable;
-                }
-                case PortType.PrivateVariable: {
-                    return OutputPortType.PrivateVariable;
-                }
-                case PortType.StaticPublicVariable: {
-                    return OutputPortType.StaticPublicVariable;
-                }
-                case PortType.StaticPrivateVariable: {
-                    return OutputPortType.StaticPrivateVariable;
-                }
-                default: {
-                    return OutputPortType.PrivateVariable;
-                }
-            }
-        }
-        // -------------------------------------------------------------------
-        R ConvertEnum<R,T>(T value, R defaultValue) where R,T: Enum {
-            var allowedValues= Enum.GetValues(R);
-            foreach(var v in allowedValues) {
-                if((int)v == (int)value) {
-                    return (R)value;
-                }
-            }
-            return defaultValue;
+			return ConvertEnum(vsObject.portType, OutputPortType.PrivateVariable);
+//            switch(vsObject.portType) {
+//                case PortType.PublicVariable: {
+//                    return OutputPortType.PublicVariable;
+//                }
+//                case PortType.PrivateVariable: {
+//                    return OutputPortType.PrivateVariable;
+//                }
+//                case PortType.StaticPublicVariable: {
+//                    return OutputPortType.StaticPublicVariable;
+//                }
+//                case PortType.StaticPrivateVariable: {
+//                    return OutputPortType.StaticPrivateVariable;
+//                }
+//                default: {
+//                    return OutputPortType.PrivateVariable;
+//                }
+//            }
         }
 	}
 
 }
 
-//switch(portType) {
-//    case PortType.Parameter:
-//    case PortType.Return:
-//    case PortType.PublicVariable:
-//    case PortType.PrivateVariable:
-//    case PortType.StaticPublicVariable:
-//    case PortType.StaticPrivateVariable:
-//    case PortType.Enable:
-//    case PortType.Trigger:
-//    case PortType.Constant:
-//    case PortType.Owner:
-//    case PortType.Other:
-//    case PortType.Default:
-//}

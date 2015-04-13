@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -56,6 +57,24 @@ namespace iCanScript.Editor {
             iCS_EditorObject parent= vsObject.ParentNode;
             EditorGUILayout.LabelField("Parent", parent.DisplayName);
         }
+		
+        // -------------------------------------------------------------------
+		/// Convert an enumeration type to another.
+		///
+		/// @param value The enumeration value to be converted.
+		/// @param defaultValue The value to be returned if conversion is
+		///                     unsuccessful.
+		///
+        protected R ConvertEnum<R,T>(T value, R defaultValue) {
+            var allowedValues= Enum.GetValues(typeof(R));
+            foreach(var v in allowedValues) {
+                if((int)Convert.ChangeType(v, typeof(int)) == (int)Convert.ChangeType(value, typeof(int))) {
+                    return (R)Convert.ChangeType(value, typeof(R));
+                }
+            }
+            return defaultValue;
+        }
+		
     }
     
 }
