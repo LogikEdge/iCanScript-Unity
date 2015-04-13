@@ -281,7 +281,8 @@ public partial class iCS_EditorObject {
                     }
                 }
                 else if(IsInstanceNode) {
-                    c_DisplayName= "Property Accessor";
+					var typeName= iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(RuntimeType));
+                    c_DisplayName= typeName+" Properties";
                 }
                 else {
                     c_DisplayName= EngineObject.RawName;

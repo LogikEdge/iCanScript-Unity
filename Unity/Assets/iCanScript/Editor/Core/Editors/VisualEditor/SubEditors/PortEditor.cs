@@ -29,9 +29,18 @@ namespace iCanScript.Editor {
             if(port == null) return null;
             // Create the specific port editors.
             var parent= port.ParentNode;
+			if(parent.IsMessage) {
+				return EventHandlerPortEditor.Create(port, screenPosition);
+			}
+			if(parent.IsPublicFunction) {
+				return FunctionDefinitionPortEditor.Create(port, screenPosition);
+			}
             if(parent.IsPackage) {
                 return PackagePortEditor.Create(port, screenPosition);
             }
+			if(parent.IsKindOfFunction) {
+				return FunctionCallPortEditor.Create(port, screenPosition);
+			}
             // Create a generic port editor.
             var self= PortEditor.CreateInstance<PortEditor>();
             self.vsObject= port;
