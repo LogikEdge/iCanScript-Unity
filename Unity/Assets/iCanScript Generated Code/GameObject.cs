@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace iCanScript.Engine.GeneratedCode {
 
@@ -7,6 +8,8 @@ namespace iCanScript.Engine.GeneratedCode {
         // =========================================================================
         // PUBLIC FIELDS
         // -------------------------------------------------------------------------
+        [iCS_InOutPort]
+        public  UIBehaviour target= default(UIBehaviour);
         [iCS_InOutPort]
         public  GameObject owner= default(GameObject);
         [iCS_InOutPort]
@@ -21,9 +24,7 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void Update() {
-            Transform theAClonePaddleTR;
-            GameObject theAClonePaddle;
-            this.PublicFunction(out theAClonePaddle, out theAClonePaddleTR);
+            target.IsDestroyed();
         }
 
         [iCS_Function]

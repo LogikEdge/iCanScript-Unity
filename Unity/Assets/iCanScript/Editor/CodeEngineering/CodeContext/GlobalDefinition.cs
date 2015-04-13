@@ -26,14 +26,14 @@ namespace iCanScript.Editor.CodeEngineering {
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds the code global scope.
-        public GlobalDefinition(iCS_EditorObject vsRootObject, string namespaceName, string[] usingDirectives)
+        public GlobalDefinition(iCS_EditorObject vsRootObject, string namespaceName)
         : base(vsRootObject, null) {
             // Initialise attributes
 			myNamespace= namespaceName;
-			foreach(var ud in usingDirectives) {
-				AddUsingDirective(ud);
-			}
 
+			// Collect the used assemblies.
+			CollectUsedNamespaces();
+			
 			// Build root types
 			BuildRootTypes(vsRootObject);
 			
@@ -41,6 +41,21 @@ namespace iCanScript.Editor.CodeEngineering {
 			ResolveDependencies();
         }
 
+        // -------------------------------------------------------------------
+		/// Collect the used assemblies
+		void CollectUsedNamespaces() {
+			VSObject.ForEachChildRecursiveDepthFirst(
+				c=> {
+					if(c.IsKindOfFunction) {
+						var runtimeType= c.RuntimeType;
+						if(runtimeType != null) {
+							AddUsingDirective(runtimeType.Namespace);
+						}
+					}
+				}
+			);
+		}
+		
         // -------------------------------------------------------------------
 		/// Builds the root class defintions
 		///
@@ -83,6 +98,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public void AddUsingDirective(string usingDirective) {
             if(!myUsingDirectives.Exists((s1)=> s1 == usingDirective)) {
                 myUsingDirectives.Add(usingDirective);
+				myUsingDirectives.Sort((s1,s2)=> s1.Length - s2.Length);
             }
         }
 

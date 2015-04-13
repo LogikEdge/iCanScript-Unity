@@ -22,8 +22,7 @@ namespace iCanScript.Editor.CodeEngineering {
 
             // Build code global scope.
             var codeGenerationNamespace= "iCanScript.Engine.GeneratedCode";
-			string[] usingDirectives= {"UnityEngine"};
-            myCodeRoot= new GlobalDefinition(iStorage.EditorObjects[0], codeGenerationNamespace, usingDirectives);
+            myCodeRoot= new GlobalDefinition(iStorage.EditorObjects[0], codeGenerationNamespace);
             
             // Generate code.
             var result= myCodeRoot.GenerateCode(0);
