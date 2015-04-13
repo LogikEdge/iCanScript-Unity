@@ -47,7 +47,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Release all worker objects.
         myGraphics      = null;
         myContextualMenu= null;
-		mySubEditor     = null;
+        CloseSubEditor();
         
         // Unregister for window under mouse change
         SystemEvents.OnWindowUnderMouseChange-= helpWindowChange;
@@ -62,7 +62,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(IStorage == null) {
             myBookmark= null;
             DragType= DragTypeEnum.None;
-            mySubEditor= null;
+            CloseSubEditor();
 		    return false;
 		}
         if(IStorage != myPreviousIStorage) {
@@ -73,7 +73,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             myPreviousIStorage= IStorage;
             myBookmark= null;
             DragType= DragTypeEnum.None;
-            mySubEditor= null;
+            CloseSubEditor();
             IStorage.ForceRelayout= true;
         }
         

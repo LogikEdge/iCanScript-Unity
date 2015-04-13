@@ -39,7 +39,6 @@ public static partial class iCS_UserCommands {
                 CancelTransaction(iStorage);
                 return;
             }
-            iCS_EditorController.RepaintPropertyEditor();
             CloseTransaction(iStorage, "Delete "+name);
             return;
         }

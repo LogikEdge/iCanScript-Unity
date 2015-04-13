@@ -97,7 +97,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public new void OnSelectionChange() {
         base.OnSelectionChange();
         myNeedRepaint= true;
-        mySubEditor= null;
+        CloseSubEditor();
     }
     // ======================================================================
     // Update all message ports when hierarchy has changed
@@ -251,19 +251,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
              ProcessEvents();            
         }
         
-        // -- Update sub editor if active --
-        if(mySubEditor != null) {
-        	mySubEditor.Update();
-            var ev= Event.current;
-            if(ev.type == EventType.KeyDown) {
-                var keyCode= ev.keyCode;
-                if(keyCode == KeyCode.Escape || keyCode == KeyCode.Return) {
-                    mySubEditor= null;
-                    ev.Use();
-                }
-            }
-        }
-
         // -- Process scroll zone --
         ProcessScrollZone();
         

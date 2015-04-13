@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace iCanScript.Editor {
 
-    public class EventHandlerEditor : NodeEditor {
+	public class FunctionDefinitionPortEditor : PortEditor {
         // ===================================================================
         // BUILDER
         // -------------------------------------------------------------------
@@ -14,22 +13,26 @@ namespace iCanScript.Editor {
         /// @param screenPosition The screen position where the editor
         ///                       should be displayed.
         ///
-        public static new EditorWindow Create(iCS_EditorObject node, Vector2 screenPosition) {
-            if(node == null) return null;
-            var self= EventHandlerEditor.CreateInstance<EventHandlerEditor>();
-            self.vsObject= node;
-            self.title= "Event Handler Editor";
+        public static new EditorWindow Create(iCS_EditorObject port, Vector2 screenPosition) {
+            if(port == null) return null;
+            var self= FunctionDefinitionPortEditor.CreateInstance<FunctionDefinitionPortEditor>();
+            self.vsObject= port;
+            self.title= "Function Definition Port Editor";
             self.ShowUtility();
             return self;
         }
-        
+
         // ===================================================================
         // EDITOR ENTRY POINT
         // -------------------------------------------------------------------
-        /// Edit node specific information.
-    	protected override void OnNodeSpecificGUI() {
-    	}
-        
-    }
-    
+        protected override void OnPortSpecificGUI() {
+            // Edit the value of the port.
+            EditPortValue();
+            
+            // Show port value type.
+            EditPortValueType();
+        }
+                
+	}
+
 }

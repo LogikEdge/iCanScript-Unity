@@ -41,7 +41,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 return newSelected;
             }
 	        iCS_UserCommands.Select(newSelected, IStorage);
-            UpdateSelected();
 		}
         return SelectedObject;
     }
@@ -527,19 +526,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
         }
         iCS_UserCommands.PasteIntoGraph(sourceMonoBehaviour, sourceRoot, IStorage, validParent, point);
-        UpdateSelected();
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {
         var updateDesc= P.filter(d => d.DisplayName == iCS_Strings.Update, iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour)));
         if(updateDesc == null || updateDesc.Length == 0) return null;
         return iCS_UserCommands.CreateMessageHandler(IStorage[0], globalPos, updateDesc[0]);
-    }
-	// ----------------------------------------------------------------------
-    void UpdateSelected() {
-        if(SelectedObject != null && SelectedObject.IsInstanceNode) {
-			iCS_PropertyEditor.Init(IStorage);
-        }
     }
 }
 }

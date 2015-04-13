@@ -21,9 +21,9 @@ namespace iCanScript.Editor {
         /// @param screenPosition The screen position where the editor
         ///                       should be displayed.
         ///
-        public static EditorWindow Create(iCS_EditorObject node, Vector2 screenPosition) {
+        public static new EditorWindow Create(iCS_EditorObject node, Vector2 screenPosition) {
             if(node == null) return null;
-            var self= new FunctionDefinitionEditor();
+            var self= FunctionDefinitionEditor.CreateInstance<FunctionDefinitionEditor>();
             self.vsObject= node;
             self.title= "Function Definition Editor";
             self.ShowUtility();
@@ -35,7 +35,6 @@ namespace iCanScript.Editor {
         // -------------------------------------------------------------------
         /// Edit node specific information.
     	protected override void OnNodeSpecificGUI() {
-            var node= vsObject;
             EditorGUILayout.EnumPopup("Function Type", FunctionType.Public);
     	}
         

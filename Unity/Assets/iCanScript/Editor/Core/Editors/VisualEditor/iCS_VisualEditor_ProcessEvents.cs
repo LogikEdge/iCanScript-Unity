@@ -14,7 +14,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-	iCS_ISubEditor		mySubEditor = null;
+	EditorWindow	mySubEditor = null;
     
     // ======================================================================
     // USER INTERACTIONS
@@ -94,7 +94,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
                     IsDragEnabled= true;                                                    
                 }
-                mySubEditor= null;
+                CloseSubEditor();
                 break;
             }
             case 1: { // Right mouse button
@@ -202,31 +202,22 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ProcessPicking(iCS_PickInfo pickInfo) {
 		iCS_EditorObject pickedObject= pickInfo.PickedObject;
         switch(pickInfo.PickedPart) {
-            case iCS_PickPartEnum.Name: {
-                if(pickedObject.IsNameEditable) {
-    				mySubEditor= new iCS_ObjectNameEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);											
-                }
-                break;
-            }
-            case iCS_PickPartEnum.Value: {
-                if(!pickedObject.IsInDataOrControlPort || pickedObject.ProducerPortId != -1) break;
-				if(iCS_PortValueEditor.IsValueEditionSupported(pickedObject.RuntimeType)) {
-					mySubEditor= new iCS_PortValueEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);
-				}
-				else {
-					iCS_PortValueInspector.CreateInstance(pickedObject, pickInfo.PickedPointInGUISpace);
-				}
-                break;
-            }
+            case iCS_PickPartEnum.Name:
+            case iCS_PickPartEnum.Value:
             case iCS_PickPartEnum.EditorObject: {
-                if(myClickCount >= 2) {
-                    if(pickedObject.IsPort) {
-                        PortEditor.Create(pickedObject, new Vector2(100,100));
+                if(pickedObject.IsPort) {
+                    CloseSubEditor();
+                    mySubEditor= PortEditor.Create(pickedObject, new Vector2(100,100));                    
+                }
+                else {
+                    CloseSubEditor();
+                    if(pickedObject.IsIconizedInLayout) {
+                        iCS_UserCommands.Unfold(pickedObject);
+                        myClickCount= 0;
                     }
-                    if(pickedObject.IsNode) {
-                        NodeEditor.Create(pickedObject, new Vector2(100,100));
-                        Debug.Log("Picking node");
-                    }                    
+                    else {
+                        mySubEditor= NodeEditor.Create(pickedObject, new Vector2(100,100));
+                    }
                 }
                 break;
             }
@@ -241,6 +232,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void PanViewportBy(Vector2 additionalPan) {
         ScrollPosition-= additionalPan;
+    }
+
+	// ----------------------------------------------------------------------
+    /// Closes the subeditor if it exists.
+    void CloseSubEditor() {
+        if(mySubEditor != null) {
+            mySubEditor.Close();
+            mySubEditor= null;
+        }
     }
 }
 }
