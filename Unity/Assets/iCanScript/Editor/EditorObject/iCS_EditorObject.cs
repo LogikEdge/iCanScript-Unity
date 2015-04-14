@@ -4,28 +4,8 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
+using iCanScript.Engine;
 using Prefs= iCS_PreferencesController;
-
-namespace iCanScript.Editor {
-    public enum PortType {
-        Parameter, Return,
-        PublicVariable, PrivateVariable,
-        StaticPublicVariable, StaticPrivateVariable,
-        Enable, Trigger,
-        Constant,
-        Other
-    };
-    public enum NodeType {
-        Type,
-        PublicFunction, PrivateFunction,
-        StaticPublicFunction, StaticPrivateFunction,
-        Constructor, StaticConstructor,
-        FunctionCall,
-        EventHandler,
-        StateChart, State,
-        Other
-    };
-}
 
 public partial class iCS_EditorObject {
     // ======================================================================
@@ -112,6 +92,18 @@ public partial class iCS_EditorObject {
             if(engineObject.DisplayOption == value) return;
             engineObject.DisplayOption= value;
         }
+    }
+    // ----------------------------------------------------------------------
+    /// Returns the port type of this object.
+    public PortType portType {
+        get { return EngineObject.portType; }
+        set { EngineObject.portType= value; }
+    }
+    // ----------------------------------------------------------------------
+    /// Returns the node type of this object.
+    public NodeType nodeType {
+        get { return EngineObject.nodeType; }
+        set { EngineObject.nodeType= value; }
     }
     // ----------------------------------------------------------------------
     /// Returns the port type of this object.
