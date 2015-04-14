@@ -3,13 +3,14 @@ using System;
 using System.Collections;
 using P=Prelude;
 using Prefs= iCS_PreferencesController;
+using iCanScript.Editor;
 
 public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
 	public P.Animate<Rect> myAnimatedRect=
-		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio), iCS_TimerService.EditorTime);
+		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio), TimerService.EditorTime);
     
     // ======================================================================
     // Properties

@@ -4,8 +4,8 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using Subspace;
 
+namespace iCanScript.Editor {
 public static class iCS_GuiUtilities {
     class GUIFieldInfo {
         public bool    Foldout= false;
@@ -27,7 +27,12 @@ public static class iCS_GuiUtilities {
     static void   ControlID(Dictionary<string,object> db, string key, int value)     { ((GUIFieldInfo)(db[key])).ControlID= value; }
 
     // -----------------------------------------------------------------------
-    public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage iStorage, int indentLevel, Dictionary<string,object> foldoutDB) {
+    public static void OnInspectorDataPortGUI(iCS_EditorObject port, int indentLevel, Dictionary<string,object> foldoutDB) {
+        OnInspectorDataPortGUI(port.DisplayName, port, indentLevel, foldoutDB);
+    }
+    // -----------------------------------------------------------------------
+    public static void OnInspectorDataPortGUI(string labelName, iCS_EditorObject port, int indentLevel, Dictionary<string,object> foldoutDB) {
+        var iStorage= port.IStorage;
         // Only accept data ports.
         if(!port.IsDataOrControlPort) return;
         // Extract port information
@@ -35,19 +40,17 @@ public static class iCS_GuiUtilities {
         iCS_EditorObject parent= port.Parent;
         iCS_EditorObject sourcePort= port.ProducerPort;
         bool hasSource= sourcePort != null;
-        // Get runtime object if it exists.
-        var runtimeObject= iStorage.GetRuntimeObject(parent) as SSNodeAction;
         // Determine if we are allowed to modify port value.
         bool isReadOnly= !(!hasSource && (port.IsInputPort || port.IsKindOfPackagePort));
         // Nothing to display if we don't have a runtime object and we are in readonly.
-        if(isReadOnly && runtimeObject == null) return;
+        if(isReadOnly) return;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
 		object portValue= port.PortValue;
         // Determine section name (used for foldout parent).
-        string foldoutName= (port.IsInputPort ? "in" : "out")+"."+parent.Name;
+        string foldoutName= (port.IsInputPort ? "in" : "out")+"."+parent.DisplayName;
         // Display primitives.
         bool isDirty= false;
-        object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty, iStorage);
+        object newPortValue= ShowInInspector(labelName, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty, iStorage);
         if(!isReadOnly && isDirty && newPortValue != null /*&& !newPortValue.Equals(portValue)*/) {
 			iCS_UserCommands.ChangePortValue(port, newPortValue);
         }
@@ -438,4 +441,5 @@ public static class iCS_GuiUtilities {
     public static void UnsupportedFeature() {
         Debug.LogWarning("The selected feature is unsupported in the current version of iCanScript.  Feature is planned for a later version.  Thanks for your patience.");
     }
+}
 }

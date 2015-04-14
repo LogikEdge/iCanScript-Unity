@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using iCanScript.Editor;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	
     // ======================================================================
@@ -30,18 +31,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 
-    // =================================================================================================
+    // ======================================================================
     // Help Initialization
-	// -------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     void HelpInit() {
         iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);
         iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
         HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
     }
  
-    // =================================================================================================
-    // Mouse in detected over another window, show contextual help for that window in the Visual Editor.
-	// -------------------------------------------------------------------------------------------------
+    // ======================================================================
+    // Mouse in detected over another window, show contextual help for that
+    // window in the Visual Editor.
+    // ----------------------------------------------------------------------
 	public void helpWindowChange() {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
 		if(edWin != null) {
@@ -51,9 +53,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 	}
 	   
-    // =================================================================================================
+    // ======================================================================
     // Mouse in detected over a library item, show help in the Visual Editor.
-	// -------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
 	public void libraryHelp(iCS_MemberInfo memInfo ) {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
 		if(edWin!= null && iCS_Types.IsA<iCS_LibraryEditor>(edWin.GetType())) { 
@@ -183,7 +185,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
 		}
 		else if(direction == Direction.Consumer) {
-			port= edObj.EndConsumerPorts[0];
+            var consumerPorts= edObj.EndConsumerPorts;
+			port= consumerPorts.Length != 0 ? consumerPorts[0] : port;
 			if(port.ParentNode.ParentNode.IsInstanceNode) {
 				port= port.ProducerPort;
 			}
@@ -294,4 +297,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     	    return myLibraryWindowPos.x > position.x;            
         }
     }
+}
 }

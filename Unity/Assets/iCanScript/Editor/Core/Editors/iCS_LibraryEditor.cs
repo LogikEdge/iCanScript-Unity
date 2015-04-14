@@ -43,6 +43,8 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // Display.
     // ---------------------------------------------------------------------------------
     public new void OnGUI() {
+        // Wait until mouse is over our window.
+//        if(mouseOverWindow != this) return;
 		if(!IsInitialized()) return;
 
         // -- Draw the base stuff for all windows --
@@ -197,6 +199,9 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 //        var library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
         var library= iCS_DynamicCall.AddLibrary(go);
         iCS_IStorage iStorage= new iCS_IStorage(library);
+        if(iStorage == null) {
+            Debug.LogWarning("iCanScript: Cannot create iStorage.");
+        }
         CreateInstance(node, iStorage);
         iStorage.SaveStorage();
         // Fill drag info.

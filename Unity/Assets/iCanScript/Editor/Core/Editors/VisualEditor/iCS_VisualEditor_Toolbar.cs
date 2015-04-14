@@ -3,10 +3,12 @@ using UnityEditor;
 using System.Collections;
 using Prefs= iCS_PreferencesController;
 using iCanScript.Editor;
+using iCanScript.Editor.CodeEngineering;
 
 /*
     TODO: Should show runId in header bar.
 */
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // =======================================================================
     // Toolbar Constants
@@ -62,15 +64,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             iCS_ToolbarUtility.MiniLabel(ref r, "Frame Id", 0,0);
             iCS_ToolbarUtility.Separator(ref r);
     		
-            // Enable Traces.
-            bool enableTrace= VisualScript.Context.IsTraceEnabled;
-            bool newEnableTrace= iCS_ToolbarUtility.Toggle(ref r, enableTrace, spacer, spacer);
-            if(newEnableTrace != enableTrace) {
-                VisualScript.Context.IsTraceEnabled= newEnableTrace;
-            }            
-            iCS_ToolbarUtility.MiniLabel(ref r, "Trace", 0,0);
-            iCS_ToolbarUtility.Separator(ref r);
-        
             // Show Runtime values.
             bool showRuntime= Prefs.ShowRuntimePortValue;
             bool newShowRuntime= iCS_ToolbarUtility.Toggle(ref r, showRuntime, spacer, spacer);
@@ -99,7 +92,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             Vector2 pivot= ViewportToGraph(ViewportCenter);
             CenterAtWithScale(pivot, newScale);
 		}
-		iCS_ToolbarUtility.Separator(ref r, true);
+        if(iCS_ToolbarUtility.Button(ref r, 100, true, "Generate C#", 0, spacer, true)) {
+            var codeGenerator= new CodeGenerator();
+            codeGenerator.GenerateCodeFor(IStorage);
+        }
+        if(iCS_ToolbarUtility.Button(ref r, 100, true, "Delete C#", spacer, 0, true)) {
+            var codeGenerator= new CodeGenerator();
+            codeGenerator.DeleteGeneratedFilesFor(IStorage);
+        }
 
 //		// Show current bookmark.
 //		string bookmarkString= "Bookmark: ";
@@ -115,17 +115,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// CENTER TOOLBAR
         // Show game object name in middle of toolbar.
 		var name= DisplayRoot.FullName;
-		if(Application.isPlaying) {
-			var visualScript= IStorage.iCSMonoBehaviour as iCS_VisualScriptImp;
-			if(visualScript != null) {
-				name+= " (id= "+visualScript.UpdateFrameId;
-				if(Math3D.IsNotZero(Time.smoothDeltaTime)) {
-					int frameRate= (int)(1f/Time.smoothDeltaTime);
-					name+="; fr= "+frameRate;
-				}
-				name+=")";				
-			}
-		}
 		iCS_ToolbarUtility.CenteredTitle(ref r, name);
 
         // Trial information.
@@ -184,4 +173,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //            }
         }        
     }
+}
 }

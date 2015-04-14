@@ -1,7 +1,11 @@
 using UnityEngine;
 using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Editor;
+using iCanScript.Engine;
+using Prefs= iCS_PreferencesController;
 
 public partial class iCS_EditorObject {
     // ======================================================================
@@ -12,6 +16,17 @@ public partial class iCS_EditorObject {
     bool            myIsFloating     = false;
     List<int>		myChildren       = new List<int>();
     bool            myIsSticky       = false;
+
+    // ======================================================================
+    // Cache
+    // ----------------------------------------------------------------------
+    Type    c_RuntimeType     = null;
+    string  c_NodeTitle       = null;
+    Vector2 c_NodeTitleSize   = Vector2.zero;
+    string  c_NodeSubTitle    = null;
+    Vector2 c_NodeSubTitleSize= Vector2.zero;
+    string  c_CodeName        = null;
+    string  c_DisplayName     = null;
 
     // ======================================================================
     // Conversion Utilities
@@ -79,70 +94,217 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public Type RuntimeType {
-		get { return EngineObject.RuntimeType; }
-	}
+    /// Returns the port type of this object.
+    public PortType portType {
+        get { return EngineObject.portType; }
+        set { EngineObject.portType= value; }
+    }
     // ----------------------------------------------------------------------
-    public string RawName {
-		get { return EngineObject.RawName; }
-		set {
+    /// Returns the node type of this object.
+    public NodeType nodeType {
+        get { return EngineObject.nodeType; }
+        set { EngineObject.nodeType= value; }
+    }
+    // ----------------------------------------------------------------------
+    /// Returns the port type of this object.
+    public PortType PortType {
+        get {
+            if(!IsPort) {
+                Debug.LogError("iCanScript: Requesting PortType on an object that is not a port!");
+            }
+            if(IsReturnPort)  return PortType.Return;
+            if(IsTriggerPort) return PortType.Trigger;
+            if(IsEnablePort)  return PortType.Enable;
+            var parent= ParentNode;
+            if(parent.IsMessageHandler) {
+                if(IsFixDataPort) return PortType.Parameter;
+                return PortType.PublicVariable;
+            }
+            if(parent.IsPublicFunction) {
+                return PortType.Parameter;
+            }
+            if(parent.IsKindOfFunction) {
+                return PortType.Parameter;
+            }
+            return PortType.Other;
+        }
+    }
+    // ----------------------------------------------------------------------
+    /// Returns the node type of this object.
+    public NodeType NodeType {
+        get {
+            if(!IsNode) {
+                Debug.LogError("iCanScript: Requesting NodeType on an object that is not a node!");                
+            }
+            if(InstanceId == 0)  return NodeType.Type;
+            if(IsMessageHandler) return NodeType.EventHandler;
+            if(IsConstructor)    return NodeType.Constructor;
+            if(IsPublicFunction) return NodeType.PublicFunction;
+            if(IsKindOfFunction) return NodeType.FunctionCall;
+            return NodeType.Other;
+        }
+    }
+    
+    // ----------------------------------------------------------------------
+    public Type RuntimeType {
+		get {
+            if(c_RuntimeType == null) {
+                c_RuntimeType= EngineObject.RuntimeType;
+            }
+            return c_RuntimeType;
+        }
+	}
+
+    // ======================================================================
+    // ----------------------------------------------------------------------
+    /// Returns the name as per the underlying code.
+    public string CodeName {
+        get {
+            if(c_CodeName == null) {
+				var name= EngineObject.RawName;
+                if(IsPort) {
+                    if(IsDataPort && IsProgrammaticInstancePort) {
+                        if(ParentNode.IsConstructor) {
+                            // Use the name of the variable for constructor output.
+                            var scheme= iCS_ObjectNames.NamingScheme.LOWER_CAMEL_CASE;
+                            c_CodeName= iCS_ObjectNames.ToCodeName(scheme, ParentNode.DisplayName);
+                        }
+                        else {
+                            c_CodeName= "this";
+                        }
+                    }
+                    else if(IsTriggerPort) {
+                    	c_CodeName= "trigger";
+                    }
+					else if(IsEnablePort) {
+						c_CodeName= "enable";
+					}
+					else {
+                        c_CodeName= EngineObject.RawName;
+						if(string.IsNullOrEmpty(c_CodeName)) {
+							var parent= ParentNode;
+							if(parent != null) {
+		                        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+								if(desc != null) {
+		                            var funcInfo= desc.ToFunctionPrototypeInfo;
+								    if(funcInfo != null) {
+										var parameters= funcInfo.Parameters;
+										if(parameters != null && PortIndex < parameters.Length) {
+											c_CodeName= iCS_ObjectNames.ToFunctionParameterName(parameters[PortIndex].name);
+										}
+										else if(IsReturnPort) {
+											if(funcInfo.FunctionReturn != null) {
+												c_CodeName= iCS_ObjectNames.ToLocalVariableName(funcInfo.FunctionReturn.name);
+											}
+										}
+									}
+								}
+							}								
+						}                       
+						if(string.IsNullOrEmpty(c_CodeName)) {
+							c_CodeName= IsReturnPort ? "output" : "p";
+						}
+                    }
+                }
+                else if(IsNode) {
+					c_CodeName= name;
+                    if(IsBehaviour) {
+                        var endIdx= name.IndexOf(':');
+                        if(endIdx != -1) {
+                            name= name.Substring(0, endIdx);
+                        }
+                        c_CodeName= iCS_ObjectNames.ToTypeName(name);
+                    }
+                    else if(IsConstructor) {
+                        c_CodeName= iCS_Types.TypeName(RuntimeType);
+                    }
+					else if(IsTransitionPackage) {
+                        c_CodeName= string.IsNullOrEmpty(name) ? "StateTransition" : name;						
+					}
+                    else if(IsStateChart) {
+                        c_CodeName= string.IsNullOrEmpty(name) ? "StateChart" : name;
+                    }
+                    else if(IsState) {
+                        c_CodeName= string.IsNullOrEmpty(name) ? "State" : name;
+                    }
+                    else if(IsPackage) {
+                        c_CodeName= string.IsNullOrEmpty(name) ? "Package" : name;
+                    }
+                    else {
+                        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+						if(desc != null) {
+	                        var funcInfo= desc.ToFunctionPrototypeInfo;
+	                        if(funcInfo != null) {
+	                            if(funcInfo is iCS_MessageInfo) {
+	                                c_CodeName= funcInfo.DisplayName;
+	                            }
+	                            else {
+	                                c_CodeName= funcInfo.MethodName;                            
+	                            }
+	                        }
+	                        else {
+	                            c_CodeName= string.IsNullOrEmpty(name) ? "null" : name;
+	                        }							
+						}
+						else {
+                            c_CodeName= string.IsNullOrEmpty(name) ? "null" : name;							
+						}
+                    }
+                }
+                else {
+                    c_CodeName= string.IsNullOrEmpty(name) ? "null" : name;
+                }
+            }
+            return c_CodeName ?? "null";
+        }
+    }
+    // ======================================================================
+    // ----------------------------------------------------------------------
+    /// Returns the user visible name of the object.
+    public string DisplayName {
+        get {
+            if(c_DisplayName == null) {
+                if(IsDataPort && IsProgrammaticInstancePort) {
+                    if(IsOutputPort || ParentNode.IsMessageHandler || ParentNode.IsPublicFunction) {
+                        c_DisplayName= "Self";
+                    }
+                    else {
+                        c_DisplayName= "Target";
+                    }
+                }
+                else if(IsInstanceNode) {
+					var typeName= iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(RuntimeType));
+                    c_DisplayName= typeName+" Properties";
+                }
+                else {
+                    c_DisplayName= EngineObject.RawName;
+                    if(string.IsNullOrEmpty(c_DisplayName)) {
+                        c_DisplayName= CodeName;
+                    }
+                }
+                c_DisplayName= iCS_ObjectNames.ToDisplayName(c_DisplayName);
+            }
+            return c_DisplayName;
+        }
+        set {
             var engineObject= EngineObject;
             if(engineObject.RawName == value) return;
 		    engineObject.RawName= value;
-		}
-	}
-    // ----------------------------------------------------------------------
-    public string Name {
-		get {
-            if(IsDataPort) {
-                if(IsProgrammaticInstancePort) {
-                    return "<"+iCS_Types.TypeName(RuntimeType)+" &>";
-                }                
-            }
-            return EngineObject.Name;
+            ResetNameCaches();
         }
-		set {
-            var engineObject= EngineObject;
-            if(engineObject.Name == value) return;
-		    engineObject.Name= value;
-		}
-	}
+    }
+
     // ----------------------------------------------------------------------
     public string FullName {
         get { return Storage.GetFullName(iCSMonoBehaviour, EngineObject); }
     }
     // ----------------------------------------------------------------------
-    public string DefaultName {
-        get {
-            var defaultName= Name;
-            if(IsPackage) {
-                defaultName= "";                
-            }
-            else if(IsConstructor) {
-                defaultName= "Variable";
-            }
-            else {
-                if(IsNode) {
-                    var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-                    if(desc != null) {
-                        defaultName= desc.DisplayName;
-                    }
-                    else {
-                        defaultName= EngineObject.MethodName;                        
-                    }
-                }
-                else {
-                    // TODO: Support retreiving the initial port name.
-                }
-            }
-            return defaultName+TypeLabel;            
-        }
-    }
-    // ----------------------------------------------------------------------
-    public string TypeLabel {
-        get {
-            return "<"+iCS_Types.TypeName(iCS_Types.RemoveRefOrPointer(RuntimeType))+">";
-        }
+    /// This functions resets all name related caches.
+    void ResetNameCaches() {
+		c_CodeName       = null;
+        c_NodeTitle      = null;
+        c_NodeTitleSize  = Vector2.zero;
+        c_DisplayName    = null;
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
@@ -163,31 +325,88 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-    public string Stereotype {
+    /// Returns the node title string.
+    ///
+    /// The frame ID is appended to the node title string if the application
+    /// is running and show frame ID option is selected.
+    ///
+    public string NodeTitle {
         get {
-            if(!IsNode) return null;
-            if(IsMessageHandler)    return "MessageHandler";
-            if(IsConstructor)       return "Builder";
-            if(IsTypeCast)          return "TypeCast";
-            if(IsInstanceNode)      return "Instance";
-            if(IsStateChart)        return "StateChart";
-            if(IsState)             return "State";
-            if(IsTransitionPackage) return "Trigger";
-            if(IsKindOfFunction)    return "Function";
-            if(IsKindOfPackage)     return "Package";
-            return "";
+            // Fill the node title cache.
+            if(c_NodeTitle == null) {
+                c_NodeTitle= iCS_ObjectNames.ToDisplayName(DisplayName);
+            }
+            // Return editor node title.
+            return c_NodeTitle;
         }
     }
     // ----------------------------------------------------------------------
-    public string NodeTitle {
+    public Vector2 NodeTitleSize {
         get {
-            if(iCS_PreferencesController.ShowNodeStereotype) {
-                return DisplayName+" <"+Stereotype+">";
+            if(Math3D.IsZero(c_NodeTitleSize)) {
+                var titleContent= new GUIContent(NodeTitle);
+                c_NodeTitleSize= iCS_Layout.DefaultTitleStyle.CalcSize(titleContent);
             }
-            return DisplayName;
+            return c_NodeTitleSize;
         }
     }
-	
+
+    // ----------------------------------------------------------------------
+    /// Builds and returns the Node SubTitle text.
+    public string NodeSubTitle {
+        get {
+            if(c_NodeSubTitle == null) {
+                c_NodeSubTitleSize= Vector2.zero;
+                if(IsConstructor) {
+                    c_NodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
+                }
+                else if(IsMessageHandler || IsPublicFunction) {
+                    c_NodeSubTitle= "Self is a "+iCS_ObjectNames.ToDisplayName(EditorObjects[0].DisplayName);                    
+                }
+                else if(IsKindOfFunction || IsInstanceNode) {
+                    c_NodeSubTitle= BuildIsASubTitle("Target", RuntimeType);
+                }
+                else if(IsKindOfPackage) {
+                    c_NodeSubTitle= "Node is a Package";
+                }
+                else {
+                    c_NodeSubTitle= null;
+                }
+            }
+            return c_NodeSubTitle ?? "";
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    /// Builds a standard IsA type of node subtitle string.
+    ///
+    /// @param name The name to be used that _"is a"_.
+    /// @param type The type of the _"is a"_.
+    ///
+    string BuildIsASubTitle(string name, Type type) {
+        var result= new StringBuilder(name, 64);
+        result.Append(" is a");
+        var typeName= iCS_ObjectNames.ToDisplayName(iCS_Types.TypeName(type));
+        if(iCS_TextUtility.StartsWithAVowel(typeName)) {
+            result.Append('n');
+        }
+        result.Append(" ");
+        result.Append(typeName);
+        return result.ToString();        
+    }
+
+    // ----------------------------------------------------------------------
+    /// Returns the rendering dimension of the Node SubTitle text.
+    public Vector2 NodeSubTitleSize {
+        get {
+            if(Math3D.IsZero(c_NodeSubTitleSize)) {
+                var guiContent= new GUIContent(NodeSubTitle);
+                c_NodeSubTitleSize= iCS_Layout.DefaultSubTitleStyle.CalcSize(guiContent);
+            }
+            return c_NodeSubTitleSize;
+        }
+    }    
+        
     // ======================================================================
     // High-Level Properties
     // ----------------------------------------------------------------------

@@ -42,16 +42,16 @@ namespace iCanScript { namespace Editor {
         // ======================================================================
         // Community License Management
         // ----------------------------------------------------------------------
-        public const int MaxCommunityVisualScriptPerScene= 7;
+        public const int MaxCommunityVisualScriptPerProject= 7;
         public const int MaxCommunityNodesPerVisualScript= 50;
         public static int CommunityVisualScriptsRemaining {
             get {
-                if(EditorApplication.isPlaying) return MaxCommunityVisualScriptPerScene;
-                return MaxCommunityVisualScriptPerScene-SceneController.NumberOfVisualScriptsInOrReferencedByScene;
+                if(EditorApplication.isPlaying) return MaxCommunityVisualScriptPerProject;
+                return MaxCommunityVisualScriptPerProject-NumberOfVisualScriptsInProject;
             }
         }
         public static float CommunityPercentVisualScriptsRemaining {
-            get { return EditorApplication.isPlaying ? 1.0f : (float)(CommunityVisualScriptsRemaining) / MaxCommunityVisualScriptPerScene; }
+            get { return EditorApplication.isPlaying ? 1.0f : (float)(CommunityVisualScriptsRemaining) / MaxCommunityVisualScriptPerProject; }
         }
         public static int CommunityNodesRemaining {
             get {
@@ -69,6 +69,14 @@ namespace iCanScript { namespace Editor {
                 if(!IsCommunityEdition || EditorApplication.isPlaying) return false;
                 return CommunityVisualScriptsRemaining < 0 || CommunityNodesRemaining < 0;
             }
+        }
+
+        // ======================================================================
+        // UTILITIES
+        // ----------------------------------------------------------------------
+        static int NumberOfVisualScriptsInProject {
+            // TODO: Determine number of visual script in project.
+            get { return 0; }
         }
     }
     

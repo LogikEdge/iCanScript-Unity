@@ -8,6 +8,7 @@ using System.Collections;
 namespace iCanScript.Editor.CodeEngineering {
 
     public static class CSharpFileUtils {
+        const string    kFileExtension= ".cs";
 
         // ----------------------------------------------------------------------
         // Verify the consistancy of the source file
@@ -18,7 +19,8 @@ namespace iCanScript.Editor.CodeEngineering {
 //            }
             // TODO: verify the existance of the source file and create it
         }
-                
+
+
         // ----------------------------------------------------------------------
         // Make Unique Class Name
         public static string MakeUniqueClassName(string desiredClassName, int id= 0) {
@@ -40,9 +42,17 @@ namespace iCanScript.Editor.CodeEngineering {
         }
     
         // ----------------------------------------------------------------------
-        // Write generated code to given file.
+        /// Writes or overwrites the CSharp code file.
         public static void WriteCSharpFile(string folderPath, string className, string code) {
-            TextFileUtils.WriteFile("Assets/"+folderPath+"/"+className+".cs", code);
+            var filePath= "Assets/"+folderPath+"/"+className+kFileExtension;
+            TextFileUtils.WriteFile(filePath, code);
+        }
+
+        // ----------------------------------------------------------------------
+        /// Deletes CSharp code file.
+        public static void DeleteCSharpFile(string folderPath, string className) {
+            var filePath= "Assets/"+folderPath+"/"+className+kFileExtension;
+            AssetDatabase.DeleteAsset(filePath);
         }
     }
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
 
+namespace iCanScript.Editor {
 public partial class iCS_Graphics {
     // ======================================================================
     // Constants
@@ -30,17 +31,15 @@ public partial class iCS_Graphics {
     static Texture2D    rightArrowHeadIcon= null;
 	
     // ----------------------------------------------------------------------
-    public GUIStyle    LabelStyle              = null;
-    public GUIStyle    TitleStyle              = null;
-    public GUIStyle    MessageTitleStyle       = null;
-    public GUIStyle    ValueStyle              = null;
-    public GUIStyle    StereotypeStyle         = null;
     public Texture2D   StateMaximizeIcon       = null;
     public Texture2D   ModuleMaximizeIcon      = null;
     public Texture2D   EntryStateMaximizeIcon  = null;
     public Texture2D   ConstructionMaximizeIcon= null;
     public Texture2D   FunctionMaximizeIcon    = null;
     public Texture2D   DefaultMaximizeIcon     = null;
+
+    // ----------------------------------------------------------------------
+    public iCS_Layout  Layout= new iCS_Layout();
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
@@ -75,24 +74,14 @@ public partial class iCS_Graphics {
         selectedObject= selObj;
 
         // Rebuild label style to match user preferences.
-        BuildLabelStyle();
-        BuildTitleStyle();
-        BuildMessageTitleStyle();
-        BuildValueStyle();
-        BuildStereotypeStyle();
+        Layout.Refresh(scale);
         
-        // Set font size according to scale.
-        LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
-        TitleStyle.fontSize= (int)(kTitleFontSize*Scale);
-        ValueStyle.fontSize= (int)(kLabelFontSize*Scale);
-        StereotypeStyle.fontSize= (int)(kTitleFontSize*Scale);
-
         // Special case for asset store images
         if(iCS_DevToolsConfig.ShowBoldImage) {
-            LabelStyle.fontSize= (int)(LabelStyle.fontSize*1.2f);
-            ValueStyle.fontSize= (int)(ValueStyle.fontSize*1.2f);
-            LabelStyle.fontStyle= FontStyle.Bold;
-            ValueStyle.fontStyle= FontStyle.Bold;
+            Layout.DynamicLabelStyle.fontSize= (int)(Layout.DynamicLabelStyle.fontSize*1.2f);
+            Layout.DynamicValueStyle.fontSize= (int)(Layout.DynamicValueStyle.fontSize*1.2f);
+            Layout.DynamicLabelStyle.fontStyle= FontStyle.Bold;
+            Layout.DynamicValueStyle.fontStyle= FontStyle.Bold;
         }                
     }
     public void End(iCS_IStorage iStorage) {
@@ -135,10 +124,9 @@ public partial class iCS_Graphics {
         return new Vector2(Scale*(x-Translation.x), Scale*(y-Translation.y));
     }
     // ----------------------------------------------------------------------
-    void GUI_Box(Rect pos, GUIContent title, Color nodeColor, Color backgroundColor, Color shadowColor, GUIStyle titleStyle= null) {
-        if(titleStyle == null) titleStyle= TitleStyle;
+    void GUI_Box(Rect pos, iCS_EditorObject node, Color nodeColor, Color backgroundColor, Color shadowColor) {
         Rect adjPos= TranslateAndScale(pos);
-        DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, title, titleStyle);
+        DrawNode(adjPos, node, nodeColor, backgroundColor, shadowColor);
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -238,74 +226,6 @@ public partial class iCS_Graphics {
         return IsInitialized;
     }
     // ----------------------------------------------------------------------
-    void BuildLabelStyle() {
-        Color labelColor= Prefs.NodeLabelColor;
-        if(LabelStyle == null) LabelStyle= new GUIStyle();
-        LabelStyle.normal.textColor= labelColor;
-        LabelStyle.hover.textColor= labelColor;
-        LabelStyle.focused.textColor= labelColor;
-        LabelStyle.active.textColor= labelColor;
-        LabelStyle.onNormal.textColor= labelColor;
-        LabelStyle.onHover.textColor= labelColor;
-        LabelStyle.onFocused.textColor= labelColor;
-        LabelStyle.onActive.textColor= labelColor;
-        LabelStyle.fontStyle= FontStyle.Bold;
-        LabelStyle.fontSize= 11;
-    }
-    // ----------------------------------------------------------------------
-    void BuildTitleStyle() {
-        Color titleColor= Prefs.NodeTitleColor;
-        if(TitleStyle == null) TitleStyle= new GUIStyle();
-        TitleStyle.normal.textColor= titleColor;
-        TitleStyle.hover.textColor= titleColor;
-        TitleStyle.focused.textColor= titleColor;
-        TitleStyle.active.textColor= titleColor;
-        TitleStyle.onNormal.textColor= titleColor;
-        TitleStyle.onHover.textColor= titleColor;
-        TitleStyle.onFocused.textColor= titleColor;
-        TitleStyle.onActive.textColor= titleColor;
-        TitleStyle.fontStyle= FontStyle.Bold;
-        TitleStyle.fontSize= 12;
-    }
-    // ----------------------------------------------------------------------
-    void BuildStereotypeStyle() {
-        Color titleColor= Prefs.NodeTitleColor;
-        if(StereotypeStyle == null) StereotypeStyle= new GUIStyle();
-        StereotypeStyle.normal.textColor= titleColor;
-        StereotypeStyle.hover.textColor= titleColor;
-        StereotypeStyle.focused.textColor= titleColor;
-        StereotypeStyle.active.textColor= titleColor;
-        StereotypeStyle.onNormal.textColor= titleColor;
-        StereotypeStyle.onHover.textColor= titleColor;
-        StereotypeStyle.onFocused.textColor= titleColor;
-        StereotypeStyle.onActive.textColor= titleColor;
-        StereotypeStyle.fontStyle= FontStyle.Bold;
-        StereotypeStyle.fontSize= 12;
-    }
-    // ----------------------------------------------------------------------
-    void BuildMessageTitleStyle() {
-        Color messageTitleColor= Color.red;
-        if(MessageTitleStyle == null) {
-            MessageTitleStyle= new GUIStyle(TitleStyle);
-        }
-        MessageTitleStyle.normal.textColor= messageTitleColor;
-    }
-    // ----------------------------------------------------------------------
-    void BuildValueStyle() {
-        Color valueColor= Prefs.NodeValueColor;
-        if(ValueStyle == null) ValueStyle= new GUIStyle();
-        ValueStyle.normal.textColor= valueColor;
-        ValueStyle.hover.textColor= valueColor;
-        ValueStyle.focused.textColor= valueColor;
-        ValueStyle.active.textColor= valueColor;
-        ValueStyle.onNormal.textColor= valueColor;
-        ValueStyle.onHover.textColor= valueColor;
-        ValueStyle.onFocused.textColor= valueColor;
-        ValueStyle.onActive.textColor= valueColor;
-        ValueStyle.fontStyle= FontStyle.Bold;
-        ValueStyle.fontSize= 11;
-    }
-    // ----------------------------------------------------------------------
     public void DrawIconCenteredAt(Vector2 point, Texture2D icon) {
         if(icon == null) return;
         GUI_DrawTexture(new Rect(point.x-0.5f*icon.width,point.y-0.5f*icon.height, icon.width, icon.height), icon);
@@ -324,7 +244,13 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  GRID
     // ----------------------------------------------------------------------
-    public void DrawGrid(Rect screenArea, Vector2 offset, Color backgroundColor, Color gridColor, float gridSpacing) {
+    public void DrawGrid(Rect screenArea, Vector2 offset) {
+        var backgroundColor = Prefs.CanvasBackgroundColor;
+        var minorGridColor  = Prefs.MinorGridColor;
+        var majorGridColor  = Prefs.MajorGridColor;
+        var minorGridSpacing= Prefs.GridSpacing;
+        var screenWidth     = screenArea.width;
+        var screenHeight    = screenArea.height;
         if(iCS_DevToolsConfig.UseBackgroundImage) {
             Texture2D background= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/background.png");
             var backgroundRect= new Rect(0,0,background.width, background.height);
@@ -333,54 +259,84 @@ public partial class iCS_Graphics {
         else {
             // Draw background.
             Vector3[] vect= { new Vector3(0,0,0),
-                              new Vector3(screenArea.width, 0, 0),
-                              new Vector3(screenArea.width,screenArea.height,0),
-                              new Vector3(0,screenArea.height,0)};
+                              new Vector3(screenWidth, 0, 0),
+                              new Vector3(screenWidth,screenHeight,0),
+                              new Vector3(0,screenHeight,0)};
             Handles.color= Color.white;
             Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
 
             // Draw grid lines.
-            if(gridSpacing*Scale < 2) return;
-        
-            float xOffset= -Translation.x-offset.x;
-            float yOffset= -Translation.y-offset.y;
-            float gridSpacing5= 5f*gridSpacing;
-            float x= (xOffset)-gridSpacing*Mathf.Floor((xOffset)/gridSpacing);
-            float y= (yOffset)-gridSpacing*Mathf.Floor((yOffset)/gridSpacing);
-            float x5= (xOffset)-gridSpacing5*Mathf.Floor((xOffset)/gridSpacing5);
-            float y5= (yOffset)-gridSpacing5*Mathf.Floor((yOffset)/gridSpacing5);
-        
-            // Scale grid
-            x*= Scale;
-            y*= Scale;
-            x5*= Scale;
-            y5*=Scale;
-            gridSpacing*= Scale;
-            gridSpacing5*= Scale;
-        
-            if(Scale < 1f) {
-                gridColor.a *= Scale;
-            }
-            Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.5f*gridColor.a);
-            for(; x < screenArea.width; x+= gridSpacing) {
-                if(Mathf.Abs(x-x5) < 1f) {
-                    Handles.color= gridColor;
-                    x5+= gridSpacing5;
-                } else {
-                    Handles.color= gridColor2;                
+            if(minorGridSpacing*Scale >= 2) {        
+                float xOffset= -Translation.x-offset.x;
+                float yOffset= -Translation.y-offset.y;
+                float majorGridSpacing= 10f*minorGridSpacing;
+                float x= (xOffset)-minorGridSpacing*Mathf.Floor((xOffset)/minorGridSpacing);
+                float y= (yOffset)-minorGridSpacing*Mathf.Floor((yOffset)/minorGridSpacing);
+                float x10= (xOffset)-majorGridSpacing*Mathf.Floor((xOffset)/majorGridSpacing);
+                float y10= (yOffset)-majorGridSpacing*Mathf.Floor((yOffset)/majorGridSpacing);
+            
+                // Scale grid
+                x*= Scale;
+                y*= Scale;
+                x10*= Scale;
+                y10*= Scale;
+                minorGridSpacing*= Scale;
+                majorGridSpacing*= Scale;
+            
+                if(Scale < 1f) {
+                    minorGridColor.a *= Scale;
+                    majorGridColor.a *= Scale;
                 }
-                Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,screenArea.height,0));            
-            }
-            for(; y < screenArea.height; y+= gridSpacing) {
-                if(Mathf.Abs(y-y5) < 1f) {
-                    Handles.color= gridColor;
-                    y5+= gridSpacing5;
-                } else {
-                    Handles.color= gridColor2;                
+                minorGridColor= new Color(minorGridColor.r, minorGridColor.g, minorGridColor.b, 0.5f*minorGridColor.a);
+                var startPoint= new Vector3(0,0,0);
+                var endPoint  = new Vector3(0,screenHeight,0);
+                Handles.color= minorGridColor;
+                for(; x < screenWidth; x+= minorGridSpacing) {
+                    startPoint.x= x;
+                    endPoint.x  = x;
+                    if(Mathf.Abs(x-x10) < 1f) {
+                        x10+= majorGridSpacing;
+                        Handles.color= majorGridColor;
+                        Handles.DrawLine(startPoint, endPoint);
+                        Handles.color= minorGridColor;
+                    } else {
+                        Handles.DrawLine(startPoint, endPoint);
+                    }
                 }
-                Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
-            }            
+                startPoint.x= 0;
+                endPoint.x  = screenWidth;
+                Handles.color= minorGridColor;
+                for(; y < screenHeight; y+= minorGridSpacing) {
+                    startPoint.y= y;
+                    endPoint.y  = y;
+                    if(Mathf.Abs(y-y10) < 1f) {
+                        y10+= majorGridSpacing;
+                        Handles.color= majorGridColor;
+                        Handles.DrawLine(startPoint, endPoint);
+                        Handles.color= minorGridColor;
+                    } else {
+                        Handles.DrawLine(startPoint, endPoint);
+                    }
+                }            
+            }
         }
+        // Show iCanScript backdrop.
+        var backdropStyle= new GUIStyle();
+        backdropStyle.fontSize= (int)(screenWidth/20);
+        backdropStyle.fontStyle= FontStyle.Bold;
+        var backdropColor= Color.grey;
+        backdropColor.a= 0.3f;
+        backdropStyle.normal.textColor= backdropColor;
+        var backdrop= new GUIContent("iCanScript2");
+        var backdropSize= backdropStyle.CalcSize(backdrop);
+        var spacer= 20f;
+        var backdropRect= new Rect(screenWidth-(backdropSize.x+spacer),
+                                    screenHeight-(backdropSize.y+spacer),
+                                    backdropSize.x,
+                                    backdropSize.y);
+//        GUI.color= new Color(1f, 1f, 1f, 0.3f);
+        GUI.Label(backdropRect, backdrop, backdropStyle);
+        
         // Draw guides for asset store big image
         if(iCS_DevToolsConfig.ShowAssetStoreBigImageFrame) {
             Rect liveRect;
@@ -451,14 +407,13 @@ public partial class iCS_Graphics {
 			alpha*= 0.5f;
 		}
         GUI.color= new Color(1f, 1f, 1f, alpha);
-        string title= GetNodeName(node);
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
 		
         // Determine title style
         var shadowColor= isMouseOver || iStorage.IsSelectedOrMultiSelected(node) ? WhiteShadowColor : BlackShadowColor;
-        GUI_Box(position, new GUIContent(title), GetNodeColor(node), backgroundColor, shadowColor);
+        GUI_Box(position, node, GetNodeColor(node), backgroundColor, shadowColor);
         if(isMouseOver) {
             EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
         }
@@ -522,7 +477,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
 	void ShowTitleOver(Rect pos, iCS_EditorObject node) {
         if(!ShouldShowTitle()) return;
-        string title= node.DisplayName;
+        string title= GetNodeTitle(node);
 //        string title= GetNodeName(node); // Name too long with stereotype
         Vector2 labelSize= GetNodeNameSize(node);
 		pos.y-=5f;	// Put title a bit higher.
@@ -537,7 +492,7 @@ public partial class iCS_Graphics {
             backgroundColor= GetBackgroundColor(node);
         }
         DrawLabelBackground(labelRect, boxAlpha, backgroundColor, outlineColor);
-        GUI.Label(labelRect, new GUIContent(title), LabelStyle);		
+        GUI.Label(labelRect, new GUIContent(title), Layout.DynamicLabelStyle);		
 	}
 	
     // ======================================================================
@@ -681,14 +636,18 @@ public partial class iCS_Graphics {
         if(ShouldDisplayPortName(port)) {
 	        Rect portNamePos= GetPortNameGUIPosition(port);
             var boxAlpha= 0.35f;
-            var outlineColor= Color.black;
+            var backgroundColor= Color.clear;
+            var outlineColor= Color.clear;
             if(isSelectedPort) {
                 boxAlpha= 1f;
                 outlineColor= portColor;
             }
-            DrawLabelBackground(portNamePos, boxAlpha, Color.black, outlineColor);
+            if(parent.IsKindOfPackage && parent.IsUnfoldedInLayout) {
+                backgroundColor= Color.black;
+            }
+            DrawLabelBackground(portNamePos, boxAlpha, backgroundColor, outlineColor);
 	        string name= GetPortName(port);
-	        GUI.Label(portNamePos, name, LabelStyle);                                            	
+	        GUI.Label(portNamePos, name, Layout.DynamicLabelStyle);                                            	
         }
 
         // Display port value (if applicable).
@@ -699,7 +658,7 @@ public partial class iCS_Graphics {
         		if(Math3D.IsNotZero(portValuePos.width)) {
                     DrawLabelBackground(portValuePos, 0.35f, Color.black, Color.black);
             		string valueAsStr= GetPortValueAsString(port);
-        			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
+        			GUI.Label(portValuePos, valueAsStr, Layout.DynamicValueStyle);			
         		}            				
     
 //                /*
@@ -904,23 +863,6 @@ public partial class iCS_Graphics {
 		GUI.DrawTexture(pos, portIcon);
     }   
     
-	// ----------------------------------------------------------------------
-    static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
-    static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
-    static float TopBottomLabelOffset(iCS_EditorObject port, iCS_IStorage iStorage) {
-        float ratio= 0.5f+port.PortPositionRatio;
-        float error= 100f;
-        float offset= 0f;
-        for(int i= 0; i < portTopBottomRatio.Length; ++i) {
-            float delta= Mathf.Abs(ratio-portTopBottomRatio[i]);
-            if(delta < error) {
-                error= delta;
-                offset= portLabelTopBottomOffset[i];
-            }
-        }
-        return offset;
-    }
-    
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
@@ -1006,9 +948,7 @@ public partial class iCS_Graphics {
         float highlightWidth= 2f;
         Color highlightColor= new Color(0.67f, 0.67f, 0.67f, alpha);
         if(iStorage.IsSelectedOrMultiSelected(port) ||
-           iStorage.IsSelectedOrMultiSelected(source) ||
-           iStorage.IsSelectedOrMultiSelected(portParent) ||
-           iStorage.IsSelectedOrMultiSelected(sourceParent)) {
+           iStorage.IsSelectedOrMultiSelected(source)) {
            highlight= true;
         }
         // Special case for asset store images.
@@ -1191,25 +1131,23 @@ public partial class iCS_Graphics {
 			var fromState= fromStatePort.ParentNode;
 			return IsEnable(fromState);
 		}
-		var enablePorts= obj.BuildListOfChildPorts(p=> p.IsEnablePort);
-		foreach(var ep in enablePorts) {
-			if(isPlaying || ep.ProducerPort == null) {
-                var portValue= ep.PortValue;
-				if(portValue != null && (bool)(ep.PortValue) == false) {
-					return false;
-				}				
-			}
-		}
-		return true;
+        bool isEnabled= true;
+		obj.ForEachChildPort(
+            p=> {
+    			if(p.IsEnablePort && (isPlaying || p.ProducerPort == null)) {
+                    var portValue= p.PortValue;
+    				if(portValue != null && (bool)(portValue) == false) {
+    					isEnabled= false;
+    				}				
+    			}
+            }
+        );
+		return isEnabled;
 	}
     // ----------------------------------------------------------------------
     public static bool IsActiveState(iCS_EditorObject state) {
-        var stateChart= state.GetParentStateChart();
-        if(stateChart == null) return false;
-        var runtimeNodes= state.IStorage.VisualScript.RuntimeNodes;
-        var rtStateChart= runtimeNodes[stateChart.InstanceId] as iCS_StateChart;
-        var rtState     = runtimeNodes[state.InstanceId] as iCS_State;
-        return rtStateChart.IsActiveState(rtState);
+        // TODO: Determine state chart (runtime) active state.
+        return true;
     }
     
     // ----------------------------------------------------------------------
@@ -1236,4 +1174,6 @@ public partial class iCS_Graphics {
         }
         return result;
     }
+}
+
 }

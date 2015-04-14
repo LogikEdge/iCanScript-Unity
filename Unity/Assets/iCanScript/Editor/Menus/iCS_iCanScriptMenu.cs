@@ -55,7 +55,7 @@ public static class iCS_iCanScriptMenu {
         if(monoBehaviour == null) return;
         var storage= new iCS_VisualScriptData(monoBehaviour);
         var initialPath= Application.dataPath;
-        var path= EditorUtility.SaveFilePanel("Export Visual Script", initialPath, monoBehaviour.name+".json", "json");
+        var path= EditorUtility.SaveFilePanel("Export Visual Script", initialPath, monoBehaviour.name+".ics2", "ics2");
         if(string.IsNullOrEmpty(path)) return;
         iCS_VisualScriptImportExport.Export(storage, path);
         Debug.Log("iCanScript: Export completed => "+path);
@@ -80,7 +80,7 @@ public static class iCS_iCanScriptMenu {
         var monoBehaviour= go.GetComponent<iCS_MonoBehaviourImp>() as iCS_MonoBehaviourImp;
         if(monoBehaviour == null) return;
         var initialPath= Application.dataPath;
-        var path= EditorUtility.OpenFilePanel("Import Visual Script", initialPath, "json");
+        var path= EditorUtility.OpenFilePanel("Import Visual Script", initialPath, "ics2");
         if(string.IsNullOrEmpty(path)) return;
         var tmpVsd= new iCS_VisualScriptData();
         if(!iCS_VisualScriptImportExport.Import(tmpVsd, path)) {

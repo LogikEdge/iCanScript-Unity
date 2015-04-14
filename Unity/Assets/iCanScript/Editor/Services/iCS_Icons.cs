@@ -4,7 +4,7 @@ using System.Collections;
 
 public enum iCS_DefaultNodeIcons {
     iCanScript, Unity, DotNet, Company, Library,
-    Behaviour, Package, Message, ObjectInstance,
+    Package, Message, ObjectInstance,
     Function, Variable, Builder,
     StateChart, State, EntryState,
 	OnStateEntry, OnStateUpdate, OnStateExit
@@ -18,7 +18,6 @@ public static class iCS_Icons {
     const string kUnityIcon         = "iCS_UnityLogo_32x32.png";
     const string kDotNetIcon        = "iCS_DotNetLogo_32x32.png";
     const string kCompanyIcon       = "iCS_CompanyIcon_32x32.png";
-    const string kBehaviourIcon     = "iCS_BehaviourIcon_32x32.png";
     const string kPackageIcon       = "iCS_PackageIcon_32x32.png";
     const string kMessageIcon       = "iCS_MessageIcon_32x32.png";
     const string kObjectInstanceIcon= "iCS_ObjectInstanceIcon_32x32.png";
@@ -38,7 +37,6 @@ public static class iCS_Icons {
     const string kDotNetLibraryIcon        = "iCS_DotNetLogo_32x32.png";
     const string kCompanyLibraryIcon       = "iCS_CompanyIcon_32x32.png";
     const string kLibraryIcon              = "iCS_LibraryIcon_32x32.png";
-    const string kBehaviourLibraryIcon     = "iCS_BehaviourIcon_32x32.png";
     const string kPackageLibraryIcon       = "iCS_PackageIcon_32x32.png";
     const string kMessageLibraryIcon       = "iCS_MessageIcon_32x32.png";
     const string kObjectInstanceLibraryIcon= "iCS_ObjectInstanceIcon_16x16.png";
@@ -78,9 +76,7 @@ public static class iCS_Icons {
 
     // -------------------------------------------------------------------------
     public static Texture2D GetDefaultNodeIconFor(iCS_EditorObject obj) {
-        if(obj.IsBehaviour) {
-            return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Behaviour);
-        } else if(obj.IsMessage) {
+        if(obj.IsMessage) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Message);            
         } else if(obj.IsInstanceNode) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);
@@ -118,8 +114,6 @@ public static class iCS_Icons {
                 icon= iCS_TextureCache.GetIcon(kDotNetIcon); break;
             case iCS_DefaultNodeIcons.Company:
                 icon= iCS_TextureCache.GetIcon(kCompanyIcon); break;
-            case iCS_DefaultNodeIcons.Behaviour:
-                icon= iCS_TextureCache.GetIcon(kBehaviourIcon); break;
             case iCS_DefaultNodeIcons.Package:
                 icon= iCS_TextureCache.GetIcon(kPackageIcon); break;
             case iCS_DefaultNodeIcons.Message:
@@ -162,8 +156,6 @@ public static class iCS_Icons {
                 icon= iCS_TextureCache.GetIcon(kCompanyLibraryIcon); break;
             case iCS_DefaultNodeIcons.Library:
                 icon= iCS_TextureCache.GetIcon(kLibraryIcon); break;            
-            case iCS_DefaultNodeIcons.Behaviour:
-                icon= iCS_TextureCache.GetIcon(kBehaviourLibraryIcon); break;
             case iCS_DefaultNodeIcons.Package:
                 icon= iCS_TextureCache.GetIcon(kPackageLibraryIcon); break;
             case iCS_DefaultNodeIcons.Message:

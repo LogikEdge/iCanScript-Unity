@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 [iCS_Class(Company="iCanScript", Library="SimplePhysic")]
 public class iCS_ForceIntegrator {
     // ======================================================================

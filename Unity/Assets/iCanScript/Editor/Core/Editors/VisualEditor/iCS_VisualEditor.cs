@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Prefs= iCS_PreferencesController;
 
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Constants
@@ -96,7 +97,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public new void OnSelectionChange() {
         base.OnSelectionChange();
         myNeedRepaint= true;
-        mySubEditor= null;
+        CloseSubEditor();
     }
     // ======================================================================
     // Update all message ports when hierarchy has changed
@@ -250,19 +251,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
              ProcessEvents();            
         }
         
-        // -- Update sub editor if active --
-        if(mySubEditor != null) {
-        	mySubEditor.Update();
-            var ev= Event.current;
-            if(ev.type == EventType.KeyDown) {
-                var keyCode= ev.keyCode;
-                if(keyCode == KeyCode.Escape || keyCode == KeyCode.Return) {
-                    mySubEditor= null;
-                    ev.Use();
-                }
-            }
-        }
-
         // -- Process scroll zone --
         ProcessScrollZone();
         
@@ -273,8 +261,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		
 		// -- Simulate OnPostRender --
 		OnPostRender();
+        
+//        // -- Test library panel --
+//        libraryEditor.position= new Rect(0,0, 350, position.height);
+//        var saveColor= GUI.color;
+//        GUI.color= new Color(0,0,0,0.9f);
+//        GUI.Box(libraryEditor.position, "");
+//        GUI.color= saveColor;
+//        libraryEditor.OnGUI();
 	}
 
+//    iCS_LibraryEditor2 libraryEditor= new iCS_LibraryEditor2();
 
 	// ----------------------------------------------------------------------
     // Processes all events.
@@ -389,8 +386,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		float frameTime= Time.realtimeSinceStartup- myCurrentTime;
 		if(frameTime > myMaxFrameTime) myMaxFrameTime= frameTime;
 		myAverageFrameTime= (myAverageFrameTime*9f+frameTime)/10f;
-		Debug.Log("VisualEditor: frame time: "+myAverageFrameTime+" max frame time: "+myMaxFrameTime);
+		Debug.Log("VisualEditor: Frame Time: Average=> "+myAverageFrameTime+" Current=> "+frameTime+" Max=> "+myMaxFrameTime);
 #endif			    
 	}
 #endif
+}
 }

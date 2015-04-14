@@ -60,6 +60,7 @@ public static class iCS_UnityClasses {
     public static void PopulateDataBase() {                        
             // Install MonoBehaviour messages with no parameters.
             var noParameters= new iCS_Parameter[0];
+            InstallMonoBehaviourMessage("Awake"               , noParameters, kInMailIcon);
             InstallMonoBehaviourMessage("Update"              , noParameters, kInMailIcon);
             InstallMonoBehaviourMessage("LateUpdate"          , noParameters, kInMailIcon);
             InstallMonoBehaviourMessage("FixedUpdate"         , noParameters, kInMailIcon);

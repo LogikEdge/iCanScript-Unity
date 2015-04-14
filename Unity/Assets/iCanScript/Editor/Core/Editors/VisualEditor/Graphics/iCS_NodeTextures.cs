@@ -6,8 +6,8 @@ public static class iCS_NodeTextures {
     // ======================================================================
     // CONSTANTS
     // ----------------------------------------------------------------------
-    const float kNodeCornerRadius= 8f;
-    const float kNodeTitleHeight = 2f*kNodeCornerRadius;
+    const float kNodeCornerRadius= iCS_EditorConfig.kNodeCornerRadius;
+    const float kNodeTitleHeight = iCS_EditorConfig.kNodeTitleHeight;
 	const float kShadowAlpha     = 0.4f;
 
     // ======================================================================
@@ -60,7 +60,7 @@ public static class iCS_NodeTextures {
 					c.r= nodeColorRatio*nodeColor.r+backColorRatio*backColor.r+shadowColorRatio*shadowColor.r;
 					c.g= nodeColorRatio*nodeColor.g+backColorRatio*backColor.g+shadowColorRatio*shadowColor.g;
 					c.b= nodeColorRatio*nodeColor.b+backColorRatio*backColor.b+shadowColorRatio*shadowColor.b;
-					c.a= pixel.a;
+					c.a= pixel.a*(nodeColorRatio*nodeColor.a+backColorRatio*backColor.a+shadowColorRatio*shadowColor.a);
 					texture.SetPixel(x,y, c);					
 				}					
 			}
@@ -75,7 +75,7 @@ public static class iCS_NodeTextures {
 	public static void BuildNodeTemplate(float scale) {
         float radius= kNodeCornerRadius*scale;
 		int radiusInt    = (int)(radius+0.5f);
-		int extraTitleheightInt= (int)(0.75f*radius+0.5f);
+		int extraTitleheightInt= (int)(kNodeTitleHeight*scale+0.5f)-radiusInt;
 
 		// We don't need to rebuild node textures if nothing has changed.
 		if(radiusInt == myRadius && extraTitleheightInt == myExtraTitleHeight) {
@@ -152,7 +152,6 @@ public static class iCS_NodeTextures {
 		myNodeTemplate.hideFlags= HideFlags.DontSave;
 		myNodeTemplate.Apply();
 	}
-	//		GUI.DrawTextureWithTexCoords();
 	
     // ----------------------------------------------------------------------
 	// Draw a filled 90 degree arc into a texture.

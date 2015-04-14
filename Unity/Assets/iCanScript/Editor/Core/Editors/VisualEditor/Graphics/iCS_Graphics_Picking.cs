@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public partial class iCS_Graphics {
     // ======================================================================
     // Picking functionality
@@ -245,4 +246,5 @@ public partial class iCS_Graphics {
         if(objectAt == null) objectAt= iStorage.GetNodeAt(point);
         return new Prelude.Tuple<iCS_EditorObject,iCS_EditorObject>(objectAt, iStorage.GetClosestPortAt(point));
     }
+}
 }

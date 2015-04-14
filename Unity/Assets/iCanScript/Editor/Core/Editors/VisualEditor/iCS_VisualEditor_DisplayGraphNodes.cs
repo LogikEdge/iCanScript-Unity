@@ -8,12 +8,13 @@ using P= Prelude;
 /*
     TODO: Cleanup conditional tree descent VS full tree descent when drawing graph.
 */
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields.
     // ----------------------------------------------------------------------
-    P.Animate<Vector2>    myAnimatedScrollPosition= new P.Animate<Vector2>(iCS_TimerService.EditorTime);
-    P.Animate<float>      myAnimatedScale         = new P.Animate<float>(iCS_TimerService.EditorTime);
+    P.Animate<Vector2>    myAnimatedScrollPosition= new P.Animate<Vector2>(TimerService.EditorTime);
+    P.Animate<float>      myAnimatedScale         = new P.Animate<float>(TimerService.EditorTime);
 
     // ======================================================================
     // Properties.
@@ -72,10 +73,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// No grid if editor snapshot without background requested.
 		if(iCS_DevToolsConfig.IsFrameWithoutBackground) return;
 		// Draw Grid
-        myGraphics.DrawGrid(position, GridOffset,
-                            Pref.CanvasBackgroundColor,
-                            Pref.GridColor,
-                            Pref.GridSpacing);
+        myGraphics.DrawGrid(position, GridOffset);
     }                       
     
 	// ----------------------------------------------------------------------
@@ -211,4 +209,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         return scale;
     }
+}
 }

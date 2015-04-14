@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using iCanScript.Editor;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties.
@@ -39,14 +40,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 	// ----------------------------------------------------------------------
-    // Releases all resources used by the iCS_Behaviour editor.
+    // Releases all resources used by the iCS_VisualScript editor.
     public new void OnDisable() {
         base.OnDisable();
         
         // Release all worker objects.
         myGraphics      = null;
         myContextualMenu= null;
-		mySubEditor     = null;
+        CloseSubEditor();
         
         // Unregister for window under mouse change
         SystemEvents.OnWindowUnderMouseChange-= helpWindowChange;
@@ -61,7 +62,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(IStorage == null) {
             myBookmark= null;
             DragType= DragTypeEnum.None;
-            mySubEditor= null;
+            CloseSubEditor();
 		    return false;
 		}
         if(IStorage != myPreviousIStorage) {
@@ -72,7 +73,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             myPreviousIStorage= IStorage;
             myBookmark= null;
             DragType= DragTypeEnum.None;
-            mySubEditor= null;
+            CloseSubEditor();
             IStorage.ForceRelayout= true;
         }
         
@@ -96,4 +97,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void UpdateVisualScriptCache() {
         
     }
+}
 }

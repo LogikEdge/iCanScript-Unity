@@ -38,7 +38,7 @@ public partial class iCS_IStorage {
 						portIndex= ports[i].PortIndex;
 						if(portIndex < parametersStart || portIndex > parametersEnd) break;
 						if(portIndex != expectedPortIndex) {
-							Debug.LogWarning("iCanScript: Expected port index was: "+expectedPortIndex+" actual is: "+portIndex+" => "+ports[i].Name);
+							Debug.LogWarning("iCanScript: Expected port index was: "+expectedPortIndex+" actual is: "+portIndex+" => "+ports[i].DisplayName);
 						}
 						if(isFixPort) {
 							if(!ports[i].IsFixDataPort) {
@@ -49,7 +49,7 @@ public partial class iCS_IStorage {
 						}
 						if(!isFixPort) {
 							if(!ports[i].IsDynamicDataPort && !ports[i].IsProposedDataPort) {
-								Debug.LogWarning("iCanScript: Invalid parameter object type: "+ports[i].ObjectType+" => "+ports[i].Name);
+								Debug.LogWarning("iCanScript: Invalid parameter object type: "+ports[i].ObjectType+" => "+ports[i].DisplayName);
 							}
 								
 						}

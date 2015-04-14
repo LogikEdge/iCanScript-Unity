@@ -50,9 +50,6 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     List<iCS_EngineObject>  iCS_IVisualScriptData.EngineObjects {
         get { return EngineObjects; }
     }
-    List<Object> iCS_IVisualScriptData.UnityObjects {
-        get { return UnityObjects; }
-    }
     int iCS_IVisualScriptData.UndoRedoId {
         get { return UndoRedoId; }
         set { UndoRedoId= value; }
@@ -97,30 +94,12 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     public bool IsValidEngineObject(int id) {
 		return iCS_VisualScriptData.IsValidEngineObject(this, id);
 	}
-    public bool IsValidUnityObject(int id)  {
-        return iCS_VisualScriptData.IsValidUnityObject(this, id);
-	}
 
     // ======================================================================
     // Duplication Utilities
     // ----------------------------------------------------------------------
     public static void CopyFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
         iCS_VisualScriptData.CopyFromTo(from, to);
-    }
-
-    // ======================================================================
-    // Unity Object Utilities
-    // ----------------------------------------------------------------------
-    public void ClearUnityObjects() {
-        iCS_VisualScriptData.ClearUnityObjects(this);
-    }
-    // ----------------------------------------------------------------------
-    public int AddUnityObject(Object obj) {
-        return iCS_VisualScriptData.AddUnityObject(this, obj);
-    }
-    // ----------------------------------------------------------------------
-    public Object GetUnityObject(int id) {
-        return iCS_VisualScriptData.GetUnityObject(this, id);
     }
 
     // ======================================================================

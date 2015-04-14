@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties.
@@ -40,7 +41,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 return newSelected;
             }
 	        iCS_UserCommands.Select(newSelected, IStorage);
-            UpdateSelected();
 		}
         return SelectedObject;
     }
@@ -94,12 +94,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Refuse to connect the input of a builder node.
         var dragFixPortParentNode    = DragFixPort.ParentNode;
         var overlappingPortParentNode= overlappingPort.ParentNode;
-        if( DragFixPort.IsInputPort && dragFixPortParentNode.IsConstructor ||
-            overlappingPort.IsInputPort && overlappingPortParentNode.IsConstructor) {
-                var errorMessage= "Instance Builder nodes must be initialized with static values !!!";
-                ShowNotification(new GUIContent(errorMessage));
-                return true;
-        }
+//        if( DragFixPort.IsInputPort && dragFixPortParentNode.IsConstructor ||
+//            overlappingPort.IsInputPort && overlappingPortParentNode.IsConstructor) {
+//                var errorMessage= "Instance Builder nodes must be initialized with static values !!!";
+//                ShowNotification(new GUIContent(errorMessage));
+//                return true;
+//        }
         // Refuse invalid trigger port connections
         var connectToOutputError= new GUIContent("Cannot connect a trigger to an output !!!");
         var connectInsideError= new GUIContent("Cannot connect a trigger to a node involved in generating the trigger !!!");
@@ -235,14 +235,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var source= parentMuxPort.ProducerPort;
 		// Convert source port to child port.
 		if(source != null) {
-			var firstChildMux= IStorage.CreatePort(fixPort.Name, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
+			var firstChildMux= IStorage.CreatePort(fixPort.DisplayName, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
 			IStorage.SetSource(firstChildMux, source);
 			IStorage.SetSource(parentMuxPort, null);
 			parentMuxPort.ObjectType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InParentMuxPort : iCS_ObjectTypeEnum.OutParentMuxPort;
             parentMuxPort.PortIndex= (int)iCS_PortIndex.Return;
 		}
 		// Create new mux input port.
-		var childMuxPort= IStorage.CreatePort(fixPort.Name, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
+		var childMuxPort= IStorage.CreatePort(fixPort.DisplayName, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
 		IStorage.SetNewDataConnection(childMuxPort, fixPort, conversion);
 		IStorage.CleanupMuxPort(parentMuxPort);
 	}
@@ -269,7 +269,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             newParent= IStorage.DisplayRoot;
         }
         if(newParent == node.Parent) return newParent;
-        if(!iCS_AllowedChildren.CanAddChildNode(node.Name, node.EngineObject, newParent, IStorage)) {
+        if(!iCS_AllowedChildren.CanAddChildNode(node.DisplayName, node.EngineObject, newParent, IStorage)) {
             newParent= null;
         }
         return newParent;
@@ -282,7 +282,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             newParent= IStorage.DisplayRoot;
         }
         if(newParent.InstanceId == node.ParentId) return newParent;
-        if(!iCS_AllowedChildren.CanAddChildNode(node.Name, node, newParent, IStorage)) {
+        if(!iCS_AllowedChildren.CanAddChildNode(node.RawName, node, newParent, IStorage)) {
             newParent= null;
         }
         return newParent;
@@ -291,7 +291,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	void RebuildDataConnection(iCS_EditorObject outputPort, iCS_EditorObject inputPort) {
 #if DEBUG
-		Debug.Log("iCanScript: RebuildDataConnection: output= "+outputPort.Name+" input= "+inputPort.Name);
+		Debug.Log("iCanScript: RebuildDataConnection: output= "+outputPort.DisplayName+" input= "+inputPort.DisplayName);
 #endif
 		// Have we completed rebuilding ... if so return.
 		if(inputPort == outputPort) return;
@@ -317,7 +317,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -343,7 +343,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -363,7 +363,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.Name, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -526,7 +526,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
         }
         iCS_UserCommands.PasteIntoGraph(sourceMonoBehaviour, sourceRoot, IStorage, validParent, point);
-        UpdateSelected();
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {
@@ -534,10 +533,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(updateDesc == null || updateDesc.Length == 0) return null;
         return iCS_UserCommands.CreateMessageHandler(IStorage[0], globalPos, updateDesc[0]);
     }
-	// ----------------------------------------------------------------------
-    void UpdateSelected() {
-        if(SelectedObject != null && SelectedObject.IsInstanceNode) {
-            iCS_EditorController.OpenInstanceEditor();
-        }
-    }
+}
 }

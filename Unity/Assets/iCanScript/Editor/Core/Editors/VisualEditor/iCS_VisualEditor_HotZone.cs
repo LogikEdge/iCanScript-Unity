@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // =======================================================================
     // Types
@@ -76,4 +77,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         }                
     }
+}
 }

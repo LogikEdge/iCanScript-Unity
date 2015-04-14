@@ -8,7 +8,7 @@ public partial class iCS_IStorage {
 	public iCS_EditorObject WrapInPackage(iCS_EditorObject obj) {
 		if(obj == null || !obj.CanHavePackageAsParent()) return null;
 		var parent= obj.ParentNode;
-        var package= CreatePackage(parent.InstanceId, obj.Name);
+        var package= CreatePackage(parent.InstanceId, obj.DisplayName);
 		ChangeParent(obj, package);
 		// Attempt to reposition the package ports to match the object ports.		
 		obj.ForEachChildPort(

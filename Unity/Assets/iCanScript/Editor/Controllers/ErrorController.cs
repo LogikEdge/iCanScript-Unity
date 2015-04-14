@@ -7,7 +7,7 @@ namespace iCanScript { namespace Editor {
     
     public static class ErrorController {
         // ======================================================================
-        // Initialization
+        // INIT / SHUTDOWN
         // ----------------------------------------------------------------------
         static ErrorController()    {
         	ErrorControllerProxy._Clear     = Clear;
@@ -18,7 +18,7 @@ namespace iCanScript { namespace Editor {
         public static void Shutdown()   {}
     
         // ======================================================================
-        // Types
+        // TYPES
         // ----------------------------------------------------------------------
     	public class ErrorWarning {
     		string				myServiceId   = null;
@@ -40,7 +40,7 @@ namespace iCanScript { namespace Editor {
     	};
     	
         // ======================================================================
-        // Fields
+        // FIELDS
         // ----------------------------------------------------------------------
     	static List<ErrorWarning>	myErrors        = new List<ErrorWarning>();
     	static List<ErrorWarning>	myWarnings      = new List<ErrorWarning>();
@@ -50,7 +50,7 @@ namespace iCanScript { namespace Editor {
         static Texture2D            mySmallWarningIcon= null;
     	
         // ======================================================================
-        // Properties
+        // PROPERTIES
         // ----------------------------------------------------------------------
         public static bool                  IsErrorOrWarning    { get { return NumberOfErrors != 0 || NumberOfWarnings != 0; }}
     	public static int 					NumberOfErrors 		{ get { return myErrors.Count; }}
@@ -93,7 +93,7 @@ namespace iCanScript { namespace Editor {
         }
     
         // ======================================================================
-        // Operations
+        // OPERATIONS
         // ----------------------------------------------------------------------
     	public static void Clear(string serviceId) {
     		myErrors  = P.filter(d=> d.ServiceId != serviceId, myErrors);

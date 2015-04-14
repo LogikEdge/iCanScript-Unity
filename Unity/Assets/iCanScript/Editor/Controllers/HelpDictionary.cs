@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEditor;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Editor {
     
     public static class HelpDictionary {
     	
@@ -88,4 +88,4 @@ namespace iCanScript { namespace Editor {
     
     }
     
-}}
+}

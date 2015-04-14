@@ -11,21 +11,22 @@ public static class AppController {
     // Initialization all sub-systems
     // ----------------------------------------------------------------------
 	static AppController() {
+//        var diff= new Diff();
+//        diff= null;
+        
         // Start all sub-systems.
 		ErrorController.Start();
         SystemEvents.Start();
-        iCS_TimerService.Start();
+        TimerService.Start();
         BlinkController.Start();
         EditionController.Start();
         LicenseController.Start();
 		SoftwareUpdateController.Start();
         GizmoController.Start();
-        LibraryDatabaseController.Start();
-		CodeEngineering.CodeEngineeringController.Start();
+        LibraryController.Start();
         iCS_VisualScriptDataController.Start();
         iCS_EditorController.Start();
         SceneController.Start();
-        PublicInterfaceController.Start();
 		HelpController.Start();	
 	}
     
@@ -35,18 +36,16 @@ public static class AppController {
     public static void Shutdown() {
         // Shutdown all subsystems.
 		HelpController.Shutdown();
-        PublicInterfaceController.Start();
         SceneController.Shutdown();
         iCS_EditorController.Shutdown();
         iCS_VisualScriptDataController.Shutdown();
-        CodeEngineering.CodeEngineeringController.Shutdown();
-        LibraryDatabaseController.Shutdown();
+        LibraryController.Shutdown();
         GizmoController.Shutdown();
         SoftwareUpdateController.Shutdown();
         LicenseController.Shutdown();
         EditionController.Shutdown();
         BlinkController.Shutdown();
-        iCS_TimerService.Shutdown();
+        TimerService.Shutdown();
         SystemEvents.Shutdown();
 		ErrorController.Shutdown();
     }

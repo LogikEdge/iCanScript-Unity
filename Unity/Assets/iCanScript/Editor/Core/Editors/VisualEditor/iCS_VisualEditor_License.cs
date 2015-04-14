@@ -2,6 +2,7 @@ using UnityEngine;
 //using System.Management;
 using System.Collections;
 
+namespace iCanScript.Editor {
 // ===========================================================================
 // User license verification
 // ===========================================================================
@@ -40,4 +41,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //        }
 //        return cpuInfo;        
 //    }
+}
 }

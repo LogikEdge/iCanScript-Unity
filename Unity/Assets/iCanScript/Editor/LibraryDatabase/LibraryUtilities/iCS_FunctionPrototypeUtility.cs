@@ -83,7 +83,7 @@ public static class iCS_FunctionPrototypeUtility {
         }
         int paramIdx= port.PortIndex;
         var paramName= prototype.Parameters[paramIdx].name;
-        return paramName == port.Name;
+        return paramName == port.DisplayName;
     }
     // -----------------------------------------------------------------------
     /// Returns _'true'_ if all port types and names matches the prototype.

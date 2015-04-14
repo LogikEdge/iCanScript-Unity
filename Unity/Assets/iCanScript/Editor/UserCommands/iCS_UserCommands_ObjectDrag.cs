@@ -13,7 +13,7 @@ public static partial class iCS_UserCommands {
         OpenTransaction(node.IStorage);
     }
     public static void EndNodeDrag(iCS_EditorObject node) {
-        CloseTransaction(node.IStorage, "Drag "+node.Name);
+        CloseTransaction(node.IStorage, "Drag "+node.DisplayName);
     }
     public static void StartMultiSelectionNodeDrag(iCS_IStorage iStorage) {
         OpenTransaction(iStorage);
@@ -41,7 +41,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        CloseTransaction(iStorage, "Relocate "+node.Name);
+        CloseTransaction(iStorage, "Relocate "+node.DisplayName);
     }
     public static void CancelNodeRelocation(iCS_EditorObject node) {
         CancelTransaction(node.IStorage);
@@ -95,7 +95,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        CloseTransaction(iStorage, "Port Connection=> "+port.Name);
+        CloseTransaction(iStorage, "Port Connection=> "+port.DisplayName);
     }
     public static void EndPortPublishing(iCS_EditorObject port) {
         var iStorage= port.IStorage;
@@ -104,7 +104,7 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        CloseTransaction(iStorage, "Port Publishing=> "+port.Name);
+        CloseTransaction(iStorage, "Port Publishing=> "+port.DisplayName);
     }
 
 
@@ -115,6 +115,6 @@ public static partial class iCS_UserCommands {
                 iStorage.ForcedRelayoutOfTree();
             }
         );
-        CloseTransaction(iStorage, "Drag "+port.Name);
+        CloseTransaction(iStorage, "Drag "+port.DisplayName);
     }
 }

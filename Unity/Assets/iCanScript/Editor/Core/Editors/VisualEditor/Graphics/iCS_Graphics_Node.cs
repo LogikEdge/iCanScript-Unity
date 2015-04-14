@@ -1,13 +1,13 @@
-//#define SHOW_POSITION
 using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
 
+namespace iCanScript.Editor {
 // ==========================================================================
 // Node utilities.
 // ==========================================================================
-public partial class iCS_Graphics {
+    public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     bool ShouldDisplayNodeName(iCS_EditorObject node) {
         if(!ShouldShowTitle()) return false;
@@ -16,20 +16,29 @@ public partial class iCS_Graphics {
         return true;
     }
     // ----------------------------------------------------------------------
-    // Returns the scaled node name size.
-	string GetNodeName(iCS_EditorObject node) {
-#if SHOW_POSITION
-        return node.NodeTitle+" GP:"+node.GlobalPosition+" CO:"+node.CollisionOffset+" WO:"+node.WrappingOffset;
-#else
+    /// Returns the title of the given node.
+    ///
+    /// @param node The node object from which to extract the name
+    ///
+	string GetNodeTitle(iCS_EditorObject node) {
         return node.NodeTitle;
-#endif
 	}
+    // ----------------------------------------------------------------------
+    /// Return the sub-title of the given node.
+    ///
+    /// @param node The node from which to extract the sub-title
+    ///
+    string GetNodeSubTitle(iCS_EditorObject node) {
+        return node.NodeSubTitle;
+    }
     // ----------------------------------------------------------------------
     // Returns the scaled node name size.
     Vector2 GetNodeNameSize(iCS_EditorObject node) {
-        string nodeName= GetNodeName(node);
+        string nodeName= GetNodeTitle(node);
         GUIContent content= new GUIContent(nodeName);
-        return node.IsIconizedOnDisplay ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
+        return node.IsIconizedOnDisplay ?
+            Layout.DynamicLabelStyle.CalcSize(content):
+            Layout.DynamicTitleStyle.CalcSize(content);
     }
     // ----------------------------------------------------------------------
     // Returns the non-scaled x,y with the scaled size.
@@ -53,4 +62,5 @@ public partial class iCS_Graphics {
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
     }
 	
+}
 }

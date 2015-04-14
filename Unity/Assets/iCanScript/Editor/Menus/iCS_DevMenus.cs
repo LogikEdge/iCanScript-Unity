@@ -110,7 +110,7 @@ public static class iCS_DevMenus {
 		if(iStorage == null) return;
         var selectedObj= iStorage.SelectedObject;
         if(selectedObj == null) return;
-        Debug.Log("Layout Info for => "+selectedObj.Name+"\n"+
+        Debug.Log("Layout Info for => "+selectedObj.DisplayName+"\n"+
             "LayoutRect => "+selectedObj.GlobalRect
         );
     }

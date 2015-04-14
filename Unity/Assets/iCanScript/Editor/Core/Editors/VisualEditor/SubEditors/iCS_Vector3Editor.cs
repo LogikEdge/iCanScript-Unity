@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
+namespace iCanScript.Editor {
 public class iCS_Vector3Editor : iCS_ISubEditor {
     // =================================================================================
     // Fields
@@ -39,4 +40,5 @@ public class iCS_Vector3Editor : iCS_ISubEditor {
         }
         return GUI.changed;
     }
+}
 }

@@ -6,6 +6,7 @@ using Prefs= iCS_PreferencesController;
 using iCanScript.Editor;
 using iCanScript.Editor.CodeEngineering;
 
+namespace iCanScript.Editor {
 // ===========================================================================
 // Graph editor event processing.
 // ===========================================================================
@@ -13,7 +14,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-	iCS_ISubEditor		mySubEditor = null;
+	EditorWindow	mySubEditor = null;
     
     // ======================================================================
     // USER INTERACTIONS
@@ -93,7 +94,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
                     IsDragEnabled= true;                                                    
                 }
-                mySubEditor= null;
+                CloseSubEditor();
                 break;
             }
             case 1: { // Right mouse button
@@ -101,7 +102,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     DetermineSelectedObject();                    
                 }
                 myShowDynamicMenu= true;
-                UT_CSharpGenerator.GenerateTestCSharpFile(IStorage);
                 break;
             }
             case 2: { // Middle mouse button
@@ -130,8 +130,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 } else {
                     // Fold/Unfold on double click.
                     if(SelectedObject == SelectedObjectBeforeMouseDown) {
-                        if(myClickCount >= 2) {
-                            ProcessNodeDisplayOptionEvent();
+                        if(IsShiftKeyDown) {
+                            if(myClickCount >= 2) {
+                                ProcessNodeDisplayOptionEvent();
+                            }
                         }
                         else {
                             iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
@@ -200,23 +202,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ProcessPicking(iCS_PickInfo pickInfo) {
 		iCS_EditorObject pickedObject= pickInfo.PickedObject;
         switch(pickInfo.PickedPart) {
-            case iCS_PickPartEnum.Name: {
-                if(pickedObject.IsNameEditable) {
-    				mySubEditor= new iCS_ObjectNameEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);											
-                } else {
-                    ShowNotification(new GUIContent("The selected name cannot be changed !!!"));
+            case iCS_PickPartEnum.Name:
+            case iCS_PickPartEnum.Value:
+            case iCS_PickPartEnum.EditorObject: {
+                if(pickedObject.IsPort) {
+                    CloseSubEditor();
+                    mySubEditor= PortEditor.Create(pickedObject, new Vector2(100,100));                    
                 }
-                break;
-            }
-            case iCS_PickPartEnum.Value: {
-                if(!pickedObject.IsInDataOrControlPort || pickedObject.ProducerPortId != -1) break;
-				if(iCS_PortValueEditor.IsValueEditionSupported(pickedObject.RuntimeType)) {
-					mySubEditor= new iCS_PortValueEditor(pickedObject, myGraphics, pickInfo.PickedPointInGUISpace);
-				}
-				else {
-					iCS_PortValueInspector.CreateInstance(pickedObject, pickInfo.PickedPointInGUISpace);
-//					ShowNotification(new GUIContent("Please use the Inspector to edit this port value."));					
-				}
+                else {
+                    CloseSubEditor();
+                    if(pickedObject.IsIconizedInLayout) {
+                        iCS_UserCommands.Unfold(pickedObject);
+                        myClickCount= 0;
+                    }
+                    else {
+                        mySubEditor= NodeEditor.Create(pickedObject, new Vector2(100,100));
+                    }
+                }
                 break;
             }
         }
@@ -231,4 +233,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public void PanViewportBy(Vector2 additionalPan) {
         ScrollPosition-= additionalPan;
     }
+
+	// ----------------------------------------------------------------------
+    /// Closes the subeditor if it exists.
+    void CloseSubEditor() {
+        if(mySubEditor != null) {
+            mySubEditor.Close();
+            mySubEditor= null;
+        }
+    }
+}
 }

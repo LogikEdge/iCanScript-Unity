@@ -15,7 +15,7 @@ public static partial class iCS_UserCommands {
     public static bool ChangeIcon(iCS_EditorObject node, Texture newTexture) {
         if(node == null) return false;
 #if DEBUG
-        Debug.Log("iCanScript: Change Icon => "+node.Name);
+        Debug.Log("iCanScript: Change Icon => "+node.DisplayName);
 #endif
         if(!IsCreationAllowed()) return false;
         var iStorage= node.IStorage;
@@ -65,7 +65,7 @@ public static partial class iCS_UserCommands {
 		if(pasted != null) {
 			SystemEvents.AnnounceVisualScriptElementAdded(pasted);			
 		}
-        CloseTransaction(iStorage, "Add Prefab "+sourceRoot.Name);
+        CloseTransaction(iStorage, "Add Prefab "+sourceRoot.RawName);
     }
 	// ----------------------------------------------------------------------
     public static void DragAndDropSetPortValue(iCS_EditorObject port, UnityEngine.Object value) {
@@ -78,7 +78,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return;
         }
-        CloseTransaction(iStorage, "Set port "+port.Name);
+        CloseTransaction(iStorage, "Set port "+port.DisplayName);
     }
 
 }
