@@ -96,6 +96,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param usingDirective A string with a using directive.
         ///
         public void AddUsingDirective(string usingDirective) {
+            if(string.IsNullOrEmpty(usingDirective)) return;
             if(!myUsingDirectives.Exists((s1)=> s1 == usingDirective) &&
                Namespace != usingDirective) {
                 myUsingDirectives.Add(usingDirective);
