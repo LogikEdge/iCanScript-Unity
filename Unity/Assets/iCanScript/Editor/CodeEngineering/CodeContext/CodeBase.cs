@@ -184,7 +184,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param type The type to be converted.
         /// @return The string representation of the type.
         ///
-		public static string ToTypeName(Type type) {
+		public string ToTypeName(Type type) {
             if(type == null) {
                 Debug.LogWarning("iCanScript: Unexpected null type.");
                 return "";
@@ -196,7 +196,11 @@ namespace iCanScript.Editor.CodeEngineering {
 			if(type == typeof(bool))   return "bool";
 			if(type == typeof(string)) return "string";
             if(type == typeof(float))  return "float";
-			return type.Name;
+			var typeName= type.Name;
+			if(NumberOfNamespacesWithTypeName(typeName) > 1) {
+				typeName= type.Namespace+"."+typeName;
+			}
+			return typeName;
 		}
         
         // -------------------------------------------------------------------
@@ -227,7 +231,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param type The object to be converted.
         /// @return The string representation of the value.
         ///
-        public static string ToValueString(System.Object obj) {
+        public string ToValueString(System.Object obj) {
             if(obj == null) return "null";
             var objType= obj.GetType();
             if(obj is bool) {
@@ -453,7 +457,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param paramValues The values to pass to the constrcutor.
         /// @return The format code fragment of the allocator.
         ///
-        public static string GenerateAllocatorFragment(Type type, string[] paramValues) {
+        public string GenerateAllocatorFragment(Type type, string[] paramValues) {
             var result= new StringBuilder(" new ");
             result.Append(ToTypeName(type));
             result.Append("(");
