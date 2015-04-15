@@ -136,7 +136,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var result= new StringBuilder(indent, 1024);
             // Access Type
             if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
-                result.Append("[iCS_Class(Library=\"Visual Scripts\")]\n");
+                result.Append("[iCS_Class(Library=\"My Visual Scripts\")]\n");
                 result.Append(indent);
             }
             result.Append(ToAccessString(myAccessSpecifier));

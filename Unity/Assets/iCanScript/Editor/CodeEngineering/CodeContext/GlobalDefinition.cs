@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ namespace iCanScript.Editor.CodeEngineering {
         // FIELDS
         // -------------------------------------------------------------------
         string                myNamespace        = null;
-        List<string>          myUsingDirectives  = new List<string>();
         List<TypeDefinition>  myTypes            = new List<TypeDefinition>();
         
         // ===================================================================
@@ -32,6 +32,7 @@ namespace iCanScript.Editor.CodeEngineering {
 			myNamespace= namespaceName;
 
 			// Collect the used assemblies.
+            AddNamespace("UnityEngine");   // Top-Type inherits from MonoBehaviour
 			CollectUsedNamespaces();
 			
 			// Build root types
@@ -39,6 +40,10 @@ namespace iCanScript.Editor.CodeEngineering {
 			
 			// Resolve dependencies.
 			ResolveDependencies();
+            
+            
+            // TEST
+            Debug.Log("Object exists in "+NumberOfNamespacesWithTypeName("Object")+" namespaces");
         }
 
         // -------------------------------------------------------------------
@@ -49,7 +54,7 @@ namespace iCanScript.Editor.CodeEngineering {
 					if(c.IsKindOfFunction) {
 						var runtimeType= c.RuntimeType;
 						if(runtimeType != null) {
-							AddUsingDirective(runtimeType.Namespace);
+							AddNamespace(runtimeType.Namespace);
 						}
 					}
 				}
@@ -95,12 +100,10 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @param usingDirective A string with a using directive.
         ///
-        public void AddUsingDirective(string usingDirective) {
-            if(string.IsNullOrEmpty(usingDirective)) return;
-            if(!myUsingDirectives.Exists((s1)=> s1 == usingDirective) &&
-               Namespace != usingDirective) {
-                myUsingDirectives.Add(usingDirective);
-				myUsingDirectives.Sort((s1,s2)=> s1.Length - s2.Length);
+        public void AddNamespace(string namespaceName) {
+            if(string.IsNullOrEmpty(namespaceName)) return;
+            if(Namespace != namespaceName) {
+                Context.AddNamespace(namespaceName);
             }
         }
 
@@ -115,7 +118,9 @@ namespace iCanScript.Editor.CodeEngineering {
         public override string GenerateHeader(int indentSize) {
             var result= new StringBuilder(2048);
             // Generate using directives.
-            foreach(var u in myUsingDirectives) {
+            var usedNamespaces= Context.UsedNamespaces;
+            usedNamespaces.Sort((s1,s2)=> s1.Length - s2.Length);
+            foreach(var u in usedNamespaces) {
                 result.Append("using ");
                 result.Append(u);
                 result.Append(";\n");
@@ -158,6 +163,24 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             return "";
         }
-        
+
+        // ===================================================================
+        // UTILITY
+        // -------------------------------------------------------------------
+        int NumberOfNamespacesWithTypeName(string typeName) {
+            int cnt= 0;
+            foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+                foreach(var t in assembly.GetTypes()) {
+                    if(t.Name == typeName) {
+                        foreach(var ns in Context.UsedNamespaces) {
+                            if(t.Namespace == ns) {
+                                ++cnt;
+                            }
+                        }
+                    }
+                }
+            }
+            return cnt;
+        }
     }
 }

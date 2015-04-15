@@ -200,6 +200,28 @@ namespace iCanScript.Editor.CodeEngineering {
 		}
         
         // -------------------------------------------------------------------
+        /// Returns the number of used namespaces that has the given type name.
+        ///
+        /// @param typeName the Type name.
+        /// @return The number of used namespaces that has the given type name.
+        /// 
+        int NumberOfNamespacesWithTypeName(string typeName) {
+            int cnt= 0;
+            foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+                foreach(var t in assembly.GetTypes()) {
+                    if(t.Name == typeName) {
+                        foreach(var ns in Context.UsedNamespaces) {
+                            if(t.Namespace == ns) {
+                                ++cnt;
+                            }
+                        }
+                    }
+                }
+            }
+            return cnt;
+        }
+
+        // -------------------------------------------------------------------
         /// Converts the given object to its string value representation.
         ///
         /// @param type The object to be converted.
