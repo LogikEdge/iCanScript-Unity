@@ -9,11 +9,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INIT / SHUTDOWN
         // ----------------------------------------------------------------------
-        static ErrorController()    {
-        	ErrorControllerProxy._Clear     = Clear;
-    		ErrorControllerProxy._AddError  = AddError;
-    		ErrorControllerProxy._AddWarning= AddWarning;
-        }
+        static ErrorController()    	{}
         public static void Start()      {}
         public static void Shutdown()   {}
     

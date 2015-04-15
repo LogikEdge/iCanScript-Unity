@@ -44,19 +44,37 @@ public partial class iCS_EditorObject {
            }
        }
        return false;
-   } 
+    } 
 
     // ----------------------------------------------------------------------
     /// Performs a snaity check on the visual script object.
-   public void SanityCheck(string serviceKey) {
+	///
+    /// @param serviceKey The service key to use when registering with the
+    ///					  error controller.
+    /// @return _true_ is return if object is sane. _false_ otherwise.
+	///
+   	public bool SanityCheck(string serviceKey) {
+		var visualScript= IStorage.VisualScript;
        // Verify that the runtime portion still exists.
        if(IsKindOfFunction) {
            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
            if(memberInfo == null) {
                var message= "Unable to find the runtime code for "+FullName;
-               ErrorController.AddError(serviceKey, message, IStorage.VisualScript, InstanceId);
+               ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
+			   return false;
            }
        }
+	   if(IsInInstancePort) {
+		   if(ProducerPort == null || ProducerPort == this) {
+			   var parentNode= ParentNode;
+			   if(parentNode.IsKindOfFunction) {
+				   var message= "Value for Target port is not valid: "+FullName;
+				   ErrorController.AddWarning(serviceKey, message, visualScript, InstanceId);
+				   return false;			   	
+			   }
+		   }
+	   }
+	   return true;
    }
 
 }
