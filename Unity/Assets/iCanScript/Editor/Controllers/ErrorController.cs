@@ -107,6 +107,18 @@ namespace iCanScript.Editor {
         public static List<ErrorWarning> GetWarningsFor(iCS_VisualScriptImp vs) {
             return P.filter(e=> e.VisualScript == vs, Warnings);
         }
+		public static List<ErrorWarning> GetErrorsFor(iCS_VisualScriptImp vs, int objectId) {
+            return P.filter(e=> e.VisualScript == vs && e.ObjectId == objectId, Errors);			
+		}
+		public static List<ErrorWarning> GetWarningsFor(iCS_VisualScriptImp vs, int objectId) {
+            return P.filter(e=> e.VisualScript == vs && e.ObjectId == objectId, Warnings);			
+		}
+		public static List<ErrorWarning> GetErrorsFor(string serviceKey, iCS_VisualScriptImp vs, int objectId) {
+            return P.filter(e=> e.ServiceId == serviceKey && e.VisualScript == vs && e.ObjectId == objectId, Errors);			
+		}
+		public static List<ErrorWarning> GetWarningsFor(string serviceKey, iCS_VisualScriptImp vs, int objectId) {
+            return P.filter(e=> e.ServiceId == serviceKey && e.VisualScript == vs && e.ObjectId == objectId, Warnings);			
+		}
     }
     
 }

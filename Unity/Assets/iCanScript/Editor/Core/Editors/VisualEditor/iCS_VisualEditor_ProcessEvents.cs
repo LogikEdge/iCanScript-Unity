@@ -200,6 +200,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void ProcessPicking(iCS_PickInfo pickInfo) {
+		if(myClickCount < 2) return;
 		iCS_EditorObject pickedObject= pickInfo.PickedObject;
         switch(pickInfo.PickedPart) {
             case iCS_PickPartEnum.Name:
@@ -213,12 +214,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     CloseSubEditor();
                     if(pickedObject.IsIconizedInLayout) {
                         iCS_UserCommands.Unfold(pickedObject);
-                        myClickCount= 0;
                     }
                     else {
                         mySubEditor= NodeEditor.Create(pickedObject, new Vector2(100,100));
                     }
                 }
+                myClickCount= 0;
                 break;
             }
         }
