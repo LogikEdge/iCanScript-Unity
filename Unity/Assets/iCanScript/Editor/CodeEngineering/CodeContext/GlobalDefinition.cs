@@ -40,10 +40,6 @@ namespace iCanScript.Editor.CodeEngineering {
 			
 			// Resolve dependencies.
 			ResolveDependencies();
-            
-            
-            // TEST
-            Debug.Log("Object exists in "+NumberOfNamespacesWithTypeName("Object")+" namespaces");
         }
 
         // -------------------------------------------------------------------

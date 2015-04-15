@@ -93,11 +93,9 @@ public static class iCS_VisualScriptImportExport {
     }
     // ---------------------------------------------------------------------------------
     static UnityEngine.Object ReadUnityObject(JObject jobj) {
-//        JNumber jinstanceId= jobj.GetValueFor("InstanceId") as JNumber;
         JString jname      = jobj.GetValueFor("Name") as JString;
         JString jtypeName  = jobj.GetValueFor("Type") as JString;
-        if(/*jinstanceId == null ||*/ jname == null || jtypeName == null) return null;
-//        int    instanceId= (int)jinstanceId.value;
+        if(jname == null || jtypeName == null) return null;
         string name      = jname.value;
         string typeName  = jtypeName.value;
         var unityAssembly= typeof(GameObject).Assembly;
@@ -124,7 +122,6 @@ public static class iCS_VisualScriptImportExport {
             Debug.LogWarning("iCanScript: Import failure: Expected a Scene GUID for => "+name+" of type => "+typeName);
             return null;
         }
-//        string sceneGUID= jsceneGUID.value;
         JArray parents= jobj.GetValueFor("Parents") as JArray;
         if(parents == null) {
             Debug.LogWarning("iCanScript: Import failure: Expected parent list for => "+name+" of type =>"+typeName);

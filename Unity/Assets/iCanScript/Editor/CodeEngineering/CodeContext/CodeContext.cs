@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -91,6 +92,8 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
 
+		// ===================================================================
+		// ERROR/WARNING MANAGEMENT UTILITIES
         // -------------------------------------------------------------------
         /// Register a code generation error message.
         ///
@@ -110,6 +113,12 @@ namespace iCanScript.Editor.CodeEngineering {
         public void AddWarning(string message, int objectId) {
             ErrorController.AddWarning(myServiceKey, message, myVisualScript, objectId);
         }
+
+        // -------------------------------------------------------------------
+		/// Determines if errors are reported for the function call.
+		public bool IsInError(int objectId) {
+			return P.length(ErrorController.GetErrorsFor(myServiceKey, myVisualScript, objectId)) != 0;
+		}
 
     }
 

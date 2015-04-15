@@ -218,6 +218,10 @@ namespace iCanScript.Editor.CodeEngineering {
             var code= new List<CodeBase>();
     		node.ForEachChildRecursiveDepthFirst(
     			vsObj=> {
+					if(Context.IsInError(vsObj.InstanceId)) {
+						Debug.LogWarning("iCanScript: Code not generated for node in Error: "+VSObject.FullName);						
+						return;
+					}
                     var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(vsObj);
                     if(IsFieldOrPropertyGet(memberInfo)) {
                         code.Add(new GetPropertyCallDefinition(vsObj, this));
