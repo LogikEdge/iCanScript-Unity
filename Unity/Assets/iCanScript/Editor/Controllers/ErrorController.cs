@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Editor {
     
     public static class ErrorController {
         // ======================================================================
@@ -113,4 +113,4 @@ namespace iCanScript { namespace Editor {
         }
     }
     
-}}
+}

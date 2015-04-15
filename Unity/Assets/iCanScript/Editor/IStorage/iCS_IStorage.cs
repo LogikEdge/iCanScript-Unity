@@ -176,6 +176,9 @@ public partial class iCS_IStorage {
                 }
             });            
         }
+        
+        // Perform an initial sanity check.
+        SanityCheck();
     }
     
     // ----------------------------------------------------------------------

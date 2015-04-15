@@ -36,9 +36,9 @@ public class iCS_ContextualMenu {
     const string OnUpdateStr                   = "+ "+iCS_Strings.OnUpdate;
     const string OnExitStr                     = "+ "+iCS_Strings.OnExit;
 	const string ObjectInstanceStr             = "+ Instance Node";
-    const string EnablePortStr                 = "+ Enable Port";
-    const string TriggerPortStr                = "+ Trigger Port";
-    const string OutputInstancePortStr         = "+ Output Instance Port";
+    const string EnablePortStr                 = "+ Add Enable Port";
+    const string TriggerPortStr                = "+ Add Trigger Port";
+    const string OutputInstancePortStr         = "+ Add Self Port";
 	const string WrapInPackageStr              = "+ Wrap in Package";
     const string MultiSelectionWrapInPackageStr= "+ Wrap Multi-Selection in Package";
     const string MultiSelectionDeleteStr       = "- Delete Multi-Selection";

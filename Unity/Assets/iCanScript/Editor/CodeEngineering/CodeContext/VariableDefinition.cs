@@ -47,6 +47,11 @@ namespace iCanScript.Editor.CodeEngineering {
         public override string GenerateCode(int indentSize) {
             var result= new StringBuilder(128);
             var fieldType= myVSObject.RuntimeType;
+            if(fieldType == null) {
+                var message= "Unable to determine type for variable: "+myVSObject.FullName;
+                Context.AddError(message, myVSObject.InstanceId);
+                return "";
+            }
             string initializer= "";
             // Generate variable from port.
             if(VSObject.IsDataPort) {

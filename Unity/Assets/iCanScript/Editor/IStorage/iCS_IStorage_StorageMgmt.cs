@@ -102,6 +102,8 @@ public partial class iCS_IStorage {
         ++ModificationId;
         iCS_EditorController.RepaintAllEditors();
         SystemEvents.AnnouceVisualScriptSaved(this);
+        // Perform sanity check.
+        SanityCheck();
     }
     // ----------------------------------------------------------------------
     public void GenerateEditorData() {
