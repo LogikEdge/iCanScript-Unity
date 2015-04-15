@@ -201,10 +201,13 @@ namespace iCanScript.Editor.CodeEngineering {
             // Ajust back the indentation.
             var result= new StringBuilder(128);
             // Simplified situation for property get.
-            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
+            var memberInfo= GetMemberInfo();
+            if(memberInfo == null) {
+                return "";
+            }
             bool isSpecial= false;
             bool isOperator= false;
-            var functionName= FunctionName(memberInfo, out isSpecial, out isOperator);
+            var functionName= FunctionName(memberInfo, out isSpecial, out isOperator);                
             // Determine parameters information.
             var parameters= GetParameters(VSObject);
             var pLen= parameters.Length;
@@ -249,6 +252,11 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The method name.
         ///
         string FunctionName(iCS_MemberInfo memberInfo, out bool isSpecial, out bool isOperator) {
+            // Validate that the function still exists.
+            if(memberInfo == null) {
+                isSpecial= isOperator= false;
+                return "";
+            }
             if(memberInfo.IsConstructor) {
                 isSpecial= true;
                 isOperator= false;
@@ -257,6 +265,12 @@ namespace iCanScript.Editor.CodeEngineering {
             var functionName= memberInfo.ToFunctionPrototypeInfo.MethodName;
             isSpecial= isOperator= functionName.StartsWith("op_");
             return functionName;
+        }
+        
+        // -------------------------------------------------------------------
+        /// Returns the MemberInfo for the current visual script object.
+        iCS_MemberInfo GetMemberInfo() {
+            return iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
         }
         
         // -------------------------------------------------------------------

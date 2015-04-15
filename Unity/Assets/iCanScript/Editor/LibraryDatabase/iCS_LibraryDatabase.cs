@@ -329,7 +329,19 @@ public class iCS_LibraryDatabase {
 					}
                     if(member is iCS_MethodInfo) {
                         var methodInfo= member as iCS_MethodInfo;
-                        if(engineObject.MethodName == methodInfo.MethodName) {
+                        if(edObj.MethodName != methodInfo.MethodName) continue;
+                        if(edObj.NbOfParams != methodInfo.Parameters.Length) continue;
+                        bool isFound= true;
+                        edObj.ForEachChildPort(
+                            p=> {
+                                if(p.IsParameterPort) {
+                                    if(p.RuntimeType != methodInfo.Parameters[p.PortIndex].type) {
+                                        isFound= false;
+                                    }
+                                }
+                            }
+                        );
+                        if(isFound) {
                             return member;
                         }
                     }

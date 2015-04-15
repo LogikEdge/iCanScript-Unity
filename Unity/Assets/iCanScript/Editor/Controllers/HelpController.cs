@@ -219,6 +219,7 @@ namespace iCanScript.Editor {
     	
     	public static string getHelp(Type type)
     	{
+            if(type == null) return "";
     		return getHelp(type.ToString());
     	}
     	

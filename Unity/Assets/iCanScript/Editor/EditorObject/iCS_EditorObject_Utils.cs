@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using iCanScript.Editor;
 
 public partial class iCS_EditorObject {
     // =====================================================================
@@ -44,4 +45,18 @@ public partial class iCS_EditorObject {
        }
        return false;
    } 
+
+    // ----------------------------------------------------------------------
+    /// Performs a snaity check on the visual script object.
+   public void SanityCheck(string serviceKey) {
+       // Verify that the runtime portion still exists.
+       if(IsKindOfFunction) {
+           var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+           if(memberInfo == null) {
+               var message= "Unable to find the runtime code for "+FullName;
+               ErrorController.AddError(serviceKey, message, IStorage.VisualScript, InstanceId);
+           }
+       }
+   }
+
 }

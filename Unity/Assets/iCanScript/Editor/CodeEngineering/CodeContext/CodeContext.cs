@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -7,7 +8,10 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        CodeBase[]  myObjectToCodeTable= null;
+        CodeBase[]          myObjectToCodeTable= null;
+        string              myServiceKey       = null;
+        iCS_VisualScriptImp myVisualScript     = null;
+        List<string>        myUsedNamespaces   = new List<string>();
 
         // ===================================================================
         // PROPERTIES
@@ -16,17 +20,27 @@ namespace iCanScript.Editor.CodeEngineering {
 		public CodeBase[] ObjectToCodeTable {
 			get { return myObjectToCodeTable; }
 		}
+        public List<string> UsedNamespaces {
+            get { return myUsedNamespaces; }
+        }
 
         // -------------------------------------------------------------------
         /// Builds a code context to share among all CodeBase of the same
         /// visual script.
         ///
         /// @param vsObjects A visual script object from which to extract the
-        ///                  vsual script storage.
+        ///                  visual script storage.
         /// @return The newly created code context.
         ///
         public CodeContext(iCS_EditorObject vsObject) {
-            AllocateObjectToCodeTable(vsObject.IStorage);
+            // Allocate conversion tables.
+            var iStorage= vsObject.IStorage;
+            AllocateObjectToCodeTable(iStorage);
+
+            // Clear any pending code generation error.
+            myVisualScript= iStorage.VisualScript;
+            myServiceKey= "C# Code Generation: "+iCS_ObjectNames.ToTypeName(vsObject.CodeName);
+            ErrorController.Clear(myServiceKey);
         }
 
         // -------------------------------------------------------------------
@@ -63,6 +77,40 @@ namespace iCanScript.Editor.CodeEngineering {
         public CodeBase GetCodeFor(iCS_EditorObject vsObject) {
             return ObjectToCodeTable[vsObject.InstanceId];
         }
+
+        // -------------------------------------------------------------------
+        /// Adds a namespace to the used namespace container.
+        ///
+        /// @param namespaceName The name of the namespace to add.
+        ///
+        public void AddNamespace(string namespaceName) {
+            if(string.IsNullOrEmpty(namespaceName)) return;
+            if(!myUsedNamespaces.Exists((s1)=> s1 == namespaceName)) {
+                myUsedNamespaces.Add(namespaceName);
+            }
+        }
+
+
+        // -------------------------------------------------------------------
+        /// Register a code generation error message.
+        ///
+        /// @param message The error string message to be displayed.
+        /// @param objectId The identifier of the visual script object in error.
+        ///
+        public void AddError(string message, int objectId) {
+            ErrorController.AddError(myServiceKey, message, myVisualScript, objectId);
+        }
+
+        // -------------------------------------------------------------------
+        /// Register a code generation warning message.
+        ///
+        /// @param message The error string message to be displayed.
+        /// @param objectId The identifier of the visual script object in error.
+        ///
+        public void AddWarning(string message, int objectId) {
+            ErrorController.AddWarning(myServiceKey, message, myVisualScript, objectId);
+        }
+
     }
 
 }
