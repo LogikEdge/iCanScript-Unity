@@ -71,7 +71,6 @@ public partial class iCS_EditorObject {
 			   var parentNode= ParentNode;
 			   if(parentNode.IsKindOfFunction) {
 				   if(!(InitialValue is OwnerTag)) {
-					   Debug.Log("AQT: "+QualifiedTypeName+" NS=> "+Namespace+" TN=> "+TypeName);
 					   var message= "Value for Target port is not valid: "+FullName;
 					   ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
 					   return false;				   	
