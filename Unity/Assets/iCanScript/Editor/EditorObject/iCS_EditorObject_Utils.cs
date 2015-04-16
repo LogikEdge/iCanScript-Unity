@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using iCanScript.Editor;
+using iCanScript.Engine;
 
 public partial class iCS_EditorObject {
     // =====================================================================
@@ -68,8 +69,8 @@ public partial class iCS_EditorObject {
 	   if(IsInInstancePort) {
 		   if(ProducerPort == null || ProducerPort == this) {
 			   var parentNode= ParentNode;
-			   if(parentNode.IsKindOfFunction && !isDefinedInType(null, typeof(MonoBehaviour))) {
-				   if(GetParentTypeName() != iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(parentNode.RuntimeType))) {
+			   if(parentNode.IsKindOfFunction) {
+				   if(!(InitialValue is OwnerTag)) {
 					   var message= "Value for Target port is not valid: "+FullName;
 					   ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
 					   return false;				   	
@@ -93,25 +94,6 @@ public partial class iCS_EditorObject {
 	iCS_EditorObject GetParentTypeNode() {
 		// TODO: To be changed once nested type nodes are supported.
 		return EditorObjects[0];
-	}
-
-    // ----------------------------------------------------------------------
-	/// Determines if the vsObject refers to an element of the given type.
-	///
-	/// @param ourType The type defined by this visual script.
-	/// @param baseType The type this visual script derives from.
-	/// @param vsObj The object on which the search occurs.
-	///
-	public bool isDefinedInType(Type ourType, Type baseType) {
-		var derivedType= ourType;
-		if(derivedType == null) {
-			derivedType= baseType;
-			if(derivedType == null) return false;
-		}
-		var typeToSearch= RuntimeType;
-		if(typeToSearch == null)  return false;
-		if(derivedType == typeToSearch) return true;
-		return iCS_Types.IsA(typeToSearch, derivedType);
 	}
 
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using iCanScript.Engine;
 using Prefs= iCS_PreferencesController;
 
 namespace iCanScript.Editor {
@@ -18,6 +19,7 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     string GetValueAsString(object value) {
         if(value == null) return null;
+		if(value is OwnerTag) return "Owner";
         if(value is bool) return ((bool)value) ? "true" : "false";
         if(value is float) return ((float)value).ToString();
         if(value is int) return ((int)value).ToString();

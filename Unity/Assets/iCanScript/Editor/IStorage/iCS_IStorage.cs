@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
+using iCanScript.Engine;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
 
@@ -298,6 +299,15 @@ public partial class iCS_IStorage {
                 
                 // Keep a copy of the final position.
                 obj.AnimationTargetRect= obj.GlobalRect;
+				// Reassign all non-connected "target" ports to script Owner
+				if(obj.IsInInstancePort) {
+					if(obj.ProducerPort == null) {
+						if(IsLocalType(obj)) {
+							Debug.Log("Set target to Owner on "+obj.ParentNode.FullName);
+							obj.InitialValue= OwnerTag.instance;							
+						}
+					}
+				}
                 // Cleanup disconnected or dangling ports.
                 if(CleanupDeadPorts) {
 					if(obj.IsPort) {
@@ -402,6 +412,22 @@ public partial class iCS_IStorage {
         ClearUserTransactions();        
         return modified;
     }
+
+    // ----------------------------------------------------------------------
+	/// Determines if the vsObject refers to an element of the given type.
+	///
+	/// @param ourType The type defined by this visual script.
+	/// @param baseType The type this visual script derives from.
+	/// @param vsObj The object on which the search occurs.
+	///
+	public bool IsLocalType(iCS_EditorObject vsObj) {
+		// First determine if the type is included inside the GameObject.
+		var type= vsObj.RuntimeType;
+		if(type == typeof(GameObject)) return true;
+		if(type == typeof(Transform))  return true;
+		return false;
+	}
+
     
     // ======================================================================
     // Editor Object Creation/Destruction

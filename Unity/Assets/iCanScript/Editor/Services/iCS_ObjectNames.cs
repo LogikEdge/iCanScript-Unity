@@ -20,8 +20,8 @@ public static class iCS_ObjectNames {
     /// @return The converted name.
     ///
     public static string ToFunctionParameterName(string name) {
-        string prefix= "a";
-        NamingScheme namingScheme= NamingScheme.UPPER_CAMEL_CASE;
+        string prefix= "";
+        NamingScheme namingScheme= NamingScheme.LOWER_CAMEL_CASE;
         return ToCodeName(namingScheme, name, prefix);
     }
     // ---------------------------------------------------------------------------------

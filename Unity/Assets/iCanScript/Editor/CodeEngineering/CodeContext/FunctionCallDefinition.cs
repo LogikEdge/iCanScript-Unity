@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
@@ -381,6 +382,16 @@ namespace iCanScript.Editor.CodeEngineering {
                         }
                         result.Append(".");
                     }
+					else if(thisPort.InitialValue is OwnerTag) {
+						var thisType= iCS_Types.RemoveRefOrPointer(thisPort.RuntimeType);
+						if(thisType == typeof(Transform)) {
+							result.Append("transform.");
+						}
+						if(thisType == typeof(GameObject)) {
+							result.Append("gameObject.");
+						}
+						// Here we assume that no prefix is required.
+					}
                 }
             }
             return result.ToString();
