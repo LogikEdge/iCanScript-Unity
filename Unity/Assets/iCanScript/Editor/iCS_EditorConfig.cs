@@ -18,6 +18,8 @@ public static class iCS_EditorConfig {
     public const float kTitlePadding     = 4;
     public const float kNodeTitleHeight  = kTitleFontSize+kSubTitleFontSize+2*kTitlePadding;
     public const float kNodeTitleIconSize= 32f;
+	public const int   kHelpBoxHeight    = 85;
+	public const int   kHelpBoxWidth     = 420;
     
     // ----------------------------------------------------------------------
 	public const float NodeShadowSize= 5.0f;

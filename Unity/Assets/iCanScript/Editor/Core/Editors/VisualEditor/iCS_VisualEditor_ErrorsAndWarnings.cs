@@ -46,7 +46,7 @@ public partial class iCS_VisualEditor {
         var nbOfWarnings= warnings.Count;
 
         // -- Display scene error/warning icon --
-        var r= GetSceneErrorWarningIconRect();
+        var r= GetVisualScriptErrorWarningIconRect();
         var icon= nbOfErrors != 0 ? ErrorController.ErrorIcon : ErrorController.WarningIcon;
         DisplayErrorOrWarningIconWithAlpha(r, icon);
         
@@ -54,7 +54,7 @@ public partial class iCS_VisualEditor {
 		if(r.Contains(WindowMousePosition)) {
 			showErrorDetails= true;
 			if(showErrorDetailTimer == null) {
-				showErrorDetailTimer= TimerService.CreateTimedAction(1f, ()=> { showErrorDetails= false; IsHelpEnabled= true; });
+				showErrorDetailTimer= TimerService.CreateTimedAction(1f, ()=> { showErrorDetails= false; });
 				showErrorDetailTimer.Schedule();
 			}
 			else {
@@ -64,9 +64,6 @@ public partial class iCS_VisualEditor {
 
         // -- Display scene errors/warnings --
 		if(showErrorDetails) {
-			// -- Remove help viewport --
-			IsHelpEnabled= false;
-			
             var nbOfMessages= Mathf.Min(10, nbOfErrors+nbOfWarnings);
             r= DetermineErrorDetailRect(r, nbOfMessages, true);
 			if(r.Contains(WindowMousePosition)) {
@@ -107,8 +104,9 @@ public partial class iCS_VisualEditor {
     }
 
 	// -----------------------------------------------------------------------
-    Rect GetSceneErrorWarningIconRect() {
-		return new Rect(kMargins, position.height-kMargins-48f, 48f, 48f);
+    Rect GetVisualScriptErrorWarningIconRect() {
+		var helpBoxWidth= iCS_EditorConfig.kHelpBoxWidth;
+		return new Rect(helpBoxWidth+kMargins, position.height-kMargins-48f, 48f, 48f);
     }
 	// -----------------------------------------------------------------------
     void DisplayErrorOrWarningIconWithAlpha(Rect r, Texture2D icon) {
