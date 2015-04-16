@@ -38,8 +38,6 @@ namespace iCanScript.Editor.CodeEngineering {
             if(myType != null) {
                 var desiredTypeName= ToTypeName(myType);
                 var producerType= VSObject.RuntimeType;
-//                var producerTypeName= ToTypeName(producerType);
-//                if(producerTypeName != desiredTypeName) {
                 if(!iCS_Types.IsA(myType, producerType)) {
                     result.Append(" as ");
                     result.Append(desiredTypeName);

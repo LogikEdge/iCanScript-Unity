@@ -362,10 +362,11 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(thisPort != null) {
                     var producerPort= GetCodeProducerPort(thisPort);
                     if(producerPort != null && producerPort != thisPort) {
-                        var portRuntime= ToTypeName(thisPort.RuntimeType);
-                        var producerCommonType= GetCommonBaseTypeForProducerPort(producerPort);
-                        var producerRuntime= ToTypeName(producerCommonType);
-                        if(portRuntime != producerRuntime) {
+						var desiredType= VSObject.RuntimeType;
+		                var desiredTypeName= ToTypeName(desiredType);
+		                var producerType= producerPort.RuntimeType;
+		                var isUpcastNeeded= producerType != desiredType && iCS_Types.IsA(producerType, desiredType);
+                        if(isUpcastNeeded) {
                             result.Append("(");
                         }
                         var producerNode= producerPort.ParentNode;
@@ -375,9 +376,9 @@ namespace iCanScript.Editor.CodeEngineering {
                         else {
                             result.Append(GetNameFor(producerPort));                        
                         }
-                        if(portRuntime != producerRuntime) {
+                        if(isUpcastNeeded) {
                             result.Append(" as ");
-                            result.Append(portRuntime);
+                            result.Append(desiredTypeName);
                             result.Append(")");
                         }
                         result.Append(".");
