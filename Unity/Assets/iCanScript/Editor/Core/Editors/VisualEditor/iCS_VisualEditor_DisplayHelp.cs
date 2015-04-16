@@ -15,10 +15,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     const string kHelpDisplayKey    ="HelpDisplayKey";
 	bool         myHelpEnabled      = true;
 	string       myHelpText         = null;
+	bool         myIsLibraryHelp    = false;
+#if HELP_HOTZONE
     Texture2D    myHelpLogo         = null;
     Texture2D    myHelpDontLogo     = null;
-	bool         myIsLibraryHelp    = false;
-    
+#endif
+	    
     // ======================================================================
     // Dynamic Properties
     // ----------------------------------------------------------------------
@@ -27,9 +29,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Help Initialization
     // ----------------------------------------------------------------------
     void HelpInit() {
+#if HELP_HOTZONE
         iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);
         iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
-//        HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
+        HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
+#endif
     }
  
     // ======================================================================
