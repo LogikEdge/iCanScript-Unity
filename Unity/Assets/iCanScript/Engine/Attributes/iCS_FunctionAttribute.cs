@@ -28,6 +28,12 @@ public class iCS_FunctionAttribute : Attribute {
         set { myIcon= value; }
     }
     private string myIcon= null;
+	
+	public string Obsolete {
+		get { return myObsolete; }
+		set { myObsolete= value; }
+	}
+	private string myObsolete= null;
     
     // ======================================================================
     public override string ToString() { return "iCS_Function"; }

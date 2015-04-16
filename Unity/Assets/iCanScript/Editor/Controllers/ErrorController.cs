@@ -5,6 +5,27 @@ using P=Prelude;
 
 namespace iCanScript.Editor {
     
+    // ======================================================================
+	public class ErrorWarning {
+		string				myServiceId   = null;
+		string 				myMessage     = null;
+		iCS_VisualScriptImp	myVisualScript= null;
+		int					myObjectId    = -1;
+
+		public string 				ServiceId 		{ get { return myServiceId; }}
+		public string 				Message			{ get { return myMessage; }}
+		public iCS_VisualScriptImp	VisualScript	{ get { return myVisualScript; }}
+		public int					ObjectId		{ get { return myObjectId; }}
+		
+		public ErrorWarning(string serviceId, string msg, iCS_VisualScriptImp vs, int objectId) {
+			myServiceId= serviceId;
+			myMessage= msg;
+			myVisualScript= vs;
+			myObjectId= objectId;
+		}
+	};
+
+    // ======================================================================
     public static class ErrorController {
         // ======================================================================
         // INIT / SHUTDOWN
@@ -15,25 +36,6 @@ namespace iCanScript.Editor {
     
         // ======================================================================
         // TYPES
-        // ----------------------------------------------------------------------
-    	public class ErrorWarning {
-    		string				myServiceId   = null;
-    		string 				myMessage     = null;
-    		iCS_VisualScriptImp	myVisualScript= null;
-    		int					myObjectId    = -1;
-    
-    		public string 				ServiceId 		{ get { return myServiceId; }}
-    		public string 				Message			{ get { return myMessage; }}
-    		public iCS_VisualScriptImp	VisualScript	{ get { return myVisualScript; }}
-    		public int					ObjectId		{ get { return myObjectId; }}
-    		
-    		public ErrorWarning(string serviceId, string msg, iCS_VisualScriptImp vs, int objectId) {
-    			myServiceId= serviceId;
-    			myMessage= msg;
-    			myVisualScript= vs;
-    			myObjectId= objectId;
-    		}
-    	};
     	
         // ======================================================================
         // FIELDS

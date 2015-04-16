@@ -321,10 +321,11 @@ public class iCS_Reflection {
                         registerMethod= true;
                         // Register execution functions/methods.
                         iCS_FunctionAttribute funcAttr= methodAttribute as iCS_FunctionAttribute;
-                        if(funcAttr.Name    != null) displayName= funcAttr.Name; 
-                        if(funcAttr.Return  != null) returnName = funcAttr.Return;
-                        if(funcAttr.Tooltip != null) description= funcAttr.Tooltip;
-                        if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
+                        if(funcAttr.Name     != null) displayName= funcAttr.Name; 
+                        if(funcAttr.Return   != null) returnName = funcAttr.Return;
+                        if(funcAttr.Tooltip  != null) description= funcAttr.Tooltip;
+                        if(funcAttr.Icon     != null) iconPath   = funcAttr.Icon;
+						if(funcAttr.Obsolete != null) iCS_LibraryDatabase.AddObsolete(method, funcAttr.Obsolete);
                     } else {
                         Debug.LogWarning("iCanScript: Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");                        
                     }

@@ -60,11 +60,15 @@ public partial class iCS_EditorObject {
        // Verify that the runtime portion still exists.
        if(IsKindOfFunction) {
            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-           if(memberInfo == null) {
+           if(memberInfo == null && !IStorage.IsLocalType(this)) {
                var message= "Unable to find the runtime code for "+FullName;
                ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
 			   return false;
            }
+		   if(IsObsolete) {
+			   var message= CodeName+" is obsolete. "+ObsoleteMessage;
+			   ErrorController.AddWarning(serviceKey, message, visualScript, InstanceId);
+		   }
        }
 	   if(IsInInstancePort) {
 		   if(ProducerPort == null || ProducerPort == this) {
