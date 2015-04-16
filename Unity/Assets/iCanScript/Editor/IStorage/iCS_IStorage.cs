@@ -700,11 +700,6 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public string GetDefaultNodeName(iCS_FunctionPrototype desc) {
-        var displayName= desc.DisplayName;
-        if(desc.IsConstructor) {
-            displayName= "Variable";
-        }
-        var defaultName= displayName;
-        return defaultName;
+        return desc.DisplayName;
     }
 }
