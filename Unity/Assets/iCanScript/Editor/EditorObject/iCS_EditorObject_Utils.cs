@@ -71,6 +71,7 @@ public partial class iCS_EditorObject {
 			   var parentNode= ParentNode;
 			   if(parentNode.IsKindOfFunction) {
 				   if(!(InitialValue is OwnerTag)) {
+					   Debug.Log("AQT: "+QualifiedTypeName+" NS=> "+Namespace+" TN=> "+TypeName);
 					   var message= "Value for Target port is not valid: "+FullName;
 					   ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
 					   return false;				   	
@@ -80,20 +81,5 @@ public partial class iCS_EditorObject {
 	   }
 	   return true;
     }
-
-    // ----------------------------------------------------------------------
-	/// Returns the parent type name.
-	string GetParentTypeName() {
-		var typeNode= GetParentTypeNode();
-		if(typeNode == null) return "";
-		return iCS_ObjectNames.ToTypeName(typeNode.CodeName);
-	}
-	
-    // ----------------------------------------------------------------------
-	/// Returns the parent type node.
-	iCS_EditorObject GetParentTypeNode() {
-		// TODO: To be changed once nested type nodes are supported.
-		return EditorObjects[0];
-	}
 
 }

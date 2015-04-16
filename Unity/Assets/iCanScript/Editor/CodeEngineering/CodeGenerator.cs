@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -21,7 +22,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
 
             // Build code global scope.
-            var codeGenerationNamespace= "iCanScript.Engine.GeneratedCode";
+            var codeGenerationNamespace= iCS_Config.kCodeGenerationNamespace;
             myCodeRoot= new GlobalDefinition(iStorage.EditorObjects[0], codeGenerationNamespace);
             
             // Generate code.

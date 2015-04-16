@@ -420,6 +420,12 @@ public partial class iCS_IStorage {
 		var type= vsObj.RuntimeType;
 		if(type == typeof(GameObject)) return true;
 		if(type == typeof(Transform))  return true;
+		if(vsObj.IsIncludedInType(typeof(MonoBehaviour))) return true;
+		var typeNode= vsObj.ParentTypeNode;
+		if(typeNode == null) return false;
+		if(vsObj.Namespace == iCS_Config.kCodeGenerationNamespace) {
+			return vsObj.TypeName == typeNode.CodeName;
+		}
 		return false;
 	}
 
