@@ -197,11 +197,6 @@ public partial class iCS_IStorage {
             return true;
         }
     }
-    public bool IsLibrary {
-		get {
-			return IsValid(EditorObjects[0]) && !EditorObjects[0].IsBehaviour;
-		}
-	}
     // ----------------------------------------------------------------------
     public bool IsIdValid(int id) {
 		return id >= 0 && id < EngineObjects.Count;
