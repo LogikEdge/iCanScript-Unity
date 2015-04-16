@@ -163,6 +163,9 @@ public partial class iCS_EditorObject {
 		get {
 			var assemblyQualifiedName= EngineObject.QualifiedType;
 			int size= assemblyQualifiedName.IndexOf(',');
+			if(size < 0 || size >= assemblyQualifiedName.Length) {
+				return assemblyQualifiedName;
+			}
 			return assemblyQualifiedName.Substring(0, size);
 		}
 	}
@@ -173,6 +176,9 @@ public partial class iCS_EditorObject {
 		get {
 			var qualifiedTypeName= QualifiedTypeName;
 			int start= qualifiedTypeName.LastIndexOf('.')+1;
+			if(start < 0 || start >= qualifiedTypeName.Length) {
+				return qualifiedTypeName;
+			}
 			int len= qualifiedTypeName.Length;
 			return qualifiedTypeName.Substring(start, len-start);
 		}
@@ -184,6 +190,9 @@ public partial class iCS_EditorObject {
 		get {
 			var qualifiedTypeName= QualifiedTypeName;
 			int size= qualifiedTypeName.LastIndexOf('.');
+			if(size < 0 || size >= qualifiedTypeName.Length) {
+				return "";
+			}
 			return qualifiedTypeName.Substring(0, size);			
 		}
 	}

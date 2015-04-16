@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace iCanScript.Engine.GeneratedCode {
 
-    [iCS_Class(Library="Visual Scripts")]
+    [iCS_Class(Library="My Visual Scripts")]
     public class Boundary : MonoBehaviour {
 
         // =========================================================================
@@ -10,8 +10,8 @@ namespace iCanScript.Engine.GeneratedCode {
         // -------------------------------------------------------------------------
 
         [iCS_Function]
-        public  void OnTriggerExit(Collider aColliderInfo) {
-            Object.Destroy(aColliderInfo.gameObject);
+        public  void OnTriggerExit(Collider colliderInfo) {
+            Object.Destroy(colliderInfo.gameObject);
         }
     }
 }
