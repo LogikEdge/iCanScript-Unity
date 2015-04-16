@@ -65,6 +65,22 @@ public struct Int {
     [iCS_Function(Name="value < b",Return="value < b")]    public bool IsSmallerThen(int b)      { return myValue < b; }
     [iCS_Function(Name="value >= b",Return="value >= b")]  public bool IsGreaterOrEqualTo(int b) { return myValue >= b; }
     [iCS_Function(Name="value <= b",Return="value <= b")]  public bool IsSmallerOrEqualTo(int b) { return myValue <= b; }    
+	[iCS_Function] public static bool operator==(Int a, int b) { return a.myValue == b; }
+	[iCS_Function] public static bool operator!=(Int a, int b) { return a.myValue != b; }
+	[iCS_Function] public static bool operator<(Int a, int b) { return a.myValue < b; }
+	[iCS_Function] public static bool operator>(Int a, int b) { return a.myValue > b; }
+	[iCS_Function] public static bool operator<=(Int a, int b) { return a.myValue <= b; }
+	[iCS_Function] public static bool operator>=(Int a, int b) { return a.myValue >= b; }
+	public override bool Equals(object o) {
+		if(o is int) {
+			return myValue == (int)o;
+		}
+		if(o is Int) {
+			return myValue == ((Int)o).myValue;
+		}
+		return false;
+	}
+	public override int GetHashCode() { return myValue; }
 }
 
 [System.Serializable]

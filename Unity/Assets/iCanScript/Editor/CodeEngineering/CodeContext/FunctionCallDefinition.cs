@@ -321,12 +321,16 @@ namespace iCanScript.Editor.CodeEngineering {
 
     	// -------------------------------------------------------------------------
         string OperatorNameToSymbol(string operatorName) {
-            if(operatorName == "op_Equality")     return "==";
-            if(operatorName == "op_Inequality")   return "!=";
-            if(operatorName == "op_Addition")     return "+";
-            if(operatorName == "op_Subtraction")  return "-";
-            if(operatorName == "op_Multiply")     return "*";
-            if(operatorName == "op_Division")     return "/";
+            if(operatorName == "op_Addition")           return "+";
+            if(operatorName == "op_Subtraction")        return "-";
+            if(operatorName == "op_Multiply")           return "*";
+            if(operatorName == "op_Division")           return "/";
+            if(operatorName == "op_Equality")           return "==";
+            if(operatorName == "op_Inequality")         return "!=";
+			if(operatorName == "op_GreaterThan")        return ">";
+			if(operatorName == "op_LessThan")           return "<";
+			if(operatorName == "op_GreaterThanOrEqual")	return ">=";
+			if(operatorName == "op_LessThanOrEqual")    return "<=";
             Debug.LogWarning("iCanScript: Unknown operator=> "+operatorName);
             return operatorName;
         }
