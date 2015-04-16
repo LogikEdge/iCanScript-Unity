@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
@@ -79,6 +80,16 @@ namespace iCanScript.Editor.CodeEngineering {
             return ObjectToCodeTable[vsObject.InstanceId];
         }
 
+        // -------------------------------------------------------------------
+		/// Returns the runtime type for the given visual script object.
+		///
+		/// @param vsObject The visual script object.
+		/// @return The runtime type.
+		public Type GetRuntimeTypeFor(iCS_EditorObject vsObject) {
+			var code= GetCodeFor(vsObject);
+			return code != null ? code.GetRuntimeType() : vsObject.RuntimeType;
+		}
+		
         // -------------------------------------------------------------------
         /// Adds a namespace to the used namespace container.
         ///

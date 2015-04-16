@@ -111,6 +111,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     myParameters[i]= producerCode;
                     producerCode.CodeBlock= myCodeBlock;
                 }
+				myParameters[i].ResolveDependencies();
             }
             // Ask output objects to resolve their own child dependencies.
 			foreach(var v in myOutputVariables) {
@@ -127,6 +128,7 @@ namespace iCanScript.Editor.CodeEngineering {
                         var v= new VariableDefinition(returnPort, returnCodeBlock, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC);
                         returnCodeBlock.AddVariable(v);
                         myReturnVariable= null;
+						v.ResolveDependencies();
                     }
                 }
             }
@@ -364,7 +366,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     if(producerPort != null && producerPort != thisPort) {
 						var desiredType= VSObject.RuntimeType;
 		                var desiredTypeName= ToTypeName(desiredType);
-		                var producerType= producerPort.RuntimeType;
+		                var producerType= Context.GetRuntimeTypeFor(producerPort);
 		                var isUpcastNeeded= producerType != desiredType && iCS_Types.IsA(producerType, desiredType);
                         if(isUpcastNeeded) {
                             result.Append("(");

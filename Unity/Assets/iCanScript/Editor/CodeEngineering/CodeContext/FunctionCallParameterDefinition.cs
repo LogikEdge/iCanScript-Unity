@@ -37,7 +37,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var result= new StringBuilder(GetNameFor(VSObject), 64);
             if(myType != null) {
                 var desiredTypeName= ToTypeName(myType);
-                var producerType= VSObject.RuntimeType;
+                var producerType= Context.GetRuntimeTypeFor(VSObject);
                 if(!iCS_Types.IsA(myType, producerType)) {
                     result.Append(" as ");
                     result.Append(desiredTypeName);
