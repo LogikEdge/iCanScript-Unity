@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
+using iCanScript.Engine;
 using P= Prelude;
 using Prefs= iCS_PreferencesController;
 
@@ -196,11 +197,6 @@ public partial class iCS_IStorage {
             return true;
         }
     }
-    public bool IsLibrary {
-		get {
-			return IsValid(EditorObjects[0]) && !EditorObjects[0].IsBehaviour;
-		}
-	}
     // ----------------------------------------------------------------------
     public bool IsIdValid(int id) {
 		return id >= 0 && id < EngineObjects.Count;
@@ -298,6 +294,15 @@ public partial class iCS_IStorage {
                 
                 // Keep a copy of the final position.
                 obj.AnimationTargetRect= obj.GlobalRect;
+				// Reassign all non-connected "target" ports to script Owner
+				if(obj.IsInInstancePort) {
+					if(obj.ProducerPort == null) {
+						if(IsLocalType(obj)) {
+							Debug.Log("Set target to Owner on "+obj.ParentNode.FullName);
+							obj.InitialValue= OwnerTag.instance;							
+						}
+					}
+				}
                 // Cleanup disconnected or dangling ports.
                 if(CleanupDeadPorts) {
 					if(obj.IsPort) {
@@ -402,6 +407,28 @@ public partial class iCS_IStorage {
         ClearUserTransactions();        
         return modified;
     }
+
+    // ----------------------------------------------------------------------
+	/// Determines if the vsObject refers to an element of the given type.
+	///
+	/// @param ourType The type defined by this visual script.
+	/// @param baseType The type this visual script derives from.
+	/// @param vsObj The object on which the search occurs.
+	///
+	public bool IsLocalType(iCS_EditorObject vsObj) {
+		// First determine if the type is included inside the GameObject.
+		var type= vsObj.RuntimeType;
+		if(type == typeof(GameObject)) return true;
+		if(type == typeof(Transform))  return true;
+		if(vsObj.IsIncludedInType(typeof(MonoBehaviour))) return true;
+		var typeNode= vsObj.ParentTypeNode;
+		if(typeNode == null) return false;
+		if(vsObj.Namespace == iCS_Config.kCodeGenerationNamespace) {
+			return vsObj.TypeName == typeNode.CodeName;
+		}
+		return false;
+	}
+
     
     // ======================================================================
     // Editor Object Creation/Destruction
@@ -489,7 +516,7 @@ public partial class iCS_IStorage {
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         if(instance.IsInstanceNode) {
             InstanceWizardCompleteCreation(instance);
-            instance.DisplayName= "Property Accessor";
+            instance.DisplayName= iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(runtimeType))+" Properties";
             instance.IsNameEditable= false;
         }
         return instance;
@@ -539,7 +566,7 @@ public partial class iCS_IStorage {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        var defaultName= GetDefaultNodeName(desc);
+        var defaultName= desc.DisplayName;
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         // Determine icon.
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
@@ -569,7 +596,7 @@ public partial class iCS_IStorage {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        var defaultName= GetDefaultNodeName(desc);
+        var defaultName= desc.DisplayName;
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
@@ -671,14 +698,5 @@ public partial class iCS_IStorage {
     }
     public static string GetInstancePortName(Type type) {
         return "Target";
-    }
-    // ----------------------------------------------------------------------
-    public string GetDefaultNodeName(iCS_FunctionPrototype desc) {
-        var displayName= desc.DisplayName;
-        if(desc.IsConstructor) {
-            displayName= "Variable";
-        }
-        var defaultName= displayName;
-        return defaultName;
     }
 }

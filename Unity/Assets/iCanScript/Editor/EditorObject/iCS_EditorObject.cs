@@ -146,6 +146,7 @@ public partial class iCS_EditorObject {
     }
     
     // ----------------------------------------------------------------------
+	/// Returns the runtime type of the visual script object.
     public Type RuntimeType {
 		get {
             if(c_RuntimeType == null) {
@@ -155,6 +156,49 @@ public partial class iCS_EditorObject {
         }
 	}
 
+    // ----------------------------------------------------------------------
+	/// Returns the qualified type name of the visual script object.
+	public string QualifiedTypeName {
+		get {
+			var assemblyQualifiedName= EngineObject.QualifiedType;
+			int size= assemblyQualifiedName.IndexOf(',');
+			return assemblyQualifiedName.Substring(0, size);
+		}
+	}
+	
+    // ----------------------------------------------------------------------
+	/// Returns the type name from the qualified type.
+	public string TypeName {
+		get {
+			var qualifiedTypeName= QualifiedTypeName;
+			int start= qualifiedTypeName.LastIndexOf('.')+1;
+			int len= qualifiedTypeName.Length;
+			return qualifiedTypeName.Substring(start, len-start);
+		}
+	}
+	
+    // ----------------------------------------------------------------------
+	/// Returns the type name from the qualified type.
+	public string Namespace {
+		get {
+			var qualifiedTypeName= QualifiedTypeName;
+			int size= qualifiedTypeName.LastIndexOf('.');
+			return qualifiedTypeName.Substring(0, size);			
+		}
+	}
+	
+    // ----------------------------------------------------------------------
+	/// Returns true if the runtime type of this visual object is included
+	/// the the given type.
+	///
+	/// @param parentType The type to verify against.
+	/// @return _true_ if the object runtime type is included in the given
+	///         parent type.  _false_ otherwise.
+	///
+	public bool IsIncludedInType(Type parentType) {
+		return iCS_Types.IsA(RuntimeType, parentType);
+	}
+	
     // ======================================================================
     // ----------------------------------------------------------------------
     /// Returns the name as per the underlying code.
@@ -431,6 +475,11 @@ public partial class iCS_EditorObject {
 	        while(parent != null && !parent.IsNode) parent= parent.Parent;
 	        return parent;
 	    }
+	}
+	public iCS_EditorObject ParentTypeNode {
+		get {
+			return EditorObjects[0];
+		}
 	}
     public bool IsFloating {
 		get { return myIsFloating; }

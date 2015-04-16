@@ -67,6 +67,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
         }
         // -------------------------------------------------------------------
+		public virtual Type GetRuntimeType()					  { return VSObject.RuntimeType; }
         public virtual void SetCodeBlock(CodeBase newCodeBlock)   { myCodeBlock= newCodeBlock; }
         public virtual iCS_EditorObject[] GetRelatedEnablePorts() { return new iCS_EditorObject[0]; }
         public virtual iCS_EditorObject[] GetDependencies()       { return new iCS_EditorObject[0]; }

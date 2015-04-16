@@ -176,7 +176,7 @@ public class iCS_Reflection {
                     Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+_classTypeInfo.DisplayName);
                     continue;
                 }
-                DecodeConstructor(_classTypeInfo, displayName, description, iconPath, constructor);
+                DecodeConstructor(_classTypeInfo, "new "+displayName, description, iconPath, constructor);
             }
         }                               
     }

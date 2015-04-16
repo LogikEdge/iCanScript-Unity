@@ -11,6 +11,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         public AccessSpecifier  myAccessSpecifier = AccessSpecifier.PRIVATE;
         public ScopeSpecifier   myScopeSpecifier  = ScopeSpecifier.NONSTATIC;
+		public Type				myRuntimeType     = null;
         
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -27,14 +28,26 @@ namespace iCanScript.Editor.CodeEngineering {
         : base(vsObject, codeBlock) {
             myAccessSpecifier = accessType;
             myScopeSpecifier  = scopeType;
+			myRuntimeType     = vsObject.RuntimeType;
         }
         
         // ===================================================================
         // COMMON INTERFACE FUNCTIONS
         // -------------------------------------------------------------------
 		/// Resolves code dependencies.
-		public override void ResolveDependencies() {}
-
+		public override void ResolveDependencies() {
+			// Determine proper variable type.
+            var consumerType= GetCommonBaseTypeForProducerPort(VSObject);
+            if(consumerType != typeof(void) && !iCS_Types.IsA(consumerType, myRuntimeType)) {
+				myRuntimeType= consumerType;
+            }			
+		}
+        // -------------------------------------------------------------------
+		/// Returns the runtime type of the variable.
+		public override Type GetRuntimeType() {
+			return myRuntimeType;
+		}
+		
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
@@ -45,21 +58,20 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The generated code for the given field.
         ///
         public override string GenerateCode(int indentSize) {
-            var result= new StringBuilder(128);
-            var fieldType= myVSObject.RuntimeType;
-            if(fieldType == null) {
+            if(myRuntimeType == null) {
                 var message= "Unable to determine type for variable: "+myVSObject.FullName;
                 Context.AddError(message, myVSObject.InstanceId);
                 return "";
-            }
+			}
+            var result= new StringBuilder(128);
             string initializer= "";
             // Generate variable from port.
             if(VSObject.IsDataPort) {
-                if(VSObject.IsInDataPort && !iCS_Types.IsA<UnityEngine.Object>(VSObject.RuntimeType)) {
+                if(VSObject.IsInDataPort && !iCS_Types.IsA<UnityEngine.Object>(myRuntimeType)) {
                     initializer= GetNameFor(VSObject, /*valueInsteadOfSelf=*/true);                    
                 }
                 else {
-                    initializer= "default("+ToTypeName(VSObject.RuntimeType)+")";
+                    initializer= "default("+ToTypeName(myRuntimeType)+")";
                 }
             }
     		// Generate variable from constructor.
@@ -73,7 +85,7 @@ namespace iCanScript.Editor.CodeEngineering {
                         }
                     }
                 );
-                initializer= GenerateAllocatorFragment(fieldType, initValues);
+                initializer= GenerateAllocatorFragment(myRuntimeType, initValues);
             }
             else {
                 Debug.LogWarning("iCanScript: Unreconized variable type");
@@ -93,7 +105,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 variableName= CodeBlock.CodeBlock.GetLocalVariableName(myVSObject);
                 initializer= null;
             }
-			result.Append(GenerateVariable(indentSize, myAccessSpecifier, myScopeSpecifier, fieldType, variableName, initializer));                    
+			result.Append(GenerateVariable(indentSize, myAccessSpecifier, myScopeSpecifier, myRuntimeType, variableName, initializer));                    
             return result.ToString();
         }
         
