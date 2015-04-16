@@ -565,7 +565,7 @@ public partial class iCS_IStorage {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        var defaultName= GetDefaultNodeName(desc);
+        var defaultName= desc.DisplayName;
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         // Determine icon.
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
@@ -595,7 +595,7 @@ public partial class iCS_IStorage {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        var defaultName= GetDefaultNodeName(desc);
+        var defaultName= desc.DisplayName;
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
@@ -697,9 +697,5 @@ public partial class iCS_IStorage {
     }
     public static string GetInstancePortName(Type type) {
         return "Target";
-    }
-    // ----------------------------------------------------------------------
-    public string GetDefaultNodeName(iCS_FunctionPrototype desc) {
-        return desc.DisplayName;
     }
 }
