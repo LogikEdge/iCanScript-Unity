@@ -335,7 +335,7 @@ public class iCS_LibraryDatabase {
                         bool isFound= true;
                         edObj.ForEachChildPort(
                             p=> {
-                                if(p.IsParameterPort) {
+                                if(p.IsParameterPort && !p.IsFloating) {
                                     if(p.RuntimeType != methodInfo.Parameters[p.PortIndex].type) {
                                         isFound= false;
                                     }
