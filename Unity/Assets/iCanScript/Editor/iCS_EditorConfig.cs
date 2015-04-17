@@ -18,6 +18,8 @@ public static class iCS_EditorConfig {
     public const float kTitlePadding     = 4;
     public const float kNodeTitleHeight  = kTitleFontSize+kSubTitleFontSize+2*kTitlePadding;
     public const float kNodeTitleIconSize= 32f;
+	public const int   kHelpBoxHeight    = 85;
+	public const int   kHelpBoxWidth     = 420;
     
     // ----------------------------------------------------------------------
 	public const float NodeShadowSize= 5.0f;
@@ -44,7 +46,7 @@ public static class iCS_EditorConfig {
 	// Release info
 	public static string VersionId {
 		get {
-			return ""+iCS_Config.MajorVersion+"."+iCS_Config.MinorVersion+"f"+iCS_Config.BugFixVersion;	
+			return ""+iCS_Config.MajorVersion+"."+iCS_Config.MinorVersion+"."+iCS_Config.BugFixVersion;	
 		}		
 	}
 	public static string VersionStr {

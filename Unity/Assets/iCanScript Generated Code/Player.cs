@@ -2,19 +2,34 @@ using UnityEngine;
 
 namespace iCanScript.Engine.GeneratedCode {
 
-    [iCS_Class(Library="Visual Scripts")]
+    [iCS_Class(Library="My Visual Scripts")]
     public class Player : MonoBehaviour {
         // =========================================================================
         // PUBLIC FIELDS
         // -------------------------------------------------------------------------
         [iCS_InOutPort]
-        public  iCS_ImpulseForceGenerator jumpConfig=  new iCS_ImpulseForceGenerator(Vector3.up, 0.2f, new Vector3(0f, 5f, 0f), 0.3f, 1.2f, 10f);
+        public  iCS_PulseGenerator pulseGenerator=  new iCS_PulseGenerator();
         [iCS_InOutPort]
-        public  iCS_DesiredVelocityForceGenerator roamingConfig=  new iCS_DesiredVelocityForceGenerator(25f, 35f, new Vector3(1f, 0f, 1f));
+        public  Object bolt= default(Object);
         [iCS_InOutPort]
-        public  iCS_ForceIntegrator forceIntegrator=  new iCS_ForceIntegrator(new Vector3(0f, -20f, 0f), 1f, 0.995f);
+        public  Transform boltSpawnPoint= default(Transform);
         [iCS_InOutPort]
         public  float maxSpeed= 10f;
+        [iCS_InOutPort]
+        public  float left= -6f;
+        [iCS_InOutPort]
+        public  float right= 6f;
+        [iCS_InOutPort]
+        public  float bottom= -4f;
+        [iCS_InOutPort]
+        public  float top= 8f;
+        [iCS_InOutPort]
+        public  float tiltFactor= -4f;
+
+        // =========================================================================
+        // PRIVATE FIELDS
+        // -------------------------------------------------------------------------
+        private  Vector3 p_velocity= default(Vector3);
 
 
         // =========================================================================
@@ -23,16 +38,24 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void Update() {
-            var theTransform= GetComponent<Transform>();
-            forceIntegrator.Acceleration1= jumpConfig.Update(Input.GetButton("Fire1"));
-            var theCharacter= gameObject.GetComponent("CharacterController") as CharacterController;
-            var theVelocity= theCharacter.velocity;
-            Vector3 theDisplacement;
-            forceIntegrator.Integrate(theVelocity, out theDisplacement);
-            forceIntegrator.Acceleration2= roamingConfig.Update(maxSpeed * new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")), theVelocity, 1f);
-            theCharacter.Move(theDisplacement);
-            var theRotationAxis= Vector3.Cross(theVelocity, Vector3.down);
-            theTransform.Rotate(theRotationAxis.normalized, iCS_Math.Mul(iCS_TimeUtility.ScaleByDeltaTime(theVelocity.magnitude), 114.59f), Space.World);
+            var theAudioSource= GetComponent<AudioSource>();
+            p_velocity= maxSpeed * new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+            if(Input.GetButton("Fire1")) {
+                if(pulseGenerator.GeneratePulse(0.25f, true, true)) {
+                    Object.Instantiate(bolt, boltSpawnPoint.position, boltSpawnPoint.rotation);
+                    theAudioSource.Play();
+                }
+            }
+        }
+
+        [iCS_Function]
+        public  void FixedUpdate() {
+            var theRigidbody= GetComponent<Rigidbody>();
+            theRigidbody.velocity= p_velocity;
+            var thePosition= theRigidbody.position;
+            var theVelocity= theRigidbody.velocity;
+            theRigidbody.position= new Vector3(Mathf.Clamp(thePosition.x, left, right), thePosition.y, Mathf.Clamp(thePosition.z, bottom, top));
+            theRigidbody.rotation= Quaternion.Euler(0f, 0f, iCS_Math.Mul(theVelocity.x, tiltFactor));
         }
     }
 }

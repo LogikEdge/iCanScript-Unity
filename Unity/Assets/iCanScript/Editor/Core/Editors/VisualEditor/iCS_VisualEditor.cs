@@ -227,8 +227,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!isInit || IStorage == null) {
             // -- Show next step help --
             ShowWorkflowAssistant();
-			// -- Repaint erros/warning info --
-			DisplaySceneErrorsAndWarnings();
             return;            
         }
         // -- Assure that we have a library window opened --

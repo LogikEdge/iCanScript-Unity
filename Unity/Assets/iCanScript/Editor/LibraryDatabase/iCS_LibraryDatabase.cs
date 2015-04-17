@@ -11,6 +11,7 @@ public class iCS_LibraryDatabase {
     // ----------------------------------------------------------------------
     public static List<iCS_TypeInfo>        	types    = new List<iCS_TypeInfo>();
     public static List<iCS_FunctionPrototype>	Functions= new List<iCS_FunctionPrototype>();
+	public static Dictionary<MemberInfo,string> obsoletes= new Dictionary<MemberInfo,string>();
     
     // ======================================================================
     // Utility Type
@@ -399,6 +400,13 @@ public class iCS_LibraryDatabase {
 		}
 		return null;
     }
+    // ----------------------------------------------------------------------
+	/// Find an obsolete message for the given MemberInfo.
+	public static string GetObsoleteMessage(MemberInfo memberInfo) {
+		string message= null;
+		obsoletes.TryGetValue(memberInfo, out message);
+		return message;
+	}
 
     // ======================================================================
     // Container management functions
@@ -542,6 +550,12 @@ public class iCS_LibraryDatabase {
 		}
 	}
 
+    // ----------------------------------------------------------------------
+	/// Add an obsoleted qualified name with its message.
+	public static void AddObsolete(MemberInfo memberInfo, string obsoleteMessage) {
+		obsoletes.Add(memberInfo, obsoleteMessage);
+	}
+	
     // ======================================================================
     // Fix operator display names
     // ----------------------------------------------------------------------

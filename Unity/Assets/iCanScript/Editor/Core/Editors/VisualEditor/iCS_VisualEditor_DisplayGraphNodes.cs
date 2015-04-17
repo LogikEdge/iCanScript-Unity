@@ -1,3 +1,4 @@
+//#define WORKFLOW_ASSISTANT
 using UnityEngine;
 using System;
 using System.Collections;
@@ -50,7 +51,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	    DrawGrid();			
         
         // -- Show workflow assistant --
+#if WORKFLOW_ASSISTANT
         ShowWorkflowAssistant();
+#endif
         HotZoneGUI();
         
         // Draw nodes and their connections.

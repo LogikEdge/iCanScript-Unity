@@ -9,6 +9,7 @@ public static class iCS_Types {
     // ----------------------------------------------------------------------
     // Returns true if type can be converted to another type
     public static bool IsA(Type baseType, Type derivedType) {
+		if(baseType == null || derivedType == null) return false;
 		if((baseType.IsArray && !derivedType.IsArray) || (!baseType.IsArray && derivedType.IsArray)) return false;
         baseType= RemoveRefOrPointer(baseType);
         for(; derivedType != null; derivedType= derivedType.BaseType) {
@@ -145,10 +146,16 @@ public static class iCS_Types {
         return RemoveProductPrefix(type.Name);
     }
     // ----------------------------------------------------------------------
-    public static Type FindType(string name) {
+	/// Seraches the application domain for the first type with the given
+	/// name
+	///
+	/// @param typeName The name of the type to search.
+	/// @return The found type descriptor if found. _null_ otherwise.
+	///
+    public static Type FindType(string typeName) {
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var classType in assembly.GetTypes()) {
-                if(classType.Name == name) {
+                if(classType.Name == typeName) {
                     return classType;
                 }
             }
@@ -156,8 +163,54 @@ public static class iCS_Types {
         return null;
     }
     // ----------------------------------------------------------------------
+	/// Seraches the application domain for the type with the given name in
+	/// the given namespace.
+	///
+	/// @param typeName The name of the type to search.
+	/// @param namespaceName The namespace that contains the type.
+	/// @return The found type descriptor if found. _null_ otherwise.
+	///
+    public static Type FindType(string typeName, string namespaceName) {
+        foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+            foreach(var classType in assembly.GetTypes()) {
+                if(classType.Name == typeName && classType.Namespace == namespaceName) {
+                    return classType;
+                }
+            }
+        }
+        return null;
+    }
+    // ----------------------------------------------------------------------
+	/// Finds the method information of a function with the given type name.
+	///
+	/// @param typeName The name of the type to search.
+	/// @param functionName The function name to be located.
+	/// @return The found method information if found. _null_ otherwise.
+	///
     public static MethodInfo FindFunction(string typeName, string functionName) {
         var interfaceType= iCS_Types.FindType(typeName);
+        if(interfaceType == null) {
+            Debug.LogWarning("iCanScript: unable to find type=> "+typeName+" <= in application.");
+            return null;
+        }
+        MethodInfo methodInfo= interfaceType.GetMethod(functionName,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        if(methodInfo == null) {
+            Debug.LogWarning("iCanScript: unable to find function: "+functionName);
+            return null;
+        }
+        return methodInfo;
+    }
+    // ----------------------------------------------------------------------
+	/// Finds the method information of a function of the given type name
+	/// within the given namespace.
+	///
+	/// @param typeName The name of the type to search.
+	/// @param functionName The function name to be located.
+	/// @param namespaceName The namespace that contains the type.
+	/// @return The found method information if found. _null_ otherwise.
+	///
+    public static MethodInfo FindFunction(string typeName, string functionName, string namespaceName) {
+        var interfaceType= iCS_Types.FindType(typeName, namespaceName);
         if(interfaceType == null) {
             Debug.LogWarning("iCanScript: unable to find type=> "+typeName+" <= in application.");
             return null;

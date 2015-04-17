@@ -179,6 +179,7 @@ public partial class iCS_IStorage {
         }
         
         // Perform an initial sanity check.
+		Cleanup();
         SanityCheck();
     }
     
@@ -298,7 +299,6 @@ public partial class iCS_IStorage {
 				if(obj.IsInInstancePort) {
 					if(obj.ProducerPort == null) {
 						if(IsLocalType(obj)) {
-							Debug.Log("Set target to Owner on "+obj.ParentNode.FullName);
 							obj.InitialValue= OwnerTag.instance;							
 						}
 					}

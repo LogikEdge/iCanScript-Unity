@@ -27,6 +27,7 @@ public partial class iCS_EditorObject {
     Vector2 c_NodeSubTitleSize= Vector2.zero;
     string  c_CodeName        = null;
     string  c_DisplayName     = null;
+	string  c_ObsoleteMessage = null;
 
     // ======================================================================
     // Conversion Utilities
@@ -162,6 +163,9 @@ public partial class iCS_EditorObject {
 		get {
 			var assemblyQualifiedName= EngineObject.QualifiedType;
 			int size= assemblyQualifiedName.IndexOf(',');
+			if(size < 0 || size >= assemblyQualifiedName.Length) {
+				return assemblyQualifiedName;
+			}
 			return assemblyQualifiedName.Substring(0, size);
 		}
 	}
@@ -172,6 +176,9 @@ public partial class iCS_EditorObject {
 		get {
 			var qualifiedTypeName= QualifiedTypeName;
 			int start= qualifiedTypeName.LastIndexOf('.')+1;
+			if(start < 0 || start >= qualifiedTypeName.Length) {
+				return qualifiedTypeName;
+			}
 			int len= qualifiedTypeName.Length;
 			return qualifiedTypeName.Substring(start, len-start);
 		}
@@ -183,6 +190,9 @@ public partial class iCS_EditorObject {
 		get {
 			var qualifiedTypeName= QualifiedTypeName;
 			int size= qualifiedTypeName.LastIndexOf('.');
+			if(size < 0 || size >= qualifiedTypeName.Length) {
+				return "";
+			}
 			return qualifiedTypeName.Substring(0, size);			
 		}
 	}
@@ -505,7 +515,29 @@ public partial class iCS_EditorObject {
             return this.InstanceId == Storage.DisplayRoot;
 	    }
 	}
-    
+    public bool IsObsolete {
+    	get {
+    		if(c_ObsoleteMessage == null) {
+				var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+				if(desc != null) {
+					var methodInfo= desc.ToMethodInfo;
+					if(methodInfo != null) {
+						c_ObsoleteMessage= iCS_LibraryDatabase.GetObsoleteMessage(methodInfo.Method);						
+					}
+				}
+				if(string.IsNullOrEmpty(c_ObsoleteMessage)) {
+					c_ObsoleteMessage= "";
+				}
+    		}
+			return !string.IsNullOrEmpty(c_ObsoleteMessage);
+    	}
+    }
+	public string ObsoleteMessage {
+		get {
+			return IsObsolete ? c_ObsoleteMessage : null;
+		}
+	}
+	
     // ======================================================================
     // Constructors/Builders
     // ----------------------------------------------------------------------
