@@ -251,18 +251,6 @@ public partial class iCS_IStorage {
     }
     	
     // ----------------------------------------------------------------------
-    /*
-        FEATURE: Should use the layout rule the determine execution priority.
-    */
-    public void UpdateExecutionPriority() {
-        var len= EditorObjects.Count;
-        for(int i= 0; i < len; ++i) {
-            if(IsValid(i)) {
-                EditorObjects[i].ExecutionPriority= i;
-            }
-        }
-    }
-    // ----------------------------------------------------------------------
     public void CleanupUnityObjects() {
         // Keep a copy to repopulate for long bindings
         ForEach(
@@ -379,25 +367,6 @@ public partial class iCS_IStorage {
 							DestroyInstanceInternal(obj);
 						}
 					}                    
-				}
-				// Propagate variable name to instance nodes
-				if(obj.IsInstanceNode) {
-					string instanceNodeName= obj.CodeName;
-					var thisPort= InstanceWizardGetInputThisPort(obj);
-					if(thisPort != null) {
-						var producerPort= thisPort.FirstProducerPort;
-						if(producerPort != null) {
-							var producerNode= producerPort.ParentNode;
-							if(producerNode.IsConstructor) {
-								instanceNodeName= producerNode.DisplayName;
-							}
-						}
-					}
-					if(obj.DisplayName != instanceNodeName) {
-						obj.DisplayName= instanceNodeName;						
-						needsRelayout= true;
-						modified= true;
-					}
 				}
             }
         );

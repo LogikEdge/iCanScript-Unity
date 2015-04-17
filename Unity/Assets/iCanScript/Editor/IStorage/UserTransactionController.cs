@@ -45,9 +45,6 @@ namespace iCanScript { namespace Editor {
                 --myUserTransactionCount;
             }
             if(myUserTransactionCount == 0) {
-                // Perform graph cleanup once objects & layout are stable.
-                iStorage.UpdateExecutionPriority();
-                for(int retries= 0; retries < 10 && iStorage.Cleanup(); ++retries);
                 // Schedule saving this copy of the visual script.
                 iCS_VisualScriptDataController.SaveWithUndo(iStorage, undoMessage, transactionType);
             }

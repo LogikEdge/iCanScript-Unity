@@ -68,6 +68,7 @@ public partial class iCS_IStorage {
         }
         // Prepare to record modification to group.
         Undo.RecordObject(iCSMonoBehaviour, undoMessage);
+		Cleanup();
         SaveStorage();        
         // Save type of user operation
         if(transactionType == myLastTransactionType) {
