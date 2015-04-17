@@ -27,6 +27,7 @@ public static class iCS_Math {
 
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static int     Mul(int a, int b)         { return a*b; }
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static float   Mul(float a, float b)     { return a*b; }
+    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static float   op_Multiply(float a, float b)     { return a*b; }
 
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static int     Div(int a, int div)       { return a/div; }
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static float   Div(float a, float div)   { return a/div; }

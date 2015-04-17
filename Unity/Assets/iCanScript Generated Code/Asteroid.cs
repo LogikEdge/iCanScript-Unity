@@ -23,26 +23,24 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void Start() {
-            var theTransform= GetComponent<Transform>();
             var theRigidbody= GetComponent<Rigidbody>();
-            theRigidbody.velocity= theTransform.forward * velocity;
+            theRigidbody.velocity= transform.forward * velocity;
             theRigidbody.angularVelocity= Random.insideUnitSphere * rate;
         }
 
         [iCS_Function]
         public  void OnTriggerEnter(Collider colliderInfo) {
-            var theTransform= GetComponent<Transform>();
             var theIsBolt= colliderInfo.CompareTag("Bolt");
             bool theTrigger= false;
-            var theTransform_94= colliderInfo.transform;
             if(colliderInfo.CompareTag("Player")) {
-                Object.Instantiate(playerExplosion, theTransform_94.position, theTransform_94.rotation);
+                var theTransform= colliderInfo.transform;
+                Object.Instantiate(playerExplosion, theTransform.position, theTransform.rotation);
                 theTrigger= true;
             }
             if(theTrigger || theIsBolt) {
                 Object.Destroy(colliderInfo.gameObject);
                 Object.Destroy(gameObject);
-                Object.Instantiate(asteroidExplosion, theTransform.position, theTransform.rotation);
+                Object.Instantiate(asteroidExplosion, transform.position, transform.rotation);
             }
         }
     }

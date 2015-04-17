@@ -367,10 +367,21 @@ namespace iCanScript.Editor.CodeEngineering {
                 var thisPort= GetThisPort(node);
                 if(thisPort != null) {
                     var producerPort= GetCodeProducerPort(thisPort);
-                    if(producerPort != null && producerPort != thisPort) {
+	                var producerType= Context.GetRuntimeTypeFor(producerPort);
+					if(producerPort.InitialValue is OwnerTag) {
+						if(producerType == typeof(Transform)) {
+							result.Append("transform.");
+						}
+						else if(producerType == typeof(GameObject)) {
+							result.Append("gameObject.");
+						}
+						else {
+							result.Append("this.");
+						}						
+					}
+                    else if(producerPort != null && producerPort != thisPort) {
 						var desiredType= VSObject.RuntimeType;
 		                var desiredTypeName= ToTypeName(desiredType);
-		                var producerType= Context.GetRuntimeTypeFor(producerPort);
 		                var isUpcastNeeded= producerType != desiredType && iCS_Types.IsA(producerType, desiredType);
                         if(isUpcastNeeded) {
                             result.Append("(");
@@ -389,16 +400,6 @@ namespace iCanScript.Editor.CodeEngineering {
                         }
                         result.Append(".");
                     }
-					else if(thisPort.InitialValue is OwnerTag) {
-						var thisType= iCS_Types.RemoveRefOrPointer(thisPort.RuntimeType);
-						if(thisType == typeof(Transform)) {
-							result.Append("transform.");
-						}
-						if(thisType == typeof(GameObject)) {
-							result.Append("gameObject.");
-						}
-						// Here we assume that no prefix is required.
-					}
                 }
             }
             return result.ToString();
