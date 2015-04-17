@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace iCanScript.Engine.GeneratedCode {
 
-    [iCS_Class(Library="Visual Scripts")]
+    [iCS_Class(Library="My Visual Scripts")]
     public class Bolt : MonoBehaviour {
         // =========================================================================
         // PUBLIC FIELDS
@@ -19,7 +19,7 @@ namespace iCanScript.Engine.GeneratedCode {
         public  void Start() {
             var theTransform= GetComponent<Transform>();
             var theRigidbody= GetComponent<Rigidbody>();
-            theRigidbody.velocity= iCS_Math.ScaleVector(velocity, theTransform.forward);
+            theRigidbody.velocity= theTransform.forward * velocity;
         }
     }
 }
