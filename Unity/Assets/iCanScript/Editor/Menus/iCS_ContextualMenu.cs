@@ -32,10 +32,10 @@ public class iCS_ContextualMenu {
     const string SetAsDisplayRootStr           = "Set as Display Root";
     const string ClearNavigationHistoryStr     = "Clear Navigation History";
     const string DeleteStr                     = "- Delete";
-    const string PackageStr                    = "+ Package";
-    const string StateChartStr                 = "+ State Chart";
-    const string StateStr                      = "+ State";
-    const string EntryStateStr                 = "+ Entry State";
+    const string PackageStr                    = "+ Create a Package";
+    const string StateChartStr                 = "+ Create a State Chart";
+    const string StateStr                      = "+ Create a State";
+    const string EntryStateStr                 = "+ Create an Entry State";
     const string SetAsEntryStr                 = "Set as Entry";
     const string OnEntryStr                    = "+ "+iCS_Strings.OnEntry;
     const string OnUpdateStr                   = "+ "+iCS_Strings.OnUpdate;
@@ -158,7 +158,7 @@ public class iCS_ContextualMenu {
             menu[idx+1]= new iCS_MenuContext(StateChartStr);
             menu[idx+2]= new iCS_MenuContext(SeparatorStr);
         }
-        if(!selectedObject.IsPublicFunction) {
+        if(!selectedObject.IsPublicFunction && !selectedObject.IsMessage) {
             idx= GrowMenuBy(ref menu, 2);
             menu[idx]= new iCS_MenuContext(EnablePortStr);
             if(storage.HasTriggerPort(selectedObject)) {
