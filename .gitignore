@@ -74,3 +74,17 @@ Unity/Library/*
 bin/staging/upgradeFiles
 bin/staging/iCanScriptUpgrade.dll
 bin/staging/iCanScriptUpgrade.rsp
+StagingCommunity
+StagingPro
+Product/bin/staging/_editorFiles
+Product/bin/staging/_engineFiles
+Product/bin/staging/editorFiles
+Product/bin/staging/editorFilesToExclude
+Product/bin/staging/engineFiles
+Product/bin/staging/engineFilesToExclude
+Product/bin/staging/iCanScriptEditorCommunity.dll
+Product/bin/staging/iCanScriptEditorCommunity.rsp
+Product/bin/staging/iCanScriptEditorPro.dll
+Product/bin/staging/iCanScriptEditorPro.rsp
+Product/bin/staging/iCanScriptEngine.dll
+Product/bin/staging/iCanScriptEngine.rsp
