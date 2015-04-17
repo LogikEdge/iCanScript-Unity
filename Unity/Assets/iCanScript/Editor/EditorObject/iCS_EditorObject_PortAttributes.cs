@@ -67,6 +67,7 @@ public partial class iCS_EditorObject {
         }
 	}
 	// ----------------------------------------------------------------------
+    /// Returns the port that actually produces the data.
 	public iCS_EditorObject FirstProducerPort {
 		get {
 		    var engineObject= Storage.GetFirstProducerPort(EngineObject);
@@ -84,11 +85,12 @@ public partial class iCS_EditorObject {
 		}
 	}
 	// ----------------------------------------------------------------------
+    /// Returns the list of consumers a producer ports has.
 	public iCS_EditorObject[] EndConsumerPorts {
 		get {
 			var result= new List<iCS_EditorObject>();
 			BuildListOfEndConsumerPorts(ref result);
-            // Remove our self from result.
+            // -- Remove our self from result. --
             if(result.Count == 1 && result[0] == this) {
                 result.RemoveAt(0);
             }
@@ -105,6 +107,15 @@ public partial class iCS_EditorObject {
 			}
 		}
 	}
+	// ----------------------------------------------------------------------
+    /// Determines if the port is the only consumer of the attached producer
+    /// producer port.
+    public bool IsTheOnlyConsumer {
+        get {
+            var producerPort= FirstProducerPort;
+            return producerPort.EndConsumerPorts.Length == 1;
+        }
+    }
 	// ----------------------------------------------------------------------
 	public P.Tuple<iCS_EditorObject,iCS_EditorObject>[] Connections {
 		get {

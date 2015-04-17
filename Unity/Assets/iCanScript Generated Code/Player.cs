@@ -55,7 +55,7 @@ namespace iCanScript.Engine.GeneratedCode {
             var thePosition= theRigidbody.position;
             var theVelocity= theRigidbody.velocity;
             theRigidbody.position= new Vector3(Mathf.Clamp(thePosition.x, left, right), thePosition.y, Mathf.Clamp(thePosition.z, bottom, top));
-            theRigidbody.rotation= Quaternion.Euler(0f, 0f, iCS_Math.Mul(theVelocity.x, tiltFactor));
+            theRigidbody.rotation= Quaternion.Euler(0f, 0f, theVelocity.x * tiltFactor);
         }
     }
 }

@@ -139,25 +139,6 @@ public static partial class iCS_UserCommands {
         CloseTransaction(iStorage, "AutoLayout Ports on=> "+node.DisplayName);
     }
     // ----------------------------------------------------------------------
-    public static void UpdateMessageHandlerPorts(iCS_EditorObject messageHandler) {
-        if(messageHandler == null) return;
-        var iStorage= messageHandler.IStorage;
-        OpenTransaction(iStorage);
-        try {
-            iStorage.AnimateGraph(null,
-                _=> {
-                    iStorage.UpdateBehaviourMessagePorts(messageHandler);
-                    iStorage.ForcedRelayoutOfTree();
-                }
-            );            
-        }
-        catch(System.Exception) {
-            CancelTransaction(iStorage);
-            return;
-        }
-        CloseTransaction(iStorage, "Update Ports=> "+messageHandler.DisplayName);
-    }
-    // ----------------------------------------------------------------------
     public static void SetScrollPosition(iCS_IStorage iStorage, Vector2 newPosition) {
         OpenTransaction(iStorage);
         iStorage.ScrollPosition= newPosition;

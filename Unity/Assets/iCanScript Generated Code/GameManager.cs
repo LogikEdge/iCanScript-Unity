@@ -56,13 +56,13 @@ namespace iCanScript.Engine.GeneratedCode {
 
         [iCS_Function]
         public  void CheckGameOver() {
-            var theWeLost= lives <= 1;
-            gameOver.SetActive(theWeLost);
             var theWeWin= bricks < 0;
             youWon.SetActive(theWeWin);
-            if(theWeLost || theWeWin) {
+            var theWeLost= lives <= 1;
+            if(theWeWin || theWeLost) {
                 Reset();
             }
+            gameOver.SetActive(theWeLost);
         }
 
         [iCS_Function]

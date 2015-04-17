@@ -8,7 +8,7 @@ public enum iCS_ObjectTypeEnum {
     NodeStart= 0,
     
     // Structural nodes
-    Behaviour= 0, Package, StateChart, State, Mux, Selector, Iterator,
+    Behaviour= 0, Package, StateChart, State, Mux, Selector,
 
     // Function nodes
     Constructor=100,
@@ -73,13 +73,10 @@ public static class iCS_ObjectType {
     public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.State; }
     public static bool IsPackage              (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Package ||
 																			  IsOnStatePackage(obj) ||
-																			  IsTransitionPackage(obj) ||
-																			  IsIterator(obj); }
+																			  IsTransitionPackage(obj); }
     public static bool IsMux                  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Mux; }
     public static bool IsSelector             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Selector; }
 
-	public static bool IsIterator			  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Iterator; }
-	
     public static bool IsKindOfPackage	      (iCS_EngineObject obj) { return IsPackage(obj) ||
                                                                               IsBehaviour(obj) || IsMessage(obj); }
 	public static bool IsKindOfState		  (iCS_EngineObject obj) { return IsStateChart(obj) || IsState(obj); }

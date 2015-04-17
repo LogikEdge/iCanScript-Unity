@@ -243,44 +243,6 @@ public partial class iCS_IStorage {
     }
 
     // ----------------------------------------------------------------------
-    public void UpdateBehaviourMessages() {
-        if(EditorObjects == null || EditorObjects.Count == 0) return;
-        var behaviour= EditorObjects[0];
-        if(!behaviour.IsBehaviour) return;
-        behaviour.ForEachChildNode(c=> { if(c.IsMessage) UpdateBehaviourMessagePorts(c); });
-    }
-    	
-    // ----------------------------------------------------------------------
-    /*
-        FEATURE: Should use the layout rule the determine execution priority.
-    */
-    public void UpdateExecutionPriority() {
-        var len= EditorObjects.Count;
-        for(int i= 0; i < len; ++i) {
-            if(IsValid(i)) {
-                EditorObjects[i].ExecutionPriority= i;
-            }
-        }
-    }
-    // ----------------------------------------------------------------------
-    public void CleanupUnityObjects() {
-        // Keep a copy to repopulate for long bindings
-        ForEach(
-            obj=> {
-                if(obj.IsInDataOrControlPort && obj.ProducerPortId == -1 && obj.InitialValue != null) {
-                    StoreInitialPortValueInArchive(obj);
-                }
-                else {
-                    if(obj.IsFunctionCall || obj.IsVariableReference) {
-                    }
-                    else {
-                        obj.InitialValueArchive= null;
-                    }
-                }
-            }
-        );
-    }
-    // ----------------------------------------------------------------------
 	// This function is invoked after a change in the visual script.  It
 	// is assumed that the visual script is in a stable state when this
 	// function is invoked.
@@ -380,31 +342,11 @@ public partial class iCS_IStorage {
 						}
 					}                    
 				}
-				// Propagate variable name to instance nodes
-				if(obj.IsInstanceNode) {
-					string instanceNodeName= obj.CodeName;
-					var thisPort= InstanceWizardGetInputThisPort(obj);
-					if(thisPort != null) {
-						var producerPort= thisPort.FirstProducerPort;
-						if(producerPort != null) {
-							var producerNode= producerPort.ParentNode;
-							if(producerNode.IsConstructor) {
-								instanceNodeName= producerNode.DisplayName;
-							}
-						}
-					}
-					if(obj.DisplayName != instanceNodeName) {
-						obj.DisplayName= instanceNodeName;						
-						needsRelayout= true;
-						modified= true;
-					}
-				}
             }
         );
 		if(needsRelayout) {
 			ForcedRelayoutOfTree();
 		}
-        ClearUserTransactions();        
         return modified;
     }
 
@@ -656,8 +598,6 @@ public partial class iCS_IStorage {
                 port.InitialValue= instance.Parent.iCSMonoBehaviour;
             }
         }
-		// Update available component ports
-		UpdateBehaviourMessagePorts(instance);
         return instance;
     }    
 	// ----------------------------------------------------------------------

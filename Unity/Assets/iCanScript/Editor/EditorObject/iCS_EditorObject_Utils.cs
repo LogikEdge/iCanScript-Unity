@@ -94,7 +94,7 @@ public partial class iCS_EditorObject {
 			   var parentNode= producerPort.ParentNode;
 			   if(parentNode.IsFunction("Or", "iCS_Boolean", "")) {
 				   if(producerPort.EndConsumerPorts.Length <= 1) {
-					   var message= "Use additional 'Enable(s)' ports instead of an OR function. => "+parentNode.FullName;
+					   var message= "Consider using additional 'Enable(s)' ports instead of an OR function. => "+parentNode.FullName;
 					   ErrorController.AddWarning(serviceKey, message, visualScript, parentNode.InstanceId);
 					   ErrorController.AddWarning(serviceKey, message, visualScript, ParentNode.InstanceId);				   	
 				   }

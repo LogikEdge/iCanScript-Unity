@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using TimedAction= Prelude.TimerService.TimedAction;
 
 namespace iCanScript { namespace Editor {
 
@@ -8,8 +9,8 @@ namespace iCanScript { namespace Editor {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        public static bool  ShowUserTransaction   = false;
-        public int          myUserTransactionCount= 0;
+        public  static bool  ShowUserTransaction   = false;
+        public  int          myUserTransactionCount= 0;
                 
         // ======================================================================
         // User transaction management
@@ -25,11 +26,13 @@ namespace iCanScript { namespace Editor {
             }
         }
         // ----------------------------------------------------------------------
+        /// Opens a new user transaction.
         public void OpenUserTransaction() {
             if(myUserTransactionCount == 0) {
                 Undo.IncrementCurrentGroup();
             }
             ++myUserTransactionCount;
+            // -- Display user transactions information. --
             if(ShowUserTransaction) {
                 Debug.Log("Open: User Transaction Count=> "+myUserTransactionCount);                
             }
@@ -45,9 +48,6 @@ namespace iCanScript { namespace Editor {
                 --myUserTransactionCount;
             }
             if(myUserTransactionCount == 0) {
-                // Perform graph cleanup once objects & layout are stable.
-                iStorage.UpdateExecutionPriority();
-                for(int retries= 0; retries < 10 && iStorage.Cleanup(); ++retries);
                 // Schedule saving this copy of the visual script.
                 iCS_VisualScriptDataController.SaveWithUndo(iStorage, undoMessage, transactionType);
             }
