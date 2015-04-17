@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SandwichFillings</key>
+	<array>
+		<dict>
+			<key>Dictionary</key>
+			<dict/>
+			<key>Files</key>
+			<array/>
+			<key>Subsandwiches</key>
+			<array>
+				<string>01-003Ci-class003D0022icon-info-sign0022003E003C002Fi003E-What-is-iCanScript003F</string>
+				<string>02-003Ci-class003D0022icon-download0022003E003C002Fi003E-Installation</string>
+				<string>03-003Ci-class003D0022icon-sitemap0022003E003C002Fi003E-Core-Concepts</string>
+				<string>04-003Ci-class003D0022icon-certificate0022003E003C002Fi003E-Unity3D-Integration</string>
+				<string>05-003Ci-class003D0022icon-rocket0022003E003C002Fi003E-Examples</string>
+				<string>06-003Ci-class003D0022icon-gamepad0022003E003C002Fi003E-Quick-Start-Tutorial</string>
+				<string>07-003Ci-class003D0022icon-list0022003E003C002Fi003E-Menus</string>
+				<string>08-003Ci-class003D0022icon-pencil0022003E003C002Fi003E-Editors</string>
+				<string>09-003Ci-class003D0022icon-code0022003E003C002Fi003E-Extending-iCanScript</string>
+				<string>10-003Ci-class003D0022icon-keyboard0022003E003C002Fi003E-Keyboard-Shortcuts</string>
+				<string>11-003Ci-class003D0022icon-puzzle-piece0022003E003C002Fi003E-Library</string>
+			</array>
+		</dict>
+	</array>
+	<key>Type</key>
+	<string>Pages</string>
+</dict>
+</plist>

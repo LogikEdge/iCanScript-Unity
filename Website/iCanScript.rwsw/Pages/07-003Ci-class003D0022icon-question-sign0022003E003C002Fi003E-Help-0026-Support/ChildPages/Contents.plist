@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SandwichFillings</key>
+	<array>
+		<dict>
+			<key>Dictionary</key>
+			<dict/>
+			<key>Files</key>
+			<array/>
+			<key>Subsandwiches</key>
+			<array>
+				<string>1-003Ci-class003D0022icon-book0022003E003C002Fi003E-Knowledge-Base</string>
+				<string>2-003Ci-class003D0022icon-comment0022003E003C002Fi003E-Community</string>
+				<string>3-003Ci-class003D0022icon-envelope0022003E003C002Fi003E-Tickets</string>
+				<string>4-003Ci-class003D0022icon-file0022003E003C002Fi003E-Release-Notes</string>
+				<string>5-003Ci-class003D0022icon-code0022003E003C002Fi003E-Node-Library</string>
+			</array>
+		</dict>
+	</array>
+	<key>Type</key>
+	<string>Pages</string>
+</dict>
+</plist>

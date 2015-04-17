@@ -18,7 +18,7 @@ BUILD_DATE_VAR=kBuildDateStr
 # ============================================================================
 # Constants
 ROOT_DIR=../..
-UNITY_DIR=$ROOT_DIR/Unity
+UNITY_DIR=$ROOT_DIR/iCanScript
 ASSETS_DIR=$UNITY_DIR/Assets
 ASSET_STORE_TOOLS_DIR=$ASSETS_DIR/AssetStoreTools
 PRODUCT_DIR=$ASSETS_DIR/iCanScript

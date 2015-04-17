@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SandwichFillings</key>
+	<array>
+		<dict>
+			<key>Dictionary</key>
+			<dict>
+				<key>ID</key>
+				<string>page5</string>
+				<key>MostRecentlySelectedStyleName</key>
+				<string>Theme Default</string>
+				<key>PageTitle</key>
+				<string>&lt;i class="icon-book"&gt;&lt;/i&gt; User Guide</string>
+				<key>PluginClassName</key>
+				<string>YHStacksPlugin</string>
+				<key>PluginMetadata</key>
+				<dict>
+					<key>Author</key>
+					<string>YourHead Software</string>
+					<key>Name</key>
+					<string>Stacks</string>
+				</dict>
+				<key>PublishingManifest</key>
+				<dict>
+					<key>CreationDate</key>
+					<date>2014-09-28T13:01:33Z</date>
+					<key>DigestAlgorithm</key>
+					<string>MD5</string>
+					<key>DocumentGUID</key>
+					<string>D5192229-A6EB-4C56-9F39-F53E9280371A</string>
+					<key>PageDigests</key>
+					<dict>
+						<key>files/stacks_page_page5.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							NXxqoaedRwfKJcBOPVrB
+							OA==
+							</data>
+							<key>Size</key>
+							<integer>11</integer>
+						</dict>
+						<key>files/stacks_page_page5.js</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							4nf49Kcs/AKiir2hdl+8
+							Qg==
+							</data>
+							<key>Size</key>
+							<integer>135</integer>
+						</dict>
+						<key>index.html</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							AQ1h5+qjQCZKv/L4N0jY
+							EA==
+							</data>
+							<key>Size</key>
+							<integer>5700</integer>
+						</dict>
+					</dict>
+					<key>PageID</key>
+					<string>page5</string>
+					<key>SiteRoot</key>
+					<string>user-guide</string>
+					<key>Version</key>
+					<integer>3</integer>
+				</dict>
+			</dict>
+			<key>Files</key>
+			<array/>
+			<key>Subsandwiches</key>
+			<array>
+				<string>ChildPages</string>
+				<string>Data</string>
+				<string>PageAttributes</string>
+			</array>
+		</dict>
+	</array>
+	<key>Type</key>
+	<string>Page</string>
+</dict>
+</plist>

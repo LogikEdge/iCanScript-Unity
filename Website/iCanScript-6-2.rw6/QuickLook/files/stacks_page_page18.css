@@ -1,0 +1,593 @@
+ .target_stacks_in_645_page18{ z-index:1; }.target_stacks_in_645_page18.rotate{-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-ms-transform:rotate(0deg);-o-transform:rotate(0deg);transform:rotate(0deg);-webkit-transform-origin:center center;-moz-transform-origin:center center;-ms-transform-origin:center center;-o-transform-origin:center center;transform-origin:center center}.target_stacks_in_645_page18.fill{width:100%}.target_stacks_in_645_page18.flexible{width:100%}.target_stacks_in_645_page18.fixed{width:250px}.target_stacks_in_645_page18.browser{position:fixed!important}.target_stacks_in_645_page18.absolute{position:absolute!important}.target_stacks_in_645_page18.body{position:absolute!important}.target_stacks_in_645_page18.right{float:right}.target_stacks_in_645_page18.left{float:left}.target_stacks_in_645_page18.top_pt{top:0%}.target_stacks_in_645_page18.top_px{top:0px}.target_stacks_in_645_page18.bottom_pt{bottom:0%}.target_stacks_in_645_page18.bottom_px{bottom:0px}.target_stacks_in_645_page18.vcenter{top:0;height:100%}.target_stacks_in_645_page18.vcenter>.com_joeworkman_stacks_target_stack{position:relative;top:50%;-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%);transform:translateY(-50%)}.target_stacks_in_645_page18.right_pt{right:0%}.target_stacks_in_645_page18.right_px{right:0px}.target_stacks_in_645_page18.left_pt{left:0%}.target_stacks_in_645_page18.left_px{left:0px}.target_stacks_in_645_page18.hcenter>.com_joeworkman_stacks_target_stack{position:relative;left:50%;-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);-ms-transform:translateX(-50%);-o-transform:translateX(-50%);transform:translateX(-50%)} 
+
+ #stacks_in_647_page18{ height:46px; } 
+
+#stacks_in_647_page18 {
+	background-color: #000000;
+	border: solid #FF7F00;
+	border-width: 0px 0px 3px 0px;
+}
+ .target_stacks_in_477_page18{ z-index:1; }.target_stacks_in_477_page18.rotate{-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-ms-transform:rotate(0deg);-o-transform:rotate(0deg);transform:rotate(0deg);-webkit-transform-origin:center center;-moz-transform-origin:center center;-ms-transform-origin:center center;-o-transform-origin:center center;transform-origin:center center}.target_stacks_in_477_page18.fill{width:100%}.target_stacks_in_477_page18.flexible{width:100%}.target_stacks_in_477_page18.fixed{width:250px}.target_stacks_in_477_page18.browser{position:fixed!important}.target_stacks_in_477_page18.absolute{position:absolute!important}.target_stacks_in_477_page18.body{position:absolute!important}.target_stacks_in_477_page18.right{float:right}.target_stacks_in_477_page18.left{float:left}.target_stacks_in_477_page18.top_pt{top:0%}.target_stacks_in_477_page18.top_px{top:0px}.target_stacks_in_477_page18.bottom_pt{bottom:0%}.target_stacks_in_477_page18.bottom_px{bottom:0px}.target_stacks_in_477_page18.vcenter{top:0;height:100%}.target_stacks_in_477_page18.vcenter>.com_joeworkman_stacks_target_stack{position:relative;top:50%;-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%);transform:translateY(-50%)}.target_stacks_in_477_page18.right_pt{right:0%}.target_stacks_in_477_page18.right_px{right:0px}.target_stacks_in_477_page18.left_pt{left:0%}.target_stacks_in_477_page18.left_px{left:0px}.target_stacks_in_477_page18.hcenter>.com_joeworkman_stacks_target_stack{position:relative;left:50%;-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);-ms-transform:translateX(-50%);-o-transform:translateX(-50%);transform:translateX(-50%)} 
+
+ #stacks_in_491_page18{ height:40px; } 
+/*
+-------------------------------------------
+Stack: Blueball FreeStacks Responsive Max Width Stack
+Style Sheet: fsrmaxwidth.css
+Created: 23, October 2012
+Last Modified: 01, May 2014
+Author: Charlie Lockhart, Blueball Design
+www.blueballdesign.com
+Copyright 2012-2014 Blueball Design LLC USA/Charlie Lockhart
+All Rights Reserved
+-------------------------------------------
+*/
+
+#stacks_in_495_page18 {
+	max-width: 1200px;
+	min-width: 320px;
+	margin: 0px auto !important;
+}
+
+/************************************************************************************
+MOBILE
+*************************************************************************************/
+
+@media screen and (max-width: 768px) {
+
+#stacks_in_495_page18 {
+	max-width: 100% !important;
+	min-width: % !important;
+}
+
+}
+/*
+-------------------------------------------
+File: 'Blueball FreeStacks Responsive Add-Ons Pack 1'
+fsrnavmenures6f.css Style Sheet
+Created: 24, July, 2013
+Last Modified: 09, September, 2013
+Author: Blueball Design/Charlie Lockhart
+www.blueballdesign.com
+Copyright 2013 Charlie Lockhart/Blueball Design USA
+All Rights Reserved
+-------------------------------------------
+*/
+
+#navbar {
+	display: block !important;	
+	height: auto;
+	font-size: 1.05em;
+	font-weight: 600;
+}
+
+#nav ul {
+	bottom: 0;
+	left: 0;
+	line-height: 46px;
+	margin: 0;
+	padding: 0;
+	text-align: right;
+}
+
+*:first-child+html #nav ul {
+	height: 46px !important;
+}
+
+#nav ul li {
+	display: inline-block;
+	position: relative;
+	margin: 0;
+	padding: 0;
+	height: 46px;
+	border-right: 0px solid #FFFFFF;
+	width: auto;
+}
+
+#nav ul li a, #nav ul li a:visited {
+	background-color: rgba(0, 0, 0, 0.0);
+	color: #FFFFFF;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 1.05em;
+	font-weight: 600;
+	padding: 0 15px 0 15px;
+	text-decoration: none;
+}
+
+#nav ul li a:hover {
+	background-color: rgba(255, 255, 255, 0.0);
+	/*background: 255, 255, 255,;*/
+	color: #FF8000;
+}
+
+#nav ul li #current {
+	background-color: rgba(254, 120, 0, 0.99);
+	color: #FFFFFF;
+}
+
+#nav ul li .currentAncestor {
+	color: #FFFFFF;
+}
+
+#nav ul li a:hover > ul {
+	position: relative;
+	display: inline-block;
+}
+
+#nav ul li.hasChild > a {
+	background-image: url(../files/downarrow_black50.png);
+	background-position: 96% 50%;
+	background-repeat: no-repeat;
+	padding: 0 29px 0 15px;
+}
+
+#nav li:first-child > a {
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+}
+
+#nav li:last-child > a {
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+}
+
+#nav ul li:last-child {
+	border-right: 0px;
+}
+
+/* Sub Menu Levels */
+
+#nav ul ul {
+	display: none;
+	height: 32px;
+	left: 0;
+	line-height: 32px;
+	margin: 0;
+	position: absolute;
+	top: 45px;
+	width: 165px;
+	z-index: 999;
+	text-align: left;
+}
+
+#nav ul ul li {
+	display: block;
+	padding: 0;
+	height: 32px;
+	width: 165px;
+	border-right: 0px;
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+}
+
+#nav ul ul li a, #nav ul ul li a:visited {
+	background-color: rgba(0, 0, 0, 0.80);
+	/*background: 0, 0, 0,;*/
+	color: #FFFFFF;
+	border-top: px solid #FFFFFF;
+	font-size: 0.90em;
+	font-weight: normal;
+	height: 32px;
+	padding: 0 14px 0 14px;
+	margin: 0;
+	text-shadow: none;
+	width: 151px;
+	overflow: hidden; 
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+*:first-child+html #nav ul ul li a, #nav ul ul li a:visited {
+	padding: 0 14px 0 14px;
+	line-height: 32px !important;
+	width: 151px !important;
+}
+
+#nav ul ul li a:hover {
+	background-color: rgba(0, 0, 0, 0.90);
+	/*background: 0, 0, 0,;*/
+	color: #FF8000;
+	width: 151px;
+	background-image: none;
+}
+
+#nav ul ul li #current, #nav ul ul li .currentAncestor {
+	background-color: rgba(254, 120, 0, 0.80);
+	/*background: 254, 120, 0,;*/
+	color: #FFFFFF;
+	width: 151px;
+}
+
+#nav ul ul li:last-child > a {
+	border-bottom: 0px solid #FFFFFF;
+}
+
+#nav ul ul li.hasChild > a {
+	background-image: url(../files/rightarrow_white50.png);
+	background-position: 97% 50%;
+	background-repeat: no-repeat;
+	width: 151px;
+	padding: 0 14px 0 14px;
+}
+
+#nav li li:first-child a {
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+}
+
+#nav li li:last-child a {
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+}
+
+#nav ul ul ul {
+	top: 0;
+	left: 179px;
+}
+
+*:first-child+html #nav ul ul ul {
+	top: 0;
+	left: 179px !important;
+}
+
+#nav li li li:first-child a {
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+}
+
+#nav li li li:last-child a {
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+}
+
+#nav li li li li:first-child a {
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+}
+
+#nav li li li li:last-child a {
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-radius: 0px 0px 0px 0px;
+}
+
+
+/************************************************************************************
+MOBILE
+*************************************************************************************/
+
+/* #######################################################################
+
+	meanMenu
+	--------
+	
+	To be used with jquery.meanmenu.js by Chris Wharton (http://www.meanthemes.com/plugins/meanmenu/)
+
+####################################################################### */
+
+@media screen and (max-width: 640px) {
+	
+#navbar, #nav { 
+    display: none; 
+    visibility: collapse;
+    height: 0px;
+}
+
+#pagecontainer, #pagewrapper {
+	overflow: hidden !important;
+}
+
+@-moz-document url-prefix() {
+    #pagecontainer, #pagewrapper {
+	overflow: visible !important;
+}
+}
+
+}
+
+/* hide the link until viewport size is reached */
+a.meanmenu-reveal {
+display: none;
+}
+
+/* when under viewport size, .mean-container is added to body */
+.mean-container .mean-bar { 
+float: left;
+width: 100%;
+position: relative;
+background: #000000;
+/*original background: #0c1923;*/
+padding: 4px 0 0 0;
+min-height: 42px;
+z-index: 999999;
+}
+.mean-container a.meanmenu-reveal {
+width: 22px;
+height: 22px;
+padding: 13px 13px 11px 13px;
+position: absolute;
+top: 0;
+right: 0;
+color: #FFFFFF;
+cursor: pointer;
+text-decoration: none;
+font-size: 16px;
+text-indent: -9999em;
+line-height: 22px;
+font-size: 1px;
+display: block;
+font-family: Arial, Helvetica, sans-serif;
+font-weight: 700;
+}
+
+.mean-container a.meanmenu-reveal span {
+display: block;
+background: #FFFFFF;
+/*Original menu icon color - background: #ffffff;*/
+height: 3px;
+margin-top: 3px;
+}
+
+.mean-container a:hover.meanmenu-reveal span {
+display: block;
+background: #309093;
+/*Original menu icon color - background: #ffffff;*/
+height: 3px;
+margin-top: 3px;
+}
+
+.mean-container .mean-nav { 
+float: left;
+width: 100%;
+background: #000000;
+/*original background: #0c1923;*/
+margin-top: 38px;
+}
+.mean-container .mean-nav ul {
+padding: 0;
+margin: 0;
+width: 100%;
+list-style-type: none;
+}
+.mean-container .mean-nav ul li {
+position: relative;
+float: left;
+width: 100%;
+}
+.mean-container .mean-nav ul li a {
+display: block;
+float: left;
+width: 90%;
+padding: 1em 5%;
+margin: 0;
+text-align: left;
+color: #FFFFFF;
+/*original active link color: #fff;*/
+border-bottom: 1px solid #F1F1F1;
+/*original border-bottom: 1px solid #383838;*/
+text-decoration: none;
+text-transform: none;
+}
+
+.mean-container .mean-nav ul li #current {
+	background-color: #006063;
+	color: #FFFFFF;
+}
+
+.mean-container .mean-nav ul li li a {
+width: 80%;
+padding: 1em 10%;
+border-bottom: 1px solid #F1F1F1;
+/*border-bottom: 1px solid #f1f1f1;*/
+opacity: 0.75; 
+filter: alpha(opacity=75);
+text-shadow: none !important;
+visibility: visible;
+}
+.mean-container .mean-nav ul li.mean-last a {
+border-bottom: none;
+margin-bottom: 0;
+}
+.mean-container .mean-nav ul li li li a {
+width: 70%;
+padding: 1em 15%;
+}
+.mean-container .mean-nav ul li li li li a {
+width: 60%;
+padding: 1em 20%;
+}
+.mean-container .mean-nav ul li li li li li a {
+width: 50%;
+padding: 1em 25%;
+}
+.mean-container .mean-nav ul li a:hover { 
+color: #FFFFFF;
+background: #309093;
+/*original hover background: #252525;*/
+}
+.mean-container .mean-nav ul li a.mean-expand {
+width: 26px;
+height: 26px;
+border: none !important;
+padding: 12px !important;
+text-align: center;
+position: absolute;
+right: 0;
+top: 0;
+font-size: 20px !important;
+z-index: 2;
+font-weight: 700;
+}
+.mean-container .mean-nav ul li a.mean-expand:hover {
+background: none;
+}
+.mean-container .mean-push { 
+float: left;
+width: 100%;
+padding: 0;
+margin: 0;
+clear: both; 
+}
+.mean-nav .wrapper {
+width: 100%;
+padding: 0;
+margin: 0;
+}
+
+
+
+
+
+#stacks_in_499_page18 {
+	background-color: #000000;
+}
+  @media screen and (max-width:640px){#stacks_in_865_page18{display:none}} 
+ #stacks_in_871_page18{ height:46px; } 
+  @media screen and (max-width:800px){#stacks_in_740_page18{display:none}} 
+ .target_stacks_in_860_page18{ z-index:1000; }.target_stacks_in_860_page18.rotate{-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-ms-transform:rotate(0deg);-o-transform:rotate(0deg);transform:rotate(0deg);-webkit-transform-origin:center center;-moz-transform-origin:center center;-ms-transform-origin:center center;-o-transform-origin:center center;transform-origin:center center}.target_stacks_in_860_page18.fill{width:100%}.target_stacks_in_860_page18.flexible{width:100%}.target_stacks_in_860_page18.fixed{width:250px}.target_stacks_in_860_page18.browser{position:fixed!important}.target_stacks_in_860_page18.absolute{position:absolute!important}.target_stacks_in_860_page18.body{position:absolute!important}.target_stacks_in_860_page18.right{float:right}.target_stacks_in_860_page18.left{float:left}.target_stacks_in_860_page18.top_pt{top:0%}.target_stacks_in_860_page18.top_px{top:0px}.target_stacks_in_860_page18.bottom_pt{bottom:0%}.target_stacks_in_860_page18.bottom_px{bottom:0px}.target_stacks_in_860_page18.vcenter{top:0;height:100%}.target_stacks_in_860_page18.vcenter>.com_joeworkman_stacks_target_stack{position:relative;top:50%;-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%);transform:translateY(-50%)}.target_stacks_in_860_page18.right_pt{right:0%}.target_stacks_in_860_page18.right_px{right:0px}.target_stacks_in_860_page18.left_pt{left:0%}.target_stacks_in_860_page18.left_px{left:0px}.target_stacks_in_860_page18.hcenter>.com_joeworkman_stacks_target_stack{position:relative;left:50%;-webkit-transform:translateX(-50%);-moz-transform:translateX(-50%);-ms-transform:translateX(-50%);-o-transform:translateX(-50%);transform:translateX(-50%)} 
+
+/*
+-------------------------------------------
+Stack: Blueball FreeStacks Responsive Max Width Stack
+Style Sheet: fsrmaxwidth.css
+Created: 23, October 2012
+Last Modified: 01, May 2014
+Author: Charlie Lockhart, Blueball Design
+www.blueballdesign.com
+Copyright 2012-2014 Blueball Design LLC USA/Charlie Lockhart
+All Rights Reserved
+-------------------------------------------
+*/
+
+#stacks_in_863_page18 {
+	max-width: 1200px;
+	min-width: 320px;
+	margin: 0px auto !important;
+}
+
+/************************************************************************************
+MOBILE
+*************************************************************************************/
+
+@media screen and (max-width: 768px) {
+
+#stacks_in_863_page18 {
+	max-width: 100% !important;
+	min-width: % !important;
+}
+
+}
+/*
+-------------------------------------------
+File: 'Blueball FreeStacks Responsive Logo Stack' 
+Style Sheet: fsrlogo.css
+Created: 25, October, 2010
+Last Modified: 22, May 2014
+Author: Charlie Lockhart, Blueball Design
+www.blueballdesign.com
+Copyright 2013 Blueball Design LLC USA/Charlie Lockhart
+All Rights Reserved
+-------------------------------------------
+*/
+
+#stacks_in_862_page18 {
+	text-align: left;
+}
+
+#logo {
+	background: transparent;
+}
+
+#logo img {
+	position:  relative;
+	height: auto !important;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+/* Smartphones (landscape) ----------- */
+@media screen and (max-width: 600px) {
+	
+#stacks_in_862_page18 {
+	text-align: center;
+}
+	
+#logo img {
+	height: auto !important;
+	max-width: 75% !important;
+}
+}
+
+
+  #stacks_in_744_page18{display:none}@media screen and (max-width:800px){#stacks_in_744_page18{display:block}} 
+#stacks_in_789_page18{  padding-left:0px;padding-right:0px; }#stacks_in_789_page18>.jack-wrapper{padding:0;margin:0;border:0;background:0;position:relative;display:block;       margin:0px;  margin-left:auto;margin-right:auto;    border-radius:0px; -moz-box-shadow:0px 0px 0px 0px #333333;-webkit-box-shadow:0px 0px 0px 0px #333333;box-shadow:0px 0px 0px 0px #333333; behavior:url(/PIE/PIE.htc)}#stacks_in_789_page18>.jack-wrapper.hover{  behavior:url(/PIE/PIE.htc)}#stacks_in_789_page18>.jack-wrapper>.jack{padding:0;margin:0;border:0;background:0;position:relative;display:block;overflow:hidden;      padding:0px;  border-color:#000000; border-style:solid;  border-width:0px;  border-radius:0px;  -moz-box-shadow:inset 0px 0px 0px 0px #333333;-webkit-box-shadow:inset 0px 0px 0px 0px #333333;box-shadow:inset 0px 0px 0px 0px #333333; behavior:url(/PIE/PIE.htc)}
+#stacks_in_789_page18>.jack-wrapper>.jack.hover{  behavior:url(/PIE/PIE.htc)}#stacks_in_789_page18>.jack-wrapper>.jack>.stacks_out{  }#stacks_in_789_page18>.jack-wrapper>.jack-back{  border-radius:0px;  background-attachment:scroll;background-clip:border-box; background-color:transparent;     background-color:#4C4C4C;  background-image:-webkit-gradient(linear,left top,left bottom,from(#4C4C4C),to(#191919));background-image:-webkit-linear-gradient(top,#4C4C4C,#191919);background-image:-moz-linear-gradient(top,#4C4C4C,#191919);background-image:-o-linear-gradient(top,#4C4C4C,#191919);background-image:linear,to bottom,#4C4C4C,#191919;-pie-background:linear,to bottom,#4C4C4C,#191919;               behavior:url(/PIE/PIE.htc)}
+#stacks_in_789_page18>.jack-wrapper>.jack-back.hover{  behavior:url(/PIE/PIE.htc)}
+/*
+-------------------------------------------
+File: 'Blueball FreeStacks Responsive Logo Stack' 
+Style Sheet: fsrlogo.css
+Created: 25, October, 2010
+Last Modified: 22, May 2014
+Author: Charlie Lockhart, Blueball Design
+www.blueballdesign.com
+Copyright 2013 Blueball Design LLC USA/Charlie Lockhart
+All Rights Reserved
+-------------------------------------------
+*/
+
+#stacks_in_859_page18 {
+	text-align: center;
+}
+
+#logo {
+	background: transparent;
+}
+
+#logo img {
+	position:  relative;
+	height: auto !important;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+/* Smartphones (landscape) ----------- */
+@media screen and (max-width: 600px) {
+	
+#stacks_in_859_page18 {
+	text-align: center;
+}
+	
+#logo img {
+	height: auto !important;
+	max-width: 75% !important;
+}
+}
+
+
+
+#stacks_in_859_page18 {
+	padding: 5px 0px 0px 0px;
+}
+/*
+-------------------------------------------
+Stack: Blueball FreeStacks Responsive Title Stack
+Style Sheet: fsrtitle.css
+Created: 23, September 2012
+Last Modified: 22, April 2014
+Author: Charlie Lockhart, Blueball Design
+www.blueballdesign.com
+Copyright 2012-2014 Blueball Design LLC USA/Charlie Lockhart
+All Rights Reserved
+-------------------------------------------
+*/
+
+#stacks_in_853_page18 {
+	
+}
+
+#stacks_in_853_page18 #title h1 {
+	line-height: 1.00em;
+	text-align: center;
+	font-weight: 700;
+}
