@@ -32,11 +32,12 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
 		/// Resolves code dependencies.
 		public override void ResolveDependencies() {
-            // Ask our children to resolve their dependencies.
+            // -- Ask our children to resolve their dependencies. --
             base.ResolveDependencies();
             
             // Simply reposition code for simple trigger-to-enable dependencies.
-            if(myEnablePorts.Length == 1) {
+            var enableLen= myEnablePorts.Length;
+            if(enableLen == 1) {
                 var producerPort= myEnablePorts[0].FirstProducerPort;
                 var parentAsExecBlock= myCodeBlock as ExecutionBlockDefinition;
                 if(producerPort.IsTriggerPort && parentAsExecBlock != null) {
@@ -45,7 +46,22 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
             }
             
-            // Verify if we can optimize parameter ports.
+            // -- Determine best enable order for code optimization. --
+            if(enableLen > 1) {
+                for(int i= 0; i < enableLen; ++i) {
+                    var enable= myEnablePorts[i];
+                    if(enable.IsTheOnlyConsumer && !enable.FirstProducerPort.IsTriggerPort) {
+                        if(i != 0) {
+                            var t= myEnablePorts[0];
+                            myEnablePorts[0]= enable;
+                            myEnablePorts[i]= t;
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            // -- Verify if we can optimize parameter ports. --
             myEnableCode[0]= Context.GetCodeFor(GetCodeProducerPort(myEnablePorts[0]));
             if(myEnableCode[0] != null) {
                 myEnableCode[0]= OptimizeInputParameter(myEnableCode[0], myCodeBlock);

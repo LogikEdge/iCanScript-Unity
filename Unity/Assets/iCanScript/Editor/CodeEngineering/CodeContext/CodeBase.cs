@@ -129,7 +129,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             var name= TryGetNameFor(vsObj);
             if(name == null) {
-                Debug.Log("Unable to find name for=> "+vsObj.FullName);
+//                Debug.Log("Unable to find name for=> "+vsObj.FullName);
                 return vsObj.CodeName;
             }
             return name;
@@ -386,7 +386,16 @@ namespace iCanScript.Editor.CodeEngineering {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             bool isConstructor= vsObject.IsConstructor;
-            name= isConstructor ? vsObject.DisplayName : vsObject.CodeName;
+            if(isConstructor) {
+                name= vsObject.DisplayName;
+            }
+            else if(vsObject.IsTriggerPort) {
+                name= vsObject.CodeName;
+                name= vsObject.ParentNode.CodeName+Char.ToUpper(name[0])+name.Substring(1);
+            }
+            else {
+                name= vsObject.CodeName;
+            }
             return MakeNameUnique(iCS_ObjectNames.ToLocalVariableName(name), vsObject);
         }
         // ---------------------------------------------------------------------------------

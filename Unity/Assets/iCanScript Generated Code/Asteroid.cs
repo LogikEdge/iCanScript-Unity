@@ -31,13 +31,13 @@ namespace iCanScript.Engine.GeneratedCode {
         [iCS_Function]
         public  void OnTriggerEnter(Collider colliderInfo) {
             var theIsBolt= colliderInfo.CompareTag("Bolt");
-            bool theTrigger= false;
+            bool thePlayerCollisionTrigger= false;
             if(colliderInfo.CompareTag("Player")) {
                 var theTransform= colliderInfo.transform;
                 Object.Instantiate(playerExplosion, theTransform.position, theTransform.rotation);
-                theTrigger= true;
+                thePlayerCollisionTrigger= true;
             }
-            if(theTrigger || theIsBolt) {
+            if(thePlayerCollisionTrigger || theIsBolt) {
                 Object.Destroy(colliderInfo.gameObject);
                 Object.Destroy(gameObject);
                 Object.Instantiate(asteroidExplosion, transform.position, transform.rotation);
