@@ -29,8 +29,8 @@ public class iCS_ContextualMenu {
 	const string NestedTypeCreationStr		   = "#+ Create a Nested Type";
 	
     const string ShowHierarchyStr              = "Show in hierarchy";
-    const string SetAsDisplayRootStr           = "Set as Display Root";
-    const string ClearNavigationHistoryStr     = "Clear Navigation History";
+    const string SetAsDisplayRootStr           = "Work on Node in Isolation";
+    const string ClearNavigationHistoryStr     = "Back to Full View";
     const string DeleteStr                     = "- Delete";
     const string PackageStr                    = "+ Create a Package";
     const string StateChartStr                 = "+ Create a State Chart";
