@@ -56,21 +56,26 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void SaveWithUndo(string undoMessage, TransactionType transactionType) {
-        // Start recording changes for Undo.
+        // -- Start recording changes for Undo. --
         if(UserTransactionController.ShowUserTransaction) {
             Debug.Log("iCanScript: Saving=> "+undoMessage);            
         }
         ++Storage.UndoRedoId;
-        // Collapse undo group for same transaction.
+        // -- Collapse undo group for same transaction. --
         var currentGroupId= Undo.GetCurrentGroup();
         if(currentGroupId != myCurrentUndoGroupId) {
             Undo.CollapseUndoOperations(myCurrentUndoGroupId);
         }
-        // Prepare to record modification to group.
+        // -- Run visual script cleanup code. --
+		int retries= 3;
+		while(retries > 0 && Cleanup()) --retries;
+		if(retries <= 0) {
+			Debug.LogWarning("iCanScript: Cleanup is not stabilizing.  Contact support.");
+		}
+        // -- Prepare to record modification to group. --
         Undo.RecordObject(iCSMonoBehaviour, undoMessage);
-		Cleanup();
         SaveStorage();        
-        // Save type of user operation
+        // -- Save type of user operation. --
         if(transactionType == myLastTransactionType) {
             if(myLastTransactionType == TransactionType.Navigation) {
                 Undo.CollapseUndoOperations(myFirstNavigationUndoGroupId);
@@ -79,13 +84,13 @@ public partial class iCS_IStorage {
                 Undo.CollapseUndoOperations(myFirstFieldUndoGroupId);                
             }            
         }
-        // New user operation type
+        // -- New user operation type. --
         else {
-            // Take a snapshot of the first navigation transaction.
+            // -- Take a snapshot of the first navigation transaction. --
             if(transactionType == TransactionType.Navigation) {
                 myFirstNavigationUndoGroupId= Undo.GetCurrentGroup();
             } 
-            // Take a snapshot of the first field transaction.
+            // -- Take a snapshot of the first field transaction. --
             if(transactionType == TransactionType.Field) {
                 myFirstFieldUndoGroupId= Undo.GetCurrentGroup();
             }             
