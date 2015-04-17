@@ -1,0 +1,85 @@
+Title: iCanScript Extending iCanScript
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+<!--TOC max2-->
+
+# Adding Message Handlers #
+
+
+The [Tagging your Source Code] and [Importing Public Members] installing mechanism extract existing functionality from the object definition to publish into the iCanScript library.  However, they do not provide for defining message handlers for the Unity framework.  This is because the Unity messages are dynamically created at runtime and are therefore not visible in the object definitions.
+
+The message handlers nodes have the following characteristics:
+
+*  they are package nodes;
+*  they includes child node(s) that implement the behaviour for the message;
+*  their input ports contain the parameter values of the message.
+
+
+The following image depicts a game object behaviour with four (4) message handlers:
+
+
+![Figure 1. Behaviour Message Handlers Example.][behaviour-message-handlers2.png]
+
+
+You rarely need to add message handlers to the iCanScript library but if do, you will need to invoke the following function:
+
+	void iCS_LibraryDatabase.AddMessage(	System.Type classType,
+												string messageName,
+												iCS_StorageClass storageClass,
+												iCS_Parameter[] parameters,
+												iCS_FunctionReturn functionReturn,
+												string description,
+												string iconPath)
+
+| Parameter Name | Description                                                   |
+| :------------- | :------------------------------------------------------------ |
+| classType      | The programatic type that will accept the message             |
+| messageName    | The name of the message to handle                             |
+| storageClass   | Either *iCS_Storage.Class* or *iCS_Storage.Instance*          |
+| parameters     | Message parameters. See *iCS_UnityClasses* file for example.  |
+| functionReturn | Message return type. See *iCS_UnityClasses* file for example. |
+| description    | A short description of the message.                           |
+| iconPath       | The icon to use when the message handler is iconized.         |
+[Table 1. AddMessage parameter descriptions.]
+
+
+>  **Note:** The iCanScript distribution installs the Unity message handlers in file: *"iCanScript/Editor/NodeInstaller/iCS_UnityClasses.cs"*.  Please use the Unity installer as example to create your own message handlers.
+
+[behaviour-message-handlers2.png]: behaviour-message-handlers2.png

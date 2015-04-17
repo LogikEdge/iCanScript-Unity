@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___game_controller" kind="class" prot="public">
+    <compoundname>iCS_GameController</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___game_controller_1ac9960ea7f5004f53b4c9b4cdd703f63a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_GameController.GameController</definition>
+        <argsstring>(out Vector2 analog1, out bool b1, out bool b2, out bool b3, float scale=1.0f)</argsstring>
+        <name>GameController</name>
+        <param>
+          <type>out Vector2</type>
+          <declname>analog1</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b1</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b2</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b3</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>scale</declname>
+          <defval>1.0f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_GameController.cs" line="9" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_GameController.cs" bodystart="9" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___game_controller_1a4c7504540a3603289a4c5bb57cdb5515" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_GameController.GameControllerExt</definition>
+        <argsstring>(out Vector2 scaledAnalog2, out bool b1, out bool b2, out bool b3, out bool b4, out bool b5, out bool b6, out bool b7, out bool b8, string analog1_x_name=&quot;Horizontal&quot;, string analog1_y_name=&quot;Vertical&quot;, float analog1_scale=1.0f, string analog2_x_name=null, string analog2_y_name=null, float analog2_scale=1.0f, string b1_name=&quot;Fire1&quot;, string b2_name=&quot;Fire2&quot;, string b3_name=&quot;Fire3&quot;, string b4_name=&quot;Jump&quot;, string b5_name=null, string b6_name=null, string b7_name=null, string b8_name=null)</argsstring>
+        <name>GameControllerExt</name>
+        <param>
+          <type>out Vector2</type>
+          <declname>scaledAnalog2</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b1</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b2</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b3</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b4</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b5</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b6</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b7</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>b8</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>analog1_x_name</declname>
+          <defval>&quot;Horizontal&quot;</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>analog1_y_name</declname>
+          <defval>&quot;Vertical&quot;</defval>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>analog1_scale</declname>
+          <defval>1.0f</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>analog2_x_name</declname>
+          <defval>null</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>analog2_y_name</declname>
+          <defval>null</defval>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>analog2_scale</declname>
+          <defval>1.0f</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>b1_name</declname>
+          <defval>&quot;Fire1&quot;</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>b2_name</declname>
+          <defval>&quot;Fire2&quot;</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>b3_name</declname>
+          <defval>&quot;Fire3&quot;</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>b4_name</declname>
+          <defval>&quot;Jump&quot;</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>b5_name</declname>
+          <defval>null</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>b6_name</declname>
+          <defval>null</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>b7_name</declname>
+          <defval>null</defval>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>b8_name</declname>
+          <defval>null</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_GameController.cs" line="21" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_GameController.cs" bodystart="21" bodyend="60"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_GameController.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_GameController.cs" bodystart="5" bodyend="62"/>
+    <listofallmembers>
+      <member refid="classi_c_s___game_controller_1ac9960ea7f5004f53b4c9b4cdd703f63a" prot="public" virt="non-virtual"><scope>iCS_GameController</scope><name>GameController</name></member>
+      <member refid="classi_c_s___game_controller_1a4c7504540a3603289a4c5bb57cdb5515" prot="public" virt="non-virtual"><scope>iCS_GameController</scope><name>GameControllerExt</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

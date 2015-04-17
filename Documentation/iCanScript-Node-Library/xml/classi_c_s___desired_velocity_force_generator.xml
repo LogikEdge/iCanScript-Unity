@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___desired_velocity_force_generator" kind="class" prot="public">
+    <compoundname>iCS_DesiredVelocityForceGenerator</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classi_c_s___desired_velocity_force_generator_1a0b29129fdc7a257acd79f9c41f3783e7" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_DesiredVelocityForceGenerator.MaxAcceleration</definition>
+        <argsstring></argsstring>
+        <name>MaxAcceleration</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" line="6" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___desired_velocity_force_generator_1a63bbddbd1e07b5acddfd9b0d66e92dae" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_DesiredVelocityForceGenerator.MaxDeceleration</definition>
+        <argsstring></argsstring>
+        <name>MaxDeceleration</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___desired_velocity_force_generator_1aaae3cda4b71493f4ecb6aed96d180d6b" prot="private" static="no" mutable="no">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_DesiredVelocityForceGenerator.AffectedCoordinates</definition>
+        <argsstring></argsstring>
+        <name>AffectedCoordinates</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" line="8" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classi_c_s___desired_velocity_force_generator_1a308ac7a0da09f36aa4dceaa355445529" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>iCS_DesiredVelocityForceGenerator.iCS_DesiredVelocityForceGenerator</definition>
+        <argsstring>(float maxAcceleration, float maxDeceleration, Vector3 affectedCoordinates)</argsstring>
+        <name>iCS_DesiredVelocityForceGenerator</name>
+        <param>
+          <type>float</type>
+          <declname>maxAcceleration</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>maxDeceleration</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>affectedCoordinates</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" bodystart="11" bodyend="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___desired_velocity_force_generator_1a54debeb473daf0c9263a51ef31785ea8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_DesiredVelocityForceGenerator.Update</definition>
+        <argsstring>(Vector3 desiredVelocity, Vector3 currentVelocity, float accelerationScale=1f)</argsstring>
+        <name>Update</name>
+        <param>
+          <type>Vector3</type>
+          <declname>desiredVelocity</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>currentVelocity</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>accelerationScale</declname>
+          <defval>1f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" line="18" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" bodystart="18" bodyend="41"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs" bodystart="5" bodyend="42"/>
+    <listofallmembers>
+      <member refid="classi_c_s___desired_velocity_force_generator_1aaae3cda4b71493f4ecb6aed96d180d6b" prot="private" virt="non-virtual"><scope>iCS_DesiredVelocityForceGenerator</scope><name>AffectedCoordinates</name></member>
+      <member refid="classi_c_s___desired_velocity_force_generator_1a308ac7a0da09f36aa4dceaa355445529" prot="public" virt="non-virtual"><scope>iCS_DesiredVelocityForceGenerator</scope><name>iCS_DesiredVelocityForceGenerator</name></member>
+      <member refid="classi_c_s___desired_velocity_force_generator_1a0b29129fdc7a257acd79f9c41f3783e7" prot="private" virt="non-virtual"><scope>iCS_DesiredVelocityForceGenerator</scope><name>MaxAcceleration</name></member>
+      <member refid="classi_c_s___desired_velocity_force_generator_1a63bbddbd1e07b5acddfd9b0d66e92dae" prot="private" virt="non-virtual"><scope>iCS_DesiredVelocityForceGenerator</scope><name>MaxDeceleration</name></member>
+      <member refid="classi_c_s___desired_velocity_force_generator_1a54debeb473daf0c9263a51ef31785ea8" prot="public" virt="non-virtual"><scope>iCS_DesiredVelocityForceGenerator</scope><name>Update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

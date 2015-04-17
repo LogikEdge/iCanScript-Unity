@@ -1,0 +1,89 @@
+Title: iCanScript Example Project
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+    <!--
+
+.center {
+    text-align: center;
+}
+
+.tipbox {
+    text-align: justify;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-style: ridge;
+    border-width: 2px;
+    text-indent: 0;
+}
+
+.cmd {
+    color: #6d00ff;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.tiptitle {
+    font-size: 1.4em;
+    font-weight: normal;
+}
+    -->
+</style>
+
+<!--TOC max2-->
+
+# Objective
+
+In this section, we examine the core constructs of iCanScript with the help of a small example.  To that end, we shall first establish the working parameters of our example by creating a storyline and setting up the scene before implementing the visual scripts.
+
+The following is a summary of the steps to build our first example:
+
+1. Create a [storyline][] to define the working parameters for our example;
+2. Identify and define the [actors][Our Actors] for our story;
+3. Build a scene in Unity populated with [the defined actors][Our Actors];
+4. Design the visual script for [moving Mr Cube][Moving Mr Cube (step 1)];
+5. Design the visual script for [enabling & disabling Ms Light][];
+6. Complete the example by [adding a Panic State][] for Mr Cube.
+
+
+
+# Storyline
+
+If you are like me, you prefer learning the workings of a tool in the context of a small example.  Like all good game designers, I like to give a soul to my project using a storyline.  We can then extract working scenarios to direct the creation of our visual scripts.
+
+Here goes the story:
+
+>  In the land of Emptiness lives Mr Cube.  Mr Cube has a busy life roaming around on an invisible 2D plane.  Since Mr Cube is a close relative of Mr Fly, he is attracted to Ms Light that also lives in the land of Emptiness. Little does Mr Cube know is that Ms Light is shy and she get "turned off" if anyone comes to close to her.  When in the dark, Mr Cube panics and runs around in all directions.  Luckily for Mr Cube, Ms Light gets "turned on" when Mr Cube is far enough from her.
+
+(Wow! we got romance, terror and deception. What a great plot!)
+
+
+
+# Our Actors
+
+Before creating visual scripts, we first need to build a scene in Unity and populate it with actors.  Based on the storyline, the actors are (the camera has been purposely omitted):
+
+- **Mr. Cube** (I'll let you guess the shape to use);
+- **Ms. Light** (a directional light);
+- **Near Trigger Zone** to turn off _Ms. Light_ (a sphere will do fine);
+- **Far Trigger Zone** to turn on _Ms. Light_ (again a sphere will do fine).
+
+The main characteristics of the actors are:
+
+- All actors live on a 2D plane with the Y-axes set to zero (0);
+- Ms. Light and both Trigger Zones are centred at (0,0,0);
+- Both Trigger Zones are configured to trigger when colliding with _Rigid Bodies_;
+- The Near Trigger Zone will be 2 meters in diameter;
+- The Far Trigger Zone will be 3 meters in diameter;
+- Mr. Cube is one meter in dimensions;
+- Mr. Cube includes a _Rigid Body_ component to generate collision triggers.
+
+You may ask yourself why two trigger zones?  We want to avoid _Ms Light_ from rapidly transitioning on and off while _Mr Cube_ nears her.  If only one trigger zone existed, _Mr Cube_ could navigate on the edge of the trigger zone causing _Ms Light_ to flicker.  By creating a buffer area between the on trigger (near) and the off trigger (far), we remove the possibility of _Ms Light_ flickering.

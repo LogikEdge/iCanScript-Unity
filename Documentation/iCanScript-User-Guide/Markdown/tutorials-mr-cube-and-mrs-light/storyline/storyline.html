@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="creator" content="Marked.app"/>
+	<title>iCanScript Example Project</title>
+	<meta name="author" content="Michel Launier"/>
+	<meta name="version" content="v1.0.3 (Beta #17)"/>
+	<meta name="email" content="support@icanscript.com"/>
+	<link type="text/css" rel="stylesheet" href="Github.css"/>
+</head>
+<body>
+
+<style type="text/css">
+    <!--
+
+.center {  
+    text-align: center;  
+}  
+
+.tipbox {  
+    text-align: justify;  
+    margin-bottom: 10px;  
+    margin-right: 10px;  
+    margin-left: 20px;  
+    padding-right: 10px;  
+    padding-left: 10px;  
+    border-style: ridge;  
+    border-width: 2px;  
+    text-indent: 0;  
+}  
+
+.cmd {  
+    color: #6d00ff;  
+    font-weight: bold;  
+    font-style: italic;  
+}  
+
+.tiptitle {  
+    font-size: 1.4em;  
+    font-weight: normal;  
+}  
+    -->
+</style>
+
+
+<ul style="display: block;" id="mkreplaced-toc" class="max-2"><li class="notmissing"><a href="#objective" class="wiki-link">Objective</a></li><li class="notmissing"><a href="#storyline" class="wiki-link">Storyline</a></li><li class="notmissing"><a href="#ouractors" class="wiki-link">Our Actors</a></li></ul>
+
+
+
+<h1 id="objective">Objective</h1>
+
+<p>In this section, we examine the core constructs of iCanScript with the help of a small example. To that end, we shall first establish the working parameters of our example by creating a storyline and setting up the scene before implementing the visual scripts. </p>
+
+<p>The following is a summary of the steps to build our first example: </p>
+
+<ol>
+<li>Create a <a href="#storyline">storyline</a> to define the working parameters for our example;</li>
+<li>Identify and define the <a href="#ouractors">actors</a> for our story;</li>
+<li>Build a scene in Unity populated with <a href="#ouractors">the defined actors</a>;</li>
+<li>Design the visual script for [moving Mr Cube][Moving Mr Cube (step 1)];</li>
+<li>Design the visual script for [enabling &amp; disabling Ms Light][];</li>
+<li>Complete the example by [adding a Panic State][] for Mr Cube.</li>
+</ol>
+
+<h1 id="storyline">Storyline</h1>
+
+<p>If you are like me, you prefer learning the workings of a tool in the context of a small example. Like all good game designers, I like to give a soul to my project using a storyline. We can then extract working scenarios to direct the creation of our visual scripts. </p>
+
+<p>Here goes the story: </p>
+
+<blockquote>
+<p>In the land of Emptiness lives Mr Cube. Mr Cube has a busy life roaming around on an invisible 2D plane. Since Mr Cube is a close relative of Mr Fly, he is attracted to Ms Light that also lives in the land of Emptiness. Little does Mr Cube know is that Ms Light is shy and she get &#8220;turned off&#8221; if anyone comes to close to her. When in the dark, Mr Cube panics and runs around in all directions. Luckily for Mr Cube, Ms Light gets &#8220;turned on&#8221; when Mr Cube is far enough from her. </p>
+</blockquote>
+
+<p>(Wow! we got romance, terror and deception. What a great plot!) </p>
+
+<h1 id="ouractors">Our Actors</h1>
+
+<p>Before creating visual scripts, we first need to build a scene in Unity and populate it with actors. Based on the storyline, the actors are (the camera has been purposely omitted): </p>
+
+<ul>
+<li><strong>Mr. Cube</strong> (I&#8217;ll let you guess the shape to use);</li>
+<li><strong>Ms. Light</strong> (a directional light);</li>
+<li><strong>Near Trigger Zone</strong> to turn off <em>Ms. Light</em> (a sphere will do fine);</li>
+<li><strong>Far Trigger Zone</strong> to turn on <em>Ms. Light</em> (again a sphere will do fine).</li>
+</ul>
+
+<p>The main characteristics of the actors are: </p>
+
+<ul>
+<li>All actors live on a 2D plane with the Y-axes set to zero (0);</li>
+<li>Ms. Light and both Trigger Zones are centred at (0,0,0);</li>
+<li>Both Trigger Zones are configured to trigger when colliding with <em>Rigid Bodies</em>;</li>
+<li>The Near Trigger Zone will be 2 meters in diameter;</li>
+<li>The Far Trigger Zone will be 3 meters in diameter;</li>
+<li>Mr. Cube is one meter in dimensions;</li>
+<li>Mr. Cube includes a <em>Rigid Body</em> component to generate collision triggers.</li>
+</ul>
+
+<p>You may ask yourself why two trigger zones? We want to avoid <em>Ms Light</em> from rapidly transitioning on and off while <em>Mr Cube</em> nears her. If only one trigger zone existed, <em>Mr Cube</em> could navigate on the edge of the trigger zone causing <em>Ms Light</em> to flicker. By creating a buffer area between the on trigger (near) and the off trigger (far), we remove the possibility of <em>Ms Light</em> flickering.</p>
+
+</body>
+</html>

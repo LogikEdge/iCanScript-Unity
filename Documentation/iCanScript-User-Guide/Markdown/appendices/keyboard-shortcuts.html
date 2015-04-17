@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="creator" content="Marked.app"/>
+	<title>iCanScript Appendices</title>
+	<meta name="author" content="Michel Launier"/>
+	<meta name="version" content="v1.0.3 (Beta #17)"/>
+	<meta name="email" content="support@icanscript.com"/>
+	<link type="text/css" rel="stylesheet" href="Github.css"/>
+</head>
+<body>
+
+<style type="text/css">
+    <!--
+
+.center {  
+    text-align: center;  
+}  
+
+.tipbox {  
+    text-align: justify;  
+    margin-bottom: 10px;  
+    margin-right: 10px;  
+    margin-left: 20px;  
+    padding-right: 10px;  
+    padding-left: 10px;  
+    border-style: ridge;  
+    border-width: 2px;  
+    text-indent: 0;  
+}  
+
+.cmd {  
+    color: #6d00ff;  
+    font-weight: bold;  
+    font-style: italic;  
+}  
+
+.tiptitle {  
+    font-size: 1.4em;  
+    font-weight: normal;  
+}  
+    -->
+</style>
+
+
+<ul style="display: block;" id="mkreplaced-toc" class="max-2"><ul><li class="notmissing"><a href="#visualscriptnavigation" class="wiki-link">Visual Script Navigation</a></li><li class="notmissing"><a href="#selectionnavigation" class="wiki-link">Selection Navigation</a></li><li class="notmissing"><a href="#bookmarks" class="wiki-link">Bookmarks</a></li><li class="notmissing"><a href="#expandfold" class="wiki-link">Expand / Fold</a></li><li class="notmissing"><a href="#edition" class="wiki-link">Edition</a></li></ul></ul>
+
+
+
+<h2 id="visualscriptnavigation">Visual Script Navigation</h2>
+
+<p>The visual script can be navigating by changing the node that serves as the display root. Use the following keyboard and mouse commands to navigate your Visual Scripts. </p>
+
+<table>
+<caption id="table1.visualscriptnavigationshortcuts.">Table 1. Visual Script Navigation Shortcuts.</caption>
+<colgroup>
+<col style="text-align:center;"/>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">Navigation Hot-Keys</th>
+	<th style="text-align:left;">Action Performed</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;"><em><strong>Ctrl-Double Click</strong></em></td>
+	<td style="text-align:left;"><em>Child Node:</em> Set new display root node.<br><em>Display Root Node:</em> Revert to previous display root.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><em><strong>[</strong></em></td>
+	<td style="text-align:left;">Moves backward in navigation history.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><em><strong>]</strong></em></td>
+	<td style="text-align:left;">Moves forward in the navigation history.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="selectionnavigation">Selection Navigation</h2>
+
+<table>
+<caption id="table2.selectionshortcuts.">Table 2. Selection Shortcuts.</caption>
+<colgroup>
+<col style="text-align:center;"/>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">Selection Hot-Keys</th>
+	<th style="text-align:left;">Action Performed</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;"><strong><em>Up Arrow</em></strong></td>
+	<td style="text-align:left;">Moves the selection to the parent node.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>Down Arrow</em></strong></td>
+	<td style="text-align:left;">Moves the selection to the first child node.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>Right Arrow</em></strong></td>
+	<td style="text-align:left;">Moves the selection to the next sibling node.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>Left Arrow</em></strong></td>
+	<td style="text-align:left;">Moves the selection to the previous sibling node.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>F</em></strong></td>
+	<td style="text-align:left;">Repositions the selected node or port in the centre of the visual editor viewport</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>Shift-F</em></strong></td>
+	<td style="text-align:left;">Centres the visual script in the middle of the visual editor viewport</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="bookmarks">Bookmarks</h2>
+
+<table>
+<caption id="table3.bookmarkshortcuts.">Table 3. Bookmark Shortcuts.</caption>
+<colgroup>
+<col style="text-align:center;"/>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">Bookmarks Hot-Keys</th>
+	<th style="text-align:left;">Action Performed</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;"><strong><em>B</em></strong></td>
+	<td style="text-align:left;">Bookmarks the active selection.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>G</em></strong></td>
+	<td style="text-align:left;">Moves the selection to the active bookmark</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>S</em></strong></td>
+	<td style="text-align:left;">Swaps bookmark. Bookmarks the active selection and moves the selection to the previous bookmark.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>C</em></strong></td>
+	<td style="text-align:left;">Connects the bookmarked port and the selected port (requires compatible data types)</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="expandfold">Expand / Fold</h2>
+
+<table>
+<caption id="table4.expandfoldshortcuts.">Table 4. Expand / Fold Shortcuts.</caption>
+<colgroup>
+<col style="text-align:center;"/>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">Expand / Fold Keys</th>
+	<th style="text-align:left;">Action Performed</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;"><strong><em>Enter</em></strong></td>
+	<td style="text-align:left;">Expands the selected node:<br>- <strong>Action Nodes:</strong> Iconized -&gt; Folded<br>- <strong>Composite Nodes:</strong> Iconized -&gt; Folded -&gt; Unfolded</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>Alt-Enter</em></strong></td>
+	<td style="text-align:left;">Maximizes the selected node:<br>- <strong>Action Nodes:</strong> Iconized -&gt; Folded<br>- <strong>Composite Nodes:</strong> Iconized or Folded -&gt; Unfolded</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>Shift-Enter</em></strong></td>
+	<td style="text-align:left;">Collapses the selected node:<br>- <strong>Action Nodes:</strong> Folded -&gt; Iconized<br>- <strong>Composite Nodes:</strong> Unfolded -&gt; Folded -&gt; Iconized</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>Alt-Shift-Enter</em></strong></td>
+	<td style="text-align:left;">Iconizes the selected node.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="edition">Edition</h2>
+
+<table>
+<caption id="table5.quickdeletionshortcuts.">Table 5. Quick Deletion Shortcuts.</caption>
+<colgroup>
+<col style="text-align:center;"/>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">Edition Keys</th>
+	<th style="text-align:left;">Action Performed</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;"><em><strong>L</strong></em></td>
+	<td style="text-align:left;">Performs an auto-layout of the selected binding.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>Del</em></strong></td>
+	<td style="text-align:left;">Deletes the currently selected object with user confirmation. The selection is moved to the parent node on deletion.</td>
+</tr>
+<tr>
+	<td style="text-align:center;"><strong><em>Shift-Del</em></strong></td>
+	<td style="text-align:left;">Deletes the currently selected node (no user confirmation). The selection is moved to the parent node.</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+</body>
+</html>

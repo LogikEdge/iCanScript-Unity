@@ -1,0 +1,89 @@
+Title: iCanScript Extending iCanScript
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+<!--TOC max2-->
+
+# Extending iCanScript #
+
+From its inception, iCanScript was designed to be extendable with the addition of user defined nodes. Once installed, the user defined nodes are accessible from the [Library Tree].
+
+Extending the iCanScript library is realized by:
+
+1. [Tagging your Source Code]; 
+2. [Importing Public Members]; 
+3. [Adding Message Handlers]. 
+
+The following picture illustrates how the iCanScript library gets populated and used.  You are given three access points (purple) to include your own packages and nodes inside the iCanScript library.  The iCanScript library gets repopulated for every recompile of the Unity scripts.
+
+![Figure 1. iCanScript library information flow.][extending-node-information-flow.png]
+
+
+![][stamp-1-purple.png] **Tagged Source Code:** You can add to the iCanScript library by tagging your source code with specialized .NET attributes.  This provides for fine control of which elements in your source code are published to the iCanScript user.
+
+![][stamp-2-purple.png] **Importing Public Members:** You can add to the iCanScript library by batch importing all *public* members of specified programatic types.  This method is specially useful for importing libraries for which you do not have the source code.
+
+
+![][stamp-3-purple.png] **Message Installation:** The .NET reflection technology allows for dynamic messaging; a technic used to dynamically invoke a functionality only if it is defined for a software object.  A script responds to dynamic messages if it includes the appropriate message handlers.  You can populate the iCanScript library with the signature of message handlers for given programatic types.  Afterward, the signature can be used by the iCanScript user to build the message handler nodes.
+
+![][stamp-4-orange.png]![][stamp-5-orange.png] The iCanScript editors extracts from the library node and port information when building the visual script.  The visual script manifest and layout information is saved along with the game object that includes the _iCS_VisualScript_ component.
+
+![][stamp-6-orange.png] iCanScript also generates the _iCS_Behaviour_ code that is needed by Unity to execute the the Visual Script.  The behaviour code includes:
+
+1.  the message handlers;
+2.  the control logic that determine the execution order of nodes, and;
+3.  the nodes converted into .NET code.
+
+![][stamp-7-orange.png]When the Unity engine is ran, the iCS_Behaviour code instantiates the variables, invokes the .NET code of the nodes, and responds to the message handlers.  The iCanScript core executive (iCanScriptEngine.dll) assures the execution order and resolves data contention.
+
+[extending-node-information-flow.png]: extending-node-information-flow.png width=479px height=295px
+
+[stamp-1-purple.png]: stamp-1-purple.png width=31px height=30px
+
+[stamp-2-purple.png]: stamp-2-purple.png width=32px height=30px
+
+[stamp-3-purple.png]: stamp-3-purple.png width=32px height=30px
+
+[stamp-4-orange.png]: stamp-4-orange.png width=32px height=30px
+
+[stamp-5-orange.png]: stamp-5-orange.png width=32px height=30px
+
+[stamp-6-orange.png]: stamp-6-orange.png width=32px height=30px
+
+[stamp-7-orange.png]: stamp-7-orange.png width=32px height=30px

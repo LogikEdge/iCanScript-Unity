@@ -1,0 +1,88 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\sl288\slmult1\pardirnatural
+
+\f0\fs26 \cf0 Before we begin digging into the main concepts of iCanScript, it is good to understand the underlying architecture of the product.  So let's take a closer look at what is installed as part of the iCanScript package ...\
+\
+### iCanScript File Architecture\
+\
+If you browse the iCanScript folder within Unity, you will find that the iCanScript package is divided in two main subsystems:\
+	* the **editor** and;\
+	* the **engine**.\
+\
+\
+[Figure <$n:figure>. iCanScript file structure.]\
+\
+#### Editor Files\
+\
+Browsing the *editor* subsystem, you will find:\
+	* a library file named *iCanScript_Editor.dll*;\
+	* an *EditorWindows* folder with delegates to the editor windows;\
+	* a *Resources* folder with iCanScript graphical assets and;\
+	* a *NodeInstaller* folder with the source code populating the iCanScript library.\
+\
+All but the *NodeInstaller* folder are of limited interest for the user.  They are functional components of iCanScript that should not be tampered with.\
+\
+The *NodeInstaller* folder is, however, of special interest to users wanting to extend iCanScript.  It contains the source code that populates the iCanScript library with the Unity and .NET/Mono nodes. It also contains a special file -- *iCS_CustomInstaller* -- that can be used to extend iCanScript with your own node.  The ability to extend the node library is a pristine feature of iCanScript and is fully described in section [Extending iCanScript].\
+\
+#### Engine Files\
+\
+Browsing the *engine* subsystem, you will find:\
+	* a library file named *iCanScript_Engine.dll* and;\
+	* a *Components* folder with delegates for the iCanScript components.  \
+\
+The *iCanScript_Engine.dll* file contains the iCanScript runtime library.  It is not to be tampered with and must be distributed with every product implemented with iCanScript.\
+\
+!\{-tip-\
+ The **Components** folder contains delegates for the 3 Unity components that are defined in iCanScript.  These delegates are:\
+\
+* *iCS_VisualScript* (persistent storage for Game Object);\
+* *iCS_Library* (persistent storage for Prefab);\
+* *iCS_Behaviour* (iCanScript behaviour).\
+!-tip-\}\
+\
+Files *iCS_VisualScript* and *iCS_Library* are of limited interest for the user.  They are functional components of iCanScript that should not be tampered with.\
+\
+The *iCS_Behaviour* file is dynamically created and modified by iCanScript. It contains the source code to catch and handle Unity Behaviour Messages implemented by your visual scripts.  and may be rebuilt when adding or removing Unity Behaviour Messages (more on Behaviour Messages later).  It cumulates the behaviour messages Don't be surprise if you \
+\
+### The Editor Subsystem\
+\
+As you may have guessed, the *editor* subsystem includes all of the iCanScript editors.  But what you may not have known, is that it also includes the node database.  The node database is somewhat of a complex implementation that is best described once we have a better understanding of the *engine* subsystem responsibilities.  So we will postpone the description of the node database for now\
+\
+\
+### The Engine Subsystem\
+\
+The *engine* section includes all of the "stuff" required to run a visual script.  That is:\
+	* the visual script persistent storage;\
+	* the runtime code of each node;\
+	* the node compiler and;\
+	* the visual script runtime executive.\
+\
+While the *editor* section only needs to be present when editing your script, the *engine* section must be present with your product.  Therefore you need to distribute the iCanScript engine section as part of your product.  You don't need to worry about license distribution since the iCanScript engine is royalty free as long as you have bought the iCanScript product for each of your development seat.\
+\
+\
+Browsing each section, you will find that both contain a library file (iCanScript_Editor.dll & iCanScript_Engine.dll) and a small number of source files.  The *editor* section also includes resource files.\
+\
+The library files include the majority of the iCanScript functionality\
+\
+Each of those section includes one library file, several source code files, and resources\
+\
+\
+\
+### The Editor Subsystem\
+\
+As you may have guessed, the *editor* subsystem includes the iCanScript editors employed to create and modify the visual scripts.  These editors are:\
+\
+* The ***Preferences panel***;\
+* The ***Library tree***;\
+* The ***Visual editor***;\
+* The ***Hierarchy tree***;\
+* The ***Instance Wizard***.\
+\
+\
+Each of those editors are explained in detail in section  [Editors] section.\
+\
+The actual data of the visual scripts are saved inside the engine subsystem.  But what you may not have known, is that it also includes the node database.  The node database is somewhat of a complex implementation that is best described once we have a better understanding of the *engine* subsystem responsibilities.  So we will postpone the description of the node database for now\
+\
+}

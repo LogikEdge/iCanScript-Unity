@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___timer" kind="class" prot="public">
+    <compoundname>iCS_Timer</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___timer_1ab7c6e4071ca5846687b989d11de7d335" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Timer.StartTimer</definition>
+        <argsstring>(float time)</argsstring>
+        <name>StartTimer</name>
+        <param>
+          <type>float</type>
+          <declname>time</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Timer.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Timer.cs" bodystart="7" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___timer_1a4cbb14852d0067a04719fa9aa2fec07c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Timer.IsTimeElapsed</definition>
+        <argsstring>(float endTime, out bool isNotElapsed)</argsstring>
+        <name>IsTimeElapsed</name>
+        <param>
+          <type>float</type>
+          <declname>endTime</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isNotElapsed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Timer.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Timer.cs" bodystart="11" bodyend="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___timer_1a4fe0197340b5133c86cc935cb7c48290" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Timer.RemainingTime</definition>
+        <argsstring>(float endTime)</argsstring>
+        <name>RemainingTime</name>
+        <param>
+          <type>float</type>
+          <declname>endTime</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Timer.cs" line="17" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Timer.cs" bodystart="17" bodyend="20"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Timer.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Timer.cs" bodystart="5" bodyend="21"/>
+    <listofallmembers>
+      <member refid="classi_c_s___timer_1a4cbb14852d0067a04719fa9aa2fec07c" prot="public" virt="non-virtual"><scope>iCS_Timer</scope><name>IsTimeElapsed</name></member>
+      <member refid="classi_c_s___timer_1a4fe0197340b5133c86cc935cb7c48290" prot="public" virt="non-virtual"><scope>iCS_Timer</scope><name>RemainingTime</name></member>
+      <member refid="classi_c_s___timer_1ab7c6e4071ca5846687b989d11de7d335" prot="public" virt="non-virtual"><scope>iCS_Timer</scope><name>StartTimer</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

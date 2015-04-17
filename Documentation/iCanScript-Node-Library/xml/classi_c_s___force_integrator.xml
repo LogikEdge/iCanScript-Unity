@@ -1,0 +1,299 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___force_integrator" kind="class" prot="public">
+    <compoundname>iCS_ForceIntegrator</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classi_c_s___force_integrator_1a084a06cb73f3201769617838fbe001e0" prot="public" static="no" mutable="no">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.Gravity</definition>
+        <argsstring></argsstring>
+        <name>Gravity</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="9" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___force_integrator_1a0460ab387e5f770a358842f84a61ce67" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_ForceIntegrator.Damping</definition>
+        <argsstring></argsstring>
+        <name>Damping</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="10" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___force_integrator_1a3e7ef7f501e1af14952a9a5c4f96fd72" prot="public" static="no" mutable="no">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.Acceleration</definition>
+        <argsstring></argsstring>
+        <name>Acceleration</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___force_integrator_1a8edc33516493f349b7e1054d38a5fa1d" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_ForceIntegrator.InvMass</definition>
+        <argsstring></argsstring>
+        <name>InvMass</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="12" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___force_integrator_1a0b4b7119426703f30822dd445767adfc" prot="public" static="no" mutable="no">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.PreviousVelocity</definition>
+        <argsstring></argsstring>
+        <name>PreviousVelocity</name>
+        <initializer>= Vector3.zero</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="13" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___force_integrator_1a2b16289c2a513d99cf5dbc035d71e39d" prot="public" static="no" mutable="no">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.OutputVelocity</definition>
+        <argsstring></argsstring>
+        <name>OutputVelocity</name>
+        <initializer>= Vector3.zero</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="14" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classi_c_s___force_integrator_1a5eda47276ef2c7136957745e1caeb762" prot="private" static="no" mutable="no">
+        <type>Vector3[]</type>
+        <definition>Vector3 [] iCS_ForceIntegrator.Forces</definition>
+        <argsstring></argsstring>
+        <name>Forces</name>
+        <initializer>= new Vector3[3]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="15" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___force_integrator_1a4966713efb698b402ededf4a0c1fd672" prot="private" static="no" mutable="no">
+        <type>Vector3[]</type>
+        <definition>Vector3 [] iCS_ForceIntegrator.Accelerations</definition>
+        <argsstring></argsstring>
+        <name>Accelerations</name>
+        <initializer>= new Vector3[3]</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="16" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="classi_c_s___force_integrator_1a5e7f3a5aedcae2c245670af79966cd8f" prot="public" static="no" readable="no" writable="no" gettable="no" settable="yes">
+        <type>float</type>
+        <definition>float iCS_ForceIntegrator.Mass</definition>
+        <argsstring></argsstring>
+        <name>Mass</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="21" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classi_c_s___force_integrator_1aef1c160690c3c63598dbf5920e97e21b" prot="public" static="no" readable="no" writable="no" gettable="no" settable="yes">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.Force1</definition>
+        <argsstring></argsstring>
+        <name>Force1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="22" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classi_c_s___force_integrator_1aa4d529288f969bc8142b07f76f231ebd" prot="public" static="no" readable="no" writable="no" gettable="no" settable="yes">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.Force2</definition>
+        <argsstring></argsstring>
+        <name>Force2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="23" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classi_c_s___force_integrator_1a1d20f2763147f1f6b4981a4440e6dfa9" prot="public" static="no" readable="no" writable="no" gettable="no" settable="yes">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.Force3</definition>
+        <argsstring></argsstring>
+        <name>Force3</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="24" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classi_c_s___force_integrator_1a3d786a1848075460fbf115ee6ab017f1" prot="public" static="no" readable="no" writable="no" gettable="no" settable="yes">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.Acceleration1</definition>
+        <argsstring></argsstring>
+        <name>Acceleration1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="25" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classi_c_s___force_integrator_1a43e5c8ee1a0da0b4c5473fdce906c383" prot="public" static="no" readable="no" writable="no" gettable="no" settable="yes">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.Acceleration2</definition>
+        <argsstring></argsstring>
+        <name>Acceleration2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="26" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="classi_c_s___force_integrator_1a811ae6403be08cbf53da477c09b0c2c4" prot="public" static="no" readable="no" writable="no" gettable="no" settable="yes">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.Acceleration3</definition>
+        <argsstring></argsstring>
+        <name>Acceleration3</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="27" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classi_c_s___force_integrator_1aa81c94f25dc56cce305bdc50a07230be" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>iCS_ForceIntegrator.iCS_ForceIntegrator</definition>
+        <argsstring>()</argsstring>
+        <name>iCS_ForceIntegrator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="31" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="31" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___force_integrator_1abc3c21098ca5fe641bd0c1e0cda8e1a8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>iCS_ForceIntegrator.iCS_ForceIntegrator</definition>
+        <argsstring>(Vector3 gravity, float mass=1f, float damping=0.995f)</argsstring>
+        <name>iCS_ForceIntegrator</name>
+        <param>
+          <type>Vector3</type>
+          <declname>gravity</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>mass</declname>
+          <defval>1f</defval>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>damping</declname>
+          <defval>0.995f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="33" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="33" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___force_integrator_1af321c3d083c3a651e03db52ecae16177" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ForceIntegrator.Integrate</definition>
+        <argsstring>(Vector3 actualVelocity, out Vector3 displacement)</argsstring>
+        <name>Integrate</name>
+        <param>
+          <type>Vector3</type>
+          <declname>actualVelocity</declname>
+        </param>
+        <param>
+          <type>out Vector3</type>
+          <declname>displacement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="41" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="41" bodyend="69"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ForceIntegrator.cs" bodystart="5" bodyend="70"/>
+    <listofallmembers>
+      <member refid="classi_c_s___force_integrator_1a3e7ef7f501e1af14952a9a5c4f96fd72" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Acceleration</name></member>
+      <member refid="classi_c_s___force_integrator_1a3d786a1848075460fbf115ee6ab017f1" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Acceleration1</name></member>
+      <member refid="classi_c_s___force_integrator_1a43e5c8ee1a0da0b4c5473fdce906c383" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Acceleration2</name></member>
+      <member refid="classi_c_s___force_integrator_1a811ae6403be08cbf53da477c09b0c2c4" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Acceleration3</name></member>
+      <member refid="classi_c_s___force_integrator_1a4966713efb698b402ededf4a0c1fd672" prot="private" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Accelerations</name></member>
+      <member refid="classi_c_s___force_integrator_1a0460ab387e5f770a358842f84a61ce67" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Damping</name></member>
+      <member refid="classi_c_s___force_integrator_1aef1c160690c3c63598dbf5920e97e21b" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Force1</name></member>
+      <member refid="classi_c_s___force_integrator_1aa4d529288f969bc8142b07f76f231ebd" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Force2</name></member>
+      <member refid="classi_c_s___force_integrator_1a1d20f2763147f1f6b4981a4440e6dfa9" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Force3</name></member>
+      <member refid="classi_c_s___force_integrator_1a5eda47276ef2c7136957745e1caeb762" prot="private" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Forces</name></member>
+      <member refid="classi_c_s___force_integrator_1a084a06cb73f3201769617838fbe001e0" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Gravity</name></member>
+      <member refid="classi_c_s___force_integrator_1aa81c94f25dc56cce305bdc50a07230be" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>iCS_ForceIntegrator</name></member>
+      <member refid="classi_c_s___force_integrator_1abc3c21098ca5fe641bd0c1e0cda8e1a8" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>iCS_ForceIntegrator</name></member>
+      <member refid="classi_c_s___force_integrator_1af321c3d083c3a651e03db52ecae16177" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Integrate</name></member>
+      <member refid="classi_c_s___force_integrator_1a8edc33516493f349b7e1054d38a5fa1d" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>InvMass</name></member>
+      <member refid="classi_c_s___force_integrator_1a5e7f3a5aedcae2c245670af79966cd8f" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>Mass</name></member>
+      <member refid="classi_c_s___force_integrator_1a2b16289c2a513d99cf5dbc035d71e39d" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>OutputVelocity</name></member>
+      <member refid="classi_c_s___force_integrator_1a0b4b7119426703f30822dd445767adfc" prot="public" virt="non-virtual"><scope>iCS_ForceIntegrator</scope><name>PreviousVelocity</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,118 @@
+Title: iCanScript Unity3D Integration
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.1 (Beta #15)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.notebox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.notetitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+
+# Table of Contents #
+
+<!--TOC max2-->
+
+
+# Unity3D Integration #
+
+iCanScript is designed to seamlessly integrated into the Unity development environment.  It builds on the philosophies and application programming interfaces (APIs) available to Unity script programmers.
+
+iCanScripts integrates with the following Unity concepts:
+
+-  Visual scripts are standard Unity _Components_; 
+-  Each visual script is compiled into an Unity _Behaviour_ and executed as such;
+-  All Unity engine programming interfaces are available in the iCanScript library database; 
+-  All _Behaviour Messages_ are implemented as _Message Handler Nodes_;
+-  Visual script libraries are implemented with Unity _Prefabs_;
+-  Visual scripts are saved and loaded with the game object they are attached to;
+-  Visual scripts are compiled when starting the Unity engine.
+
+iCanScript extends the Unity Concepts with:
+
+-  Functional diagrams;
+-  State Chart diagrams;
+-  Automatic data driven execution sequencing;
+-  Automatic deadlock avoidance.
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+ ![PostitNote_32x32.png](PostitNote_32x32.png) **Note:** Proper usage of iCanScript requires minimal knowledge of the Unity platform.
+
+</div>
+
+
+
+# Adding a Visual Script #
+
+To use iCanScript, you first need to install a visual scripts on one of your game objects.  To illustrate this process, we will add a visual script to a sphere that will later be used as a trigger zone. 
+
+To do so, you must:
+
+1. Select a game object to contain the visual script;
+2. Create a visual script using the menu item: <span class="cmd">iCanScript->Create Visual Script</span>. 
+
+![Figure 1. Create Visual Script menu item.][ics-menu-create-visual-script.png]
+
+_Et voilà,  you have a visual script !!!_  It does not do anything yet but it is ready to listen and react to Unity messages.  We will look at defining and handling Unity messages in the next section.  For now, let's examine the changes brought when creating the visual script.
+
+
+When iCanScript creates a visual script, it attaches two (2) Unity script components on the game object.  These components are:
+
+1.  _**iCS_VisualScript (persistent storage)**_
+2.  _**iCS_Behaviour (runtime compiler & execution services)**_
+
+![Figure 2. iCanScript visual script components.][icanscript-components.png]
+
+
+![stamp-1-orange.png](stamp-1-orange.png) The _iCS_VisualScript_ contains the visual script persistant data including the definitions of nodes, ports, bindings as well as their layout information.  It is populated and modified by the iCanScript editors.
+
+![stamp-2-green.png](stamp-2-green.png) The *iCS_Behaviour* is dynamically created from the visual script data and includes the source code for the message handlers of the visual script.  It uses the execution services of the iCanScript engine library (i.e. iCanScriptEngine.dll) to manage the execution flow and resolve data contention (also known as deadlocks).
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+ **Note:**  You must delete the _iCS_VisualScript_ component to remove the visual script from the game object.  The _iCS_Behaviour_ component will be re-created if you delete it while the _iCS_VisualScript_ is installed.
+</div>
+
+
+[Back to Top][Table of Contents]
+
+
+# Libraries & Prefabs #
+
+Visual script libraries are created using Unity’s Prefab concept. 
+
+[Back to Top][Table of Contents]
+
+
+[ics-menu-create-visual-script.png]: ics-menu-create-visual-script.png
+
+[icanscript-components.png]: icanscript-components.png

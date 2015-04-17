@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<omniplan xmlns="http://www.omnigroup.com/namespace/OmniPlan/v2">
+  <window x="64" y="242" w="1920" h="1174">
+    <editing-scenario>nZD7ngjJP5o</editing-scenario>
+    <comparison-scenario>nsOpY83qjF0</comparison-scenario>
+    <view>task</view>
+    <draw-folded/>
+    <status-display>basic</status-display>
+    <task-view>
+      <split-view-divider-position>492</split-view-divider-position>
+      <outline x="0" y="458" w="492" h="1049">
+        <column name="Violations" width="20"/>
+        <column name="Status" width="20"/>
+        <column name="Notes" width="20"/>
+        <column name="Title" width="252"/>
+        <column name="Effort" width="70"/>
+        <column name="%Done" width="87"/>
+        <expanded-items idrefs="t113 t26 t2 t114 t19 t45 t41 t120 t50 t1"/>
+        <expanded-item-notes idrefs="t90 t107 t2"/>
+      </outline>
+      <gantt-view x="1095" y="458" w="1427" h="1049">
+        <view-mode>actual</view-mode>
+        <dependency-lines/>
+        <constraints/>
+        <task-bar-label task-type="group" position="left">
+          <key>%Done</key>
+        </task-bar-label>
+        <task-bar-label task-type="group" position="center">
+          <key>End Variance</key>
+        </task-bar-label>
+        <task-bar-label task-type="group" position="right">
+          <key>End</key>
+        </task-bar-label>
+        <task-bar-label task-type="milestone" position="left">
+          <key>End</key>
+        </task-bar-label>
+        <task-bar-label task-type="milestone" position="center">
+          <key/>
+        </task-bar-label>
+        <task-bar-label task-type="milestone" position="right">
+          <key>Title</key>
+        </task-bar-label>
+        <task-bar-label task-type="task" position="left">
+          <key>%Done</key>
+        </task-bar-label>
+        <task-bar-label task-type="task" position="center">
+          <key>End Variance</key>
+        </task-bar-label>
+        <task-bar-label task-type="task" position="right">
+          <key>Assigned</key>
+        </task-bar-label>
+        <scale scale-name="Automatic" full-day-width="75.6303"/>
+        <scale scale-name="Day" full-day-width="653.536"/>
+        <scale scale-name="Hour" full-day-width="65880"/>
+        <scale scale-name="Minute" full-day-width="64800"/>
+        <scale scale-name="Month" full-day-width="34.5"/>
+        <scale scale-name="Quarter" full-day-width="9.6"/>
+        <scale scale-name="Week" full-day-width="75.6303">
+          <selected/>
+        </scale>
+        <scale scale-name="Year" full-day-width="2.3625"/>
+      </gantt-view>
+    </task-view>
+    <resource-view>
+      <split-view-divider-position>306</split-view-divider-position>
+      <outline x="0" y="0" w="306" h="1070">
+        <column name="IM" width="20"/>
+        <column name="Notes" width="20"/>
+        <column name="Type" width="49"/>
+        <column name="Resource" width="121"/>
+        <column name="#" width="75"/>
+        <selected-items-at-filter-time idrefs="r4 r2"/>
+      </outline>
+      <timeline x="-221" y="0" w="1585" h="1070">
+        <task-bar-label task-type="group" position="left">
+          <key>Title</key>
+        </task-bar-label>
+        <task-bar-label task-type="group" position="center">
+          <key/>
+        </task-bar-label>
+        <task-bar-label task-type="group" position="right">
+          <key/>
+        </task-bar-label>
+        <task-bar-label task-type="milestone" position="left">
+          <key>Title</key>
+        </task-bar-label>
+        <task-bar-label task-type="milestone" position="center">
+          <key/>
+        </task-bar-label>
+        <task-bar-label task-type="milestone" position="right">
+          <key>Assigned</key>
+        </task-bar-label>
+        <task-bar-label task-type="task" position="left">
+          <key>Title</key>
+        </task-bar-label>
+        <task-bar-label task-type="task" position="center">
+          <key/>
+        </task-bar-label>
+        <task-bar-label task-type="task" position="right">
+          <key/>
+        </task-bar-label>
+        <scale scale-name="Automatic" full-day-width="300">
+          <selected/>
+        </scale>
+        <scale scale-name="Day" full-day-width="1215"/>
+        <scale scale-name="Hour" full-day-width="65880"/>
+        <scale scale-name="Minute" full-day-width="64800"/>
+        <scale scale-name="Month" full-day-width="34.5"/>
+        <scale scale-name="Quarter" full-day-width="9.6"/>
+        <scale scale-name="Week" full-day-width="162"/>
+        <scale scale-name="Year" full-day-width="2.3625"/>
+      </timeline>
+    </resource-view>
+    <calendar>
+      <split-view-divider-position>290</split-view-divider-position>
+      <outline x="0" y="0" w="290" h="1039">
+        <column name="IM" width="20"/>
+        <column name="Notes" width="20"/>
+        <column name="Type" width="49"/>
+        <column name="Resource" width="139"/>
+        <column name="Custom Work Week" width="20"/>
+        <column name="Schedule Exception" width="20"/>
+      </outline>
+    </calendar>
+  </window>
+  <project>
+    <title>iCanScript v1.0</title>
+    <next-task-id>132</next-task-id>
+    <next-resource-id>8</next-resource-id>
+    <scenario id="nZD7ngjJP5o" name="Actual" filename="Actual.xml"/>
+    <scenario id="bvG_geyZZ1M" name="Baseline 2013-06-24" filename="h_qc-ifGiPH.xml"/>
+    <scenario id="hcOKpWU8CGH" name="Baseline 2013-06-28" filename="lUYE4Z38r4J.xml"/>
+    <scenario id="nsOpY83qjF0" name="Baseline 2013-07-02" filename="nsOpY83qjF0.xml"/>
+    <date-display dates="true" times="true" seconds="false"/>
+    <numbering-style>wbs</numbering-style>
+    <no-numbers/>
+    <auto-level/>
+    <critical-path-slack>0</critical-path-slack>
+    <currency-format>$1,234.56</currency-format>
+    <duration-format hours-per-day="8" hours-per-week="40" hours-per-month="160" hours-per-year="1920" hours="true" days="true" weeks="true"/>
+    <effort-format hours-per-day="8" hours-per-week="40" hours-per-month="160" hours-per-year="1920" hours="true" days="true" weeks="true"/>
+    <base-style>
+      <style>
+        <value key="gantt-alternate-color">
+          <color r="0.954993" g="0.954993" b="0.954993"/>
+        </value>
+      </style>
+    </base-style>
+    <column-title-style>
+      <style>
+        <value key="font-weight">9</value>
+        <value key="paragraph-alignment">center</value>
+      </style>
+    </column-title-style>
+    <note-style>
+      <style>
+        <value key="font-family">Helvetica</value>
+        <value key="font-fill">
+          <color w="0.334677"/>
+        </value>
+        <value key="font-size">11</value>
+      </style>
+    </note-style>
+    <standard-task-style>
+      <style>
+        <value key="gantt-completion-color">
+          <color r="0.129412" g="0.501961" b="0.254902"/>
+        </value>
+      </style>
+    </standard-task-style>
+    <overdue-task-style>
+      <style/>
+    </overdue-task-style>
+    <completed-task-style>
+      <style/>
+    </completed-task-style>
+    <group-task-style>
+      <style>
+        <value key="font-weight">9</value>
+        <value key="gantt-fill-color">
+          <color r="0.74902" g="0.74902" b="0.74902"/>
+        </value>
+      </style>
+    </group-task-style>
+    <milestone-task-style>
+      <style>
+        <value key="gantt-fill-color">
+          <color r="0.847059" g="0.301961" b="0.301961"/>
+        </value>
+      </style>
+    </milestone-task-style>
+    <resource-style>
+      <style/>
+    </resource-style>
+    <not-editable-style>
+      <style>
+        <value key="font-fill">
+          <color w="0.334677"/>
+        </value>
+      </style>
+    </not-editable-style>
+<!-- completedPercentage < 100 -->
+    <filter name="Last Used" flat="0" id="hfA7UPsBNV8">YnBsaXN0MDDUAQIDBAUGbW5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QFgcIDxQcJicqMjY7PEFFS1BRVlxhZmhVJG51bGzTCQoLDA0OXxAXTlNDb21wb3VuZFByZWRpY2F0ZVR5cGVfEA9OU1N1YnByZWRpY2F0ZXNWJGNsYXNzEAKAAoAV0hALERNaTlMub2JqZWN0c6ESgAOAFNQLFRYXGBkaG18QEU5TUmlnaHRFeHByZXNzaW9uXxAQTlNMZWZ0RXhwcmVzc2lvbl8QE05TUHJlZGljYXRlT3BlcmF0b3KAE4AOgASAEdUdHh8gCyEiIyQlWU5TT3BlcmFuZF5OU1NlbGVjdG9yTmFtZV8QEE5TRXhwcmVzc2lvblR5cGVbTlNBcmd1bWVudHOABoAFEAOACIANXHZhbHVlRm9yS2V5OtIfCygpEAGAB9IrLC0uWiRjbGFzc25hbWVYJGNsYXNzZXNfEBBOU1NlbGZFeHByZXNzaW9uoy8wMV8QEE5TU2VsZkV4cHJlc3Npb25cTlNFeHByZXNzaW9uWE5TT2JqZWN00hALMzWhNIAJgAzTCx83ODk6WU5TS2V5UGF0aIALEAqACl8QE2NvbXBsZXRlZFBlcmNlbnRhZ2XSKyw9Pl8QHE5TS2V5UGF0aFNwZWNpZmllckV4cHJlc3Npb26jP0AxXxAcTlNLZXlQYXRoU3BlY2lmaWVyRXhwcmVzc2lvblxOU0V4cHJlc3Npb27SKyxCQ15OU011dGFibGVBcnJheaNCRDFXTlNBcnJhedIrLEZHXxATTlNLZXlQYXRoRXhwcmVzc2lvbqRISUoxXxATTlNLZXlQYXRoRXhwcmVzc2lvbl8QFE5TRnVuY3Rpb25FeHByZXNzaW9uXE5TRXhwcmVzc2lvbtNMHwtNTk9fEA9OU0NvbnN0YW50VmFsdWWADxAAgBAQZNIrLFJTXxAZTlNDb25zdGFudFZhbHVlRXhwcmVzc2lvbqNUVTFfEBlOU0NvbnN0YW50VmFsdWVFeHByZXNzaW9uXE5TRXhwcmVzc2lvbtULV1hZWltOTk5OWk5TTW9kaWZpZXJZTlNWYXJpYW50WU5TT3B0aW9uc15OU09wZXJhdG9yVHlwZYAS0issXV5fEB1OU0NvbXBhcmlzb25QcmVkaWNhdGVPcGVyYXRvcqNfYDFfEB1OU0NvbXBhcmlzb25QcmVkaWNhdGVPcGVyYXRvcl8QE05TUHJlZGljYXRlT3BlcmF0b3LSKyxiY18QFU5TQ29tcGFyaXNvblByZWRpY2F0ZaNkZTFfEBVOU0NvbXBhcmlzb25QcmVkaWNhdGVbTlNQcmVkaWNhdGXSKyxEZ6JEMdIrLGlqXxATTlNDb21wb3VuZFByZWRpY2F0ZaNrbDFfEBNOU0NvbXBvdW5kUHJlZGljYXRlW05TUHJlZGljYXRlXxAPTlNLZXllZEFyY2hpdmVy0W9wVHJvb3SAAQAIABEAGgAjAC0AMgA3AFAAVgBdAHcAiQCQAJIAlACWAJsApgCoAKoArAC1AMkA3ADyAPQA9gD4APoBBQEPAR4BMQE9AT8BQQFDAUUBRwFUAVkBWwFdAWIBbQF2AYkBjQGgAa0BtgG7Ab0BvwHBAcgB0gHUAdYB2AHuAfMCEgIWAjUCQgJHAlYCWgJiAmcCfQKCApgCrwK8AsMC1QLXAtkC2wLdAuIC/gMCAx4DKwM2A0EDSwNVA2QDZgNrA4sDjwOvA8UDygPiA+YD/gQKBA8EEgQXBC0EMQRHBFMEZQRoBG0AAAAAAAACAQAAAAAAAABxAAAAAAAAAAAAAAAAAAAEbw==</filter>
+<!-- completedPercentage < 100 -->
+    <filter name="Remaining Tasks" flat="0" id="epH0i7gL4s3">YnBsaXN0MDDUAQIDBAUGbW5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QFgcIDxQcJicqMjY7PEFFS1BRVlxhZmhVJG51bGzTCQoLDA0OXxAXTlNDb21wb3VuZFByZWRpY2F0ZVR5cGVfEA9OU1N1YnByZWRpY2F0ZXNWJGNsYXNzEAKAAoAV0hALERNaTlMub2JqZWN0c6ESgAOAFNQLFRYXGBkaG18QEU5TUmlnaHRFeHByZXNzaW9uXxAQTlNMZWZ0RXhwcmVzc2lvbl8QE05TUHJlZGljYXRlT3BlcmF0b3KAE4AOgASAEdUdHh8gCyEiIyQlWU5TT3BlcmFuZF5OU1NlbGVjdG9yTmFtZV8QEE5TRXhwcmVzc2lvblR5cGVbTlNBcmd1bWVudHOABoAFEAOACIANXHZhbHVlRm9yS2V5OtIfCygpEAGAB9IrLC0uWiRjbGFzc25hbWVYJGNsYXNzZXNfEBBOU1NlbGZFeHByZXNzaW9uoy8wMV8QEE5TU2VsZkV4cHJlc3Npb25cTlNFeHByZXNzaW9uWE5TT2JqZWN00hALMzWhNIAJgAzTCx83ODk6WU5TS2V5UGF0aIALEAqACl8QE2NvbXBsZXRlZFBlcmNlbnRhZ2XSKyw9Pl8QHE5TS2V5UGF0aFNwZWNpZmllckV4cHJlc3Npb26jP0AxXxAcTlNLZXlQYXRoU3BlY2lmaWVyRXhwcmVzc2lvblxOU0V4cHJlc3Npb27SKyxCQ15OU011dGFibGVBcnJheaNCRDFXTlNBcnJhedIrLEZHXxATTlNLZXlQYXRoRXhwcmVzc2lvbqRISUoxXxATTlNLZXlQYXRoRXhwcmVzc2lvbl8QFE5TRnVuY3Rpb25FeHByZXNzaW9uXE5TRXhwcmVzc2lvbtNMHwtNTk9fEA9OU0NvbnN0YW50VmFsdWWADxAAgBAQZNIrLFJTXxAZTlNDb25zdGFudFZhbHVlRXhwcmVzc2lvbqNUVTFfEBlOU0NvbnN0YW50VmFsdWVFeHByZXNzaW9uXE5TRXhwcmVzc2lvbtULV1hZWltOTk5OWk5TTW9kaWZpZXJZTlNWYXJpYW50WU5TT3B0aW9uc15OU09wZXJhdG9yVHlwZYAS0issXV5fEB1OU0NvbXBhcmlzb25QcmVkaWNhdGVPcGVyYXRvcqNfYDFfEB1OU0NvbXBhcmlzb25QcmVkaWNhdGVPcGVyYXRvcl8QE05TUHJlZGljYXRlT3BlcmF0b3LSKyxiY18QFU5TQ29tcGFyaXNvblByZWRpY2F0ZaNkZTFfEBVOU0NvbXBhcmlzb25QcmVkaWNhdGVbTlNQcmVkaWNhdGXSKyxEZ6JEMdIrLGlqXxATTlNDb21wb3VuZFByZWRpY2F0ZaNrbDFfEBNOU0NvbXBvdW5kUHJlZGljYXRlW05TUHJlZGljYXRlXxAPTlNLZXllZEFyY2hpdmVy0W9wVHJvb3SAAQAIABEAGgAjAC0AMgA3AFAAVgBdAHcAiQCQAJIAlACWAJsApgCoAKoArAC1AMkA3ADyAPQA9gD4APoBBQEPAR4BMQE9AT8BQQFDAUUBRwFUAVkBWwFdAWIBbQF2AYkBjQGgAa0BtgG7Ab0BvwHBAcgB0gHUAdYB2AHuAfMCEgIWAjUCQgJHAlYCWgJiAmcCfQKCApgCrwK8AsMC1QLXAtkC2wLdAuIC/gMCAx4DKwM2A0EDSwNVA2QDZgNrA4sDjwOvA8UDygPiA+YD/gQKBA8EEgQXBC0EMQRHBFMEZQRoBG0AAAAAAAACAQAAAAAAAABxAAAAAAAAAAAAAAAAAAAEbw==</filter>
+    <publish publish-allocations="true" subscribe-to-allocations="true">
+      <key>active</key>
+      <string>YES</string>
+      <key>serverURL</key>
+      <string>https://sync.omnigroup.com:443/michel.launier%40videotron.ca/</string>
+      <key>lastSeenChange</key>
+      <date>2013-07-23T19:29:53.918Z</date>
+      <key>class</key>
+      <string>OPWebDAVChangeSyncAction</string>
+      <key>uuid</key>
+      <string>k1NL3hFSlBX</string>
+      <key>serverAccount</key>
+      <string>mW30NRHyYtN</string>
+      <key>etag</key>
+      <string>&quot;3fe2405-4c658-4e232d1815980&quot;</string>
+    </publish>
+    <publish-on-save/>
+    <subscribe-refresh>0</subscribe-refresh>
+    <leveling>
+      <constrains-completion-date/>
+    </leveling>
+    <printinfo-dictionary>
+      <key>OPReportPrintScale</key>
+      <real>0.400000005960464</real>
+      <key>NSPrinterName</key>
+      <string>Canon MG5300 USB</string>
+      <key>OPPrintSettingPrintOption</key>
+      <integer>0</integer>
+      <key>OPAsDisplayedPrintScale</key>
+      <real>0.379999995231628</real>
+      <key>NSTopMargin</key>
+      <real>18</real>
+      <key>NSBottomMargin</key>
+      <real>41</real>
+      <key>NSRightMargin</key>
+      <real>18</real>
+      <key>NSLeftMargin</key>
+      <real>18</real>
+      <key>NSOrientation</key>
+      <integer>1</integer>
+      <key>OPPrintSettingPrintDisplayOption</key>
+      <integer>0</integer>
+      <key>NSScalingFactor</key>
+      <real>0.379999995231628</real>
+      <key>NSPaperName</key>
+      <string>na-letter</string>
+    </printinfo-dictionary>
+    <page-adornment>
+      <master-page-headers>
+        <header location="left">
+          <text>
+            <p>
+              <run>
+                <lit><cell variable="OPDocumentTitleVariableIdentifier"/></lit>
+              </run>
+            </p>
+          </text>
+        </header>
+        <header location="right">
+          <text>
+            <p>
+              <run>
+                <lit><cell variable="OPPrintJobTimestampVariableIdentifier"/></lit>
+              </run>
+            </p>
+          </text>
+        </header>
+        <footer location="left">
+          <text>
+            <p>
+              <run>
+                <lit><cell variable="OPDocumentFilenameVariableIdentifier"/></lit>
+              </run>
+            </p>
+          </text>
+        </footer>
+        <footer location="right">
+          <text>
+            <p>
+              <run>
+                <lit><cell variable="OPPageNumberVariableIdentifier"/></lit>
+              </run>
+            </p>
+          </text>
+        </footer>
+      </master-page-headers>
+    </page-adornment>
+  </project>
+</omniplan>

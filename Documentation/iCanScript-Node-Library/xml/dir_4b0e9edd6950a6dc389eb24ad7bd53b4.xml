@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="dir_4b0e9edd6950a6dc389eb24ad7bd53b4" kind="dir">
+    <compoundname>/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets</compoundname>
+    <innerdir refid="dir_08d5b5581b68718566fd773ae30ce6ad">/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/"/>
+  </compounddef>
+</doxygen>

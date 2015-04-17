@@ -1,0 +1,914 @@
+Title: iCanScript Quick Start Tutorial
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.1 (Beta #15)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.notebox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.notetitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+
+# Table of Contents #
+
+<!--TOC max2-->
+
+
+# Objective #
+
+In this section, we examine the core constructs of iCanScript with the help of a small example.  To that end, we shall first establish the working parameters of our example by creating a storyline and setting up the scene before implementing the visual scripts.
+
+The following is a summary of the steps to build our first example:
+
+1. Create a [storyline][] to define the working parameters for our example;
+2. Identify and define the [actors][Our Actors] for our story;
+3. Build a scene in Unity populated with [the defined actors][Our Actors];
+4. Design the visual script for [moving Mr Cube][Moving Mr Cube (step 1)];
+5. Design the visual script for [enabling & disabling Ms Light][];
+6. Complete the example by [adding a Panic State][] for Mr Cube.
+
+
+
+# Storyline #
+
+If you are like me, you prefer learning the workings of a tool in the context of a small example.  Like all good game designers, I like to give a soul to my project using a storyline.  We can then extract working scenarios to direct the creation of our visual scripts.
+
+Here goes the story:
+
+>  In the land of Emptiness lives Mr Cube.  Mr Cube has a busy life roaming around on an invisible 2D plane.  Since Mr Cube is a close relative of Mr Fly, he is attracted to Ms Light that also lives in the land of Emptiness. Little does Mr Cube know is that Ms Light is shy and she get "turned off" if anyone comes to close to her.  When in the dark, Mr Cube panics and runs around in all directions.  Luckily for Mr Cube, Ms Light gets "turned on" when Mr Cube is far enough from her.
+
+(Wow! we got romance, terror and deception. What a great plot!)
+
+
+
+# Our Actors #
+
+Before creating visual scripts, we first need to build a scene in Unity and populate it with actors.  Based on the storyline, the actors are (the camera has been purposely omitted):
+
+- **Mr. Cube** (I'll let you guess the shape to use);
+- **Ms. Light** (a directional light);
+- **Near Trigger Zone** to turn off _Ms. Light_ (a sphere will do fine);
+- **Far Trigger Zone** to turn on _Ms. Light_ (again a sphere will do fine).
+
+The main characteristics of the actors are:
+
+- All actors live on a 2D plane with the Y-axes set to zero (0);
+- Ms. Light and both Trigger Zones are centred at (0,0,0);
+- Both Trigger Zones are configured to trigger when colliding with _Rigid Bodies_;
+- The Near Trigger Zone will be 2 meters in diameter;
+- The Far Trigger Zone will be 3 meters in diameter;
+- Mr. Cube is one meter in dimensions;
+- Mr. Cube includes a _Rigid Body_ component to generate collision triggers.
+
+You may ask yourself why two trigger zones?  We want to avoid _Ms Light_ from rapidly transitioning on and off while _Mr Cube_ nears her.  If only one trigger zone existed, _Mr Cube_ could navigate on the edge of the trigger zone causing _Ms Light_ to flicker.  By creating a buffer area between the on trigger (near) and the off trigger (far), we remove the possibility of _Ms Light_ flickering.
+
+
+# Creating the Unity Project #
+
+We are now ready to build our scene in Unity.  First, we need a fresh new Unity project with an installed version of iCanScript.  For the purpose of this tutorial, the project will be named "Houpi Youpi" (I don't know how to call it! So please bear with me...).
+
+Open Unity and select the <span class="cmd">File->New Project...</span> menu item as shown in the image below:
+
+![Figure 1. Create a new Unity project.][unity-new-project.png]
+
+
+Next you will be asked for a project name and prompted to install standard Unity packages.  Enter _"HoupiYoupi"_ as the project name. None of the Unity packages will be required for this tutorial.  So don't select any and close the dialog box by clicking the <span class="cmd">Create Project</span> button.
+
+![Figure 2. Create _Houpi Youpi_ Project.][create-houpi-youpi.png]
+
+
+
+You now have a bare project in which to import iCanScript.  Please follow the instructions in the [installation] section to download the latest version of iCanScript if you haven't already done so.  Use the <span class="cmd">Assets->Import Package->Custom Package...</span> menu item to import iCanScript into your project.  Once you complete the import, your project panel in Unity should look as follows: 
+
+![Figure 3. Unity project with the iCanScript package.][icanscript-empty-project.png]
+
+<!--BREAK-->
+
+
+## Adding Actors to the Scene ##
+
+Ok, we are ready to bring our actors into the scene.  For each new project, Unity creates a default scene with the main camera object.  You will add the actors to the default scene using the <span class="cmd">GameObject->...</span> menu.
+
+
+
+### Ms Light ###
+
+Let's start by adding _Ms Light_.  Select the <span class="cmd">GameObject->Create Other->Directional Light</span> menu item and, _swoosh ... Ms Light_ appears.
+
+![Figure 4. Adding Ms Light to the scene.][adding-directional-light.png]
+
+Double click on the _"Directional light"_ label in the hierarchy panel to rename it to _"Ms Light"_.  Because _Ms Light_ is a directional light, she lights the scene equally regardless of her position.  For consistency shake with our story, I suggest you position her at (0,0,0) as show in Figure 5.
+
+![Figure 5. Renaming and positioning Ms Light.][adding-mrs-light.png]
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![UnityLogo_32x32.png](UnityLogo_32x32.png) Unity Tips</span>
+
+---
+**What's a Directional Light?**
+> A **directional light** illuminates the scene with uniform intensity regardless of the distance from the light source.  It is often used to simulate the sun.  Its light direction and color can be configured to create various time-of-day effects and neat extra-terrestrial atmospheres.  The default color and direction of the directional light source is adequate for our example.
+
+</div>
+
+
+
+
+### Near & Far Trigger Zones ###
+
+The two trigger zones are spheric in shape and are create with the <span class="cmd">GameObject->Create Other->Sphere</span> menu.
+
+![Figure 6. Adding Trigger Zones to the Scene.][adding-trigger-zones.png]
+
+After you have created both _trigger zones_, you need to configure them as follows:
+
+1. Name one of them _"Near Trigger Zone"_ and the other _"Far Trigger Zone"_;
+2. As for _Ms Light_, position both trigger zones at (0,0,0);
+3. Now resize the _"Near Trigger Zone"_ to 2 meters and the _"Far Trigger Zone"_ to 3 meters by setting the scale to (2,2,2) and (3,3,3) respectively;
+4. The final step is to enable the **trigger** behaviour of both spheres. This is realized by clicking the <span class="cmd">Is Trigger</span> checkbox in the _Sphere Collider_ component of the trigger zones (see 7).
+
+![Figure 7. Configuring Near & Far Trigger Zones.][configure-near-far-trigger-zones.png]
+
+
+
+### Mr Cube ###
+
+We are now ready for our final actor: _Mr Cube_.  Use the <span class="cmd">GameObject->Create Other->Cube</span> menu item to add _Mr Cube_ to the scene.
+
+![Figure 8. Adding Mr Cube to the scene.][adding-mr-cube.png]
+
+Once more, you need to set the initial parameters of the new actor.  _Mr Cube_ must be configured as follows:
+
+1. Rename the cube object to _"Mr Cube"_ (sexy!);
+2. Relocate _Mr Cube_ outside both trigger zones at position (5,0,0);
+3. For _Mr Cube_ to collide with the trigger zones, it must have a _Rigid Body_.  Add the _Rigid Body_ to _Mr Cube_ using the <span class="cmd">Component->Physics->RigidBody</span> menu item (see figure 10);
+4. The _Rigid Body_ component is configured to use gravity by default.  Our land of _Emptiness_ is deprived of this _Newtonian_ concept and therefore requires that you remove all gravity behaviour.  Select the _Rigid Body_ component of _Mr Cube_ and uncheck the <span class="cmd">Use Gravity</span> checkbox as illustrated in figure 11.
+
+
+![Figure 9. Adjusting Name and Position of Mr Cube.][configure-mr-cube-name-and-position.png]
+
+
+![Figure 10. Adding a Rigid Body to Mr Cube.][adding-rigid-body.png]
+
+
+![Figure 11. Removing gravity from Mr Cube.][remove-use-gravity.png]
+
+
+
+## Hiding the Trigger Zones ##
+
+All of our actors are now included in the scene.  However, we still need to make one last adjustment: hide the trigger zones.
+
+The trigger zones are the _"magic"_ that makes actors change behaviour and everyone knows that _"magic"_ must be invisible.  So, let's hide those spheres for no one to see.  To hide the trigger zones, you need to disable the _Mesh Renderer_  as depicted in the below figure.
+
+![Figure 12. Disable the Mesh Renderer of both Trigger Zones.][disable-trigger-zones-mesh-renderer.png]
+
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![UnityLogo_32x32.png](UnityLogo_32x32.png) Unity Tips</span>
+
+---
+**What's a Renderer?**
+> The **renderer** is the Unity entity responsible for drawing the scene objects.  Each object in a Unity scene includes a renderer component to control its drawing properties. By disabling the **Mesh Renderer**, you are telling Unity to forgo the drawing of the trigger zones hence hiding them from the user.  Hiding the trigger zones does not change the behaviour of other components such as collision detection that is dear to us.
+</div>
+
+
+You are now ready to build your visual scripts!!!
+> (finally you must be saying to yourself).
+
+
+# Opening the iCanScript Editors #
+
+
+You are almost ready to create your first visual script.  Before you do so, you need to open the following four iCanScript editors:
+
+- Visual Editor;
+- Library Tree;
+- Hierarchy Tree and;
+- Instance Wizard.
+
+All of the editors can be opened for the <span class="cmd">Window->iCanScript->...</span> menu item.  The _Visual Editor_ requires a significant screen area so I propose that you combine it with the _Scene_ or _Game_ window.  All of the other editors are narrow and tall and may be combine with the Unity _Project_, _Hierarchy_, or _Inspector_ panels.
+
+My preferred window setup for working with iCanScript is:
+
+- the _**Visual Editor**_ is combined with _Unity's Scene_;
+- the _**Library Tree**_ and _**Hierarchy Tree**_ share the bottom section with _Unity's Project_ and;
+- the _**Instance Wizard**_ is combined with _Unity's Inspector_.  
+
+
+![Figure 13. Proposed iCanScript Window Layout.][proposed-icanscript-window-layout.png]
+
+
+Of course the layout is a matter of taste and you should organize it to your licking (a two screen layout is the best!).
+
+
+# Moving Mr Cube (step 1) #
+
+Finally, you are ready to write your first visual script.  _Mr Cube_ movement is ratter complex and shall be implement in phases.  In this section, you will create a visual script to move _Mr Cube_ at a consistent speed regardless of the performance of the computer or game platform running the script.
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![Chalkboard-ABCs_32x32.png](Chalkboard-ABCs_32x32.png) What you will learn...</span>
+
+---
+
+In this section you will learn several key aspects of iCanScript including:
+
+> - Adding a visual script to a game object;
+> - Defining message handler nodes to process Unity messages;
+> - Structuring your visual scripts by encapsulating functionality inside _Package_ nodes;
+> - Designing logic flows and computations using visual scripts;
+> - Using and binding scene objects into your visual scripts;
+> - Navigating and extracting entity, variable and function nodes from the iCanScript library;
+</div>
+
+
+## Installing a Visual Script on _Mr Cube_ ##
+
+The first step is to install a visual script on _Mr Cube_.  This is accomplished by:
+
+1. Selecting _Mr Cube_ in the Hierarchy and;
+2. Clicking on the menu item <span class="cmd">Component->iCanScript->Visual Script</span>.
+
+
+![Figure 14. Installing a visual script on _Mr Cube_.][ics-installing-visual-script-on-mr-cube.png]
+
+
+A visual script is now installed on _Mr Cube_ and ready to receive Unity messages.  To edit the visual script, you must select _Mr Cube_ (if not already done) and activate the _Visual Editor_ by clicking on its tab.
+
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![icanscript-ui-tips_32x32x32.png](icanscript-ui-tips_32x32x32.png) iCanScript User Interface Tips</span>
+
+---
+
+**Visual Editor :: Centring the visual script (<span class="cmd">Shift-F</span>):**
+> The hot key _**Shift-F**_ can be used to resize and reposition the visual script in the centre of the viewport. (See the [navigation][] for additional hot keys.)
+
+**Scene Editor :: Visualizing which object contains a visual script:**
+> In the Scene editor, iCanScript displays its logo in front of each object that contains a visual script.
+
+> ![ics-gizmo-in-scene.png](ics-gizmo-in-scene.png)
+[iCanScript Gizmos displayed on game objects with visual scripts.]
+
+**Visual Editor :: Selecting the visual script to edit:**
+> The _**Visual Editor**_ provides a graphical view of the visual script installed on the selected game object.  To edit a visual script, you first need to select the game object that contains the visual script.
+
+> The name of the game object containing the visual script is displayed in the toolbar of the _Visual Editor_.
+
+>  ![name-of-object-including-visual-script.png](name-of-object-including-visual-script.png)
+
+> **Note:**  The Visual Editor continues to edit the same visual script (previous selection) if the object selected in the Hierarchy panel does not contain a visual script.
+
+</div>
+
+
+Currently your visual script contains a single grey node named: _Behaviour_.  For iCanScript, the _Behaviour_ node is special in two ways:
+
+- first, it's the top-level node that orchestrates the execution of all visual scripts;
+- secondly, its content is limited to _Message Handler_ nodes.
+
+Before furthering our example, let's take a moment to examine some of the core constructs of iCanScript:
+
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![iCanScriptLogo_32x32x32.png](iCanScriptLogo_32x32x32.png) iCanScript Core Concepts</span>
+
+---
+
+iCanScript supports two categories of nodes:
+
+**Action nodes:**
+> _**Action**_ nodes execute functionality created outside the realm of iCanScript.  Nodes extracted from libraries and handwriting code are good examples of action nodes.
+>
+> iCanScript does not have the ability to look inside or alter the functionality underlying _Action_ nodes.  For iCanScript,  _Action_ nodes are black-boxes that can be inter-connected, conditionally executed, and packaged to create high-level functionality.
+
+**Composite nodes:**
+> _**Composite**_ nodes are used to organize, abstract, and control a subset of the visual script.  The subset is embedded, using nesting, inside the composite node creating a parent / child relationship.
+>
+> A _Composite_ node activates its child nodes if the conditions for it own activation are met.  For example, a message handler node will execute its internal visual script only when it receives the appropriate message.
+>
+> Composite nodes exist in several flavours each with distinct behaviour and trigger conditions.
+
+</div>
+
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![iCanScriptLogo_32x32x32.png](iCanScriptLogo_32x32x32.png) iCanScript Core Concepts</span>
+
+---
+Every visual script is composed of one _Behaviour_ node and one or more _Message Handler_ node(s).
+
+**Behaviour Node:**
+> _**Behaviour**_ is a special composite node that coordinates the execution of the overall visual script.  It waits for messages sent from Unity's engine to trigger a subset of the visual script.
+
+> The _**Behaviour**_ node uses _**Message Handler**_ nodes to identify which messages the script operates on.
+
+> Before creating a visual script, you must first decide which of the Unity messages triggers the execution of your script.  A message handler node must be created and embedded in the _Behaviour_ node for each message your visual script responds to.
+
+<!-- BEGIN NOTE BOX --><div class="notebox">
+
+> ![UnityLogo_32x32.png](UnityLogo_32x32.png) Details pertaining the available Unity messages are documented in the _MonoBehaviour_ section of the [Unity Script Reference guide](http://docs.unity3d.com/Documentation/ScriptReference/MonoBehaviour.html).
+
+<!-- END NOTE BOX --></div>
+
+**Message Handler Nodes:**
+> A _Message Handler_ node is a composite node associated with a specific Unity message.  Its purpose is to bridge a Unity message with a subset of your visual script.
+>
+> When the _Behaviour_ node receives a message, it updates the input port values (message parameters) and activates the corresponding _Message Handler_ node.  The script you create to respond to the message must be embedded in the corresponding _Message Handler_ node.
+
+</div>
+
+
+## Installing the _Update_ Message Handler ##
+
+
+Before displaying a new frame, Unity sends an _Update_ message to each game object in the scene asking them to prepare for the upcoming frame.  This _Update_ message is ideal to trigger the execution of the visual script to move _Mr Cube_.  It gives you the chance to recompute _Mr Cube_ position immediately before the scene is displayed.
+
+Your next step is to install the _Update_ message handler node whom will serve as the parent trigger for your visual script.  The creation of the _Update_ message handler node is realized as follows:
+
+1- Right click on the _Behaviour_ node to reveal the list of message handlers it supports;
+2- Click the <span class="cmd">+ Update</span> menu item to install the message handler node;
+
+![Figure 15. Installing the Update message handler.][installing-update-message-handler.png]
+
+A new child node called _Update_ is create inside the _Behaviour_ node.  The _Update_ node is blue indicating that it is a message handler.  You are now ready to create the visual script to move _Mr Cube_ inside the _Update_ node.
+
+
+## Visual Script Overview ##
+
+
+_Mr Cube_ visual script will evolve to become somewhat involved as you increase its functionality.  To avoid complex and overblown graphs, you should consider structuring the visual script from its inception.
+
+The following diagram depicts the high-level design of the visual script you will create for Mr Cube:
+
+![Figure 16. _Mr Cube_ visual script overview.][mr-cube-script-overview.png]
+
+It's good practice to segregate and encapsulate functionality into tight bundles and iCanScript has the right _Composite_ node to do so: (drum roll...) the '_**Package**_'.
+
+The _Package_ is iCanScript most flexible node.  It can contain complex graphs and expose only those ports that are made public by the visual script designer.  To modify a _Package_, it will need to be _**unfolded**_, showing its internal graph.  Once you have completed its functionality, you may want to _**fold**_ it so that it displays as a singular node or _**iconize**_ it to reduce visual clutter.
+
+
+The following diagram shows the controls to fold/unfold and iconize a _Package_ node.
+
+![Figure 17. Node display state controls.][node-display-state-controls.png]
+
+## Creating the _"Move Mr Cube Package"_ ##
+
+Let's create a package to encapsulate the basic movement functionality of _Mr Cube_.  This is achieved by:
+
+- Right clicking on the _Update_ node to display the context sensitive menu and;
+- Selecting the <span class="cmd">+ Package</span> menu item.
+
+![Figure 18. Creating the _"Move Mr Cube"_ Package.][creating-package-in-update.png]
+
+iCanScript adds a package node under the _Update_ message handler.  By default, the package is yellow and named _":Package"_.  A name that better describes the purpose of the package would be better suited.  Do let's rename your new package to: _"Move Mr Cube"_.
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![icanscript-ui-tips_32x32x32.png](icanscript-ui-tips_32x32x32.png) iCanScript User Interface Tips</span>
+
+---
+**Modifying name of visual elements:**
+> Modifying the node or port name is realized either from the _Inspector_ or the iCanScript _Hierarchy Tree_.
+
+> The _Inspector_ grants detail access to the node or port that is selected in the visual script.  It is however limited the selected element only and will require re-selecting if more then one element needs to be modified.
+
+> The iCanScript _Hierarchy Tree_ offers a tree-like navigation of the entire visual script.  It also allows for changing visual element names.  In this tutorial, we will always use the _Hierarchy Tree_ when modifying node and port names.
+ 
+</div>
+
+
+Let's use the _Hierarchy Tree_ to change the name of the package.
+
+From the _Visual Editor_, right click on the _:Package_ and select the <span class="cmd">Show in hierarchy</span> menu item (figure 19).  This action displays the selected node in the _Hierarchy Tree_.
+
+![Figure 19. Show Package node in iCanScript Hierarchy tree.][show-package-in-hierarchy.png]
+
+Double click on the package name in the _Hierarchy Tree_ to modify it to _"Move Mr Cube"_ (figure 20).
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+![PostitNote_32x32.png](PostitNote_32x32.png) **Note:** The _Visual Editor_ and _Hierarchy Tree_ are two views into the visual script.  This means that modifications done in the _Hierarchy Tree_ are reflected in the _Visual Editor_ and vice-versa.
+
+</div>
+
+
+![Figure 20. Renaming the package to _Move Mr Cube_.][renaming-move-mr-cube-package.png]
+
+## Adding _Mr Cube_ to the Visual Script ##
+
+
+It's now time to put beef into your hamburger!  The first ingredient you need is _Mr Cube_.  He can be brought into the visual script by dragging him from Unity's Hierarchy panel into the _Move Mr Cube_ package (see figure 21).
+
+
+![Figure 21. Adding Mr Cube to the _Move Mr Cube_ package.][dragging-mr-cube.png]
+
+The new _Mr Cube_ node is coloured orange indicating that it is an instance of an entity.  Factually, _Mr Cube_ is an instance of a _Game Object_: a complex entity that contains several components defining its capabilities.
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![icanscript-ui-tips_32x32x32.png](icanscript-ui-tips_32x32x32.png) iCanScript User Interface Tips</span>
+
+---
+
+**Instance Nodes and the _Instance Wizard_**
+iCanScript includes a dedicated editor called the _Instance Wizard_ to manage the variables and operations associated with nodes representing object instances.  The _Instance Wizard_ is automatically brought forward when such a node is selected.
+
+Using a simple point-and-click interface, the _Instance Wizard_ can expose or hide the internal variables and operations of the instance.  It is divided in three (3) sections:
+
+**Instance (top section):**
+> The top section consists of a drop down menu that lists the available functions to create an instance of the proper node type and bind it to the _'this'_ port.  Since we have dragged in _Mr Cube_, iCanScript has assumed that the instance should be set to the _Mr Cube_ game object.
+
+**Variables (middle section):**
+> The middle section displays all of the variables (fields & properties) of the instance.  You may expose those variables as input and/or output ports by modifying the checkbox on the left of the variable name.
+
+**Operations (bottom section):**
+> The bottom section gives access to the operations available for the instance as a list of buttons.  Clicking on the operation name exposes that operation on the instance node. Clicking again removes the operation.
+
+</div>
+
+
+## Exposing the _Transform_ of _Mr Cube_ ##
+
+In Unity, a game object and its components form a group of inter-related objects.  The game object maintains a list of all of its components and each component keeps a reference back to the game object as depicted in figure 22.
+
+![Figure 22. Unity _Game Object_ and associated _Components_.][game-object-and-components.png]
+
+To gain access to a component of the game object, you first need to extract it as a separate instance node.  You can then interact with the component variables and operations using the _Instance Wizard_.
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![UnityLogo_32x32.png](UnityLogo_32x32.png) Unity Tips</span>
+
+---
+
+> The number and type of components that can be attached to a game object is not limited to the listed displayed in figure 22.  The Unity library includes a set of standard components and allows for extending the game object functionality with user defined components.
+
+> When you create a visual script on a game object, you are in fact extending that game object by attaching an _iCS_VisualScript_ component to it.  iCanScript then uses the iCS_VisualScript component to edit, compile and run you visual script.
+</div>
+
+
+The component of interest for moving _Mr Cube_ is called the _Transform_.  It defines the position, rotation, and scale of the game object.  Moving _Mr Cube_ requires that you change its position hence change its _Transform_ component.
+
+Exposing the _Transform_ of _Mr Cube_ requires that:
+1- you reveal the port associated with the _Transform_ component and then;
+2- extract the transform node to gain access to its variables and operations.
+
+
+**<u>STEP #1:</u> Revealing the _transform_ port:**
+
+Revealing the _transform_ port of _Mr Cube_ is a simple matter of:
+- selecting the _Mr Cube_ node to reveal the _Instance Wizard_ (figure 23);
+- clicking the checkbox on the left side of the _"transform"_ variable in the _Instance Wizard_ (you may need to scroll to the bottom of the _Variables_ section).
+
+  
+![Figure 23. Reveal Mr Cube transform port.][access-mr-cube-transform.png]
+
+
+**<u>STEP #2:</u> Extracting the _transform_ instance node:**
+
+The next step is to extract the transform node from _Mr Cube_.  The good news is that iCanScript includes a feature that automatically creates an instance node when you drag a port into an empty area.
+
+Since the _Move Mr Cube_ package tightly surrounds the _Mr Cube_ node, dragging the port into an empty area inside the _Move Mr Cube_ node may be challenging (Undo can be used if mistakes are made).  In the current situation, the easiest way is to drag the _transform_ port up towards the title bar of the _Move Mr Cube_ node and release it their (see figure 24).
+
+You can later reposition the new transform node by dragging it from its title bar.  Likewise, you can relocate the ports by sliding them on the boundaries of the node.    
+
+
+![Figure 24. Extract Mr Cube transform.][extract-mr-cube-transform.png]
+
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![UnityLogo_32x32.png](UnityLogo_32x32.png) Unity Tips</span>
+
+---
+
+**Game Object Transform:**
+
+> Every _Game Object_ in Unity includes a _Transform_ component.  The _Transform_ component defines the position, rotation, and scale of the object with respect to its parent.  If no parent exists, then the _Transform_ is considered global -- relative to the world coordinates -- as for all actors in our example.
+
+</div>
+
+
+
+## Adding the _Translation_ operation to the _Transform_ node ##
+
+
+Now that you have access to the _Transform_ instance node, you can select it and browse its variables and operations using the _Instance Wizard_ (figure 25).
+
+If you browse the _Operations_ section, you will find that the _Transform_ node includes several _Translate(...)_ operations that can be used to move _Mr Cube_.  We are interested in the _Translate_ operation that utilizes a _Vector3_ type for the displacement.
+
+To add the _Translate_ operation to your visual script, you will need to depress the <span class="cmd">Translate(translation:Vector3)</span> button of the _Instance Wizard_.  Once the operation is added, its button is shown as depressed and the text as bolded.  Clicking the button a second time will remove the operation from the visual script.  Make certain that the _Translate_ operation is added before moving on.
+
+
+![Figure 25. Add Mr Cube translation operation.][mr-cube-translate.png]
+
+
+With the _Translate_ operation added, you'll notice a new port named _"translation.Translate"_ appearing on the _Transform_ node.  As you may have guessed, this new input port configures the translation to be applied by the _Translate_ operation.
+
+The default value for the translation is (0,0,0).  You will learn to create a visual script to dynamically change the translation value in the sections to follow. 
+
+
+## Moving with Consistent Velocity ##
+
+
+Your next task is to feed a displacement value to the _Translate_ operation of _Mr Cube_.  While this seams easy, it does present a challenge...
+
+**The Challenge:**
+The problem is that the displacement is applied for each frame and that the frame rate (# of frames / second) is dependent on the performance of the computer or gaming platform.  This means that if the same displacement value is applied, _Mr Cube_ will move lightning fast on high-end gaming computers and turtle slow on entry level portable devices.
+
+**The Solution:**
+To maintain constant velocity on all platform regardless of their performance, you need to adjust the magnitude of the displacement according to the frame rate.  So how do you do that?
+
+As starters, you need to control the velocity of _Mr Cube_ and derive the displacement from it.  The displacement is computed by equation #1:
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+**Eq. #1. Calculation of the displacement for a frame**
+
+	displacement= velocity * frame_duration;
+ 
+</div>
+
+The result of this equation is that higher the frame rate, smaller are the displacement values added to the movement for each frame.  Therefore, the velocity is maintained irrespectively of the computing performance.
+
+From equation 1, you need to bring in play an operator that multiplies the velocity (a _Vector3_ value) and the frame duration (a _scalar_ value).
+
+Using the search field in the iCanScript library, type the characters _"mul"_ to reveal the available multiply operators.  Drag the multiply operation under the _Vector3_ type into the _Move Mr Cube_ package as depicted in figure 26.
+
+
+![Figure 26. Adding a function to convert velocity into displacement.][adding-vector3-multiply-to-move-mr-cube.png]
+
+
+The _"op\_Multiply"_ node is coloured green indicating that it is a function.  Functions are created outside iCanScript and imported into the iCanScript library.  In this particular case, the multiply operator is a member function of the _Vector3_ class that is part of the Unity Engine library (the hierarchy in the _Library Tree_ is reminiscence of this structure).
+
+The new node is created with generic names.  To improve on the clarity of the visual script, you should rename the node and its ports to reflect the intended functionality.
+
+Follow these steps to rename the _op\_Multiply_ node:
+
+1. Right click on the _"op\_Multiply"_ node to bring up the context menu;
+2. Select the _Show in Hierarchy_ menu item;
+3. From the hierarchy tree, unfold the node and rename it and its ports as depicted in figure 27.
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![icanscript-ui-tips_32x32x32.png](icanscript-ui-tips_32x32x32.png) iCanScript User Interface Tips</span>
+
+---
+
+> You need to double click on the name in the hierarchy tree to edit it.
+
+</div>
+
+
+
+![Figure 27. Renaming the node that converts the velocity to a displacement.][rename-velocity-to-displacement-node.png]
+
+The next step is to bind the _displacement_ output port of the _To Displacement_ node to the _translation_ input port on the _Transform_ node.  This is super simple to accomplish: just drag the _"displacement"_ port onto the _"translation.Translate"_ port and ... Voilà! it's done.  Now the computed displacement changes the position of _Mr Cube_ on every frame.
+
+![Figure 28. Bind the computed displacement to Mr Cube transform.][bind-displacement-to-translation.png]
+
+You are still missing the frame duration value.  Unity has us covered with that.  The _Time_ type supports several time related functions.  The duration of the last executed frame is held in a variable named <u>_deltaTime_</u>.
+
+Start typing _"delta"_ in the search field of the _Library_ panel to expose the _deltaTime_ variable.  You should see it under the _Time_ type of the UnityEngine section.
+
+Drag it from the library into the _Move Mr Cube_ package and bind its output (named _:float_) to the _frameDuration_ input of the _To Displacement_ node.  The final result should look like figure 29.
+
+![Figure 29. Adding frame duration for displacement computation.][adding-delta-time-to-mr-cube.png]
+
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![UnityLogo_32x32.png](UnityLogo_32x32.png) Unity Tips</span>
+
+---
+
+**The _CharacterController_ component:**
+
+> Advised users of Unity will have noticed that we have reproduced the functionality to move a game object using relative speed; a functionality that is available in the _CharacterController_ component.
+
+> We have deliberately avoided the _CharacterController_ to focus the learning experience on building visual scripts.  The _CharacterController_ offers many features that are beyond the scope of this tutorial.  We strongly advise that you take some time to learn about the _CharacterController_ before building large on complex projects with Unity.
+
+</div>
+
+
+## Controlling Speed and Direction Separately ##
+
+Referencing back to the [overview of the visual script][Visual Script Overview] depicted in figure 16, you will notice that the _Move Mr Cube_ package receives its input values from the _Adjust Direction_ & _Adjust Speed_ packages (you will build these packages later on).  This means that separate controls for direction and speed are required.
+
+Your next task is to extend your visual script to:
+
+- accept two (2) inputs: a _direction_ and a _speed_ value;
+- compute the velocity value from the _direction_ and _speed_ inputs;
+- bind the "computed velocity" to the _velocity_ input of the _To Displacement_ node created in the previous section.
+
+In our example, the _speed_ and _direction_ are defined as:
+
+- the distance travel in one (1) second and;
+- a unit vector pointing in the direction of movement;
+
+respectively.
+
+From these definitions, you can calculate the velocity by scaling the direction vector (a unit vector) by the speed (a scale value) as described in equation #2:
+
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+**Eq. #2. Calculation of the velocity.**
+
+	velocity = speed * direction
+ 
+</div>
+
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+![PostitNote_32x32.png](PostitNote_32x32.png) **Note:** A _unit vector_ is a vector who's length is equal to one (1).
+
+</div>
+
+Equation #2 has exactly the same structure as the displacement calculation performed in the previous section: you need to multiply a vector value and a scaler value.  This is your chance at trying another cool feature of iCanScript: **node cloning** (without social or legal issues!!!).
+
+To clone the multiply operator, you need to press the <span class="cmd">Shift</span> key and drag the _To Displacement_ node in an empty area inside the _Move Mr Cube_ package (see figure 30).
+
+![Figure 30. Duplicating the vector scale node.][duplicate-multiply-node.png]
+
+
+Once more, you should rename the node and ports to better describe the intent.  Use the _Hierarchy Tree_ as you have done for the _To Displacement_ node to rename the new node and its ports as shown in figure 31.
+
+You also need to bind the _velocity_ output port of the new _To Velocity_ node to the _velocity_ input port of the _To Displacement_ node.
+
+
+![Figure 31. Properly rename the "To Velocity" node.][rename-to-velocity.png]
+
+## Publishing the Interface ##
+
+
+Now you have completed the functionality of the _Move Mr Cube_ package.  The last step is to publish the _speed_ and _direction_ ports so that they can be accessed from outside the _Move Mr Cube_ package.  This is easily done by dragging them on the left edge of the _Move Mr Cube_ package.  The final build of the _Move Mr Cube_ package can be seen in figure 32.
+
+![Figure 32. Publish speed and direction ports.][publish-speed-and-direction.png]
+
+## Running the _Move Mr Cube_ Visual Script ##
+
+
+
+I bet your fingers are twitching to give your new script a go.
+
+Before you do so, you need to configure initial values for the _speed_ and _direction_ ports.  The initial values are configured using the _Inspector_.
+
+Make certain that the _Mr Cube_ game object is selected and open the _Inspector_.  You will see that a _visual script component_ is installed on _Mr Cube_.  Unfold the _visual script component_ and you will see that it contains two sections:
+
+- a _**Selected Object**_ section and;
+- an _**Engine Selected Object**_ section.
+
+You will be using the _Selected Object_ section to configure the _"speed"_ and _"direction"_ ports.  Unfold the _Selected Object_ section if it is folded.
+
+With the _Inspector_ open, select the _speed_ port in the visual editor.  You will see the details of the port presented in the visual script component.  Change the speed value from zero (0) to one (1).
+
+Now select the _direction_ port in the visual editor.  The _Inspector_ information will change to match your new selection.  Change the _direction_ value from (0,0,0) to (-1,0,0).
+
+You are all done; the initial values are now configured.
+
+
+
+![Figure 33. Change speed to 1.][change-speed-value.png]
+
+
+
+![Figure 34. Change direction to (-1,0,0).][change-direction-value.png]
+
+
+Hit the run button at the top of the Unity editor to give it a whirl (yeh!!!).
+
+iCanScript compiles and runs your script.  _Mr Cube_ will start moving towards the centre of the scene (0,0,0) and continues forever in the same direction.
+
+You can configure different values of direction and speed while your script is running.  The new values are immediately impacting the behaviour of your script.  However, the values configured while the engine is running are temporary and they will revert back to their initial configured values once the Unity game engine is stopped.
+
+<div class="annotation" style="color:#000000" markdown="1"></div><div class="notebox">
+
+<span class="notetitle">![icanscript-ui-tips_32x32x32.png](icanscript-ui-tips_32x32x32.png) iCanScript User Interface Tips</span>
+
+---
+
+The details of the selected node or port are accessible from the visual script component in the _Inspector_.  The visual script component inspector is divided in two sections:
+
+**Selected Object:**
+> This section allows to view and configure the attributes of the selected node or port.
+
+**Selected Engine Object:**
+> This section displays in-depth information to help debug the visual script.  This information will not be used in this tutorial.
+
+</div>
+
+
+## Accessing Runtime Information ##
+
+
+Let's take this opportunity to discuss some of the basic debugging features of iCanScript.
+
+The visual editor remains active while the script is running.  Selecting the visual editor tab will bring it forward.  You may decide to relocate it so that both the visual editor and the game window be visible.  
+
+![Figure 35. iCanScript Visual Editor with runtime debug information.][runtime-display.png]
+
+The visual editor displays the following runtime information in the centre of it's toolbar:
+
+- the current frame #;
+- the average frame rate (in frames / sec).
+
+
+In addition, the Visual Editor toolbar includes several options to control the display of runtime information.  These options are:
+
+**Enable/Disable display of the frame #**
+	: Enable this control to display the last executed frame # in the title bar of each node.  The display of the last executed frame # is especially useful when conditional execution is used.  It helps differentiate the nodes that are executing from the nodes that are stalled.
+
+**Enable/Disable display of port values**
+	: Enable this control to display the runtime values of the ports.  The runtime values are displayed in beige and are periodically refreshed.
+
+**Slider to control the refresh period**
+	: This slider is used to control the frequency at which the runtime information is displayed in the visual editor.  Depending on the performance of your computer, the display of runtime information could impair on the frame rate of your game.  Reducing the refresh rate of the runtime information will reduce the performance impact on your game.
+
+
+
+## Recap on Your First Visual Script ##
+
+
+So what have you done so far?  You have:
+
+- Create the Unity scene to host your example project;
+- Installed a visual script on the _Mr Cube_ game object;
+- Created the _Update_ message handler to contain and execute your visual script on each frame;
+- Created a package to encapsulate the script to control the movement of _Mr Cube_ using speed and direction;
+- Dragged the _Mr Cube_ game object inside the script and extracted its _Transform_ component;
+- Build a small equation to translate the speed and direction inputs into a displacement to be applied on _Mr Cube_ transform;
+- Publish the _speed_ & _direction_ ports onto the _Move Mr Cube_ package for easy access by other packages.
+- Tested your new script with predefined speed & direction values.
+
+
+
+
+# Enabling & Disabling Ms Light #
+
+
+<!-- BEGIN NOTE BOX --><div class="notebox">
+<span class="notetitle">To Be Continued ...</span>
+<!-- END NOTE BOX --></div>
+
+
+
+# Homing on Ms Light #
+
+
+<!-- BEGIN NOTE BOX --><div class="notebox">
+<span class="notetitle">To Be Continued ...</span>
+<!-- END NOTE BOX --></div>
+
+
+# Creating a Timer Utility #
+
+
+<!-- BEGIN NOTE BOX --><div class="notebox">
+<span class="notetitle">To Be Continued ...</span>
+<!-- END NOTE BOX --></div>
+
+
+
+# Changing Direction #
+
+
+<!-- BEGIN NOTE BOX --><div class="notebox">
+<span class="notetitle">To Be Continued ...</span>
+<!-- END NOTE BOX --></div>
+
+
+
+# Mr Cube Roaming State #
+
+
+<!-- BEGIN NOTE BOX --><div class="notebox">
+<span class="notetitle">To Be Continued ...</span>
+<!-- END NOTE BOX --></div>
+
+
+
+# Adding a Panic State #
+
+
+<!-- BEGIN NOTE BOX --><div class="notebox">
+<span class="notetitle">To Be Continued ...</span>
+<!-- END NOTE BOX --></div>
+
+
+
+# Beautifying your Scripts #
+
+
+<!-- BEGIN NOTE BOX --><div class="notebox">
+<span class="notetitle">To Be Continued ...</span>
+<!-- END NOTE BOX --></div>
+
+
+
+[unity-new-project.png]: unity-new-project.png
+
+[create-houpi-youpi.png]: create-houpi-youpi.png
+
+[icanscript-empty-project.png]: icanscript-empty-project.png
+
+[adding-directional-light.png]: adding-directional-light.png
+
+[adding-mrs-light.png]: adding-mrs-light.png
+
+[adding-trigger-zones.png]: adding-trigger-zones.png
+
+[configure-near-far-trigger-zones.png]: configure-near-far-trigger-zones.png
+
+[adding-mr-cube.png]: adding-mr-cube.png
+
+[configure-mr-cube-name-and-position.png]: configure-mr-cube-name-and-position.png
+
+[adding-rigid-body.png]: adding-rigid-body.png
+
+[remove-use-gravity.png]: remove-use-gravity.png
+
+[disable-trigger-zones-mesh-renderer.png]: disable-trigger-zones-mesh-renderer.png
+
+[proposed-icanscript-window-layout.png]: proposed-icanscript-window-layout.png
+
+[ics-installing-visual-script-on-mr-cube.png]: ics-installing-visual-script-on-mr-cube.png
+
+[installing-update-message-handler.png]: installing-update-message-handler.png
+
+[mr-cube-script-overview.png]: mr-cube-script-overview.png
+
+[node-display-state-controls.png]: node-display-state-controls.png
+
+[creating-package-in-update.png]: creating-package-in-update.png
+
+[show-package-in-hierarchy.png]: show-package-in-hierarchy.png
+
+[renaming-move-mr-cube-package.png]: renaming-move-mr-cube-package.png
+
+[dragging-mr-cube.png]: dragging-mr-cube.png
+
+[game-object-and-components.png]: game-object-and-components.png
+
+[access-mr-cube-transform.png]: access-mr-cube-transform.png
+
+[extract-mr-cube-transform.png]: extract-mr-cube-transform.png
+
+[mr-cube-translate.png]: mr-cube-translate.png
+
+[adding-vector3-multiply-to-move-mr-cube.png]: adding-vector3-multiply-to-move-mr-cube.png
+
+[rename-velocity-to-displacement-node.png]: rename-velocity-to-displacement-node.png
+
+[bind-displacement-to-translation.png]: bind-displacement-to-translation.png
+
+[adding-delta-time-to-mr-cube.png]: adding-delta-time-to-mr-cube.png
+
+[duplicate-multiply-node.png]: duplicate-multiply-node.png
+
+[rename-to-velocity.png]: rename-to-velocity.png
+
+[publish-speed-and-direction.png]: publish-speed-and-direction.png
+
+[change-speed-value.png]: change-speed-value.png
+
+[change-direction-value.png]: change-direction-value.png
+
+[runtime-display.png]: runtime-display.png

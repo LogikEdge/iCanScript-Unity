@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>iCanScript Visual Script Anatomy</title>
+	<meta name="author" content="Michel Launier"/>
+	<meta name="version" content="v1.0.3 (Beta #17)"/>
+	<meta name="email" content="support@icanscript.com"/>
+	<link type="text/css" rel="stylesheet" href="Github.css"/>
+</head>
+<body>
+
+<style type="text/css">
+    <!--
+
+.center {
+    text-align: center;
+}
+
+.tipbox {
+    text-align: justify;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-style: ridge;
+    border-width: 2px;
+    text-indent: 0;
+}
+
+.cmd {
+    color: #6d00ff;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.tiptitle {
+    font-size: 1.4em;
+    font-weight: normal;
+}
+    -->
+</style>
+
+<ul>
+<li><a href="#nodesportsandbindings">Nodes, Ports, and Bindings</a></li>
+<li><a href="#nodeanatomy">Node Anatomy</a></li>
+</ul>
+
+<h1 id="nodesportsandbindings">Nodes, Ports, and Bindings</h1>
+
+<p>A good understanding of the fundamental building blocks of a visual script is necessary to effectively use iCanScript.</p>
+
+<p>A visual script includes three (3) types of component being:</p>
+
+<ul>
+<li><strong>Nodes</strong>;</li>
+<li><strong>Ports</strong>; and &#8230;</li>
+<li><strong>Bindings.</strong></li>
+</ul>
+
+<figure>
+<img src="ics-visual-script-building-blocks.png" alt="Figure 1. Visual Script Building Blocks." id="ics-visual-script-building-blocks.png" />
+<figcaption>Figure 1. Visual Script Building Blocks.</figcaption>
+</figure>
+
+<p>The <strong>node</strong> is the primary ingredient of visual scripts. Its main purpose is to encapsulate various type of behaviours such as:</p>
+
+<ul>
+<li>variables &amp; functions;</li>
+<li>algorithms;</li>
+<li>states and state charts; and</li>
+<li>nested visual scripts (i.e. packages or submodules).</li>
+</ul>
+
+<p>The <strong>ports</strong> are the public interfaces to nodes. Multiple ports may exist on the same node each representing a distinct interface. A single port is directional and is either an input port or an output port both never both. The ports are further classified as:</p>
+
+<ul>
+<li><em>data flow:</em> feeding or extracting data to/from the node behaviour;</li>
+<li><em>control flow:</em> controlling the execution state of the node (<em>boolean</em> value);</li>
+<li><em>state transition:</em> controlling the state transition triggers (state charts only).</li>
+</ul>
+
+<p>The <strong>bindings</strong> define relationships between ports. Bindings can only be created between compatible ports. Furthermore, bindings are directional and can only exist between an output port and one or more inputs port(s). That is, connecting input ports together or output ports together is not permitted. The following summarizes the permissible bindings:</p>
+
+<ul>
+<li>from an output data port to one or more input data or control port(s) if the data type is compatible;</li>
+<li>from an output control port to one or more input data or control port(s) if the data type is compatible with a <em>boolean</em> value;</li>
+<li>from an output state port to one input state port using a transition trigger module.</li>
+</ul>
+
+<p><u><strong>Exception:</strong></u> iCanScript includes a special port, named the <em>Multiplexer Port</em>, that bridges multiple output ports into a single output port. This port is especially useful when multiple exclusive execution paths of a visual script must combine into a single set of data values. (see [Data Flow Diagram][] for additional details).</p>
+<div class="annotation"  style="color:#000000" > <div class="tipbox">
+<img src="iCanScriptLogo_32x32x32.png" alt="" id="icanscriptlogo_32x32x32.png" style="height:33px;width:33px;" /> <span class="tiptitle">iCanScript Advanced Topic</span>
+
+<hr />
+
+<p>iCanScript internally implements the <em>Multiplexer Port</em> using a specialized <em>data multiplexer node</em>. For convenience to the user, this multiplexer node is always iconized and positioned on the edge of the parent node giving the illusion of being a <em>multiplexer port</em>.</p>
+ </div><!--tipbox-->
+</div>
+
+<h1 id="nodeanatomy">Node Anatomy</h1>
+
+<p>The <em>node</em> is by far the most elaborate component of visual scripts. It plays a key role in the structure, execution, and layout of the visual script.</p>
+
+<p>All nodes in iCanScript share a common set of attributes:</p>
+
+<ul>
+<li><strong>Name:</strong> A character string representation of the node;</li>
+<li><strong>Type:</strong> Identifies the node specialization.</li>
+<li><strong>Tree-like Hierarchical Structure:</strong>
+
+<ul>
+<li>A parent node;</li>
+<li>Zero or more child components:
+
+<ul>
+<li><em>Ports</em>;</li>
+<li><em>Child Nodes</em> (nested Visual Script).</li>
+</ul></li>
+</ul></li>
+<li><strong>Graphical Representation:</strong> (see figure 3
+
+<ul>
+<li>Position within the parent node;</li>
+<li>Display State:
+
+<ul>
+<li><em>Unfolded</em>;</li>
+<li><em>Folded</em>; or</li>
+<li><em>Iconized</em>.</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>The following image depicts an unfolded node as seen in the <em>Visual Editor</em>:</p>
+
+<figure>
+<img src="ics-anatomy-of-a-node.png" alt="Figure 2. Anatomy of an unfolded node as seen in the Visual Editor." id="ics-anatomy-of-a-node.png" />
+<figcaption>Figure 2. Anatomy of an unfolded node as seen in the <em>Visual Editor</em>.</figcaption>
+</figure>
+
+<p>The following image depicts the same unfolded node as seen in the <em>Tree View</em>:</p>
+
+<figure>
+<img src="ics-hierarchy-tree-example.png" alt="Figure 3. Anatomy of an unfolded node as seen in the Tree View." id="ics-hierarchy-tree-example.png" />
+<figcaption>Figure 3. Anatomy of an unfolded node as seen in the <em>Tree View</em>.</figcaption>
+</figure>
+
+<ol>
+<li><strong>Node Name:</strong> User configurable name for the node. The name is editable in the inspector or the hierarchy tree. The programmatic function / type name is used by default.</li>
+<li><strong>Iconize Control:</strong> Clicking this pictogram causes the node to take its iconic representation.</li>
+<li><strong>Fold/Unfold Control:</strong> Clicking this pictogram toggles the node between its folded and unfolded representation. The fold/unfold control is available only for those node types that can contain nested visual scripts. (see [Node Types] for details).</li>
+<li><strong>Node Ports:</strong> Ports are positioned on any of the four node edges.
+
+<ul>
+<li><em>Port Name</em> is displayed inside the node;</li>
+<li><em>Port Value</em> is display outside the node.</li>
+</ul></li>
+<li><strong>Nested Visual Script:</strong> The central area of the node is used to manage the nested child nodes. The child node container is only visible when the node is unfolded. See section [Node Types] for details on which node types support nested children.</li>
+</ol>
+
+</body>
+</html>

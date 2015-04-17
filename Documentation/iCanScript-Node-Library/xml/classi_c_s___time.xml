@@ -1,0 +1,313 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___time" kind="class" prot="public">
+    <compoundname>iCS_Time</compoundname>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classi_c_s___time_1aad3fd3e363efbba42667b65cce877915" prot="private" static="yes" mutable="no">
+        <type>float</type>
+        <definition>float iCS_Time.ourLastFrameTime</definition>
+        <argsstring></argsstring>
+        <name>ourLastFrameTime</name>
+        <initializer>= 0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="54" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___time_1a8cb76a0450c942a68921f3f7f48bc034" prot="private" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int iCS_Time.ourFrameCount</definition>
+        <argsstring></argsstring>
+        <name>ourFrameCount</name>
+        <initializer>= -1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="55" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___time_1a59b58054b4880d92a39e118714c95300" prot="private" static="yes" mutable="no">
+        <type>float</type>
+        <definition>float iCS_Time.ourSmoothIntervalTime</definition>
+        <argsstring></argsstring>
+        <name>ourSmoothIntervalTime</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="56" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="classi_c_s___time_1a42c76764c4fcd04f0e7d7ea3bc615f69" prot="public" static="yes" readable="no" writable="no" gettable="yes" settable="no">
+        <type>float</type>
+        <definition>float iCS_Time.smoothIntervalTime</definition>
+        <argsstring></argsstring>
+        <name>smoothIntervalTime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="57" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___time_1a320a331ef4b94989196055fc9cb62df4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Time.ScaleByDeltaTime</definition>
+        <argsstring>(float value=1f)</argsstring>
+        <name>ScaleByDeltaTime</name>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+          <defval>1f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="7" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1a194a6a5106f96872c9d8dd260d9d815f" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_Time.ScaleByDeltaTime</definition>
+        <argsstring>(Vector2 value)</argsstring>
+        <name>ScaleByDeltaTime</name>
+        <param>
+          <type>Vector2</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="11" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1ac59f27ba45385a8530a9a6ec3df90388" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Time.ScaleByDeltaTime</definition>
+        <argsstring>(Vector3 value)</argsstring>
+        <name>ScaleByDeltaTime</name>
+        <param>
+          <type>Vector3</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="15" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="15" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1aa93642df190ca78a952680db885a14f3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_Time.ScaleByDeltaTime</definition>
+        <argsstring>(Vector4 value)</argsstring>
+        <name>ScaleByDeltaTime</name>
+        <param>
+          <type>Vector4</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="19" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="19" bodyend="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1a59c0d1f4a80f1f2b4f6e9e3dece002f6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Time.LerpUsingDeltaTime</definition>
+        <argsstring>(float v1, float v2, float ratio)</argsstring>
+        <name>LerpUsingDeltaTime</name>
+        <param>
+          <type>float</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="23" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="23" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1a29cc8b1c82689c48ff06160e60cbd150" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_Time.LerpUsingDeltaTime</definition>
+        <argsstring>(Vector2 v1, Vector2 v2, float ratio)</argsstring>
+        <name>LerpUsingDeltaTime</name>
+        <param>
+          <type>Vector2</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector2</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="27" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="27" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1ad40ab176fc0597216ddb6656efc73f58" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Time.LerpUsingDeltaTime</definition>
+        <argsstring>(Vector3 v1, Vector3 v2, float ratio)</argsstring>
+        <name>LerpUsingDeltaTime</name>
+        <param>
+          <type>Vector3</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="31" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="31" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1aaa512ff45069fb8c64a65a513a2b9e71" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_Time.LerpUsingDeltaTime</definition>
+        <argsstring>(Vector4 v1, Vector4 v2, float ratio)</argsstring>
+        <name>LerpUsingDeltaTime</name>
+        <param>
+          <type>Vector4</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector4</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="35" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="35" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1a9585685174456b6ab8728d76029efc7e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Time.ComputeElapseTime</definition>
+        <argsstring>(float time)</argsstring>
+        <name>ComputeElapseTime</name>
+        <param>
+          <type>float</type>
+          <declname>time</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="39" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="39" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1ac83f306a7923d7962563267c3402eaf1" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Time.StartTimer</definition>
+        <argsstring>(float time)</argsstring>
+        <name>StartTimer</name>
+        <param>
+          <type>float</type>
+          <declname>time</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="43" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="43" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_1a659d7f3f80b5f3b02517955ff38da8c6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Time.IsTimerElapsed</definition>
+        <argsstring>(float endTime, out bool isNotElapsed)</argsstring>
+        <name>IsTimerElapsed</name>
+        <param>
+          <type>float</type>
+          <declname>endTime</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isNotElapsed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="47" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="47" bodyend="51"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Time.cs" bodystart="5" bodyend="77"/>
+    <listofallmembers>
+      <member refid="classi_c_s___time_1a9585685174456b6ab8728d76029efc7e" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>ComputeElapseTime</name></member>
+      <member refid="classi_c_s___time_1a659d7f3f80b5f3b02517955ff38da8c6" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>IsTimerElapsed</name></member>
+      <member refid="classi_c_s___time_1a59c0d1f4a80f1f2b4f6e9e3dece002f6" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>LerpUsingDeltaTime</name></member>
+      <member refid="classi_c_s___time_1a29cc8b1c82689c48ff06160e60cbd150" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>LerpUsingDeltaTime</name></member>
+      <member refid="classi_c_s___time_1ad40ab176fc0597216ddb6656efc73f58" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>LerpUsingDeltaTime</name></member>
+      <member refid="classi_c_s___time_1aaa512ff45069fb8c64a65a513a2b9e71" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>LerpUsingDeltaTime</name></member>
+      <member refid="classi_c_s___time_1a8cb76a0450c942a68921f3f7f48bc034" prot="private" virt="non-virtual"><scope>iCS_Time</scope><name>ourFrameCount</name></member>
+      <member refid="classi_c_s___time_1aad3fd3e363efbba42667b65cce877915" prot="private" virt="non-virtual"><scope>iCS_Time</scope><name>ourLastFrameTime</name></member>
+      <member refid="classi_c_s___time_1a59b58054b4880d92a39e118714c95300" prot="private" virt="non-virtual"><scope>iCS_Time</scope><name>ourSmoothIntervalTime</name></member>
+      <member refid="classi_c_s___time_1a320a331ef4b94989196055fc9cb62df4" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>ScaleByDeltaTime</name></member>
+      <member refid="classi_c_s___time_1a194a6a5106f96872c9d8dd260d9d815f" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>ScaleByDeltaTime</name></member>
+      <member refid="classi_c_s___time_1ac59f27ba45385a8530a9a6ec3df90388" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>ScaleByDeltaTime</name></member>
+      <member refid="classi_c_s___time_1aa93642df190ca78a952680db885a14f3" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>ScaleByDeltaTime</name></member>
+      <member refid="classi_c_s___time_1a42c76764c4fcd04f0e7d7ea3bc615f69" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>smoothIntervalTime</name></member>
+      <member refid="classi_c_s___time_1ac83f306a7923d7962563267c3402eaf1" prot="public" virt="non-virtual"><scope>iCS_Time</scope><name>StartTimer</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

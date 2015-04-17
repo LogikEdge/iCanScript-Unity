@@ -1,0 +1,1 @@
+In this section we discuss the difficulty that we have with the displacement and the variable frame rate. We also provide a solution to resolve the issue.

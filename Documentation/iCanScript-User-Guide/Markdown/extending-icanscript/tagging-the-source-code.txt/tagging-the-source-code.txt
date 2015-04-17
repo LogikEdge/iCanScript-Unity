@@ -1,0 +1,151 @@
+Title: iCanScript Extending iCanScript
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+<!--TOC max2-->
+
+# Tagging your Source Code #
+
+iCanScript includes several .NET attributes to control which part of your source code is to be included in the iCanScript library. These attributes enables fine control over which fields, properties and functions become visible to the iCanScript user.
+
+iCanScript scans the .NET assemblies to populate its library with public classes tagged with the *iCS_Class* attribute.  The assembly scan is performed after every recompile of the Unity scripts.
+
+The following table depicts the mapping between C# source code and iCanScript objects:
+
+| Source Code           | iCanScript Objects                                    ||
+| :-------------------- | :------: | :------------------------------------------ |
+| **class**             | ![][iCS_ObjectInstanceIcon_32x32.png]     | Class / Type Node                           |
+| **field**             | ![][iCS_InputPort-64x64.png]![][iCS_OutputPort-64x64.png] | Port                                        |
+| **property**          | ![][iCS_InputPort-64x64.png]![][iCS_OutputPort-64x64.png] | Port                                        |
+| **constructor**       | ![][iCS_BuilderIcon_32x32.png]
+     | Variable Builder Node                       |
+| **instance function** | ![][iCS_FunctionIcon.png]     | Function Node with a *"this"* input port    |
+| **class function**    | ![][iCS_FunctionIcon.png]     | Function Node without a *"this"* input port |
+[Table 1. Mapping between C# source code and iCanScript objects.]
+
+>  **Note:** All source code elements tagged with an iCanScript attribute *MUST HAVE* a public programmatic scope.
+
+
+### iCanScript .NET Attribute Reference
+
+The following two tables enumerates the supported iCanScript attributes and their associated parameters: 
+
+| Attribute Name    | Targets            | Parameters |
+| :---------------- | :----------------- | :--------- |
+| **iCS_Class**     | class or structure | **Company**<br>**CompanyIcon**<br>**Library**<br>**Icon**<br>**Tooltip**<br>**BaseVisibility** |
+| **iCS_Function**  | constructor,<br>function,<br>property get,<br>property set | **Name**<br>**Return**<br>**Icon**<br>**Tooltip**  |
+| **iCS_InPort**    | field | |
+| **iCS_OutPort**   | field | |
+| **iCS_InOutPort** | field | |
+[Table 2. iCanScript .NET Attributes]
+
+
+| Parameter Name     | Type   | Description            |
+| :----------------- | :----- | :--------------------- |
+| **BaseVisibility** | bool   | if true: adds the base classes public variables and functions. |
+| **Company**        | string | The name shown at the first level of the library tree. |
+| **CompanyIcon**    | string | Path to the iconic representation of the company. |
+| **Icon**           | string | Path to the iconic representation of the node. |
+| **Name**           | string | Function name substitute. |
+| **Library**        | string | The name shown at the second level of the library tree. |
+| **Return**         | string | Port name for the function *return value*. |
+| **Tooltip**        | string | Brief description of the component. |
+[Table 3. iCanScript .NET Attribute Parameters.]
+
+
+### iCS_Class Attribute
+
+iCanScript adds a type node to its library for each class and structure marked with the *iCS_Class* attribute.
+
+> **Note** that iCanScript will only add *public* classes and structures.
+
+**Example:**
+
+![Figure 1. iCS_Class attribute example.][attribute-ics_class-example.png]
+
+
+### iCS_Function Attribute
+
+You can publish to the iCanScript library your C# properties, constructors, instance function and class function using the *iCS_Function* attribute.
+
+See [Tagging your Source Code] for details on the C# source code to iCanScript object mapping.
+
+>  **Note:** The _iCS_Function_ attribute can only be applied to _public_ members of the C# class.
+
+**Example:**
+
+![Figure 2. iCS_Function attribute example.][attribute-ics_function-example.png]
+
+
+### iCS_InPort, iCS_OutPort, and iCS_InOutPort Attributes
+
+You can publish to the iCanScript library your C# fields using the _iCS_InPort_, _iCS_OutPort_, and _iCS_InOutPort_ attributes.
+
+>  **Note:** The _iCS_xxPort_ attributes can only be applied to _public_ fields of C# classes.
+
+**Example:**
+
+![Figure 3. iCS_xxPort attribute example.][attribute-iCS_xxPort-example.png]
+
+
+
+
+
+
+[iCS_ObjectInstanceIcon_32x32.png]: iCS_ObjectInstanceIcon_32x32.png width=31px height=31px
+
+[iCS_InputPort-64x64.png]: iCS_InputPort-64x64.png width=32px height=32px
+
+[iCS_OutputPort-64x64.png]: iCS_OutputPort-64x64.png width=32px height=32px
+
+[iCS_InputPort-64x64.png]: iCS_InputPort-64x64.png width=32px height=32px
+
+[iCS_OutputPort-64x64.png]: iCS_OutputPort-64x64.png width=32px height=32px
+
+[iCS_BuilderIcon_32x32.png]: iCS_BuilderIcon_32x32.png width=31px height=31px
+
+[iCS_FunctionIcon.png]: iCS_FunctionIcon.png width=31px height=31px
+
+[iCS_FunctionIcon.png]: iCS_FunctionIcon.png width=31px height=31px
+
+[attribute-ics_class-example.png]: attribute-ics_class-example.png
+
+[attribute-ics_function-example.png]: attribute-ics_function-example.png width=479px height=219px
+
+[attribute-iCS_xxPort-example.png]: attribute-iCS_xxPort-example.png

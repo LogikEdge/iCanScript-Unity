@@ -1,0 +1,67 @@
+Title: iCanScript Example Project
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+# Opening the iCanScript Editors #
+
+
+You are almost ready to create your first visual script.  Before you do so, you need to open the following four iCanScript editors:
+
+- Visual Editor;
+- Library Tree;
+- Hierarchy Tree and;
+- Instance Wizard.
+
+All of the editors can be opened for the <span class="cmd">Window->iCanScript->...</span> menu item.  The _Visual Editor_ requires a significant screen area so I propose that you combine it with the _Scene_ or _Game_ window.  All of the other editors are narrow and tall and may be combine with the Unity _Project_, _Hierarchy_, or _Inspector_ panels.
+
+My preferred window setup for working with iCanScript is:
+
+- the _**Visual Editor**_ is combined with _Unity's Scene_;
+- the _**Library Tree**_ and _**Hierarchy Tree**_ share the bottom section with _Unity's Project_ and;
+- the _**Instance Wizard**_ is combined with _Unity's Inspector_.  
+
+
+![Figure 1. Proposed iCanScript Window Layout.][proposed-icanscript-window-layout.png]
+
+
+Of course the layout is a matter of taste and you should organize it to your licking (a two screen layout is the best!).
+
+
+[proposed-icanscript-window-layout.png]: proposed-icanscript-window-layout.png

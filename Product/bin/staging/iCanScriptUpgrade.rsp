@@ -1,0 +1,8 @@
+/target:library
+/out:iCanScriptUpgrade.dll
+/reference:/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll
+/reference:/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll
+/reference:iCanScriptEngine.dll
+
+
+../../Unity/Assets/iCanScript/Editor/0-Upgrade/iCS_UpgradeController.cs

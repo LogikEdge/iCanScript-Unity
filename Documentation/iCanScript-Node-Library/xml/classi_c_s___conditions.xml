@@ -1,0 +1,607 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___conditions" kind="class" prot="public">
+    <compoundname>iCS_Conditions</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___conditions_1a9d66ba204383d55a842d9dedddd6b503" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsNull</definition>
+        <argsstring>(object obj, out bool isNotNull)</argsstring>
+        <name>IsNull</name>
+        <param>
+          <type>object</type>
+          <declname>obj</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isNotNull</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="8" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="8" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a3983fe340f51aca91bd49e179fc518f7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsZero</definition>
+        <argsstring>(float a, out bool isNotZero)</argsstring>
+        <name>IsZero</name>
+        <param>
+          <type>float</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isNotZero</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="13" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="13" bodyend="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a010630cadc5538c3bd8d4b2a860be2a7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsEqual</definition>
+        <argsstring>(float a, float b, out bool isNotEqual)</argsstring>
+        <name>IsEqual</name>
+        <param>
+          <type>float</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isNotEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="16" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="16" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a4a2fcec00bb5922c9baff1aa4a624eba" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsGreater</definition>
+        <argsstring>(float value, float bias, out bool isSmallerOrEqual)</argsstring>
+        <name>IsGreater</name>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmallerOrEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="19" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="19" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1acc18074d99cdf8ac074d2ea6fcba6c77" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsSmaller</definition>
+        <argsstring>(float value, float bias, out bool isGreaterOrEqual)</argsstring>
+        <name>IsSmaller</name>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreaterOrEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="22" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="22" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a396982e64701dac35d4baa3670ac1d36" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsGreaterOrEqual</definition>
+        <argsstring>(float value, float bias, out bool isSmaller)</argsstring>
+        <name>IsGreaterOrEqual</name>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmaller</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="25" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="25" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a17544f01901cd9112c1e69ef945550c7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsSmallerOrEqual</definition>
+        <argsstring>(float value, float bias, out bool isGreater)</argsstring>
+        <name>IsSmallerOrEqual</name>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreater</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="28" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="28" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a11f18c55d7a0bd66855cf19ee3f54390" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.Compare</definition>
+        <argsstring>(float value, float bias, out bool isSmaller, out bool isGreater, out bool isSmallerOrEqual, out bool isGreaterOrEqual)</argsstring>
+        <name>Compare</name>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmaller</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreater</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmallerOrEqual</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreaterOrEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="31" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="31" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a94980aa2f36f01e4c68df4d4ae6a77e1" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsZero</definition>
+        <argsstring>(int a, out bool isNotZero)</argsstring>
+        <name>IsZero</name>
+        <param>
+          <type>int</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isNotZero</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="45" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="45" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1aa687442a4c0f0511a75ec2115026f925" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsEqual</definition>
+        <argsstring>(int a, int b, out bool isNotEqual)</argsstring>
+        <name>IsEqual</name>
+        <param>
+          <type>int</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isNotEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="48" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="48" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a4d0e9a27cc1dc4052feea7a7087d9b57" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsGreater</definition>
+        <argsstring>(int value, int bias, out bool isSmallerOrEqual)</argsstring>
+        <name>IsGreater</name>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmallerOrEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="51" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="51" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1ae83072da07a1e8759ed0fa42bc0eee42" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsSmaller</definition>
+        <argsstring>(int value, int bias, out bool isGreaterOrEqual)</argsstring>
+        <name>IsSmaller</name>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreaterOrEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="54" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="54" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a07e3eb110953be3436b5652384f7f09b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsGreaterOrEqual</definition>
+        <argsstring>(int value, int bias, out bool isSmaller)</argsstring>
+        <name>IsGreaterOrEqual</name>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmaller</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="57" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="57" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a018a4a8b6e24ad34a1f796791f88b504" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsSmallerOrEqual</definition>
+        <argsstring>(int value, int bias, out bool isGreater)</argsstring>
+        <name>IsSmallerOrEqual</name>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreater</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="60" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="60" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a0fd68096f8db40fcc451964142e523e9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.Compare</definition>
+        <argsstring>(int value, int bias, out bool isSmaller, out bool isGreater, out bool isSmallerOrEqual, out bool isGreaterOrEqual)</argsstring>
+        <name>Compare</name>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmaller</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreater</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmallerOrEqual</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreaterOrEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="63" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="63" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a6e8079ab2b4f846e5640f00d07afe034" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsNullOrEmpty</definition>
+        <argsstring>(string a, out bool Else)</argsstring>
+        <name>IsNullOrEmpty</name>
+        <param>
+          <type>string</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>Else</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="77" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="77" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a241816d6f0ba145958fee49811c07053" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsEqual</definition>
+        <argsstring>(string value, string bias, out bool isNotEqual)</argsstring>
+        <name>IsEqual</name>
+        <param>
+          <type>string</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isNotEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="80" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="80" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1ac2dfa7c71498225e8dd5cfe9d81a97b3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsGreater</definition>
+        <argsstring>(string value, string bias, out bool isSmallerOrEqual)</argsstring>
+        <name>IsGreater</name>
+        <param>
+          <type>string</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmallerOrEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="83" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="83" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a4afdf5193f45f11cb49408f5e2cd51a5" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsSmaller</definition>
+        <argsstring>(string value, string bias, out bool isGreaterOrEqual)</argsstring>
+        <name>IsSmaller</name>
+        <param>
+          <type>string</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreaterOrEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="86" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="86" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1af816e87a16e01d67aa057c3a1440a4f5" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsGreaterOrEqual</definition>
+        <argsstring>(string value, string bias, out bool isSmaller)</argsstring>
+        <name>IsGreaterOrEqual</name>
+        <param>
+          <type>string</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmaller</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="89" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="89" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1adc6a67f0099befef7641abcbb7fe1674" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.IsSmallerOrEqual</definition>
+        <argsstring>(string value, string bias, out bool isGreater)</argsstring>
+        <name>IsSmallerOrEqual</name>
+        <param>
+          <type>string</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreater</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="92" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="92" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___conditions_1a7f53dbd2acce6613c884e9ecb0cf8075" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Conditions.Compare</definition>
+        <argsstring>(string value, string bias, out bool isSmaller, out bool isGreater, out bool isSmallerOrEqual, out bool isGreaterOrEqual)</argsstring>
+        <name>Compare</name>
+        <param>
+          <type>string</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>bias</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmaller</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreater</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isSmallerOrEqual</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>isGreaterOrEqual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="95" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="95" bodyend="106"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="5" bodyend="107"/>
+    <listofallmembers>
+      <member refid="classi_c_s___conditions_1a11f18c55d7a0bd66855cf19ee3f54390" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>Compare</name></member>
+      <member refid="classi_c_s___conditions_1a0fd68096f8db40fcc451964142e523e9" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>Compare</name></member>
+      <member refid="classi_c_s___conditions_1a7f53dbd2acce6613c884e9ecb0cf8075" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>Compare</name></member>
+      <member refid="classi_c_s___conditions_1a010630cadc5538c3bd8d4b2a860be2a7" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsEqual</name></member>
+      <member refid="classi_c_s___conditions_1aa687442a4c0f0511a75ec2115026f925" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsEqual</name></member>
+      <member refid="classi_c_s___conditions_1a241816d6f0ba145958fee49811c07053" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsEqual</name></member>
+      <member refid="classi_c_s___conditions_1a4a2fcec00bb5922c9baff1aa4a624eba" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsGreater</name></member>
+      <member refid="classi_c_s___conditions_1a4d0e9a27cc1dc4052feea7a7087d9b57" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsGreater</name></member>
+      <member refid="classi_c_s___conditions_1ac2dfa7c71498225e8dd5cfe9d81a97b3" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsGreater</name></member>
+      <member refid="classi_c_s___conditions_1a396982e64701dac35d4baa3670ac1d36" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsGreaterOrEqual</name></member>
+      <member refid="classi_c_s___conditions_1a07e3eb110953be3436b5652384f7f09b" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsGreaterOrEqual</name></member>
+      <member refid="classi_c_s___conditions_1af816e87a16e01d67aa057c3a1440a4f5" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsGreaterOrEqual</name></member>
+      <member refid="classi_c_s___conditions_1a9d66ba204383d55a842d9dedddd6b503" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsNull</name></member>
+      <member refid="classi_c_s___conditions_1a6e8079ab2b4f846e5640f00d07afe034" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsNullOrEmpty</name></member>
+      <member refid="classi_c_s___conditions_1acc18074d99cdf8ac074d2ea6fcba6c77" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsSmaller</name></member>
+      <member refid="classi_c_s___conditions_1ae83072da07a1e8759ed0fa42bc0eee42" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsSmaller</name></member>
+      <member refid="classi_c_s___conditions_1a4afdf5193f45f11cb49408f5e2cd51a5" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsSmaller</name></member>
+      <member refid="classi_c_s___conditions_1a17544f01901cd9112c1e69ef945550c7" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsSmallerOrEqual</name></member>
+      <member refid="classi_c_s___conditions_1a018a4a8b6e24ad34a1f796791f88b504" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsSmallerOrEqual</name></member>
+      <member refid="classi_c_s___conditions_1adc6a67f0099befef7641abcbb7fe1674" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsSmallerOrEqual</name></member>
+      <member refid="classi_c_s___conditions_1a3983fe340f51aca91bd49e179fc518f7" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsZero</name></member>
+      <member refid="classi_c_s___conditions_1a94980aa2f36f01e4c68df4d4ae6a77e1" prot="public" virt="non-virtual"><scope>iCS_Conditions</scope><name>IsZero</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

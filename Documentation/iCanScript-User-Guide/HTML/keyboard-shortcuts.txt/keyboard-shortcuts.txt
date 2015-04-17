@@ -1,0 +1,91 @@
+Title: iCanScript Keyboard Shortcuts
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.1 (Beta #15)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.notebox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.notetitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+
+# Table of Contents #
+
+<!--TOC max2-->
+
+
+# Navigation #
+
+| Navigation Hot-Keys | Action Performed |
+| :---------------------------: | :--------------- |
+|  ***Up Arrow***   | Moves the selection to the parent node. |
+| ***Down Arrow***  | Moves the selection to the first child node. | 
+| ***Right Arrow*** | Moves the selection to the next sibling node. |
+| ***Left Arrow***  | Moves the selection to the previous sibling node. |
+|      ***F***      | Repositions the selected node or port in the centre of the visual editor viewport |
+|   ***Shift-F***   | Centres the visual script in the middle of the visual editor viewport |
+[Table 1. Navigation Shortcuts.]
+
+# Bookmarks #
+
+| Bookmarks Hot-Keys | Action Performed |
+| :------------: | :--------------- |
+|    ***B***     | Bookmarks the active selection. |
+|    ***G***     | Moves the selection to the active bookmark |
+|    ***S***     | Swaps bookmark. Bookmarks the active selection and moves the selection to the previous bookmark. |
+|    ***C***     | Connects the bookmarked port and the selected port (requires compatible data types) |
+[Table 2. Bookmark Shortcuts.]
+
+# Expand / Fold #
+
+|   Expand / Fold Keys   | Action Performed |
+| :--------------------: | :--------------- |
+|      ***Enter***       | Expands the selected node:<br>- **Action Nodes:** Iconized -> Folded<br>- **Composite Nodes:** Iconized -> Folded -> Unfolded |
+|    ***Ctrl-Enter***    | Maximizes the selected node:<br>- **Action Nodes:** Iconized -> Folded<br>- **Composite Nodes:** Iconized or Folded -> Unfolded |
+|   ***Shift-Enter***    | Collapses the selected node:<br>- **Action Nodes:** Folded -> Iconized<br>- **Composite Nodes:** Unfolded -> Folded -> Iconized |
+| ***Ctrl-Shift-Enter*** | Iconizes the selected node. |
+[Table 3. Expand / Fold Shortcuts.]
+
+
+# Delete #
+
+|  Deletion Keys  | Action Performed |
+| :-------------: | :--------------- |
+|    ***Del***    | Deletes the currently selected object with user confirmation. The selection is moved to the parent node on deletion. |
+| ***Shift-Del*** | Deletes the currently selected node (no user confirmation). The selection is moved to the parent node. |
+[Table 4. Quick Deletion Shortcuts.]
+
+
+[Back to Top][Table of Contents]
+
+* * *

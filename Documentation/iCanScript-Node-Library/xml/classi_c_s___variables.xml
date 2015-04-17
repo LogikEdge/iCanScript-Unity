@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___variables" kind="class" prot="public">
+    <compoundname>iCS_Variables</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___variables_1aceff0f0100db3d2ba2b0c4212fc32595" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Variables._bool</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>_bool</name>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="5" bodyend="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___variables_1abe9b9319e5e056c0346ee4c1d36e17cb" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iCS_Variables._int</definition>
+        <argsstring>(int value)</argsstring>
+        <name>_int</name>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="6" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="6" bodyend="6"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___variables_1a285a84ed41823846ffc2be0dc0fc6f84" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Variables._float</definition>
+        <argsstring>(float value)</argsstring>
+        <name>_float</name>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="7" bodyend="7"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___variables_1affdb20de43dda1323369dcdff7f65121" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string iCS_Variables._string</definition>
+        <argsstring>(string value)</argsstring>
+        <name>_string</name>
+        <param>
+          <type>string</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="8" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="8" bodyend="8"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="4" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="4" bodyend="9"/>
+    <listofallmembers>
+      <member refid="classi_c_s___variables_1aceff0f0100db3d2ba2b0c4212fc32595" prot="public" virt="non-virtual"><scope>iCS_Variables</scope><name>_bool</name></member>
+      <member refid="classi_c_s___variables_1a285a84ed41823846ffc2be0dc0fc6f84" prot="public" virt="non-virtual"><scope>iCS_Variables</scope><name>_float</name></member>
+      <member refid="classi_c_s___variables_1abe9b9319e5e056c0346ee4c1d36e17cb" prot="public" virt="non-virtual"><scope>iCS_Variables</scope><name>_int</name></member>
+      <member refid="classi_c_s___variables_1affdb20de43dda1323369dcdff7f65121" prot="public" virt="non-virtual"><scope>iCS_Variables</scope><name>_string</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,90 @@
+Title: iCanScript Visual Script Anatomy
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+<!--TOC max2-->
+
+# Nodes, Ports, and Bindings #
+
+A good understanding of the fundamental building blocks of a visual script is necessary to effectively use iCanScript.
+
+A visual script includes three (3) types of component being:
+
+- **Nodes**;
+- **Ports**; and ...
+- **Bindings.**
+
+![Figure 1.  Visual Script Building Blocks.][ics-visual-script-building-blocks.png]
+
+The **node** is the primary ingredient of visual scripts.  Its main purpose is to encapsulate various type of behaviours such as:
+
+- variables & functions;
+- algorithms;
+- states and state charts; and
+- nested visual scripts (i.e. packages or submodules).
+
+The **ports** are the public interfaces to nodes.  Multiple ports may exist on the same node each representing a distinct interface.  A single port is directional and is either an input port or an output port both never both.  The ports are further classified as:
+
+ - _data flow:_ feeding or extracting data to/from the node behaviour;
+ - _control flow:_ controlling the execution state of the node (_boolean_ value);
+ - _state transition:_  controlling the state transition triggers (state charts only).
+ 
+The **bindings** define relationships between ports.  Bindings can only be created between compatible ports.  Furthermore, bindings are directional and can only exist between an output port and one or more inputs port(s).  That is, connecting input ports together or output ports together is not permitted.  The following summarizes the permissible bindings:
+
+- from an output data port to one or more input data or control port(s) if the data type is compatible;
+- from an output control port to one or more input data or control port(s) if the data type is compatible with a _boolean_ value;
+- from an output state port to one input state port using a transition trigger module.
+
+<u>**Exception:**</u> iCanScript includes a special port, named the _Multiplexer Port_, that bridges multiple output ports into a single output port.  This port is especially useful when multiple exclusive execution paths of a visual script must combine into a single set of data values.  (see [Data Flow Diagram][] for additional details).
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][iCanScriptLogo_32x32x32.png] <span class="tiptitle">iCanScript Advanced Topic</span>
+
+---
+
+iCanScript internally implements the _Multiplexer Port_ using a specialized  _data multiplexer node_.  For convenience to the user, this multiplexer node is always iconized and positioned on the edge of the parent node giving the illusion of being a _multiplexer port_.
+
+ </div><!--tipbox-->
+</div>
+
+
+
+[ics-visual-script-building-blocks.png]: ics-visual-script-building-blocks.png
+
+[iCanScriptLogo_32x32x32.png]: iCanScriptLogo_32x32x32.png width=33px height=33px

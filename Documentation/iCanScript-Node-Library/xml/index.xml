@@ -1,0 +1,371 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.7">
+  <compound refid="struct_bool" kind="struct"><name>Bool</name>
+    <member refid="struct_bool_1a66ba58e525f8d28f05655f36ffb9ceed" kind="variable"><name>myValue</name></member>
+    <member refid="struct_bool_1a70bc573da6ea3bb93da5de3e442ada19" kind="property"><name>Value</name></member>
+    <member refid="struct_bool_1ab80004af3dcb164ab2876b76a6b10936" kind="property"><name>Not</name></member>
+    <member refid="struct_bool_1aa94cd09bc0530f4bf17d1a8f9bf55280" kind="property"><name>Inverse</name></member>
+    <member refid="struct_bool_1adfa392e25e49fa380805cdc3e720db4c" kind="function"><name>Bool</name></member>
+    <member refid="struct_bool_1aa8673143ee9773e4179568c7a0b750e0" kind="function"><name>And</name></member>
+    <member refid="struct_bool_1a06d2286fa15c689ce13c9572591712e1" kind="function"><name>Or</name></member>
+    <member refid="struct_bool_1a3ee01384c4fc57177fd99f77a85345ff" kind="function"><name>Xor</name></member>
+  </compound>
+  <compound refid="struct_float" kind="struct"><name>Float</name>
+    <member refid="struct_float_1afe3c4ce011a8f5f370400321e34a01f2" kind="variable"><name>myValue</name></member>
+    <member refid="struct_float_1abf7787573f5748d6b7d6fdea53295c9f" kind="property"><name>Value</name></member>
+    <member refid="struct_float_1aadfa3393561599aace320aed12abbbdf" kind="property"><name>Negate</name></member>
+    <member refid="struct_float_1ad4f1c61102b96fd84bf6a8fc29c415da" kind="property"><name>Abs</name></member>
+    <member refid="struct_float_1a6ed15f1070c8f097c0fd47c547b3e3d6" kind="property"><name>Sign</name></member>
+    <member refid="struct_float_1a7004024e43ca3b873ee41bcfce2738c5" kind="function"><name>Float</name></member>
+    <member refid="struct_float_1a9ff499dd3ae201e026f8866db5179ca1" kind="function"><name>Add</name></member>
+    <member refid="struct_float_1a2472249178e551dc183df271c83348ec" kind="function"><name>Sub</name></member>
+    <member refid="struct_float_1a732e3c385809c7805fd2f8c7d3970e85" kind="function"><name>Mul</name></member>
+    <member refid="struct_float_1a4fbbfde061f1ebf328fc77d75593436f" kind="function"><name>Div</name></member>
+    <member refid="struct_float_1adb4624ebbd03dceb157fe922068e6b1e" kind="function"><name>AddAndUpdate</name></member>
+    <member refid="struct_float_1a2334a1bdf14c07b1b99038599bdb86d9" kind="function"><name>SubAndUpdate</name></member>
+    <member refid="struct_float_1ae2fd19e3e38c997855cd7286474b8afb" kind="function"><name>MulAndUpdate</name></member>
+    <member refid="struct_float_1a18f9e0801ba868874667e7703591bd87" kind="function"><name>DivAndUpdate</name></member>
+    <member refid="struct_float_1a8303114694c5d757fa4ad8912e3c3659" kind="function"><name>IsEqual</name></member>
+    <member refid="struct_float_1a0112a13292def5891844b38ecf373ecb" kind="function"><name>IsNotEqual</name></member>
+    <member refid="struct_float_1a74e6971096820f723c3213783710403c" kind="function"><name>IsGreaterThen</name></member>
+    <member refid="struct_float_1ac6a92ab7acec948b944cf365ccac697d" kind="function"><name>IsSmallerThen</name></member>
+    <member refid="struct_float_1afa5d327492e259cc33da0e9ba1f57ee7" kind="function"><name>IsGreaterOrEqualTo</name></member>
+    <member refid="struct_float_1a652e825527bd6b273bfaa58e02716f7a" kind="function"><name>IsSmallerOrEqualTo</name></member>
+  </compound>
+  <compound refid="classi_c_s___accumulator_float" kind="class"><name>iCS_AccumulatorFloat</name>
+    <member refid="classi_c_s___accumulator_float_1a08d21e38773f42f96485a5b5540523fd" kind="variable"><name>acc</name></member>
+    <member refid="classi_c_s___accumulator_float_1ab1825024f421a6445ff61418a6b96bd6" kind="function"><name>iCS_AccumulatorFloat</name></member>
+    <member refid="classi_c_s___accumulator_float_1adec7f080dd945b504ffc12d3163674a3" kind="function"><name>Reset</name></member>
+    <member refid="classi_c_s___accumulator_float_1a5f6d101bb81dbc731b47943056227c64" kind="function"><name>Accumulate</name></member>
+  </compound>
+  <compound refid="classi_c_s___accumulator_int" kind="class"><name>iCS_AccumulatorInt</name>
+    <member refid="classi_c_s___accumulator_int_1a6eafc15fa6d361a8535bff2d3aaf0cad" kind="variable"><name>acc</name></member>
+    <member refid="classi_c_s___accumulator_int_1a0ae09ad524ed9ed2bec9f85a9c1283a8" kind="function"><name>iCS_AccumulatorInt</name></member>
+    <member refid="classi_c_s___accumulator_int_1a2ba7547ca917ee73c137546c2fa17893" kind="function"><name>Reset</name></member>
+    <member refid="classi_c_s___accumulator_int_1a160c26b534c6058dd06f1681e8cd48e7" kind="function"><name>Accumulate</name></member>
+  </compound>
+  <compound refid="classi_c_s___accumulator_vector2" kind="class"><name>iCS_AccumulatorVector2</name>
+    <member refid="classi_c_s___accumulator_vector2_1ac1acd4587433e5288d6c4ded2998e461" kind="variable"><name>acc</name></member>
+    <member refid="classi_c_s___accumulator_vector2_1ac5da0b02a81be49c2c4fef5cfe844a2b" kind="function"><name>iCS_AccumulatorVector2</name></member>
+    <member refid="classi_c_s___accumulator_vector2_1af24e5a7c60890d42179fa5c7d3d1916c" kind="function"><name>Reset</name></member>
+    <member refid="classi_c_s___accumulator_vector2_1aad5ccb12fc15e11a0600a2c4b0d674ed" kind="function"><name>Accumulate</name></member>
+  </compound>
+  <compound refid="classi_c_s___accumulator_vector3" kind="class"><name>iCS_AccumulatorVector3</name>
+    <member refid="classi_c_s___accumulator_vector3_1a583bb8a0464ce5e15a37437c45c4d475" kind="variable"><name>acc</name></member>
+    <member refid="classi_c_s___accumulator_vector3_1ab953f1d630502811ad432146e1e03f43" kind="function"><name>iCS_AccumulatorVector3</name></member>
+    <member refid="classi_c_s___accumulator_vector3_1a3344256bbd31a418b49b3a32588cf60c" kind="function"><name>Reset</name></member>
+    <member refid="classi_c_s___accumulator_vector3_1a41d0c92da04f747d9de53fea755b7786" kind="function"><name>Accumulate</name></member>
+  </compound>
+  <compound refid="classi_c_s___accumulator_vector4" kind="class"><name>iCS_AccumulatorVector4</name>
+    <member refid="classi_c_s___accumulator_vector4_1a9f29e0408689d6ca890d395d5494a16a" kind="variable"><name>acc</name></member>
+    <member refid="classi_c_s___accumulator_vector4_1a559f3ed2688c8e9bc8d5309dd44620fa" kind="function"><name>iCS_AccumulatorVector4</name></member>
+    <member refid="classi_c_s___accumulator_vector4_1a2785737de517b3c0f739309e5217dd4d" kind="function"><name>Reset</name></member>
+    <member refid="classi_c_s___accumulator_vector4_1a0f8be07a41d8e06c8a88d15c747524ad" kind="function"><name>Accumulate</name></member>
+  </compound>
+  <compound refid="classi_c_s___boolean" kind="class"><name>iCS_Boolean</name>
+    <member refid="classi_c_s___boolean_1adec5a228aeddaeac4eefe7c4fdd73c5b" kind="function"><name>And</name></member>
+    <member refid="classi_c_s___boolean_1a321cd6a1da2b966b4770212f1d452118" kind="function"><name>And</name></member>
+    <member refid="classi_c_s___boolean_1a92ec4e69d19ed6f31649ba8e96887f82" kind="function"><name>And</name></member>
+    <member refid="classi_c_s___boolean_1a4f8a23884f70f1f962f92c37401419e8" kind="function"><name>Or</name></member>
+    <member refid="classi_c_s___boolean_1a5abcc785466b0d80ab429662badfde31" kind="function"><name>Or</name></member>
+    <member refid="classi_c_s___boolean_1ada06b40212d27095c300e7d51f602391" kind="function"><name>Or</name></member>
+    <member refid="classi_c_s___boolean_1ad60a5d9ca0bfb00655427548d8ce87ef" kind="function"><name>Xor</name></member>
+    <member refid="classi_c_s___boolean_1a381fb8fa890c53cd53fab5cfb86ba2b1" kind="function"><name>Not</name></member>
+    <member refid="classi_c_s___boolean_1a16830746c0821bc1607d385b72291b14" kind="function"><name>NotAnd</name></member>
+    <member refid="classi_c_s___boolean_1ab58b367379fa1ce08dbd36722326805d" kind="function"><name>NotAnd</name></member>
+    <member refid="classi_c_s___boolean_1aec7e3a0d441248654904a4c9f722165b" kind="function"><name>NotAnd</name></member>
+    <member refid="classi_c_s___boolean_1a3083a993ef3008180701911a31f84898" kind="function"><name>Inverse</name></member>
+  </compound>
+  <compound refid="classi_c_s___choice" kind="class"><name>iCS_Choice</name>
+    <member refid="classi_c_s___choice_1ad3cbb448c7ecf96a5a673b780dbe44b8" kind="function"><name>Choice</name></member>
+    <member refid="classi_c_s___choice_1a30104767457945ce5c194e25b0ef7d83" kind="function"><name>Choice</name></member>
+    <member refid="classi_c_s___choice_1ad8d08537fb0a5222f89405e7f3896426" kind="function"><name>Choice</name></member>
+    <member refid="classi_c_s___choice_1aad16d1dfffb32dd3bce22c53846907e7" kind="function"><name>Choice</name></member>
+    <member refid="classi_c_s___choice_1a1cf57e40af14de81d4fd9bdb8991df8a" kind="function"><name>Choice</name></member>
+  </compound>
+  <compound refid="classi_c_s___conditions" kind="class"><name>iCS_Conditions</name>
+    <member refid="classi_c_s___conditions_1a9d66ba204383d55a842d9dedddd6b503" kind="function"><name>IsNull</name></member>
+    <member refid="classi_c_s___conditions_1a3983fe340f51aca91bd49e179fc518f7" kind="function"><name>IsZero</name></member>
+    <member refid="classi_c_s___conditions_1a010630cadc5538c3bd8d4b2a860be2a7" kind="function"><name>IsEqual</name></member>
+    <member refid="classi_c_s___conditions_1a4a2fcec00bb5922c9baff1aa4a624eba" kind="function"><name>IsGreater</name></member>
+    <member refid="classi_c_s___conditions_1acc18074d99cdf8ac074d2ea6fcba6c77" kind="function"><name>IsSmaller</name></member>
+    <member refid="classi_c_s___conditions_1a396982e64701dac35d4baa3670ac1d36" kind="function"><name>IsGreaterOrEqual</name></member>
+    <member refid="classi_c_s___conditions_1a17544f01901cd9112c1e69ef945550c7" kind="function"><name>IsSmallerOrEqual</name></member>
+    <member refid="classi_c_s___conditions_1a11f18c55d7a0bd66855cf19ee3f54390" kind="function"><name>Compare</name></member>
+    <member refid="classi_c_s___conditions_1a94980aa2f36f01e4c68df4d4ae6a77e1" kind="function"><name>IsZero</name></member>
+    <member refid="classi_c_s___conditions_1aa687442a4c0f0511a75ec2115026f925" kind="function"><name>IsEqual</name></member>
+    <member refid="classi_c_s___conditions_1a4d0e9a27cc1dc4052feea7a7087d9b57" kind="function"><name>IsGreater</name></member>
+    <member refid="classi_c_s___conditions_1ae83072da07a1e8759ed0fa42bc0eee42" kind="function"><name>IsSmaller</name></member>
+    <member refid="classi_c_s___conditions_1a07e3eb110953be3436b5652384f7f09b" kind="function"><name>IsGreaterOrEqual</name></member>
+    <member refid="classi_c_s___conditions_1a018a4a8b6e24ad34a1f796791f88b504" kind="function"><name>IsSmallerOrEqual</name></member>
+    <member refid="classi_c_s___conditions_1a0fd68096f8db40fcc451964142e523e9" kind="function"><name>Compare</name></member>
+    <member refid="classi_c_s___conditions_1a6e8079ab2b4f846e5640f00d07afe034" kind="function"><name>IsNullOrEmpty</name></member>
+    <member refid="classi_c_s___conditions_1a241816d6f0ba145958fee49811c07053" kind="function"><name>IsEqual</name></member>
+    <member refid="classi_c_s___conditions_1ac2dfa7c71498225e8dd5cfe9d81a97b3" kind="function"><name>IsGreater</name></member>
+    <member refid="classi_c_s___conditions_1a4afdf5193f45f11cb49408f5e2cd51a5" kind="function"><name>IsSmaller</name></member>
+    <member refid="classi_c_s___conditions_1af816e87a16e01d67aa057c3a1440a4f5" kind="function"><name>IsGreaterOrEqual</name></member>
+    <member refid="classi_c_s___conditions_1adc6a67f0099befef7641abcbb7fe1674" kind="function"><name>IsSmallerOrEqual</name></member>
+    <member refid="classi_c_s___conditions_1a7f53dbd2acce6613c884e9ecb0cf8075" kind="function"><name>Compare</name></member>
+  </compound>
+  <compound refid="classi_c_s___desired_velocity_force_generator" kind="class"><name>iCS_DesiredVelocityForceGenerator</name>
+    <member refid="classi_c_s___desired_velocity_force_generator_1a0b29129fdc7a257acd79f9c41f3783e7" kind="variable"><name>MaxAcceleration</name></member>
+    <member refid="classi_c_s___desired_velocity_force_generator_1a63bbddbd1e07b5acddfd9b0d66e92dae" kind="variable"><name>MaxDeceleration</name></member>
+    <member refid="classi_c_s___desired_velocity_force_generator_1aaae3cda4b71493f4ecb6aed96d180d6b" kind="variable"><name>AffectedCoordinates</name></member>
+    <member refid="classi_c_s___desired_velocity_force_generator_1a308ac7a0da09f36aa4dceaa355445529" kind="function"><name>iCS_DesiredVelocityForceGenerator</name></member>
+    <member refid="classi_c_s___desired_velocity_force_generator_1a54debeb473daf0c9263a51ef31785ea8" kind="function"><name>Update</name></member>
+  </compound>
+  <compound refid="classi_c_s___force_integrator" kind="class"><name>iCS_ForceIntegrator</name>
+    <member refid="classi_c_s___force_integrator_1a084a06cb73f3201769617838fbe001e0" kind="variable"><name>Gravity</name></member>
+    <member refid="classi_c_s___force_integrator_1a0460ab387e5f770a358842f84a61ce67" kind="variable"><name>Damping</name></member>
+    <member refid="classi_c_s___force_integrator_1a3e7ef7f501e1af14952a9a5c4f96fd72" kind="variable"><name>Acceleration</name></member>
+    <member refid="classi_c_s___force_integrator_1a8edc33516493f349b7e1054d38a5fa1d" kind="variable"><name>InvMass</name></member>
+    <member refid="classi_c_s___force_integrator_1a0b4b7119426703f30822dd445767adfc" kind="variable"><name>PreviousVelocity</name></member>
+    <member refid="classi_c_s___force_integrator_1a2b16289c2a513d99cf5dbc035d71e39d" kind="variable"><name>OutputVelocity</name></member>
+    <member refid="classi_c_s___force_integrator_1a5eda47276ef2c7136957745e1caeb762" kind="variable"><name>Forces</name></member>
+    <member refid="classi_c_s___force_integrator_1a4966713efb698b402ededf4a0c1fd672" kind="variable"><name>Accelerations</name></member>
+    <member refid="classi_c_s___force_integrator_1a5e7f3a5aedcae2c245670af79966cd8f" kind="property"><name>Mass</name></member>
+    <member refid="classi_c_s___force_integrator_1aef1c160690c3c63598dbf5920e97e21b" kind="property"><name>Force1</name></member>
+    <member refid="classi_c_s___force_integrator_1aa4d529288f969bc8142b07f76f231ebd" kind="property"><name>Force2</name></member>
+    <member refid="classi_c_s___force_integrator_1a1d20f2763147f1f6b4981a4440e6dfa9" kind="property"><name>Force3</name></member>
+    <member refid="classi_c_s___force_integrator_1a3d786a1848075460fbf115ee6ab017f1" kind="property"><name>Acceleration1</name></member>
+    <member refid="classi_c_s___force_integrator_1a43e5c8ee1a0da0b4c5473fdce906c383" kind="property"><name>Acceleration2</name></member>
+    <member refid="classi_c_s___force_integrator_1a811ae6403be08cbf53da477c09b0c2c4" kind="property"><name>Acceleration3</name></member>
+    <member refid="classi_c_s___force_integrator_1aa81c94f25dc56cce305bdc50a07230be" kind="function"><name>iCS_ForceIntegrator</name></member>
+    <member refid="classi_c_s___force_integrator_1abc3c21098ca5fe641bd0c1e0cda8e1a8" kind="function"><name>iCS_ForceIntegrator</name></member>
+    <member refid="classi_c_s___force_integrator_1af321c3d083c3a651e03db52ecae16177" kind="function"><name>Integrate</name></member>
+  </compound>
+  <compound refid="classi_c_s___from_to" kind="class"><name>iCS_FromTo</name>
+    <member refid="classi_c_s___from_to_1ad625c5b254d662fcf0e4cc8bcbf13347" kind="function"><name>FromVector</name></member>
+    <member refid="classi_c_s___from_to_1ae560b45e7d7b2f25e793fef734c4a2eb" kind="function"><name>FromVector</name></member>
+    <member refid="classi_c_s___from_to_1a986ce5df09150145779623666204789e" kind="function"><name>FromVector</name></member>
+    <member refid="classi_c_s___from_to_1a05f6bba0364e45903f3bd9f54291e231" kind="function"><name>ToVector</name></member>
+    <member refid="classi_c_s___from_to_1ad1dc5c85176671bd01531c1bc6600699" kind="function"><name>ToVector</name></member>
+    <member refid="classi_c_s___from_to_1a3ad7128cd08e163b294f51eafd7ca8fb" kind="function"><name>ToVector</name></member>
+  </compound>
+  <compound refid="classi_c_s___game_controller" kind="class"><name>iCS_GameController</name>
+    <member refid="classi_c_s___game_controller_1ac9960ea7f5004f53b4c9b4cdd703f63a" kind="function"><name>GameController</name></member>
+    <member refid="classi_c_s___game_controller_1a4c7504540a3603289a4c5bb57cdb5515" kind="function"><name>GameControllerExt</name></member>
+  </compound>
+  <compound refid="classi_c_s___impulse_force_generator" kind="class"><name>iCS_ImpulseForceGenerator</name>
+    <member refid="classi_c_s___impulse_force_generator_1ac66898c5aac5f47e5fd67971e886f73c" kind="variable"><name>IsActive</name></member>
+    <member refid="classi_c_s___impulse_force_generator_1a97f52ef206c649c006ca60e66da02927" kind="variable"><name>StartTime</name></member>
+    <member refid="classi_c_s___impulse_force_generator_1ae1e40d0291794243afcaa4e60216f13d" kind="variable"><name>MainImpulse</name></member>
+    <member refid="classi_c_s___impulse_force_generator_1aed752c0fda3daf008390a68767cd65e3" kind="variable"><name>SecondaryImpulse</name></member>
+    <member refid="classi_c_s___impulse_force_generator_1afcc991eefa4efc21fd29008d86c23fd9" kind="variable"><name>MainImpulseTime</name></member>
+    <member refid="classi_c_s___impulse_force_generator_1a00758290d030fbdf121dfa956e07d8af" kind="variable"><name>SecondaryImpulseTime</name></member>
+    <member refid="classi_c_s___impulse_force_generator_1a6cad3a772a5ec147b2233066f3285169" kind="variable"><name>RetriggerDelay</name></member>
+    <member refid="classi_c_s___impulse_force_generator_1a964bfe6041374767d57268e996240724" kind="variable"><name>InitialVelocityBoost</name></member>
+    <member refid="classi_c_s___impulse_force_generator_1a98be9136d17b7dc1bb2e3615efeab19e" kind="function"><name>iCS_ImpulseForceGenerator</name></member>
+    <member refid="classi_c_s___impulse_force_generator_1a7613f26fe1128ae462057137427b0f82" kind="function"><name>Update</name></member>
+  </compound>
+  <compound refid="classi_c_s___math" kind="class"><name>iCS_Math</name>
+    <member refid="classi_c_s___math_1a3727941e926721f2f5bc90b276d9d7e4" kind="function"><name>Add</name></member>
+    <member refid="classi_c_s___math_1a861fdf645bec625faf7962b047a9f887" kind="function"><name>Add</name></member>
+    <member refid="classi_c_s___math_1aa33dd63e532cbb7243d52c45201028ce" kind="function"><name>Add</name></member>
+    <member refid="classi_c_s___math_1ade16afbbbebb15d04692e2dc4ac5fb7b" kind="function"><name>Add</name></member>
+    <member refid="classi_c_s___math_1a821fb856167a60096f2eb926ec277255" kind="function"><name>Add</name></member>
+    <member refid="classi_c_s___math_1aa3c78113fb9b4e39e95e33ec9c3b38e4" kind="function"><name>Sub</name></member>
+    <member refid="classi_c_s___math_1a508732d2de71a8f76a52418d5a964afb" kind="function"><name>Sub</name></member>
+    <member refid="classi_c_s___math_1a333934e0934bd861eb1b4bbbef70c3d7" kind="function"><name>Sub</name></member>
+    <member refid="classi_c_s___math_1ab0ee88b34ea58be0bfd59f1b5387b883" kind="function"><name>Sub</name></member>
+    <member refid="classi_c_s___math_1a08bd5db05b7117f055a66119e99146d6" kind="function"><name>Sub</name></member>
+    <member refid="classi_c_s___math_1a044054b6f57e4aff12cc51b1e0ece1d3" kind="function"><name>Mul</name></member>
+    <member refid="classi_c_s___math_1a38c560afaf6a2612296256e19e7feba0" kind="function"><name>Mul</name></member>
+    <member refid="classi_c_s___math_1ad8b47c294617d92f5b1605ccaef9e4f8" kind="function"><name>Div</name></member>
+    <member refid="classi_c_s___math_1a891917cfbaf44b5a331573ab792f5a5d" kind="function"><name>Div</name></member>
+    <member refid="classi_c_s___math_1ac69b1ff1542fcbd156044eaaa01d9433" kind="function"><name>Div</name></member>
+    <member refid="classi_c_s___math_1a79daed83d0a371230719505a36b29447" kind="function"><name>Div</name></member>
+    <member refid="classi_c_s___math_1a826c1a5d845a4aa49ca9fc3176de2c3d" kind="function"><name>Div</name></member>
+    <member refid="classi_c_s___math_1a991ee9e3f9bd09fda1f88627e81b46bf" kind="function"><name>Lerp</name></member>
+    <member refid="classi_c_s___math_1a78b543002c8ea086be7df0a0b4a531ae" kind="function"><name>Lerp</name></member>
+    <member refid="classi_c_s___math_1a7cb13bbb20565cd8f5491c4487b01b93" kind="function"><name>Lerp</name></member>
+    <member refid="classi_c_s___math_1a17d5ecf4dda7320595ed69dde7963a84" kind="function"><name>Lerp</name></member>
+    <member refid="classi_c_s___math_1a6520ced4500ec359c96fef7a41148f01" kind="function"><name>Lerp</name></member>
+    <member refid="classi_c_s___math_1a985c474fef90aa27d6771fa164b5925c" kind="function"><name>Random</name></member>
+    <member refid="classi_c_s___math_1a199a92f47c1ee4e8a73fc1ac3d253f14" kind="function"><name>RandomVector2</name></member>
+    <member refid="classi_c_s___math_1a9a4141d452a2ab4fd7825209242b79ba" kind="function"><name>RandomVector3</name></member>
+    <member refid="classi_c_s___math_1a6f8c2109fec99695b3e01df963e0a376" kind="function"><name>ScaleVector</name></member>
+    <member refid="classi_c_s___math_1ab44d16701b03ec445353384a4d95e1b4" kind="function"><name>ScaleVector</name></member>
+    <member refid="classi_c_s___math_1a67214f59600abaa04f6fc24b40ecd2f0" kind="function"><name>ScaleVector</name></member>
+    <member refid="classi_c_s___math_1a7d58bfb098b0d442f20bdf8e1fae85ff" kind="function"><name>Scale2Vector</name></member>
+    <member refid="classi_c_s___math_1ad3111adef1aec8bbb2e9629affce6169" kind="function"><name>Scale2Vector</name></member>
+    <member refid="classi_c_s___math_1a8b1193ad97a0db82652a684fb7a31800" kind="function"><name>Scale2Vector</name></member>
+    <member refid="classi_c_s___math_1aac616bb5a7a9285c95f852847b9955b5" kind="function"><name>NormalizedCross</name></member>
+  </compound>
+  <compound refid="classi_c_s___oscillator" kind="class"><name>iCS_Oscillator</name>
+    <member refid="classi_c_s___oscillator_1a260af540a870f2172019d441cdebb4e0" kind="variable"><name>myActiveState</name></member>
+    <member refid="classi_c_s___oscillator_1afeeef36d1843a2a54a7e773fa6133390" kind="variable"><name>myTrueElapseTime</name></member>
+    <member refid="classi_c_s___oscillator_1ab80a4b30c9720be43b480d7781acd160" kind="variable"><name>myFalseElapseTime</name></member>
+    <member refid="classi_c_s___oscillator_1ae448e01cde8bd182a093e6e4293a457e" kind="function"><name>iCS_Oscillator</name></member>
+    <member refid="classi_c_s___oscillator_1a293eddc65e9135e6a792c24c1d751ada" kind="function"><name>Oscillate</name></member>
+  </compound>
+  <compound refid="classi_c_s___pulse_generator" kind="class"><name>iCS_PulseGenerator</name>
+    <member refid="classi_c_s___pulse_generator_1a111a71988015fd6d6e57a29d206e1cee" kind="variable"><name>myIsActive</name></member>
+    <member refid="classi_c_s___pulse_generator_1aa58b0588656b96da9a79d32f7d6c5666" kind="variable"><name>myElapseTime</name></member>
+    <member refid="classi_c_s___pulse_generator_1aa33ddb5aa56085b3cb3b9c5a249a40de" kind="function"><name>iCS_PulseGenerator</name></member>
+    <member refid="classi_c_s___pulse_generator_1a4b6cff255c65e9f12e85b28a0fd64205" kind="function"><name>GeneratePulse</name></member>
+  </compound>
+  <compound refid="classi_c_s___remote_call" kind="class"><name>iCS_RemoteCall</name>
+    <member refid="classi_c_s___remote_call_1a6b1defbc7b42394853ea086b847be259" kind="variable"><name>myDictionary</name></member>
+    <member refid="classi_c_s___remote_call_1a7339bc885d2cc91f75c2925b218ed21f" kind="function"><name>FindWithTag</name></member>
+    <member refid="classi_c_s___remote_call_1a0b2475918c3bf919a2926f9ce7182615" kind="function"><name>SendMessage</name></member>
+    <member refid="classi_c_s___remote_call_1ab4f5845c0d2b3f9d5549fd0108cf8e32" kind="function"><name>SendMessageUsingTag</name></member>
+  </compound>
+  <compound refid="classi_c_s___time" kind="class"><name>iCS_Time</name>
+    <member refid="classi_c_s___time_1aad3fd3e363efbba42667b65cce877915" kind="variable"><name>ourLastFrameTime</name></member>
+    <member refid="classi_c_s___time_1a8cb76a0450c942a68921f3f7f48bc034" kind="variable"><name>ourFrameCount</name></member>
+    <member refid="classi_c_s___time_1a59b58054b4880d92a39e118714c95300" kind="variable"><name>ourSmoothIntervalTime</name></member>
+    <member refid="classi_c_s___time_1a42c76764c4fcd04f0e7d7ea3bc615f69" kind="property"><name>smoothIntervalTime</name></member>
+    <member refid="classi_c_s___time_1a320a331ef4b94989196055fc9cb62df4" kind="function"><name>ScaleByDeltaTime</name></member>
+    <member refid="classi_c_s___time_1a194a6a5106f96872c9d8dd260d9d815f" kind="function"><name>ScaleByDeltaTime</name></member>
+    <member refid="classi_c_s___time_1ac59f27ba45385a8530a9a6ec3df90388" kind="function"><name>ScaleByDeltaTime</name></member>
+    <member refid="classi_c_s___time_1aa93642df190ca78a952680db885a14f3" kind="function"><name>ScaleByDeltaTime</name></member>
+    <member refid="classi_c_s___time_1a59c0d1f4a80f1f2b4f6e9e3dece002f6" kind="function"><name>LerpUsingDeltaTime</name></member>
+    <member refid="classi_c_s___time_1a29cc8b1c82689c48ff06160e60cbd150" kind="function"><name>LerpUsingDeltaTime</name></member>
+    <member refid="classi_c_s___time_1ad40ab176fc0597216ddb6656efc73f58" kind="function"><name>LerpUsingDeltaTime</name></member>
+    <member refid="classi_c_s___time_1aaa512ff45069fb8c64a65a513a2b9e71" kind="function"><name>LerpUsingDeltaTime</name></member>
+    <member refid="classi_c_s___time_1a9585685174456b6ab8728d76029efc7e" kind="function"><name>ComputeElapseTime</name></member>
+    <member refid="classi_c_s___time_1ac83f306a7923d7962563267c3402eaf1" kind="function"><name>StartTimer</name></member>
+    <member refid="classi_c_s___time_1a659d7f3f80b5f3b02517955ff38da8c6" kind="function"><name>IsTimerElapsed</name></member>
+  </compound>
+  <compound refid="classi_c_s___timer" kind="class"><name>iCS_Timer</name>
+    <member refid="classi_c_s___timer_1ab7c6e4071ca5846687b989d11de7d335" kind="function"><name>StartTimer</name></member>
+    <member refid="classi_c_s___timer_1a4cbb14852d0067a04719fa9aa2fec07c" kind="function"><name>IsTimeElapsed</name></member>
+    <member refid="classi_c_s___timer_1a4fe0197340b5133c86cc935cb7c48290" kind="function"><name>RemainingTime</name></member>
+  </compound>
+  <compound refid="classi_c_s___time_utility" kind="class"><name>iCS_TimeUtility</name>
+    <member refid="classi_c_s___time_utility_1aee31f9e7423159959060fbb185a94bfe" kind="function"><name>ScaleByDeltaTime</name></member>
+    <member refid="classi_c_s___time_utility_1adc20e271bd5a31f2321d3c767140bfc7" kind="function"><name>ScaleByDeltaTime</name></member>
+    <member refid="classi_c_s___time_utility_1ab79b22ccdc390943c9d0bfebd1c6a06f" kind="function"><name>ScaleByDeltaTime</name></member>
+    <member refid="classi_c_s___time_utility_1a2d64bc71bea1d4b155cbade330152b19" kind="function"><name>ScaleByDeltaTime</name></member>
+    <member refid="classi_c_s___time_utility_1a880886d7c76475db0b458a2217198cbc" kind="function"><name>LerpUsingDeltaTime</name></member>
+    <member refid="classi_c_s___time_utility_1ad89b24668bf9fa18708c33d41f89a11d" kind="function"><name>LerpUsingDeltaTime</name></member>
+    <member refid="classi_c_s___time_utility_1a90ea122b5979cd3203bd750a0627186e" kind="function"><name>LerpUsingDeltaTime</name></member>
+    <member refid="classi_c_s___time_utility_1aab7ac30b38519012456c94a9e2309f97" kind="function"><name>LerpUsingDeltaTime</name></member>
+  </compound>
+  <compound refid="classi_c_s___type_casts" kind="class"><name>iCS_TypeCasts</name>
+    <member refid="classi_c_s___type_casts_1afe4f874629183e316f14cd7e30ea099d" kind="function"><name>ToBool</name></member>
+    <member refid="classi_c_s___type_casts_1a61103a116dd88ddcb0e4f53a92175dd7" kind="function"><name>ToBool</name></member>
+    <member refid="classi_c_s___type_casts_1ac05536474cbc2f68a2fffa4684b09b8d" kind="function"><name>ToBool</name></member>
+    <member refid="classi_c_s___type_casts_1ae5950033d3de40b595d8026d09e7ee9a" kind="function"><name>ToBool</name></member>
+    <member refid="classi_c_s___type_casts_1ad36995391cce11f7fcd4a67f5312ff28" kind="function"><name>ToBool</name></member>
+    <member refid="classi_c_s___type_casts_1ac2d94ae8cdfe7c563286413e29ecacf6" kind="function"><name>ToBool</name></member>
+    <member refid="classi_c_s___type_casts_1adebf554e8e5665f835a559389e51b66f" kind="function"><name>ToInt</name></member>
+    <member refid="classi_c_s___type_casts_1a8e1551731cfc3cd5ff8f5d86eeb77f36" kind="function"><name>ToInt</name></member>
+    <member refid="classi_c_s___type_casts_1a41533efff871479053adff182befe7c3" kind="function"><name>ToFloat</name></member>
+    <member refid="classi_c_s___type_casts_1a920e8f227b807d4425577d8b982c0317" kind="function"><name>ToFloat</name></member>
+    <member refid="classi_c_s___type_casts_1abbfde2d268722f8e5d1512bd87afd852" kind="function"><name>ToString</name></member>
+    <member refid="classi_c_s___type_casts_1ae152f0b5c43643e1ee8dfa1cd830a5a6" kind="function"><name>ToString</name></member>
+    <member refid="classi_c_s___type_casts_1a17c6150309812ef1ce006098f930991c" kind="function"><name>ToString</name></member>
+    <member refid="classi_c_s___type_casts_1a61cd8b127e3ca63fb5575f46480299fc" kind="function"><name>ToString</name></member>
+    <member refid="classi_c_s___type_casts_1a2f303312ba748dc777ea1680ee3ed434" kind="function"><name>ToString</name></member>
+    <member refid="classi_c_s___type_casts_1a2afc7f44ce2f692ac7fbbc50038c8c71" kind="function"><name>ToString</name></member>
+    <member refid="classi_c_s___type_casts_1a9ae3c15543fc4601ab41c8470abc2a5a" kind="function"><name>ToString</name></member>
+    <member refid="classi_c_s___type_casts_1a43d444394208b0e18504bd86e58afe76" kind="function"><name>ToVector2</name></member>
+    <member refid="classi_c_s___type_casts_1acdaec668fd0f28c08193afb8eee36649" kind="function"><name>ToVector2</name></member>
+    <member refid="classi_c_s___type_casts_1a4cc3ce4090ff9aa3e5f036fbd58ac84c" kind="function"><name>ToVector3</name></member>
+    <member refid="classi_c_s___type_casts_1ac3d4c0f0f8c379ae30bdf56a1bfb85b3" kind="function"><name>ToVector3</name></member>
+    <member refid="classi_c_s___type_casts_1a25951adbb16fbda238e7309d94455150" kind="function"><name>ToVector4</name></member>
+    <member refid="classi_c_s___type_casts_1a46df74f91762794c4f657d436f4495cd" kind="function"><name>ToVector4</name></member>
+    <member refid="classi_c_s___type_casts_1ad716972e6c2811790c45effe97301c99" kind="function"><name>ToAnimation</name></member>
+    <member refid="classi_c_s___type_casts_1a2341df1a54a4dbc2e83018f44af2982e" kind="function"><name>ToAudioSource</name></member>
+    <member refid="classi_c_s___type_casts_1a02b59f264564e906a85d6409ecaf3dfd" kind="function"><name>ToCamera</name></member>
+    <member refid="classi_c_s___type_casts_1ad8b7e7974e1d0937c3f3ee5bc3c400db" kind="function"><name>ToCollider</name></member>
+    <member refid="classi_c_s___type_casts_1ab40d3a2778cd9dc05bf895c9b67c25b1" kind="function"><name>ToCollider2D</name></member>
+    <member refid="classi_c_s___type_casts_1a0db52b820c7413a81a710678019d9ea7" kind="function"><name>ToConstantForce</name></member>
+    <member refid="classi_c_s___type_casts_1ab66051eb71774ffb1e2240cd4e6a48dc" kind="function"><name>ToGUIText</name></member>
+    <member refid="classi_c_s___type_casts_1aa6fffc4e65e2b43616314f81a94706b3" kind="function"><name>ToGUITexture</name></member>
+    <member refid="classi_c_s___type_casts_1a508b22eb0633ba16b482f92e09b0568d" kind="function"><name>ToHingeJoint</name></member>
+    <member refid="classi_c_s___type_casts_1a0369d8796b47d3f81e772d5e66f1e4b4" kind="function"><name>ToLight</name></member>
+    <member refid="classi_c_s___type_casts_1a47f7dd25f38492d97b214694c70cdb0d" kind="function"><name>ToNetworkView</name></member>
+    <member refid="classi_c_s___type_casts_1a69c89f5ef01e0ae87886c9ab12ee0c0d" kind="function"><name>ToParticleEmitter</name></member>
+    <member refid="classi_c_s___type_casts_1a3325c996c921325d5d9c462e154914ba" kind="function"><name>ToRenderer</name></member>
+    <member refid="classi_c_s___type_casts_1a64096471b63d3899f7dfc7898dce8499" kind="function"><name>ToRigidBody</name></member>
+    <member refid="classi_c_s___type_casts_1ad324bfab4559a48d7e590fd718e1769b" kind="function"><name>ToRigidBody2D</name></member>
+    <member refid="classi_c_s___type_casts_1ab1441adcedd5703c0d464cce228526b1" kind="function"><name>ToTransform</name></member>
+    <member refid="classi_c_s___type_casts_1a46b0e593d2088aa407dd541f32af65c6" kind="function"><name>ToCharacterController</name></member>
+    <member refid="classi_c_s___type_casts_1afea79c8e9c9a08740dcceac469413257" kind="function"><name>ToGameObject</name></member>
+    <member refid="classi_c_s___type_casts_1a91e25d69baa1ce16eee92837997599a0" kind="function"><name>ToGameObject</name></member>
+  </compound>
+  <compound refid="classi_c_s___variables" kind="class"><name>iCS_Variables</name>
+    <member refid="classi_c_s___variables_1aceff0f0100db3d2ba2b0c4212fc32595" kind="function"><name>_bool</name></member>
+    <member refid="classi_c_s___variables_1abe9b9319e5e056c0346ee4c1d36e17cb" kind="function"><name>_int</name></member>
+    <member refid="classi_c_s___variables_1a285a84ed41823846ffc2be0dc0fc6f84" kind="function"><name>_float</name></member>
+    <member refid="classi_c_s___variables_1affdb20de43dda1323369dcdff7f65121" kind="function"><name>_string</name></member>
+  </compound>
+  <compound refid="struct_int" kind="struct"><name>Int</name>
+    <member refid="struct_int_1af4c6984f25cf742c067f630c9f917b98" kind="variable"><name>myValue</name></member>
+    <member refid="struct_int_1a5e3cbaf337232bde68fe94225f01b46c" kind="property"><name>Value</name></member>
+    <member refid="struct_int_1a3915bbe206661b528757b9bc41c53350" kind="property"><name>Negate</name></member>
+    <member refid="struct_int_1a9d4719fbc8e7ab4087ceff40633044ec" kind="property"><name>Abs</name></member>
+    <member refid="struct_int_1a416e1f5855334378912b031378f5fb26" kind="property"><name>Sign</name></member>
+    <member refid="struct_int_1acf38efbafa6984afdd185c50cc46b9a1" kind="function"><name>Int</name></member>
+    <member refid="struct_int_1ae331ebd4ecbc5b541e8ed4367436992f" kind="function"><name>Add</name></member>
+    <member refid="struct_int_1aecdcda2e9a7c7566fa86a02b45b1cfa3" kind="function"><name>Sub</name></member>
+    <member refid="struct_int_1aec6d3adf3ee01748c19ea16645e2d09b" kind="function"><name>Mul</name></member>
+    <member refid="struct_int_1a5bbe35ebeaf5d4dd9b0fe346940655d3" kind="function"><name>Div</name></member>
+    <member refid="struct_int_1ad513d0da6cd23715d3afcba91570cad9" kind="function"><name>AddAndUpdate</name></member>
+    <member refid="struct_int_1a65bd8e1feab3a6e40f7f294e8fb335f3" kind="function"><name>SubAndUpdate</name></member>
+    <member refid="struct_int_1ad2ef7bce7704156b137e10523bd0d850" kind="function"><name>MulAndUpdate</name></member>
+    <member refid="struct_int_1a01d3f8f5b739468f98b75ff4882a5ebf" kind="function"><name>DivAndUpdate</name></member>
+    <member refid="struct_int_1a0be3fa92ae33169fde228a6c5b368919" kind="function"><name>IsEqual</name></member>
+    <member refid="struct_int_1ad3a289036b77d569944b4bf8daacfa67" kind="function"><name>IsNotEqual</name></member>
+    <member refid="struct_int_1a03a5e92fb2ce83f56c5feaf5bae606dc" kind="function"><name>IsGreaterThen</name></member>
+    <member refid="struct_int_1a83074c7973028ec33e32c641f3048af0" kind="function"><name>IsSmallerThen</name></member>
+    <member refid="struct_int_1ade0a495eb80f483473efa54e2cbb7f4a" kind="function"><name>IsGreaterOrEqualTo</name></member>
+    <member refid="struct_int_1ab563607623b35c98073a45ef68736870" kind="function"><name>IsSmallerOrEqualTo</name></member>
+  </compound>
+  <compound refid="namespace_object" kind="namespace"><name>Object</name>
+  </compound>
+  <compound refid="namespace_system" kind="namespace"><name>System</name>
+  </compound>
+  <compound refid="namespace_system_1_1_collections" kind="namespace"><name>System::Collections</name>
+  </compound>
+  <compound refid="namespace_system_1_1_collections_1_1_generic" kind="namespace"><name>System::Collections::Generic</name>
+  </compound>
+  <compound refid="namespace_unity_engine" kind="namespace"><name>UnityEngine</name>
+  </compound>
+  <compound refid="i_c_s___variables_8cs" kind="file"><name>iCS_Variables.cs</name>
+  </compound>
+  <compound refid="i_c_s___from_to_8cs" kind="file"><name>iCS_FromTo.cs</name>
+  </compound>
+  <compound refid="i_c_s___game_controller_8cs" kind="file"><name>iCS_GameController.cs</name>
+  </compound>
+  <compound refid="i_c_s___logic_8cs" kind="file"><name>iCS_Logic.cs</name>
+    <member refid="i_c_s___logic_8cs_1a5b2c8b05b9a357906d7f9e5b2c1e154d" kind="typedef"><name>Object</name></member>
+  </compound>
+  <compound refid="i_c_s___math_8cs" kind="file"><name>iCS_Math.cs</name>
+  </compound>
+  <compound refid="i_c_s___oscilator_8cs" kind="file"><name>iCS_Oscilator.cs</name>
+  </compound>
+  <compound refid="i_c_s___pulse_generator_8cs" kind="file"><name>iCS_PulseGenerator.cs</name>
+  </compound>
+  <compound refid="i_c_s___remote_call_8cs" kind="file"><name>iCS_RemoteCall.cs</name>
+  </compound>
+  <compound refid="i_c_s___timer_8cs" kind="file"><name>iCS_Timer.cs</name>
+  </compound>
+  <compound refid="i_c_s___time_utility_8cs" kind="file"><name>iCS_TimeUtility.cs</name>
+  </compound>
+  <compound refid="i_c_s___type_casts_8cs" kind="file"><name>iCS_TypeCasts.cs</name>
+  </compound>
+  <compound refid="i_c_s___desired_velocity_force_generator_8cs" kind="file"><name>iCS_DesiredVelocityForceGenerator.cs</name>
+  </compound>
+  <compound refid="i_c_s___force_integrator_8cs" kind="file"><name>iCS_ForceIntegrator.cs</name>
+  </compound>
+  <compound refid="i_c_s___impulse_force_generator_8cs" kind="file"><name>iCS_ImpulseForceGenerator.cs</name>
+  </compound>
+  <compound refid="i_c_s___accumulators_8cs" kind="file"><name>iCS_Accumulators.cs</name>
+  </compound>
+  <compound refid="i_c_s___time_8cs" kind="file"><name>iCS_Time.cs</name>
+  </compound>
+  <compound refid="dir_cf317a9037b8960de6cbe46f0af5d7c3" kind="dir"><name>/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET</name>
+  </compound>
+  <compound refid="dir_4eca7a8eb7ae2865e805bd56836a5c9e" kind="dir"><name>/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript</name>
+  </compound>
+  <compound refid="dir_d95ff02fbac8d6cfab4c30a756544283" kind="dir"><name>/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript</name>
+  </compound>
+  <compound refid="dir_abfae78e080c3c2ee326e6c2bf7d0d57" kind="dir"><name>/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted</name>
+  </compound>
+  <compound refid="dir_08fd7fe5295ece232888090bcb8c25da" kind="dir"><name>/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics</name>
+  </compound>
+</doxygenindex>

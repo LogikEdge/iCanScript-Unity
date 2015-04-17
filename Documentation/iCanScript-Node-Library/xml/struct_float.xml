@@ -1,0 +1,360 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="struct_float" kind="struct" prot="public">
+    <compoundname>Float</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_float_1afe3c4ce011a8f5f370400321e34a01f2" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Float.myValue</definition>
+        <argsstring></argsstring>
+        <name>myValue</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="70" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="struct_float_1abf7787573f5748d6b7d6fdea53295c9f" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="yes">
+        <type>float</type>
+        <definition>float Float.Value</definition>
+        <argsstring></argsstring>
+        <name>Value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="72" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="struct_float_1aadfa3393561599aace320aed12abbbdf" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="no">
+        <type>float</type>
+        <definition>float Float.Negate</definition>
+        <argsstring></argsstring>
+        <name>Negate</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="76" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="struct_float_1ad4f1c61102b96fd84bf6a8fc29c415da" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="no">
+        <type>float</type>
+        <definition>float Float.Abs</definition>
+        <argsstring></argsstring>
+        <name>Abs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="79" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="struct_float_1a6ed15f1070c8f097c0fd47c547b3e3d6" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="no">
+        <type>float</type>
+        <definition>float Float.Sign</definition>
+        <argsstring></argsstring>
+        <name>Sign</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="82" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_float_1a7004024e43ca3b873ee41bcfce2738c5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Float.Float</definition>
+        <argsstring>(float init=0f)</argsstring>
+        <name>Float</name>
+        <param>
+          <type>float</type>
+          <declname>init</declname>
+          <defval>0f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="86" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="86" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a9ff499dd3ae201e026f8866db5179ca1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Float.Add</definition>
+        <argsstring>(float b)</argsstring>
+        <name>Add</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="87" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="87" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a2472249178e551dc183df271c83348ec" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Float.Sub</definition>
+        <argsstring>(float b)</argsstring>
+        <name>Sub</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="88" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="88" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a732e3c385809c7805fd2f8c7d3970e85" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Float.Mul</definition>
+        <argsstring>(float b)</argsstring>
+        <name>Mul</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="89" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="89" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a4fbbfde061f1ebf328fc77d75593436f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Float.Div</definition>
+        <argsstring>(float b)</argsstring>
+        <name>Div</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="90" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="90" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1adb4624ebbd03dceb157fe922068e6b1e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Float.AddAndUpdate</definition>
+        <argsstring>(float b)</argsstring>
+        <name>AddAndUpdate</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="91" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="91" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a2334a1bdf14c07b1b99038599bdb86d9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Float.SubAndUpdate</definition>
+        <argsstring>(float b)</argsstring>
+        <name>SubAndUpdate</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="92" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="92" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1ae2fd19e3e38c997855cd7286474b8afb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Float.MulAndUpdate</definition>
+        <argsstring>(float b)</argsstring>
+        <name>MulAndUpdate</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="93" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="93" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a18f9e0801ba868874667e7703591bd87" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Float.DivAndUpdate</definition>
+        <argsstring>(float b)</argsstring>
+        <name>DivAndUpdate</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="94" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="94" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a8303114694c5d757fa4ad8912e3c3659" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Float.IsEqual</definition>
+        <argsstring>(float b)</argsstring>
+        <name>IsEqual</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="95" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="95" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a0112a13292def5891844b38ecf373ecb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Float.IsNotEqual</definition>
+        <argsstring>(float b)</argsstring>
+        <name>IsNotEqual</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="96" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="96" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a74e6971096820f723c3213783710403c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Float.IsGreaterThen</definition>
+        <argsstring>(float b)</argsstring>
+        <name>IsGreaterThen</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="97" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="97" bodyend="97"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1ac6a92ab7acec948b944cf365ccac697d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Float.IsSmallerThen</definition>
+        <argsstring>(float b)</argsstring>
+        <name>IsSmallerThen</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="98" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="98" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1afa5d327492e259cc33da0e9ba1f57ee7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Float.IsGreaterOrEqualTo</definition>
+        <argsstring>(float b)</argsstring>
+        <name>IsGreaterOrEqualTo</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="99" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="99" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_float_1a652e825527bd6b273bfaa58e02716f7a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Float.IsSmallerOrEqualTo</definition>
+        <argsstring>(float b)</argsstring>
+        <name>IsSmallerOrEqualTo</name>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="100" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="100" bodyend="100"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="69" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="69" bodyend="101"/>
+    <listofallmembers>
+      <member refid="struct_float_1ad4f1c61102b96fd84bf6a8fc29c415da" prot="public" virt="non-virtual"><scope>Float</scope><name>Abs</name></member>
+      <member refid="struct_float_1a9ff499dd3ae201e026f8866db5179ca1" prot="public" virt="non-virtual"><scope>Float</scope><name>Add</name></member>
+      <member refid="struct_float_1adb4624ebbd03dceb157fe922068e6b1e" prot="public" virt="non-virtual"><scope>Float</scope><name>AddAndUpdate</name></member>
+      <member refid="struct_float_1a4fbbfde061f1ebf328fc77d75593436f" prot="public" virt="non-virtual"><scope>Float</scope><name>Div</name></member>
+      <member refid="struct_float_1a18f9e0801ba868874667e7703591bd87" prot="public" virt="non-virtual"><scope>Float</scope><name>DivAndUpdate</name></member>
+      <member refid="struct_float_1a7004024e43ca3b873ee41bcfce2738c5" prot="public" virt="non-virtual"><scope>Float</scope><name>Float</name></member>
+      <member refid="struct_float_1a8303114694c5d757fa4ad8912e3c3659" prot="public" virt="non-virtual"><scope>Float</scope><name>IsEqual</name></member>
+      <member refid="struct_float_1afa5d327492e259cc33da0e9ba1f57ee7" prot="public" virt="non-virtual"><scope>Float</scope><name>IsGreaterOrEqualTo</name></member>
+      <member refid="struct_float_1a74e6971096820f723c3213783710403c" prot="public" virt="non-virtual"><scope>Float</scope><name>IsGreaterThen</name></member>
+      <member refid="struct_float_1a0112a13292def5891844b38ecf373ecb" prot="public" virt="non-virtual"><scope>Float</scope><name>IsNotEqual</name></member>
+      <member refid="struct_float_1a652e825527bd6b273bfaa58e02716f7a" prot="public" virt="non-virtual"><scope>Float</scope><name>IsSmallerOrEqualTo</name></member>
+      <member refid="struct_float_1ac6a92ab7acec948b944cf365ccac697d" prot="public" virt="non-virtual"><scope>Float</scope><name>IsSmallerThen</name></member>
+      <member refid="struct_float_1a732e3c385809c7805fd2f8c7d3970e85" prot="public" virt="non-virtual"><scope>Float</scope><name>Mul</name></member>
+      <member refid="struct_float_1ae2fd19e3e38c997855cd7286474b8afb" prot="public" virt="non-virtual"><scope>Float</scope><name>MulAndUpdate</name></member>
+      <member refid="struct_float_1afe3c4ce011a8f5f370400321e34a01f2" prot="public" virt="non-virtual"><scope>Float</scope><name>myValue</name></member>
+      <member refid="struct_float_1aadfa3393561599aace320aed12abbbdf" prot="public" virt="non-virtual"><scope>Float</scope><name>Negate</name></member>
+      <member refid="struct_float_1a6ed15f1070c8f097c0fd47c547b3e3d6" prot="public" virt="non-virtual"><scope>Float</scope><name>Sign</name></member>
+      <member refid="struct_float_1a2472249178e551dc183df271c83348ec" prot="public" virt="non-virtual"><scope>Float</scope><name>Sub</name></member>
+      <member refid="struct_float_1a2334a1bdf14c07b1b99038599bdb86d9" prot="public" virt="non-virtual"><scope>Float</scope><name>SubAndUpdate</name></member>
+      <member refid="struct_float_1abf7787573f5748d6b7d6fdea53295c9f" prot="public" virt="non-virtual"><scope>Float</scope><name>Value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

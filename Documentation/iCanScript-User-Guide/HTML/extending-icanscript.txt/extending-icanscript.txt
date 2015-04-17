@@ -1,0 +1,290 @@
+Title: iCanScript Extending iCanScript
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.1 (Beta #15)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.notebox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.notetitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+
+# Table of Contents #
+
+<!--TOC max2-->
+
+
+# Extending iCanScript #
+
+From its inception, iCanScript was designed to be extendable with the addition of user defined nodes. Once installed, the user defined nodes are accessible from the [Library Tree].
+
+Extending the iCanScript library is realized by:
+
+1. [Tagging your Source Code]; 
+2. [Importing Public Members]; 
+3. [Adding Message Handlers]. 
+
+The following picture illustrates how the iCanScript library gets populated and used.  You are given three access points (purple) to include your own packages and nodes inside the iCanScript library.  The iCanScript library gets repopulated for every recompile of the Unity scripts.
+
+![Figure 1. iCanScript library information flow.][extending-node-information-flow.png]
+
+
+![stamp-1-purple.png](stamp-1-purple.png) **Tagged Source Code:** You can add to the iCanScript library by tagging your source code with specialized .NET attributes.  This provides for fine control of which elements in your source code are published to the iCanScript user.
+
+![stamp-2-purple.png](stamp-2-purple.png) **Importing Public Members:** You can add to the iCanScript library by batch importing all *public* members of specified programatic types.  This method is specially useful for importing libraries for which you do not have the source code.
+
+
+![stamp-3-purple.png](stamp-3-purple.png) **Message Installation:** The .NET reflection technology allows for dynamic messaging; a technic used to dynamically invoke a functionality only if it is defined for a software object.  A script responds to dynamic messages if it includes the appropriate message handlers.  You can populate the iCanScript library with the signature of message handlers for given programatic types.  Afterward, the signature can be used by the iCanScript user to build the message handler nodes.
+
+![stamp-4-orange.png](stamp-4-orange.png)![stamp-5-orange.png](stamp-5-orange.png) The iCanScript editors extracts from the library node and port information when building the visual script.  The visual script manifest and layout information is saved along with the game object that includes the _iCS_VisualScript_ component.
+
+![stamp-6-orange.png](stamp-6-orange.png) iCanScript also generates the _iCS_Behaviour_ code that is needed by Unity to execute the the Visual Script.  The behaviour code includes:
+
+1.  the message handlers;
+2.  the control logic that determine the execution order of nodes, and;
+3.  the nodes converted into .NET code.
+
+![stamp-7-orange.png](stamp-7-orange.png)When the Unity engine is ran, the iCS_Behaviour code instantiates the variables, invokes the .NET code of the nodes, and responds to the message handlers.  The iCanScript core executive (iCanScriptEngine.dll) assures the execution order and resolves data contention.
+
+# Tagging your Source Code #
+
+iCanScript includes several .NET attributes to control which part of your source code is to be included in the iCanScript library. These attributes enables fine control over which fields, properties and functions become visible to the iCanScript user.
+
+iCanScript scans the .NET assemblies to populate its library with public classes tagged with the *iCS_Class* attribute.  The assembly scan is performed after every recompile of the Unity scripts.
+
+The following table depicts the mapping between C# source code and iCanScript objects:
+
+| Source Code           | iCanScript Objects                                    ||
+| :-------------------- | :------: | :------------------------------------------ |
+| **class**             | ![iCS_ObjectInstanceIcon_32x32.png](iCS_ObjectInstanceIcon_32x32.png)     | Class / Type Node                           |
+| **field**             | ![][iCS_InputPort-64x64.png]![][iCS_OutputPort-64x64.png] | Port                                        |
+| **property**          | ![][iCS_InputPort-64x64.png]![][iCS_OutputPort-64x64.png] | Port                                        |
+| **constructor**       | ![iCS_BuilderIcon_32x32.png](iCS_BuilderIcon_32x32.png)     | Variable Builder Node                       |
+| **instance function** | ![iCS_FunctionIcon.png](iCS_FunctionIcon.png)     | Function Node with a *"this"* input port    |
+| **class function**    | ![iCS_FunctionIcon.png](iCS_FunctionIcon.png)     | Function Node without a *"this"* input port |
+[Table 1. Mapping between C# source code and iCanScript objects.]
+
+>  **Note:** All source code elements tagged with an iCanScript attribute *MUST BE* public in terms of C# scope.
+
+
+### iCanScript .NET Attribute Reference
+
+The following two tables enumerates the supported iCanScript attributes and their associated parameters: 
+
+| Attribute Name    | Targets            | Parameters |
+| :---------------- | :----------------- | :--------- |
+| **iCS_Class**     | class or structure | **Company**<br>**CompanyIcon**<br>**Library**<br>**Icon**<br>**Tooltip**<br>**BaseVisibility** |
+| **iCS_Function**  | constructor,<br>function,<br>property get,<br>property set | **Name**<br>**Return**<br>**Icon**<br>**Tooltip**  |
+| **iCS_InPort**    | field | |
+| **iCS_OutPort**   | field | |
+| **iCS_InOutPort** | field | |
+[Table 2. iCanScript .NET Attributes]
+
+
+| Parameter Name     | Type   | Description            |
+| :----------------- | :----- | :--------------------- |
+| **BaseVisibility** | bool   | if true: adds the base classes public variables and functions. |
+| **Company**        | string | The name shown at the first level of the library tree. |
+| **CompanyIcon**    | string | Path to the iconic representation of the company. |
+| **Icon**           | string | Path to the iconic representation of the node. |
+| **Name**           | string | Function name substitute. |
+| **Library**        | string | The name shown at the second level of the library tree. |
+| **Return**         | string | Port name for the function *return value*. |
+| **Tooltip**        | string | Brief description of the component. |
+[Table 3. iCanScript .NET Attribute Parameters.]
+
+
+### iCS_Class Attribute
+
+iCanScript adds a type node to its library for each class and structure marked with the *iCS_Class* attribute.
+
+> **Note** that iCanScript will only add *public* classes and structures.
+
+**Example:**
+
+![Figure 2. iCS_Class attribute example.][attribute-ics_class-example.png]
+
+
+### iCS_Function Attribute
+
+You can publish to the iCanScript library your C# properties, constructors, instance function and class function using the *iCS_Function* attribute.
+
+See [Tagging your Source Code] for details on the C# source code to iCanScript object mapping.
+
+>  **Note:** The _iCS_Function_ attribute can only be applied to _public_ members of the C# class.
+
+**Example:**
+
+![Figure 3. iCS_Function attribute example.][attribute-ics_function-example.png]
+
+
+### iCS_InPort, iCS_OutPort, and iCS_InOutPort Attributes
+
+You can publish to the iCanScript library your C# fields using the _iCS_InPort_, _iCS_OutPort_, and _iCS_InOutPort_ attributes.
+
+>  **Note:** The _iCS_xxPort_ attributes can only be applied to _public_ fields of C# classes.
+
+**Example:**
+
+![Figure 4. iCS_xxPort attribute example.][attribute-iCS_xxPort-example.png]
+
+
+[Back to Top][Table of Contents]
+
+
+
+# Importing Public Members #
+
+iCanScript supports invoking a custom installer to add all public fields, properties and functions of an object definition into the iCanScript library.
+
+This method of populating the iCanScript library is ideal if:
+
+-  you are not in control of the source code (i.e. using a vendor library) or;
+-  you want to add all public fields, properties and functions of your classes without tagging your source code with iCanScript custom attributes.
+
+
+### Understanding the Custom Installer
+
+On every script recompile, iCanScript seeks for and invokes the *void PopulateDataBase()* static function of the *iCS_CustomInstaller* static class to populate it library.
+
+>  **Note:**  iCanScript uses runtime binding to avoid generating compilation errors if the custom installer is not present.
+
+The signature of the iCanScript library custom installer is:
+
+	// iCanScript library custom installer class
+	public static class iCS_CustomInstaller {
+		// Function invoked to populate the iCanScript library.
+		public static void PopulateDataBase() {
+			// ==> INSTALL YOUR NODES HERE <==
+			...
+		}
+	}
+
+
+The iCanScript distribution comes with a custom installer template to be use as a base for your custom installer.  It is located in the editor section of the iCanScript package as show in the following diagram.
+ 
+![Figure 5.  Extending Library with Custom Installer.][extending-custom-installer.png]
+
+![stamp-1-purple.png](stamp-1-purple.png) The *iCS_CustomInstaller* file should be used as a starting point to create your own installer. You will need to move this file into your package and modify it to specify the types to be included in the iCanScript library.
+
+![stamp-2-orange.png](stamp-2-orange.png) The files *iCS_NETClasses* and *iCS_UnityClasses* install all of the .NET and Unity types that come with the iCanScript distribution.  Browsing those files will give you a better understanding on what needs to be done when creating your custom installer.
+
+
+### Modifying the Custom Installer Template
+
+>  **Important:**  It is important that you move the custom installer template file outside of the iCanScript package before you modify it.  This will avoid losing your changes on subsequent iCanScript package upgrades.
+
+Their is five sections of interest in the custom installer template, four of which you will need to modify.  The following provide the details:
+
+![Figure 6. Custom Installer Template File.][custom-installer-template-file.png]
+
+![stamp-1-purple.png](stamp-1-purple.png) The template file that comes in the distribution is disabled.  This avoids conflicts with your own custom installer on subsequent product upgrades.  To activate your custom installer, you need to uncomment the definition of *_iCS_USE_CUSTOM_INSTALLER_*.
+	  
+![stamp-2-purple.png](stamp-2-purple.png) The template includes the helper function _PopulateWithType(…)_ that fills-in the default company name, package name, and icon if they are not specified.  The default values are taken from *kDefaultCompanyName*, *kDefaultPackageName*, and *kDefaultIcon* constants.  Change the value of those defaults to reflect your situation.
+
+![stamp-3-purple.png](stamp-3-purple.png) This is were the bulk of your installer will be coded.  You need to invoke the helper function _PopulateWithType(…)_ for every type you include in the iCanScript library.  Only the type information is mandatory but it is suggested that you also fill-in the description and install an icon that depicts the type.  Package name  and company name can also be provided if the default values do not suffice.
+
+![stamp-4-purple.png](stamp-4-purple.png) By default, the iCanScript custom installation template displays a message when it is invoked.  This is useful to determine if the installer is properly activated.  You can remove or comment out this log message once you know your installer is invoked.
+
+![stamp-5-orange.png](stamp-5-orange.png) The _iCS_Reflection.DecodeClassInfo(…)_ is the main programatic interface for populating the iCanScript library.  For your convenience, it is wrapped by the function _PopulateWithType(…)_.
+
+
+[Back to Top][Table of Contents]
+
+---
+
+
+
+# Adding Message Handlers #
+
+
+The [Tagging your Source Code] and [Importing Public Members] installing mechanism extract existing functionality from the object definition to publish into the iCanScript library.  However, they do not provide for defining message handlers for the Unity framework.  This is because the Unity messages are dynamically created at runtime and are therefore not visible in the object definitions.
+
+The message handlers in iCanScript has the following characteristics:
+
+*  they are a parent nodes (node aggregates);
+*  they includes child nodes that implement the behaviour for the message;
+*  they have input and output ports that map with the received message parameters.
+
+
+The following image depicts a game object behaviour with four (4) message handlers:
+
+
+![Figure 7. Behaviour Message Handlers Example.][behaviour-message-handlers2.png]
+
+
+You rarely need to add message handlers to the iCanScript library but if do, you will need to invoke the following function:
+
+	void iCS_LibraryDatabase.AddMessage(	System.Type classType,
+												string messageName,
+												iCS_StorageClass storageClass,
+                                  			iCS_Parameter[] parameters,
+												iCS_FunctionReturn functionReturn,
+                                  			string description,
+												string iconPath)
+
+| Parameter Name | Description                                                   |
+| :------------- | :------------------------------------------------------------ |
+| classType      | The programatic type that will accept the message             |
+| messageName    | The name of the message to handle                             |
+| storageClass   | Either *iCS_Storage.Class* or *iCS_Storage.Instance*          |
+| parameters     | Message parameters. See *iCS_UnityClasses* file for example.  |
+| functionReturn | Message return type. See *iCS_UnityClasses* file for example. |
+| description    | A short description of the message.                           |
+| iconPath       | The icon to use when the message handler is iconized.         |
+[Table 4. AddMessage parameter descriptions.]
+
+
+>  **Note:** The iCanScript distribution installs the Unity message handlers in file: *"iCanScript/Editor/NodeInstaller/iCS_UnityClasses.cs"*.  Please use the Unity installer as example to create your own message handlers.
+
+[extending-node-information-flow.png]: extending-node-information-flow.png width=643px height=395px
+
+[iCS_InputPort-64x64.png]: iCS_InputPort-64x64.png width=32px height=32px
+
+[iCS_OutputPort-64x64.png]: iCS_OutputPort-64x64.png width=32px height=32px
+
+[iCS_InputPort-64x64.png]: iCS_InputPort-64x64.png width=32px height=32px
+
+[iCS_OutputPort-64x64.png]: iCS_OutputPort-64x64.png width=32px height=32px
+
+[attribute-ics_class-example.png]: attribute-ics_class-example.png
+
+[attribute-ics_function-example.png]: attribute-ics_function-example.png width=641px height=292px
+
+[attribute-iCS_xxPort-example.png]: attribute-iCS_xxPort-example.png
+
+[extending-custom-installer.png]: extending-custom-installer.png
+
+[custom-installer-template-file.png]: custom-installer-template-file.png
+
+[behaviour-message-handlers2.png]: behaviour-message-handlers2.png

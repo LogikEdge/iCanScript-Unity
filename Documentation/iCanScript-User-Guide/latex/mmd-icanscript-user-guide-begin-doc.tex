@@ -1,0 +1,78 @@
+%
+%	Get ready for the actual document
+%
+
+\usepackage[
+	colorlinks=true,
+    linkcolor=blue!50!green,
+    urlcolor=blue,
+    citecolor=gray,
+	plainpages=false,
+	pdfpagelabels,
+	pdftitle={\mytitle},
+	pagebackref,
+	pdfauthor={\myauthor},
+	pdfkeywords={\keywords}
+	]{hyperref}
+\usepackage{memhfixc}
+
+
+\input{../latex/mmd-title}
+\title{\mytitle}
+\author{\myauthor}
+
+\ifx\mydate\undefined
+\else
+	\date{\mydate}
+\fi
+
+
+\ifx\theme\undefined
+\else
+	\usetheme{\theme}
+\fi
+
+\begin{document}
+
+\VerbatimFootnotes
+
+
+\chapterstyle{\mychapterstyle}
+\pagestyle{\mypagestyle}
+
+\input{../latex/environments}
+
+% Frontmatter
+\frontmatter
+
+% Title Page
+%\maketitle
+
+\textbf{\Huge User Guide}
+
+\begin{raggedleft}
+    \rule{2.5in}{0.4pt}
+\end{raggedleft}
+
+\includegraphics[keepaspectratio,width=\textwidth,height=0.75\textheight]{iCanScript_Title.png}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=256pt,height=256pt]{iCanScriptLogo_256x256x32.png}
+\includegraphics[width=256pt,height=38pt]{VisualScriptingForUnity_black.png}
+\end{figure}
+
+ 
+%\clearpage
+
+\input{../latex/mmd-icanscript-user-guide-copyright}
+
+\tableofcontents
+%\listoffigures
+%\listoftables
+
+
+\mainmatter
+
+\setlength{\parskip}{1em}
+

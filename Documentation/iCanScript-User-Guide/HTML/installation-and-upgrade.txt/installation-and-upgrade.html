@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>iCanScript Installation &amp; Upgrade</title>
+	<meta name="author" content="Michel Launier"/>
+	<meta name="version" content="v1.0.3 (Beta #17)"/>
+	<meta name="email" content="support@icanscript.com"/>
+	<link type="text/css" rel="stylesheet" href="Github.css"/>
+</head>
+<body>
+
+<style type="text/css">
+    <!--
+
+.center {
+    text-align: center;
+}
+
+.tipbox {
+    text-align: justify;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-style: ridge;
+    border-width: 2px;
+    text-indent: 0;
+}
+
+.cmd {
+    color: #6d00ff;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.tiptitle {
+    font-size: 1.4em;
+    font-weight: normal;
+}
+    -->
+</style>
+
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#removingicanscript">Removing iCanScript</a></li>
+<li><a href="#upgradingicanscript">Upgrading iCanScript</a></li>
+</ul>
+
+<h1 id="installation">Installation</h1>
+<div class="annotation"  style="color:#000000" > <div class="tipbox"><span style="color:red">
+
+<p>Please note that the installation of iCanScript from the Unity Asset Store is currently not discussed. It will be added in future releases of this document.</p>
+</span> </div><!--tipbox-->
+</div>
+
+<p><img src="Drive-Download_48x48.png" alt="" id="drive-download_48x48.png" style="height:32px;width:32px;" /> iCanScript is a downloadable plugin for the Unity 3D game engine. It comes in the form of a Unity package that must be installed for each project.</p>
+
+<p>The initial download of iCanScript is available from the project <a href="http://www.icanscript.com">website</a>. User registration is required to obtain the latest version of the iCanScript software via email. An overview of the registration, download and installation procedure is available in the following video:</p>
+
+<p><a href="http://youtu.be/LJIqMaUNoAU"><img src="tutorial-installation-tumbnail.png" alt="" id="tutorial-installation-tumbnail.png" style="height:180px;width:320px;" /></a></p>
+
+<p>Follow these steps to install iCanScript for the first time:</p>
+
+<ol>
+<li>Visit the iCanScript web site at <a href="http://www.icanscript.com">www.icanscript.com</a>;</li>
+<li>Click the download button from the home page;</li>
+<li>Fill-in the registration form (the email is important);</li>
+<li>Shortly after, you will receive an email with the latest version of iCanScript in attachment;</li>
+<li>Open the email and save the iCanScript package;</li>
+<li>Launch Unity and import the iCanScript package (see Figure 1);</li>
+<li>You are now ready to start …</li>
+</ol>
+
+<figure>
+<img src="custom-import.png" alt="Figure 1. Importing iCanScript into Unity." id="custom-import.png" />
+<figcaption>Figure 1. Importing iCanScript into Unity.</figcaption>
+</figure>
+
+<p>You now have the knowledge to download and install iCanScript in your own project. I propose that you move on to the [quick start tutorial][] where you will build your first visual script.</p>
+<div class="annotation"  style="color:#000000" > <div class="tipbox">
+<img src="icanscript-ui-tips_64x64x32.png" alt="" id="icanscript-ui-tips_64x64x32.png" style="height:32px;width:32px;" /> <span class="tiptitle">iCanScript User Interface Tips</span>
+
+<hr />
+
+<blockquote>
+<p>Subsequent software releases can be downloaded using the <a href="#upgradingicanscript">upgrade</a> feature of iCanScript.</p>
+</blockquote>
+ </div><!--tipbox-->
+</div>
+
+<h1 id="removingicanscript">Removing iCanScript</h1>
+
+<p>The following steps are needed to uninstall iCanScript from your project:</p>
+
+<ul>
+<li>Remove the <em><strong>iCanScript</strong></em> folder;</li>
+<li>Open the <em>Gizmos</em> folder and remove the <em><strong>iCanScriptGizmo.png</strong></em> file;</li>
+<li>Remove the optional <em><strong>iCanScript_Nodes</strong></em> package;</li>
+</ul>
+<div class="annotation"  style="color:#000000" > <div class="tipbox">
+<img src="PostitNote_48x48.png" alt="" id="postitnote_48x48.png" style="height:32px;width:32px;" /> <strong>Note:</strong> Uninstalling the previous version of iCanScript is required when performing an upgrade.
+ </div><!--tipbox-->
+</div>
+
+<p><!-- 2columns - Start --><div style="width: 100%; margin:0 auto"><div style="float:left; width:49%; margin:0 auto; padding:0"></p>
+
+<figure>
+<img src="remove-packages.png" alt="Figure 2. Uninstalling the iCanScript packages." id="remove-packages.png" />
+<figcaption>Figure 2. Uninstalling the iCanScript packages.</figcaption>
+</figure>
+
+<p><!-- 2columns - Separator --></div><div style="float:right; width:49%; margin:0 auto; padding: 0"></p>
+
+<figure>
+<img src="remove-gizmo.png" alt="Figure 3. Removing the iCanScript Gizmo." id="remove-gizmo.png" />
+<figcaption>Figure 3. Removing the iCanScript Gizmo.</figcaption>
+</figure>
+
+<p><!-- 2columns - End --></div></div><div style="clear: both"></div></p>
+
+<h1 id="upgradingicanscript">Upgrading iCanScript</h1>
+
+<p>Improvements to iCanScript are regularly made available as downloadable software updates. </p>
+
+<p>The following steps are needed to verify for and update to the latest version of iCanScript:</p>
+
+<ol>
+<li>Verify for an update using the menu item: <span class="cmd">Help-&gt;iCanScript-&gt;Check for Updates…</span>;</li>
+<li>If an update is available, a dialog box will guide you to the download page;</li>
+<li>Download the latest version of iCanScript;</li>
+<li>Open Unity and uninstall the current version of iCanScript (see <a href="#removingicanscript">Removing iCanScript</a>);</li>
+<li>Import the latest version of iCanScript (see <a href="#installation">Installation</a>);</li>
+<li>An alert box will be shown if data conversion is required after the upgrade;
+
+<ul>
+<li>data conversion is performed in memory;</li>
+<li>each visual script data is converted independently;</li>
+<li>converted data is persisted when the scene is saved;</li>
+<li>data rollback is performed if scene is not saved after an upgrade.</li>
+</ul></li>
+<li>Save the scene to complete the upgrade.</li>
+</ol>
+
+<figure>
+<img src="ics-check-for-update.png" alt="Figure 4. Verifying for an update." id="ics-check-for-update.png" />
+<figcaption>Figure 4. Verifying for an update.</figcaption>
+</figure>
+
+</body>
+</html>

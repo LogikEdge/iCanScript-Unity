@@ -1,0 +1,13 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1344\cocoasubrtf720
+{\fonttbl\f0\fnil\fcharset0 Cochin;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\fi360\sl288\slmult1\pardirnatural
+
+\f0\fs36 \cf0 Unity 5 changes many interfaces and the way the index for its help file is generated.  This, with the fact that it is still in beta, does create some issues for visual scripts created with prior versions of Unity.  We will work out the remain issues as Unity 5 stabilizes and is rolled out to the general public.\
+\
+- **<span style="color: red">\\[ISSUE - Unity 5\\]</span>** No anti-aliasing for bindings that connect nodes.  The root cause is being investigated.\
+- **<span style="color: red">\\[ISSUE - Unity 5\\]</span>** No help description for UnityEngine nodes.  The help file format for Unity 5 has changed.  Support will be added in future release.  Please refer to the Unity 5 scripting help for now.\
+- **<span style="color: red">\\[ISSUE - Unity 5\\]</span>** Unity 5 has removed direct access to _GameObject Components_ and requires the use of the _GetComponent(type)_ function.  Visual Script create with previous version of Unity need to adopt the new Unity 5 interface.  These changes are backward compatible with Unity 4.\
+- **<span style="color: red">\\[ISSUE - Unity 5\\]</span>** Unity v5.0.0f2 has minor corruption in its reflection database resulting in misbehaviour for a small number of UnityEngine functions.  An example of this is the function "Random.insideUnitSphere" function that cannot be invoked from the reflection database.  A new version of Unity is required to solve this issue.\
+\
+* * *}

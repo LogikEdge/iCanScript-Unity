@@ -1,0 +1,89 @@
+Title: iCanScript Installation & Upgrade
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+# Installation #
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox"><span style="color:red">
+
+Please note that the installation of iCanScript from the Unity Asset Store is currently not discussed.  It will be added in future releases of this document.
+
+</span> </div><!--tipbox-->
+</div>
+
+![][Drive-Download_48x48.png] iCanScript is a downloadable plugin for the Unity 3D game engine. It comes in the form of a Unity package that must be installed for each project.
+
+The initial download of iCanScript is available from the project [website](http://www.icanscript.com). User registration is required to obtain the latest version of the iCanScript software via email. An overview of the registration, download and installation procedure is available in the following video:
+
+
+[![][tutorial-installation-tumbnail.png]](http://youtu.be/LJIqMaUNoAU)
+
+
+Follow these steps to install iCanScript for the first time:
+
+1. Visit the iCanScript web site at [www.icanscript.com](http://www.icanscript.com);
+2. Click the download button from the home page;
+3. Fill-in the registration form (the email is important);
+4. Shortly after, you will receive an email with the latest version of iCanScript in attachment;
+5. Open the email and save the iCanScript package;
+6. Launch Unity and import the iCanScript package (see Figure 1);
+7. You are now ready to start …
+
+![Figure 1. Importing iCanScript into Unity.][custom-import.png]
+
+You now have the knowledge to download and install iCanScript in your own project. I propose that you move on to the [quick start tutorial][] where you will build your first visual script.
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][icanscript-ui-tips_64x64x32.png] <span class="tiptitle">iCanScript User Interface Tips</span>
+
+---
+
+> Subsequent software releases can be downloaded using the [upgrade][Upgrading iCanScript] feature of iCanScript.
+
+ </div><!--tipbox-->
+</div>
+
+
+[Drive-Download_48x48.png]: http://www.icanscript.com/images/support/kb/user-guide/installation/Drive-Download_48x48.png width=32px height=32px
+
+[tutorial-installation-tumbnail.png]: http://www.icanscript.com/images/support/kb/user-guide/installation/tutorial-installation-tumbnail.png width=320px height=180px
+
+[custom-import.png]: http://www.icanscript.com/images/support/kb/user-guide/installation/custom-import.png
+
+[icanscript-ui-tips_64x64x32.png]: http://www.icanscript.com/images/support/kb/user-guide/installation/icanscript-ui-tips_64x64x32.png width=32px height=32px

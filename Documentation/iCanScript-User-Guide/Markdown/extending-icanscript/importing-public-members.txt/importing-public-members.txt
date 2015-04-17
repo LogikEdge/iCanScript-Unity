@@ -1,0 +1,114 @@
+Title: iCanScript Extending iCanScript
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+# Importing Public Members #
+
+iCanScript supports invoking a custom installer to add all public fields, properties and functions of an object definition into the iCanScript library.
+
+This method of populating the iCanScript library is ideal if:
+
+-  you are not in control of the source code (i.e. using a vendor library) or;
+-  you want to add all public fields, properties and functions of your classes without tagging your source code with iCanScript custom attributes.
+
+
+### Understanding the Custom Installer
+
+On every script recompile, iCanScript seeks for and invokes the *void PopulateDataBase()* static function of the *iCS_CustomInstaller* static class to populate it library.
+
+>  **Note:**  iCanScript uses runtime binding to avoid generating compilation errors if the custom installer is not present.
+
+The signature of the iCanScript library custom installer is:
+
+	// iCanScript library custom installer class
+	public static class iCS_CustomInstaller {
+		// Function invoked to populate the iCanScript library.
+		public static void PopulateDataBase() {
+			// ==> INSTALL YOUR NODES HERE <==
+			...
+		}
+	}
+
+
+The iCanScript distribution comes with a custom installer template to be use as a base for your custom installer.  It is located in the editor section of the iCanScript package as show in the following diagram.
+ 
+![Figure 1.  Extending Library with Custom Installer.][extending-custom-installer.png]
+
+![][stamp-1-purple.png] The *iCS_CustomInstaller* file should be used as a starting point to create your own installer. You will need to move this file into your package and modify it to specify the types to be included in the iCanScript library.
+
+![][stamp-2-orange.png] The files *iCS_NETClasses* and *iCS_UnityClasses* install all of the .NET and Unity types that come with the iCanScript distribution.  Browsing those files will give you a better understanding on what needs to be done when creating your custom installer.
+
+
+### Modifying the Custom Installer Template
+
+>  **Important:**  It is important that you move the custom installer template file outside of the iCanScript package before you modify it.  This will avoid losing your changes on subsequent iCanScript package upgrades.
+
+Their is five sections of interest in the custom installer template, four of which you will need to modify.  The following provide the details:
+
+![Figure 2. Custom Installer Template File.][custom-installer-template-file.png]
+
+![][stamp-1-purple.png] The template file that comes in the distribution is disabled.  This avoids conflicts with your own custom installer on subsequent product upgrades.  To activate your custom installer, you need to uncomment the definition of *_iCS_USE_CUSTOM_INSTALLER_*.
+	  
+![][stamp-2-purple.png] The template includes the helper function _PopulateWithType(…)_ that fills-in the default company name, package name, and icon if they are not specified.  The default values are taken from *kDefaultCompanyNam
+e*, *kDefaultPackageName*, and *kDefaultIcon* constants.  Change the value of those defaults to reflect your situation.
+
+![][stamp-3-purple.png] This is were the bulk of your installer will be coded.  You need to invoke the helper function _PopulateWithType(…)_ for every type you include in the iCanScript library.  Only the type information is mandatory but it is suggested that you also fill-in the description and install an icon that depicts the type.  Package name  and company name can also be provided if the default values do not suffice.
+
+![][stamp-4-purple.png] By default, the iCanScript custom installation template displays a message when it is invoked.  This is useful to determine if the installer is properly activated.  You can remove or comment out this log message once you know your installer is invoked.
+
+![][stamp-5-orange.png] The _iCS_Reflection.DecodeClassInfo(…)_ is the main programatic interface for populating the iCanScript library.  For your convenience, it is wrapped by the function _PopulateWithType(…)_.
+
+
+
+
+[extending-custom-installer.png]: http://www.icanscript.com/images/support/kb/user-guide/importing-public-members/extending-custom-installer.png
+
+[custom-installer-template-file.png]: http://www.icanscript.com/images/support/kb/user-guide/importing-public-members/custom-installer-template-file.png
+
+[stamp-1-purple.png]: http://www.icanscript.com/images/support/kb/user-guide/importing-public-members/stamp-1-purple.png width=32px height=30px
+
+[stamp-2-purple.png]: http://www.icanscript.com/images/support/kb/user-guide/importing-public-members/stamp-2-purple.png width=32px height=30px
+
+[stamp-2-orange.png]: http://www.icanscript.com/images/support/kb/user-guide/importing-public-members/stamp-2-orange.png width=32px height=30px
+
+[stamp-3-purple.png]: http://www.icanscript.com/images/support/kb/user-guide/importing-public-members/stamp-3-purple.png width=32px height=30px
+
+[stamp-4-purple.png]: http://www.icanscript.com/images/support/kb/user-guide/importing-public-members/stamp-4-purple.png width=32px height=30px
+
+[stamp-5-orange.png]: http://www.icanscript.com/images/support/kb/user-guide/importing-public-members/stamp-5-orange.png width=32px height=30px

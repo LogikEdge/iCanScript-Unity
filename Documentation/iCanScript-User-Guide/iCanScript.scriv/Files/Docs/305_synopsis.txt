@@ -1,0 +1,7 @@
+Before creating visual scripts, we first need to build a scene in Unity and populate it with actors. Based on the storyline, the actors are (the camera has been purposely omitted):
+- **Mr. Cube** (I'll let you guess the shape to use);
+- **Ms. Light** (a directional light);
+- **Near Trigger Zone** to turn off _Ms. Light_ (a sphere will do fine);
+- **Far Trigger Zone** to turn on _Ms. Light_ (again a sphere will do fine).
+The main characteristics of the actors are:
+- All actors live on a 2D plane ...

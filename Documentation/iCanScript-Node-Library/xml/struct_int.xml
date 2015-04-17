@@ -1,0 +1,360 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="struct_int" kind="struct" prot="public">
+    <compoundname>Int</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_int_1af4c6984f25cf742c067f630c9f917b98" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Int.myValue</definition>
+        <argsstring></argsstring>
+        <name>myValue</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="35" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="struct_int_1a5e3cbaf337232bde68fe94225f01b46c" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="yes">
+        <type>int</type>
+        <definition>int Int.Value</definition>
+        <argsstring></argsstring>
+        <name>Value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="37" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="struct_int_1a3915bbe206661b528757b9bc41c53350" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="no">
+        <type>int</type>
+        <definition>int Int.Negate</definition>
+        <argsstring></argsstring>
+        <name>Negate</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="41" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="struct_int_1a9d4719fbc8e7ab4087ceff40633044ec" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="no">
+        <type>int</type>
+        <definition>int Int.Abs</definition>
+        <argsstring></argsstring>
+        <name>Abs</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="44" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="struct_int_1a416e1f5855334378912b031378f5fb26" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="no">
+        <type>int</type>
+        <definition>int Int.Sign</definition>
+        <argsstring></argsstring>
+        <name>Sign</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="47" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_int_1acf38efbafa6984afdd185c50cc46b9a1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Int.Int</definition>
+        <argsstring>(int init=0)</argsstring>
+        <name>Int</name>
+        <param>
+          <type>int</type>
+          <declname>init</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="51" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="51" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1ae331ebd4ecbc5b541e8ed4367436992f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Int.Add</definition>
+        <argsstring>(int b)</argsstring>
+        <name>Add</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="52" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="52" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1aecdcda2e9a7c7566fa86a02b45b1cfa3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Int.Sub</definition>
+        <argsstring>(int b)</argsstring>
+        <name>Sub</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="53" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="53" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1aec6d3adf3ee01748c19ea16645e2d09b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Int.Mul</definition>
+        <argsstring>(int b)</argsstring>
+        <name>Mul</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="54" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1a5bbe35ebeaf5d4dd9b0fe346940655d3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Int.Div</definition>
+        <argsstring>(int b)</argsstring>
+        <name>Div</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="55" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="55" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1ad513d0da6cd23715d3afcba91570cad9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Int.AddAndUpdate</definition>
+        <argsstring>(int b)</argsstring>
+        <name>AddAndUpdate</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="56" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="56" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1a65bd8e1feab3a6e40f7f294e8fb335f3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Int.SubAndUpdate</definition>
+        <argsstring>(int b)</argsstring>
+        <name>SubAndUpdate</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="57" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="57" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1ad2ef7bce7704156b137e10523bd0d850" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Int.MulAndUpdate</definition>
+        <argsstring>(int b)</argsstring>
+        <name>MulAndUpdate</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="58" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="58" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1a01d3f8f5b739468f98b75ff4882a5ebf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Int.DivAndUpdate</definition>
+        <argsstring>(int b)</argsstring>
+        <name>DivAndUpdate</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="59" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="59" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1a0be3fa92ae33169fde228a6c5b368919" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Int.IsEqual</definition>
+        <argsstring>(int b)</argsstring>
+        <name>IsEqual</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="60" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="60" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1ad3a289036b77d569944b4bf8daacfa67" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Int.IsNotEqual</definition>
+        <argsstring>(int b)</argsstring>
+        <name>IsNotEqual</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="61" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="61" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1a03a5e92fb2ce83f56c5feaf5bae606dc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Int.IsGreaterThen</definition>
+        <argsstring>(int b)</argsstring>
+        <name>IsGreaterThen</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="62" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="62" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1a83074c7973028ec33e32c641f3048af0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Int.IsSmallerThen</definition>
+        <argsstring>(int b)</argsstring>
+        <name>IsSmallerThen</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="63" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="63" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1ade0a495eb80f483473efa54e2cbb7f4a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Int.IsGreaterOrEqualTo</definition>
+        <argsstring>(int b)</argsstring>
+        <name>IsGreaterOrEqualTo</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="64" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="64" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_int_1ab563607623b35c98073a45ef68736870" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Int.IsSmallerOrEqualTo</definition>
+        <argsstring>(int b)</argsstring>
+        <name>IsSmallerOrEqualTo</name>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="65" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="65" bodyend="65"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="34" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="34" bodyend="66"/>
+    <listofallmembers>
+      <member refid="struct_int_1a9d4719fbc8e7ab4087ceff40633044ec" prot="public" virt="non-virtual"><scope>Int</scope><name>Abs</name></member>
+      <member refid="struct_int_1ae331ebd4ecbc5b541e8ed4367436992f" prot="public" virt="non-virtual"><scope>Int</scope><name>Add</name></member>
+      <member refid="struct_int_1ad513d0da6cd23715d3afcba91570cad9" prot="public" virt="non-virtual"><scope>Int</scope><name>AddAndUpdate</name></member>
+      <member refid="struct_int_1a5bbe35ebeaf5d4dd9b0fe346940655d3" prot="public" virt="non-virtual"><scope>Int</scope><name>Div</name></member>
+      <member refid="struct_int_1a01d3f8f5b739468f98b75ff4882a5ebf" prot="public" virt="non-virtual"><scope>Int</scope><name>DivAndUpdate</name></member>
+      <member refid="struct_int_1acf38efbafa6984afdd185c50cc46b9a1" prot="public" virt="non-virtual"><scope>Int</scope><name>Int</name></member>
+      <member refid="struct_int_1a0be3fa92ae33169fde228a6c5b368919" prot="public" virt="non-virtual"><scope>Int</scope><name>IsEqual</name></member>
+      <member refid="struct_int_1ade0a495eb80f483473efa54e2cbb7f4a" prot="public" virt="non-virtual"><scope>Int</scope><name>IsGreaterOrEqualTo</name></member>
+      <member refid="struct_int_1a03a5e92fb2ce83f56c5feaf5bae606dc" prot="public" virt="non-virtual"><scope>Int</scope><name>IsGreaterThen</name></member>
+      <member refid="struct_int_1ad3a289036b77d569944b4bf8daacfa67" prot="public" virt="non-virtual"><scope>Int</scope><name>IsNotEqual</name></member>
+      <member refid="struct_int_1ab563607623b35c98073a45ef68736870" prot="public" virt="non-virtual"><scope>Int</scope><name>IsSmallerOrEqualTo</name></member>
+      <member refid="struct_int_1a83074c7973028ec33e32c641f3048af0" prot="public" virt="non-virtual"><scope>Int</scope><name>IsSmallerThen</name></member>
+      <member refid="struct_int_1aec6d3adf3ee01748c19ea16645e2d09b" prot="public" virt="non-virtual"><scope>Int</scope><name>Mul</name></member>
+      <member refid="struct_int_1ad2ef7bce7704156b137e10523bd0d850" prot="public" virt="non-virtual"><scope>Int</scope><name>MulAndUpdate</name></member>
+      <member refid="struct_int_1af4c6984f25cf742c067f630c9f917b98" prot="public" virt="non-virtual"><scope>Int</scope><name>myValue</name></member>
+      <member refid="struct_int_1a3915bbe206661b528757b9bc41c53350" prot="public" virt="non-virtual"><scope>Int</scope><name>Negate</name></member>
+      <member refid="struct_int_1a416e1f5855334378912b031378f5fb26" prot="public" virt="non-virtual"><scope>Int</scope><name>Sign</name></member>
+      <member refid="struct_int_1aecdcda2e9a7c7566fa86a02b45b1cfa3" prot="public" virt="non-virtual"><scope>Int</scope><name>Sub</name></member>
+      <member refid="struct_int_1a65bd8e1feab3a6e40f7f294e8fb335f3" prot="public" virt="non-virtual"><scope>Int</scope><name>SubAndUpdate</name></member>
+      <member refid="struct_int_1a5e3cbaf337232bde68fe94225f01b46c" prot="public" virt="non-virtual"><scope>Int</scope><name>Value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

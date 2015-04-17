@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>iCanScript Unity3D Integration</title>
+	<meta name="author" content="Michel Launier"/>
+	<meta name="version" content="v1.0.1 (Beta #15)"/>
+	<meta name="email" content="support@icanscript.com"/>
+	<link type="text/css" rel="stylesheet" href="Github.css"/>
+</head>
+<body>
+
+<style type="text/css">
+    <!--
+
+.center {
+    text-align: center;
+}
+
+.notebox {
+    text-align: justify;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-style: ridge;
+    border-width: 2px;
+    text-indent: 0;
+}
+
+.cmd {
+    color: #6d00ff;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.notetitle {
+    font-size: 1.4em;
+    font-weight: normal;
+}
+    -->
+</style>
+
+<h1 id="tableofcontents">Table of Contents</h1>
+
+<ul>
+<li><a href="#unity3dintegration">Unity3D Integration</a></li>
+<li><a href="#addingavisualscript">Adding a Visual Script</a></li>
+<li><a href="#librariesprefabs">Libraries &amp; Prefabs</a></li>
+</ul>
+
+<h1 id="unity3dintegration">Unity3D Integration</h1>
+
+<p>iCanScript is designed to seamlessly integrated into the Unity development environment. It builds on the philosophies and application programming interfaces (APIs) available to Unity script programmers.</p>
+
+<p>iCanScripts integrates with the following Unity concepts:</p>
+
+<ul>
+<li>Visual scripts are standard Unity <em>Components</em>;</li>
+<li>Each visual script is compiled into an Unity <em>Behaviour</em> and executed as such;</li>
+<li>All Unity engine programming interfaces are available in the iCanScript library database;</li>
+<li>All <em>Behaviour Messages</em> are implemented as <em>Message Handler Nodes</em>;</li>
+<li>Visual script libraries are implemented with Unity <em>Prefabs</em>;</li>
+<li>Visual scripts are saved and loaded with the game object they are attached to;</li>
+<li>Visual scripts are compiled when starting the Unity engine.</li>
+</ul>
+
+<p>iCanScript extends the Unity Concepts with:</p>
+
+<ul>
+<li>Functional diagrams;</li>
+<li>State Chart diagrams;</li>
+<li>Automatic data driven execution sequencing;</li>
+<li>Automatic deadlock avoidance.</li>
+</ul>
+<div class="annotation"  style="color:#000000" ></div><div class="notebox">
+ <img src="PostitNote_32x32.png" alt="PostitNote_32x32.png" /> <strong>Note:</strong> Proper usage of iCanScript requires minimal knowledge of the Unity platform.
+
+<p></div></p>
+
+<h1 id="addingavisualscript">Adding a Visual Script</h1>
+
+<p>To use iCanScript, you first need to install a visual scripts on one of your game objects. To illustrate this process, we will add a visual script to a sphere that will later be used as a trigger zone. </p>
+
+<p>To do so, you must:</p>
+
+<ol>
+<li>Select a game object to contain the visual script;</li>
+<li>Create a visual script using the menu item: <span class="cmd">iCanScript-&gt;Create Visual Script</span>.</li>
+</ol>
+
+<figure>
+<img src="ics-menu-create-visual-script.png" alt="Figure 1. Create Visual Script menu item." id="ics-menu-create-visual-script.png" />
+<figcaption>Figure 1. Create Visual Script menu item.</figcaption>
+</figure>
+
+<p><em>Et voilà, you have a visual script !!!</em> It does not do anything yet but it is ready to listen and react to Unity messages. We will look at defining and handling Unity messages in the next section. For now, let&#8217;s examine the changes brought when creating the visual script.</p>
+
+<p>When iCanScript creates a visual script, it attaches two (2) Unity script components on the game object. These components are:</p>
+
+<ol>
+<li><em><strong>iCS_VisualScript (persistent storage)</strong></em></li>
+<li><em><strong>iCS_Behaviour (runtime compiler &amp; execution services)</strong></em></li>
+</ol>
+
+<figure>
+<img src="icanscript-components.png" alt="Figure 2. iCanScript visual script components." id="icanscript-components.png" />
+<figcaption>Figure 2. iCanScript visual script components.</figcaption>
+</figure>
+
+<p><img src="stamp-1-orange.png" alt="stamp-1-orange.png" /> The <em>iCS_VisualScript</em> contains the visual script persistant data including the definitions of nodes, ports, bindings as well as their layout information. It is populated and modified by the iCanScript editors.</p>
+
+<p><img src="stamp-2-green.png" alt="stamp-2-green.png" /> The <em>iCS_Behaviour</em> is dynamically created from the visual script data and includes the source code for the message handlers of the visual script. It uses the execution services of the iCanScript engine library (i.e. iCanScriptEngine.dll) to manage the execution flow and resolve data contention (also known as deadlocks).</p>
+<div class="annotation"  style="color:#000000" ></div><div class="notebox">
+ <strong>Note:</strong> You must delete the <em>iCS_VisualScript</em> component to remove the visual script from the game object. The <em>iCS_Behaviour</em> component will be re-created if you delete it while the <em>iCS_VisualScript</em> is installed.
+</div>
+
+<p><a href="#tableofcontents">Back to Top</a></p>
+
+<h1 id="librariesprefabs">Libraries &amp; Prefabs</h1>
+
+<p>Visual script libraries are created using Unity’s Prefab concept. </p>
+
+<p><a href="#tableofcontents">Back to Top</a></p>
+
+</body>
+</html>

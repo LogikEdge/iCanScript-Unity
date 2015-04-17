@@ -1,0 +1,12 @@
+\newenvironment{tipbox}%
+    {%
+        \par%
+        \centering%
+        \color{black!25!gray}%
+        \list{}{\leftmargin=0.05\textwidth}%
+        \item[]%
+        \begin{Sbox}%
+        \begin{minipage}{0.93\textwidth}%
+    }%
+    {\end{minipage}\end{Sbox}\shadowbox{\TheSbox}\endlist}
+
