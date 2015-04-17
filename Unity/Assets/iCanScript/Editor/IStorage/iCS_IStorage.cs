@@ -347,7 +347,6 @@ public partial class iCS_IStorage {
 		if(needsRelayout) {
 			ForcedRelayoutOfTree();
 		}
-        ClearUserTransactions();        
         return modified;
     }
 
