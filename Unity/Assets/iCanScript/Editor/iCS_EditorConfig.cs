@@ -46,7 +46,7 @@ public static class iCS_EditorConfig {
 	// Release info
 	public static string VersionId {
 		get {
-			return ""+iCS_Config.MajorVersion+"."+iCS_Config.MinorVersion+"f"+iCS_Config.BugFixVersion;	
+			return ""+iCS_Config.MajorVersion+"."+iCS_Config.MinorVersion+"."+iCS_Config.BugFixVersion;	
 		}		
 	}
 	public static string VersionStr {

@@ -59,12 +59,12 @@ public struct Int {
     [iCS_Function(Return="value-b")] public int SubAndUpdate(int b) { return myValue= myValue-b; }
     [iCS_Function(Return="value*b")] public int MulAndUpdate(int b) { return myValue= myValue*b; }
     [iCS_Function(Return="value/b")] public int DivAndUpdate(int b) { return myValue= myValue/b; }
-    [iCS_Function(Obsolete="Use operator == instead.")]  public bool IsEqual(int b)            { return myValue==b; }
-    [iCS_Function(Obsolete="Use operator != instead.")]  public bool IsNotEqual(int b)         { return myValue!=b; }
-    [iCS_Function(Obsolete="Use operator > instead.")]    public bool IsGreaterThen(int b)      { return myValue > b; }
-    [iCS_Function(Obsolete="Use operator < instead.")]    public bool IsSmallerThen(int b)      { return myValue < b; }
-    [iCS_Function(Obsolete="Use operator >= instead.")]  public bool IsGreaterOrEqualTo(int b) { return myValue >= b; }
-    [iCS_Function(Obsolete="Use operator <= instead.")]  public bool IsSmallerOrEqualTo(int b) { return myValue <= b; }    
+    [iCS_Function(Obsolete="Use 'operator ==' instead.")]  public bool IsEqual(int b)            { return myValue==b; }
+    [iCS_Function(Obsolete="Use 'operator !=' instead.")]  public bool IsNotEqual(int b)         { return myValue!=b; }
+    [iCS_Function(Obsolete="Use 'operator >' instead.")]    public bool IsGreaterThen(int b)      { return myValue > b; }
+    [iCS_Function(Obsolete="Use 'operator <' instead.")]    public bool IsSmallerThen(int b)      { return myValue < b; }
+    [iCS_Function(Obsolete="Use 'operator >=' instead.")]  public bool IsGreaterOrEqualTo(int b) { return myValue >= b; }
+    [iCS_Function(Obsolete="Use 'operator <=' instead.")]  public bool IsSmallerOrEqualTo(int b) { return myValue <= b; }    
 
 	[iCS_Function(Return="a == b")]   public static bool operator ==(Int a, int b)  { return a.myValue == b; }
 	[iCS_Function(Return="a != b")]   public static bool operator !=(Int a, int b)  { return a.myValue != b; }

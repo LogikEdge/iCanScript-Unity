@@ -79,10 +79,46 @@ public partial class iCS_EditorObject {
 					   ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
 					   return false;				   	
 				   }
+				   else {
+					   if(parentNode.IsFunction("get_transform", "GameObject", "UnityEngine")) {
+						   var message= "When 'Target' is set to 'Owner', the generated code has no effect.  The node can be removed safely. => "+ParentNode.FullName;
+						   ErrorController.AddWarning(serviceKey, message, visualScript, ParentNode.InstanceId);
+					   }
+				   }
+			   }
+		   }
+	   }
+	   if(IsEnablePort) {
+		   var producerPort= ProducerPort;
+		   if(producerPort != null) {
+			   var parentNode= producerPort.ParentNode;
+			   if(parentNode.IsFunction("Or", "iCS_Boolean", "")) {
+				   if(producerPort.EndConsumerPorts.Length <= 1) {
+					   var message= "Use additional 'Enable(s)' ports instead of an OR function. => "+parentNode.FullName;
+					   ErrorController.AddWarning(serviceKey, message, visualScript, parentNode.InstanceId);
+					   ErrorController.AddWarning(serviceKey, message, visualScript, ParentNode.InstanceId);				   	
+				   }
 			   }
 		   }
 	   }
 	   return true;
     }
-
+	
+    // ----------------------------------------------------------------------
+	/// Determines if node corresponds to given specification.
+	///
+	/// @param funcName The function name.
+	/// @param typeName The type name of the function.
+	/// @param namespaceName The namespace of the type name.
+	/// @return _true_ if the object corresponds to the given specification.
+	///         _false_ otherwise.
+	///
+	public bool IsFunction(string funcName, string typeName, string namespaceName) {
+	   if(this.CodeName == funcName) {
+		   if(this.TypeName == typeName && this.Namespace == namespaceName) {
+			   return true;
+		   }
+	   }
+	   return false;
+	}
 }
