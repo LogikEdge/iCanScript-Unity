@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 namespace iCanScript.Editor.CodeEngineering {
 
     public class ReturnVariableDefinition : CodeBase {
-    
+        // ===================================================================
+        // FIELDS
+        // -------------------------------------------------------------------
+		public Type	myRuntimeType= null;
+        
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
@@ -15,8 +20,26 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created return variable.
         ///
         public ReturnVariableDefinition(iCS_EditorObject vsObject, CodeBase parent)
-            : base(vsObject, parent) {}
+        : base(vsObject, parent) {
+            myRuntimeType= vsObject.RuntimeType;
+        }
     
+        // ===================================================================
+        // COMMON INTERFACE FUNCTIONS
+        // -------------------------------------------------------------------
+        /// Sets the runtime type of the return variable.
+        ///
+        /// @param newType The new runtime type for the return variable.
+        ///
+        public void SetRuntimeType(Type newType) {
+            myRuntimeType= newType;
+        }
+        // -------------------------------------------------------------------
+		/// Returns the runtime type of the variable.
+		public override Type GetRuntimeType() {
+			return myRuntimeType;
+		}
+		
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------

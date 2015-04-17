@@ -348,6 +348,11 @@ namespace iCanScript.Editor.CodeEngineering {
             if(consumerType == typeof(void) || iCS_Types.IsA(consumerType, returnPort.RuntimeType)) {
                 return "";
             }
+            // Change return variable type.
+            var returnVariable= myReturnVariable as ReturnVariableDefinition;
+            if(returnVariable != null) {
+                returnVariable.SetRuntimeType(consumerType);
+            } 
             return " as "+ToTypeName(consumerType);
         }
     	// -------------------------------------------------------------------------
