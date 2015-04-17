@@ -69,8 +69,6 @@ $GMCS @iCanScriptEngine.rsp
 echo "Compiling editor code..."
 $GMCS -d:COMMUNITY_EDITION @iCanScriptEditorCommunity.rsp
 $GMCS -d:PRO_EDITION @iCanScriptEditorPro.rsp
-echo "Compiling upgrade code..."
-$GMCS @iCanScriptUpgrade.rsp
 
 # ============================================================================
 # Run obfuscator.
