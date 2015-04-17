@@ -47,6 +47,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds the list of function parameters.
         protected virtual void BuildParameterList() {
             var parameters= GetParameters(VSObject);
+			parameters= P.filter(p=> p.IsInDataPort && p.ProducerPort == null, parameters);
             myParameters= new FunctionParameterDefinition[parameters.Length];
             foreach(var p in parameters) {
                 myParameters[p.PortIndex]= new FunctionParameterDefinition(p, this);
@@ -218,6 +219,10 @@ namespace iCanScript.Editor.CodeEngineering {
             var code= new List<CodeBase>();
     		node.ForEachChildRecursiveDepthFirst(
     			vsObj=> {
+					if(Context.IsInError(vsObj.InstanceId)) {
+						Debug.LogWarning("iCanScript: Code not generated for node in Error: "+VSObject.FullName);						
+						return;
+					}
                     var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(vsObj);
                     if(IsFieldOrPropertyGet(memberInfo)) {
                         code.Add(new GetPropertyCallDefinition(vsObj, this));

@@ -25,21 +25,28 @@ public partial class iCS_VisualEditor {
         if(!ErrorController.IsErrorOrWarning) return;
         // -- Update the repaint timer --
         UpdateErrorRepaintTimer();
+        // -- Get errors/warnings for this visual script --
+        var errors  = ErrorController.GetErrorsFor(VisualScript);
+        var warnings= ErrorController.GetWarningsFor(VisualScript);	
+        // -- Filter out invalid objects --
+        errors  = P.filter(e=> IStorage.IsValid(e.ObjectId), errors);
+        warnings= P.filter(w=> IStorage.IsValid(w.ObjectId), warnings);	
+		// -- Return if no errors or warnings --
+		if((errors.Count + warnings.Count) == 0) return;
         // -- Show scene errors/warnings --
-        DisplaySceneErrorsAndWarnings();
+        DisplayVisualScriptErrorsAndWarnings(errors, warnings);
         // -- Show errors/warnings on the nodes of our visual script --
-        DisplayVisualScriptErrorsAndWarnings();
+        DisplayObjectErrorsAndWarnings(errors, warnings);
     }
     
 	// -----------------------------------------------------------------------
-	void DisplaySceneErrorsAndWarnings() {
-		// -- Nothing to show if no errors/warnings detected --
-        if(!ErrorController.IsErrorOrWarning) return;
-		
+	void DisplayVisualScriptErrorsAndWarnings(List<ErrorWarning> errors, List<ErrorWarning> warnings) {
+        // -- Get error/warning information --
+		var nbOfErrors  = errors.Count;
+        var nbOfWarnings= warnings.Count;
+
         // -- Display scene error/warning icon --
-		var nbOfErrors  = ErrorController.NumberOfErrors;
-        var nbOfWarnings= ErrorController.NumberOfWarnings;
-        var r= GetSceneErrorWarningIconRect();
+        var r= GetVisualScriptErrorWarningIconRect();
         var icon= nbOfErrors != 0 ? ErrorController.ErrorIcon : ErrorController.WarningIcon;
         DisplayErrorOrWarningIconWithAlpha(r, icon);
         
@@ -47,7 +54,7 @@ public partial class iCS_VisualEditor {
 		if(r.Contains(WindowMousePosition)) {
 			showErrorDetails= true;
 			if(showErrorDetailTimer == null) {
-				showErrorDetailTimer= TimerService.CreateTimedAction(1f, ()=> { showErrorDetails= false; IsHelpEnabled= true; });
+				showErrorDetailTimer= TimerService.CreateTimedAction(1f, ()=> { showErrorDetails= false; });
 				showErrorDetailTimer.Schedule();
 			}
 			else {
@@ -57,28 +64,17 @@ public partial class iCS_VisualEditor {
 
         // -- Display scene errors/warnings --
 		if(showErrorDetails) {
-			// -- Remove help viewport --
-			IsHelpEnabled= false;
-			
             var nbOfMessages= Mathf.Min(10, nbOfErrors+nbOfWarnings);
             r= DetermineErrorDetailRect(r, nbOfMessages, true);
 			if(r.Contains(WindowMousePosition)) {
 				showErrorDetailTimer.Restart();
 			}
-            DisplayErrorAndWarningDetails(r, ErrorController.Errors, ErrorController.Warnings);
+            DisplayErrorAndWarningDetails(r, errors, warnings);
 		}
 	}
 
 	// -----------------------------------------------------------------------
-    void DisplayVisualScriptErrorsAndWarnings() {
-        // -- Get errors/warnings for this visual script --
-        var errors  = ErrorController.GetErrorsFor(VisualScript);
-        var warnings= ErrorController.GetWarningsFor(VisualScript);
-
-        // -- Filter out invalid objects --
-        errors  = P.filter(e=> IStorage.IsValid(e.ObjectId), errors);
-        warnings= P.filter(w=> IStorage.IsValid(w.ObjectId), warnings);
-
+    void DisplayObjectErrorsAndWarnings(List<ErrorWarning> errors, List<ErrorWarning> warnings) {
         // -- Determine wich objects have errors or warnings --
         var objectIds= P.append(P.map(e=> e.ObjectId, errors), P.map(w=> w.ObjectId, warnings));
         objectIds= P.removeDuplicates(objectIds);
@@ -108,8 +104,9 @@ public partial class iCS_VisualEditor {
     }
 
 	// -----------------------------------------------------------------------
-    Rect GetSceneErrorWarningIconRect() {
-		return new Rect(kMargins, position.height-kMargins-48f, 48f, 48f);
+    Rect GetVisualScriptErrorWarningIconRect() {
+		var helpBoxWidth= iCS_EditorConfig.kHelpBoxWidth;
+		return new Rect(helpBoxWidth+kMargins, position.height-kMargins-48f, 48f, 48f);
     }
 	// -----------------------------------------------------------------------
     void DisplayErrorOrWarningIconWithAlpha(Rect r, Texture2D icon) {
@@ -119,7 +116,7 @@ public partial class iCS_VisualEditor {
 		GUI.color= savedColor;
     }
 	// -----------------------------------------------------------------------
-    void DisplayErrorAndWarningDetails(Rect r, List<ErrorController.ErrorWarning> errors, List<ErrorController.ErrorWarning> warnings) {
+    void DisplayErrorAndWarningDetails(Rect r, List<ErrorWarning> errors, List<ErrorWarning> warnings) {
         // -- Draw background box --
         var savedColor= GUI.color;
         var outlineRect= new Rect(r.x-2, r.y-2, r.width+4, r.height+4);

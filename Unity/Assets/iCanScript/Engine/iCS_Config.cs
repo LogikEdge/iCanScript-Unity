@@ -1,17 +1,18 @@
 using UnityEngine;
 using System.Collections;
 
-namespace iCanScript { namespace Engine {
+namespace iCanScript.Engine {
 	
 	public static class iCS_Config {
 	    // ----------------------------------------------------------------------
 	    // Product descriptions. 
 		public const int    MajorVersion = 2;
 		public const int    MinorVersion = 0;
-		public const int    BugFixVersion= 2;
-	    public const string ProductName= "iCanScript";
-	    public const string ProductAcronym= "iCS";
-		public const string ProductPrefix= ProductAcronym+"_";
+		public const int    BugFixVersion= 3;
+	    public const string ProductName             = "iCanScript";
+	    public const string ProductAcronym          = "iCS";
+		public const string ProductPrefix           = ProductAcronym+"_";
+		public const string kCodeGenerationNamespace= "iCanScript.Engine.GeneratedCode";
 
 	    // ----------------------------------------------------------------------
 	    // Product paths.
@@ -27,4 +28,4 @@ namespace iCanScript { namespace Engine {
 	    public const string BehaviourGenerationPath  = CodeGenerationPath+"/"+BehaviourGenerationFolder;
 	}
 	
-}}
+}

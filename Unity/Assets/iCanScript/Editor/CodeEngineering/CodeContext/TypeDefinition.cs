@@ -13,8 +13,8 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         iCS_EditorObject         myClassNode = null;  ///< VS objects associated with code context
         Type                     myBaseClass = null;  ///< The base class for this class
-        AccessSpecifier               myAccessSpecifier= AccessSpecifier.PRIVATE;
-        ScopeSpecifier                myScopeSpecifier = ScopeSpecifier.NONSTATIC;
+        AccessSpecifier          myAccessSpecifier= AccessSpecifier.PRIVATE;
+        ScopeSpecifier           myScopeSpecifier = ScopeSpecifier.NONSTATIC;
         List<VariableDefinition> myFields    = new List<VariableDefinition>();
         List<FunctionDefinition> myFunctions = new List<FunctionDefinition>();
         
@@ -37,8 +37,8 @@ namespace iCanScript.Editor.CodeEngineering {
         public TypeDefinition(iCS_EditorObject typeNode, CodeBase parent, Type baseClass,
                               AccessSpecifier accessType, ScopeSpecifier scopeType)
         : base(typeNode, parent) {
-            myClassNode = typeNode;
-            myBaseClass = baseClass;
+            myClassNode      = typeNode;
+            myBaseClass      = baseClass;
             myAccessSpecifier= accessType;
             myScopeSpecifier = scopeType;
             // Add fields

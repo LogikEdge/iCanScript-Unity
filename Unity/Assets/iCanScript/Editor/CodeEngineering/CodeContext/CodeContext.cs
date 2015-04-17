@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -79,6 +81,16 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
         // -------------------------------------------------------------------
+		/// Returns the runtime type for the given visual script object.
+		///
+		/// @param vsObject The visual script object.
+		/// @return The runtime type.
+		public Type GetRuntimeTypeFor(iCS_EditorObject vsObject) {
+			var code= GetCodeFor(vsObject);
+			return code != null ? code.GetRuntimeType() : vsObject.RuntimeType;
+		}
+		
+        // -------------------------------------------------------------------
         /// Adds a namespace to the used namespace container.
         ///
         /// @param namespaceName The name of the namespace to add.
@@ -91,6 +103,8 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
 
+		// ===================================================================
+		// ERROR/WARNING MANAGEMENT UTILITIES
         // -------------------------------------------------------------------
         /// Register a code generation error message.
         ///
@@ -110,6 +124,12 @@ namespace iCanScript.Editor.CodeEngineering {
         public void AddWarning(string message, int objectId) {
             ErrorController.AddWarning(myServiceKey, message, myVisualScript, objectId);
         }
+
+        // -------------------------------------------------------------------
+		/// Determines if errors are reported for the function call.
+		public bool IsInError(int objectId) {
+			return P.length(ErrorController.GetErrorsFor(myServiceKey, myVisualScript, objectId)) != 0;
+		}
 
     }
 

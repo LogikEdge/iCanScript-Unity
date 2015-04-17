@@ -20,8 +20,8 @@ public static class iCS_ObjectNames {
     /// @return The converted name.
     ///
     public static string ToFunctionParameterName(string name) {
-        string prefix= "a";
-        NamingScheme namingScheme= NamingScheme.UPPER_CAMEL_CASE;
+        string prefix= "";
+        NamingScheme namingScheme= NamingScheme.LOWER_CAMEL_CASE;
         return ToCodeName(namingScheme, name, prefix);
     }
     // ---------------------------------------------------------------------------------
@@ -379,6 +379,20 @@ public static class iCS_ObjectNames {
     // =================================================================================
     // Utilities
     // ---------------------------------------------------------------------------------
+	/// Converts internal runtime names to user displayable name.
+	///
+	/// @param runtimeName The internal name to be converted.
+	/// @return A user displayable name corrsponding the the given runtime name.
+	///
+	public static string ConvertRuntimeNameToDisplayName(string runtimeName) {
+		if(runtimeName == "op_GreaterThan")        	return "operator >";
+		if(runtimeName == "op_GreaterThanOrEqual") 	return "operator >=";
+		if(runtimeName == "op_LessThan")        	return "operator <";
+		if(runtimeName == "op_LessThanOrEqual") 	return "operator <=";
+		return runtimeName;
+	}
+	
+	// ---------------------------------------------------------------------------------
     /// Converts a special character into code valid code name.
     ///
     /// @param c The special character to be converted.
@@ -419,6 +433,14 @@ public static class iCS_ObjectNames {
     }
     
     // ---------------------------------------------------------------------------------
+	/// Adds the given prefix to the given name.
+	///
+	/// Special cae is taken for the 'a' prefix when the name starts with a vowel.
+	///
+	/// @param prefix The prefix to use.
+	/// @param name The name to be combined with the prefix.
+	/// @return The combined prefix and name.
+	///
     public static string AddPrefix(string prefix, string name) {
         // Special case for "a" prefix.
         if(prefix == "a") {

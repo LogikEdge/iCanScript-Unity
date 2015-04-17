@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
@@ -110,6 +111,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     myParameters[i]= producerCode;
                     producerCode.CodeBlock= myCodeBlock;
                 }
+				myParameters[i].ResolveDependencies();
             }
             // Ask output objects to resolve their own child dependencies.
 			foreach(var v in myOutputVariables) {
@@ -126,6 +128,7 @@ namespace iCanScript.Editor.CodeEngineering {
                         var v= new VariableDefinition(returnPort, returnCodeBlock, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC);
                         returnCodeBlock.AddVariable(v);
                         myReturnVariable= null;
+						v.ResolveDependencies();
                     }
                 }
             }
@@ -318,12 +321,16 @@ namespace iCanScript.Editor.CodeEngineering {
 
     	// -------------------------------------------------------------------------
         string OperatorNameToSymbol(string operatorName) {
-            if(operatorName == "op_Equality")     return "==";
-            if(operatorName == "op_Inequality")   return "!=";
-            if(operatorName == "op_Addition")     return "+";
-            if(operatorName == "op_Subtraction")  return "-";
-            if(operatorName == "op_Multiply")     return "*";
-            if(operatorName == "op_Division")     return "/";
+            if(operatorName == "op_Addition")           return "+";
+            if(operatorName == "op_Subtraction")        return "-";
+            if(operatorName == "op_Multiply")           return "*";
+            if(operatorName == "op_Division")           return "/";
+            if(operatorName == "op_Equality")           return "==";
+            if(operatorName == "op_Inequality")         return "!=";
+			if(operatorName == "op_GreaterThan")        return ">";
+			if(operatorName == "op_LessThan")           return "<";
+			if(operatorName == "op_GreaterThanOrEqual")	return ">=";
+			if(operatorName == "op_LessThanOrEqual")    return "<=";
             Debug.LogWarning("iCanScript: Unknown operator=> "+operatorName);
             return operatorName;
         }
@@ -361,10 +368,11 @@ namespace iCanScript.Editor.CodeEngineering {
                 if(thisPort != null) {
                     var producerPort= GetCodeProducerPort(thisPort);
                     if(producerPort != null && producerPort != thisPort) {
-                        var portRuntime= ToTypeName(thisPort.RuntimeType);
-                        var producerCommonType= GetCommonBaseTypeForProducerPort(producerPort);
-                        var producerRuntime= ToTypeName(producerCommonType);
-                        if(portRuntime != producerRuntime) {
+						var desiredType= VSObject.RuntimeType;
+		                var desiredTypeName= ToTypeName(desiredType);
+		                var producerType= Context.GetRuntimeTypeFor(producerPort);
+		                var isUpcastNeeded= producerType != desiredType && iCS_Types.IsA(producerType, desiredType);
+                        if(isUpcastNeeded) {
                             result.Append("(");
                         }
                         var producerNode= producerPort.ParentNode;
@@ -374,13 +382,23 @@ namespace iCanScript.Editor.CodeEngineering {
                         else {
                             result.Append(GetNameFor(producerPort));                        
                         }
-                        if(portRuntime != producerRuntime) {
+                        if(isUpcastNeeded) {
                             result.Append(" as ");
-                            result.Append(portRuntime);
+                            result.Append(desiredTypeName);
                             result.Append(")");
                         }
                         result.Append(".");
                     }
+					else if(thisPort.InitialValue is OwnerTag) {
+						var thisType= iCS_Types.RemoveRefOrPointer(thisPort.RuntimeType);
+						if(thisType == typeof(Transform)) {
+							result.Append("transform.");
+						}
+						if(thisType == typeof(GameObject)) {
+							result.Append("gameObject.");
+						}
+						// Here we assume that no prefix is required.
+					}
                 }
             }
             return result.ToString();

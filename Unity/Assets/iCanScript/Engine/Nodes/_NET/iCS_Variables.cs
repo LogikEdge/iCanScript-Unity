@@ -51,20 +51,43 @@ public struct Int {
     }
     
     [iCS_Function] public Int(int init= 0) { myValue= init; }
-    [iCS_Function(Name="value+b",Return="value+b")] public int Add(int b) { return myValue+b; }
-    [iCS_Function(Name="value-b",Return="value-b")] public int Sub(int b) { return myValue-b; }
-    [iCS_Function(Name="value*b",Return="value*b")] public int Mul(int b) { return myValue*b; }
-    [iCS_Function(Name="value/b",Return="value/b")] public int Div(int b) { return myValue/b; }
-    [iCS_Function(Name="value= value+b",Return="value+b")] public int AddAndUpdate(int b) { return myValue= myValue+b; }
-    [iCS_Function(Name="value= value-b",Return="value-b")] public int SubAndUpdate(int b) { return myValue= myValue-b; }
-    [iCS_Function(Name="value= value*b",Return="value*b")] public int MulAndUpdate(int b) { return myValue= myValue*b; }
-    [iCS_Function(Name="value= value/b",Return="value/b")] public int DivAndUpdate(int b) { return myValue= myValue/b; }
-    [iCS_Function(Name="value == b",Return="value == b")]  public bool IsEqual(int b)            { return myValue==b; }
-    [iCS_Function(Name="value != b",Return="value != b")]  public bool IsNotEqual(int b)         { return myValue!=b; }
-    [iCS_Function(Name="value > b",Return="value > b")]    public bool IsGreaterThen(int b)      { return myValue > b; }
-    [iCS_Function(Name="value < b",Return="value < b")]    public bool IsSmallerThen(int b)      { return myValue < b; }
-    [iCS_Function(Name="value >= b",Return="value >= b")]  public bool IsGreaterOrEqualTo(int b) { return myValue >= b; }
-    [iCS_Function(Name="value <= b",Return="value <= b")]  public bool IsSmallerOrEqualTo(int b) { return myValue <= b; }    
+    [iCS_Function(Return="value+b")] public int Add(int b) { return myValue+b; }
+    [iCS_Function(Return="value-b")] public int Sub(int b) { return myValue-b; }
+    [iCS_Function(Return="value*b")] public int Mul(int b) { return myValue*b; }
+    [iCS_Function(Return="value/b")] public int Div(int b) { return myValue/b; }
+    [iCS_Function(Return="value+b")] public int AddAndUpdate(int b) { return myValue= myValue+b; }
+    [iCS_Function(Return="value-b")] public int SubAndUpdate(int b) { return myValue= myValue-b; }
+    [iCS_Function(Return="value*b")] public int MulAndUpdate(int b) { return myValue= myValue*b; }
+    [iCS_Function(Return="value/b")] public int DivAndUpdate(int b) { return myValue= myValue/b; }
+    [iCS_Function(Obsolete="Use 'operator ==' instead.")]  public bool IsEqual(int b)            { return myValue==b; }
+    [iCS_Function(Obsolete="Use 'operator !=' instead.")]  public bool IsNotEqual(int b)         { return myValue!=b; }
+    [iCS_Function(Obsolete="Use 'operator >' instead.")]    public bool IsGreaterThen(int b)      { return myValue > b; }
+    [iCS_Function(Obsolete="Use 'operator <' instead.")]    public bool IsSmallerThen(int b)      { return myValue < b; }
+    [iCS_Function(Obsolete="Use 'operator >=' instead.")]  public bool IsGreaterOrEqualTo(int b) { return myValue >= b; }
+    [iCS_Function(Obsolete="Use 'operator <=' instead.")]  public bool IsSmallerOrEqualTo(int b) { return myValue <= b; }    
+
+	[iCS_Function(Return="a == b")]   public static bool operator ==(Int a, int b)  { return a.myValue == b; }
+	[iCS_Function(Return="a != b")]   public static bool operator !=(Int a, int b)  { return a.myValue != b; }
+	[iCS_Function(Return="a < b")]    public static bool operator <(Int a, int b)   { return a.myValue < b; }
+	[iCS_Function(Return="a > b")]    public static bool operator >(Int a, int b)   { return a.myValue > b; }
+	[iCS_Function(Return="a <= b")]   public static bool operator <=(Int a, int b)  { return a.myValue <= b; }
+	[iCS_Function(Return="a >= b")]   public static bool operator >=(Int a, int b)  { return a.myValue >= b; }
+	[iCS_Function(Return="a + b")]    public static int  operator +(Int a, int b)   { return a.myValue + b; }
+	[iCS_Function(Return="a + b")]    public static int  operator +(Int a, Int b)   { return a.myValue + b.myValue; }
+	[iCS_Function(Return="a - b")]    public static int  operator -(Int a, int b)   { return a.myValue - b; }
+	[iCS_Function(Return="a - b")]    public static int  operator -(int a, Int b)   { return a - b.myValue; }
+	[iCS_Function(Return="a - b")]    public static int  operator -(Int a, Int b)   { return a.myValue - b.myValue; }
+	
+	public override bool Equals(object o) {
+		if(o is int) {
+			return myValue == (int)o;
+		}
+		if(o is Int) {
+			return myValue == ((Int)o).myValue;
+		}
+		return false;
+	}
+	public override int GetHashCode() { return myValue; }
 }
 
 [System.Serializable]

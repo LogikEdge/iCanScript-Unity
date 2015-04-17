@@ -27,6 +27,7 @@ public partial class iCS_EditorObject {
     Vector2 c_NodeSubTitleSize= Vector2.zero;
     string  c_CodeName        = null;
     string  c_DisplayName     = null;
+	string  c_ObsoleteMessage = null;
 
     // ======================================================================
     // Conversion Utilities
@@ -146,6 +147,7 @@ public partial class iCS_EditorObject {
     }
     
     // ----------------------------------------------------------------------
+	/// Returns the runtime type of the visual script object.
     public Type RuntimeType {
 		get {
             if(c_RuntimeType == null) {
@@ -155,6 +157,58 @@ public partial class iCS_EditorObject {
         }
 	}
 
+    // ----------------------------------------------------------------------
+	/// Returns the qualified type name of the visual script object.
+	public string QualifiedTypeName {
+		get {
+			var assemblyQualifiedName= EngineObject.QualifiedType;
+			int size= assemblyQualifiedName.IndexOf(',');
+			if(size < 0 || size >= assemblyQualifiedName.Length) {
+				return assemblyQualifiedName;
+			}
+			return assemblyQualifiedName.Substring(0, size);
+		}
+	}
+	
+    // ----------------------------------------------------------------------
+	/// Returns the type name from the qualified type.
+	public string TypeName {
+		get {
+			var qualifiedTypeName= QualifiedTypeName;
+			int start= qualifiedTypeName.LastIndexOf('.')+1;
+			if(start < 0 || start >= qualifiedTypeName.Length) {
+				return qualifiedTypeName;
+			}
+			int len= qualifiedTypeName.Length;
+			return qualifiedTypeName.Substring(start, len-start);
+		}
+	}
+	
+    // ----------------------------------------------------------------------
+	/// Returns the type name from the qualified type.
+	public string Namespace {
+		get {
+			var qualifiedTypeName= QualifiedTypeName;
+			int size= qualifiedTypeName.LastIndexOf('.');
+			if(size < 0 || size >= qualifiedTypeName.Length) {
+				return "";
+			}
+			return qualifiedTypeName.Substring(0, size);			
+		}
+	}
+	
+    // ----------------------------------------------------------------------
+	/// Returns true if the runtime type of this visual object is included
+	/// the the given type.
+	///
+	/// @param parentType The type to verify against.
+	/// @return _true_ if the object runtime type is included in the given
+	///         parent type.  _false_ otherwise.
+	///
+	public bool IsIncludedInType(Type parentType) {
+		return iCS_Types.IsA(RuntimeType, parentType);
+	}
+	
     // ======================================================================
     // ----------------------------------------------------------------------
     /// Returns the name as per the underlying code.
@@ -432,6 +486,11 @@ public partial class iCS_EditorObject {
 	        return parent;
 	    }
 	}
+	public iCS_EditorObject ParentTypeNode {
+		get {
+			return EditorObjects[0];
+		}
+	}
     public bool IsFloating {
 		get { return myIsFloating; }
 		set {
@@ -456,7 +515,29 @@ public partial class iCS_EditorObject {
             return this.InstanceId == Storage.DisplayRoot;
 	    }
 	}
-    
+    public bool IsObsolete {
+    	get {
+    		if(c_ObsoleteMessage == null) {
+				var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+				if(desc != null) {
+					var methodInfo= desc.ToMethodInfo;
+					if(methodInfo != null) {
+						c_ObsoleteMessage= iCS_LibraryDatabase.GetObsoleteMessage(methodInfo.Method);						
+					}
+				}
+				if(string.IsNullOrEmpty(c_ObsoleteMessage)) {
+					c_ObsoleteMessage= "";
+				}
+    		}
+			return !string.IsNullOrEmpty(c_ObsoleteMessage);
+    	}
+    }
+	public string ObsoleteMessage {
+		get {
+			return IsObsolete ? c_ObsoleteMessage : null;
+		}
+	}
+	
     // ======================================================================
     // Constructors/Builders
     // ----------------------------------------------------------------------
