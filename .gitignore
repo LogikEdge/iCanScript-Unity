@@ -8,7 +8,7 @@
 tmtags
 user.lock
 Temp/
-Product/iCanScript/Library/
+Product/iCanScript/Library/*
 Product/iCanScript/iOS/
 Product/iCanScript/OSX/
 Product/iCanScript/Windows/
