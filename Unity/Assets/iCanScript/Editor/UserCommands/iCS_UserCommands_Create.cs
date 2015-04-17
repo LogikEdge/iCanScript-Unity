@@ -250,8 +250,8 @@ public static partial class iCS_UserCommands {
         return msgHandler;
     }
     // ----------------------------------------------------------------------
-    public static iCS_EditorObject CreatePublicFunction(iCS_EditorObject parent, Vector2 globalPos) {
-        return CreatePackage(parent, globalPos, "PublicFunction");    
+    public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos) {
+        return CreatePackage(parent, globalPos, "My Function");    
     }
 	// ----------------------------------------------------------------------
 	// OK

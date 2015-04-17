@@ -22,6 +22,12 @@ public class iCS_ContextualMenu {
     // ======================================================================
     // Menu Items
 	// ----------------------------------------------------------------------
+	// Canvas Menu
+	const string VariableCreationStr		   = "#+ Create a Variable";
+    const string FunctionCreationStr           = "+ Create a Function";
+	const string AddUnityEventStr			   = "Add a Unity Event/";
+	const string NestedTypeCreationStr		   = "#+ Create a Nested Type";
+	
     const string ShowHierarchyStr              = "Show in hierarchy";
     const string SetAsDisplayRootStr           = "Set as Display Root";
     const string ClearNavigationHistoryStr     = "Clear Navigation History";
@@ -45,7 +51,6 @@ public class iCS_ContextualMenu {
     const string UnwrapPackageStr              = "- Unwrap Package";
     const string UpdateMessageHandlerPortsStr  = "+ Update Message Ports";
 	const string RemoveUnusedPortsStr          = "- Remove Unused Ports";
-    const string PublicFunctionStr             = "+ Public Function";
     const string AddNodeStr                    = "+ Add Node";  
     const string SeparatorStr                  = "";
 
@@ -81,7 +86,7 @@ public class iCS_ContextualMenu {
         
         // Process the menu state.
         switch(selectedObject.ObjectType) {
-            case iCS_ObjectTypeEnum.Behaviour:         BehaviourMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Behaviour:         CanvasMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.StateChart:        StateChartMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.State:             StateMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceMessage:   MessageHandlerMenu(selectedObject, storage); break;
@@ -112,13 +117,14 @@ public class iCS_ContextualMenu {
     }
 
 	// ----------------------------------------------------------------------
-    void BehaviourMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+    void CanvasMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         // Don't show any menu if behaviour not visible.
         if(selectedObject.IsIconizedInLayout || selectedObject.IsFoldedInLayout) return;
 
-        iCS_MenuContext[] menu= new iCS_MenuContext[2];
-        menu[0]= new iCS_MenuContext(PublicFunctionStr);
-        menu[1]= new iCS_MenuContext(SeparatorStr);
+        iCS_MenuContext[] menu= new iCS_MenuContext[3];
+        menu[0]= new iCS_MenuContext(VariableCreationStr);
+        menu[1]= new iCS_MenuContext(FunctionCreationStr);
+        menu[2]= new iCS_MenuContext(NestedTypeCreationStr);
         // Add Unity message handlers
 		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
         int len= P.length(messages);
@@ -127,9 +133,9 @@ public class iCS_ContextualMenu {
 			var message= messages[i];
             string name= message.DisplayName;
             if(iCS_AllowedChildren.CanAddChildNode(name, message.ObjectType, selectedObject, storage)) {
-                menu[idx+i]= new iCS_MenuContext(String.Concat("+ ", name), message);
+                menu[idx+i]= new iCS_MenuContext(String.Concat("+ "+AddUnityEventStr, name), message);
             } else {
-                menu[idx+i]= new iCS_MenuContext(String.Concat("#+ ", name), message);
+                menu[idx+i]= new iCS_MenuContext(String.Concat("#+ "+AddUnityEventStr, name), message);
             }
         }
         ShowMenu(menu, selectedObject, storage);
@@ -563,7 +569,7 @@ public class iCS_ContextualMenu {
             case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
             case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
             case UnwrapPackageStr:               iCS_UserCommands.DeleteKeepChildren(targetObject); break;
-            case PublicFunctionStr:              iCS_UserCommands.CreatePublicFunction(targetObject, globalPos); break;
+            case FunctionCreationStr:            iCS_UserCommands.CreateFunction(targetObject, globalPos); break;
             default: {
 				iCS_FunctionPrototype desc= context.Descriptor;
 				if(desc == null) {
