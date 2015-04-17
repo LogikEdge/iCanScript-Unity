@@ -33,7 +33,6 @@ public class iCS_ContextualMenu {
     const string ClearNavigationHistoryStr     = "Clear Navigation History";
     const string DeleteStr                     = "- Delete";
     const string PackageStr                    = "+ Package";
-    const string IteratorStr                   = "+ Iterator";
     const string StateChartStr                 = "+ State Chart";
     const string StateStr                      = "+ State";
     const string EntryStateStr                 = "+ Entry State";
@@ -49,8 +48,6 @@ public class iCS_ContextualMenu {
     const string MultiSelectionWrapInPackageStr= "+ Wrap Multi-Selection in Package";
     const string MultiSelectionDeleteStr       = "- Delete Multi-Selection";
     const string UnwrapPackageStr              = "- Unwrap Package";
-    const string UpdateMessageHandlerPortsStr  = "+ Update Message Ports";
-	const string RemoveUnusedPortsStr          = "- Remove Unused Ports";
     const string AddNodeStr                    = "+ Add Node";  
     const string SeparatorStr                  = "";
 
@@ -105,7 +102,6 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
-			case iCS_ObjectTypeEnum.Iterator:
             case iCS_ObjectTypeEnum.Package:           if(selectedObject.IsInstanceNode) {
                                                              InstanceMenu(selectedObject, storage);
                                                        } else {
@@ -143,11 +139,6 @@ public class iCS_ContextualMenu {
 	// ----------------------------------------------------------------------
     void MessageHandlerMenu(iCS_EditorObject messageHandler, iCS_IStorage storage) {
         iCS_MenuContext[] menu= StartWithFocusMenu(messageHandler);
-//        AddNodeMenu(ref menu);
-        var idx= GrowMenuBy(ref menu, 3);
-        menu[idx]= new iCS_MenuContext(UpdateMessageHandlerPortsStr);
-		menu[idx+1]= new iCS_MenuContext(RemoveUnusedPortsStr);
-        menu[idx+2]= new iCS_MenuContext(SeparatorStr);
         CommonPackageMenu(messageHandler, storage, ref menu);
 		ShowMenu(menu, messageHandler, storage);
     }
@@ -162,11 +153,10 @@ public class iCS_ContextualMenu {
         int idx;
         if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
             // Base menu items
-            idx= GrowMenuBy(ref menu, 4);
+            idx= GrowMenuBy(ref menu, 3);
             menu[idx]= new iCS_MenuContext(PackageStr);
             menu[idx+1]= new iCS_MenuContext(StateChartStr);
             menu[idx+2]= new iCS_MenuContext(SeparatorStr);
-            menu[idx+3]= new iCS_MenuContext(IteratorStr);
         }
         if(!selectedObject.IsPublicFunction) {
             idx= GrowMenuBy(ref menu, 2);
@@ -550,7 +540,6 @@ public class iCS_ContextualMenu {
             case SetAsDisplayRootStr:       iCS_UserCommands.SetAsDisplayRoot(targetObject); break;
             case ClearNavigationHistoryStr: iCS_UserCommands.ResetDisplayRoot(iStorage); break;
             case PackageStr:                iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
-            case IteratorStr:               iCS_UserCommands.CreateIterator(targetObject, globalPos, null); break;
             case StateChartStr:             iCS_UserCommands.CreateStateChart(targetObject, globalPos, null); break;
             case StateStr:                  iCS_UserCommands.CreateState(targetObject, globalPos, null);  break;
             case SetAsEntryStr:             iCS_UserCommands.SetAsStateEntry(targetObject); break;
@@ -564,8 +553,6 @@ public class iCS_ContextualMenu {
             case TriggerPortStr:            iCS_UserCommands.CreateTriggerPort(targetObject); break;
             case OutputInstancePortStr:     iCS_UserCommands.CreateOutInstancePort(targetObject); break;
 			case WrapInPackageStr:          iCS_UserCommands.WrapInPackage(targetObject); break;
-            case UpdateMessageHandlerPortsStr:   iCS_UserCommands.UpdateMessageHandlerPorts(targetObject); break;
-			case RemoveUnusedPortsStr:           iCS_UserCommands.RemoveUnusedPorts(targetObject); break;
             case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
             case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
             case UnwrapPackageStr:               iCS_UserCommands.DeleteKeepChildren(targetObject); break;

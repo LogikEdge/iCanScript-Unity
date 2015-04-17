@@ -21,14 +21,6 @@ public partial class iCS_IStorage {
     }
     
     // ----------------------------------------------------------------------
-    // Scans through the behaviour
-    // Returns the next available port index.
-    public void UpdateBehaviourMessagePorts(iCS_EditorObject node) {
-        var neededPorts= BuildListOfPortInfoForBehaviourMessage(node.Parent);
-        var changed= CleanupExistingProposedPorts(node, neededPorts);
-        changed |= BuildMissingPorts(node, neededPorts);
-    }
-    // ----------------------------------------------------------------------
 	// Deletes all dynamic message handler ports that are not connected.
 	public void RemoveUnusedPorts(iCS_EditorObject node) {
 		var ports= node.BuildListOfChildPorts(p=> p.IsProposedDataPort || p.IsDynamicDataPort);

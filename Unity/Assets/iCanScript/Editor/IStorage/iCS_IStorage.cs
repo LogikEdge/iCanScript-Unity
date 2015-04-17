@@ -243,32 +243,6 @@ public partial class iCS_IStorage {
     }
 
     // ----------------------------------------------------------------------
-    public void UpdateBehaviourMessages() {
-        if(EditorObjects == null || EditorObjects.Count == 0) return;
-        var behaviour= EditorObjects[0];
-        if(!behaviour.IsBehaviour) return;
-        behaviour.ForEachChildNode(c=> { if(c.IsMessage) UpdateBehaviourMessagePorts(c); });
-    }
-    	
-    // ----------------------------------------------------------------------
-    public void CleanupUnityObjects() {
-        // Keep a copy to repopulate for long bindings
-        ForEach(
-            obj=> {
-                if(obj.IsInDataOrControlPort && obj.ProducerPortId == -1 && obj.InitialValue != null) {
-                    StoreInitialPortValueInArchive(obj);
-                }
-                else {
-                    if(obj.IsFunctionCall || obj.IsVariableReference) {
-                    }
-                    else {
-                        obj.InitialValueArchive= null;
-                    }
-                }
-            }
-        );
-    }
-    // ----------------------------------------------------------------------
 	// This function is invoked after a change in the visual script.  It
 	// is assumed that the visual script is in a stable state when this
 	// function is invoked.
@@ -625,8 +599,6 @@ public partial class iCS_IStorage {
                 port.InitialValue= instance.Parent.iCSMonoBehaviour;
             }
         }
-		// Update available component ports
-		UpdateBehaviourMessagePorts(instance);
         return instance;
     }    
 	// ----------------------------------------------------------------------
