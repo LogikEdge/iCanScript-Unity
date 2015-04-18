@@ -229,6 +229,7 @@ public static class iCS_Types {
     }
     // ----------------------------------------------------------------------
     public static void GetAssemblyQualifiedNameComponents(string assemblyQualifiedName, ref string typeName, ref string assemblyName) {
+//		Debug.Log("Assemlby=> "+assemblyQualifiedName);
         var typeIdent= assemblyQualifiedName.Split(new char[]{','});
         typeName= typeIdent[0];
         assemblyName= typeIdent[1];
