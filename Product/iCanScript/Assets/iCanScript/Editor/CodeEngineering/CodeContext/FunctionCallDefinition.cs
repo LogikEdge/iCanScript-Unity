@@ -40,14 +40,14 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Set the new code block for the assignment code
         ///
-        /// @param newCodeBlock The new code block to be assigned.
+        /// @param newParent The new code block to be assigned.
         ///
-        public override void SetCodeBlock(CodeBase newCodeBlock) {
-            myCodeBlock= newCodeBlock;
-            foreach(var p in myParameters)      { p.CodeBlock= newCodeBlock; }
-            foreach(var v in myOutputVariables) { v.CodeBlock= newCodeBlock; }
+        public override void SetParent(CodeBase newParent) {
+            myParent= newParent;
+            foreach(var p in myParameters)      { p.Parent= newParent; }
+            foreach(var v in myOutputVariables) { v.Parent= newParent; }
             if(myReturnVariable != null) {
-                myReturnVariable.CodeBlock= newCodeBlock;
+                myReturnVariable.Parent= newParent;
             }
         }
 
@@ -88,13 +88,13 @@ namespace iCanScript.Editor.CodeEngineering {
         void BuildOutputParameters() {
             var outputPorts= GetOutputDataPorts();
             foreach(var p in outputPorts) {
-                AddVariable(new VariableDefinition(p, myCodeBlock, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC));
+                AddVariable(new VariableDefinition(p, myParent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC));
             }
             // Return value.
             // TODO: Build proper definition for return variable.
             var returnPort= GetReturnPort(VSObject);
             if(returnPort != null) {
-                myReturnVariable= new ReturnVariableDefinition(returnPort, myCodeBlock);
+                myReturnVariable= new ReturnVariableDefinition(returnPort, myParent);
             }
         }
         
@@ -106,10 +106,10 @@ namespace iCanScript.Editor.CodeEngineering {
             // Optimize input parameters to fields/properties
             for(int i= 0; i < myParameters.Length; ++i) {
                 var code= myParameters[i];
-                var producerCode= OptimizeInputParameter(code, myCodeBlock);
+                var producerCode= OptimizeInputParameter(code, myParent);
                 if(producerCode != null) {
                     myParameters[i]= producerCode;
-                    producerCode.CodeBlock= myCodeBlock;
+                    producerCode.Parent= myParent;
                 }
 				myParameters[i].ResolveDependencies();
             }
@@ -121,12 +121,12 @@ namespace iCanScript.Editor.CodeEngineering {
                 myReturnVariable.ResolveDependencies();
 
                 // Return variable relocation
-                var returnCodeBlock= GetProperCodeBlockForProducerPort(myReturnVariable);
-                if(returnCodeBlock != null && returnCodeBlock != myCodeBlock) {
+                var returnParent= GetProperParentForProducerPort(myReturnVariable);
+                if(returnParent != null && returnParent != myParent) {
                     var returnPort= myReturnVariable.VSObject;
-                    if(returnCodeBlock is TypeDefinition) {
-                        var v= new VariableDefinition(returnPort, returnCodeBlock, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC);
-                        returnCodeBlock.AddVariable(v);
+                    if(returnParent is TypeDefinition) {
+                        var v= new VariableDefinition(returnPort, returnParent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC);
+                        returnParent.AddVariable(v);
                         myReturnVariable= null;
 						v.ResolveDependencies();
                     }
@@ -167,7 +167,7 @@ namespace iCanScript.Editor.CodeEngineering {
             else {
                 myOutputVariables.Add(outputVariable);
             }
-            outputVariable.CodeBlock= myCodeBlock;
+            outputVariable.Parent= myParent;
         }
 
         // -------------------------------------------------------------------

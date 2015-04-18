@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 
@@ -49,7 +49,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The formatted body code for the return variable.
         ///
         public override string GenerateBody(int indentSize) {
-            return "var "+CodeBlock.GetLocalVariableName(VSObject);
+            return "var "+Parent.GetLocalVariableName(VSObject);
         }
     }
 

@@ -24,7 +24,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // FIELDS
         // -------------------------------------------------------------------
         protected iCS_EditorObject                     myVSObject  = null;    ///< Visual script associated object
-        protected CodeBase                             myCodeBlock = null;    ///< The code block for code generation
+        protected CodeBase                             myParent = null;    ///< The code block for code generation
         protected Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
         protected CodeContext                          myContext   = null;
         
@@ -34,9 +34,9 @@ namespace iCanScript.Editor.CodeEngineering {
         public iCS_EditorObject VSObject {
         	get { return myVSObject; }
         }
-        public CodeBase CodeBlock {
-            get { return myCodeBlock; }
-            set { SetCodeBlock(value); }
+        public CodeBase Parent {
+            get { return myParent; }
+            set { SetParent(value); }
         }
         public CodeContext Context {
             get { return myContext; }
@@ -53,7 +53,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public CodeBase(iCS_EditorObject vsObject, CodeBase codeBlock) {
             myVSObject = vsObject;
-            myCodeBlock= codeBlock;
+            myParent= codeBlock;
             // Build or assign shared code Context.
             if(codeBlock == null) {
                 myContext= new CodeContext(vsObject);
@@ -68,7 +68,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         // -------------------------------------------------------------------
 		public virtual Type GetRuntimeType()					  { return VSObject.RuntimeType; }
-        public virtual void SetCodeBlock(CodeBase newCodeBlock)   { myCodeBlock= newCodeBlock; }
+        public virtual void SetParent(CodeBase newParent)   { myParent= newParent; }
         public virtual iCS_EditorObject[] GetRelatedEnablePorts() { return new iCS_EditorObject[0]; }
         public virtual iCS_EditorObject[] GetDependencies()       { return new iCS_EditorObject[0]; }
         public virtual void ResolveDependencies() {}
@@ -146,8 +146,8 @@ namespace iCanScript.Editor.CodeEngineering {
             if(myLocalNames.TryGetValue(vsObj, out name)) {
                 return name;
             }
-            if(myCodeBlock == null) return null;
-            return myCodeBlock.TryGetNameFor(vsObj);
+            if(myParent == null) return null;
+            return myParent.TryGetNameFor(vsObj);
         }
         
     	// -------------------------------------------------------------------------
@@ -454,8 +454,8 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public bool DoesNameAlreadyExist(string name) {
             if(myLocalNames.ContainsValue(name)) return true;
-            if(myCodeBlock == null) return false;
-            return myCodeBlock.DoesNameAlreadyExist(name);
+            if(myParent == null) return false;
+            return myParent.DoesNameAlreadyExist(name);
         }
 
         // =========================================================================
@@ -685,8 +685,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Returns the type definition.
         public TypeDefinition GetTypeDefinition() {
             if(this is TypeDefinition) return this as TypeDefinition;
-            if(myCodeBlock == null) return null;
-            return myCodeBlock.GetTypeDefinition();
+            if(myParent == null) return null;
+            return myParent.GetTypeDefinition();
         }
 
     	// -------------------------------------------------------------------------
@@ -706,20 +706,20 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The proper parent context for the producer port.
         ///
         // TODO: To be tested...
-        public CodeBase GetProperCodeBlockForProducerPort(CodeBase producerPortCode) {
+        public CodeBase GetProperParentForProducerPort(CodeBase producerPortCode) {
             var consumerPorts=  GetCodeConsumerPorts(producerPortCode.VSObject);
-            var commonCodeBlock= producerPortCode;
+            var commonParent= producerPortCode;
             foreach(var c in consumerPorts) {
                 var consumerCode= Context.GetCodeFor(c);
                 if(consumerCode == null) {
                     consumerCode= Context.GetCodeFor(c.ParentNode);                    
                 }
                 if(consumerCode != null) {
-                    var consumerCodeBlock= consumerCode.CodeBlock;
-                    commonCodeBlock= GetCommonCodeBlock(commonCodeBlock, consumerCodeBlock); 
+                    var consumerParent= consumerCode.Parent;
+                    commonParent= GetCommonParent(commonParent, consumerParent); 
                 }
             }
-            return commonCodeBlock;
+            return commonParent;
         }
 
     	// -------------------------------------------------------------------------
@@ -729,10 +729,10 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param vsObject2 Second visual script object.
         /// @return The common code parent of both visual script object.
         ///
-        public CodeBase GetCommonCodeBlock(iCS_EditorObject vsObject1, iCS_EditorObject vsObject2) {
+        public CodeBase GetCommonParent(iCS_EditorObject vsObject1, iCS_EditorObject vsObject2) {
             var code1= Context.GetCodeFor(vsObject1);
             var code2= Context.GetCodeFor(vsObject2);
-            return GetCommonCodeBlock(code1, code2);
+            return GetCommonParent(code1, code2);
         }
 
     	// -------------------------------------------------------------------------
@@ -742,15 +742,15 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param code2 Second code base.
         /// @return The common code parent of both visual script object.
         ///
-        public CodeBase GetCommonCodeBlock(CodeBase code1, CodeBase code2) {
-            var codeBlocks1= GetListOfCodeBlocks(code1);
-            var codeBlocks2= GetListOfCodeBlocks(code2);
-            CodeBase commonCodeBlock= null;
+        public CodeBase GetCommonParent(CodeBase code1, CodeBase code2) {
+            var codeBlocks1= GetListOfParents(code1);
+            var codeBlocks2= GetListOfParents(code2);
+            CodeBase commonParent= null;
             int len= Mathf.Min(codeBlocks1.Length, codeBlocks2.Length);
             for(int i= 0; i < len && codeBlocks1[i] == codeBlocks2[i]; ++i) {
-                commonCodeBlock= codeBlocks1[i];
+                commonParent= codeBlocks1[i];
             }
-            return commonCodeBlock;
+            return commonParent;
         }
 
     	// -------------------------------------------------------------------------
@@ -759,9 +759,9 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param code The code from which to create the list.
         /// @return The ordered list of parents.
         ///
-        public CodeBase[] GetListOfCodeBlocks(CodeBase code) {
+        public CodeBase[] GetListOfParents(CodeBase code) {
             var codeBlocks= new List<CodeBase>();
-            for(; code != null; code= code.CodeBlock) {
+            for(; code != null; code= code.Parent) {
                 codeBlocks.Add(code);
             }
             codeBlocks.Reverse();
@@ -1020,7 +1020,7 @@ namespace iCanScript.Editor.CodeEngineering {
             if(CanReplaceInputParameter(outputCode, allowedParent, out producerParent)) {
                 var producerCode= FindCodeBase(producerParent);
                 if(producerCode != null) {
-                    producerCode.CodeBlock.Remove(producerCode);
+                    producerCode.Parent.Remove(producerCode);
                     return producerCode;
                 }
             }
@@ -1043,7 +1043,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // Accept return value if we are the only consumer.
             if(producerPort.PortIndex == (int)iCS_PortIndex.Return) {
                 var producerCode= FindCodeBase(producerParent);
-                if(producerCode.CodeBlock != allowedParent) return false;
+                if(producerCode.Parent != allowedParent) return false;
                 var parameters= GetParameters(producerParent);
                 if(P.filter(p=> p.IsOutDataPort, parameters).Length == 0) {
                     if(producerPort.ConsumerPorts.Length == 1) {

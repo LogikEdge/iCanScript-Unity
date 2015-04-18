@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 
@@ -37,7 +37,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             result.Append(ToTypeName(VSObject.RuntimeType));
             result.Append(" ");
-            result.Append(CodeBlock.GetFunctionParameterName(VSObject));
+            result.Append(Parent.GetFunctionParameterName(VSObject));
             return result.ToString();
         }
 

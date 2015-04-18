@@ -35,14 +35,16 @@ namespace iCanScript.Editor.CodeEngineering {
             // -- Ask our children to resolve their dependencies. --
             base.ResolveDependencies();
             
-            // Simply reposition code for simple trigger-to-enable dependencies.
+            // -- Reposition code for simple trigger->enable --
             var enableLen= myEnablePorts.Length;
             if(enableLen == 1) {
                 var producerPort= myEnablePorts[0].FirstProducerPort;
-                var parentAsExecBlock= myCodeBlock as ExecutionBlockDefinition;
-                if(producerPort.IsTriggerPort && parentAsExecBlock != null) {
-                    parentAsExecBlock.Replace(this, myExecutionList);
-                    return;
+                if(producerPort.IsTriggerPort) {
+                    var parentAsExecBlock= myParent as ExecutionBlockDefinition;
+                    if(parentAsExecBlock != null) {
+                        parentAsExecBlock.Replace(this, myExecutionList);
+                        return;
+                    }
                 }
             }
             
@@ -64,9 +66,9 @@ namespace iCanScript.Editor.CodeEngineering {
             // -- Verify if we can optimize parameter ports. --
             myEnableCode[0]= Context.GetCodeFor(GetCodeProducerPort(myEnablePorts[0]));
             if(myEnableCode[0] != null) {
-                myEnableCode[0]= OptimizeInputParameter(myEnableCode[0], myCodeBlock);
+                myEnableCode[0]= OptimizeInputParameter(myEnableCode[0], myParent);
                 if(myEnableCode[0] != null) {
-                    myEnableCode[0].CodeBlock= this;
+                    myEnableCode[0].Parent= this;
                 }
             }
         }

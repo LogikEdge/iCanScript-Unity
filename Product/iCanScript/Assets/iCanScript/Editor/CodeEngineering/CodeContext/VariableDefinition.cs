@@ -92,17 +92,17 @@ namespace iCanScript.Editor.CodeEngineering {
                 return "";
             }
             string variableName;
-            if(CodeBlock is TypeDefinition) {
+            if(Parent is TypeDefinition) {
                 if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
-                    variableName= CodeBlock.GetPublicFieldName(myVSObject);
+                    variableName= Parent.GetPublicFieldName(myVSObject);
                 }
                 else {
-                    variableName= CodeBlock.GetPrivateFieldName(myVSObject);
+                    variableName= Parent.GetPrivateFieldName(myVSObject);
                 }                
             }
             else {
                 // FIXME: should be going to common parent.
-                variableName= CodeBlock.CodeBlock.GetLocalVariableName(myVSObject);
+                variableName= Parent.Parent.GetLocalVariableName(myVSObject);
                 initializer= null;
             }
 			result.Append(GenerateVariable(indentSize, myAccessSpecifier, myScopeSpecifier, myRuntimeType, variableName, initializer));                    
@@ -116,7 +116,7 @@ namespace iCanScript.Editor.CodeEngineering {
 									   Type variableType, string variableName, string initializer) {
 			string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder(indent);
-            if(myCodeBlock is TypeDefinition) {
+            if(myParent is TypeDefinition) {
                 if(accessType == AccessSpecifier.PUBLIC) {
                     result.Append("[iCS_InOutPort]\n");
                     result.Append(indent);
