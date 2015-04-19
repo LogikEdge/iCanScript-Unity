@@ -20,8 +20,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param codeBlock The code block this assignment belongs to.
         /// @return The newly created code context.
         ///
-        public ExecutionBlockDefinition(iCS_EditorObject vsObject, CodeBase codeBlock)
-        : base(vsObject, codeBlock) {
+        public ExecutionBlockDefinition(iCS_EditorObject vsObject, CodeBase parent)
+        : base(vsObject, parent) {
         }
 
         // ===================================================================

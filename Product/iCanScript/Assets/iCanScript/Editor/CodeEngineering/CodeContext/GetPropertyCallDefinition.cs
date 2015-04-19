@@ -15,8 +15,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param codeBlock The code block in which the accessor reside.
         /// @return The newly created GET definition.
         ///
-        public GetPropertyCallDefinition(iCS_EditorObject vsObj, CodeBase codeBlock)
-        : base(vsObj, codeBlock) {
+        public GetPropertyCallDefinition(iCS_EditorObject vsObj, CodeBase parent)
+        : base(vsObj, parent) {
         }        
 
         // ===================================================================

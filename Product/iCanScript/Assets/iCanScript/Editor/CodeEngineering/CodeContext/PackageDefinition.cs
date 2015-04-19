@@ -13,8 +13,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param enables The enable ports that affect this code block.
         /// @return The newly created code context.
         ///
-        public PackageDefinition(iCS_EditorObject node, CodeBase codeBlock, iCS_EditorObject[] enables)
-        : base(node, codeBlock) {
+        public PackageDefinition(iCS_EditorObject node, CodeBase parent, iCS_EditorObject[] enables)
+        : base(node, parent) {
         }
 
     }  

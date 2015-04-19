@@ -14,8 +14,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param codeBlock The code block this assignment belongs to.        
         /// @return The newly created function call definition.
         ///
-        public ConstructorDefinition(iCS_EditorObject vsObj, CodeBase codeBlock)
-        : base(vsObj, codeBlock) {}
+        public ConstructorDefinition(iCS_EditorObject vsObj, CodeBase parent)
+        : base(vsObj, parent) {}
         
         // ===================================================================
         // CODE GENERATION FUNCTIONS

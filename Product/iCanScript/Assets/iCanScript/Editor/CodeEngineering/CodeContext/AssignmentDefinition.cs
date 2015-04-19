@@ -21,12 +21,12 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param rightHandCode The source of the assignment.
         /// @return The newly created code definition.
         ///
-        public AssignmentDefinition(CodeBase codeBlock,
+        public AssignmentDefinition(CodeBase parent,
                                     CodeBase leftHandSize, CodeBase rightHandCode)
-        : base(null, codeBlock) {
+        : base(null, parent) {
             myLeftHandCode = leftHandSize;
             myRightHandCode= rightHandCode;
-            myLeftHandCode.Parent= myRightHandCode.Parent= codeBlock;
+            myLeftHandCode.Parent= myRightHandCode.Parent= parent;
         }        
     
         // -------------------------------------------------------------------

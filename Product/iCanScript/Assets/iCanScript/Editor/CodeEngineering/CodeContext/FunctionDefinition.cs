@@ -29,8 +29,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param codeBlock The code block this assignment belongs to.
         /// @return The newly created code context.
         ///
-        public FunctionDefinition(iCS_EditorObject node, CodeBase codeBlock, AccessSpecifier accessType, ScopeSpecifier scopeType)
-        : base(node, codeBlock) {
+        public FunctionDefinition(iCS_EditorObject node, CodeBase parent, AccessSpecifier accessType, ScopeSpecifier scopeType)
+        : base(node, parent) {
             myAccessSpecifier  = accessType;
             myScopeSpecifier   = scopeType;
             

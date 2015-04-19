@@ -22,8 +22,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param enables The enable ports that affect this code block.
         /// @return The newly created code context.
         ///
-        public EnableBlockDefinition(CodeBase codeBlock, iCS_EditorObject[] enables)
-        : base(null, codeBlock) {
+        public EnableBlockDefinition(CodeBase parent, iCS_EditorObject[] enables)
+        : base(null, parent) {
             myEnablePorts= enables;
             myEnableCode = new CodeBase[myEnablePorts.Length];
             for(int i= 0; i < myEnableCode.Length; ++i) myEnableCode[i]= null;

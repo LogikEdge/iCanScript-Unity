@@ -24,8 +24,8 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param scopeType The Scope property of the field.
         /// @return The newly created variable defintion.
         ///
-        public VariableDefinition(iCS_EditorObject vsObject, CodeBase codeBlock, AccessSpecifier accessType, ScopeSpecifier scopeType)
-        : base(vsObject, codeBlock) {
+        public VariableDefinition(iCS_EditorObject vsObject, CodeBase parent, AccessSpecifier accessType, ScopeSpecifier scopeType)
+        : base(vsObject, parent) {
             myAccessSpecifier = accessType;
             myScopeSpecifier  = scopeType;
 			myRuntimeType     = vsObject.RuntimeType;
