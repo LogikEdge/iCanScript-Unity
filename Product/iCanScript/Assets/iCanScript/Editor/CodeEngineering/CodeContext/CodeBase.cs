@@ -36,10 +36,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         public CodeBase Parent {
             get { return myParent; }
-            set {
-				myParent= value;
-				OnParentChange(value);
-			}
+            set { myParent= value; OnParentChange(value); }
         }
         public CodeContext Context {
             get { return myContext; }
@@ -51,23 +48,16 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds the core code structure.
         ///
         /// @param vsObject The visual script object associated with this code.
-        /// @param codeBlock The code block this code belongs to.
+        /// @param parent The parent code block.
         /// @return The newly created code definition.
         ///
-        public CodeBase(iCS_EditorObject vsObject, CodeBase codeBlock) {
+        public CodeBase(iCS_EditorObject vsObject, CodeBase parent) {
             myVSObject = vsObject;
-            myParent= codeBlock;
+            myParent= parent;
             // Build or assign shared code Context.
-            if(codeBlock == null) {
-                myContext= new CodeContext(vsObject);
-            }
-            else {
-                myContext= codeBlock.Context;
-            }
+			myContext= parent != null ? parent.Context : new CodeContext(vsObject);
             // Register visual script object to code association
-            if(vsObject != null) {
-                myContext.Register(vsObject, this);
-            }
+            myContext.Register(vsObject, this);
         }
         // -------------------------------------------------------------------
 		public virtual Type GetRuntimeType()					  { return VSObject.RuntimeType; }
