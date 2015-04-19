@@ -862,7 +862,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 }
                 // We assume the trigger parent is a package.
                 // Collect all child functions.
-                var childFunctions= GetListOfFunctions(triggerNode);
+                var childFunctions= VSStructure.GetListOfFunctions(triggerNode);
                 if(childFunctions.Count != 0) {
                     return childFunctions.ToArray();
                 }
@@ -895,7 +895,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             while(producerPort.IsTriggerPort && producerPort.ParentNode.IsKindOfPackage) {
                 var package= producerPort.ParentNode;
-                var nestedFunctions= GetListOfFunctions(package);
+                var nestedFunctions= VSStructure.GetListOfFunctions(package);
                 if(nestedFunctions.Count != 0) {
                     // FIXME: Need to create a trigger variable.
                     return producerPort;
@@ -918,23 +918,23 @@ namespace iCanScript.Editor.CodeEngineering {
             return producerPort;
         }
 
-    	// -------------------------------------------------------------------------
-        /// Returns the list of functions inside the given package.
-        ///
-        /// @param package The package to examine.
-        /// @return The list of all functions nested inside the package.
-        ///
-        public List<iCS_EditorObject> GetListOfFunctions(iCS_EditorObject package) {
-            var childFunctions= new List<iCS_EditorObject>();
-            package.ForEachChildRecursiveDepthFirst(
-                c=> {
-                    if(c.IsKindOfFunction) {
-                        childFunctions.Add(c);
-                    }
-                }
-            );
-            return childFunctions;
-        }
+//    	// -------------------------------------------------------------------------
+//        /// Returns the list of functions inside the given package.
+//        ///
+//        /// @param package The package to examine.
+//        /// @return The list of all functions nested inside the package.
+//        ///
+//        public List<iCS_EditorObject> GetListOfFunctions(iCS_EditorObject package) {
+//            var childFunctions= new List<iCS_EditorObject>();
+//            package.ForEachChildRecursiveDepthFirst(
+//                c=> {
+//                    if(c.IsKindOfFunction) {
+//                        childFunctions.Add(c);
+//                    }
+//                }
+//            );
+//            return childFunctions;
+//        }
         
     	// -------------------------------------------------------------------------
         /// Returns the consumer ports usbale by the code.
@@ -1064,7 +1064,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var triggerNode= triggerPort.ParentNode;
             if(triggerNode.IsKindOfPackage) {
                 if(GetAllRelatedEnablePorts(triggerNode).Length <= 1) {
-                    if(GetListOfFunctions(triggerNode).Count == 0) {
+                    if(VSStructure.GetListOfFunctions(triggerNode).Count == 0) {
                         return false;
                     }
                 }
