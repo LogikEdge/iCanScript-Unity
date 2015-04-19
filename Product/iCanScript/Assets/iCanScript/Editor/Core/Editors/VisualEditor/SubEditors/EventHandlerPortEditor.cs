@@ -10,23 +10,23 @@ namespace iCanScript.Editor {
         // TYPES
         // -------------------------------------------------------------------
         public enum InputPortType {
-            PublicVariable=        PortType.PublicVariable,
-            PrivateVariable=       PortType.PrivateVariable,
-            StaticPublicVariable=  PortType.StaticPublicVariable,
-            StaticPrivateVariable= PortType.StaticPrivateVariable,
-            Constant=              PortType.Constant
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable,
+            Constant=              PortSpecification.Constant
         };
         public enum OutputPortType {
-            PublicVariable=        PortType.PublicVariable,
-            PrivateVariable=       PortType.PrivateVariable,
-            StaticPublicVariable=  PortType.StaticPublicVariable,
-            StaticPrivateVariable= PortType.StaticPrivateVariable            
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable            
         };
         public enum ThisPortType {
-            Owner= PortType.Owner
+            Owner= PortSpecification.Owner
         };
         public enum ParameterPortType {
-            Parameter= PortType.Parameter
+            Parameter= PortSpecification.Parameter
         }
         
         // ===================================================================
@@ -69,27 +69,27 @@ namespace iCanScript.Editor {
             var generatedVariableLabel= "Generated Variable";
             if(port.IsInInstancePort) {
                 var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ThisPortType.Owner);
-                vsObject.portType= (PortType)newPortType;
+                vsObject.portType= (PortSpecification)newPortType;
                 return;                
             }
             if(IsHelperPort()) {
                 var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ThisPortType.Owner);
-                vsObject.portType= (PortType)newPortType;
+                vsObject.portType= (PortSpecification)newPortType;
                 return;                                
             }
             if(IsEventParameter()) {
                 var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ParameterPortType.Parameter);                
-                vsObject.portType= (PortType)newPortType;
+                vsObject.portType= (PortSpecification)newPortType;
                 return;                
             }
             if(port.IsInDataPort) {
                 var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ToInputPortType());                
-                vsObject.portType= (PortType)newPortType;
+                vsObject.portType= (PortSpecification)newPortType;
                 return;
             }
             if(port.IsOutDataPort) {
                 var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ToOutputPortType());                                
-                vsObject.portType= (PortType)newPortType;
+                vsObject.portType= (PortSpecification)newPortType;
                 return;
             }
         }

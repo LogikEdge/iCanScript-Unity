@@ -7,7 +7,7 @@ using iCanScript.Engine;
 using P=Prelude;
 
 namespace iCanScript.Engine {
-    public enum PortType {
+    public enum PortSpecification {
         Parameter, Return,
         PublicVariable, PrivateVariable,
         StaticPublicVariable, StaticPrivateVariable,
@@ -17,7 +17,7 @@ namespace iCanScript.Engine {
         Other,
         Default
     };
-    public enum NodeType {
+    public enum NodeSpecification {
         Type,
         PublicFunction, PrivateFunction,
         StaticPublicFunction, StaticPrivateFunction,
@@ -46,7 +46,7 @@ public class iCS_EngineObject {
     public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded; // PortIterationSignature
 
 	// Node specific attributes ---------------------------------------------
-    public NodeType              nodeType         = NodeType.Default;
+    public NodeSpecification     nodeType         = NodeSpecification.Default;
 	public string				 MethodName       = null;
 	public int					 NbOfParams       = 0;     // Also used for port group
     public string                IconGUID         = null;
@@ -55,7 +55,7 @@ public class iCS_EngineObject {
     public int                   LayoutPriority   = 0;
 
     // Port specific attributes ---------------------------------------------
-    public PortType              portType           = PortType.Default;
+    public PortSpecification     portType           = PortSpecification.Default;
     public int                   SourceId           = -1;    // Proxy original node id
     public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;  // Proxy original visual script tag

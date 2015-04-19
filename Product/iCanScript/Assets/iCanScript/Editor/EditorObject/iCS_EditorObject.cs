@@ -96,53 +96,53 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     /// Returns the port type of this object.
-    public PortType portType {
+    public PortSpecification portType {
         get { return EngineObject.portType; }
         set { EngineObject.portType= value; }
     }
     // ----------------------------------------------------------------------
     /// Returns the node type of this object.
-    public NodeType nodeType {
+    public NodeSpecification nodeType {
         get { return EngineObject.nodeType; }
         set { EngineObject.nodeType= value; }
     }
     // ----------------------------------------------------------------------
     /// Returns the port type of this object.
-    public PortType PortType {
+    public PortSpecification PortType {
         get {
             if(!IsPort) {
                 Debug.LogError("iCanScript: Requesting PortType on an object that is not a port!");
             }
-            if(IsReturnPort)  return PortType.Return;
-            if(IsTriggerPort) return PortType.Trigger;
-            if(IsEnablePort)  return PortType.Enable;
+            if(IsReturnPort)  return PortSpecification.Return;
+            if(IsTriggerPort) return PortSpecification.Trigger;
+            if(IsEnablePort)  return PortSpecification.Enable;
             var parent= ParentNode;
             if(parent.IsMessageHandler) {
-                if(IsFixDataPort) return PortType.Parameter;
-                return PortType.PublicVariable;
+                if(IsFixDataPort) return PortSpecification.Parameter;
+                return PortSpecification.PublicVariable;
             }
             if(parent.IsPublicFunction) {
-                return PortType.Parameter;
+                return PortSpecification.Parameter;
             }
             if(parent.IsKindOfFunction) {
-                return PortType.Parameter;
+                return PortSpecification.Parameter;
             }
-            return PortType.Other;
+            return PortSpecification.Other;
         }
     }
     // ----------------------------------------------------------------------
     /// Returns the node type of this object.
-    public NodeType NodeType {
+    public NodeSpecification NodeType {
         get {
             if(!IsNode) {
                 Debug.LogError("iCanScript: Requesting NodeType on an object that is not a node!");                
             }
-            if(InstanceId == 0)  return NodeType.Type;
-            if(IsMessageHandler) return NodeType.EventHandler;
-            if(IsConstructor)    return NodeType.Constructor;
-            if(IsPublicFunction) return NodeType.PublicFunction;
-            if(IsKindOfFunction) return NodeType.FunctionCall;
-            return NodeType.Other;
+            if(InstanceId == 0)  return NodeSpecification.Type;
+            if(IsMessageHandler) return NodeSpecification.EventHandler;
+            if(IsConstructor)    return NodeSpecification.Constructor;
+            if(IsPublicFunction) return NodeSpecification.PublicFunction;
+            if(IsKindOfFunction) return NodeSpecification.FunctionCall;
+            return NodeSpecification.Other;
         }
     }
     

@@ -366,7 +366,7 @@ namespace iCanScript.Editor.CodeEngineering {
             if(memberInfo != null && memberInfo.IsClassFunctionBase) {
                 if(!VSObject.IStorage.IsLocalType(VSObject)) {
                     result.Append(ToTypeName(node.RuntimeType));
-                    result.Append(".");                    
+                    result.Append(".");
                 }
             }
             else {
