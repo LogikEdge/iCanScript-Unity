@@ -61,7 +61,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         // -------------------------------------------------------------------
 		public virtual Type GetRuntimeType()					  { return VSObject.RuntimeType; }
-        public virtual void OnParentChange(CodeBase newParent)    { myParent= newParent; }
+        public virtual void OnParentChange(CodeBase newParent)    { }
         public virtual iCS_EditorObject[] GetRelatedEnablePorts() { return new iCS_EditorObject[0]; }
         public virtual iCS_EditorObject[] GetDependencies()       { return new iCS_EditorObject[0]; }
         public virtual void ResolveDependencies() {}
