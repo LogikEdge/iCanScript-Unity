@@ -45,7 +45,7 @@ public class iCS_EngineObject {
     public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded; // PortIterationSignature
 
 	// Node specific attributes ---------------------------------------------
-    public NodeSpecification     nodeType         = NodeSpecification.Default;
+    public NodeSpecification     NodeSpec         = NodeSpecification.Default;
 	public string				 MethodName       = null;
 	public int					 NbOfParams       = 0;     // Also used for port group
     public string                IconGUID         = null;
@@ -54,7 +54,7 @@ public class iCS_EngineObject {
     public int                   LayoutPriority   = 0;
 
     // Port specific attributes ---------------------------------------------
-    public PortSpecification     portType           = PortSpecification.Default;
+    public PortSpecification     PortSpec           = PortSpecification.Default;
     public int                   SourceId           = -1;    // Proxy original node id
     public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;  // Proxy original visual script tag

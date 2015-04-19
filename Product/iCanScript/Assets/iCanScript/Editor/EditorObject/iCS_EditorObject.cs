@@ -96,15 +96,15 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     /// Returns the port type of this object.
-    public PortSpecification portType {
-        get { return EngineObject.portType; }
-        set { EngineObject.portType= value; }
+    public PortSpecification PortSpec {
+        get { return EngineObject.PortSpec; }
+        set { EngineObject.PortSpec= value; }
     }
     // ----------------------------------------------------------------------
     /// Returns the node type of this object.
-    public NodeSpecification nodeType {
-        get { return EngineObject.nodeType; }
-        set { EngineObject.nodeType= value; }
+    public NodeSpecification NodeSpec {
+        get { return EngineObject.NodeSpec; }
+        set { EngineObject.NodeSpec= value; }
     }
     // ----------------------------------------------------------------------
     /// Returns the port type of this object.
