@@ -672,25 +672,6 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
-        /// Returns the input port representing the _'self'_ connection.
-        ///
-        /// @param node The node in which to search for the _'self'_ port.
-        ///
-        /// @return _'null'_ is returned if the port is not found.
-        ///
-        public static iCS_EditorObject GetThisPort(iCS_EditorObject node) {
-            iCS_EditorObject result= null;
-            node.ForEachChildPort(
-                p=> {
-                    if(p.PortIndex == (int)iCS_PortIndex.Target) {
-                        result= p;
-                    }
-                }
-            );
-            return result;
-        }
-
-    	// -------------------------------------------------------------------------
         /// Returns a list of input ports on the given node.
         ///
         /// @param node The node in which to search for input ports.
@@ -807,7 +788,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public iCS_EditorObject[] GetCodeInputDependencies(iCS_EditorObject node) {
             var inputParameters= node.BuildListOfChildPorts(p=> p.IsInputPort);
-            var enablePorts= GetAllRelatedEnablePorts(node);
+            var enablePorts= ControlFlow.GetAllRelatedEnablePorts(node);
             return P.append(inputParameters, enablePorts);
         }
     
@@ -826,7 +807,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 dependencies.AddRange(GetInputPortCodeDependencies(p));
             }
             // Gather all enable dependencies.
-            foreach(var e in GetAllRelatedEnablePorts(node)) {
+            foreach(var e in ControlFlow.GetAllRelatedEnablePorts(node)) {
                 dependencies.AddRange(GetInputPortCodeDependencies(e));
             }
             return dependencies.ToArray();
@@ -867,7 +848,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     return childFunctions.ToArray();
                 }
                 // Follow the enable port(s).
-                var enablePorts= GetAllRelatedEnablePorts(triggerNode);
+                var enablePorts= ControlFlow.GetAllRelatedEnablePorts(triggerNode);
                 if(enablePorts.Length == 0) {
                     return new iCS_EditorObject[0];
                 }
@@ -881,62 +862,6 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
-        /// Returns the producer port usable by the code.
-        ///
-        /// @param consumerPort The VS consumer port.
-        /// @return The producer port usable by the code.
-        ///
-        public iCS_EditorObject GetCodeProducerPort(iCS_EditorObject consumerPort) {
-            var producerPort= consumerPort.FirstProducerPort;
-            // Follow the target/self port chain.
-            while(producerPort.IsSelfPort) {
-                producerPort= GetThisPort(producerPort.ParentNode);
-                producerPort= producerPort.FirstProducerPort;
-            }
-            while(producerPort.IsTriggerPort && producerPort.ParentNode.IsKindOfPackage) {
-                var package= producerPort.ParentNode;
-                var nestedFunctions= VSStructure.GetListOfFunctions(package);
-                if(nestedFunctions.Count != 0) {
-                    // FIXME: Need to create a trigger variable.
-                    return producerPort;
-                }
-                var enables= GetEnablePorts(package);
-                switch(enables.Length) {
-                    case 0: {
-                        // FIXME: Should remove enable to nothing.
-                        return producerPort;
-                    }
-                    case 1: {
-                        return GetCodeProducerPort(enables[0]);
-                    }
-                    default: {
-                        // FIXME: Need to create a trigger variable.
-                        return producerPort;
-                    }
-                }
-            }
-            return producerPort;
-        }
-
-//    	// -------------------------------------------------------------------------
-//        /// Returns the list of functions inside the given package.
-//        ///
-//        /// @param package The package to examine.
-//        /// @return The list of all functions nested inside the package.
-//        ///
-//        public List<iCS_EditorObject> GetListOfFunctions(iCS_EditorObject package) {
-//            var childFunctions= new List<iCS_EditorObject>();
-//            package.ForEachChildRecursiveDepthFirst(
-//                c=> {
-//                    if(c.IsKindOfFunction) {
-//                        childFunctions.Add(c);
-//                    }
-//                }
-//            );
-//            return childFunctions;
-//        }
-        
-    	// -------------------------------------------------------------------------
         /// Returns the consumer ports usbale by the code.
         ///
         /// @param producerPort The visual script producer port.
@@ -949,105 +874,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 
         // =========================================================================
         // ENABLE PORTS UTILITIES
-    	// -------------------------------------------------------------------------
-        /// Returns the list of enable ports that affects the function call
-        ///
-        /// @param funcNode Visual script representing the function call.
-        /// @return Array of all enable ports that affects the function call.
-        ///
-        public iCS_EditorObject[] GetAllRelatedEnablePorts(iCS_EditorObject funcNode) {
-            // -- Gather all enable ports --
-            var enablePorts= new List<iCS_EditorObject>();
-            while(funcNode != null) {
-                var enables= GetEnablePorts(funcNode);
-                if(enables.Length != 0 && !IsAtLeastOneEnableAlwaysTrue(enables)) {
-                    enables= P.filter(e=> !IsEnableAlwaysFalse(e), enables);
-                    enablePorts.AddRange(enables);
-                }
-                funcNode= funcNode.ParentNode;                    
-            }
-            // -- Reorder ports starting from parent --
-            enablePorts.Reverse();
-            return enablePorts.ToArray();
-        }
-    	// -------------------------------------------------------------------------
-        /// Determines if the enable port is always _true_.
-        ///
-        /// @param enablePort The enable port.
-        /// @return _true_ if the enable is always true. _false_ otherwise.
-        ///
-        public bool IsEnableAlwaysTrue(iCS_EditorObject enablePort) {
-            var producerPort= GetCodeProducerPort(enablePort);
-            if(producerPort.IsInputPort) {
-                var initialValue= producerPort.InitialValue;
-                if(initialValue is UndefinedTag) return false;
-                var value= (bool)initialValue;
-                return value == true;
-            }  
-            return false;          
-        }
-    	// -------------------------------------------------------------------------
-        /// Determines if the enable port is always _false_.
-        ///
-        /// @param enablePort The enable port.
-        /// @return _true_ if the enable is always false. _false_ otherwise.
-        ///
-        public bool IsEnableAlwaysFalse(iCS_EditorObject enablePort) {
-            var producerPort= GetCodeProducerPort(enablePort);
-            if(producerPort.IsInputPort) {
-                var initialValue= producerPort.InitialValue;
-                if(initialValue is UndefinedTag) return false;
-                var value= (bool)initialValue;
-                return value == false;
-            }  
-            return false;          
-        }
-    	// -------------------------------------------------------------------------
-        /// Appends to the given list the enable ports on the given node.
-        ///
-        /// @param node The node from which to extract the enable ports.
-        /// @return The input list is updated with the found enable ports.
-        ///
-        public static iCS_EditorObject[] GetEnablePorts(iCS_EditorObject node) {
-            var enables= new List<iCS_EditorObject>();
-            node.ForEachChildPort(
-                p=> {
-                    if(p.IsEnablePort) {
-                        enables.Add(p);
-                    }
-                }
-            );
-            return enables.ToArray();
-        }
-    	// -------------------------------------------------------------------------
-        /// Determines if one of the enable ports is always true.
-        ///
-        /// @param enablePorts An array of enable ports.
-        /// @return _true_ if at least one enable is always _true_. _false_ otherwise.
-        ///
-        public bool IsAtLeastOneEnableAlwaysTrue(iCS_EditorObject[] enablePorts) {
-            foreach(var e in enablePorts) {
-                if(IsEnableAlwaysTrue(e)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    	// -------------------------------------------------------------------------
-        /// Determines if all enable ports are always false.
-        ///
-        /// @param enablePorts An array of enable ports.
-        /// @return _true_ if all enables are always false. _false_ otherwise.
-        ///
-        public bool IsAllEnablesAlwaysFalse(iCS_EditorObject[] enablePorts) {
-            foreach(var e in enablePorts) {
-                if(!IsEnableAlwaysFalse(e)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        
+
         // =========================================================================
         // TRIGGER PORTS UTILITIES
     	// -------------------------------------------------------------------------
@@ -1063,7 +890,7 @@ namespace iCanScript.Editor.CodeEngineering {
             // No trigger is parent package is empty and one or less enables
             var triggerNode= triggerPort.ParentNode;
             if(triggerNode.IsKindOfPackage) {
-                if(GetAllRelatedEnablePorts(triggerNode).Length <= 1) {
+                if(ControlFlow.GetAllRelatedEnablePorts(triggerNode).Length <= 1) {
                     if(VSStructure.GetListOfFunctions(triggerNode).Count == 0) {
                         return false;
                     }
@@ -1075,22 +902,10 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             // Can't easily reposition the code if one of our clients has multiple enable ports.
             foreach(var c in consumers) {
-                if(GetEnablePorts(c.ParentNode).Length > 1) return true;
+                if(ControlFlow.GetEnablePorts(c.ParentNode).Length > 1) return true;
             }
             // Assume we can relocate code to avoid generation of trigger code.
             return false;
-        }
-
-    	// -------------------------------------------------------------------------
-        /// Finds the trigger port associated with the givne node.
-        ///
-        /// @param node Visual script node to serach for a trigger port.
-        /// @return The trigger port or _null_ if not found.
-        ///
-        public iCS_EditorObject GetTriggerPort(iCS_EditorObject node) {
-            iCS_EditorObject triggerPort= null;
-            node.ForEachChild(p=> { if(p.IsTriggerPort) triggerPort= p; });
-            return triggerPort;
         }
 
         // =========================================================================

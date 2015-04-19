@@ -36,12 +36,12 @@ namespace iCanScript.Editor.CodeEngineering {
             base.ResolveDependencies();
             
             // -- Don't generate code if all enables are false. --
-            if(IsAllEnablesAlwaysFalse(myEnablePorts)) {
+            if(ControlFlow.IsAllEnablesAlwaysFalse(myEnablePorts)) {
                 Parent.Remove(this);
                 return;
             }
             // -- Merge with parent if one of the enables is always true. --
-            if(IsAtLeastOneEnableAlwaysTrue(myEnablePorts)) {
+            if(ControlFlow.IsAtLeastOneEnableAlwaysTrue(myEnablePorts)) {
 				(Parent as ExecutionBlockDefinition).Replace(this, myExecutionList);
 				return;					
             }
@@ -73,7 +73,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             
             // -- Verify if we can optimize parameter ports. --
-            myEnableCode[0]= Context.GetCodeFor(GetCodeProducerPort(myEnablePorts[0]));
+            myEnableCode[0]= Context.GetCodeFor(CodeFlow.GetProducerPort(myEnablePorts[0]));
             if(myEnableCode[0] != null) {
                 myEnableCode[0]= OptimizeInputParameter(myEnableCode[0], myParent);
                 if(myEnableCode[0] != null) {
@@ -144,7 +144,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     result.Append(myEnableCode[i].GenerateBody(0));
                 }
                 else {
-                    result.Append(GetNameFor(GetCodeProducerPort(myEnablePorts[i])));                    
+                    result.Append(GetNameFor(CodeFlow.GetProducerPort(myEnablePorts[i])));                    
                 }
                 if(i < len-1) {
                     result.Append(" || ");

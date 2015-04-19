@@ -245,7 +245,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     else if(vsObj.IsOutDataPort && vsObj.ParentNode == node) {
                         var portVariable= Context.GetCodeFor(vsObj);
                         if(portVariable != null) {
-                            var producerPort= GetCodeProducerPort(vsObj);
+                            var producerPort= CodeFlow.GetProducerPort(vsObj);
                             if(producerPort != null) {
                                 var consumerCode= new VariableReferenceDefinition(vsObj, this);
                                 var producerCode= new VariableReferenceDefinition(producerPort, this);
@@ -335,7 +335,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///         calls.
         ///
         iCS_EditorObject[][] GetConditionalContexts(iCS_EditorObject[] funcCalls) {
-            return P.map(fc=> GetAllRelatedEnablePorts(fc), funcCalls);
+            return P.map(fc=> ControlFlow.GetAllRelatedEnablePorts(fc), funcCalls);
         }
     
 

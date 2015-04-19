@@ -27,7 +27,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Returns a list of all enable ports that affects this function call.
         public override iCS_EditorObject[] GetRelatedEnablePorts() {
-            return GetAllRelatedEnablePorts(myTriggerPort.ParentNode);
+            return ControlFlow.GetAllRelatedEnablePorts(myTriggerPort.ParentNode);
         }
 
         // -------------------------------------------------------------------
