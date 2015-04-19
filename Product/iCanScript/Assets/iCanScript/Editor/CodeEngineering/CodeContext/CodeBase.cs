@@ -23,8 +23,8 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        protected iCS_EditorObject                     myVSObject  = null;    ///< Visual script associated object
-        protected CodeBase                             myParent = null;    ///< The code block for code generation
+        protected iCS_EditorObject                     myVSObject  = null;
+        protected CodeBase                             myParent    = null;
         protected Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
         protected CodeContext                          myContext   = null;
         
@@ -36,7 +36,10 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         public CodeBase Parent {
             get { return myParent; }
-            set { SetParent(value); }
+            set {
+				myParent= value;
+				OnParentChange(value);
+			}
         }
         public CodeContext Context {
             get { return myContext; }
@@ -68,7 +71,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         // -------------------------------------------------------------------
 		public virtual Type GetRuntimeType()					  { return VSObject.RuntimeType; }
-        public virtual void SetParent(CodeBase newParent)   { myParent= newParent; }
+        public virtual void OnParentChange(CodeBase newParent)    { myParent= newParent; }
         public virtual iCS_EditorObject[] GetRelatedEnablePorts() { return new iCS_EditorObject[0]; }
         public virtual iCS_EditorObject[] GetDependencies()       { return new iCS_EditorObject[0]; }
         public virtual void ResolveDependencies() {}

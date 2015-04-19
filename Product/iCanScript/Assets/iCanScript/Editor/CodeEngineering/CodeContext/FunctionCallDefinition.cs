@@ -42,8 +42,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         /// @param newParent The new code block to be assigned.
         ///
-        public override void SetParent(CodeBase newParent) {
-            myParent= newParent;
+        public override void OnParentChange(CodeBase newParent) {
             foreach(var p in myParameters)      { p.Parent= newParent; }
             foreach(var v in myOutputVariables) { v.Parent= newParent; }
             if(myReturnVariable != null) {
