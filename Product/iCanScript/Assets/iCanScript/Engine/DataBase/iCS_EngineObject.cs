@@ -7,8 +7,9 @@ using iCanScript.Engine;
 using P=Prelude;
 
 namespace iCanScript.Engine {
+    [Serializable]
     public enum PortSpecification {
-        Parameter= 0, Return,
+        Target= 0, Self, Parameter, Return,
         PublicVariable= 10, PrivateVariable,
         StaticPublicVariable= 20, StaticPrivateVariable,
         Enable= 30, Trigger,
@@ -16,6 +17,7 @@ namespace iCanScript.Engine {
         Owner= 50,
         Default= 1000
     };
+    [Serializable]
     public enum NodeSpecification {
         Type= 200,
         VariableReference= 210, StaticVariableReference,

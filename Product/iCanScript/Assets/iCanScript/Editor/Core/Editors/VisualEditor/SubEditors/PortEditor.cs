@@ -56,7 +56,9 @@ namespace iCanScript.Editor {
     	public void OnGUI() {
             // Display port name.
             EditName("Port Name");
-
+            
+            EditorGUILayout.EnumPopup("Port Spec", vsObject.PortSpec);                    
+            
             OnPortSpecificGUI();
             
             EditDescription();        

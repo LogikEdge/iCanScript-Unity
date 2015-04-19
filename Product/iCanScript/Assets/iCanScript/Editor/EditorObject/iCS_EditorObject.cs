@@ -107,48 +107,6 @@ public partial class iCS_EditorObject {
         set { EngineObject.NodeSpec= value; }
     }
     // ----------------------------------------------------------------------
-    /// Returns the port type of this object.
-    public PortSpecification PortType {
-        get {
-            if(!IsPort) {
-                Debug.LogError("iCanScript: Requesting PortType on an object that is not a port!");
-            }
-            if(IsReturnPort)  return PortSpecification.Return;
-            if(IsTriggerPort) return PortSpecification.Trigger;
-            if(IsEnablePort)  return PortSpecification.Enable;
-            var parent= ParentNode;
-            if(parent.IsMessageHandler) {
-                if(IsFixDataPort) return PortSpecification.Parameter;
-                return PortSpecification.PublicVariable;
-            }
-            if(parent.IsPublicFunction) {
-                return PortSpecification.Parameter;
-            }
-            if(parent.IsKindOfFunction) {
-                return PortSpecification.Parameter;
-            }
-            Debug.LogWarning("iCanScript: Unknown port specification.  Contact support.");
-            return PortSpecification.Default;
-        }
-    }
-    // ----------------------------------------------------------------------
-    /// Returns the node type of this object.
-    public NodeSpecification NodeType {
-        get {
-            if(!IsNode) {
-                Debug.LogError("iCanScript: Requesting NodeType on an object that is not a node!");                
-            }
-            if(InstanceId == 0)  return NodeSpecification.Type;
-            if(IsMessageHandler) return NodeSpecification.EventHandler;
-            if(IsConstructor)    return NodeSpecification.Constructor;
-            if(IsPublicFunction) return NodeSpecification.PublicFunction;
-            if(IsKindOfFunction) return NodeSpecification.FunctionCall;
-            Debug.LogWarning("iCanScript: Unknown node specification.  Contact support.");
-            return NodeSpecification.Default;
-        }
-    }
-    
-    // ----------------------------------------------------------------------
 	/// Returns the runtime type of the visual script object.
     public Type RuntimeType {
 		get {
