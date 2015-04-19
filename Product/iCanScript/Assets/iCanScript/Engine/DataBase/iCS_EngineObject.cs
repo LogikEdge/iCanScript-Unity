@@ -164,11 +164,13 @@ public class iCS_EngineObject {
         instance.IsNameEditable= toClone.IsNameEditable;
 		instance.LocalAnchorPosition= toClone.LocalAnchorPosition;
 		// Node
+        instance.NodeSpec= toClone.NodeSpec;
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;
         instance.IconGUID= toClone.IconGUID;
         instance.Tooltip= toClone.Tooltip;
 		// Port
+        instance.PortSpec= toClone.PortSpec;
         instance.Edge= toClone.Edge;
         instance.PortIndex= toClone.PortIndex;
         if(instance.IsInDataOrControlPort && toClone.SourceId == -1 && !iCS_Types.IsA<UnityEngine.Object>(toClone.RuntimeType)) {
@@ -179,6 +181,8 @@ public class iCS_EngineObject {
     // ----------------------------------------------------------------------
 	public iCS_EngineObject CopyTo(iCS_EngineObject to) {
         to.ObjectType= ObjectType;
+        to.NodeSpec= NodeSpec;
+        to.PortSpec= PortSpec;
         to.InstanceId= InstanceId;
         to.ParentId= ParentId;
         to.QualifiedType= QualifiedType;
@@ -202,6 +206,8 @@ public class iCS_EngineObject {
     public void Reset() {
 		// Common
         ObjectType= iCS_ObjectTypeEnum.Unknown;
+        NodeSpec= NodeSpecification.Default;
+        PortSpec= PortSpecification.Default;
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";

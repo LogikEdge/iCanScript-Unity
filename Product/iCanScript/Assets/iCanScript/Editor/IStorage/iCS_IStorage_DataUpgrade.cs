@@ -41,7 +41,7 @@ public partial class iCS_IStorage {
         }
         // -- Warn the user that an upgrade toke place --
         if(isUpgraded) {
-            EditorUtility.SetDirty(iCSMonoBehaviour);
+            SaveStorage();
 			ShowUpgradeDialog(softwareVersion);
         }
 		// -- Update storage version identifiers --
@@ -98,39 +98,32 @@ public partial class iCS_IStorage {
                 if(p.IsTargetPort) {
                     p.PortSpec= PortSpecification.Target;
                     isUpgraded= true;
-                    Debug.Log("Target");
                 }
                 else if(p.IsSelfPort) {
                     p.PortSpec= PortSpecification.Self;
                     isUpgraded= true;
-                    Debug.Log("Self");
                 }
                 else if(p.IsReturnPort) {
                     p.PortSpec= PortSpecification.Return;
                     isUpgraded= true;
-                    Debug.Log("Return");
                 }
                 else if(parentNode.IsKindOfFunction) {
                     p.PortSpec= PortSpecification.Parameter;
                     isUpgraded= true;
-                    Debug.Log("Parameter");
                 }
                 else if(parentNode.IsMessageHandler) {
                     if(p.IsFixDataPort) {
                         p.PortSpec= PortSpecification.Parameter;
                         isUpgraded= true;
-                        Debug.Log("Parameter2");
                     }
                     else {
                         p.PortSpec= PortSpecification.PublicVariable;
                         isUpgraded= true;
-                        Debug.Log("PublicVariable");
                     }
                 }
                 else if(parentNode.IsPublicFunction) {
                     p.PortSpec= PortSpecification.Parameter;
                     isUpgraded= true;
-                    Debug.Log("Parameter3");
                 }
                 else {
                     
