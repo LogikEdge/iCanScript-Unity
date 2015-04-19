@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Snapshots Version="1.0">
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-09-17 10:58:31 -0400</Date>
+    </Snapshot>
+    <Snapshot>
+        <Title>First attempt at MultiMarkdown->PDF</Title>
+        <Date>2013-09-17 12:10:19 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="498,11">6</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-09-17 15:49:09 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="476,11">6</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+    <Snapshot>
+        <Title>Pre-External File Sync Overwrite</Title>
+        <Date>2013-09-19 14:21:18 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="498,11">6</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-09-19 19:49:16 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="334,11">6</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-09-19 22:47:42 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="337,11">6</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-09-24 14:05:44 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="342,11">6</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+</Snapshots>

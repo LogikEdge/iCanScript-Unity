@@ -1,0 +1,146 @@
+Title: iCanScript Example Project
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+## Running the _Move Mr Cube_ Visual Script ##
+
+
+
+I bet your fingers are twitching to give your new script a go.
+
+Before you do so, you need to configure initial values for the _speed_ and _direction_ ports.  The initial values are configured using the _Inspector_.
+
+Make certain that the _Mr Cube_ game object is selected and open the _Inspector_.  You will see that a _visual script component_ is installed on _Mr Cube_.  Unfold the _visual script component_ and you will see that it contains two sections:
+
+- a _**Selected Object**_ section and;
+- an _**Engine Selected Object**_ section.
+
+You will be using the _Selected Object_ section to configure the _"speed"_ and _"direction"_ ports.  Unfold the _Selected Object_ section if it is folded.
+
+With the _Inspector_ open, select the _speed_ port in the visual editor.  You will see the details of the port presented in the visual script component.  Change the speed value from zero (0) to one (1).
+
+Now select the _direction_ port in the visual editor.  The _Inspector_ information will change to match your new selection.  Change the _direction_ value from (0,0,0) to (-1,0,0).
+
+You are all done; the initial values are now configured.
+
+
+
+![Figure 1. Change speed to 1.][change-speed-value.png]
+
+
+
+![Figure 2. Change direction to (-1,0,0).][change-direction-value.png]
+
+
+Hit the run button at the top of the Unity editor to give it a whirl (yeh!!!).
+
+iCanScript compiles and runs your script.  _Mr Cube_ will start moving towards the centre of the scene (0,0,0) and continues forever in the same direction.
+
+You can configure different values of direction and speed while your script is running.  The new values are immediately impacting the behaviour of your script.  However, the values configured while the engine is running are temporary and they will revert back to their initial configured values once the Unity game engine is stopped.
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][icanscript-ui-tips_32x32x32.png] <span class="tiptitle">iCanScript User Interface Tips</span>
+
+---
+
+The details of the selected node or port are accessible from the visual script component in the _Inspector_.  The visual script component inspector is divided in two sections:
+
+**Selected Object:**
+> This section allows to view and configure the attributes of the selected node or port.
+
+**Selected Engine Object:**
+> This section displays in-depth information to help debug the visual script.  This information will not be used in this tutorial.
+
+ </div><!--tipbox-->
+</div>
+
+
+## Accessing Runtime Information ##
+
+
+Let's take this opportunity to discuss some of the basic debugging features of iCanScript.
+
+The visual editor remains active while the script is running.  Selecting the visual editor tab will bring it forward.  You may decide to relocate it so that both the visual editor and the game window be visible.  
+
+![Figure 3. iCanScript Visual Editor with runtime debug information.][runtime-display.png]
+
+The visual editor displays the following runtime information in the centre of it's toolbar:
+
+- the current frame #;
+- the average frame rate (in frames / sec).
+
+
+In addition, the Visual Editor toolbar includes several options to control the display of runtime information.  These options are:
+
+**Enable/Disable display of the frame #**
+	: Enable this control to display the last executed frame # in the title bar of each node.  The display of the last executed frame # is especially useful when conditional execution is used.  It helps differentiate the nodes that are executing from the nodes that are stalled.
+
+**Enable/Disable display of port values**
+	: Enable this control to display the runtime values of the ports.  The runtime values are displayed in beige and are periodically refreshed.
+
+**Slider to control the refresh period**
+	: This slider is used to control the frequency at which the runtime information is displayed in the visual editor.  Depending on the performance of your computer, the display of runtime information could impair on the frame rate of your game.  Reducing the refresh rate of the runtime information will reduce the performance impact on your game.
+
+
+
+## Recap on Your First Visual Script ##
+
+
+So what have you done so far?  You have:
+
+- Create the Unity scene to host your example project;
+- Installed a visual script on the _Mr Cube_ game object;
+- Created the _Update_ message handler to contain and execute your visual script on each frame;
+- Created a package to encapsulate the script to control the movement of _Mr Cube_ using speed and direction;
+- Dragged the _Mr Cube_ game object inside the script and extracted its _Transform_ component;
+- Build a small equation to translate the speed and direction inputs into a displacement to be applied on _Mr Cube_ transform;
+- Publish the _speed_ & _direction_ ports onto the _Move Mr Cube_ package for easy access by other packages.
+- Tested your new script with predefined speed & direction values.
+
+
+
+
+[change-speed-value.png]: change-speed-value.png
+
+[change-direction-value.png]: change-direction-value.png
+
+[icanscript-ui-tips_32x32x32.png]: icanscript-ui-tips_32x32x32.png width=33px height=33px
+
+[runtime-display.png]: runtime-display.png

@@ -1,0 +1,72 @@
+Title: iCanScript Installation & Upgrade
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+# Removing iCanScript #
+
+
+The following steps are needed to uninstall iCanScript from your project:
+
+*  Remove the _**iCanScript**_ folder;
+*  Open the _Gizmos_ folder and remove the _**iCanScriptGizmo.png**_ file;
+*  Remove the optional _**iCanScript_Nodes**_ package;
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][PostitNote_48x48.png] **Note:**  Uninstalling the previous version of iCanScript is required when performing an upgrade.
+
+ </div><!--tipbox-->
+</div>
+
+<!-- 2columns - Start --><div style="width: 100%; margin:0 auto"><div style="float:left; width:49%; margin:0 auto; padding:0">
+ 
+![Figure 1. Uninstalling the iCanScript packages.][remove-packages.png]
+
+<!-- 2columns - Separator --></div><div style="float:right; width:49%; margin:0 auto; padding: 0">
+
+![Figure 2. Removing the iCanScript Gizmo.][remove-gizmo.png]
+
+<!-- 2columns - End --></div></div><div style="clear: both"></div>
+
+
+[PostitNote_48x48.png]: PostitNote_48x48.png width=32px height=32px
+
+[remove-packages.png]: remove-packages.png
+
+[remove-gizmo.png]: remove-gizmo.png

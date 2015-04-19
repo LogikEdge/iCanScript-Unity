@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Snapshots Version="1.0">
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-10-03 15:02:18 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="6,24">53</LinkID>
+                    <LinkID Range="37,24">54</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+</Snapshots>

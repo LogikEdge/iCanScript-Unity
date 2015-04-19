@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<scenario xmlns="http://www.omnigroup.com/namespace/OmniPlan/v2" id="iFnDov1gzC_">
+  <start-date>2013-06-24T12:00:00.000Z</start-date>
+  <prototype-task>
+    <task id="t4294967294">
+      <title>New port icon in hierarchy</title>
+      <leveled-start>2013-08-29T19:00:00.000Z</leveled-start>
+      <effort>28800</effort>
+      <effort-done>28800</effort-done>
+    </task>
+  </prototype-task>
+  <prototype-task>
+    <task id="t4294967293">
+      <title>Milestone 1</title>
+      <type>milestone</type>
+    </task>
+  </prototype-task>
+  <prototype-task>
+    <task id="t4294967292">
+      <title>Group 1</title>
+      <type>group</type>
+    </task>
+  </prototype-task>
+  <prototype-resource>
+    <resource id="r4294967294">
+      <name>Resource 1</name>
+      <type>Staff</type>
+      <units-available>0</units-available>
+      <efficiency>0</efficiency>
+    </resource>
+  </prototype-resource>
+  <prototype-resource>
+    <resource id="r4294967293">
+      <name>Equipment 1</name>
+      <type>Equipment</type>
+    </resource>
+  </prototype-resource>
+  <prototype-resource>
+    <resource id="r4294967292">
+      <name>Material 1</name>
+      <type>Material</type>
+      <units-available>0</units-available>
+      <efficiency>0</efficiency>
+    </resource>
+  </prototype-resource>
+  <prototype-resource>
+    <resource id="r4294967291">
+      <name>Group 1</name>
+      <type>Group</type>
+    </resource>
+  </prototype-resource>
+  <top-resource idref="r-1"/>
+  <resource id="r-1">
+    <type>Group</type>
+    <schedule>
+      <calendar name="Time Off" editable="yes" overtime="no">
+        <event start="2013-06-24T12:00:00.000Z" end="2013-06-24T21:00:00.000Z"/>
+        <event start="2013-07-01T12:00:00.000Z" end="2013-07-01T21:00:00.000Z"/>
+        <event start="2013-12-23T13:00:00.000Z" end="2013-12-27T22:00:00.000Z"/>
+        <event start="2013-12-30T13:00:00.000Z" end="2014-01-03T22:00:00.000Z"/>
+      </calendar>
+      <calendar name="Overtime" editable="yes" overtime="yes"/>
+    </schedule>
+    <child-resource idref="r2"/>
+    <child-resource idref="r4"/>
+  </resource>
+  <resource id="r2">
+    <name>MLaunier</name>
+    <type>Staff</type>
+    <schedule>
+      <calendar name="Time Off" editable="yes" overtime="no">
+        <event start="2013-06-25T12:00:00.000Z" end="2013-06-28T13:00:00.000Z"/>
+        <event start="2013-06-25T20:00:00.000Z" end="2013-06-28T21:00:00.000Z"/>
+        <event start="2013-07-02T12:00:00.000Z" end="2013-07-05T13:00:00.000Z"/>
+        <event start="2013-07-02T20:00:00.000Z" end="2013-07-05T21:00:00.000Z"/>
+        <event start="2013-07-08T12:00:00.000Z" end="2013-07-12T13:00:00.000Z"/>
+        <event start="2013-07-08T20:00:00.000Z" end="2013-07-12T21:00:00.000Z"/>
+        <event start="2013-07-15T12:00:00.000Z" end="2013-07-19T13:00:00.000Z"/>
+        <event start="2013-07-15T20:00:00.000Z" end="2013-07-19T21:00:00.000Z"/>
+        <event start="2013-07-22T12:00:00.000Z" end="2013-07-26T21:00:00.000Z"/>
+        <event start="2013-07-29T12:00:00.000Z" end="2013-08-02T21:00:00.000Z"/>
+        <event start="2013-08-05T12:00:00.000Z" end="2013-08-09T21:00:00.000Z"/>
+        <event start="2013-08-12T12:00:00.000Z" end="2013-08-16T21:00:00.000Z"/>
+        <event start="2013-08-19T12:00:00.000Z" end="2013-08-23T21:00:00.000Z"/>
+        <event start="2013-08-26T12:00:00.000Z" end="2013-08-27T21:00:00.000Z"/>
+      </calendar>
+      <calendar name="Overtime" editable="yes" overtime="yes"/>
+    </schedule>
+  </resource>
+  <resource id="r4">
+    <name>User1</name>
+    <type>Staff</type>
+    <efficiency>0</efficiency>
+  </resource>
+  <top-task idref="t-1"/>
+  <task id="t-1">
+    <type>group</type>
+    <child-task idref="t48"/>
+    <child-task idref="t65"/>
+    <child-task idref="t87"/>
+  </task>
+  <task id="t15">
+    <title>New Navigation</title>
+    <type>group</type>
+    <child-task idref="t16"/>
+    <note>
+      <text>
+        <p>
+          <run>
+            <lit>Scapple like</lit>
+          </run>
+        </p>
+      </text>
+    </note>
+  </task>
+  <task id="t16">
+    <title>Z key - Birds eye view</title>
+    <leveled-start>2013-08-30T21:00:00.000Z</leveled-start>
+    <effort>28800</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t27">
+    <title>Vector type conversion</title>
+    <leveled-start>2013-10-23T21:00:00.000Z</leveled-start>
+    <effort>57600</effort>
+    <note>
+      <text>
+        <p>
+          <run>
+            <lit>Should allow for component rearrangement</lit>
+          </run>
+        </p>
+      </text>
+    </note>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t28">
+    <title>Add fields/property to Behaviour</title>
+    <leveled-start>2013-09-04T21:00:00.000Z</leveled-start>
+    <effort>288000</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t29">
+    <title>Show base class in Library</title>
+    <leveled-start>2013-07-04T18:00:00.000Z</leveled-start>
+    <effort>57600</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t30">
+    <title>Behaviour interconnection</title>
+    <leveled-start>2013-09-18T21:00:00.000Z</leveled-start>
+    <effort>288000</effort>
+    <note>
+      <text>
+        <p>
+          <run>
+            <lit>Using module ports.</lit>
+          </run>
+        </p>
+      </text>
+    </note>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t31">
+    <title>Merge all windows</title>
+    <leveled-start>2013-10-02T21:00:00.000Z</leveled-start>
+    <effort>144000</effort>
+    <note>
+      <text>
+        <p>
+          <run>
+            <lit>Simplify full screen mode</lit>
+          </run>
+        </p>
+      </text>
+    </note>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t32">
+    <title>Multiple opened visual editors</title>
+    <leveled-start>2013-10-09T21:00:00.000Z</leveled-start>
+    <effort>144000</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t36">
+    <title>Port relocation on any edge</title>
+    <leveled-start>2013-09-02T21:00:00.000Z</leveled-start>
+    <effort>57600</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t37">
+    <title>Orthogonal lines for connections</title>
+    <leveled-start>2013-10-16T21:00:00.000Z</leveled-start>
+    <effort>144000</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t42">
+    <title>.NET AttributeToolTip -&gt; Description</title>
+    <leveled-start>2013-08-29T16:00:00.000Z</leveled-start>
+    <effort>14400</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t48">
+    <title>iCanScript v1.0.1 (Cleanup)</title>
+    <type>group</type>
+    <child-task idref="t49"/>
+    <child-task idref="t55"/>
+    <child-task idref="t67"/>
+  </task>
+  <task id="t49">
+    <title>Features</title>
+    <type>group</type>
+    <child-task idref="t76"/>
+    <child-task idref="t29"/>
+    <child-task idref="t59"/>
+    <child-task idref="t70"/>
+    <child-task idref="t42"/>
+  </task>
+  <task id="t55">
+    <title>Prepare Release v1.0.1</title>
+    <leveled-start>2013-08-29T21:00:00.000Z</leveled-start>
+    <effort>28800</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t59">
+    <title>Icons for Behaviour messages</title>
+    <leveled-start>2013-07-09T15:00:00.000Z</leveled-start>
+    <effort>86400</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t65">
+    <title>iCanScript v1.1.0</title>
+    <type>group</type>
+    <child-task idref="t66"/>
+    <child-task idref="t68"/>
+    <child-task idref="t69"/>
+  </task>
+  <task id="t66">
+    <title>Features</title>
+    <type>group</type>
+    <child-task idref="t15"/>
+    <child-task idref="t36"/>
+    <child-task idref="t28"/>
+    <child-task idref="t30"/>
+    <child-task idref="t31"/>
+    <child-task idref="t32"/>
+    <child-task idref="t37"/>
+    <child-task idref="t27"/>
+  </task>
+  <task id="t67">
+    <title>Release v1.0.1</title>
+    <type>milestone</type>
+    <prerequisite-task idref="t55"/>
+  </task>
+  <task id="t68">
+    <title>Prepare Release v1.1.0</title>
+    <leveled-start>2013-10-25T21:00:00.000Z</leveled-start>
+    <effort>28800</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t69">
+    <title>Release v1.1.0</title>
+    <type>milestone</type>
+    <prerequisite-task idref="t68"/>
+  </task>
+  <task id="t70">
+    <title>Icons for Unity Classes</title>
+    <leveled-start>2013-07-15T15:00:00.000Z</leveled-start>
+    <effort>144000</effort>
+    <start-constraint-date>2013-06-25T12:00:00.000Z</start-constraint-date>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t76">
+    <title>Icons cleanup library &amp; hierarchy</title>
+    <leveled-start>2013-06-29T04:45:38.033Z</leveled-start>
+    <effort>57600</effort>
+    <assignment idref="r2"/>
+  </task>
+  <task id="t87">
+    <title>Tutorials</title>
+    <leveled-start>2013-10-28T21:00:00.000Z</leveled-start>
+    <effort>28800</effort>
+    <assignment idref="r2"/>
+  </task>
+  <critical-path root="-1" enabled="false" resources="false">
+    <color r="1" g="0.498039" b="0.498039"/>
+  </critical-path>
+  <tracking-changes/>
+</scenario>

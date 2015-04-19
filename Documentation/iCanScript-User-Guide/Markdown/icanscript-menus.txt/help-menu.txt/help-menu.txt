@@ -1,0 +1,122 @@
+Title: iCanScript Menus
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+# Help Menu #
+
+iCanScript extends Unity's <span class="cmd">Help</span> menu to provide quick access to the product web site, documentation and support pages.
+
+![Figure 1. iCanScript Help menu extension.][ics-menu-help.png]
+
+## Help->iCanScript->Home Page ##
+
+_**Summary:**_
+
+		Opens iCanScript home page in the default Web browser.
+
+
+_**Description:**_
+
+The <span class="cmd">Home Page</span> menu item is used to open the home page of the iCanScript Web site in a new internet browser window.
+
+An internet connection is required to access the iCanScript home page.
+
+
+## Help->iCanScript->User's Guide ##
+
+_**Summary:**_
+
+		Opens iCanScript user manual in the default Web browser.
+
+
+_**Description:**_
+
+The <span class="cmd">User's Guide</span> menu item is used to open the iCanScript online user guide in a new internet browser window.
+
+An internet connection is required to access the iCanScript online user guide.
+
+
+## Help->iCanScript->Release Notes ##
+
+_**Summary:**_
+
+		Opens latest release notes in the default Web browser.
+
+
+_**Description:**_
+
+The <span class="cmd">Release Notes</span> menu item is used to open the iCanScript latest release information in a new internet browser window.
+
+The release notes are sorted from the latest release to the oldest release for your convenience. A copy of the release notes in PDF format can also be downloaded from the web site.
+
+An internet connection is required to access the iCanScript release note pages.
+
+
+## Help->iCanScript->Customer Request ##
+
+_**Summary:**_
+
+		Opens the feature request and bug report form.
+
+
+_**Description:**_
+
+The <span class="cmd">Customer Request</span> menu item is used to submit feature requests and bug reports for the iCanScript product. You can also browse the status of existing customer requests.
+
+The customer request form is Web based and requires an active internet connection.
+
+
+## Help->iCanScript->Check for Updates... ##
+
+_**Summary:**_
+
+		Validates the current version against latest available release.
+
+
+_**Description:**_
+
+The <span class="cmd">Check for Update</span> menu item is used to determine if you have the latest official release of iCanScript. You will be prompted to download the latest version if your version is out-of-date.
+
+Validation of the latest iCanScript version requires an active internet connection.
+
+
+
+
+[ics-menu-help.png]: ics-menu-help.png

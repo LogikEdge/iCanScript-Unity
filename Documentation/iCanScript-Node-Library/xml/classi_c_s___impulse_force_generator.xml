@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___impulse_force_generator" kind="class" prot="public">
+    <compoundname>iCS_ImpulseForceGenerator</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classi_c_s___impulse_force_generator_1ac66898c5aac5f47e5fd67971e886f73c" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool iCS_ImpulseForceGenerator.IsActive</definition>
+        <argsstring></argsstring>
+        <name>IsActive</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="6" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___impulse_force_generator_1a97f52ef206c649c006ca60e66da02927" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_ImpulseForceGenerator.StartTime</definition>
+        <argsstring></argsstring>
+        <name>StartTime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___impulse_force_generator_1ae1e40d0291794243afcaa4e60216f13d" prot="private" static="no" mutable="no">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ImpulseForceGenerator.MainImpulse</definition>
+        <argsstring></argsstring>
+        <name>MainImpulse</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="8" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___impulse_force_generator_1aed752c0fda3daf008390a68767cd65e3" prot="private" static="no" mutable="no">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ImpulseForceGenerator.SecondaryImpulse</definition>
+        <argsstring></argsstring>
+        <name>SecondaryImpulse</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="9" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___impulse_force_generator_1afcc991eefa4efc21fd29008d86c23fd9" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_ImpulseForceGenerator.MainImpulseTime</definition>
+        <argsstring></argsstring>
+        <name>MainImpulseTime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="10" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___impulse_force_generator_1a00758290d030fbdf121dfa956e07d8af" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_ImpulseForceGenerator.SecondaryImpulseTime</definition>
+        <argsstring></argsstring>
+        <name>SecondaryImpulseTime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___impulse_force_generator_1a6cad3a772a5ec147b2233066f3285169" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_ImpulseForceGenerator.RetriggerDelay</definition>
+        <argsstring></argsstring>
+        <name>RetriggerDelay</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="12" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___impulse_force_generator_1a964bfe6041374767d57268e996240724" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_ImpulseForceGenerator.InitialVelocityBoost</definition>
+        <argsstring></argsstring>
+        <name>InitialVelocityBoost</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="13" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classi_c_s___impulse_force_generator_1a98be9136d17b7dc1bb2e3615efeab19e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>iCS_ImpulseForceGenerator.iCS_ImpulseForceGenerator</definition>
+        <argsstring>(Vector3 mainImpulseAccel, float mainImpulseTime, Vector3 secondaryImpulseAccel, float secondaryImpulseTime, float retriggerDelay=1.2f, float initialVelocityBoost=10f)</argsstring>
+        <name>iCS_ImpulseForceGenerator</name>
+        <param>
+          <type>Vector3</type>
+          <declname>mainImpulseAccel</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>mainImpulseTime</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>secondaryImpulseAccel</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>secondaryImpulseTime</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>retriggerDelay</declname>
+          <defval>1.2f</defval>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>initialVelocityBoost</declname>
+          <defval>10f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="16" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="16" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___impulse_force_generator_1a7613f26fe1128ae462057137427b0f82" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_ImpulseForceGenerator.Update</definition>
+        <argsstring>(bool trigger)</argsstring>
+        <name>Update</name>
+        <param>
+          <type>bool</type>
+          <declname>trigger</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="29" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="29" bodyend="61"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_ImpulseForceGenerator.cs" bodystart="5" bodyend="62"/>
+    <listofallmembers>
+      <member refid="classi_c_s___impulse_force_generator_1a98be9136d17b7dc1bb2e3615efeab19e" prot="public" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>iCS_ImpulseForceGenerator</name></member>
+      <member refid="classi_c_s___impulse_force_generator_1a964bfe6041374767d57268e996240724" prot="private" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>InitialVelocityBoost</name></member>
+      <member refid="classi_c_s___impulse_force_generator_1ac66898c5aac5f47e5fd67971e886f73c" prot="private" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>IsActive</name></member>
+      <member refid="classi_c_s___impulse_force_generator_1ae1e40d0291794243afcaa4e60216f13d" prot="private" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>MainImpulse</name></member>
+      <member refid="classi_c_s___impulse_force_generator_1afcc991eefa4efc21fd29008d86c23fd9" prot="private" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>MainImpulseTime</name></member>
+      <member refid="classi_c_s___impulse_force_generator_1a6cad3a772a5ec147b2233066f3285169" prot="private" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>RetriggerDelay</name></member>
+      <member refid="classi_c_s___impulse_force_generator_1aed752c0fda3daf008390a68767cd65e3" prot="private" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>SecondaryImpulse</name></member>
+      <member refid="classi_c_s___impulse_force_generator_1a00758290d030fbdf121dfa956e07d8af" prot="private" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>SecondaryImpulseTime</name></member>
+      <member refid="classi_c_s___impulse_force_generator_1a97f52ef206c649c006ca60e66da02927" prot="private" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>StartTime</name></member>
+      <member refid="classi_c_s___impulse_force_generator_1a7613f26fe1128ae462057137427b0f82" prot="public" virt="non-virtual"><scope>iCS_ImpulseForceGenerator</scope><name>Update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

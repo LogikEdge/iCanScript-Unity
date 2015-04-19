@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___boolean" kind="class" prot="public">
+    <compoundname>iCS_Boolean</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___boolean_1adec5a228aeddaeac4eefe7c4fdd73c5b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.And</definition>
+        <argsstring>(bool a, bool b)</argsstring>
+        <name>And</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="111" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="111" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1a321cd6a1da2b966b4770212f1d452118" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.And</definition>
+        <argsstring>(bool a, bool b, bool c)</argsstring>
+        <name>And</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="112" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="112" bodyend="112"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1a92ec4e69d19ed6f31649ba8e96887f82" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.And</definition>
+        <argsstring>(bool a, bool b, bool c, bool d)</argsstring>
+        <name>And</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>c</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="113" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="113" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1a4f8a23884f70f1f962f92c37401419e8" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.Or</definition>
+        <argsstring>(bool a, bool b)</argsstring>
+        <name>Or</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="114" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="114" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1a5abcc785466b0d80ab429662badfde31" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.Or</definition>
+        <argsstring>(bool a, bool b, bool c)</argsstring>
+        <name>Or</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="115" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="115" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1ada06b40212d27095c300e7d51f602391" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.Or</definition>
+        <argsstring>(bool a, bool b, bool c, bool d)</argsstring>
+        <name>Or</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>c</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="116" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="116" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1ad60a5d9ca0bfb00655427548d8ce87ef" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.Xor</definition>
+        <argsstring>(bool a, bool b)</argsstring>
+        <name>Xor</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="117" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="117" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1a381fb8fa890c53cd53fab5cfb86ba2b1" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.Not</definition>
+        <argsstring>(bool a)</argsstring>
+        <name>Not</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="118" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="118" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1a16830746c0821bc1607d385b72291b14" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.NotAnd</definition>
+        <argsstring>(bool a, bool b)</argsstring>
+        <name>NotAnd</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="119" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="119" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1ab58b367379fa1ce08dbd36722326805d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.NotAnd</definition>
+        <argsstring>(bool a, bool b, bool c)</argsstring>
+        <name>NotAnd</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="120" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="120" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1aec7e3a0d441248654904a4c9f722165b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.NotAnd</definition>
+        <argsstring>(bool a, bool b, bool c, bool d)</argsstring>
+        <name>NotAnd</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>c</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="121" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="121" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___boolean_1a3083a993ef3008180701911a31f84898" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Boolean.Inverse</definition>
+        <argsstring>(bool a)</argsstring>
+        <name>Inverse</name>
+        <param>
+          <type>bool</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="122" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="122" bodyend="122"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="110" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="110" bodyend="123"/>
+    <listofallmembers>
+      <member refid="classi_c_s___boolean_1adec5a228aeddaeac4eefe7c4fdd73c5b" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>And</name></member>
+      <member refid="classi_c_s___boolean_1a321cd6a1da2b966b4770212f1d452118" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>And</name></member>
+      <member refid="classi_c_s___boolean_1a92ec4e69d19ed6f31649ba8e96887f82" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>And</name></member>
+      <member refid="classi_c_s___boolean_1a3083a993ef3008180701911a31f84898" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>Inverse</name></member>
+      <member refid="classi_c_s___boolean_1a381fb8fa890c53cd53fab5cfb86ba2b1" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>Not</name></member>
+      <member refid="classi_c_s___boolean_1a16830746c0821bc1607d385b72291b14" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>NotAnd</name></member>
+      <member refid="classi_c_s___boolean_1ab58b367379fa1ce08dbd36722326805d" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>NotAnd</name></member>
+      <member refid="classi_c_s___boolean_1aec7e3a0d441248654904a4c9f722165b" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>NotAnd</name></member>
+      <member refid="classi_c_s___boolean_1a4f8a23884f70f1f962f92c37401419e8" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>Or</name></member>
+      <member refid="classi_c_s___boolean_1a5abcc785466b0d80ab429662badfde31" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>Or</name></member>
+      <member refid="classi_c_s___boolean_1ada06b40212d27095c300e7d51f602391" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>Or</name></member>
+      <member refid="classi_c_s___boolean_1ad60a5d9ca0bfb00655427548d8ce87ef" prot="public" virt="non-virtual"><scope>iCS_Boolean</scope><name>Xor</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

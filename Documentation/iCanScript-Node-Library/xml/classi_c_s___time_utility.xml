@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___time_utility" kind="class" prot="public">
+    <compoundname>iCS_TimeUtility</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___time_utility_1aee31f9e7423159959060fbb185a94bfe" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_TimeUtility.ScaleByDeltaTime</definition>
+        <argsstring>(float value=1f)</argsstring>
+        <name>ScaleByDeltaTime</name>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+          <defval>1f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" bodystart="7" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_utility_1adc20e271bd5a31f2321d3c767140bfc7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_TimeUtility.ScaleByDeltaTime</definition>
+        <argsstring>(Vector2 value)</argsstring>
+        <name>ScaleByDeltaTime</name>
+        <param>
+          <type>Vector2</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" bodystart="11" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_utility_1ab79b22ccdc390943c9d0bfebd1c6a06f" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_TimeUtility.ScaleByDeltaTime</definition>
+        <argsstring>(Vector3 value)</argsstring>
+        <name>ScaleByDeltaTime</name>
+        <param>
+          <type>Vector3</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" line="15" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" bodystart="15" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_utility_1a2d64bc71bea1d4b155cbade330152b19" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_TimeUtility.ScaleByDeltaTime</definition>
+        <argsstring>(Vector4 value)</argsstring>
+        <name>ScaleByDeltaTime</name>
+        <param>
+          <type>Vector4</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" line="19" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" bodystart="19" bodyend="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_utility_1a880886d7c76475db0b458a2217198cbc" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_TimeUtility.LerpUsingDeltaTime</definition>
+        <argsstring>(float v1, float v2, float ratio)</argsstring>
+        <name>LerpUsingDeltaTime</name>
+        <param>
+          <type>float</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" line="23" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" bodystart="23" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_utility_1ad89b24668bf9fa18708c33d41f89a11d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_TimeUtility.LerpUsingDeltaTime</definition>
+        <argsstring>(Vector2 v1, Vector2 v2, float ratio)</argsstring>
+        <name>LerpUsingDeltaTime</name>
+        <param>
+          <type>Vector2</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector2</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" line="27" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" bodystart="27" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_utility_1a90ea122b5979cd3203bd750a0627186e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_TimeUtility.LerpUsingDeltaTime</definition>
+        <argsstring>(Vector3 v1, Vector3 v2, float ratio)</argsstring>
+        <name>LerpUsingDeltaTime</name>
+        <param>
+          <type>Vector3</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" line="31" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" bodystart="31" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___time_utility_1aab7ac30b38519012456c94a9e2309f97" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_TimeUtility.LerpUsingDeltaTime</definition>
+        <argsstring>(Vector4 v1, Vector4 v2, float ratio)</argsstring>
+        <name>LerpUsingDeltaTime</name>
+        <param>
+          <type>Vector4</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector4</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" line="35" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" bodystart="35" bodyend="37"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TimeUtility.cs" bodystart="5" bodyend="38"/>
+    <listofallmembers>
+      <member refid="classi_c_s___time_utility_1a880886d7c76475db0b458a2217198cbc" prot="public" virt="non-virtual"><scope>iCS_TimeUtility</scope><name>LerpUsingDeltaTime</name></member>
+      <member refid="classi_c_s___time_utility_1ad89b24668bf9fa18708c33d41f89a11d" prot="public" virt="non-virtual"><scope>iCS_TimeUtility</scope><name>LerpUsingDeltaTime</name></member>
+      <member refid="classi_c_s___time_utility_1a90ea122b5979cd3203bd750a0627186e" prot="public" virt="non-virtual"><scope>iCS_TimeUtility</scope><name>LerpUsingDeltaTime</name></member>
+      <member refid="classi_c_s___time_utility_1aab7ac30b38519012456c94a9e2309f97" prot="public" virt="non-virtual"><scope>iCS_TimeUtility</scope><name>LerpUsingDeltaTime</name></member>
+      <member refid="classi_c_s___time_utility_1aee31f9e7423159959060fbb185a94bfe" prot="public" virt="non-virtual"><scope>iCS_TimeUtility</scope><name>ScaleByDeltaTime</name></member>
+      <member refid="classi_c_s___time_utility_1adc20e271bd5a31f2321d3c767140bfc7" prot="public" virt="non-virtual"><scope>iCS_TimeUtility</scope><name>ScaleByDeltaTime</name></member>
+      <member refid="classi_c_s___time_utility_1ab79b22ccdc390943c9d0bfebd1c6a06f" prot="public" virt="non-virtual"><scope>iCS_TimeUtility</scope><name>ScaleByDeltaTime</name></member>
+      <member refid="classi_c_s___time_utility_1a2d64bc71bea1d4b155cbade330152b19" prot="public" virt="non-virtual"><scope>iCS_TimeUtility</scope><name>ScaleByDeltaTime</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

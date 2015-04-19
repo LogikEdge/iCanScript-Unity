@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___remote_call" kind="class" prot="public">
+    <compoundname>iCS_RemoteCall</compoundname>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classi_c_s___remote_call_1a6b1defbc7b42394853ea086b847be259" prot="private" static="yes" mutable="no">
+        <type>Dictionary&lt; string, iCS_VisualScriptImp &gt;</type>
+        <definition>Dictionary&lt;string, iCS_VisualScriptImp&gt; iCS_RemoteCall.myDictionary</definition>
+        <argsstring></argsstring>
+        <name>myDictionary</name>
+        <initializer>= new Dictionary&lt;string, iCS_VisualScriptImp&gt;()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" line="40" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___remote_call_1a7339bc885d2cc91f75c2925b218ed21f" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Component</type>
+        <definition>static Component iCS_RemoteCall.FindWithTag</definition>
+        <argsstring>(string tag, string componentType)</argsstring>
+        <name>FindWithTag</name>
+        <param>
+          <type>string</type>
+          <declname>tag</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>componentType</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" line="9" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" bodystart="9" bodyend="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___remote_call_1a0b2475918c3bf919a2926f9ce7182615" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void iCS_RemoteCall.SendMessage</definition>
+        <argsstring>(iCS_VisualScriptImp targetVisualScript, string messageName)</argsstring>
+        <name>SendMessage</name>
+        <param>
+          <type>iCS_VisualScriptImp</type>
+          <declname>targetVisualScript</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>messageName</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" line="18" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" bodystart="18" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___remote_call_1ab4f5845c0d2b3f9d5549fd0108cf8e32" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void iCS_RemoteCall.SendMessageUsingTag</definition>
+        <argsstring>(string tag, string messageName)</argsstring>
+        <name>SendMessageUsingTag</name>
+        <param>
+          <type>string</type>
+          <declname>tag</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>messageName</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" line="45" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" bodystart="45" bodyend="65"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_RemoteCall.cs" bodystart="7" bodyend="66"/>
+    <listofallmembers>
+      <member refid="classi_c_s___remote_call_1a7339bc885d2cc91f75c2925b218ed21f" prot="public" virt="non-virtual"><scope>iCS_RemoteCall</scope><name>FindWithTag</name></member>
+      <member refid="classi_c_s___remote_call_1a6b1defbc7b42394853ea086b847be259" prot="private" virt="non-virtual"><scope>iCS_RemoteCall</scope><name>myDictionary</name></member>
+      <member refid="classi_c_s___remote_call_1a0b2475918c3bf919a2926f9ce7182615" prot="public" virt="non-virtual"><scope>iCS_RemoteCall</scope><name>SendMessage</name></member>
+      <member refid="classi_c_s___remote_call_1ab4f5845c0d2b3f9d5549fd0108cf8e32" prot="public" virt="non-virtual"><scope>iCS_RemoteCall</scope><name>SendMessageUsingTag</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

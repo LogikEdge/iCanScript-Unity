@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="struct_bool" kind="struct" prot="public">
+    <compoundname>Bool</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_bool_1a66ba58e525f8d28f05655f36ffb9ceed" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Bool.myValue</definition>
+        <argsstring></argsstring>
+        <name>myValue</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="14" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="struct_bool_1a70bc573da6ea3bb93da5de3e442ada19" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="yes">
+        <type>bool</type>
+        <definition>bool Bool.Value</definition>
+        <argsstring></argsstring>
+        <name>Value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="16" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="struct_bool_1ab80004af3dcb164ab2876b76a6b10936" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="no">
+        <type>bool</type>
+        <definition>bool Bool.Not</definition>
+        <argsstring></argsstring>
+        <name>Not</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="20" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="property" id="struct_bool_1aa94cd09bc0530f4bf17d1a8f9bf55280" prot="public" static="no" readable="no" writable="no" gettable="yes" settable="no">
+        <type>bool</type>
+        <definition>bool Bool.Inverse</definition>
+        <argsstring></argsstring>
+        <name>Inverse</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="23" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_bool_1adfa392e25e49fa380805cdc3e720db4c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Bool.Bool</definition>
+        <argsstring>(bool init=false)</argsstring>
+        <name>Bool</name>
+        <param>
+          <type>bool</type>
+          <declname>init</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="27" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="27" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_bool_1aa8673143ee9773e4179568c7a0b750e0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Bool.And</definition>
+        <argsstring>(bool b)</argsstring>
+        <name>And</name>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="28" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_bool_1a06d2286fa15c689ce13c9572591712e1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Bool.Or</definition>
+        <argsstring>(bool b)</argsstring>
+        <name>Or</name>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="29" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_bool_1a3ee01384c4fc57177fd99f77a85345ff" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Bool.Xor</definition>
+        <argsstring>(bool b)</argsstring>
+        <name>Xor</name>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="30" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="30" bodyend="30"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" line="13" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/_NET/iCS_Variables.cs" bodystart="13" bodyend="31"/>
+    <listofallmembers>
+      <member refid="struct_bool_1aa8673143ee9773e4179568c7a0b750e0" prot="public" virt="non-virtual"><scope>Bool</scope><name>And</name></member>
+      <member refid="struct_bool_1adfa392e25e49fa380805cdc3e720db4c" prot="public" virt="non-virtual"><scope>Bool</scope><name>Bool</name></member>
+      <member refid="struct_bool_1aa94cd09bc0530f4bf17d1a8f9bf55280" prot="public" virt="non-virtual"><scope>Bool</scope><name>Inverse</name></member>
+      <member refid="struct_bool_1a66ba58e525f8d28f05655f36ffb9ceed" prot="public" virt="non-virtual"><scope>Bool</scope><name>myValue</name></member>
+      <member refid="struct_bool_1ab80004af3dcb164ab2876b76a6b10936" prot="public" virt="non-virtual"><scope>Bool</scope><name>Not</name></member>
+      <member refid="struct_bool_1a06d2286fa15c689ce13c9572591712e1" prot="public" virt="non-virtual"><scope>Bool</scope><name>Or</name></member>
+      <member refid="struct_bool_1a70bc573da6ea3bb93da5de3e442ada19" prot="public" virt="non-virtual"><scope>Bool</scope><name>Value</name></member>
+      <member refid="struct_bool_1a3ee01384c4fc57177fd99f77a85345ff" prot="public" virt="non-virtual"><scope>Bool</scope><name>Xor</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SandwichFillings</key>
+	<array>
+		<dict>
+			<key>Dictionary</key>
+			<dict>
+				<key>Changed</key>
+				<false/>
+				<key>ColourStyles</key>
+				<dict>
+					<key>iCanScript-R</key>
+					<dict>
+						<key>%colour_bodybg%</key>
+						<string>#F0F0F0</string>
+						<key>%colour_content_text%</key>
+						<string>#444444</string>
+						<key>%colour_headlineh1%</key>
+						<string>#631600</string>
+						<key>%colour_headlineh2%</key>
+						<string>#631600</string>
+						<key>%colour_headlineh3%</key>
+						<string>#631600</string>
+						<key>%colour_headlineh4%</key>
+						<string>#631600</string>
+						<key>%colour_headlineh5%</key>
+						<string>#631600</string>
+						<key>%colour_link%</key>
+						<string>#0000FF</string>
+					</dict>
+				</dict>
+				<key>CreditRapidWeaver</key>
+				<true/>
+				<key>CustomCopyrightUsed</key>
+				<false/>
+				<key>CustomSiteTitleUsed</key>
+				<false/>
+				<key>CustomSloganUsed</key>
+				<false/>
+				<key>DefaultLinkTarget</key>
+				<string>self</string>
+				<key>FilenameExtension</key>
+				<string>html</string>
+				<key>FolderName</key>
+				<string>user-guide</string>
+				<key>HasCustomThemeStyle</key>
+				<true/>
+				<key>Hidden</key>
+				<true/>
+				<key>ImageFormat</key>
+				<string>Original</string>
+				<key>ImageQuality</key>
+				<string>High</string>
+				<key>IndexFilename</key>
+				<string>index.html</string>
+				<key>OutputFormat</key>
+				<string>Default</string>
+				<key>OutputXMLDeclaration</key>
+				<false/>
+				<key>SidebarEnabled</key>
+				<integer>1</integer>
+				<key>TextEncoding</key>
+				<string>utf-8</string>
+				<key>ThemeStyles</key>
+				<dict>
+					<key>iCanScript-R</key>
+					<array>
+						<string> Body Backgrd Images (Add images to "Resources" folder.No Body Backgrd Image</string>
+						<string>Body Background Image Repeat (Tiling).Repeat (Default)</string>
+						<string>Colour Picker Options.Body Background Color</string>
+						<string>Content Font Styles.Helvetica Content (default)</string>
+						<string>Footer Text Alignment.Footer Left (default)</string>
+						<string>Global Font Size.Font Size Normal (default)</string>
+						<string>Headline Font Styles.Helvetica Headline</string>
+						<string>Links Underline.Link On, Hover Off (default)</string>
+						<string>Nav Menu Font Styles.Helvetica Nav Menu (default)</string>
+						<string>Sidebar Header Alignment.Sidebar Header Left (default)</string>
+					</array>
+				</dict>
+			</dict>
+			<key>Files</key>
+			<array/>
+			<key>Subsandwiches</key>
+			<array/>
+		</dict>
+	</array>
+	<key>Type</key>
+	<string>Page Attributes</string>
+</dict>
+</plist>

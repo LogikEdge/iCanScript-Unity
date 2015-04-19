@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___oscillator" kind="class" prot="public">
+    <compoundname>iCS_Oscillator</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classi_c_s___oscillator_1a260af540a870f2172019d441cdebb4e0" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool iCS_Oscillator.myActiveState</definition>
+        <argsstring></argsstring>
+        <name>myActiveState</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" line="6" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___oscillator_1afeeef36d1843a2a54a7e773fa6133390" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_Oscillator.myTrueElapseTime</definition>
+        <argsstring></argsstring>
+        <name>myTrueElapseTime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classi_c_s___oscillator_1ab80a4b30c9720be43b480d7781acd160" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float iCS_Oscillator.myFalseElapseTime</definition>
+        <argsstring></argsstring>
+        <name>myFalseElapseTime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" line="8" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classi_c_s___oscillator_1ae448e01cde8bd182a093e6e4293a457e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>iCS_Oscillator.iCS_Oscillator</definition>
+        <argsstring>()</argsstring>
+        <name>iCS_Oscillator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" bodystart="11" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___oscillator_1a293eddc65e9135e6a792c24c1d751ada" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool iCS_Oscillator.Oscillate</definition>
+        <argsstring>(float trueTime, float falseTime, bool active, out bool invOut)</argsstring>
+        <name>Oscillate</name>
+        <param>
+          <type>float</type>
+          <declname>trueTime</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>falseTime</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>active</declname>
+        </param>
+        <param>
+          <type>out bool</type>
+          <declname>invOut</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" line="14" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" bodystart="14" bodyend="44"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Oscilator.cs" bodystart="5" bodyend="45"/>
+    <listofallmembers>
+      <member refid="classi_c_s___oscillator_1ae448e01cde8bd182a093e6e4293a457e" prot="public" virt="non-virtual"><scope>iCS_Oscillator</scope><name>iCS_Oscillator</name></member>
+      <member refid="classi_c_s___oscillator_1a260af540a870f2172019d441cdebb4e0" prot="private" virt="non-virtual"><scope>iCS_Oscillator</scope><name>myActiveState</name></member>
+      <member refid="classi_c_s___oscillator_1ab80a4b30c9720be43b480d7781acd160" prot="private" virt="non-virtual"><scope>iCS_Oscillator</scope><name>myFalseElapseTime</name></member>
+      <member refid="classi_c_s___oscillator_1afeeef36d1843a2a54a7e773fa6133390" prot="private" virt="non-virtual"><scope>iCS_Oscillator</scope><name>myTrueElapseTime</name></member>
+      <member refid="classi_c_s___oscillator_1a293eddc65e9135e6a792c24c1d751ada" prot="public" virt="non-virtual"><scope>iCS_Oscillator</scope><name>Oscillate</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

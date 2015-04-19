@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___accumulator_int" kind="class" prot="public">
+    <compoundname>iCS_AccumulatorInt</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classi_c_s___accumulator_int_1a6eafc15fa6d361a8535bff2d3aaf0cad" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int iCS_AccumulatorInt.acc</definition>
+        <argsstring></argsstring>
+        <name>acc</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="8" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classi_c_s___accumulator_int_1a0ae09ad524ed9ed2bec9f85a9c1283a8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>iCS_AccumulatorInt.iCS_AccumulatorInt</definition>
+        <argsstring>(int initialValue)</argsstring>
+        <name>iCS_AccumulatorInt</name>
+        <param>
+          <type>int</type>
+          <declname>initialValue</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="11" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___accumulator_int_1a2ba7547ca917ee73c137546c2fa17893" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void iCS_AccumulatorInt.Reset</definition>
+        <argsstring>(int resetValue=0)</argsstring>
+        <name>Reset</name>
+        <param>
+          <type>int</type>
+          <declname>resetValue</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="15" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="15" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___accumulator_int_1a160c26b534c6058dd06f1681e8cd48e7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int iCS_AccumulatorInt.Accumulate</definition>
+        <argsstring>(int toAdd=1)</argsstring>
+        <name>Accumulate</name>
+        <param>
+          <type>int</type>
+          <declname>toAdd</declname>
+          <defval>1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="19" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="19" bodyend="22"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="7" bodyend="23"/>
+    <listofallmembers>
+      <member refid="classi_c_s___accumulator_int_1a6eafc15fa6d361a8535bff2d3aaf0cad" prot="public" virt="non-virtual"><scope>iCS_AccumulatorInt</scope><name>acc</name></member>
+      <member refid="classi_c_s___accumulator_int_1a160c26b534c6058dd06f1681e8cd48e7" prot="public" virt="non-virtual"><scope>iCS_AccumulatorInt</scope><name>Accumulate</name></member>
+      <member refid="classi_c_s___accumulator_int_1a0ae09ad524ed9ed2bec9f85a9c1283a8" prot="public" virt="non-virtual"><scope>iCS_AccumulatorInt</scope><name>iCS_AccumulatorInt</name></member>
+      <member refid="classi_c_s___accumulator_int_1a2ba7547ca917ee73c137546c2fa17893" prot="public" virt="non-virtual"><scope>iCS_AccumulatorInt</scope><name>Reset</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

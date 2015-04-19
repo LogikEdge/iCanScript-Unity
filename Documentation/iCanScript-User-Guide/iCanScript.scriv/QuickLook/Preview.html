@@ -1,0 +1,1018 @@
+<html>
+
+<head>
+<title>iCanScript</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+	body {background-color: #bac0c7}
+    p.binderItem {margin: 10.0px 0.0px 0.0px 05.0px; font-family:Cochin, Times, Courier, Arial, serif; font-size:14.0px;}
+    .page {border: 1px solid #727272; background: #fff}
+    hr {
+      border-top: 1px dashed #000;
+      border-bottom: 0px solid #fff;
+      color: #fff;
+      background-color: #fff;
+      height: 0px;
+  </style>
+</head>
+
+<body>
+
+<table border="0" width="100%" cellspacing="3">
+<tr>
+<td>
+
+<table class="page" width="100%" cellspacing="10" cellpadding="2">
+<tr>
+<td valign="top">
+
+<ul>
+<li>
+<p class="binderItem"><strong>User Guide</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Introduction</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>What is iCanScript?</strong><br/><br/>
+<br/>
+<$right-2col><br/>
+> <!--\leftskip=0.5\textwidth--><br/>
+> Think twice before you start programming or you will program twice before you start thinking. <br/>
+><br/>
+> <$html(* * *)><$latex(\noindent\makebox[0.5\linewidth]{\rule{0.5\linewidth}{0.4pt}})><br/>
+><br/>
+> \- Unknown<br/>
+<br/>
+<$end><br/>
+<br/>
+<br/>
+<br/>
+More then 50 years after ENIAC, most programmers still rely solely on textual editors to express their creative thoughts into programs that can be compiled or interpreted by computers.<br/>
+<br/>
+As the programs increase in complexity, many corpora...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Feature Overview</strong><br/><br/>
+- Fully integrated functional & state chart diagrams;<br/>
+- Unlimited nesting of nodes allows for structured visual scripts;<br/>
+- Visual scripts can be saved and loaded to/from Prefabs to create your own personal visual library;<br/>
+- Each node can be displayed as:<br/>
+ - unfolded (displays nested nodes);<br/>
+ - folded (hides nested nodes) or;<br/>
+ - iconized.<br/>
+- Visual Editor zoom in/out enables bird's-eye view and eases navigation of large diagrams;<br/>
+- Visual library includes Unity's runtime functionality;<br/>
+- Library ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>When to use Visual Scripts?</strong><br/><br/>
+Our goal in creating iCanScript is to simplify and accelerate scripting within Unity's development environment. iCanScript offers a visual alternative to traditional textual scripts enabling greater accessibility for both programmers and non-programmers.<br/>
+<br/>
+We believe that depicting the scripts allows for a larger community of talents to interact with the high-level logic that drive your games.  It simplifies the understanding of the overall structure to all individuals in your production.<br/>
+<br/>
+_So c...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Who will Benefit from Using iCanScript?</strong><br/><br/>
+<$u=**The Novice and Intermediate Programmer:**> The novice programmer will greatly benefit from the immense Unity library available for visual scripting. The programmer will find enjoyable the ability to create _**state charts**_ and _**data flow diagrams**_ in a visual and coherent environment. The ability to _**aggregate multiple functions and state charts**_ into a _**package node**_ combined with the _**unlimited nesting**_ capabilities of iCanScript provides a sandbox to design at multipl...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Installation & Upgrade</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Installation</strong><br/><$begin{tipbox}><$latex(\color{red})><$html(<span style="color:red">)><br/>
+<br/>
+Please note that the installation of iCanScript from the Unity Asset Store is currently not discussed.  It will be added in future releases of this document.<br/>
+<br/>
+<$html(</span>)><$end{tipbox}><br/>
+<br/>
+# iCanScript is a downloadable plugin for the Unity 3D game engine. It comes in the form of a Unity package that must be installed for each project.<br/>
+<br/>
+The initial download of iCanScript is available from the project [website](http://www.i...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Removing iCanScript</strong><br/><br/>
+The following steps are needed to uninstall iCanScript from your project:<br/>
+<br/>
+*  Remove the _**iCanScript**_ folder;<br/>
+*  Open the _Gizmos_ folder and remove the _**iCanScriptGizmo.png**_ file;<br/>
+*  Remove the optional _**iCanScript_Nodes**_ package;<br/>
+<br/>
+<$begin{tipbox}><br/>
+# **Note:**  Uninstalling the previous version of iCanScript is required when performing an upgrade.<br/>
+<br/>
+<$end{tipbox}><br/>
+<br/>
+!{-2col-<br/>
+ <br/>
+<br/>
+[<$figure=remove-package>. Uninstalling the iCanScript packages.]<br/>
+<br/>
+!-2col-|<br/>
+<br/>
+<br/>
+[<$figure=remove-gizmo>. Remo...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Upgrading iCanScript</strong><br/><br/>
+Improvements to iCanScript are regularly made available as downloadable software updates. <br/>
+<br/>
+The following steps are needed to verify for and update to the latest version of iCanScript:<br/>
+<br/>
+1. Verify for an update using the menu item: `Help->iCanScript->Check for Updates…`;<br/>
+2. If an update is available, a dialog box will guide you to the download page;<br/>
+3. Download the latest version of iCanScript;<br/>
+4. Open Unity and uninstall the current version of iCanScript (see [Removing iCanScript]);<br/>
+5. Import t...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Visual Script Anatomy</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Nodes, Ports, and Bindings</strong><br/>A good understanding of the fundamental building blocks of a visual script is necessary to effectively use iCanScript.<br/>
+<br/>
+A visual script includes three (3) types of component being:<br/>
+<br/>
+- **Nodes**;<br/>
+- **Ports**; and ...<br/>
+- **Bindings.**<br/>
+<br/>
+#<br/>
+[<$Figure=building-blocks>.  Visual Script Building Blocks.]<br/>
+<br/>
+The **node** is the primary ingredient of visual scripts.  Its main purpose is to encapsulate various type of behaviours such as:<br/>
+<br/>
+- variables & functions;<br/>
+- algorithms;<br/>
+- states and state charts; and<br/>
+- ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Node Anatomy</strong><br/>- node role<br/>
+- node types<br/>
+- common attributes<br/>
+- visual editor view & controls<br/>
+- tree view & controls</p>
+</li>
+<li>
+<p class="binderItem"><strong>Specialized Nodes</strong><br/>The nodes come in various types or specialization.  For example, their is a specialization that represents _Variables_, another that represents _Functions_ and yet another for _Message Handlers_.  <br/>
+ </p>
+</li>
+<li>
+<p class="binderItem"><strong>Port Types</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Node Nesting</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Data Flow Diagram</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>State Chart Diagram</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>States</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Entry Function</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Update Function</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Exit Function</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Nested State</strong></p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Transitions</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Trigger Function</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Transition Behaviour</strong></p>
+</li>
+</ul>
+</ul>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Integration with Unity</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Unity Integration</strong><br/>iCanScript is designed to seamlessly integrated into the Unity development environment.  It builds on the philosophies and application programming interfaces (APIs) available to Unity script programmers.<br/>
+<br/>
+iCanScripts integrates with the following Unity concepts:<br/>
+<br/>
+-  Visual scripts are standard Unity _Components_; <br/>
+-  Each visual script is compiled into an Unity _Behaviour_ and executed as such;<br/>
+-  All Unity engine programming interfaces are available in the iCanScript library database; <br/>
+-  All _...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Adding a Visual Script</strong><br/>To use iCanScript, you first need to install a visual scripts on one of your game objects.  To illustrate this process, we will add a visual script to a sphere that will later be used as a trigger zone. <br/>
+<br/>
+To do so, you must:<br/>
+<br/>
+1. Select a game object to contain the visual script;<br/>
+2. Create a visual script using the menu item: `iCanScript->Create Visual Script`. <br/>
+<br/>
+#<br/>
+[<$figure=ics-menu-create-visual-script>. Create Visual Script menu item.]<br/>
+<br/>
+_Et voilà,  you have a visual script !!!_  It does not do...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Libraries & Prefabs</strong><br/>Visual script libraries are created using Unity’s Prefab concept. <br/>
+<br/>
+</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>How To</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Example Project</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Objective</strong><br/>In this section, we examine the core constructs of iCanScript with the help of a small example.  To that end, we shall first establish the working parameters of our example by creating a storyline and setting up the scene before implementing the visual scripts.<br/>
+<br/>
+The following is a summary of the steps to build our first example:<br/>
+<br/>
+1. Create a [storyline][] to define the working parameters for our example;<br/>
+2. Identify and define the [actors][Our Actors] for our story;<br/>
+3. Build a scene in Unity pop...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Storyline</strong><br/>If you are like me, you prefer learning the workings of a tool in the context of a small example.  Like all good game designers, I like to give a soul to my project using a storyline.  We can then extract working scenarios to direct the creation of our visual scripts.<br/>
+<br/>
+Here goes the story:<br/>
+<br/>
+>  In the land of Emptiness lives Mr Cube.  Mr Cube has a busy life roaming around on an invisible 2D plane.  Since Mr Cube is a close relative of Mr Fly, he is attracted to Ms Light that also lives in the la...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Our Actors</strong><br/>Before creating visual scripts, we first need to build a scene in Unity and populate it with actors. Based on the storyline, the actors are (the camera has been purposely omitted):<br/>
+- **Mr. Cube** (I'll let you guess the shape to use);<br/>
+- **Ms. Light** (a directional light);<br/>
+- **Near Trigger Zone** to turn off _Ms. Light_ (a sphere will do fine);<br/>
+- **Far Trigger Zone** to turn on _Ms. Light_ (again a sphere will do fine).<br/>
+The main characteristics of the actors are:<br/>
+- All actors live on a 2D plane ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Creating the Unity Project</strong><br/>We are now ready to build our scene in Unity.  First, we need a fresh new Unity project with an installed version of iCanScript.  For the purpose of this tutorial, the project will be named "Houpi Youpi" (I don't know how to call it! So please bear with me...).<br/>
+<br/>
+Open Unity and select the `File->New Project...` menu item as shown in the image below:<br/>
+<br/>
+#<br/>
+[<$figure=unity-new-project>. Create a new Unity project.]<br/>
+<br/>
+<br/>
+Next you will be asked for a project name and prompted to install standard Unity pack...</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Adding Actors to the Scene</strong><br/>Ok, we are ready to bring our actors into the scene.  For each new project, Unity creates a default scene with the main camera object.  You will add the actors to the default scene using the `GameObject->...` menu.<br/>
+</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Ms Light</strong><br/>Let's start by adding _Ms Light_.  Select the `GameObject->Create Other->Directional Light` menu item and, _swoosh ... Ms Light_ appears.<br/>
+<br/>
+#<br/>
+[<$figure=adding-mrs-light>. Adding Ms Light to the scene.]<br/>
+<br/>
+Double click on the _"Directional light"_ label in the hierarchy panel to rename it to _"Ms Light"_.  Because _Ms Light_ is a directional light, she lights the scene equally regardless of her position.  For consistency shake with our story, I suggest you position her at (0,0,0) as show in Figure <...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Near & Far Trigger Zones</strong><br/>The two trigger zones are spheric in shape and are create with the `GameObject->Create Other->Sphere` menu.<br/>
+<br/>
+#<br/>
+[<$figure=adding-trigger-zones>. Adding Trigger Zones to the Scene.]<br/>
+<br/>
+After you have created both _trigger zones_, you need to configure them as follows:<br/>
+<br/>
+1. Name one of them _"Near Trigger Zone"_ and the other _"Far Trigger Zone"_;<br/>
+2. As for _Ms Light_, position both trigger zones at (0,0,0);<br/>
+3. Now resize the _"Near Trigger Zone"_ to 2 meters and the _"Far Trigger Zone"_ to 3 meters b...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Mr Cube</strong><br/>We are now ready for our final actor: _Mr Cube_.  Use the `GameObject->Create Other->Cube` menu item to add _Mr Cube_ to the scene.<br/>
+<br/>
+#<br/>
+[<$figure=adding-mr-cube>. Adding Mr Cube to the scene.]<br/>
+<br/>
+Once more, you need to set the initial parameters of the new actor.  _Mr Cube_ must be configured as follows:<br/>
+<br/>
+1. Rename the cube object to _"Mr Cube"_ (sexy!);<br/>
+2. Relocate _Mr Cube_ outside both trigger zones at position (5,0,0);<br/>
+3. For _Mr Cube_ to collide with the trigger zones, it must have a _Rigid Bo...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Hiding the Trigger Zones</strong><br/>All of our actors are now included in the scene.  However, we still need to make one last adjustment: hide the trigger zones.<br/>
+<br/>
+The trigger zones are the _"magic"_ that makes actors change behaviour and everyone knows that _"magic"_ must be invisible.  So, let's hide those spheres for no one to see.  To hide the trigger zones, you need to disable the _Mesh Renderer_  as depicted in the below figure.<br/>
+<br/>
+#<br/>
+[<$figure=disable-trigger-zones-mesh-renderer>. Disable the Mesh Renderer of both Trigger Zones...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Opening the iCanScript Editors</strong><br/><br/>
+You are almost ready to create your first visual script.  Before you do so, you need to open the following four iCanScript editors:<br/>
+<br/>
+- Visual Editor;<br/>
+- Library Tree;<br/>
+- Hierarchy Tree and;<br/>
+- Instance Wizard.<br/>
+<br/>
+All of the editors can be opened for the `Window->iCanScript->...` menu item.  The _Visual Editor_ requires a significant screen area so I propose that you combine it with the _Scene_ or _Game_ window.  All of the other editors are narrow and tall and may be combine with the Unity _Project_...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Moving Mr Cube (step 1)</strong><br/>Finally, you are ready to write your first visual script.  _Mr Cube_ movement is ratter complex and shall be implement in phases.  In this section, you will create a visual script to move _Mr Cube_ at a consistent speed regardless of the performance of the computer or game platform running the script.<br/>
+<br/>
+<$begin{tipbox}><br/>
+# ^^What you will learn...^^<br/>
+<br/>
+---<br/>
+<br/>
+In this section you will learn several key aspects of iCanScript including:<br/>
+<br/>
+> - Adding a visual script to a game object;<br/>
+> - Defining message h...</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Installing a Visual Script on _Mr Cube_</strong><br/>The first step is to install a visual script on _Mr Cube_.  This is accomplished by:<br/>
+<br/>
+1. Selecting _Mr Cube_ in the Hierarchy and;<br/>
+2. Clicking on the menu item `Component->iCanScript->Visual Script`.<br/>
+<br/>
+<br/>
+#<br/>
+[<$figure=mr-cube-installing-visual-script>. Installing a visual script on _Mr Cube_.]<br/>
+<br/>
+<br/>
+A visual script is now installed on _Mr Cube_ and ready to receive Unity messages.  To edit the visual script, you must select _Mr Cube_ (if not already done) and activate the _Visual Editor_ by clicking on ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Installing the _Update_ Message Handler</strong><br/><br/>
+Before displaying a new frame, Unity sends an _Update_ message to each game object in the scene asking them to prepare for the upcoming frame.  This _Update_ message is ideal to trigger the execution of the visual script to move _Mr Cube_.  It gives you the chance to recompute _Mr Cube_ position immediately before the scene is displayed.<br/>
+<br/>
+Your next step is to install the _Update_ message handler node whom will serve as the parent trigger for your visual script.  The creation of the _Update_ mes...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Visual Script Overview</strong><br/><br/>
+_Mr Cube_ visual script will evolve to become somewhat involved as you increase its functionality.  To avoid complex and overblown graphs, you should consider structuring the visual script from its inception.<br/>
+<br/>
+The following diagram depicts the high-level design of the visual script you will create for Mr Cube:<br/>
+<br/>
+#<br/>
+[<$figure=mr-cube-script-overview>. _Mr Cube_ visual script overview.]<br/>
+<br/>
+It's good practice to segregate and encapsulate functionality into tight bundles and iCanScript has the right _C...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Creating the _"Move Mr Cube Package"_</strong><br/>Let's create a package to encapsulate the basic movement functionality of _Mr Cube_.  This is achieved by:<br/>
+<br/>
+- Right clicking on the _Update_ node to display the context sensitive menu and;<br/>
+- Selecting the `+ Package` menu item.<br/>
+<br/>
+#<br/>
+[<$figure=creating-package-in-update>. Creating the _"Move Mr Cube"_ Package.]<br/>
+<br/>
+iCanScript adds a package node under the _Update_ message handler.  By default, the package is yellow and named _":Package"_.  A name that better describes the purpose of the package would ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Adding _Mr Cube_ to the Visual Script</strong><br/><br/>
+It's now time to put beef into your hamburger!  The first ingredient you need is _Mr Cube_.  He can be brought into the visual script by dragging him from Unity's Hierarchy panel into the _Move Mr Cube_ package (see figure <$rfigure=drag-and-drop-mr-cube>).<br/>
+<br/>
+<br/>
+#<br/>
+[<$figure=drag-and-drop-mr-cube>. Adding Mr Cube to the _Move Mr Cube_ package.]<br/>
+<br/>
+The new _Mr Cube_ node is coloured orange indicating that it is an instance of an entity.  Factually, _Mr Cube_ is an instance of a _Game Object_: a comple...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Exposing the _Transform_ of _Mr Cube_</strong><br/>In Unity, a game object and its components form a group of inter-related objects.  The game object maintains a list of all of its components and each component keeps a reference back to the game object as depicted in figure <$rfigure=game-object-composition>.<br/>
+<br/>
+#<br/>
+[<$figure=game-object-composition>. Unity _Game Object_ and associated _Components_.]<br/>
+<br/>
+To gain access to a component of the game object, you first need to extract it as a separate instance node.  You can then interact with the component ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Adding the _Translation_ operation to the _Transform_ node</strong><br/><br/>
+Now that you have access to the _Transform_ instance node, you can select it and browse its variables and operations using the _Instance Wizard_ (figure <$rfigure=add-mr-cube-translation>).<br/>
+<br/>
+If you browse the _Operations_ section, you will find that the _Transform_ node includes several _Translate(...)_ operations that can be used to move _Mr Cube_.  We are interested in the _Translate_ operation that utilizes a _Vector3_ type for the displacement.<br/>
+<br/>
+To add the _Translate_ operation to your visu...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Moving with Consistent Velocity</strong><br/>In this section we discuss the difficulty that we have with the displacement and the variable frame rate. We also provide a solution to resolve the issue.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Controlling Speed and Direction Separately</strong><br/>Referencing back to the [overview of the visual script][Visual Script Overview] depicted in figure <$rfigure=mr-cube-script-overview>, you will notice that the _Move Mr Cube_ package receives its input values from the _Adjust Direction_ & _Adjust Speed_ packages (you will build these packages later on).  This means that separate controls for direction and speed are required.<br/>
+<br/>
+Your next task is to extend your visual script to:<br/>
+<br/>
+- accept two (2) inputs: a _direction_ and a _speed_ value;<br/>
+- compute...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Publishing the Interface</strong><br/><br/>
+Now you have completed the functionality of the _Move Mr Cube_ package.  The last step is to publish the _speed_ and _direction_ ports so that they can be accessed from outside the _Move Mr Cube_ package.  This is easily done by dragging them on the left edge of the _Move Mr Cube_ package.  The final build of the _Move Mr Cube_ package can be seen in figure <$rfigure=publish-speed-and-direction>.<br/>
+<br/>
+#<br/>
+[<$figure=publish-speed-and-direction>. Publish speed and direction ports.]</p>
+</li>
+<li>
+<p class="binderItem"><strong>Running the _Move Mr Cube_ Visual Script</strong><br/><br/>
+<br/>
+I bet your fingers are twitching to give your new script a go.<br/>
+<br/>
+Before you do so, you need to configure initial values for the _speed_ and _direction_ ports.  The initial values are configured using the _Inspector_.<br/>
+<br/>
+Make certain that the _Mr Cube_ game object is selected and open the _Inspector_.  You will see that a _visual script component_ is installed on _Mr Cube_.  Unfold the _visual script component_ and you will see that it contains two sections:<br/>
+<br/>
+- a _**Selected Object**_ section and;...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Accessing Runtime Information</strong><br/><br/>
+Let's take this opportunity to discuss some of the basic debugging features of iCanScript.<br/>
+<br/>
+The visual editor remains active while the script is running.  Selecting the visual editor tab will bring it forward.  You may decide to relocate it so that both the visual editor and the game window be visible.  <br/>
+<br/>
+#<br/>
+[<$figure=runtime-debug-overview>. iCanScript Visual Editor with runtime debug information.]<br/>
+<br/>
+The visual editor displays the following runtime information in the centre of it's toolbar:<br/>
+<br/>
+- t...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Recap on Your First Visual Script</strong><br/><br/>
+So what have you done so far?  You have:<br/>
+<br/>
+- Create the Unity scene to host your example project;<br/>
+- Installed a visual script on the _Mr Cube_ game object;<br/>
+- Created the _Update_ message handler to contain and execute your visual script on each frame;<br/>
+- Created a package to encapsulate the script to control the movement of _Mr Cube_ using speed and direction;<br/>
+- Dragged the _Mr Cube_ game object inside the script and extracted its _Transform_ component;<br/>
+- Build a small equation to translate the s...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Enabling & Disabling Ms Light</strong><br/><br/>
+<$begin{tipbox}><br/>
+^^To Be Continued ...^^<br/>
+<$end{tipbox}></p>
+</li>
+<li>
+<p class="binderItem"><strong>Homing on Ms Light</strong><br/><br/>
+<$begin{tipbox}><br/>
+^^To Be Continued ...^^<br/>
+<$end{tipbox}></p>
+</li>
+<li>
+<p class="binderItem"><strong>Creating a Timer Utility</strong><br/><br/>
+<$begin{tipbox}><br/>
+^^To Be Continued ...^^<br/>
+<$end{tipbox}><br/>
+</p>
+</li>
+<li>
+<p class="binderItem"><strong>Changing Direction</strong><br/><br/>
+<$begin{tipbox}><br/>
+^^To Be Continued ...^^<br/>
+<$end{tipbox}><br/>
+</p>
+</li>
+<li>
+<p class="binderItem"><strong>Mr Cube Roaming State</strong><br/><br/>
+<$begin{tipbox}><br/>
+^^To Be Continued ...^^<br/>
+<$end{tipbox}><br/>
+</p>
+</li>
+<li>
+<p class="binderItem"><strong>Adding a Panic State</strong><br/><br/>
+<$begin{tipbox}><br/>
+^^To Be Continued ...^^<br/>
+<$end{tipbox}><br/>
+</p>
+</li>
+<li>
+<p class="binderItem"><strong>Beautifying your Scripts</strong><br/><br/>
+<$begin{tipbox}><br/>
+^^To Be Continued ...^^<br/>
+<$end{tipbox}><br/>
+</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>User Interface</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Menus</strong><br/>iCanScript installs itself in Unity's Edit, Component, Windows and Help menus. This section describes the iCanScript functionality associated with each menu item.</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Edit Menu</strong><br/>iCanScript extends Unity's `Edit` menu with navigation features and the ability to create a Visual script as depicted in the below figure.<br/>
+<br/>
+#<br/>
+[<$figure=edit-menu>. iCanScript Edit menu extension.]</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Edit->iCanScript->Create Visual Script</strong><br/>_**Summary:**_<br/>
+<br/>
+  Attaches a visual script component to the selected game object.<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The `Create Visual Script` menu item is used to attach an iCanScript Visual Script component to the selected game object.<br/>
+<br/>
+The Visual Script component is at the root of your visual script. It includes the iCanScript engine code that compiles and runs the visual script when the Unity engine runs. It also saves & reloads your visual script when the scene in which it is contained is saved or reloa...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Edit->iCanScript->Center Visual Script</strong><br/>_**Summary:**_<br/>
+<br/>
+  Centres the visual script in the viewport.<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The `Center Visual Script` menu item is used to reposition the visual script in the centre of the visual editor viewport.<br/>
+<br/>
+The zoom factor of the viewport may be adjusted to improve visual script visibility.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Edit->iCanScript->Center Selected</strong><br/>_**Summary:**_<br/>
+<br/>
+  Centres the selected node / port in the viewport.<br/>
+<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The `Center Selected` menu item is used to reposition the selected node in the centre of the visual editor viewport.<br/>
+<br/>
+The zoom factor of the viewport may be adjusted to improve selected node visibility.<br/>
+</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Component Menus</strong><br/>Creating a visual script with iCanScript requires that you install the iCanScript Visual Script component on your game object. The iCanScript Visual Script component can be attached using Unity's top-level _Component_ menu as well as the _Add Component_ button located in the Inspector.<br/>
+<br/>
+<br/>
+#<br/>
+[<$figure=menu-component>. iCanScript Component menu extension.]<br/>
+<br/>
+<br/>
+[<$figure=menu-component2>. iCanScript Inspector->Component menu extension.]</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Attaching a Visual Script component</strong><br/><br/>
+The `Create Visual Script` menu item is used to attach an iCanScript Visual Script component to the selected game object.<br/>
+<br/>
+The Visual Script component is at the root of your visual script. It includes the iCanScript engine code that compiles and runs the visual script when the Unity engine runs. It also saves & reloads your visual script when the scene in which it is contained is saved or reloaded.<br/>
+<br/>
+A game object containing an iCanScript Visual Script can be edited using the visual editor.<br/>
+<br/>
+<br/>
+<br/>
+|...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Window Menu</strong><br/>iCanScript installs menu items to open its five (5) editors & panels in Unity's top-level _Window_ menu.<br/>
+<br/>
+#<br/>
+[<$figure=menu-window>. iCanscript Window menu extension.]</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Preferences</strong><br/>_**Summary:**_<br/>
+<br/>
+  Opens the Preferences Panel<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+iCanScript `Preference Panel` is used to configure the appearance and global behaviour of iCanScript editors & panels.<br/>
+<br/>
+The iCanScript preference configuration is save for the current user session and is independent of visual script saved data.<br/>
+<br/>
+The Preference Panel also includes iCanScript version information.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Visual Editor</strong><br/>_**Summary:**_<br/>
+<br/>
+  Opens the Visual Editor.<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The Visual Editor is the core editor of iCanScript. It is where you will create and modify your visual scripts.<br/>
+<br/>
+The Visual Editor displays the visual script associated with the currently selected game object. The visual editor will be empty if no game object is selected or the selected game object does not include an iCanScript Behaviour component.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Hierarchy</strong><br/>_**Summary:**_<br/>
+<br/>
+  Opens the visual script hierarchy tree.<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The Hierarchy Tree Editor is used to navigate and edit your visual script as a tree view. It complements the graphical visual editor.<br/>
+<br/>
+You can edit the node & port names and quickly navigate your visual script from the hierarchy tree editor.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Library</strong><br/>_**Summary:**_<br/>
+<br/>
+  Opens the node library tree.<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The _**Library Panel**_ is a repository of all available nodes that can be dragged into your visual script. It includes Unity's core library, iCanScript base node library as well as some of the .NET functionality.<br/>
+<br/>
+The Library Panel can easily be extended with your own nodes. Refer to section Extending iCanScript to learn how to add your own nodes in the library.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Instance Wizard</strong><br/>_**Summary:**_<br/>
+<br/>
+  Opens the node instance wizard.<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The _**Instance Wizard**_ is used to intelligently present and configure the fields, properties, and functions associated to the type of a node in your visual script.<br/>
+<br/>
+The instance wizard will automatically activate when selecting a node associate with a specific type (i.e. .NET class).<br/>
+<br/>
+</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Help Menu</strong><br/>iCanScript extends Unity's `Help` menu to provide quick access to the product web site, documentation and support pages.<br/>
+<br/>
+#<br/>
+[<$figure=help-menu>. iCanScript Help menu extension.]</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Help->iCanScript->Home Page</strong><br/>_**Summary:**_<br/>
+<br/>
+  Opens iCanScript home page in the default Web browser.<br/>
+<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The `Home Page` menu item is used to open the home page of the iCanScript Web site in a new internet browser window.<br/>
+<br/>
+An internet connection is required to access the iCanScript home page.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Help->iCanScript->User's Guide</strong><br/>_**Summary:**_<br/>
+<br/>
+  Opens iCanScript user manual in the default Web browser.<br/>
+<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The `User's Guide` menu item is used to open the iCanScript online user guide in a new internet browser window.<br/>
+<br/>
+An internet connection is required to access the iCanScript online user guide.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Help->iCanScript->Release Notes</strong><br/>_**Summary:**_<br/>
+<br/>
+  Opens latest release notes in the default Web browser.<br/>
+<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The `Release Notes` menu item is used to open the iCanScript latest release information in a new internet browser window.<br/>
+<br/>
+The release notes are sorted from the latest release to the oldest release for your convenience. A copy of the release notes in PDF format can also be downloaded from the web site.<br/>
+<br/>
+An internet connection is required to access the iCanScript release note pages.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Help->iCanScript->Customer Request</strong><br/>_**Summary:**_<br/>
+<br/>
+  Opens the feature request and bug report form.<br/>
+<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The `Customer Request` menu item is used to submit feature requests and bug reports for the iCanScript product. You can also browse the status of existing customer requests.<br/>
+<br/>
+The customer request form is Web based and requires an active internet connection.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Help->iCanScript->Check for Updates...</strong><br/>_**Summary:**_<br/>
+<br/>
+  Validates the current version against latest available release.<br/>
+<br/>
+<br/>
+_**Description:**_<br/>
+<br/>
+The `Check for Update` menu item is used to determine if you have the latest official release of iCanScript. You will be prompted to download the latest version if your version is out-of-date.<br/>
+<br/>
+Validation of the latest iCanScript version requires an active internet connection.<br/>
+<br/>
+</p>
+</li>
+</ul>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Editors</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>User Preferences</strong><br/>The ***User Preferences*** is used to customize the default behaviour and the look and feel of iCanScript.<br/>
+<br/>
+This information is saved in the user profile and applied to all iCanScript projects opened by the user.<br/>
+<br/>
+<br/>
+#<br/>
+[<$figure=editor-user-preferences>. User Preferences]<br/>
+ <br/>
+<br/>
+ **Panel Selection:**  The panel selection is used to navigate the different configuration panels available to the iCanScript user.  Clicking on the panel name reveals the configuration details in the panel area.<br/>
+<br/>
+ **Configura...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Visual Editor</strong><br/>![Figure <$n:figure:editor-visual>. Visual Editor](http://www.user-guide.icanscript.com/resources/images/editor-visual-editor.png)<br/>
+<br/>
+</p>
+</li>
+<li>
+<p class="binderItem"><strong>Hierarchy Tree</strong><br/>![Figure <$n:figure:editor-hierarchy-tree>. Hierarchy Tree](http://www.user-guide.icanscript.com/resources/images/editor-hierarchy-tree.png)<br/>
+<br/>
+</p>
+</li>
+<li>
+<p class="binderItem"><strong>Library Tree</strong><br/>![Figure <$n:figure:editor-library-tree>. Library Tree](http://www.user-guide.icanscript.com/resources/images/editor-library-tree.png)<br/>
+<br/>
+![](http://www.user-guide.icanscript.com/resources/images/stamp-1-orange.png) TBD<br/>
+<br/>
+![](http://www.user-guide.icanscript.com/resources/images/stamp-2-orange.png) TBD<br/>
+<br/>
+<br/>
+<br/>
+---</p>
+</li>
+<li>
+<p class="binderItem"><strong>Instance Wizard</strong><br/>#<br/>
+[<$figure=editor-instance-wizard>. Instance Wizard]<br/>
+<br/>
+ **Instance Builder:** This drop-down list enumerates the available builders for the instance node selected in the visual editor.  A builder for the instance node can be created by selecting an element from this list.  Note that selecting the special *"Use input port (this)"* item will remove the builder (if it exists) and leave open the instance port *"this"* for manual connection.<br/>
+<br/>
+ **Variables Selection:** Lorem ipsum dolor sit amet, sapi...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Unity Inspector</strong></p>
+</li>
+</ul>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Extending iCanScript</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Extending iCanScript</strong><br/>From its inception, iCanScript was designed to be extendable with the addition of user defined nodes. Once installed, the user defined nodes are accessible from the [Library Tree].<br/>
+<br/>
+Extending the iCanScript library is realized by:<br/>
+<br/>
+1. [Tagging your Source Code]; <br/>
+2. [Importing Public Members]; <br/>
+3. [Adding Message Handlers]. <br/>
+<br/>
+The following picture illustrates how the iCanScript library gets populated and used.  You are given three access points (purple) to include your own packages and nodes ins...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Tagging your Source Code</strong><br/>iCanScript includes several .NET attributes to control which part of your source code is to be included in the iCanScript library. These attributes enables fine control over which fields, properties and functions become visible to the iCanScript user.<br/>
+<br/>
+iCanScript scans the .NET assemblies to populate its library with public classes tagged with the *iCS_Class* attribute.  The assembly scan is performed after every recompile of the Unity scripts.<br/>
+<br/>
+The following table depicts the mapping between C#...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Importing Public Members</strong><br/>iCanScript supports invoking a custom installer to add all public fields, properties and functions of an object definition into the iCanScript library.<br/>
+<br/>
+This method of populating the iCanScript library is ideal if:<br/>
+<br/>
+-  you are not in control of the source code (i.e. using a vendor library) or;<br/>
+-  you want to add all public fields, properties and functions of your classes without tagging your source code with iCanScript custom attributes.<br/>
+<br/>
+<br/>
+### Understanding the Custom Installer<br/>
+<br/>
+On every script ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Adding Message Handlers</strong><br/><br/>
+The [Tagging your Source Code] and [Importing Public Members] installing mechanism extract existing functionality from the object definition to publish into the iCanScript library.  However, they do not provide for defining message handlers for the Unity framework.  This is because the Unity messages are dynamically created at runtime and are therefore not visible in the object definitions.<br/>
+<br/>
+The message handlers nodes have the following characteristics:<br/>
+<br/>
+*  they are package nodes;<br/>
+*  they inclu...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Appendices</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Keyboard Shortcuts</strong><br/>iCanScript includes several keyboard shortcuts (hot-keys) to accelerate visual script edition.  The following tables details the iCanScript hot-keys regrouped by functional area.</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Visual Script Navigation</strong><br/>The visual script can be navigating by changing the node that serves as the display root.  Use the following keyboard and mouse commands to navigate your Visual Scripts.<br/>
+<br/>
+| Navigation Hot-Keys      | Action Performed                                      |<br/>
+| :----------------------: | :---------------------------------------------------- |<br/>
+|  _**Ctrl-Double Click**_ | _Child Node:_ Set new display root node.<br>_Display Root Node:_ Revert to previous display root. |<br/>
+| _**\[**_                  | ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Selection Navigation</strong><br/>| Selection Hot-Keys | Action Performed |<br/>
+| :---------------------------: | :--------------- |<br/>
+|  ***Up Arrow***   | Moves the selection to the parent node. |<br/>
+| ***Down Arrow***  | Moves the selection to the first child node. | <br/>
+| ***Right Arrow*** | Moves the selection to the next sibling node. |<br/>
+| ***Left Arrow***  | Moves the selection to the previous sibling node. |<br/>
+|      ***F***      | Repositions the selected node or port in the centre of the visual editor viewport |<br/>
+|   ***Shift-F***   |...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Bookmarks</strong><br/>| Bookmarks Hot-Keys | Action Performed |<br/>
+| :------------: | :--------------- |<br/>
+|    ***B***     | Bookmarks the active selection. |<br/>
+|    ***G***     | Moves the selection to the active bookmark |<br/>
+|    ***S***     | Swaps bookmark. Bookmarks the active selection and moves the selection to the previous bookmark. |<br/>
+|    ***C***     | Connects the bookmarked port and the selected port (requires compatible data types) |<br/>
+[<$table>. Bookmark Shortcuts.]</p>
+</li>
+<li>
+<p class="binderItem"><strong>Expand / Fold</strong><br/>|   Expand / Fold Keys   | Action Performed |<br/>
+| :--------------------: | :--------------- |<br/>
+|      ***Enter***       | Expands the selected node:<br>- **Action Nodes:** Iconized -> Folded<br>- **Composite Nodes:** Iconized -> Folded -> Unfolded |<br/>
+|    ***Alt-Enter***    | Maximizes the selected node:<br>- **Action Nodes:** Iconized -> Folded<br>- **Composite Nodes:** Iconized or Folded -> Unfolded |<br/>
+|   ***Shift-Enter***    | Collapses the selected node:<br>- **Action Nodes:** Folded -> Iconized...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Edition</strong><br/>|  Edition Keys   | Action Performed |<br/>
+| :-------------: | :--------------- |<br/>
+|    _**L**_      | Performs an auto-layout of the selected binding. |<br/>
+|    ***Del***    | Deletes the currently selected object with user confirmation. The selection is moved to the parent node on deletion. |<br/>
+| ***Shift-Del*** | Deletes the currently selected node (no user confirmation). The selection is moved to the parent node. |<br/>
+[<$table>. Quick Deletion Shortcuts.]<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+* * *</p>
+</li>
+</ul>
+</ul>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Release Notes</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Readme</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Support</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>FAQs</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Announcements</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Testomonials</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>devang_xprt</strong><br/>> This is best tool compare to any visual scripting asset available on the Unity asset store, I really love to use it,as it is very user friendly for non coder. Best developer support on developer forum.<br/>
+<br/>
+>>\- devang_xprt - <http://forum.unity3d.com/threads/icanscript-visual-script-modeling-engine-for-unity.280847> @ 2014-11-21<br/>
+</p>
+</li>
+<li>
+<p class="binderItem"><strong>Pushkar Chufal</strong><br/>> This is a most powerful tool till date for unity. Visual scripting can not be better then this. <br/>
+Recommend all non coders. Go try it and see your self.<br/>
+>> \- Pushkar Chufal - <https://www.assetstore.unity3d.com/en/#!/content/24996> @ 2014-12-20</p>
+</li>
+<li>
+<p class="binderItem"><strong>Red_Studio</strong><br/>> Love to use it. Rightly priced, with maximum capacity to be used in programming games visually. No visual script give me this much flexibility before. Great going. I have heard that next feature coming to iCS like arrays and loop will make this tool more and more useful. So lets begin the game design completely visually.<br/>
+>> \- Red_Studio - <http://forum.unity3d.com/threads/icanscript-visual-script-modeling-engine-for-unity.280847> @ 2014-11-28</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Glossary</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Knowledge Base</strong></p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Website</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Marketing Statement</strong><br/>Disruptive software is pleased to announce the community and professional editions of iCanScript. iCanScript is a powerful modelling engine allowing both novices and experts to create visual scripts for the Unity Game Engine.<br/>
+<br/>
+iCanScript integrates both multi-level functional diagrams and state charts into a single visual script. You can mix-and-match both concepts to realize your scripts in a natural way, in the same visual graph. <br/>
+<br/>
+In addition, iCanScript supports nesting and grouping of secti...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Company Profile</strong><br/>Disruptive software was founded in 2010 by industry veterans, to create iCanScript:  A powerful visual scripting development aid for the Unity 3D Game Engine.  The idea was born from experience in large gaming companies, as well as innovating the designing of advanced development tools in other software industries.  iCanScript provides a visual scripting environment that has a one-to-one mapping with Unity API’s, and can be used to create full games without a single line of code.  Our goal is to...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Leadership Team</strong><br/>### Michel Launier<br/>
+#<br/>
+Michel Launier has over 20 year of experience in software engineering and the gaming industry, producing some of the industries leading console games.   From the start of his career, Michel had a passion for developing advanced tools and frameworks that allow developers to achieve greater productivity and results than were possible using classic coding techniques.  These tools have been used and proven at several high-profile companies, iCanScript being the latest vision of ...</p>
+</li>
+</ul>
+</ul>
+
+</td>
+<td width="8">
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

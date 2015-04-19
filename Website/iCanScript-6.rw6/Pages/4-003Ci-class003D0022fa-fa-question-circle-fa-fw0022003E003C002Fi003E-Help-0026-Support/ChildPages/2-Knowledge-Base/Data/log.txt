@@ -1,0 +1,1082 @@
+g: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/7061793F-A097-49CF-8434-CC1F881D6461/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/7061793F-A097-49CF-8434-CC1F881D6461/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:47:03 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-yfXXK7.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-yfXXK7.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/6A7DD0A0-7B7A-462C-9162-8750BB12B587/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/6A7DD0A0-7B7A-462C-9162-8750BB12B587/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:48:02 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-eKl0lB.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-eKl0lB.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/6252CB3E-248B-44EC-9F9D-BB2E2FFF8292/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/6252CB3E-248B-44EC-9F9D-BB2E2FFF8292/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:50:11 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-pUlvwd.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-pUlvwd.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/2D89D6C2-D85B-46CE-940B-45811999F833/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/2D89D6C2-D85B-46CE-940B-45811999F833/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:52:44 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-EUbTDE.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-EUbTDE.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/8A1F6923-B9C6-4B28-AD19-D912C5614DBC/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/8A1F6923-B9C6-4B28-AD19-D912C5614DBC/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:52:54 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-eB60IY.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-eB60IY.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/7A324AFA-7D3D-4A9E-89FC-279271074CD7/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/7A324AFA-7D3D-4A9E-89FC-279271074CD7/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:54:35 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-4BEfDT.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-4BEfDT.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/DA26AEBC-B4DB-4B89-B616-555F505C0286/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/DA26AEBC-B4DB-4B89-B616-555F505C0286/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:56:05 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-BDukam.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-BDukam.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/518F6498-920A-4B54-8C5F-CFA6F1DA6650/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/518F6498-920A-4B54-8C5F-CFA6F1DA6650/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:57:31 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-WPATvo.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-WPATvo.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/73857D18-1152-4002-8480-7D6C833F08DC/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/73857D18-1152-4002-8480-7D6C833F08DC/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:58:18 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-d3kGrw.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-d3kGrw.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/E841FEF8-0CF1-48FC-8EE6-BAB4A1842575/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/E841FEF8-0CF1-48FC-8EE6-BAB4A1842575/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:58:48 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-5u9cQI.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-5u9cQI.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/315805BA-FEC0-4FF6-BD34-EF74C6FE84C4/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/315805BA-FEC0-4FF6-BD34-EF74C6FE84C4/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 14:59:45 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-q2mEH5.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-q2mEH5.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/2040722A-31A0-49DB-8641-85B3DC6A516F/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/2040722A-31A0-49DB-8641-85B3DC6A516F/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:01:16 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-BX44WI.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-BX44WI.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/69E00D7A-DDBA-445A-9083-430A47C121D3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/69E00D7A-DDBA-445A-9083-430A47C121D3/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:02:01 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-YeMkXe.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-YeMkXe.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/217C0C07-E518-48AB-8DAE-96B7F5451895/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/217C0C07-E518-48AB-8DAE-96B7F5451895/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:04:21 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-4CSM78.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-4CSM78.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/4982FDA3-BA06-43C1-A78A-3032F83AB695/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/4982FDA3-BA06-43C1-A78A-3032F83AB695/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:04:51 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-sGUTlc.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-sGUTlc.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/9752379E-39F5-4DB8-8FFA-9515746D2179/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/9752379E-39F5-4DB8-8FFA-9515746D2179/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:05:01 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-8Kq0FB.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-8Kq0FB.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/C34A1574-3E72-4454-ADED-446320A03083/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/C34A1574-3E72-4454-ADED-446320A03083/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:05:55 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-wMcO5Y.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-wMcO5Y.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/3D2AB8F2-9B68-48A3-8D68-B0522A3C0B06/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/3D2AB8F2-9B68-48A3-8D68-B0522A3C0B06/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:06:37 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-vFe1MK.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-vFe1MK.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/D1B6495B-E2E7-4E5B-95D6-3C3EC467C4FE/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/D1B6495B-E2E7-4E5B-95D6-3C3EC467C4FE/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:07:03 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-IvN0Gm.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-IvN0Gm.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/9BEA35C6-44D5-4478-9F25-CB4DE8BB5CA4/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/9BEA35C6-44D5-4478-9F25-CB4DE8BB5CA4/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:07:28 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-iSAWY7.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-iSAWY7.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/E1882590-100F-48A8-A2B2-03F915D233F3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/E1882590-100F-48A8-A2B2-03F915D233F3/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:07:45 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-lixjdP.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-lixjdP.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/D5771B36-1548-4D99-9D40-C9B58AD7DDB2/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/D5771B36-1548-4D99-9D40-C9B58AD7DDB2/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:08:12 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-9eZjZQ.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-9eZjZQ.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/5ED1E4D8-9C0F-4283-808D-D4B44922EB78/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/5ED1E4D8-9C0F-4283-808D-D4B44922EB78/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:08:27 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-WHj8M7.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-WHj8M7.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/15D318AE-C76A-4695-BFF1-F1591188EE28/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/15D318AE-C76A-4695-BFF1-F1591188EE28/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:09:03 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-1WmdOE.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-1WmdOE.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/E8CC178C-D871-4F9B-B67B-05AA411C3DF7/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/E8CC178C-D871-4F9B-B67B-05AA411C3DF7/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:10:11 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------
+-[YHSandwich setFile:forKey:]: 
+    url: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-qfyu7g.txt
+    key: log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///var/folders/r3/nqkgxvts54b0jlgh6b89bb080000gn/T/com.realmacsoftware.rapidweaver6/com.realmacsoftware.rapidweaver6-3180/log-qfyu7g.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: about to remove item
+-[YHSandwich copy:to:withName:]: finished remove item
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+########  yhSandwich copy  ########
+-[YHSandwich copy:to:withName:]: 
+    source: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+    destination dir:file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/97C81D0D-74ED-4EDE-A7A9-1B949E11F9AC/
+    new name:log.txt
+-[YHSandwich copy:to:withName:]: pre-copy listing: (
+)
+-[YHSandwich copy:to:withName:]: about to copy item
+-[YHSandwich copy:to:withName:]: finished copy item
+-[YHSandwich copy:to:withName:]: post-copy listing: (
+    "log.txt"
+)
+-[YHSandwich copy:to:withName:]: return destination: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/97C81D0D-74ED-4EDE-A7A9-1B949E11F9AC/log.txt
+########  creating rmSandwich for save  ########
+########  yhSandwich check integrity  ########
+-[YHSandwich urlForFilename:]: 
+    filename: log.txt
+-[YHSandwich urlForFilename:]: return: file:///Users/Reinual/Library/Containers/com.realmacsoftware.rapidweaver6/Data/Library/Caches/com.yourhead.YHStacksKit-64/A770A007-A4FA-43F0-9BB5-3318F0C0ABC3/log.txt
+-[YHSandwich RMSandwichWithType:version:build:]: ------------------------------------------------------------------------
+-[YHSandwich RMSandwichWithType:version:build:]: - - Stacks v2.6.8 (1188) - Wed, 19 Nov 2014 15:12:15 -0500
+-[YHSandwich RMSandwichWithType:version:build:]: --------------------------------- save ---------------------------------

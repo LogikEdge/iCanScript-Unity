@@ -1,0 +1,771 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___type_casts" kind="class" prot="public">
+    <compoundname>iCS_TypeCasts</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___type_casts_1afe4f874629183e316f14cd7e30ea099d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_TypeCasts.ToBool</definition>
+        <argsstring>(int v)</argsstring>
+        <name>ToBool</name>
+        <param>
+          <type>int</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="8" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="8" bodyend="8"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a61103a116dd88ddcb0e4f53a92175dd7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_TypeCasts.ToBool</definition>
+        <argsstring>(float v)</argsstring>
+        <name>ToBool</name>
+        <param>
+          <type>float</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="9" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="9" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ac05536474cbc2f68a2fffa4684b09b8d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_TypeCasts.ToBool</definition>
+        <argsstring>(string s)</argsstring>
+        <name>ToBool</name>
+        <param>
+          <type>string</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="10" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="10" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ae5950033d3de40b595d8026d09e7ee9a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_TypeCasts.ToBool</definition>
+        <argsstring>(Vector2 v)</argsstring>
+        <name>ToBool</name>
+        <param>
+          <type>Vector2</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="11" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ad36995391cce11f7fcd4a67f5312ff28" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_TypeCasts.ToBool</definition>
+        <argsstring>(Vector3 v)</argsstring>
+        <name>ToBool</name>
+        <param>
+          <type>Vector3</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="12" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="12" bodyend="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ac2d94ae8cdfe7c563286413e29ecacf6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_TypeCasts.ToBool</definition>
+        <argsstring>(Vector4 v)</argsstring>
+        <name>ToBool</name>
+        <param>
+          <type>Vector4</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="13" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="13" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1adebf554e8e5665f835a559389e51b66f" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iCS_TypeCasts.ToInt</definition>
+        <argsstring>(bool v)</argsstring>
+        <name>ToInt</name>
+        <param>
+          <type>bool</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="16" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="16" bodyend="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a8e1551731cfc3cd5ff8f5d86eeb77f36" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iCS_TypeCasts.ToInt</definition>
+        <argsstring>(float v)</argsstring>
+        <name>ToInt</name>
+        <param>
+          <type>float</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="17" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="17" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a41533efff871479053adff182befe7c3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_TypeCasts.ToFloat</definition>
+        <argsstring>(bool v)</argsstring>
+        <name>ToFloat</name>
+        <param>
+          <type>bool</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="20" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="20" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a920e8f227b807d4425577d8b982c0317" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_TypeCasts.ToFloat</definition>
+        <argsstring>(int v)</argsstring>
+        <name>ToFloat</name>
+        <param>
+          <type>int</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="21" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="21" bodyend="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1abbfde2d268722f8e5d1512bd87afd852" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string iCS_TypeCasts.ToString</definition>
+        <argsstring>(object v)</argsstring>
+        <name>ToString</name>
+        <param>
+          <type>object</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="24" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="24" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ae152f0b5c43643e1ee8dfa1cd830a5a6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string iCS_TypeCasts.ToString</definition>
+        <argsstring>(bool v)</argsstring>
+        <name>ToString</name>
+        <param>
+          <type>bool</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="25" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="25" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a17c6150309812ef1ce006098f930991c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string iCS_TypeCasts.ToString</definition>
+        <argsstring>(int v)</argsstring>
+        <name>ToString</name>
+        <param>
+          <type>int</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="26" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="26" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a61cd8b127e3ca63fb5575f46480299fc" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string iCS_TypeCasts.ToString</definition>
+        <argsstring>(float v)</argsstring>
+        <name>ToString</name>
+        <param>
+          <type>float</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="27" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="27" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a2f303312ba748dc777ea1680ee3ed434" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string iCS_TypeCasts.ToString</definition>
+        <argsstring>(Vector2 v)</argsstring>
+        <name>ToString</name>
+        <param>
+          <type>Vector2</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="28" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a2afc7f44ce2f692ac7fbbc50038c8c71" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string iCS_TypeCasts.ToString</definition>
+        <argsstring>(Vector3 v)</argsstring>
+        <name>ToString</name>
+        <param>
+          <type>Vector3</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="29" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a9ae3c15543fc4601ab41c8470abc2a5a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string iCS_TypeCasts.ToString</definition>
+        <argsstring>(Vector4 v)</argsstring>
+        <name>ToString</name>
+        <param>
+          <type>Vector4</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="30" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="30" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a43d444394208b0e18504bd86e58afe76" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_TypeCasts.ToVector2</definition>
+        <argsstring>(Vector3 v)</argsstring>
+        <name>ToVector2</name>
+        <param>
+          <type>Vector3</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="33" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1acdaec668fd0f28c08193afb8eee36649" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_TypeCasts.ToVector2</definition>
+        <argsstring>(Vector4 v)</argsstring>
+        <name>ToVector2</name>
+        <param>
+          <type>Vector4</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="34" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a4cc3ce4090ff9aa3e5f036fbd58ac84c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_TypeCasts.ToVector3</definition>
+        <argsstring>(Vector2 v)</argsstring>
+        <name>ToVector3</name>
+        <param>
+          <type>Vector2</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="37" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ac3d4c0f0f8c379ae30bdf56a1bfb85b3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_TypeCasts.ToVector3</definition>
+        <argsstring>(Vector4 v)</argsstring>
+        <name>ToVector3</name>
+        <param>
+          <type>Vector4</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="38" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="38" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a25951adbb16fbda238e7309d94455150" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_TypeCasts.ToVector4</definition>
+        <argsstring>(Vector2 v)</argsstring>
+        <name>ToVector4</name>
+        <param>
+          <type>Vector2</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="41" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a46df74f91762794c4f657d436f4495cd" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_TypeCasts.ToVector4</definition>
+        <argsstring>(Vector3 v)</argsstring>
+        <name>ToVector4</name>
+        <param>
+          <type>Vector3</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="42" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="42" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ad716972e6c2811790c45effe97301c99" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Animation</type>
+        <definition>static Animation iCS_TypeCasts.ToAnimation</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToAnimation</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="45" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a2341df1a54a4dbc2e83018f44af2982e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>AudioSource</type>
+        <definition>static AudioSource iCS_TypeCasts.ToAudioSource</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToAudioSource</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="46" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a02b59f264564e906a85d6409ecaf3dfd" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Camera</type>
+        <definition>static Camera iCS_TypeCasts.ToCamera</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToCamera</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="47" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ad8b7e7974e1d0937c3f3ee5bc3c400db" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Collider</type>
+        <definition>static Collider iCS_TypeCasts.ToCollider</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToCollider</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="48" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ab40d3a2778cd9dc05bf895c9b67c25b1" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Collider2D</type>
+        <definition>static Collider2D iCS_TypeCasts.ToCollider2D</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToCollider2D</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="49" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="49" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a0db52b820c7413a81a710678019d9ea7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>ConstantForce</type>
+        <definition>static ConstantForce iCS_TypeCasts.ToConstantForce</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToConstantForce</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="50" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="50" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ab66051eb71774ffb1e2240cd4e6a48dc" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>GUIText</type>
+        <definition>static GUIText iCS_TypeCasts.ToGUIText</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToGUIText</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="51" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="51" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1aa6fffc4e65e2b43616314f81a94706b3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>GUITexture</type>
+        <definition>static GUITexture iCS_TypeCasts.ToGUITexture</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToGUITexture</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="52" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="52" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a508b22eb0633ba16b482f92e09b0568d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>HingeJoint</type>
+        <definition>static HingeJoint iCS_TypeCasts.ToHingeJoint</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToHingeJoint</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="53" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="53" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a0369d8796b47d3f81e772d5e66f1e4b4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Light</type>
+        <definition>static Light iCS_TypeCasts.ToLight</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToLight</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="54" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a47f7dd25f38492d97b214694c70cdb0d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>NetworkView</type>
+        <definition>static NetworkView iCS_TypeCasts.ToNetworkView</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToNetworkView</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="55" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="55" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a69c89f5ef01e0ae87886c9ab12ee0c0d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>ParticleEmitter</type>
+        <definition>static ParticleEmitter iCS_TypeCasts.ToParticleEmitter</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToParticleEmitter</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="56" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="56" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a3325c996c921325d5d9c462e154914ba" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Renderer</type>
+        <definition>static Renderer iCS_TypeCasts.ToRenderer</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToRenderer</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="57" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="57" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a64096471b63d3899f7dfc7898dce8499" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Rigidbody</type>
+        <definition>static Rigidbody iCS_TypeCasts.ToRigidBody</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToRigidBody</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="58" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="58" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ad324bfab4559a48d7e590fd718e1769b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Rigidbody2D</type>
+        <definition>static Rigidbody2D iCS_TypeCasts.ToRigidBody2D</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToRigidBody2D</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="59" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="59" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1ab1441adcedd5703c0d464cce228526b1" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Transform</type>
+        <definition>static Transform iCS_TypeCasts.ToTransform</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToTransform</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="60" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="60" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a46b0e593d2088aa407dd541f32af65c6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>CharacterController</type>
+        <definition>static CharacterController iCS_TypeCasts.ToCharacterController</definition>
+        <argsstring>(GameObject go)</argsstring>
+        <name>ToCharacterController</name>
+        <param>
+          <type>GameObject</type>
+          <declname>go</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="61" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="61" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1afea79c8e9c9a08740dcceac469413257" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>GameObject</type>
+        <definition>static GameObject iCS_TypeCasts.ToGameObject</definition>
+        <argsstring>(Component c)</argsstring>
+        <name>ToGameObject</name>
+        <param>
+          <type>Component</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="64" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="64" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___type_casts_1a91e25d69baa1ce16eee92837997599a0" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>GameObject</type>
+        <definition>static GameObject iCS_TypeCasts.ToGameObject</definition>
+        <argsstring>(Transform c)</argsstring>
+        <name>ToGameObject</name>
+        <param>
+          <type>Transform</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="65" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="65" bodyend="65"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" line="6" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_TypeCasts.cs" bodystart="6" bodyend="66"/>
+    <listofallmembers>
+      <member refid="classi_c_s___type_casts_1ad716972e6c2811790c45effe97301c99" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToAnimation</name></member>
+      <member refid="classi_c_s___type_casts_1a2341df1a54a4dbc2e83018f44af2982e" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToAudioSource</name></member>
+      <member refid="classi_c_s___type_casts_1afe4f874629183e316f14cd7e30ea099d" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToBool</name></member>
+      <member refid="classi_c_s___type_casts_1a61103a116dd88ddcb0e4f53a92175dd7" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToBool</name></member>
+      <member refid="classi_c_s___type_casts_1ac05536474cbc2f68a2fffa4684b09b8d" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToBool</name></member>
+      <member refid="classi_c_s___type_casts_1ae5950033d3de40b595d8026d09e7ee9a" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToBool</name></member>
+      <member refid="classi_c_s___type_casts_1ad36995391cce11f7fcd4a67f5312ff28" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToBool</name></member>
+      <member refid="classi_c_s___type_casts_1ac2d94ae8cdfe7c563286413e29ecacf6" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToBool</name></member>
+      <member refid="classi_c_s___type_casts_1a02b59f264564e906a85d6409ecaf3dfd" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToCamera</name></member>
+      <member refid="classi_c_s___type_casts_1a46b0e593d2088aa407dd541f32af65c6" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToCharacterController</name></member>
+      <member refid="classi_c_s___type_casts_1ad8b7e7974e1d0937c3f3ee5bc3c400db" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToCollider</name></member>
+      <member refid="classi_c_s___type_casts_1ab40d3a2778cd9dc05bf895c9b67c25b1" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToCollider2D</name></member>
+      <member refid="classi_c_s___type_casts_1a0db52b820c7413a81a710678019d9ea7" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToConstantForce</name></member>
+      <member refid="classi_c_s___type_casts_1a41533efff871479053adff182befe7c3" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToFloat</name></member>
+      <member refid="classi_c_s___type_casts_1a920e8f227b807d4425577d8b982c0317" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToFloat</name></member>
+      <member refid="classi_c_s___type_casts_1afea79c8e9c9a08740dcceac469413257" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToGameObject</name></member>
+      <member refid="classi_c_s___type_casts_1a91e25d69baa1ce16eee92837997599a0" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToGameObject</name></member>
+      <member refid="classi_c_s___type_casts_1ab66051eb71774ffb1e2240cd4e6a48dc" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToGUIText</name></member>
+      <member refid="classi_c_s___type_casts_1aa6fffc4e65e2b43616314f81a94706b3" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToGUITexture</name></member>
+      <member refid="classi_c_s___type_casts_1a508b22eb0633ba16b482f92e09b0568d" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToHingeJoint</name></member>
+      <member refid="classi_c_s___type_casts_1adebf554e8e5665f835a559389e51b66f" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToInt</name></member>
+      <member refid="classi_c_s___type_casts_1a8e1551731cfc3cd5ff8f5d86eeb77f36" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToInt</name></member>
+      <member refid="classi_c_s___type_casts_1a0369d8796b47d3f81e772d5e66f1e4b4" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToLight</name></member>
+      <member refid="classi_c_s___type_casts_1a47f7dd25f38492d97b214694c70cdb0d" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToNetworkView</name></member>
+      <member refid="classi_c_s___type_casts_1a69c89f5ef01e0ae87886c9ab12ee0c0d" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToParticleEmitter</name></member>
+      <member refid="classi_c_s___type_casts_1a3325c996c921325d5d9c462e154914ba" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToRenderer</name></member>
+      <member refid="classi_c_s___type_casts_1a64096471b63d3899f7dfc7898dce8499" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToRigidBody</name></member>
+      <member refid="classi_c_s___type_casts_1ad324bfab4559a48d7e590fd718e1769b" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToRigidBody2D</name></member>
+      <member refid="classi_c_s___type_casts_1abbfde2d268722f8e5d1512bd87afd852" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToString</name></member>
+      <member refid="classi_c_s___type_casts_1ae152f0b5c43643e1ee8dfa1cd830a5a6" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToString</name></member>
+      <member refid="classi_c_s___type_casts_1a17c6150309812ef1ce006098f930991c" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToString</name></member>
+      <member refid="classi_c_s___type_casts_1a61cd8b127e3ca63fb5575f46480299fc" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToString</name></member>
+      <member refid="classi_c_s___type_casts_1a2f303312ba748dc777ea1680ee3ed434" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToString</name></member>
+      <member refid="classi_c_s___type_casts_1a2afc7f44ce2f692ac7fbbc50038c8c71" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToString</name></member>
+      <member refid="classi_c_s___type_casts_1a9ae3c15543fc4601ab41c8470abc2a5a" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToString</name></member>
+      <member refid="classi_c_s___type_casts_1ab1441adcedd5703c0d464cce228526b1" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToTransform</name></member>
+      <member refid="classi_c_s___type_casts_1a43d444394208b0e18504bd86e58afe76" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToVector2</name></member>
+      <member refid="classi_c_s___type_casts_1acdaec668fd0f28c08193afb8eee36649" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToVector2</name></member>
+      <member refid="classi_c_s___type_casts_1a4cc3ce4090ff9aa3e5f036fbd58ac84c" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToVector3</name></member>
+      <member refid="classi_c_s___type_casts_1ac3d4c0f0f8c379ae30bdf56a1bfb85b3" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToVector3</name></member>
+      <member refid="classi_c_s___type_casts_1a25951adbb16fbda238e7309d94455150" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToVector4</name></member>
+      <member refid="classi_c_s___type_casts_1a46df74f91762794c4f657d436f4495cd" prot="public" virt="non-virtual"><scope>iCS_TypeCasts</scope><name>ToVector4</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

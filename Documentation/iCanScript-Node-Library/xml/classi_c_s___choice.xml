@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___choice" kind="class" prot="public">
+    <compoundname>iCS_Choice</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___choice_1ad3cbb448c7ecf96a5a673b780dbe44b8" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool iCS_Choice.Choice</definition>
+        <argsstring>(bool trueValue, bool falseValue, bool sel)</argsstring>
+        <name>Choice</name>
+        <param>
+          <type>bool</type>
+          <declname>trueValue</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>falseValue</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>sel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="128" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="128" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___choice_1a30104767457945ce5c194e25b0ef7d83" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Choice.Choice</definition>
+        <argsstring>(float trueValue, float falseValue, bool sel)</argsstring>
+        <name>Choice</name>
+        <param>
+          <type>float</type>
+          <declname>trueValue</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>falseValue</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>sel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="130" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="130" bodyend="130"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___choice_1ad8d08537fb0a5222f89405e7f3896426" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iCS_Choice.Choice</definition>
+        <argsstring>(int trueValue, int falseValue, bool sel)</argsstring>
+        <name>Choice</name>
+        <param>
+          <type>int</type>
+          <declname>trueValue</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>falseValue</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>sel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="132" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="132" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___choice_1aad16d1dfffb32dd3bce22c53846907e7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>static string iCS_Choice.Choice</definition>
+        <argsstring>(string trueValue, string falseValue, bool sel)</argsstring>
+        <name>Choice</name>
+        <param>
+          <type>string</type>
+          <declname>trueValue</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>falseValue</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>sel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="134" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="134" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___choice_1a1cf57e40af14de81d4fd9bdb8991df8a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="i_c_s___logic_8cs_1a5b2c8b05b9a357906d7f9e5b2c1e154d" kindref="member">Object</ref></type>
+        <definition>static Object iCS_Choice.Choice</definition>
+        <argsstring>(Object trueValue, Object falseValue, bool sel)</argsstring>
+        <name>Choice</name>
+        <param>
+          <type><ref refid="i_c_s___logic_8cs_1a5b2c8b05b9a357906d7f9e5b2c1e154d" kindref="member">Object</ref></type>
+          <declname>trueValue</declname>
+        </param>
+        <param>
+          <type><ref refid="i_c_s___logic_8cs_1a5b2c8b05b9a357906d7f9e5b2c1e154d" kindref="member">Object</ref></type>
+          <declname>falseValue</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>sel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="136" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="136" bodyend="136"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" line="126" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Logic.cs" bodystart="126" bodyend="137"/>
+    <listofallmembers>
+      <member refid="classi_c_s___choice_1ad3cbb448c7ecf96a5a673b780dbe44b8" prot="public" virt="non-virtual"><scope>iCS_Choice</scope><name>Choice</name></member>
+      <member refid="classi_c_s___choice_1a30104767457945ce5c194e25b0ef7d83" prot="public" virt="non-virtual"><scope>iCS_Choice</scope><name>Choice</name></member>
+      <member refid="classi_c_s___choice_1ad8d08537fb0a5222f89405e7f3896426" prot="public" virt="non-virtual"><scope>iCS_Choice</scope><name>Choice</name></member>
+      <member refid="classi_c_s___choice_1aad16d1dfffb32dd3bce22c53846907e7" prot="public" virt="non-virtual"><scope>iCS_Choice</scope><name>Choice</name></member>
+      <member refid="classi_c_s___choice_1a1cf57e40af14de81d4fd9bdb8991df8a" prot="public" virt="non-virtual"><scope>iCS_Choice</scope><name>Choice</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

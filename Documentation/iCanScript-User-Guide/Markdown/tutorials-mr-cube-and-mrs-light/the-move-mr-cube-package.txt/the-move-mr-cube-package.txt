@@ -1,0 +1,383 @@
+Title: iCanScript Example Project
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+## Creating the _"Move Mr Cube Package"_ ##
+
+Let's create a package to encapsulate the basic movement functionality of _Mr Cube_.  This is achieved by:
+
+- Right clicking on the _Update_ node to display the context sensitive menu and;
+- Selecting the <span class="cmd">+ Package</span> menu item.
+
+![Figure 1. Creating the _"Move Mr Cube"_ Package.][creating-package-in-update.png]
+
+iCanScript adds a package node under the _Update_ message handler.  By default, the package is yellow and named _":Package"_.  A name that better describes the purpose of the package would be better suited.  Do let's rename your new package to: _"Move Mr Cube"_.
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][icanscript-ui-tips_32x32x32.png] <span class="tiptitle">iCanScript User Interface Tips</span>
+
+---
+**Modifying name of visual elements:**
+> Modifying the node or port name is realized either from the _Inspector_ or the iCanScript _Hierarchy Tree_.
+
+> The _Inspector_ grants detail access to the node or port that is selected in the visual script.  It is however limited the selected element only and will require re-selecting if more then one element needs to be modified.
+
+> The iCanScript _Hierarchy Tree_ offers a tree-like navigation of the entire visual script.  It also allows for changing visual element names.  In this tutorial, we will always use the _Hierarchy Tree_ when modifying node and port names.
+
+ </div><!--tipbox-->
+</div>
+
+
+Let's use the _Hierarchy Tree_ to change the name of the package.
+
+From the _Visual Editor_, right click on the _:Package_ and select the <span class="cmd">Show in hierarchy</span> menu item (figure 2).  This action displays the selected node in the _Hierarchy Tree_.
+
+![Figure 2. Show Package node in iCanScript Hierarchy tree.][show-package-in-hierarchy.png]
+
+Double click on the package name in the _Hierarchy Tree_ to modify it to _"Move Mr Cube"_ (figure 3).
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][PostitNote_32x32.png] **Note:** The _Visual Editor_ and _Hierarchy Tree_ are two views into the visual script.  This means that modifications done in the _Hierarchy Tree_ are reflected in the _Visual Editor_ and vice-versa.
+
+ </div><!--tipbox-->
+</div>
+
+
+![Figure 3. Renaming the package to _Move Mr Cube_.][renaming-move-mr-cube-package.png]
+
+## Adding _Mr Cube_ to the Visual Script ##
+
+
+It's now time to put beef into your hamburger!  The first ingredient you need is _Mr Cube_.  He can be brought into the visual script by dragging him from Unity's Hierarchy panel into the _Move Mr Cube_ package (see figure 4).
+
+
+![Figure 4. Adding Mr Cube to the _Move Mr Cube_ package.][drag-and-drop-mr-cube.png]
+
+The new _Mr Cube_ node is coloured orange indicating that it is an instance of an entity.  Factually, _Mr Cube_ is an instance of a _Game Object_: a complex entity that contains several components defining its capabilities.
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][icanscript-ui-tips_32x32x32.png] <span class="tiptitle">iCanScript User Interface Tips</span>
+
+---
+
+**Instance Nodes and the _Instance Wizard_**
+iCanScript includes a dedicated editor called the _Instance Wizard_ to manage the variables and operations associated with nodes representing object instances.  The _Instance Wizard_ is automatically brought forward when such a node is selected.
+
+Using a simple point-and-click interface, the _Instance Wizard_ can expose or hide the internal variables and operations of the instance.  It is divided in three (3) sections:
+
+**Instance (top section):**
+> The top section consists of a drop down menu that lists the available functions to create an instance of the proper node type and bind it to the _'this'_ port.  Since we have dragged in _Mr Cube_, iCanScript has assumed that the instance should be set to the _Mr Cube_ game object.
+
+**Variables (middle section):**
+> The middle section displays all of the variables (fields & properties) of the instance.  You may expose those variables as input and/or output ports by modifying the checkbox on the left of the variable name.
+
+**Operations (bottom section):**
+> The bottom section gives access to the operations available for the instance as a list of buttons.  Clicking on the operation name exposes that operation on the instance node. Clicking again removes the operation.
+
+ </div><!--tipbox-->
+</div>
+
+
+## Exposing the _Transform_ of _Mr Cube_ ##
+
+In Unity, a game object and its components form a group of inter-related objects.  The game object maintains a list of all of its components and each component keeps a reference back to the game object as depicted in figure 5.
+
+![Figure 5. Unity _Game Object_ and associated _Components_.][game-object-composition.png]
+
+To gain access to a component of the game object, you first need to extract it as a separate instance node.  You can then interact with the component variables and operations using the _Instance Wizard_.
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][UnityLogo_32x32.png] <span class="tiptitle">Unity Tips</span>
+
+---
+
+> The number and type of components that can be attached to a game object is not limited to the listed displayed in figure 5.  The Unity library includes a set of standard components and allows for extending the game object functionality with user defined components.
+
+> When you create a visual script on a game object, you are in fact extending that game object by attaching an _iCS_VisualScript_ component to it.  iCanScript then uses the iCS_VisualScript component to edit, compile and run you visual script.
+
+ </div><!--tipbox-->
+</div>
+
+
+The component of interest for moving _Mr Cube_ is called the _Transform_.  It defines the position, rotation, and scale of the game object.  Moving _Mr Cube_ requires that you change its position hence change its _Transform_ component.
+
+Exposing the _Transform_ of _Mr Cube_ requires that:
+1- you reveal the port associated with the _Transform_ component and then;
+2- extract the transform node to gain access to its variables and operations.
+
+
+**<u>STEP #1:</u> Revealing the _transform_ port:**
+
+Revealing the _transform_ port of _Mr Cube_ is a simple matter of:
+- selecting the _Mr Cube_ node to reveal the _Instance Wizard_ (figure 6);
+- clicking the checkbox on the left side of the _"transform"_ variable in the _Instance Wizard_ (you may need to scroll to the bottom of the _Variables_ section).
+
+  
+![Figure 6. Reveal Mr Cube transform port.][reveal-mr-cube-transform.png]
+
+
+**<u>STEP #2:</u> Extracting the _transform_ instance node:**
+
+The next step is to extract the transform node from _Mr Cube_.  The good news is that iCanScript includes a feature that automatically creates an instance node when you drag a port into an empty area.
+
+Since the _Move Mr Cube_ package tightly surrounds the _Mr Cube_ node, dragging the port into an empty area inside the _Move Mr Cube_ node may be challenging (Undo can be used if mistakes are made).  In the current situation, the easiest way is to drag the _transform_ port up towards the title bar of the _Move Mr Cube_ node and release it their (see figure 7).
+
+You can later reposition the new transform node by dragging it from its title bar.  Likewise, you can relocate the ports by sliding them on the boundaries of the node.    
+
+
+![Figure 7. Extract Mr Cube transform.][extract-mr-cube-transform.png]
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][UnityLogo_32x32.png] <span class="tiptitle">Unity Tips</span>
+
+---
+
+**Game Object Transform:**
+
+> Every _Game Object_ in Unity includes a _Transform_ component.  The _Transform_ component defines the position, rotation, and scale of the object with respect to its parent.  If no parent exists, then the _Transform_ is considered global -- relative to the world coordinates -- as for all actors in our example.
+
+ </div><!--tipbox-->
+</div>
+
+
+
+## Adding the _Translation_ operation to the _Transform_ node ##
+
+
+Now that you have access to the _Transform_ instance node, you can select it and browse its variables and operations using the _Instance Wizard_ (figure 8).
+
+If you browse the _Operations_ section, you will find that the _Transform_ node includes several _Translate(...)_ operations that can be used to move _Mr Cube_.  We are interested in the _Translate_ operation that utilizes a _Vector3_ type for the displacement.
+
+To add the _Translate_ operation to your visual script, you will need to depress the <span class="cmd">Translate(translation:Vector3)</span> button of the _Instance Wizard_.  Once the operation is added, its button is shown as depressed and the text as bolded.  Clicking the button a second time will remove the operation from the visual script.  Make certain that the _Translate_ operation is added before moving on.
+
+
+![Figure 8. Add Mr Cube translation operation.][add-mr-cube-translation.png]
+
+
+With the _Translate_ operation added, you'll notice a new port named _"translation.Translate"_ appearing on the _Transform_ node.  As you may have guessed, this new input port configures the translation to be applied by the _Translate_ operation.
+
+The default value for the translation is (0,0,0).  You will learn to create a visual script to dynamically change the translation value in the sections to follow. 
+
+
+## Moving with Consistent Velocity ##
+
+
+Your next task is to feed a displacement value to the _Translate_ operation of _Mr Cube_.  While this seams easy, it does present a challenge...
+
+**The Challenge:**
+The problem is that the displacement is applied for each frame and that the frame rate (# of frames / second) is dependent on the performance of the computer or gaming platform.  This means that if the same displacement value is applied, _Mr Cube_ will move lightning fast on high-end gaming computers and turtle slow on entry level portable devices.
+
+**The Solution:**
+To maintain constant velocity on all platform regardless of their performance, you need to adjust the magnitude of the displacement according to the frame rate.  So how do you do that?
+
+As starters, you need to control the velocity of _Mr Cube_ and derive the displacement from it.  The displacement is computed by equation #1:
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+**Eq. #1. Calculation of the displacement for a frame**
+
+	displacement= velocity * frame_duration;
+
+ </div><!--tipbox-->
+</div>
+
+The result of this equation is that higher the frame rate, smaller are the displacement values added to the movement for each frame.  Therefore, the velocity is maintained irrespectively of the computing performance.
+
+From equation 1, you need to bring in play an operator that multiplies the velocity (a _Vector3_ value) and the frame duration (a _scalar_ value).
+
+Using the search field in the iCanScript library, type the characters _"mul"_ to reveal the available multiply operators.  Drag the multiply operation under the _Vector3_ type into the _Move Mr Cube_ package as depicted in figure 9.
+
+
+![Figure 9. Adding a function to convert velocity into displacement.][adding-velocity-to-displacement-node.png]
+
+
+The _"op\_Multiply"_ node is coloured green indicating that it is a function.  Functions are created outside iCanScript and imported into the iCanScript library.  In this particular case, the multiply operator is a member function of the _Vector3_ class that is part of the Unity Engine library (the hierarchy in the _Library Tree_ is reminiscence of this structure).
+
+The new node is created with generic names.  To improve on the clarity of the visual script, you should rename the node and its ports to reflect the intended functionality.
+
+Follow these steps to rename the _op\_Multiply_ node:
+
+1. Right click on the _"op\_Multiply"_ node to bring up the context menu;
+2. Select the _Show in Hierarchy_ menu item;
+3. From the hierarchy tree, unfold the node and rename it and its ports as depicted in figure 10.
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][icanscript-ui-tips_32x32x32.png] <span class="tiptitle">iCanScript User Interface Tips</span>
+
+---
+
+> You need to double click on the name in the hierarchy tree to edit it.
+
+ </div><!--tipbox-->
+</div>
+
+
+
+![Figure 10. Renaming the node that converts the velocity to a displacement.][renaming-to-displacement-node.png]
+
+The next step is to bind the _displacement_ output port of the _To Displacement_ node to the _translation_ input port on the _Transform_ node.  This is super simple to accomplish: just drag the _"displacement"_ port onto the _"translation.Translate"_ port and ... Voilà! it's done.  Now the computed displacement changes the position of _Mr Cube_ on every frame.
+
+![Figure 11. Bind the computed displacement to Mr Cube transform.][bind-displacement-to-translation.png]
+
+You are still missing the frame duration value.  Unity has us covered with that.  The _Time_ type supports several time related functions.  The duration of the last executed frame is held in a variable named <u>_deltaTime_</u>.
+
+Start typing _"delta"_ in the search field of the _Library_ panel to expose the _deltaTime_ variable.  You should see it under the _Time_ type of the UnityEngine section.
+
+Drag it from the library into the _Move Mr Cube_ package and bind its output (named _:float_) to the _frameDuration_ input of the _To Displacement_ node.  The final result should look like figure 12.
+
+![Figure 12. Adding frame duration for displacement computation.][adding-delta-time.png]
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][UnityLogo_32x32.png] <span class="tiptitle">Unity Tips</span>
+
+---
+
+**The _CharacterController_ component:**
+
+> Advised users of Unity will have noticed that we have reproduced the functionality to move a game object using relative speed; a functionality that is available in the _CharacterController_ component.
+
+> We have deliberately avoided the _CharacterController_ to focus the learning experience on building visual scripts.  The _CharacterController_ offers many features that are beyond the scope of this tutorial.  We strongly advise that you take some time to learn about the _CharacterController_ before building large on complex projects with Unity.
+
+ </div><!--tipbox-->
+</div>
+
+
+## Controlling Speed and Direction Separately ##
+
+Referencing back to the [overview of the visual script][Visual Script Overview] depicted in figure <$n#figure:mr-cube-script-overview>, you will notice that the _Move Mr Cube_ package receives its input values from the _Adjust Direction_ & _Adjust Speed_ packages (you will build these packages later on).  This means that separate controls for direction and speed are required.
+
+Your next task is to extend your visual script to:
+
+- accept two (2) inputs: a _direction_ and a _speed_ value;
+- compute the velocity value from the _direction_ and _speed_ inputs;
+- bind the "computed velocity" to the _velocity_ input of the _To Displacement_ node created in the previous section.
+
+In our example, the _speed_ and _direction_ are defined as:
+
+- the distance travel in one (1) second and;
+- a unit vector pointing in the direction of movement;
+
+respectively.
+
+From these definitions, you can calculate the velocity by scaling the direction vector (a unit vector) by the speed (a scale value) as described in equation #2:
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+**Eq. #2. Calculation of the velocity.**
+
+	velocity = speed * direction
+
+ </div><!--tipbox-->
+</div>
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][PostitNote_32x32.png] **Note:** A _unit vector_ is a vector who's length is equal to one (1).
+
+ </div><!--tipbox-->
+</div>
+
+Equation #2 has exactly the same structure as the displacement calculation performed in the previous section: you need to multiply a vector value and a scaler value.  This is your chance at trying another cool feature of iCanScript: **node cloning** (without social or legal issues!!!).
+
+To clone the multiply operator, you need to press the <span class="cmd">Shift</span> key and drag the _To Displacement_ node in an empty area inside the _Move Mr Cube_ package (see figure 13).
+
+![Figure 13. Duplicating the vector scale node.][duplicate-vector-scale.png]
+
+
+Once more, you should rename the node and ports to better describe the intent.  Use the _Hierarchy Tree_ as you have done for the _To Displacement_ node to rename the new node and its ports as shown in figure 14.
+
+You also need to bind the _velocity_ output port of the new _To Velocity_ node to the _velocity_ input port of the _To Displacement_ node.
+
+
+![Figure 14. Properly rename the "To Velocity" node.][rename-to-velocity-node.png]
+
+## Publishing the Interface ##
+
+
+Now you have completed the functionality of the _Move Mr Cube_ package.  The last step is to publish the _speed_ and _direction_ ports so that they can be accessed from outside the _Move Mr Cube_ package.  This is easily done by dragging them on the left edge of the _Move Mr Cube_ package.  The final build of the _Move Mr Cube_ package can be seen in figure 15.
+
+![Figure 15. Publish speed and direction ports.][publish-speed-and-direction.png]
+
+[creating-package-in-update.png]: creating-package-in-update.png
+
+[icanscript-ui-tips_32x32x32.png]: icanscript-ui-tips_32x32x32.png width=33px height=33px
+
+[show-package-in-hierarchy.png]: show-package-in-hierarchy.png
+
+[PostitNote_32x32.png]: PostitNote_32x32.png width=31px height=31px
+
+[renaming-move-mr-cube-package.png]: renaming-move-mr-cube-package.png
+
+[drag-and-drop-mr-cube.png]: drag-and-drop-mr-cube.png
+
+[icanscript-ui-tips_32x32x32.png]: icanscript-ui-tips_32x32x32.png width=33px height=33px
+
+[game-object-composition.png]: game-object-composition.png
+
+[UnityLogo_32x32.png]: UnityLogo_32x32.png width=33px height=33px
+
+[reveal-mr-cube-transform.png]: reveal-mr-cube-transform.png
+
+[extract-mr-cube-transform.png]: extract-mr-cube-transform.png
+
+[UnityLogo_32x32.png]: UnityLogo_32x32.png width=33px height=33px
+
+[add-mr-cube-translation.png]: add-mr-cube-translation.png
+
+[adding-velocity-to-displacement-node.png]: adding-velocity-to-displacement-node.png
+
+[icanscript-ui-tips_32x32x32.png]: icanscript-ui-tips_32x32x32.png width=33px height=33px
+
+[renaming-to-displacement-node.png]: renaming-to-displacement-node.png
+
+[bind-displacement-to-translation.png]: bind-displacement-to-translation.png
+
+[adding-delta-time.png]: adding-delta-time.png
+
+[UnityLogo_32x32.png]: UnityLogo_32x32.png width=33px height=33px
+
+[PostitNote_32x32.png]: PostitNote_32x32.png width=33px height=33px
+
+[duplicate-vector-scale.png]: duplicate-vector-scale.png
+
+[rename-to-velocity-node.png]: rename-to-velocity-node.png
+
+[publish-speed-and-direction.png]: publish-speed-and-direction.png

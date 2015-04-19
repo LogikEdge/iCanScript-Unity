@@ -1,0 +1,216 @@
+Title: iCanScript Example Project
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+# Moving Mr Cube (step 1) #
+
+Finally, you are ready to write your first visual script.  _Mr Cube_ movement is ratter complex and shall be implement in phases.  In this section, you will create a visual script to move _Mr Cube_ at a consistent speed regardless of the performance of the computer or game platform running the script.
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][Chalkboard-ABCs_32x32.png] <span class="tiptitle">What you will learn...</span>
+
+---
+
+In this section you will learn several key aspects of iCanScript including:
+
+> - Adding a visual script to a game object;
+> - Defining message handler nodes to process Unity messages;
+> - Structuring your visual scripts by encapsulating functionality inside _Package_ nodes;
+> - Designing logic flows and computations using visual scripts;
+> - Using and binding scene objects into your visual scripts;
+> - Navigating and extracting entity, variable and function nodes from the iCanScript library.
+
+ </div><!--tipbox-->
+</div>
+
+
+## Installing a Visual Script on _Mr Cube_ ##
+
+The first step is to install a visual script on _Mr Cube_.  This is accomplished by:
+
+1. Selecting _Mr Cube_ in the Hierarchy and;
+2. Clicking on the menu item <span class="cmd">Component->iCanScript->Visual Script</span>.
+
+
+![Figure 1. Installing a visual script on _Mr Cube_.][ics-installing-visual-script-on-mr-cube.png]
+
+
+A visual script is now installed on _Mr Cube_ and ready to receive Unity messages.  To edit the visual script, you must select _Mr Cube_ (if not already done) and activate the _Visual Editor_ by clicking on its tab.
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][icanscript-ui-tips_32x32x32.png] <span class="tiptitle">iCanScript User Interface Tips</span>
+
+---
+
+**Visual Editor :: Centring the visual script (<span class="cmd">Shift-F</span>):**
+> The hot key _**Shift-F**_ can be used to resize and reposition the visual script in the centre of the viewport. (See the [navigation][] for additional hot keys.)
+
+**Scene Editor :: Visualizing which object contains a visual script:**
+> In the Scene editor, iCanScript displays its logo in front of each object that contains a visual script.
+
+>  ![][ics-gizmo-in-scene.png]
+
+**Visual Editor :: Selecting the visual script to edit:**
+> The _**Visual Editor**_ provides a graphical view of the visual script installed on the selected game object.  To edit a visual script, you first need to select the game object that contains the visual script.
+
+> The name of the game object containing the visual script is displayed in the toolbar of the _Visual Editor_.
+
+>  ![][name-of-object-including-visual-script.png]
+
+> **Note:**  The Visual Editor continues to edit the same visual script (previous selection) if the object selected in the Hierarchy panel does not contain a visual script.
+
+ </div><!--tipbox-->
+</div>
+
+
+Currently your visual script contains a single grey node named: _Behaviour_.  For iCanScript, the _Behaviour_ node is special in two ways:
+
+- first, it's the top-level node that orchestrates the execution of all visual scripts;
+- secondly, its content is limited to _Message Handler_ nodes.
+
+Before furthering our example, let's take a moment to examine some of the core constructs of iCanScript:
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][iCanScriptLogo_32x32x32.png] <span class="tiptitle">iCanScript Core Concepts</span>
+
+---
+
+iCanScript supports two categories of nodes:
+
+
+**Action nodes:**
+> _**Action**_ nodes execute functionality created outside the realm of iCanScript.  Nodes extracted from libraries and handwriting code are good examples of action nodes.
+>
+> iCanScript does not have the ability to look inside or alter the functionality underlying _Action_ nodes.  For iCanScript,  _Action_ nodes are black-boxes that can be inter-connected, conditionally executed, and packaged to create high-level functionality.
+
+**Composite nodes:**
+> _**Composite**_ nodes are used to organize, abstract, and control a subset of the visual script.  The subset is embedded, using nesting, inside the composite node creating a parent / child relationship.
+>
+> A _Composite_ node activates its child nodes if the conditions for it own activation are met.  For example, a message handler node will execute its internal visual script only when it receives the appropriate message.
+>
+> Composite nodes exist in several flavours each with distinct behaviour and trigger conditions.
+
+ </div><!--tipbox-->
+</div>
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][iCanScriptLogo_32x32x32.png] <span class="tiptitle">iCanScript Core Concepts</span>
+
+---
+Every visual script is composed of one _Behaviour_ node and one or more _Message Handler_ node(s).
+
+**Behaviour Node:**
+> _**Behaviour**_ is a special composite node that coordinates the execution of the overall visual script.  It waits for messages sent from Unity's engine to trigger a subset of the visual script.
+
+> The _**Behaviour**_ node uses _**Message Handler**_ nodes to identify which messages the script operates on.
+
+> Before creating a visual script, you must first decide which of the Unity messages triggers the execution of your script.  A message handler node must be created and embedded in the _Behaviour_ node for each message your visual script responds to.
+
+ <div class="tipbox">
+> ![][UnityLogo_32x32.png] Details pertaining the available Unity messages are documented in the _MonoBehaviour_ section of the [Unity Script Reference guide](http://docs.unity3d.com/Documentation/ScriptReference/MonoBehaviour.html).
+
+ </div><!--tipbox-->
+
+**Message Handler Nodes:**
+> A _Message Handler_ node is a composite node associated with a specific Unity message.  Its purpose is to bridge a Unity message with a subset of your visual script.
+>
+> When the _Behaviour_ node receives a message, it updates the input port values (message parameters) and activates the corresponding _Message Handler_ node.  The script you create to respond to the message must be embedded in the corresponding _Message Handler_ node.
+
+ </div><!--tipbox-->
+</div>
+
+
+## Installing the _Update_ Message Handler ##
+
+
+Before displaying a new frame, Unity sends an _Update_ message to each game object in the scene asking them to prepare for the upcoming frame.  This _Update_ message is ideal to trigger the execution of the visual script to move _Mr Cube_.  It gives you the chance to recompute _Mr Cube_ position immediately before the scene is displayed.
+
+Your next step is to install the _Update_ message handler node whom will serve as the parent trigger for your visual script.  The creation of the _Update_ message handler node is realized as follows:
+
+1- Right click on the _Behaviour_ node to reveal the list of message handlers it supports;
+2- Click the <span class="cmd">+ Update</span> menu item to install the message handler node;
+
+![Figure 2. Installing the Update message handler.][installing-update-message-handler.png]
+
+A new child node called _Update_ is create inside the _Behaviour_ node.  The _Update_ node is blue indicating that it is a message handler.  You are now ready to create the visual script to move _Mr Cube_ inside the _Update_ node.
+
+
+## Visual Script Overview ##
+
+
+_Mr Cube_ visual script will evolve to become somewhat involved as you increase its functionality.  To avoid complex and overblown graphs, you should consider structuring the visual script from its inception.
+
+The following diagram depicts the high-level design of the visual script you will create for Mr Cube:
+
+![Figure 3. _Mr Cube_ visual script overview.][mr-cube-script-overview.png]
+
+It's good practice to segregate and encapsulate functionality into tight bundles and iCanScript has the right _Composite_ node to do so: (drum roll...) the '_**Package**_'.
+
+The _Package_ is iCanScript most flexible node.  It can contain complex graphs and expose only those ports that are made public by the visual script designer.  To modify a _Package_, it will need to be _**unfolded**_, showing its internal graph.  Once you have completed its functionality, you may want to _**fold**_ it so that it displays as a singular node or _**iconize**_ it to reduce visual clutter.
+
+
+The following diagram shows the controls to fold/unfold and iconize a _Package_ node.
+
+![Figure 4. Node display state controls.][node-display-state-controls.png]
+
+[Chalkboard-ABCs_32x32.png]: Chalkboard-ABCs_32x32.png width=33px height=33px
+
+[ics-installing-visual-script-on-mr-cube.png]: ics-installing-visual-script-on-mr-cube.png
+
+[icanscript-ui-tips_32x32x32.png]: icanscript-ui-tips_32x32x32.png width=33px height=33px
+
+[ics-gizmo-in-scene.png]: ics-gizmo-in-scene.png width=249px height=195px
+
+[name-of-object-including-visual-script.png]: name-of-object-including-visual-script.png width=351px height=110px
+
+[iCanScriptLogo_32x32x32.png]: iCanScriptLogo_32x32x32.png width=33px height=33px
+
+[iCanScriptLogo_32x32x32.png]: iCanScriptLogo_32x32x32.png width=33px height=33px
+
+[UnityLogo_32x32.png]: UnityLogo_32x32.png width=33px height=33px
+
+[installing-update-message-handler.png]: installing-update-message-handler.png
+
+[mr-cube-script-overview.png]: mr-cube-script-overview.png
+
+[node-display-state-controls.png]: node-display-state-controls.png

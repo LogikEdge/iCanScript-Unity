@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="dir_a303052ae3d4667f68baea5813f2dabe" kind="dir">
+    <compoundname>/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript</compoundname>
+    <innerdir refid="dir_a44758ce1bac8695b5940641162d8274">/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics</innerdir>
+    <innerfile refid="i_c_s___from_to_8cs">iCS_FromTo.cs</innerfile>
+    <innerfile refid="i_c_s___game_controller_8cs">iCS_GameController.cs</innerfile>
+    <innerfile refid="i_c_s___logic_8cs">iCS_Logic.cs</innerfile>
+    <innerfile refid="i_c_s___math_8cs">iCS_Math.cs</innerfile>
+    <innerfile refid="i_c_s___oscilator_8cs">iCS_Oscilator.cs</innerfile>
+    <innerfile refid="i_c_s___pulse_generator_8cs">iCS_PulseGenerator.cs</innerfile>
+    <innerfile refid="i_c_s___remote_call_8cs">iCS_RemoteCall.cs</innerfile>
+    <innerfile refid="i_c_s___timer_8cs">iCS_Timer.cs</innerfile>
+    <innerfile refid="i_c_s___time_utility_8cs">iCS_TimeUtility.cs</innerfile>
+    <innerfile refid="i_c_s___type_casts_8cs">iCS_TypeCasts.cs</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/"/>
+  </compounddef>
+</doxygen>

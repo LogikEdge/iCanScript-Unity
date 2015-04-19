@@ -1,0 +1,195 @@
+\hypertarget{classi_c_s___force_integrator}{\section{i\+C\+S\+\_\+\+Force\+Integrator Class Reference}
+\label{classi_c_s___force_integrator}\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classi_c_s___force_integrator_aa81c94f25dc56cce305bdc50a07230be}{i\+C\+S\+\_\+\+Force\+Integrator} ()
+\item 
+\hyperlink{classi_c_s___force_integrator_abc3c21098ca5fe641bd0c1e0cda8e1a8}{i\+C\+S\+\_\+\+Force\+Integrator} (Vector3 gravity, float mass=1f, float damping=0.\+995f)
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_af321c3d083c3a651e03db52ecae16177}{Integrate} (Vector3 actual\+Velocity, out Vector3 displacement)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_a084a06cb73f3201769617838fbe001e0}{Gravity}
+\item 
+float \hyperlink{classi_c_s___force_integrator_a0460ab387e5f770a358842f84a61ce67}{Damping}
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_a3e7ef7f501e1af14952a9a5c4f96fd72}{Acceleration}
+\item 
+float \hyperlink{classi_c_s___force_integrator_a8edc33516493f349b7e1054d38a5fa1d}{Inv\+Mass}
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_a0b4b7119426703f30822dd445767adfc}{Previous\+Velocity} = Vector3.\+zero
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_a2b16289c2a513d99cf5dbc035d71e39d}{Output\+Velocity} = Vector3.\+zero
+\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{classi_c_s___force_integrator_a5e7f3a5aedcae2c245670af79966cd8f}{Mass}\hspace{0.3cm}{\ttfamily  \mbox{[}set\mbox{]}}
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_aef1c160690c3c63598dbf5920e97e21b}{Force1}\hspace{0.3cm}{\ttfamily  \mbox{[}set\mbox{]}}
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_aa4d529288f969bc8142b07f76f231ebd}{Force2}\hspace{0.3cm}{\ttfamily  \mbox{[}set\mbox{]}}
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_a1d20f2763147f1f6b4981a4440e6dfa9}{Force3}\hspace{0.3cm}{\ttfamily  \mbox{[}set\mbox{]}}
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_a3d786a1848075460fbf115ee6ab017f1}{Acceleration1}\hspace{0.3cm}{\ttfamily  \mbox{[}set\mbox{]}}
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_a43e5c8ee1a0da0b4c5473fdce906c383}{Acceleration2}\hspace{0.3cm}{\ttfamily  \mbox{[}set\mbox{]}}
+\item 
+Vector3 \hyperlink{classi_c_s___force_integrator_a811ae6403be08cbf53da477c09b0c2c4}{Acceleration3}\hspace{0.3cm}{\ttfamily  \mbox{[}set\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 5 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classi_c_s___force_integrator_aa81c94f25dc56cce305bdc50a07230be}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{i\+C\+S\+\_\+\+Force\+Integrator}]{\setlength{\rightskip}{0pt plus 5cm}i\+C\+S\+\_\+\+Force\+Integrator.\+i\+C\+S\+\_\+\+Force\+Integrator (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classi_c_s___force_integrator_aa81c94f25dc56cce305bdc50a07230be}
+
+
+Definition at line 31 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_abc3c21098ca5fe641bd0c1e0cda8e1a8}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{i\+C\+S\+\_\+\+Force\+Integrator}]{\setlength{\rightskip}{0pt plus 5cm}i\+C\+S\+\_\+\+Force\+Integrator.\+i\+C\+S\+\_\+\+Force\+Integrator (
+\begin{DoxyParamCaption}
+\item[{Vector3}]{gravity, }
+\item[{float}]{mass = {\ttfamily 1f}, }
+\item[{float}]{damping = {\ttfamily 0.995f}}
+\end{DoxyParamCaption}
+)}}\label{classi_c_s___force_integrator_abc3c21098ca5fe641bd0c1e0cda8e1a8}
+
+
+Definition at line 33 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classi_c_s___force_integrator_af321c3d083c3a651e03db52ecae16177}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Integrate@{Integrate}}
+\index{Integrate@{Integrate}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Integrate}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Integrate (
+\begin{DoxyParamCaption}
+\item[{Vector3}]{actual\+Velocity, }
+\item[{out Vector3}]{displacement}
+\end{DoxyParamCaption}
+)}}\label{classi_c_s___force_integrator_af321c3d083c3a651e03db52ecae16177}
+
+
+Definition at line 41 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classi_c_s___force_integrator_a3e7ef7f501e1af14952a9a5c4f96fd72}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Acceleration@{Acceleration}}
+\index{Acceleration@{Acceleration}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Acceleration}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Acceleration}}\label{classi_c_s___force_integrator_a3e7ef7f501e1af14952a9a5c4f96fd72}
+
+
+Definition at line 11 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_a0460ab387e5f770a358842f84a61ce67}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Damping@{Damping}}
+\index{Damping@{Damping}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Damping}]{\setlength{\rightskip}{0pt plus 5cm}float i\+C\+S\+\_\+\+Force\+Integrator.\+Damping}}\label{classi_c_s___force_integrator_a0460ab387e5f770a358842f84a61ce67}
+
+
+Definition at line 10 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_a084a06cb73f3201769617838fbe001e0}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Gravity@{Gravity}}
+\index{Gravity@{Gravity}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Gravity}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Gravity}}\label{classi_c_s___force_integrator_a084a06cb73f3201769617838fbe001e0}
+
+
+Definition at line 9 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_a8edc33516493f349b7e1054d38a5fa1d}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Inv\+Mass@{Inv\+Mass}}
+\index{Inv\+Mass@{Inv\+Mass}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Inv\+Mass}]{\setlength{\rightskip}{0pt plus 5cm}float i\+C\+S\+\_\+\+Force\+Integrator.\+Inv\+Mass}}\label{classi_c_s___force_integrator_a8edc33516493f349b7e1054d38a5fa1d}
+
+
+Definition at line 12 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_a2b16289c2a513d99cf5dbc035d71e39d}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Output\+Velocity@{Output\+Velocity}}
+\index{Output\+Velocity@{Output\+Velocity}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Output\+Velocity}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Output\+Velocity = Vector3.\+zero}}\label{classi_c_s___force_integrator_a2b16289c2a513d99cf5dbc035d71e39d}
+
+
+Definition at line 14 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_a0b4b7119426703f30822dd445767adfc}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Previous\+Velocity@{Previous\+Velocity}}
+\index{Previous\+Velocity@{Previous\+Velocity}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Previous\+Velocity}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Previous\+Velocity = Vector3.\+zero}}\label{classi_c_s___force_integrator_a0b4b7119426703f30822dd445767adfc}
+
+
+Definition at line 13 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+
+
+\subsection{Property Documentation}
+\hypertarget{classi_c_s___force_integrator_a3d786a1848075460fbf115ee6ab017f1}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Acceleration1@{Acceleration1}}
+\index{Acceleration1@{Acceleration1}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Acceleration1}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Acceleration1\hspace{0.3cm}{\ttfamily [set]}}}\label{classi_c_s___force_integrator_a3d786a1848075460fbf115ee6ab017f1}
+
+
+Definition at line 25 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_a43e5c8ee1a0da0b4c5473fdce906c383}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Acceleration2@{Acceleration2}}
+\index{Acceleration2@{Acceleration2}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Acceleration2}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Acceleration2\hspace{0.3cm}{\ttfamily [set]}}}\label{classi_c_s___force_integrator_a43e5c8ee1a0da0b4c5473fdce906c383}
+
+
+Definition at line 26 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_a811ae6403be08cbf53da477c09b0c2c4}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Acceleration3@{Acceleration3}}
+\index{Acceleration3@{Acceleration3}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Acceleration3}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Acceleration3\hspace{0.3cm}{\ttfamily [set]}}}\label{classi_c_s___force_integrator_a811ae6403be08cbf53da477c09b0c2c4}
+
+
+Definition at line 27 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_aef1c160690c3c63598dbf5920e97e21b}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Force1@{Force1}}
+\index{Force1@{Force1}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Force1}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Force1\hspace{0.3cm}{\ttfamily [set]}}}\label{classi_c_s___force_integrator_aef1c160690c3c63598dbf5920e97e21b}
+
+
+Definition at line 22 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_aa4d529288f969bc8142b07f76f231ebd}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Force2@{Force2}}
+\index{Force2@{Force2}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Force2}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Force2\hspace{0.3cm}{\ttfamily [set]}}}\label{classi_c_s___force_integrator_aa4d529288f969bc8142b07f76f231ebd}
+
+
+Definition at line 23 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_a1d20f2763147f1f6b4981a4440e6dfa9}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Force3@{Force3}}
+\index{Force3@{Force3}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Force3}]{\setlength{\rightskip}{0pt plus 5cm}Vector3 i\+C\+S\+\_\+\+Force\+Integrator.\+Force3\hspace{0.3cm}{\ttfamily [set]}}}\label{classi_c_s___force_integrator_a1d20f2763147f1f6b4981a4440e6dfa9}
+
+
+Definition at line 24 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+\hypertarget{classi_c_s___force_integrator_a5e7f3a5aedcae2c245670af79966cd8f}{\index{i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}!Mass@{Mass}}
+\index{Mass@{Mass}!i\+C\+S\+\_\+\+Force\+Integrator@{i\+C\+S\+\_\+\+Force\+Integrator}}
+\subsubsection[{Mass}]{\setlength{\rightskip}{0pt plus 5cm}float i\+C\+S\+\_\+\+Force\+Integrator.\+Mass\hspace{0.3cm}{\ttfamily [set]}}}\label{classi_c_s___force_integrator_a5e7f3a5aedcae2c245670af79966cd8f}
+
+
+Definition at line 21 of file i\+C\+S\+\_\+\+Force\+Integrator.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/\+Reinual/\+Workspaces/i\+Can\+Script/\+Product/\+Unity/\+Assets/i\+Can\+Script/\+Engine/\+Nodes/i\+Can\+Script/\+Simple\+Physics/\hyperlink{i_c_s___force_integrator_8cs}{i\+C\+S\+\_\+\+Force\+Integrator.\+cs}\end{DoxyCompactItemize}

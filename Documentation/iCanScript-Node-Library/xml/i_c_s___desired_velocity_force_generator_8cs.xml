@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="i_c_s___desired_velocity_force_generator_8cs" kind="file">
+    <compoundname>iCS_DesiredVelocityForceGenerator.cs</compoundname>
+    <innerclass refid="classi_c_s___desired_velocity_force_generator" prot="public">iCS_DesiredVelocityForceGenerator</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="keyword">using</highlight><highlight class="normal"><sp/>UnityEngine;</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>System.Collections;</highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal">[iCS_Class(Company=</highlight><highlight class="stringliteral">&quot;iCanScript&quot;</highlight><highlight class="normal">,<sp/>Library=</highlight><highlight class="stringliteral">&quot;SimplePhysic&quot;</highlight><highlight class="normal">)]</highlight></codeline>
+<codeline lineno="5" refid="classi_c_s___desired_velocity_force_generator" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classi_c_s___desired_velocity_force_generator" kindref="compound">iCS_DesiredVelocityForceGenerator</ref><sp/>{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>MaxAcceleration;</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>MaxDeceleration;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>Vector3<sp/>AffectedCoordinates;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>[iCS_Function]</highlight></codeline>
+<codeline lineno="11" refid="classi_c_s___desired_velocity_force_generator_1a308ac7a0da09f36aa4dceaa355445529" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classi_c_s___desired_velocity_force_generator_1a308ac7a0da09f36aa4dceaa355445529" kindref="member">iCS_DesiredVelocityForceGenerator</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>maxAcceleration,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>maxDeceleration,<sp/>Vector3<sp/>affectedCoordinates)<sp/>{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MaxAcceleration=<sp/>maxAcceleration;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MaxDeceleration=<sp/>maxDeceleration;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AffectedCoordinates=<sp/>affectedCoordinates;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>[iCS_Function(Return=</highlight><highlight class="stringliteral">&quot;acceleration&quot;</highlight><highlight class="normal">)]</highlight></codeline>
+<codeline lineno="18" refid="classi_c_s___desired_velocity_force_generator_1a54debeb473daf0c9263a51ef31785ea8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>Vector3<sp/><ref refid="classi_c_s___desired_velocity_force_generator_1a54debeb473daf0c9263a51ef31785ea8" kindref="member">Update</ref>(Vector3<sp/>desiredVelocity,<sp/>Vector3<sp/>currentVelocity,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>accelerationScale=<sp/>1f)<sp/>{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Can<sp/>compute<sp/>acceleration<sp/>in<sp/>zero<sp/>time.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>dt=<sp/>Time.deltaTime;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(Math3D.IsZero(dt))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Vector3.zero;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Eliminate<sp/>undesired<sp/>components.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>desiredVelocity.Scale(AffectedCoordinates);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>currentVelocity.Scale(AffectedCoordinates);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Compute<sp/>acceleration<sp/>to<sp/>meet<sp/>desired<sp/>speed<sp/>in<sp/>one<sp/>frame.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>var<sp/>deltaVelocity=<sp/>desiredVelocity-currentVelocity;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>var<sp/>accelerationVector=<sp/>deltaVelocity/dt;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>accelerationMagnitude=<sp/>accelerationVector.magnitude;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Compute<sp/>maximum<sp/>allowed<sp/>acceleration/deceleration</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>maxAcceleration=<sp/>accelerationScale<sp/>*<sp/>(Vector3.Dot(desiredVelocity,<sp/>currentVelocity)<sp/>&gt;<sp/>0<sp/>?<sp/>MaxAcceleration<sp/>:<sp/>MaxDeceleration);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(accelerationMagnitude<sp/>&gt;<sp/>maxAcceleration)<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>accelerationMagnitude=<sp/>maxAcceleration;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Return<sp/>acceleration<sp/>for<sp/>this<sp/>dt.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>accelerationVector=<sp/>accelerationVector.normalized<sp/>*<sp/>accelerationMagnitude;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>accelerationVector;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/SimplePhysics/iCS_DesiredVelocityForceGenerator.cs"/>
+  </compounddef>
+</doxygen>

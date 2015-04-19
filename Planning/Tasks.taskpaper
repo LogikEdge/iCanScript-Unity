@@ -1,0 +1,19 @@
+www.icanscript.com:
+	- Fill-in Meta Data in Project Header
+	- Automated "resources" publishing
+	- Automated "User-Guide" publishing
+	- Automated "Release Notes" publishing
+	- Fix: HTML not transfered to LocalServer
+	Problem is caused by Hazel not detection file changes on external drives.
+	- Fix: GlobalContent not working on LocalServer
+	- Fix: FormSnap not working
+	
+iCanScript:
+	Verification:
+	Bugs:
+		- Undo node drag does not reposition at start.
+		- Undo of port is on wrong edge.
+	Improvements:
+Archive:
+	- Favicon for User Guide @done @project(www.icanscript.com)
+	- Combine sitemap (sub-sites) @done @project(www.icanscript.com)

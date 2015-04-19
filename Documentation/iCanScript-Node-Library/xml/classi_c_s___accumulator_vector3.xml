@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___accumulator_vector3" kind="class" prot="public">
+    <compoundname>iCS_AccumulatorVector3</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classi_c_s___accumulator_vector3_1a583bb8a0464ce5e15a37437c45c4d475" prot="public" static="no" mutable="no">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_AccumulatorVector3.acc</definition>
+        <argsstring></argsstring>
+        <name>acc</name>
+        <initializer>= default(Vector3)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="65" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classi_c_s___accumulator_vector3_1ab953f1d630502811ad432146e1e03f43" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>iCS_AccumulatorVector3.iCS_AccumulatorVector3</definition>
+        <argsstring>(Vector3 initialValue=default(Vector3))</argsstring>
+        <name>iCS_AccumulatorVector3</name>
+        <param>
+          <type>Vector3</type>
+          <declname>initialValue</declname>
+          <defval>default(Vector3)</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="68" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="68" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___accumulator_vector3_1a3344256bbd31a418b49b3a32588cf60c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void iCS_AccumulatorVector3.Reset</definition>
+        <argsstring>(Vector3 resetValue=default(Vector3))</argsstring>
+        <name>Reset</name>
+        <param>
+          <type>Vector3</type>
+          <declname>resetValue</declname>
+          <defval>default(Vector3)</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="72" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="72" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___accumulator_vector3_1a41d0c92da04f747d9de53fea755b7786" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>Vector3 iCS_AccumulatorVector3.Accumulate</definition>
+        <argsstring>(Vector3 toAdd)</argsstring>
+        <name>Accumulate</name>
+        <param>
+          <type>Vector3</type>
+          <declname>toAdd</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="76" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="76" bodyend="79"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" line="64" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/Obsoleted/iCanScript/iCS_Accumulators.cs" bodystart="64" bodyend="80"/>
+    <listofallmembers>
+      <member refid="classi_c_s___accumulator_vector3_1a583bb8a0464ce5e15a37437c45c4d475" prot="public" virt="non-virtual"><scope>iCS_AccumulatorVector3</scope><name>acc</name></member>
+      <member refid="classi_c_s___accumulator_vector3_1a41d0c92da04f747d9de53fea755b7786" prot="public" virt="non-virtual"><scope>iCS_AccumulatorVector3</scope><name>Accumulate</name></member>
+      <member refid="classi_c_s___accumulator_vector3_1ab953f1d630502811ad432146e1e03f43" prot="public" virt="non-virtual"><scope>iCS_AccumulatorVector3</scope><name>iCS_AccumulatorVector3</name></member>
+      <member refid="classi_c_s___accumulator_vector3_1a3344256bbd31a418b49b3a32588cf60c" prot="public" virt="non-virtual"><scope>iCS_AccumulatorVector3</scope><name>Reset</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

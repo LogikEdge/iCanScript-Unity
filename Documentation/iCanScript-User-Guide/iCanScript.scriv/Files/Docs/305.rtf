@@ -1,0 +1,51 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset0 Menlo-Bold;\f2\fnil\fcharset0 Menlo-Italic;
+}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\sl288\slmult1\pardirnatural
+
+\f0\fs26 \cf0 Before creating visual scripts, we first need to build a scene in Unity and populate it with actors.  Based on the storyline, the actors are (the camera has been purposely omitted):\
+\
+- **
+\f1\b Mr. Cube
+\f0\b0 ** (I'll let you guess the shape to use);\
+- **
+\f1\b Ms. Light
+\f0\b0 ** (a directional light);\
+- **
+\f1\b Near Trigger Zone
+\f0\b0 ** to turn off _
+\f2\i Ms. Light
+\f0\i0 _ (a sphere will do fine);\
+- **
+\f1\b Far Trigger Zone
+\f0\b0 ** to turn on _
+\f2\i Ms. Light
+\f0\i0 _ (again a sphere will do fine).\
+\
+The main characteristics of the actors are:\
+\
+- All actors live on a 2D plane with the Y-axes set to zero (0);\
+- Ms. Light and both Trigger Zones are centred at (0,0,0);\
+- Both Trigger Zones are configured to trigger when colliding with _
+\f2\i Rigid Bodies
+\f0\i0 _;\
+- The Near Trigger Zone will be 2 meters in diameter;\
+- The Far Trigger Zone will be 3 meters in diameter;\
+- Mr. Cube is one meter in dimensions;\
+- Mr. Cube includes a _
+\f2\i Rigid Body
+\f0\i0 _ component to generate collision triggers.\
+\
+You may ask yourself why two trigger zones?  We want to avoid _
+\f2\i Ms Light
+\f0\i0 _ from rapidly transitioning on and off while _
+\f2\i Mr Cube
+\f0\i0 _ nears her.  If only one trigger zone existed, _
+\f2\i Mr Cube
+\f0\i0 _ could navigate on the edge of the trigger zone causing _
+\f2\i Ms Light
+\f0\i0 _ to flicker.  By creating a buffer area between the on trigger (near) and the off trigger (far), we remove the possibility of _
+\f2\i Ms Light
+\f0\i0 _ flickering.\
+}

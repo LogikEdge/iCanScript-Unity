@@ -1,0 +1,185 @@
+Title: iCanScript Example Project
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+<!--TOC max2-->
+
+# Creating the Unity Project #
+
+We are now ready to build our scene in Unity.  First, we need a fresh new Unity project with an installed version of iCanScript.  For the purpose of this tutorial, the project will be named "Houpi Youpi" (I don't know how to call it! So please bear with me...).
+
+Open Unity and select the <span class="cmd">File->New Project...</span> menu item as shown in the image below:
+
+![Figure 1. Create a new Unity project.][unity-new-project.png]
+
+
+Next you will be asked for a project name and prompted to install standard Unity packages.  Enter _"HoupiYoupi"_ as the project name. None of the Unity packages will be required for this tutorial.  So don't select any and close the dialog box by clicking the <span class="cmd">Create Project</span> button.
+
+![Figure 2. Create _Houpi Youpi_ Project.][create-houpi-youpi.png]
+
+
+
+You now have a bare project in which to import iCanScript.  Please follow the instructions in the [installation] section to download the latest version of iCanScript if you haven't already done so.  Use the <span class="cmd">Assets->Import Package->Custom Package...</span> menu item to import iCanScript into your project.  Once you complete the import, your project panel in Unity should look as follows: 
+
+![Figure 3. Unity project with the iCanScript package.][icanscript-empty-project.png]
+
+<!--BREAK-->
+
+
+## Adding Actors to the Scene ##
+
+Ok, we are ready to bring our actors into the scene.  For each new project, Unity creates a default scene with the main camera object.  You will add the actors to the default scene using the <span class="cmd">GameObject->...</span> menu.
+
+
+
+### Ms Light ###
+
+Let's start by adding _Ms Light_.  Select the <span class="cmd">GameObject->Create Other->Directional Light</span> menu item and, _swoosh ... Ms Light_ appears.
+
+![Figure 4. Adding Ms Light to the scene.][adding-directional-light.png]
+
+Double click on the _"Directional light"_ label in the hierarchy panel to rename it to _"Ms Light"_.  Because _Ms Light_ is a directional light, she lights the scene equally regardless of her position.  For consistency shake with our story, I suggest you position her at (0,0,0) as show in Figure 5.
+
+![Figure 5. Renaming and positioning Ms Light.][config-mrs-light.png]
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][UnityLogo_32x32.png] <span class="tiptitle">Unity Tips</span>
+
+---
+**What's a Directional Light?**
+> A **directional light** illuminates the scene with uniform intensity regardless of the distance from the light source.  It is often used to simulate the sun.  Its light direction and color can be configured to create various time-of-day effects and neat extra-terrestrial atmospheres.  The default color and direction of the directional light source is adequate for our example.
+
+ </div><!--tipbox-->
+</div>
+
+
+
+
+### Near & Far Trigger Zones ###
+
+The two trigger zones are spheric in shape and are create with the <span class="cmd">GameObject->Create Other->Sphere</span> menu.
+
+![Figure 6. Adding Trigger Zones to the Scene.][adding-trigger-zones.png]
+
+After you have created both _trigger zones_, you need to configure them as follows:
+
+1. Name one of them _"Near Trigger Zone"_ and the other _"Far Trigger Zone"_;
+2. As for _Ms Light_, position both trigger zones at (0,0,0);
+3. Now resize the _"Near Trigger Zone"_ to 2 meters and the _"Far Trigger Zone"_ to 3 meters by setting the scale to (2,2,2) and (3,3,3) respectively;
+4. The final step is to enable the **trigger** behaviour of both spheres. This is realized by clicking the <span class="cmd">Is Trigger</span> checkbox in the _Sphere Collider_ component of the trigger zones (see 7).
+
+![Figure 7. Configuring Near & Far Trigger Zones.][config-trigger-zones.png]
+
+
+
+### Mr Cube ###
+
+We are now ready for our final actor: _Mr Cube_.  Use the <span class="cmd">GameObject->Create Other->Cube</span> menu item to add _Mr Cube_ to the scene.
+
+![Figure 8. Adding Mr Cube to the scene.][adding-mr-cube.png]
+
+Once more, you need to set the initial parameters of the new actor.  _Mr Cube_ must be configured as follows:
+
+1. Rename the cube object to _"Mr Cube"_ (sexy!);
+2. Relocate _Mr Cube_ outside both trigger zones at position (5,0,0);
+3. For _Mr Cube_ to collide with the trigger zones, it must have a _Rigid Body_.  Add the _Rigid Body_ to _Mr Cube_ using the <span class="cmd">Component->Physics->RigidBody</span> menu item (see figure 10);
+4. The _Rigid Body_ component is configured to use gravity by default.  Our land of _Emptiness_ is deprived of this _Newtonian_ concept and therefore requires that you remove all gravity behaviour.  Select the _Rigid Body_ component of _Mr Cube_ and uncheck the <span class="cmd">Use Gravity</span> checkbox as illustrated in figure 11.
+
+
+![Figure 9. Adjusting Name and Position of Mr Cube.][configure-mr-cube-name-and-position.png]
+
+
+![Figure 10. Adding a Rigid Body to Mr Cube.][adding-rigid-body.png]
+
+
+![Figure 11. Removing gravity from Mr Cube.][remove-gravity-from-mr-cube.png]
+
+
+
+## Hiding the Trigger Zones ##
+
+All of our actors are now included in the scene.  However, we still need to make one last adjustment: hide the trigger zones.
+
+The trigger zones are the _"magic"_ that makes actors change behaviour and everyone knows that _"magic"_ must be invisible.  So, let's hide those spheres for no one to see.  To hide the trigger zones, you need to disable the _Mesh Renderer_  as depicted in the below figure.
+
+![Figure 12. Disable the Mesh Renderer of both Trigger Zones.][disable-trigger-zones-mesh-renderer.png]
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][UnityLogo_32x32.png] <span class="tiptitle">Unity Tips</span>
+
+---
+**What's a Renderer?**
+> The **renderer** is the Unity entity responsible for drawing the scene objects.  Each object in a Unity scene includes a renderer component to control its drawing properties. By disabling the **Mesh Renderer**, you are telling Unity to forgo the drawing of the trigger zones hence hiding them from the user.  Hiding the trigger zones does not change the behaviour of other components such as collision detection that is dear to us.
+
+ </div><!--tipbox-->
+</div>
+
+
+You are now ready to build your visual scripts!!!
+> (finally you must be saying to yourself).
+
+
+[unity-new-project.png]: unity-new-project.png
+
+[create-houpi-youpi.png]: create-houpi-youpi.png
+
+[icanscript-empty-project.png]: icanscript-empty-project.png
+
+[adding-directional-light.png]: adding-directional-light.png
+
+[config-mrs-light.png]: config-mrs-light.png
+
+[UnityLogo_32x32.png]: UnityLogo_32x32.png width=31px height=31px
+
+[adding-trigger-zones.png]: adding-trigger-zones.png
+
+[config-trigger-zones.png]: config-trigger-zones.png
+
+[adding-mr-cube.png]: adding-mr-cube.png
+
+[configure-mr-cube-name-and-position.png]: configure-mr-cube-name-and-position.png
+
+[adding-rigid-body.png]: adding-rigid-body.png
+
+[remove-gravity-from-mr-cube.png]: remove-gravity-from-mr-cube.png
+
+[disable-trigger-zones-mesh-renderer.png]: disable-trigger-zones-mesh-renderer.png
+
+[UnityLogo_32x32.png]: UnityLogo_32x32.png width=31px height=31px

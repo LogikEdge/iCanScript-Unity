@@ -1,0 +1,66 @@
+Title: iCanScript Installation & Upgrade
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+# Upgrading iCanScript #
+
+
+Improvements to iCanScript are regularly made available as downloadable software updates. 
+
+The following steps are needed to verify for and update to the latest version of iCanScript:
+
+1. Verify for an update using the menu item: <span class="cmd">Help->iCanScript->Check for Updates…</span>;
+2. If an update is available, a dialog box will guide you to the download page;
+3. Download the latest version of iCanScript;
+4. Open Unity and uninstall the current version of iCanScript (see [Removing iCanScript]);
+5. Import the latest version of iCanScript (see [Installation]);
+6. An alert box will be shown if data conversion is required after the upgrade;
+	- data conversion is performed in memory;
+	- each visual script data is converted independently;
+	- converted data is persisted when the scene is saved;
+	- data rollback is performed if scene is not saved after an upgrade.
+7. Save the scene to complete the upgrade.
+
+![Figure 1. Verifying for an update.][ics-check-for-update.png]
+
+
+
+
+[ics-check-for-update.png]: ics-check-for-update.png

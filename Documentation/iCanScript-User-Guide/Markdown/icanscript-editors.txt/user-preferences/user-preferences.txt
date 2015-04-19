@@ -1,0 +1,72 @@
+Title: iCanScript Editors
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+# User Preferences #
+
+The ***User Preferences*** is used to customize the default behaviour and the look and feel of iCanScript.
+
+This information is saved in the user profile and applied to all iCanScript projects opened by the user.
+
+
+![Figure 1. User Preferences][editor-user-preferences.png]
+ 
+
+![][stamp-1-orange.png] **Panel Selection:**  The panel selection is used to navigate the different configuration panels available to the iCanScript user.  Clicking on the panel name reveals the configuration details in the panel area.
+
+![][stamp-2-orange.png] **Configuration Panel:** The configuration panel is the largest section of the user preference window. It includes all of the configurable attributes for the selected product area.  Changing the product area will reveal a new panel with its configurable attributes.  The user can modify these attributes customize the behaviour and the look and feel of iCanScript.
+
+![][stamp-3-orange.png] **Use Defaults Button:** Clicking this button will restore all parameters of the active configuration panel to their factory default values.
+
+![][stamp-4-orange.png] **iCanScript Version Information:** The iCanScript product version and user registration information is displayed in this area.
+
+
+
+---
+
+[editor-user-preferences.png]: editor-user-preferences.png
+
+[stamp-1-orange.png]: stamp-1-orange.png width=32px height=30px
+
+[stamp-2-orange.png]: stamp-2-orange.png width=32px height=30px
+
+[stamp-3-orange.png]: stamp-3-orange.png width=32px height=30px
+
+[stamp-4-orange.png]: stamp-4-orange.png width=32px height=30px

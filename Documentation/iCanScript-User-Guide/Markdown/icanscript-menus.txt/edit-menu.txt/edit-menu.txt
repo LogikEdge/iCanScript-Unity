@@ -1,0 +1,101 @@
+Title: iCanScript Menus
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+# Edit Menu #
+
+iCanScript extends Unity's <span class="cmd">Edit</span> menu with navigation features and the ability to create a Visual script as depicted in the below figure.
+
+![Figure 1. iCanScript Edit menu extension.][ics-menu-edit.png]
+
+
+## Edit->iCanScript->Create Visual Script ##
+
+_**Summary:**_
+
+		Attaches a visual script component to the selected game object.
+
+_**Description:**_
+
+The <span class="cmd">Create Visual Script</span> menu item is used to attach an iCanScript Visual Script component to the selected game object.
+
+The Visual Script component is at the root of your visual script. It includes the iCanScript engine code that compiles and runs the visual script when the Unity engine runs. It also saves & reloads your visual script when the scene in which it is contained is saved or reloaded.
+
+A game object containing an iCanScript Visual Script can be edited using the visual editor.
+
+
+
+
+|   Menu State   | Condition |
+| :------------: | :-------- |
+| _**Enabled**_  | - Selected game object without a Visual Script component. |
+| _**Disabled**_ | - No selected object;<br>- Selected object already has a Visual Script component. |
+[Table 1. Create Visual Script Enable State]
+
+
+## Edit->iCanScript->Center Visual Script ##
+
+_**Summary:**_
+
+		Centres the visual script in the viewport.
+
+_**Description:**_
+
+The <span class="cmd">Center Visual Script</span> menu item is used to reposition the visual script in the centre of the visual editor viewport.
+
+The zoom factor of the viewport may be adjusted to improve visual script visibility.
+
+
+## Edit->iCanScript->Center Selected ##
+
+_**Summary:**_
+
+		Centres the selected node / port in the viewport.
+
+
+_**Description:**_
+
+The <span class="cmd">Center Selected</span> menu item is used to reposition the selected node in the centre of the visual editor viewport.
+
+The zoom factor of the viewport may be adjusted to improve selected node visibility.
+
+
+
+[ics-menu-edit.png]: ics-menu-edit.png

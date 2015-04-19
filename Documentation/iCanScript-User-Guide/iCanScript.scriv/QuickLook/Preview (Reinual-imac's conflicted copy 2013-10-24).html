@@ -1,0 +1,693 @@
+<html>
+
+<head>
+<title>iCanScript User Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+	body {background-color: #bac0c7}
+    p.binderItem {margin: 10.0px 0.0px 0.0px 05.0px; font-family:Menlo, Cochin, Times, Courier, Arial, serif; font-size:13.0px;}
+    .page {border: 1px solid #727272; background: #fff}
+    hr {
+      border-top: 1px dashed #000;
+      border-bottom: 0px solid #fff;
+      color: #fff;
+      background-color: #fff;
+      height: 0px;
+  </style>
+</head>
+
+<body>
+
+<table border="0" width="100%" cellspacing="3">
+<tr>
+<td>
+
+<table class="page" width="100%" cellspacing="10" cellpadding="2">
+<tr>
+<td valign="top">
+
+<ul>
+<li>
+<p class="binderItem"><strong>What is iCanScript?</strong><br/>!{-2col-<br/>
+!-2col-|<br/>
+<br/>
+> Think twice before you start programming or you will program twice before you start thinking.<br/>
+> <br/>
+> ---<br/>
+> <br/>
+> \- Unknown<br/>
+<br/>
+!-2col-}<br/>
+<br/>
+More then 50 years after ENIAC, most programmers still rely solely on textual editors to express their creative thoughts into programs that can be compiled or interpreted by computers.<br/>
+<br/>
+As the programs increase in complexity, many corporations encourage the interdisciplinary⁠ discussion of the high-level concepts overseeing the software product to...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Installation</strong><br/>!<{#!<| <p>iCanScript is a downloadable plugin for the Unity 3D game engine. It comes in the form of a Unity package that must be installed for each project.</p>!<}<br/>
+<br/>
+The initial download of iCanScript is available from the project website. User registration is required to obtain the latest version of the iCanScript software via email. An overview of the registration, download and installation procedure is available in the following video:<br/>
+<br/>
+<br/>
+[](http://youtu.be/LJIqMaUNoAU)<br/>
+<br/>
+<br/>
+Installing for the fi...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Core Concepts</strong><br/>iCanScript is designed to seamlessly integrated into the Unity development environment.  It builds on the philosophies and application programming interfaces (APIs) available to Unity script programmers.<br/>
+<br/>
+iCanScripts integrates with the following Unity concepts:<br/>
+<br/>
+*  Visual scripts are standard Unity *Components*; <br/>
+*  Each visual script is compiled into an Unity *Behaviour* and executed as such;<br/>
+*  All Unity engine programming interfaces are available in the iCanScript library database; <br/>
+*  All *...</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Adding a Visual Script</strong><br/>To use iCanScript, you first need to install a visual scripts on one of your game objects.  To illustrate this process, we will add a visual script to a sphere that will later be used as a trigger zone. <br/>
+<br/>
+To do so, you must:<br/>
+<br/>
+1. Select a game object to contain the visual script;<br/>
+2. Create a visual script using the menu item: *iCanScript->Create Visual Script*. <br/>
+<br/>
+#<br/>
+[Figure <$n:figure>. Create Visual Script menu item.]<br/>
+<br/>
+*Et voilà,  you have a visual script !!!*  It does not do anything yet but it ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Node Anatomy</strong><br/>The iCanScript node has several visual adornments to manipulate and configure its behaviour and layout.  The following image depicts these visual adornments:<br/>
+<br/>
+#<br/>
+[Figure <$n:figure>.  Anatomy of a node.]<br/>
+<br/>
+1. **Node Name:**  User configurable name for the node.  The name editable in the inspector or the hierarchy tree.  The programmatic function or type name is used by default.<br/>
+2. **Iconize Control:** Clicking this pictogram causes the node to take its iconic representation.<br/>
+3. **Fold/Unfold Contr...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Data Flow Diagram</strong><br/><br/>
+[Back to Top][]</p>
+</li>
+<li>
+<p class="binderItem"><strong>State Chart Diagram</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>States</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Entry Function</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Update Function</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Exit Function</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Nested State</strong></p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Transitions</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Trigger Function</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Transition Behaviour</strong><br/>[Back to Top][]</p>
+</li>
+</ul>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Libraries & Prefabs</strong><br/>Visual script libraries are created using Unity’s Prefab concept. <br/>
+<br/>
+[Back to Top][]</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Menus</strong><br/>In addition to creating it's own menu, iCanScript installs itself in Unity's Component and Windows menus. This section describes the iCanScript functionality associated with each menu item.</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>iCanScript Menu</strong><br/>iCanScript installs its own menu for easy access to product services. These services include access to online documentation, feature request form, and product updates.<br/>
+<br/>
+#<br/>
+[Figure <$n:figure>. iCanScript Menu]</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>iCanScript->Create Visual Script</strong><br/>***Summary:***<br/>
+<br/>
+  Attaches a visual script component to the selected game object.<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The *Create Visual Script* menu item is used to attach an iCanScript Visual Script component to the selected game object.<br/>
+<br/>
+The Visual Script component is at the root of your visual script. It includes the iCanScript engine code that compiles and runs the visual script when the Unity engine runs. It also saves & reloads your visual script when the scene in which it is contained is saved or reloa...</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript->Center Visual Script</strong><br/>***Summary:***<br/>
+<br/>
+  Centres visual behaviour in viewport.<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The *Center Visual Script* menu item is used to reposition the visual script in the centre of the visual editor viewport.<br/>
+<br/>
+The zoom factor of the viewport may be adjusted to improve visual script visibility.</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript->Focus On Selected</strong><br/>***Summary:***<br/>
+<br/>
+  Centres selected node / port in viewport.<br/>
+<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The *Focus On Selected* menu item is used to reposition the selected node in the centre of the visual editor viewport.<br/>
+<br/>
+The zoom factor of the viewport may be adjusted to improve selected node visibility.</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript->Documentation->Home</strong><br/>***Summary:***<br/>
+<br/>
+  Opens iCanScript home page in default Web browser.<br/>
+<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The *Documentation->Home* menu item is used to open the home page of the iCanScript Web site in a new internet browser window.<br/>
+<br/>
+An internet connection is required to access the iCanScript home page.</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript->Documentation->User's Guide</strong><br/>***Summary:***<br/>
+<br/>
+  Opens iCanScript user manual in default Web browser.<br/>
+<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The *Documentation->User's Guide* menu item is used to open the iCanScript online user guide in a new internet browser window.<br/>
+<br/>
+An internet connection is required to access the iCanScript online user guide.</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript->Documentation->Release Notes</strong><br/>***Summary:***<br/>
+<br/>
+  Opens latest release notes in default Web browser.<br/>
+<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The *Documentation->Release Notes* menu item is used to open the iCanScript latest release information in a new internet browser window.<br/>
+<br/>
+The release notes are sorted from the latest release to the oldest release for your convenience. A copy of the release notes in PDF format can also be downloaded from the web site.<br/>
+<br/>
+An internet connection is required to access the iCanScript release note pages.</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript->Customer Request</strong><br/>***Summary:***<br/>
+<br/>
+  Open feature request and bug report form.<br/>
+<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The *Documentation->Customer Request* menu item is used to submit feature requests and bug reports for the iCanScript product. You can also browse the status of existing customer requests.<br/>
+<br/>
+The customer request form is Web based and requires an active internet connection.</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript->Check for Updates...</strong><br/>***Summary:***<br/>
+<br/>
+  Validates current version against latest available release.<br/>
+<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The *Check for Update* menu item is used to determine if you have the latest official release of iCanScript. You will be prompted to download the latest version if your version is out-of-date.<br/>
+<br/>
+Validation of the latest iCanScript version requires an active internet connection.<br/>
+<br/>
+[Back to Top][]</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Window Menu</strong><br/>iCanScript installs menu items to open its five (5) editors & panels in Unity's top-level *Window* menu.<br/>
+<br/>
+#<br/>
+[Figure <$n:figure>. iCanscript Window Menu]</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Preferences</strong><br/>***Summary:***<br/>
+<br/>
+  Opens the Preferences Panel<br/>
+<br/>
+***Description:***<br/>
+<br/>
+iCanScript *Preference Panel* is used to configure the appearance and global behaviour of iCanScript editors & panels.<br/>
+<br/>
+The iCanScript preference configuration is save for the current user session and is independent of visual script saved data.<br/>
+<br/>
+The Preference Panel also includes iCanScript version information.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Visual Editor</strong><br/>***Summary:***<br/>
+<br/>
+  Opens the Visual Editor.<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The Visual Editor is the core editor of iCanScript. It is where you will create and modify your visual scripts.<br/>
+<br/>
+The Visual Editor displays the visual script associated with the currently selected game object. The visual editor will be empty if no game object is selected or the selected game object does not include an iCanScript Behaviour component.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Hierarchy</strong><br/>***Summary:***<br/>
+<br/>
+  Opens the visual script hierarchy tree.<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The Hierarchy Tree Editor is used to navigate and edit your visual script as a tree view. It complements the graphical visual editor.<br/>
+<br/>
+You can edit the node & port names and quickly navigate your visual script from the hierarchy tree editor.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Library</strong><br/>***Summary:***<br/>
+<br/>
+  Opens the node library tree.<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The ***Library Panel*** is a repository of all available nodes that can be dragged into your visual script. It includes Unity's core library, iCanScript base node library as well as some of the .NET functionality.<br/>
+<br/>
+The Library Panel can easily be extended with your own nodes. Refer to section Extending iCanScript to learn how to add your own nodes in the library.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Window->iCanScript->Instance Wizard</strong><br/>***Summary:***<br/>
+<br/>
+  Opens the node instance wizard.<br/>
+<br/>
+***Description:***<br/>
+<br/>
+The ***Instance Wizard*** is used to intelligently present and configure the fields, properties, and functions associated to the type of a node in your visual script.<br/>
+<br/>
+The instance wizard will automatically activate when selecting a node associate with a specific type (i.e. .NET class).<br/>
+<br/>
+[Back to Top][]</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Component Menus</strong><br/>Creating a visual script with iCanScript requires that you install the iCanScript Visual Script component on your game object. The iCanScript Visual Script component can be attached using Unity's top-level *Component* menu as well as the *Add Component* button located in the Inspector.<br/>
+<br/>
+<br/>
+#<br/>
+[Figure <$n:figure>. Component Menu]<br/>
+<br/>
+<br/>
+[Figure <$n:figure>. Inspector->Component Menu]<br/>
+<br/>
+<br/>
+#### Attaching an iCanScript Visual Script component<br/>
+<br/>
+The *Create Visual Script* menu item is used to attach an iCanScri...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Editors</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>User Preferences</strong><br/>The ***User Preferences*** is used to customize the look and feel as well as the default behaviour of iCanScript.  This information is saved in the user profile and applied to all iCanScript projects opened by the user.<br/>
+<br/>
+<br/>
+#<br/>
+[Figure <$n:figure>. User Preferences]<br/>
+ <br/>
+<br/>
+ **Panel Selection:**  The panel selection is used to navigate the different configuration panels available to the iCanScript user.  Clicking on the panel name reveals the configuration details in the panel area.<br/>
+<br/>
+ **Configuration Pan...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Visual Editor</strong><br/>![Figure <$n:figure>. Visual Editor](http://www.user-guide.icanscript.com/resources/images/editor-visual-editor.png)<br/>
+<br/>
+[Back to Top][]</p>
+</li>
+<li>
+<p class="binderItem"><strong>Hierarchy Tree</strong><br/>![Figure <$n:figure>. Hierarchy Tree](http://www.user-guide.icanscript.com/resources/images/editor-hierarchy-tree.png)<br/>
+<br/>
+[Back to Top][]</p>
+</li>
+<li>
+<p class="binderItem"><strong>Library Tree</strong><br/>![Figure <$n:figure>. Library Tree](http://www.user-guide.icanscript.com/resources/images/editor-library-tree.png)<br/>
+<br/>
+![](http://www.user-guide.icanscript.com/resources/images/stamp-1-orange.png) Lorem ipsum dolor sit amet, sapien platea morbi dolor lacus nunc, nunc ullamcorper. Felis aliquet egestas vitae, nibh ante quis quis dolor sed mauris. Erat lectus sem ut lobortis, adipiscing ligula eleifend, sodales fringilla mattis dui nullam. Ac massa aliquet.<br/>
+<br/>
+![](http://www.user-guide.icanscript.com/r...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Instance Wizard</strong><br/>#<br/>
+[Figure <$n:figure>. Instance Wizard]<br/>
+<br/>
+ **Instance Builder:** This drop-down list enumerates the available builders for the instance node selected in the visual editor.  A builder for the instance node can be created by selecting an element from this list.  Note that selecting the special *"Use input port (this)"* item will remove the builder (if it exists) and leave open the instance port *"this"* for manual connection.<br/>
+<br/>
+ **Variables Selection:** Lorem ipsum dolor sit amet, sapien platea morb...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Unity Inspector</strong><br/>[Back to Top][]<br/>
+<br/>
+---</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Extending iCanScript</strong><br/>From its inception, iCanScript was designed to be extendable with the addition of user defined nodes. Once installed, the user defined nodes are accessible from the [Library Tree].<br/>
+<br/>
+Extending the iCanScript library is realized by:<br/>
+<br/>
+1. [Tagging your Source Code]; <br/>
+2. [Importing Public Members]; <br/>
+3. [Adding Message Handlers]. <br/>
+<br/>
+The following picture illustrates how the iCanScript library gets populated and used.  You are given three access points (purple) to include your own packages and nodes ins...</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Tagging your Source Code</strong><br/>iCanScript includes several .NET attributes to control which part of your source code is to be included in the iCanScript library. These attributes enables fine control over which fields, properties and functions become visible to the iCanScript user.<br/>
+<br/>
+iCanScript scans the .NET assemblies to populate its library with public classes tagged with the *iCS_Class* attribute.  The assembly scan is performed after every recompile of the Unity scripts.<br/>
+<br/>
+The following table depicts the mapping between C#...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Importing Public Members</strong><br/>iCanScript supports invoking a custom installer to add all public fields, properties and functions of an object definition into the iCanScript library.<br/>
+<br/>
+This method of populating the iCanScript library is ideal if:<br/>
+<br/>
+*  you are not in control of the source code (i.e. using a vendor library) or;<br/>
+*  you want to add all public fields, properties and functions of your classes without tagging your source code with iCanScript custom attributes.<br/>
+<br/>
+<br/>
+### Understanding the Custom Installer<br/>
+<br/>
+On every script ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Adding Message Handlers</strong><br/><br/>
+The [Tagging your Source Code] and [Importing Public Members] installing mechanism extract existing functionality from the object definition to publish into the iCanScript library.  However, they do not provide for defining message handlers for the Unity framework.  This is because the Unity messages are dynamically created at runtime and are therefore not visible in the object definitions.<br/>
+<br/>
+The message handlers in iCanScript has the following characteristics:<br/>
+<br/>
+*  they are a parent nodes (node ...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Appendices</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Keyboard Shortcuts</strong><br/>iCanScript includes many keyboard shortcuts to accelerate navigating, expanding / folding as well as inserting / deleting node and ports when editing the visual script.</p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Navigation</strong><br/>| Visual Editor Navigation Keys | Action Performed |<br/>
+| :---------------------------: | :--------------- |<br/>
+|  ***Up Arrow***   | Moves the selection to the parent node. |<br/>
+| ***Down Arrow***  | Moves the selection to the first child node. | <br/>
+| ***Right Arrow*** | Moves the selection to the next sibling node. |<br/>
+| ***Left Arrow***  | Moves the selection to the previous sibling node. |<br/>
+|      ***F***      | Repositions the selected node or port in the centre of the visual editor viewport |<br/>
+|   ***Shi...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Bookmarks</strong><br/>| Bookmarks Keys | Action Performed |<br/>
+| :------------: | :--------------- |<br/>
+|    ***B***     | Bookmarks the current selection. |<br/>
+|    ***G***     | Moves selection to the current bookmark |<br/>
+|    ***S***     | Swaps bookmark. Bookmarks the current selection and moves the selection to the previous bookmark. |<br/>
+|    ***C***     | Connects the bookmark port and the selected port (for compatible data types) |<br/>
+[Table <$n:table>. Bookmark Shortcuts.]</p>
+</li>
+<li>
+<p class="binderItem"><strong>Expand / Fold</strong><br/>|   Expand / Fold Keys   | Action Performed ||<br/>
+| :--------------------: | :------- | :----- |<br/>
+|      ***Enter***       | Expends the selected Node:<br><br> | *- Iconized -> Folded<br> - Folded -> Maximized* |<br/>
+|    ***Ctrl-Enter***    | Maximizes the selected node ||<br/>
+|   ***Shift-Enter***    | Collapses the selected node:<br><br> | *- Maximized -> Folded<br>- Folded -> Iconized* |<br/>
+| ***Ctrl-Shift-Enter*** | Iconizes the selected node. ||<br/>
+[Table <$n:table>. Expand / Fold Shortcuts.]</p>
+</li>
+<li>
+<p class="binderItem"><strong>Insert / Delete</strong><br/>|  Deletion Keys  | Action Performed |<br/>
+| :-------------: | :--------------- |<br/>
+|    ***Del***    | Deletes the currently selected object with user confirmation. The selection is moved to the parent node on deletion. |<br/>
+| ***Shift-Del*** | Deletes the currently selected node. The selection is moved to the parent node. |<br/>
+[Table <$n:table>. Quick Deletion Shortcuts.]<br/>
+<br/>
+<br/>
+| Insertion Keys | Action Performed |<br/>
+| :------------: | :--------------- |<br/>
+| ***Ins (Windows)<br>Fn-Return (OSX)*** | Auto-inserts p...</p>
+</li>
+</ul>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Additional Material</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Binding Types</strong><br/>| Binding Type     | Diagram Type |<br/>
+| :--------------- | :----------- |<br/>
+| Data Binding     | Data Flow    |<br/>
+| State Transition | State Chart  |<br/>
+[Table <$n:table>. Binding types summary.]<br/>
+<br/>
+[Back to Top][]</p>
+</li>
+<li>
+<p class="binderItem"><strong>Acknowledgement</strong><br/>Many thanks to the following people for very kindly donating time and knowledge in creating iCanScript:<br/>
+<br/>
+**Manual Rochon** - helped in user interface design as well as the overall operational concepts.  Manual was also a key validator on the Windows platform.<br/>
+<br/>
+**Georges Kechichian** - is a key reviewer for the online and printed documentation.  His motivational communication style and customer facing experience helps in conveying a clear message to iCanScript users.<br/>
+<br/>
+[Back to Top][]<br/>
+<br/>
+---</p>
+</li>
+<li>
+<p class="binderItem"><strong>Message from the Founder</strong><br/>iCanScript is a concept that has evolved over the last 15 years of my professional software engineering life.<br/>
+<br/>
+In 1997, the core concepts of the engine sub-system were first designed and implemented for a large telecommunication corporation. The resulting software engine was embedded in several large scale products in the years to follow.<br/>
+<br/>
+Having joined the gaming industry in 2003, I have realized that the software engine needed to be complemented by a visual editor to boost the productivity in ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Many Thanks ...</strong><br/>We, at Disruptive Software, would like to start by saying:<br/>
+ <br/>
+ > ***— Thank You for your interest in iCanScript !!!***<br/>
+<br/>
+Their is nothing more exciting for software designers like us than growing our customer base and we will make every effort to help you become one of our users.<br/>
+<br/>
+*— The Software Development Team at Disruptive Software.*<br/>
+<br/>
+[Back to Top][]<br/>
+<br/>
+---</p>
+</li>
+<li>
+<p class="binderItem"><strong>What's New?</strong><br/>iCanScript is continuously evolving with feature additions and bug fixes.  The latest release information for the current and previous versions of the product can be found in the [Release Notes][release notes] pages.<br/>
+<br/>
+You are welcomed to request new features and report bugs using the [Customer Requests][customer requests] form.<br/>
+<br/>
+[Back to Top][]<br/>
+<br/>
+---</p>
+</li>
+<li>
+<p class="binderItem"><strong>Product Licensing</strong><br/>### Trial Versions<br/>
+<br/>
+The purpose of the trial program is allow users to become acquainted with iCanScript. This period is an incubator to iron-out any remaining issues and allow users to modulate the feature set of the next commercial release.<br/>
+The trial versions of iCanScript can be downloaded and distributed free of charge and used for the creation of commercial and non-commercial products respecting the usage limitations.<br/>
+<br/>
+---<br/>
+<br/>
+### Commercial Versions<br/>
+<br/>
+The commercial versions of iCanScript is l...</p>
+</li>
+<li>
+<p class="binderItem"><strong>System Requirements</strong><br/>* Unity Standard and Professional version 4.x or later.<br/>
+* Windows 7 SP1 or later; Mac OS X "Snow Leopard" 10.6 or later.  Note that iCanScript was not tested on earlier versions of Windows and OS X but may still perform properly.  Not tested on Linux.<br/>
+* Dynamic visual script value refresh while the engine is running is optimal on Intel i7 quad core or better.  Option to reduce refresh rate or disable refresh is provided for lower performance machine.<br/>
+<br/>
+[Back to Top][]<br/>
+<br/>
+---</p>
+</li>
+<li>
+<p class="binderItem"><strong>An Overview of iCanScript</strong><br/>iCanScript is a package for creating and modifying visual scripts for the Unity game platform.  It is constructed with two (2) subsystems:<br/>
+<br/>
+Editor subsystem<br/>
+: Responsible for creating visual scripts.<br/>
+<br/>
+Engine subsystem<br/>
+: Responsible for running visual scripts.<br/>
+<br/>
+<br/>
+### The Editor Subsystem<br/>
+<br/>
+As you may have guessed, the *Editor subsystem* includes:<br/>
+<br/>
+* the five (5) editors;<br/>
+* the menu items and;<br/>
+* the node library database.<br/>
+<br/>
+The editors and menu items are employed to create and modify the visual scrip...</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript Architecture</strong><br/>Let's take a moment to discuss the underlying structure of the iCanScript product.<br/>
+<br/>
+The iCanScript package is divided in two (2) subsystems each with distinct roles and capabilities.  These subsystems are:<br/>
+<br/>
+* the **Editor** and;<br/>
+* the **Engine**.<br/>
+<br/>
+In a nutshell, we can say that the *Editor* subsystem is responsible for building the visual scripts while the *Engine* is responsible for running the visual scripts.<br/>
+<br/>
+!{-tip-<br/>
+ If you are like me, you will not be able to resist digging into the files t...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Examples</strong><br/>[Back to Top][]</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript Architecture</strong><br/>Before we begin digging into the main concepts of iCanScript, it is good to understand the underlying architecture of the product.  So let's take a look at what is installed as part of the iCanScript package ...<br/>
+<br/>
+iCanScript is divided in two main sections: the **editor** and the **engine**.  Each section is easily identifiable by browsing the file structure of the iCanScript package installed in Unity.<br/>
+<br/>
+[Figure <$n:figure>. iCanScript package file structure.]<br/>
+<br/>
+Browsing each section, you will fin...</p>
+</li>
+<li>
+<p class="binderItem"><strong>iCanScript Architecture -261- (Michel Launier's conflicted copy)</strong><br/>Before we begin digging into the main concepts of iCanScript, it is good to understand the underlying architecture of the product.  So let's take a closer look at what is installed as part of the iCanScript package ...<br/>
+<br/>
+### iCanScript File Architecture<br/>
+<br/>
+If you browse the iCanScript folder within Unity, you will find that the iCanScript package is divided in two main subsystems:<br/>
+ * the **editor** and;<br/>
+ * the **engine**.<br/>
+<br/>
+<br/>
+[Figure <$n:figure>. iCanScript file structure.]<br/>
+<br/>
+#### Editor Files<br/>
+<br/>
+Browsi...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Visual Scripts & Behaviours -145- (Michel Launier's conflicted copy)</strong><br/>A visual script must be installed on the game object that will persist and run the visual script.  The installation is performed using the *iCanScript->Create Visual Script* or the Unity *Component* menus (see [Component Menus] for details).<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+Two Unity script components are installed on the game object for each iCanScript visual script.  These components are:<br/>
+<br/>
+1.  ***iCS_VisualScript (persistent storage)***<br/>
+2.  ***iCS_Behaviour (runtime compiler & execution services)***<br/>
+<br/>
+<br/>
+[Figure <$n:figure...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Node Types</strong><br/>The primary ingredient of a visual script is the node.  The node is the cornerstone defining specific functionalities available to the visual script designer.  To that end, iCanScript offers a variety of node types classified as follows:<br/>
+#<br/>
+[Figure <$n:figure>.  Node types classification tree.]<br/>
+<br/>
+1. **Node:**  The base for all iCanScript nodes is the *Node*.  It includes a common set of attributes available to all nodes you instantiate with iCanScript.<br/>
+<br/>
+ | Attribute           | Description        ...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Port Types</strong><br/>| Port Type                     || Diagram Type |<br/>
+| :--: | :---------------------- | :----------- |<br/>
+| # | Data Input end-point    | Data Flow    |<br/>
+|  | Data Input relay        | All          |<br/>
+|  | Data Output end-point   | Data Flow    |<br/>
+|  | Data Output relay       | All          |<br/>
+|  | Data Multiplexer Input  | All          |<br/>
+|  | Data Multiplexer Output | All          |<br/>
+|  | Node Enable             | All          |<br/>
+|  | Trigger Output          | All          |<br/>
+|  | Transition Start        | ...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Visual Script Ingredients</strong><br/># The Visual Script<br/>
+<br/>
+# Behaviour Node<br/>
+<br/>
+# Behaviour Messages<br/>
+<br/>
+# Node Anatomy<br/>
+<br/>
+# Node Types<br/>
+<br/>
+# Port Types<br/>
+<br/>
+# Node Nesting<br/>
+<br/>
+# Data Flow Diagram<br/>
+<br/>
+# State Charts Diagram</p>
+</li>
+</ul>
+
+</td>
+<td width="8">
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

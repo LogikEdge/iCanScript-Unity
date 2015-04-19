@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Snapshots Version="1.0">
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-10-09 16:25:13 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="1667,19">146</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+    <Snapshot>
+        <Title>Pre-External File Sync Overwrite</Title>
+        <Date>2013-10-10 08:38:45 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="1667,19">146</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-10-11 10:22:55 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="1667,19">146</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-10-13 12:50:16 -0400</Date>
+        <Links Version="1.0" Anchor="RTF">
+            <ScrivenerLinks>
+                <TextLinks>
+                    <LinkID Range="1716,19">146</LinkID>
+                </TextLinks>
+            </ScrivenerLinks>
+        </Links>
+    </Snapshot>
+    <Snapshot>
+        <Title>Pre-Sync External File Version</Title>
+        <Date>2013-10-15 16:37:12 -0400</Date>
+    </Snapshot>
+</Snapshots>

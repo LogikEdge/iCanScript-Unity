@@ -1,0 +1,114 @@
+Title: iCanScript Menus
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+</style>
+
+<!--TOC max2-->
+
+# Window Menu #
+
+iCanScript installs menu items to open its five (5) editors & panels in Unity's top-level _Window_ menu.
+
+![Figure 1. iCanscript Window menu extension.][menu-window.png]
+
+
+## Window->iCanScript->Preferences ##
+
+_**Summary:**_
+
+		Opens the Preferences Panel
+
+_**Description:**_
+
+iCanScript <span class="cmd">Preference Panel</span> is used to configure the appearance and global behaviour of iCanScript editors & panels.
+
+The iCanScript preference configuration is save for the current user session and is independent of visual script saved data.
+
+The Preference Panel also includes iCanScript version information.
+
+## Window->iCanScript->Visual Editor ##
+
+_**Summary:**_
+
+		Opens the Visual Editor.
+
+_**Description:**_
+
+The Visual Editor is the core editor of iCanScript. It is where you will create and modify your visual scripts.
+
+The Visual Editor displays the visual script associated with the currently selected game object. The visual editor will be empty if no game object is selected or the selected game object does not include an iCanScript Behaviour component.
+
+## Window->iCanScript->Hierarchy ##
+
+_**Summary:**_
+
+		Opens the visual script hierarchy tree.
+
+_**Description:**_
+
+The Hierarchy Tree Editor is used to navigate and edit your visual script as a tree view. It complements the graphical visual editor.
+
+You can edit the node & port names and quickly navigate your visual script from the hierarchy tree editor.
+
+## Window->iCanScript->Library ##
+
+_**Summary:**_
+
+		Opens the node library tree.
+
+_**Description:**_
+
+The _**Library Panel**_ is a repository of all available nodes that can be dragged into your visual script. It includes Unity's core library, iCanScript base node library as well as some of the .NET functionality.
+
+The Library Panel can easily be extended with your own nodes. Refer to section Extending iCanScript to learn how to add your own nodes in the library.
+
+## Window->iCanScript->Instance Wizard ##
+
+_**Summary:**_
+
+		Opens the node instance wizard.
+
+_**Description:**_
+
+The _**Instance Wizard**_ is used to intelligently present and configure the fields, properties, and functions associated to the type of a node in your visual script.
+
+The instance wizard will automatically activate when selecting a node associate with a specific type (i.e. .NET class).
+
+
+
+
+[menu-window.png]: menu-window.png

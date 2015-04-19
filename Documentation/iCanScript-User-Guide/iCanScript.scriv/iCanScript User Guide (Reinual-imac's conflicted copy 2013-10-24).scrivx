@@ -1,0 +1,2931 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-10-23 15:17:12 -0400">
+    <Binder>
+        <BinderItem ID="0" Type="DraftFolder" Created="2013-09-17 10:34:16 -0400" Modified="2013-09-17 10:36:49 -0400">
+            <Title>iCanScript User Guide</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+            </MetaData>
+            <CorkboardAndOutliner>
+                <SelectedSubdocumentIDs>6</SelectedSubdocumentIDs>
+                <OutlinerExpandedState>
+                    <ItemID>6</ItemID>
+                    <ItemID>11</ItemID>
+                    <ItemID>29</ItemID>
+                    <ItemID>49</ItemID>
+                    <ItemID>52</ItemID>
+                    <ItemID>56</ItemID>
+                </OutlinerExpandedState>
+            </CorkboardAndOutliner>
+            <Children>
+                <BinderItem ID="12" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-10-23 12:07:00 -0400">
+                    <Title>What is iCanScript?</Title>
+                    <MetaData>
+                        <StatusID>4</StatusID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>150,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="22" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-10-22 20:32:17 -0400">
+                    <Title>Installation</Title>
+                    <MetaData>
+                        <StatusID>4</StatusID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>1666,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                        <Reference BinderID="22" Destination="[Internal Link]">Installation</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="49" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-10-23 15:14:36 -0400">
+                    <Title>Core Concepts</Title>
+                    <MetaData>
+                        <StatusID>4</StatusID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                    <Children>
+                        <BinderItem ID="145" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-23 13:52:36 -0400">
+                            <Title>Adding a Visual Script</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>364,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="255" Type="Text" Created="2013-10-11 08:03:53 -0400" Modified="2013-10-15 14:51:41 -0400">
+                            <Title>Node Anatomy</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>157,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="153" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-11 08:04:37 -0400">
+                            <Title>Data Flow Diagram</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>17,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="157" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-11 08:03:27 -0400">
+                            <Title>State Chart Diagram</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                            <Children>
+                                <BinderItem ID="158" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>States</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="159" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Entry Function</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="160" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Update Function</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="161" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Exit Function</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="162" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Nested State</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="163" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Transitions</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="164" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Trigger Function</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="165" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-08 16:22:51 -0400">
+                                            <Title>Transition Behaviour</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>16,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="146" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-15 09:03:01 -0400">
+                            <Title>Libraries &amp; Prefabs</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                                <Reference BinderID="251" Destination="[Internal Link]">What's a Node?</Reference>
+                            </References>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="30" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:16 -0400">
+                    <Title>Menus</Title>
+                    <MetaData>
+                        <StatusID>4</StatusID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                    <Children>
+                        <BinderItem ID="31" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 19:45:28 -0400">
+                            <Title>iCanScript Menu</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                            <Children>
+                                <BinderItem ID="32" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>iCanScript->Create Visual Script</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="33" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>iCanScript->Center Visual Script</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="34" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>iCanScript->Focus On Selected</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="35" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>iCanScript->Documentation->Home</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="36" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>iCanScript->Documentation->User's Guide</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="37" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>iCanScript->Documentation->Release Notes</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="38" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>iCanScript->Customer Request</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="39" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>iCanScript->Check for Updates...</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="40" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 19:45:28 -0400">
+                            <Title>Window Menu</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                            <Children>
+                                <BinderItem ID="68" Type="Text" Created="2013-09-19 15:16:03 -0400" Modified="2013-09-25 15:38:11 -0400">
+                                    <Title>Window->iCanScript->Preferences</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,65</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="69" Type="Text" Created="2013-09-19 15:16:28 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>Window->iCanScript->Visual Editor</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>415,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="70" Type="Text" Created="2013-09-19 15:16:46 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>Window->iCanScript->Hierarchy</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>320,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="71" Type="Text" Created="2013-09-19 15:17:02 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>Window->iCanScript->Library</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>47,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="72" Type="Text" Created="2013-09-19 15:17:15 -0400" Modified="2013-09-25 15:37:16 -0400">
+                                    <Title>Window->iCanScript->Instance Wizard</Title>
+                                    <MetaData>
+                                        <StatusID>4</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>395,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="41" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-10-07 20:17:45 -0400">
+                            <Title>Component Menus</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1400,16</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                                <Reference BinderID="145" Destination="[Internal Link]">Visual Scripts &amp; Behaviours</Reference>
+                            </References>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="76" Type="Text" Created="2013-09-21 11:29:22 -0400" Modified="2013-10-22 19:42:56 -0400">
+                    <Title>Editors</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                    <Children>
+                        <BinderItem ID="43" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-10-07 17:35:51 -0400">
+                            <Title>User Preferences</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1122,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="44" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:17 -0400">
+                            <Title>Visual Editor</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>134,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="45" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:17 -0400">
+                            <Title>Hierarchy Tree</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>136,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="46" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:17 -0400">
+                            <Title>Library Tree</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,820</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                                <Reference BinderID="52" Destination="[Internal Link]">Extending the Library</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="47" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-10-07 17:39:40 -0400">
+                            <Title>Instance Wizard</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>428,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="48" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:17 -0400">
+                            <Title>Unity Inspector</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>20,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="52" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-10-07 17:47:00 -0400">
+                    <Title>Extending iCanScript</Title>
+                    <MetaData>
+                        <StatusID>4</StatusID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>677,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                    <Children>
+                        <BinderItem ID="53" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-10-03 08:37:47 -0400">
+                            <Title>Tagging your Source Code</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3792,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="52" Destination="[Internal Link]">Extending the Library</Reference>
+                                <Reference BinderID="112" Destination="[Internal Link]">Adding Message Handlers</Reference>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="54" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-10-07 17:37:31 -0400">
+                            <Title>Importing Public Members</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3765,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="52" Destination="[Internal Link]">Extending the Library</Reference>
+                                <Reference BinderID="112" Destination="[Internal Link]">Adding Message Handlers</Reference>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="112" Type="Text" Created="2013-09-30 15:08:08 -0400" Modified="2013-10-03 14:39:33 -0400">
+                            <Title>Adding Message Handlers</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="52" Destination="[Internal Link]">Extending the Library</Reference>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="256" Type="Text" Created="2013-10-11 08:05:57 -0400" Modified="2013-10-11 08:06:03 -0400">
+                    <Title>Appendices</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                    <Children>
+                        <BinderItem ID="57" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-29 10:21:37 -0400">
+                            <Title>Keyboard Shortcuts</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>169,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                            <Children>
+                                <BinderItem ID="58" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:17 -0400">
+                                    <Title>Navigation</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>584,18</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="59" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:17 -0400">
+                                    <Title>Bookmarks</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>447,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="60" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:17 -0400">
+                                    <Title>Expand / Fold</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>486,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="61" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-25 15:37:17 -0400">
+                                    <Title>Insert / Delete</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>1328,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="75" Type="Folder" Created="2013-09-21 11:25:16 -0400" Modified="2013-09-21 11:25:27 -0400">
+                    <Title>Additional Material</Title>
+                    <MetaData>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Notes (Green Notepad).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="259" Type="Text" Created="2013-10-13 07:17:11 -0400" Modified="2013-10-13 07:53:22 -0400">
+                            <Title>Binding Types</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>204,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="14" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>Acknowledgement</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>473,11</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="13" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>Message from the Founder</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1570,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="16" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>Many Thanks ...</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>359,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="15" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>What's New?</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>329,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="18" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>Product Licensing</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>431,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="19" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>System Requirements</Title>
+                            <MetaData>
+                                <StatusID>4</StatusID>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>477,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="263" Type="Text" Created="2013-10-22 16:28:59 -0400" Modified="2013-10-22 18:12:32 -0400">
+                            <Title>An Overview of iCanScript</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1502,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="261" Type="Text" Created="2013-10-18 11:25:50 -0400" Modified="2013-10-22 16:28:54 -0400">
+                            <Title>iCanScript Architecture</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>5139,4852</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="77" Type="Text" Created="2013-09-21 11:31:59 -0400" Modified="2013-10-08 16:22:55 -0400">
+                            <Title>Examples</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>16,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="262" Type="Text" Created="2013-10-18 13:38:22 -0400" Modified="2013-10-18 14:50:35 -0400">
+                            <Title>iCanScript Architecture</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,1810</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="264" Type="Text" Created="2013-10-21 19:15:22 -0400" Modified="2013-10-22 16:55:31 -0400">
+                            <Title>iCanScript Architecture -261- (Michel Launier's conflicted copy)</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>4085,291</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="260" Type="Text" Created="2013-10-15 16:53:36 -0400" Modified="2013-10-15 17:21:24 -0400">
+                            <Title>Visual Scripts &amp; Behaviours -145- (Michel Launier's conflicted copy)</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="251" Type="Text" Created="2013-10-09 10:18:04 -0400" Modified="2013-10-15 14:56:28 -0400">
+                            <Title>Node Types</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3556,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="258" Type="Text" Created="2013-10-13 07:17:02 -0400" Modified="2013-10-13 12:46:09 -0400">
+                            <Title>Port Types</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>54,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                            </References>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="265" Type="Text" Created="2013-10-22 21:34:10 -0400" Modified="2013-10-23 00:07:51 -0400">
+                    <Title>Visual Script Ingredients</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem ID="1" Type="ResearchFolder" Created="2013-09-17 10:34:16 -0400" Modified="2013-09-17 10:36:56 -0400">
+            <Title>Cabinet</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+            </MetaData>
+            <Children>
+                <BinderItem ID="78" Type="Image" Created="2013-09-20 05:49:13 -0400" Modified="2013-09-20 05:49:13 -0400">
+                    <Title>stamp-1-orange</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem ID="2" Type="TrashFolder" Created="2013-09-17 10:34:16 -0400" Modified="2013-09-17 10:34:16 -0400">
+            <Title>Trash</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+            </MetaData>
+            <Children>
+                <BinderItem ID="3" Type="Text" Created="2013-09-17 10:34:16 -0400" Modified="2013-09-17 10:34:16 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="4" Type="Folder" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 10:37:30 -0400">
+                    <Title>iCanScript Documentation</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="73" Type="Text" Created="2013-09-19 15:29:57 -0400" Modified="2013-09-19 15:29:57 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="74" Type="Text" Created="2013-09-19 15:35:03 -0400" Modified="2013-09-19 15:35:09 -0400">
+                    <Title></Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="42" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-17 10:37:31 -0400">
+                    <Title>Editors</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="11" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-19 16:51:57 -0400">
+                    <Title>Introduction [_introduction]</Title>
+                    <MetaData>
+                        <StatusID>4</StatusID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="29" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 10:37:30 -0400">
+                    <Title>User Interface [_user-interface]</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="17" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 11:38:47 -0400">
+                    <Title>Getting Started [_getting-started]</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="50" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-17 11:38:47 -0400">
+                    <Title>Understanding Ports</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="51" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-17 11:38:47 -0400">
+                    <Title>Understanding Nodes</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="56" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-17 10:37:31 -0400">
+                    <Title>Appendices [_appendices]</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="62" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-17 10:37:31 -0400">
+                            <Title>Node Reference</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="63" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-17 20:16:47 -0400">
+                            <Title>Tips &amp; Tricks</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>16,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="5" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 10:49:58 -0400">
+                    <Title>MultiMarkdown Meta-Data</Title>
+                    <MetaData>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>789,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="66" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-20 11:47:56 -0400">
+                    <Title>MultiMarkdown Meta-Data</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CompileAsIs>Yes</CompileAsIs>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>405,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="81" Type="Text" Created="2013-09-29 10:08:08 -0400" Modified="2013-09-29 10:08:08 -0400">
+                    <Title>iCanScript User Guide By Disruptive Software</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="82" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                            <Title>User Preferences</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="83" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>The ***User Preferences*** is used to customize the look and feel as well as the default behaviour of iCanScript.  This information is saved in the user profile and applied to all iCanScript projects opened by the user.   </Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="84" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title></Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="85" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                            <Title>editor-preferences-panel</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="86" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                            <Title>stamp-1-orange**Panel Selection:**  The panel selection is used to navigate the different configuration panels available to the iCanScript user.    Clicking on the panel name reveals the configuration details in the panel area.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="87" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                            <Title>stamp-2-orange**Configuration Panel:**  </Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="88" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                            <Title>stamp-3-orange**Use Default Button:**  This button can be used to restore all parameters of the active configuration panel to their factory default values.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="89" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                            <Title>stamp-4-orange**iCanScript Version Information:**  The iCanScript product user version and registration information is displayed in this area  (note that no registration information is shown in this exmaple image).</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="90" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                            <Title>Visual Editor</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="91" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>Prima fundamenta commosin vocant periti, secunda pissoceron, tertia propolin, inter coria cerasque, magni ad medicamina usus. commosis crusta est prima, saporis amari. pissoceros super eam venit, picantium modo, ceu dilutior cera. e vitium populorumque mitiore cummi propolis, crassioris iam materiae additis floribus, nondum tamen cera, sed favorum stabilimentum, qua omnes frigoris aut iniuriae aditus obstruuntur, odore et ipsa etiamnum gravi, ut qua plerique pro galbano utantur.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="92" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                            <Title>Hierarchy Tree</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="93" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>Praeter haec convehitur erithace, quam aliqui sandaracam, alii cerinthum vocant. hic erit apium dum operantur cibus, qui saepe invenitur in favorum inanitatibus sepositus, et ipse amari saporis. gignitur autem rore verno et arborum suco cummium modo, capitur in ficis minor, austri flatu nigrior, aquilonibus melior et rubens, plurimus in Graecis nucibus. Menecrates florem esse dicit, sed nemo praeter eum.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="94" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                            <Title>Library Tree</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="95" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>Ceras ex omnium arborum satorumque floribus confingunt excepta pumice et echinopode; herbarum haec genera. falso excipitur et spartum, quippe cum in Hispania multa in spartariis mella herbam eam sapiant. falso et oleas excipi arbitror, quippe olivae proventu plurima exanima gigni certum est. fructibus nullis nocetur. mortuis ne floribus quidem, non modo corporibus, insidunt.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="96" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>operantur intra LX p. et subinde consumptis in proximo floribus speculatores ad pabula ulteriora mittunt. noctu deprehensae in expeditione excubant supinae, ut alas a rore protegant,</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="97" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                            <Title>Instance Wizard</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="98" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>ne quis miretur amore earum captos Aristomachum Solensem duodesexaginta annis nihil aliud egisse, Philiscum vero Thasium in desertis apes colentem Agrium cognominatum, qui ambo scripsere de iis.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="99" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                            <Title></Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="100" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>Ratio operis mire divisi: statio ad portas more castrorum, quies in matutinum, donec una excitet gemino aut triplici bombo ut bucino aliquo. tunc universae provolant, si dies mitis futurus est. praedivinant enim ventos imbresque, cum se continent tectis; itaque temperie caeli otium hoc inter praescita habent. cum agmen ad opera processit, aliae flores adgerunt pedibus, alia aquam ore guttasque lanugine totius corporis.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="101" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>quibus est earum adulescentia, ad opera exeunt et supra dicta convehunt, seniores intus operantur. quae flores comportant, prioribus pedibus femina onerant propter id natura scabra, pedes priores rostro, totaeque onustae remeant sarcina pandatae. excipiunt eas ternae quaternae, quae exonerant.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="102" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>sunt enim intus quoque officia divisa: aliae struunt, aliae poliunt, aliae suggerunt, aliae cibum comparant ex eo quod adlatum est; neque enim separatim vescuntur, ne inaequalitas operis et cibi fiat et temporis. struunt orsae a concamaratione alvi textumque velut a summa tela deducunt, limitibus binis circa singulos actus, ut aliis intrent, aliis exeant.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="103" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>favi, superiore parte adfixi et pulum etiam lateribus, simul haerent et pendent; ima alvum non contingunt, oblongi aut rotundi, qualiter poposcit alvus, aliquando et duorum generum, cum duo examina concordibus populis dissimiles habuere ritus. ruentes ceras fulciunt, pilarum intergerivis a solo fornicatis, ne desit aditus ad sarciendum.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="104" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>primi fere tres versus inanes struuntur, ne promptum sit quod invitet furantem; novissimi maxime inplentur melle. ideo aversa alvo favi eximuntur. gerulae secundos flatus captant. si cooriatur procella, adprehensi pondusculo lapilli se librant; quidam in umeros eum inponi tradunt. iuxta vero terram volant in adverso flato vepribus evitatis.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="105" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>mira observatio operis: cessantium inertiam notant, castigant, mox et puniunt morte. mira munditia amoliuntur omnia e medio, nullaeque inter opera spurcitiae iacent; quin et excrementa operantium intus, ne longius recedant, unum congesta in locum turbidis diebus et operis otio egerunt.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="106" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>cum advesperascit, in alvo strepunt minus ac minus, donec una circumvolet eodem quo excitavit bombo ceu quietem capere imperans, et hoc castrorum more. tunc repente omnes conticescunt.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="107" Type="Text" Created="2013-09-29 10:08:41 -0400" Modified="2013-09-29 10:08:41 -0400">
+                                    <Title>Domos primum plebei exaedificant, deinde regibus. si speratur largior proventus, adiciuntur contubernia et fucis. hae cellarum minimae, sed ipsi maiores apibus.</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="108" Type="Text" Created="2013-09-29 10:09:46 -0400" Modified="2013-09-29 10:09:46 -0400">
+                    <Title>iCanScript User Guide</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="109" Type="Text" Created="2013-09-29 10:10:31 -0400" Modified="2013-09-29 10:10:31 -0400">
+                    <Title>iCanScript User Guide</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>163,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="110" Type="Text" Created="2013-09-29 10:11:51 -0400" Modified="2013-09-29 10:13:08 -0400">
+                    <Title>iCanScript User Guide</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>302,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="111" Type="WebArchive" Created="2013-09-29 09:29:50 -0400" Modified="2013-09-29 09:32:36 -0400">
+                    <Title>index</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>webarchive</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                </BinderItem>
+                <BinderItem ID="80" Type="Text" Created="2013-09-29 09:16:20 -0400" Modified="2013-09-29 09:16:20 -0400">
+                    <Title>iCanScript User Guide</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>53,1</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="55" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2013-09-28 22:56:11 -0400">
+                    <Title>.NET Attribute Reference</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>1,2129</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="113" Type="Folder" Created="2013-10-04 23:40:47 -0400" Modified="2013-10-04 23:40:53 -0400">
+                    <Title>Test</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="114" Type="Text" Created="2013-10-04 23:40:59 -0400" Modified="2013-10-04 23:41:46 -0400">
+                            <Title>test1</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>29,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="115" Type="Text" Created="2013-10-04 23:41:11 -0400" Modified="2013-10-04 23:44:03 -0400">
+                            <Title>test2</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="114" Destination="[Internal Link]">test1</Reference>
+                            </References>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="236" Type="Text" Created="2013-10-07 15:55:29 -0400" Modified="2013-10-07 15:55:29 -0400">
+                    <Title>Additional Material</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="237" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Acknowledgement</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="238" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Message from the Founder</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="239" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Many Thanks ...</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="240" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>What's New?</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="241" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Product Licensing</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="242" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>System Requirements</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="243" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Upgrade</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="244" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Verifying for a new version</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="245" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Downloading latest version</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="246" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Removing iCanScript</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="247" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Installing iCanScript</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="248" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Converting visual script saved data</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="249" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Initial Download</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="250" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Usage of the Registration Information</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="232" Type="Text" Created="2013-10-07 15:55:29 -0400" Modified="2013-10-07 15:55:29 -0400">
+                    <Title>Front Matter</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="233" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>MultiMarkdown</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="234" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Style Sheet</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="235" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Table of Contents [Back to Top]</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="180" Type="Text" Created="2013-10-07 15:55:29 -0400" Modified="2013-10-07 15:55:29 -0400">
+                    <Title>Trash</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="181" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Untitled</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="182" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>iCanScript Documentation</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="183" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Untitled</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="184" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title></Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="185" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Editors</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="186" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Introduction [_introduction]</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="187" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>User Interface [_user-interface]</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="188" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Getting Started [_getting-started]</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="189" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Understanding Ports</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="190" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Understanding Nodes</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="191" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Appendices [_appendices]</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="192" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Node Reference</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="193" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Tips &amp; Tricks</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="194" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>MultiMarkdown Meta-Data</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="195" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>MultiMarkdown Meta-Data</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="196" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>iCanScript User Guide By Disruptive Software</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="197" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>User Preferences</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="198" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>The ***User Preferences*** is used to customize the look and feel as well as the default behaviour of iCanScript.  This information is saved in the user profile and applied to all iCanScript projects opened by the user.   </Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="199" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title></Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                            <Children>
+                                                <BinderItem ID="200" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                                    <Title>editor-preferences-panel</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="201" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                                    <Title>stamp-1-orange**Panel Selection:**  The panel selection is used to navigate the different configuration panels available to the iCanScript user.    Clicking on the panel name reveals the configuration details in the panel area.</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="202" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                                    <Title>stamp-2-orange**Configuration Panel:**  </Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="203" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                                    <Title>stamp-3-orange**Use Default Button:**  This button can be used to restore all parameters of the active configuration panel to their factory default values.</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="204" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                                    <Title>stamp-4-orange**iCanScript Version Information:**  The iCanScript product user version and registration information is displayed in this area  (note that no registration information is shown in this exmaple image).</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                            </Children>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="205" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Visual Editor</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="206" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Prima fundamenta commosin vocant periti, secunda pissoceron, tertia propolin, inter coria cerasque, magni ad medicamina usus. commosis crusta est prima, saporis amari. pissoceros super eam venit, picantium modo, ceu dilutior cera. e vitium populorumque mitiore cummi propolis, crassioris iam materiae additis floribus, nondum tamen cera, sed favorum stabilimentum, qua omnes frigoris aut iniuriae aditus obstruuntur, odore et ipsa etiamnum gravi, ut qua plerique pro galbano utantur.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="207" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Hierarchy Tree</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="208" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Praeter haec convehitur erithace, quam aliqui sandaracam, alii cerinthum vocant. hic erit apium dum operantur cibus, qui saepe invenitur in favorum inanitatibus sepositus, et ipse amari saporis. gignitur autem rore verno et arborum suco cummium modo, capitur in ficis minor, austri flatu nigrior, aquilonibus melior et rubens, plurimus in Graecis nucibus. Menecrates florem esse dicit, sed nemo praeter eum.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="209" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Library Tree</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="210" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Ceras ex omnium arborum satorumque floribus confingunt excepta pumice et echinopode; herbarum haec genera. falso excipitur et spartum, quippe cum in Hispania multa in spartariis mella herbam eam sapiant. falso et oleas excipi arbitror, quippe olivae proventu plurima exanima gigni certum est. fructibus nullis nocetur. mortuis ne floribus quidem, non modo corporibus, insidunt.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="211" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>operantur intra LX p. et subinde consumptis in proximo floribus speculatores ad pabula ulteriora mittunt. noctu deprehensae in expeditione excubant supinae, ut alas a rore protegant,</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="212" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Instance Wizard</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="213" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>ne quis miretur amore earum captos Aristomachum Solensem duodesexaginta annis nihil aliud egisse, Philiscum vero Thasium in desertis apes colentem Agrium cognominatum, qui ambo scripsere de iis.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="214" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title></Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="215" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Ratio operis mire divisi: statio ad portas more castrorum, quies in matutinum, donec una excitet gemino aut triplici bombo ut bucino aliquo. tunc universae provolant, si dies mitis futurus est. praedivinant enim ventos imbresque, cum se continent tectis; itaque temperie caeli otium hoc inter praescita habent. cum agmen ad opera processit, aliae flores adgerunt pedibus, alia aquam ore guttasque lanugine totius corporis.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="216" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>quibus est earum adulescentia, ad opera exeunt et supra dicta convehunt, seniores intus operantur. quae flores comportant, prioribus pedibus femina onerant propter id natura scabra, pedes priores rostro, totaeque onustae remeant sarcina pandatae. excipiunt eas ternae quaternae, quae exonerant.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="217" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>sunt enim intus quoque officia divisa: aliae struunt, aliae poliunt, aliae suggerunt, aliae cibum comparant ex eo quod adlatum est; neque enim separatim vescuntur, ne inaequalitas operis et cibi fiat et temporis. struunt orsae a concamaratione alvi textumque velut a summa tela deducunt, limitibus binis circa singulos actus, ut aliis intrent, aliis exeant.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="218" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>favi, superiore parte adfixi et pulum etiam lateribus, simul haerent et pendent; ima alvum non contingunt, oblongi aut rotundi, qualiter poposcit alvus, aliquando et duorum generum, cum duo examina concordibus populis dissimiles habuere ritus. ruentes ceras fulciunt, pilarum intergerivis a solo fornicatis, ne desit aditus ad sarciendum.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="219" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>primi fere tres versus inanes struuntur, ne promptum sit quod invitet furantem; novissimi maxime inplentur melle. ideo aversa alvo favi eximuntur. gerulae secundos flatus captant. si cooriatur procella, adprehensi pondusculo lapilli se librant; quidam in umeros eum inponi tradunt. iuxta vero terram volant in adverso flato vepribus evitatis.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="220" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>mira observatio operis: cessantium inertiam notant, castigant, mox et puniunt morte. mira munditia amoliuntur omnia e medio, nullaeque inter opera spurcitiae iacent; quin et excrementa operantium intus, ne longius recedant, unum congesta in locum turbidis diebus et operis otio egerunt.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="221" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>cum advesperascit, in alvo strepunt minus ac minus, donec una circumvolet eodem quo excitavit bombo ceu quietem capere imperans, et hoc castrorum more. tunc repente omnes conticescunt.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="222" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                            <Title>Domos primum plebei exaedificant, deinde regibus. si speratur largior proventus, adiciuntur contubernia et fucis. hae cellarum minimae, sed ipsi maiores apibus.</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="223" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>iCanScript User Guide</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="224" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>iCanScript User Guide</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="225" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>iCanScript User Guide</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="226" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>index</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="227" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>iCanScript User Guide</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="228" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>.NET Attribute Reference</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="229" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Test</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="230" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>test1</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="231" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>test2</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="177" Type="Text" Created="2013-10-07 15:55:29 -0400" Modified="2013-10-07 15:55:29 -0400">
+                    <Title>Cabinet</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="178" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>stamp-1-orange</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="179" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>User Preferences</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="116" Type="Text" Created="2013-10-07 15:55:29 -0400" Modified="2013-10-07 15:55:29 -0400">
+                    <Title>iCanScript User Guide</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="117" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                            <Title>What is iCanScript?</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="118" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                            <Title>Installation</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="119" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                            <Title>Menus</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="120" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                    <Title>iCanScript Menu</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="121" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>iCanScript->Create Visual Script</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="122" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>iCanScript->Center Visual Script</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="123" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>iCanScript->Focus On Selected</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="124" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>iCanScript->Documentation->Home</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="125" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>iCanScript->Documentation->User's Guide</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="126" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>iCanScript->Documentation->Release Notes</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="127" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>iCanScript->Customer Request</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="128" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>iCanScript->Check for Updates...</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="129" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                    <Title>Window Menu</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="130" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>Window->iCanScript->Preferences</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="131" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>Window->iCanScript->Visual Editor</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="132" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>Window->iCanScript->Hierarchy</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="133" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>Window->iCanScript->Library</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="134" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                            <Title>Window->iCanScript->Instance Wizard</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="135" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                    <Title>Component Menus</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="136" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                            <Title>Editors</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="137" Type="Text" Created="2013-10-07 15:55:52 -0400" Modified="2013-10-07 15:55:52 -0400">
+                                    <Title>User Preferences</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="138" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Visual Editor</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="139" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Hierarchy Tree</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="140" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Library Tree</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="141" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Instance Wizard</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="142" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Unity Inspector</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="143" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Core Concepts</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="167" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Examples</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="168" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Extending iCanScript</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="169" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Tagging your Source Code</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="170" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Importing Public Members</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="171" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Adding Message Handlers</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="172" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                            <Title>Keyboard Shortcuts</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="173" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Navigation</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="174" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Bookmarks</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="175" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Expand / Fold</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="176" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                                    <Title>Insert / Delete</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="144" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                    <Title>Root Components</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="148" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                    <Title>OnEnable / OnDisable</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="149" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                    <Title>Update</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="150" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                    <Title>OnGui</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="151" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                    <Title>Etc...</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="154" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                    <Title>Variables Builder</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="155" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-07 15:55:53 -0400">
+                    <Title>Instances Interface</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="156" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-08 16:22:33 -0400">
+                    <Title>Functions</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>16,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="252" Type="Text" Created="2013-10-09 10:18:45 -0400" Modified="2013-10-09 10:20:38 -0400">
+                    <Title>What's a Port?</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="253" Type="Text" Created="2013-10-09 10:19:13 -0400" Modified="2013-10-09 10:20:38 -0400">
+                    <Title>What's a Binding?</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>1,15</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="152" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-09 10:20:38 -0400">
+                    <Title>Aggregate Nodes</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>16,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="166" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-09 09:54:20 -0400">
+                    <Title>Execution Flow</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>16,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="147" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2013-10-09 10:15:38 -0400">
+                    <Title>Message Nodes &amp; Behaviour Messages</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>68,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="254" Type="Text" Created="2013-10-10 13:26:19 -0400" Modified="2013-10-10 16:04:26 -0400">
+                    <Title>Node Types</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,1328</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="257" Type="Text" Created="2013-10-13 07:16:51 -0400" Modified="2013-10-15 14:42:19 -0400">
+                    <Title>Node Types</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,1041</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="20" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                    <Title>Initial Download</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="21" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 11:38:47 -0400">
+                            <Title>Usage of the Registration Information</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>324,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="23" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                    <Title>Upgrade</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="24" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 10:37:30 -0400">
+                            <Title>Verifying for a new version</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="25" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 10:37:30 -0400">
+                            <Title>Downloading latest version</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="26" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 10:37:30 -0400">
+                            <Title>Removing iCanScript</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="27" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 10:37:30 -0400">
+                            <Title>Installing iCanScript</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="28" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-17 11:38:47 -0400">
+                            <Title>Converting visual script saved data</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="79" Type="Text" Created="2013-09-27 16:16:18 -0400" Modified="2013-09-27 16:16:18 -0400">
+                    <Title>User Preferences</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="6" Destination="[Internal Link]">Table of Contents [Back to Top]</Reference>
+                    </References>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem ID="64" Type="Folder" Created="2013-09-17 10:45:35 -0400" Modified="2013-09-17 10:45:54 -0400">
+            <Title>Front Matter</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+                <NotesTextSelection>0,0</NotesTextSelection>
+                <IconFileName>Front Matter.tiff</IconFileName>
+            </MetaData>
+            <TextSettings>
+                <TextSelection>0,0</TextSelection>
+            </TextSettings>
+            <Children>
+                <BinderItem ID="65" Type="Folder" Created="2013-09-17 10:46:05 -0400" Modified="2013-09-17 10:46:11 -0400">
+                    <Title>MultiMarkdown</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="67" Type="Text" Created="2013-09-18 14:25:01 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>Style Sheet</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>127,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="6" Type="Folder" Created="2013-09-17 10:37:30 -0400" Modified="2013-10-23 12:10:43 -0400">
+                            <Title>Table of Contents [Back to Top]</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>33,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="16" Destination="[Internal Link]">Many Thanks ...</Reference>
+                                <Reference BinderID="12" Destination="[Internal Link]">What is iCanScript?</Reference>
+                                <Reference BinderID="13" Destination="[Internal Link]">Message from the Founder</Reference>
+                                <Reference BinderID="14" Destination="[Internal Link]">Acknowledgement</Reference>
+                                <Reference BinderID="39" Destination="[Internal Link]">iCanScript->Check for Updates...</Reference>
+                            </References>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+    </Binder>
+    <Collections>
+        <Collection Type="Binder" ID="AB7677A9-A4E7-4FD0-AC9F-E8C263342688" Color="0.784753 0.815752 0.848702">
+            <Title>Binder</Title>
+        </Collection>
+        <Collection Type="RecentSearch" ID="B3DC7EB4-2A83-47ED-829B-78494713A750" Color="0.922 0.91 0.98">
+            <Title>Search Results</Title>
+        </Collection>
+        <Collection Type="Arbitrary" ID="673B9C8D-9DC4-479B-BC60-B26BBCFF8E98" Color="0.992 0.973 0.769">
+            <Title>Updated Documents</Title>
+        </Collection>
+    </Collections>
+    <LabelSettings>
+        <Title>Label</Title>
+        <DefaultLabelID>-1</DefaultLabelID>
+        <Labels>
+            <Label ID="-1">No Label</Label>
+            <Label ID="0" Color="0.9 0.92 0.95">Concept</Label>
+            <Label ID="1" Color="0.985 0.875 0.85">Chapter</Label>
+        </Labels>
+    </LabelSettings>
+    <StatusSettings>
+        <Title>Status</Title>
+        <DefaultStatusID>-1</DefaultStatusID>
+        <StatusItems>
+            <Status ID="-1">No Status</Status>
+            <Status ID="0">To Do</Status>
+            <Status ID="1">First Draft</Status>
+            <Status ID="2">Revised Draft</Status>
+            <Status ID="3">Final Draft</Status>
+            <Status ID="4">Done</Status>
+        </StatusItems>
+    </StatusSettings>
+    <ProjectTargets Notify="No">
+        <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="No" Deadline="2013-09-17 10:34:15 -0400" IgnoreDeadline="Yes">0</DraftTarget>
+        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
+        <PreviousSession Words="434" Characters="2492" Date="2013-10-23 13:03:14 -0400"></PreviousSession>
+    </ProjectTargets>
+    <PrintSettings PaperSize="612.0,792.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="na-letter" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
+</ScrivenerProject>

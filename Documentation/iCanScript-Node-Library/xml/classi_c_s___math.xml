@@ -1,0 +1,742 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.7">
+  <compounddef id="classi_c_s___math" kind="class" prot="public">
+    <compoundname>iCS_Math</compoundname>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classi_c_s___math_1a3727941e926721f2f5bc90b276d9d7e4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iCS_Math.Add</definition>
+        <argsstring>(int a, int b)</argsstring>
+        <name>Add</name>
+        <param>
+          <type>int</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="7" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="7" bodyend="7"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a861fdf645bec625faf7962b047a9f887" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Math.Add</definition>
+        <argsstring>(float a, float b)</argsstring>
+        <name>Add</name>
+        <param>
+          <type>float</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="9" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="9" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1aa33dd63e532cbb7243d52c45201028ce" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_Math.Add</definition>
+        <argsstring>(Vector2 a, Vector2 b)</argsstring>
+        <name>Add</name>
+        <param>
+          <type>Vector2</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>Vector2</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="11" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="11" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1ade16afbbbebb15d04692e2dc4ac5fb7b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Math.Add</definition>
+        <argsstring>(Vector3 a, Vector3 b)</argsstring>
+        <name>Add</name>
+        <param>
+          <type>Vector3</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="13" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="13" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a821fb856167a60096f2eb926ec277255" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_Math.Add</definition>
+        <argsstring>(Vector4 a, Vector4 b)</argsstring>
+        <name>Add</name>
+        <param>
+          <type>Vector4</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>Vector4</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="15" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="15" bodyend="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1aa3c78113fb9b4e39e95e33ec9c3b38e4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iCS_Math.Sub</definition>
+        <argsstring>(int a, int b)</argsstring>
+        <name>Sub</name>
+        <param>
+          <type>int</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="18" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="18" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a508732d2de71a8f76a52418d5a964afb" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Math.Sub</definition>
+        <argsstring>(float a, float b)</argsstring>
+        <name>Sub</name>
+        <param>
+          <type>float</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="20" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="20" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a333934e0934bd861eb1b4bbbef70c3d7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_Math.Sub</definition>
+        <argsstring>(Vector2 a, Vector2 b)</argsstring>
+        <name>Sub</name>
+        <param>
+          <type>Vector2</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>Vector2</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="22" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="22" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1ab0ee88b34ea58be0bfd59f1b5387b883" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Math.Sub</definition>
+        <argsstring>(Vector3 a, Vector3 b)</argsstring>
+        <name>Sub</name>
+        <param>
+          <type>Vector3</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="24" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="24" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a08bd5db05b7117f055a66119e99146d6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_Math.Sub</definition>
+        <argsstring>(Vector4 a, Vector4 b)</argsstring>
+        <name>Sub</name>
+        <param>
+          <type>Vector4</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>Vector4</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="26" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="26" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a044054b6f57e4aff12cc51b1e0ece1d3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iCS_Math.Mul</definition>
+        <argsstring>(int a, int b)</argsstring>
+        <name>Mul</name>
+        <param>
+          <type>int</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="28" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a38c560afaf6a2612296256e19e7feba0" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Math.Mul</definition>
+        <argsstring>(float a, float b)</argsstring>
+        <name>Mul</name>
+        <param>
+          <type>float</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="29" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1ad8b47c294617d92f5b1605ccaef9e4f8" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iCS_Math.Div</definition>
+        <argsstring>(int a, int div)</argsstring>
+        <name>Div</name>
+        <param>
+          <type>int</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>div</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="31" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="31" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a891917cfbaf44b5a331573ab792f5a5d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Math.Div</definition>
+        <argsstring>(float a, float div)</argsstring>
+        <name>Div</name>
+        <param>
+          <type>float</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>div</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="32" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="32" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1ac69b1ff1542fcbd156044eaaa01d9433" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_Math.Div</definition>
+        <argsstring>(Vector2 v, float div)</argsstring>
+        <name>Div</name>
+        <param>
+          <type>Vector2</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>div</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="33" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a79daed83d0a371230719505a36b29447" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Math.Div</definition>
+        <argsstring>(Vector3 v, float div)</argsstring>
+        <name>Div</name>
+        <param>
+          <type>Vector3</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>div</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="34" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a826c1a5d845a4aa49ca9fc3176de2c3d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_Math.Div</definition>
+        <argsstring>(Vector4 v, float div)</argsstring>
+        <name>Div</name>
+        <param>
+          <type>Vector4</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>div</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="35" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="35" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a991ee9e3f9bd09fda1f88627e81b46bf" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iCS_Math.Lerp</definition>
+        <argsstring>(int v1, int v2, float ratio)</argsstring>
+        <name>Lerp</name>
+        <param>
+          <type>int</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="37" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a78b543002c8ea086be7df0a0b4a531ae" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Math.Lerp</definition>
+        <argsstring>(float v1, float v2, float ratio)</argsstring>
+        <name>Lerp</name>
+        <param>
+          <type>float</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="38" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="38" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a7cb13bbb20565cd8f5491c4487b01b93" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_Math.Lerp</definition>
+        <argsstring>(Vector2 v1, Vector2 v2, float ratio)</argsstring>
+        <name>Lerp</name>
+        <param>
+          <type>Vector2</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector2</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="39" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a17d5ecf4dda7320595ed69dde7963a84" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Math.Lerp</definition>
+        <argsstring>(Vector3 v1, Vector3 v2, float ratio)</argsstring>
+        <name>Lerp</name>
+        <param>
+          <type>Vector3</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="40" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="40" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a6520ced4500ec359c96fef7a41148f01" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_Math.Lerp</definition>
+        <argsstring>(Vector4 v1, Vector4 v2, float ratio)</argsstring>
+        <name>Lerp</name>
+        <param>
+          <type>Vector4</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector4</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ratio</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="41" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a985c474fef90aa27d6771fa164b5925c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>static float iCS_Math.Random</definition>
+        <argsstring>(float scale=1f)</argsstring>
+        <name>Random</name>
+        <param>
+          <type>float</type>
+          <declname>scale</declname>
+          <defval>1f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="43" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a199a92f47c1ee4e8a73fc1ac3d253f14" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_Math.RandomVector2</definition>
+        <argsstring>(float scale=1f)</argsstring>
+        <name>RandomVector2</name>
+        <param>
+          <type>float</type>
+          <declname>scale</declname>
+          <defval>1f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="44" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a9a4141d452a2ab4fd7825209242b79ba" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Math.RandomVector3</definition>
+        <argsstring>(float scale=1f)</argsstring>
+        <name>RandomVector3</name>
+        <param>
+          <type>float</type>
+          <declname>scale</declname>
+          <defval>1f</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="45" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a6f8c2109fec99695b3e01df963e0a376" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_Math.ScaleVector</definition>
+        <argsstring>(float scale, Vector2 v)</argsstring>
+        <name>ScaleVector</name>
+        <param>
+          <type>float</type>
+          <declname>scale</declname>
+        </param>
+        <param>
+          <type>Vector2</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="47" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1ab44d16701b03ec445353384a4d95e1b4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Math.ScaleVector</definition>
+        <argsstring>(float scale, Vector3 v)</argsstring>
+        <name>ScaleVector</name>
+        <param>
+          <type>float</type>
+          <declname>scale</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="48" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a67214f59600abaa04f6fc24b40ecd2f0" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_Math.ScaleVector</definition>
+        <argsstring>(float scale, Vector4 v)</argsstring>
+        <name>ScaleVector</name>
+        <param>
+          <type>float</type>
+          <declname>scale</declname>
+        </param>
+        <param>
+          <type>Vector4</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="49" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="49" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a7d58bfb098b0d442f20bdf8e1fae85ff" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector2</type>
+        <definition>static Vector2 iCS_Math.Scale2Vector</definition>
+        <argsstring>(float s1, float s2, Vector2 v)</argsstring>
+        <name>Scale2Vector</name>
+        <param>
+          <type>float</type>
+          <declname>s1</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>s2</declname>
+        </param>
+        <param>
+          <type>Vector2</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="51" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="51" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1ad3111adef1aec8bbb2e9629affce6169" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Math.Scale2Vector</definition>
+        <argsstring>(float s1, float s2, Vector3 v)</argsstring>
+        <name>Scale2Vector</name>
+        <param>
+          <type>float</type>
+          <declname>s1</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>s2</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="52" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="52" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1a8b1193ad97a0db82652a684fb7a31800" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector4</type>
+        <definition>static Vector4 iCS_Math.Scale2Vector</definition>
+        <argsstring>(float s1, float s2, Vector4 v)</argsstring>
+        <name>Scale2Vector</name>
+        <param>
+          <type>float</type>
+          <declname>s1</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>s2</declname>
+        </param>
+        <param>
+          <type>Vector4</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="53" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="53" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="classi_c_s___math_1aac616bb5a7a9285c95f852847b9955b5" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Vector3</type>
+        <definition>static Vector3 iCS_Math.NormalizedCross</definition>
+        <argsstring>(Vector3 v1, Vector3 v2)</argsstring>
+        <name>NormalizedCross</name>
+        <param>
+          <type>Vector3</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>Vector3</type>
+          <declname>v2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="56" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="56" bodyend="56"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" line="5" column="1" bodyfile="/Users/Reinual/Workspaces/iCanScript/Product/Unity/Assets/iCanScript/Engine/Nodes/iCanScript/iCS_Math.cs" bodystart="5" bodyend="57"/>
+    <listofallmembers>
+      <member refid="classi_c_s___math_1a3727941e926721f2f5bc90b276d9d7e4" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Add</name></member>
+      <member refid="classi_c_s___math_1a861fdf645bec625faf7962b047a9f887" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Add</name></member>
+      <member refid="classi_c_s___math_1aa33dd63e532cbb7243d52c45201028ce" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Add</name></member>
+      <member refid="classi_c_s___math_1ade16afbbbebb15d04692e2dc4ac5fb7b" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Add</name></member>
+      <member refid="classi_c_s___math_1a821fb856167a60096f2eb926ec277255" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Add</name></member>
+      <member refid="classi_c_s___math_1ad8b47c294617d92f5b1605ccaef9e4f8" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Div</name></member>
+      <member refid="classi_c_s___math_1a891917cfbaf44b5a331573ab792f5a5d" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Div</name></member>
+      <member refid="classi_c_s___math_1ac69b1ff1542fcbd156044eaaa01d9433" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Div</name></member>
+      <member refid="classi_c_s___math_1a79daed83d0a371230719505a36b29447" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Div</name></member>
+      <member refid="classi_c_s___math_1a826c1a5d845a4aa49ca9fc3176de2c3d" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Div</name></member>
+      <member refid="classi_c_s___math_1a991ee9e3f9bd09fda1f88627e81b46bf" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Lerp</name></member>
+      <member refid="classi_c_s___math_1a78b543002c8ea086be7df0a0b4a531ae" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Lerp</name></member>
+      <member refid="classi_c_s___math_1a7cb13bbb20565cd8f5491c4487b01b93" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Lerp</name></member>
+      <member refid="classi_c_s___math_1a17d5ecf4dda7320595ed69dde7963a84" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Lerp</name></member>
+      <member refid="classi_c_s___math_1a6520ced4500ec359c96fef7a41148f01" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Lerp</name></member>
+      <member refid="classi_c_s___math_1a044054b6f57e4aff12cc51b1e0ece1d3" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Mul</name></member>
+      <member refid="classi_c_s___math_1a38c560afaf6a2612296256e19e7feba0" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Mul</name></member>
+      <member refid="classi_c_s___math_1aac616bb5a7a9285c95f852847b9955b5" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>NormalizedCross</name></member>
+      <member refid="classi_c_s___math_1a985c474fef90aa27d6771fa164b5925c" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Random</name></member>
+      <member refid="classi_c_s___math_1a199a92f47c1ee4e8a73fc1ac3d253f14" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>RandomVector2</name></member>
+      <member refid="classi_c_s___math_1a9a4141d452a2ab4fd7825209242b79ba" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>RandomVector3</name></member>
+      <member refid="classi_c_s___math_1a7d58bfb098b0d442f20bdf8e1fae85ff" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Scale2Vector</name></member>
+      <member refid="classi_c_s___math_1ad3111adef1aec8bbb2e9629affce6169" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Scale2Vector</name></member>
+      <member refid="classi_c_s___math_1a8b1193ad97a0db82652a684fb7a31800" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Scale2Vector</name></member>
+      <member refid="classi_c_s___math_1a6f8c2109fec99695b3e01df963e0a376" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>ScaleVector</name></member>
+      <member refid="classi_c_s___math_1ab44d16701b03ec445353384a4d95e1b4" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>ScaleVector</name></member>
+      <member refid="classi_c_s___math_1a67214f59600abaa04f6fc24b40ecd2f0" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>ScaleVector</name></member>
+      <member refid="classi_c_s___math_1aa3c78113fb9b4e39e95e33ec9c3b38e4" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Sub</name></member>
+      <member refid="classi_c_s___math_1a508732d2de71a8f76a52418d5a964afb" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Sub</name></member>
+      <member refid="classi_c_s___math_1a333934e0934bd861eb1b4bbbef70c3d7" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Sub</name></member>
+      <member refid="classi_c_s___math_1ab0ee88b34ea58be0bfd59f1b5387b883" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Sub</name></member>
+      <member refid="classi_c_s___math_1a08bd5db05b7117f055a66119e99146d6" prot="public" virt="non-virtual"><scope>iCS_Math</scope><name>Sub</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

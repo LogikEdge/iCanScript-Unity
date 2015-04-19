@@ -1,0 +1,150 @@
+Title: iCanScript Installation & Upgrade
+Author: Michel Launier
+Base Header Level: 1
+Version: v1.0.3 (Beta #17)
+email: support@icanscript.com
+CSS: Github.css
+
+
+<style type="text/css">
+	<!--
+
+.center {
+	text-align: center;
+}
+
+.tipbox {
+	text-align: justify;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-left: 20px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	text-indent: 0;
+}
+
+.cmd {
+	color: #6d00ff;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.tiptitle {
+	font-size: 1.4em;
+	font-weight: normal;
+}
+	-->
+</style>
+
+<!--TOC max2-->
+
+# Installation #
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox"><span style="color:red">
+
+Please note that the installation of iCanScript from the Unity Asset Store is currently not discussed.  It will be added in future releases of this document.
+
+</span> </div><!--tipbox-->
+</div>
+
+![][Drive-Download_48x48.png] iCanScript is a downloadable plugin for the Unity 3D game engine. It comes in the form of a Unity package that must be installed for each project.
+
+The initial download of iCanScript is available from the project [website](http://www.icanscript.com). User registration is required to obtain the latest version of the iCanScript software via email. An overview of the registration, download and installation procedure is available in the following video:
+
+
+[![][tutorial-installation-tumbnail.png]](http://youtu.be/LJIqMaUNoAU)
+
+
+Follow these steps to install iCanScript for the first time:
+
+1. Visit the iCanScript web site at [www.icanscript.com](http://www.icanscript.com);
+2. Click the download button from the home page;
+3. Fill-in the registration form (the email is important);
+4. Shortly after, you will receive an email with the latest version of iCanScript in attachment;
+5. Open the email and save the iCanScript package;
+6. Launch Unity and import the iCanScript package (see Figure 1);
+7. You are now ready to start …
+
+![Figure 1. Importing iCanScript into Unity.][custom-import.png]
+
+You now have the knowledge to download and install iCanScript in your own project. I propose that you move on to the [quick start tutorial][] where you will build your first visual script.
+
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][icanscript-ui-tips_64x64x32.png] <span class="tiptitle">iCanScript User Interface Tips</span>
+
+---
+
+> Subsequent software releases can be downloaded using the [upgrade][Upgrading iCanScript] feature of iCanScript.
+
+ </div><!--tipbox-->
+</div>
+
+
+# Removing iCanScript #
+
+
+The following steps are needed to uninstall iCanScript from your project:
+
+*  Remove the _**iCanScript**_ folder;
+*  Open the _Gizmos_ folder and remove the _**iCanScriptGizmo.png**_ file;
+*  Remove the optional _**iCanScript_Nodes**_ package;
+
+<div class="annotation" style="color:#000000" markdown="1"> <div class="tipbox">
+![][PostitNote_48x48.png] **Note:**  Uninstalling the previous version of iCanScript is required when performing an upgrade.
+
+ </div><!--tipbox-->
+</div>
+
+<!-- 2columns - Start --><div style="width: 100%; margin:0 auto"><div style="float:left; width:49%; margin:0 auto; padding:0">
+ 
+![Figure 2. Uninstalling the iCanScript packages.][remove-packages.png]
+
+<!-- 2columns - Separator --></div><div style="float:right; width:49%; margin:0 auto; padding: 0">
+
+![Figure 3. Removing the iCanScript Gizmo.][remove-gizmo.png]
+
+<!-- 2columns - End --></div></div><div style="clear: both"></div>
+
+
+# Upgrading iCanScript #
+
+
+Improvements to iCanScript are regularly made available as downloadable software updates. 
+
+The following steps are needed to verify for and update to the latest version of iCanScript:
+
+1. Verify for an update using the menu item: <span class="cmd">Help->iCanScript->Check for Updates…</span>;
+2. If an update is available, a dialog box will guide you to the download page;
+3. Download the latest version of iCanScript;
+4. Open Unity and uninstall the current version of iCanScript (see [Removing iCanScript]);
+5. Import the latest version of iCanScript (see [Installation]);
+6. An alert box will be shown if data conversion is required after the upgrade;
+	- data conversion is performed in memory;
+	- each visual script data is converted independently;
+	- converted data is persisted when the scene is saved;
+	- data rollback is performed if scene is not saved after an upgrade.
+7. Save the scene to complete the upgrade.
+
+![Figure 4. Verifying for an update.][ics-check-for-update.png]
+
+
+
+
+[Drive-Download_48x48.png]: Drive-Download_48x48.png width=32px height=32px
+
+[tutorial-installation-tumbnail.png]: tutorial-installation-tumbnail.png width=320px height=180px
+
+[custom-import.png]: custom-import.png
+
+[icanscript-ui-tips_64x64x32.png]: icanscript-ui-tips_64x64x32.png width=32px height=32px
+
+[PostitNote_48x48.png]: PostitNote_48x48.png width=32px height=32px
+
+[remove-packages.png]: remove-packages.png
+
+[remove-gizmo.png]: remove-gizmo.png
+
+[ics-check-for-update.png]: ics-check-for-update.png

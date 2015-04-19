@@ -1,0 +1,2191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.6-25479" Modified="2015-04-12 22:32:22 -0400">
+    <Binder>
+        <BinderItem ID="0" Type="DraftFolder" Created="2013-09-17 10:34:16 -0400" Modified="2013-10-24 14:11:22 -0400">
+            <Title>Documents</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+            </MetaData>
+            <CorkboardAndOutliner>
+                <SelectedSubdocumentIDs>6</SelectedSubdocumentIDs>
+                <OutlinerExpandedState>
+                    <ItemID>6</ItemID>
+                    <ItemID>11</ItemID>
+                    <ItemID>29</ItemID>
+                    <ItemID>49</ItemID>
+                    <ItemID>52</ItemID>
+                    <ItemID>56</ItemID>
+                </OutlinerExpandedState>
+            </CorkboardAndOutliner>
+            <Children>
+                <BinderItem ID="276" Type="Folder" Created="2013-10-24 14:00:59 -0400" Modified="2014-02-05 15:35:20 -0500">
+                    <Title>User Guide</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Blue Book).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <CorkboardAndOutliner>
+                        <SelectedSubdocumentIDs></SelectedSubdocumentIDs>
+                        <OutlinerExpandedState>
+                            <ItemID>478</ItemID>
+                        </OutlinerExpandedState>
+                    </CorkboardAndOutliner>
+                    <References>
+                        <Reference Destination="evernote:///view/7870103/s70/a528fb83-c414-4c66-bd78-3c6db1d94161/a528fb83-c414-4c66-bd78-3c6db1d94161/">Evernote</Reference>
+                    </References>
+                    <Children>
+                        <BinderItem ID="475" Type="Folder" Created="2014-02-26 08:49:57 -0500" Modified="2014-04-22 10:52:18 -0400">
+                            <Title>Introduction</Title>
+                            <MetaData>
+                                <LabelID>16</LabelID>
+                                <StatusID>12</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="12" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2015-01-25 22:01:44 -0500">
+                                    <Title>What is iCanScript?</Title>
+                                    <MetaData>
+                                        <LabelID>16</LabelID>
+                                        <StatusID>12</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>31,0</NotesTextSelection>
+                                        <CustomMetaData>
+                                            <MetaDataItem>
+                                                <FieldID>webpublished</FieldID>
+                                                <Value>2014-04-28 11:42am</Value>
+                                            </MetaDataItem>
+                                        </CustomMetaData>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>1097,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="366" Type="Text" Created="2013-12-02 14:15:16 -0500" Modified="2014-04-28 11:42:22 -0400">
+                                    <Title>Feature Overview</Title>
+                                    <MetaData>
+                                        <LabelID>16</LabelID>
+                                        <StatusID>12</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                        <CustomMetaData>
+                                            <MetaDataItem>
+                                                <FieldID>webpublished</FieldID>
+                                                <Value>2014-04-28 11:42am</Value>
+                                            </MetaDataItem>
+                                        </CustomMetaData>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="367" Type="Text" Created="2013-12-02 14:15:48 -0500" Modified="2014-04-28 11:42:08 -0400">
+                                    <Title>When to use Visual Scripts?</Title>
+                                    <MetaData>
+                                        <LabelID>16</LabelID>
+                                        <StatusID>12</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                        <CustomMetaData>
+                                            <MetaDataItem>
+                                                <FieldID>webpublished</FieldID>
+                                                <Value>2014-04-28 11:42am</Value>
+                                            </MetaDataItem>
+                                        </CustomMetaData>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>1,1492</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="368" Type="Text" Created="2013-12-02 14:16:28 -0500" Modified="2014-04-28 11:41:57 -0400">
+                                    <Title>Who will Benefit from Using iCanScript?</Title>
+                                    <MetaData>
+                                        <LabelID>16</LabelID>
+                                        <StatusID>12</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                        <CustomMetaData>
+                                            <MetaDataItem>
+                                                <FieldID>webpublished</FieldID>
+                                                <Value>2014-04-28 11:41am</Value>
+                                            </MetaDataItem>
+                                        </CustomMetaData>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>965,112</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="476" Type="Folder" Created="2014-02-26 08:51:04 -0500" Modified="2014-04-28 11:34:22 -0400">
+                            <Title>Installation &amp; Upgrade</Title>
+                            <MetaData>
+                                <LabelID>11</LabelID>
+                                <StatusID>10</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>webpublished</FieldID>
+                                        <Value>2014-04-28 11:34am</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="22" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2014-04-28 11:27:08 -0400">
+                                    <Title>Installation</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>16,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>726,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="22" Destination="[Internal Link]">Installation</Reference>
+                                        <Reference BinderID="12" Destination="[Internal Link]">What is iCanScript?</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="369" Type="Text" Created="2013-12-02 16:10:26 -0500" Modified="2014-04-23 11:46:10 -0400">
+                                    <Title>Removing iCanScript</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>246,16</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="22" Destination="[Internal Link]">Installation</Reference>
+                                        <Reference BinderID="370" Destination="[Internal Link]">Upgrading iCanScript</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="370" Type="Text" Created="2013-12-02 16:11:04 -0500" Modified="2014-04-23 11:48:21 -0400">
+                                    <Title>Upgrading iCanScript</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>99,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>448,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="22" Destination="[Internal Link]">Installation</Reference>
+                                    </References>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="478" Type="Folder" Created="2014-02-26 08:52:55 -0500" Modified="2014-04-28 11:34:34 -0400">
+                            <Title>Visual Script Anatomy</Title>
+                            <MetaData>
+                                <LabelID>11</LabelID>
+                                <StatusID>10</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>webpublished</FieldID>
+                                        <Value>2014-04-28 11:34am</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="482" Type="Text" Created="2014-02-28 13:08:44 -0500" Modified="2014-06-10 13:08:23 -0400">
+                                    <Title>Nodes, Ports, and Bindings</Title>
+                                    <MetaData>
+                                        <LabelID>16</LabelID>
+                                        <StatusID>12</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>74,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>2015,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="255" Type="Text" Created="2013-10-11 08:03:53 -0400" Modified="2014-04-25 15:47:16 -0400">
+                                    <Title>Node Anatomy</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>906,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="273" Type="Text" Created="2013-10-24 13:31:47 -0400" Modified="2014-04-25 15:19:15 -0400">
+                                    <Title>Specialized Nodes</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>200,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="274" Type="Text" Created="2013-10-24 13:31:55 -0400" Modified="2014-02-25 22:29:35 -0500">
+                                    <Title>Port Types</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="272" Type="Text" Created="2013-10-24 13:31:31 -0400" Modified="2014-02-25 22:29:37 -0500">
+                                    <Title>Node Nesting</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="153" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-28 15:46:05 -0500">
+                                    <Title>Data Flow Diagram</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="157" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:29:41 -0500">
+                                    <Title>State Chart Diagram</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="158" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:29:54 -0500">
+                                            <Title>States</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                            <Children>
+                                                <BinderItem ID="159" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:01 -0500">
+                                                    <Title>Entry Function</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="160" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:02 -0500">
+                                                    <Title>Update Function</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="161" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:04 -0500">
+                                                    <Title>Exit Function</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="162" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:06 -0500">
+                                                    <Title>Nested State</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                            </Children>
+                                        </BinderItem>
+                                        <BinderItem ID="163" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:29:56 -0500">
+                                            <Title>Transitions</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                            <Children>
+                                                <BinderItem ID="164" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:10 -0500">
+                                                    <Title>Trigger Function</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="165" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-28 15:46:05 -0500">
+                                                    <Title>Transition Behaviour</Title>
+                                                    <MetaData>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                            </Children>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="483" Type="Folder" Created="2014-02-28 14:27:28 -0500" Modified="2014-04-25 13:55:07 -0400">
+                            <Title>Integration with Unity</Title>
+                            <MetaData>
+                                <LabelID>11</LabelID>
+                                <StatusID>10</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="49" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:55:14 -0400">
+                                    <Title>Unity Integration</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="145" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-04-25 13:55:20 -0400">
+                                    <Title>Adding a Visual Script</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>364,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="146" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-28 15:46:04 -0500">
+                                    <Title>Libraries &amp; Prefabs</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="251" Destination="[Internal Link]">What's a Node?</Reference>
+                                    </References>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="481" Type="Folder" Created="2014-02-28 10:54:44 -0500" Modified="2014-02-28 10:54:49 -0500">
+                            <Title>How To</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="477" Type="Folder" Created="2014-02-26 08:52:04 -0500" Modified="2014-04-25 13:55:36 -0400">
+                            <Title>Example Project</Title>
+                            <MetaData>
+                                <LabelID>11</LabelID>
+                                <StatusID>10</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="268" Type="Text" Created="2013-10-24 13:24:51 -0400" Modified="2014-04-25 13:55:42 -0400">
+                                    <Title>Objective</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>752,0</TextSelection>
+                                    </TextSettings>
+                                    <CorkboardAndOutliner>
+                                        <SelectedSubdocumentIDs></SelectedSubdocumentIDs>
+                                        <OutlinerExpandedState>
+                                            <ItemID>349</ItemID>
+                                            <ItemID>306</ItemID>
+                                        </OutlinerExpandedState>
+                                    </CorkboardAndOutliner>
+                                    <References>
+                                        <Reference BinderID="22" Destination="[Internal Link]">Installation</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="304" Type="Text" Created="2013-10-30 15:22:25 -0400" Modified="2014-04-25 13:55:48 -0400">
+                                    <Title>Storyline</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>246,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="305" Type="Text" Created="2013-10-30 15:23:00 -0400" Modified="2014-04-25 13:55:54 -0400">
+                                    <Title>Our Actors</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>1300,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="349" Type="Text" Created="2013-11-12 10:42:54 -0500" Modified="2014-04-25 13:56:02 -0400">
+                                    <Title>Creating the Unity Project</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>710,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="357" Type="Text" Created="2013-11-19 17:27:43 -0500" Modified="2014-04-25 13:56:10 -0400">
+                                            <Title>Adding Actors to the Scene</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>153,0</TextSelection>
+                                            </TextSettings>
+                                            <Children>
+                                                <BinderItem ID="358" Type="Text" Created="2013-11-19 17:28:30 -0500" Modified="2014-04-25 15:51:15 -0400">
+                                                    <Title>Ms Light</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>620,2</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="359" Type="Text" Created="2013-11-19 17:28:52 -0500" Modified="2014-04-25 13:56:22 -0400">
+                                                    <Title>Near &amp; Far Trigger Zones</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>110,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="360" Type="Text" Created="2013-11-19 17:29:11 -0500" Modified="2014-04-25 13:56:28 -0400">
+                                                    <Title>Mr Cube</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>134,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                            </Children>
+                                        </BinderItem>
+                                        <BinderItem ID="361" Type="Text" Created="2013-11-19 17:29:40 -0500" Modified="2014-04-25 15:52:59 -0400">
+                                            <Title>Hiding the Trigger Zones</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>523,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="307" Type="Text" Created="2013-10-31 09:49:36 -0400" Modified="2014-04-25 13:56:43 -0400">
+                                    <Title>Opening the iCanScript Editors</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>879,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="306" Type="Text" Created="2013-10-30 15:25:38 -0400" Modified="2014-04-25 13:56:51 -0400">
+                                    <Title>Moving Mr Cube (step 1)</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
+                                    </References>
+                                    <Children>
+                                        <BinderItem ID="364" Type="Text" Created="2013-11-27 14:56:13 -0500" Modified="2014-04-25 13:56:56 -0400">
+                                            <Title>Installing a Visual Script on _Mr Cube_</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>1370,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="371" Type="Text" Created="2013-12-03 11:56:11 -0500" Modified="2014-04-25 13:57:01 -0400">
+                                            <Title>Installing the _Update_ Message Handler</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>1026,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="365" Type="Text" Created="2013-11-29 13:42:50 -0500" Modified="2014-04-25 13:57:07 -0400">
+                                            <Title>Visual Script Overview</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>1063,0</TextSelection>
+                                            </TextSettings>
+                                            <References>
+                                                <Reference BinderID="374" Destination="[Internal Link]">Controlling Speed and Direction Separately</Reference>
+                                            </References>
+                                        </BinderItem>
+                                        <BinderItem ID="383" Type="Text" Created="2013-12-09 10:45:38 -0500" Modified="2014-04-25 13:57:14 -0400">
+                                            <Title>Creating the _"Move Mr Cube Package"_</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>230,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="372" Type="Text" Created="2013-12-03 12:06:21 -0500" Modified="2014-04-25 13:57:20 -0400">
+                                            <Title>Adding _Mr Cube_ to the Visual Script</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>226,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="384" Type="Text" Created="2013-12-10 12:19:24 -0500" Modified="2014-04-25 13:57:27 -0400">
+                                            <Title>Exposing the _Transform_ of _Mr Cube_</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>2985,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="385" Type="Text" Created="2013-12-12 16:18:32 -0500" Modified="2014-04-25 13:57:34 -0400">
+                                            <Title>Adding the _Translation_ operation to the _Transform_ node</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>854,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="373" Type="Text" Created="2013-12-03 12:13:37 -0500" Modified="2014-04-25 13:57:40 -0400">
+                                            <Title>Moving with Consistent Velocity</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>2327,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="374" Type="Text" Created="2013-12-03 14:25:36 -0500" Modified="2014-04-25 13:57:46 -0400">
+                                            <Title>Controlling Speed and Direction Separately</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>856,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="375" Type="Text" Created="2013-12-03 14:50:57 -0500" Modified="2014-04-25 13:57:52 -0400">
+                                            <Title>Publishing the Interface</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>371,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="376" Type="Text" Created="2013-12-03 14:53:26 -0500" Modified="2014-04-25 13:57:57 -0400">
+                                            <Title>Running the _Move Mr Cube_ Visual Script</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>1147,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="377" Type="Text" Created="2013-12-03 15:17:15 -0500" Modified="2014-04-25 13:58:04 -0400">
+                                            <Title>Accessing Runtime Information</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="378" Type="Text" Created="2013-12-03 15:40:23 -0500" Modified="2014-04-25 13:58:10 -0400">
+                                            <Title>Recap on Your First Visual Script</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>762,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="350" Type="Text" Created="2013-11-12 10:46:50 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                    <Title>Enabling &amp; Disabling Ms Light</Title>
+                                    <MetaData>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="352" Type="Text" Created="2013-11-14 19:27:09 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                    <Title>Homing on Ms Light</Title>
+                                    <MetaData>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>12,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="351" Type="Text" Created="2013-11-12 10:47:23 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                    <Title>Creating a Timer Utility</Title>
+                                    <MetaData>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>12,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="353" Type="Text" Created="2013-11-14 19:30:29 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                    <Title>Changing Direction</Title>
+                                    <MetaData>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>12,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="354" Type="Text" Created="2013-11-14 19:32:01 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                    <Title>Mr Cube Roaming State</Title>
+                                    <MetaData>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>12,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="355" Type="Text" Created="2013-11-14 19:32:32 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                    <Title>Adding a Panic State</Title>
+                                    <MetaData>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>12,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="356" Type="Text" Created="2013-11-14 19:33:16 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                    <Title>Beautifying your Scripts</Title>
+                                    <MetaData>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>12,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="418" Type="Folder" Created="2014-02-04 15:53:09 -0500" Modified="2014-04-25 13:58:25 -0400">
+                            <Title>User Interface</Title>
+                            <MetaData>
+                                <LabelID>11</LabelID>
+                                <StatusID>10</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="30" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:33 -0400">
+                                    <Title>Menus</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,162</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="31" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:40 -0400">
+                                            <Title>Edit Menu</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>197,0</TextSelection>
+                                            </TextSettings>
+                                            <Children>
+                                                <BinderItem ID="32" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:48 -0400">
+                                                    <Title>Edit-&gt;iCanScript-&gt;Create Visual Script</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>116,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="33" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:54 -0400">
+                                                    <Title>Edit-&gt;iCanScript-&gt;Center Visual Script</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>51,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="34" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:59:00 -0400">
+                                                    <Title>Edit-&gt;iCanScript-&gt;Center Selected</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>89,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                            </Children>
+                                        </BinderItem>
+                                        <BinderItem ID="41" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:59:07 -0400">
+                                            <Title>Component Menus</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>415,0</TextSelection>
+                                            </TextSettings>
+                                            <References>
+                                                <Reference BinderID="145" Destination="[Internal Link]">Visual Scripts &amp; Behaviours</Reference>
+                                            </References>
+                                            <Children>
+                                                <BinderItem ID="381" Type="Text" Created="2013-12-04 17:14:19 -0500" Modified="2014-04-25 13:59:14 -0400">
+                                                    <Title>Attaching a Visual Script component</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                    <References>
+                                                        <Reference BinderID="145" Destination="[Internal Link]">Visual Scripts &amp; Behaviours</Reference>
+                                                    </References>
+                                                </BinderItem>
+                                            </Children>
+                                        </BinderItem>
+                                        <BinderItem ID="40" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:59:23 -0400">
+                                            <Title>Window Menu</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                            <Children>
+                                                <BinderItem ID="68" Type="Text" Created="2013-09-19 15:16:03 -0400" Modified="2014-04-25 13:59:30 -0400">
+                                                    <Title>Window-&gt;iCanScript-&gt;Preferences</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,65</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="69" Type="Text" Created="2013-09-19 15:16:28 -0400" Modified="2014-04-25 13:59:36 -0400">
+                                                    <Title>Window-&gt;iCanScript-&gt;Visual Editor</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>415,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="70" Type="Text" Created="2013-09-19 15:16:46 -0400" Modified="2014-04-25 13:59:42 -0400">
+                                                    <Title>Window-&gt;iCanScript-&gt;Hierarchy</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>320,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="71" Type="Text" Created="2013-09-19 15:17:02 -0400" Modified="2014-04-25 13:59:47 -0400">
+                                                    <Title>Window-&gt;iCanScript-&gt;Library</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>47,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="72" Type="Text" Created="2013-09-19 15:17:15 -0400" Modified="2014-04-25 13:59:53 -0400">
+                                                    <Title>Window-&gt;iCanScript-&gt;Instance Wizard</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                            </Children>
+                                        </BinderItem>
+                                        <BinderItem ID="387" Type="Text" Created="2014-01-11 22:12:26 -0500" Modified="2014-04-25 14:00:03 -0400">
+                                            <Title>Help Menu</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>34,0</TextSelection>
+                                            </TextSettings>
+                                            <Children>
+                                                <BinderItem ID="35" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:11 -0400">
+                                                    <Title>Help-&gt;iCanScript-&gt;Home Page</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>52,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="36" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:18 -0400">
+                                                    <Title>Help-&gt;iCanScript-&gt;User's Guide</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>54,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="37" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:24 -0400">
+                                                    <Title>Help-&gt;iCanScript-&gt;Release Notes</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>52,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="38" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:30 -0400">
+                                                    <Title>Help-&gt;iCanScript-&gt;Customer Request</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>23,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                                <BinderItem ID="39" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:36 -0400">
+                                                    <Title>Help-&gt;iCanScript-&gt;Check for Updates...</Title>
+                                                    <MetaData>
+                                                        <LabelID>11</LabelID>
+                                                        <StatusID>10</StatusID>
+                                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                                    </MetaData>
+                                                    <TextSettings>
+                                                        <TextSelection>0,0</TextSelection>
+                                                    </TextSettings>
+                                                </BinderItem>
+                                            </Children>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="76" Type="Text" Created="2013-09-21 11:29:22 -0400" Modified="2014-04-25 14:00:53 -0400">
+                                    <Title>Editors</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="43" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-05-09 09:19:14 -0400">
+                                            <Title>User Preferences</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>108,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="44" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:07 -0400">
+                                            <Title>Visual Editor</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="45" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:13 -0400">
+                                            <Title>Hierarchy Tree</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>136,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="46" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:19 -0400">
+                                            <Title>Library Tree</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                            <References>
+                                                <Reference BinderID="52" Destination="[Internal Link]">Extending the Library</Reference>
+                                            </References>
+                                        </BinderItem>
+                                        <BinderItem ID="47" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-05-09 09:19:47 -0400">
+                                            <Title>Instance Wizard</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>428,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="48" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:31 -0400">
+                                            <Title>Unity Inspector</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="479" Type="Folder" Created="2014-02-26 08:53:46 -0500" Modified="2014-04-25 13:54:14 -0400">
+                            <Title>Extending iCanScript</Title>
+                            <MetaData>
+                                <LabelID>11</LabelID>
+                                <StatusID>10</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="52" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 15:56:58 -0400">
+                                    <Title>Extending iCanScript</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>1962,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="53" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 15:59:05 -0400">
+                                    <Title>Tagging your Source Code</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="52" Destination="[Internal Link]">Extending the Library</Reference>
+                                        <Reference BinderID="112" Destination="[Internal Link]">Adding Message Handlers</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="54" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 15:57:10 -0400">
+                                    <Title>Importing Public Members</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>2832,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="52" Destination="[Internal Link]">Extending the Library</Reference>
+                                        <Reference BinderID="112" Destination="[Internal Link]">Adding Message Handlers</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="112" Type="Text" Created="2013-09-30 15:08:08 -0400" Modified="2014-04-25 13:54:40 -0400">
+                                    <Title>Adding Message Handlers</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="52" Destination="[Internal Link]">Extending the Library</Reference>
+                                    </References>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="256" Type="Folder" Created="2013-10-11 08:05:57 -0400" Modified="2014-04-25 13:53:19 -0400">
+                            <Title>Appendices</Title>
+                            <MetaData>
+                                <LabelID>11</LabelID>
+                                <StatusID>10</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="57" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:53:28 -0400">
+                                    <Title>Keyboard Shortcuts</Title>
+                                    <MetaData>
+                                        <LabelID>11</LabelID>
+                                        <StatusID>10</StatusID>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>179,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="484" Type="Text" Created="2014-04-02 11:46:22 -0400" Modified="2014-04-25 13:53:34 -0400">
+                                            <Title>Visual Script Navigation</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>690,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="58" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-06-26 13:20:26 -0400">
+                                            <Title>Selection Navigation</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>569,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="59" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:53:48 -0400">
+                                            <Title>Bookmarks</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="60" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:53:56 -0400">
+                                            <Title>Expand / Fold</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>369,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="61" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:54:04 -0400">
+                                            <Title>Edition</Title>
+                                            <MetaData>
+                                                <LabelID>11</LabelID>
+                                                <StatusID>10</StatusID>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="277" Type="Folder" Created="2013-10-24 14:02:00 -0400" Modified="2014-02-05 15:33:21 -0500">
+                    <Title>Release Notes</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Red Book).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="423" Type="Folder" Created="2014-02-05 15:35:59 -0500" Modified="2015-01-25 22:03:20 -0500">
+                    <Title>Readme</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Brown Book).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="570" Type="Folder" Created="2015-01-26 10:40:18 -0500" Modified="2015-01-26 10:40:21 -0500">
+                    <Title>Support</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="571" Type="Folder" Created="2015-01-26 10:40:43 -0500" Modified="2015-01-26 10:40:51 -0500">
+                            <Title>FAQs</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="573" Type="Folder" Created="2015-01-26 10:41:25 -0500" Modified="2015-01-26 10:41:31 -0500">
+                            <Title>Announcements</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="574" Type="Folder" Created="2015-01-26 10:41:38 -0500" Modified="2015-01-26 10:41:45 -0500">
+                            <Title>Testomonials</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Children>
+                                <BinderItem ID="576" Type="Text" Created="2015-01-26 10:52:59 -0500" Modified="2015-01-26 14:45:50 -0500">
+                                    <Title>devang_xprt</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <CompileAsIs>Yes</CompileAsIs>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>177,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="581" Type="Text" Created="2015-01-26 14:41:15 -0500" Modified="2015-01-26 14:45:27 -0500">
+                                    <Title>Pushkar Chufal</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>247,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="582" Type="Text" Created="2015-01-26 14:43:44 -0500" Modified="2015-01-26 14:45:17 -0500">
+                                    <Title>Red_Studio</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,449</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="575" Type="Folder" Created="2015-01-26 10:41:54 -0500" Modified="2015-01-26 10:41:59 -0500">
+                            <Title>Glossary</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="572" Type="Folder" Created="2015-01-26 10:41:00 -0500" Modified="2015-01-26 10:41:08 -0500">
+                            <Title>Knowledge Base</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="577" Type="Folder" Created="2015-01-26 11:18:11 -0500" Modified="2015-01-26 11:18:30 -0500">
+                    <Title>Website</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="578" Type="Text" Created="2015-01-26 11:18:33 -0500" Modified="2015-01-26 11:42:54 -0500">
+                            <Title>Marketing Statement</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1279,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="583" Type="Text" Created="2015-01-26 14:57:47 -0500" Modified="2015-01-26 14:58:30 -0500">
+                            <Title>Company Profile</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>913,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="584" Type="Text" Created="2015-01-26 14:58:46 -0500" Modified="2015-01-26 14:59:32 -0500">
+                            <Title>Leadership Team</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>518,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem ID="1" Type="ResearchFolder" Created="2013-09-17 10:34:16 -0400" Modified="2015-01-26 14:50:50 -0500">
+            <Title>Filing Cabinet</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+            </MetaData>
+            <Children>
+                <BinderItem ID="270" Type="Folder" Created="2013-10-24 13:28:06 -0400" Modified="2013-10-24 14:20:05 -0400">
+                    <Title>User Guide</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Blue Book).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="259" Type="Text" Created="2013-10-13 07:17:11 -0400" Modified="2013-10-13 07:53:22 -0400">
+                            <Title>Binding Types</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>204,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="258" Type="Text" Created="2013-10-13 07:17:02 -0400" Modified="2013-10-13 12:46:09 -0400">
+                            <Title>Port Types</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>54,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="264" Type="Text" Created="2013-10-21 19:15:22 -0400" Modified="2013-10-22 16:55:31 -0400">
+                            <Title>iCanScript Architecture -261- (Michel Launier's conflicted copy)</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>4085,291</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="262" Type="Text" Created="2013-10-18 13:38:22 -0400" Modified="2013-10-18 14:50:35 -0400">
+                            <Title>iCanScript Architecture</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,1810</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="77" Type="Text" Created="2013-09-21 11:31:59 -0400" Modified="2013-10-08 16:22:55 -0400">
+                            <Title>Examples</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>16,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="261" Type="Text" Created="2013-10-18 11:25:50 -0400" Modified="2013-10-22 16:28:54 -0400">
+                            <Title>iCanScript Architecture</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>5139,4852</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="263" Type="Text" Created="2013-10-22 16:28:59 -0400" Modified="2013-10-22 18:12:32 -0400">
+                            <Title>An Overview of iCanScript</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1502,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="19" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>System Requirements</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>477,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="13" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>Message from the Founder</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1570,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="16" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>Many Thanks ...</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>359,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="15" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>What's New?</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>329,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="18" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>Product Licensing</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>431,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="14" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                            <Title>Acknowledgement</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>473,11</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="260" Type="Text" Created="2013-10-15 16:53:36 -0400" Modified="2013-10-15 17:21:24 -0400">
+                            <Title>Visual Scripts &amp; Behaviours -145- (Michel Launier's conflicted copy)</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="251" Type="Text" Created="2013-10-09 10:18:04 -0400" Modified="2013-10-15 14:56:28 -0400">
+                            <Title>Node Types</Title>
+                            <MetaData>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3556,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem ID="284" Type="Folder" Created="2013-10-25 09:35:23 -0400" Modified="2013-10-25 09:35:26 -0400">
+                            <Title>images</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="281" Type="Folder" Created="2013-10-24 14:20:10 -0400" Modified="2013-10-24 14:20:22 -0400">
+                    <Title>Release Notes</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Red Book).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="282" Type="Folder" Created="2013-10-24 14:20:14 -0400" Modified="2013-10-24 14:20:26 -0400">
+                    <Title>Tutorials</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Brown Book).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="405" Type="Folder" Created="2014-02-04 15:06:06 -0500" Modified="2015-01-26 14:52:10 -0500">
+                    <Title>Images</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="422" Type="Image" Created="2014-02-05 14:22:45 -0500" Modified="2014-02-05 14:22:45 -0500">
+                            <Title>VisualScriptingForUnity_black</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                            <References>
+                                <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="403" Type="Image" Created="2014-02-03 16:10:40 -0500" Modified="2014-02-03 16:10:40 -0500">
+                            <Title>UnityLogo_32x32</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                            <References>
+                                <Reference BinderID="401" Destination="[Internal Link]">image ref</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="406" Type="Image" Created="2014-02-04 15:28:50 -0500" Modified="2014-02-04 15:28:50 -0500">
+                            <Title>PostitNote_32x32</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                            <References>
+                                <Reference BinderID="401" Destination="[Internal Link]">Postit</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="407" Type="Image" Created="2014-02-04 15:40:34 -0500" Modified="2014-02-04 15:40:34 -0500">
+                            <Title>icanscript-ui-tips_32x32x32</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                            <References>
+                                <Reference BinderID="22" Destination="[Internal Link]">Installation</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="408" Type="Image" Created="2014-02-04 15:40:34 -0500" Modified="2014-02-04 15:40:34 -0500">
+                            <Title>iCanScriptLogo_32x32x32</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                        </BinderItem>
+                        <BinderItem ID="409" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                            <Title>stamp-1-purple</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <References>
+                                <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="411" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                            <Title>stamp-2-purple</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <References>
+                                <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="415" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                            <Title>stamp-3-purple</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                            <References>
+                                <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="412" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                            <Title>stamp-4-purple</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                            <References>
+                                <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="410" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                            <Title>stamp-2-orange</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                        </BinderItem>
+                        <BinderItem ID="416" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                            <Title>stamp-4-orange</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                        </BinderItem>
+                        <BinderItem ID="413" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                            <Title>stamp-5-orange</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                        </BinderItem>
+                        <BinderItem ID="414" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                            <Title>stamp-6-orange</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                        </BinderItem>
+                        <BinderItem ID="417" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                            <Title>stamp-7-orange</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>No</ImageScalesProportionally>
+                            </MediaSettings>
+                        </BinderItem>
+                        <BinderItem ID="420" Type="Image" Created="2014-02-05 14:22:30 -0500" Modified="2014-02-05 14:22:30 -0500">
+                            <Title>iCanScript_Title</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <References>
+                                <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="421" Type="Image" Created="2014-02-05 14:22:36 -0500" Modified="2014-02-05 14:22:36 -0500">
+                            <Title>iCanScriptLogo_256x256x32</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <References>
+                                <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
+                            </References>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="585" Type="Text" Created="2015-03-11 10:54:58 -0400" Modified="2015-03-11 11:23:00 -0400">
+                    <Title>Cornell Notes</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>6,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem ID="2" Type="TrashFolder" Created="2013-09-17 10:34:16 -0400" Modified="2013-09-17 10:34:16 -0400">
+            <Title>Trash</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+            </MetaData>
+            <Children>
+                <BinderItem ID="580" Type="Folder" Created="2015-01-26 11:48:07 -0500" Modified="2015-01-26 11:48:07 -0500">
+                    <Title>Faqs (Unsorted)</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Brown).png</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem ID="64" Type="Folder" Created="2013-09-17 10:45:35 -0400" Modified="2013-09-17 10:45:54 -0400">
+            <Title>Front Matter</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+                <NotesTextSelection>0,0</NotesTextSelection>
+                <IconFileName>Front Matter.tiff</IconFileName>
+            </MetaData>
+            <TextSettings>
+                <TextSelection>0,0</TextSelection>
+            </TextSettings>
+            <Children>
+                <BinderItem ID="562" Type="Folder" Created="2014-04-24 08:45:08 -0400" Modified="2014-04-24 08:45:28 -0400">
+                    <Title>User Guide</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Blue Book).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="401" Type="Text" Created="2014-02-04 14:26:32 -0500" Modified="2014-04-24 08:41:46 -0400">
+                            <Title>Latex - Image Refs</Title>
+                            <MetaData>
+                                <LabelID>11</LabelID>
+                                <StatusID>10</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CompileAsIs>Yes</CompileAsIs>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>479,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="369" Destination="[Internal Link]">Removing iCanScript</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="382" Type="Text" Created="2013-12-06 11:03:29 -0500" Modified="2014-05-08 14:58:38 -0400">
+                            <Title>HTML - Custom CSS</Title>
+                            <MetaData>
+                                <LabelID>16</LabelID>
+                                <StatusID>12</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CompileAsIs>Yes</CompileAsIs>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>256,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="278" Type="Folder" Created="2013-10-24 14:02:33 -0400" Modified="2013-10-24 14:02:40 -0400">
+                    <Title>Release Notes</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Red Book).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="280" Type="Folder" Created="2013-10-24 14:03:26 -0400" Modified="2013-10-24 14:03:31 -0400">
+                    <Title>Tutorials</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <IconFileName>Book (Brown Book).tiff</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem ID="267" Type="Folder" Created="2013-10-24 13:24:33 -0400" Modified="2013-10-24 13:24:33 -0400">
+            <Title>_Recovered Files</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+                <NotesTextSelection>0,0</NotesTextSelection>
+            </MetaData>
+            <TextSettings>
+                <TextSelection>0,0</TextSelection>
+            </TextSettings>
+        </BinderItem>
+        <BinderItem ID="391" Type="Text" Created="2014-02-04 10:31:39 -0500" Modified="2014-02-04 22:25:42 -0500">
+            <Title>Front Matter - User Guide - Latex</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+                <NotesTextSelection>0,0</NotesTextSelection>
+                <IconFileName>Front Matter.tiff</IconFileName>
+            </MetaData>
+            <TextSettings>
+                <TextSelection>0,0</TextSelection>
+            </TextSettings>
+            <Children>
+                <BinderItem ID="398" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                    <Title>mmd-memoir-packages</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="395" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                    <Title>mmd-memoir-footer</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="394" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                    <Title>mmd-memoir-copyright</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="392" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                    <Title>mmd-default-metadata</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="393" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2014-02-04 22:51:43 -0500">
+                    <Title>mmd-memoir-begin-doc</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>101,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="396" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                    <Title>mmd-memoir-header</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="397" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                    <Title>mmd-memoir-layout-8.5x11</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="399" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                    <Title>mmd-memoir-setup</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="400" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                    <Title>mmd-title</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+    </Binder>
+    <Collections>
+        <Collection Type="Binder" ID="AB7677A9-A4E7-4FD0-AC9F-E8C263342688" Color="0.784753 0.815752 0.848702">
+            <Title>Binder</Title>
+        </Collection>
+        <Collection Type="RecentSearch" ID="B3DC7EB4-2A83-47ED-829B-78494713A750" Color="0.922 0.91 0.98">
+            <Title>Search Results</Title>
+            <SearchSettings Operator="All" Type="All" CaseSensitive="No">^^</SearchSettings>
+        </Collection>
+        <Collection Type="Arbitrary" ID="673B9C8D-9DC4-479B-BC60-B26BBCFF8E98" Color="0.992 0.973 0.769">
+            <Title>Updated Documents</Title>
+            <BinderIDs>
+                <BinderID>574</BinderID>
+                <BinderID>576</BinderID>
+                <BinderID>581</BinderID>
+                <BinderID>582</BinderID>
+            </BinderIDs>
+        </Collection>
+    </Collections>
+    <LabelSettings>
+        <Title>Label</Title>
+        <DefaultLabelID>-1</DefaultLabelID>
+        <Labels>
+            <Label ID="-1">No Label</Label>
+            <Label ID="11" Color="1.0 0.0 0.0">AP1</Label>
+            <Label ID="12" Color="1.0 0.4 0.4">AP2</Label>
+            <Label ID="13" Color="1.0 0.4 0.4">AP3</Label>
+            <Label ID="14" Color="1.0 0.501961 0.0">AP4</Label>
+            <Label ID="15" Color="1.0 0.8 0.4">AP5</Label>
+            <Label ID="16" Color="0.0 1.0 0.0">RevA</Label>
+        </Labels>
+    </LabelSettings>
+    <StatusSettings>
+        <Title>Status</Title>
+        <DefaultStatusID>-1</DefaultStatusID>
+        <StatusItems>
+            <Status ID="-1">No Status</Status>
+            <Status ID="10">Draft</Status>
+            <Status ID="12">Approved</Status>
+        </StatusItems>
+    </StatusSettings>
+    <CustomMetaDataSettings>
+        <MetaDataField ID="webpublished" Wraps="Yes">Web Published Date</MetaDataField>
+    </CustomMetaDataSettings>
+    <ProjectProperties>
+        <ProjectTitle></ProjectTitle>
+        <AbbreviatedTitle></AbbreviatedTitle>
+        <FullName></FullName>
+        <LastName></LastName>
+        <FirstName></FirstName>
+    </ProjectProperties>
+    <ProjectTargets Notify="Yes">
+        <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="No" Deadline="2013-09-17 10:34:15 -0400" IgnoreDeadline="Yes">20000</DraftTarget>
+        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">1000</SessionTarget>
+        <PreviousSession Words="0" Characters="0" Date="2015-04-12 22:31:27 -0400"></PreviousSession>
+    </ProjectTargets>
+    <PrintSettings PaperSize="612.0,792.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="na-letter" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
+</ScrivenerProject>
