@@ -625,18 +625,4 @@ public partial class iCS_IStorage {
         var center= editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
 		return center;
     }
-    // ----------------------------------------------------------------------
-    public static string GetInstancePortName(iCS_MemberInfo memberInfo) {
-        var typeInfo= memberInfo.ParentTypeInfo;
-        if(typeInfo == null) {
-            typeInfo= memberInfo as iCS_TypeInfo;
-            if(typeInfo == null) {
-                return "Instance";
-            }
-        }
-        return GetInstancePortName(typeInfo.CompilerType);
-    }
-    public static string GetInstancePortName(Type type) {
-        return "Target";
-    }
 }

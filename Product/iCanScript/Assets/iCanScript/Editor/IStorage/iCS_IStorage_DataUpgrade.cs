@@ -17,22 +17,14 @@ public partial class iCS_IStorage {
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
         // POST-PROCESING ====================================================
-        // v1.2.0 Needs to convert "this" port name to "type instance"
-		if(storageVersion.IsOlderThen(1,2,0)) {
-            foreach(var obj in EngineStorage.EngineObjects) {
-                if(obj.IsDataPort && obj.RawName == "this" && obj.RuntimeType != null) {
-                    obj.RawName= GetInstancePortName(obj.RuntimeType);
-                    isUpgraded= true;
-                }         
-            }
+        // v2.0.5 ...
+		if(storageVersion.IsOlderThen(2,0,5)) {
         }
-        if(storageVersion.IsOlderOrEqualTo(1,2,3)) {
-        }
-        // Warn the user that an upgrade toke place.
+        // -- Warn the user that an upgrade toke place --
         if(isUpgraded) {
 			ShowUpgradeDialog(softwareVersion);
         }
-		// Update storage version identifiers
+		// -- Update storage version identifiers --
 		EngineStorage.MajorVersion = iCS_Config.MajorVersion;
 		EngineStorage.MinorVersion = iCS_Config.MinorVersion;
 		EngineStorage.BugFixVersion= iCS_Config.BugFixVersion;

@@ -12,7 +12,7 @@ public partial class iCS_IStorage {
         module.Fold();
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
-            iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, iCS_IStorage.GetInstancePortName(classType), classType,
+            iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, "Target", classType,
                                                                                iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
             inThisPort.IsNameEditable= false;
         }
@@ -37,7 +37,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateInputInstancePort(Type classType, iCS_EditorObject instanceNode) {
-        return InstanceWizardCreatePortIfNonExisting(instanceNode, iCS_IStorage.GetInstancePortName(classType), classType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
+        return InstanceWizardCreatePortIfNonExisting(instanceNode, "Target", classType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
     }
     // ----------------------------------------------------------------------
     public void InstanceWizardCreateOutputInstanceFields(iCS_EditorObject module) {
@@ -394,7 +394,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardCreateConstructor(iCS_EditorObject module, iCS_ConstructorInfo desc) {
         InstanceWizardDestroyConstructor(module);
-        iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_IStorage.GetInstancePortName(module.RuntimeType),
+        iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, "Target",
                                                                iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
         if(moduleThisPort == null) return null;
         Rect thisPos= moduleThisPort.GlobalRect; 

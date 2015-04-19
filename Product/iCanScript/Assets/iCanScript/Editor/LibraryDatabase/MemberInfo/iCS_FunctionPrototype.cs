@@ -55,7 +55,7 @@ public class iCS_FunctionPrototype : iCS_MemberInfo, IEquatable<iCS_FunctionProt
 			// Build input string
 			string inputStr= "";
             if(IsInstanceFunctionBase) {
-                inputStr+= iCS_IStorage.GetInstancePortName(ClassType)+", ";
+                inputStr+= "Target, ";
             }
             foreach(var param in Parameters) {
 				if(!param.type.IsByRef) {
@@ -221,7 +221,7 @@ public class iCS_FunctionPrototype : iCS_MemberInfo, IEquatable<iCS_FunctionProt
 			// Build input string
 			string inputStr= "";
             if(IsInstanceFunctionBase) {
-                inputStr+= "<iCS_x=150><iCS_highlight>" + iCS_IStorage.GetInstancePortName(ClassType)+ "</iCS_highlight>\n" ;
+                inputStr+= "<iCS_x=150><iCS_highlight>Target</iCS_highlight>\n" ;
             }
             foreach(var param in Parameters) {
 				if(!param.type.IsByRef) {
