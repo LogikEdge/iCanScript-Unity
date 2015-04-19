@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.1
+Version: v2.0.5
 CSS: Github.css
 
 
@@ -9,6 +9,20 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.5 ##
+
+_April 19, 2015_
+
+V2.0.5 is a development release of iCanScript2.
+
+### List of Changes
+
+- **<span style="color: blue">\[IMPROVED\]</span>** Automatically generated type-cast now uses the most specialized type instead of the common base type.
+- **<span style="color: red">\[FIXED\]</span>** Fix code generation when multiple enables exists on a single node.
+
+
+* * *
 
 ## iCanScript v2.0.4 ##
 
