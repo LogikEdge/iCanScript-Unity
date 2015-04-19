@@ -343,7 +343,7 @@ namespace iCanScript.Editor.CodeEngineering {
         protected string GenerateReturnTypeCastFragment(iCS_EditorObject node) {
             var returnPort= GetReturnPort(node);
             if(returnPort == null) return "";
-            var consumerType= GetCommonBaseTypeForProducerPort(returnPort);
+            var consumerType= GetMostSpecializedTypeForProducerPort(returnPort);
             if(consumerType == typeof(void) || iCS_Types.IsA(consumerType, returnPort.RuntimeType)) {
                 return "";
             }

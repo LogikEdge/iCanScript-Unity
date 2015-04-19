@@ -511,6 +511,28 @@ namespace iCanScript.Editor.CodeEngineering {
         }
         
         // ---------------------------------------------------------------------------------
+        /// Returns the most specialized type of all consumers of a producer port.
+        ///
+        /// @param producerPort The producer port.
+        /// @return The common base type for all consumers.
+        ///
+        public Type GetMostSpecializedTypeForProducerPort(iCS_EditorObject producerPort) {
+            var consumers= producerPort.EndConsumerPorts;
+            var consumersLen= consumers.Length;
+            if(consumersLen == 0) return typeof(void);
+            var specializedType= consumers[0].RuntimeType;
+            for(int i= 1; i < consumersLen; ++i) {
+                var t= consumers[i].RuntimeType;
+                if(t != specializedType) {
+                    if(iCS_Types.IsA(specializedType, t)) {
+                        specializedType= t;
+                    }
+                }
+            }
+            return specializedType;
+        }
+        
+        // ---------------------------------------------------------------------------------
         /// Generates a code banner.
         ///
         /// @param indent White space string to be prepended to each line.

@@ -37,7 +37,7 @@ namespace iCanScript.Editor.CodeEngineering {
 		/// Resolves code dependencies.
 		public override void ResolveDependencies() {
 			// Determine proper variable type.
-            var consumerType= GetCommonBaseTypeForProducerPort(VSObject);
+            var consumerType= GetMostSpecializedTypeForProducerPort(VSObject);
             if(consumerType != typeof(void) && !iCS_Types.IsA(consumerType, myRuntimeType)) {
 				myRuntimeType= consumerType;
             }			
