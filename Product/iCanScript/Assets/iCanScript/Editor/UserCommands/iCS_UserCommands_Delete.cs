@@ -11,17 +11,17 @@ public static partial class iCS_UserCommands {
     // ======================================================================
     // Object destruction.
 	// ----------------------------------------------------------------------
-    public static void DeleteObject(iCS_EditorObject obj) {
+    public static bool DeleteObject(iCS_EditorObject obj) {
 #if DEBUG
 		Debug.Log("iCanScript: Deleting => "+obj.DisplayName);
 #endif
-        if(obj == null || obj == obj.IStorage.DisplayRoot) return;
-        if(!IsDeletionAllowed()) return;
-        var name= obj.DisplayName;
+        if(obj == null) return false;
+        if(!IsDeletionAllowed()) return false;
         if(!obj.CanBeDeleted()) {
-            ShowNotification("Fix port=> \""+name+"\" from node=> \""+obj.ParentNode.FullName+"\" cannot be deleted.");
-            return;
+            ShowNotification("Port cannot be deleted=> "+obj.FullName);
+            return false;
         }
+        var name= obj.DisplayName;
         var iStorage= obj.IStorage;
         OpenTransaction(iStorage);
         if(obj.IsInstanceNodePort) {
@@ -37,10 +37,10 @@ public static partial class iCS_UserCommands {
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
-                return;
+                return false;
             }
             CloseTransaction(iStorage, "Delete "+name);
-            return;
+            return true;
         }
         // TODO: Should animate parent node on node delete.
         try {
@@ -57,9 +57,10 @@ public static partial class iCS_UserCommands {
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
-            return;
+            return false;
         }
         CloseTransaction(iStorage, "Delete "+name);
+        return true;
 	}
 	// ----------------------------------------------------------------------
     public static bool DeleteMultiSelectedObjects(iCS_IStorage iStorage) {

@@ -147,10 +147,10 @@ public static class iCS_ObjectType {
     public static bool IsDataPort             (iCS_EngineObject obj) { return IsInDataPort(obj) || IsOutDataPort(obj); }
     public static bool IsInDataPort			  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsInDynamicDataPort(obj) ||
 																			  IsInProposedDataPort(obj) || IsInMuxPort(obj) ||
-																			  IsInInstancePort(obj); }
+																			  IsTargetPort(obj); }
     public static bool IsOutDataPort		  (iCS_EngineObject obj) { return IsOutFixDataPort(obj) || IsOutDynamicDataPort(obj) ||
 		                                                                      IsOutProposedDataPort(obj) || IsOutMuxPort(obj) ||
-																			  IsOutInstancePort(obj); }
+																			  IsSelfPort(obj); }
 
 	// Parameter Data Flow Ports
 	public static bool IsParameterPort        (iCS_EngineObject obj) { return IsPort(obj) &&
@@ -182,8 +182,8 @@ public static class iCS_ObjectType {
 	public static bool IsOutChildMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutChildMuxPort; }
 
 	// Instance Ports
-	public static bool IsInstancePort		  (iCS_EngineObject obj) { return IsInInstancePort(obj) || IsOutInstancePort(obj); }
-	public static bool IsInInstancePort		  (iCS_EngineObject obj) { return IsInFixDataPort(obj) &&
-	                                                                          obj.PortIndex == (int)iCS_PortIndex.InInstance; }
-	public static bool IsOutInstancePort	  (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.OutInstance; }
+	public static bool IsInstancePort		  (iCS_EngineObject obj) { return IsTargetPort(obj) || IsSelfPort(obj); }
+	public static bool IsTargetPort		      (iCS_EngineObject obj) { return IsInFixDataPort(obj) &&
+	                                                                          obj.PortIndex == (int)iCS_PortIndex.Target; }
+	public static bool IsSelfPort	          (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.Self; }
 }

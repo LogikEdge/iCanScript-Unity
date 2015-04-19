@@ -681,7 +681,7 @@ namespace iCanScript.Editor.CodeEngineering {
             iCS_EditorObject result= null;
             node.ForEachChildPort(
                 p=> {
-                    if(p.PortIndex == (int)iCS_PortIndex.InInstance) {
+                    if(p.PortIndex == (int)iCS_PortIndex.Target) {
                         result= p;
                     }
                 }
@@ -888,7 +888,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public iCS_EditorObject GetCodeProducerPort(iCS_EditorObject consumerPort) {
             var producerPort= consumerPort.FirstProducerPort;
             // Follow the target/self port chain.
-            while(producerPort.IsOutInstancePort) {
+            while(producerPort.IsSelfPort) {
                 producerPort= GetThisPort(producerPort.ParentNode);
                 producerPort= producerPort.FirstProducerPort;
             }

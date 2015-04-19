@@ -15,8 +15,16 @@ public partial class iCS_EditorObject {
 		return true;
 	}
     // ----------------------------------------------------------------------
+    /// Determines if an object can be deleted.
     public bool CanBeDeleted() {
-        if(IsBehaviour || IsFixDataPort) return false;
+        if(IsTargetPort || IsSelfPort) return false;
+        if(IsEnablePort || IsTriggerPort) return true;
+        if(IsPort) {
+            if(ParentNode.IsKindOfFunction) {
+                return false;
+            }
+        }
+        if(IsRootObject) return false;
         return true;
     }
 	
@@ -70,7 +78,7 @@ public partial class iCS_EditorObject {
 			   ErrorController.AddWarning(serviceKey, message, visualScript, InstanceId);
 		   }
        }
-	   if(IsInInstancePort) {
+	   if(IsTargetPort) {
 		   if(ProducerPort == null || ProducerPort == this) {
 			   var parentNode= ParentNode;
 			   if(parentNode.IsKindOfFunction) {
@@ -121,4 +129,5 @@ public partial class iCS_EditorObject {
 	   }
 	   return false;
 	}
+
 }

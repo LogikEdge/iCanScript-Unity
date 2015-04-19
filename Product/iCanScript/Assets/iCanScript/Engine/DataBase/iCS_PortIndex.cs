@@ -7,10 +7,10 @@ public enum iCS_PortIndex  {
     ParametersStart= 0,
     ParametersEnd=399,
     Return= 400,
-    InInstance= 401,
+    Target= 401,
 
     // Extended Signature
-    OutInstance= 500,
+    Self= 500,
     
     // Control Ports
     ControlStart= 1000,

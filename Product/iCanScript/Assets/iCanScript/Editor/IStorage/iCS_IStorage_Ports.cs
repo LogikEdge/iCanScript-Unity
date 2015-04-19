@@ -60,41 +60,119 @@ public partial class iCS_IStorage {
 	
 	
     // =========================================================================
-    // Input This Port
+    // Target Port
     // -------------------------------------------------------------------------
-	public iCS_EditorObject CreateInInstancePort(int parentId, Type runtimeType) {
-		var port= CreatePort(GetInstancePortName(runtimeType), parentId, runtimeType,
-							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+    /// Creates a target port on the given parent.
+    ///
+    /// @param parent The visual script parent node.
+    /// @return The newly create target port object.
+    ///
+	public iCS_EditorObject CreateTargetPort(iCS_EditorObject parent) {
+        if(parent == null) {
+            Debug.LogWarning("iCanScript: Trying to create a target port on NULL parent.");
+            return null;
+        }
+        return CreateTargetPort(parent.InstanceId);
+	}
+    // -------------------------------------------------------------------------
+    /// Creates a target port on the given parent.
+    ///
+    /// @param parentId The visual script object ID of the parent.
+    /// @return The newly create target port object.
+    ///
+	public iCS_EditorObject CreateTargetPort(int parentId) {
+        if(!IsIdValid(parentId)) {
+            Debug.LogWarning("iCanScript: Trying to create a target port on an invalid parent ID.");
+            return null;
+        }
+        var parentNode= EditorObjects[parentId];
+        var runtimeType= parentNode.RuntimeType;
+        if(runtimeType == null || runtimeType == typeof(void)) {
+            Debug.LogWarning("iCanScript: Trying to create a target port with an invalid runtime type.");
+            return null;            
+        }
+        var portName= "Target";
+		var port= CreatePort(portName, parentId, runtimeType,
+							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
 		port.IsNameEditable= false;
 		return port;
 	}
 
     // -------------------------------------------------------------------------
-    public bool HasInInstancePort(iCS_EditorObject node)  {
-        return GetInInstancePort(node) != null;
+    /// Retruns the target port attached to th egiven node.
+    ///
+    /// @param node The parent node of the target port to search for.
+    /// @return The target port if found. _null_ otherwise.
+    ///
+    public iCS_EditorObject GetTargetPort(iCS_EditorObject node) {
+        return FindInChildren(node, c=> c.IsTargetPort);
     }
+
     // -------------------------------------------------------------------------
-    public iCS_EditorObject GetInInstancePort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsInInstancePort);
+    /// Determines if the given node has a target port.
+    ///
+    /// @param node The parent node of the target port to search for.
+    /// @return _true_ if the target port is found. _false_ otherwise.
+    ///
+    public bool HasTargetPort(iCS_EditorObject node)  {
+        return GetTargetPort(node) != null;
     }
 
 
     // =========================================================================
-    // Output This Port
+    // Self Port
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateOutInstancePort(int parentId, Type runtimeType) {
-        iCS_EditorObject port= CreatePort(GetInstancePortName(runtimeType), parentId, runtimeType,
-                                          iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.OutInstance);
+    /// Creates a self port on the given parent.
+    ///
+    /// @param parent The visual script parent object.
+    /// @return The newly create self port object.
+    ///
+    public iCS_EditorObject CreateSelfPort(iCS_EditorObject parent) {
+        if(parent == null) {
+            Debug.LogWarning("iCanScript: Trying to create a self port on a NULL parent.");
+            return null;
+        }
+        return CreateSelfPort(parent.InstanceId);
+    }
+    // ----------------------------------------------------------------------
+    /// Creates a self port on the given parent.
+    ///
+    /// @param parentId The visual script object ID of the parent.
+    /// @return The newly create self port object.
+    ///
+    public iCS_EditorObject CreateSelfPort(int parentId) {
+        if(!IsIdValid(parentId)) {
+            Debug.LogWarning("iCanScript: Trying to create a self port on an invalid parent ID.");
+            return null;
+        }
+        var parentNode= EditorObjects[parentId];
+        var runtimeType= parentNode.RuntimeType;
+        if(runtimeType == null || runtimeType == typeof(void)) {
+            Debug.LogWarning("iCanScript: Trying to create a self port with an invalid runtime type.");
+            return null;            
+        }
+        iCS_EditorObject port= CreatePort("Self", parentId, runtimeType,
+                                          iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.Self);
         port.IsNameEditable= false;
         return port;
     }
     // -------------------------------------------------------------------------
-    public bool HasOutInstancePort(iCS_EditorObject node)  {
-        return GetOutInstancePort(node) != null;
+    /// Retruns the self port attached to th egiven node.
+    ///
+    /// @param node The parent node of the self port to search for.
+    /// @return The self port if found. _null_ otherwise.
+    ///
+    public iCS_EditorObject GetSelfPort(iCS_EditorObject node) {
+        return FindInChildren(node, c=> c.IsSelfPort);
     }
     // -------------------------------------------------------------------------
-    public iCS_EditorObject GetOutInstancePort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsOutInstancePort);
+    /// Determines if the given node has a target port.
+    ///
+    /// @param node The parent node of the target port to search for.
+    /// @return _true_ if the target port is found. _false_ otherwise.
+    ///
+    public bool HasSelfPort(iCS_EditorObject node)  {
+        return GetSelfPort(node) != null;
     }
     
 	
@@ -222,14 +300,6 @@ public partial class iCS_IStorage {
             }
         }
         return lastIdx;
-    }
-    // -------------------------------------------------------------------------
-    public iCS_EditorObject FindInputInstancePort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsInInstancePort);
-    }
-    // -------------------------------------------------------------------------
-    public iCS_EditorObject FindOutputInstancePort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsOutInstancePort);
     }
     // ----------------------------------------------------------------------
     public static iCS_EditorObject[] SortPortsOnIndex(iCS_EditorObject[] lst) {
