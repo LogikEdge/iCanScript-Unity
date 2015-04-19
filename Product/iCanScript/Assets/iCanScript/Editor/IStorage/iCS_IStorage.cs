@@ -258,7 +258,7 @@ public partial class iCS_IStorage {
                 // Keep a copy of the final position.
                 obj.AnimationTargetRect= obj.GlobalRect;
 				// Reassign all non-connected "target" ports to script Owner
-				if(obj.IsInInstancePort) {
+				if(obj.IsTargetPort) {
 					if(obj.ProducerPort == null) {
 						if(IsLocalType(obj)) {
 							obj.InitialValue= OwnerTag.instance;							
@@ -535,13 +535,16 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateInstanceFunction(int parentId, iCS_FunctionPrototype desc) {
-        // Create the conversion node.
+        // -- Grab a free ID --
         int id= GetNextAvailableId();
-        // Create new EditorObject
+        // -- Create the function node --
         var defaultName= desc.DisplayName;
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        // Create parameter ports.
+		// -- Create target & self ports. --
+        CreateTargetPort(id, desc.ClassType);
+        CreateSelfPort(id, desc.ClassType);
+        // -- Create parameter ports. --
 		iCS_EditorObject port= null;
         for(int parameterIdx= 0; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
             var p= desc.Parameters[parameterIdx];
@@ -555,25 +558,30 @@ public partial class iCS_IStorage {
                 port.InitialPortValue= initialPortValue;
             }
         }
-		// Create return port.
+		// -- Create return port. --
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
-		// Create 'instance' ports.
-        port= CreatePort(GetInstancePortName(desc), id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
         return instance;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateMessageHandler(int parentId, iCS_MessageInfo desc) {
         if(desc == null) return null;
-        // Create the conversion node.
+        // -- Grab next available ID --
         int id= GetNextAvailableId();
-        // Create new EditorObject
+        // -- Create event handler node --
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.IsNameEditable= false;
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        // Create parameter ports.
+        // -- Create target port. --
 		iCS_EditorObject port= null;
+        if(desc.IsInstanceMember) {
+            port= CreateTargetPort(id, desc.ClassType);
+            if(instance.Parent.IsBehaviour) {
+                port.InitialValue= instance.Parent.iCSMonoBehaviour;
+            }
+        }
+        // -- Create parameter ports --
         for(int parameterIdx= 0; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
             var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
@@ -586,18 +594,10 @@ public partial class iCS_IStorage {
                 port.InitialPortValue= initialPortValue;
             }
         }
-		// Create return port.
+		// -- Create return port --
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
-        // Create 'this' port.
-        if(desc.IsInstanceMember) {
-            port= CreatePort(GetInstancePortName(desc), id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);            
-            port.IsNameEditable= false;
-            if(instance.Parent.IsBehaviour) {
-                port.InitialValue= instance.Parent.iCSMonoBehaviour;
-            }
-        }
         return instance;
     }    
 	// ----------------------------------------------------------------------

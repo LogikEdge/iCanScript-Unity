@@ -62,9 +62,10 @@ public partial class iCS_IStorage {
     // =========================================================================
     // Input This Port
     // -------------------------------------------------------------------------
-	public iCS_EditorObject CreateInInstancePort(int parentId, Type runtimeType) {
-		var port= CreatePort(GetInstancePortName(runtimeType), parentId, runtimeType,
-							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+	public iCS_EditorObject CreateTargetPort(int parentId, Type runtimeType) {
+        var portName= "Target";
+		var port= CreatePort(portName, parentId, runtimeType,
+							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
 		port.IsNameEditable= false;
 		return port;
 	}
@@ -75,16 +76,16 @@ public partial class iCS_IStorage {
     }
     // -------------------------------------------------------------------------
     public iCS_EditorObject GetInInstancePort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsInInstancePort);
+        return FindInChildren(node, c=> c.IsTargetPort);
     }
 
 
     // =========================================================================
     // Output This Port
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateOutInstancePort(int parentId, Type runtimeType) {
-        iCS_EditorObject port= CreatePort(GetInstancePortName(runtimeType), parentId, runtimeType,
-                                          iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.OutInstance);
+    public iCS_EditorObject CreateSelfPort(int parentId, Type runtimeType) {
+        iCS_EditorObject port= CreatePort("Self", parentId, runtimeType,
+                                          iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.Self);
         port.IsNameEditable= false;
         return port;
     }
@@ -94,7 +95,7 @@ public partial class iCS_IStorage {
     }
     // -------------------------------------------------------------------------
     public iCS_EditorObject GetOutInstancePort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsOutInstancePort);
+        return FindInChildren(node, c=> c.IsSelfPort);
     }
     
 	
@@ -225,11 +226,11 @@ public partial class iCS_IStorage {
     }
     // -------------------------------------------------------------------------
     public iCS_EditorObject FindInputInstancePort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsInInstancePort);
+        return FindInChildren(node, c=> c.IsTargetPort);
     }
     // -------------------------------------------------------------------------
     public iCS_EditorObject FindOutputInstancePort(iCS_EditorObject node) {
-        return FindInChildren(node, c=> c.IsOutInstancePort);
+        return FindInChildren(node, c=> c.IsSelfPort);
     }
     // ----------------------------------------------------------------------
     public static iCS_EditorObject[] SortPortsOnIndex(iCS_EditorObject[] lst) {

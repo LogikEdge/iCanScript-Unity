@@ -303,8 +303,8 @@ public class iCS_EngineObject {
 	public bool IsOutChildMuxPort		{ get { return iCS_ObjectType.IsOutChildMuxPort(this); }}
     // Instance Ports
 	public bool IsInstancePort			{ get { return iCS_ObjectType.IsInstancePort(this); }}
-	public bool IsInInstancePort		{ get { return iCS_ObjectType.IsInInstancePort(this); }}
-	public bool IsOutInstancePort		{ get { return iCS_ObjectType.IsOutInstancePort(this); }}
+	public bool IsTargetPort		    { get { return iCS_ObjectType.IsTargetPort(this); }}
+	public bool IsSelfPort		        { get { return iCS_ObjectType.IsSelfPort(this); }}
 	
     // ======================================================================
     // Feature support

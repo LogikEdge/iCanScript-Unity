@@ -93,13 +93,13 @@ public partial class iCS_EditorObject {
     public bool IsNestedPort                { get { var parent= Parent; return parent != null && parent.IsPort; }}
 	// Instance Ports
 	public bool IsInstancePort				{ get { return EngineObject.IsInstancePort; }}
-	public bool IsInInstancePort			{ get { return EngineObject.IsInInstancePort; }}
-	public bool IsOutInstancePort			{ get { return EngineObject.IsOutInstancePort; }}
+	public bool IsTargetPort			    { get { return EngineObject.IsTargetPort; }}
+	public bool IsSelfPort			        { get { return EngineObject.IsSelfPort; }}
     // Special Cases
     public bool IsProgrammaticInstancePort  {
         get {
-            if(IsInInstancePort && (!ParentNode.IsVariableReference && !ParentNode.IsFunctionCall) ||
-               IsOutInstancePort ||
+            if(IsTargetPort && (!ParentNode.IsVariableReference && !ParentNode.IsFunctionCall) ||
+               IsSelfPort ||
                (PortIndex == (int)iCS_PortIndex.Return && (ParentNode.IsConstructor || ParentNode.IsVariableReference))) {
                    return true;
             }

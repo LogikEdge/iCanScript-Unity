@@ -70,7 +70,7 @@ public partial class iCS_EditorObject {
 			   ErrorController.AddWarning(serviceKey, message, visualScript, InstanceId);
 		   }
        }
-	   if(IsInInstancePort) {
+	   if(IsTargetPort) {
 		   if(ProducerPort == null || ProducerPort == this) {
 			   var parentNode= ParentNode;
 			   if(parentNode.IsKindOfFunction) {

@@ -67,7 +67,7 @@ namespace iCanScript.Editor {
         void EditGeneratedVariableType() {
             var port= vsObject;
             var generatedVariableLabel= "Generated Variable";
-            if(port.IsInInstancePort) {
+            if(port.IsTargetPort) {
                 var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ThisPortType.Owner);
                 vsObject.PortSpec= (PortSpecification)newPortType;
                 return;                
