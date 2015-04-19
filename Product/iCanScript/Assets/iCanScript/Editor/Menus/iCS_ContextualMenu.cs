@@ -304,7 +304,7 @@ public class iCS_ContextualMenu {
         iCS_MenuContext[] menu= new iCS_MenuContext[1];
         menu[0]= new iCS_MenuContext(ShowHierarchyStr);
         // Allow to delete a port if its parent is a module.
-        if(port.IsStatePort || !port.IsFixDataPort) {
+        if(port.CanBeDeleted()) {
             AddDeleteMenuItem(ref menu);
         }
         ShowMenu(menu, port, storage);            
