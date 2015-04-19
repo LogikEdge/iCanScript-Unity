@@ -364,8 +364,10 @@ namespace iCanScript.Editor.CodeEngineering {
         protected string FunctionCallPrefix(iCS_MemberInfo memberInfo, iCS_EditorObject node) {
             var result= new StringBuilder(32);
             if(memberInfo != null && memberInfo.IsClassFunctionBase) {
-                result.Append(ToTypeName(node.RuntimeType));
-                result.Append(".");
+                if(!VSObject.IStorage.IsLocalType(VSObject)) {
+                    result.Append(ToTypeName(node.RuntimeType));
+                    result.Append(".");                    
+                }
             }
             else {
                 var thisPort= GetThisPort(node);
@@ -379,9 +381,6 @@ namespace iCanScript.Editor.CodeEngineering {
 						else if(producerType == typeof(GameObject)) {
 							result.Append("gameObject.");
 						}
-						else {
-							result.Append("this.");
-						}						
 					}
                     else if(producerPort != null && producerPort != thisPort) {
 						var desiredType= VSObject.RuntimeType;
