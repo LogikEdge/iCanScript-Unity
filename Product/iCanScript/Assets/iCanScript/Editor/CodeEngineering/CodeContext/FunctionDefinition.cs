@@ -81,15 +81,13 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param toRemove The code context to be removed.
         ///
         public override void Remove(CodeBase toRemove) {
-            if(toRemove is VariableDefinition) {
-                if(myVariables.Remove(toRemove as VariableDefinition)) {
-                    toRemove.Parent= null;
-                }
+			// -- Remove from execution list --
+            if(myExecutionList.Remove(toRemove)) {
+                toRemove.Parent= null;
             }
-            else {
-                if(myExecutionList.Remove(toRemove)) {
-                    toRemove.Parent= null;
-                }
+			// -- Remove from variable list --
+            if(myVariables.Remove(toRemove as VariableDefinition)) {
+                toRemove.Parent= null;
             }
         }
         
@@ -238,8 +236,10 @@ namespace iCanScript.Editor.CodeEngineering {
                     }
                     else if(vsObj.IsTriggerPort) {
                         if(ShouldGenerateTriggerCode(vsObj)) {
-                            code.Add(new TriggerVariableDefinition(vsObj, this));
-                            code.Add(new TriggerSetDefinition(vsObj, this));
+							var triggerSet     = new TriggerSetDefinition(vsObj, this);
+							var triggerVariable= new TriggerVariableDefinition(vsObj, this, triggerSet);
+                            code.Add(triggerVariable);
+                            code.Add(triggerSet);
                         }
                     }
                     else if(vsObj.IsOutDataPort && vsObj.ParentNode == node) {

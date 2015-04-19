@@ -6,6 +6,11 @@ namespace iCanScript.Editor.CodeEngineering {
 
     public class TriggerVariableDefinition : VariableDefinition {
         // ===================================================================
+        // FIELDS
+        // -------------------------------------------------------------------
+		TriggerSetDefinition	myTriggerSet= null;
+		
+        // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds an output parameter definition.
@@ -14,8 +19,24 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param parent The parent code context.
         /// @return The newly created reference.
         ///
-        public TriggerVariableDefinition(iCS_EditorObject port, CodeBase parent)
-            : base(port, parent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC) {}
+        public TriggerVariableDefinition(iCS_EditorObject port, CodeBase parent, TriggerSetDefinition triggerSet)
+            : base(port, parent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC) {
+        		myTriggerSet= triggerSet;
+            }
+
+        // ===================================================================
+        // COMMON INTERFACE FUNCTIONS
+        // -------------------------------------------------------------------
+		/// Resolves code dependencies.
+		public override void ResolveDependencies() {
+			if(Parent == myTriggerSet.Parent) {
+				var executionBlock= Parent as ExecutionBlockDefinition;
+				if(executionBlock != null) {
+					executionBlock.Remove(myTriggerSet);
+					executionBlock.Remove(this);
+				}
+			}
+		}
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS

@@ -36,6 +36,14 @@ namespace iCanScript.Editor.CodeEngineering {
             base.ResolveDependencies();
             
             // -- Reposition code for simple trigger->enable --
+			CodeBase commonParent= null;
+			if(AreAllProducersTriggers() && AreAllInSameExecutionContext(out commonParent)) {
+				var parentAsExecBlock= commonParent as ExecutionBlockDefinition;
+				if(parentAsExecBlock != null) {
+					parentAsExecBlock.Replace(this, myExecutionList);
+					return;					
+				}
+			}
             var enableLen= myEnablePorts.Length;
             if(enableLen == 1) {
                 var producerPort= myEnablePorts[0].FirstProducerPort;
@@ -73,6 +81,50 @@ namespace iCanScript.Editor.CodeEngineering {
             }
         }
         
+        // -------------------------------------------------------------------
+		/// Determines of all producers are connected to triggers.
+		bool AreAllProducersTriggers() {
+			bool areAllProducersTriggers= true;
+			foreach(var e in myEnablePorts) {
+                var producerPort= e.FirstProducerPort;
+                if(!producerPort.IsTriggerPort) {
+					areAllProducersTriggers= false;
+                }	
+			}
+			return areAllProducersTriggers;			
+		}
+
+        // -------------------------------------------------------------------
+		/// Determines if all producer are in the same execution context.
+		bool AreAllInSameExecutionContext(out CodeBase code) {
+			code= null;
+			foreach(var e in myEnablePorts) {
+                var producerPort= e.FirstProducerPort;
+				var producerParent= producerPort.ParentNode;
+				var function= GetFunction(producerParent);
+				if(function == null) return false;
+				var c= Context.GetCodeFor(function).Parent;
+				if(code == null) {
+					code= c;
+				}
+				else if(code != c) {
+					return false;
+				}
+			}
+			return true;
+		}
+		 
+        // -------------------------------------------------------------------
+		/// Finds a function node within the given node.
+		///
+		/// @param node The node to search.
+		/// @return The found function node. _null_ if not found.
+		///
+		iCS_EditorObject GetFunction(iCS_EditorObject node) {
+			if(node.IsKindOfFunction) return node;
+			return null;
+		}
+		
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------

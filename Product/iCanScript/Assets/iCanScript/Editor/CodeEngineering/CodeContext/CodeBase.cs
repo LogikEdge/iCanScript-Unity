@@ -25,6 +25,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         protected iCS_EditorObject                     myVSObject  = null;
         protected CodeBase                             myParent    = null;
+		protected List<CodeBase>					   myChildren  = new List<CodeBase>();
         protected Dictionary<iCS_EditorObject, string> myLocalNames= new Dictionary<iCS_EditorObject, string>();
         protected CodeContext                          myContext   = null;
         
@@ -34,12 +35,24 @@ namespace iCanScript.Editor.CodeEngineering {
         public iCS_EditorObject VSObject {
         	get { return myVSObject; }
         }
-        public CodeBase Parent {
-            get { return myParent; }
-            set { myParent= value; OnParentChange(value); }
-        }
         public CodeContext Context {
             get { return myContext; }
+        }
+        public List<CodeBase> Children {
+            get { return myChildren; }
+        }
+        public CodeBase Parent {
+            get { return myParent; }
+            set {
+				if(myParent != null) {
+					myParent.Children.Remove(this);
+				}
+				if(value != null) {
+					value.Children.Add(this);
+				}
+				myParent= value;
+				OnParentChange(value);
+			}
         }
 		
         // ===================================================================
