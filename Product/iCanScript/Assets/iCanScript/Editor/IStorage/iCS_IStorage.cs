@@ -153,6 +153,7 @@ public partial class iCS_IStorage {
         if(oldMonoBehaviour != monoBehaviour) {
 			PerformEngineDataUpgrade();
             GenerateEditorData();
+            PerformEditorDataUpgrade();
             // Assure that we have the default nodes if visual script is empty.
             if(EngineObjects.Count == 0) {
                 if(monoBehaviour is iCS_VisualScriptImp) {
@@ -460,6 +461,7 @@ public partial class iCS_IStorage {
             InstanceWizardCompleteCreation(instance);
             instance.DisplayName= iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(runtimeType))+" Properties";
             instance.IsNameEditable= false;
+            CreateSelfPort(id);
         }
         return instance;
     }
@@ -542,8 +544,8 @@ public partial class iCS_IStorage {
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
 		// -- Create target & self ports. --
-        CreateTargetPort(id, desc.ClassType);
-        CreateSelfPort(id, desc.ClassType);
+        CreateTargetPort(id);
+        CreateSelfPort(id);
         // -- Create parameter ports. --
 		iCS_EditorObject port= null;
         for(int parameterIdx= 0; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
@@ -576,7 +578,7 @@ public partial class iCS_IStorage {
         // -- Create target port. --
 		iCS_EditorObject port= null;
         if(desc.IsInstanceMember) {
-            port= CreateTargetPort(id, desc.ClassType);
+            port= CreateTargetPort(id);
             if(instance.Parent.IsBehaviour) {
                 port.InitialValue= instance.Parent.iCSMonoBehaviour;
             }

@@ -6,6 +6,7 @@ using System.Collections;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // Object Type Queries ---------------------------------------------------
+    public bool IsRootObject                { get { return InstanceId == 0; }}
     public bool IsNode                      { get { return EngineObject.IsNode; }}
     public bool IsKindOfPackage             { get { return EngineObject.IsKindOfPackage; }}
     public bool IsKindOfFunction            { get { return EngineObject.IsKindOfFunction; }}

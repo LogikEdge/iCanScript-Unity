@@ -5,6 +5,7 @@ using iCanScript.Engine;
 
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
+    /// Performs engine data upgarde before generating the editor data.
 	void PerformEngineDataUpgrade() {
         bool isUpgraded= false;
         
@@ -16,9 +17,37 @@ public partial class iCS_IStorage {
 		iCS_Version storageVersion= new iCS_Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
-        // POST-PROCESING ====================================================
-        // v2.0.5 ...
-		if(storageVersion.IsOlderThen(2,0,5)) {
+        // -- Warn the user that an upgrade toke place --
+        if(isUpgraded) {
+			ShowUpgradeDialog(softwareVersion);
+        }
+	}
+    // ----------------------------------------------------------------------
+    /// Performs editor data upgarde.
+	void PerformEditorDataUpgrade() {
+        bool isUpgraded= false;
+        
+        // PRE-PROCESSING ====================================================
+        // Use this are to perform pre-processing data conversion.
+		iCS_Version softwareVersion= iCS_Version.Current;
+
+		// Extract the version of the storage.
+		iCS_Version storageVersion= new iCS_Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
+		if(softwareVersion.IsEqual(storageVersion)) { return; }
+		
+        // -- Before v2.0.6 --
+		if(storageVersion.IsOlderThen(2,0,6)) {
+            // -- Scan for functions and properties nodes to add a self port --
+            ForEach(
+                o=> {
+                    if(o.IsKindOfFunction || o.IsInstanceNode) {
+                        if(GetSelfPort(o) == null) {
+                            CreateSelfPort(o);
+                            isUpgraded= true;
+                        }
+                    }
+                }
+            );
         }
         // -- Warn the user that an upgrade toke place --
         if(isUpgraded) {

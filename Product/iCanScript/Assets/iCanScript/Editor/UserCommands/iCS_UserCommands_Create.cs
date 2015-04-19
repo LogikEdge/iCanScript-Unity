@@ -42,7 +42,7 @@ public static partial class iCS_UserCommands {
                         }
                     }
                     // Instance visual script port to support dynamic connection
-                    var gameObjectPort= iStorage.CreateTargetPort(proxyId, typeof(GameObject));
+                    var gameObjectPort= iStorage.CreateTargetPort(proxyId);
                     gameObjectPort.PortValue= vs.gameObject;
                     variableReference.ProxyOriginalNodeId= realObject.InstanceId;
                     variableReference.ProxyOriginalVisualScriptTag= vs.tag;
@@ -93,7 +93,7 @@ public static partial class iCS_UserCommands {
                         }
                     }
                     // Instance visual script port to support dynamic connection
-                    var gameObjectPort= iStorage.CreateTargetPort(usrFncCallId, typeof(GameObject));
+                    var gameObjectPort= iStorage.CreateTargetPort(usrFncCallId);
                     gameObjectPort.PortValue= vs.gameObject;
                     functionCall.ProxyOriginalNodeId= userFunction.InstanceId;
                     functionCall.ProxyOriginalVisualScriptTag= vs.tag;
@@ -490,35 +490,6 @@ public static partial class iCS_UserCommands {
 		SystemEvents.AnnounceVisualScriptElementAdded(port);
         return port;
     }
-    // -------------------------------------------------------------------------
-    // OK
-    public static iCS_EditorObject CreateOutInstancePort(iCS_EditorObject parent) {
-        if(parent == null) return null;
-        if(!IsCreationAllowed()) return null;
-        var iStorage= parent.IStorage;
-        OpenTransaction(iStorage);
-        iCS_EditorObject port= null;
-        try {
-            iStorage.AnimateGraph(null,
-                _=> {
-            		port= iStorage.CreateSelfPort(parent.InstanceId, parent.RuntimeType);        
-                    iStorage.ForcedRelayoutOfTree();
-                }
-            );            
-        }
-        catch(System.Exception) {
-            CancelTransaction(iStorage);
-            return null;
-        }
-        if(port == null) {
-            CancelTransaction(iStorage);
-            return null;
-        }
-        CloseTransaction(iStorage, "Create 'this' Port");
-		SystemEvents.AnnounceVisualScriptElementAdded(port);
-        return port;
-    }
-    
 
     // ======================================================================
     // Instance Object creation.
