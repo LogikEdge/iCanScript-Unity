@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 
@@ -26,18 +26,18 @@ namespace iCanScript.Editor.CodeEngineering {
         : base(null, codeBlock) {
             myLeftHandCode = leftHandSize;
             myRightHandCode= rightHandCode;
-            myLeftHandCode.CodeBlock= myRightHandCode.CodeBlock= codeBlock;
+            myLeftHandCode.Parent= myRightHandCode.Parent= codeBlock;
         }        
     
         // -------------------------------------------------------------------
         /// Set the new code block for the assignment code
         ///
-        /// @param newCodeBlock The new code block to be assigned.
+        /// @param newParent The new code block to be assigned.
         ///
-        public override void SetCodeBlock(CodeBase newCodeBlock) {
-            myCodeBlock= newCodeBlock;
-            myLeftHandCode.CodeBlock = newCodeBlock;
-            myRightHandCode.CodeBlock= newCodeBlock;
+        public override void SetParent(CodeBase newParent) {
+            myParent= newParent;
+            myLeftHandCode.Parent = newParent;
+            myRightHandCode.Parent= newParent;
         }
         
         // ===================================================================

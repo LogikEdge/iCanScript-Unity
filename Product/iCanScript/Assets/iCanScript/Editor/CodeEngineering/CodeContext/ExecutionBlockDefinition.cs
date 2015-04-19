@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void AddExecutable(CodeBase child) {
             myExecutionList.Add(child);
-            child.CodeBlock= this;
+            child.Parent= this;
         }
 
         // -------------------------------------------------------------------
@@ -51,7 +51,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void Remove(CodeBase toRemove) {
             if(myExecutionList.Remove(toRemove)) {
-                toRemove.CodeBlock= null;
+                toRemove.Parent= null;
             }
         }
                 
@@ -67,7 +67,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 myExecutionList.RemoveAt(idx);
                 myExecutionList.InsertRange(idx, theCodeList);
                 foreach(var c in theCodeList) {
-                    c.CodeBlock= this;
+                    c.Parent= this;
                 }
             }
         }

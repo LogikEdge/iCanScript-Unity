@@ -73,7 +73,7 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override void AddVariable(VariableDefinition variableDefinition) {
             myVariables.Add(variableDefinition);
-            variableDefinition.CodeBlock= this;
+            variableDefinition.Parent= this;
         }
         // -------------------------------------------------------------------
         /// Removes a code context from the function.
@@ -83,12 +83,12 @@ namespace iCanScript.Editor.CodeEngineering {
         public override void Remove(CodeBase toRemove) {
             if(toRemove is VariableDefinition) {
                 if(myVariables.Remove(toRemove as VariableDefinition)) {
-                    toRemove.CodeBlock= null;
+                    toRemove.Parent= null;
                 }
             }
             else {
                 if(myExecutionList.Remove(toRemove)) {
-                    toRemove.CodeBlock= null;
+                    toRemove.Parent= null;
                 }
             }
         }
@@ -107,7 +107,7 @@ namespace iCanScript.Editor.CodeEngineering {
 						// Terminate existing If-Statement(s)
 						var removeIdx= enableIdx;
 						while(removeIdx < currentEnables.Length) {
-							currentEnableBlock= currentEnableBlock.CodeBlock as EnableBlockDefinition;
+							currentEnableBlock= currentEnableBlock.Parent as EnableBlockDefinition;
 							do {
 								++removeIdx;								
 							} while(removeIdx < currentEnables.Length && currentEnables[removeIdx-1].ParentNode == currentEnables[removeIdx].ParentNode);
