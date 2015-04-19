@@ -8,24 +8,24 @@ using P=Prelude;
 
 namespace iCanScript.Engine {
     public enum PortSpecification {
-        Parameter, Return,
-        PublicVariable, PrivateVariable,
-        StaticPublicVariable, StaticPrivateVariable,
-        Enable, Trigger,
-        Constant,
-        Owner,
-        Default
+        Parameter= 0, Return,
+        PublicVariable= 10, PrivateVariable,
+        StaticPublicVariable= 20, StaticPrivateVariable,
+        Enable= 30, Trigger,
+        Constant= 40,
+        Owner= 50,
+        Default= 1000
     };
     public enum NodeSpecification {
-        Type,
-        VariableReference, StaticVariableReference,
-        Constructor, StaticConstructor,
-        PublicFunction, PrivateFunction,
-        StaticPublicFunction, StaticPrivateFunction,
-        FunctionCall,
-        EventHandler,
-        StateChart, State,
-        Default
+        Type= 200,
+        VariableReference= 210, StaticVariableReference,
+        Constructor= 220, StaticConstructor,
+        PublicFunction= 230, PrivateFunction,
+        StaticPublicFunction= 240, StaticPrivateFunction,
+        FunctionCall= 250,
+        EventHandler= 260,
+        StateChart= 270, State,
+        Default= 1000
     };
 }
 
