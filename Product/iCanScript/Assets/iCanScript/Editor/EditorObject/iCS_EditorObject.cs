@@ -127,7 +127,8 @@ public partial class iCS_EditorObject {
             if(parent.IsKindOfFunction) {
                 return PortSpecification.Parameter;
             }
-            return PortSpecification.Other;
+            Debug.LogWarning("iCanScript: Unknown port specification.  Contact support.");
+            return PortSpecification.Default;
         }
     }
     // ----------------------------------------------------------------------
@@ -142,7 +143,8 @@ public partial class iCS_EditorObject {
             if(IsConstructor)    return NodeSpecification.Constructor;
             if(IsPublicFunction) return NodeSpecification.PublicFunction;
             if(IsKindOfFunction) return NodeSpecification.FunctionCall;
-            return NodeSpecification.Other;
+            Debug.LogWarning("iCanScript: Unknown node specification.  Contact support.");
+            return NodeSpecification.Default;
         }
     }
     

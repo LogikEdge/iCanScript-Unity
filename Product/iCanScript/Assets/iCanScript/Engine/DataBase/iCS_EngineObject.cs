@@ -14,18 +14,17 @@ namespace iCanScript.Engine {
         Enable, Trigger,
         Constant,
         Owner,
-        Other,
         Default
     };
     public enum NodeSpecification {
         Type,
+        VariableReference, StaticVariableReference,
+        Constructor, StaticConstructor,
         PublicFunction, PrivateFunction,
         StaticPublicFunction, StaticPrivateFunction,
-        Constructor, StaticConstructor,
         FunctionCall,
         EventHandler,
         StateChart, State,
-        Other,
         Default
     };
 }
