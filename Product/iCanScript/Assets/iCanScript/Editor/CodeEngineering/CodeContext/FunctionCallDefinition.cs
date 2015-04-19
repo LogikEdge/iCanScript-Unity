@@ -137,14 +137,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Returns a list of all enable ports that affects this function call.
         public override iCS_EditorObject[] GetRelatedEnablePorts() {
-            var enablePorts= new List<iCS_EditorObject>();
-            var funcNode= VSObject;
-            while(funcNode != null) {
-                enablePorts.AddRange(GetEnablePorts(funcNode));
-                funcNode= funcNode.ParentNode;
-            }
-            enablePorts.Reverse();
-            return enablePorts.ToArray();
+            return GetAllRelatedEnablePorts(VSObject);
         }
 
         // -------------------------------------------------------------------

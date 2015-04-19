@@ -4,6 +4,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 using P=Prelude;
 
 namespace iCanScript.Editor.CodeEngineering {
@@ -955,13 +956,51 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return Array of all enable ports that affects the function call.
         ///
         public iCS_EditorObject[] GetAllRelatedEnablePorts(iCS_EditorObject funcNode) {
+            // -- Gather all enable ports --
             var enablePorts= new List<iCS_EditorObject>();
             while(funcNode != null) {
-                enablePorts.AddRange(GetEnablePorts(funcNode));
-                funcNode= funcNode.ParentNode;
+                var enables= GetEnablePorts(funcNode);
+                if(enables.Length != 0 && !IsAtLeastOneEnableAlwaysTrue(enables)) {
+                    enables= P.filter(e=> !IsEnableAlwaysFalse(e), enables);
+                    enablePorts.AddRange(enables);
+                }
+                funcNode= funcNode.ParentNode;                    
             }
+            // -- Reorder ports starting from parent --
             enablePorts.Reverse();
             return enablePorts.ToArray();
+        }
+    	// -------------------------------------------------------------------------
+        /// Determines if the enable port is always _true_.
+        ///
+        /// @param enablePort The enable port.
+        /// @return _true_ if the enable is always true. _false_ otherwise.
+        ///
+        public bool IsEnableAlwaysTrue(iCS_EditorObject enablePort) {
+            var producerPort= GetCodeProducerPort(enablePort);
+            if(producerPort.IsInputPort) {
+                var initialValue= producerPort.InitialValue;
+                if(initialValue is UndefinedTag) return false;
+                var value= (bool)initialValue;
+                return value == true;
+            }  
+            return false;          
+        }
+    	// -------------------------------------------------------------------------
+        /// Determines if the enable port is always _false_.
+        ///
+        /// @param enablePort The enable port.
+        /// @return _true_ if the enable is always false. _false_ otherwise.
+        ///
+        public bool IsEnableAlwaysFalse(iCS_EditorObject enablePort) {
+            var producerPort= GetCodeProducerPort(enablePort);
+            if(producerPort.IsInputPort) {
+                var initialValue= producerPort.InitialValue;
+                if(initialValue is UndefinedTag) return false;
+                var value= (bool)initialValue;
+                return value == false;
+            }  
+            return false;          
         }
     	// -------------------------------------------------------------------------
         /// Appends to the given list the enable ports on the given node.
@@ -980,7 +1019,35 @@ namespace iCanScript.Editor.CodeEngineering {
             );
             return enables.ToArray();
         }
-    
+    	// -------------------------------------------------------------------------
+        /// Determines if one of the enable ports is always true.
+        ///
+        /// @param enablePorts An array of enable ports.
+        /// @return _true_ if at least one enable is always _true_. _false_ otherwise.
+        ///
+        public bool IsAtLeastOneEnableAlwaysTrue(iCS_EditorObject[] enablePorts) {
+            foreach(var e in enablePorts) {
+                if(IsEnableAlwaysTrue(e)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    	// -------------------------------------------------------------------------
+        /// Determines if all enable ports are always false.
+        ///
+        /// @param enablePorts An array of enable ports.
+        /// @return _true_ if all enables are always false. _false_ otherwise.
+        ///
+        public bool IsAllEnablesAlwaysFalse(iCS_EditorObject[] enablePorts) {
+            foreach(var e in enablePorts) {
+                if(!IsEnableAlwaysFalse(e)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
         // =========================================================================
         // TRIGGER PORTS UTILITIES
     	// -------------------------------------------------------------------------

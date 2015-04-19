@@ -35,6 +35,17 @@ namespace iCanScript.Editor.CodeEngineering {
             // -- Ask our children to resolve their dependencies. --
             base.ResolveDependencies();
             
+            // -- Don't generate code if all enables are false. --
+            if(IsAllEnablesAlwaysFalse(myEnablePorts)) {
+                Parent.Remove(this);
+                return;
+            }
+            // -- Merge with parent if one of the enables is always true. --
+            if(IsAtLeastOneEnableAlwaysTrue(myEnablePorts)) {
+				(Parent as ExecutionBlockDefinition).Replace(this, myExecutionList);
+				return;					
+            }
+            
             // -- Reposition code for simple trigger->enable --
 			CodeBase commonParent= null;
 			if(AreAllProducersTriggers() && AreAllInSameExecutionContext(out commonParent)) {
@@ -44,19 +55,9 @@ namespace iCanScript.Editor.CodeEngineering {
 					return;					
 				}
 			}
-            var enableLen= myEnablePorts.Length;
-            if(enableLen == 1) {
-                var producerPort= myEnablePorts[0].FirstProducerPort;
-                if(producerPort.IsTriggerPort) {
-                    var parentAsExecBlock= myParent as ExecutionBlockDefinition;
-                    if(parentAsExecBlock != null) {
-                        parentAsExecBlock.Replace(this, myExecutionList);
-                        return;
-                    }
-                }
-            }
             
             // -- Determine best enable order for code optimization. --
+            var enableLen= myEnablePorts.Length;
             if(enableLen > 1) {
                 for(int i= 0; i < enableLen; ++i) {
                     var enable= myEnablePorts[i];
