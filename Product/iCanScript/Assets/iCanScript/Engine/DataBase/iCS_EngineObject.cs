@@ -237,7 +237,6 @@ public class iCS_EngineObject {
     public bool IsState                    { get { return iCS_ObjectType.IsState(this); }}
     public bool IsPackage                  { get { return iCS_ObjectType.IsPackage(this); }}
     public bool IsMux                      { get { return iCS_ObjectType.IsMux(this); }}
-    public bool IsSelector                 { get { return iCS_ObjectType.IsSelector(this); }}
     public bool IsKindOfPackage            { get { return iCS_ObjectType.IsKindOfPackage(this); }}
     public bool IsTransitionPackage        { get { return iCS_ObjectType.IsTransitionPackage(this); }}
     public bool IsKindOfFunction           { get { return iCS_ObjectType.IsKindOfFunction(this); }}
