@@ -100,21 +100,6 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     public iCS_EngineObject GetParentNode(iCS_EngineObject obj) {
         return iCS_VisualScriptData.GetParentNode(this, obj);
     }
-    public bool IsOutPackagePort(iCS_EngineObject port) {
-        return iCS_VisualScriptData.IsOutPackagePort(this, port);
-    }
     
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // DATABASE CONVERSION
-    // ======================================================================
-	// None.
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-
-    // ======================================================================
-    // Initialization
-    // ----------------------------------------------------------------------
-    void Awake() {
-    }
 
  }
