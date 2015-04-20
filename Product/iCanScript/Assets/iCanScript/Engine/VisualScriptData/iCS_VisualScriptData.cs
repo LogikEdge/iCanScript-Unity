@@ -356,10 +356,4 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         FilterWith(p=> p.IsPort && p.ParentId == node.InstanceId, childPorts.Add, vsd);
         return childPorts.ToArray();
     }
-    // ----------------------------------------------------------------------
-    public static iCS_EngineObject GetChildPortWithIndex(iCS_IVisualScriptData vsd, iCS_EngineObject node, int index) {
-        iCS_EngineObject port= null;
-        FilterWith(p=> p.IsPort && p.ParentId == node.InstanceId && p.PortIndex == index, fp=> port= fp, vsd);
-        return port;
-    }
 }
