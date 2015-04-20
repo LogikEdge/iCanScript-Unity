@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 using iCanScript.Engine;
 
 public partial class iCS_IStorage {
@@ -79,16 +80,20 @@ public partial class iCS_IStorage {
     bool V2_0_6_EditorUpgrade() {
         bool isUpgraded= false;
         // -- Scan for functions and properties nodes to add the self port --
+        var needsSelfPort= new List<iCS_EditorObject>();
         ForEach(
             o=> {
                 if(o.IsKindOfFunction || o.IsInstanceNode) {
                     if(o.IsConstructor == false && GetSelfPort(o) == null) {
-                        CreateSelfPort(o);
-                        isUpgraded= true;
+                        needsSelfPort.Add(o);
                     }
                 }
             }
         );
+        foreach(var o in needsSelfPort) {
+            CreateSelfPort(o);
+            isUpgraded= true;            
+        }
         return isUpgraded;
     }
     // ----------------------------------------------------------------------
