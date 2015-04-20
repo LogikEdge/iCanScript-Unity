@@ -100,7 +100,7 @@ namespace iCanScript.Editor.CodeEngineering {
                         var functionDefinition= new FunctionDefinition(n, this, AccessSpecifier.PUBLIC, ScopeSpecifier.NONSTATIC);
                         AddFunction(functionDefinition);
     				}
-    				if(n.IsMessage) {
+    				if(n.IsEventHandler) {
                         var functionDefinition= new EventHandlerDefinition(n, this, AccessSpecifier.PUBLIC, ScopeSpecifier.NONSTATIC);
                         AddFunction(functionDefinition);
     				}

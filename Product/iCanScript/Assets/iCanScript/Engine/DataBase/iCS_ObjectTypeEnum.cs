@@ -8,7 +8,7 @@ public enum iCS_ObjectTypeEnum {
     NodeStart= 0,
     
     // Structural nodes
-    Behaviour= 0, Package, StateChart, State, Mux, Selector,
+    Behaviour= 0, Package, StateChart, State, Mux,
 
     // Function nodes
     Constructor=100,
@@ -18,9 +18,6 @@ public enum iCS_ObjectTypeEnum {
     InstanceMessage,  ClassMessage,
     InstanceProperty, ClassProperty,
 
-    // Proxy nodes
-    VariableReference= 150, FunctionCall,
-            
     // Transition nodes
     TransitionPackage=200,
 
@@ -75,10 +72,9 @@ public static class iCS_ObjectType {
 																			  IsOnStatePackage(obj) ||
 																			  IsTransitionPackage(obj); }
     public static bool IsMux                  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Mux; }
-    public static bool IsSelector             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Selector; }
 
     public static bool IsKindOfPackage	      (iCS_EngineObject obj) { return IsPackage(obj) ||
-                                                                              IsBehaviour(obj) || IsMessage(obj); }
+                                                                              IsBehaviour(obj) || IsEventHandler(obj); }
 	public static bool IsKindOfState		  (iCS_EngineObject obj) { return IsStateChart(obj) || IsState(obj); }
 
     // Function nodes.
@@ -86,7 +82,7 @@ public static class iCS_ObjectType {
 																			  IsField(obj) || IsTypeCast(obj); } 
     public static bool IsFunction             (iCS_EngineObject obj) { return IsClassFunction(obj) || IsInstanceFunction(obj); }
     public static bool IsField                (iCS_EngineObject obj) { return IsClassField(obj) || IsInstanceField(obj); }
-    public static bool IsMessage              (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsClassMessage(obj); }
+    public static bool IsEventHandler         (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsClassMessage(obj); }
 
     public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
     public static bool IsClassFunction        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassFunction; }
@@ -106,10 +102,6 @@ public static class iCS_ObjectType {
     public static bool IsOnStateUpdatePackage (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateUpdate; }
     public static bool IsOnStateExitPackage   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateExit; }
 	
-    // Proxy
-    public static bool IsVariableReference    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.VariableReference; }
-    public static bool IsFunctionCall         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.FunctionCall; }
-
     // General Ports
     public static bool IsPort                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.PortStart &&
                                                                               obj.ObjectType <= iCS_ObjectTypeEnum.PortEnd; }
@@ -147,10 +139,10 @@ public static class iCS_ObjectType {
     public static bool IsDataPort             (iCS_EngineObject obj) { return IsInDataPort(obj) || IsOutDataPort(obj); }
     public static bool IsInDataPort			  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsInDynamicDataPort(obj) ||
 																			  IsInProposedDataPort(obj) || IsInMuxPort(obj) ||
-																			  IsInInstancePort(obj); }
+																			  IsTargetPort(obj); }
     public static bool IsOutDataPort		  (iCS_EngineObject obj) { return IsOutFixDataPort(obj) || IsOutDynamicDataPort(obj) ||
 		                                                                      IsOutProposedDataPort(obj) || IsOutMuxPort(obj) ||
-																			  IsOutInstancePort(obj); }
+																			  IsSelfPort(obj); }
 
 	// Parameter Data Flow Ports
 	public static bool IsParameterPort        (iCS_EngineObject obj) { return IsPort(obj) &&
@@ -182,8 +174,6 @@ public static class iCS_ObjectType {
 	public static bool IsOutChildMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutChildMuxPort; }
 
 	// Instance Ports
-	public static bool IsInstancePort		  (iCS_EngineObject obj) { return IsInInstancePort(obj) || IsOutInstancePort(obj); }
-	public static bool IsInInstancePort		  (iCS_EngineObject obj) { return IsInFixDataPort(obj) &&
-	                                                                          obj.PortIndex == (int)iCS_PortIndex.InInstance; }
-	public static bool IsOutInstancePort	  (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.OutInstance; }
+	public static bool IsTargetPort		      (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.Target; }
+	public static bool IsSelfPort	          (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.Self; }
 }

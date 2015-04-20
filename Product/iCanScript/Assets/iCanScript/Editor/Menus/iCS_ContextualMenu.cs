@@ -43,7 +43,6 @@ public class iCS_ContextualMenu {
 	const string ObjectInstanceStr             = "+ Instance Node";
     const string EnablePortStr                 = "+ Add Enable Port";
     const string TriggerPortStr                = "+ Add Trigger Port";
-    const string OutputInstancePortStr         = "+ Add Self Port";
 	const string WrapInPackageStr              = "+ Wrap in Package";
     const string MultiSelectionWrapInPackageStr= "+ Wrap Multi-Selection in Package";
     const string MultiSelectionDeleteStr       = "- Delete Multi-Selection";
@@ -97,8 +96,6 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.ClassField:        FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassProperty:     FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.FunctionCall:      FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.VariableReference: FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
@@ -158,7 +155,7 @@ public class iCS_ContextualMenu {
             menu[idx+1]= new iCS_MenuContext(StateChartStr);
             menu[idx+2]= new iCS_MenuContext(SeparatorStr);
         }
-        if(!selectedObject.IsPublicFunction && !selectedObject.IsMessage) {
+        if(!selectedObject.IsPublicFunction && !selectedObject.IsEventHandler) {
             idx= GrowMenuBy(ref menu, 2);
             menu[idx]= new iCS_MenuContext(EnablePortStr);
             if(storage.HasTriggerPort(selectedObject)) {
@@ -201,25 +198,15 @@ public class iCS_ContextualMenu {
     void InstanceMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedInLayout) {
-            // Determine if we should support output 'this' port.
-            Type classType= selectedObject.RuntimeType;
-            bool shouldSupportThis= !iCS_Types.IsStaticClass(classType);
             // Base menu items
-            menu= new iCS_MenuContext[shouldSupportThis ? 4 : 3];
+            menu= new iCS_MenuContext[3];
             menu[0]= new iCS_MenuContext(EnablePortStr);
             if(storage.HasTriggerPort(selectedObject)) {
                 menu[1]= new iCS_MenuContext("#"+TriggerPortStr);
             } else {
                 menu[1]= new iCS_MenuContext(TriggerPortStr);                
             }
-            if(shouldSupportThis) {
-                if(storage.HasOutInstancePort(selectedObject)) {
-                    menu[2]= new iCS_MenuContext("#"+OutputInstancePortStr);
-                } else {
-                    menu[2]= new iCS_MenuContext(OutputInstancePortStr);                
-                }                
-            }
-            menu[3]= new iCS_MenuContext(SeparatorStr);
+            menu[2]= new iCS_MenuContext(SeparatorStr);
         }
  		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
         AddShowInHierarchyMenuItem(ref menu);
@@ -274,34 +261,17 @@ public class iCS_ContextualMenu {
     void FunctionMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu;
         if(!selectedObject.IsIconizedInLayout) {
-            // Determine if we should support output 'this' port.
-            Type classType= selectedObject.RuntimeType;
-            bool isOutInstanceSupported= true;
-            if(iCS_Types.IsStaticClass(classType) || selectedObject.IsConstructor ||
-               selectedObject.IsFunctionCall || selectedObject.IsVariableReference) {
-                isOutInstanceSupported= false;
-            }
-            bool isEnableSupported= !selectedObject.IsVariableReference;
             // Base menu items
             menu= new iCS_MenuContext[0];
             int idx= 0;
-            if(isEnableSupported) {
-                idx= GrowMenuBy(ref menu, 1);
-                menu[idx]= new iCS_MenuContext(EnablePortStr);
-            }
+            // -- Add Enable & Trigger --
+            idx= GrowMenuBy(ref menu, 1);
+            menu[idx]= new iCS_MenuContext(EnablePortStr);
             idx= GrowMenuBy(ref menu, 1);
             if(storage.HasTriggerPort(selectedObject)) {
                 menu[idx]= new iCS_MenuContext("#"+TriggerPortStr);
             } else {
                 menu[idx]= new iCS_MenuContext(TriggerPortStr);                
-            }
-            if(isOutInstanceSupported) {
-                idx= GrowMenuBy(ref menu, 1);
-                if(storage.HasOutInstancePort(selectedObject)) {
-                    menu[idx]= new iCS_MenuContext("#"+OutputInstancePortStr);
-                } else {
-                    menu[idx]= new iCS_MenuContext(OutputInstancePortStr);                
-                }                
             }
             idx= GrowMenuBy(ref menu, 1);
             menu[idx]= new iCS_MenuContext(SeparatorStr);
@@ -329,7 +299,7 @@ public class iCS_ContextualMenu {
         iCS_MenuContext[] menu= new iCS_MenuContext[1];
         menu[0]= new iCS_MenuContext(ShowHierarchyStr);
         // Allow to delete a port if its parent is a module.
-        if(port.IsStatePort || !port.IsFixDataPort) {
+        if(port.CanBeDeleted()) {
             AddDeleteMenuItem(ref menu);
         }
         ShowMenu(menu, port, storage);            
@@ -551,7 +521,6 @@ public class iCS_ContextualMenu {
             case DeleteStr:                 iCS_UserCommands.DeleteObject(targetObject); break;
             case EnablePortStr:             iCS_UserCommands.CreateEnablePort(targetObject); break;
             case TriggerPortStr:            iCS_UserCommands.CreateTriggerPort(targetObject); break;
-            case OutputInstancePortStr:     iCS_UserCommands.CreateOutInstancePort(targetObject); break;
 			case WrapInPackageStr:          iCS_UserCommands.WrapInPackage(targetObject); break;
             case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
             case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;

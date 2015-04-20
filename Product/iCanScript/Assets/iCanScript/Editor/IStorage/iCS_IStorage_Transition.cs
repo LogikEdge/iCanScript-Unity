@@ -37,16 +37,12 @@ public partial class iCS_IStorage {
         string statePortName= fromParent.DisplayName+"->"+toParent.DisplayName;
         fromStatePort.DisplayName= statePortName;
         toStatePort.DisplayName  = statePortName;
-        fromStatePort.IsNameEditable= false;
-        toStatePort.IsNameEditable= false;
         // Transition module ports.
         var transitionPackage = GetTransitionPackage(toStatePort);
         var inTransitionPort = GetInTransitionPort(transitionPackage);
         var outTransitionPort= GetOutTransitionPort(transitionPackage);
         inTransitionPort.DisplayName= fromParent.DisplayName+"->"+transitionPackage.DisplayName;
         outTransitionPort.DisplayName= transitionPackage.DisplayName+"->"+toParent.DisplayName;
-        inTransitionPort.IsNameEditable= false;
-        outTransitionPort.IsNameEditable= false;
     }
     // ----------------------------------------------------------------------
     // Returns the common parent of given states.

@@ -12,9 +12,8 @@ public partial class iCS_IStorage {
         module.Fold();
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
-            iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, iCS_IStorage.GetInstancePortName(classType), classType,
-                                                                               iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
-            inThisPort.IsNameEditable= false;
+            InstanceWizardCreatePortIfNonExisting(module, "Target", classType,
+                                                  iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
         }
         if(Prefs.InstanceAutocreateOutFields)          InstanceWizardCreateOutputInstanceFields(module);
         if(Prefs.InstanceAutocreateInFields)           InstanceWizardCreateInputInstanceFields(module);
@@ -37,7 +36,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateInputInstancePort(Type classType, iCS_EditorObject instanceNode) {
-        return InstanceWizardCreatePortIfNonExisting(instanceNode, iCS_IStorage.GetInstancePortName(classType), classType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+        return InstanceWizardCreatePortIfNonExisting(instanceNode, "Target", classType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
     }
     // ----------------------------------------------------------------------
     public void InstanceWizardCreateOutputInstanceFields(iCS_EditorObject module) {
@@ -224,7 +223,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardGetObjectAssociatedWithPort(iCS_EditorObject port) {
-        if(port.IsInstancePort || port.IsControlPort) return port;
+        if(port.IsTargetOrSelfPort || port.IsControlPort) return port;
         iCS_EditorObject result= port;
         var objectInstance= port.Parent;
         objectInstance.ForEachChildRecursiveDepthFirst(
@@ -271,7 +270,6 @@ public partial class iCS_IStorage {
         iCS_EditorObject port= InstanceWizardGetPort(module, portName, objType, portIdx);
         if(port == null) {
             port= CreatePort(portName, module.InstanceId, portType, objType);                
-			port.IsNameEditable= false;
             if(portIdx != -1) {
                 port.PortIndex= portIdx;                
             }
@@ -300,7 +298,7 @@ public partial class iCS_IStorage {
         ForEachChildDataPort(func,
             port=> {
                 string modulePortName= port.DisplayName;
-                if(!port.IsInstancePort) {
+                if(!port.IsTargetOrSelfPort) {
                     if(desc.IsField) {
                         var fieldInfo= desc as iCS_FieldInfo;
                         modulePortName= (fieldInfo.IsGet ? "get_" : "set_")+fieldInfo.FieldName;
@@ -312,7 +310,7 @@ public partial class iCS_IStorage {
                 }
                 if(port.IsInputPort) {
                     // Special case for "instance".
-                    if(port.IsInInstancePort) {
+                    if(port.IsTargetPort) {
                         iCS_EditorObject classPort= InstanceWizardGetInputThisPort(module);
                         if(classPort != null) {
                             SetSource(port, classPort);
@@ -323,7 +321,6 @@ public partial class iCS_IStorage {
                         iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicDataPort);
                         if(classPort == null) {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
-							classPort.IsNameEditable= false;
                             SetSource(port, classPort);
                         } else {
                             SetSource(port, classPort);
@@ -331,12 +328,11 @@ public partial class iCS_IStorage {
                     }
                 } else {
                     // Special case for "instance".
-                    if(port.IsInstancePort) {
+                    if(port.IsTargetOrSelfPort) {
                     } else {
                         iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicDataPort);
                         if(classPort == null) {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-							classPort.IsNameEditable= false;
                             SetSource(classPort, port);
                         } else {
                             SetSource(classPort, port);
@@ -362,7 +358,7 @@ public partial class iCS_IStorage {
         var portsToDestroy= new List<iCS_EditorObject>();
         toDelete.ForEachChildPort(
             p=> {
-                if(p.IsInDataPort && !p.IsInInstancePort) {
+                if(p.IsInDataPort && !p.IsTargetPort) {
                     var source= p.ProducerPort;
                     if(source != null && source.ParentNode == objectInstance) {
                         portsToDestroy.Add(source);
@@ -394,14 +390,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardCreateConstructor(iCS_EditorObject module, iCS_ConstructorInfo desc) {
         InstanceWizardDestroyConstructor(module);
-        iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, iCS_IStorage.GetInstancePortName(module.RuntimeType),
-                                                               iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
+        iCS_EditorObject moduleThisPort= InstanceWizardGetPort(module, "Target",
+                                                               iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
         if(moduleThisPort == null) return null;
         Rect thisPos= moduleThisPort.GlobalRect; 
         iCS_EditorObject constructor= CreateFunction(module.ParentId, desc);
         constructor.SetInitialPosition(new Vector2(thisPos.x-75f, thisPos.y));
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutputPort && port.RuntimeType == module.RuntimeType);
-		constructorThisPort.IsNameEditable= false;
         SetSource(moduleThisPort, constructorThisPort);
         constructor.Iconize();
         return constructor;
@@ -457,7 +452,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject FindInputInstancePortOn(iCS_EditorObject module) {
-        var portId= (int)iCS_PortIndex.InInstance;
+        var portId= (int)iCS_PortIndex.Target;
         iCS_EditorObject result= null;
         UntilMatchingChildPort(module,
             port=> {
@@ -472,7 +467,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject FindOutputInstancePortOn(iCS_EditorObject module) {
-        var portId= (int)iCS_PortIndex.OutInstance;
+        var portId= (int)iCS_PortIndex.Self;
         iCS_EditorObject result= null;
         UntilMatchingChildPort(module,
             port=> {

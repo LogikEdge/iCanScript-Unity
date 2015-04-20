@@ -35,6 +35,17 @@ namespace iCanScript.Editor.CodeEngineering {
             // -- Ask our children to resolve their dependencies. --
             base.ResolveDependencies();
             
+            // -- Don't generate code if all enables are false. --
+            if(ControlFlow.IsAllEnablesAlwaysFalse(myEnablePorts)) {
+                Parent.Remove(this);
+                return;
+            }
+            // -- Merge with parent if one of the enables is always true. --
+            if(ControlFlow.IsAtLeastOneEnableAlwaysTrue(myEnablePorts)) {
+				(Parent as ExecutionBlockDefinition).Replace(this, myExecutionList);
+				return;					
+            }
+            
             // -- Reposition code for simple trigger->enable --
 			CodeBase commonParent= null;
 			if(AreAllProducersTriggers() && AreAllInSameExecutionContext(out commonParent)) {
@@ -44,19 +55,9 @@ namespace iCanScript.Editor.CodeEngineering {
 					return;					
 				}
 			}
-            var enableLen= myEnablePorts.Length;
-            if(enableLen == 1) {
-                var producerPort= myEnablePorts[0].FirstProducerPort;
-                if(producerPort.IsTriggerPort) {
-                    var parentAsExecBlock= myParent as ExecutionBlockDefinition;
-                    if(parentAsExecBlock != null) {
-                        parentAsExecBlock.Replace(this, myExecutionList);
-                        return;
-                    }
-                }
-            }
             
             // -- Determine best enable order for code optimization. --
+            var enableLen= myEnablePorts.Length;
             if(enableLen > 1) {
                 for(int i= 0; i < enableLen; ++i) {
                     var enable= myEnablePorts[i];
@@ -72,7 +73,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             
             // -- Verify if we can optimize parameter ports. --
-            myEnableCode[0]= Context.GetCodeFor(GetCodeProducerPort(myEnablePorts[0]));
+            myEnableCode[0]= Context.GetCodeFor(CodeFlow.GetProducerPort(myEnablePorts[0]));
             if(myEnableCode[0] != null) {
                 myEnableCode[0]= OptimizeInputParameter(myEnableCode[0], myParent);
                 if(myEnableCode[0] != null) {
@@ -143,7 +144,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     result.Append(myEnableCode[i].GenerateBody(0));
                 }
                 else {
-                    result.Append(GetNameFor(GetCodeProducerPort(myEnablePorts[i])));                    
+                    result.Append(GetNameFor(CodeFlow.GetProducerPort(myEnablePorts[i])));                    
                 }
                 if(i < len-1) {
                     result.Append(" || ");

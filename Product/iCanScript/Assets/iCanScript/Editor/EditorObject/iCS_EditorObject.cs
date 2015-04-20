@@ -96,56 +96,16 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     /// Returns the port type of this object.
-    public PortType portType {
-        get { return EngineObject.portType; }
-        set { EngineObject.portType= value; }
+    public PortSpecification PortSpec {
+        get { return EngineObject.PortSpec; }
+        set { EngineObject.PortSpec= value; }
     }
     // ----------------------------------------------------------------------
     /// Returns the node type of this object.
-    public NodeType nodeType {
-        get { return EngineObject.nodeType; }
-        set { EngineObject.nodeType= value; }
+    public NodeSpecification NodeSpec {
+        get { return EngineObject.NodeSpec; }
+        set { EngineObject.NodeSpec= value; }
     }
-    // ----------------------------------------------------------------------
-    /// Returns the port type of this object.
-    public PortType PortType {
-        get {
-            if(!IsPort) {
-                Debug.LogError("iCanScript: Requesting PortType on an object that is not a port!");
-            }
-            if(IsReturnPort)  return PortType.Return;
-            if(IsTriggerPort) return PortType.Trigger;
-            if(IsEnablePort)  return PortType.Enable;
-            var parent= ParentNode;
-            if(parent.IsMessageHandler) {
-                if(IsFixDataPort) return PortType.Parameter;
-                return PortType.PublicVariable;
-            }
-            if(parent.IsPublicFunction) {
-                return PortType.Parameter;
-            }
-            if(parent.IsKindOfFunction) {
-                return PortType.Parameter;
-            }
-            return PortType.Other;
-        }
-    }
-    // ----------------------------------------------------------------------
-    /// Returns the node type of this object.
-    public NodeType NodeType {
-        get {
-            if(!IsNode) {
-                Debug.LogError("iCanScript: Requesting NodeType on an object that is not a node!");                
-            }
-            if(InstanceId == 0)  return NodeType.Type;
-            if(IsMessageHandler) return NodeType.EventHandler;
-            if(IsConstructor)    return NodeType.Constructor;
-            if(IsPublicFunction) return NodeType.PublicFunction;
-            if(IsKindOfFunction) return NodeType.FunctionCall;
-            return NodeType.Other;
-        }
-    }
-    
     // ----------------------------------------------------------------------
 	/// Returns the runtime type of the visual script object.
     public Type RuntimeType {
@@ -319,7 +279,7 @@ public partial class iCS_EditorObject {
         get {
             if(c_DisplayName == null) {
                 if(IsDataPort && IsProgrammaticInstancePort) {
-                    if(IsOutputPort || ParentNode.IsMessageHandler || ParentNode.IsPublicFunction) {
+                    if(IsOutputPort || ParentNode.IsEventHandler || ParentNode.IsPublicFunction) {
                         c_DisplayName= "Self";
                     }
                     else {
@@ -362,12 +322,16 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
-		get { return EngineObject.IsNameEditable && !IsMessageHandler; }
-		set {
-            var engineObject= EngineObject;
-            if(engineObject.IsNameEditable == value) return;
-		    engineObject.IsNameEditable= value;
-		}
+		get {
+            if(IsBehaviour) return false;
+            if(IsEventHandler) return false;
+            if(IsTargetPort || IsSelfPort) return false;
+            if(IsInstanceNode) return false;
+            if(IsDataPort && ParentNode.IsInstanceNode) return false;
+            if(IsStatePort || IsTransitionPort) return false;
+            if(IsOnStatePackage) return false;
+            return true;
+        }
 	}
     // ----------------------------------------------------------------------
     public string Tooltip {
@@ -414,7 +378,7 @@ public partial class iCS_EditorObject {
                 if(IsConstructor) {
                     c_NodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
                 }
-                else if(IsMessageHandler || IsPublicFunction) {
+                else if(IsEventHandler || IsPublicFunction) {
                     c_NodeSubTitle= "Self is a "+iCS_ObjectNames.ToDisplayName(EditorObjects[0].DisplayName);                    
                 }
                 else if(IsKindOfFunction || IsInstanceNode) {

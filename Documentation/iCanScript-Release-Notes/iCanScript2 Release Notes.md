@@ -10,6 +10,20 @@ CSS: Github.css
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
 
+## iCanScript v2.0.6 ##
+
+_April 20, 2015_
+
+V2.0.6 is a development release of iCanScript2.
+
+### List of Changes
+
+- **<span style="color: blue">\[IMPROVED\]</span>** Add the _'Self'_ port on all function nodes.
+- **<span style="color: red">\[FIXED\]</span>** Disabled nodes are now displayed with half intensity in editor mode.
+
+
+* * *
+
 ## iCanScript v2.0.5 ##
 
 _April 19, 2015_

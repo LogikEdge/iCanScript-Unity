@@ -6,15 +6,15 @@ using System.Collections;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // Object Type Queries ---------------------------------------------------
+    public bool IsRootObject                { get { return InstanceId == 0; }}
     public bool IsNode                      { get { return EngineObject.IsNode; }}
     public bool IsKindOfPackage             { get { return EngineObject.IsKindOfPackage; }}
     public bool IsKindOfFunction            { get { return EngineObject.IsKindOfFunction; }}
     public bool IsKindOfState               { get { return EngineObject.IsKindOfState; }}
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
     public bool IsPackage                   { get { return EngineObject.IsPackage; }}
-    public bool IsMessage                   { get { return EngineObject.IsMessage; }}
+    public bool IsEventHandler              { get { return EngineObject.IsEventHandler; }}
     public bool IsMux                       { get { return EngineObject.IsMux; }}
-    public bool IsSelector                  { get { return EngineObject.IsSelector; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
 	public bool IsField						{ get { return EngineObject.IsField; }}
 	public bool IsClassField                { get { return EngineObject.IsClassField; }}
@@ -23,13 +23,10 @@ public partial class iCS_EditorObject {
     public bool IsState                     { get { return EngineObject.IsState; }}
 	public bool IsInstanceNode				{ get { return EngineObject.IsInstanceNode; }}
     public bool IsTransitionPackage         { get { return EngineObject.IsTransitionPackage; }}
-	public bool IsMessageHandler			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour; }}
 	public bool IsOnStatePackage        	{ get { return EngineObject.IsOnStatePackage; }}
     public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}
     public bool IsOnStateUpdatePackage  	{ get { return EngineObject.IsOnStateUpdatePackage; }}
     public bool IsOnStateExitPackage    	{ get { return EngineObject.IsOnStateExitPackage; }}
-    public bool IsVariableReference         { get { return EngineObject.IsVariableReference; }}
-    public bool IsFunctionCall              { get { return EngineObject.IsFunctionCall; }}
     public bool IsPublicFunction            { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
     public bool IsPublicVariable            { get { return IsConstructor && IsParentValid && Parent.IsBehaviour; }}
     
@@ -73,7 +70,7 @@ public partial class iCS_EditorObject {
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
     // Control Ports
-    public bool IsControlPort               { get { return EngineObject.IsControlPort; }}
+    public bool IsControlPort               { get { return IsEnablePort || IsTriggerPort; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
     public bool IsTriggerPort               { get { return EngineObject.IsTriggerPort; }}
     // Data Flow or Control Ports
@@ -92,15 +89,13 @@ public partial class iCS_EditorObject {
     public bool IsOutParentMuxPort          { get { return EngineObject.IsOutParentMuxPort; }}
     public bool IsNestedPort                { get { var parent= Parent; return parent != null && parent.IsPort; }}
 	// Instance Ports
-	public bool IsInstancePort				{ get { return EngineObject.IsInstancePort; }}
-	public bool IsInInstancePort			{ get { return EngineObject.IsInInstancePort; }}
-	public bool IsOutInstancePort			{ get { return EngineObject.IsOutInstancePort; }}
+	public bool IsTargetOrSelfPort			{ get { return IsTargetPort || IsSelfPort; }}
+	public bool IsTargetPort			    { get { return EngineObject.IsTargetPort; }}
+	public bool IsSelfPort			        { get { return EngineObject.IsSelfPort; }}
     // Special Cases
     public bool IsProgrammaticInstancePort  {
         get {
-            if(IsInInstancePort && (!ParentNode.IsVariableReference && !ParentNode.IsFunctionCall) ||
-               IsOutInstancePort ||
-               (PortIndex == (int)iCS_PortIndex.Return && (ParentNode.IsConstructor || ParentNode.IsVariableReference))) {
+            if(IsTargetPort || IsSelfPort || (IsReturnPort && ParentNode.IsConstructor)) {
                    return true;
             }
             return false;

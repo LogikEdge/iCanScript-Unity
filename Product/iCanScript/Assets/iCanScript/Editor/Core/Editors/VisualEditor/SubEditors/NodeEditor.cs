@@ -21,7 +21,7 @@ namespace iCanScript.Editor {
         ///
         public static EditorWindow Create(iCS_EditorObject node, Vector2 screenPosition) {
             if(node == null) return null;
-            if(node.IsMessageHandler) {
+            if(node.IsEventHandler) {
                 return EventHandlerEditor.Create(node, screenPosition);
             }
             if(node.IsPublicFunction) {

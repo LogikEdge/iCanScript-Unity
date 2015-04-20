@@ -7,26 +7,27 @@ using iCanScript.Engine;
 using P=Prelude;
 
 namespace iCanScript.Engine {
-    public enum PortType {
-        Parameter, Return,
-        PublicVariable, PrivateVariable,
-        StaticPublicVariable, StaticPrivateVariable,
-        Enable, Trigger,
-        Constant,
-        Owner,
-        Other,
-        Default
+    [Serializable]
+    public enum PortSpecification {
+        Target= 0, Self, Parameter, Return,
+        PublicVariable= 10, PrivateVariable,
+        StaticPublicVariable= 20, StaticPrivateVariable,
+        Enable= 30, Trigger,
+        Constant= 40,
+        Owner= 50,
+        Default= 1000
     };
-    public enum NodeType {
-        Type,
-        PublicFunction, PrivateFunction,
-        StaticPublicFunction, StaticPrivateFunction,
-        Constructor, StaticConstructor,
-        FunctionCall,
-        EventHandler,
-        StateChart, State,
-        Other,
-        Default
+    [Serializable]
+    public enum NodeSpecification {
+        Type= 200,
+        VariableReference= 210, StaticVariableReference,
+        Constructor= 220, StaticConstructor,
+        PublicFunction= 230, ProtectedFunction, PrivateFunction,
+        StaticPublicFunction= 240, StaticPrivateFunction,
+        FunctionCall= 250,
+        EventHandler= 260,
+        StateChart= 270, State,
+        Default= 1000
     };
 }
 
@@ -40,22 +41,20 @@ public class iCS_EngineObject {
     public iCS_ObjectTypeEnum    ObjectType         = iCS_ObjectTypeEnum.Unknown;
     public int                   InstanceId         = -1;
     public int                   ParentId           = -1;
-    public bool                  IsNameEditable     = true;
     public string                QualifiedType      = "";
 	public Vector2				 LocalAnchorPosition= Vector2.zero;
-    public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded; // PortIterationSignature
+    public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded;
 
 	// Node specific attributes ---------------------------------------------
-    public NodeType              nodeType         = NodeType.Default;
+    public NodeSpecification     NodeSpec         = NodeSpecification.Default;
 	public string				 MethodName       = null;
 	public int					 NbOfParams       = 0;     // Also used for port group
     public string                IconGUID         = null;
     public string                Tooltip          = null;
-    public int                   ExecutionPriority= 0;
     public int                   LayoutPriority   = 0;
 
     // Port specific attributes ---------------------------------------------
-    public PortType              portType           = PortType.Default;
+    public PortSpecification     PortSpec           = PortSpecification.Default;
     public int                   SourceId           = -1;    // Proxy original node id
     public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;  // Proxy original visual script tag
@@ -160,14 +159,15 @@ public class iCS_EngineObject {
         iCS_EngineObject instance= new iCS_EngineObject(id, toClone.RawName, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
-        instance.IsNameEditable= toClone.IsNameEditable;
 		instance.LocalAnchorPosition= toClone.LocalAnchorPosition;
 		// Node
+        instance.NodeSpec= toClone.NodeSpec;
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;
         instance.IconGUID= toClone.IconGUID;
         instance.Tooltip= toClone.Tooltip;
 		// Port
+        instance.PortSpec= toClone.PortSpec;
         instance.Edge= toClone.Edge;
         instance.PortIndex= toClone.PortIndex;
         if(instance.IsInDataOrControlPort && toClone.SourceId == -1 && !iCS_Types.IsA<UnityEngine.Object>(toClone.RuntimeType)) {
@@ -178,18 +178,18 @@ public class iCS_EngineObject {
     // ----------------------------------------------------------------------
 	public iCS_EngineObject CopyTo(iCS_EngineObject to) {
         to.ObjectType= ObjectType;
+        to.NodeSpec= NodeSpec;
+        to.PortSpec= PortSpec;
         to.InstanceId= InstanceId;
         to.ParentId= ParentId;
         to.QualifiedType= QualifiedType;
         to.RawName= RawName;
         to.LocalAnchorPosition= LocalAnchorPosition;
         to.DisplayOption= DisplayOption;
-        to.IsNameEditable= IsNameEditable;
         to.MethodName= MethodName;
         to.NbOfParams= NbOfParams;
         to.IconGUID= IconGUID;
         to.Tooltip= Tooltip;
-        to.ExecutionPriority= ExecutionPriority;
         to.LayoutPriority= LayoutPriority;
         to.SourceId= SourceId;
         to.PortIndex= PortIndex;
@@ -201,6 +201,8 @@ public class iCS_EngineObject {
     public void Reset() {
 		// Common
         ObjectType= iCS_ObjectTypeEnum.Unknown;
+        NodeSpec= NodeSpecification.Default;
+        PortSpec= PortSpecification.Default;
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
@@ -208,7 +210,6 @@ public class iCS_EngineObject {
         LocalAnchorPosition= Vector2.zero;
         LayoutPriority= 0;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-        IsNameEditable= true;
 		// Node
 		MethodName= null;
 		NbOfParams= 0;
@@ -232,7 +233,6 @@ public class iCS_EngineObject {
     public bool IsState                    { get { return iCS_ObjectType.IsState(this); }}
     public bool IsPackage                  { get { return iCS_ObjectType.IsPackage(this); }}
     public bool IsMux                      { get { return iCS_ObjectType.IsMux(this); }}
-    public bool IsSelector                 { get { return iCS_ObjectType.IsSelector(this); }}
     public bool IsKindOfPackage            { get { return iCS_ObjectType.IsKindOfPackage(this); }}
     public bool IsTransitionPackage        { get { return iCS_ObjectType.IsTransitionPackage(this); }}
     public bool IsKindOfFunction           { get { return iCS_ObjectType.IsKindOfFunction(this); }}
@@ -243,14 +243,12 @@ public class iCS_EngineObject {
     public bool IsClassField               { get { return iCS_ObjectType.IsClassField(this); }}
     public bool IsInstanceField            { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast                 { get { return iCS_ObjectType.IsTypeCast(this); }}
-    public bool IsMessage                  { get { return iCS_ObjectType.IsMessage(this); }}
+    public bool IsEventHandler             { get { return iCS_ObjectType.IsEventHandler(this); }}
     public bool IsInstanceNode             { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
 	public bool IsOnStatePackage           { get { return iCS_ObjectType.IsOnStatePackage(this); }}
     public bool IsOnStateEntryPackage      { get { return iCS_ObjectType.IsOnStateEntryPackage(this); }}
     public bool IsOnStateUpdatePackage     { get { return iCS_ObjectType.IsOnStateUpdatePackage(this); }}
     public bool IsOnStateExitPackage       { get { return iCS_ObjectType.IsOnStateExitPackage(this); }}
-    public bool IsVariableReference        { get { return iCS_ObjectType.IsVariableReference(this); }}
-    public bool IsFunctionCall             { get { return iCS_ObjectType.IsFunctionCall(this); }}
     // General Ports
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
     public bool IsOutputPort            { get { return iCS_ObjectType.IsOutputPort(this); }}
@@ -285,7 +283,6 @@ public class iCS_EngineObject {
     public bool IsInDataPort            { get { return iCS_ObjectType.IsInDataPort(this); }}
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
     // Control Ports
-    public bool IsControlPort           { get { return iCS_ObjectType.IsControlPort(this); }}
     public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}
     public bool IsTriggerPort           { get { return iCS_ObjectType.IsTriggerPort(this); }}
     // Data Flow or Control Ports
@@ -303,9 +300,9 @@ public class iCS_EngineObject {
 	public bool IsOutParentMuxPort		{ get { return iCS_ObjectType.IsOutParentMuxPort(this); }}
 	public bool IsOutChildMuxPort		{ get { return iCS_ObjectType.IsOutChildMuxPort(this); }}
     // Instance Ports
-	public bool IsInstancePort			{ get { return iCS_ObjectType.IsInstancePort(this); }}
-	public bool IsInInstancePort		{ get { return iCS_ObjectType.IsInInstancePort(this); }}
-	public bool IsOutInstancePort		{ get { return iCS_ObjectType.IsOutInstancePort(this); }}
+	public bool IsTargetOrSelfPort		{ get { return IsTargetPort || IsSelfPort; }}
+	public bool IsTargetPort		    { get { return iCS_ObjectType.IsTargetPort(this); }}
+	public bool IsSelfPort		        { get { return iCS_ObjectType.IsSelfPort(this); }}
 	
     // ======================================================================
     // Feature support

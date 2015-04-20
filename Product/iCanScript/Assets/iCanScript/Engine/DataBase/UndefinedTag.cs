@@ -1,17 +1,17 @@
 ﻿namespace iCanScript.Engine {
 	// --------------------------------------------------------------------------
 	/// Tag to indicate to use the script owner as port input.
-	public class OwnerTag {
+	public class UndefinedTag {
 		// ==========================================================================
 		// FIELDS
 		// --------------------------------------------------------------------------
-		public static OwnerTag instance= new OwnerTag();
+		public static UndefinedTag instance= new UndefinedTag();
 		
 		// ==========================================================================
 		// CONVERSIONS
 		// --------------------------------------------------------------------------
 		public override string ToString() {
-			return "Owner";
+			return "Undefined";
 		}
 	}
 	

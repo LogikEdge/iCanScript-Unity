@@ -92,7 +92,7 @@ public static class iCS_FunctionPrototypeUtility {
             return false;
         }
         foreach(var p in dataPorts) {
-            if(p.PortIndex == (int)iCS_PortIndex.Return || p.PortIndex == (int)iCS_PortIndex.InInstance) {
+            if(p.PortIndex == (int)iCS_PortIndex.Return || p.PortIndex == (int)iCS_PortIndex.Target) {
                 continue;
             }
             if(!IsParameterTypeAndNameEquivalent(prototype, p)) {
@@ -128,7 +128,7 @@ public static class iCS_FunctionPrototypeUtility {
     // -----------------------------------------------------------------------
     /// Determine if the instance port is of the same compiler type.
     public static bool IsInstanceTypeEquivalent(iCS_FunctionPrototype prototype, iCS_EditorObject[] dataPorts) {
-        var instancePort= Array.Find(dataPorts, p=> p.PortIndex == (int)iCS_PortIndex.InInstance);
+        var instancePort= Array.Find(dataPorts, p=> p.PortIndex == (int)iCS_PortIndex.Target);
         if(instancePort == null) {
             if(prototype.IsInstanceMember) {
                 return false;
@@ -150,7 +150,7 @@ public static class iCS_FunctionPrototypeUtility {
     public static bool AreAllParameterTypesEquivalent(iCS_FunctionPrototype prototype, iCS_EditorObject[] dataPorts) {
         int nbOfPortsValidated= 0;
         foreach(var p in dataPorts) {
-            if(p.PortIndex == (int)iCS_PortIndex.Return || p.PortIndex == (int)iCS_PortIndex.InInstance) {
+            if(p.PortIndex == (int)iCS_PortIndex.Return || p.PortIndex == (int)iCS_PortIndex.Target) {
                 continue;
             }
             ++nbOfPortsValidated;

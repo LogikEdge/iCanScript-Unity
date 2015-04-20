@@ -153,6 +153,7 @@ public partial class iCS_IStorage {
         if(oldMonoBehaviour != monoBehaviour) {
 			PerformEngineDataUpgrade();
             GenerateEditorData();
+            PerformEditorDataUpgrade();
             // Assure that we have the default nodes if visual script is empty.
             if(EngineObjects.Count == 0) {
                 if(monoBehaviour is iCS_VisualScriptImp) {
@@ -258,7 +259,7 @@ public partial class iCS_IStorage {
                 // Keep a copy of the final position.
                 obj.AnimationTargetRect= obj.GlobalRect;
 				// Reassign all non-connected "target" ports to script Owner
-				if(obj.IsInInstancePort) {
+				if(obj.IsTargetPort) {
 					if(obj.ProducerPort == null) {
 						if(IsLocalType(obj)) {
 							obj.InitialValue= OwnerTag.instance;							
@@ -446,7 +447,6 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(0, name, typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
         this[0].LocalAnchorFromGlobalPosition= VisualEditorCenter();
-		this[0].IsNameEditable= false;
         return this[0];
     }
     // ----------------------------------------------------------------------
@@ -459,7 +459,7 @@ public partial class iCS_IStorage {
         if(instance.IsInstanceNode) {
             InstanceWizardCompleteCreation(instance);
             instance.DisplayName= iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(runtimeType))+" Properties";
-            instance.IsNameEditable= false;
+            CreateSelfPort(id);
         }
         return instance;
     }
@@ -535,13 +535,16 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateInstanceFunction(int parentId, iCS_FunctionPrototype desc) {
-        // Create the conversion node.
+        // -- Grab a free ID --
         int id= GetNextAvailableId();
-        // Create new EditorObject
+        // -- Create the function node --
         var defaultName= desc.DisplayName;
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        // Create parameter ports.
+		// -- Create target & self ports. --
+        CreateTargetPort(id);
+        CreateSelfPort(id);
+        // -- Create parameter ports. --
 		iCS_EditorObject port= null;
         for(int parameterIdx= 0; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
             var p= desc.Parameters[parameterIdx];
@@ -555,25 +558,29 @@ public partial class iCS_IStorage {
                 port.InitialPortValue= initialPortValue;
             }
         }
-		// Create return port.
+		// -- Create return port. --
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
-		// Create 'instance' ports.
-        port= CreatePort(GetInstancePortName(desc), id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
         return instance;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateMessageHandler(int parentId, iCS_MessageInfo desc) {
         if(desc == null) return null;
-        // Create the conversion node.
+        // -- Grab next available ID --
         int id= GetNextAvailableId();
-        // Create new EditorObject
+        // -- Create event handler node --
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        instance.IsNameEditable= false;
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        // Create parameter ports.
+        // -- Create target port. --
 		iCS_EditorObject port= null;
+        if(desc.IsInstanceMember) {
+            port= CreateTargetPort(id);
+            if(instance.Parent.IsBehaviour) {
+                port.InitialValue= instance.Parent.iCSMonoBehaviour;
+            }
+        }
+        // -- Create parameter ports --
         for(int parameterIdx= 0; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
             var p= desc.Parameters[parameterIdx];
             if(p.type != typeof(void)) {
@@ -586,18 +593,10 @@ public partial class iCS_IStorage {
                 port.InitialPortValue= initialPortValue;
             }
         }
-		// Create return port.
+		// -- Create return port --
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
-        // Create 'this' port.
-        if(desc.IsInstanceMember) {
-            port= CreatePort(GetInstancePortName(desc), id, desc.ClassType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);            
-            port.IsNameEditable= false;
-            if(instance.Parent.IsBehaviour) {
-                port.InitialValue= instance.Parent.iCSMonoBehaviour;
-            }
-        }
         return instance;
     }    
 	// ----------------------------------------------------------------------
@@ -624,19 +623,5 @@ public partial class iCS_IStorage {
         iCS_VisualEditor editor= iCS_EditorController.FindVisualEditor();
         var center= editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
 		return center;
-    }
-    // ----------------------------------------------------------------------
-    public static string GetInstancePortName(iCS_MemberInfo memberInfo) {
-        var typeInfo= memberInfo.ParentTypeInfo;
-        if(typeInfo == null) {
-            typeInfo= memberInfo as iCS_TypeInfo;
-            if(typeInfo == null) {
-                return "Instance";
-            }
-        }
-        return GetInstancePortName(typeInfo.CompilerType);
-    }
-    public static string GetInstancePortName(Type type) {
-        return "Target";
     }
 }

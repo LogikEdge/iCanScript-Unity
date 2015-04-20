@@ -403,7 +403,7 @@ public partial class iCS_Graphics {
 
         // Draw node since all draw conditions are valid.
 		float alpha= node.DisplayAlpha;
-		if(IsDisable(node)) {
+		if(ControlFlow.IsDisabledInEditorMode(node)) {
 			alpha*= 0.5f;
 		}
         GUI.color= new Color(1f, 1f, 1f, alpha);
@@ -446,7 +446,7 @@ public partial class iCS_Graphics {
         if(!IsVisibleInViewport(displayArea)) return;
 
 		float alpha= node.DisplayAlpha;
-		if(IsDisable(node)) {
+		if(ControlFlow.IsDisabledInEditorMode(node)) {
 			alpha*= 0.5f;
 		}
 		Color alphaWhite= new Color(1f, 1f, 1f, alpha);
@@ -503,7 +503,7 @@ public partial class iCS_Graphics {
         if(node.IsBehaviour) {
             return new Color(0.75f, 0.75f, 0.75f);
         }
-        if(node.IsMessage) {
+        if(node.IsEventHandler) {
             return Prefs.MessageNodeColor;
         }
         if(node.IsPublicFunction) {
@@ -609,7 +609,7 @@ public partial class iCS_Graphics {
             alpha= 1f-parent.AnimationTimeRatio;
         }
 		// Reduce alpha if port is disabled
-		if(IsDisable(port)) {
+		if(ControlFlow.IsDisabledInEditorMode(parent)) {
 			alpha*= 0.5f;
 		}
         GUI.color= new Color(1f,1f,1f,alpha);
@@ -925,7 +925,8 @@ public partial class iCS_Graphics {
         }
         
 		// Reduce alpha if consumer port is disable
-		if(IsDisable(port)) {
+		if(ControlFlow.IsDisabledInEditorMode(sourceParent) ||
+           ControlFlow.IsDisabledInEditorMode(portParent)) {
 			alpha*= 0.5f;
 		}
 		

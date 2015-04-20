@@ -403,6 +403,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     // ----------------------------------------------------------------------
     public static iCS_EngineObject GetInInstancePort(iCS_IVisualScriptData vsd, iCS_EngineObject node) {
-        return GetChildPortWithIndex(vsd, node, (int)iCS_PortIndex.InInstance);
+        return GetChildPortWithIndex(vsd, node, (int)iCS_PortIndex.Target);
     }
 }

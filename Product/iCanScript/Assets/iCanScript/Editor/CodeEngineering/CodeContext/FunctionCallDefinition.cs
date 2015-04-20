@@ -137,14 +137,7 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Returns a list of all enable ports that affects this function call.
         public override iCS_EditorObject[] GetRelatedEnablePorts() {
-            var enablePorts= new List<iCS_EditorObject>();
-            var funcNode= VSObject;
-            while(funcNode != null) {
-                enablePorts.AddRange(GetEnablePorts(funcNode));
-                funcNode= funcNode.ParentNode;
-            }
-            enablePorts.Reverse();
-            return enablePorts.ToArray();
+            return ControlFlow.GetAllRelatedEnablePorts(VSObject);
         }
 
         // -------------------------------------------------------------------
@@ -366,13 +359,13 @@ namespace iCanScript.Editor.CodeEngineering {
             if(memberInfo != null && memberInfo.IsClassFunctionBase) {
                 if(!VSObject.IStorage.IsLocalType(VSObject)) {
                     result.Append(ToTypeName(node.RuntimeType));
-                    result.Append(".");                    
+                    result.Append(".");
                 }
             }
             else {
-                var thisPort= GetThisPort(node);
+                var thisPort= DataFlow.GetTargetPort(node);
                 if(thisPort != null) {
-                    var producerPort= GetCodeProducerPort(thisPort);
+                    var producerPort= CodeFlow.GetProducerPort(thisPort);
 	                var producerType= Context.GetRuntimeTypeFor(producerPort);
 					if(producerPort.InitialValue is OwnerTag) {
 						if(producerType == typeof(Transform)) {
