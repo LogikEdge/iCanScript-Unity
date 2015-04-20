@@ -9,7 +9,7 @@ public partial class iCS_EditorObject {
     // Edition Utility
     // ----------------------------------------------------------------------
 	public bool CanHavePackageAsParent() {
-		if(IsPort || IsBehaviour || IsState || IsMessage || IsOnStatePackage) {
+		if(IsPort || IsBehaviour || IsState || IsEventHandler || IsOnStatePackage) {
 			return false;
 		}
 		return true;

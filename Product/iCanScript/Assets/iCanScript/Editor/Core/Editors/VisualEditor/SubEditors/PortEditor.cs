@@ -2,6 +2,7 @@
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor {
 
@@ -29,7 +30,7 @@ namespace iCanScript.Editor {
             if(port == null) return null;
             // Create the specific port editors.
             var parent= port.ParentNode;
-			if(parent.IsMessage) {
+			if(parent.IsEventHandler) {
 				return EventHandlerPortEditor.Create(port, screenPosition);
 			}
 			if(parent.IsPublicFunction) {
@@ -56,7 +57,10 @@ namespace iCanScript.Editor {
     	public void OnGUI() {
             // Display port name.
             EditName("Port Name");
-
+            
+            var newPortSpec= EditorGUILayout.EnumPopup("Port Spec", vsObject.PortSpec);
+            vsObject.PortSpec= ConvertEnum(newPortSpec, PortSpecification.Default);
+            
             OnPortSpecificGUI();
             
             EditDescription();        

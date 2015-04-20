@@ -503,7 +503,7 @@ public partial class iCS_Graphics {
         if(node.IsBehaviour) {
             return new Color(0.75f, 0.75f, 0.75f);
         }
-        if(node.IsMessage) {
+        if(node.IsEventHandler) {
             return Prefs.MessageNodeColor;
         }
         if(node.IsPublicFunction) {

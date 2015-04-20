@@ -224,7 +224,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject InstanceWizardGetObjectAssociatedWithPort(iCS_EditorObject port) {
-        if(port.IsInstancePort || port.IsControlPort) return port;
+        if(port.IsTargetOrSelfPort || port.IsControlPort) return port;
         iCS_EditorObject result= port;
         var objectInstance= port.Parent;
         objectInstance.ForEachChildRecursiveDepthFirst(
@@ -300,7 +300,7 @@ public partial class iCS_IStorage {
         ForEachChildDataPort(func,
             port=> {
                 string modulePortName= port.DisplayName;
-                if(!port.IsInstancePort) {
+                if(!port.IsTargetOrSelfPort) {
                     if(desc.IsField) {
                         var fieldInfo= desc as iCS_FieldInfo;
                         modulePortName= (fieldInfo.IsGet ? "get_" : "set_")+fieldInfo.FieldName;
@@ -331,7 +331,7 @@ public partial class iCS_IStorage {
                     }
                 } else {
                     // Special case for "instance".
-                    if(port.IsInstancePort) {
+                    if(port.IsTargetOrSelfPort) {
                     } else {
                         iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicDataPort);
                         if(classPort == null) {

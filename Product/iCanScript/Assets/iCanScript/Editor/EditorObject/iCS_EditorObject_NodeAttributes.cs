@@ -50,14 +50,6 @@ public partial class iCS_EditorObject {
 			engineObject.IconGUID= value;
 		}
 	}
-	public int ExecutionPriority {
-	    get { return EngineObject.ExecutionPriority; }
-	    set {
-			var engineObject= EngineObject;
-            if(engineObject.ExecutionPriority == value) return;
-	        engineObject.ExecutionPriority= value;
-	    }
-	}
     public MethodBase GetMethodBase(List<iCS_EditorObject> editorObjects) {
         return EngineObject.GetMethodBase(EditorToEngineList(editorObjects));
     }

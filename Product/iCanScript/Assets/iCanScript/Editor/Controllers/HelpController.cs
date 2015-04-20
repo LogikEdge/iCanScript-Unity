@@ -147,11 +147,7 @@ namespace iCanScript.Editor {
     			// Otherwise try and get help based on engineObject Type.
     			// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
     			if (edObj.IsNode) {
-    				if(edObj.IsVariableReference)
-    					return getHelp("VariableReference");
-    				else if(edObj.IsFunctionCall)
-    					return getHelp("FunctionCall");
-    				else if(edObj.IsPublicFunction)
+    				if(edObj.IsPublicFunction)
     					return getHelp("PublicFunction");
     				else if(edObj.IsPublicVariable)
     					return getHelp("PublicVariable");
@@ -163,8 +159,10 @@ namespace iCanScript.Editor {
     					return getHelp("Instance");
     			}
     			else if (edObj.IsPort) {
-    				if (edObj.IsInstancePort)
-    					return getHelp("InstancePort");
+    				if (edObj.IsTargetPort)
+    					return getHelp("TargetPort");
+                    else if(edObj.IsSelfPort)
+                        return getHelp("SelfPort");
     				else if(edObj.IsTriggerPort)
     					return getHelp("TriggerPort");
     				else if(edObj.IsEnablePort)
@@ -262,7 +260,7 @@ namespace iCanScript.Editor {
     			iCS_MemberInfo memberInfo=null;
     			
     			// Try and Get Member Info from GetAssociatedDescriptor 
-    			if(edObj.IsKindOfFunction || edObj.IsMessageHandler) {
+    			if(edObj.IsKindOfFunction || edObj.IsEventHandler) {
     				memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
     			}
     			
@@ -292,12 +290,8 @@ namespace iCanScript.Editor {
     			if(displayType) {
     				// Type names to be displayed in front of node name.
     				// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
-    				if(edObj.IsVariableReference)
-    					typeName= "Variable Reference";
-    				else if(edObj.IsFunctionCall)
-    					typeName= "Function Call";
-    				else if(edObj.IsMessageHandler)
-    					typeName= "Message Handler";
+    				if(edObj.IsEventHandler)
+    					typeName= "Unity Event Handler";
     				else if(edObj.IsPublicFunction)
     					typeName= "Public Function";
     				else if(edObj.IsPublicVariable)
@@ -317,11 +311,13 @@ namespace iCanScript.Editor {
     		else if (edObj.IsPort) {
     			if(displayType) {
     				// change Type for special types of ports. 
-    				if (edObj.IsInstancePort) {
-    					// no need to show type name of Instance ports which will be repeated in port name.
-    					typeName= "Instance";	
+    				if (edObj.IsTargetPort) {
+    					typeName= "Target";	
     				}
-    				else {
+    				else if(edObj.IsSelfPort) {
+    				    typeName= "Self";
+    				}
+                    else {
     					typeName= iCS_Types.TypeName(edObj.RuntimeType);
     				}
     			}

@@ -13,7 +13,7 @@ namespace iCanScript.Editor.CodeEngineering {
     // -------------------------------------------------------------------
     public delegate string  CodeProducer(int indent);
     public enum AccessSpecifier   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
-    public enum ScopeSpecifier    { STATIC, NONSTATIC, VIRTUAL };
+    public enum ScopeSpecifier    { STATIC, NONSTATIC, VIRTUAL, OVERRIDE, NEW, CONST };
 
     public abstract class CodeBase {
         // ===================================================================
@@ -128,7 +128,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     if(producerPort == vsObj && valueInsteadOfSelf) {
                         return ToValueString(producerPort.InitialValue);
                     }
-                    if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsMessageHandler) && !producerPort.IsFixDataPort) {
+                    if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsEventHandler) && !producerPort.IsFixDataPort) {
                         return ToValueString(producerPort.InitialValue);
                     }                    
                 }

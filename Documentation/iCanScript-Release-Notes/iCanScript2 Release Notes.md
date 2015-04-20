@@ -19,6 +19,7 @@ V2.0.6 is a development release of iCanScript2.
 ### List of Changes
 
 - **<span style="color: blue">\[IMPROVED\]</span>** Add the _'Self'_ port on all function nodes.
+- **<span style="color: red">\[FIXED\]</span>** Disabled nodes are now displayed with half intensity in editor mode.
 
 
 * * *

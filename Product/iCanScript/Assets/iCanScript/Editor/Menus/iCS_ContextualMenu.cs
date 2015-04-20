@@ -96,8 +96,6 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.ClassField:        FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassProperty:     FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.FunctionCall:      FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.VariableReference: FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
             case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
@@ -157,7 +155,7 @@ public class iCS_ContextualMenu {
             menu[idx+1]= new iCS_MenuContext(StateChartStr);
             menu[idx+2]= new iCS_MenuContext(SeparatorStr);
         }
-        if(!selectedObject.IsPublicFunction && !selectedObject.IsMessage) {
+        if(!selectedObject.IsPublicFunction && !selectedObject.IsEventHandler) {
             idx= GrowMenuBy(ref menu, 2);
             menu[idx]= new iCS_MenuContext(EnablePortStr);
             if(storage.HasTriggerPort(selectedObject)) {
@@ -263,15 +261,12 @@ public class iCS_ContextualMenu {
     void FunctionMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         iCS_MenuContext[] menu;
         if(!selectedObject.IsIconizedInLayout) {
-            // Determine if we should support output 'this' port.
-            bool isEnableSupported= !selectedObject.IsVariableReference;
             // Base menu items
             menu= new iCS_MenuContext[0];
             int idx= 0;
-            if(isEnableSupported) {
-                idx= GrowMenuBy(ref menu, 1);
-                menu[idx]= new iCS_MenuContext(EnablePortStr);
-            }
+            // -- Add Enable & Trigger --
+            idx= GrowMenuBy(ref menu, 1);
+            menu[idx]= new iCS_MenuContext(EnablePortStr);
             idx= GrowMenuBy(ref menu, 1);
             if(storage.HasTriggerPort(selectedObject)) {
                 menu[idx]= new iCS_MenuContext("#"+TriggerPortStr);
