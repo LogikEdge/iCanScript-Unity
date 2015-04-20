@@ -1,3 +1,4 @@
+//#define TEST_UPGRADE
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -35,20 +36,27 @@ public partial class iCS_IStorage {
 		iCS_Version storageVersion= new iCS_Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
-        // -- Before v2.0.6 --
+        // -- Upgrade each version --
 		if(storageVersion.IsOlderThen(2,0,6)) {
             isUpgraded |= V2_0_6_EditorUpgrade();
         }
+		if(storageVersion.IsOlderThen(2,0,7)) {
+            isUpgraded |= V2_0_7_EditorUpgrade();
+        }
+
         // -- Warn the user that an upgrade toke place --
         if(isUpgraded) {
             SaveStorage();
 			ShowUpgradeDialog(softwareVersion);
         }
 		// -- Update storage version identifiers --
+#if TEST_UPGRADE
         Debug.LogWarning("ENABLE SAVED VERSION ONCE CONVERSION IS COMPLETED");
-//		EngineStorage.MajorVersion = iCS_Config.MajorVersion;
-//		EngineStorage.MinorVersion = iCS_Config.MinorVersion;
-//		EngineStorage.BugFixVersion= iCS_Config.BugFixVersion;
+#else
+		EngineStorage.MajorVersion = iCS_Config.MajorVersion;
+		EngineStorage.MinorVersion = iCS_Config.MinorVersion;
+		EngineStorage.BugFixVersion= iCS_Config.BugFixVersion;
+#endif
 	}
 
     // ----------------------------------------------------------------------
@@ -64,11 +72,13 @@ public partial class iCS_IStorage {
 		EditorApplication.SaveCurrentSceneIfUserWantsTo();
 	}
 
+    // ======================================================================
+    // UPGRADE CODE
     // ----------------------------------------------------------------------
     /// Performs the editor data upgrade for v2.0.6.
     bool V2_0_6_EditorUpgrade() {
         bool isUpgraded= false;
-        // -- Scan for functions and properties nodes to add a self port --
+        // -- Scan for functions and properties nodes to add the self port --
         ForEach(
             o=> {
                 if(o.IsKindOfFunction || o.IsInstanceNode) {
@@ -79,12 +89,18 @@ public partial class iCS_IStorage {
                 }
             }
         );
-        // -- Set port spec for Target/Self ports --
+        return isUpgraded;
+    }
+    // ----------------------------------------------------------------------
+    /// Performs the editor data upgrade for v2.0.6.
+    bool V2_0_7_EditorUpgrade() {
+        bool isUpgraded= false;
+        // -- Convert to new port specification --
         ForEach(
             p=> {
                 if(!p.IsPort) return;
                 // -- Abort if conversion already took place --
-//                if(p.PortSpec != PortSpecification.Default) return;
+                if(p.PortSpec != PortSpecification.Default) return;
                 // -- Initial setup of the port specification --
                 var parentNode= p.ParentNode;
                 if(p.IsEnablePort) {
@@ -132,4 +148,5 @@ public partial class iCS_IStorage {
         );        
         return isUpgraded;
     }
+
 }
