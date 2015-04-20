@@ -86,6 +86,19 @@ public partial class iCS_EditorObject {
 		return count;                
     }
     // ---------------------------------------------------------------------------------
+    public int NumberOfFunctionOutputPorts() {
+        int count= 0;
+        foreach(var childId in Children) {
+            if(IsIdValid(childId)) {
+                var vsObj= EditorObjects[childId];
+                if(vsObj.IsOutputPort && !vsObj.IsSelfPort && !vsObj.IsTriggerPort) {
+                    ++count;                    
+                }
+            }
+        }
+		return count;                
+    }
+    // ---------------------------------------------------------------------------------
     public iCS_EditorObject TopObjectInstanceNode() {
         iCS_EditorObject objInstance= null;
         ForEachParentNode(p=> { if(p.IsInstanceNode) objInstance= p; });

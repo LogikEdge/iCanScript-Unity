@@ -150,16 +150,5 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     public bool HasADestination(iCS_EngineObject port) {
         return iCS_VisualScriptData.HasADestination(this, port);
     }
-    
-    // ======================================================================
-    // EnginObject Utilities
-    // ----------------------------------------------------------------------
-	public bool IsInPackagePort(iCS_EngineObject obj) {
-        return iCS_VisualScriptData.IsInPackagePort(this, obj);
-	}
-    // ----------------------------------------------------------------------
-	public bool IsOutPackagePort(iCS_EngineObject obj) {
-        return iCS_VisualScriptData.IsOutPackagePort(this, obj);
-	}
-    
+        
 }

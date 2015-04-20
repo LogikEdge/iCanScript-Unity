@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 using iCanScript.Engine;
 
 public partial class iCS_IStorage {
@@ -40,8 +41,8 @@ public partial class iCS_IStorage {
 		if(storageVersion.IsOlderThen(2,0,6)) {
             isUpgraded |= V2_0_6_EditorUpgrade();
         }
-		if(storageVersion.IsOlderThen(2,0,7)) {
-            isUpgraded |= V2_0_7_EditorUpgrade();
+		if(storageVersion.IsOlderThen(2,0,8)) {
+            isUpgraded |= V2_0_8_EditorUpgrade();
         }
 
         // -- Warn the user that an upgrade toke place --
@@ -79,21 +80,25 @@ public partial class iCS_IStorage {
     bool V2_0_6_EditorUpgrade() {
         bool isUpgraded= false;
         // -- Scan for functions and properties nodes to add the self port --
+        var needsSelfPort= new List<iCS_EditorObject>();
         ForEach(
             o=> {
                 if(o.IsKindOfFunction || o.IsInstanceNode) {
                     if(o.IsConstructor == false && GetSelfPort(o) == null) {
-                        CreateSelfPort(o);
-                        isUpgraded= true;
+                        needsSelfPort.Add(o);
                     }
                 }
             }
         );
+        foreach(var o in needsSelfPort) {
+            CreateSelfPort(o);
+            isUpgraded= true;            
+        }
         return isUpgraded;
     }
     // ----------------------------------------------------------------------
     /// Performs the editor data upgrade for v2.0.6.
-    bool V2_0_7_EditorUpgrade() {
+    bool V2_0_8_EditorUpgrade() {
         bool isUpgraded= false;
         // -- Convert to new port specification --
         ForEach(

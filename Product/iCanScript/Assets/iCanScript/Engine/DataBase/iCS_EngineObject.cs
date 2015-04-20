@@ -118,10 +118,6 @@ public class iCS_EngineObject {
         get { return LocalAnchorPosition.y; }
         set { LocalAnchorPosition.y= value; }
     }
-    public PortIterationSignatureEnum PortIterationSignature {
-        get { return (PortIterationSignatureEnum)(int)DisplayOption; }
-        set { DisplayOption= (iCS_DisplayOptionEnum)(int)value; }
-    }
 
     // ======================================================================
     // Initialization
@@ -321,10 +317,15 @@ public class iCS_EngineObject {
     public FieldInfo GetFieldInfoNoWarning() {
         if(MethodName == null) return null;
 		Type classType= RuntimeType;
-        if( classType == null ) return null;
-        return classType.GetField(MethodName);
+        return GetFieldInfoRecursive(classType, MethodName);
     }
-
+    public FieldInfo GetFieldInfoRecursive(Type classType, string fieldName) {
+        if(classType == null) return null;
+        var fieldInfo= classType.GetField(fieldName);
+        if(fieldInfo != null) return fieldInfo;
+        return GetFieldInfoRecursive(classType.BaseType, fieldName);
+    }
+    
     // ----------------------------------------------------------------------
 	public MethodBase GetMethodBase(List<iCS_EngineObject> parameters) {
         // Extract MethodBase for constructor.

@@ -157,11 +157,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         return GetFirstProducerPort(this, port);
     }
     // ----------------------------------------------------------------------
-    // Returns the list of consumer ports.
-    public iCS_EngineObject[] GetConsumerPorts(iCS_EngineObject port) {
-        return GetConsumerPorts(this, port);
-    }
-    // ----------------------------------------------------------------------
     public bool IsEndPort(iCS_EngineObject port) {
         return IsEndPort(this, port);
     }
@@ -169,26 +164,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     public bool IsRelayPort(iCS_EngineObject port) {
         return IsRelayPort(this, port);
     }
-    // ----------------------------------------------------------------------
-    public bool HasASource(iCS_EngineObject port) {
-        return HasASource(this, port);
-    }
-    // ----------------------------------------------------------------------
-    public bool HasADestination(iCS_EngineObject port) {
-        return HasADestination(this, port);
-    }
     
-    // ======================================================================
-    // EngineObject Utilities
-    // ----------------------------------------------------------------------
-	public bool IsInPackagePort(iCS_EngineObject obj) {
-        return IsInPackagePort(this, obj);
-	}
-    // ----------------------------------------------------------------------
-	public bool IsOutPackagePort(iCS_EngineObject obj) {
-        return IsOutPackagePort(this, obj);
-    }
-
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     //               VISUAL SCRIPT DATA UTILITY SECTION
@@ -373,36 +349,11 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     }
     
     // ======================================================================
-    // EngineObject Utilities
-    // ----------------------------------------------------------------------
-	public static bool IsInPackagePort(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
-		if(!obj.IsInDataOrControlPort) return false;
-		var parent= GetParentNode(vsd, obj);
-		return parent != null && parent.IsKindOfPackage;
-	}
-    // ----------------------------------------------------------------------
-	public static bool IsOutPackagePort(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
-		if(!obj.IsOutDataOrControlPort) return false;
-		var parent= GetParentNode(vsd, obj);
-		return parent != null && parent.IsKindOfPackage;
-	}
-    
-    // ======================================================================
     // General Queries
     // ----------------------------------------------------------------------
     public static iCS_EngineObject[] GetChildPorts(iCS_IVisualScriptData vsd, iCS_EngineObject node) {
         List<iCS_EngineObject> childPorts= new List<iCS_EngineObject>();
         FilterWith(p=> p.IsPort && p.ParentId == node.InstanceId, childPorts.Add, vsd);
         return childPorts.ToArray();
-    }
-    // ----------------------------------------------------------------------
-    public static iCS_EngineObject GetChildPortWithIndex(iCS_IVisualScriptData vsd, iCS_EngineObject node, int index) {
-        iCS_EngineObject port= null;
-        FilterWith(p=> p.IsPort && p.ParentId == node.InstanceId && p.PortIndex == index, fp=> port= fp, vsd);
-        return port;
-    }
-    // ----------------------------------------------------------------------
-    public static iCS_EngineObject GetInInstancePort(iCS_IVisualScriptData vsd, iCS_EngineObject node) {
-        return GetChildPortWithIndex(vsd, node, (int)iCS_PortIndex.Target);
     }
 }

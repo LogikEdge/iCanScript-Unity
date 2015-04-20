@@ -82,39 +82,4 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     }
 
     
-    // ======================================================================
-    // Storage Redirect
-    // ----------------------------------------------------------------------
-    public string GetFullName(iCS_EngineObject obj) {
-        return iCS_VisualScriptData.GetFullName(this, this, obj);
-    }
-    public iCS_EngineObject GetParent(iCS_EngineObject obj) {
-        return iCS_VisualScriptData.GetParent(this, obj);
-    }
-    public iCS_EngineObject GetProducerEndPort(iCS_EngineObject port) {
-        return iCS_VisualScriptData.GetFirstProducerPort(this, port);
-    }
-    public iCS_EngineObject GetProducerPort(iCS_EngineObject port) {
-        return iCS_VisualScriptData.GetProducerPort(this, port);
-    }
-    public iCS_EngineObject GetParentNode(iCS_EngineObject obj) {
-        return iCS_VisualScriptData.GetParentNode(this, obj);
-    }
-    public bool IsOutPackagePort(iCS_EngineObject port) {
-        return iCS_VisualScriptData.IsOutPackagePort(this, port);
-    }
-    
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    // DATABASE CONVERSION
-    // ======================================================================
-	// None.
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
-
-    // ======================================================================
-    // Initialization
-    // ----------------------------------------------------------------------
-    void Awake() {
-    }
-
  }
