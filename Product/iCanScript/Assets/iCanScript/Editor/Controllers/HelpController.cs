@@ -260,7 +260,7 @@ namespace iCanScript.Editor {
     			iCS_MemberInfo memberInfo=null;
     			
     			// Try and Get Member Info from GetAssociatedDescriptor 
-    			if(edObj.IsKindOfFunction || edObj.IsMessageHandler) {
+    			if(edObj.IsKindOfFunction || edObj.IsEventHandler) {
     				memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
     			}
     			
@@ -290,8 +290,8 @@ namespace iCanScript.Editor {
     			if(displayType) {
     				// Type names to be displayed in front of node name.
     				// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
-    				if(edObj.IsMessageHandler)
-    					typeName= "Message Handler";
+    				if(edObj.IsEventHandler)
+    					typeName= "Unity Event Handler";
     				else if(edObj.IsPublicFunction)
     					typeName= "Public Function";
     				else if(edObj.IsPublicVariable)

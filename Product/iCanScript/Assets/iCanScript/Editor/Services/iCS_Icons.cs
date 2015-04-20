@@ -76,7 +76,7 @@ public static class iCS_Icons {
 
     // -------------------------------------------------------------------------
     public static Texture2D GetDefaultNodeIconFor(iCS_EditorObject obj) {
-        if(obj.IsMessage) {
+        if(obj.IsEventHandler) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.Message);            
         } else if(obj.IsInstanceNode) {
             return GetDefaultNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);

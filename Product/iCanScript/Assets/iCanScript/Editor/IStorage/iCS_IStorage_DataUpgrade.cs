@@ -111,7 +111,7 @@ public partial class iCS_IStorage {
                     p.PortSpec= PortSpecification.Parameter;
                     isUpgraded= true;
                 }
-                else if(parentNode.IsMessageHandler) {
+                else if(parentNode.IsEventHandler) {
                     if(p.IsFixDataPort) {
                         p.PortSpec= PortSpecification.Parameter;
                         isUpgraded= true;

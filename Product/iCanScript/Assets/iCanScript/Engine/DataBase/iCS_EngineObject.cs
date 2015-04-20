@@ -247,7 +247,7 @@ public class iCS_EngineObject {
     public bool IsClassField               { get { return iCS_ObjectType.IsClassField(this); }}
     public bool IsInstanceField            { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast                 { get { return iCS_ObjectType.IsTypeCast(this); }}
-    public bool IsMessage                  { get { return iCS_ObjectType.IsMessage(this); }}
+    public bool IsEventHandler             { get { return iCS_ObjectType.IsEventHandler(this); }}
     public bool IsInstanceNode             { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
 	public bool IsOnStatePackage           { get { return iCS_ObjectType.IsOnStatePackage(this); }}
     public bool IsOnStateEntryPackage      { get { return iCS_ObjectType.IsOnStateEntryPackage(this); }}

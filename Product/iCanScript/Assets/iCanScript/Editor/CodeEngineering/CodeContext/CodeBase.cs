@@ -128,7 +128,7 @@ namespace iCanScript.Editor.CodeEngineering {
                     if(producerPort == vsObj && valueInsteadOfSelf) {
                         return ToValueString(producerPort.InitialValue);
                     }
-                    if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsMessageHandler) && !producerPort.IsFixDataPort) {
+                    if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsEventHandler) && !producerPort.IsFixDataPort) {
                         return ToValueString(producerPort.InitialValue);
                     }                    
                 }

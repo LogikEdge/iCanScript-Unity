@@ -279,7 +279,7 @@ public partial class iCS_EditorObject {
         get {
             if(c_DisplayName == null) {
                 if(IsDataPort && IsProgrammaticInstancePort) {
-                    if(IsOutputPort || ParentNode.IsMessageHandler || ParentNode.IsPublicFunction) {
+                    if(IsOutputPort || ParentNode.IsEventHandler || ParentNode.IsPublicFunction) {
                         c_DisplayName= "Self";
                     }
                     else {
@@ -322,7 +322,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
-		get { return EngineObject.IsNameEditable && !IsMessageHandler; }
+		get { return EngineObject.IsNameEditable && !IsEventHandler; }
 		set {
             var engineObject= EngineObject;
             if(engineObject.IsNameEditable == value) return;
@@ -374,7 +374,7 @@ public partial class iCS_EditorObject {
                 if(IsConstructor) {
                     c_NodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
                 }
-                else if(IsMessageHandler || IsPublicFunction) {
+                else if(IsEventHandler || IsPublicFunction) {
                     c_NodeSubTitle= "Self is a "+iCS_ObjectNames.ToDisplayName(EditorObjects[0].DisplayName);                    
                 }
                 else if(IsKindOfFunction || IsInstanceNode) {

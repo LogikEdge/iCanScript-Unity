@@ -74,7 +74,7 @@ public static class iCS_ObjectType {
     public static bool IsMux                  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Mux; }
 
     public static bool IsKindOfPackage	      (iCS_EngineObject obj) { return IsPackage(obj) ||
-                                                                              IsBehaviour(obj) || IsMessage(obj); }
+                                                                              IsBehaviour(obj) || IsEventHandler(obj); }
 	public static bool IsKindOfState		  (iCS_EngineObject obj) { return IsStateChart(obj) || IsState(obj); }
 
     // Function nodes.
@@ -82,7 +82,7 @@ public static class iCS_ObjectType {
 																			  IsField(obj) || IsTypeCast(obj); } 
     public static bool IsFunction             (iCS_EngineObject obj) { return IsClassFunction(obj) || IsInstanceFunction(obj); }
     public static bool IsField                (iCS_EngineObject obj) { return IsClassField(obj) || IsInstanceField(obj); }
-    public static bool IsMessage              (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsClassMessage(obj); }
+    public static bool IsEventHandler         (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsClassMessage(obj); }
 
     public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
     public static bool IsClassFunction        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassFunction; }

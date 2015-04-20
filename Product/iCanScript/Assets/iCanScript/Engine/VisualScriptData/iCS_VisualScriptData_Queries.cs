@@ -67,8 +67,8 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // Searching Queries
     // -----------------------------------------------------------------------
     // Finds all the message handlers
-    public static iCS_EngineObject[] FindMessageHandlers(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> o.IsMessage);
+    public static iCS_EngineObject[] FindEventHandlers(iCS_IVisualScriptData vsd) {
+        return FindMany(vsd, o=> o.IsEventHandler);
     }
     // -----------------------------------------------------------------------
     // Finds all the constructors

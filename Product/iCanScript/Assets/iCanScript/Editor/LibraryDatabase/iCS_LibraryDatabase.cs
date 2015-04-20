@@ -322,7 +322,7 @@ public class iCS_LibraryDatabase {
 					if(edObj.IsInstanceNode) {
 						return member.ParentTypeInfo;
 					}
-					if(edObj.IsMessageHandler) {
+					if(edObj.IsEventHandler) {
 						var memberInfo= member as iCS_MemberInfo;
 						if(engineObject.RawName == memberInfo.DisplayName) {
 							return member;

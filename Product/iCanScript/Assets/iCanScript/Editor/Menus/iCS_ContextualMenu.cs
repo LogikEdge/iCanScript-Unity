@@ -155,7 +155,7 @@ public class iCS_ContextualMenu {
             menu[idx+1]= new iCS_MenuContext(StateChartStr);
             menu[idx+2]= new iCS_MenuContext(SeparatorStr);
         }
-        if(!selectedObject.IsPublicFunction && !selectedObject.IsMessage) {
+        if(!selectedObject.IsPublicFunction && !selectedObject.IsEventHandler) {
             idx= GrowMenuBy(ref menu, 2);
             menu[idx]= new iCS_MenuContext(EnablePortStr);
             if(storage.HasTriggerPort(selectedObject)) {

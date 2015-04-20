@@ -30,7 +30,7 @@ namespace iCanScript.Editor {
             if(port == null) return null;
             // Create the specific port editors.
             var parent= port.ParentNode;
-			if(parent.IsMessage) {
+			if(parent.IsEventHandler) {
 				return EventHandlerPortEditor.Create(port, screenPosition);
 			}
 			if(parent.IsPublicFunction) {

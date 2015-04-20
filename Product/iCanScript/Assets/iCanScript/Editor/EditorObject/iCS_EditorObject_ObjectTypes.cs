@@ -13,7 +13,7 @@ public partial class iCS_EditorObject {
     public bool IsKindOfState               { get { return EngineObject.IsKindOfState; }}
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
     public bool IsPackage                   { get { return EngineObject.IsPackage; }}
-    public bool IsMessage                   { get { return EngineObject.IsMessage; }}
+    public bool IsEventHandler              { get { return EngineObject.IsEventHandler; }}
     public bool IsMux                       { get { return EngineObject.IsMux; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
 	public bool IsField						{ get { return EngineObject.IsField; }}
@@ -23,7 +23,6 @@ public partial class iCS_EditorObject {
     public bool IsState                     { get { return EngineObject.IsState; }}
 	public bool IsInstanceNode				{ get { return EngineObject.IsInstanceNode; }}
     public bool IsTransitionPackage         { get { return EngineObject.IsTransitionPackage; }}
-	public bool IsMessageHandler			{ get { return IsMessage && IsParentValid && Parent.IsBehaviour; }}
 	public bool IsOnStatePackage        	{ get { return EngineObject.IsOnStatePackage; }}
     public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}
     public bool IsOnStateUpdatePackage  	{ get { return EngineObject.IsOnStateUpdatePackage; }}
