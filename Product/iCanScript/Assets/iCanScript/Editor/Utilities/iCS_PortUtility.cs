@@ -10,7 +10,7 @@ public static class iCS_PortUtility {
     public static void RepairPorts(iCS_IVisualScriptData vsd, iCS_EngineObject obj) {
         // Extract and classify ports.
         var ports= iCS_VisualScriptData.GetChildPorts(vsd, obj);
-        var parameterPorts= P.filter(p=> p.IsDataPort && !p.IsInstancePort, ports);
+        var parameterPorts= P.filter(p=> p.IsDataPort && !p.IsTargetOrSelfPort, ports);
         var enablePorts   = P.filter(p=> p.IsEnablePort, ports);
 
         // Move all uninitialized indexes at the end.

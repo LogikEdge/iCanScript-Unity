@@ -174,8 +174,6 @@ public static class iCS_ObjectType {
 	public static bool IsOutChildMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutChildMuxPort; }
 
 	// Instance Ports
-	public static bool IsInstancePort		  (iCS_EngineObject obj) { return IsTargetPort(obj) || IsSelfPort(obj); }
-	public static bool IsTargetPort		      (iCS_EngineObject obj) { return IsInFixDataPort(obj) &&
-	                                                                          obj.PortIndex == (int)iCS_PortIndex.Target; }
+	public static bool IsTargetPort		      (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.Target; }
 	public static bool IsSelfPort	          (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.Self; }
 }

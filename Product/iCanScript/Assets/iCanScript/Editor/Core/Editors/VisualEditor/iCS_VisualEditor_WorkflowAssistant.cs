@@ -208,7 +208,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     					ShowAssistantMessage("Drag-and-Release port inside Message Handler to Popup Quick Create Menu");                                                
                     }
 					if(editorObj.IsInputPort && editorObj.ProducerPort == null) {
-                        if(!(parent.IsMessageHandler && (port.IsProposedDataPort || port.IsInstancePort))) {
+                        if(!(parent.IsMessageHandler && (port.IsProposedDataPort || port.IsTargetOrSelfPort))) {
                             if(port.IsSelected) {
                                 ShowAssistantMessage("Use the Inspector to Change the Value of the port");                            
                             }

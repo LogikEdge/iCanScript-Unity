@@ -13,7 +13,7 @@ namespace iCanScript.Editor.CodeEngineering {
     // -------------------------------------------------------------------
     public delegate string  CodeProducer(int indent);
     public enum AccessSpecifier   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
-    public enum ScopeSpecifier    { STATIC, NONSTATIC, VIRTUAL };
+    public enum ScopeSpecifier    { STATIC, NONSTATIC, VIRTUAL, OVERRIDE, NEW, CONST };
 
     public abstract class CodeBase {
         // ===================================================================

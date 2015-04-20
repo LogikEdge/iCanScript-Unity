@@ -159,8 +159,10 @@ namespace iCanScript.Editor {
     					return getHelp("Instance");
     			}
     			else if (edObj.IsPort) {
-    				if (edObj.IsInstancePort)
-    					return getHelp("InstancePort");
+    				if (edObj.IsTargetPort)
+    					return getHelp("TargetPort");
+                    else if(edObj.IsSelfPort)
+                        return getHelp("SelfPort");
     				else if(edObj.IsTriggerPort)
     					return getHelp("TriggerPort");
     				else if(edObj.IsEnablePort)
@@ -309,11 +311,13 @@ namespace iCanScript.Editor {
     		else if (edObj.IsPort) {
     			if(displayType) {
     				// change Type for special types of ports. 
-    				if (edObj.IsInstancePort) {
-    					// no need to show type name of Instance ports which will be repeated in port name.
-    					typeName= "Instance";	
+    				if (edObj.IsTargetPort) {
+    					typeName= "Target";	
     				}
-    				else {
+    				else if(edObj.IsSelfPort) {
+    				    typeName= "Self";
+    				}
+                    else {
     					typeName= iCS_Types.TypeName(edObj.RuntimeType);
     				}
     			}

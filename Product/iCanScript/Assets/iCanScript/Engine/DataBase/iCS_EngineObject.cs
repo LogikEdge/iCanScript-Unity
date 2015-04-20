@@ -287,7 +287,6 @@ public class iCS_EngineObject {
     public bool IsInDataPort            { get { return iCS_ObjectType.IsInDataPort(this); }}
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
     // Control Ports
-    public bool IsControlPort           { get { return iCS_ObjectType.IsControlPort(this); }}
     public bool IsEnablePort            { get { return iCS_ObjectType.IsEnablePort(this); }}
     public bool IsTriggerPort           { get { return iCS_ObjectType.IsTriggerPort(this); }}
     // Data Flow or Control Ports
@@ -305,7 +304,7 @@ public class iCS_EngineObject {
 	public bool IsOutParentMuxPort		{ get { return iCS_ObjectType.IsOutParentMuxPort(this); }}
 	public bool IsOutChildMuxPort		{ get { return iCS_ObjectType.IsOutChildMuxPort(this); }}
     // Instance Ports
-	public bool IsInstancePort			{ get { return iCS_ObjectType.IsInstancePort(this); }}
+	public bool IsTargetOrSelfPort		{ get { return IsTargetPort || IsSelfPort; }}
 	public bool IsTargetPort		    { get { return iCS_ObjectType.IsTargetPort(this); }}
 	public bool IsSelfPort		        { get { return iCS_ObjectType.IsSelfPort(this); }}
 	

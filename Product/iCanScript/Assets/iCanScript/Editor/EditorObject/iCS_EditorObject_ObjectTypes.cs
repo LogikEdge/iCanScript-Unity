@@ -71,7 +71,7 @@ public partial class iCS_EditorObject {
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
     // Control Ports
-    public bool IsControlPort               { get { return EngineObject.IsControlPort; }}
+    public bool IsControlPort               { get { return IsEnablePort || IsTriggerPort; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
     public bool IsTriggerPort               { get { return EngineObject.IsTriggerPort; }}
     // Data Flow or Control Ports
@@ -90,7 +90,7 @@ public partial class iCS_EditorObject {
     public bool IsOutParentMuxPort          { get { return EngineObject.IsOutParentMuxPort; }}
     public bool IsNestedPort                { get { var parent= Parent; return parent != null && parent.IsPort; }}
 	// Instance Ports
-	public bool IsInstancePort				{ get { return EngineObject.IsInstancePort; }}
+	public bool IsTargetOrSelfPort			{ get { return IsTargetPort || IsSelfPort; }}
 	public bool IsTargetPort			    { get { return EngineObject.IsTargetPort; }}
 	public bool IsSelfPort			        { get { return EngineObject.IsSelfPort; }}
     // Special Cases
