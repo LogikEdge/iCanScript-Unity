@@ -15,14 +15,6 @@ public partial class iCS_EditorObject {
 	public object	InitialValue= null;
 
     // ======================================================================
-	// Port iteration signature
-	// ----------------------------------------------------------------------
-    public PortIterationSignatureEnum PortIterationSignature {
-        get { return EngineObject.PortIterationSignature; }
-        set { EngineObject.PortIterationSignature= value; }
-    }
-    
-    // ======================================================================
 	// Port source related attributes.
 	// ----------------------------------------------------------------------
     public bool IsPortDisabled { get { return DisplayOption == iCS_DisplayOptionEnum.Disabled; }}
