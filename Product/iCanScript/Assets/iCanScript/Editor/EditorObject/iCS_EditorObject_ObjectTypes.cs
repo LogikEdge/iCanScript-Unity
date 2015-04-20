@@ -28,8 +28,6 @@ public partial class iCS_EditorObject {
     public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}
     public bool IsOnStateUpdatePackage  	{ get { return EngineObject.IsOnStateUpdatePackage; }}
     public bool IsOnStateExitPackage    	{ get { return EngineObject.IsOnStateExitPackage; }}
-    public bool IsVariableReference         { get { return EngineObject.IsVariableReference; }}
-    public bool IsFunctionCall              { get { return EngineObject.IsFunctionCall; }}
     public bool IsPublicFunction            { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
     public bool IsPublicVariable            { get { return IsConstructor && IsParentValid && Parent.IsBehaviour; }}
     
@@ -98,9 +96,7 @@ public partial class iCS_EditorObject {
     // Special Cases
     public bool IsProgrammaticInstancePort  {
         get {
-            if(IsTargetPort && (!ParentNode.IsVariableReference && !ParentNode.IsFunctionCall) ||
-               IsSelfPort ||
-               (PortIndex == (int)iCS_PortIndex.Return && (ParentNode.IsConstructor || ParentNode.IsVariableReference))) {
+            if(IsTargetPort || IsSelfPort || (IsReturnPort && ParentNode.IsConstructor)) {
                    return true;
             }
             return false;

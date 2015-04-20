@@ -71,16 +71,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         return FindMany(vsd, o=> o.IsMessage);
     }
     // -----------------------------------------------------------------------
-    // Finds all the user functions
-    public static iCS_EngineObject[] FindFunctionCalls(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> o.IsFunctionCall);
-    }
-    // -----------------------------------------------------------------------
-    // Finds all the variable proxies
-    public static iCS_EngineObject[] FindVariableReferences(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> o.IsVariableReference);
-    }
-    // -----------------------------------------------------------------------
     // Finds all the constructors
     public static iCS_EngineObject[] FindConstructors(iCS_IVisualScriptData vsd) {
         return FindMany(vsd, o=> o.IsConstructor);

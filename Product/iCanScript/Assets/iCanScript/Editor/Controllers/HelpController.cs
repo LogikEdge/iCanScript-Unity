@@ -147,11 +147,7 @@ namespace iCanScript.Editor {
     			// Otherwise try and get help based on engineObject Type.
     			// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
     			if (edObj.IsNode) {
-    				if(edObj.IsVariableReference)
-    					return getHelp("VariableReference");
-    				else if(edObj.IsFunctionCall)
-    					return getHelp("FunctionCall");
-    				else if(edObj.IsPublicFunction)
+    				if(edObj.IsPublicFunction)
     					return getHelp("PublicFunction");
     				else if(edObj.IsPublicVariable)
     					return getHelp("PublicVariable");
@@ -292,11 +288,7 @@ namespace iCanScript.Editor {
     			if(displayType) {
     				// Type names to be displayed in front of node name.
     				// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
-    				if(edObj.IsVariableReference)
-    					typeName= "Variable Reference";
-    				else if(edObj.IsFunctionCall)
-    					typeName= "Function Call";
-    				else if(edObj.IsMessageHandler)
+    				if(edObj.IsMessageHandler)
     					typeName= "Message Handler";
     				else if(edObj.IsPublicFunction)
     					typeName= "Public Function";

@@ -253,8 +253,6 @@ public class iCS_EngineObject {
     public bool IsOnStateEntryPackage      { get { return iCS_ObjectType.IsOnStateEntryPackage(this); }}
     public bool IsOnStateUpdatePackage     { get { return iCS_ObjectType.IsOnStateUpdatePackage(this); }}
     public bool IsOnStateExitPackage       { get { return iCS_ObjectType.IsOnStateExitPackage(this); }}
-    public bool IsVariableReference        { get { return iCS_ObjectType.IsVariableReference(this); }}
-    public bool IsFunctionCall             { get { return iCS_ObjectType.IsFunctionCall(this); }}
     // General Ports
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
     public bool IsOutputPort            { get { return iCS_ObjectType.IsOutputPort(this); }}
