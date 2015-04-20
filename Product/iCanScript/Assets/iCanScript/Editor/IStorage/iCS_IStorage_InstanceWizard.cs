@@ -12,9 +12,8 @@ public partial class iCS_IStorage {
         module.Fold();
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
-            iCS_EditorObject inThisPort= InstanceWizardCreatePortIfNonExisting(module, "Target", classType,
-                                                                               iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
-            inThisPort.IsNameEditable= false;
+            InstanceWizardCreatePortIfNonExisting(module, "Target", classType,
+                                                  iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
         }
         if(Prefs.InstanceAutocreateOutFields)          InstanceWizardCreateOutputInstanceFields(module);
         if(Prefs.InstanceAutocreateInFields)           InstanceWizardCreateInputInstanceFields(module);
@@ -271,7 +270,6 @@ public partial class iCS_IStorage {
         iCS_EditorObject port= InstanceWizardGetPort(module, portName, objType, portIdx);
         if(port == null) {
             port= CreatePort(portName, module.InstanceId, portType, objType);                
-			port.IsNameEditable= false;
             if(portIdx != -1) {
                 port.PortIndex= portIdx;                
             }
@@ -323,7 +321,6 @@ public partial class iCS_IStorage {
                         iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicDataPort);
                         if(classPort == null) {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
-							classPort.IsNameEditable= false;
                             SetSource(port, classPort);
                         } else {
                             SetSource(port, classPort);
@@ -336,7 +333,6 @@ public partial class iCS_IStorage {
                         iCS_EditorObject classPort= InstanceWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicDataPort);
                         if(classPort == null) {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
-							classPort.IsNameEditable= false;
                             SetSource(classPort, port);
                         } else {
                             SetSource(classPort, port);
@@ -401,7 +397,6 @@ public partial class iCS_IStorage {
         iCS_EditorObject constructor= CreateFunction(module.ParentId, desc);
         constructor.SetInitialPosition(new Vector2(thisPos.x-75f, thisPos.y));
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutputPort && port.RuntimeType == module.RuntimeType);
-		constructorThisPort.IsNameEditable= false;
         SetSource(moduleThisPort, constructorThisPort);
         constructor.Iconize();
         return constructor;

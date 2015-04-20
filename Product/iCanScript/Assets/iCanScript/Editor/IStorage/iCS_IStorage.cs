@@ -447,7 +447,6 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(0, name, typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
         this[0].LocalAnchorFromGlobalPosition= VisualEditorCenter();
-		this[0].IsNameEditable= false;
         return this[0];
     }
     // ----------------------------------------------------------------------
@@ -460,7 +459,6 @@ public partial class iCS_IStorage {
         if(instance.IsInstanceNode) {
             InstanceWizardCompleteCreation(instance);
             instance.DisplayName= iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(runtimeType))+" Properties";
-            instance.IsNameEditable= false;
             CreateSelfPort(id);
         }
         return instance;
@@ -573,7 +571,6 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // -- Create event handler node --
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        instance.IsNameEditable= false;
         instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         // -- Create target port. --
 		iCS_EditorObject port= null;

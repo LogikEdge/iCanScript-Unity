@@ -166,7 +166,6 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnEntry;
         CloseTransaction(iStorage, "Create "+package.DisplayName);
 		SystemEvents.AnnounceVisualScriptElementAdded(package);
@@ -190,7 +189,6 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnUpdate;
         CloseTransaction(iStorage, "Create "+package.DisplayName);
 		SystemEvents.AnnounceVisualScriptElementAdded(package);
@@ -214,7 +212,6 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        package.IsNameEditable= false;            
         package.Tooltip= iCS_ObjectTooltips.OnExit;
         CloseTransaction(iStorage, "Create "+package.DisplayName);
 		SystemEvents.AnnounceVisualScriptElementAdded(package);

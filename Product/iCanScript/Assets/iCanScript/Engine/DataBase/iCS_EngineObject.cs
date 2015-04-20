@@ -41,7 +41,6 @@ public class iCS_EngineObject {
     public iCS_ObjectTypeEnum    ObjectType         = iCS_ObjectTypeEnum.Unknown;
     public int                   InstanceId         = -1;
     public int                   ParentId           = -1;
-    public bool                  IsNameEditable     = true;
     public string                QualifiedType      = "";
 	public Vector2				 LocalAnchorPosition= Vector2.zero;
     public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded;
@@ -160,7 +159,6 @@ public class iCS_EngineObject {
         iCS_EngineObject instance= new iCS_EngineObject(id, toClone.RawName, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
-        instance.IsNameEditable= toClone.IsNameEditable;
 		instance.LocalAnchorPosition= toClone.LocalAnchorPosition;
 		// Node
         instance.NodeSpec= toClone.NodeSpec;
@@ -188,7 +186,6 @@ public class iCS_EngineObject {
         to.RawName= RawName;
         to.LocalAnchorPosition= LocalAnchorPosition;
         to.DisplayOption= DisplayOption;
-        to.IsNameEditable= IsNameEditable;
         to.MethodName= MethodName;
         to.NbOfParams= NbOfParams;
         to.IconGUID= IconGUID;
@@ -213,7 +210,6 @@ public class iCS_EngineObject {
         LocalAnchorPosition= Vector2.zero;
         LayoutPriority= 0;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-        IsNameEditable= true;
 		// Node
 		MethodName= null;
 		NbOfParams= 0;

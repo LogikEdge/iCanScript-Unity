@@ -12,7 +12,6 @@ public partial class iCS_IStorage {
         var existingTriggerPort= GetTriggerPort(EditorObjects[parentId]);
         if(existingTriggerPort != null) return existingTriggerPort;
         iCS_EditorObject port= CreatePort(iCS_Strings.TriggerPort, parentId, typeof(bool), iCS_ObjectTypeEnum.TriggerPort, (int)iCS_PortIndex.Trigger);
-        port.IsNameEditable= false;
         port.InitialPortValue= true;
         return port;
     }
@@ -30,7 +29,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateEnablePort(int parentId) {
         iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), iCS_ObjectTypeEnum.EnablePort, (int)GetNextAvailableEnablePortIndex(EditorObjects[parentId]));
-        port.IsNameEditable= false;
         port.InitialPortValue= true;
         return port;
     }
@@ -94,7 +92,6 @@ public partial class iCS_IStorage {
         var portName= "Target";
 		var port= CreatePort(portName, parentId, runtimeType,
 							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
-		port.IsNameEditable= false;
 		return port;
 	}
 
@@ -153,7 +150,6 @@ public partial class iCS_IStorage {
         }
         iCS_EditorObject port= CreatePort("Self", parentId, runtimeType,
                                           iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.Self);
-        port.IsNameEditable= false;
         return port;
     }
     // -------------------------------------------------------------------------

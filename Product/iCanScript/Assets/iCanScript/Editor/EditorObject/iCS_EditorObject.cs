@@ -322,12 +322,16 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
-		get { return EngineObject.IsNameEditable && !IsEventHandler; }
-		set {
-            var engineObject= EngineObject;
-            if(engineObject.IsNameEditable == value) return;
-		    engineObject.IsNameEditable= value;
-		}
+		get {
+            if(IsBehaviour) return false;
+            if(IsEventHandler) return false;
+            if(IsTargetPort || IsSelfPort) return false;
+            if(IsInstanceNode) return false;
+            if(IsDataPort && ParentNode.IsInstanceNode) return false;
+            if(IsStatePort || IsTransitionPort) return false;
+            if(IsOnStatePackage) return false;
+            return true;
+        }
 	}
     // ----------------------------------------------------------------------
     public string Tooltip {
