@@ -14,7 +14,7 @@ CSS: Github.css
 
 _April 20, 2015_
 
-V2.0.7 resolves two major issue introduced in release v2.0.6.  Sorry for the inconvenience.
+V2.0.7 resolves two major issues introduced in release v2.0.6.  Sorry for the inconvenience.
 
 ### List of Changes
 

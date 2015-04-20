@@ -8,7 +8,7 @@ namespace iCanScript.Engine {
 	    // Product descriptions. 
 		public const int    MajorVersion = 2;
 		public const int    MinorVersion = 0;
-		public const int    BugFixVersion= 6;
+		public const int    BugFixVersion= 7;
 	    public const string ProductName             = "iCanScript";
 	    public const string ProductAcronym          = "iCS";
 		public const string ProductPrefix           = ProductAcronym+"_";
