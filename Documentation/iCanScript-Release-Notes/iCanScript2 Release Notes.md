@@ -10,6 +10,19 @@ CSS: Github.css
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
 
+## iCanScript v2.0.7 ##
+
+_April 20, 2015_
+
+V2.0.7 resolves two major issue introduced in release v2.0.6.  Sorry for the inconvenience.
+
+### List of Changes
+
+- **<span style="color: red">\[FIXED\]</span>** Enumeration null exception on data upgrade of visual script.
+- **<span style="color: red">\[FIXED\]</span>** Invalid error generated on _get_ accessor of fields.
+
+* * *
+
 ## iCanScript v2.0.6 ##
 
 _April 20, 2015_
