@@ -51,42 +51,4 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         foreach(var o in vsd.EngineObjects) { if(Test(o, cond, vsd)) return o; }
         return null;
     }
-    // -----------------------------------------------------------------------
-    // Finds all engine objects that passes the test
-    public static iCS_EngineObject[] FindMany(iCS_IVisualScriptData vsd, Func<iCS_EngineObject,bool> cond) {
-        List<iCS_EngineObject> result= new List<iCS_EngineObject>();
-        foreach(var o in vsd.EngineObjects) {
-            if(Test(o, cond, vsd)) {
-                result.Add(o);
-            }
-        }
-        return result.ToArray();
-    }
-
-    // =======================================================================
-    // Searching Queries
-    // -----------------------------------------------------------------------
-    // Finds all the message handlers
-    public static iCS_EngineObject[] FindEventHandlers(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> o.IsEventHandler);
-    }
-    // -----------------------------------------------------------------------
-    // Finds all the constructors
-    public static iCS_EngineObject[] FindConstructors(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> o.IsConstructor);
-    }
-    // -----------------------------------------------------------------------
-    // Finds all user functions
-    public static iCS_EngineObject[] FindFunctionDefinitions(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> IsPublicFunction(vsd, o));
-    }
-    // -----------------------------------------------------------------------
-    // Find the function definition with the given name.
-    public static iCS_EngineObject FindFunctionDefinitionWithName(iCS_IVisualScriptData vsd, string name) {
-        var publicFunctions= FindFunctionDefinitions(vsd);
-        foreach(var v in publicFunctions) {
-            if(v.RawName == name) return v;
-        }
-        return null;
-    }
 }
