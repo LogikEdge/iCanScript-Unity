@@ -84,7 +84,7 @@ public partial class iCS_IStorage {
             p=> {
                 if(!p.IsPort) return;
                 // -- Abort if conversion already took place --
-                if(p.PortSpec != PortSpecification.Default) return;
+//                if(p.PortSpec != PortSpecification.Default) return;
                 // -- Initial setup of the port specification --
                 var parentNode= p.ParentNode;
                 if(p.IsEnablePort) {
@@ -95,7 +95,7 @@ public partial class iCS_IStorage {
                     p.PortSpec= PortSpecification.Trigger;
                     isUpgraded= true;
                 }
-                if(p.IsTargetPort) {
+                else if(p.IsTargetPort) {
                     p.PortSpec= PortSpecification.Target;
                     isUpgraded= true;
                 }

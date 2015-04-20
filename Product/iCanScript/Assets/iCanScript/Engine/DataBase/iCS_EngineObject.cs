@@ -22,7 +22,7 @@ namespace iCanScript.Engine {
         Type= 200,
         VariableReference= 210, StaticVariableReference,
         Constructor= 220, StaticConstructor,
-        PublicFunction= 230, PrivateFunction,
+        PublicFunction= 230, ProtectedFunction, PrivateFunction,
         StaticPublicFunction= 240, StaticPrivateFunction,
         FunctionCall= 250,
         EventHandler= 260,
@@ -44,7 +44,7 @@ public class iCS_EngineObject {
     public bool                  IsNameEditable     = true;
     public string                QualifiedType      = "";
 	public Vector2				 LocalAnchorPosition= Vector2.zero;
-    public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded; // PortIterationSignature
+    public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded;
 
 	// Node specific attributes ---------------------------------------------
     public NodeSpecification     NodeSpec         = NodeSpecification.Default;
@@ -52,7 +52,6 @@ public class iCS_EngineObject {
 	public int					 NbOfParams       = 0;     // Also used for port group
     public string                IconGUID         = null;
     public string                Tooltip          = null;
-    public int                   ExecutionPriority= 0;
     public int                   LayoutPriority   = 0;
 
     // Port specific attributes ---------------------------------------------
@@ -194,7 +193,6 @@ public class iCS_EngineObject {
         to.NbOfParams= NbOfParams;
         to.IconGUID= IconGUID;
         to.Tooltip= Tooltip;
-        to.ExecutionPriority= ExecutionPriority;
         to.LayoutPriority= LayoutPriority;
         to.SourceId= SourceId;
         to.PortIndex= PortIndex;

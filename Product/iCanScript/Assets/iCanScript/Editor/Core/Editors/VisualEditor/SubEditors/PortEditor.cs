@@ -2,6 +2,7 @@
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor {
 
@@ -57,7 +58,8 @@ namespace iCanScript.Editor {
             // Display port name.
             EditName("Port Name");
             
-            EditorGUILayout.EnumPopup("Port Spec", vsObject.PortSpec);                    
+            var newPortSpec= EditorGUILayout.EnumPopup("Port Spec", vsObject.PortSpec);
+            vsObject.PortSpec= ConvertEnum(newPortSpec, PortSpecification.Default);
             
             OnPortSpecificGUI();
             
