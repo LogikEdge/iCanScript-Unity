@@ -118,10 +118,6 @@ public class iCS_EngineObject {
         get { return LocalAnchorPosition.y; }
         set { LocalAnchorPosition.y= value; }
     }
-    public PortIterationSignatureEnum PortIterationSignature {
-        get { return (PortIterationSignatureEnum)(int)DisplayOption; }
-        set { DisplayOption= (iCS_DisplayOptionEnum)(int)value; }
-    }
 
     // ======================================================================
     // Initialization
