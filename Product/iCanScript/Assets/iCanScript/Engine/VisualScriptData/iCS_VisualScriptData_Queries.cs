@@ -81,25 +81,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         return FindMany(vsd, o=> IsPublicFunction(vsd, o));
     }
     // -----------------------------------------------------------------------
-    // Finds all user functions
-    public static iCS_EngineObject[] FindPublicVariableDefinitions(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> IsPublicVariable(vsd, o));
-    }
-    // -----------------------------------------------------------------------
-    // Find all public objects
-    public static iCS_EngineObject[] FindPublicObjects(iCS_IVisualScriptData vsd) {
-        return FindMany(vsd, o=> o.ParentId == 0);
-    }
-    // -----------------------------------------------------------------------
-    // Find the variable definition with the given name.
-    public static iCS_EngineObject FindPublicVariableDefinitionWithName(iCS_IVisualScriptData vsd, string name) {
-        var publicVariables= FindPublicVariableDefinitions(vsd);
-        foreach(var v in publicVariables) {
-            if(v.RawName == name) return v;
-        }
-        return null;
-    }
-    // -----------------------------------------------------------------------
     // Find the function definition with the given name.
     public static iCS_EngineObject FindFunctionDefinitionWithName(iCS_IVisualScriptData vsd, string name) {
         var publicFunctions= FindFunctionDefinitions(vsd);
@@ -107,12 +88,5 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
             if(v.RawName == name) return v;
         }
         return null;
-    }
-    // -----------------------------------------------------------------------
-    // Find defintion with the given name.
-    public static iCS_EngineObject FindDefinitionWithName(iCS_IVisualScriptData vsd, string name) {
-        var definition= FindPublicVariableDefinitionWithName(vsd, name);
-        if(definition != null) return definition;
-        return FindFunctionDefinitionWithName(vsd, name);
     }
 }
