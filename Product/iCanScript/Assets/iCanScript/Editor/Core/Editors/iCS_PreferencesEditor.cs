@@ -400,7 +400,7 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
     	void CodeGeneration() {
             // Column 2
-            Rect[] pos= new Rect[4];
+            Rect[] pos= new Rect[3];
             pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
             for(int i= 1; i < pos.Length; ++i) {
                 pos[i]= pos[i-1];
@@ -408,23 +408,20 @@ namespace iCanScript.Editor {
             }
             GUI.Label(pos[0], "Default Folder");
             GUI.Label(pos[1], "Default Base Type Name");
-            GUI.Label(pos[3], "Default Base Type Namespace");
     
             // Draw Column 3
             for(int i= 0; i < pos.Length; ++i) {
                 pos[i].x+= kColumn2Width;
                 pos[i].width= kColumn3Width;
             }
-            Prefs.CodeGenerationFolder           = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
-            Prefs.CodeGenerationBaseTypeName     = EditorGUI.TextField(pos[1], Prefs.CodeGenerationBaseTypeName);
+            Prefs.CodeGenerationFolder      = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
+            Prefs.CodeGenerationBaseTypeName= EditorGUI.TextField(pos[1], Prefs.CodeGenerationBaseTypeName);
             GUI.Label(pos[2], "<i>(format: namespace.type)</i>");
-            Prefs.CodeGenerationBaseTypeNamespace= EditorGUI.TextField(pos[3], Prefs.CodeGenerationBaseTypeNamespace);
             
             // Reset Button
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
                 Prefs.ResetCodeGenerationFolder();
                 Prefs.ResetCodeGenerationBaseTypeName();
-                Prefs.ResetCodeGenerationBaseTypeNamespace();
             }        	    
     	}
     	

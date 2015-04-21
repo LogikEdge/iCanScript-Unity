@@ -192,7 +192,7 @@ public static class iCS_Types {
 	/// @return The found method information if found. _null_ otherwise.
 	///
     public static MethodInfo FindFunction(string typeName, string functionName, string namespaceName) {
-        var interfaceType= iCS_Types.FindType(typeName, namespaceName);
+        var interfaceType= iCS_Types.FindType(namespaceName, typeName);
         if(interfaceType == null) {
             Debug.LogWarning("iCanScript: unable to find type=> "+typeName+" <= in application.");
             return null;
@@ -219,22 +219,25 @@ public static class iCS_Types {
     ///
     /// @param typeString The _'namespace.type'_ formatted string.
     /// @param namespaceName The extracted namespace name. _null_ if not found.
-    /// @return The extracted type name. _null_ if not found.
+    /// @param typeName The extracted type name. _null_ if not found.
+    /// @return _true_ if type string properly decoded. _false_ otherwise.
     ///
-    public static string SplitTypeString(string typeString, out string namespaceName) {
-        string typeName= null;
+    public static bool SplitTypeString(string typeString,
+                                       out string namespaceName,
+                                       out string typeName) {
+        typeName= null;
         namespaceName  = null;
         // -- Separate namespace name from type name --
         var len= typeString.Length;
         var splitIdx= typeString.LastIndexOf('.');
         if(splitIdx > 0 && splitIdx < len) {
-            namespaceName= typeString.Substring(splitIdx);
+            namespaceName= typeString.Substring(0, splitIdx);
             typeName= typeString.Substring(splitIdx+1, len-splitIdx-1);
         }
         else {
             typeName= typeString;
         }
-        return string.IsNullOrEmpty(typeName) ? null : typeName;
+        return !string.IsNullOrEmpty(typeName);
     }
     // ----------------------------------------------------------------------
     /// Extract the type information from a type string.
@@ -248,19 +251,19 @@ public static class iCS_Types {
                                                  out string namespaceName,
                                                  out string typeName) {
         // -- Separate namespace name from type name --
-        typeName= SplitTypeString(typeString, out namespaceName);
+        SplitTypeString(typeString, out namespaceName, out typeName);
         // -- Find the corresponding type --
-        return FindType(typeName, namespaceName);
+        return FindType(namespaceName, typeName);
     }
     // ----------------------------------------------------------------------
 	/// Seraches the application domain for the type with the given name in
 	/// the given namespace.
 	///
-	/// @param typeName The name of the type to search.
 	/// @param namespaceName The namespace that contains the type.
+	/// @param typeName The name of the type to search.
 	/// @return The found type descriptor if found. _null_ otherwise.
 	///
-    public static Type FindType(string typeName, string namespaceName) {
+    public static Type FindType(string namespaceName, string typeName) {
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var classType in assembly.GetTypes()) {
                 if(classType.Name == typeName && classType.Namespace == namespaceName) {

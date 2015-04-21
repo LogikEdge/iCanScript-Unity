@@ -506,7 +506,7 @@ namespace iCanScript.Editor {
             return DefaultTypeColor;
         }
     
-        	// =================================================================================
+        // =================================================================================
     	// Software Updates Preferences
         // ---------------------------------------------------------------------------------
     	//
@@ -568,15 +568,13 @@ namespace iCanScript.Editor {
     	// Default Values
     	//
     	const string kCodeGenerationFolder           = "iCanScript Generated Code";
-    	const string kCodeGenerationBaseTypeName     = "MonoBehaviour";
-    	const string kCodeGenerationBaseTypeNamespace= "UnityEngine";
+    	const string kCodeGenerationBaseTypeName     = "UnityEngine.MonoBehaviour";
     
     	//
     	// Database access keys
     	//
     	const string kCodeGenerationFolderKey           = "iCS_CodeGenerationFolder";
     	const string kCodeGenerationBaseTypeNameKey     = "iCS_CodeGenerationBaseTypeName";
-    	const string kCodeGenerationBaseTypeNamespaceKey= "iCS_CodeGenerationBaseTypeNamespace";
 
     	//
     	// Reset to default value functions
@@ -586,9 +584,6 @@ namespace iCanScript.Editor {
     	}
     	public static void ResetCodeGenerationBaseTypeName() {
     	    CodeGenerationBaseTypeName= kCodeGenerationBaseTypeName;
-    	}
-    	public static void ResetCodeGenerationBaseTypeNamespace() {
-    	    CodeGenerationBaseTypeNamespace= kCodeGenerationBaseTypeNamespace;
     	}
     
     	//
@@ -601,10 +596,6 @@ namespace iCanScript.Editor {
         public static string CodeGenerationBaseTypeName {
             get { return EditorPrefs.GetString(kCodeGenerationBaseTypeNameKey, kCodeGenerationBaseTypeName); }
             set { EditorPrefs.SetString(kCodeGenerationBaseTypeNameKey, value); }
-        }
-        public static string CodeGenerationBaseTypeNamespace {
-            get { return EditorPrefs.GetString(kCodeGenerationBaseTypeNamespaceKey, kCodeGenerationBaseTypeNamespace); }
-            set { EditorPrefs.SetString(kCodeGenerationBaseTypeNamespaceKey, value); }
         }
     
     
