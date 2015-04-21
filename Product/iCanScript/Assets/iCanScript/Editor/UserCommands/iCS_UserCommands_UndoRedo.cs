@@ -43,7 +43,7 @@ public static partial class iCS_UserCommands {
                 }
 				var visualEditor= iCS_EditorController.FindVisualEditor();
 				if(visualEditor != null) {
-					var animationTime= iCS_PreferencesController.AnimationTime;
+					var animationTime= PreferencesController.AnimationTime;
 					visualEditor.AnimateScrollPosition(previousScrollPosition,
 													   iStorage.ScrollPosition,
 													   animationTime);

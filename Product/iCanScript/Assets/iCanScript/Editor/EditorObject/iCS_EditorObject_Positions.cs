@@ -1,7 +1,10 @@
 using UnityEngine;
 using System.Collections;
 using P= Prelude;
-using Prefs= iCS_PreferencesController;
+
+namespace iCanScript.Editor {
+    using Prefs= PreferencesController;
+}
 
 public partial class iCS_EditorObject {   
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

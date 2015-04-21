@@ -4,9 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
-using Prefs= iCS_PreferencesController;
 using iCanScript.Editor;
 using iCanScript.Editor.CodeEngineering;
+
+namespace iCanScript.Editor {
+    using Prefs= PreferencesController;
+}
 
 public enum TransactionType { None, Graph, Navigation, Field };
 

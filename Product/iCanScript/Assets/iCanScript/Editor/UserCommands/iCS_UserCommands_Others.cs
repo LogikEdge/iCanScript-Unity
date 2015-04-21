@@ -4,8 +4,11 @@
 //#define DEBUG
 using UnityEngine;
 using System.Collections;
-using Pref= iCS_PreferencesController;
 using iCanScript.Editor;
+
+namespace iCanScript.Editor {
+    using Prefs= PreferencesController;
+}
 
 public static partial class iCS_UserCommands {
     // ======================================================================
