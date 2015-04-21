@@ -17,7 +17,10 @@ _April 21, 2015_
 V2.0.8 is a development release of iCanScript2.
 ### List of Changes
 
-- **<span style="color: red">\[FIXED\]</span>** Import null exception for field value set to _null_.
+- **<span style="color: green">\[NEW\]</span>** New _Code Generation_ section in the User Preferences.
+- **<span style="color: green">\[NEW\]</span>** Ability to change the default _Base Type_ for code generation.  _(see User Preferences -> Code Generation)_
+- **<span style="color: green">\[NEW\]</span>** Ability to change the default code generation folder.  _(see User Preferences -> Code Generation)_
+- **<span style="color: red">\[FIXED\]</span>** Null exception when attempting to import a field with its value set _null_.
 
 * * *
 

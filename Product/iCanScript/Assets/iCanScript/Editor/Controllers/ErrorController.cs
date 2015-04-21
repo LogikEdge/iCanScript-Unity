@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
@@ -121,6 +122,184 @@ namespace iCanScript.Editor {
 		public static List<ErrorWarning> GetWarningsFor(string serviceKey, iCS_VisualScriptImp vs, int objectId) {
             return P.filter(e=> e.ServiceId == serviceKey && e.VisualScript == vs && e.ObjectId == objectId, Warnings);			
 		}
+
+        // ======================================================================
+        // DISPLAY UTILITIES
+    	// -----------------------------------------------------------------------
+        /// Dsiplays the error/warning icon in the given rectangle with a blinking
+        /// alpha channel.
+        ///
+        /// @param r The rectangle in which the display the error/warning icon.
+        /// @param icon The icon to be displayed with the blinking alpha channel.
+        ///
+        public static void DisplayErrorOrWarningIconWithAlpha(Rect r, Texture2D icon) {
+            var savedColor= GUI.color;
+    		GUI.color= BlendColor;
+    		GUI.DrawTexture(r, icon, ScaleMode.ScaleToFit);
+    		GUI.color= savedColor;
+        }
+    	// -----------------------------------------------------------------------
+        /// Determines the size of the error detail rectangle.
+        ///
+        /// @param position The parent window rectangle.
+        /// @param iconRect The rectangle used to display the error/warning icon.
+        /// @param nbOfLines The number of lines to be displayed.
+        /// @param growUpward Set to _true_ for the detail box to grow upwards.
+        /// @return The rectangle in which to display of the details.
+        ///  
+    	const float kMargins= 4f;
+        public static Rect DetermineErrorDetailRect(Rect position, Rect iconRect, int nbOfLines, bool growUpward= false) {
+            var r= iconRect;
+    		r.x= kMargins+iconRect.xMax;
+    		r.width= position.width-r.x-kMargins;
+            var height= 16*nbOfLines;
+            if(growUpward) {
+                r.y= r.yMax-height;
+            }
+            r.height= height;
+            return r;
+        }
+
+    	// -----------------------------------------------------------------------
+        /// Display the error/warning details inside the given area.
+        ///
+        /// @param r The area in which to display the error/warning details.
+        /// @param errors The error details.
+        /// @param warnings The warning details.
+        ///
+        public static void DisplayErrorAndWarningDetails(Rect r, List<ErrorWarning> errors, List<ErrorWarning> warnings) {
+            // -- We must have at least one item to display --
+            var nbErrors  = errors   != null ? errors.Count : 0;
+            var nbWarnings= warnings != null ? warnings.Count : 0;
+            if(nbErrors == 0 && nbWarnings == 0) return;
+            // -- convert ErrorWarning to their string representation --
+            string[] errorsStrings = null;
+            string[] warningStrings= null;
+            if(nbErrors != 0) {
+                errorsStrings= P.map(e=> e.Message, errors).ToArray();
+            }
+            if(nbWarnings != 0) {
+                warningStrings= P.map(w=> w.Message, warnings).ToArray();
+            }
+            DisplayErrorAndWarningDetails(r, errorsStrings, warningStrings);
+        }    
+
+    	// -----------------------------------------------------------------------
+        /// Display the error/warning details inside the given area.
+        ///
+        /// @param r The area in which to display the error/warning details.
+        /// @param errors The error details.
+        /// @param warnings The warning details.
+        ///
+        public static void DisplayErrorAndWarningDetails(Rect r, string[] errors, string[] warnings) {
+            // -- We must have at least one item to display --
+            var nbErrors  = errors   != null ? errors.Length : 0;
+            var nbWarnings= warnings != null ? warnings.Length : 0;
+            if(nbErrors == 0 && nbWarnings == 0) return;
+            // -- Draw background box --
+            var borderColor= nbErrors != 0 ? Color.red : Color.yellow;
+            Draw2D.FilledBoxWithOutline(r, Color.black, borderColor, 2);
+//            var savedColor= GUI.color;
+//            var outlineRect= new Rect(r.x-2, r.y-2, r.width+4, r.height+4);
+//            GUI.color= nbErrors != 0 ? Color.red : Color.yellow;
+//            GUI.Box(outlineRect,"");
+//    		GUI.color= Color.black;
+//    		GUI.Box(r,"");
+//    		GUI.color= savedColor;
+
+            // -- Define error/warning detail style --
+    		GUIStyle style= EditorStyles.whiteLabel;
+    		style.richText= true;
+        
+            // -- Show Error first than Warnings --
+    		float y= 0;
+    		GUI.BeginScrollView(r, Vector2.zero, new Rect(0,0,r.width,r.height));
+            var content= new GUIContent("", ErrorController.SmallErrorIcon);
+            if(nbErrors != 0) {
+        		foreach(var e in errors) {
+        			content.text= e;
+        			GUI.Label(new Rect(0, y, r.width, r.height), content, style);
+        			y+= 16;
+        		}                
+            }
+            if(nbWarnings != 0) {
+                content.image= ErrorController.SmallWarningIcon;
+        		foreach(var w in warnings) {
+        			content.text= w;
+        			GUI.Label(new Rect(0, y, r.width, r.height), content, style);
+        			y+= 16;
+        		}                
+            }
+    		GUI.EndScrollView();        
+        }    
+
+    	// -----------------------------------------------------------------------
+        /// Displays an error/warning icon with the details inside a toolbox.
+        ///
+        /// @param rect The rectangle in which to display the error/warning icon.
+        /// @param errors List of errors
+        /// @param warnings List of warnings
+        ///
+        public static void DisplayErrorsAndWarningsAt(Rect position, Rect rect, List<ErrorWarning> errors, List<ErrorWarning> warnings) {
+            // -- Display the appropriate error/warning icon --
+            var icon= errors.Count != 0 ? ErrorController.ErrorIcon : ErrorController.WarningIcon;
+            ErrorController.DisplayErrorOrWarningIconWithAlpha(rect, icon);
+            // -- Display error/warning details --
+            var mousePosition= Event.current.mousePosition;
+            if(rect.Contains(mousePosition)) {
+                var nbOfMessages= Mathf.Min(5, errors.Count + warnings.Count);
+                var detailRect= ErrorController.DetermineErrorDetailRect(position, rect, nbOfMessages);
+                ErrorController.DisplayErrorAndWarningDetails(detailRect, errors, warnings);
+            }
+        }
+
+    	// -----------------------------------------------------------------------
+        /// Displays an error message.
+        ///
+        /// @param rect The rectangle in which to display the error/warning icon.
+        /// @param errorMessage The error message.
+        ///
+        public static void DisplayErrorMessage(Rect position, Rect rect, string errorMessage) {
+            // -- Display the appropriate error/warning icon --
+            var icon= ErrorController.ErrorIcon;
+            var errors= new string[1]{errorMessage};
+            DisplayIconAndMessages(position, rect, icon, errors, null);
+        }
+
+    	// -----------------------------------------------------------------------
+        /// Displays a warning message.
+        ///
+        /// @param rect The rectangle in which to display the error/warning icon.
+        /// @param errorMessage The warning message.
+        ///
+        public static void DisplayWarningMessage(Rect position, Rect rect, string errorMessage) {
+            // -- Display the appropriate error/warning icon --
+            var icon= ErrorController.WarningIcon;
+            var warnings= new string[1]{errorMessage};
+            DisplayIconAndMessages(position, rect, icon, null, warnings);
+        }
+
+    	// -----------------------------------------------------------------------
+        /// Displays an icon and message when mouse is over icon.
+        ///
+        /// @param position The parent window rectangle.
+        /// @param iconRect The rectangle used to display the error/warning icon.
+        /// @param icon The icon to be displayed.
+        /// @param errors List of errors
+        /// @param warnings List of warnings
+        ///
+        public static void DisplayIconAndMessages(Rect position, Rect rect, Texture2D icon, string[] errors, string[] warnings) {
+            // -- Display the appropriate error/warning icon --
+            ErrorController.DisplayErrorOrWarningIconWithAlpha(rect, icon);
+            // -- Display error/warning details --
+            var mousePosition= Event.current.mousePosition;
+            if(rect.Contains(mousePosition)) {
+                var nbOfMessages= 1;
+                var detailRect= ErrorController.DetermineErrorDetailRect(position, rect, nbOfMessages);
+                ErrorController.DisplayErrorAndWarningDetails(detailRect, errors, null);
+            }
+        }
+    
     }
     
 }

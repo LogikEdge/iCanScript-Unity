@@ -48,7 +48,7 @@ public partial class iCS_VisualEditor {
         // -- Display scene error/warning icon --
         var r= GetVisualScriptErrorWarningIconRect();
         var icon= nbOfErrors != 0 ? ErrorController.ErrorIcon : ErrorController.WarningIcon;
-        DisplayErrorOrWarningIconWithAlpha(r, icon);
+        ErrorController.DisplayErrorOrWarningIconWithAlpha(r, icon);
         
         // -- Initiate the display of the scene error/warning details when mouse is over the icon --
 		if(r.Contains(WindowMousePosition)) {
@@ -65,11 +65,11 @@ public partial class iCS_VisualEditor {
         // -- Display scene errors/warnings --
 		if(showErrorDetails) {
             var nbOfMessages= Mathf.Min(10, nbOfErrors+nbOfWarnings);
-            r= DetermineErrorDetailRect(r, nbOfMessages, true);
+            r= ErrorController.DetermineErrorDetailRect(position, r, nbOfMessages, true);
 			if(r.Contains(WindowMousePosition)) {
 				showErrorDetailTimer.Restart();
 			}
-            DisplayErrorAndWarningDetails(r, errors, warnings);
+            ErrorController.DisplayErrorAndWarningDetails(r, errors, warnings);
 		}
 	}
 
@@ -92,14 +92,7 @@ public partial class iCS_VisualEditor {
             // -- Display the appropriate error/warning icon --
             var r= Math3D.BuildRectCenteredAt(pos, 32f, 32f);
             r= myGraphics.TranslateAndScale(r);
-            var icon= nodeErrors.Count != 0 ? ErrorController.ErrorIcon : ErrorController.WarningIcon;
-            DisplayErrorOrWarningIconWithAlpha(r, icon);
-            // -- Display error/warning details --
-            if(r.Contains(WindowMousePosition)) {
-                var nbOfMessages= Mathf.Min(5, nodeErrors.Count + nodeWarnings.Count);
-                var detailRect= DetermineErrorDetailRect(r, nbOfMessages);
-                DisplayErrorAndWarningDetails(detailRect, nodeErrors, nodeWarnings);
-            }
+            DisplayErrorsAndWarningAt(r, nodeErrors, nodeWarnings);
         }
     }
 
@@ -109,55 +102,22 @@ public partial class iCS_VisualEditor {
 		return new Rect(helpBoxWidth+kMargins, position.height-kMargins-48f, 48f, 48f);
     }
 	// -----------------------------------------------------------------------
-    void DisplayErrorOrWarningIconWithAlpha(Rect r, Texture2D icon) {
-        var savedColor= GUI.color;
-		GUI.color= ErrorController.BlendColor;
-		GUI.DrawTexture(r, icon, ScaleMode.ScaleToFit);
-		GUI.color= savedColor;
-    }
-	// -----------------------------------------------------------------------
-    void DisplayErrorAndWarningDetails(Rect r, List<ErrorWarning> errors, List<ErrorWarning> warnings) {
-        // -- Draw background box --
-        var savedColor= GUI.color;
-        var outlineRect= new Rect(r.x-2, r.y-2, r.width+4, r.height+4);
-        GUI.color= errors.Count != 0 ? Color.red : Color.yellow;
-        GUI.Box(outlineRect,"");
-		GUI.color= Color.black;
-		GUI.Box(r,"");
-		GUI.color= savedColor;
-
-        // -- Define error/warning detail style --
-		GUIStyle style= EditorStyles.whiteLabel;
-		style.richText= true;
-        
-        // -- Show Error first than Warnings --
-		float y= 0;
-		GUI.BeginScrollView(r, Vector2.zero, new Rect(0,0,r.width,r.height));
-        var content= new GUIContent("", ErrorController.SmallErrorIcon);
-		foreach(var e in errors) {
-			content.text= e.Message;
-			GUI.Label(new Rect(0, y, r.width, r.height), content, style);
-			y+= 16;
-		}
-        content.image= ErrorController.SmallWarningIcon;
-		foreach(var w in warnings) {
-			content.text= w.Message;
-			GUI.Label(new Rect(0, y, r.width, r.height), content, style);
-			y+= 16;
-		}
-		GUI.EndScrollView();        
-    }
-	// -----------------------------------------------------------------------
-    Rect DetermineErrorDetailRect(Rect iconRect, int nbOfLines, bool growUpward= false) {
-        var r= iconRect;
-		r.x= kMargins+iconRect.xMax;
-		r.width= position.width-r.x-kMargins;
-        var height= 16*nbOfLines;
-        if(growUpward) {
-            r.y= r.yMax-height;
+    /// Displays an error/warning icon with the details inside a toolbox.
+    ///
+    /// @param rect The rectangle in which to display the error/warning icon.
+    /// @param errors List of errors
+    /// @param warnings List of warnings
+    ///
+    void DisplayErrorsAndWarningAt(Rect rect, List<ErrorWarning> errors, List<ErrorWarning> warnings) {
+        // -- Display the appropriate error/warning icon --
+        var icon= errors.Count != 0 ? ErrorController.ErrorIcon : ErrorController.WarningIcon;
+        ErrorController.DisplayErrorOrWarningIconWithAlpha(rect, icon);
+        // -- Display error/warning details --
+        if(rect.Contains(WindowMousePosition)) {
+            var nbOfMessages= Mathf.Min(5, errors.Count + warnings.Count);
+            var detailRect= ErrorController.DetermineErrorDetailRect(position, rect, nbOfMessages);
+            ErrorController.DisplayErrorAndWarningDetails(detailRect, errors, warnings);
         }
-        r.height= height;
-        return r;
     }
     
     // =======================================================================

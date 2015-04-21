@@ -5,6 +5,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Engine;
+using TimedAction= Prelude.TimerService.TimedAction;
 
 namespace iCanScript.Editor {
     using Prefs= PreferencesController;
@@ -25,6 +26,7 @@ namespace iCanScript.Editor {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
+	    TimedAction	ourRepaintTimer= null;
     	GUIStyle    titleStyle= null;
     	GUIStyle    selectionStyle= null;
     	Texture2D	selectionBackground= null;
@@ -47,7 +49,30 @@ namespace iCanScript.Editor {
             minSize= new Vector2(500f, 400f);
             maxSize= new Vector2(500f, 400f);
         }
+        public new void OnDisable() {
+            base.OnDisable();
+            StopRepaintTimer();
+        }
     
+        // =================================================================================
+        // REPAINT TIMER UTILITY
+        // ---------------------------------------------------------------------------------
+        /// Starts the repaint time.
+        void StartRepaintTimer() {
+            if(ourRepaintTimer == null) {
+                ourRepaintTimer= TimerService.CreateTimedAction(0.06f, Repaint, /*isLooping=*/true);
+                ourRepaintTimer.Schedule();                
+            }
+        }
+        // ---------------------------------------------------------------------------------
+        /// Stops the repaint time.
+        void StopRepaintTimer() {
+            if(ourRepaintTimer != null) {
+                ourRepaintTimer.Stop();
+                ourRepaintTimer= null;                
+            }
+        }
+        
         // ---------------------------------------------------------------------------------
     	static GUIStyle largeLabelStyleCache= null;
         void RebuildStyles() {
@@ -424,9 +449,15 @@ namespace iCanScript.Editor {
                 GUI.FocusControl("");
                 Prefs.ResetCodeGenerationFolder();
                 Prefs.ResetCodeGenerationBaseTypeName();
-            }        	    
+            }
+            // -- Display error if base type not found --
+            if(CodeGenerationConfig.BaseType == null) {
+                StartRepaintTimer();
+                var r= ErrorRect(pos[1]); 
+                ErrorController.DisplayErrorMessage(position, r, "Unable to find base type.");                
+            }
     	}
-    	
+        
     	// =================================================================================
         // Helpers.
         // ---------------------------------------------------------------------------------
@@ -445,5 +476,15 @@ namespace iCanScript.Editor {
         Texture2D LoadIconFromGUID(string iconGuid) {
             return iCS_TextureCache.GetIconFromGUID(iconGuid);
         }
+
+        // -------------------------------------------------------------------------
+        Rect ErrorRect(Rect r) {
+            var size= r.height;
+            var x= r.x-size;
+            var y= r.y+0.5f*size;
+            return Math3D.BuildRectCenteredAt(new Vector2(x, y), size, size);            
+        }
+
     }
+
 }
