@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.5
+Version: v2.0.8
 CSS: Github.css
 
 
@@ -9,6 +9,17 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.8 ##
+
+_April 21, 2015_
+
+V2.0.8 is a development release of iCanScript2.
+### List of Changes
+
+- **<span style="color: red">\[FIXED\]</span>** Import null exception for field value set to _null_.
+
+* * *
 
 ## iCanScript v2.0.7 ##
 

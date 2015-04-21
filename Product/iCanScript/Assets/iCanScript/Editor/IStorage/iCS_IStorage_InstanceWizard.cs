@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
-using Prefs= iCanScript.Editor.PreferencesController;
 
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
@@ -15,14 +14,6 @@ public partial class iCS_IStorage {
             InstanceWizardCreatePortIfNonExisting(module, "Target", classType,
                                                   iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
         }
-        if(Prefs.InstanceAutocreateOutFields)          InstanceWizardCreateOutputInstanceFields(module);
-        if(Prefs.InstanceAutocreateInFields)           InstanceWizardCreateInputInstanceFields(module);
-        if(Prefs.InstanceAutocreateOutProperties)      InstanceWizardCreateOutputInstanceProperties(module);
-        if(Prefs.InstanceAutocreateInProperties)       InstanceWizardCreateInputInstanceProperties(module);
-        if(Prefs.InstanceAutocreateOutClassFields)     InstanceWizardCreateOutputStaticFields(module);
-        if(Prefs.InstanceAutocreateInClassFields)      InstanceWizardCreateInputStaticFields(module);
-        if(Prefs.InstanceAutocreateOutClassProperties) InstanceWizardCreateOutputStaticProperties(module);
-        if(Prefs.InstanceAutocreateInClassProperties)  InstanceWizardCreateInputStaticProperties(module);
         
         // Use the class Icon if it exists.
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(module.RuntimeType);

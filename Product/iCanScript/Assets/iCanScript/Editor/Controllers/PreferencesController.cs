@@ -1,10 +1,8 @@
 ﻿// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// iCS_PreferencesController.cs
+// PreferencesController.cs
 //
 // Revised: 2014-01-29
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#define CODE_GENERATION_CONFIG
-
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -508,100 +506,7 @@ namespace iCanScript.Editor {
             return DefaultTypeColor;
         }
     
-    
-    	// =================================================================================
-        // Properties Node Config Constants
-        // ---------------------------------------------------------------------------------
-    	//
-    	// Default Values
-    	//
-        const bool   kInstanceAutocreateInFields          = false;
-        const bool   kInstanceAutocreateOutFields         = false;
-        const bool   kInstanceAutocreateInClassFields     = false;
-        const bool   kInstanceAutocreateOutClassFields    = false;
-        const bool   kInstanceAutocreateInProperties      = false;
-        const bool   kInstanceAutocreateOutProperties     = false;
-        const bool   kInstanceAutocreateInClassProperties = false;
-        const bool   kInstanceAutocreateOutClassProperties= false;
-    
-    	//
-    	// Database access keys
-    	//
-        const string kInstanceAutocreateInFieldsKey          = "iCS_InstanceAutocreateInFields"; 
-        const string kInstanceAutocreateOutFieldsKey         = "iCS_InstanceAutocreateOutFields"; 
-        const string kInstanceAutocreateInClassFieldsKey     = "iCS_InstanceAutocreateInClassFields";
-        const string kInstanceAutocreateOutClassFieldsKey    = "iCS_InstanceAutocreateOutClassFields";
-        const string kInstanceAutocreateInPropertiesKey      = "iCS_InstanceAutocreateInProperties";
-        const string kInstanceAutocreateOutPropertiesKey     = "iCS_InstanceAutocreateOutProperties"; 
-        const string kInstanceAutocreateInClassPropertiesKey = "iCS_InstanceAutocreateInClassProperties";
-        const string kInstanceAutocreateOutClassPropertiesKey= "iCS_InstanceAutocreateOutClassProperties";
-    
-    	//
-    	// Reset to default value functions
-    	//
-        public static void ResetInstanceAutocreateInFields() {
-    	    InstanceAutocreateInFields= kInstanceAutocreateInFields;
-        }
-        public static void ResetInstanceAutocreateOutFields() {
-    	    InstanceAutocreateOutFields= kInstanceAutocreateOutFields;
-        }
-        public static void ResetInstanceAutocreateInClassFields() {
-    	    InstanceAutocreateInClassFields= kInstanceAutocreateInClassFields;
-        }
-        public static void ResetInstanceAutocreateOutClassFields() {
-    	    InstanceAutocreateOutClassFields= kInstanceAutocreateOutClassFields;
-        }
-        public static void ResetInstanceAutocreateInProperties() {
-    	    InstanceAutocreateInProperties= kInstanceAutocreateInProperties;
-        }
-        public static void ResetInstanceAutocreateOutProperties() {
-    	    InstanceAutocreateOutProperties= kInstanceAutocreateOutProperties;
-        }
-        public static void ResetInstanceAutocreateInClassProperties() {
-    	    InstanceAutocreateInClassProperties= kInstanceAutocreateInClassProperties;
-        }
-        public static void ResetInstanceAutocreateOutClassProperties() {
-    	    InstanceAutocreateOutClassProperties= kInstanceAutocreateOutClassProperties;    	
-        }
-    
-    	//
-    	// Accessors
-    	//
-        public static bool InstanceAutocreateInFields {
-            get { return EditorPrefs.GetBool(kInstanceAutocreateInFieldsKey, kInstanceAutocreateInFields); }
-            set { EditorPrefs.SetBool(kInstanceAutocreateInFieldsKey, value); }        
-        }
-        public static bool InstanceAutocreateOutFields {
-            get { return EditorPrefs.GetBool(kInstanceAutocreateOutFieldsKey, kInstanceAutocreateOutFields); }
-            set { EditorPrefs.SetBool(kInstanceAutocreateOutFieldsKey, value); }        
-        }
-        public static bool InstanceAutocreateInClassFields {
-            get { return EditorPrefs.GetBool(kInstanceAutocreateInClassFieldsKey, kInstanceAutocreateInClassFields); }
-            set { EditorPrefs.SetBool(kInstanceAutocreateInClassFieldsKey, value); }        
-        }
-        public static bool InstanceAutocreateOutClassFields {
-            get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassFieldsKey, kInstanceAutocreateOutClassFields); }
-            set { EditorPrefs.SetBool(kInstanceAutocreateOutClassFieldsKey, value); }        
-        }
-        public static bool InstanceAutocreateInProperties {
-            get { return EditorPrefs.GetBool(kInstanceAutocreateInPropertiesKey, kInstanceAutocreateInProperties); }
-            set { EditorPrefs.SetBool(kInstanceAutocreateInPropertiesKey, value); }        
-        }
-        public static bool InstanceAutocreateOutProperties {
-            get { return EditorPrefs.GetBool(kInstanceAutocreateOutPropertiesKey, kInstanceAutocreateOutProperties); }
-            set { EditorPrefs.SetBool(kInstanceAutocreateOutPropertiesKey, value); }        
-        }
-        public static bool InstanceAutocreateInClassProperties {
-            get { return EditorPrefs.GetBool(kInstanceAutocreateInClassPropertiesKey, kInstanceAutocreateInClassProperties); }
-            set { EditorPrefs.SetBool(kInstanceAutocreateInClassPropertiesKey, value); }        
-        }
-        public static bool InstanceAutocreateOutClassProperties {
-            get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassPropertiesKey, kInstanceAutocreateOutClassProperties); }
-            set { EditorPrefs.SetBool(kInstanceAutocreateOutClassPropertiesKey, value); }        
-        }
-    
-    
-    	// =================================================================================
+        	// =================================================================================
     	// Software Updates Preferences
         // ---------------------------------------------------------------------------------
     	//
@@ -656,35 +561,34 @@ namespace iCanScript.Editor {
     	}
     	
     
-    #if CODE_GENERATION_CONFIG
     	// =================================================================================
     	// Code Engineering Preferences
         // ---------------------------------------------------------------------------------
     	//
     	// Default Values
     	//
-    	const string kCodeGenerationFolder            = "iCanScript Generated Code";
-    	const string kCodeGenerationBaseClassName     = "MonoBehaviour";
-    	const string kCodeGenerationBaseClassNamespace= "UnityEngine";
+    	const string kCodeGenerationFolder           = "iCanScript Generated Code";
+    	const string kCodeGenerationBaseTypeName     = "MonoBehaviour";
+    	const string kCodeGenerationBaseTypeNamespace= "UnityEngine";
     
     	//
     	// Database access keys
     	//
-    	const string kCodeGenerationFolderKey            = "iCS_CodeGenerationFolder";
-    	const string kCodeGenerationBaseClassNameKey     = "iCS_CodeGenerationBaseClassName";
-    	const string kCodeGenerationBaseClassNamespaceKey= "iCS_CodeGenerationBaseClassNamespace";
-    
+    	const string kCodeGenerationFolderKey           = "iCS_CodeGenerationFolder";
+    	const string kCodeGenerationBaseTypeNameKey     = "iCS_CodeGenerationBaseTypeName";
+    	const string kCodeGenerationBaseTypeNamespaceKey= "iCS_CodeGenerationBaseTypeNamespace";
+
     	//
     	// Reset to default value functions
     	//
     	public static void ResetCodeGenerationFolder() {
     	    CodeGenerationFolder= kCodeGenerationFolder;
     	}
-    	public static void ResetCodeGenerationBaseClassName() {
-    	    CodeGenerationBaseClassName= kCodeGenerationBaseClassName;
+    	public static void ResetCodeGenerationBaseTypeName() {
+    	    CodeGenerationBaseTypeName= kCodeGenerationBaseTypeName;
     	}
-    	public static void ResetCodeGenerationBaseClassNamespace() {
-    	    CodeGenerationBaseClassNamespace= kCodeGenerationBaseClassNamespace;
+    	public static void ResetCodeGenerationBaseTypeNamespace() {
+    	    CodeGenerationBaseTypeNamespace= kCodeGenerationBaseTypeNamespace;
     	}
     
     	//
@@ -694,15 +598,14 @@ namespace iCanScript.Editor {
             get { return EditorPrefs.GetString(kCodeGenerationFolderKey, kCodeGenerationFolder); }
             set { EditorPrefs.SetString(kCodeGenerationFolderKey, value); }
         }
-        public static string CodeGenerationBaseClassName {
-            get { return EditorPrefs.GetString(kCodeGenerationBaseClassNameKey, kCodeGenerationBaseClassName); }
-            set { EditorPrefs.GetString(kCodeGenerationBaseClassNameKey, value); }
+        public static string CodeGenerationBaseTypeName {
+            get { return EditorPrefs.GetString(kCodeGenerationBaseTypeNameKey, kCodeGenerationBaseTypeName); }
+            set { EditorPrefs.SetString(kCodeGenerationBaseTypeNameKey, value); }
         }
-        public static string CodeGenerationBaseClassNamespace {
-            get { return EditorPrefs.GetString(kCodeGenerationBaseClassNamespaceKey, kCodeGenerationBaseClassNamespace); }
-            set { EditorPrefs.GetString(kCodeGenerationBaseClassNamespaceKey, value); }
+        public static string CodeGenerationBaseTypeNamespace {
+            get { return EditorPrefs.GetString(kCodeGenerationBaseTypeNamespaceKey, kCodeGenerationBaseTypeNamespace); }
+            set { EditorPrefs.SetString(kCodeGenerationBaseTypeNamespaceKey, value); }
         }
-    #endif
     
     
     	// =================================================================================

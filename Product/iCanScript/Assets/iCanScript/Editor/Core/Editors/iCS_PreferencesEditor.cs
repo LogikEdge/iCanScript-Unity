@@ -34,7 +34,6 @@ namespace iCanScript.Editor {
     	    "Canvas",
     	    "Node Colors",
     	    "Type Colors",
-    	    "Properties Wizard",
     		"Software Update",
     	    "Code Generation"
     	};
@@ -118,9 +117,8 @@ namespace iCanScript.Editor {
                 case 1: Canvas(); break;
                 case 2: NodeColors(); break;
                 case 3: TypeColors(); break;
-                case 4: PropertyWizard(); break;
-    			case 5: SoftwareUpdate(); break;
-                case 6: CodeGeneration(); break;
+    			case 4: SoftwareUpdate(); break;
+                case 5: CodeGeneration(); break;
                 default: break;
             }
     
@@ -364,57 +362,6 @@ namespace iCanScript.Editor {
     		}
         }
         // ---------------------------------------------------------------------------------
-        void PropertyWizard() {
-            // Header
-            Rect p= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
-            GUI.Label(p, "Auto-Creation", EditorStyles.boldLabel);
-            Rect p2= new Rect(kColumn3X+kMargin, p.y, 0.5f*kColumn3Width, 20f);
-            GUI.Label(p2, "In", EditorStyles.boldLabel);
-            p2.x+= 40f;
-            GUI.Label(p2, "Out", EditorStyles.boldLabel);
-            
-            // Column 2
-            Rect[] pos= new Rect[4];
-            pos[0]= new Rect(p.x, p.yMax, p.width, p.height);
-            for(int i= 1; i < pos.Length; ++i) {
-                pos[i]= pos[i-1];
-                pos[i].y= pos[i-1].yMax;
-            }
-            GUI.Label(pos[0], "Instance Fields");
-            GUI.Label(pos[1], "Class Fields");
-            GUI.Label(pos[2], "Instance Properties");
-            GUI.Label(pos[3], "Class Properties");
-            
-            // Draw Column 3
-            for(int i= 0; i < pos.Length; ++i) {
-                pos[i].x+= kColumn2Width;
-                pos[i].width= 40f;
-            }
-            Prefs.InstanceAutocreateInFields         = EditorGUI.Toggle(pos[0], Prefs.InstanceAutocreateInFields);
-            Prefs.InstanceAutocreateInClassFields    = EditorGUI.Toggle(pos[1], Prefs.InstanceAutocreateInClassFields);
-            Prefs.InstanceAutocreateInProperties     = EditorGUI.Toggle(pos[2], Prefs.InstanceAutocreateInProperties);
-            Prefs.InstanceAutocreateInClassProperties= EditorGUI.Toggle(pos[3], Prefs.InstanceAutocreateInClassProperties);
-            for(int i= 0; i < pos.Length; ++i) {
-                pos[i].x+= 45f;
-            }
-            Prefs.InstanceAutocreateOutFields         = EditorGUI.Toggle(pos[0], Prefs.InstanceAutocreateOutFields);
-            Prefs.InstanceAutocreateOutClassFields    = EditorGUI.Toggle(pos[1], Prefs.InstanceAutocreateOutClassFields);
-            Prefs.InstanceAutocreateOutProperties     = EditorGUI.Toggle(pos[2], Prefs.InstanceAutocreateOutProperties);
-            Prefs.InstanceAutocreateOutClassProperties= EditorGUI.Toggle(pos[3], Prefs.InstanceAutocreateOutClassProperties);
-            
-            // Reset Button
-            if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-                Prefs.ResetInstanceAutocreateInFields();
-                Prefs.ResetInstanceAutocreateInClassFields();
-                Prefs.ResetInstanceAutocreateInProperties();
-                Prefs.ResetInstanceAutocreateInClassProperties();
-                Prefs.ResetInstanceAutocreateOutFields();
-                Prefs.ResetInstanceAutocreateOutClassFields();
-                Prefs.ResetInstanceAutocreateOutProperties();
-                Prefs.ResetInstanceAutocreateOutClassProperties();
-            }        
-        }
-        // ---------------------------------------------------------------------------------
     	void SoftwareUpdate() {
             // Column 2
             Rect[] pos= new Rect[3];
@@ -453,30 +400,31 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
     	void CodeGeneration() {
             // Column 2
-            Rect[] pos= new Rect[3];
+            Rect[] pos= new Rect[4];
             pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
             for(int i= 1; i < pos.Length; ++i) {
                 pos[i]= pos[i-1];
                 pos[i].y= pos[i-1].yMax;
             }
             GUI.Label(pos[0], "Default Folder");
-            GUI.Label(pos[0], "Default Base Class Name");
-            GUI.Label(pos[2], "Default Base Class Namespace");
+            GUI.Label(pos[1], "Default Base Type Name");
+            GUI.Label(pos[3], "Default Base Type Namespace");
     
             // Draw Column 3
             for(int i= 0; i < pos.Length; ++i) {
                 pos[i].x+= kColumn2Width;
                 pos[i].width= kColumn3Width;
             }
-            Prefs.CodeGenerationFolder            = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
-            Prefs.CodeGenerationBaseClassName     = EditorGUI.TextField(pos[1], Prefs.CodeGenerationBaseClassName);
-            Prefs.CodeGenerationBaseClassNamespace= EditorGUI.TextField(pos[2], Prefs.CodeGenerationBaseClassNamespace);
+            Prefs.CodeGenerationFolder           = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
+            Prefs.CodeGenerationBaseTypeName     = EditorGUI.TextField(pos[1], Prefs.CodeGenerationBaseTypeName);
+            GUI.Label(pos[2], "<i>(format: namespace.type)</i>");
+            Prefs.CodeGenerationBaseTypeNamespace= EditorGUI.TextField(pos[3], Prefs.CodeGenerationBaseTypeNamespace);
             
             // Reset Button
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
                 Prefs.ResetCodeGenerationFolder();
-                Prefs.ResetCodeGenerationBaseClassName();
-                Prefs.ResetCodeGenerationBaseClassNamespace();
+                Prefs.ResetCodeGenerationBaseTypeName();
+                Prefs.ResetCodeGenerationBaseTypeNamespace();
             }        	    
     	}
     	

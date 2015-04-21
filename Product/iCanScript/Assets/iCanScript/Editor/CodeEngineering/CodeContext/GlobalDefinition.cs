@@ -10,8 +10,9 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        string                myNamespace        = null;
-        List<TypeDefinition>  myTypes            = new List<TypeDefinition>();
+        string                myNamespace= null;
+        List<TypeDefinition>  myTypes    = new List<TypeDefinition>();
+        Type                  myBaseType = null;
         
         // ===================================================================
         // PROPERTIES
@@ -28,17 +29,20 @@ namespace iCanScript.Editor.CodeEngineering {
         /// Builds the code global scope.
         public GlobalDefinition(iCS_EditorObject vsRootObject, string namespaceName)
         : base(vsRootObject, null) {
-            // Initialise attributes
+            // -- Initialise attributes --
 			myNamespace= namespaceName;
-
-			// Collect the used assemblies.
-            AddNamespace("UnityEngine");   // Top-Type inherits from MonoBehaviour
+            myBaseType = CodeGenerationConfig.BaseType;
+            
+			// -- Collect the used namespaces --
+            if(myBaseType != null && myBaseType != typeof(void)) {
+                AddNamespace(myBaseType.Namespace);
+            }
 			CollectUsedNamespaces();
 			
-			// Build root types
+			// -- Build root types --
 			BuildRootTypes(vsRootObject);
 			
-			// Resolve dependencies.
+			// -- Resolve dependencies --
 			ResolveDependencies();
         }
 
@@ -64,8 +68,9 @@ namespace iCanScript.Editor.CodeEngineering {
 		///
 		void BuildRootTypes(iCS_EditorObject vsRootObject) {
             // Add root class defintion.
+            var baseType= CodeGenerationConfig.BaseType;
             var classDefinition= new TypeDefinition(vsRootObject, this,
-                                                    typeof(MonoBehaviour),
+                                                    baseType,
                                                     AccessSpecifier.PUBLIC,
                                                     ScopeSpecifier.NONSTATIC);
             AddType(classDefinition);			

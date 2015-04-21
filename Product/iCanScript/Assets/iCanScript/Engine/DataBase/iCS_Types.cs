@@ -163,24 +163,6 @@ public static class iCS_Types {
         return null;
     }
     // ----------------------------------------------------------------------
-	/// Seraches the application domain for the type with the given name in
-	/// the given namespace.
-	///
-	/// @param typeName The name of the type to search.
-	/// @param namespaceName The namespace that contains the type.
-	/// @return The found type descriptor if found. _null_ otherwise.
-	///
-    public static Type FindType(string typeName, string namespaceName) {
-        foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-            foreach(var classType in assembly.GetTypes()) {
-                if(classType.Name == typeName && classType.Namespace == namespaceName) {
-                    return classType;
-                }
-            }
-        }
-        return null;
-    }
-    // ----------------------------------------------------------------------
 	/// Finds the method information of a function with the given type name.
 	///
 	/// @param typeName The name of the type to search.
@@ -222,6 +204,75 @@ public static class iCS_Types {
         }
         return methodInfo;
     }
+    // ======================================================================
+    // TYPE STRING UTILITIES
+    // ----------------------------------------------------------------------
+    public static string ToTypeString(Type type) {
+        var namespaceName= type.Namespace;
+        if(!string.IsNullOrEmpty(namespaceName)) {
+            return namespaceName+"."+type.Name;
+        }
+        return type.Name;
+    }
+    // ----------------------------------------------------------------------
+    /// Extract the namespace and type names from a type string.
+    ///
+    /// @param typeString The _'namespace.type'_ formatted string.
+    /// @param namespaceName The extracted namespace name. _null_ if not found.
+    /// @return The extracted type name. _null_ if not found.
+    ///
+    public static string SplitTypeString(string typeString, out string namespaceName) {
+        string typeName= null;
+        namespaceName  = null;
+        // -- Separate namespace name from type name --
+        var len= typeString.Length;
+        var splitIdx= typeString.LastIndexOf('.');
+        if(splitIdx > 0 && splitIdx < len) {
+            namespaceName= typeString.Substring(splitIdx);
+            typeName= typeString.Substring(splitIdx+1, len-splitIdx-1);
+        }
+        else {
+            typeName= typeString;
+        }
+        return string.IsNullOrEmpty(typeName) ? null : typeName;
+    }
+    // ----------------------------------------------------------------------
+    /// Extract the type information from a type string.
+    ///
+    /// @param typeString The _'namespace.type'_ formatted string.
+    /// @param namespaceName The extracted namespace name. _null_ if not found.
+    /// @param typeName The extracted type name. _null_ if not found.
+    /// @return The type if found. _null_ otherwise.
+    ///
+    public static Type GetTypeInfoFromTypeString(string typeString,
+                                                 out string namespaceName,
+                                                 out string typeName) {
+        // -- Separate namespace name from type name --
+        typeName= SplitTypeString(typeString, out namespaceName);
+        // -- Find the corresponding type --
+        return FindType(typeName, namespaceName);
+    }
+    // ----------------------------------------------------------------------
+	/// Seraches the application domain for the type with the given name in
+	/// the given namespace.
+	///
+	/// @param typeName The name of the type to search.
+	/// @param namespaceName The namespace that contains the type.
+	/// @return The found type descriptor if found. _null_ otherwise.
+	///
+    public static Type FindType(string typeName, string namespaceName) {
+        foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+            foreach(var classType in assembly.GetTypes()) {
+                if(classType.Name == typeName && classType.Namespace == namespaceName) {
+                    return classType;
+                }
+            }
+        }
+        return null;
+    }
+    
+    // ======================================================================
+    // ASSEMBLY TYPE STRING UTILITIES
     // ----------------------------------------------------------------------
     public static Type TypeFromAssemblyQualifiedName(string assemblyQualifiedName) {
         bool dummy= false;
