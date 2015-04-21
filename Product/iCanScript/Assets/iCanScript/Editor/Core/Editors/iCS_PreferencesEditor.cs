@@ -416,10 +416,12 @@ namespace iCanScript.Editor {
             }
             Prefs.CodeGenerationFolder      = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
             Prefs.CodeGenerationBaseTypeName= EditorGUI.TextField(pos[1], Prefs.CodeGenerationBaseTypeName);
+            GUI.skin.label.richText= true;
             GUI.Label(pos[2], "<i>(format: namespace.type)</i>");
             
             // Reset Button
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
+                GUI.FocusControl("");
                 Prefs.ResetCodeGenerationFolder();
                 Prefs.ResetCodeGenerationBaseTypeName();
             }        	    

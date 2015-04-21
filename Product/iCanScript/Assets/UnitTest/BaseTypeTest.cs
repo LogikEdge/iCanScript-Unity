@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Fred {
+//namespace Fred {
     [iCS_Class(Company="iCanScript")]
     public class BaseTypeTest : MonoBehaviour {
 
@@ -16,4 +16,4 @@ namespace Fred {
     	}
     }
     
-}
+    //}

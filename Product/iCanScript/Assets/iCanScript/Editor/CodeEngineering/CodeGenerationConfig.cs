@@ -10,23 +10,31 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
         /// Gets and Sets the base type to be used for code generation.
         ///
+        /// @return The base type or _null_ if base type is not valid.
+        ///
         public static Type BaseType {
             get {
                 Type baseType= null;
                 // -- Get the default base type from the user preferences. --
-                var baseTypeString= Prefs.CodeGenerationBaseTypeName;
+                var baseTypeString= BaseTypeString;
                 if(!string.IsNullOrEmpty(baseTypeString)) {
                     string typeName;
                     string namespaceName;
                     baseType= iCS_Types.GetTypeInfoFromTypeString(baseTypeString, out namespaceName, out typeName);
-                    if(baseType == null || baseType == typeof(void)) {
-                        Debug.LogWarning("iCanScript: Error: Unable to find default base type: "+baseTypeString+".  Please verify base type configured in the Preferences->Code Generation.");
-                        Debug.Log("NS=> "+namespaceName+" TN=> "+typeName);
-                    }
+                }
+                else {
+                    baseType= typeof(void);
                 }
                 return baseType;
             }
         }
 
+        // ----------------------------------------------------------------------
+        /// Get base type string
+        public static string BaseTypeString {
+            get {
+                return Prefs.CodeGenerationBaseTypeName;
+            }
+        }
     }    
 }
