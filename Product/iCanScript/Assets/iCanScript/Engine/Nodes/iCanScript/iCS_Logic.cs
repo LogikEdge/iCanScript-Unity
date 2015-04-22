@@ -135,19 +135,3 @@ public static class iCS_Choice {
 	[iCS_Function(Return="out")]
 	public static Object Choice(Object trueValue, Object falseValue, bool sel) { return sel ? trueValue : falseValue; }
 }
-
-[iCS_Class(Company="iCanScript", Library="Test")]
-public class BaseClass {
-    [iCS_InOutPort]
-    public bool done= false;
-    
-    public bool fred { [iCS_Function] get; [iCS_Function] set; }
-
-    [iCS_Function]
-    public int Inc(int x) { return x; }
-}
-
-[iCS_Class(Company="iCanScript", Library="Test")]
-public class DerivedClass : BaseClass {
-        
-}
