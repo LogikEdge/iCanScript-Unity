@@ -28,7 +28,7 @@ namespace iCanScript.Editor {
     
     		// --------------
     		// LEFT TOOLBAR
-            // Navigation History
+            // -- Navigation History --
             var backwardNavigationIcon= iCS_BuiltinTextures.BackwardNavigationHistoryIcon();
             var forwardNavigationIcon= iCS_BuiltinTextures.ForwardNavigationHistoryIcon();
             var hasBackwardHistory= IStorage.HasBackwardNavigationHistory;
@@ -45,7 +45,18 @@ namespace iCanScript.Editor {
                     iCS_UserCommands.ReloadFromForwardNavigationHistory(IStorage);
                 }            
             }
-    		// Show Display Root Node.
+            // -- User Preferences --
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Preferences", 0, spacer, true)) {
+                var editor= EditorWindow.CreateInstance<PreferencesEditor>();
+                editor.ShowUtility();
+            }
+            // -- Visual Script Config --
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Config", 0, spacer, true)) {
+                var editor= EditorWindow.CreateInstance<VSConfigEditor>();
+                editor.ShowUtility();
+            }
+            
+    		// -- Show Display Root Node. --
     		GUI.changed= false;
     		IStorage.ShowDisplayRootNode= iCS_ToolbarUtility.Toggle(ref r, IStorage.ShowDisplayRootNode, spacer, spacer);
             iCS_ToolbarUtility.MiniLabel(ref r, "Show Root Node", 0,0);

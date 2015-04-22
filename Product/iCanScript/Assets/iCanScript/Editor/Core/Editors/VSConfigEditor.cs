@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
@@ -10,7 +10,7 @@ using TimedAction= Prelude.TimerService.TimedAction;
 namespace iCanScript.Editor {
     using Prefs= PreferencesController;
 
-    public class PreferencesEditor : ConfigEditorBase {
+    public class VSConfigEditor : ConfigEditorBase {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ namespace iCanScript.Editor {
         // INTERFACES TO BE PROVIDED
         // ---------------------------------------------------------------------------------
         protected override string   GetTitle() {
-            return "iCanScript Global Preferences";
+            return "Visual Script Configuration";
         }
         protected override string[] GetMainSelectionGridStrings() {
             return myOptionStrings;
