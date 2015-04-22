@@ -92,8 +92,8 @@ namespace iCanScript.Editor {
         public static iCS_LibraryEditor FindLibraryEditor() {
             return FindWindow(typeof(iCS_LibraryEditor)) as iCS_LibraryEditor;
         }    
-        public static iCS_PreferencesEditor FindPreferencesEditor() {
-            return FindWindow(typeof(iCS_PreferencesEditor)) as iCS_PreferencesEditor;
+        public static PreferencesEditor FindPreferencesEditor() {
+            return FindWindow(typeof(PreferencesEditor)) as PreferencesEditor;
         }
         // ======================================================================
     	public static void RepaintVisualEditor() {

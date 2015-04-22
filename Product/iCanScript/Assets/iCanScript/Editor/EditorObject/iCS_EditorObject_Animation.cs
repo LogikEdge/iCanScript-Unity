@@ -2,8 +2,11 @@ using UnityEngine;
 using System;
 using System.Collections;
 using P=Prelude;
-using Prefs= iCS_PreferencesController;
 using iCanScript.Editor;
+
+namespace iCanScript.Editor {
+    using Prefs= PreferencesController;
+}
 
 public partial class iCS_EditorObject {
     // ======================================================================

@@ -7,24 +7,39 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ======================================================================
     // Storage
     // ----------------------------------------------------------------------
-    [HideInInspector] public string                   SourceFileGUID        = null;
-    [HideInInspector] public int			          MajorVersion          = iCS_Config.MajorVersion;
-    [HideInInspector] public int    		          MinorVersion          = iCS_Config.MinorVersion;
-    [HideInInspector] public int    		          BugFixVersion         = iCS_Config.BugFixVersion;
-    [HideInInspector] public int                      DisplayRoot           = -1;	
-	[HideInInspector] public int    		          SelectedObject        = -1;
-    [HideInInspector] public Vector2                  SelectedObjectPosition= Vector2.zero;
-	[HideInInspector] public bool                     ShowDisplayRootNode   = true;
-	[HideInInspector] public float  		          GuiScale              = 1f;	
-	[HideInInspector] public Vector2		          ScrollPosition        = Vector2.zero;
-    [HideInInspector] public int                      UndoRedoId            = 0;
-    [HideInInspector] public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
-    [HideInInspector] public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
-    [HideInInspector] public iCS_EngineObject         EngineObject          = null;
+    [HideInInspector] public string                   TypeName               = null;
+    [HideInInspector] public bool                     OverrideDefaultBaseType= false;
+    [HideInInspector] public string                   BaseTypeName           = null;
+    [HideInInspector] public string                   SourceFileGUID         = null;
+    [HideInInspector] public int			          MajorVersion           = iCS_Config.MajorVersion;
+    [HideInInspector] public int    		          MinorVersion           = iCS_Config.MinorVersion;
+    [HideInInspector] public int    		          BugFixVersion          = iCS_Config.BugFixVersion;
+    [HideInInspector] public int                      DisplayRoot            = -1;	
+	[HideInInspector] public int    		          SelectedObject         = -1;
+    [HideInInspector] public Vector2                  SelectedObjectPosition = Vector2.zero;
+	[HideInInspector] public bool                     ShowDisplayRootNode    = true;
+	[HideInInspector] public float  		          GuiScale               = 1f;	
+	[HideInInspector] public Vector2		          ScrollPosition         = Vector2.zero;
+    [HideInInspector] public int                      UndoRedoId             = 0;
+    [HideInInspector] public List<iCS_EngineObject>   EngineObjects          = new List<iCS_EngineObject>();
+    [HideInInspector] public iCS_NavigationHistory    NavigationHistory      = new iCS_NavigationHistory();
+    [HideInInspector] public iCS_EngineObject         EngineObject           = null;
 
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
+    string iCS_IVisualScriptData.TypeName {
+        get { return TypeName; }
+        set { TypeName= value; }
+    }
+    bool iCS_IVisualScriptData.OverrideDefaultBaseType {
+        get { return OverrideDefaultBaseType; }
+        set { OverrideDefaultBaseType= value; }
+    }
+    string iCS_IVisualScriptData.BaseTypeName {
+        get { return BaseTypeName; }
+        set { BaseTypeName= value; }
+    }
     string iCS_IVisualScriptData.SourceFileGUID {
         get { return SourceFileGUID; }
         set { SourceFileGUID= value; }

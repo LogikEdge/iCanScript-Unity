@@ -41,9 +41,9 @@ public partial class iCS_IStorage {
 		if(storageVersion.IsOlderThen(2,0,6)) {
             isUpgraded |= V2_0_6_EditorUpgrade();
         }
-		if(storageVersion.IsOlderThen(2,0,8)) {
-            isUpgraded |= V2_0_8_EditorUpgrade();
-        }
+//		if(storageVersion.IsOlderThen(2,0,9)) {
+//            isUpgraded |= V2_0_8_EditorUpgrade();
+//        }
 
         // -- Warn the user that an upgrade toke place --
         if(isUpgraded) {
@@ -97,8 +97,8 @@ public partial class iCS_IStorage {
         return isUpgraded;
     }
     // ----------------------------------------------------------------------
-    /// Performs the editor data upgrade for v2.0.6.
-    bool V2_0_8_EditorUpgrade() {
+    /// Performs the editor data upgrade for v2.0.9.
+    bool V2_0_9_EditorUpgrade() {
         bool isUpgraded= false;
         // -- Convert to new port specification --
         ForEach(

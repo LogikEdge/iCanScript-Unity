@@ -174,6 +174,10 @@ public class iCS_LibraryDatabase {
         if(methodInfo != null) {
             return methodInfo.Method.DeclaringType != methodInfo.ClassType;
         }
+        var fieldInfo= memberInfo.ToFieldInfo;
+        if(fieldInfo != null) {
+            return fieldInfo.Field.DeclaringType != fieldInfo.ClassType;            
+        }
         var messageInfo= memberInfo.ToMessageInfo;
         if(messageInfo != null) {
             var parentTypeInfo= messageInfo.ParentTypeInfo;
@@ -346,9 +350,10 @@ public class iCS_LibraryDatabase {
                             return member;
                         }
                     }
-                    if(member is iCS_FieldInfo) {
+                    if(member is iCS_FieldInfo && edObj.IsField) {
                         var fieldInfo= member as iCS_FieldInfo;
-                        if(engineObject.GetFieldInfoNoWarning() == fieldInfo.Field) {
+                        var objFieldInfo= engineObject.GetFieldInfoNoWarning();
+                        if(objFieldInfo.Name == fieldInfo.Field.Name) {
                             if(numberOfFunctionOutputPorts == 0 && fieldInfo.IsSet) {
                                 return member;                                                            
                             }

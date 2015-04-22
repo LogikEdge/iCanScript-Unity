@@ -3,8 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
-using Prefs=iCS_PreferencesController;
 using iCanScript.Editor;
+using Prefs= iCanScript.Editor.PreferencesController;
 
 public partial class iCS_IStorage {
     // ======================================================================

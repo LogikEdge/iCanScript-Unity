@@ -5,7 +5,10 @@ using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
 using iCanScript.Engine;
-using Prefs= iCS_PreferencesController;
+
+namespace iCanScript.Editor {
+    using Prefs= PreferencesController;
+}
 
 public partial class iCS_EditorObject {
     // ======================================================================

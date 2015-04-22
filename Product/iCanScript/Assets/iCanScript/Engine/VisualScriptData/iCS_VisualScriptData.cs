@@ -22,24 +22,39 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public string                   SourceFileGUID        = null;
-    public int			            MajorVersion          = iCS_Config.MajorVersion;
-    public int    		            MinorVersion          = iCS_Config.MinorVersion;
-    public int    		            BugFixVersion         = iCS_Config.BugFixVersion;
-    public int                      DisplayRoot           = -1;	
-	public int    		            SelectedObject        = -1;
-    public Vector2                  SelectedObjectPosition= Vector2.zero;
-	public bool                     ShowDisplayRootNode   = true;
-	public float  		            GuiScale              = 1f;	
-	public Vector2		            ScrollPosition        = Vector2.zero;
-    public int                      UndoRedoId            = 0;
-    public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
-    public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
+    public string                   TypeName               = null;
+    public bool                     OverrideDefaultBaseType= false;
+    public string                   BaseTypeName           = null;
+    public string                   SourceFileGUID         = null;
+    public int			            MajorVersion           = iCS_Config.MajorVersion;
+    public int    		            MinorVersion           = iCS_Config.MinorVersion;
+    public int    		            BugFixVersion          = iCS_Config.BugFixVersion;
+    public int                      DisplayRoot            = -1;	
+	public int    		            SelectedObject         = -1;
+    public Vector2                  SelectedObjectPosition = Vector2.zero;
+	public bool                     ShowDisplayRootNode    = true;
+	public float  		            GuiScale               = 1f;	
+	public Vector2		            ScrollPosition         = Vector2.zero;
+    public int                      UndoRedoId             = 0;
+    public List<iCS_EngineObject>   EngineObjects          = new List<iCS_EngineObject>();
+    public iCS_NavigationHistory    NavigationHistory      = new iCS_NavigationHistory();
     
 
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
+    string iCS_IVisualScriptData.TypeName {
+        get { return TypeName; }
+        set { TypeName= value; }
+    }
+    bool iCS_IVisualScriptData.OverrideDefaultBaseType {
+        get { return OverrideDefaultBaseType; }
+        set { OverrideDefaultBaseType= value; }
+    }
+    string iCS_IVisualScriptData.BaseTypeName {
+        get { return BaseTypeName; }
+        set { BaseTypeName= value; }
+    }
     string iCS_IVisualScriptData.SourceFileGUID {
         get { return SourceFileGUID; }
         set { SourceFileGUID= value; }
@@ -217,11 +232,14 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
 
     // ----------------------------------------------------------------------
     public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
-        to.SourceFileGUID= from.SourceFileGUID;
-        to.MajorVersion  = from.MajorVersion;
-        to.MinorVersion  = from.MinorVersion;
-        to.BugFixVersion = from.BugFixVersion;
-        to.UndoRedoId    = from.UndoRedoId;
+        to.TypeName               = from.TypeName;
+        to.OverrideDefaultBaseType= from.OverrideDefaultBaseType;
+        to.BaseTypeName           = from.BaseTypeName;
+        to.SourceFileGUID         = from.SourceFileGUID;
+        to.MajorVersion           = from.MajorVersion;
+        to.MinorVersion           = from.MinorVersion;
+        to.BugFixVersion          = from.BugFixVersion;
+        to.UndoRedoId             = from.UndoRedoId;
         
         // Resize destination engine object array.
         var fromEngineObjects= from.EngineObjects;

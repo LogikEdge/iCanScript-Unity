@@ -7,9 +7,9 @@ using System.Collections;
 using iCanScript.JSON;
 using iCanScript.Engine;
 using P=Prelude;
-using Prefs=iCS_PreferencesController;
 
 namespace iCanScript.Editor {
+    using Prefs=PreferencesController;
     
     public static class SoftwareUpdateController {
     	// =================================================================================
@@ -117,7 +117,7 @@ namespace iCanScript.Editor {
     //				Application.OpenURL(URL_DownloadPage);            
     				break;
     			case 1:	// Skip this version
-    				iCS_PreferencesController.SoftwareUpdateSkippedVersion= latestVersion.ToString();
+    				PreferencesController.SoftwareUpdateSkippedVersion= latestVersion.ToString();
     				break;
     			default: // Cancel
     				break;

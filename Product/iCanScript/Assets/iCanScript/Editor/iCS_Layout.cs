@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Prefs= iCS_PreferencesController;
 
 namespace iCanScript.Editor {
+    using Prefs= PreferencesController;
+
     public class iCS_Layout {
         // ======================================================================
         // CONSTANTS
