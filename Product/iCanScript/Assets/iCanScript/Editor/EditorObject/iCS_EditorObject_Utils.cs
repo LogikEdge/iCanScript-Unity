@@ -83,13 +83,13 @@ public partial class iCS_EditorObject {
 			   var parentNode= ParentNode;
 			   if(parentNode.IsKindOfFunction) {
 				   if(!(InitialValue is OwnerTag)) {
-					   var message= "Value for Target port is not valid: "+FullName;
+					   var message= "<color=red><b>Value</b></color> for <b>Target</b> port is not valid for node: <b>"+FullName+"</b>";
 					   ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
 					   return false;				   	
 				   }
 				   else {
 					   if(parentNode.IsFunction("get_transform", "GameObject", "UnityEngine")) {
-						   var message= "When 'Target' is set to 'Owner', the generated code has no effect.  The node can be removed safely. => "+ParentNode.FullName;
+						   var message= "When <b>'Target'</b> is set to <b>'Owner'</b>, the generated code has no effect.  The node can be removed safely: <b>"+ParentNode.FullName+"</b>";
 						   ErrorController.AddWarning(serviceKey, message, visualScript, ParentNode.InstanceId);
 					   }
 				   }

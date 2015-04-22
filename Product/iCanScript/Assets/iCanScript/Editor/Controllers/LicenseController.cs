@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using iCanScript.Engine;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Editor {
     
     public static class LicenseController {
         // ======================================================================
@@ -46,10 +46,10 @@ namespace iCanScript { namespace Editor {
     		var licenseType= iCS_LicenseType.Pro;
     		var version= iCS_Config.MajorVersion;
     		var license= LicenseController.BuildSignature(fingerPrint, (int)licenseType, (int)version);
-    		iCS_PreferencesController.UserLicense= LicenseController.ToString(license);
+    		PreferencesController.UserLicense= LicenseController.ToString(license);
         }
     	public static string LicenseAsString() {
-            return iCS_PreferencesController.UserLicense;
+            return PreferencesController.UserLicense;
     	}
             
         // ======================================================================
@@ -60,7 +60,7 @@ namespace iCanScript { namespace Editor {
         }
         public static byte[] Signature {
             get {
-                ourSignature= Xor(ourFingerPrint, FromString(iCS_PreferencesController.UserLicense));            
+                ourSignature= Xor(ourFingerPrint, FromString(PreferencesController.UserLicense));            
                 return ourSignature;
             }
         }
@@ -204,4 +204,4 @@ namespace iCanScript { namespace Editor {
         }
     }
     
-}}
+}

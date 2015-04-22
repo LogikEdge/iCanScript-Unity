@@ -22,6 +22,9 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+    public string                   TypeName              = null;
+    public bool                     UseDefaultBaseType    = true;
+    public string                   BaseTypeName          = null;
     public string                   SourceFileGUID        = null;
     public int			            MajorVersion          = iCS_Config.MajorVersion;
     public int    		            MinorVersion          = iCS_Config.MinorVersion;
@@ -40,6 +43,18 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
+    string iCS_IVisualScriptData.TypeName {
+        get { return TypeName; }
+        set { TypeName= value; }
+    }
+    bool iCS_IVisualScriptData.UseDefaultBaseType {
+        get { return UseDefaultBaseType; }
+        set { UseDefaultBaseType= value; }
+    }
+    string iCS_IVisualScriptData.BaseTypeName {
+        get { return BaseTypeName; }
+        set { BaseTypeName= value; }
+    }
     string iCS_IVisualScriptData.SourceFileGUID {
         get { return SourceFileGUID; }
         set { SourceFileGUID= value; }
@@ -217,11 +232,14 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
 
     // ----------------------------------------------------------------------
     public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
-        to.SourceFileGUID= from.SourceFileGUID;
-        to.MajorVersion  = from.MajorVersion;
-        to.MinorVersion  = from.MinorVersion;
-        to.BugFixVersion = from.BugFixVersion;
-        to.UndoRedoId    = from.UndoRedoId;
+        to.TypeName          = from.TypeName;
+        to.UseDefaultBaseType= from.UseDefaultBaseType;
+        to.BaseTypeName      = from.BaseTypeName;
+        to.SourceFileGUID    = from.SourceFileGUID;
+        to.MajorVersion      = from.MajorVersion;
+        to.MinorVersion      = from.MinorVersion;
+        to.BugFixVersion     = from.BugFixVersion;
+        to.UndoRedoId        = from.UndoRedoId;
         
         // Resize destination engine object array.
         var fromEngineObjects= from.EngineObjects;

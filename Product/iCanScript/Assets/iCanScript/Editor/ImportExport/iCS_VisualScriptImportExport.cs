@@ -84,9 +84,14 @@ public static class iCS_VisualScriptImportExport {
                     value= ReadObject(jvalue as JObject, field.FieldType);
                 }
                 // Convert the type as appropriate.
-                var fieldType= field.FieldType;
-                value= Convert.ChangeType(value, fieldType);
-                field.SetValue(newObj, value);
+                if(value != null) {
+                    var fieldType= field.FieldType;
+                    value= Convert.ChangeType(value, fieldType);
+                    field.SetValue(newObj, value);
+                }
+                else {
+                    field.SetValue(newObj, null);
+                }
             }
 		}
         return newObj;
