@@ -18,9 +18,7 @@ namespace iCanScript.Editor {
                 // -- Get the default base type from the user preferences. --
                 var baseTypeString= BaseTypeString;
                 if(!string.IsNullOrEmpty(baseTypeString)) {
-                    string typeName;
-                    string namespaceName;
-                    baseType= iCS_Types.GetTypeInfoFromTypeString(baseTypeString, out namespaceName, out typeName);
+                    baseType= iCS_Types.GetTypeFromTypeString(baseTypeString);
                 }
                 else {
                     baseType= typeof(void);

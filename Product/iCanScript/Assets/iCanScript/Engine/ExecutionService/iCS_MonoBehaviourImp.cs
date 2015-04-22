@@ -9,7 +9,7 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ----------------------------------------------------------------------
                       public string                   TypeName              = null;
                       public bool                     UseDefaultBaseType    = true;
-                      public string                   BaseType              = null;
+                      public string                   BaseTypeName          = null;
     [HideInInspector] public string                   SourceFileGUID        = null;
     [HideInInspector] public int			          MajorVersion          = iCS_Config.MajorVersion;
     [HideInInspector] public int    		          MinorVersion          = iCS_Config.MinorVersion;
@@ -36,9 +36,9 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
         get { return UseDefaultBaseType; }
         set { UseDefaultBaseType= value; }
     }
-    string iCS_IVisualScriptData.BaseType {
-        get { return BaseType; }
-        set { BaseType= value; }
+    string iCS_IVisualScriptData.BaseTypeName {
+        get { return BaseTypeName; }
+        set { BaseTypeName= value; }
     }
     string iCS_IVisualScriptData.SourceFileGUID {
         get { return SourceFileGUID; }

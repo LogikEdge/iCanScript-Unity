@@ -8,11 +8,15 @@ public partial class iCS_IStorage {
     public void SanityCheck() {
         var kSanityCheckServiceKey= "SanityCheck";
         ErrorController.Clear(kSanityCheckServiceKey);
-        // -- Verify visual script attributes --
+        // -- Verify base types --
         var message= Sanity.ValidateDefaultBaseType();
         if(message != null) {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }
+        message= Sanity.ValidateVisualScriptBaseType(this);
+        if(message != null) {
+            ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
+        }        
         // -- Ask each object to perform their own sanity check --
         ForEach(o=> o.SanityCheck(kSanityCheckServiceKey));
     }

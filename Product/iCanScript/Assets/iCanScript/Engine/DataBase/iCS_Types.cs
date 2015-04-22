@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using iCanScript.Engine;
+using P= Prelude;
 
 public static class iCS_Types {
     // ----------------------------------------------------------------------
@@ -247,10 +248,24 @@ public static class iCS_Types {
     /// @param typeName The extracted type name. _null_ if not found.
     /// @return The type if found. _null_ otherwise.
     ///
-    public static Type GetTypeInfoFromTypeString(string typeString,
-                                                 out string namespaceName,
-                                                 out string typeName) {
+    public static Type GetTypeFromTypeString(string typeString,
+                                             out string namespaceName,
+                                             out string typeName) {
         // -- Separate namespace name from type name --
+        SplitTypeString(typeString, out namespaceName, out typeName);
+        // -- Find the corresponding type --
+        return FindType(namespaceName, typeName);
+    }
+    // ----------------------------------------------------------------------
+    /// Extract the type information from a type string.
+    ///
+    /// @param typeString The _'namespace.type'_ formatted string.
+    /// @return The type if found. _null_ otherwise.
+    ///
+    public static Type GetTypeFromTypeString(string typeString) {
+        // -- Separate namespace name from type name --
+        string namespaceName= null;
+        string typeName     = null;
         SplitTypeString(typeString, out namespaceName, out typeName);
         // -- Find the corresponding type --
         return FindType(namespaceName, typeName);
@@ -272,6 +287,42 @@ public static class iCS_Types {
             }
         }
         return null;
+    }
+    
+    // ======================================================================
+    // ----------------------------------------------------------------------
+    public static bool IsGeneratedByiCanScript(string namespaceName, string typeName) {
+        var type= FindType(namespaceName, typeName);
+        if(type == null || type == typeof(void)) return false;
+        foreach(var attribute in type.GetCustomAttributes(true)) {
+            if(attribute is iCS_ClassAttribute) return true;
+        }
+        return false;
+    }
+    // ----------------------------------------------------------------------
+    public static string GetICanScriptFile(Type type) {
+        foreach(var attribute in type.GetCustomAttributes(true)) {
+            if(attribute is iCS_FileSpecAttribute) {
+                var fileSpec= attribute as iCS_FileSpecAttribute;
+                return fileSpec.iCanScriptFile;
+            }
+        }
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    public static string GetICanScriptFileGUID(Type type) {
+        foreach(var attribute in type.GetCustomAttributes(true)) {
+            if(attribute is iCS_FileSpecAttribute) {
+                var fileSpec= attribute as iCS_FileSpecAttribute;
+                return fileSpec.iCanScriptFileGUID;
+            }
+        }
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    public static MethodInfo[] GetAbstractMethods(Type type) {
+        var methods= type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        return P.filter(m=> m.IsAbstract, methods);
     }
     
     // ======================================================================

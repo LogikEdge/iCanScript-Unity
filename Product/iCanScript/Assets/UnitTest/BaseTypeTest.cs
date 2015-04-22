@@ -3,7 +3,7 @@ using System.Collections;
 
 //namespace Fred {
     [iCS_Class(Company="iCanScript")]
-    public class BaseTypeTest : MonoBehaviour {
+    public abstract class BaseTypeTest : MonoBehaviour {
 
     	// Use this for initialization
     	void Start () {
@@ -14,6 +14,8 @@ using System.Collections;
     	void Update () {
 	
     	}
+        
+        protected abstract void FredFlinstone(int x);
     }
     
     //}

@@ -24,7 +24,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ----------------------------------------------------------------------
     public string                   TypeName              = null;
     public bool                     UseDefaultBaseType    = true;
-    public string                   BaseType              = null;
+    public string                   BaseTypeName          = null;
     public string                   SourceFileGUID        = null;
     public int			            MajorVersion          = iCS_Config.MajorVersion;
     public int    		            MinorVersion          = iCS_Config.MinorVersion;
@@ -51,9 +51,9 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         get { return UseDefaultBaseType; }
         set { UseDefaultBaseType= value; }
     }
-    string iCS_IVisualScriptData.BaseType {
-        get { return BaseType; }
-        set { BaseType= value; }
+    string iCS_IVisualScriptData.BaseTypeName {
+        get { return BaseTypeName; }
+        set { BaseTypeName= value; }
     }
     string iCS_IVisualScriptData.SourceFileGUID {
         get { return SourceFileGUID; }
@@ -234,7 +234,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
         to.TypeName          = from.TypeName;
         to.UseDefaultBaseType= from.UseDefaultBaseType;
-        to.BaseType          = from.BaseType;
+        to.BaseTypeName      = from.BaseTypeName;
         to.SourceFileGUID    = from.SourceFileGUID;
         to.MajorVersion      = from.MajorVersion;
         to.MinorVersion      = from.MinorVersion;
