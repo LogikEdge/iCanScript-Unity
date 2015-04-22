@@ -22,8 +22,10 @@ namespace iCanScript.Editor.CodeEngineering {
             }
 
             // -- Build code global scope. --
-            var codeGenerationNamespace= iCS_Config.kCodeGenerationNamespace;
-            myCodeRoot= new GlobalDefinition(iStorage.EditorObjects[0], codeGenerationNamespace);
+            var typeName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
+            var namespaceName= iCS_Config.kCodeGenerationNamespace;
+            var baseType= CodeGenerationConfig.GetBaseType(iStorage);
+            myCodeRoot= new GlobalDefinition(typeName, namespaceName, baseType, iStorage);
             
             // -- Generate code. --
             var result= myCodeRoot.GenerateCode(0);

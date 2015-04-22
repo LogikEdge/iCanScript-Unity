@@ -15,7 +15,6 @@ using System.Collections;
 	
     	}
         
-        protected abstract void FredFlinstone(int x);
     }
     
     //}

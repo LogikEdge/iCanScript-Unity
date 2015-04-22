@@ -27,11 +27,11 @@ namespace iCanScript.Editor.CodeEngineering {
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds the code global scope.
-        public GlobalDefinition(iCS_EditorObject vsRootObject, string namespaceName)
-        : base(vsRootObject, null) {
+        public GlobalDefinition(string typeName, string namespaceName, Type baseType, iCS_IStorage iStorage)
+        : base(iStorage.EditorObjects[0], null) {
             // -- Initialise attributes --
 			myNamespace= namespaceName;
-            myBaseType = CodeGenerationConfig.BaseType;
+            myBaseType = baseType;
             
 			// -- Collect the used namespaces --
             if(myBaseType != null && myBaseType != typeof(void)) {
@@ -40,6 +40,7 @@ namespace iCanScript.Editor.CodeEngineering {
 			CollectUsedNamespaces();
 			
 			// -- Build root types --
+            var vsRootObject= iStorage.EditorObjects[0];
 			BuildRootTypes(vsRootObject);
 			
 			// -- Resolve dependencies --
@@ -68,9 +69,8 @@ namespace iCanScript.Editor.CodeEngineering {
 		///
 		void BuildRootTypes(iCS_EditorObject vsRootObject) {
             // Add root class defintion.
-            var baseType= CodeGenerationConfig.BaseType;
             var classDefinition= new TypeDefinition(vsRootObject, this,
-                                                    baseType,
+                                                    myBaseType,
                                                     AccessSpecifier.PUBLIC,
                                                     ScopeSpecifier.NONSTATIC);
             AddType(classDefinition);			
