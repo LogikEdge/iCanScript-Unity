@@ -12,17 +12,18 @@ CSS: Github.css
 
 ## iCanScript v2.0.8 ##
 
-_April 21, 2015_
+_April 22, 2015_
 
 V2.0.8 is a development release of iCanScript2.
 ### List of Changes
 
-- **<span style="color: green">\[NEW\]</span>** New _Visual Script Configuration Panel_ added to the _Visual Editor toolbar_.
-- **<span style="color: green">\[NEW\]</span>** Ability to change the _Base Type_ of the visual script via the new configuration panel.
-- **<span style="color: green">\[NEW\]</span>** New _Code Generation_ section in the User Preferences.
-- **<span style="color: green">\[NEW\]</span>** Ability to change the default _Base Type_ for code generation.  _(see User Preferences -> Code Generation)_
-- **<span style="color: green">\[NEW\]</span>** Ability to change the default code generation folder.  _(see User Preferences -> Code Generation)_
+- **<span style="color: green">\[NEW\]</span>** Added a _Visual Script Configuration Panel_ accessible from the visual script toolbar.
+- **<span style="color: green">\[NEW\]</span>** The user can now configure the _**base type (inheritance)**_ for the type defined by the visual script.
+	- **<span style="color: green">\[NEW\]</span>** The global _Base Type_ can be configured in the _Global Preferences_;
+	- **<span style="color: green">\[NEW\]</span>** The _Base Type_ can be overridden for each visual script in the new _Visual Script Configuration Panel_.
 - **<span style="color: red">\[FIXED\]</span>** Null exception when attempting to import a field with its value set _null_.
+- **<span style="color: red">\[FIXED\]</span>** Fields defined in a base class not properly imported in derived classes resulting in a type not found error.
+
 
 * * *
 
