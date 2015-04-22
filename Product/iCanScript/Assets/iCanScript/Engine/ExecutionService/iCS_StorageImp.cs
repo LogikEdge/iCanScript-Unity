@@ -11,24 +11,24 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-                      public string                   TypeName              = null;
-                      public bool                     UseDefaultBaseType    = true;
-                      public string                   BaseTypeName          = null;
-                      public string                   SourceFileGUID        = null;
-    [HideInInspector] public int			          MajorVersion          = iCS_Config.MajorVersion;
-    [HideInInspector] public int    		          MinorVersion          = iCS_Config.MinorVersion;
-    [HideInInspector] public int    		          BugFixVersion         = iCS_Config.BugFixVersion;
-    [HideInInspector] public int                      DisplayRoot           = -1;	
-	[HideInInspector] public int    		          SelectedObject        = -1;
-    [HideInInspector] public Vector2                  SelectedObjectPosition= Vector2.zero;
-	[HideInInspector] public bool                     ShowDisplayRootNode   = true;
-	[HideInInspector] public float  		          GuiScale              = 1f;	
-	[HideInInspector] public Vector2		          ScrollPosition        = Vector2.zero;
-    [HideInInspector] public int                      UndoRedoId            = 0;
-    [HideInInspector] public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
-    [HideInInspector] public List<Object>             UnityObjects          = new List<Object>();
-    [HideInInspector] public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
-                      public iCS_EngineObject         EngineObject          = null;
+                      public string                   TypeName               = null;
+                      public bool                     OverrideDefaultBaseType= false;
+                      public string                   BaseTypeName           = null;
+                      public string                   SourceFileGUID         = null;
+    [HideInInspector] public int			          MajorVersion           = iCS_Config.MajorVersion;
+    [HideInInspector] public int    		          MinorVersion           = iCS_Config.MinorVersion;
+    [HideInInspector] public int    		          BugFixVersion          = iCS_Config.BugFixVersion;
+    [HideInInspector] public int                      DisplayRoot            = -1;	
+	[HideInInspector] public int    		          SelectedObject         = -1;
+    [HideInInspector] public Vector2                  SelectedObjectPosition = Vector2.zero;
+	[HideInInspector] public bool                     ShowDisplayRootNode    = true;
+	[HideInInspector] public float  		          GuiScale               = 1f;	
+	[HideInInspector] public Vector2		          ScrollPosition         = Vector2.zero;
+    [HideInInspector] public int                      UndoRedoId             = 0;
+    [HideInInspector] public List<iCS_EngineObject>   EngineObjects          = new List<iCS_EngineObject>();
+    [HideInInspector] public List<Object>             UnityObjects           = new List<Object>();
+    [HideInInspector] public iCS_NavigationHistory    NavigationHistory      = new iCS_NavigationHistory();
+                      public iCS_EngineObject         EngineObject           = null;
     
 
     // ======================================================================
@@ -38,9 +38,9 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
         get { return TypeName; }
         set { TypeName= value; }
     }
-    bool iCS_IVisualScriptData.UseDefaultBaseType {
-        get { return UseDefaultBaseType; }
-        set { UseDefaultBaseType= value; }
+    bool iCS_IVisualScriptData.OverrideDefaultBaseType {
+        get { return OverrideDefaultBaseType; }
+        set { OverrideDefaultBaseType= value; }
     }
     string iCS_IVisualScriptData.BaseTypeName {
         get { return BaseTypeName; }

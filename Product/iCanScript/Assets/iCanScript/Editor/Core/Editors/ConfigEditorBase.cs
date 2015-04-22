@@ -140,6 +140,7 @@ namespace iCanScript.Editor {
             }
     
             // Execute option specific panel.
+            GUI.skin.label.richText= true;
             ProcessSelection(selGridId);
     
             // Show iCanScript version information.

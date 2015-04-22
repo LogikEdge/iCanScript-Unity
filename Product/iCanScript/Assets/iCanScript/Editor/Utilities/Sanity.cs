@@ -29,8 +29,8 @@ namespace iCanScript.Editor {
             }
             // -- Base type not found; generate error message --
             c_codeGenerationBaseTypeMessage=
-                "Unable to find the default <b>Base Type</b> <color=red><b>"+baseTypeName+
-                "</b></color> defined in the <b>User Preferences</b>";
+                "Unable to locate the <b>Default Base Type</b> <color=red><b>"+baseTypeName+
+                "</b></color> configured in the <b>Global Preferences</b>";
             return c_codeGenerationBaseTypeMessage;
         }
         private static string c_codeGenerationBaseTypeName    = null;
@@ -42,6 +42,8 @@ namespace iCanScript.Editor {
         /// @return A user message if a problem is found. _null_ otherwise.
         ///
         public static string ValidateVisualScriptBaseType(iCS_IStorage iStorage) {
+            // -- Don't validate if not enabled --
+            if(iStorage.OverrideDefaultBaseType == false) return null;
             // -- Return previous message if nothing changed --
             var baseTypeName= iStorage.BaseTypeName;
             if(baseTypeName == c_visualScriptBaseTypeName) {
@@ -60,8 +62,8 @@ namespace iCanScript.Editor {
             }
             // -- Base type not found; generate error message --
             c_visualScriptBaseTypeMessage=
-                "Unable to find the specific <b>Base Type</b> <color=red><b>"+baseTypeName+
-                "</b></color> defined in the <b>Visual Script</b>";
+                "Unable to locate the <b>Base Type</b> <color=red><b>"+baseTypeName+
+                "</b></color> configured in the <b>Visual Script Configuration</b>";
             return c_visualScriptBaseTypeMessage;
         }
         private static string c_visualScriptBaseTypeName   = null;

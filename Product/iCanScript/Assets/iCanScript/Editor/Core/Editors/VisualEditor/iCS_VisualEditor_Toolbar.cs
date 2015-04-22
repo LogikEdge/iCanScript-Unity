@@ -52,8 +52,7 @@ namespace iCanScript.Editor {
             }
             // -- Visual Script Config --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Config", 0, spacer, true)) {
-                var editor= EditorWindow.CreateInstance<VSConfigEditor>();
-                editor.ShowUtility();
+                VSConfigEditor.Init(IStorage);
             }
             
     		// -- Show Display Root Node. --

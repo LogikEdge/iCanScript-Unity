@@ -106,9 +106,9 @@ public partial class iCS_IStorage {
         get { return Storage.TypeName; }
         set { Storage.TypeName= value; }
     }
-    public bool UseDefaultBaseType {
-        get { return Storage.UseDefaultBaseType; }
-        set { Storage.UseDefaultBaseType= value; }
+    public bool OverrideDefaultBaseType {
+        get { return Storage.OverrideDefaultBaseType; }
+        set { Storage.OverrideDefaultBaseType= value; }
     }
     public string BaseTypeName {
         get { return Storage.BaseTypeName; }

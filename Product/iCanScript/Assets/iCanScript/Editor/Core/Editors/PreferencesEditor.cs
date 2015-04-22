@@ -261,7 +261,6 @@ namespace iCanScript.Editor {
             pos= GetValueColumnPositions(3);
             Prefs.CodeGenerationFolder      = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
             Prefs.CodeGenerationBaseTypeName= EditorGUI.TextField(pos[1], Prefs.CodeGenerationBaseTypeName);
-            GUI.skin.label.richText= true;
             GUI.Label(pos[2], "<i>(format: namespace.type)</i>");
             
             // -- Reset button --
