@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public interface iCS_IVisualScriptData {
 	// Editor Interface
+    string                  TypeName               { get; set; }
+    bool                    UseDefaultBaseType     { get; set; }
+    string                  BaseType               { get; set; }
     string                  SourceFileGUID         { get; set; }
     int                     DisplayRoot            { get; set; }
     int                     SelectedObject         { get; set; }

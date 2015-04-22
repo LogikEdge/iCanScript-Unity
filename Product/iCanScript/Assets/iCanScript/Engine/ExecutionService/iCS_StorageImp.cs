@@ -11,6 +11,9 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+                      public string                   TypeName              = null;
+                      public bool                     UseDefaultBaseType    = true;
+                      public string                   BaseType              = null;
                       public string                   SourceFileGUID        = null;
     [HideInInspector] public int			          MajorVersion          = iCS_Config.MajorVersion;
     [HideInInspector] public int    		          MinorVersion          = iCS_Config.MinorVersion;
@@ -31,6 +34,18 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
+    string iCS_IVisualScriptData.TypeName {
+        get { return TypeName; }
+        set { TypeName= value; }
+    }
+    bool iCS_IVisualScriptData.UseDefaultBaseType {
+        get { return UseDefaultBaseType; }
+        set { UseDefaultBaseType= value; }
+    }
+    string iCS_IVisualScriptData.BaseType {
+        get { return BaseType; }
+        set { BaseType= value; }
+    }
     string iCS_IVisualScriptData.SourceFileGUID {
         get { return SourceFileGUID; }
         set { SourceFileGUID= value; }
