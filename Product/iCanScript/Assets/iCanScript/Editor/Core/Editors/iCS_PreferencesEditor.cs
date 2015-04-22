@@ -10,7 +10,7 @@ using TimedAction= Prelude.TimerService.TimedAction;
 namespace iCanScript.Editor {
     using Prefs= PreferencesController;
 
-    public class iCS_PreferencesEditor : iCS_EditorBase {
+    public class PreferencesEditor : iCS_EditorBase {
         // =================================================================================
         // Constants
         // ---------------------------------------------------------------------------------
