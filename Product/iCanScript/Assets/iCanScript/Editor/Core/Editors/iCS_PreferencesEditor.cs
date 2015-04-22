@@ -450,11 +450,13 @@ namespace iCanScript.Editor {
                 Prefs.ResetCodeGenerationFolder();
                 Prefs.ResetCodeGenerationBaseTypeName();
             }
+
             // -- Display error if base type not found --
-            if(CodeGenerationConfig.BaseType == null) {
+            var message= Sanity.ValidateDefaultBaseType();
+            if(message != null) {
                 StartRepaintTimer();
                 var r= ErrorRect(pos[1]); 
-                ErrorController.DisplayErrorMessage(position, r, "Unable to find base type.");                
+                ErrorController.DisplayErrorMessage(position, r, message);                
             }
     	}
         

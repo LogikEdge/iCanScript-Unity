@@ -150,8 +150,18 @@ namespace iCanScript.Editor {
     	const float kMargins= 4f;
         public static Rect DetermineErrorDetailRect(Rect position, Rect iconRect, int nbOfLines, bool growUpward= false) {
             var r= iconRect;
-    		r.x= kMargins+iconRect.xMax;
-    		r.width= position.width-r.x-kMargins;
+            var rightWidth= position.width-iconRect.xMax-kMargins;
+            var leftWidth= iconRect.x-kMargins;
+            if(leftWidth > rightWidth) {
+                r.x= kMargins;
+                r.width= leftWidth-2*kMargins;
+            }
+            else {
+                r.x= r.xMax+kMargins;
+                r.width= rightWidth-2*kMargins;
+            }
+            var lineFactor= 1+((int)(640f/r.width));
+            if(r.width < 500) nbOfLines*= lineFactor;
             var height= 16*nbOfLines;
             if(growUpward) {
                 r.y= r.yMax-height;
@@ -199,17 +209,11 @@ namespace iCanScript.Editor {
             // -- Draw background box --
             var borderColor= nbErrors != 0 ? Color.red : Color.yellow;
             Draw2D.FilledBoxWithOutline(r, Color.black, borderColor, 2);
-//            var savedColor= GUI.color;
-//            var outlineRect= new Rect(r.x-2, r.y-2, r.width+4, r.height+4);
-//            GUI.color= nbErrors != 0 ? Color.red : Color.yellow;
-//            GUI.Box(outlineRect,"");
-//    		GUI.color= Color.black;
-//    		GUI.Box(r,"");
-//    		GUI.color= savedColor;
 
             // -- Define error/warning detail style --
     		GUIStyle style= EditorStyles.whiteLabel;
     		style.richText= true;
+            style.wordWrap= true;
         
             // -- Show Error first than Warnings --
     		float y= 0;
@@ -228,9 +232,9 @@ namespace iCanScript.Editor {
         			content.text= w;
         			GUI.Label(new Rect(0, y, r.width, r.height), content, style);
         			y+= 16;
-        		}                
+        		}
             }
-    		GUI.EndScrollView();        
+    		GUI.EndScrollView();
         }    
 
     	// -----------------------------------------------------------------------
@@ -243,13 +247,13 @@ namespace iCanScript.Editor {
         public static void DisplayErrorsAndWarningsAt(Rect position, Rect rect, List<ErrorWarning> errors, List<ErrorWarning> warnings) {
             // -- Display the appropriate error/warning icon --
             var icon= errors.Count != 0 ? ErrorController.ErrorIcon : ErrorController.WarningIcon;
-            ErrorController.DisplayErrorOrWarningIconWithAlpha(rect, icon);
+            DisplayErrorOrWarningIconWithAlpha(rect, icon);
             // -- Display error/warning details --
             var mousePosition= Event.current.mousePosition;
             if(rect.Contains(mousePosition)) {
                 var nbOfMessages= Mathf.Min(5, errors.Count + warnings.Count);
-                var detailRect= ErrorController.DetermineErrorDetailRect(position, rect, nbOfMessages);
-                ErrorController.DisplayErrorAndWarningDetails(detailRect, errors, warnings);
+                var detailRect= DetermineErrorDetailRect(position, rect, nbOfMessages);
+                DisplayErrorAndWarningDetails(detailRect, errors, warnings);
             }
         }
 
