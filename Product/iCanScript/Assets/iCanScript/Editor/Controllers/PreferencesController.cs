@@ -570,6 +570,7 @@ namespace iCanScript.Editor {
     	const string kCodeGenerationFolder= "iCanScript Generated Code";
     	const string kGlobalBaseType      = "UnityEngine.MonoBehaviour";
         const string kGlobalNamespace     = "iCanScript.GeneratedCode";
+        const bool   kIncludeEditorLibrary= false;
     
     	//
     	// Database access keys
@@ -577,7 +578,8 @@ namespace iCanScript.Editor {
     	const string kCodeGenerationFolderKey= "iCS_CodeGenerationFolder";
     	const string kGlobalBaseTypeKey      = "iCS_GlobalBaseType";
         const string kGlobalNamespaceKey     = "iCS_GlobalNamespace";
-
+        const string kIncludeEditorLibraryKey= "iCS_IncludeEditorLibrary";
+        
     	//
     	// Reset to default value functions
     	//
@@ -590,6 +592,9 @@ namespace iCanScript.Editor {
     	public static void ResetGlobalNamespace() {
     	    GlobalNamespace= kGlobalNamespace;
     	}
+        public static void ResetIncludeEditorLibrary() {
+            IncludeEditorLibrary= kIncludeEditorLibrary;
+        }
     
     	//
     	// Accessors
@@ -605,6 +610,10 @@ namespace iCanScript.Editor {
         public static string GlobalNamespace {
             get { return EditorPrefs.GetString(kGlobalNamespaceKey, kGlobalNamespace); }
             set { EditorPrefs.SetString(kGlobalNamespaceKey, value); }
+        }
+        public static bool IncludeEditorLibrary {
+            get { return EditorPrefs.GetBool(kIncludeEditorLibraryKey, kIncludeEditorLibrary); }
+            set { EditorPrefs.SetBool(kIncludeEditorLibraryKey, value); }
         }
     
     
