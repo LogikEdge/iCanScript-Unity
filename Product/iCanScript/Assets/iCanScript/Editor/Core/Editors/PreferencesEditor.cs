@@ -253,23 +253,26 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
     	void CodeGeneration() {
             // -- Label column --
-            Rect[] pos= GetLabelColumnPositions(5);
+            Rect[] pos= GetLabelColumnPositions(7);
             GUI.Label(pos[0], "Default Folder");
             GUI.Label(pos[2], "Global Namespace");
             GUI.Label(pos[3], "Global Base Type");
+            GUI.Label(pos[6], "Unity Editor Library");
     
             // -- Value column --
-            pos= GetValueColumnPositions(5);
-            Prefs.CodeGenerationFolder      = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
-            Prefs.GlobalNamespace= EditorGUI.TextField(pos[2], Prefs.GlobalNamespace);
-            Prefs.GlobalBaseType= EditorGUI.TextField(pos[3], Prefs.GlobalBaseType);
+            pos= GetValueColumnPositions(7);
+            Prefs.CodeGenerationFolder= EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
+            Prefs.GlobalNamespace     = EditorGUI.TextField(pos[2], Prefs.GlobalNamespace);
+            Prefs.GlobalBaseType      = EditorGUI.TextField(pos[3], Prefs.GlobalBaseType);
             GUI.Label(pos[4], "<i>(format: namespace.type)</i>");
+            Prefs.IncludeEditorLibrary= EditorGUI.Toggle(pos[6], Prefs.IncludeEditorLibrary);
             
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
                 GUI.FocusControl("");
                 Prefs.ResetCodeGenerationFolder();
                 Prefs.ResetGlobalBaseType();
+                Prefs.ResetIncludeEditorLibrary();
             }
 
             // -- Display error if base type not found --
