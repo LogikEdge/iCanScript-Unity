@@ -32,7 +32,9 @@ namespace iCanScript.Editor.CodeEngineering {
             
             // -- Write final code to file. --
             var fileName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
-            CSharpFileUtils.WriteCSharpFile("iCanScript Generated Code", fileName, result.ToString());
+            var folder= CodeGenerationUtility.GetCodeGenerationFolder(iStorage);
+            FileUtils.CreateAssetFolder(folder);
+            CSharpFileUtils.WriteCSharpFile(folder, fileName, result.ToString());
             
             // -- Update the type information --
             GameObject go= iStorage.HostGameObject;
@@ -49,7 +51,8 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public void DeleteGeneratedFilesFor(iCS_IStorage iStorage) {
             var fileName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
-            CSharpFileUtils.DeleteCSharpFile("iCanScript Generated Code", fileName);            
+            var folder= CodeGenerationUtility.GetCodeGenerationFolder(iStorage);
+            CSharpFileUtils.DeleteCSharpFile(folder, fileName);
         }
 
     }

@@ -44,8 +44,6 @@ namespace iCanScript.Editor {
         // ======================================================================
         // NAMESPACE UTILITIES
         // ----------------------------------------------------------------------
-
-        // ----------------------------------------------------------------------
         /// Get namespace used for code generation.
         ///
         /// @param iStorage The visual script storage.
@@ -70,6 +68,15 @@ namespace iCanScript.Editor {
             }
             return Prefs.EngineNamespace;
         }
-        
+
+        // ======================================================================
+        // NAMESPACE UTILITIES
+        // ----------------------------------------------------------------------
+        public static string GetCodeGenerationFolder(iCS_IStorage iStorage) {
+            if(iStorage.IsEditorScript) {
+                return Prefs.EditorCodeGenerationFolder;
+            }
+            return Prefs.EngineCodeGenerationFolder;
+        }
     }    
 }

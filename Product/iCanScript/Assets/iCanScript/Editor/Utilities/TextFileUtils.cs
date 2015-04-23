@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Collections;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Editor {
     
     public static class TextFileUtils {
         // =================================================================================
@@ -85,4 +85,4 @@ namespace iCanScript { namespace Editor {
     	}
     }
 
-}}
+}
