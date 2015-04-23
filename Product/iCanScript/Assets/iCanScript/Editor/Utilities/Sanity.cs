@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 namespace iCanScript.Editor {
     using Prefs= PreferencesController;
     
     public class Sanity {
+        // =========================================================================
+        // BASE TYPE VALIDATIONS
         // -------------------------------------------------------------------------
         /// Validates the default type defined in the uSer Preferences.
         ///
@@ -12,7 +15,7 @@ namespace iCanScript.Editor {
         ///
         public static string ValidateDefaultBaseType() {
             // -- Return previous message if nothing changed --
-            var baseTypeName= Prefs.GlobalBaseType;
+            var baseTypeName= Prefs.DefaultBaseType;
             if(baseTypeName == c_codeGenerationBaseTypeName) {
                 return c_codeGenerationBaseTypeMessage;
             }
@@ -68,6 +71,65 @@ namespace iCanScript.Editor {
         }
         private static string c_visualScriptBaseTypeName   = null;
         private static string c_visualScriptBaseTypeMessage= null;
+
+
+        // =========================================================================
+        // NAMESPACE VALIDATIONS
+        // -------------------------------------------------------------------------
+        /// Validates that the default namespace follows programmatic conventions.
+        ///
+        /// @return The error message or _null_ if no error found.
+        ///
+        public static string ValidateDefaultNamespace() {
+            return ValidateNamespace(Prefs.DefaultNamespace);
+        }
+
+        // -------------------------------------------------------------------------
+        /// Validates that the visual script namespace follows programmatic conventions.
+        ///
+        /// @return The error message or _null_ if no error found.
+        ///
+        public static string ValidateVisualScriptNamespace(iCS_IStorage iStorage) {
+            if(iStorage.NamespaceOverride == false) return null;
+            return ValidateNamespace(iStorage.Namespace);
+        }
+
+        // -------------------------------------------------------------------------
+        /// Validates that the given namespace follows programmatic conventions.
+        ///
+        /// @return The error message or _null_ if no error found.
+        ///
+        public static string ValidateNamespace(string ns) {
+            if(string.IsNullOrEmpty(ns)) return null;
+            var parts= ns.Split(new Char[1]{'.'});
+            foreach(var p in parts) {
+                var error= ValidateIdentifier(p);
+                if(error != null) {
+                    return error;
+                }
+            }
+            return null;
+        }
+
+        // -------------------------------------------------------------------------
+        /// Verifies for a valid programmatic identifier.
+        ///
+        /// @param identifier The identifier to validate.
+        /// @return The error message or _null_ if no error found.
+        ///
+        public static string ValidateIdentifier(string identifier) {
+            if(string.IsNullOrEmpty(identifier)) return null;
+            var firstLetter= identifier[0];
+            if(!(Char.IsLetter(firstLetter) || firstLetter == '_')) {
+                return "Invalid first character for an identifier. An identifier must start with a letter [a-z][A-Z] or an underscore.";
+            }
+            foreach(var c in identifier) {
+                if(!(Char.IsLetterOrDigit(c) || c == '_')) {
+                    return "Invalid identifier. Valid characters include letters [a-z][A-Z], digits [0-9], or an underscore.";
+                }
+            }
+            return null;
+        }
 
     }
     

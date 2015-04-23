@@ -255,27 +255,33 @@ namespace iCanScript.Editor {
             // -- Label column --
             Rect[] pos= GetLabelColumnPositions(5);
             GUI.Label(pos[0], "Default Folder");
-            GUI.Label(pos[2], "Global Namespace");
-            GUI.Label(pos[3], "Global Base Type");
+            GUI.Label(pos[2], "Default Namespace");
+            GUI.Label(pos[3], "Default Base Type");
     
             // -- Value column --
             pos= GetValueColumnPositions(5);
             Prefs.CodeGenerationFolder      = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
-            Prefs.GlobalNamespace= EditorGUI.TextField(pos[2], Prefs.GlobalNamespace);
-            Prefs.GlobalBaseType= EditorGUI.TextField(pos[3], Prefs.GlobalBaseType);
+            Prefs.DefaultNamespace= EditorGUI.TextField(pos[2], Prefs.DefaultNamespace);
+            Prefs.DefaultBaseType= EditorGUI.TextField(pos[3], Prefs.DefaultBaseType);
             GUI.Label(pos[4], "<i>(format: namespace.type)</i>");
             
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
                 GUI.FocusControl("");
                 Prefs.ResetCodeGenerationFolder();
-                Prefs.ResetGlobalBaseType();
+                Prefs.ResetDefaultBaseType();
+                Prefs.ResetDefaultNamespace();
             }
 
             // -- Display error if base type not found --
             var message= Sanity.ValidateDefaultBaseType();
             if(message != null) {
-                DisplayError(pos[1], message);
+                DisplayError(pos[3], message);
+                return;
+            }
+            message= Sanity.ValidateDefaultNamespace();
+            if(message != null) {
+                DisplayError(pos[2], message);
             }
     	}
         

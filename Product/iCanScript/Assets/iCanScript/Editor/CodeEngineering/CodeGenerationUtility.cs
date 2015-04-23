@@ -7,6 +7,8 @@ namespace iCanScript.Editor {
     
     public static class CodeGenerationUtility {
 
+        // ======================================================================
+        // BASE TYPE UTILITIES
         // ----------------------------------------------------------------------
         /// Gets and Sets the base type to be used for code generation.
         ///
@@ -36,7 +38,25 @@ namespace iCanScript.Editor {
             if(iStorage.BaseTypeOverride) {
                 return iStorage.BaseType;
             }
-            return Prefs.GlobalBaseType;
+            return Prefs.DefaultBaseType;
         }
+        
+        // ======================================================================
+        // NAMESPACE UTILITIES
+        // ----------------------------------------------------------------------
+
+        // ----------------------------------------------------------------------
+        /// Get namespace used for code generation.
+        ///
+        /// @param iStorage The visual script storage.
+        /// @return The namespace.
+        ///
+        public static string GetNamespace(iCS_IStorage iStorage) {
+            if(iStorage.NamespaceOverride) {
+                return iStorage.Namespace;
+            }
+            return Prefs.DefaultNamespace;
+        }
+        
     }    
 }

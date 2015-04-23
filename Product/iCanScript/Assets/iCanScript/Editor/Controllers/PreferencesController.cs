@@ -568,15 +568,15 @@ namespace iCanScript.Editor {
     	// Default Values
     	//
     	const string kCodeGenerationFolder= "iCanScript Generated Code";
-    	const string kGlobalBaseType      = "UnityEngine.MonoBehaviour";
-        const string kGlobalNamespace     = "iCanScript.GeneratedCode";
+    	const string kDefaultBaseType      = "UnityEngine.MonoBehaviour";
+        const string kDefaultNamespace     = "iCanScript.GeneratedCode";
     
     	//
     	// Database access keys
     	//
     	const string kCodeGenerationFolderKey= "iCS_CodeGenerationFolder";
-    	const string kGlobalBaseTypeKey      = "iCS_GlobalBaseType";
-        const string kGlobalNamespaceKey     = "iCS_GlobalNamespace";
+    	const string kDefaultBaseTypeKey      = "iCS_GlobalBaseType";
+        const string kDefaultNamespaceKey     = "iCS_GlobalNamespace";
 
     	//
     	// Reset to default value functions
@@ -584,11 +584,11 @@ namespace iCanScript.Editor {
     	public static void ResetCodeGenerationFolder() {
     	    CodeGenerationFolder= kCodeGenerationFolder;
     	}
-    	public static void ResetGlobalBaseType() {
-    	    GlobalBaseType= kGlobalBaseType;
+    	public static void ResetDefaultBaseType() {
+    	    DefaultBaseType= kDefaultBaseType;
     	}
-    	public static void ResetGlobalNamespace() {
-    	    GlobalNamespace= kGlobalNamespace;
+    	public static void ResetDefaultNamespace() {
+    	    DefaultNamespace= kDefaultNamespace;
     	}
     
     	//
@@ -598,13 +598,13 @@ namespace iCanScript.Editor {
             get { return EditorPrefs.GetString(kCodeGenerationFolderKey, kCodeGenerationFolder); }
             set { EditorPrefs.SetString(kCodeGenerationFolderKey, value); }
         }
-        public static string GlobalBaseType {
-            get { return EditorPrefs.GetString(kGlobalBaseTypeKey, kGlobalBaseType); }
-            set { EditorPrefs.SetString(kGlobalBaseTypeKey, value); }
+        public static string DefaultBaseType {
+            get { return EditorPrefs.GetString(kDefaultBaseTypeKey, kDefaultBaseType); }
+            set { EditorPrefs.SetString(kDefaultBaseTypeKey, value); }
         }
-        public static string GlobalNamespace {
-            get { return EditorPrefs.GetString(kGlobalNamespaceKey, kGlobalNamespace); }
-            set { EditorPrefs.SetString(kGlobalNamespaceKey, value); }
+        public static string DefaultNamespace {
+            get { return EditorPrefs.GetString(kDefaultNamespaceKey, kDefaultNamespace); }
+            set { EditorPrefs.SetString(kDefaultNamespaceKey, value); }
         }
     
     

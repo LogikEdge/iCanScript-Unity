@@ -79,19 +79,27 @@ namespace iCanScript.Editor {
     
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-                iStorage.BaseTypeOverride= false;
-                iStorage.BaseType= Prefs.GlobalBaseType;
+                iStorage.BaseTypeOverride = false;
+                iStorage.BaseType         = Prefs.DefaultBaseType;
+                iStorage.NamespaceOverride= false;
+                iStorage.Namespace        = Prefs.DefaultNamespace;
+            }
+
+    		// -- Save changes --
+            if(GUI.changed) {
+                iStorage.SaveStorage();                
             }
 
             // -- Validate user entries --
             var message= Sanity.ValidateVisualScriptBaseType(iStorage);
             if(message != null) {
                 DisplayError(pos[1], message);
+                return;
             }
-
-    		// -- Process any change --
-            if(!GUI.changed) return;
-            iStorage.SaveStorage();
+            message= Sanity.ValidateVisualScriptNamespace(iStorage);
+            if(message != null) {
+                DisplayError(pos[4], message);
+            }
         }
     }
 
