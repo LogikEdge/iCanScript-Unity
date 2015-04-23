@@ -17,6 +17,8 @@ _April 24, 2015_
 V2.0.9 is a development release of iCanScript2.
 ### List of Changes
 
+- **<span style="color: green">\[NEW\]</span>** An option to include the Unity Editor Library is now available in the _Code Generation_ section of the _Global Preferences_. 
+	- **NOTE:** A restart is required for this option to take effect.
 - **<span style="color: green">\[NEW\]</span>** The user can now configure the _**namespace**_ for the type defined by the visual script.
 	- **<span style="color: green">\[NEW\]</span>** The default _Namespace_ can be configured in the _Global Preferences_;
 	- **<span style="color: green">\[NEW\]</span>** The _Namespace_ can be overridden for each visual script in the new _Visual Script Configuration Panel_.
