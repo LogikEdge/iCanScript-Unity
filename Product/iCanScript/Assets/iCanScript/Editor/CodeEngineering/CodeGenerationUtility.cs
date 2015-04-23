@@ -5,7 +5,7 @@ using System.Collections;
 namespace iCanScript.Editor {
     using Prefs= PreferencesController;
     
-    public static class CodeGenerationConfig {
+    public static class CodeGenerationUtility {
 
         // ----------------------------------------------------------------------
         /// Gets and Sets the base type to be used for code generation.

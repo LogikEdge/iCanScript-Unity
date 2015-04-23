@@ -406,7 +406,7 @@ public partial class iCS_IStorage {
 	///
 	public bool IsLocalType(iCS_EditorObject vsObj) {
 		// First determine if the type is included inside the GameObject.
-        var baseType= CodeGenerationConfig.GetBaseType(this);
+        var baseType= CodeGenerationUtility.GetBaseType(this);
 		if(vsObj.IsIncludedInType(baseType)) return true;
 		var typeNode= vsObj.ParentTypeNode;
 		if(typeNode == null) return false;
