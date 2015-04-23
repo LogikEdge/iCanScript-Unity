@@ -17,6 +17,7 @@ _April 24, 2015_
 V2.0.9 is a development release of iCanScript2.
 ### List of Changes
 
+- **<span style="color: blue">\[IMPROVED\]</span>** Do not show menu item to _**"Add Unity Event Handler"**_ if the base type does't inherit from _MonoBehaviour_.
 - **<span style="color: red">\[FIXED\]</span>** Type name can now be entered in the _Port Editor_ using the format: _"namespace.type"_.
 - **<span style="color: red">\[FIXED\]</span>** Invalid code generated for static functions of _"GameObject"_ and _"Transform"_.
 

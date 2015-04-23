@@ -147,41 +147,17 @@ public static class iCS_Types {
         return RemoveProductPrefix(type.Name);
     }
     // ----------------------------------------------------------------------
-	/// Seraches the application domain for the first type with the given
-	/// name
-	///
-	/// @param typeName The name of the type to search.
-	/// @return The found type descriptor if found. _null_ otherwise.
-	///
-    public static Type FindType(string typeName) {
-        foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-            foreach(var classType in assembly.GetTypes()) {
-                if(classType.Name == typeName) {
-                    return classType;
-                }
-            }
-        }
-        return null;
-    }
-    // ----------------------------------------------------------------------
 	/// Finds the method information of a function with the given type name.
 	///
-	/// @param typeName The name of the type to search.
+	/// @param typeString The name of the type to search.
 	/// @param functionName The function name to be located.
 	/// @return The found method information if found. _null_ otherwise.
 	///
-    public static MethodInfo FindFunction(string typeName, string functionName) {
-        var interfaceType= iCS_Types.FindType(typeName);
-        if(interfaceType == null) {
-            Debug.LogWarning("iCanScript: unable to find type=> "+typeName+" <= in application.");
-            return null;
-        }
-        MethodInfo methodInfo= interfaceType.GetMethod(functionName,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-        if(methodInfo == null) {
-            Debug.LogWarning("iCanScript: unable to find function: "+functionName);
-            return null;
-        }
-        return methodInfo;
+    public static MethodInfo FindFunction(string typeString, string functionName) {
+        string namespaceName= null;
+        string typeName     = null;
+        SplitTypeString(typeString, out namespaceName, out typeName);
+        return FindFunction(typeName, functionName, namespaceName);
     }
     // ----------------------------------------------------------------------
 	/// Finds the method information of a function of the given type name
