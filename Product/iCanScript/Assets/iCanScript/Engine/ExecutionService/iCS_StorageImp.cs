@@ -11,6 +11,7 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+    [HideInInspector] public bool                     IsEditorScript        = false;
     [HideInInspector] public string                   TypeName              = null;
     [HideInInspector] public bool                     BaseTypeOverride      = false;
     [HideInInspector] public string                   BaseType              = null;
@@ -30,12 +31,16 @@ public class iCS_StorageImp : ScriptableObject, iCS_IVisualScriptData {
     [HideInInspector] public List<iCS_EngineObject>   EngineObjects         = new List<iCS_EngineObject>();
     [HideInInspector] public List<Object>             UnityObjects          = new List<Object>();
     [HideInInspector] public iCS_NavigationHistory    NavigationHistory     = new iCS_NavigationHistory();
-                      public iCS_EngineObject         EngineObject          = null;
+    [HideInInspector] public iCS_EngineObject         EngineObject          = null;
     
 
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
+    bool iCS_IVisualScriptData.IsEditorScript {
+        get { return IsEditorScript; }
+        set { IsEditorScript= value; }
+    }
     string iCS_IVisualScriptData.TypeName {
         get { return TypeName; }
         set { TypeName= value; }

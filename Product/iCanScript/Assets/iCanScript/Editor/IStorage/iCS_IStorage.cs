@@ -102,6 +102,10 @@ public partial class iCS_IStorage {
         get { return myForceRelayout; }
         set { myForceRelayout= value; }
     }
+    public bool IsEditorScript {
+        get { return Storage.IsEditorScript; }
+        set { Storage.IsEditorScript= value; }
+    }
     public string TypeName {
         get { return Storage.TypeName; }
         set { Storage.TypeName= value; }

@@ -38,7 +38,7 @@ namespace iCanScript.Editor {
             if(iStorage.BaseTypeOverride) {
                 return iStorage.BaseType;
             }
-            return Prefs.DefaultBaseType;
+            return Prefs.EngineBaseType;
         }
         
         // ======================================================================
@@ -55,7 +55,20 @@ namespace iCanScript.Editor {
             if(iStorage.NamespaceOverride) {
                 return iStorage.Namespace;
             }
-            return Prefs.DefaultNamespace;
+            return GetDefaultNamespace(iStorage);
+        }
+
+        // ----------------------------------------------------------------------
+        /// Returns the default namespace according to the type of viusal script.
+        ///
+        /// @param iStorage The visual script storage.
+        /// @return The default namespace.
+        ///
+        public static string GetDefaultNamespace(iCS_IStorage iStorage) {
+            if(iStorage.IsEditorScript) {
+                return Prefs.EditorNamespace;
+            }
+            return Prefs.EngineNamespace;
         }
         
     }    

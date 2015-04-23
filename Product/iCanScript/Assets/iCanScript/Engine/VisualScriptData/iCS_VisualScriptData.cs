@@ -22,6 +22,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+    public bool                     IsEditorScript        = false;
     public string                   TypeName              = null;
     public bool                     BaseTypeOverride      = false;
     public string                   BaseType              = null;
@@ -45,6 +46,10 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ======================================================================
     // Visual Script Data Interface Implementation
     // ----------------------------------------------------------------------
+    bool iCS_IVisualScriptData.IsEditorScript {
+        get { return IsEditorScript; }
+        set { IsEditorScript= value; }
+    }
     string iCS_IVisualScriptData.TypeName {
         get { return TypeName; }
         set { TypeName= value; }
@@ -242,6 +247,7 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
 
     // ----------------------------------------------------------------------
     public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
+        to.IsEditorScript   = from.IsEditorScript;
         to.TypeName         = from.TypeName;
         to.BaseTypeOverride = from.BaseTypeOverride;
         to.BaseType         = from.BaseType;

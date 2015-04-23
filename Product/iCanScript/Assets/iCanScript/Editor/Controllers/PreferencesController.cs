@@ -567,30 +567,40 @@ namespace iCanScript.Editor {
     	//
     	// Default Values
     	//
-    	const string kCodeGenerationFolder= "iCanScript Generated Code";
-    	const string kDefaultBaseType      = "UnityEngine.MonoBehaviour";
-        const string kDefaultNamespace     = "iCanScript.GeneratedCode";
-        const bool   kUseUnityEditorLibrary= false;
+    	const string kEngineCodeGenerationFolder= "iCanScript Generated Code";
+        const string kEditorCodeGenerationFolder= "Editor/iCanScript Generated Code";
+    	const string kEngineBaseType            = "UnityEngine.MonoBehaviour";
+        const string kEngineNamespace           = "iCanScript.Engine.Code";
+        const string kEditorNamespace           = "iCanScript.Editor.Code";
+        const bool   kUseUnityEditorLibrary     = false;
     
     	//
     	// Database access keys
     	//
-    	const string kCodeGenerationFolderKey= "iCS_CodeGenerationFolder";
-    	const string kDefaultBaseTypeKey      = "iCS_GlobalBaseType";
-        const string kDefaultNamespaceKey     = "iCS_GlobalNamespace";
-        const string kUseUnityEditorLibraryKey= "iCS_UseUnityEditorLibrary";
+    	const string kEngineCodeGenerationFolderKey= "iCS_EngineCodeGenerationFolder";
+    	const string kEditorCodeGenerationFolderKey= "iCS_EditorCodeGenerationFolder";
+    	const string kEngineBaseTypeKey            = "iCS_EngineBaseType";
+        const string kEngineNamespaceKey           = "iCS_EngineNamespace";
+        const string kEditorNamespaceKey           = "iCS_EditorNamespace";
+        const string kUseUnityEditorLibraryKey     = "iCS_UseUnityEditorLibrary";
 
     	//
     	// Reset to default value functions
     	//
-    	public static void ResetCodeGenerationFolder() {
-    	    CodeGenerationFolder= kCodeGenerationFolder;
+    	public static void ResetEngineCodeGenerationFolder() {
+    	    EngineCodeGenerationFolder= kEngineCodeGenerationFolder;
     	}
-    	public static void ResetDefaultBaseType() {
-    	    DefaultBaseType= kDefaultBaseType;
+    	public static void ResetEditorCodeGenerationFolder() {
+    	    EditorCodeGenerationFolder= kEditorCodeGenerationFolder;
     	}
-    	public static void ResetDefaultNamespace() {
-    	    DefaultNamespace= kDefaultNamespace;
+    	public static void ResetEngineBaseType() {
+    	    EngineBaseType= kEngineBaseType;
+    	}
+    	public static void ResetEngineNamespace() {
+    	    EngineNamespace= kEngineNamespace;
+    	}
+    	public static void ResetEditorNamespace() {
+    	    EditorNamespace= kEditorNamespace;
     	}
         public static void ResetUseUnityEditorLibrary() {
             UseUnityEditorLibrary= kUseUnityEditorLibrary;
@@ -599,17 +609,25 @@ namespace iCanScript.Editor {
     	//
     	// Accessors
     	//
-        public static string CodeGenerationFolder {
-            get { return EditorPrefs.GetString(kCodeGenerationFolderKey, kCodeGenerationFolder); }
-            set { EditorPrefs.SetString(kCodeGenerationFolderKey, value); }
+        public static string EngineCodeGenerationFolder {
+            get { return EditorPrefs.GetString(kEngineCodeGenerationFolderKey, kEngineCodeGenerationFolder); }
+            set { EditorPrefs.SetString(kEngineCodeGenerationFolderKey, value); }
         }
-        public static string DefaultBaseType {
-            get { return EditorPrefs.GetString(kDefaultBaseTypeKey, kDefaultBaseType); }
-            set { EditorPrefs.SetString(kDefaultBaseTypeKey, value); }
+        public static string EditorCodeGenerationFolder {
+            get { return EditorPrefs.GetString(kEditorCodeGenerationFolderKey, kEditorCodeGenerationFolder); }
+            set { EditorPrefs.SetString(kEditorCodeGenerationFolderKey, value); }
         }
-        public static string DefaultNamespace {
-            get { return EditorPrefs.GetString(kDefaultNamespaceKey, kDefaultNamespace); }
-            set { EditorPrefs.SetString(kDefaultNamespaceKey, value); }
+        public static string EngineBaseType {
+            get { return EditorPrefs.GetString(kEngineBaseTypeKey, kEngineBaseType); }
+            set { EditorPrefs.SetString(kEngineBaseTypeKey, value); }
+        }
+        public static string EngineNamespace {
+            get { return EditorPrefs.GetString(kEngineNamespaceKey, kEngineNamespace); }
+            set { EditorPrefs.SetString(kEngineNamespaceKey, value); }
+        }
+        public static string EditorNamespace {
+            get { return EditorPrefs.GetString(kEditorNamespaceKey, kEditorNamespace); }
+            set { EditorPrefs.SetString(kEditorNamespaceKey, value); }
         }
         public static bool UseUnityEditorLibrary {
             get { return EditorPrefs.GetBool(kUseUnityEditorLibraryKey, kUseUnityEditorLibrary); }

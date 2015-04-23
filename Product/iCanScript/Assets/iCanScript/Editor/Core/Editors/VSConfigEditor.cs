@@ -55,50 +55,70 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
         void General() {
             // -- Label column --
-            var pos= GetLabelColumnPositions(5);
-            GUI.Label(pos[0], "Base Type Override");
+            var pos= GetLabelColumnPositions(6);
+            GUI.Label(pos[0], "Is Editor Script");
+            GUI.Label(pos[1], "Base Type Override");
             EditorGUI.BeginDisabledGroup(!iStorage.BaseTypeOverride);
-            GUI.Label(pos[1], "Base Type Name");
+            GUI.Label(pos[2], "Base Type Name");
             EditorGUI.EndDisabledGroup();
-            GUI.Label(pos[3], "Namespace Override");
+            GUI.Label(pos[4], "Namespace Override");
             EditorGUI.BeginDisabledGroup(!iStorage.NamespaceOverride);
-            GUI.Label(pos[4], "Namespace");
+            GUI.Label(pos[5], "Namespace");
             EditorGUI.EndDisabledGroup();
             
             // -- Value column --
-            pos= GetValueColumnPositions(5);
-            iStorage.BaseTypeOverride= EditorGUI.Toggle(pos[0], iStorage.BaseTypeOverride);
+            pos= GetValueColumnPositions(6);
+            GUI.changed= false;
+            iStorage.IsEditorScript= EditorGUI.Toggle(pos[0], iStorage.IsEditorScript);
+            if(GUI.changed) {
+                if(iStorage.IsEditorScript) {
+                    iStorage.BaseTypeOverride= true;
+                    iStorage.BaseType        = "";
+                    if(iStorage.NamespaceOverride == false) {
+                        iStorage.Namespace= Prefs.EditorNamespace;
+                    }
+                }
+                else {                    
+                    iStorage.BaseTypeOverride= false;
+                    iStorage.BaseType        = Prefs.EngineBaseType;
+                    if(iStorage.NamespaceOverride == false) {
+                        iStorage.Namespace= Prefs.EngineNamespace;
+                    }
+                }
+            }
+            iStorage.BaseTypeOverride= EditorGUI.Toggle(pos[1], iStorage.BaseTypeOverride);
             EditorGUI.BeginDisabledGroup(!iStorage.BaseTypeOverride);
-            iStorage.BaseType= EditorGUI.TextField(pos[1], iStorage.BaseType);
-            GUI.Label(pos[2], "<i>(format: namespace.type)</i>");
+            iStorage.BaseType= EditorGUI.TextField(pos[2], iStorage.BaseType);
+            GUI.Label(pos[3], "<i>(format: namespace.type)</i>");
             EditorGUI.EndDisabledGroup();
-            iStorage.NamespaceOverride= EditorGUI.Toggle(pos[3], iStorage.NamespaceOverride);
+            iStorage.NamespaceOverride= EditorGUI.Toggle(pos[4], iStorage.NamespaceOverride);
             EditorGUI.BeginDisabledGroup(!iStorage.NamespaceOverride);
-            iStorage.Namespace= EditorGUI.TextField(pos[4], iStorage.Namespace);
+            iStorage.Namespace= EditorGUI.TextField(pos[5], iStorage.Namespace);
             EditorGUI.EndDisabledGroup();
     
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
+                iStorage.IsEditorScript   = false;
                 iStorage.BaseTypeOverride = false;
-                iStorage.BaseType         = Prefs.DefaultBaseType;
+                iStorage.BaseType         = Prefs.EngineBaseType;
                 iStorage.NamespaceOverride= false;
-                iStorage.Namespace        = Prefs.DefaultNamespace;
+                iStorage.Namespace        = CodeGenerationUtility.GetDefaultNamespace(iStorage);
             }
 
     		// -- Save changes --
             if(GUI.changed) {
-                iStorage.SaveStorage();                
+                iStorage.SaveStorage();
             }
 
             // -- Validate user entries --
             var message= Sanity.ValidateVisualScriptBaseType(iStorage);
             if(message != null) {
-                DisplayError(pos[1], message);
+                DisplayError(pos[2], message);
                 return;
             }
-            message= Sanity.ValidateVisualScriptNamespace(iStorage);
+            message= Sanity.ValidateVisualScriptNamespace(iStorage, /*shortFormat=*/true);
             if(message != null) {
-                DisplayError(pos[4], message);
+                DisplayError(pos[5], message);
             }
         }
     }

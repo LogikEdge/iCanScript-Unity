@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public interface iCS_IVisualScriptData {
 	// Editor Interface
+    bool                    IsEditorScript          { get; set; }
     string                  TypeName                { get; set; }
     bool                    BaseTypeOverride        { get; set; }
     string                  BaseType                { get; set; }

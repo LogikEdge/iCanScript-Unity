@@ -9,13 +9,13 @@ namespace iCanScript.Editor {
         // =========================================================================
         // BASE TYPE VALIDATIONS
         // -------------------------------------------------------------------------
-        /// Validates the default type defined in the uSer Preferences.
+        /// Validates the engine base type defined in the Preferences.
         ///
         /// @return A user message if a problem is found. _null_ otherwise.
         ///
-        public static string ValidateDefaultBaseType() {
+        public static string ValidateEngineBaseType() {
             // -- Return previous message if nothing changed --
-            var baseTypeName= Prefs.DefaultBaseType;
+            var baseTypeName= Prefs.EngineBaseType;
             if(baseTypeName == c_codeGenerationBaseTypeName) {
                 return c_codeGenerationBaseTypeMessage;
             }
@@ -32,7 +32,7 @@ namespace iCanScript.Editor {
             }
             // -- Base type not found; generate error message --
             c_codeGenerationBaseTypeMessage=
-                "Unable to locate the <b>Default Base Type</b> <color=red><b>"+baseTypeName+
+                "Unable to locate the <b>Engine Base Type</b> <color=red><b>"+baseTypeName+
                 "</b></color> configured in the <b>Global Preferences</b>";
             return c_codeGenerationBaseTypeMessage;
         }
@@ -76,12 +76,32 @@ namespace iCanScript.Editor {
         // =========================================================================
         // NAMESPACE VALIDATIONS
         // -------------------------------------------------------------------------
-        /// Validates that the default namespace follows programmatic conventions.
+        /// Validates that the default engine namespace.
         ///
         /// @return The error message or _null_ if no error found.
         ///
-        public static string ValidateDefaultNamespace() {
-            return ValidateNamespace(Prefs.DefaultNamespace);
+        public static string ValidateEngineNamespace(bool shortFormat= false) {
+            var ns= Prefs.EngineNamespace;
+            var error= ValidateNamespace(ns);
+            if(error == null) return null;
+            if(shortFormat) {
+                return "Invalid namespace format: "+error;
+            }
+            return "Invalid <b>Engine Namespace '<color=red>"+ns+"</color>'</b> defined in <b>Global Preferences</b>: "+error;
+        }
+        // -------------------------------------------------------------------------
+        /// Validates that the default editor namespace.
+        ///
+        /// @return The error message or _null_ if no error found.
+        ///
+        public static string ValidateEditorNamespace(bool shortFormat= false) {
+            var ns= Prefs.EditorNamespace;
+            var error= ValidateNamespace(ns);
+            if(error == null) return null;
+            if(shortFormat) {
+                return "Invalid namespace format: "+error;
+            }
+            return "Invalid <b>Editor Namespace '<color=red>"+ns+"</color>'</b> defined in <b>Global Preferences</b>: "+error;
         }
 
         // -------------------------------------------------------------------------
@@ -89,9 +109,15 @@ namespace iCanScript.Editor {
         ///
         /// @return The error message or _null_ if no error found.
         ///
-        public static string ValidateVisualScriptNamespace(iCS_IStorage iStorage) {
+        public static string ValidateVisualScriptNamespace(iCS_IStorage iStorage, bool shortFormat= false) {
             if(iStorage.NamespaceOverride == false) return null;
-            return ValidateNamespace(iStorage.Namespace);
+            var ns= iStorage.Namespace;
+            var error= ValidateNamespace(ns);
+            if(error == null) return null;
+            if(shortFormat) {
+                return "Invalid namespace format: "+error;
+            }
+            return "Invalid <b>Namespace '<color=red>"+ns+"</color>'</b> defined in the <b>Visual Script Configuration</b>: "+error;
         }
 
         // -------------------------------------------------------------------------
@@ -121,11 +147,11 @@ namespace iCanScript.Editor {
             if(string.IsNullOrEmpty(identifier)) return null;
             var firstLetter= identifier[0];
             if(!(Char.IsLetter(firstLetter) || firstLetter == '_')) {
-                return "Invalid first character for an identifier. An identifier must start with a letter [a-z][A-Z] or an underscore.";
+                return "First character must start with a letter [a-z][A-Z] or an underscore.";
             }
             foreach(var c in identifier) {
                 if(!(Char.IsLetterOrDigit(c) || c == '_')) {
-                    return "Invalid identifier. Valid characters include letters [a-z][A-Z], digits [0-9], or an underscore.";
+                    return "Valid characters include letters [a-z][A-Z], digits [0-9], or an underscore.";
                 }
             }
             return null;
