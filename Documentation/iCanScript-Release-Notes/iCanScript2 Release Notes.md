@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.8
+Version: v2.0.9
 CSS: Github.css
 
 
@@ -9,6 +9,19 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.9 ##
+
+_April 24, 2015_
+
+V2.0.9 is a development release of iCanScript2.
+### List of Changes
+
+- **<span style="color: red">\[FIXED\]</span>** Type name can now be entered in the _Port Editor_ using the format: _"namespace.type"_.
+- **<span style="color: red">\[FIXED\]</span>** Invalid code generated for static functions of _"GameObject"_ and _"Transform"_.
+
+
+* * *
 
 ## iCanScript v2.0.8 ##
 

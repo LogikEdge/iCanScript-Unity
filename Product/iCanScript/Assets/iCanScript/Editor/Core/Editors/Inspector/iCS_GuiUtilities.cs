@@ -132,7 +132,7 @@ public static class iCS_GuiUtilities {
         // Support Type type.
         if(valueElementType == typeof(Type) || currentValue is Type) {
             string typeName= currentValue != null ? iCS_Types.ToTypeString(currentValue as Type) : "";
-			string origTypeName= typeName;
+//			string origTypeName= typeName;
             if(ModalEdit(niceName, name, ref typeName, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
                 Type newType= iCS_Types.GetTypeFromTypeString(typeName);
                 if(newType != null) {

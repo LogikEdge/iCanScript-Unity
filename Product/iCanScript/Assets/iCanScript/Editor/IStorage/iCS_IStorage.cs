@@ -406,10 +406,8 @@ public partial class iCS_IStorage {
 	///
 	public bool IsLocalType(iCS_EditorObject vsObj) {
 		// First determine if the type is included inside the GameObject.
-		var type= vsObj.RuntimeType;
-		if(type == typeof(GameObject)) return true;
-		if(type == typeof(Transform))  return true;
-		if(vsObj.IsIncludedInType(typeof(MonoBehaviour))) return true;
+        var baseType= CodeGenerationConfig.GetBaseType(this);
+		if(vsObj.IsIncludedInType(baseType)) return true;
 		var typeNode= vsObj.ParentTypeNode;
 		if(typeNode == null) return false;
 		if(vsObj.Namespace == iCS_Config.kCodeGenerationNamespace) {
