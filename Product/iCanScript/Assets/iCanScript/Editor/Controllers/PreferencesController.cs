@@ -1,4 +1,4 @@
-﻿// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // PreferencesController.cs
 //
 // Revised: 2014-01-29
@@ -568,32 +568,32 @@ namespace iCanScript.Editor {
     	// Default Values
     	//
     	const string kCodeGenerationFolder= "iCanScript Generated Code";
-    	const string kGlobalBaseType      = "UnityEngine.MonoBehaviour";
-        const string kGlobalNamespace     = "iCanScript.GeneratedCode";
-        const bool   kIncludeEditorLibrary= false;
+    	const string kDefaultBaseType      = "UnityEngine.MonoBehaviour";
+        const string kDefaultNamespace     = "iCanScript.GeneratedCode";
+        const bool   kUseUnityEditorLibrary= false;
     
     	//
     	// Database access keys
     	//
     	const string kCodeGenerationFolderKey= "iCS_CodeGenerationFolder";
-    	const string kGlobalBaseTypeKey      = "iCS_GlobalBaseType";
-        const string kGlobalNamespaceKey     = "iCS_GlobalNamespace";
-        const string kIncludeEditorLibraryKey= "iCS_IncludeEditorLibrary";
-        
+    	const string kDefaultBaseTypeKey      = "iCS_GlobalBaseType";
+        const string kDefaultNamespaceKey     = "iCS_GlobalNamespace";
+        const string kUseUnityEditorLibraryKey= "iCS_UseUnityEditorLibrary";
+
     	//
     	// Reset to default value functions
     	//
     	public static void ResetCodeGenerationFolder() {
     	    CodeGenerationFolder= kCodeGenerationFolder;
     	}
-    	public static void ResetGlobalBaseType() {
-    	    GlobalBaseType= kGlobalBaseType;
+    	public static void ResetDefaultBaseType() {
+    	    DefaultBaseType= kDefaultBaseType;
     	}
-    	public static void ResetGlobalNamespace() {
-    	    GlobalNamespace= kGlobalNamespace;
+    	public static void ResetDefaultNamespace() {
+    	    DefaultNamespace= kDefaultNamespace;
     	}
-        public static void ResetIncludeEditorLibrary() {
-            IncludeEditorLibrary= kIncludeEditorLibrary;
+        public static void ResetUseUnityEditorLibrary() {
+            UseUnityEditorLibrary= kUseUnityEditorLibrary;
         }
     
     	//
@@ -603,19 +603,18 @@ namespace iCanScript.Editor {
             get { return EditorPrefs.GetString(kCodeGenerationFolderKey, kCodeGenerationFolder); }
             set { EditorPrefs.SetString(kCodeGenerationFolderKey, value); }
         }
-        public static string GlobalBaseType {
-            get { return EditorPrefs.GetString(kGlobalBaseTypeKey, kGlobalBaseType); }
-            set { EditorPrefs.SetString(kGlobalBaseTypeKey, value); }
+        public static string DefaultBaseType {
+            get { return EditorPrefs.GetString(kDefaultBaseTypeKey, kDefaultBaseType); }
+            set { EditorPrefs.SetString(kDefaultBaseTypeKey, value); }
         }
-        public static string GlobalNamespace {
-            get { return EditorPrefs.GetString(kGlobalNamespaceKey, kGlobalNamespace); }
-            set { EditorPrefs.SetString(kGlobalNamespaceKey, value); }
+        public static string DefaultNamespace {
+            get { return EditorPrefs.GetString(kDefaultNamespaceKey, kDefaultNamespace); }
+            set { EditorPrefs.SetString(kDefaultNamespaceKey, value); }
         }
-        public static bool IncludeEditorLibrary {
-            get { return EditorPrefs.GetBool(kIncludeEditorLibraryKey, kIncludeEditorLibrary); }
-            set { EditorPrefs.SetBool(kIncludeEditorLibraryKey, value); }
-        }
-    
+        public static bool UseUnityEditorLibrary {
+            get { return EditorPrefs.GetBool(kUseUnityEditorLibraryKey, kUseUnityEditorLibrary); }
+            set { EditorPrefs.SetBool(kUseUnityEditorLibraryKey, value); }
+        }    
     
     	// =================================================================================
     	// Activation

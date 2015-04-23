@@ -119,7 +119,7 @@ public class iCS_ContextualMenu {
         menu[1]= new iCS_MenuContext(FunctionCreationStr);
         menu[2]= new iCS_MenuContext(NestedTypeCreationStr);
         // Add Unity message handlers
-        var baseType= CodeGenerationConfig.GetBaseType(iStorage);
+        var baseType= CodeGenerationUtility.GetBaseType(iStorage);
         if(iCS_Types.IsA<MonoBehaviour>(baseType)) {
     		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
             int len= P.length(messages);

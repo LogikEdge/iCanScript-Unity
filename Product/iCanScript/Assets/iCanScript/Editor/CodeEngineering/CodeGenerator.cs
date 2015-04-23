@@ -23,8 +23,8 @@ namespace iCanScript.Editor.CodeEngineering {
 
             // -- Build code global scope. --
             var typeName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
-            var namespaceName= iCS_Config.kCodeGenerationNamespace;
-            var baseType= CodeGenerationConfig.GetBaseType(iStorage);
+            var namespaceName= CodeGenerationUtility.GetNamespace(iStorage);
+            var baseType= CodeGenerationUtility.GetBaseType(iStorage);
             myCodeRoot= new GlobalDefinition(typeName, namespaceName, baseType, iStorage);
             
             // -- Generate code. --
@@ -38,7 +38,7 @@ namespace iCanScript.Editor.CodeEngineering {
             GameObject go= iStorage.HostGameObject;
             if(go != null) {
                 iStorage.TypeName= fileName;
-                iStorage.BaseType= PreferencesController.GlobalBaseType;
+                iStorage.BaseType= PreferencesController.DefaultBaseType;
             }
         }
 
