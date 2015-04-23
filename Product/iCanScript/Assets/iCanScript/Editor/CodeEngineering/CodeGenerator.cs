@@ -38,7 +38,7 @@ namespace iCanScript.Editor.CodeEngineering {
             GameObject go= iStorage.HostGameObject;
             if(go != null) {
                 iStorage.TypeName= fileName;
-                iStorage.BaseTypeName= PreferencesController.CodeGenerationBaseTypeName;
+                iStorage.BaseType= PreferencesController.GlobalBaseType;
             }
         }
 

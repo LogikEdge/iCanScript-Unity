@@ -567,14 +567,16 @@ namespace iCanScript.Editor {
     	//
     	// Default Values
     	//
-    	const string kCodeGenerationFolder           = "iCanScript Generated Code";
-    	const string kCodeGenerationBaseTypeName     = "UnityEngine.MonoBehaviour";
+    	const string kCodeGenerationFolder= "iCanScript Generated Code";
+    	const string kGlobalBaseType      = "UnityEngine.MonoBehaviour";
+        const string kGlobalNamespace     = "iCanScript.GeneratedCode";
     
     	//
     	// Database access keys
     	//
-    	const string kCodeGenerationFolderKey           = "iCS_CodeGenerationFolder";
-    	const string kCodeGenerationBaseTypeNameKey     = "iCS_CodeGenerationBaseTypeName";
+    	const string kCodeGenerationFolderKey= "iCS_CodeGenerationFolder";
+    	const string kGlobalBaseTypeKey      = "iCS_GlobalBaseType";
+        const string kGlobalNamespaceKey     = "iCS_GlobalNamespace";
 
     	//
     	// Reset to default value functions
@@ -582,8 +584,11 @@ namespace iCanScript.Editor {
     	public static void ResetCodeGenerationFolder() {
     	    CodeGenerationFolder= kCodeGenerationFolder;
     	}
-    	public static void ResetCodeGenerationBaseTypeName() {
-    	    CodeGenerationBaseTypeName= kCodeGenerationBaseTypeName;
+    	public static void ResetGlobalBaseType() {
+    	    GlobalBaseType= kGlobalBaseType;
+    	}
+    	public static void ResetGlobalNamespace() {
+    	    GlobalNamespace= kGlobalNamespace;
     	}
     
     	//
@@ -593,9 +598,13 @@ namespace iCanScript.Editor {
             get { return EditorPrefs.GetString(kCodeGenerationFolderKey, kCodeGenerationFolder); }
             set { EditorPrefs.SetString(kCodeGenerationFolderKey, value); }
         }
-        public static string CodeGenerationBaseTypeName {
-            get { return EditorPrefs.GetString(kCodeGenerationBaseTypeNameKey, kCodeGenerationBaseTypeName); }
-            set { EditorPrefs.SetString(kCodeGenerationBaseTypeNameKey, value); }
+        public static string GlobalBaseType {
+            get { return EditorPrefs.GetString(kGlobalBaseTypeKey, kGlobalBaseType); }
+            set { EditorPrefs.SetString(kGlobalBaseTypeKey, value); }
+        }
+        public static string GlobalNamespace {
+            get { return EditorPrefs.GetString(kGlobalNamespaceKey, kGlobalNamespace); }
+            set { EditorPrefs.SetString(kGlobalNamespaceKey, value); }
         }
     
     

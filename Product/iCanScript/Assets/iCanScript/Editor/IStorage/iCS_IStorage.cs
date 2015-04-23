@@ -106,13 +106,21 @@ public partial class iCS_IStorage {
         get { return Storage.TypeName; }
         set { Storage.TypeName= value; }
     }
-    public bool OverrideDefaultBaseType {
-        get { return Storage.OverrideDefaultBaseType; }
-        set { Storage.OverrideDefaultBaseType= value; }
+    public bool BaseTypeOverride {
+        get { return Storage.BaseTypeOverride; }
+        set { Storage.BaseTypeOverride= value; }
     }
-    public string BaseTypeName {
-        get { return Storage.BaseTypeName; }
-        set { Storage.BaseTypeName= value; }
+    public string BaseType {
+        get { return Storage.BaseType; }
+        set { Storage.BaseType= value; }
+    }
+    public bool NamespaceOverride {
+        get { return Storage.NamespaceOverride; }
+        set { Storage.NamespaceOverride= value; }
+    }
+    public string Namespace {
+        get { return Storage.Namespace; }
+        set { Storage.Namespace= value; }
     }
 	public Vector2 ScrollPosition {
 	    get { return Storage.ScrollPosition; }

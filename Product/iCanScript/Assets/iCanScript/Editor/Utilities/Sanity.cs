@@ -12,7 +12,7 @@ namespace iCanScript.Editor {
         ///
         public static string ValidateDefaultBaseType() {
             // -- Return previous message if nothing changed --
-            var baseTypeName= Prefs.CodeGenerationBaseTypeName;
+            var baseTypeName= Prefs.GlobalBaseType;
             if(baseTypeName == c_codeGenerationBaseTypeName) {
                 return c_codeGenerationBaseTypeMessage;
             }
@@ -43,9 +43,9 @@ namespace iCanScript.Editor {
         ///
         public static string ValidateVisualScriptBaseType(iCS_IStorage iStorage) {
             // -- Don't validate if not enabled --
-            if(iStorage.OverrideDefaultBaseType == false) return null;
+            if(iStorage.BaseTypeOverride == false) return null;
             // -- Return previous message if nothing changed --
-            var baseTypeName= iStorage.BaseTypeName;
+            var baseTypeName= iStorage.BaseType;
             if(baseTypeName == c_visualScriptBaseTypeName) {
                 return c_visualScriptBaseTypeMessage;
             }

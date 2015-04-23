@@ -33,10 +33,10 @@ namespace iCanScript.Editor {
         /// @return The base type string or _null_ if not found.
         ///
         public static string GetBaseTypeString(iCS_IStorage iStorage) {
-            if(iStorage.OverrideDefaultBaseType) {
-                return iStorage.BaseTypeName;
+            if(iStorage.BaseTypeOverride) {
+                return iStorage.BaseType;
             }
-            return Prefs.CodeGenerationBaseTypeName;
+            return Prefs.GlobalBaseType;
         }
     }    
 }

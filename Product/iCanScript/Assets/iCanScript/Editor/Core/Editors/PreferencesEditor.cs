@@ -253,21 +253,23 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
     	void CodeGeneration() {
             // -- Label column --
-            Rect[] pos= GetLabelColumnPositions(3);
+            Rect[] pos= GetLabelColumnPositions(5);
             GUI.Label(pos[0], "Default Folder");
-            GUI.Label(pos[1], "Default Base Type Name");
+            GUI.Label(pos[2], "Global Namespace");
+            GUI.Label(pos[3], "Global Base Type");
     
             // -- Value column --
-            pos= GetValueColumnPositions(3);
+            pos= GetValueColumnPositions(5);
             Prefs.CodeGenerationFolder      = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
-            Prefs.CodeGenerationBaseTypeName= EditorGUI.TextField(pos[1], Prefs.CodeGenerationBaseTypeName);
-            GUI.Label(pos[2], "<i>(format: namespace.type)</i>");
+            Prefs.GlobalNamespace= EditorGUI.TextField(pos[2], Prefs.GlobalNamespace);
+            Prefs.GlobalBaseType= EditorGUI.TextField(pos[3], Prefs.GlobalBaseType);
+            GUI.Label(pos[4], "<i>(format: namespace.type)</i>");
             
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
                 GUI.FocusControl("");
                 Prefs.ResetCodeGenerationFolder();
-                Prefs.ResetCodeGenerationBaseTypeName();
+                Prefs.ResetGlobalBaseType();
             }
 
             // -- Display error if base type not found --

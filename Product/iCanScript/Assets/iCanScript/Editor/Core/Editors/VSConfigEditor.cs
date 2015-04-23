@@ -55,24 +55,32 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
         void General() {
             // -- Label column --
-            var pos= GetLabelColumnPositions(3);
-            GUI.Label(pos[0], "Override Default Base Type");
-            EditorGUI.BeginDisabledGroup(!iStorage.OverrideDefaultBaseType);
+            var pos= GetLabelColumnPositions(5);
+            GUI.Label(pos[0], "Base Type Override");
+            EditorGUI.BeginDisabledGroup(!iStorage.BaseTypeOverride);
             GUI.Label(pos[1], "Base Type Name");
+            EditorGUI.EndDisabledGroup();
+            GUI.Label(pos[3], "Namespace Override");
+            EditorGUI.BeginDisabledGroup(!iStorage.NamespaceOverride);
+            GUI.Label(pos[4], "Namespace");
             EditorGUI.EndDisabledGroup();
             
             // -- Value column --
-            pos= GetValueColumnPositions(3);
-            iStorage.OverrideDefaultBaseType= EditorGUI.Toggle(pos[0], iStorage.OverrideDefaultBaseType);
-            EditorGUI.BeginDisabledGroup(!iStorage.OverrideDefaultBaseType);
-            iStorage.BaseTypeName= EditorGUI.TextField(pos[1], iStorage.BaseTypeName);
+            pos= GetValueColumnPositions(5);
+            iStorage.BaseTypeOverride= EditorGUI.Toggle(pos[0], iStorage.BaseTypeOverride);
+            EditorGUI.BeginDisabledGroup(!iStorage.BaseTypeOverride);
+            iStorage.BaseType= EditorGUI.TextField(pos[1], iStorage.BaseType);
             GUI.Label(pos[2], "<i>(format: namespace.type)</i>");
+            EditorGUI.EndDisabledGroup();
+            iStorage.NamespaceOverride= EditorGUI.Toggle(pos[3], iStorage.NamespaceOverride);
+            EditorGUI.BeginDisabledGroup(!iStorage.NamespaceOverride);
+            iStorage.Namespace= EditorGUI.TextField(pos[4], iStorage.Namespace);
             EditorGUI.EndDisabledGroup();
     
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-                iStorage.OverrideDefaultBaseType= false;
-                iStorage.BaseTypeName= Prefs.CodeGenerationBaseTypeName;
+                iStorage.BaseTypeOverride= false;
+                iStorage.BaseType= Prefs.GlobalBaseType;
             }
 
             // -- Validate user entries --
