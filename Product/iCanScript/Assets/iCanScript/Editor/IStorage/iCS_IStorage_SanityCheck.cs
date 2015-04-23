@@ -18,7 +18,7 @@ public partial class iCS_IStorage {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }        
         // -- Verify namespaces --
-        var message= Sanity.ValidateDefaultNamespace();
+        message= Sanity.ValidateDefaultNamespace();
         if(message != null) {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }

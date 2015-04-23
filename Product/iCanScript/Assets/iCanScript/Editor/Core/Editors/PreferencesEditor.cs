@@ -265,7 +265,7 @@ namespace iCanScript.Editor {
             Prefs.DefaultNamespace    = EditorGUI.TextField(pos[2], Prefs.DefaultNamespace);
             Prefs.DefaultBaseType     = EditorGUI.TextField(pos[3], Prefs.DefaultBaseType);
             GUI.Label(pos[4], "<i>(format: namespace.type)</i>");
-            Prefs.IncludeEditorLibrary= EditorGUI.Toggle(pos[6], Prefs.IncludeEditorLibrary);
+            Prefs.UseUnityEditorLibrary= EditorGUI.Toggle(pos[6], Prefs.UseUnityEditorLibrary);
             
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
@@ -273,7 +273,7 @@ namespace iCanScript.Editor {
                 Prefs.ResetCodeGenerationFolder();
                 Prefs.ResetDefaultBaseType();
                 Prefs.ResetDefaultNamespace();
-                Prefs.ResetIncludeEditorLibrary();
+                Prefs.ResetUseUnityEditorLibrary();
             }
 
             // -- Display error if base type not found --

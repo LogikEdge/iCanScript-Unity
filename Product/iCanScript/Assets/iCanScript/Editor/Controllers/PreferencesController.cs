@@ -570,7 +570,7 @@ namespace iCanScript.Editor {
     	const string kCodeGenerationFolder= "iCanScript Generated Code";
     	const string kDefaultBaseType      = "UnityEngine.MonoBehaviour";
         const string kDefaultNamespace     = "iCanScript.GeneratedCode";
-        const bool   kIncludeEditorLibrary= false;
+        const bool   kUseUnityEditorLibrary= false;
     
     	//
     	// Database access keys
@@ -578,7 +578,7 @@ namespace iCanScript.Editor {
     	const string kCodeGenerationFolderKey= "iCS_CodeGenerationFolder";
     	const string kDefaultBaseTypeKey      = "iCS_GlobalBaseType";
         const string kDefaultNamespaceKey     = "iCS_GlobalNamespace";
-        const string kIncludeEditorLibraryKey= "iCS_IncludeEditorLibrary";
+        const string kUseUnityEditorLibraryKey= "iCS_UseUnityEditorLibrary";
 
     	//
     	// Reset to default value functions
@@ -592,8 +592,8 @@ namespace iCanScript.Editor {
     	public static void ResetDefaultNamespace() {
     	    DefaultNamespace= kDefaultNamespace;
     	}
-        public static void ResetIncludeEditorLibrary() {
-            IncludeEditorLibrary= kIncludeEditorLibrary;
+        public static void ResetUseUnityEditorLibrary() {
+            UseUnityEditorLibrary= kUseUnityEditorLibrary;
         }
     
     	//
@@ -611,9 +611,9 @@ namespace iCanScript.Editor {
             get { return EditorPrefs.GetString(kDefaultNamespaceKey, kDefaultNamespace); }
             set { EditorPrefs.SetString(kDefaultNamespaceKey, value); }
         }
-        public static bool IncludeEditorLibrary {
-            get { return EditorPrefs.GetBool(kIncludeEditorLibraryKey, kIncludeEditorLibrary); }
-            set { EditorPrefs.SetBool(kIncludeEditorLibraryKey, value); }
+        public static bool UseUnityEditorLibrary {
+            get { return EditorPrefs.GetBool(kUseUnityEditorLibraryKey, kUseUnityEditorLibrary); }
+            set { EditorPrefs.SetBool(kUseUnityEditorLibraryKey, value); }
         }    
     
     	// =================================================================================

@@ -48,7 +48,7 @@ public class iCS_Reflection {
         // Remove all previously registered functions.
         iCS_LibraryDatabase.Clear();
         // Scan the application for functions/methods/conversions to register.
-        var shouldIncludeUnityEditor= Prefs.IncludeEditorLibrary;
+        var useUnityEditor= Prefs.UseUnityEditorLibrary;
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             // -- Install all Unity public types --
             string unityPackageName= null;
@@ -56,7 +56,7 @@ public class iCS_Reflection {
             if(assemblyName.StartsWith("UnityEngine")) {
                 unityPackageName= "UnityEngine";
             }
-            else if(assemblyName.StartsWith("UnityEditor")) {
+            else if(useUnityEditor && assemblyName.StartsWith("UnityEditor")) {
                 unityPackageName= "UnityEditor";
             }
             if(unityPackageName != null) {
