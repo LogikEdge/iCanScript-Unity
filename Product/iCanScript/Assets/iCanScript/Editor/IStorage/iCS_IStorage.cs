@@ -106,6 +106,10 @@ public partial class iCS_IStorage {
         get { return Storage.IsEditorScript; }
         set { Storage.IsEditorScript= value; }
     }
+    public string CSharpFileName {
+        get { return Storage.CSharpFileName; }
+        set { Storage.CSharpFileName= value; }
+    }
     public string TypeName {
         get { return Storage.TypeName; }
         set { Storage.TypeName= value; }
