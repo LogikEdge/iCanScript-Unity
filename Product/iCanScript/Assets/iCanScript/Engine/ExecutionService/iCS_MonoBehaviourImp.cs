@@ -9,7 +9,6 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     // ----------------------------------------------------------------------
     [HideInInspector] public bool                     IsEditorScript        = false;
     [HideInInspector] public string                   CSharpFileName        = null;
-    [HideInInspector] public string                   TypeName              = null;
     [HideInInspector] public bool                     BaseTypeOverride      = false;
     [HideInInspector] public string                   BaseType              = null;
     [HideInInspector] public bool                     NamespaceOverride     = false;
@@ -39,10 +38,6 @@ public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {
     string iCS_IVisualScriptData.CSharpFileName {
         get { return CSharpFileName; }
         set { CSharpFileName= value; }
-    }
-    string iCS_IVisualScriptData.TypeName {
-        get { return TypeName; }
-        set { TypeName= value; }
     }
     bool iCS_IVisualScriptData.BaseTypeOverride {
         get { return BaseTypeOverride; }

@@ -24,7 +24,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     // ----------------------------------------------------------------------
     public bool                     IsEditorScript        = false;
     public string                   CSharpFileName        = null;
-    public string                   TypeName              = null;
     public bool                     BaseTypeOverride      = false;
     public string                   BaseType              = null;
     public bool                     NamespaceOverride     = false;
@@ -54,10 +53,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     string iCS_IVisualScriptData.CSharpFileName {
         get { return CSharpFileName; }
         set { CSharpFileName= value; }
-    }
-    string iCS_IVisualScriptData.TypeName {
-        get { return TypeName; }
-        set { TypeName= value; }
     }
     bool iCS_IVisualScriptData.BaseTypeOverride {
         get { return BaseTypeOverride; }
@@ -254,7 +249,6 @@ public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
     public static void CopyDataFromTo(iCS_IVisualScriptData from, iCS_IVisualScriptData to) {
         to.IsEditorScript   = from.IsEditorScript;
         to.CSharpFileName   = from.CSharpFileName;
-        to.TypeName         = from.TypeName;
         to.BaseTypeOverride = from.BaseTypeOverride;
         to.BaseType         = from.BaseType;
         to.NamespaceOverride= from.NamespaceOverride;
