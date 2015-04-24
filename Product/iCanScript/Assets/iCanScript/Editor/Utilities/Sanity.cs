@@ -229,6 +229,23 @@ namespace iCanScript.Editor {
             }
             return null;
         }
+        
+        // =========================================================================
+        // TYPE NAME VALIDATIONS
+        // -------------------------------------------------------------------------
+        /// Validates the visual script type name.
+        ///
+        /// @return The error message or _null_ if no error found.
+        ///
+        public static string ValidateVisualScriptTypeName(iCS_IStorage iStorage, bool shortFormat= false) {
+            var typeName= iStorage.TypeName;
+            var error= ValidateIdentifier(typeName);
+            if(error == null) return null;
+            if(shortFormat) {
+                return "<b>Type Name '<color=red>"+typeName+"</color>'</b> is invalid. "+error;
+            }
+            return "The <b>Type Name '<color=red>"+typeName+"</color>'</b> defined in the <b>Visual Script Configuration</b> is invalid. "+error;
+        }
     }
     
 }

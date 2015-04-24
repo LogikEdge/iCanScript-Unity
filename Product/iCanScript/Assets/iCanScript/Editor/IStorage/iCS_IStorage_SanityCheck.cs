@@ -49,6 +49,12 @@ public partial class iCS_IStorage {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }
         
+        // -- Validate visual script type name --
+        message= Sanity.ValidateVisualScriptTypeName(this);
+        if(message != null) {
+            ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
+        }
+
         // -- Ask each object to perform their own sanity check --
         ForEach(o=> o.SanityCheck(kSanityCheckServiceKey));
     }
