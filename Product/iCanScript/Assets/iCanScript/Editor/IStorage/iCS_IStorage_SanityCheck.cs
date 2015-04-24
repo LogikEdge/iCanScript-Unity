@@ -6,8 +6,10 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     /// Ask each object to perform their own sanity check.
     public void SanityCheck() {
+        // -- Validate user inputs --
         var kSanityCheckServiceKey= "SanityCheck";
         ErrorController.Clear(kSanityCheckServiceKey);
+
         // -- Verify base types --
         var message= Sanity.ValidateEngineBaseType();
         if(message != null) {
@@ -17,12 +19,13 @@ public partial class iCS_IStorage {
         if(message != null) {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }        
+
         // -- Verify namespaces --
-        message= Sanity.ValidateEngineNamespace();
+        message= Sanity.ValidateEditorNamespace();
         if(message != null) {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }
-        message= Sanity.ValidateEditorNamespace();
+        message= Sanity.ValidateEngineNamespace();
         if(message != null) {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }
@@ -30,6 +33,23 @@ public partial class iCS_IStorage {
         if(message != null) {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }        
+
+        // -- Validate folders --
+        message= Sanity.ValidateEditorCodeGenerationFolder();
+        if(message != null) {
+            ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
+        }
+        message= Sanity.ValidateEngineCodeGenerationFolder();
+        if(message != null) {
+            ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
+        }
+        
+        // -- Validate visual script type name --
+        message= Sanity.ValidateVisualScriptTypeName(this);
+        if(message != null) {
+            ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
+        }
+
         // -- Ask each object to perform their own sanity check --
         ForEach(o=> o.SanityCheck(kSanityCheckServiceKey));
     }

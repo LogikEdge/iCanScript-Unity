@@ -1,20 +1,32 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.IO;
 using System.Collections;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Editor {
     
     public static class FileUtils {
 
         // ----------------------------------------------------------------------
         // Create a subfolder under the project Assets folder (if it does not exist)
         public static void CreateAssetFolder(string folderPath) {
+            // -- Split up folder into its parts --
+            var folders= folderPath.Split(new Char[1]{'/'});
+            var len= folders.Length;
+            if(len == 0) return;
+
+            // -- Create the folder recursively --
             string systemAssetPath= Application.dataPath;
-            string systemCodeGenerationFolder= systemAssetPath+"/"+folderPath;
-            if(!Directory.Exists(systemCodeGenerationFolder)) {
-                AssetDatabase.CreateFolder("Assets",folderPath);
-            }        
+            string assetPath= "Assets";
+            for(int i= 0; i < len; ++i) {
+                var leafFolder= folders[i];
+                systemAssetPath+= "/"+leafFolder;
+                if(!Directory.Exists(systemAssetPath)) {
+                    AssetDatabase.CreateFolder(assetPath, leafFolder);
+                }        
+                assetPath+= "/"+leafFolder;
+            }
         }
     
 
@@ -88,4 +100,4 @@ namespace iCanScript { namespace Editor {
     	}
     }
     
-}}
+}

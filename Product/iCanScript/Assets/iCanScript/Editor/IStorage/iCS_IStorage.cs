@@ -414,7 +414,7 @@ public partial class iCS_IStorage {
 		if(vsObj.IsIncludedInType(baseType)) return true;
 		var typeNode= vsObj.ParentTypeNode;
 		if(typeNode == null) return false;
-		if(vsObj.Namespace == iCS_Config.kCodeGenerationNamespace) {
+		if(vsObj.Namespace == CodeGenerationUtility.GetNamespace(this)) {
 			return vsObj.TypeName == typeNode.CodeName;
 		}
 		return false;

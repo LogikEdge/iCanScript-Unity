@@ -295,10 +295,22 @@ namespace iCanScript.Editor {
             message= Sanity.ValidateEngineNamespace(/*shortFormat=*/true);
             if(message != null) {
                 DisplayError(pos[8], message);
+                return;
             }
             message= Sanity.ValidateEditorNamespace(/*shortFormat=*/true);
             if(message != null) {
                 DisplayError(pos[2], message);
+                return;
+            }
+            message= Sanity.ValidateEditorCodeGenerationFolder(/*shortFormat=*/true);
+            if(message != null) {
+                DisplayError(pos[3], message);
+                return;
+            }
+            message= Sanity.ValidateEngineCodeGenerationFolder(/*shortFormat=*/true);
+            if(message != null) {
+                DisplayError(pos[9], message);
+                return;
             }
     	}
         
