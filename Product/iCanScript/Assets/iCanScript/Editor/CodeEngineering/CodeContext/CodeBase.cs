@@ -291,7 +291,6 @@ namespace iCanScript.Editor.CodeEngineering {
             if(obj is Type) {
                 return "typeof("+obj.ToString()+")";
             }
-            Debug.Log("Value: "+obj.ToString());
             return obj.ToString();
         }
         // ---------------------------------------------------------------------------------

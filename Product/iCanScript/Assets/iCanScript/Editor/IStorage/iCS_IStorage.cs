@@ -322,8 +322,17 @@ public partial class iCS_IStorage {
 				if(obj.IsTargetPort) {
 					if(obj.ProducerPort == null) {
 						if(IsLocalType(obj)) {
-							obj.InitialValue= OwnerTag.instance;							
+							obj.InitialValue= OwnerTag.instance;
 						}
+                        else {
+                            var baseType= CodeGenerationUtility.GetBaseType(this);
+                            if(iCS_Types.IsA<Component>(baseType) || iCS_Types.IsA<GameObject>(baseType)) {
+                                var objType= obj.RuntimeType;
+                                if(iCS_Types.IsA<Transform>(objType) || iCS_Types.IsA<GameObject>(objType)) {
+                                    obj.InitialValue= OwnerTag.instance;
+                                }
+                            }
+                        }
 					}
 				}
                 // Cleanup disconnected or dangling ports.
