@@ -529,8 +529,8 @@ namespace iCanScript.Editor {
     	const string kEngineCodeGenerationFolder= "iCanScript Generated Code";
         const string kEditorCodeGenerationFolder= "Editor/iCanScript Generated Code";
     	const string kEngineBaseType            = "UnityEngine.MonoBehaviour";
-        const string kEngineNamespace           = "iCanScript.Engine.Code";
-        const string kEditorNamespace           = "iCanScript.Editor.Code";
+        const string kEngineNamespace           = "MyVisualScripts.Engine";
+        const string kEditorNamespace           = "MyVisualScripts.Editor";
         const bool   kUseUnityEditorLibrary     = false;
     
     	//
