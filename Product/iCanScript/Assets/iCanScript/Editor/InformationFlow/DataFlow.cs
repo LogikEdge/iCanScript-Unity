@@ -14,15 +14,7 @@ namespace iCanScript.Editor {
         /// @return The _'target'_ port if found. _'null'_ otherwise.
         ///
         public static iCS_EditorObject GetTargetPort(iCS_EditorObject node) {
-            iCS_EditorObject result= null;
-            node.ForEachChildPort(
-                p=> {
-                    if(p.PortIndex == (int)iCS_PortIndex.Target) {
-                        result= p;
-                    }
-                }
-            );
-            return result;
+            return node.TargetPort;
         }
 
     }    

@@ -57,6 +57,43 @@ public partial class iCS_EditorObject {
         return EngineObject.GetFieldInfo();
     }
     
+	// -------------------------------------------------------------------------
+    /// Returns the target port of a node.
+    ///
+    /// @return The _'target'_ port if found. _'null'_ otherwise.
+    ///
+    public iCS_EditorObject TargetPort {
+        get {
+            iCS_EditorObject result= null;
+            ForEachChildPort(
+                p=> {
+                    if(p.PortIndex == (int)iCS_PortIndex.Target) {
+                        result= p;
+                    }
+                }
+            );
+            return result;
+        }
+    }
+	// -------------------------------------------------------------------------
+    /// Returns the self port of a node.
+    ///
+    /// @return The _'target'_ port if found. _'null'_ otherwise.
+    ///
+    public iCS_EditorObject SelfPort {
+        get {
+            iCS_EditorObject result= null;
+            ForEachChildPort(
+                p=> {
+                    if(p.PortIndex == (int)iCS_PortIndex.Self) {
+                        result= p;
+                    }
+                }
+            );
+            return result;
+        }
+    }
+    
     // =======================================================================
     // Proxy Node
     // -----------------------------------------------------------------------

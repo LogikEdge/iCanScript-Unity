@@ -51,7 +51,7 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
         void DisplayOptions() {
             // -- Label column --
-            var pos= GetLabelColumnPositions(12);
+            var pos= GetLabelColumnPositions(7);
             GUI.Label(pos[0], "Animation Controls", EditorStyles.boldLabel);
             GUI.Label(pos[1], "Animation Enabled");
             GUI.Label(pos[2], "Animation Time");
@@ -59,13 +59,9 @@ namespace iCanScript.Editor {
             GUI.Label(pos[4], "Edge Scroll Speed (pixels)");
             GUI.Label(pos[5], "Inverse Zoom");
             GUI.Label(pos[6], "Zoom Speed");
-            GUI.Label(pos[8], "Runtime Configuration", EditorStyles.boldLabel);
-            GUI.Label(pos[9], "Show Runtime Values");
-            GUI.Label(pos[10], "Refresh Period (seconds)");
-    		GUI.Label(pos[11], "Show Frame Id");
             
             // -- Value column --
-            pos= GetValueColumnPositions(12);
+            pos= GetValueColumnPositions(7);
             Prefs.IsAnimationEnabled= EditorGUI.Toggle(pos[1], Prefs.IsAnimationEnabled);
             EditorGUI.BeginDisabledGroup(Prefs.IsAnimationEnabled==false);
             Prefs.AnimationTime= EditorGUI.FloatField(pos[2], Prefs.AnimationTime);
@@ -74,9 +70,6 @@ namespace iCanScript.Editor {
             Prefs.EdgeScrollSpeed= EditorGUI.FloatField(pos[4], Prefs.EdgeScrollSpeed);
             Prefs.InverseZoom= EditorGUI.Toggle(pos[5], Prefs.InverseZoom);
             Prefs.ZoomSpeed= EditorGUI.FloatField(pos[6], Prefs.ZoomSpeed);
-            Prefs.ShowRuntimePortValue= EditorGUI.Toggle(pos[9], Prefs.ShowRuntimePortValue);
-            Prefs.PortValueRefreshPeriod= EditorGUI.FloatField(pos[10], Prefs.PortValueRefreshPeriod);
-    		Prefs.ShowRuntimeFrameId= EditorGUI.Toggle(pos[11], Prefs.ShowRuntimeFrameId);
     
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
@@ -86,9 +79,6 @@ namespace iCanScript.Editor {
                 Prefs.ResetEdgeScrollSpeed();
                 Prefs.ResetInverseZoom();
                 Prefs.ResetZoomSpeed();
-                Prefs.ResetShowRuntimePortValue();
-                Prefs.ResetPortValueRefreshPeriod();
-    			Prefs.ResetShowRuntimeFrameId();   
             }
     		// -- Repaint visual editor if option has changed --
     		if(GUI.changed) {

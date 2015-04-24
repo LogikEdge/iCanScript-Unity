@@ -10,8 +10,19 @@ public partial class iCS_IStorage {
         var kSanityCheckServiceKey= "SanityCheck";
         ErrorController.Clear(kSanityCheckServiceKey);
 
+        // -- Validate visual script type name --
+        var message= Sanity.ValidateVisualScriptTypeName(this);
+        if(message != null) {
+            ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
+        }
+
+        // -- Validate CSharpFileName --
+        if(CSharpFileName != TypeName) {
+            message= "CSharp file name: <b><color=red>"+CSharpFileName+"</color></b> doesn't match the type name: <b><color=red>"+TypeName+"</color></b>";
+        }
+        
         // -- Verify base types --
-        var message= Sanity.ValidateEngineBaseType();
+        message= Sanity.ValidateEngineBaseType();
         if(message != null) {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }
@@ -44,12 +55,6 @@ public partial class iCS_IStorage {
             ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
         }
         
-        // -- Validate visual script type name --
-        message= Sanity.ValidateVisualScriptTypeName(this);
-        if(message != null) {
-            ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
-        }
-
         // -- Ask each object to perform their own sanity check --
         ForEach(o=> o.SanityCheck(kSanityCheckServiceKey));
     }
