@@ -76,7 +76,24 @@ public partial class iCS_EditorObject {
                    if(doesDataFlowExist) {
                        var message= "<b>Trigger</b> to <b>Enable</b> connection not needed since data flow already exist between nodes.  Consider removing the control flow.";
                        ErrorController.AddWarning(serviceKey, message, visualScript, InstanceId);
- 				      ErrorController.AddWarning(serviceKey, message, visualScript, producerPort.InstanceId);				   	
+ 				       ErrorController.AddWarning(serviceKey, message, visualScript, producerPort.InstanceId);				   	
+                   }
+                   // -- Determine if self to target connection should be used for
+                   //    sequencing operation on same object.
+                   var producerNodeTargetPort= producerNode.TargetPort;
+                   var parentNodeTargetPort  = parentNode.TargetPort;
+                   if(producerNodeTargetPort != null && parentNodeTargetPort != null) {
+                       var targetProducerPort= parentNodeTargetPort.FirstProducerPort;
+                       if(producerNodeTargetPort.FirstProducerPort == targetProducerPort) {
+                           var targetProducerNode= targetProducerPort.ParentNode;
+                           var producerNodeSelfPort= producerNode.SelfPort;
+                           var message= "Consider connecting the <b>Self</b> port of '<b>"+producerNode.DisplayName
+                                        +"</b>' to the <b>Target</b> port of '<b>"+parentNode.DisplayName
+                                        +"</b> to sequence operations on <b>"+targetProducerNode.DisplayName
+                                        +"<\b>.";
+                           ErrorController.AddWarning(serviceKey, message, visualScript, parentNodeTargetPort.InstanceId);
+                           ErrorController.AddWarning(serviceKey, message, visualScript, producerNodeSelfPort.InstanceId);
+                       }
                    }
                }
 		   }
