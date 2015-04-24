@@ -45,6 +45,26 @@ namespace iCanScript.Editor {
                     iCS_UserCommands.ReloadFromForwardNavigationHistory(IStorage);
                 }            
             }
+
+            // -- Generate & Delete C#
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Generate C#", spacer, 0)) {
+                var codeGenerator= new CodeGenerator();
+                codeGenerator.GenerateCodeFor(IStorage);
+            }
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Delete C#", spacer, 0)) {
+                var codeGenerator= new CodeGenerator();
+                codeGenerator.DeleteGeneratedFilesFor(IStorage);
+            }
+    
+            
+            // -- Zoom factor --
+            float newScale= iCS_ToolbarUtility.Slider(ref r, kSliderSize, Scale, 2f, 0.15f, spacer, spacer, true);
+            iCS_ToolbarUtility.MiniLabel(ref r, "Zoom", 10f, 0, true);
+    		if(Math3D.IsNotEqual(newScale, Scale)) {
+                Vector2 pivot= ViewportToGraph(ViewportCenter);
+                CenterAtWithScale(pivot, newScale);
+    		}
+            
             // -- User Preferences --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Preferences", 0, spacer, true)) {
                 var editor= EditorWindow.CreateInstance<PreferencesEditor>();
@@ -56,73 +76,20 @@ namespace iCanScript.Editor {
             }
             
     		// -- Show Display Root Node. --
-    		GUI.changed= false;
-    		IStorage.ShowDisplayRootNode= iCS_ToolbarUtility.Toggle(ref r, IStorage.ShowDisplayRootNode, spacer, spacer);
-            iCS_ToolbarUtility.MiniLabel(ref r, "Show Root Node", 0,0);
-            iCS_ToolbarUtility.Separator(ref r);
-    
-            // Debug Controls
-            if(VisualScript != null /*&& Application.isPlaying*/) {
-        		// Show Runtime frame id.
-                bool showFrameId= Prefs.ShowRuntimeFrameId;
-                bool newShowFrameId= iCS_ToolbarUtility.Toggle(ref r, showFrameId, 0, 0);
-                if(newShowFrameId != showFrameId) {
-                    Prefs.ShowRuntimeFrameId= newShowFrameId;
-                }
-                iCS_ToolbarUtility.MiniLabel(ref r, "Frame Id", 0,0);
-                iCS_ToolbarUtility.Separator(ref r);
-        		
-                // Show Runtime values.
-                bool showRuntime= Prefs.ShowRuntimePortValue;
-                bool newShowRuntime= iCS_ToolbarUtility.Toggle(ref r, showRuntime, spacer, spacer);
-                if(newShowRuntime != showRuntime) {
-                    Prefs.ShowRuntimePortValue= newShowRuntime;
-                }
-                iCS_ToolbarUtility.MiniLabel(ref r, "Runtime Values", 0,0);
-                float refreshSpeed= Mathf.Sqrt(Prefs.PortValueRefreshPeriod);
-                float newRefreshSpeed= iCS_ToolbarUtility.Slider(ref r, kSliderSize, refreshSpeed, 0.3162f, 1.414f, spacer, spacer);
-                if(newRefreshSpeed != refreshSpeed) {
-                    Prefs.PortValueRefreshPeriod= newRefreshSpeed*newRefreshSpeed;
-                }
-                iCS_ToolbarUtility.Separator(ref r);
-    		    // Refresh Preferences window
-    		    if(GUI.changed) {
-    		    	iCS_EditorController.RepaintPreferencesEditor();
-    		    }
+            if(IStorage.DisplayRoot != IStorage.RootObject) {
+        		IStorage.ShowDisplayRootNode= iCS_ToolbarUtility.Toggle(ref r, IStorage.ShowDisplayRootNode, spacer, spacer);
+                iCS_ToolbarUtility.MiniLabel(ref r, "Show Root Node", 0,0);
+                iCS_ToolbarUtility.Separator(ref r);                
             }
-    		
-    		// --------------
-    		// RIGHT TOOLBAR
-    		// Show zoom control at the end of the toolbar.
-            float newScale= iCS_ToolbarUtility.Slider(ref r, kSliderSize, Scale, 2f, 0.15f, spacer, spacer, true);
-            iCS_ToolbarUtility.MiniLabel(ref r, "Zoom", 10f, 0, true);
-    		if(Math3D.IsNotEqual(newScale, Scale)) {
-                Vector2 pivot= ViewportToGraph(ViewportCenter);
-                CenterAtWithScale(pivot, newScale);
-    		}
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Generate C#", 0, spacer, true)) {
-                var codeGenerator= new CodeGenerator();
-                codeGenerator.GenerateCodeFor(IStorage);
-            }
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Delete C#", spacer, 0, true)) {
-                var codeGenerator= new CodeGenerator();
-                codeGenerator.DeleteGeneratedFilesFor(IStorage);
-            }
-    
-    //		// Show current bookmark.
-    //		string bookmarkString= "Bookmark: ";
-    //		if(myBookmark == null) {
-    //		    bookmarkString+= "(empty)";
-    //		} else {
-    //		    bookmarkString+= myBookmark.Name;
-    //		}
-    //		iCS_ToolbarUtility.MiniLabel(ref r, 150f, bookmarkString, spacer, 0, true);
-    //        iCS_ToolbarUtility.Separator(ref r, true);
     
     		// --------------
     		// CENTER TOOLBAR
             // Show game object name in middle of toolbar.
-    		var name= DisplayRoot.FullName;
+    		var name= IStorage.TypeName;
+            var baseType= CodeGenerationUtility.GetBaseType(IStorage);
+            if(baseType != null && baseType != typeof(void)) {
+                name+= " : "+baseType.Name;
+            }
     		iCS_ToolbarUtility.CenteredTitle(ref r, name);
     
             // Trial information.

@@ -92,9 +92,6 @@ namespace iCanScript.Editor {
         const float  kEdgeScrollSpeed            = 400.0f;
         const bool   kInverseZoom                = false;
         const float  kZoomSpeed                  = 1.0f;
-        const bool   kShowRuntimePortValue       = false;
-        const float  kPortValueRefreshPeriod     = 0.1f;
-    	const bool   kShowRuntimeFrameId         = false;
     
     	//
     	// Database access keys
@@ -105,9 +102,6 @@ namespace iCanScript.Editor {
         const string kEdgeScrollSpeedKey         = "iCS_EdgeScrollSpeed";
         const string kInverseZoomKey             = "iCS_InverseZoom";
         const string kZoomSpeedKey               = "iCS_ZoomSpeed";
-        const string kShowRuntimePortValueKey    = "iCS_ShowRuntimePortValue";
-        const string kPortValueRefreshPeriodKey  = "iCS_PortValueRefresh";
-        const string kShowRuntimeFrameIdKey      = "iCS_ShowRuntimeFrameId";
     
     	//
     	// Reset to default value functions
@@ -130,15 +124,6 @@ namespace iCanScript.Editor {
         public static void ResetZoomSpeed() {
     	    ZoomSpeed= kZoomSpeed;
         }
-        public static void ResetShowRuntimePortValue() {
-    	    ShowRuntimePortValue= kShowRuntimePortValue;
-        }
-        public static void ResetPortValueRefreshPeriod() {
-    	    PortValueRefreshPeriod= kPortValueRefreshPeriod;
-        }
-    	public static void ResetShowRuntimeFrameId() {
-    		ShowRuntimeFrameId= kShowRuntimeFrameId;    	
-    	}
     
     	//
     	// Accessors
@@ -193,32 +178,6 @@ namespace iCanScript.Editor {
             set {
                 if(value < 0.1f || value >5.0f) return;
                 EditorPrefs.SetFloat(kZoomSpeedKey, value);
-            }
-        }
-        public static bool ShowRuntimePortValue {
-            get {
-                return EditorPrefs.GetBool(kShowRuntimePortValueKey, kShowRuntimePortValue);
-            }
-            set {
-                EditorPrefs.SetBool(kShowRuntimePortValueKey, value);
-            }
-        }
-        public static float PortValueRefreshPeriod {
-            get {
-                return EditorPrefs.GetFloat(kPortValueRefreshPeriodKey, kPortValueRefreshPeriod);
-            }
-            set {
-                if(value < 0.1f) value= 0.1f;
-                if(value > 2.0f) value= 2.0f;
-                EditorPrefs.SetFloat(kPortValueRefreshPeriodKey, value);
-            }
-        }
-        public static bool ShowRuntimeFrameId {
-            get {
-                return EditorPrefs.GetBool(kShowRuntimeFrameIdKey, kShowRuntimeFrameId);
-            }
-            set {
-                EditorPrefs.SetBool(kShowRuntimeFrameIdKey, value);
             }
         }
     

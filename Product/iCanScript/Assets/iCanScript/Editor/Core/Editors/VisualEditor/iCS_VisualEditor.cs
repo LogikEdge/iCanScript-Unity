@@ -33,7 +33,6 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
         bool  myShowDynamicMenu    = false;
         int   myUpdateCounter      = 0;
-        int   myRefreshCounter     = 0;
         float myCurrentTime        = 0;
         float myDeltaTime          = 0;
         bool  myNeedRepaint        = true;
@@ -185,17 +184,6 @@ namespace iCanScript.Editor {
                 else if(myNeedRepaint) {
                     Repaint();
                     myNeedRepaint= false;                    
-                }
-                // Repaint if game is running.
-                else if(Application.isPlaying && Prefs.ShowRuntimePortValue) {
-                    float period= Prefs.PortValueRefreshPeriod;
-                    if(period < 0.1f) period= 0.1f;
-                    float refreshFactor= 1f/period;
-                    int newRefreshCounter= (int)(currentTime*refreshFactor);
-                    if(newRefreshCounter != myRefreshCounter) {
-                        myRefreshCounter= newRefreshCounter;
-                        Repaint();
-                    }
                 }
 #if FORCE_REPAINT
                 else {

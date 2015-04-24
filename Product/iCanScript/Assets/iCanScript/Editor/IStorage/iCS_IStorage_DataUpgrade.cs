@@ -104,10 +104,6 @@ public partial class iCS_IStorage {
             CSharpFileName= RootObject.CodeName;
             isUpgraded= true;
         }
-        if(string.IsNullOrEmpty(TypeName)) {
-            TypeName= RootObject.CodeName;
-            isUpgraded= true;
-        }        
         return isUpgraded;
     }
     // ----------------------------------------------------------------------
