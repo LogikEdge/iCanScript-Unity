@@ -6,11 +6,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     /// Ask each object to perform their own sanity check.
     public void SanityCheck() {
-        // -- Refresh dynamic values --
-//        if(string.IsNullOrEmpty(TypeName)) {
-//            TypeName= EditorObjects[0].CodeName;
-//        }
-        
         // -- Validate user inputs --
         var kSanityCheckServiceKey= "SanityCheck";
         ErrorController.Clear(kSanityCheckServiceKey);
