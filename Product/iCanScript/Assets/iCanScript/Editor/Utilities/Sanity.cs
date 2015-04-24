@@ -45,6 +45,7 @@ namespace iCanScript.Editor {
         /// @return A user message if a problem is found. _null_ otherwise.
         ///
         public static string ValidateVisualScriptBaseType(iCS_IStorage iStorage) {
+            if(!iStorage.IsRootObjectAType) return null;
             // -- Don't validate if not enabled --
             if(iStorage.BaseTypeOverride == false) return null;
             // -- Return previous message if nothing changed --
@@ -110,6 +111,7 @@ namespace iCanScript.Editor {
         /// @return The error message or _null_ if no error found.
         ///
         public static string ValidateVisualScriptNamespace(iCS_IStorage iStorage, bool shortFormat= false) {
+            if(!iStorage.IsRootObjectAType) return null;
             if(iStorage.NamespaceOverride == false) return null;
             var ns= iStorage.Namespace;
             var error= ValidateNamespace(ns);
@@ -238,6 +240,7 @@ namespace iCanScript.Editor {
         /// @return The error message or _null_ if no error found.
         ///
         public static string ValidateVisualScriptTypeName(iCS_IStorage iStorage, bool shortFormat= false) {
+            if(!iStorage.IsRootObjectAType) return null;
             var typeName= iStorage.TypeName;
             var error= ValidateIdentifier(typeName);
             if(error == null) return null;
