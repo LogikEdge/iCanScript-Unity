@@ -151,12 +151,84 @@ namespace iCanScript.Editor {
             }
             foreach(var c in identifier) {
                 if(!(Char.IsLetterOrDigit(c) || c == '_')) {
-                    return "Valid characters include letters [a-z][A-Z], digits [0-9], or an underscore.";
+                    return "Valid characters are [a-z][A-Z][0-9] and underscore.";
                 }
             }
             return null;
         }
 
+        // =========================================================================
+        // FOLDER NAME VALIDATIONS
+        // -------------------------------------------------------------------------
+        /// Validates the editor code generation folder from Global Preferences.
+        ///
+        /// @return The error message or _null_ if no error found.
+        ///
+        public static string ValidateEditorCodeGenerationFolder(bool shortFormat= false) {
+            var folder= Prefs.EditorCodeGenerationFolder;
+            var pathParts= folder.Split(new Char[1]{'/'});
+            bool isEditorFolderFound= false;
+            foreach(var p in pathParts) {
+                if(p == "Editor") isEditorFolderFound= true;
+            }
+            if(!isEditorFolderFound) {
+                if(shortFormat) {
+                    return "<b>'<color=red>"+folder+"</color>'</b> MUST include <b>'Editor'</b> in its path.";                    
+                }
+                return "The <b>Editor Code Generation Folder '<color=red>"+folder+"</color>'</b> defined in <b>Global Preferences</b> MUST include <b>'Editor'</b> in its path.";
+            }
+            var error= ValidateFolderName(folder, true);
+            if(error == null) return null;
+            if(shortFormat) {
+                return "<b>'<color=red>"+folder+"</color>'</b> includes invalid characters. "+error;                
+            }
+            return "The <b>Editor Code Generation Folder '<color=red>"+folder+"</color>'</b> defined in <b>Global Preferences</b> includes invalid characters. "+error;
+        }
+
+        // -------------------------------------------------------------------------
+        /// Validates the engine code generation folder from Global Preferences.
+        ///
+        /// @return The error message or _null_ if no error found.
+        ///
+        public static string ValidateEngineCodeGenerationFolder(bool shortFormat= false) {
+            // -- Verify that the 'Editor' path is not included --
+            var folder= Prefs.EngineCodeGenerationFolder;
+            var pathParts= folder.Split(new Char[1]{'/'});
+            bool isEditorFolderFound= false;
+            foreach(var p in pathParts) {
+                if(p == "Editor") isEditorFolderFound= true;
+            }
+            if(isEditorFolderFound) {
+                if(shortFormat) {
+                    return "<b>'<color=red>"+folder+"</color>'</b> CAN NOT include <b>'Editor'</b> in its path.";                    
+                }
+                return "The <b>Engine Code Generation Folder '<color=red>"+folder+"</color>'</b> defined in <b>Global Preferences</b> CAN NOT include <b>'Editor'</b> in its path.";
+            }
+            var error= ValidateFolderName(folder, true);
+            if(error == null) return null;
+            if(shortFormat) {
+                return "<b>'<color=red>"+folder+"</color>'</b> includes invalid characters. "+error;                
+            }
+            return "<b>Engine Code Generation Folder '<color=red>"+folder+"</color>'</b> defined in <b>Global Preferences</b> includes invalid characters. "+error;
+        }
+
+        // -------------------------------------------------------------------------
+        /// Validates the given folder name.
+        ///
+        /// @param folderName The name to be validated.
+        /// @return The error message or _null_ if no error found.
+        ///
+        public static string ValidateFolderName(string folderName, bool shortFormat= false) {
+            foreach(var c in folderName) {
+                if(!(Char.IsLetterOrDigit(c) || c == ' ' || c == '_' || c == '/')) {
+                    if(shortFormat) {
+                        return "Valid characters are [a-z][A-Z][0-9], space and underscore.";                        
+                    }
+                    return "The folder name '<color=red>"+folderName+"</color>' includes invalid characters. Valid characters are [a-z][A-Z][0-9], space and underscore.";
+                }
+            }
+            return null;
+        }
     }
     
 }

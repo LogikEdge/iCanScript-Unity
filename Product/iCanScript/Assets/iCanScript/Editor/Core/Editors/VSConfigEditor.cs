@@ -55,21 +55,24 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
         void General() {
             // -- Label column --
-            var pos= GetLabelColumnPositions(6);
-            GUI.Label(pos[0], "Is Editor Script");
-            GUI.Label(pos[1], "Base Type Override");
+            var pos= GetLabelColumnPositions(8);
+            GUI.Label(pos[0], "Type Name");
+            GUI.Label(pos[2], "Is Editor Script");
+            GUI.Label(pos[3], "Base Type Override");
             EditorGUI.BeginDisabledGroup(!iStorage.BaseTypeOverride);
-            GUI.Label(pos[2], "Base Type Name");
+            GUI.Label(pos[4], "Base Type Name");
             EditorGUI.EndDisabledGroup();
-            GUI.Label(pos[4], "Namespace Override");
+            GUI.Label(pos[6], "Namespace Override");
             EditorGUI.BeginDisabledGroup(!iStorage.NamespaceOverride);
-            GUI.Label(pos[5], "Namespace");
+            GUI.Label(pos[7], "Namespace");
             EditorGUI.EndDisabledGroup();
             
             // -- Value column --
-            pos= GetValueColumnPositions(6);
+            pos= GetValueColumnPositions(8);
+            iStorage.TypeName= EditorGUI.TextField(pos[0], iStorage.TypeName);
+            var savedGuiChanged= GUI.changed;
             GUI.changed= false;
-            iStorage.IsEditorScript= EditorGUI.Toggle(pos[0], iStorage.IsEditorScript);
+            iStorage.IsEditorScript= EditorGUI.Toggle(pos[2], iStorage.IsEditorScript);
             if(GUI.changed) {
                 if(iStorage.IsEditorScript) {
                     iStorage.BaseTypeOverride= true;
@@ -86,18 +89,20 @@ namespace iCanScript.Editor {
                     }
                 }
             }
-            iStorage.BaseTypeOverride= EditorGUI.Toggle(pos[1], iStorage.BaseTypeOverride);
+            GUI.changed |= savedGuiChanged;
+            iStorage.BaseTypeOverride= EditorGUI.Toggle(pos[3], iStorage.BaseTypeOverride);
             EditorGUI.BeginDisabledGroup(!iStorage.BaseTypeOverride);
-            iStorage.BaseType= EditorGUI.TextField(pos[2], iStorage.BaseType);
-            GUI.Label(pos[3], "<i>(format: namespace.type)</i>");
+            iStorage.BaseType= EditorGUI.TextField(pos[4], iStorage.BaseType);
+            GUI.Label(pos[5], "<i>(format: namespace.type)</i>");
             EditorGUI.EndDisabledGroup();
-            iStorage.NamespaceOverride= EditorGUI.Toggle(pos[4], iStorage.NamespaceOverride);
+            iStorage.NamespaceOverride= EditorGUI.Toggle(pos[6], iStorage.NamespaceOverride);
             EditorGUI.BeginDisabledGroup(!iStorage.NamespaceOverride);
-            iStorage.Namespace= EditorGUI.TextField(pos[5], iStorage.Namespace);
+            iStorage.Namespace= EditorGUI.TextField(pos[7], iStorage.Namespace);
             EditorGUI.EndDisabledGroup();
     
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
+                iStorage.TypeName         = iStorage.EditorObjects[0].CodeName;
                 iStorage.IsEditorScript   = false;
                 iStorage.BaseTypeOverride = false;
                 iStorage.BaseType         = Prefs.EngineBaseType;
@@ -113,12 +118,12 @@ namespace iCanScript.Editor {
             // -- Validate user entries --
             var message= Sanity.ValidateVisualScriptBaseType(iStorage);
             if(message != null) {
-                DisplayError(pos[2], message);
+                DisplayError(pos[4], message);
                 return;
             }
             message= Sanity.ValidateVisualScriptNamespace(iStorage, /*shortFormat=*/true);
             if(message != null) {
-                DisplayError(pos[5], message);
+                DisplayError(pos[7], message);
             }
         }
     }
