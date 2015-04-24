@@ -6,6 +6,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     /// Ask each object to perform their own sanity check.
     public void SanityCheck() {
+        // -- Don't perform sanity check on transient data --
+        if(!IsRootObjectAType) return;
+        
         // -- Validate user inputs --
         var kSanityCheckServiceKey= "SanityCheck";
         ErrorController.Clear(kSanityCheckServiceKey);

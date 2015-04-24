@@ -45,8 +45,14 @@ public partial class iCS_IStorage {
             return iCSMonoBehaviour;
         }
     }
+    public bool HasRootObject {
+        get { return EditorObjects != null && EditorObjects.Count != 0; }
+    }
     public iCS_EditorObject RootObject {
         get { return EditorObjects[0]; }
+    }
+    public bool IsRootObjectAType {
+        get { return HasRootObject && IsBehaviour; }
     }
     public int DisplayRootId {
         get {

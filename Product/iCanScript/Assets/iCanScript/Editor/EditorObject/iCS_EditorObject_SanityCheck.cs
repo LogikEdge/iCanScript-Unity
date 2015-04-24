@@ -90,7 +90,7 @@ public partial class iCS_EditorObject {
                            var message= "Consider connecting the <b>Self</b> port of '<b>"+producerNode.DisplayName
                                         +"</b>' to the <b>Target</b> port of '<b>"+parentNode.DisplayName
                                         +"</b> to sequence operations on <b>"+targetProducerNode.DisplayName
-                                        +"<\b>.";
+                                        +"</b>.";
                            ErrorController.AddWarning(serviceKey, message, visualScript, parentNodeTargetPort.InstanceId);
                            ErrorController.AddWarning(serviceKey, message, visualScript, producerNodeSelfPort.InstanceId);
                        }
