@@ -74,20 +74,7 @@ namespace iCanScript.Editor {
             GUI.changed= false;
             iStorage.IsEditorScript= EditorGUI.Toggle(pos[2], iStorage.IsEditorScript);
             if(GUI.changed) {
-                if(iStorage.IsEditorScript) {
-                    iStorage.BaseTypeOverride= true;
-                    iStorage.BaseType        = "";
-                    if(iStorage.NamespaceOverride == false) {
-                        iStorage.Namespace= Prefs.EditorNamespace;
-                    }
-                }
-                else {                    
-                    iStorage.BaseTypeOverride= false;
-                    iStorage.BaseType        = Prefs.EngineBaseType;
-                    if(iStorage.NamespaceOverride == false) {
-                        iStorage.Namespace= Prefs.EngineNamespace;
-                    }
-                }
+                UpdateEditorScriptOption();
             }
             GUI.changed |= savedGuiChanged;
             iStorage.BaseTypeOverride= EditorGUI.Toggle(pos[3], iStorage.BaseTypeOverride);
@@ -130,6 +117,30 @@ namespace iCanScript.Editor {
             if(message != null) {
                 DisplayError(pos[0], message);
                 return;
+            }
+        }
+        
+        // ---------------------------------------------------------------------------------
+        /// Updates the option to determines if this is an editor script.
+        void UpdateEditorScriptOption() {
+            if(iStorage.IsEditorScript) {
+                iStorage.BaseTypeOverride= true;
+                iStorage.BaseType        = "";
+                if(iStorage.NamespaceOverride == false) {
+                    iStorage.Namespace= Prefs.EditorNamespace;
+                }
+                if(Prefs.UseUnityEditorLibrary == false) {
+                    if(EditorUtility.DisplayDialog("The Unity Editor Library must be enabled to create editor scipts.", "Do you want to enable the Unity Editor Library?", "Enable", "Abort")) {
+                        Prefs.UseUnityEditorLibrary= true;                        
+                    }
+                }
+            }
+            else {
+                iStorage.BaseTypeOverride= false;
+                iStorage.BaseType        = Prefs.EngineBaseType;
+                if(iStorage.NamespaceOverride == false) {
+                    iStorage.Namespace= Prefs.EngineNamespace;
+                }
             }
         }
     }
