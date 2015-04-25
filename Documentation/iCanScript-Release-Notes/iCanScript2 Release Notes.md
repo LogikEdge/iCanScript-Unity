@@ -17,14 +17,19 @@ _April 24, 2015_
 V2.0.9 is a development release of iCanScript2.
 ### List of Changes
 
-- **<span style="color: green">\[NEW\]</span>** An option to include the Unity Editor Library is now available in the _Code Generation_ section of the _Global Preferences_. 
+- **<span style="color: green">\[NEW\]</span>** The **Type Name** of the visual script can now be configured in the _Visual Script Configuration_ panel.
+- **<span style="color: green">\[NEW\]</span>** iCanScript2 can now be used to create _Editor Scripts_.
+	- Enable/Disable the _Editor Script_ option in the _Visual Script Configuration_ to switch between engine and editor scripts.
+	- The _Unity Editor Library_ must be enabled to create _Editor Visual Scripts_.
+- **<span style="color: green">\[NEW\]</span>** An option to include the **Unity Editor Library** is now available in the _Code Generation_ section of the _Global Preferences_. 
 	- **NOTE:** A restart is required for this option to take effect.
-- **<span style="color: green">\[NEW\]</span>** The user can now configure the _**namespace**_ for the type defined by the visual script.
-	- **<span style="color: green">\[NEW\]</span>** The default _Namespace_ can be configured in the _Global Preferences_;
-	- **<span style="color: green">\[NEW\]</span>** The _Namespace_ can be overridden for each visual script in the new _Visual Script Configuration Panel_.
-- **<span style="color: blue">\[IMPROVED\]</span>** Do not show menu item to _**"Add Unity Event Handler"**_ if the base type does't inherit from _MonoBehaviour_.
+- **<span style="color: green">\[NEW\]</span>** The user can now customize the _**code generation folders**_ for the _Editor_ and _Engine_ visual scripts from the _Global Preferences_.
+- **<span style="color: green">\[NEW\]</span>** The user can now customize the _**namespace**_ for code generation:
+	- **<span style="color: green">\[NEW\]</span>** Separate _Namespaces_ for _Editor_ & _Engine_ code generation can be customized from the _Global Preferences_;
+	- **<span style="color: green">\[NEW\]</span>** The _Namespace_ can be overridden on a visual script basis using the _Visual Script Configuration Panel_.
+- **<span style="color: blue">\[IMPROVED\]</span>** The _**"Add Unity Event Handler"**_ menu item is no longer displayed if the script does not inherit from _MonoBehaviour_.
 - **<span style="color: blue">\[IMPROVED\]</span>** Warning provided to help simplify situation where data and control flow overlap.
-- **<span style="color: red">\[FIXED\]</span>** Type name can now be entered in the _Port Editor_ using the format: _"namespace.type"_.
+- **<span style="color: red">\[FIXED\]</span>** The name of the type can now be configured when a port required a Type value.  The type name format is: _"namespace.type"_.
 - **<span style="color: red">\[FIXED\]</span>** Invalid code generated for static functions of _"GameObject"_ and _"Transform"_.
 
 
