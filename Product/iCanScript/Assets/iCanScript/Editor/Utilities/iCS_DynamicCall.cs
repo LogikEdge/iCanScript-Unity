@@ -10,7 +10,7 @@ public static class iCS_DynamicCall {
     /// @param go   The GameObject on which to add a new viusal script.
     public static iCS_VisualScriptImp AddVisualScript(GameObject go) {
         if(myAddVisualScriptFnc == null) {
-            myAddVisualScriptFnc= new DynamicInvoke("iCS_DynamicInterface", "AddVisualScript");
+            myAddVisualScriptFnc= new DynamicInvoke("iCanScript.Editor.DynamicInterface", "AddVisualScript");
         }
         return myAddVisualScriptFnc.Invoke(null, go) as iCS_VisualScriptImp;
     }
@@ -20,7 +20,7 @@ public static class iCS_DynamicCall {
     /// @param go   The GameObject on which to add a new iCS library.
     public static iCS_LibraryImp AddLibrary(GameObject go) {
         if(myAddLibraryFnc == null) {
-            myAddLibraryFnc= new DynamicInvoke("iCS_DynamicInterface", "AddLibrary");
+            myAddLibraryFnc= new DynamicInvoke("iCanScript.Editor.DynamicInterface", "AddLibrary");
         }
         return myAddLibraryFnc.Invoke(null, go) as iCS_LibraryImp;
     }

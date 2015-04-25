@@ -1,4 +1,4 @@
-﻿// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // PreferencesController.cs
 //
 // Revised: 2014-01-29
@@ -92,9 +92,6 @@ namespace iCanScript.Editor {
         const float  kEdgeScrollSpeed            = 400.0f;
         const bool   kInverseZoom                = false;
         const float  kZoomSpeed                  = 1.0f;
-        const bool   kShowRuntimePortValue       = false;
-        const float  kPortValueRefreshPeriod     = 0.1f;
-    	const bool   kShowRuntimeFrameId         = false;
     
     	//
     	// Database access keys
@@ -105,9 +102,6 @@ namespace iCanScript.Editor {
         const string kEdgeScrollSpeedKey         = "iCS_EdgeScrollSpeed";
         const string kInverseZoomKey             = "iCS_InverseZoom";
         const string kZoomSpeedKey               = "iCS_ZoomSpeed";
-        const string kShowRuntimePortValueKey    = "iCS_ShowRuntimePortValue";
-        const string kPortValueRefreshPeriodKey  = "iCS_PortValueRefresh";
-        const string kShowRuntimeFrameIdKey      = "iCS_ShowRuntimeFrameId";
     
     	//
     	// Reset to default value functions
@@ -130,15 +124,6 @@ namespace iCanScript.Editor {
         public static void ResetZoomSpeed() {
     	    ZoomSpeed= kZoomSpeed;
         }
-        public static void ResetShowRuntimePortValue() {
-    	    ShowRuntimePortValue= kShowRuntimePortValue;
-        }
-        public static void ResetPortValueRefreshPeriod() {
-    	    PortValueRefreshPeriod= kPortValueRefreshPeriod;
-        }
-    	public static void ResetShowRuntimeFrameId() {
-    		ShowRuntimeFrameId= kShowRuntimeFrameId;    	
-    	}
     
     	//
     	// Accessors
@@ -193,32 +178,6 @@ namespace iCanScript.Editor {
             set {
                 if(value < 0.1f || value >5.0f) return;
                 EditorPrefs.SetFloat(kZoomSpeedKey, value);
-            }
-        }
-        public static bool ShowRuntimePortValue {
-            get {
-                return EditorPrefs.GetBool(kShowRuntimePortValueKey, kShowRuntimePortValue);
-            }
-            set {
-                EditorPrefs.SetBool(kShowRuntimePortValueKey, value);
-            }
-        }
-        public static float PortValueRefreshPeriod {
-            get {
-                return EditorPrefs.GetFloat(kPortValueRefreshPeriodKey, kPortValueRefreshPeriod);
-            }
-            set {
-                if(value < 0.1f) value= 0.1f;
-                if(value > 2.0f) value= 2.0f;
-                EditorPrefs.SetFloat(kPortValueRefreshPeriodKey, value);
-            }
-        }
-        public static bool ShowRuntimeFrameId {
-            get {
-                return EditorPrefs.GetBool(kShowRuntimeFrameIdKey, kShowRuntimeFrameId);
-            }
-            set {
-                EditorPrefs.SetBool(kShowRuntimeFrameIdKey, value);
             }
         }
     
@@ -567,37 +526,72 @@ namespace iCanScript.Editor {
     	//
     	// Default Values
     	//
-    	const string kCodeGenerationFolder           = "iCanScript Generated Code";
-    	const string kCodeGenerationBaseTypeName     = "UnityEngine.MonoBehaviour";
+    	const string kEngineCodeGenerationFolder= "My Visual Scripts";
+        const string kEditorCodeGenerationFolder= "Editor/My Visual Scripts";
+    	const string kEngineBaseType            = "UnityEngine.MonoBehaviour";
+        const string kEngineNamespace           = "MyVisualScripts.Engine";
+        const string kEditorNamespace           = "MyVisualScripts.Editor";
+        const bool   kUseUnityEditorLibrary     = false;
     
     	//
     	// Database access keys
     	//
-    	const string kCodeGenerationFolderKey           = "iCS_CodeGenerationFolder";
-    	const string kCodeGenerationBaseTypeNameKey     = "iCS_CodeGenerationBaseTypeName";
+    	const string kEngineCodeGenerationFolderKey= "iCS_EngineCodeGenerationFolder";
+    	const string kEditorCodeGenerationFolderKey= "iCS_EditorCodeGenerationFolder";
+    	const string kEngineBaseTypeKey            = "iCS_EngineBaseType";
+        const string kEngineNamespaceKey           = "iCS_EngineNamespace";
+        const string kEditorNamespaceKey           = "iCS_EditorNamespace";
+        const string kUseUnityEditorLibraryKey     = "iCS_UseUnityEditorLibrary";
 
     	//
     	// Reset to default value functions
     	//
-    	public static void ResetCodeGenerationFolder() {
-    	    CodeGenerationFolder= kCodeGenerationFolder;
+    	public static void ResetEngineCodeGenerationFolder() {
+    	    EngineCodeGenerationFolder= kEngineCodeGenerationFolder;
     	}
-    	public static void ResetCodeGenerationBaseTypeName() {
-    	    CodeGenerationBaseTypeName= kCodeGenerationBaseTypeName;
+    	public static void ResetEditorCodeGenerationFolder() {
+    	    EditorCodeGenerationFolder= kEditorCodeGenerationFolder;
     	}
+    	public static void ResetEngineBaseType() {
+    	    EngineBaseType= kEngineBaseType;
+    	}
+    	public static void ResetEngineNamespace() {
+    	    EngineNamespace= kEngineNamespace;
+    	}
+    	public static void ResetEditorNamespace() {
+    	    EditorNamespace= kEditorNamespace;
+    	}
+        public static void ResetUseUnityEditorLibrary() {
+            UseUnityEditorLibrary= kUseUnityEditorLibrary;
+        }
     
     	//
     	// Accessors
     	//
-        public static string CodeGenerationFolder {
-            get { return EditorPrefs.GetString(kCodeGenerationFolderKey, kCodeGenerationFolder); }
-            set { EditorPrefs.SetString(kCodeGenerationFolderKey, value); }
+        public static string EngineCodeGenerationFolder {
+            get { return EditorPrefs.GetString(kEngineCodeGenerationFolderKey, kEngineCodeGenerationFolder); }
+            set { EditorPrefs.SetString(kEngineCodeGenerationFolderKey, value); }
         }
-        public static string CodeGenerationBaseTypeName {
-            get { return EditorPrefs.GetString(kCodeGenerationBaseTypeNameKey, kCodeGenerationBaseTypeName); }
-            set { EditorPrefs.SetString(kCodeGenerationBaseTypeNameKey, value); }
+        public static string EditorCodeGenerationFolder {
+            get { return EditorPrefs.GetString(kEditorCodeGenerationFolderKey, kEditorCodeGenerationFolder); }
+            set { EditorPrefs.SetString(kEditorCodeGenerationFolderKey, value); }
         }
-    
+        public static string EngineBaseType {
+            get { return EditorPrefs.GetString(kEngineBaseTypeKey, kEngineBaseType); }
+            set { EditorPrefs.SetString(kEngineBaseTypeKey, value); }
+        }
+        public static string EngineNamespace {
+            get { return EditorPrefs.GetString(kEngineNamespaceKey, kEngineNamespace); }
+            set { EditorPrefs.SetString(kEngineNamespaceKey, value); }
+        }
+        public static string EditorNamespace {
+            get { return EditorPrefs.GetString(kEditorNamespaceKey, kEditorNamespace); }
+            set { EditorPrefs.SetString(kEditorNamespaceKey, value); }
+        }
+        public static bool UseUnityEditorLibrary {
+            get { return EditorPrefs.GetBool(kUseUnityEditorLibraryKey, kUseUnityEditorLibrary); }
+            set { EditorPrefs.SetBool(kUseUnityEditorLibraryKey, value); }
+        }    
     
     	// =================================================================================
     	// Activation

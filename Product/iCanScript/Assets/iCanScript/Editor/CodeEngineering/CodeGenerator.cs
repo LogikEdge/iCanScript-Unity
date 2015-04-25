@@ -22,24 +22,19 @@ namespace iCanScript.Editor.CodeEngineering {
             }
 
             // -- Build code global scope. --
-            var typeName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
-            var namespaceName= iCS_Config.kCodeGenerationNamespace;
-            var baseType= CodeGenerationConfig.GetBaseType(iStorage);
+            var typeName= iCS_ObjectNames.ToTypeName(iStorage.TypeName);
+            var namespaceName= CodeGenerationUtility.GetNamespace(iStorage);
+            var baseType= CodeGenerationUtility.GetBaseType(iStorage);
             myCodeRoot= new GlobalDefinition(typeName, namespaceName, baseType, iStorage);
             
             // -- Generate code. --
             var result= myCodeRoot.GenerateCode(0);
             
             // -- Write final code to file. --
-            var fileName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
-            CSharpFileUtils.WriteCSharpFile("iCanScript Generated Code", fileName, result.ToString());
-            
-            // -- Update the type information --
-            GameObject go= iStorage.HostGameObject;
-            if(go != null) {
-                iStorage.TypeName= fileName;
-                iStorage.BaseTypeName= PreferencesController.CodeGenerationBaseTypeName;
-            }
+            var fileName= typeName;
+            var folder= CodeGenerationUtility.GetCodeGenerationFolder(iStorage);
+            FileUtils.CreateAssetFolder(folder);
+            CSharpFileUtils.WriteCSharpFile(folder, fileName, result.ToString());
         }
 
     	// -------------------------------------------------------------------------
@@ -49,7 +44,8 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public void DeleteGeneratedFilesFor(iCS_IStorage iStorage) {
             var fileName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
-            CSharpFileUtils.DeleteCSharpFile("iCanScript Generated Code", fileName);            
+            var folder= CodeGenerationUtility.GetCodeGenerationFolder(iStorage);
+            CSharpFileUtils.DeleteCSharpFile(folder, fileName);
         }
 
     }

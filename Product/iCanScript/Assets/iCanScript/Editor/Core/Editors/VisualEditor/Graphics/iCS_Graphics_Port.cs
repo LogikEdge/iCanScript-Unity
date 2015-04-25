@@ -142,9 +142,6 @@ namespace iCanScript.Editor {
             if(ShouldDisplayPortName(port) == false) return false;
             bool isPlaying= Application.isPlaying;
             if(isPlaying == false && port.IsSourceValid) return false;
-    		if(port.IsParentMuxPort && isPlaying && Prefs.ShowRuntimePortValue) {
-    			return true;
-    		}
             if(!port.IsDataOrControlPort || port.IsChildMuxPort) return false;
             // Declutter graph by not displaying port name if it's an input and very close to the output.
             if((port.IsInputPort || port.IsKindOfPackagePort) && port.ProducerPortId != -1) {
@@ -157,7 +154,6 @@ namespace iCanScript.Editor {
             }
             object portValue= port.PortValue;
             if(portValue == null) return false;
-            if(Application.isPlaying && Prefs.ShowRuntimePortValue) return true;
             if(!Application.isPlaying) return true;
             return false;
         }

@@ -45,8 +45,14 @@ public partial class iCS_IStorage {
             return iCSMonoBehaviour;
         }
     }
+    public bool HasRootObject {
+        get { return EditorObjects != null && EditorObjects.Count != 0; }
+    }
     public iCS_EditorObject RootObject {
         get { return EditorObjects[0]; }
+    }
+    public bool IsRootObjectAType {
+        get { return HasRootObject && IsBehaviour; }
     }
     public int DisplayRootId {
         get {
@@ -102,17 +108,33 @@ public partial class iCS_IStorage {
         get { return myForceRelayout; }
         set { myForceRelayout= value; }
     }
+    public bool IsEditorScript {
+        get { return Storage.IsEditorScript; }
+        set { Storage.IsEditorScript= value; }
+    }
+    public string CSharpFileName {
+        get { return Storage.CSharpFileName; }
+        set { Storage.CSharpFileName= value; }
+    }
     public string TypeName {
-        get { return Storage.TypeName; }
-        set { Storage.TypeName= value; }
+        get { return RootObject.CodeName; }
+        set { RootObject.DisplayName= value; }
     }
-    public bool OverrideDefaultBaseType {
-        get { return Storage.OverrideDefaultBaseType; }
-        set { Storage.OverrideDefaultBaseType= value; }
+    public bool BaseTypeOverride {
+        get { return Storage.BaseTypeOverride; }
+        set { Storage.BaseTypeOverride= value; }
     }
-    public string BaseTypeName {
-        get { return Storage.BaseTypeName; }
-        set { Storage.BaseTypeName= value; }
+    public string BaseType {
+        get { return Storage.BaseType; }
+        set { Storage.BaseType= value; }
+    }
+    public bool NamespaceOverride {
+        get { return Storage.NamespaceOverride; }
+        set { Storage.NamespaceOverride= value; }
+    }
+    public string Namespace {
+        get { return Storage.Namespace; }
+        set { Storage.Namespace= value; }
     }
 	public Vector2 ScrollPosition {
 	    get { return Storage.ScrollPosition; }
@@ -300,8 +322,17 @@ public partial class iCS_IStorage {
 				if(obj.IsTargetPort) {
 					if(obj.ProducerPort == null) {
 						if(IsLocalType(obj)) {
-							obj.InitialValue= OwnerTag.instance;							
+							obj.InitialValue= OwnerTag.instance;
 						}
+                        else {
+                            var baseType= CodeGenerationUtility.GetBaseType(this);
+                            if(iCS_Types.IsA<Component>(baseType) || iCS_Types.IsA<GameObject>(baseType)) {
+                                var objType= obj.RuntimeType;
+                                if(iCS_Types.IsA<Transform>(objType) || iCS_Types.IsA<GameObject>(objType)) {
+                                    obj.InitialValue= OwnerTag.instance;
+                                }
+                            }
+                        }
 					}
 				}
                 // Cleanup disconnected or dangling ports.
@@ -398,13 +429,11 @@ public partial class iCS_IStorage {
 	///
 	public bool IsLocalType(iCS_EditorObject vsObj) {
 		// First determine if the type is included inside the GameObject.
-		var type= vsObj.RuntimeType;
-		if(type == typeof(GameObject)) return true;
-		if(type == typeof(Transform))  return true;
-		if(vsObj.IsIncludedInType(typeof(MonoBehaviour))) return true;
+        var baseType= CodeGenerationUtility.GetBaseType(this);
+		if(vsObj.IsIncludedInType(baseType)) return true;
 		var typeNode= vsObj.ParentTypeNode;
 		if(typeNode == null) return false;
-		if(vsObj.Namespace == iCS_Config.kCodeGenerationNamespace) {
+		if(vsObj.Namespace == CodeGenerationUtility.GetNamespace(this)) {
 			return vsObj.TypeName == typeNode.CodeName;
 		}
 		return false;

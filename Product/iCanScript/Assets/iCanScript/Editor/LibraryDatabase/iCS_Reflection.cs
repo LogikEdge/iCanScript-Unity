@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Engine;
+using Prefs=iCanScript.Editor.PreferencesController;
 
 public class iCS_Reflection {
     // ======================================================================
@@ -47,12 +48,21 @@ public class iCS_Reflection {
         // Remove all previously registered functions.
         iCS_LibraryDatabase.Clear();
         // Scan the application for functions/methods/conversions to register.
+        var useUnityEditor= Prefs.UseUnityEditorLibrary;
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-            // Install all public type of the Unity Engine assembly
-            if(assembly.FullName.StartsWith("UnityEngine")) {
+            // -- Install all Unity public types --
+            string unityPackageName= null;
+            var assemblyName= assembly.FullName;
+            if(assemblyName.StartsWith("UnityEngine")) {
+                unityPackageName= "UnityEngine";
+            }
+            else if(useUnityEditor && assemblyName.StartsWith("UnityEditor")) {
+                unityPackageName= "UnityEditor";
+            }
+            if(unityPackageName != null) {
                 foreach(var classType in assembly.GetTypes()) {
                     if(classType.IsPublic && !classType.IsGenericType) {
-                        DecodeUnityClassInfo(classType);                        
+                        DecodeUnityClassInfo(classType, unityPackageName);                        
                     }
                 }                
                 continue;

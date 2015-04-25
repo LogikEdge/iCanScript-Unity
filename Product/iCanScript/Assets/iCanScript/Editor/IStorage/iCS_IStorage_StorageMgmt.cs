@@ -148,6 +148,5 @@ public partial class iCS_IStorage {
         SelectedObject= selectedObject;
         myLastTransactionType= TransactionType.None;
         SystemEvents.AnnouceVisualScriptReloaded(this);
-        CSharpFileUtils.VerifyAndCorrectSourceFile(this);
     }
 }

@@ -51,7 +51,7 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
         void DisplayOptions() {
             // -- Label column --
-            var pos= GetLabelColumnPositions(12);
+            var pos= GetLabelColumnPositions(7);
             GUI.Label(pos[0], "Animation Controls", EditorStyles.boldLabel);
             GUI.Label(pos[1], "Animation Enabled");
             GUI.Label(pos[2], "Animation Time");
@@ -59,13 +59,9 @@ namespace iCanScript.Editor {
             GUI.Label(pos[4], "Edge Scroll Speed (pixels)");
             GUI.Label(pos[5], "Inverse Zoom");
             GUI.Label(pos[6], "Zoom Speed");
-            GUI.Label(pos[8], "Runtime Configuration", EditorStyles.boldLabel);
-            GUI.Label(pos[9], "Show Runtime Values");
-            GUI.Label(pos[10], "Refresh Period (seconds)");
-    		GUI.Label(pos[11], "Show Frame Id");
             
             // -- Value column --
-            pos= GetValueColumnPositions(12);
+            pos= GetValueColumnPositions(7);
             Prefs.IsAnimationEnabled= EditorGUI.Toggle(pos[1], Prefs.IsAnimationEnabled);
             EditorGUI.BeginDisabledGroup(Prefs.IsAnimationEnabled==false);
             Prefs.AnimationTime= EditorGUI.FloatField(pos[2], Prefs.AnimationTime);
@@ -74,9 +70,6 @@ namespace iCanScript.Editor {
             Prefs.EdgeScrollSpeed= EditorGUI.FloatField(pos[4], Prefs.EdgeScrollSpeed);
             Prefs.InverseZoom= EditorGUI.Toggle(pos[5], Prefs.InverseZoom);
             Prefs.ZoomSpeed= EditorGUI.FloatField(pos[6], Prefs.ZoomSpeed);
-            Prefs.ShowRuntimePortValue= EditorGUI.Toggle(pos[9], Prefs.ShowRuntimePortValue);
-            Prefs.PortValueRefreshPeriod= EditorGUI.FloatField(pos[10], Prefs.PortValueRefreshPeriod);
-    		Prefs.ShowRuntimeFrameId= EditorGUI.Toggle(pos[11], Prefs.ShowRuntimeFrameId);
     
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
@@ -86,9 +79,6 @@ namespace iCanScript.Editor {
                 Prefs.ResetEdgeScrollSpeed();
                 Prefs.ResetInverseZoom();
                 Prefs.ResetZoomSpeed();
-                Prefs.ResetShowRuntimePortValue();
-                Prefs.ResetPortValueRefreshPeriod();
-    			Prefs.ResetShowRuntimeFrameId();   
             }
     		// -- Repaint visual editor if option has changed --
     		if(GUI.changed) {
@@ -253,27 +243,64 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
     	void CodeGeneration() {
             // -- Label column --
-            Rect[] pos= GetLabelColumnPositions(3);
-            GUI.Label(pos[0], "Default Folder");
-            GUI.Label(pos[1], "Default Base Type Name");
+            Rect[] pos= GetLabelColumnPositions(10);
+            GUI.Label(pos[0], "Editor Code", EditorStyles.boldLabel);
+            GUI.Label(pos[1], "Unity Editor Library");
+            GUI.Label(pos[2], "Namespace");
+            GUI.Label(pos[3], "Code Generation Folder");
+
+            GUI.Label(pos[5], "Engine Code", EditorStyles.boldLabel);
+            GUI.Label(pos[6], "Base Type");
+            GUI.Label(pos[8], "Namespace");
+            GUI.Label(pos[9], "Code Generation Folder");
     
             // -- Value column --
-            pos= GetValueColumnPositions(3);
-            Prefs.CodeGenerationFolder      = EditorGUI.TextField(pos[0], Prefs.CodeGenerationFolder);
-            Prefs.CodeGenerationBaseTypeName= EditorGUI.TextField(pos[1], Prefs.CodeGenerationBaseTypeName);
-            GUI.Label(pos[2], "<i>(format: namespace.type)</i>");
+            pos= GetValueColumnPositions(10);
+            Prefs.UseUnityEditorLibrary     = EditorGUI.Toggle(pos[1], Prefs.UseUnityEditorLibrary);
+            Prefs.EditorNamespace           = EditorGUI.TextField(pos[2], Prefs.EditorNamespace);
+            Prefs.EditorCodeGenerationFolder= EditorGUI.TextField(pos[3], Prefs.EditorCodeGenerationFolder);
+
+            Prefs.EngineBaseType            = EditorGUI.TextField(pos[6], Prefs.EngineBaseType);
+            GUI.Label(pos[7], "<i>(format: namespace.type)</i>");
+            Prefs.EngineNamespace           = EditorGUI.TextField(pos[8], Prefs.EngineNamespace);
+            Prefs.EngineCodeGenerationFolder= EditorGUI.TextField(pos[9], Prefs.EngineCodeGenerationFolder);
             
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
                 GUI.FocusControl("");
-                Prefs.ResetCodeGenerationFolder();
-                Prefs.ResetCodeGenerationBaseTypeName();
+                Prefs.ResetEngineCodeGenerationFolder();
+                Prefs.ResetEditorCodeGenerationFolder();
+                Prefs.ResetEngineBaseType();
+                Prefs.ResetEngineNamespace();
+                Prefs.ResetEditorNamespace();
+                Prefs.ResetUseUnityEditorLibrary();
             }
 
             // -- Display error if base type not found --
-            var message= Sanity.ValidateDefaultBaseType();
+            var message= Sanity.ValidateEngineBaseType();
             if(message != null) {
-                DisplayError(pos[1], message);
+                DisplayError(pos[6], message);
+                return;
+            }
+            message= Sanity.ValidateEngineNamespace(/*shortFormat=*/true);
+            if(message != null) {
+                DisplayError(pos[8], message);
+                return;
+            }
+            message= Sanity.ValidateEditorNamespace(/*shortFormat=*/true);
+            if(message != null) {
+                DisplayError(pos[2], message);
+                return;
+            }
+            message= Sanity.ValidateEditorCodeGenerationFolder(/*shortFormat=*/true);
+            if(message != null) {
+                DisplayError(pos[3], message);
+                return;
+            }
+            message= Sanity.ValidateEngineCodeGenerationFolder(/*shortFormat=*/true);
+            if(message != null) {
+                DisplayError(pos[9], message);
+                return;
             }
     	}
         

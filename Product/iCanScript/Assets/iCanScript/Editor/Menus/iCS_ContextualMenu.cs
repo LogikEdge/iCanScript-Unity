@@ -110,7 +110,7 @@ public class iCS_ContextualMenu {
     }
 
 	// ----------------------------------------------------------------------
-    void CanvasMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+    void CanvasMenu(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
         // Don't show any menu if behaviour not visible.
         if(selectedObject.IsIconizedInLayout || selectedObject.IsFoldedInLayout) return;
 
@@ -119,19 +119,22 @@ public class iCS_ContextualMenu {
         menu[1]= new iCS_MenuContext(FunctionCreationStr);
         menu[2]= new iCS_MenuContext(NestedTypeCreationStr);
         // Add Unity message handlers
-		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
-        int len= P.length(messages);
-		int idx= GrowMenuBy(ref menu, len);
-        for(int i= 0; i < len; ++i) {
-			var message= messages[i];
-            string name= message.DisplayName;
-            if(iCS_AllowedChildren.CanAddChildNode(name, message.ObjectType, selectedObject, storage)) {
-                menu[idx+i]= new iCS_MenuContext(String.Concat("+ "+AddUnityEventStr, name), message);
-            } else {
-                menu[idx+i]= new iCS_MenuContext(String.Concat("#+ "+AddUnityEventStr, name), message);
-            }
+        var baseType= CodeGenerationUtility.GetBaseType(iStorage);
+        if(iCS_Types.IsA<MonoBehaviour>(baseType)) {
+    		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
+            int len= P.length(messages);
+    		int idx= GrowMenuBy(ref menu, len);
+            for(int i= 0; i < len; ++i) {
+    			var message= messages[i];
+                string name= message.DisplayName;
+                if(iCS_AllowedChildren.CanAddChildNode(name, message.ObjectType, selectedObject, iStorage)) {
+                    menu[idx+i]= new iCS_MenuContext(String.Concat("+ "+AddUnityEventStr, name), message);
+                } else {
+                    menu[idx+i]= new iCS_MenuContext(String.Concat("#+ "+AddUnityEventStr, name), message);
+                }
+            }            
         }
-        ShowMenu(menu, selectedObject, storage);
+        ShowMenu(menu, selectedObject, iStorage);
     }
 	// ----------------------------------------------------------------------
     void MessageHandlerMenu(iCS_EditorObject messageHandler, iCS_IStorage storage) {

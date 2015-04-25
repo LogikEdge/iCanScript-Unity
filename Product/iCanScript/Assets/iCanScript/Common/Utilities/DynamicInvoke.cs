@@ -14,9 +14,12 @@ public class DynamicInvoke {
     /// Builds a DynamicInvoke object for the given class name and function
     /// name.
     ///
-    /// @warning    It is assumed that the class name is unique in all namespaces.
-    public DynamicInvoke(string className, string functionName) {
-        myMethodInfo= iCS_Types.FindFunction(className, functionName);
+    /// @param typeString The combination of _'namespace.type'_ that uniquely
+    ///                   identifies the type.
+    /// @param functionName The name of the function to invoke.
+    ///
+    public DynamicInvoke(string typeString, string functionName) {
+        myMethodInfo= iCS_Types.FindFunction(typeString, functionName);
     }
 
 

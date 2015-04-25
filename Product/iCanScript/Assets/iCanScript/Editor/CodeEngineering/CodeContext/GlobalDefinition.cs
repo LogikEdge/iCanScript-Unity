@@ -41,6 +41,7 @@ namespace iCanScript.Editor.CodeEngineering {
 			
 			// -- Build root types --
             var vsRootObject= iStorage.EditorObjects[0];
+            vsRootObject.DisplayName= typeName;
 			BuildRootTypes(vsRootObject);
 			
 			// -- Resolve dependencies --
