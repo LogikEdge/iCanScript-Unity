@@ -152,19 +152,25 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override string GenerateHeader(int indentSize) {
             string indent= ToIndent(indentSize);
-            StringBuilder result= new StringBuilder("\n"+indent);
+            StringBuilder result= new StringBuilder("\n");
             // Add iCanScript tag for public functions.
+            var hasDescription= !string.IsNullOrEmpty(VSObject.Description);
             if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
-                result.Append("[iCS_Function");
-                if(VSObject != null && !string.IsNullOrEmpty(VSObject.Description)) {
-                    result.Append("(Description=\"");
-                    result.Append(VSObject.Description);
-                    result.Append("\")");
-                }
-                result.Append("]\n");
                 result.Append(indent);
+                result.Append("[iCS_Function");
+//                if(VSObject != null && hasDescription) {
+//                    result.Append("(Description=\"");
+//                    result.Append(VSObject.Description);
+//                    result.Append("\")");
+//                }
+                result.Append("]\n");
+            }
+            // Add function comment block.
+            if(hasDescription) {
+                result.Append(GenerateFunctionComment(indent));
             }
             // Add Access & Scope specifiers.
+            result.Append(indent);
             result.Append(ToAccessString(myAccessSpecifier));
             result.Append(" ");
             result.Append(ToScopeString(myScopeSpecifier));
@@ -375,6 +381,49 @@ namespace iCanScript.Editor.CodeEngineering {
             return i;
         }
 
+        // =========================================================================
+        // Comment code generation
+    	// -------------------------------------------------------------------------
+        /// Generates a function comment block good for Doxygen.
+        ///
+        /// @param indent The white spaces to put at the beginning of each line.
+        /// @return The formatted comment block.
+        ///
+        string GenerateFunctionComment(string indent) {
+            var result= new StringBuilder(indent);
+            result.Append(CodeBannerBottom);
+            result.Append(indent);
+            result.Append("/// ");
+            result.Append(VSObject.Description);
+            result.Append("\n");
+            var returnPort= GetReturnPort(VSObject);
+            var showPorts= myParameters.Length != 0 || returnPort != null;
+            if(showPorts) {
+                result.Append(indent);
+                result.Append("///\n");
+            }
+            if(myParameters.Length != 0) {
+                foreach(var p in myParameters) {
+                    result.Append(indent);
+                    result.Append("/// @param ");
+                    result.Append(iCS_ObjectNames.ToFunctionParameterName(p.VSObject.CodeName));
+                    result.Append(' ');
+                    result.Append(p.VSObject.Description);
+                    result.Append("\n");
+                }
+            }
+            if(returnPort != null) {
+                result.Append(indent);
+                result.Append("/// @return ");
+                result.Append(returnPort.Description);
+                result.Append("\n");                
+            }
+            if(showPorts) {
+                result.Append(indent);
+                result.Append("///\n");
+            }
+            return result.ToString();
+        }
     }
 
 }

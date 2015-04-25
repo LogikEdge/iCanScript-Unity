@@ -34,7 +34,7 @@ namespace iCanScript.Editor {
                     iCS_UserCommands.ChangeName(vsObject, newName);
                 }
             } else {
-                EditorGUILayout.LabelField(label, name);                    
+                EditorGUILayout.LabelField(label, name);
             }
         }
         

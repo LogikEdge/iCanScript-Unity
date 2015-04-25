@@ -4,7 +4,7 @@ using System.Collections;
 [iCS_Class(Company="iCanScript", Library="Input", Icon="iCS_JoystickIcon.psd", HideClassFromLibrary=true)]
 public static partial class iCS_GameController {
     [iCS_Function(Return="scaledAnalog1", Icon="iCS_JoystickIcon.psd",
-                 Tooltip="Game Controller with configurable names.  Analog1 & 2 are time compensated and ajusted with the input associated speed.")]
+                 Description="Game Controller with configurable names.  Analog1 & 2 are time compensated and ajusted with the input associated speed.")]
     public static Vector2 GameController(out Vector2 scaledAnalog2,
                                          out bool action1, out bool action2, out bool action3, out bool action4,
                                          out bool action5, out bool action6, out bool action7, out bool action8,
