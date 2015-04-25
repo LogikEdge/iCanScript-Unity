@@ -156,9 +156,9 @@ namespace iCanScript.Editor.CodeEngineering {
             // Add iCanScript tag for public functions.
             if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
                 result.Append("[iCS_Function");
-                if(VSObject != null && !string.IsNullOrEmpty(VSObject.Tooltip)) {
-                    result.Append("(Tooltip=\"");
-                    result.Append(VSObject.Tooltip);
+                if(VSObject != null && !string.IsNullOrEmpty(VSObject.Description)) {
+                    result.Append("(Description=\"");
+                    result.Append(VSObject.Description);
                     result.Append("\")");
                 }
                 result.Append("]\n");

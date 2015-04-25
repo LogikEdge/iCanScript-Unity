@@ -98,7 +98,7 @@ public class iCS_Reflection {
                     // Extract class information.
                     string  company        = classAttribute.Company;
                     string  library        = classAttribute.Library;
-                    string  description    = classAttribute.Tooltip;
+                    string  description    = classAttribute.Description;
                     string  icon           = classAttribute.Icon;
                     bool    baseVisibility = classAttribute.BaseVisibility;
 					bool	hideFromLibrary= classAttribute.HideClassFromLibrary;

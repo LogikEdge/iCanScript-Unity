@@ -50,7 +50,7 @@ public class iCS_EngineObject {
 	public string				 MethodName       = null;
 	public int					 NbOfParams       = 0;     // Also used for port group
     public string                IconGUID         = null;
-    public string                Tooltip          = null;
+    public string                Description      = null;
     public int                   LayoutPriority   = 0;
 
     // Port specific attributes ---------------------------------------------
@@ -157,11 +157,11 @@ public class iCS_EngineObject {
         instance.DisplayOption= toClone.DisplayOption;
 		instance.LocalAnchorPosition= toClone.LocalAnchorPosition;
 		// Node
-        instance.NodeSpec= toClone.NodeSpec;
-		instance.MethodName= toClone.MethodName;
-		instance.NbOfParams= toClone.NbOfParams;
-        instance.IconGUID= toClone.IconGUID;
-        instance.Tooltip= toClone.Tooltip;
+        instance.NodeSpec   = toClone.NodeSpec;
+		instance.MethodName = toClone.MethodName;
+		instance.NbOfParams = toClone.NbOfParams;
+        instance.IconGUID   = toClone.IconGUID;
+        instance.Description= toClone.Description;
 		// Port
         instance.PortSpec= toClone.PortSpec;
         instance.Edge= toClone.Edge;
@@ -185,7 +185,7 @@ public class iCS_EngineObject {
         to.MethodName= MethodName;
         to.NbOfParams= NbOfParams;
         to.IconGUID= IconGUID;
-        to.Tooltip= Tooltip;
+        to.Description= Description;
         to.LayoutPriority= LayoutPriority;
         to.SourceId= SourceId;
         to.PortIndex= PortIndex;
@@ -210,7 +210,7 @@ public class iCS_EngineObject {
 		MethodName= null;
 		NbOfParams= 0;
         IconGUID= null;
-        Tooltip = null;
+        Description = null;
 		// Port
         Edge= iCS_EdgeEnum.None;
         SourceId= -1;

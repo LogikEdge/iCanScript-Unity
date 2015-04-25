@@ -17,7 +17,7 @@ public partial class iCS_IStorage {
         } else {
             Debug.LogWarning("Missing transition module icon: "+iCS_EditorStrings.TransitionPackageIcon);
         }
-        transitionPackage.Tooltip= "The transition package must evaluate to 'true' for the transition to fire.";
+        transitionPackage.Description= "The transition package must evaluate to 'true' for the transition to fire.";
         iCS_EditorObject inModulePort=  CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
         iCS_EditorObject outModulePort= CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
         SetSource(inModulePort, fromStatePort);

@@ -337,12 +337,12 @@ public partial class iCS_EditorObject {
         }
 	}
     // ----------------------------------------------------------------------
-    public string Tooltip {
-		get { return EngineObject.Tooltip; }
+    public string Description {
+		get { return EngineObject.Description; }
 		set {
             var engineObject= EngineObject;
-            if(engineObject.Tooltip == value) return;
-		    engineObject.Tooltip= value;
+            if(engineObject.Description == value) return;
+		    engineObject.Description= value;
 		}
 	}
     // ----------------------------------------------------------------------

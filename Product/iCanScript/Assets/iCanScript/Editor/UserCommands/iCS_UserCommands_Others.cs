@@ -73,19 +73,19 @@ public static partial class iCS_UserCommands {
 		SystemEvents.AnnounceVisualScriptElementNameChanged(obj);
     }
     // ----------------------------------------------------------------------
-    public static void ChangeTooltip(iCS_EditorObject obj, string tooltip) {
+    public static void ChangeDescription(iCS_EditorObject obj, string description) {
         var iStorage= obj.IStorage;
-        if(string.IsNullOrEmpty(tooltip)) {
+        if(string.IsNullOrEmpty(description)) {
             OpenTransaction(iStorage);
-            obj.Tooltip= null;
+            obj.Description= null;
             CloseTransaction(iStorage, "Change tooltip for "+obj.DisplayName, TransactionType.Field);
             return;
         }
-        tooltip.Trim();
-        if(string.Compare(obj.Tooltip, tooltip) == 0) return;
+        description.Trim();
+        if(string.Compare(obj.Description, description) == 0) return;
         OpenTransaction(iStorage);
-        obj.Tooltip= tooltip;
-        CloseTransaction(iStorage, "Change tooltip for "+obj.DisplayName, TransactionType.Field);
+        obj.Description= description;
+        CloseTransaction(iStorage, "Change description for "+obj.DisplayName, TransactionType.Field);
     }
     // ----------------------------------------------------------------------
 	public static void ChangePortValue(iCS_EditorObject port, object newValue) {

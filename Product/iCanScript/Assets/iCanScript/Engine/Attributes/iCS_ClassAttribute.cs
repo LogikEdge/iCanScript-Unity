@@ -17,11 +17,11 @@ public class iCS_ClassAttribute : Attribute {
     }
     private string myLibrary= null;
     
-    public string Tooltip {
-        get { return myTooltip; }
-        set { myTooltip= value; }
+    public string Description {
+        get { return myDescription; }
+        set { myDescription= value; }
     }
-    private string myTooltip= null;
+    private string myDescription= null;
     
     public string CompanyIcon {
         get { return myCompanyIcon; }
