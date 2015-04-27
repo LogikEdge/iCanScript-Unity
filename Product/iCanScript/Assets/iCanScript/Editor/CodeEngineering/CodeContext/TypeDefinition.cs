@@ -13,8 +13,8 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         iCS_EditorObject         myClassNode = null;  ///< VS objects associated with code context
         Type                     myBaseClass = null;  ///< The base class for this class
-        AccessSpecifier          myAccessSpecifier= AccessSpecifier.PRIVATE;
-        ScopeSpecifier           myScopeSpecifier = ScopeSpecifier.NONSTATIC;
+        AccessSpecifier          myAccessSpecifier= AccessSpecifier.Private;
+        ScopeSpecifier           myScopeSpecifier = ScopeSpecifier.NonStatic;
         List<VariableDefinition> myFields    = new List<VariableDefinition>();
         List<FunctionDefinition> myFunctions = new List<FunctionDefinition>();
         
@@ -73,9 +73,9 @@ namespace iCanScript.Editor.CodeEngineering {
             var constructors= myClassNode.FilterChildRecursive(c=> c.IsConstructor);
             foreach(var c in constructors) {
                 if(AreAllInputsConstant(c)) {
-                    AccessSpecifier fieldAccess= AccessSpecifier.PRIVATE;
-                    fieldAccess= AccessSpecifier.PUBLIC;
-                    var field= new VariableDefinition(c, this, fieldAccess, ScopeSpecifier.NONSTATIC);
+                    AccessSpecifier fieldAccess= AccessSpecifier.Private;
+                    fieldAccess= AccessSpecifier.Public;
+                    var field= new VariableDefinition(c, this, fieldAccess, ScopeSpecifier.NonStatic);
                     AddVariable(field);                    
                 }
             }            
@@ -86,7 +86,7 @@ namespace iCanScript.Editor.CodeEngineering {
         void AddPublicInterfaces() {
             var publicInterfaces= myClassNode.FilterChildRecursive(c=> IsPublicClassInterface(c));
             foreach(var c in publicInterfaces) {
-                var field= new VariableDefinition(c, this, AccessSpecifier.PUBLIC, ScopeSpecifier.NONSTATIC);
+                var field= new VariableDefinition(c, this, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
                 AddVariable(field);
             }            
         }
@@ -97,11 +97,11 @@ namespace iCanScript.Editor.CodeEngineering {
     		myClassNode.ForEachChildNode(
     			n=> {
     				if(n.IsPublicFunction) {
-                        var functionDefinition= new FunctionDefinition(n, this, AccessSpecifier.PUBLIC, ScopeSpecifier.NONSTATIC);
+                        var functionDefinition= new FunctionDefinition(n, this, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
                         AddFunction(functionDefinition);
     				}
     				if(n.IsEventHandler) {
-                        var functionDefinition= new EventHandlerDefinition(n, this, AccessSpecifier.PUBLIC, ScopeSpecifier.NONSTATIC);
+                        var functionDefinition= new EventHandlerDefinition(n, this, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
                         AddFunction(functionDefinition);
     				}
     			}
@@ -135,14 +135,14 @@ namespace iCanScript.Editor.CodeEngineering {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(indent, 1024);
             // Access Type
-            if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
+            if(myAccessSpecifier == AccessSpecifier.Public) {
 //                result.Append("[iCS_FileSpec(iCanScriptFile=\"Assets/fred.ics2\", iCanScriptFileGUID=\"ABCDEF12345\")]");
                 result.Append("[iCS_Class(Library=\"My Visual Scripts\")]\n");
                 result.Append(indent);
             }
             result.Append(ToAccessString(myAccessSpecifier));
             // Scope Type
-            if(myScopeSpecifier != ScopeSpecifier.NONSTATIC) {
+            if(myScopeSpecifier != ScopeSpecifier.NonStatic) {
                 result.Append(" ");
                 result.Append(ToScopeString(myScopeSpecifier));
             }
@@ -214,8 +214,8 @@ namespace iCanScript.Editor.CodeEngineering {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(1024);
             // Fields
-            var publicFields= P.filter(f=> f.myAccessSpecifier == AccessSpecifier.PUBLIC, myFields);
-            var privateFields= P.filter(f=> f.myAccessSpecifier != AccessSpecifier.PUBLIC, myFields);
+            var publicFields= P.filter(f=> f.myAccessSpecifier == AccessSpecifier.Public, myFields);
+            var privateFields= P.filter(f=> f.myAccessSpecifier != AccessSpecifier.Public, myFields);
             if(publicFields.Count != 0) {
                 result.Append(GenerateCodeBanner(indent, "PUBLIC FIELDS"));
                 foreach(var f in publicFields) {
