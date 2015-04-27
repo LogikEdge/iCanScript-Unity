@@ -371,7 +371,7 @@ public class iCS_Reflection {
 //                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping "+method.Name+" from class "+className);
                     continue;
                 }
-				displayName= iCS_ObjectNames.ConvertRuntimeNameToDisplayName(displayName);
+				displayName= NameUtility.ConvertRuntimeNameToDisplayName(displayName);
                 if(method.IsStatic) {
                     DecodeStaticMethod(_classTypeInfo, displayName, description, iconPath, returnName, method);
                 } else {

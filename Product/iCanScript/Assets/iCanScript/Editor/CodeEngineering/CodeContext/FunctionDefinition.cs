@@ -406,7 +406,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 foreach(var p in myParameters) {
                     result.Append(indent);
                     result.Append("/// @param ");
-                    result.Append(iCS_ObjectNames.ToFunctionParameterName(p.VSObject.CodeName));
+                    result.Append(NameUtility.ToFunctionParameterName(p.VSObject.CodeName));
                     result.Append(' ');
                     result.Append(p.VSObject.Description);
                     result.Append("\n");

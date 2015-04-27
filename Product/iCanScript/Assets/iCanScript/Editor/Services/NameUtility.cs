@@ -3,7 +3,7 @@ using System;
 using System.Text;
 using System.Collections;
 
-public static class iCS_ObjectNames {
+public static class NameUtility {
     public enum NamingScheme {
         VISUAL_EDITOR,
         LOWER_CAMEL_CASE, UPPER_CAMEL_CASE,

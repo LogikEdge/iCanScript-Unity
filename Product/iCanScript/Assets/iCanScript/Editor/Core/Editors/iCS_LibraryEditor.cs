@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript;
 
 /*
 	TODO : Should filter on name, input port type, and output port type.
@@ -32,8 +33,12 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }
     bool IsInitialized() {
         if(myController == null || myMainView == null) {
-            myController= new iCS_LibraryController();
-            myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
+            iCS_Debug.Profile("Building Library", 1f, 
+                ()=> {
+                    myController= new iCS_LibraryController();
+                    myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);                    
+                }
+            );
         }
         return true;
     }

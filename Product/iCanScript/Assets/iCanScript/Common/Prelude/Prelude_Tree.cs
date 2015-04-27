@@ -8,7 +8,8 @@ public static partial class Prelude {
 	    // =================================================================================
 	    // Fields
 	    // ---------------------------------------------------------------------------------
-		T				myValue= default(T);
+		T				myValue   = default(T);
+        Tree<T>         myParent  = null;
 		List<Tree<T>>	myChildren= null;
 		
 	    // =================================================================================
@@ -27,6 +28,7 @@ public static partial class Prelude {
 	    // ---------------------------------------------------------------------------------
 		public void AddChild(Tree<T> node) {
 			if(myChildren == null) myChildren= new List<Tree<T>>();
+            node.myParent= this;
 			myChildren.Add(node);			
 		}
 		public void AddChild(T childValue)	{

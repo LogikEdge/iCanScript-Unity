@@ -48,7 +48,7 @@ public static partial class iCS_UserCommands {
         if(string.Compare(obj.DisplayName, name) == 0) return;
         var iStorage= obj.IStorage;
         if(obj.IsNode && string.IsNullOrEmpty(name)) {
-            name= iCS_ObjectNames.ToDisplayName(obj.CodeName);
+            name= NameUtility.ToDisplayName(obj.CodeName);
         }
         OpenTransaction(iStorage);
         try {

@@ -42,7 +42,7 @@ public class iCS_PropertyController {
     
     // ---------------------------------------------------------------------------------
     void BuildViews() {    
-		var typeName= new GUIContent(iCS_ObjectNames.ToDisplayName(iCS_Types.TypeName(myTarget.RuntimeType)));
+		var typeName= new GUIContent(NameUtility.ToDisplayName(iCS_Types.TypeName(myTarget.RuntimeType)));
 		myVariablesController = new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, typeName, myTarget);
 
 		// Build class wizard layout view.

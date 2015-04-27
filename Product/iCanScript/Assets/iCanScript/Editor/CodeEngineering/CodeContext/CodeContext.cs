@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace iCanScript.Editor.CodeEngineering {
 
             // Clear any pending code generation error.
             myVisualScript= iStorage.VisualScript;
-            myServiceKey= "C# Code Generation: "+iCS_ObjectNames.ToTypeName(vsObject.CodeName);
+            myServiceKey= "C# Code Generation: "+NameUtility.ToTypeName(vsObject.CodeName);
             ErrorController.Clear(myServiceKey);
         }
 

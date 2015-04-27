@@ -41,7 +41,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 			}
 		}
 		public string DisplayName {
-			get { return iCS_ObjectNames.ToDisplayName(RawName); }
+			get { return NameUtility.ToDisplayName(RawName); }
 		}
 		public Type VariableType {
 			get {
@@ -51,7 +51,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 		}
 		public string DisplayTypeName {
 			get {
-				return iCS_ObjectNames.ToDisplayName(VariableType.Name);
+				return NameUtility.ToDisplayName(VariableType.Name);
 			}
 		}
     };
@@ -145,7 +145,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     // ---------------------------------------------------------------------------------
     string GetVariableName(iCS_MemberInfo variableInfo) {
         var name= variableInfo.IsField ? variableInfo.ToFieldInfo.FieldName : variableInfo.ToPropertyInfo.PropertyName;
-		return iCS_ObjectNames.ToDisplayName(name);
+		return NameUtility.ToDisplayName(name);
     }
 	string GetVariableName(VariablePair pair) {
 		return pair.DisplayName;

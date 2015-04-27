@@ -183,8 +183,8 @@ public partial class iCS_EditorObject {
                     if(IsDataPort && IsProgrammaticInstancePort) {
                         if(ParentNode.IsConstructor) {
                             // Use the name of the variable for constructor output.
-                            var scheme= iCS_ObjectNames.NamingScheme.LOWER_CAMEL_CASE;
-                            c_CodeName= iCS_ObjectNames.ToCodeName(scheme, ParentNode.DisplayName);
+                            var scheme= NameUtility.NamingScheme.LOWER_CAMEL_CASE;
+                            c_CodeName= NameUtility.ToCodeName(scheme, ParentNode.DisplayName);
                         }
                         else {
                             c_CodeName= "this";
@@ -207,11 +207,11 @@ public partial class iCS_EditorObject {
 								    if(funcInfo != null) {
 										var parameters= funcInfo.Parameters;
 										if(parameters != null && PortIndex < parameters.Length) {
-											c_CodeName= iCS_ObjectNames.ToFunctionParameterName(parameters[PortIndex].name);
+											c_CodeName= NameUtility.ToFunctionParameterName(parameters[PortIndex].name);
 										}
 										else if(IsReturnPort) {
 											if(funcInfo.FunctionReturn != null) {
-												c_CodeName= iCS_ObjectNames.ToLocalVariableName(funcInfo.FunctionReturn.name);
+												c_CodeName= NameUtility.ToLocalVariableName(funcInfo.FunctionReturn.name);
 											}
 										}
 									}
@@ -230,7 +230,7 @@ public partial class iCS_EditorObject {
                         if(endIdx != -1) {
                             name= name.Substring(0, endIdx);
                         }
-                        c_CodeName= iCS_ObjectNames.ToTypeName(name);
+                        c_CodeName= NameUtility.ToTypeName(name);
                     }
                     else if(IsConstructor) {
                         c_CodeName= iCS_Types.TypeName(RuntimeType);
@@ -290,7 +290,7 @@ public partial class iCS_EditorObject {
                     }
                 }
                 else if(IsInstanceNode) {
-					var typeName= iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(RuntimeType));
+					var typeName= NameUtility.ToTypeName(iCS_Types.TypeName(RuntimeType));
                     c_DisplayName= typeName+" Properties";
                 }
                 else {
@@ -299,7 +299,7 @@ public partial class iCS_EditorObject {
                         c_DisplayName= CodeName;
                     }
                 }
-                c_DisplayName= iCS_ObjectNames.ToDisplayName(c_DisplayName);
+                c_DisplayName= NameUtility.ToDisplayName(c_DisplayName);
             }
             return c_DisplayName;
         }
@@ -355,7 +355,7 @@ public partial class iCS_EditorObject {
         get {
             // Fill the node title cache.
             if(c_NodeTitle == null) {
-                c_NodeTitle= iCS_ObjectNames.ToDisplayName(DisplayName);
+                c_NodeTitle= NameUtility.ToDisplayName(DisplayName);
             }
             // Return editor node title.
             return c_NodeTitle;
@@ -382,7 +382,7 @@ public partial class iCS_EditorObject {
                     c_NodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
                 }
                 else if(IsEventHandler || IsPublicFunction) {
-                    c_NodeSubTitle= "Self is a "+iCS_ObjectNames.ToDisplayName(EditorObjects[0].DisplayName);                    
+                    c_NodeSubTitle= "Self is a "+NameUtility.ToDisplayName(EditorObjects[0].DisplayName);                    
                 }
                 else if(IsKindOfFunction || IsInstanceNode) {
                     c_NodeSubTitle= BuildIsASubTitle("Target", RuntimeType);
@@ -407,7 +407,7 @@ public partial class iCS_EditorObject {
     string BuildIsASubTitle(string name, Type type) {
         var result= new StringBuilder(name, 64);
         result.Append(" is a");
-        var typeName= iCS_ObjectNames.ToDisplayName(iCS_Types.TypeName(type));
+        var typeName= NameUtility.ToDisplayName(iCS_Types.TypeName(type));
         if(iCS_TextUtility.StartsWithAVowel(typeName)) {
             result.Append('n');
         }

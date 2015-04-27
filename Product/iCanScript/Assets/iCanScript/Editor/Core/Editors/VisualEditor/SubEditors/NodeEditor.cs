@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,7 +49,7 @@ namespace iCanScript.Editor {
 
             // Show parent type.
             var parentTypeName= iCS_Types.TypeName(vsObject.RuntimeType);
-            EditorGUILayout.LabelField("Member of Type", iCS_ObjectNames.ToTypeName(parentTypeName));
+            EditorGUILayout.LabelField("Member of Type", NameUtility.ToTypeName(parentTypeName));
                 
             // Show function name (if it exists).
             if(vsObject.IsKindOfFunction) {

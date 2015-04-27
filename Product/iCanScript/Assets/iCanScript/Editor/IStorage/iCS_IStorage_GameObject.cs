@@ -52,7 +52,7 @@ public partial class iCS_IStorage {
         foreach(var cp in currentProposedPorts) {
             bool found= false;
             foreach(var np in neededPorts) {
-                if(iCS_ObjectNames.ToDisplayName(np.Name) == cp.DisplayName &&
+                if(NameUtility.ToDisplayName(np.Name) == cp.DisplayName &&
 				   np.PortType == cp.ObjectType &&
 				   np.ValueType == cp.RuntimeType) {
                     found= true;
