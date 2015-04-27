@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -11,8 +12,8 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        protected AccessSpecifier               myAccessSpecifier= AccessSpecifier.PRIVATE;
-        protected ScopeSpecifier                myScopeSpecifier = ScopeSpecifier.NONSTATIC;
+        protected AccessSpecifier               myAccessSpecifier= AccessSpecifier.Private;
+        protected ScopeSpecifier                myScopeSpecifier = ScopeSpecifier.NonStatic;
         protected FunctionParameterDefinition[] myParameters     = null;
         protected List<VariableDefinition>      myVariables      = new List<VariableDefinition>();
         
@@ -31,8 +32,8 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public FunctionDefinition(iCS_EditorObject node, CodeBase parent, AccessSpecifier accessType, ScopeSpecifier scopeType)
         : base(node, parent) {
-            myAccessSpecifier  = accessType;
-            myScopeSpecifier   = scopeType;
+            myAccessSpecifier  = node.accessSpecifier;
+            myScopeSpecifier   = node.scopeSpecifier;
             
             // Build parameter list.
             BuildParameterList();
@@ -152,24 +153,34 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override string GenerateHeader(int indentSize) {
             string indent= ToIndent(indentSize);
-            StringBuilder result= new StringBuilder("\n"+indent);
-            // Add iCanScript tag for public functions.
-            if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
-                result.Append("[iCS_Function");
-                if(VSObject != null && !string.IsNullOrEmpty(VSObject.Tooltip)) {
-                    result.Append("(Tooltip=\"");
-                    result.Append(VSObject.Tooltip);
-                    result.Append("\")");
-                }
-                result.Append("]\n");
+            StringBuilder result= new StringBuilder("\n");
+            // -- Add iCanScript tag for public functions. --
+            var hasDescription= !string.IsNullOrEmpty(VSObject.Description);
+            if(myAccessSpecifier == AccessSpecifier.Public) {
                 result.Append(indent);
+                result.Append("[iCS_Function");
+//                if(VSObject != null && hasDescription) {
+//                    result.Append("(Description=\"");
+//                    result.Append(VSObject.Description);
+//                    result.Append("\")");
+//                }
+                result.Append("]\n");
+            }
+            // -- Add user .NET attributes --
+            if(!string.IsNullOrEmpty(VSObject.dotNetAttributes)) {
+                result.Append(indent);
+                result.Append(VSObject.dotNetAttributes);
+                result.Append("\n");
+            }
+            // Add function comment block.
+            if(hasDescription) {
+                result.Append(GenerateFunctionComment(indent));
             }
             // Add Access & Scope specifiers.
+            result.Append(indent);
             result.Append(ToAccessString(myAccessSpecifier));
-            result.Append(" ");
             result.Append(ToScopeString(myScopeSpecifier));
             // Add return type
-            result.Append(" ");
             var returnPort= GetReturnPort(VSObject);
             if(returnPort == null) {
                 result.Append("void");
@@ -179,7 +190,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             // Add function name.
             result.Append(" ");
-            if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
+            if(myAccessSpecifier == AccessSpecifier.Public) {
                 result.Append(GetPublicFunctionName(VSObject));
             }
             else {
@@ -375,6 +386,49 @@ namespace iCanScript.Editor.CodeEngineering {
             return i;
         }
 
+        // =========================================================================
+        // Comment code generation
+    	// -------------------------------------------------------------------------
+        /// Generates a function comment block good for Doxygen.
+        ///
+        /// @param indent The white spaces to put at the beginning of each line.
+        /// @return The formatted comment block.
+        ///
+        string GenerateFunctionComment(string indent) {
+            var result= new StringBuilder(indent);
+            result.Append(CodeBannerBottom);
+            result.Append(indent);
+            result.Append("/// ");
+            result.Append(VSObject.Description);
+            result.Append("\n");
+            var returnPort= GetReturnPort(VSObject);
+            var showPorts= myParameters.Length != 0 || returnPort != null;
+            if(showPorts) {
+                result.Append(indent);
+                result.Append("///\n");
+            }
+            if(myParameters.Length != 0) {
+                foreach(var p in myParameters) {
+                    result.Append(indent);
+                    result.Append("/// @param ");
+                    result.Append(iCS_ObjectNames.ToFunctionParameterName(p.VSObject.CodeName));
+                    result.Append(' ');
+                    result.Append(p.VSObject.Description);
+                    result.Append("\n");
+                }
+            }
+            if(returnPort != null) {
+                result.Append(indent);
+                result.Append("/// @return ");
+                result.Append(returnPort.Description);
+                result.Append("\n");                
+            }
+            if(showPorts) {
+                result.Append(indent);
+                result.Append("///\n");
+            }
+            return result.ToString();
+        }
     }
 
 }

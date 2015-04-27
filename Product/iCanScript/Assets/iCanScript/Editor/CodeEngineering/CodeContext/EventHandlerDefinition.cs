@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor.CodeEngineering {
 

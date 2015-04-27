@@ -53,7 +53,7 @@ public static class iCS_Math {
     [iCS_Function] public static Vector3 Scale3Vector(float s1, float s2, Vector3 v) { return s1*s2*v; }
     [iCS_Function] public static Vector4 Scale4Vector(float s1, float s2, Vector4 v) { return s1*s2*v; }
     
-    [iCS_Function(Tooltip="Returns the normalized cross product.")]
+    [iCS_Function(Description="Returns the normalized cross product.")]
     public static Vector3 NormalizedCross(Vector3 v1, Vector3 v2) { return Vector3.Cross(v1,v2).normalized; }
 }
 

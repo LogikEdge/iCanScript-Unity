@@ -1,4 +1,4 @@
-﻿#define OPTIMIZATION
+#define OPTIMIZATION
 using UnityEngine;
 using System;
 using System.Text;
@@ -12,9 +12,6 @@ namespace iCanScript.Editor.CodeEngineering {
     // USEFULL TYPES
     // -------------------------------------------------------------------
     public delegate string  CodeProducer(int indent);
-    public enum AccessSpecifier   { PUBLIC, PRIVATE, PROTECTED, INTERNAL };
-    public enum ScopeSpecifier    { STATIC, NONSTATIC, VIRTUAL, OVERRIDE, NEW, CONST };
-
     public abstract class CodeBase {
         // ===================================================================
         // TYPES
@@ -165,10 +162,10 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public static string ToAccessString(AccessSpecifier accessType) {
             switch(accessType) {
-                case AccessSpecifier.PUBLIC:    return "public";
-                case AccessSpecifier.PRIVATE:   return "private";
-                case AccessSpecifier.PROTECTED: return "protected";
-                case AccessSpecifier.INTERNAL:  return "internal";
+                case AccessSpecifier.Public:    return "public ";
+                case AccessSpecifier.Private:   return "private ";
+                case AccessSpecifier.Protected: return "protected ";
+                case AccessSpecifier.Internal:  return "internal ";
             }
             return "public";
         }
@@ -180,8 +177,12 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public static string ToScopeString(ScopeSpecifier scopeType) {
 			switch(scopeType) {
-				case ScopeSpecifier.STATIC:  return "static";
-				case ScopeSpecifier.VIRTUAL: return "virtual";
+                case ScopeSpecifier.NonStatic: return "";
+				case ScopeSpecifier.Static:    return "static ";
+				case ScopeSpecifier.Virtual:   return "virtual ";
+                case ScopeSpecifier.Abstract:  return "abstract ";
+                case ScopeSpecifier.Override:  return "override ";
+                case ScopeSpecifier.Const:     return "const ";
 			}
             return ""; 
         }

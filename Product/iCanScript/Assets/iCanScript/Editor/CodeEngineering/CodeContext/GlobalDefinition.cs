@@ -3,6 +3,8 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
+
 
 namespace iCanScript.Editor.CodeEngineering {
 
@@ -72,8 +74,8 @@ namespace iCanScript.Editor.CodeEngineering {
             // Add root class defintion.
             var classDefinition= new TypeDefinition(vsRootObject, this,
                                                     myBaseType,
-                                                    AccessSpecifier.PUBLIC,
-                                                    ScopeSpecifier.NONSTATIC);
+                                                    AccessSpecifier.Public,
+                                                    ScopeSpecifier.NonStatic);
             AddType(classDefinition);			
 		}
 		

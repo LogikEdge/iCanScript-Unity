@@ -34,20 +34,20 @@ namespace iCanScript.Editor {
                     iCS_UserCommands.ChangeName(vsObject, newName);
                 }
             } else {
-                EditorGUILayout.LabelField(label, name);                    
+                EditorGUILayout.LabelField(label, name);
             }
         }
         
         // -------------------------------------------------------------------
         /// Edits the object description.
         protected void EditDescription() {
-            string tooltip= vsObject.Tooltip;
-            if(string.IsNullOrEmpty(tooltip)) tooltip= EmptyStr;
+            string description= vsObject.Description;
+            if(string.IsNullOrEmpty(description)) description= EmptyStr;
             GUI.changed= false;
             EditorGUILayout.LabelField("Description");
-            var newTooltip= EditorGUILayout.TextArea(tooltip,  GUILayout.Height(position.height - 30));
+            var newDescription= EditorGUILayout.TextArea(description,  GUILayout.Height(position.height - 30));
             if(GUI.changed) {
-                iCS_UserCommands.ChangeTooltip(vsObject, newTooltip);
+                iCS_UserCommands.ChangeDescription(vsObject, newDescription);
             }            
         }
         

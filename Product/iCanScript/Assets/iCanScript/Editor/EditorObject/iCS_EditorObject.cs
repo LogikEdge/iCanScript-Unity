@@ -98,6 +98,21 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
+    public AccessSpecifier accessSpecifier {
+        get { return EngineObject.accessSpecifier; }
+        set { EngineObject.accessSpecifier= value; }
+    }
+    // ----------------------------------------------------------------------
+    public ScopeSpecifier scopeSpecifier {
+        get { return EngineObject.scopeSpecifier; }
+        set { EngineObject.scopeSpecifier= value; }
+    }
+    // ----------------------------------------------------------------------
+    public string dotNetAttributes {
+        get { return EngineObject.dotNetAttributes; }
+        set { EngineObject.dotNetAttributes= value; }
+    }
+    // ----------------------------------------------------------------------
     /// Returns the port type of this object.
     public PortSpecification PortSpec {
         get { return EngineObject.PortSpec; }
@@ -337,12 +352,12 @@ public partial class iCS_EditorObject {
         }
 	}
     // ----------------------------------------------------------------------
-    public string Tooltip {
-		get { return EngineObject.Tooltip; }
+    public string Description {
+		get { return EngineObject.Description; }
 		set {
             var engineObject= EngineObject;
-            if(engineObject.Tooltip == value) return;
-		    engineObject.Tooltip= value;
+            if(engineObject.Description == value) return;
+		    engineObject.Description= value;
 		}
 	}
     // ----------------------------------------------------------------------

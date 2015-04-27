@@ -98,7 +98,7 @@ public class iCS_Reflection {
                     // Extract class information.
                     string  company        = classAttribute.Company;
                     string  library        = classAttribute.Library;
-                    string  description    = classAttribute.Tooltip;
+                    string  description    = classAttribute.Description;
                     string  icon           = classAttribute.Icon;
                     bool    baseVisibility = classAttribute.BaseVisibility;
 					bool	hideFromLibrary= classAttribute.HideClassFromLibrary;
@@ -169,9 +169,9 @@ public class iCS_Reflection {
                         registerMethod= true;
                         // Register execution functions/methods.
                         iCS_FunctionAttribute funcAttr= constructorAttribute as iCS_FunctionAttribute;
-                        if(funcAttr.Name    != null) displayName= funcAttr.Name; 
-                        if(funcAttr.Tooltip != null) description= funcAttr.Tooltip;
-                        if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
+                        if(funcAttr.Name        != null) displayName= funcAttr.Name; 
+                        if(funcAttr.Description != null) description= funcAttr.Description;
+                        if(funcAttr.Icon        != null) iconPath   = funcAttr.Icon;
                     } else {
                         Debug.LogWarning("iCanScript: Constrcutor of class "+_classTypeInfo.DisplayName+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");                        
                     }
@@ -331,11 +331,11 @@ public class iCS_Reflection {
                         registerMethod= true;
                         // Register execution functions/methods.
                         iCS_FunctionAttribute funcAttr= methodAttribute as iCS_FunctionAttribute;
-                        if(funcAttr.Name     != null) displayName= funcAttr.Name; 
-                        if(funcAttr.Return   != null) returnName = funcAttr.Return;
-                        if(funcAttr.Tooltip  != null) description= funcAttr.Tooltip;
-                        if(funcAttr.Icon     != null) iconPath   = funcAttr.Icon;
-						if(funcAttr.Obsolete != null) iCS_LibraryDatabase.AddObsolete(method, funcAttr.Obsolete);
+                        if(funcAttr.Name        != null) displayName= funcAttr.Name; 
+                        if(funcAttr.Return      != null) returnName = funcAttr.Return;
+                        if(funcAttr.Description != null) description= funcAttr.Description;
+                        if(funcAttr.Icon        != null) iconPath   = funcAttr.Icon;
+						if(funcAttr.Obsolete    != null) iCS_LibraryDatabase.AddObsolete(method, funcAttr.Obsolete);
                     } else {
                         Debug.LogWarning("iCanScript: Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");                        
                     }

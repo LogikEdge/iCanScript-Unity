@@ -135,7 +135,7 @@ namespace iCanScript.Editor {
     	{	
     		if(edObj != null) {
     			// Get the EditorObject tooltip if there is one.
-    			string help= edObj.Tooltip;
+    			string help= edObj.Description;
     			if(!String.IsNullOrEmpty(help)) {
     				return help;
     			}
