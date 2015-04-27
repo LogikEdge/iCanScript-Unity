@@ -20,7 +20,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @return The newly created reference.
         ///
         public TriggerVariableDefinition(iCS_EditorObject port, CodeBase parent, TriggerSetDefinition triggerSet)
-            : base(port, parent, AccessSpecifier.PRIVATE, ScopeSpecifier.NONSTATIC) {
+            : base(port, parent, AccessSpecifier.Private, ScopeSpecifier.NonStatic) {
         		myTriggerSet= triggerSet;
             }
 

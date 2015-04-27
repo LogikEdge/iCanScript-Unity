@@ -72,8 +72,8 @@ namespace iCanScript.Editor.CodeEngineering {
             // Add root class defintion.
             var classDefinition= new TypeDefinition(vsRootObject, this,
                                                     myBaseType,
-                                                    AccessSpecifier.PUBLIC,
-                                                    ScopeSpecifier.NONSTATIC);
+                                                    AccessSpecifier.Public,
+                                                    ScopeSpecifier.NonStatic);
             AddType(classDefinition);			
 		}
 		

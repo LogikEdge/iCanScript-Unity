@@ -9,8 +9,8 @@ namespace iCanScript.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        public AccessSpecifier  myAccessSpecifier = AccessSpecifier.PRIVATE;
-        public ScopeSpecifier   myScopeSpecifier  = ScopeSpecifier.NONSTATIC;
+        public AccessSpecifier  myAccessSpecifier = AccessSpecifier.Private;
+        public ScopeSpecifier   myScopeSpecifier  = ScopeSpecifier.NonStatic;
 		public Type				myRuntimeType     = null;
         
         // ===================================================================
@@ -93,7 +93,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             string variableName;
             if(Parent is TypeDefinition) {
-                if(myAccessSpecifier == AccessSpecifier.PUBLIC) {
+                if(myAccessSpecifier == AccessSpecifier.Public) {
                     variableName= Parent.GetPublicFieldName(myVSObject);
                 }
                 else {
@@ -117,7 +117,7 @@ namespace iCanScript.Editor.CodeEngineering {
 			string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder(indent);
             if(myParent is TypeDefinition) {
-                if(accessType == AccessSpecifier.PUBLIC) {
+                if(accessType == AccessSpecifier.Public) {
                     result.Append("[iCS_InOutPort]\n");
                     result.Append(indent);
                 }
