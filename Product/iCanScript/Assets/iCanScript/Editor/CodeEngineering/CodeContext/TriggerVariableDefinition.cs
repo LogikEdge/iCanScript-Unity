@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Text;
 using System.Collections;
+using iCanScript.Engine;
+
 
 namespace iCanScript.Editor.CodeEngineering {
 

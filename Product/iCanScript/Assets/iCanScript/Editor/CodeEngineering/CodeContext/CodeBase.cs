@@ -12,9 +12,6 @@ namespace iCanScript.Editor.CodeEngineering {
     // USEFULL TYPES
     // -------------------------------------------------------------------
     public delegate string  CodeProducer(int indent);
-    public enum AccessSpecifier   { Public, Private, Protected, Internal };
-    public enum ScopeSpecifier    { NonStatic, Static, Virtual, Abstract, Override, New, Const };
-
     public abstract class CodeBase {
         // ===================================================================
         // TYPES
