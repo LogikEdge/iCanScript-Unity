@@ -12,12 +12,31 @@ namespace iCanScript.Editor {
         LibraryObject   myCursor    = null;
     	float           myFoldOffset= 16f;
         LibraryObject   mySelected  = null;
+        GUIStyle        myLabelStyle= null;
         
         
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
     	public DSView   View  { get { return myTreeView; }}
+        public string   displayString {
+            get {
+                var displayString= myCursor.displayString;
+                if(string.IsNullOrEmpty(displayString)) {
+                    return "<empty>";
+                }
+                return displayString;
+            }
+        }
+        public GUIStyle labelStyle {
+            get {
+                if(myLabelStyle == null) {
+                    myLabelStyle= new GUIStyle(GUI.skin.label);
+                    myLabelStyle.richText= true;
+                }
+                return myLabelStyle;
+            }
+        }
 	
         // =================================================================================
         // Constants
@@ -47,11 +66,8 @@ namespace iCanScript.Editor {
     	public void BeginDisplay() {
             // -- Initialize some display constants. --
             if(myFoldOffset == 0) {
-                myFoldOffset= EditorStyles.foldout.CalcSize(new GUIContent("")).x;                
+                myFoldOffset= EditorStyles.foldout.CalcSize(new GUIContent("")).x;
             }
-            // Enable RTF
-            GUI.skin.label.richText= true;
-            
     	}
     	public void EndDisplay() {}
         // -------------------------------------------------------------------
@@ -110,7 +126,11 @@ namespace iCanScript.Editor {
         /// @return The area needed to display the libary content.
         ///
     	public Vector2 CurrentObjectLayoutSize() {
-    	    return new Vector2(300, 16);
+            var size= myCursor.displaySize;
+            if(size == Vector2.zero) {
+                size= labelStyle.CalcSize(new GUIContent(displayString));
+            }
+    	    return size;
     	}
         // -------------------------------------------------------------------
         /// Displays the object pointed by the cursor.
@@ -130,11 +150,6 @@ namespace iCanScript.Editor {
             
             // -- Show foldout (if needed) --
     		bool foldoutState= ShouldUseFoldout ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
-            // -- Get string to display --
-            var displayString= myCursor.GetDisplayString();
-            if(string.IsNullOrEmpty(displayString)) {
-                displayString= "<empty>";
-            }
             // -- Display string to user --
             displayArea.x= displayArea.x+myFoldOffset;
             GUI.Label(displayArea, displayString, labelStyle);
