@@ -41,7 +41,10 @@ public class iCS_EngineObject {
     public iCS_ObjectTypeEnum    ObjectType         = iCS_ObjectTypeEnum.Unknown;
     public int                   InstanceId         = -1;
     public int                   ParentId           = -1;
+    public ScopeSpecifier        scopeSpecifier     = ScopeSpecifier.NonStatic;
+    public AccessSpecifier       accessSpecifier    = AccessSpecifier.Public;
     public string                QualifiedType      = "";
+    public string                dotNetAttributes   = "";
 	public Vector2				 LocalAnchorPosition= Vector2.zero;
     public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded;
 
@@ -154,14 +157,19 @@ public class iCS_EngineObject {
     public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent) {
         iCS_EngineObject instance= new iCS_EngineObject(id, toClone.RawName, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);
 		// Commmon
-        instance.DisplayOption= toClone.DisplayOption;
+        instance.DisplayOption      = toClone.DisplayOption;
+        instance.scopeSpecifier     = toClone.scopeSpecifier;
+        instance.accessSpecifier    = toClone.accessSpecifier;
+        instance.dotNetAttributes   = toClone.dotNetAttributes;
 		instance.LocalAnchorPosition= toClone.LocalAnchorPosition;
+        
 		// Node
         instance.NodeSpec   = toClone.NodeSpec;
 		instance.MethodName = toClone.MethodName;
 		instance.NbOfParams = toClone.NbOfParams;
         instance.IconGUID   = toClone.IconGUID;
         instance.Description= toClone.Description;
+
 		// Port
         instance.PortSpec= toClone.PortSpec;
         instance.Edge= toClone.Edge;
@@ -173,13 +181,16 @@ public class iCS_EngineObject {
     }
     // ----------------------------------------------------------------------
 	public iCS_EngineObject CopyTo(iCS_EngineObject to) {
-        to.ObjectType= ObjectType;
-        to.NodeSpec= NodeSpec;
-        to.PortSpec= PortSpec;
+        to.RawName= RawName;
         to.InstanceId= InstanceId;
         to.ParentId= ParentId;
+        to.scopeSpecifier= scopeSpecifier;
+        to.accessSpecifier= accessSpecifier;
+        to.dotNetAttributes= dotNetAttributes;
+        to.ObjectType= ObjectType;
         to.QualifiedType= QualifiedType;
-        to.RawName= RawName;
+        to.NodeSpec= NodeSpec;
+        to.PortSpec= PortSpec;
         to.LocalAnchorPosition= LocalAnchorPosition;
         to.DisplayOption= DisplayOption;
         to.MethodName= MethodName;

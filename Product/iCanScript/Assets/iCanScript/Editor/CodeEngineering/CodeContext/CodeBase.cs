@@ -162,10 +162,10 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public static string ToAccessString(AccessSpecifier accessType) {
             switch(accessType) {
-                case AccessSpecifier.Public:    return "public";
-                case AccessSpecifier.Private:   return "private";
-                case AccessSpecifier.Protected: return "protected";
-                case AccessSpecifier.Internal:  return "internal";
+                case AccessSpecifier.Public:    return "public ";
+                case AccessSpecifier.Private:   return "private ";
+                case AccessSpecifier.Protected: return "protected ";
+                case AccessSpecifier.Internal:  return "internal ";
             }
             return "public";
         }
@@ -178,11 +178,11 @@ namespace iCanScript.Editor.CodeEngineering {
         public static string ToScopeString(ScopeSpecifier scopeType) {
 			switch(scopeType) {
                 case ScopeSpecifier.NonStatic: return "";
-				case ScopeSpecifier.Static:    return "static";
-				case ScopeSpecifier.Virtual:   return "virtual";
-                case ScopeSpecifier.Abstract:  return "abstract";
-                case ScopeSpecifier.Override:  return "override";
-                case ScopeSpecifier.Const:     return "const";
+				case ScopeSpecifier.Static:    return "static ";
+				case ScopeSpecifier.Virtual:   return "virtual ";
+                case ScopeSpecifier.Abstract:  return "abstract ";
+                case ScopeSpecifier.Override:  return "override ";
+                case ScopeSpecifier.Const:     return "const ";
 			}
             return ""; 
         }
