@@ -11,6 +11,7 @@ namespace iCanScript.Editor {
     	DSTreeView      myTreeView  = null;
         LibraryObject   myCursor    = null;
     	float           myFoldOffset= 16f;
+        LibraryObject   mySelected  = null;
         
         
         // =================================================================================
@@ -119,6 +120,14 @@ namespace iCanScript.Editor {
         /// @param frameArea The total area in which the display takes place.
         /// @return The new foldout state.
     	public bool DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
+            // Show selected outline.
+            GUIStyle labelStyle= EditorStyles.label;
+    		if(mySelected == myCursor) {
+                Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
+                iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
+                labelStyle= EditorStyles.whiteLabel;
+    		}
+            
             // -- Show foldout (if needed) --
     		bool foldoutState= ShouldUseFoldout ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
             // -- Get string to display --
@@ -128,7 +137,7 @@ namespace iCanScript.Editor {
             }
             // -- Display string to user --
             displayArea.x= displayArea.x+myFoldOffset;
-            GUI.Label(displayArea, displayString);
+            GUI.Label(displayArea, displayString, labelStyle);
     	    return foldoutState;
     	}
         // -------------------------------------------------------------------
@@ -146,7 +155,12 @@ namespace iCanScript.Editor {
         /// @param mouseInScreenPoint The position of the mouse.
         /// @param screenArea The screen area used to display the library object.
         ///
-    	public void MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea) {}
+    	public void MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea) {
+            if(key == null) {
+                return;
+            }
+            mySelected= key as LibraryObject;
+    	}
 
         // ===================================================================
         // -------------------------------------------------------------------
