@@ -16,10 +16,15 @@ namespace iCanScript.Editor {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
+    	LibraryDisplayController    myController;
         DSScrollView                myMainView;
         Rect                        myScrollViewArea;
-    	LibraryDisplayController    myController;
-    	Rect                        mySelectedAreaCache= new Rect(0,0,0,0);
+    	Rect                        mySelectedAreaCache    = new Rect(0,0,0,0);
+        bool                        myShowInherited        = true;
+        bool                        myShowProtected        = false;
+        string                      myNamespaceSearchString= null;
+        string                      myTypeSearchString     = null;
+        string                      myMemberSearchString   = null;
 
         // =================================================================================
         // Activation/Deactivation.
@@ -29,10 +34,20 @@ namespace iCanScript.Editor {
             var editor= EditorWindow.CreateInstance<LibraryEditor>();
             editor.ShowUtility();
         }
+
+        // ---------------------------------------------------------------------------------
+        /// Assure a minimum size for the library window.
         public new void OnEnable() {
     		base.OnEnable();
     		minSize= new Vector2(270f, 270f);
         }
+
+        // ---------------------------------------------------------------------------------
+        /// Determines if the environement is properly initialize before we can start to
+        /// use the library editor.
+        ///
+        /// @return _true_ if library window is ready. _false_ otherwise.
+        ///
         bool IsInitialized() {
             if(myController == null || myMainView == null) {
                 myController= new LibraryDisplayController();
@@ -45,18 +60,18 @@ namespace iCanScript.Editor {
     	// =================================================================================
         // Display.
         // ---------------------------------------------------------------------------------
+        /// Displays the editor window and processes the user events.
         public new void OnGUI() {
-            // Wait until mouse is over our window.
-    //        if(mouseOverWindow != this) return;
+//            // Wait until mouse is over our window.
+//            if(mouseOverWindow != this) return;
     		if(!IsInitialized()) return;
 
             // -- Draw the base stuff for all windows --
             base.OnGUI();
     
-            // -- Show library components --
-//    		var toolbarRect= ShowToolbar();
-//            myScrollViewArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
-            myScrollViewArea= new Rect(0,0,position.width,position.height);
+            // -- Show toolbar --
+    		var toolbarRect= ShowToolbar();
+            myScrollViewArea= new Rect(0, toolbarRect.height, position.width, position.height-toolbarRect.height);
     		myMainView.Display(myScrollViewArea);
     		ProcessEvents(myScrollViewArea);
 //    		// -- Make new selection visible --
@@ -65,16 +80,27 @@ namespace iCanScript.Editor {
 //    		    myMainView.MakeVisible(mySelectedAreaCache, myScrollViewArea);
 //    		}          
     	}
-//        // ---------------------------------------------------------------------------------
-//    	Rect ShowToolbar() {
-//            // -- Display toolbar header --
-//    		var headerRect= iCS_ToolbarUtility.BuildToolbar(position.width);
-//            var search1Rect= new Rect(headerRect.x, headerRect.yMax, headerRect.width, headerRect.height);
-//            // Display # of items found
-//            myController.ShowInherited= iCS_ToolbarUtility.Toggle(ref headerRect, myController.ShowInherited, 0, 0);
-//            iCS_ToolbarUtility.MiniLabel(ref headerRect, "Show Inherited", 0, 0);
+        // ---------------------------------------------------------------------------------
+    	Rect ShowToolbar() {
+            // -- Display toolbar header --
+    		var line1Rect= iCS_ToolbarUtility.BuildToolbar(position.width);
+            var line2Rect= new Rect(line1Rect.x, line1Rect.yMax, line1Rect.width, line1Rect.height);
+            var line3Rect= new Rect(line1Rect.x, line2Rect.yMax, line1Rect.width, line1Rect.height);
+            // Display # of items found
+            var newShowInherited= iCS_ToolbarUtility.Toggle(ref line1Rect, myShowInherited, 0, 0);
+            if(newShowInherited != myShowInherited) {
+                // TODO: change controller ShowInherited.
+                myShowInherited= newShowInherited;                
+            }
+            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show Inherited", 0, 0);
+            var newShowProtected= iCS_ToolbarUtility.Toggle(ref line1Rect, myShowProtected, 0, 0);
+            if(newShowProtected != myShowProtected) {
+                // TODO: change controller ShowProtected.
+                myShowProtected= newShowProtected;                
+            }
+            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show Protected", 0, 0);
 //            var numberOfItems= myController.NumberOfItems;
-//            iCS_ToolbarUtility.MiniLabel(ref headerRect, "# items: "+numberOfItems.ToString(), 0, 0, true);
+//            iCS_ToolbarUtility.MiniLabel(ref line3Rect, "# items: "+numberOfItems.ToString(), 0, 0, true);
 //
 //            // -- Display toolbar search field #1 --
 //            var search= myController.SearchCriteria_1;
@@ -99,8 +125,8 @@ namespace iCanScript.Editor {
 //
 //    		string searchString= myController.SearchString ?? "";
 //    		myController.SearchString= iCS_ToolbarUtility.Search(ref search1Rect, 120.0f, searchString, 0, 0, true);
-//    		return Math3D.Union(headerRect, search1Rect);
-//    	}
+    		return Math3D.Union(line1Rect, line3Rect);
+    	}
     	// =================================================================================
         // Event processing
         // ---------------------------------------------------------------------------------

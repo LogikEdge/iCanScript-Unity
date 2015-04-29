@@ -8,12 +8,12 @@ namespace iCanScript.Editor {
         // =================================================================================
         // FIELDS
         // ---------------------------------------------------------------------------------
-    	DSTreeView      myTreeView  = null;
-        LibraryObject   myCursor    = null;
-    	float           myFoldOffset= 16f;
-        LibraryObject   mySelected  = null;
-        GUIStyle        myLabelStyle= null;
-        
+    	DSTreeView      myTreeView     = null;
+        LibraryObject   myCursor       = null;
+    	float           myFoldOffset   = 16f;
+        LibraryObject   mySelected     = null;
+        GUIStyle        myLabelStyle   = null;
+        bool            myShowInherited= true;
         
         // =================================================================================
         // Properties
@@ -139,13 +139,15 @@ namespace iCanScript.Editor {
         /// @param foldout The current foldout state.
         /// @param frameArea The total area in which the display takes place.
         /// @return The new foldout state.
+        ///
     	public bool DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
             // Show selected outline.
-            GUIStyle labelStyle= EditorStyles.label;
+            GUIStyle labelStyle= this.labelStyle;
     		if(mySelected == myCursor) {
                 Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
                 iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
                 labelStyle= EditorStyles.whiteLabel;
+                labelStyle.richText= true;
     		}
             
             // -- Show foldout (if needed) --
@@ -177,6 +179,18 @@ namespace iCanScript.Editor {
             mySelected= key as LibraryObject;
     	}
 
+        // -------------------------------------------------------------------
+        /// Determines if type member should be shown.
+        ///
+        /// @param LibraryMemberInfo Library object to test.
+        /// @return _true_ if it should be shown. _false_ otherwise.
+        ///
+        bool ShouldShow(LibraryMemberInfo libraryObject) {
+            if(myShowInherited) return true;
+            var parent= libraryObject.parent as LibraryType;
+            return parent.type == libraryObject.memberInfo.DeclaringType;
+        }
+        
         // ===================================================================
         // -------------------------------------------------------------------
         bool ShouldUseFoldout {

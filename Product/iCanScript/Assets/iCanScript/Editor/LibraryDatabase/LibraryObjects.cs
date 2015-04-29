@@ -76,6 +76,23 @@ namespace iCanScript.Editor {
         public T GetChild<T>(string rawName) where T : LibraryObject {
             return GetChild<T>(t=> t.GetRawName() == rawName);
         }
+        
+        // ----------------------------------------------------------------------
+        /// Iterates the entire tree invoking the given action.
+        ///
+        /// @param fnc The action to invoke for each element in the tree.
+        ///
+        public void ForEach(Action<LibraryObject> fnc) {
+            fnc(this);
+            if(children != null) {
+                foreach(var c in children) {
+                    var libraryObject= c as LibraryObject;
+                    if(libraryObject != null) {
+                        libraryObject.ForEach(fnc);
+                    }
+                }
+            }
+        }
 
     }
     
