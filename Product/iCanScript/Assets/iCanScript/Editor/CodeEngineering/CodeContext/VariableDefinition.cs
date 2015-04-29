@@ -123,7 +123,9 @@ namespace iCanScript.Editor.CodeEngineering {
                     result.Append(indent);
                 }
                 result.Append(ToAccessString(accessType));
+                result.Append(" ");
                 result.Append(ToScopeString(scopeType));
+                result.Append(" ");                
             }
 			result.Append(ToTypeName(variableType));
 			result.Append(" ");
