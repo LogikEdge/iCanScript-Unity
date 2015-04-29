@@ -14,6 +14,7 @@ namespace iCanScript.Editor {
         LibraryObject   mySelected     = null;
         GUIStyle        myLabelStyle   = null;
         bool            myShowInherited= true;
+		bool			myShowProtected= false;
         
         // =================================================================================
         // Properties
@@ -37,6 +38,17 @@ namespace iCanScript.Editor {
                 return myLabelStyle;
             }
         }
+		public bool showInherited {
+			get { return myShowInherited; }
+			set { myShowInherited= value; }
+		}
+		public bool showProtected {
+			get { return myShowProtected; }
+			set { myShowProtected= value; }
+		}
+		public int numberOfItems {
+			get { return 0; }
+		}
 	
         // =================================================================================
         // Constants

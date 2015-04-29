@@ -36,12 +36,12 @@ namespace iCanScript.Editor {
         // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------
-        static int myNbOfTypes       = 0;
-        static int myNbOfConstructors= 0;
-        static int myNbOfFields      = 0;
-        static int myNbOfFunctions   = 0;
-        static LibraryRoot      myDatabase= new LibraryRoot();
-        static Thread           myThread  = null;
+        static int 			myNbOfTypes       = 0;
+        static int 			myNbOfConstructors= 0;
+        static int 			myNbOfFields      = 0;
+        static int 			myNbOfFunctions   = 0;
+        static LibraryRoot  myDatabase= new LibraryRoot();
+        static Thread       myThread  = null;
         
         // ======================================================================
         // PROPERTIES

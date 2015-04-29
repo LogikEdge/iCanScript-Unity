@@ -22,10 +22,17 @@ namespace iCanScript.Editor {
     	Rect                        mySelectedAreaCache    = new Rect(0,0,0,0);
         bool                        myShowInherited        = true;
         bool                        myShowProtected        = false;
-        string                      myNamespaceSearchString= null;
-        string                      myTypeSearchString     = null;
-        string                      myMemberSearchString   = null;
+        string                      myNamespaceSearchString= "";
+        string                      myTypeSearchString     = "";
+        string                      myMemberSearchString   = "";
 
+        // =================================================================================
+        // PROPERTIES
+        // ---------------------------------------------------------------------------------
+		public int numberOfItems {
+			get { return myController.numberOfItems; }
+		}
+		
         // =================================================================================
         // Activation/Deactivation.
         // ---------------------------------------------------------------------------------
@@ -82,23 +89,44 @@ namespace iCanScript.Editor {
     	}
         // ---------------------------------------------------------------------------------
     	Rect ShowToolbar() {
-            // -- Display toolbar header --
+			var r= new Rect(0, 0, position.width, 80);
+			GUI.Box(r, "", EditorStyles.toolbar);
+			
+            // -- Build a 4 level toolbar --
     		var line1Rect= iCS_ToolbarUtility.BuildToolbar(position.width);
             var line2Rect= new Rect(line1Rect.x, line1Rect.yMax, line1Rect.width, line1Rect.height);
             var line3Rect= new Rect(line1Rect.x, line2Rect.yMax, line1Rect.width, line1Rect.height);
-            // Display # of items found
+            var line4Rect= new Rect(line1Rect.x, line3Rect.yMax, line1Rect.width, line1Rect.height);
+            iCS_ToolbarUtility.BuildToolbar(line2Rect);
+            iCS_ToolbarUtility.BuildToolbar(line3Rect);
+            iCS_ToolbarUtility.BuildToolbar(line4Rect);
+            //  -- Add display options -- 
+            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show: ", 0, 0);
+            iCS_ToolbarUtility.Separator(ref line1Rect);
             var newShowInherited= iCS_ToolbarUtility.Toggle(ref line1Rect, myShowInherited, 0, 0);
             if(newShowInherited != myShowInherited) {
                 // TODO: change controller ShowInherited.
                 myShowInherited= newShowInherited;                
             }
-            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show Inherited", 0, 0);
+            iCS_ToolbarUtility.MiniLabel(ref line1Rect, " Inherited", 0, 0);
+            iCS_ToolbarUtility.Separator(ref line1Rect);
             var newShowProtected= iCS_ToolbarUtility.Toggle(ref line1Rect, myShowProtected, 0, 0);
             if(newShowProtected != myShowProtected) {
                 // TODO: change controller ShowProtected.
                 myShowProtected= newShowProtected;                
             }
-            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show Protected", 0, 0);
+            iCS_ToolbarUtility.MiniLabel(ref line1Rect, " Protected", 0, 0);
+	        iCS_ToolbarUtility.MiniLabel(ref line1Rect, "# items: "+numberOfItems.ToString(), 0, 0, true);
+			// -- Add search fields --
+            iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Search: ", 0, 0);
+            iCS_ToolbarUtility.Separator(ref line2Rect);
+    		var newNamespaceSearchString= iCS_ToolbarUtility.Search(ref line2Rect, 120.0f, myNamespaceSearchString, 0, 0, true);
+    		var newTypeSearchString= iCS_ToolbarUtility.Search(ref line3Rect, 120.0f, myTypeSearchString, 0, 0, true);
+    		var newMemberSearchString= iCS_ToolbarUtility.Search(ref line4Rect, 120.0f, myMemberSearchString, 0, 0, true);
+            iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Namespace", 0, 20, true);
+            iCS_ToolbarUtility.MiniLabel(ref line3Rect, "Type", 0, 20, true);
+            iCS_ToolbarUtility.MiniLabel(ref line4Rect, "Field/Property/Function", 0, 20, true);
+
 //            var numberOfItems= myController.NumberOfItems;
 //            iCS_ToolbarUtility.MiniLabel(ref line3Rect, "# items: "+numberOfItems.ToString(), 0, 0, true);
 //
@@ -125,7 +153,7 @@ namespace iCanScript.Editor {
 //
 //    		string searchString= myController.SearchString ?? "";
 //    		myController.SearchString= iCS_ToolbarUtility.Search(ref search1Rect, 120.0f, searchString, 0, 0, true);
-    		return Math3D.Union(line1Rect, line3Rect);
+    		return Math3D.Union(line1Rect, line4Rect);
     	}
     	// =================================================================================
         // Event processing
