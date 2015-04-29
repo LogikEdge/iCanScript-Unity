@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
 using TimedAction= Prelude.TimerService.TimedAction;
+using iCanScript.FuzzyLogic;
 using iCanScript.Editor;
 
 public class iCS_LibraryController : DSTreeViewDataSource {
@@ -375,7 +376,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     bool NameMatches(string name, string matchString) {
         if(iCS_Strings.IsEmpty(matchString)) return true;
-        return FuzzyLogic.FuzzyString.GetScore(matchString, name) > mySearchThreashold;
+        return FuzzyString.GetScore(matchString, name) > mySearchThreashold;
 //        var result= name.ToUpper().IndexOf(matchString);
 //        return result >= 0;
     }
@@ -473,8 +474,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     bool FilterIn(iCS_MemberInfo desc, string upperSearchStr) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, desc.DisplayName) > mySearchThreashold) return true;
-        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, desc.ParentTypeInfo.DisplayName) > mySearchThreashold) return true;
+        if(FuzzyString.GetScore(upperSearchStr, desc.DisplayName) > mySearchThreashold) return true;
+        if(FuzzyString.GetScore(upperSearchStr, desc.ParentTypeInfo.DisplayName) > mySearchThreashold) return true;
 //        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
 //        if(desc.ParentTypeInfo.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
@@ -483,7 +484,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     bool FilterIn(Node node, string upperSearchStr) {
         if(node == null) return false;
         if(iCS_Strings.IsEmpty(upperSearchStr)) return true;
-        if(FuzzyLogic.FuzzyString.GetScore(upperSearchStr, node.MemberInfo.DisplayName) > mySearchThreashold) return true;
+        if(FuzzyString.GetScore(upperSearchStr, node.MemberInfo.DisplayName) > mySearchThreashold) return true;
 //        if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }

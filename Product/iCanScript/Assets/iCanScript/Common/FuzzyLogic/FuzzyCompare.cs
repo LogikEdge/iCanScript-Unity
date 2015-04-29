@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-namespace FuzzyLogic {
+namespace iCanScript.FuzzyLogic {
     public static class FuzzyString {
         // ----------------------------------------------------------------------
         public static float GetScore(string search, string dest) {

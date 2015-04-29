@@ -17,11 +17,14 @@ public static partial class Prelude {
 	    // ---------------------------------------------------------------------------------
 		public T 		     Value		{ get { return myValue; } set { myValue= value; }}
 		public List<Tree<T>> Children	{ get { return myChildren; }}
-
+        public bool          HasChild   { get { return myChildren != null && myChildren.Count != 0; }}
+        
 	    // =================================================================================
 	    // Initialization
 	    // ---------------------------------------------------------------------------------
-		public Tree(T value) { myValue= value; }
+		public Tree(T value) {
+            myValue= value;
+        }
 
 	    // =================================================================================
 	    // Child management.
