@@ -55,6 +55,22 @@ namespace iCanScript.Editor {
                 return myDisplayString;
             }
         }
+
+        // ======================================================================
+        // FORMATTING HELPERS
+        // ----------------------------------------------------------------------
+        public string mainValueBegin {
+			get { return (EditorGUIUtility.isProSkin ? "<color=cyan><b>" : "<color=blue><b>"); }
+        }
+        public string mainValueEnd { get { return "</b></color>"; }}
+		public string firstPartBegin {
+			get { return (EditorGUIUtility.isProSkin ? "<color=lime><i>" : "<color=green><i>");	}
+		}
+		public string firstPartEnd { get { return "</i></color>"; }}
+		public string secondPartBegin {
+			get { return (EditorGUIUtility.isProSkin ? "<color=yellow><i>" : "<color=brown><i>"); }
+		}
+		public string secondPartEnd { get { return "</i></color>"; }}
         
         // ======================================================================
         // INTERFACES
@@ -236,6 +252,13 @@ namespace iCanScript.Editor {
         public Type    type= null;
 
         // ======================================================================
+        // PROPERTIES
+        // ----------------------------------------------------------------------
+		public Type		baseType			{ get { return type.BaseType; }}
+		public bool 	isGeneric 			{ get { return type.IsGenericType; }}
+		public Type[]	genericArguments	{ get { return type.GetGenericArguments(); }}
+		
+        // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
         public LibraryType(Type type) : base()    { this.type= type; }
@@ -245,13 +268,22 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
         internal override string GetRawName()       { return type.Name; }
         internal override string GetDisplayString() {
-			var displayName= new StringBuilder("<b>", 64);
+			// -- Start with the base name --
+			var displayName= new StringBuilder(mainValueBegin, 64);
 			displayName.Append(NameUtility.ToDisplayNameNoGenericArguments(type));
-			displayName.Append("</b>");
-			if(type.IsGenericType) {
+			// -- Add generic arguments --
+			if(isGeneric) {
 				displayName.Append("<i>");
 				displayName.Append(NameUtility.ToDisplayGenericArguments(type));
 				displayName.Append("</i>");
+			}
+			displayName.Append(mainValueEnd);
+			// -- Add inheritance information --
+			if(baseType != null && baseType != typeof(void)) {
+				displayName.Append(firstPartBegin);
+				displayName.Append(" : ");
+				displayName.Append(NameUtility.ToDisplayName(baseType));
+				displayName.Append(firstPartEnd);
 			}
 			return displayName.ToString();
 		}
@@ -289,6 +321,7 @@ namespace iCanScript.Editor {
         // PROPERTIES
         // ----------------------------------------------------------------------
         public MemberTypes  memberType    { get { return memberInfo.MemberType; }}
+		public Type			declaringType { get { return memberInfo.DeclaringType; }}
         public bool         isField       { get { return memberType == MemberTypes.Field; }}
         public bool         isProperty    { get { return isGetProperty || isSetProperty; }}
         public bool         isConstructor { get { return memberType == MemberTypes.Constructor; }}
@@ -300,6 +333,12 @@ namespace iCanScript.Editor {
 				var libraryType= parent as LibraryType;
             	return libraryType.type != memberInfo.DeclaringType;
             }
+        }
+        public string displayNameHeader {
+			get { return (EditorGUIUtility.isProSkin ? "<color=cyan><b>" : "<color=blue><b>"); }
+        }
+        public string displayNameTrailer {
+   			get { return "</b></color>"; }
         }
 
         // ======================================================================
@@ -313,25 +352,60 @@ namespace iCanScript.Editor {
         // INTERFACES
         // ----------------------------------------------------------------------
         internal override string GetRawName()       { return memberInfo.Name; }
-        internal override string GetDisplayString() { return NameUtility.ToDisplayName(memberInfo.Name); }
-
+        internal override string GetDisplayString() {
+			var displayString= new StringBuilder(mainValueBegin,32);
+			displayString.Append(NameUtility.ToDisplayName(memberInfo.Name));
+			displayString.Append(mainValueEnd);
+			return displayString.ToString();
+		}
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the class that represents a programatic type field.
     public class Field : LibraryMemberInfo {
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
         public Field(MemberInfo memberInfo) : base(memberInfo) {}
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class LibraryMethodBase : LibraryMemberInfo {
+        // ======================================================================
+        // PROPERTIES
+        // ----------------------------------------------------------------------
+        public MethodBase       methodBase  		{ get { return memberInfo as MethodBase; }}
+        public bool             isPublic    		{ get { return methodBase.IsPublic; }}
+        public bool             isProtected 		{ get { return methodBase.IsFamily; }}
+        public bool             isPrivate   		{ get { return methodBase.IsPrivate; }}
+		public bool				isGeneric			{ get { return methodBase.IsGenericMethod; }}
+        public ParameterInfo[]  parameters  		{ get { return methodBase.GetParameters(); }}
+		public Type[]			genericArguments	{ get { return methodBase.GetGenericArguments(); }}
+
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
         public LibraryMethodBase(MethodBase methodBase) : base(methodBase) {}
-
-        public MethodBase       methodBase  { get { return memberInfo as MethodBase; }}
-        public bool             isPublic    { get { return methodBase.IsPublic; }}
-        public bool             isProtected { get { return methodBase.IsFamily; }}
-        public bool             isPrivate   { get { return methodBase.IsPrivate; }}
-        public ParameterInfo[]  parameters  { get { return methodBase.GetParameters(); }}
-
+		
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
+        internal override string GetRawName()       { return memberInfo.Name; }
+        internal override string GetDisplayString() {
+			var displayName= new StringBuilder("<b>", 64);
+			displayName.Append(NameUtility.ToDisplayName(memberInfo.Name));
+			displayName.Append("</b>");
+			if(isGeneric) {
+				displayName.Append("<i>");
+				displayName.Append(NameUtility.ToDisplayGenericArguments(genericArguments));
+				displayName.Append("</i>");
+			}
+			return displayName.ToString();
+		}
+		
+        // ======================================================================
+        // UTILITIES
+        // ----------------------------------------------------------------------
         public string FunctionSignatureInputTypes {
             get {
                 // -- We need a method to get parameters. --
@@ -358,7 +432,7 @@ namespace iCanScript.Editor {
                 if(inputStr.Length == 0) {
                     return "";
                 }
-                return "("+inputStr+")";
+                return inputStr;
             }
         }
         public string FunctionSignatureOutputTypes {
@@ -395,7 +469,7 @@ namespace iCanScript.Editor {
     			if(nbOfOutputs == 1) {
                     return result.ToString();
     			}
-                return "("+result.ToString()+")";
+                return result.ToString();
             }
         }
 
@@ -403,40 +477,45 @@ namespace iCanScript.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class Constructor : LibraryMethodBase {
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
         public Constructor(ConstructorInfo constructorInfo) : base(constructorInfo) {}
 
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetRawName()       { return memberInfo.Name; }
-        internal override string GetDisplayString() { return NameUtility.ToDisplayName(memberInfo.Name); }
+        internal override string GetRawName()       { return declaringType.Name; }
+        internal override string GetDisplayString() {
+			var displayString= new StringBuilder(mainValueBegin,32);
+			displayString.Append(NameUtility.ToDisplayName(declaringType));
+			displayString.Append(mainValueEnd);
+			return displayString.ToString();
+		}
     }
+
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class Function : LibraryMethodBase {
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
         public Function(MethodInfo methodInfo) : base(methodInfo) {}
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
         internal override string GetDisplayString() {
             // -- Determine function name --
             var name= NameUtility.ToDisplayName(memberInfo.Name);
             var methodBase= memberInfo as MethodBase;
-            if(methodBase.IsGenericMethod) {
-                name+= "<";
-                var genericArguments= methodBase.GetGenericArguments();
-                var len= genericArguments.Length;
-                for(int i= 0; i < len; ++i) {
-                    name+= genericArguments[i].Name;
-                    if(i < len-1) {
-                        name+=",";
-                    }
-                }
-                name+= ">";
+            if(isGeneric) {
+				name+= NameUtility.ToDisplayGenericArguments(genericArguments);
             }
             // -- Get input parameters --
-            var inputs= FunctionSignatureInputTypes;
+            var inputs= "("+FunctionSignatureInputTypes+")";
             // -- Get output parameters --
-            var outputs= FunctionSignatureOutputTypes;
+            var outputs= "("+FunctionSignatureOutputTypes+")";
             // -- Build formatted display string --
-            var displayNameHeader= (EditorGUIUtility.isProSkin ? "<color=cyan><b>" : "<color=blue><b>");
-            var displayNameTrailer= "</b></color>";
             var inputTypesHeader= (EditorGUIUtility.isProSkin ? "<color=lime><i>" : "<color=green><i>");
             var inputTypesTrailer= "</i></color>";
             var outputTypesHeader= (EditorGUIUtility.isProSkin ? "<color=yellow><i>" : "<color=brown><i>");

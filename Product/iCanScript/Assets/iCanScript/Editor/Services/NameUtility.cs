@@ -335,13 +335,25 @@ public static class NameUtility {
     /// Format for all name in the visual editor is word seperated with first letter
     /// of each word in upper case.
     ///
-    /// @param genericArguments The list of arguments.
+    /// @param type The type from which to extract the type arguments.
     /// @return The formated name for purpose of visual script display.
     ///
     public static string ToDisplayGenericArguments(Type type) {
+		return ToDisplayGenericArguments(type.GetGenericArguments());
+	}
+
+    // ---------------------------------------------------------------------------------
+    /// Formats the given generic arguments for user display.
+    ///
+    /// Format for all name in the visual editor is word seperated with first letter
+    /// of each word in upper case.
+    ///
+    /// @param genericArguments The list of arguments.
+    /// @return The formated name for purpose of visual script display.
+    ///
+    public static string ToDisplayGenericArguments(Type[] genericArguments) {
 		// -- Add the generic arguments --
         var name= new StringBuilder("<", 32);
-		var genericArguments= type.GetGenericArguments();
         var len= genericArguments.Length;
         for(int i= 0; i < len; ++i) {
 			name.Append(genericArguments[i].Name);
