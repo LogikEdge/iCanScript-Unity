@@ -256,12 +256,12 @@ namespace iCanScript.Editor {
 				
 			}
 			else if(libraryObject is LibraryConstructor) {
-				var libraryFunction= libraryObject as LibraryFunction;
-				if(libraryFunction.isStatic) {
-					iStorage.CreateStaticFunction(-1, libraryFunction);
+				var libraryConstructor= libraryObject as LibraryConstructor;
+				if(libraryConstructor.isStatic) {
+					iStorage.CreateStaticConstructor(-1, libraryConstructor);
 				}
 				else {
-					iStorage.CreateFunction(-1, libraryFunction);					
+					iStorage.CreateConstructor(-1, libraryConstructor);					
 				}				
 			}
 			else if(libraryObject is LibraryFunction) {

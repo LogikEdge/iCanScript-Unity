@@ -17,6 +17,7 @@ public enum iCS_ObjectTypeEnum {
     TypeCast,
     InstanceMessage,  ClassMessage,
     InstanceProperty, ClassProperty,
+	StaticConstructor,
 
     // Transition nodes
     TransitionPackage=200,
