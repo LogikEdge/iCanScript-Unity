@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 namespace iCanScript.Editor {
 
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    /// Defines the base class to create a tree container.
     public class TreeNode {
         public TreeNode        parent= null;
         public List<TreeNode>  children= null;
@@ -34,7 +36,7 @@ namespace iCanScript.Editor {
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    /// Base class for all objects in the library.
+    /// Defines the base class for all objects in the library.
     public abstract class LibraryObject : TreeNode {
         // ======================================================================
         // FIELDS
@@ -97,10 +99,27 @@ namespace iCanScript.Editor {
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    /// Defines the root node that contains all library objects.
     public class LibraryRoot : LibraryObject {
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
         public LibraryRoot() {}
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
         internal override string GetDisplayString() { return "Library"; }
         internal override string GetRawName()       { return "Library"; }
+
+        // ======================================================================
+        // UTILITIES
+        // ----------------------------------------------------------------------
+        /// Returns the root namespace library object with the given name.
+        ///
+        /// @param name The name of the root namespace to search for.
+        /// @return The found or created root namespace library object.
+        ///
         public LibraryRootNamespace GetRootNamespace(string name) {
             var node= GetChild<LibraryRootNamespace>(t=> t.GetRawName() == name);
             if(node == null) {
@@ -109,6 +128,9 @@ namespace iCanScript.Editor {
             }
             return node;
         }
+
+        // ----------------------------------------------------------------------
+        /// Sorts the entire library using the active sort algorithm. 
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryRootNamespace>(
@@ -121,6 +143,7 @@ namespace iCanScript.Editor {
         }
     }
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    /// Defines the first level namespace in the library.
     public class LibraryRootNamespace : LibraryObject {
         public string name= null;
         public LibraryRootNamespace(string name) : base() { this.name= name; }
@@ -147,6 +170,7 @@ namespace iCanScript.Editor {
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    /// Defines the nested namespaces in the library (2nd level).
     public class LibraryChildNamespace : LibraryObject {
         public string name= null;
         public LibraryChildNamespace(string name) : base() { this.name= name; }
@@ -165,6 +189,7 @@ namespace iCanScript.Editor {
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    /// Defines the class that represents a programming type in the library.
     public class LibraryType : LibraryObject {
         public Type    type= null;
 
@@ -208,27 +233,60 @@ namespace iCanScript.Editor {
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    /// Defines the base class for all library objects that are based on a
+    /// MemberInfo.
     public abstract class LibraryMemberInfo : LibraryObject {
+        // ======================================================================
+        // FIELDS
+        // ----------------------------------------------------------------------
         public MemberInfo   memberInfo= null;
         
+        // ======================================================================
+        // PROPERTIES
+        // ----------------------------------------------------------------------
+        public MemberTypes  memberType    { get { return memberInfo.MemberType; }}
+        public bool         isField       { get { return memberType == MemberTypes.Field; }}
+        public bool         isProperty    { get { return isGetProperty || isSetProperty; }}
+        public bool         isConstructor { get { return memberType == MemberTypes.Constructor; }}
+        public bool         isMethod      { get { return memberType == MemberTypes.Method; }}
+        public bool         isGetProperty { get { return isMethod && memberInfo.Name.StartsWith("get_"); }}
+        public bool         isSetProperty { get { return isMethod && memberInfo.Name.StartsWith("set_"); }}
+        public bool         isInherited   {
+            get {
+				var libraryType= parent as LibraryType;
+            	return libraryType.type != memberInfo.DeclaringType;
+            }
+        }
+
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
         public LibraryMemberInfo(MemberInfo memberInfo) : base() {
             this.memberInfo= memberInfo;
         }
-        public MemberTypes memberType { get { return memberInfo.MemberType; }}
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
         internal override string GetRawName()       { return memberInfo.Name; }
         internal override string GetDisplayString() { return memberInfo.Name; }
-        public bool isField       { get { return memberType == MemberTypes.Field; }}
-        public bool isProperty    { get { return isGetProperty || isSetProperty; }}
-        public bool isConstructor { get { return memberType == MemberTypes.Constructor; }}
-        public bool isMethod      { get { return memberType == MemberTypes.Method; }}
-        public bool isGetProperty { get { return isMethod && memberInfo.Name.StartsWith("get_"); }}
-        public bool isSetProperty { get { return isMethod && memberInfo.Name.StartsWith("set_"); }}
-        public bool isInherited   {
-            get {
-				var parent= this.parent as LibraryType;
-            	return parent.type != memberInfo.DeclaringType;
-            }
-        }
+
+    }
+    
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    public class Field : LibraryMemberInfo {
+        public Field(MemberInfo memberInfo) : base(memberInfo) {}
+    }
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    public class LibraryMethodBase : LibraryMemberInfo {
+        public LibraryMethodBase(MethodBase methodBase) : base(methodBase) {}
+
+        public MethodBase       methodBase  { get { return memberInfo as MethodBase; }}
+        public bool             isPublic    { get { return methodBase.IsPublic; }}
+        public bool             isProtected { get { return methodBase.IsFamily; }}
+        public bool             isPrivate   { get { return methodBase.IsPrivate; }}
+        public ParameterInfo[]  parameters  { get { return methodBase.GetParameters(); }}
 
         public string FunctionSignatureInputTypes {
             get {
@@ -296,21 +354,7 @@ namespace iCanScript.Editor {
                 return "("+result.ToString()+")";
             }
         }
-    }
-    
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    public class Field : LibraryMemberInfo {
-        public Field(MemberInfo memberInfo) : base(memberInfo) {}
-    }
 
-    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    public class LibraryMethodBase : LibraryMemberInfo {
-        public LibraryMethodBase(MethodBase methodBase) : base(methodBase) {}
-
-        public MethodBase methodBase { get { return memberInfo as MethodBase; }}
-        public bool isPublic         { get { return methodBase.IsPublic; }}
-        public bool isProtected      { get { return methodBase.IsFamily; }}
-        public bool isPrivate        { get { return methodBase.IsPrivate; }}
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
