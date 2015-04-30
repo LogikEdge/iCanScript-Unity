@@ -255,10 +255,10 @@ namespace iCanScript.Editor {
 			else if(libraryObject is LibraryField) {
 				var libraryField= libraryObject as LibraryField;
 				if(libraryField.isStatic) {
-//					iStorage.CreateStaticField(-1, libraryField);
+					iStorage.CreateStaticField(-1, libraryField);
 				}
 				else {
-//					iStorage.CreateField(-1, libraryField);								
+					iStorage.CreateField(-1, libraryField);								
 				}
 			}
 			else if(libraryObject is LibraryConstructor) {

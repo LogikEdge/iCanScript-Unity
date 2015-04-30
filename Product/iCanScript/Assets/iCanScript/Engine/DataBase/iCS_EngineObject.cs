@@ -233,10 +233,10 @@ public class iCS_EngineObject {
     public bool IsTransitionPackage        { get { return iCS_ObjectType.IsTransitionPackage(this); }}
     public bool IsKindOfFunction           { get { return iCS_ObjectType.IsKindOfFunction(this); }}
     public bool IsConstructor              { get { return iCS_ObjectType.IsConstructor(this); }}
-    public bool IsClassFunction            { get { return iCS_ObjectType.IsClassFunction(this); }}
+    public bool IsStaticFunction           { get { return iCS_ObjectType.IsStaticFunction(this); }}
     public bool IsInstanceFunction         { get { return iCS_ObjectType.IsInstanceFunction(this); }}
 	public bool IsField					   { get { return iCS_ObjectType.IsField(this); }}
-    public bool IsClassField               { get { return iCS_ObjectType.IsClassField(this); }}
+    public bool IsStaticField              { get { return iCS_ObjectType.IsStaticField(this); }}
     public bool IsInstanceField            { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast                 { get { return iCS_ObjectType.IsTypeCast(this); }}
     public bool IsEventHandler             { get { return iCS_ObjectType.IsEventHandler(this); }}

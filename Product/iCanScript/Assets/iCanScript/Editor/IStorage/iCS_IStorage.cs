@@ -608,7 +608,7 @@ public partial class iCS_IStorage {
         // -- Create node --
         var nodeName     = libraryFunction.nodeName;
 		var declaringType= libraryFunction.declaringType;
-		var objectType   = iCS_ObjectTypeEnum.ClassFunction;
+		var objectType   = iCS_ObjectTypeEnum.StaticFunction;
         var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
 		instance.MethodName= libraryFunction.methodInfo.Name;
         // -- Create parameter ports. --
@@ -697,6 +697,55 @@ public partial class iCS_IStorage {
 		// -- Create return port (Self). --
         CreatePort("Self", id, declaringType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		return instance;
+    }
+    // ----------------------------------------------------------------------
+	/// Creates a node that represents a static field.
+	///
+	/// @param parentId The id of the parent node.
+	/// @param libraryConstructor The library object of the function to create.
+	/// @return The newly created property wizard node.
+	///
+    public iCS_EditorObject CreateStaticField(int parentId, LibraryField libraryField) {
+//        // -- Grab a unique ID for this node. --
+//        int id= GetNextAvailableId();
+//        // -- Create node --
+//        var nodeName     = libraryField.nodeName;
+//		var declaringType= libraryField.declaringType;
+//		var objectType   = iCS_ObjectTypeEnum.StaticField;
+//        var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
+//		instance.MethodName= libraryField.methodBase.Name;
+//        // -- Create parameter ports. --
+//		var parameters= libraryField.parameters;
+//		CreateParameterPorts(instance, parameters);
+//        return instance;
+		Debug.LogWarning("iCanScript: Create Static Field not IMPLEMENTED !!!!");
+		return null;
+    }
+    // ----------------------------------------------------------------------
+	/// Creates a node that represents a non-static field.
+	///
+	/// @param parentId The id of the parent node.
+	/// @param libraryConstructor The library object of the function to create.
+	/// @return The newly created property wizard node.
+	///
+    public iCS_EditorObject CreateField(int parentId, LibraryField libraryField) {
+//        // -- Grab a unique ID for this node. --
+//        int id= GetNextAvailableId();
+//        // -- Create node --
+//        var nodeName     = libraryField.nodeName;
+//		var libraryParent= libraryField.parent as LibraryType;
+//		var declaringType= libraryParent.type;
+//		var objectType   = iCS_ObjectTypeEnum.InstanceField;
+//        var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
+//		instance.MethodName= libraryField.methodBase.Name;
+//        // -- Create ports. --
+//		var parameters= libraryField.parameters;
+//		CreateParameterPorts(instance, parameters);
+//		// -- Create return port (Self). --
+//        CreatePort("Self", id, declaringType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+//		return instance;
+		Debug.LogWarning("iCanScript: Create Field not IMPLEMENTED !!!!");
+		return null;
     }
 
     // ----------------------------------------------------------------------

@@ -202,8 +202,8 @@ public class iCS_LibraryDatabase {
             var func= Functions[i];
             if(func.ClassType == classType) {
                 switch(func.ObjectType) {
-					case iCS_ObjectTypeEnum.ClassFunction:
-					case iCS_ObjectTypeEnum.ClassField:
+					case iCS_ObjectTypeEnum.StaticFunction:
+					case iCS_ObjectTypeEnum.StaticField:
                     case iCS_ObjectTypeEnum.InstanceFunction:
                     case iCS_ObjectTypeEnum.InstanceField: {
 			            bool shouldInclude= false;
@@ -461,7 +461,7 @@ public class iCS_LibraryDatabase {
                                 FieldInfo fieldInfo) {
         var objectType= storageClass == iCS_StorageClass.Instance ?
                             iCS_ObjectTypeEnum.InstanceField :
-                            iCS_ObjectTypeEnum.ClassField;
+                            iCS_ObjectTypeEnum.StaticField;
         var record= new iCS_FieldInfo(objectType, classInfo, displayName, description, iconPath,
                                       parameters, functionReturn,
                                       storageClass, accessorType, fieldInfo);
@@ -473,7 +473,7 @@ public class iCS_LibraryDatabase {
                                  iCS_StorageClass storageClass, MethodInfo methodInfo) {
         var objectType= storageClass == iCS_StorageClass.Instance ?
                             iCS_ObjectTypeEnum.InstanceFunction :
-                            iCS_ObjectTypeEnum.ClassFunction;
+                            iCS_ObjectTypeEnum.StaticFunction;
         var record= new iCS_MethodInfo(objectType, classInfo,
                                        ImproveDisplayName(displayName), description, iconPath,
             						   parameters, functionReturn,
@@ -487,7 +487,7 @@ public class iCS_LibraryDatabase {
                                    MethodInfo methodInfo) {
         var objectType= storageClass == iCS_StorageClass.Instance ?
                             iCS_ObjectTypeEnum.InstanceFunction :
-                            iCS_ObjectTypeEnum.ClassFunction;
+                            iCS_ObjectTypeEnum.StaticFunction;
         var record= new iCS_PropertyInfo(objectType, classInfo,
                                          displayName, description, iconPath,
             						     parameters, functionReturn, storageClass, accessorType,

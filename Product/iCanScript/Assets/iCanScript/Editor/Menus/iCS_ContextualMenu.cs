@@ -90,10 +90,10 @@ public class iCS_ContextualMenu {
             case iCS_ObjectTypeEnum.TransitionPackage: PackageMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.Constructor:       FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceFunction:  FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.ClassFunction:     FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.StaticFunction:    FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TypeCast:          FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceField:     FunctionMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.ClassField:        FunctionMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.StaticField:       FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.ClassProperty:     FunctionMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;

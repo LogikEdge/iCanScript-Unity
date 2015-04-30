@@ -234,7 +234,7 @@ namespace iCanScript.Editor {
     			if (edObj.IsPort) {	
     				// check for special types of ports. 
     				// TODO: support these.
-    				if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsClassField) {
+    				if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsStaticField) {
     					// return port will be same as parent node description.
     				}
     				else if(edObj.IsKindOfPackagePort && !edObj.IsInstanceNodePort && !edObj.IsProposedDataPort)
