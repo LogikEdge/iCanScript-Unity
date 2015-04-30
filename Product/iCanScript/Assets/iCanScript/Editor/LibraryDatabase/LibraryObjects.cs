@@ -364,17 +364,25 @@ namespace iCanScript.Editor {
 	/// Defines the class that represents a programatic type field.
     public class Field : LibraryMemberInfo {
         // ======================================================================
+        // PROPERTIES
+        // ----------------------------------------------------------------------
+		public FieldInfo		fieldInfo	{ get { return memberInfo as FieldInfo; }}
+		public bool				isStatic	{ get { return fieldInfo.IsStatic; }}
+		
+        // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
         public Field(MemberInfo memberInfo) : base(memberInfo) {}
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the base class for all library object derived from MethodBase.
     public class LibraryMethodBase : LibraryMemberInfo {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
         public MethodBase       methodBase  		{ get { return memberInfo as MethodBase; }}
+		public bool				isStatic			{ get { return methodBase.IsStatic; }}
         public bool             isPublic    		{ get { return methodBase.IsPublic; }}
         public bool             isProtected 		{ get { return methodBase.IsFamily; }}
         public bool             isPrivate   		{ get { return methodBase.IsPrivate; }}
@@ -406,18 +414,17 @@ namespace iCanScript.Editor {
         // ======================================================================
         // UTILITIES
         // ----------------------------------------------------------------------
-        public string FunctionSignatureInputTypes {
+		/// Builds the input parameter string for user display.
+        public string ToDisplayInputParameters {
             get {
                 // -- We need a method to get parameters. --
-                var methodInfo= memberInfo as MethodInfo;
-                if(methodInfo == null) return "";
     			var result= new StringBuilder(32);
                 bool needComma= false;
-                if(!methodInfo.IsStatic) {
-                    result.Append(NameUtility.ToDisplayName(methodInfo.DeclaringType));
+                if(!isStatic && !isConstructor) {
+                    result.Append(NameUtility.ToDisplayName(declaringType));
                     needComma= true;
                 }
-                foreach(var param in methodInfo.GetParameters()) {
+                foreach(var param in parameters) {
                     var paramType= param.ParameterType;
     				if(!paramType.IsByRef) {
                         if(needComma) {
@@ -435,7 +442,7 @@ namespace iCanScript.Editor {
                 return inputStr;
             }
         }
-        public string FunctionSignatureOutputTypes {
+        public string ToDisplayOutputParameters {
             get {
                 // -- We need a method to get parameters. --
                 var methodInfo= memberInfo as MethodInfo;
@@ -487,14 +494,24 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
         internal override string GetRawName()       { return declaringType.Name; }
         internal override string GetDisplayString() {
-			var displayString= new StringBuilder(mainValueBegin,32);
+			var displayString= new StringBuilder(64);
+			displayString.Append("<b><color=magenta>");
+			displayString.Append("new ");
+			displayString.Append("</color></b>");
+			displayString.Append(mainValueBegin);
 			displayString.Append(NameUtility.ToDisplayName(declaringType));
 			displayString.Append(mainValueEnd);
+			displayString.Append(firstPartBegin);
+			displayString.Append(" (");
+			displayString.Append(ToDisplayInputParameters);
+			displayString.Append(")");
+			displayString.Append(firstPartEnd);
 			return displayString.ToString();
 		}
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the class that represents a function in the library.
     public class Function : LibraryMethodBase {
         // ======================================================================
         // INIT
@@ -512,9 +529,9 @@ namespace iCanScript.Editor {
 				name+= NameUtility.ToDisplayGenericArguments(genericArguments);
             }
             // -- Get input parameters --
-            var inputs= "("+FunctionSignatureInputTypes+")";
+            var inputs= "("+ToDisplayInputParameters+")";
             // -- Get output parameters --
-            var outputs= "("+FunctionSignatureOutputTypes+")";
+            var outputs= "("+ToDisplayOutputParameters+")";
             // -- Build formatted display string --
             var inputTypesHeader= (EditorGUIUtility.isProSkin ? "<color=lime><i>" : "<color=green><i>");
             var inputTypesTrailer= "</i></color>";

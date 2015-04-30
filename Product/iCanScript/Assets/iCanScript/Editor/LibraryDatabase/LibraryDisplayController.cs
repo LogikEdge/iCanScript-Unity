@@ -21,8 +21,9 @@ namespace iCanScript.Editor {
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
-    	public DSView   View  { get { return myTreeView; }}
-        public string   displayString {
+    	public DSView   	 	View		{ get { return myTreeView; }}
+		public LibraryObject	Selected	{ get { return mySelected; }}
+        public string displayString {
             get {
                 var displayString= myCursor.displayString;
                 if(string.IsNullOrEmpty(displayString)) {

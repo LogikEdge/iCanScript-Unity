@@ -667,6 +667,17 @@ public partial class iCS_IStorage {
         return instance;
     }    
 	// ----------------------------------------------------------------------
+	/// Creates a property wizard node for the given type.
+	///
+	/// @param parentId The id of the parent node that will contain the newly
+	///					created property wizard node.
+	/// @param type The programmatic type for the property wizard.
+	/// @return The newly created property wizard node.
+	///
+	public iCS_EditorObject CreatePropertyWizardNode(int parentId, Type type) {
+        return CreatePackage(parentId, null, iCS_ObjectTypeEnum.Package, type);
+	}
+	// ----------------------------------------------------------------------
 	public iCS_EditorObject CreateObjectInstance(int parentId, string name, Type instanceType) {
         return CreatePackage(parentId, name, iCS_ObjectTypeEnum.Package, instanceType);
 	}

@@ -126,52 +126,25 @@ namespace iCanScript.Editor {
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Namespace", 0, 20, true);
             iCS_ToolbarUtility.MiniLabel(ref line3Rect, "Type", 0, 20, true);
             iCS_ToolbarUtility.MiniLabel(ref line4Rect, "Field/Property/Function", 0, 20, true);
-
-//            var numberOfItems= myController.NumberOfItems;
-//            iCS_ToolbarUtility.MiniLabel(ref line3Rect, "# items: "+numberOfItems.ToString(), 0, 0, true);
-//
-//            // -- Display toolbar search field #1 --
-//            var search= myController.SearchCriteria_1;
-//            iCS_ToolbarUtility.BuildToolbar(search1Rect);
-//            search.ShowClasses= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowClasses, 0, 0);
-//    		var icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);
-//            iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, 4);            
-//            iCS_ToolbarUtility.Separator(ref search1Rect);
-//            iCS_ToolbarUtility.Separator(ref search1Rect);
-//
-//            search.ShowFunctions= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowFunctions, kLabelSpacer, 0);
-//            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Function);            
-//            iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, kLabelSpacer);            
-//            iCS_ToolbarUtility.Separator(ref search1Rect);
-//
-//            search.ShowVariables= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowVariables, kLabelSpacer, 0);
-//            icon= iCS_BuiltinTextures.OutEndPortIcon;
-//            iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, 0);            
-//            icon= iCS_BuiltinTextures.InEndPortIcon;
-//            iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, kLabelSpacer);            
-//            iCS_ToolbarUtility.Separator(ref search1Rect);
-//
-//    		string searchString= myController.SearchString ?? "";
-//    		myController.SearchString= iCS_ToolbarUtility.Search(ref search1Rect, 120.0f, searchString, 0, 0, true);
     		return Math3D.Union(line1Rect, line4Rect);
     	}
     	// =================================================================================
         // Event processing
         // ---------------------------------------------------------------------------------
         void ProcessEvents(Rect frameArea) {
-//         	Vector2 mousePosition= Event.current.mousePosition;
-//            var selected= myController.Selected;
-//    		switch(Event.current.type) {
-//                case EventType.MouseDrag: {
-//                    switch(Event.current.button) {
-//                        case 0: { // Left mouse button
-//                            StartDragAndDrop(selected);                            
-//                            Event.current.Use();
-//                            break;
-//                        }
-//                    }
-//                    break;
-//                }
+         	Vector2 mousePosition= Event.current.mousePosition;
+            var selected= myController.Selected;
+    		switch(Event.current.type) {
+                case EventType.MouseDrag: {
+                    switch(Event.current.button) {
+                        case 0: { // Left mouse button
+                            StartDragAndDrop(selected);                            
+                            Event.current.Use();
+                            break;
+                        }
+                    }
+                    break;
+                }
 //                case EventType.ScrollWheel: {
 //                    break;
 //                }
@@ -231,56 +204,67 @@ namespace iCanScript.Editor {
 //                    }
 //                    break;
 //    			}
-//            }   
+            }   
         }
 
-//    	// =================================================================================
-//        // Drag events.
-//        // ---------------------------------------------------------------------------------
-//        void StartDragAndDrop(iCS_LibraryController.Node node) {
-//    		// Just return if nothing is selected.
-//            if(node == null) return;
-//    		// Don't allow to drag & drop company, library, and packages
-//    		switch(node.Type) {
-//    			case iCS_LibraryController.NodeTypeEnum.Root:
-//    			case iCS_LibraryController.NodeTypeEnum.Company:
-//    			case iCS_LibraryController.NodeTypeEnum.Library:
-//    			case iCS_LibraryController.NodeTypeEnum.Package:
-//    				return;
-//    			default:
-//    				break;
-//    		}
-//            // Build drag object.
-//            GameObject go= new GameObject(node.Name);
-//            go.hideFlags = HideFlags.HideAndDontSave;
-//    //        var library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
-//            var library= iCS_DynamicCall.AddLibrary(go);
-//            iCS_IStorage iStorage= new iCS_IStorage(library);
-//            if(iStorage == null) {
-//                Debug.LogWarning("iCanScript: Cannot create iStorage.");
-//            }
-//            CreateInstance(node, iStorage);
-//            iStorage.SaveStorage();
-//            // Fill drag info.
-//            DragAndDrop.PrepareStartDrag();
-//            DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
-//            DragAndDrop.StartDrag(node.Name);
-//            iCS_AutoReleasePool.AutoRelease(go, 60f);
-//        }
-//        // ---------------------------------------------------------------------------------
-//        void CreateInstance(iCS_LibraryController.Node node, iCS_IStorage iStorage) {
-//            if(node.Type == iCS_LibraryController.NodeTypeEnum.Company) {
-//                CreatePackage(node.Name, iStorage);        
-//                return;
-//            }
-//            if(node.Type == iCS_LibraryController.NodeTypeEnum.Library) {
-//                CreatePackage(node.Name, iStorage);        
-//                return;
-//            }
-//            if(node.Type == iCS_LibraryController.NodeTypeEnum.Class) {
-//                CreateObjectInstance(node.MemberInfo.ClassType, iStorage);        
-//                return;
-//            }
+    	// =================================================================================
+        // Drag events.
+        // ---------------------------------------------------------------------------------
+		/// Creates a drag and drop object with a node created from the selecct library
+		/// object.
+		///
+		/// @param libraryObject The user selected library object.
+		/// 
+        void StartDragAndDrop(LibraryObject libraryObject) {
+    		// -- Just return if nothing is selected. --
+            if(libraryObject == null) return;
+    		// -- Don't allow to drag & drop for libary root and namespace. --
+			if(libraryObject is LibraryRoot) return;
+			if(libraryObject is LibraryRootNamespace) return;
+			if(libraryObject is LibraryChildNamespace) return;
+            // -- Build drag object. --
+            GameObject go= new GameObject(libraryObject.displayString);
+            go.hideFlags = HideFlags.HideAndDontSave;
+            var visualScriptRoot= iCS_DynamicCall.AddLibrary(go);
+            iCS_IStorage iStorage= new iCS_IStorage(visualScriptRoot);
+            if(iStorage == null) {
+                Debug.LogWarning("iCanScript: Cannot create iStorage. Contact support.");
+            }
+			// -- Create node for each known library type. --
+            CreateInstance(libraryObject, iStorage);
+			// -- Commit changes to drag & drop storage. --
+            iStorage.SaveStorage();
+            // -- Complete the drag information. --
+            DragAndDrop.PrepareStartDrag();
+            DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
+            DragAndDrop.StartDrag(libraryObject.displayString);
+            iCS_AutoReleasePool.AutoRelease(go, 60f);
+        }
+        // ---------------------------------------------------------------------------------
+		/// Creates a visual script node from the given library object.
+		///
+		/// @param libraryObject The library object from which to create a visual node.
+		/// @param iStorage The storage in which to put the created node.
+		/// 
+        void CreateInstance(LibraryObject libraryObject, iCS_IStorage iStorage) {
+			if(libraryObject is LibraryType) {
+				var libraryType= libraryObject as LibraryType;
+	            iStorage.CreatePropertyWizardNode(-1, libraryType.type);
+				return;
+			}
+			else if(libraryObject is Field) {
+				
+			}
+			else if(libraryObject is Constructor) {
+				
+			}
+			else if(libraryObject is Function) {
+				
+			}
+			else {
+				Debug.LogWarning("iCanScript: Unknown library type. Contact support.");
+			}
+
 //            if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {
 //                CreateMethod(node.MemberInfo, iStorage);        
 //                return;
@@ -305,19 +289,10 @@ namespace iCanScript.Editor {
 //    			return;
 //    		}
 //		
-//        }
+        }
 //	
 //        // ======================================================================
 //        // Creation Utilities
-//        // ---------------------------------------------------------------------------------
-//        // FIXME: Should pass along the object type to the module instead of multiple creation.
-//        iCS_EditorObject CreatePackage(string name, iCS_IStorage iStorage) {
-//            return iStorage.CreatePackage(-1, name);
-//        }
-//        // ---------------------------------------------------------------------------------
-//        iCS_EditorObject CreateObjectInstance(Type classType, iCS_IStorage iStorage) {
-//            return iStorage.CreateObjectInstance(-1, null, classType);
-//        }
 //        // ---------------------------------------------------------------------------------
 //        iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {
 //            return iStorage.CreateFunction(-1, desc.ToFunctionPrototypeInfo);            
