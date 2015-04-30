@@ -130,7 +130,7 @@ namespace iCanScript.Editor {
         }
 
         // ----------------------------------------------------------------------
-        /// Sorts the entire library using the active sort algorithm. 
+        /// Sorts the root namespace and ask all children to perform sorting.
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryRootNamespace>(
@@ -148,18 +148,18 @@ namespace iCanScript.Editor {
         // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------
-        public string name= null;
+        string myName= null;
 
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetRawName()        { return name; }
-        internal override string GetDisplayString()  { return NameUtility.ToDisplayName(name); }
+        internal override string GetRawName()        { return myName; }
+        internal override string GetDisplayString()  { return NameUtility.ToDisplayName(myName); }
 
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public LibraryRootNamespace(string name) : base() { this.name= name; }
+        public LibraryRootNamespace(string name) : base() { myName= name; }
 
         // ======================================================================
         // UTILITIES
@@ -179,7 +179,7 @@ namespace iCanScript.Editor {
         }
 
         // ----------------------------------------------------------------------
-        /// Sorts the entire library using the active sort algorithm. 
+        /// Sorts the child namespaces and ask all children to perform sorting.
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryChildNamespace>(
@@ -195,14 +195,26 @@ namespace iCanScript.Editor {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines the nested namespaces in the library (2nd level).
     public class LibraryChildNamespace : LibraryObject {
-        public string name= null;
+        // ======================================================================
+        // FIELDS
+        // ----------------------------------------------------------------------
+        string myName= null;
+
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetRawName()        { return name; }
-        internal override string GetDisplayString()  { return NameUtility.ToDisplayName(name); }
+        internal override string GetRawName()        { return myName; }
+        internal override string GetDisplayString()  { return NameUtility.ToDisplayName(myName); }
 
-        public LibraryChildNamespace(string name) : base() { this.name= name; }
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibraryChildNamespace(string name) : base() { myName= name; }
+
+        // ======================================================================
+        // UTILITIES
+        // ----------------------------------------------------------------------
+        /// Sorts the child types and ask all children to perform sorting.
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryType>(
@@ -218,31 +230,36 @@ namespace iCanScript.Editor {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines the class that represents a programming type in the library.
     public class LibraryType : LibraryObject {
+        // ======================================================================
+        // FIELDS
+        // ----------------------------------------------------------------------
         public Type    type= null;
 
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
         public LibraryType(Type type) : base()    { this.type= type; }
-        internal override string GetRawName()    { return type.Name; }
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
+        internal override string GetRawName()       { return type.Name; }
         internal override string GetDisplayString() {
-            var name= NameUtility.ToDisplayName(type.Name);
-            if(type.IsGenericType) {
-                // -- Remove number of parameter info --
-                int end= name.IndexOf('`');
-                if(end > 0 && end < name.Length) {
-                    name= name.Substring(0, end);
-                }
-                name+= "<";
-                var genericArguments= type.GetGenericArguments();
-                var len= genericArguments.Length;
-                for(int i= 0; i < len; ++i) {
-                    name+= genericArguments[i].Name;
-                    if(i < len-1) {
-                        name+=",";
-                    }
-                }
-                name+= ">";
-            }
-            return name;
-        }
+			var displayName= new StringBuilder("<b>", 64);
+			displayName.Append(NameUtility.ToDisplayNameNoGenericArguments(type));
+			displayName.Append("</b>");
+			if(type.IsGenericType) {
+				displayName.Append("<i>");
+				displayName.Append(NameUtility.ToDisplayGenericArguments(type));
+				displayName.Append("</i>");
+			}
+			return displayName.ToString();
+		}
+
+        // ======================================================================
+        // UTILITIES
+        // ----------------------------------------------------------------------
+        /// Sorts the child members according to their type.
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryMemberInfo>(
@@ -323,7 +340,7 @@ namespace iCanScript.Editor {
     			var result= new StringBuilder(32);
                 bool needComma= false;
                 if(!methodInfo.IsStatic) {
-                    result.Append(iCS_Types.TypeName(methodInfo.DeclaringType));
+                    result.Append(NameUtility.ToDisplayName(methodInfo.DeclaringType));
                     needComma= true;
                 }
                 foreach(var param in methodInfo.GetParameters()) {
@@ -332,7 +349,7 @@ namespace iCanScript.Editor {
                         if(needComma) {
                             result.Append(", ");
                         }
-    	                result.Append(iCS_Types.TypeName(paramType));
+    	                result.Append(NameUtility.ToDisplayName(paramType));
                         needComma= true;
     				}
                 }
@@ -359,7 +376,7 @@ namespace iCanScript.Editor {
                         if(needComma) {
                             result.Append(", ");
                         }
-    	                result.Append(iCS_Types.TypeName(paramType.GetElementType()));
+    	                result.Append(NameUtility.ToDisplayName(paramType.GetElementType()));
     					++nbOfOutputs;
                         needComma= true;
     				}
@@ -370,7 +387,7 @@ namespace iCanScript.Editor {
                         result.Append(", ");
                     }
     				++nbOfOutputs;
-    				result.Append(iCS_Types.TypeName(returnType));
+    				result.Append(NameUtility.ToDisplayName(returnType));
     			}
                 if(nbOfOutputs == 0) {
                     return "";

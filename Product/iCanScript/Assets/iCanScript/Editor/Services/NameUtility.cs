@@ -286,6 +286,73 @@ public static class NameUtility {
         return result.ToString();
     }
 
+	// =================================================================================
+	// TYPE NAME UTILITIES
+    // ---------------------------------------------------------------------------------
+    /// Formats the given type for user display.
+    ///
+    /// Format for all name in the visual editor is word seperated with first letter
+    /// of each word in upper case.
+    ///
+    /// @param type The type for which to generate a formated name.
+    /// @return The formated name for purpose of visual script display.
+    ///
+    public static string ToDisplayName(Type type) {
+        var name= ToDisplayNameNoGenericArguments(type);
+		// -- Special case for generic types --
+        if(type.IsGenericType) {
+			// -- Add the generic arguments --
+			name+= ToDisplayGenericArguments(type);
+        }
+        return name;
+	}
+	
+    // ---------------------------------------------------------------------------------
+    /// Formats the given type for user display.
+    ///
+    /// Format for all name in the visual editor is word seperated with first letter
+    /// of each word in upper case.
+    ///
+    /// @param type The type for which to generate a formated name.
+    /// @return The formated name for purpose of visual script display.
+    ///
+    public static string ToDisplayNameNoGenericArguments(Type type) {
+        var name= ToDisplayName(iCS_Types.TypeName(type));
+		// -- Special case for generic types --
+        if(type.IsGenericType) {
+            // -- Remove number of parameter info --
+            int end= name.IndexOf('`');
+            if(end > 0 && end < name.Length) {
+                name= name.Substring(0, end);
+            }
+        }
+        return name;
+	}
+	
+    // ---------------------------------------------------------------------------------
+    /// Formats the given generic arguments for user display.
+    ///
+    /// Format for all name in the visual editor is word seperated with first letter
+    /// of each word in upper case.
+    ///
+    /// @param genericArguments The list of arguments.
+    /// @return The formated name for purpose of visual script display.
+    ///
+    public static string ToDisplayGenericArguments(Type type) {
+		// -- Add the generic arguments --
+        var name= new StringBuilder("<", 32);
+		var genericArguments= type.GetGenericArguments();
+        var len= genericArguments.Length;
+        for(int i= 0; i < len; ++i) {
+			name.Append(genericArguments[i].Name);
+            if(i < len-1) {
+				name.Append(" , ");
+            }
+        }
+		name.Append(">");
+		return name.ToString();
+	}
+	
     // =================================================================================
     // Snake Case conversions
     // ---------------------------------------------------------------------------------
