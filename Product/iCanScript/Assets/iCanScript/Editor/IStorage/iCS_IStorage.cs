@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
@@ -571,6 +572,30 @@ public partial class iCS_IStorage {
 		return instance;
     }
     // ----------------------------------------------------------------------
+	/// Create parameter ports on the given node.
+	///
+	/// @param node The parent node.
+	/// @param parameters The array of parameter info.
+	///
+	void CreateParameterPorts(iCS_EditorObject node, ParameterInfo[] parameters) {
+		int nodeId= node.InstanceId;
+		var parametersLen= P.length(parameters);
+		node.NbOfParams= parametersLen;
+        for(int idx= 0; idx < parametersLen; ++idx) {
+            var p= parameters[idx];
+			var parameterType= p.ParameterType;
+            if(parameterType != typeof(void)) {
+                iCS_ObjectTypeEnum portType= p.IsOut ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
+                var port= CreatePort(p.Name, nodeId, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
+				object initialValue= p.DefaultValue;
+				if(initialValue == null || initialValue.GetType() != parameterType) {
+					initialValue= iCS_Types.DefaultValue(parameterType);
+				}
+                port.InitialPortValue= initialValue;
+            }
+        }		
+	}
+    // ----------------------------------------------------------------------
 	/// Creates a node that represents a static function.
 	///
 	/// @param parentId The id of the parent node.
@@ -586,30 +611,14 @@ public partial class iCS_IStorage {
 		var objectType   = iCS_ObjectTypeEnum.ClassFunction;
         var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
 		instance.MethodName= libraryFunction.methodInfo.Name;
-        // -- Create ports. --
-		iCS_EditorObject port= null;
+        // -- Create parameter ports. --
 		var parameters= libraryFunction.parameters;
-		var parametersLen= P.length(parameters);
-		instance.NbOfParams= parametersLen;
-		int idx= 0;
-        for(; idx < parametersLen; ++idx) {
-            var p= parameters[idx];
-			var parameterType= p.ParameterType;
-            if(parameterType != typeof(void)) {
-                iCS_ObjectTypeEnum portType= p.IsOut ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.Name, id, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
-				object initialValue= p.DefaultValue;
-				if(initialValue == null || initialValue.GetType() != parameterType) {
-					initialValue= iCS_Types.DefaultValue(parameterType);
-				}
-                port.InitialPortValue= initialValue;
-            }
-        }
-		// Create return port.
+		CreateParameterPorts(instance, parameters);
+		// -- Create return port. --
 		var returnType= libraryFunction.returnType;
 		if(returnType != null && returnType != typeof(void)) {
 			var returnName= Char.ToLower(nodeName[0])+nodeName.Substring(1);
-            port= CreatePort(returnName, id, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+            CreatePort(returnName, id, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
         return instance;
     }
@@ -633,30 +642,14 @@ public partial class iCS_IStorage {
 		// -- Create target & self ports. --
         CreateTargetPort(id);
         CreateSelfPort(id);
-        // -- Create ports. --
-		iCS_EditorObject port= null;
+        // -- Create parameter ports. --
 		var parameters= libraryFunction.parameters;
-		var parametersLen= P.length(parameters);
-		instance.NbOfParams= parametersLen;
-		int idx= 0;
-        for(; idx < parametersLen; ++idx) {
-            var p= parameters[idx];
-			var parameterType= p.ParameterType;
-            if(parameterType != typeof(void)) {
-                iCS_ObjectTypeEnum portType= p.IsOut ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.Name, id, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
-				object initialValue= p.DefaultValue;
-				if(initialValue == null || initialValue.GetType() != parameterType) {
-					initialValue= iCS_Types.DefaultValue(parameterType);
-				}
-                port.InitialPortValue= initialValue;
-            }
-        }
+		CreateParameterPorts(instance, parameters);
 		// -- Create return port. --
 		var returnType= libraryFunction.returnType;
 		if(returnType != null && returnType != typeof(void)) {
 			var returnName= Char.ToLower(nodeName[0])+nodeName.Substring(1);
-            port= CreatePort(returnName, id, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+            CreatePort(returnName, id, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		}
         return instance;
     }
@@ -676,25 +669,9 @@ public partial class iCS_IStorage {
 		var objectType   = iCS_ObjectTypeEnum.StaticConstructor;
         var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
 		instance.MethodName= libraryConstructor.methodBase.Name;
-        // -- Create ports. --
-		iCS_EditorObject port= null;
+        // -- Create parameter ports. --
 		var parameters= libraryConstructor.parameters;
-		var parametersLen= P.length(parameters);
-		instance.NbOfParams= parametersLen;
-		int idx= 0;
-        for(; idx < parametersLen; ++idx) {
-            var p= parameters[idx];
-			var parameterType= p.ParameterType;
-            if(parameterType != typeof(void)) {
-                iCS_ObjectTypeEnum portType= p.IsOut ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.Name, id, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
-				object initialValue= p.DefaultValue;
-				if(initialValue == null || initialValue.GetType() != parameterType) {
-					initialValue= iCS_Types.DefaultValue(parameterType);
-				}
-                port.InitialPortValue= initialValue;
-            }
-        }
+		CreateParameterPorts(instance, parameters);
         return instance;
     }
     // ----------------------------------------------------------------------
@@ -715,26 +692,10 @@ public partial class iCS_IStorage {
         var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
 		instance.MethodName= libraryConstructor.methodBase.Name;
         // -- Create ports. --
-		iCS_EditorObject port= null;
 		var parameters= libraryConstructor.parameters;
-		var parametersLen= P.length(parameters);
-		instance.NbOfParams= parametersLen;
-		int idx= 0;
-        for(; idx < parametersLen; ++idx) {
-            var p= parameters[idx];
-			var parameterType= p.ParameterType;
-            if(parameterType != typeof(void)) {
-                iCS_ObjectTypeEnum portType= p.IsOut ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                port= CreatePort(p.Name, id, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
-				object initialValue= p.DefaultValue;
-				if(initialValue == null || initialValue.GetType() != parameterType) {
-					initialValue= iCS_Types.DefaultValue(parameterType);
-				}
-                port.InitialPortValue= initialValue;
-            }
-        }
+		CreateParameterPorts(instance, parameters);
 		// -- Create return port (Self). --
-        port= CreatePort("Self", id, declaringType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+        CreatePort("Self", id, declaringType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
 		return instance;
     }
 
