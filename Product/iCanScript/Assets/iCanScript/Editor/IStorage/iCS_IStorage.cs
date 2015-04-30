@@ -564,14 +564,105 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateFunction(int parentId, iCS_FunctionPrototype desc) {
         iCS_EditorObject instance= desc.IsInstanceMember ?
                     				CreateInstanceFunction(parentId, desc) : 
-                    				CreateClassFunction(parentId, desc);
+                    				CreateStaticFunction(parentId, desc);
 
 		instance.MethodName= desc.MethodName;
 		instance.NbOfParams= P.length(desc.Parameters);
 		return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateClassFunction(int parentId, iCS_FunctionPrototype desc) {
+	/// Creates a node that represents a static function.
+	///
+	/// @param parentId The id of the parent node.
+	/// @param libraryObject The library object of the function to create.
+	/// @return The newly created property wizard node.
+	///
+    public iCS_EditorObject CreateStaticFunction(int parentId, LibraryFunction libraryFunction) {
+        // -- Grab a unique ID for this node. --
+        int id= GetNextAvailableId();
+        // -- Create node --
+        var nodeName     = libraryFunction.nodeName;
+		var declaringType= libraryFunction.declaringType;
+		var objectType   = iCS_ObjectTypeEnum.ClassFunction;
+        var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
+		instance.MethodName= libraryFunction.methodInfo.Name;
+        // -- Create ports. --
+		iCS_EditorObject port= null;
+		var parameters= libraryFunction.parameters;
+		var parametersLen= P.length(parameters);
+		instance.NbOfParams= parametersLen;
+		int idx= 0;
+        for(; idx < parametersLen; ++idx) {
+            var p= parameters[idx];
+			var parameterType= p.ParameterType;
+            if(parameterType != typeof(void)) {
+                iCS_ObjectTypeEnum portType= p.IsOut ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
+                port= CreatePort(p.Name, id, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
+				object initialValue= p.DefaultValue;
+				if(initialValue == null || initialValue.GetType() != parameterType) {
+					initialValue= iCS_Types.DefaultValue(parameterType);
+				}
+                port.InitialPortValue= initialValue;
+            }
+        }
+		// Create return port.
+		var returnType= libraryFunction.returnType;
+		if(returnType != null && returnType != typeof(void)) {
+			var returnName= Char.ToLower(nodeName[0])+nodeName.Substring(1);
+            port= CreatePort(returnName, id, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+		}
+        return instance;
+    }
+    // ----------------------------------------------------------------------
+	/// Creates a node that represents a non-static function.
+	///
+	/// @param parentId The id of the parent node.
+	/// @param libraryObject The library object of the function to create.
+	/// @return The newly created property wizard node.
+	///
+    public iCS_EditorObject CreateFunction(int parentId, LibraryFunction libraryFunction) {
+        // -- Grab a unique ID for this node. --
+        int id= GetNextAvailableId();
+        // -- Create node --
+        var nodeName     = libraryFunction.nodeName;
+		var libraryParent= libraryFunction.parent as LibraryType;
+		var declaringType= libraryParent.type;
+		var objectType   = iCS_ObjectTypeEnum.InstanceFunction;
+        var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
+		instance.MethodName= libraryFunction.methodInfo.Name;
+		// -- Create target & self ports. --
+        CreateTargetPort(id);
+        CreateSelfPort(id);
+        // -- Create ports. --
+		iCS_EditorObject port= null;
+		var parameters= libraryFunction.parameters;
+		var parametersLen= P.length(parameters);
+		instance.NbOfParams= parametersLen;
+		int idx= 0;
+        for(; idx < parametersLen; ++idx) {
+            var p= parameters[idx];
+			var parameterType= p.ParameterType;
+            if(parameterType != typeof(void)) {
+                iCS_ObjectTypeEnum portType= p.IsOut ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
+                port= CreatePort(p.Name, id, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
+				object initialValue= p.DefaultValue;
+				if(initialValue == null || initialValue.GetType() != parameterType) {
+					initialValue= iCS_Types.DefaultValue(parameterType);
+				}
+                port.InitialPortValue= initialValue;
+            }
+        }
+		// Create return port.
+		var returnType= libraryFunction.returnType;
+		if(returnType != null && returnType != typeof(void)) {
+			var returnName= Char.ToLower(nodeName[0])+nodeName.Substring(1);
+            port= CreatePort(returnName, id, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+		}
+        return instance;
+    }
+
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject CreateStaticFunction(int parentId, iCS_FunctionPrototype desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Create new EditorObject

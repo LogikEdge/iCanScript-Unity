@@ -252,14 +252,26 @@ namespace iCanScript.Editor {
 	            iStorage.CreatePropertyWizardNode(-1, libraryType.type);
 				return;
 			}
-			else if(libraryObject is Field) {
+			else if(libraryObject is LibraryField) {
 				
 			}
-			else if(libraryObject is Constructor) {
-				
+			else if(libraryObject is LibraryConstructor) {
+				var libraryFunction= libraryObject as LibraryFunction;
+				if(libraryFunction.isStatic) {
+					iStorage.CreateStaticFunction(-1, libraryFunction);
+				}
+				else {
+					iStorage.CreateFunction(-1, libraryFunction);					
+				}				
 			}
-			else if(libraryObject is Function) {
-				
+			else if(libraryObject is LibraryFunction) {
+				var libraryFunction= libraryObject as LibraryFunction;
+				if(libraryFunction.isStatic) {
+					iStorage.CreateStaticFunction(-1, libraryFunction);
+				}
+				else {
+					iStorage.CreateFunction(-1, libraryFunction);					
+				}
 			}
 			else {
 				Debug.LogWarning("iCanScript: Unknown library type. Contact support.");

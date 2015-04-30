@@ -47,6 +47,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
+		public string nodeName 		{ get { return GetNodeName(); }}
         public string displayString {
             get {
                 if(myDisplayString == null) {
@@ -77,6 +78,7 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
         internal abstract string GetRawName();
         internal abstract string GetDisplayString();
+		internal abstract string GetNodeName();
 
         // ======================================================================
         // INIT / SHUTDOWN
@@ -125,8 +127,9 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetDisplayString() { return "Library"; }
         internal override string GetRawName()       { return "Library"; }
+		internal override string GetNodeName()		{ return GetRawName(); }
+        internal override string GetDisplayString() { return GetNodeName(); }
 
         // ======================================================================
         // UTILITIES
@@ -170,7 +173,8 @@ namespace iCanScript.Editor {
         // INTERFACES
         // ----------------------------------------------------------------------
         internal override string GetRawName()        { return myName; }
-        internal override string GetDisplayString()  { return NameUtility.ToDisplayName(myName); }
+		internal override string GetNodeName()		 { return NameUtility.ToDisplayName(myName); }
+        internal override string GetDisplayString()  { return GetNodeName(); }
 
         // ======================================================================
         // INIT
@@ -220,7 +224,8 @@ namespace iCanScript.Editor {
         // INTERFACES
         // ----------------------------------------------------------------------
         internal override string GetRawName()        { return myName; }
-        internal override string GetDisplayString()  { return NameUtility.ToDisplayName(myName); }
+		internal override string GetNodeName()		 { return NameUtility.ToDisplayName(myName); }
+        internal override string GetDisplayString()  { return GetNodeName(); }
 
         // ======================================================================
         // INIT
@@ -267,6 +272,9 @@ namespace iCanScript.Editor {
         // INTERFACES
         // ----------------------------------------------------------------------
         internal override string GetRawName()       { return type.Name; }
+		internal override string GetNodeName() {
+			return NameUtility.ToDisplayName(type);
+		}
         internal override string GetDisplayString() {
 			// -- Start with the base name --
 			var displayName= new StringBuilder(mainValueBegin, 64);
@@ -352,9 +360,12 @@ namespace iCanScript.Editor {
         // INTERFACES
         // ----------------------------------------------------------------------
         internal override string GetRawName()       { return memberInfo.Name; }
+		internal override string GetNodeName() {
+			return NameUtility.ToDisplayName(memberInfo.Name);
+		}
         internal override string GetDisplayString() {
 			var displayString= new StringBuilder(mainValueBegin,32);
-			displayString.Append(NameUtility.ToDisplayName(memberInfo.Name));
+			displayString.Append(GetNodeName());
 			displayString.Append(mainValueEnd);
 			return displayString.ToString();
 		}
@@ -362,7 +373,7 @@ namespace iCanScript.Editor {
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the class that represents a programatic type field.
-    public class Field : LibraryMemberInfo {
+    public class LibraryField : LibraryMemberInfo {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
@@ -372,7 +383,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public Field(MemberInfo memberInfo) : base(memberInfo) {}
+        public LibraryField(MemberInfo memberInfo) : base(memberInfo) {}
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -398,7 +409,15 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetRawName()       { return memberInfo.Name; }
+		internal override string GetRawName()       { return memberInfo.Name; }
+		internal override string GetNodeName() {
+			var displayName= new StringBuilder(64);
+			displayName.Append(NameUtility.ToDisplayName(memberInfo.Name));
+			if(isGeneric) {
+				displayName.Append(NameUtility.ToDisplayGenericArguments(genericArguments));
+			}
+			return displayName.ToString();			
+		}
         internal override string GetDisplayString() {
 			var displayName= new StringBuilder("<b>", 64);
 			displayName.Append(NameUtility.ToDisplayName(memberInfo.Name));
@@ -409,6 +428,7 @@ namespace iCanScript.Editor {
 				displayName.Append("</i>");
 			}
 			return displayName.ToString();
+
 		}
 		
         // ======================================================================
@@ -421,7 +441,8 @@ namespace iCanScript.Editor {
     			var result= new StringBuilder(32);
                 bool needComma= false;
                 if(!isStatic && !isConstructor) {
-                    result.Append(NameUtility.ToDisplayName(declaringType));
+					var libraryType= parent as LibraryType;
+                    result.Append(NameUtility.ToDisplayName(libraryType.type));
                     needComma= true;
                 }
                 foreach(var param in parameters) {
@@ -483,11 +504,11 @@ namespace iCanScript.Editor {
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    public class Constructor : LibraryMethodBase {
+    public class LibraryConstructor : LibraryMethodBase {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public Constructor(ConstructorInfo constructorInfo) : base(constructorInfo) {}
+        public LibraryConstructor(ConstructorInfo constructorInfo) : base(constructorInfo) {}
 
         // ======================================================================
         // INTERFACES
@@ -499,7 +520,7 @@ namespace iCanScript.Editor {
 			displayString.Append("new ");
 			displayString.Append("</color></b>");
 			displayString.Append(mainValueBegin);
-			displayString.Append(NameUtility.ToDisplayName(declaringType));
+			displayString.Append(GetNodeName());
 			displayString.Append(mainValueEnd);
 			displayString.Append(firstPartBegin);
 			displayString.Append(" (");
@@ -508,26 +529,32 @@ namespace iCanScript.Editor {
 			displayString.Append(firstPartEnd);
 			return displayString.ToString();
 		}
+        // ----------------------------------------------------------------------
+		internal override string GetNodeName() {
+			return NameUtility.ToDisplayName(declaringType);
+		}
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the class that represents a function in the library.
-    public class Function : LibraryMethodBase {
+    public class LibraryFunction : LibraryMethodBase {
+        // ======================================================================
+        // PROPERTIES
+        // ----------------------------------------------------------------------
+        public MethodInfo	methodInfo	{ get { return memberInfo as MethodInfo; }}
+		public Type			returnType  { get { return methodInfo.ReturnType; }}
+
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public Function(MethodInfo methodInfo) : base(methodInfo) {}
+        public LibraryFunction(MethodInfo methodInfo) : base(methodInfo) {}
 
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
         internal override string GetDisplayString() {
             // -- Determine function name --
-            var name= NameUtility.ToDisplayName(memberInfo.Name);
-            var methodBase= memberInfo as MethodBase;
-            if(isGeneric) {
-				name+= NameUtility.ToDisplayGenericArguments(genericArguments);
-            }
+            var name= GetNodeName();
             // -- Get input parameters --
             var inputs= "("+ToDisplayInputParameters+")";
             // -- Get output parameters --
@@ -544,6 +571,14 @@ namespace iCanScript.Editor {
             }
             return part1 + "->" + outputTypesHeader+outputs+outputTypesTrailer;
         }
+        // ----------------------------------------------------------------------
+		internal override string GetNodeName() {
+            var name= NameUtility.ToDisplayName(memberInfo.Name);
+            if(isGeneric) {
+				name+= NameUtility.ToDisplayGenericArguments(genericArguments);
+            }
+			return name;
+		}
     }
     
 }

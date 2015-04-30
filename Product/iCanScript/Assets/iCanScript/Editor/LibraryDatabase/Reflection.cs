@@ -185,7 +185,7 @@ namespace iCanScript.Editor {
         static void ExtractConstructors(LibraryType parentType, Type type) {
             foreach(var constructor in type.GetConstructors(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {
                 ++myNbOfConstructors;
-                parentType.AddChild(new Constructor(constructor));
+                parentType.AddChild(new LibraryConstructor(constructor));
             }
         }
 
@@ -197,7 +197,7 @@ namespace iCanScript.Editor {
         static void ExtractFields(LibraryType parentType, Type type) {
             foreach(var field in type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {                
                 ++myNbOfFields;
-                parentType.AddChild(new Field(field));
+                parentType.AddChild(new LibraryField(field));
             }
         }
 
@@ -209,7 +209,7 @@ namespace iCanScript.Editor {
         static void ExtractFunctions(LibraryType parentType, Type type) {
             foreach(var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {
                 ++myNbOfFunctions;
-                parentType.AddChild(new Function(method));
+                parentType.AddChild(new LibraryFunction(method));
             }
         }
     }
