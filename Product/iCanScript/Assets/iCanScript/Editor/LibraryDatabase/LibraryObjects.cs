@@ -145,10 +145,30 @@ namespace iCanScript.Editor {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines the first level namespace in the library.
     public class LibraryRootNamespace : LibraryObject {
+        // ======================================================================
+        // FIELDS
+        // ----------------------------------------------------------------------
         public string name= null;
-        public LibraryRootNamespace(string name) : base() { this.name= name; }
-        internal override string GetDisplayString()  { return name; }
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
         internal override string GetRawName()        { return name; }
+        internal override string GetDisplayString()  { return NameUtility.ToDisplayName(name); }
+
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibraryRootNamespace(string name) : base() { this.name= name; }
+
+        // ======================================================================
+        // UTILITIES
+        // ----------------------------------------------------------------------
+        /// Returns the child namespace library object with the given name.
+        ///
+        /// @param name The name of the child namespace to search for.
+        /// @return The found or created child namespace library object.
+        ///
         public LibraryChildNamespace GetChildNamespace(string name) {
             var node= GetChild<LibraryChildNamespace>(t=> t.GetRawName() == name);
             if(node == null) {
@@ -157,6 +177,9 @@ namespace iCanScript.Editor {
             }
             return node;
         }
+
+        // ----------------------------------------------------------------------
+        /// Sorts the entire library using the active sort algorithm. 
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryChildNamespace>(
@@ -173,9 +196,13 @@ namespace iCanScript.Editor {
     /// Defines the nested namespaces in the library (2nd level).
     public class LibraryChildNamespace : LibraryObject {
         public string name= null;
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
+        internal override string GetRawName()        { return name; }
+        internal override string GetDisplayString()  { return NameUtility.ToDisplayName(name); }
+
         public LibraryChildNamespace(string name) : base() { this.name= name; }
-        internal override string GetDisplayString()   { return name; }
-        internal override string GetRawName()          { return name; }
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryType>(
@@ -196,7 +223,7 @@ namespace iCanScript.Editor {
         public LibraryType(Type type) : base()    { this.type= type; }
         internal override string GetRawName()    { return type.Name; }
         internal override string GetDisplayString() {
-            var name= type.Name;
+            var name= NameUtility.ToDisplayName(type.Name);
             if(type.IsGenericType) {
                 // -- Remove number of parameter info --
                 int end= name.IndexOf('`');
@@ -269,7 +296,7 @@ namespace iCanScript.Editor {
         // INTERFACES
         // ----------------------------------------------------------------------
         internal override string GetRawName()       { return memberInfo.Name; }
-        internal override string GetDisplayString() { return memberInfo.Name; }
+        internal override string GetDisplayString() { return NameUtility.ToDisplayName(memberInfo.Name); }
 
     }
     
@@ -360,6 +387,12 @@ namespace iCanScript.Editor {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class Constructor : LibraryMethodBase {
         public Constructor(ConstructorInfo constructorInfo) : base(constructorInfo) {}
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
+        internal override string GetRawName()       { return memberInfo.Name; }
+        internal override string GetDisplayString() { return NameUtility.ToDisplayName(memberInfo.Name); }
     }
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class Function : LibraryMethodBase {
