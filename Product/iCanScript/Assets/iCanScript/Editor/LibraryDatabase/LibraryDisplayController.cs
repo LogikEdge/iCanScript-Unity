@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.Reflection;
 using System.Collections;
 
 namespace iCanScript.Editor {
@@ -13,6 +14,7 @@ namespace iCanScript.Editor {
     	float           myFoldOffset   = 16f;
         LibraryObject   mySelected     = null;
         GUIStyle        myLabelStyle   = null;
+		int				myNumberOfItems= 0;
         bool            myShowInherited= true;
 		bool			myShowProtected= false;
         
@@ -40,16 +42,30 @@ namespace iCanScript.Editor {
         }
 		public bool showInherited {
 			get { return myShowInherited; }
-			set { myShowInherited= value; }
+			set {
+				if(value != myShowInherited) {
+					myShowInherited= value;
+					ComputeNumberOfItems();
+				}
+			}
 		}
 		public bool showProtected {
 			get { return myShowProtected; }
-			set { myShowProtected= value; }
+			set {
+				if(value != myShowProtected) {
+					myShowProtected= value;
+					ComputeNumberOfItems();					
+				}
+			}
 		}
 		public int numberOfItems {
-			get { return 0; }
+			get { return myNumberOfItems; }
+			set { myNumberOfItems= value; }
 		}
-	
+		public LibraryRoot database {
+			get { return Reflection.LibraryDatabase; }
+		}
+		
         // =================================================================================
         // Constants
         // ---------------------------------------------------------------------------------
@@ -64,6 +80,8 @@ namespace iCanScript.Editor {
     	public LibraryDisplayController() {
             // -- Initialize panel. --
     		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
+			// -- Compute # of items --
+			ComputeNumberOfItems();
             // -- Initialize the cursor --
             Reset();
     	}
@@ -73,7 +91,7 @@ namespace iCanScript.Editor {
         // -------------------------------------------------------------------
         /// Initializes the cursor position.
     	public void Reset() {
-    	    myCursor= Reflection.LibraryDatabase;
+    	    myCursor= database;
     	}
     	public void BeginDisplay() {
             // -- Initialize some display constants. --
@@ -198,11 +216,37 @@ namespace iCanScript.Editor {
         /// @return _true_ if it should be shown. _false_ otherwise.
         ///
         bool ShouldShow(LibraryMemberInfo libraryObject) {
-            if(myShowInherited) return true;
-            var parent= libraryObject.parent as LibraryType;
-            return parent.type == libraryObject.memberInfo.DeclaringType;
+			var memberInfo= libraryObject.memberInfo;
+            if(myShowInherited == false) {
+				var parent= libraryObject.parent as LibraryType;
+            	if(parent.type != memberInfo.DeclaringType) {
+            		return false;
+            	}
+			}
+			if(myShowProtected == false) {
+				var methodBase= memberInfo as MethodBase;
+				if(methodBase != null && methodBase.IsFamily) {
+					return false;
+				}
+			}
+			return true;
         }
         
+        // -------------------------------------------------------------------
+        /// Determines the number of items to show.
+        void ComputeNumberOfItems() {
+			int nbItems= 0;
+			database.ForEach(
+				l=> {
+					var libraryMemberInfo= l as LibraryMemberInfo;
+					if(libraryMemberInfo != null && ShouldShow(libraryMemberInfo)) {
+						++nbItems;
+					}
+				}
+			);
+			this.numberOfItems= nbItems;
+        }
+
         // ===================================================================
         // -------------------------------------------------------------------
         bool ShouldUseFoldout {

@@ -32,6 +32,14 @@ namespace iCanScript.Editor {
 		public int numberOfItems {
 			get { return myController.numberOfItems; }
 		}
+		public bool showInherited {
+			get { return myController.showInherited; }
+			set { myController.showInherited= value; }
+		}
+		public bool showProtected {
+			get { return myController.showProtected; }
+			set { myController.showProtected= value; }
+		}
 		
         // =================================================================================
         // Activation/Deactivation.
@@ -103,18 +111,10 @@ namespace iCanScript.Editor {
             //  -- Add display options -- 
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show: ", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            var newShowInherited= iCS_ToolbarUtility.Toggle(ref line1Rect, myShowInherited, 0, 0);
-            if(newShowInherited != myShowInherited) {
-                // TODO: change controller ShowInherited.
-                myShowInherited= newShowInherited;                
-            }
+            showInherited= iCS_ToolbarUtility.Toggle(ref line1Rect, showInherited, 0, 0);
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, " Inherited", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            var newShowProtected= iCS_ToolbarUtility.Toggle(ref line1Rect, myShowProtected, 0, 0);
-            if(newShowProtected != myShowProtected) {
-                // TODO: change controller ShowProtected.
-                myShowProtected= newShowProtected;                
-            }
+            showProtected= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtected, 0, 0);
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, " Protected", 0, 0);
 	        iCS_ToolbarUtility.MiniLabel(ref line1Rect, "# items: "+numberOfItems.ToString(), 0, 0, true);
 			// -- Add search fields --
