@@ -261,6 +261,15 @@ namespace iCanScript.Editor {
 					iStorage.CreateGetField(-1, libraryField);								
 				}
 			}
+			else if(libraryObject is LibrarySetField) {
+				var libraryField= libraryObject as LibrarySetField;
+				if(libraryField.isStatic) {
+					iStorage.CreateStaticSetField(-1, libraryField);
+				}
+				else {
+					iStorage.CreateSetField(-1, libraryField);								
+				}
+			}
 			else if(libraryObject is LibraryConstructor) {
 				var libraryConstructor= libraryObject as LibraryConstructor;
 				if(libraryConstructor.isStatic) {
