@@ -705,7 +705,7 @@ public partial class iCS_IStorage {
 	/// @param libraryConstructor The library object of the function to create.
 	/// @return The newly created property wizard node.
 	///
-    public iCS_EditorObject CreateStaticField(int parentId, LibraryField libraryField) {
+    public iCS_EditorObject CreateStaticGetField(int parentId, LibraryGetField libraryField) {
 //        // -- Grab a unique ID for this node. --
 //        int id= GetNextAvailableId();
 //        // -- Create node --
@@ -728,7 +728,7 @@ public partial class iCS_IStorage {
 	/// @param libraryConstructor The library object of the function to create.
 	/// @return The newly created property wizard node.
 	///
-    public iCS_EditorObject CreateField(int parentId, LibraryField libraryField) {
+    public iCS_EditorObject CreateGetField(int parentId, LibraryGetField libraryField) {
 //        // -- Grab a unique ID for this node. --
 //        int id= GetNextAvailableId();
 //        // -- Create node --

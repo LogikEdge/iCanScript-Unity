@@ -361,7 +361,7 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
         internal override string GetRawName()       { return memberInfo.Name; }
 		internal override string GetNodeName() {
-			return NameUtility.ToDisplayName(memberInfo.Name);
+			return NameUtility.ToDisplayName(GetRawName());
 		}
         internal override string GetDisplayString() {
 			var displayString= new StringBuilder(mainValueBegin,32);
@@ -373,17 +373,44 @@ namespace iCanScript.Editor {
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the class that represents a programatic type field.
-    public class LibraryField : LibraryMemberInfo {
+    public class LibraryGetField : LibraryMemberInfo {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
 		public FieldInfo		fieldInfo	{ get { return memberInfo as FieldInfo; }}
 		public bool				isStatic	{ get { return fieldInfo.IsStatic; }}
+		public bool				isConst     { get { return fieldInfo.IsLiteral; }}
 		
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public LibraryField(MemberInfo memberInfo) : base(memberInfo) {}
+        public LibraryGetField(MemberInfo memberInfo) : base(memberInfo) {}
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
+        internal override string GetRawName()	{ return "get_"+memberInfo.Name; }
+    }
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the class that represents a programatic type field.
+    public class LibrarySetField : LibraryMemberInfo {
+        // ======================================================================
+        // PROPERTIES
+        // ----------------------------------------------------------------------
+		public FieldInfo		fieldInfo	{ get { return memberInfo as FieldInfo; }}
+		public bool				isStatic	{ get { return fieldInfo.IsStatic; }}
+		public bool				isConst     { get { return fieldInfo.IsLiteral; }}
+		
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibrarySetField(MemberInfo memberInfo) : base(memberInfo) {}
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
+        internal override string GetRawName()	{ return "set_"+memberInfo.Name; }
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

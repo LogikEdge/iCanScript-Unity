@@ -197,7 +197,10 @@ namespace iCanScript.Editor {
         static void ExtractFields(LibraryType parentType, Type type) {
             foreach(var field in type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {                
                 ++myNbOfFields;
-                parentType.AddChild(new LibraryField(field));
+                parentType.AddChild(new LibraryGetField(field));
+				if(!field.IsLiteral) {
+	                parentType.AddChild(new LibrarySetField(field));
+				}
             }
         }
 
