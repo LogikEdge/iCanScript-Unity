@@ -109,13 +109,13 @@ namespace iCanScript.Editor {
             iCS_ToolbarUtility.BuildToolbar(line3Rect);
             iCS_ToolbarUtility.BuildToolbar(line4Rect);
             //  -- Add display options -- 
-            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show: ", 0, 0);
+            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show:", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            showInherited= iCS_ToolbarUtility.Toggle(ref line1Rect, showInherited, 0, 0);
-            iCS_ToolbarUtility.MiniLabel(ref line1Rect, " Inherited", 0, 0);
+            showInherited= iCS_ToolbarUtility.Toggle(ref line1Rect, showInherited, 10, 0);
+            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Inherited", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            showProtected= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtected, 0, 0);
-            iCS_ToolbarUtility.MiniLabel(ref line1Rect, " Protected", 0, 0);
+            showProtected= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtected, 10, 0);
+            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Protected", 0, 0);
 	        iCS_ToolbarUtility.MiniLabel(ref line1Rect, "# items: "+numberOfItems.ToString(), 0, 0, true);
 			// -- Add search fields --
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Search: ", 0, 0);

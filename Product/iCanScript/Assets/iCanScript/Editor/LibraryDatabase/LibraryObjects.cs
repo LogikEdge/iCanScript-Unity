@@ -96,6 +96,7 @@ namespace iCanScript.Editor {
 
     }
     
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class LibraryRoot : LibraryObject {
         public LibraryRoot() {}
         internal override string GetDisplayString() { return "Library"; }
@@ -119,6 +120,7 @@ namespace iCanScript.Editor {
             }
         }
     }
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class LibraryRootNamespace : LibraryObject {
         public string name= null;
         public LibraryRootNamespace(string name) : base() { this.name= name; }
@@ -144,6 +146,7 @@ namespace iCanScript.Editor {
         }
     }
 
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class LibraryChildNamespace : LibraryObject {
         public string name= null;
         public LibraryChildNamespace(string name) : base() { this.name= name; }
@@ -161,6 +164,7 @@ namespace iCanScript.Editor {
         }
     }
     
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class LibraryType : LibraryObject {
         public Type    type= null;
 
@@ -203,6 +207,7 @@ namespace iCanScript.Editor {
         }
     }
     
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public abstract class LibraryMemberInfo : LibraryObject {
         public MemberInfo   memberInfo= null;
         
@@ -218,6 +223,12 @@ namespace iCanScript.Editor {
         public bool isMethod      { get { return memberType == MemberTypes.Method; }}
         public bool isGetProperty { get { return isMethod && memberInfo.Name.StartsWith("get_"); }}
         public bool isSetProperty { get { return isMethod && memberInfo.Name.StartsWith("set_"); }}
+        public bool isInherited   {
+            get {
+				var parent= this.parent as LibraryType;
+            	return parent.type != memberInfo.DeclaringType;
+            }
+        }
 
         public string FunctionSignatureInputTypes {
             get {
@@ -287,14 +298,28 @@ namespace iCanScript.Editor {
         }
     }
     
-    public class Constructor : LibraryMemberInfo {
-        public Constructor(MemberInfo memberInfo) : base(memberInfo) {}
-    }
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public class Field : LibraryMemberInfo {
         public Field(MemberInfo memberInfo) : base(memberInfo) {}
     }
-    public class Function : LibraryMemberInfo {
-        public Function(MemberInfo memberInfo) : base(memberInfo) {}
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    public class LibraryMethodBase : LibraryMemberInfo {
+        public LibraryMethodBase(MethodBase methodBase) : base(methodBase) {}
+
+        public MethodBase methodBase { get { return memberInfo as MethodBase; }}
+        public bool isPublic         { get { return methodBase.IsPublic; }}
+        public bool isProtected      { get { return methodBase.IsFamily; }}
+        public bool isPrivate        { get { return methodBase.IsPrivate; }}
+    }
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    public class Constructor : LibraryMethodBase {
+        public Constructor(ConstructorInfo constructorInfo) : base(constructorInfo) {}
+    }
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    public class Function : LibraryMethodBase {
+        public Function(MethodInfo methodInfo) : base(methodInfo) {}
         internal override string GetDisplayString() {
             // -- Determine function name --
             var name= NameUtility.ToDisplayName(memberInfo.Name);

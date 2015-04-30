@@ -218,8 +218,7 @@ namespace iCanScript.Editor {
         bool ShouldShow(LibraryMemberInfo libraryObject) {
 			var memberInfo= libraryObject.memberInfo;
             if(myShowInherited == false) {
-				var parent= libraryObject.parent as LibraryType;
-            	if(parent.type != memberInfo.DeclaringType) {
+                if(libraryObject.isInherited) {
             		return false;
             	}
 			}
