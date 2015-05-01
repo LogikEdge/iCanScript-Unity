@@ -372,15 +372,26 @@ namespace iCanScript.Editor {
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	/// Defines the class that represents a programatic type field.
-    public class LibraryGetField : LibraryMemberInfo {
+	/// Defines the base class for all fields in the library.
+    public class LibraryField : LibraryMemberInfo {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
 		public FieldInfo		fieldInfo	{ get { return memberInfo as FieldInfo; }}
 		public bool				isStatic	{ get { return fieldInfo.IsStatic; }}
 		public bool				isConst     { get { return fieldInfo.IsLiteral; }}
+        public string           fieldName   { get { return fieldInfo.Name; }}
+        public Type             fieldType   { get { return fieldInfo.FieldType; }}
 		
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibraryField(MemberInfo memberInfo) : base(memberInfo) {}
+    }
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the class that represents a programatic type field.
+    public class LibraryGetField : LibraryField {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
@@ -394,14 +405,7 @@ namespace iCanScript.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the class that represents a programatic type field.
-    public class LibrarySetField : LibraryMemberInfo {
-        // ======================================================================
-        // PROPERTIES
-        // ----------------------------------------------------------------------
-		public FieldInfo		fieldInfo	{ get { return memberInfo as FieldInfo; }}
-		public bool				isStatic	{ get { return fieldInfo.IsStatic; }}
-		public bool				isConst     { get { return fieldInfo.IsLiteral; }}
-		
+    public class LibrarySetField : LibraryField {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
