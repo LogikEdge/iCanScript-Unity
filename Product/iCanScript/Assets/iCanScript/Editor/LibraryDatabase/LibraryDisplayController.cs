@@ -9,14 +9,18 @@ namespace iCanScript.Editor {
         // =================================================================================
         // FIELDS
         // ---------------------------------------------------------------------------------
-    	DSTreeView      myTreeView     = null;
-        LibraryObject   myCursor       = null;
-    	float           myFoldOffset   = 16f;
-        LibraryObject   mySelected     = null;
-        GUIStyle        myLabelStyle   = null;
-		int				myNumberOfItems= 0;
-        bool            myShowInherited= true;
-		bool			myShowProtected= false;
+    	DSTreeView      myTreeView       = null;
+        LibraryObject   myCursor         = null;
+    	float           myFoldOffset     = 16f;
+        LibraryObject   mySelected       = null;
+        GUIStyle        myLabelStyle     = null;
+		int				myNumberOfItems  = 0;
+        bool            myShowInherited  = true;
+		bool			myShowProtected  = false;
+        Texture2D       myiCanScriptIcon = null;
+        Texture2D       myUnityIcon      = null;
+        Texture2D       myWindowsIcon    = null;
+        Texture2D       myDefaultRootIcon= null;
         
         // =================================================================================
         // Properties
@@ -66,6 +70,38 @@ namespace iCanScript.Editor {
 		public LibraryRoot database {
 			get { return Reflection.LibraryDatabase; }
 		}
+        public Texture2D iCanScriptIcon {
+            get {
+                if(myiCanScriptIcon == null) {
+                    myiCanScriptIcon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.iCanScript);
+                }
+                return myiCanScriptIcon;
+            }
+        }
+        public Texture2D unityIcon {
+            get {
+                if(myUnityIcon == null) {
+                    myUnityIcon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Unity);
+                }
+                return myUnityIcon;
+            }
+        }
+        public Texture2D windowsIcon {
+            get {
+                if(myWindowsIcon == null) {
+                    myWindowsIcon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.DotNet);
+                }
+                return myWindowsIcon;
+            }
+        }
+        public Texture2D defaultRootIcon {
+            get {
+                if(myDefaultRootIcon == null) {
+                    myDefaultRootIcon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Company);
+                }
+                return myDefaultRootIcon;
+            }
+        }
 		
         // =================================================================================
         // Constants
@@ -185,7 +221,7 @@ namespace iCanScript.Editor {
     		bool foldoutState= ShouldUseFoldout ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
             // -- Display string to user --
             displayArea.x= displayArea.x+myFoldOffset;
-            GUI.Label(displayArea, displayString, labelStyle);
+            GUI.Label(displayArea, new GUIContent(displayString, iCanScriptIcon), labelStyle);
     	    return foldoutState;
     	}
         // -------------------------------------------------------------------

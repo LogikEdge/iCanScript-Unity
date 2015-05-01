@@ -571,6 +571,8 @@ public partial class iCS_IStorage {
 		instance.NbOfParams= P.length(desc.Parameters);
 		return instance;
     }
+    
+    // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     // ----------------------------------------------------------------------
 	/// Create parameter ports on the given node.
 	///
