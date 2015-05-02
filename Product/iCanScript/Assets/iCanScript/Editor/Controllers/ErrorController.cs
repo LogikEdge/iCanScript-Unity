@@ -61,7 +61,7 @@ namespace iCanScript.Editor {
         public static Texture2D ErrorIcon {
             get {
                 if(myErrorIcon == null) {
-            		iCS_TextureCache.GetIcon(iCS_EditorStrings.ErrorIcon, out myErrorIcon);
+            		TextureCache.GetIcon(iCS_EditorStrings.ErrorIcon, out myErrorIcon);
                 }
                 return myErrorIcon;
             }
@@ -69,7 +69,7 @@ namespace iCanScript.Editor {
         public static Texture2D SmallErrorIcon {
             get {
                 if(mySmallErrorIcon == null) {
-            		iCS_TextureCache.GetIcon(iCS_EditorStrings.ErrorSmallIcon, out mySmallErrorIcon);
+            		TextureCache.GetIcon(iCS_EditorStrings.ErrorSmallIcon, out mySmallErrorIcon);
                 }
                 return mySmallErrorIcon;
             }
@@ -77,7 +77,7 @@ namespace iCanScript.Editor {
         public static Texture2D WarningIcon {
             get {
                 if(myWarningIcon == null) {
-            		iCS_TextureCache.GetIcon(iCS_EditorStrings.WarningIcon, out myWarningIcon);
+            		TextureCache.GetIcon(iCS_EditorStrings.WarningIcon, out myWarningIcon);
                 }
                 return myWarningIcon;
             }
@@ -85,7 +85,7 @@ namespace iCanScript.Editor {
         public static Texture2D SmallWarningIcon {
             get {
                 if(mySmallWarningIcon == null) {
-            		iCS_TextureCache.GetIcon(iCS_EditorStrings.WarningSmallIcon, out mySmallWarningIcon);
+            		TextureCache.GetIcon(iCS_EditorStrings.WarningSmallIcon, out mySmallWarningIcon);
                 }
                 return mySmallWarningIcon;
             }

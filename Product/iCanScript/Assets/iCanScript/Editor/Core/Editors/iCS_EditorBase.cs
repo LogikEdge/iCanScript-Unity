@@ -60,7 +60,7 @@ public class iCS_EditorBase : EditorWindow {
                 var r= methodInfo.Invoke(this, null) as GUIContent;
                 if(r.image == null) {
                     Texture2D iCanScriptLogo= null;
-                    if(iCS_TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo)) {
+                    if(TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo)) {
                         r.image= iCanScriptLogo;
                     }
                 }

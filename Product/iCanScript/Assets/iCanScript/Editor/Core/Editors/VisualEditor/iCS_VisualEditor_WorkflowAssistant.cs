@@ -293,10 +293,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myAssistaneButtonStyle= new GUIStyle(GUI.skin.button);
         myAssistaneButtonStyle.fontSize= 20;
         myAssistaneButtonStyle.fontStyle= FontStyle.Bold;
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.LargeLogoIcon, out myiCanScriptLargeLogo);
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.LogoIcon, out myiCanScriptMediumLogo);            
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myAssistantLogo);                   
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myAssistantDontLogo);                   
+        TextureCache.GetIcon(iCS_EditorStrings.LargeLogoIcon, out myiCanScriptLargeLogo);
+        TextureCache.GetIcon(iCS_EditorStrings.LogoIcon, out myiCanScriptMediumLogo);            
+        TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myAssistantLogo);                   
+        TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myAssistantDontLogo);                   
         HotZoneAdd(kWorkflowAssistantKey, AssistantButtonArea, null, WorkflowAssistantOnMouseClick, null);
     }
 }

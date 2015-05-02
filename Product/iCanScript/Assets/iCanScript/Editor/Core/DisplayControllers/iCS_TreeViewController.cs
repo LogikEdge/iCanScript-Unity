@@ -289,7 +289,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
         Texture2D icon= null;
 		var current= IterValue;
 		if(current.IsNode) {
-            icon= iCS_Icons.GetIconFor(current);            
+            icon= Icons.GetIconFor(current);            
         } else if(current.IsControlPort) {
             if(current.IsEnablePort) {
                 icon= iCS_BuiltinTextures.InTriggerIcon;
@@ -312,7 +312,7 @@ public class iCS_TreeViewController : DSTreeViewDataSource {
             }
         } else if(current.IsStatePort || current.IsTransitionPort) {
             if(current.IsInTransitionPort || current.IsInStatePort) {
-                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon);
+                icon= TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon);
             } else {
                 icon= iCS_BuiltinTextures.OutTransitionPortIcon;                
             }

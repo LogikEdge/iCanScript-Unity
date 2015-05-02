@@ -30,8 +30,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void HelpInit() {
 #if HELP_HOTZONE
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
+        TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);
+        TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
         HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
 #endif
     }

@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Editor;
 using P= Prelude;
 
 public partial class iCS_IStorage {
@@ -18,7 +19,7 @@ public partial class iCS_IStorage {
         // Use the class Icon if it exists.
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(module.RuntimeType);
         if(components.Length != 0) {
-            var iconGUID= iCS_TextureCache.IconPathToGUID(components[0].IconPath);
+            var iconGUID= TextureCache.IconPathToGUID(components[0].IconPath);
             if(iconGUID != null) {
                 module.IconGUID= iconGUID;
             }            

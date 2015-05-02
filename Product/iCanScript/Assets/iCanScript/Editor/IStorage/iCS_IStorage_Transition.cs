@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using iCanScript.Editor;
 
 public partial class iCS_IStorage {    
     // ======================================================================
@@ -11,7 +12,7 @@ public partial class iCS_IStorage {
 
         // Create transition module
         iCS_EditorObject transitionPackage= CreatePackage(transitionParent.InstanceId, "false", iCS_ObjectTypeEnum.TransitionPackage);
-        var transitionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionPackageIcon);
+        var transitionIconGUID= TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionPackageIcon);
         if(transitionIconGUID != null) {
             transitionPackage.IconGUID= transitionIconGUID;            
         } else {

@@ -145,17 +145,7 @@ namespace iCanScript.Editor {
                 // -- Build namespace descriptors -- 
                 string level1= "";
                 string level2= "";
-                if(!string.IsNullOrEmpty(namespaceName)) {
-                    var namespaceLen= namespaceName == null ? 0 : namespaceName.Length;
-                    var separator= namespaceName.IndexOf('.');
-                    if(separator >= 0 && separator < namespaceLen) {
-                        level1= namespaceName.Substring(0, separator);
-                        level2= namespaceName.Substring(separator+1, namespaceLen-separator-1);
-                    }
-                    else {
-                        level1= namespaceName;
-                    }                    
-                }
+				SplitNamespace(namespaceName, out level1, out level2);
                 var rootNamespace = myDatabase.GetRootNamespace(level1);
                 var childNamespace= rootNamespace.GetChildNamespace(level2);
                 
@@ -164,7 +154,7 @@ namespace iCanScript.Editor {
             }        
         }
         
-        // ----------------------------------------------------------------------
+		// ----------------------------------------------------------------------
         /// Extracts all public constructors/fields/functions from the given type.
         ///
         /// @param type The type from which to extract the members.
@@ -215,6 +205,56 @@ namespace iCanScript.Editor {
                 parentType.AddChild(new LibraryFunction(method));
             }
         }
+
+        // ----------------------------------------------------------------------
+        /// Add an event handler to the given class.
+        ///
+		/// @param eventName The name of the event.
+        /// @param declaringType The parent type for the event handler.
+		/// @param parameterTypes The type for each parameter.
+		/// @param parameterNamse The name of each parameter.
+        ///
+		public static void AddEventHandler(string eventName, Type declaringType,
+										   Type[] parameterTypes, string[] parameterNames) {
+            // -- Build namespace descriptors -- 
+            string level1= "";
+            string level2= "";
+			SplitNamespace(declaringType.Namespace, out level1, out level2);
+            var rootNamespace = myDatabase.GetRootNamespace(level1);
+            var childNamespace= rootNamespace.GetChildNamespace(level2);
+			var libraryType= childNamespace.GetLibraryType(declaringType);
+			if(libraryType == null) {
+				Debug.LogWarning("iCanScript: Unable to add event handler: "+eventName+". The parent type is unknown: "+declaringType.Name);
+				return;
+			}
+			libraryType.AddChild(new LibraryEventHandler(eventName, declaringType, parameterTypes, parameterNames));
+		}
+
+		// ======================================================================
+		// UTILITIES
+        // ----------------------------------------------------------------------
+		/// Split the namespace into root and child namespace parts.
+		///
+		/// @param namespaceName The namespace to split.
+		/// @param level1 The root namespace.
+		/// @param level2 The child namesapces.
+		///
+		static void SplitNamespace(string namespaceName, out string level1, out string level2) {
+            level1= "";
+            level2= "";
+            if(!string.IsNullOrEmpty(namespaceName)) {
+                var namespaceLen= namespaceName == null ? 0 : namespaceName.Length;
+                var separator= namespaceName.IndexOf('.');
+                if(separator >= 0 && separator < namespaceLen) {
+                    level1= namespaceName.Substring(0, separator);
+                    level2= namespaceName.Substring(separator+1, namespaceLen-separator-1);
+                }
+                else {
+                    level1= namespaceName;
+                }                    
+            }	
+		}
+
     }
     
 }

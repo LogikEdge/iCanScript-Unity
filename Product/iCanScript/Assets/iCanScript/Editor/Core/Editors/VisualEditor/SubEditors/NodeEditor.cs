@@ -63,7 +63,7 @@ namespace iCanScript.Editor {
             OnNodeSpecificGUI();
 
             // Show Iconic image configuration.
-            Texture2D iconicTexture= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
+            Texture2D iconicTexture= TextureCache.GetIconFromGUID(node.IconGUID);
             Texture2D newTexture= EditorGUILayout.ObjectField("Iconic Texture", iconicTexture, typeof(Texture2D), false) as Texture2D;
             if(newTexture != iconicTexture) {
                 iCS_UserCommands.ChangeIcon(node, newTexture);

@@ -602,20 +602,20 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		string name= current.Name;
         if(nodeType == NodeTypeEnum.Company) {
             if(name == "iCanScript") {
-                icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.iCanScript);
+                icon= Icons.GetLibraryIconFor(DefaultNodeIcons.iCanScript);
             } else if(name == "Unity") {
-                icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Unity);
+                icon= Icons.GetLibraryIconFor(DefaultNodeIcons.Unity);
             } else if(name == "NET") {
-                icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.DotNet);
+                icon= Icons.GetLibraryIconFor(DefaultNodeIcons.DotNet);
             } else {
-                icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Company);
+                icon= Icons.GetLibraryIconFor(DefaultNodeIcons.Company);
             }
         } else if(nodeType == NodeTypeEnum.Library) {
-            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Library);                            
+            icon= Icons.GetLibraryIconFor(DefaultNodeIcons.Library);                            
         } else if(nodeType == NodeTypeEnum.Package) {
-			icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Package);            
+			icon= Icons.GetLibraryIconFor(DefaultNodeIcons.Package);            
         } else if(nodeType == NodeTypeEnum.Class) {
-			icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);            
+			icon= Icons.GetLibraryIconFor(DefaultNodeIcons.ObjectInstance);            
         } else if(nodeType == NodeTypeEnum.Field) {
             if(current.MemberInfo.IsGetField) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
@@ -629,11 +629,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 icon= iCS_BuiltinTextures.InEndPortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Constructor) {
-            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Builder);            
+            icon= Icons.GetLibraryIconFor(DefaultNodeIcons.Builder);            
         } else if(nodeType == NodeTypeEnum.Method) {
-			icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Function);            
+			icon= Icons.GetLibraryIconFor(DefaultNodeIcons.Function);            
         } else if(nodeType == NodeTypeEnum.Message) {
-            icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Message);            
+            icon= Icons.GetLibraryIconFor(DefaultNodeIcons.Message);            
         } else if(nodeType == NodeTypeEnum.InParameter) {
             icon= iCS_BuiltinTextures.InEndPortIcon;
         } else if(nodeType == NodeTypeEnum.OutParameter) {

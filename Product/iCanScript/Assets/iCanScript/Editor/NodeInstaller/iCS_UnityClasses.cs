@@ -1,7 +1,9 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using iCanScript.Editor;
 using iCanScript.Engine;
+using P=Prelude;
 
 // ======================================================================
 // This file installs predefined Unity3d classes and messages.
@@ -51,6 +53,11 @@ public static class iCS_UnityClasses {
                                            string iconPath= null, string description= null) {
         var voidReturn= new iCS_FunctionReturn("", typeof(void));                                       
         InstallUnityMessage(typeof(MonoBehaviour), messageName, iCS_StorageClass.Instance, parameters, voidReturn, iconPath, description);
+		
+		var declaringType= typeof(MonoBehaviour);
+		var parameterTypes= P.map(p=> p.type, parameters);
+		var parametersNames= P.map(p=> p.name, parameters);
+		Reflection.AddEventHandler(messageName, declaringType, parameterTypes, parametersNames);
     }
     
         

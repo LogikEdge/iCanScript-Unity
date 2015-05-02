@@ -223,7 +223,7 @@ namespace iCanScript.Editor {
 			if(libraryObject is LibraryRootNamespace) return;
 			if(libraryObject is LibraryChildNamespace) return;
             // -- Build drag object. --
-            GameObject go= new GameObject(libraryObject.displayString);
+            GameObject go= new GameObject(libraryObject.nodeName);
             go.hideFlags = HideFlags.HideAndDontSave;
             var visualScriptRoot= iCS_DynamicCall.AddLibrary(go);
             iCS_IStorage iStorage= new iCS_IStorage(visualScriptRoot);
@@ -237,7 +237,7 @@ namespace iCanScript.Editor {
             // -- Complete the drag information. --
             DragAndDrop.PrepareStartDrag();
             DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
-            DragAndDrop.StartDrag(libraryObject.displayString);
+            DragAndDrop.StartDrag(libraryObject.nodeName);
             iCS_AutoReleasePool.AutoRelease(go, 60f);
         }
         // ---------------------------------------------------------------------------------

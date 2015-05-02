@@ -32,7 +32,7 @@ public class iCS_AboutDialog : EditorWindow {
         var logoWidth= 64f;
         var logoHeight= 64f;
         Texture2D iCanScriptLogo= null;
-        if(iCS_TextureCache.GetTexture(iCS_EditorStrings.LogoIcon, out iCanScriptLogo)) {
+        if(TextureCache.GetTexture(iCS_EditorStrings.LogoIcon, out iCanScriptLogo)) {
             Rect r= new Rect(kSpacer, kSpacer, logoWidth, logoHeight);
             GUI.DrawTexture(r, iCanScriptLogo);
         }

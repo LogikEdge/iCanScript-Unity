@@ -85,7 +85,7 @@ public partial class iCS_Graphics {
     public static Vector2 GetMaximizeIconSize(iCS_EditorObject node) {
         Texture2D icon= null;
         if(node != null && node.IconGUID != null) {
-            icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
+            icon= TextureCache.GetIconFromGUID(node.IconGUID);
             if(icon != null) return new Vector2(icon.width, icon.height);
         }
         // Avoid null exception of first layout.

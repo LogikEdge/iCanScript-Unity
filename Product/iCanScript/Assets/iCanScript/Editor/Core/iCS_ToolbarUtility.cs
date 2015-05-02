@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScript.Editor;
 
 public static class iCS_ToolbarUtility {
     // ======================================================================
@@ -199,13 +200,13 @@ public static class iCS_ToolbarUtility {
         r.y+= 2f;
         r.width-= iconSize;
         Texture2D searchIcon= null;
-        if(iCS_TextureCache.GetTexture(iCS_EditorStrings.SearchIcon, out searchIcon)) {
+        if(TextureCache.GetTexture(iCS_EditorStrings.SearchIcon, out searchIcon)) {
             GUI.DrawTexture(new Rect(r.xMin-searchIcon.width, r.y-1f, searchIcon.width, searchIcon.height), searchIcon);
         } else {
             Debug.LogWarning("iCanScript: Cannot find search Icon in resource folder !!!");
         }
         Texture2D cancelIcon= null;
-        if(iCS_TextureCache.GetTexture(iCS_EditorStrings.CancelIcon, out cancelIcon)) {
+        if(TextureCache.GetTexture(iCS_EditorStrings.CancelIcon, out cancelIcon)) {
 			Rect cancelRect= new Rect(r.xMax, r.y-1f, cancelIcon.width, cancelIcon.height);
             GUI.DrawTexture(cancelRect, cancelIcon);
 			// Clear the search if the cancel icon is depressed.

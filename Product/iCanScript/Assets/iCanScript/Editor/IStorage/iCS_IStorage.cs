@@ -811,7 +811,7 @@ public partial class iCS_IStorage {
         var defaultName= desc.DisplayName;
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
         // Determine icon.
-        instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
+        instance.IconGUID= TextureCache.IconPathToGUID(desc.IconPath);
         // Create parameter ports.
 		iCS_EditorObject port= null;
 		int parameterIdx= 0;
@@ -840,7 +840,7 @@ public partial class iCS_IStorage {
         // -- Create the function node --
         var defaultName= desc.DisplayName;
         var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
-        instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
+        instance.IconGUID= TextureCache.IconPathToGUID(desc.IconPath);
 		// -- Create target & self ports. --
         CreateTargetPort(id);
         CreateSelfPort(id);
@@ -871,7 +871,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // -- Create event handler node --
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        instance.IconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
+        instance.IconGUID= TextureCache.IconPathToGUID(desc.IconPath);
         // -- Create target port. --
 		iCS_EditorObject port= null;
         if(desc.IsInstanceMember) {

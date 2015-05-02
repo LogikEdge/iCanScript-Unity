@@ -17,10 +17,6 @@ namespace iCanScript.Editor {
 		int				myNumberOfItems  = 0;
         bool            myShowInherited  = true;
 		bool			myShowProtected  = false;
-        Texture2D       myiCanScriptIcon = null;
-        Texture2D       myUnityIcon      = null;
-        Texture2D       myWindowsIcon    = null;
-        Texture2D       myDefaultRootIcon= null;
         
         // =================================================================================
         // Properties
@@ -29,17 +25,19 @@ namespace iCanScript.Editor {
 		public LibraryObject	Selected	{ get { return mySelected; }}
         public string displayString {
             get {
-                var displayString= myCursor.displayString;
-                if(string.IsNullOrEmpty(displayString)) {
+                if(string.IsNullOrEmpty(myCursor.displayString)) {
                     return "<empty>";
                 }
-                return displayString;
+                return myCursor.displayString;
             }
         }
+		public Texture libraryIcon {
+			get { return myCursor.libraryIcon; }
+		}
         public GUIStyle labelStyle {
             get {
                 if(myLabelStyle == null) {
-                    myLabelStyle= new GUIStyle(GUI.skin.label);
+                    myLabelStyle= new GUIStyle(EditorStyles.label);
                     myLabelStyle.richText= true;
                 }
                 return myLabelStyle;
@@ -70,44 +68,12 @@ namespace iCanScript.Editor {
 		public LibraryRoot database {
 			get { return Reflection.LibraryDatabase; }
 		}
-        public Texture2D iCanScriptIcon {
-            get {
-                if(myiCanScriptIcon == null) {
-                    myiCanScriptIcon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.iCanScript);
-                }
-                return myiCanScriptIcon;
-            }
-        }
-        public Texture2D unityIcon {
-            get {
-                if(myUnityIcon == null) {
-                    myUnityIcon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Unity);
-                }
-                return myUnityIcon;
-            }
-        }
-        public Texture2D windowsIcon {
-            get {
-                if(myWindowsIcon == null) {
-                    myWindowsIcon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.DotNet);
-                }
-                return myWindowsIcon;
-            }
-        }
-        public Texture2D defaultRootIcon {
-            get {
-                if(myDefaultRootIcon == null) {
-                    myDefaultRootIcon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Company);
-                }
-                return myDefaultRootIcon;
-            }
-        }
 		
         // =================================================================================
         // Constants
         // ---------------------------------------------------------------------------------
         const int   kIconWidth  = 16;
-        const int   kIconHeight = 16;
+        const int   kIconHeight = 16; 
         const float kLabelSpacer= 4f;
     
         // =================================================================================
@@ -196,6 +162,7 @@ namespace iCanScript.Editor {
             var size= myCursor.displaySize;
             if(size == Vector2.zero) {
                 size= labelStyle.CalcSize(new GUIContent(displayString));
+				size.x+= myFoldOffset+kIconWidth+kLabelSpacer;
             }
     	    return size;
     	}
@@ -219,9 +186,15 @@ namespace iCanScript.Editor {
             
             // -- Show foldout (if needed) --
     		bool foldoutState= ShouldUseFoldout ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
+
+			// -- Show icon --
+	        var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
+		    GUI.Label(pos, libraryIcon);
+	        pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
+
             // -- Display string to user --
             displayArea.x= displayArea.x+myFoldOffset;
-            GUI.Label(displayArea, new GUIContent(displayString, iCanScriptIcon), labelStyle);
+            GUI.Label(pos, displayString, labelStyle);
     	    return foldoutState;
     	}
         // -------------------------------------------------------------------

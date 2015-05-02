@@ -20,7 +20,7 @@ namespace iCanScript.Editor {
         static Texture2D iCanScriptLogo {
             get {
                 if(ourLogo == null) {
-                    iCS_TextureCache.GetIcon(iCS_EditorStrings.TitleLogoIcon, out ourLogo);
+                    TextureCache.GetIcon(iCS_EditorStrings.TitleLogoIcon, out ourLogo);
                 }
                 return ourLogo;  
             }

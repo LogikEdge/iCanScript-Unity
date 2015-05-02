@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Editor;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //  NODE ATTRIBUTES
@@ -36,7 +37,7 @@ public partial class iCS_EditorObject {
 				IconGUID= null;
 				return;
 			}
-			var guid= iCS_TextureCache.IconPathToGUID(value);
+			var guid= TextureCache.IconPathToGUID(value);
 			if(guid != null) {
 				IconGUID= guid;
 			}

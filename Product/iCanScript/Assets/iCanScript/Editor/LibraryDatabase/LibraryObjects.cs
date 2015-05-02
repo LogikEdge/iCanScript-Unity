@@ -41,7 +41,8 @@ namespace iCanScript.Editor {
         // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------
-                string  myDisplayString= null;
+				Texture	myLibraryIcon  = null;
+                string	myDisplayString= null;
         public  Vector2 displaySize    = Vector2.zero;
 
         // ======================================================================
@@ -56,6 +57,14 @@ namespace iCanScript.Editor {
                 return myDisplayString;
             }
         }
+		public Texture libraryIcon {
+			get {
+				if(myLibraryIcon == null) {
+					myLibraryIcon= GetLibraryIcon();
+				}
+				return myLibraryIcon;
+			}
+		}
 
         // ======================================================================
         // FORMATTING HELPERS
@@ -76,9 +85,12 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal abstract string GetRawName();
-        internal abstract string GetDisplayString();
-		internal abstract string GetNodeName();
+        internal abstract string 	GetRawName();
+		internal abstract string 	GetNodeName();
+        internal abstract string	GetDisplayString();
+		internal virtual  Texture	GetLibraryIcon() {
+			return TextureCache.GetIcon(Icons.kiCanScriptIcon);
+		}
 
         // ======================================================================
         // INIT / SHUTDOWN
@@ -127,9 +139,9 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetRawName()       { return "Library"; }
-		internal override string GetNodeName()		{ return GetRawName(); }
-        internal override string GetDisplayString() { return GetNodeName(); }
+        internal override string	GetRawName()        { return "Library"; }
+		internal override string	GetNodeName()		{ return GetRawName(); }
+        internal override string	GetDisplayString()	{ return GetNodeName(); }
 
         // ======================================================================
         // UTILITIES
@@ -172,9 +184,21 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetRawName()        { return myName; }
-		internal override string GetNodeName()		 { return NameUtility.ToDisplayName(myName); }
-        internal override string GetDisplayString()  { return GetNodeName(); }
+        internal override string 	GetRawName()        { return myName; }
+		internal override string 	GetNodeName()		{ return NameUtility.ToDisplayName(myName); }
+        internal override string	GetDisplayString()	{ return GetNodeName(); }
+		internal override Texture	GetLibraryIcon() {
+			if(myName.StartsWith("iCanScript")) {
+				return TextureCache.GetIcon(Icons.kiCanScriptIcon);
+			}
+			if(myName.StartsWith("System")) {
+				return TextureCache.GetIcon(Icons.kDotNetIcon);
+			}
+			if(myName.StartsWith("Unity")) {
+				return TextureCache.GetIcon(Icons.kUnityIcon);
+			}
+			return TextureCache.GetIcon(Icons.kCompanyIcon);
+		}
 
         // ======================================================================
         // INIT
@@ -223,9 +247,12 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetRawName()        { return myName; }
-		internal override string GetNodeName()		 { return NameUtility.ToDisplayName(myName); }
-        internal override string GetDisplayString()  { return GetNodeName(); }
+        internal override string 	GetRawName()        { return myName; }
+		internal override string 	GetNodeName()		{ return NameUtility.ToDisplayName(myName); }
+        internal override string	GetDisplayString()	{ return GetNodeName(); }
+		internal override Texture   GetLibraryIcon() {
+            return TextureCache.GetIcon(Icons.kNamespaceIcon);
+		}
 
         // ======================================================================
         // INIT
@@ -234,6 +261,16 @@ namespace iCanScript.Editor {
 
         // ======================================================================
         // UTILITIES
+        // ----------------------------------------------------------------------
+        /// Returns the type library object for the given type.
+        ///
+        /// @param type The type to search for.
+        /// @return The found library type object or _null_ if not found.
+        ///
+        public LibraryType GetLibraryType(Type type) {
+            return GetChild<LibraryType>(t=> t.type == type);
+        }
+
         // ----------------------------------------------------------------------
         /// Sorts the child types and ask all children to perform sorting.
         public void Sort() {
@@ -246,6 +283,42 @@ namespace iCanScript.Editor {
                 (c as LibraryType).Sort();
             }
         }
+    }
+    
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    /// Defines the nested namespaces in the library (2nd level).
+    public class LibraryEventHandler : LibraryObject {
+        // ======================================================================
+        // FIELDS
+        // ----------------------------------------------------------------------
+        string 			myName       = null;
+		public Type   	declaringType= null;
+		public Type[] 	parameterTypes= null;
+		public string[]	parameterNames= null;
+		
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------
+        internal override string 	GetRawName()        { return myName; }
+		internal override string 	GetNodeName()		{ return NameUtility.ToDisplayName(myName); }
+        internal override string	GetDisplayString()	{ return GetNodeName(); }
+        // ----------------------------------------------------------------------		
+		/// Retruns the library icon for an event handler node.
+		internal override Texture   GetLibraryIcon() {
+            return TextureCache.GetIcon(Icons.kEventHandlerIcon);
+		}				
+
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibraryEventHandler(string name, Type declaringType,
+								   Type[] parameterTypes, string[] parameterNames)
+		: base() {
+			myName= name;
+			this.declaringType= declaringType;
+			this.parameterTypes= parameterTypes;
+			this.parameterNames= parameterNames;
+		}
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -271,10 +344,8 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetRawName()       { return type.Name; }
-		internal override string GetNodeName() {
-			return NameUtility.ToDisplayName(type);
-		}
+        internal override string GetRawName()   { return type.Name; }
+		internal override string GetNodeName()	{ return NameUtility.ToDisplayName(type); }
         internal override string GetDisplayString() {
 			// -- Start with the base name --
 			var displayName= new StringBuilder(mainValueBegin, 64);
@@ -295,6 +366,11 @@ namespace iCanScript.Editor {
 			}
 			return displayName.ToString();
 		}
+        // ----------------------------------------------------------------------		
+		/// Retruns the library icon for a type node.
+		internal override Texture   GetLibraryIcon() {
+            return TextureCache.GetIcon(Icons.kTypeIcon);
+		}		
 
         // ======================================================================
         // UTILITIES
@@ -359,10 +435,8 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INTERFACES
         // ----------------------------------------------------------------------
-        internal override string GetRawName()       { return memberInfo.Name; }
-		internal override string GetNodeName() {
-			return NameUtility.ToDisplayName(GetRawName());
-		}
+        internal override string GetRawName()	{ return memberInfo.Name; }
+		internal override string GetNodeName()	{ return NameUtility.ToDisplayName(GetRawName()); }
         internal override string GetDisplayString() {
 			var displayString= new StringBuilder(mainValueBegin,32);
 			displayString.Append(GetNodeName());
@@ -564,6 +638,12 @@ namespace iCanScript.Editor {
 		internal override string GetNodeName() {
 			return NameUtility.ToDisplayName(declaringType);
 		}
+        // ----------------------------------------------------------------------		
+		/// Retruns the library icon for a constructor node.
+		internal override Texture   GetLibraryIcon() {
+            return TextureCache.GetIcon(Icons.kConstructorIcon);
+		}
+
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -600,7 +680,8 @@ namespace iCanScript.Editor {
             if(string.IsNullOrEmpty(outputs)) {
                 return part1;
             }
-            return part1 + "->" + outputTypesHeader+outputs+outputTypesTrailer;
+            var result= part1 + "->" + outputTypesHeader+outputs+outputTypesTrailer;
+			return result;
         }
         // ----------------------------------------------------------------------
 		internal override string GetNodeName() {
@@ -610,6 +691,12 @@ namespace iCanScript.Editor {
             }
 			return name;
 		}
+        // ----------------------------------------------------------------------		
+		/// Retruns the library icon for a function node.
+		internal override Texture   GetLibraryIcon() {
+            return TextureCache.GetIcon(Icons.kFunctionIcon);
+		}
+		
     }
     
 }

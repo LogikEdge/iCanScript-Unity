@@ -225,6 +225,7 @@ public static class NameUtility {
     /// @return The formated name for purpose of visual script display.
     ///
     public static string ToDisplayName(string name) {
+		if(name == "iCanScript") return name;
         var result= new StringBuilder(128);
         bool upperNext= true;
         bool wasUpperCase= false;
