@@ -131,6 +131,8 @@ namespace iCanScript.Editor {
             foreach(var type in assembly.GetTypes()) {
                 // -- Don't parse private types --
                 if(!type.IsPublic) continue;
+                // -- Don't parse .NET attribute. --
+                if(type.BaseType == typeof(Attribute)) continue;
                 // -- Don't parse namespaces that should be ignored. --
                 var namespaceName= type.Namespace;
                 if(namespaceName == null) {

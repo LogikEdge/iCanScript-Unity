@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Done_DestroyByTime : MonoBehaviour
-{
-	public float lifetime;
+namespace SpaceShooter {
+    public class Done_DestroyByTime : MonoBehaviour
+    {
+    	public float lifetime;
 
-	void Start ()
-	{
-		Destroy (gameObject, lifetime);
-	}
+    	void Start ()
+    	{
+    		Destroy (gameObject, lifetime);
+    	}
+    }
+    
 }

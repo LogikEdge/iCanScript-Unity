@@ -45,7 +45,6 @@ namespace iCanScript.Editor {
         // =================================================================================
         // Activation/Deactivation.
         // ---------------------------------------------------------------------------------
-    	[MenuItem("iCanScript/Editors/Special Editor",false,910)]
         static void Init() {
             var editor= EditorWindow.CreateInstance<LibraryEditor>();
             editor.ShowUtility();
