@@ -137,7 +137,7 @@ public static class iCS_Types {
         if(type == typeof(float)) return "float";
         if(type == typeof(bool)) return "bool";
         if(type == typeof(void)) return "void";
-        return RemoveProductPrefix(type.Name);
+        return type.Name;
     }
     // ----------------------------------------------------------------------
 	/// Finds the method information of a function with the given type name.
