@@ -2,21 +2,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Editor;
 
-public partial class iCS_EditorObject {
-    // ----------------------------------------------------------------------
-	public System.Object GetRuntimeObject {
-		get {
-            // TODO: GetRuntimeObject
-            return null;
-		}
-	}
-    // ----------------------------------------------------------------------
-	public int GetExecutionFrameId {
-		get {
-            // TODO: Implement get frame id for iCS2.
-            return 0;
-		}
-	}
+namespace iCanScript.Editor {
+    
+    public partial class iCS_EditorObject {
+        // ----------------------------------------------------------------------
+    	public System.Object GetRuntimeObject {
+    		get {
+                // TODO: GetRuntimeObject
+                return null;
+    		}
+    	}
+        // ----------------------------------------------------------------------
+    	public int GetExecutionFrameId {
+    		get {
+                // TODO: Implement get frame id for iCS2.
+                return 0;
+    		}
+    	}
+    }
+
 }
+
