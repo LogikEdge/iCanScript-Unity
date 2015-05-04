@@ -8,6 +8,7 @@ using TimedAction= iCanScript.Prelude.TimerService.TimedAction;
 using iCanScript;
 using iCanScript.FuzzyLogic;
 using iCanScript.Editor;
+using iCanScript.Engine;
 
 public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================

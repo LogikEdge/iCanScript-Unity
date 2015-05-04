@@ -4,6 +4,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor {
 public class iCS_TreeViewController : DSTreeViewDataSource {
