@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor {
     public static class DynamicInterface {

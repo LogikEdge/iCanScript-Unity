@@ -3,7 +3,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using P=iCanScript.Prelude;
 using iCanScript.Engine;
 
 namespace iCanScript.Editor.CodeEngineering {
@@ -32,8 +32,8 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public FunctionDefinition(iCS_EditorObject node, CodeBase parent, AccessSpecifier accessType, ScopeSpecifier scopeType)
         : base(node, parent) {
-            myAccessSpecifier  = node.accessSpecifier;
-            myScopeSpecifier   = node.scopeSpecifier;
+            myAccessSpecifier  = accessType;
+            myScopeSpecifier   = scopeType;
             
             // Build parameter list.
             BuildParameterList();
@@ -154,7 +154,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public override string GenerateHeader(int indentSize) {
             string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder("\n");
-            // -- Add iCanScript tag for public functions. --
+            // Add iCanScript tag for public functions.
             var hasDescription= !string.IsNullOrEmpty(VSObject.Description);
             if(myAccessSpecifier == AccessSpecifier.Public) {
                 result.Append(indent);
@@ -166,12 +166,6 @@ namespace iCanScript.Editor.CodeEngineering {
 //                }
                 result.Append("]\n");
             }
-            // -- Add user .NET attributes --
-            if(!string.IsNullOrEmpty(VSObject.dotNetAttributes)) {
-                result.Append(indent);
-                result.Append(VSObject.dotNetAttributes);
-                result.Append("\n");
-            }
             // Add function comment block.
             if(hasDescription) {
                 result.Append(GenerateFunctionComment(indent));
@@ -179,8 +173,10 @@ namespace iCanScript.Editor.CodeEngineering {
             // Add Access & Scope specifiers.
             result.Append(indent);
             result.Append(ToAccessString(myAccessSpecifier));
+            result.Append(" ");
             result.Append(ToScopeString(myScopeSpecifier));
             // Add return type
+            result.Append(" ");
             var returnPort= GetReturnPort(VSObject);
             if(returnPort == null) {
                 result.Append("void");
@@ -411,7 +407,7 @@ namespace iCanScript.Editor.CodeEngineering {
                 foreach(var p in myParameters) {
                     result.Append(indent);
                     result.Append("/// @param ");
-                    result.Append(iCS_ObjectNames.ToFunctionParameterName(p.VSObject.CodeName));
+                    result.Append(NameUtility.ToFunctionParameterName(p.VSObject.CodeName));
                     result.Append(' ');
                     result.Append(p.VSObject.Description);
                     result.Append("\n");

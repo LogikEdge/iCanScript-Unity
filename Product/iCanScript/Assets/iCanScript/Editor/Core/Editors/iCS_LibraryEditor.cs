@@ -3,6 +3,9 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript;
+
+namespace iCanScript.Editor {
 
 /*
 	TODO : Should filter on name, input port type, and output port type.
@@ -32,8 +35,12 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     }
     bool IsInitialized() {
         if(myController == null || myMainView == null) {
-            myController= new iCS_LibraryController();
-            myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
+            iCS_Debug.Profile("Building Library", 1f, 
+                ()=> {
+                    myController= new iCS_LibraryController();
+                    myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);                    
+                }
+            );
         }
         return true;
     }
@@ -77,13 +84,13 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         var search= myController.SearchCriteria_1;
         iCS_ToolbarUtility.BuildToolbar(search1Rect);
         search.ShowClasses= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowClasses, 0, 0);
-		var icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.ObjectInstance);
+		var icon= Icons.GetLibraryIconFor(DefaultNodeIcons.ObjectInstance);
         iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, 4);            
         iCS_ToolbarUtility.Separator(ref search1Rect);
         iCS_ToolbarUtility.Separator(ref search1Rect);
 
         search.ShowFunctions= iCS_ToolbarUtility.Toggle(ref search1Rect, search.ShowFunctions, kLabelSpacer, 0);
-        icon= iCS_Icons.GetLibraryNodeIconFor(iCS_DefaultNodeIcons.Function);            
+        icon= Icons.GetLibraryIconFor(DefaultNodeIcons.Function);            
         iCS_ToolbarUtility.Texture(ref search1Rect, icon, 0, kLabelSpacer);            
         iCS_ToolbarUtility.Separator(ref search1Rect);
 
@@ -269,4 +276,5 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {
         return iStorage.CreateMessageHandler(-1, desc as iCS_MessageInfo);            
     }    
+}    
 }

@@ -2,9 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
-namespace FuzzyLogic {
+namespace iCanScript.FuzzyLogic {
     public static class FuzzyString {
         // ----------------------------------------------------------------------
         public static float GetScore(string search, string dest) {

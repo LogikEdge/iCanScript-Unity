@@ -1,1 +1,3 @@
-public sealed class iCS_State {}
+namespace iCanScript.Engine {
+    public sealed class iCS_State {}    
+}

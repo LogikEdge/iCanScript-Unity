@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript { namespace Utilities {
+namespace iCanScript {
     
     public class ActionQueue {
         // ======================================================================
@@ -26,4 +26,4 @@ namespace iCanScript { namespace Utilities {
         }
     }
 
-}}
+}

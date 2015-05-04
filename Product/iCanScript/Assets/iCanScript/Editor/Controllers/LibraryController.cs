@@ -12,7 +12,8 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
         /// Scans the application library and extracts the needed nodes.
     	static LibraryController() {
-            iCS_Reflection.ParseAppDomain();
+//            iCS_Debug.Profile("Building Database", 1f, ()=> iCS_Reflection.ParseAppDomain());
+            Reflection.Start();
     	}        
         // ----------------------------------------------------------------------
         /// Start the application controller.

@@ -4,247 +4,250 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ClassVariablesController : DSTableViewDataSource {
-    // =================================================================================
-    // Types
-    // ---------------------------------------------------------------------------------
-    class ControlPair {
-        public iCS_FunctionPrototype    Component= null;
-        public bool                     IsActive= false;
-        public ControlPair(iCS_FunctionPrototype component, bool isActive= false) {
-            Component= component;
-            IsActive= isActive;
-        }
-    };
-    class VariablePair {
-        public ControlPair InputControlPair= null;
-        public ControlPair OutputControlPair= null;
-        public VariablePair(iCS_FunctionPrototype inputComponent, bool inputActive, iCS_FunctionPrototype outputComponent, bool outputActive) {
-            InputControlPair = new ControlPair(inputComponent, inputActive);
-            OutputControlPair= new ControlPair(outputComponent, outputActive);
-        }
-		public ControlPair GetAControlPair {
-			get {
-				if(InputControlPair != null && InputControlPair.Component != null) {
-					return InputControlPair;
-				}
-				return OutputControlPair;
-			}
-		}
-		public string RawName {
-			get {
-				var variableInfo= GetAControlPair.Component;
-	            if(variableInfo.IsField) {
-	                return variableInfo.ToFieldInfo.FieldName;
-				}
-	            return variableInfo.ToPropertyInfo.PropertyName;
-			}
-		}
-		public string DisplayName {
-			get { return iCS_ObjectNames.ToDisplayName(RawName); }
-		}
-		public Type VariableType {
-			get {
-				var variableInfo= GetAControlPair.Component;
-		        return variableInfo.IsField ? variableInfo.ToFieldInfo.type : variableInfo.ToPropertyInfo.type;				
-			}
-		}
-		public string DisplayTypeName {
-			get {
-				return iCS_ObjectNames.ToDisplayName(VariableType.Name);
-			}
-		}
-    };
+namespace iCanScript.Editor {
+    
+    public class iCS_ClassVariablesController : DSTableViewDataSource {
+        // =================================================================================
+        // Types
+        // ---------------------------------------------------------------------------------
+        class ControlPair {
+            public iCS_FunctionPrototype    Component= null;
+            public bool                     IsActive= false;
+            public ControlPair(iCS_FunctionPrototype component, bool isActive= false) {
+                Component= component;
+                IsActive= isActive;
+            }
+        };
+        class VariablePair {
+            public ControlPair InputControlPair= null;
+            public ControlPair OutputControlPair= null;
+            public VariablePair(iCS_FunctionPrototype inputComponent, bool inputActive, iCS_FunctionPrototype outputComponent, bool outputActive) {
+                InputControlPair = new ControlPair(inputComponent, inputActive);
+                OutputControlPair= new ControlPair(outputComponent, outputActive);
+            }
+    		public ControlPair GetAControlPair {
+    			get {
+    				if(InputControlPair != null && InputControlPair.Component != null) {
+    					return InputControlPair;
+    				}
+    				return OutputControlPair;
+    			}
+    		}
+    		public string RawName {
+    			get {
+    				var variableInfo= GetAControlPair.Component;
+    	            if(variableInfo.IsField) {
+    	                return variableInfo.ToFieldInfo.FieldName;
+    				}
+    	            return variableInfo.ToPropertyInfo.PropertyName;
+    			}
+    		}
+    		public string DisplayName {
+    			get { return NameUtility.ToDisplayName(RawName); }
+    		}
+    		public Type VariableType {
+    			get {
+    				var variableInfo= GetAControlPair.Component;
+    		        return variableInfo.IsField ? variableInfo.ToFieldInfo.type : variableInfo.ToPropertyInfo.type;				
+    			}
+    		}
+    		public string DisplayTypeName {
+    			get {
+    				return NameUtility.ToDisplayName(VariableType.Name);
+    			}
+    		}
+        };
 
-    // =================================================================================
-    // Fields
-    // ---------------------------------------------------------------------------------
-	Type				myClassType= null;
-	iCS_EditorObject	myTarget   = null;
-	iCS_IStorage		myStorage  = null;
-    GUIContent    		myTitle    = null;
-    DSTableView			myTableView= null;
-	VariablePair[]		myVariables= null;
-	Vector2     		myCheckBoxSize;    
+        // =================================================================================
+        // Fields
+        // ---------------------------------------------------------------------------------
+    	Type				myClassType= null;
+    	iCS_EditorObject	myTarget   = null;
+    	iCS_IStorage		myStorage  = null;
+        GUIContent    		myTitle    = null;
+        DSTableView			myTableView= null;
+    	VariablePair[]		myVariables= null;
+    	Vector2     		myCheckBoxSize;    
     
 	
-    // =================================================================================
-    // Constants
-    // ---------------------------------------------------------------------------------
-    const int     kSpacer       = 8;
-    const int     kMarginSize   = 10;
-    const float   kCheckBoxWidth= 25f;
-	const string  kDefaultTitle = "Variables";
-    const string  kInColumnId   = "In";
-    const string  kOutColumnId  = "Out";
-    const string  kNameColumnId = "Name";
-    const string  kTypeColumnId = "Type";
+        // =================================================================================
+        // Constants
+        // ---------------------------------------------------------------------------------
+        const int     kSpacer       = 8;
+        const int     kMarginSize   = 10;
+        const float   kCheckBoxWidth= 25f;
+    	const string  kDefaultTitle = "Variables";
+        const string  kInColumnId   = "In";
+        const string  kOutColumnId  = "Out";
+        const string  kNameColumnId = "Name";
+        const string  kTypeColumnId = "Type";
 
-    // =================================================================================
-    // Properties
-    // ---------------------------------------------------------------------------------
-    public DSView View { get { return myTableView; }}
+        // =================================================================================
+        // Properties
+        // ---------------------------------------------------------------------------------
+        public DSView View { get { return myTableView; }}
 
-    // =================================================================================
-    // Initialization
-    // ---------------------------------------------------------------------------------
-	public iCS_ClassVariablesController() {}
-    public iCS_ClassVariablesController(Type classType, iCS_IStorage storage, GUIContent title= null, iCS_EditorObject target= null) {
-		OnActivate(classType, storage, title, target);
-	}
-	public void OnActivate(Type classType, iCS_IStorage storage, GUIContent title= null, iCS_EditorObject target= null) {
-		// Configuration parameters.
-		myClassType= classType;
-		myStorage= storage;
-		myTitle= title ?? new GUIContent(kDefaultTitle);
-		myTarget= target;
+        // =================================================================================
+        // Initialization
+        // ---------------------------------------------------------------------------------
+    	public iCS_ClassVariablesController() {}
+        public iCS_ClassVariablesController(Type classType, iCS_IStorage storage, GUIContent title= null, iCS_EditorObject target= null) {
+    		OnActivate(classType, storage, title, target);
+    	}
+    	public void OnActivate(Type classType, iCS_IStorage storage, GUIContent title= null, iCS_EditorObject target= null) {
+    		// Configuration parameters.
+    		myClassType= classType;
+    		myStorage= storage;
+    		myTitle= title ?? new GUIContent(kDefaultTitle);
+    		myTarget= target;
 		
-		// Common variables.
-		myCheckBoxSize     = GUI.skin.toggle.CalcSize(new GUIContent(""));                
+    		// Common variables.
+    		myCheckBoxSize     = GUI.skin.toggle.CalcSize(new GUIContent(""));                
 
-		// Extract fields & properties from class descriptor.
-        List<VariablePair> variables= new List<VariablePair>();
-        foreach(var component in iCS_LibraryDatabase.GetPropertiesAndFields(myClassType)) {
-            bool isActive= (myTarget != null && myStorage != null) ? myStorage.InstanceWizardFindFunction(myTarget, component) != null : false;
-            string name= GetVariableName(component);
-            var variablePair= GetVariablePair(name, variables);
-            if(component.IsSetField || component.IsSetProperty) {
-                if(variablePair != null) {
-                    variablePair.InputControlPair.Component= component;
-                    variablePair.InputControlPair.IsActive= isActive;
+    		// Extract fields & properties from class descriptor.
+            List<VariablePair> variables= new List<VariablePair>();
+            foreach(var component in iCS_LibraryDatabase.GetPropertiesAndFields(myClassType)) {
+                bool isActive= (myTarget != null && myStorage != null) ? myStorage.InstanceWizardFindFunction(myTarget, component) != null : false;
+                string name= GetVariableName(component);
+                var variablePair= GetVariablePair(name, variables);
+                if(component.IsSetField || component.IsSetProperty) {
+                    if(variablePair != null) {
+                        variablePair.InputControlPair.Component= component;
+                        variablePair.InputControlPair.IsActive= isActive;
+                    } else {
+                        variables.Add(new VariablePair(component, isActive, null, false));                        
+                    }
                 } else {
-                    variables.Add(new VariablePair(component, isActive, null, false));                        
-                }
-            } else {
-                if(variablePair != null) {
-                    variablePair.OutputControlPair.Component= component;
-                    variablePair.OutputControlPair.IsActive= isActive;
-                } else {
-                    variables.Add(new VariablePair(null, false, component, isActive));                                            
+                    if(variablePair != null) {
+                        variablePair.OutputControlPair.Component= component;
+                        variablePair.OutputControlPair.IsActive= isActive;
+                    } else {
+                        variables.Add(new VariablePair(null, false, component, isActive));                                            
+                    }
                 }
             }
-        }
-        myVariables= variables.ToArray();
-    	Array.Sort(myVariables, (x,y)=> GetVariableName(x).CompareTo(GetVariableName(y)));
+            myVariables= variables.ToArray();
+        	Array.Sort(myVariables, (x,y)=> GetVariableName(x).CompareTo(GetVariableName(y)));
 
-		// Build view
-        myTableView= new DSTableView(new RectOffset(0,0,0,0), true, myTitle, DSView.AnchorEnum.Center, true, true);
-        myTableView.DataSource= this;
-        DSTableColumn inColumn= new DSTableColumn(kInColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("In"), DSView.AnchorEnum.Center);
-        myTableView.AddColumn(inColumn);
-        DSTableColumn outColumn= new DSTableColumn(kOutColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Out"), DSView.AnchorEnum.Center);
-        myTableView.AddColumn(outColumn);
-        DSTableColumn variableNameColumn= new DSTableColumn(kNameColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Name"), DSView.AnchorEnum.CenterLeft);
-        myTableView.AddColumn(variableNameColumn);
-        DSTableColumn variableTypeColumn= new DSTableColumn(kTypeColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Type"), DSView.AnchorEnum.CenterLeft);
-        myTableView.AddColumn(variableTypeColumn);
-    }
+    		// Build view
+            myTableView= new DSTableView(new RectOffset(0,0,0,0), true, myTitle, DSView.AnchorEnum.Center, true, true);
+            myTableView.DataSource= this;
+            DSTableColumn inColumn= new DSTableColumn(kInColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("In"), DSView.AnchorEnum.Center);
+            myTableView.AddColumn(inColumn);
+            DSTableColumn outColumn= new DSTableColumn(kOutColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Out"), DSView.AnchorEnum.Center);
+            myTableView.AddColumn(outColumn);
+            DSTableColumn variableNameColumn= new DSTableColumn(kNameColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Name"), DSView.AnchorEnum.CenterLeft);
+            myTableView.AddColumn(variableNameColumn);
+            DSTableColumn variableTypeColumn= new DSTableColumn(kTypeColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Type"), DSView.AnchorEnum.CenterLeft);
+            myTableView.AddColumn(variableTypeColumn);
+        }
 
-    // =================================================================================
-    // Helpers
-    // ---------------------------------------------------------------------------------
-    string GetVariableName(iCS_MemberInfo variableInfo) {
-        var name= variableInfo.IsField ? variableInfo.ToFieldInfo.FieldName : variableInfo.ToPropertyInfo.PropertyName;
-		return iCS_ObjectNames.ToDisplayName(name);
-    }
-	string GetVariableName(VariablePair pair) {
-		return pair.DisplayName;
-	}
-	string GetTypeName(iCS_MemberInfo variableInfo) {
-		return null;
-	}
-	string GetTypeName(VariablePair pair) {
-		return GetTypeName(GetAComponent(pair));
-	}
-    Type GetVariableType(iCS_MemberInfo variableInfo) {
-        return variableInfo.IsField ? variableInfo.ToFieldInfo.type : variableInfo.ToPropertyInfo.type;
-    }
-	Type GetVariableType(VariablePair pair) {
-		return GetVariableType(GetAComponent(pair));
-	}
-    iCS_MemberInfo GetAComponent(VariablePair pair) {
-        return pair.InputControlPair.Component ?? pair.OutputControlPair.Component; 
-    }
-    VariablePair GetVariablePair(string name, List<VariablePair> lst) {
-        foreach(var pair in lst) {
-			if(pair.DisplayName == name) return pair;
+        // =================================================================================
+        // Helpers
+        // ---------------------------------------------------------------------------------
+        string GetVariableName(iCS_MemberInfo variableInfo) {
+            var name= variableInfo.IsField ? variableInfo.ToFieldInfo.FieldName : variableInfo.ToPropertyInfo.PropertyName;
+    		return NameUtility.ToDisplayName(name);
         }
-        return null;
-    }
+    	string GetVariableName(VariablePair pair) {
+    		return pair.DisplayName;
+    	}
+    	string GetTypeName(iCS_MemberInfo variableInfo) {
+    		return null;
+    	}
+    	string GetTypeName(VariablePair pair) {
+    		return GetTypeName(GetAComponent(pair));
+    	}
+        Type GetVariableType(iCS_MemberInfo variableInfo) {
+            return variableInfo.IsField ? variableInfo.ToFieldInfo.type : variableInfo.ToPropertyInfo.type;
+        }
+    	Type GetVariableType(VariablePair pair) {
+    		return GetVariableType(GetAComponent(pair));
+    	}
+        iCS_MemberInfo GetAComponent(VariablePair pair) {
+            return pair.InputControlPair.Component ?? pair.OutputControlPair.Component; 
+        }
+        VariablePair GetVariablePair(string name, List<VariablePair> lst) {
+            foreach(var pair in lst) {
+    			if(pair.DisplayName == name) return pair;
+            }
+            return null;
+        }
 
-    // =================================================================================
-    // TableViewDataSource
-    // ---------------------------------------------------------------------------------
-    public int NumberOfRowsInTableView(DSTableView tableView) {
-		return myClassType != null ? myVariables.Length : 0;
-    }
-    // ---------------------------------------------------------------------------------
-    public Vector2 LayoutSizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
-		if(myClassType == null) return Vector2.zero;
-        string columnId= tableColumn.Identifier;
-        if(string.Compare(columnId, kInColumnId) == 0 || string.Compare(columnId, kOutColumnId) == 0) {
-            return myCheckBoxSize;
+        // =================================================================================
+        // TableViewDataSource
+        // ---------------------------------------------------------------------------------
+        public int NumberOfRowsInTableView(DSTableView tableView) {
+    		return myClassType != null ? myVariables.Length : 0;
         }
-        VariablePair variablePair= myVariables[row];
-        string name= variablePair.DisplayName;
-        string typeName= variablePair.DisplayTypeName;
-        ControlPair inputControlPair= variablePair.InputControlPair;
-        ControlPair outputControlPair= variablePair.OutputControlPair;
-        GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
-        if(string.Compare(columnId, kNameColumnId) == 0) {
-            return labelStyle.CalcSize(new GUIContent(name));
+        // ---------------------------------------------------------------------------------
+        public Vector2 LayoutSizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
+    		if(myClassType == null) return Vector2.zero;
+            string columnId= tableColumn.Identifier;
+            if(string.Compare(columnId, kInColumnId) == 0 || string.Compare(columnId, kOutColumnId) == 0) {
+                return myCheckBoxSize;
+            }
+            VariablePair variablePair= myVariables[row];
+            string name= variablePair.DisplayName;
+            string typeName= variablePair.DisplayTypeName;
+            ControlPair inputControlPair= variablePair.InputControlPair;
+            ControlPair outputControlPair= variablePair.OutputControlPair;
+            GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
+            if(string.Compare(columnId, kNameColumnId) == 0) {
+                return labelStyle.CalcSize(new GUIContent(name));
+            }
+            if(string.Compare(columnId, kTypeColumnId) == 0) {
+                return labelStyle.CalcSize(new GUIContent(typeName));                
+            }
+            return Vector2.zero;
         }
-        if(string.Compare(columnId, kTypeColumnId) == 0) {
-            return labelStyle.CalcSize(new GUIContent(typeName));                
-        }
-        return Vector2.zero;
-    }
-    // ---------------------------------------------------------------------------------
-    public void DisplayObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row, Rect position) {
-		if(myClassType == null) return;
-        VariablePair variablePair= myVariables[row];
-        string name= variablePair.DisplayName;
-        string typeName= variablePair.DisplayTypeName;
-        ControlPair inputControlPair= variablePair.InputControlPair;
-        ControlPair outputControlPair= variablePair.OutputControlPair;
+        // ---------------------------------------------------------------------------------
+        public void DisplayObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row, Rect position) {
+    		if(myClassType == null) return;
+            VariablePair variablePair= myVariables[row];
+            string name= variablePair.DisplayName;
+            string typeName= variablePair.DisplayTypeName;
+            ControlPair inputControlPair= variablePair.InputControlPair;
+            ControlPair outputControlPair= variablePair.OutputControlPair;
 
-        string columnId= tableColumn.Identifier;
-        if(string.Compare(columnId, kInColumnId) == 0 && inputControlPair.Component != null) {
-			if(Math3D.IsEqual(position.height, myCheckBoxSize.y) && Math3D.IsEqual(position.width, myCheckBoxSize.x)) {
-                bool prevActive= inputControlPair.IsActive;
-                inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
-                if(prevActive != inputControlPair.IsActive && myTarget != null && myStorage != null) {
-                    if(inputControlPair.IsActive) {
-                        iCS_UserCommands.CreateInstanceWizardElement(myTarget, inputControlPair.Component);
-                    } else {
-                        iCS_UserCommands.DeleteInstanceWizardElement(myTarget, inputControlPair.Component);
-                    }                
-                }                					
-			}
+            string columnId= tableColumn.Identifier;
+            if(string.Compare(columnId, kInColumnId) == 0 && inputControlPair.Component != null) {
+    			if(Math3D.IsEqual(position.height, myCheckBoxSize.y) && Math3D.IsEqual(position.width, myCheckBoxSize.x)) {
+                    bool prevActive= inputControlPair.IsActive;
+                    inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
+                    if(prevActive != inputControlPair.IsActive && myTarget != null && myStorage != null) {
+                        if(inputControlPair.IsActive) {
+                            iCS_UserCommands.CreateInstanceWizardElement(myTarget, inputControlPair.Component);
+                        } else {
+                            iCS_UserCommands.DeleteInstanceWizardElement(myTarget, inputControlPair.Component);
+                        }                
+                    }                					
+    			}
+            }
+            if(string.Compare(columnId, kOutColumnId) == 0 && outputControlPair.Component != null) {
+    			if(Math3D.IsEqual(position.height, myCheckBoxSize.y) && Math3D.IsEqual(position.width, myCheckBoxSize.x)) {
+                    bool prevActive= outputControlPair.IsActive;
+                    outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
+                    if(prevActive != outputControlPair.IsActive && myTarget != null && myStorage != null) {
+                        if(outputControlPair.IsActive) {
+                            iCS_UserCommands.CreateInstanceWizardElement(myTarget, outputControlPair.Component);
+                        } else {
+                            iCS_UserCommands.DeleteInstanceWizardElement(myTarget, outputControlPair.Component);
+                        }                
+    				}
+                }                
+            }
+            GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
+            if(string.Compare(columnId, kNameColumnId) == 0) {
+                GUI.Label(position, name, labelStyle);                
+            }
+            if(string.Compare(columnId, kTypeColumnId) == 0) {
+                GUI.Label(position, typeName, labelStyle);                                
+            }
         }
-        if(string.Compare(columnId, kOutColumnId) == 0 && outputControlPair.Component != null) {
-			if(Math3D.IsEqual(position.height, myCheckBoxSize.y) && Math3D.IsEqual(position.width, myCheckBoxSize.x)) {
-                bool prevActive= outputControlPair.IsActive;
-                outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
-                if(prevActive != outputControlPair.IsActive && myTarget != null && myStorage != null) {
-                    if(outputControlPair.IsActive) {
-                        iCS_UserCommands.CreateInstanceWizardElement(myTarget, outputControlPair.Component);
-                    } else {
-                        iCS_UserCommands.DeleteInstanceWizardElement(myTarget, outputControlPair.Component);
-                    }                
-				}
-            }                
-        }
-        GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
-        if(string.Compare(columnId, kNameColumnId) == 0) {
-            GUI.Label(position, name, labelStyle);                
-        }
-        if(string.Compare(columnId, kTypeColumnId) == 0) {
-            GUI.Label(position, typeName, labelStyle);                                
-        }
-    }
-    // ---------------------------------------------------------------------------------
-	public void OnMouseDown(DSTableView tableView, DSTableColumn tableColumn, int row) {}
+        // ---------------------------------------------------------------------------------
+    	public void OnMouseDown(DSTableView tableView, DSTableColumn tableColumn, int row) {}
 	
+    }
 
 }

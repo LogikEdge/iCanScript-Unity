@@ -4,7 +4,8 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using iCanScript.Engine;
+using P=iCanScript.Prelude;
 
 namespace iCanScript.Editor {
     
@@ -20,7 +21,7 @@ namespace iCanScript.Editor {
         static Texture2D iCanScriptLogo {
             get {
                 if(ourLogo == null) {
-                    iCS_TextureCache.GetIcon(iCS_EditorStrings.TitleLogoIcon, out ourLogo);
+                    TextureCache.GetIcon(iCS_EditorStrings.TitleLogoIcon, out ourLogo);
                 }
                 return ourLogo;  
             }

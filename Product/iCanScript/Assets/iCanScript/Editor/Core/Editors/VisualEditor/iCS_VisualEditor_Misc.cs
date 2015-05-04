@@ -5,7 +5,8 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using iCanScript.Engine;
+using P=iCanScript.Prelude;
 
 namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
@@ -422,9 +423,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 goto case iCS_ObjectTypeEnum.InstanceFunction;
             }
             case iCS_ObjectTypeEnum.InstanceFunction:
-            case iCS_ObjectTypeEnum.ClassFunction:
+            case iCS_ObjectTypeEnum.StaticFunction:
             case iCS_ObjectTypeEnum.InstanceField:
-            case iCS_ObjectTypeEnum.ClassField:
+            case iCS_ObjectTypeEnum.StaticField:
             case iCS_ObjectTypeEnum.TypeCast: {
                 IStorage.ForEachChildPort(node,
                     port=> {

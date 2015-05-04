@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using TimedAction= Prelude.TimerService.TimedAction;
+using TimedAction= iCanScript.Prelude.TimerService.TimedAction;
 
 namespace iCanScript { namespace Editor {
 

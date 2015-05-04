@@ -1,6 +1,8 @@
 CLASS_NAME=$2
 DATE_VAR=$3
 FILE_PATH=$1/$CLASS_NAME.cs
-echo "public static class $CLASS_NAME {" >$FILE_PATH
-echo public const string $DATE_VAR= \"`date +"%y/%m/%d %X"`\"\; >>$FILE_PATH
+echo "namespace iCanScript.Engine {" >$FILE_PATH
+echo "  public static class $CLASS_NAME {" >>$FILE_PATH
+echo        public const string $DATE_VAR= \"`date +"%y/%m/%d %X"`\"\; >>$FILE_PATH
+echo "  }" >>$FILE_PATH
 echo "}" >>$FILE_PATH
