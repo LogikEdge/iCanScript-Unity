@@ -1,3 +1,3 @@
-using iCanScript.Editor;
-
-public sealed class iCS_TreeViewEditorWindow : iCS_TreeViewEditor {}
+namespace iCanScript.Editor {
+    public sealed class iCS_TreeViewEditorWindow : iCS_TreeViewEditor {}    
+}
