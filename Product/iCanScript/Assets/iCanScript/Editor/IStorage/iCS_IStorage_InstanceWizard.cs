@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript;
 using iCanScript.Editor;
 using P= Prelude;
 

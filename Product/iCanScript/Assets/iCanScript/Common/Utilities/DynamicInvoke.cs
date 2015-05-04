@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Reflection;
 using System.Collections;
+using iCanScript;
 
 public class DynamicInvoke {
     // ======================================================================

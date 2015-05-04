@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.IO;
+using iCanScript;
 using iCanScript.JSON;
 
 public static class iCS_VisualScriptImportExport {

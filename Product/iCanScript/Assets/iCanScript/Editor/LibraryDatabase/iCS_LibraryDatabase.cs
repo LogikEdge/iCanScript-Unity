@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript;
 using P=Prelude;
 
 public class iCS_LibraryDatabase {

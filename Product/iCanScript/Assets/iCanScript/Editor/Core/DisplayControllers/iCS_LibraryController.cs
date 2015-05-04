@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
 using TimedAction= Prelude.TimerService.TimedAction;
+using iCanScript;
 using iCanScript.FuzzyLogic;
 using iCanScript.Editor;
 

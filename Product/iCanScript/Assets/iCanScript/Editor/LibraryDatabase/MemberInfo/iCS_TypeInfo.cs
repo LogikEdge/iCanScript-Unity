@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript;
 
 public class iCS_TypeInfo : iCS_MemberInfo {
     // ======================================================================

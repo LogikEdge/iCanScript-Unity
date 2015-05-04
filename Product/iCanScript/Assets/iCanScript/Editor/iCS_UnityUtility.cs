@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScript;
 
 public static class iCS_UnityUtility {
     // -----------------------------------------------------------------------
