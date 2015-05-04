@@ -126,6 +126,29 @@ namespace iCanScript.Editor {
             }
         }
 
+        // ----------------------------------------------------------------------
+		/// Split the namespace into root and child namespace parts.
+		///
+		/// @param namespaceName The namespace to split.
+		/// @param level1 The root namespace.
+		/// @param level2 The child namesapces.
+		///
+		public static void SplitNamespace(string namespaceName, out string level1, out string level2) {
+            level1= "";
+            level2= "";
+            if(!string.IsNullOrEmpty(namespaceName)) {
+                var namespaceLen= namespaceName == null ? 0 : namespaceName.Length;
+                var separator= namespaceName.IndexOf('.');
+                if(separator >= 0 && separator < namespaceLen) {
+                    level1= namespaceName.Substring(0, separator);
+                    level2= namespaceName.Substring(separator+1, namespaceLen-separator-1);
+                }
+                else {
+                    level1= namespaceName;
+                }                    
+            }	
+		}
+
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -160,6 +183,23 @@ namespace iCanScript.Editor {
             return node;
         }
 
+        // ----------------------------------------------------------------------
+        /// Returns the library type object for the given type.
+        ///
+        /// @param type The type to search for.
+        /// @return The library type if found. _null_ otherwise.
+        ///
+        public LibraryType GetLibraryType(Type type) {
+            string nsRoot= "";
+            string nsChildren= "";
+			SplitNamespace(type.Namespace, out nsRoot, out nsChildren);
+            var rootNamespace = GetRootNamespace(nsRoot);
+            if(rootNamespace == null) return null;
+            var childNamespace= rootNamespace.GetChildNamespace(nsChildren);
+            if(childNamespace == null) return null;
+			return childNamespace.GetLibraryType(type);
+        }
+        
         // ----------------------------------------------------------------------
         /// Sorts the root namespace and ask all children to perform sorting.
         public void Sort() {

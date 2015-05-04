@@ -232,13 +232,15 @@ namespace iCanScript.Editor {
                 Debug.LogWarning("iCanScript: Cannot create iStorage. Contact support.");
             }
 			// -- Create node for each known library type. --
-            CreateInstance(libraryObject, iStorage);
-			// -- Commit changes to drag & drop storage. --
-            iStorage.SaveStorage();
-            // -- Complete the drag information. --
-            DragAndDrop.PrepareStartDrag();
-            DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
-            DragAndDrop.StartDrag(libraryObject.nodeName);
+            if(CreateInstance(libraryObject, iStorage)) {
+    			// -- Commit changes to drag & drop storage. --
+                iStorage.SaveStorage();
+                // -- Complete the drag information. --
+                DragAndDrop.PrepareStartDrag();
+                DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
+                DragAndDrop.StartDrag(libraryObject.nodeName);                
+            }
+            // -- Release temporary game object in 60 seconds. --
             iCS_AutoReleasePool.AutoRelease(go, 60f);
         }
         // ---------------------------------------------------------------------------------
@@ -296,6 +298,8 @@ namespace iCanScript.Editor {
 			}
 			if(libraryObject is LibraryEventHandler) {
 				var libraryEventHandler= libraryObject as LibraryEventHandler;
+                iStorage.CreateUnityEventHandler(-1, libraryEventHandler);
+                return true;
 			}
 			else {
 				Debug.LogWarning("iCanScript: Unknown library type. Contact support.");

@@ -815,9 +815,9 @@ namespace iCanScript.Editor {
             // -- Grab next available ID --
             int id= GetNextAvailableId();
             // -- Create event handler node --
-            var nodeName     = libraryField.nodeName;
-    		var declaringType= libraryField.declaringType;
-    		var objectType   = iCS_ObjectTypeEnum.EventHandler;
+            var nodeName     = libraryEventHandler.nodeName;
+    		var declaringType= libraryEventHandler.declaringType;
+    		var objectType   = iCS_ObjectTypeEnum.InstanceMessage;
             var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
             // -- Create target port. --
     		iCS_EditorObject port= null;

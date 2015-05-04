@@ -1,4 +1,4 @@
-#define USE_THREAD
+//#define USE_THREAD
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -117,6 +117,9 @@ namespace iCanScript.Editor {
             if(installMethod != null) {
                 installMethod.Invoke(null, null);
             }
+            else {
+                Debug.LogWarning("iCanScript: Unable to install event handlers");
+            }
 		}
 		
         // ----------------------------------------------------------------------
@@ -232,7 +235,6 @@ namespace iCanScript.Editor {
 		public static void AddEventHandler(string eventName, Type declaringType,
 										   Type[] parameterTypes, string[] parameterNames) {
             // -- Build namespace descriptors -- 
-											   Debug.Log("Adding event");
             string level1= "";
             string level2= "";
 			SplitNamespace(declaringType.Namespace, out level1, out level2);
@@ -255,7 +257,7 @@ namespace iCanScript.Editor {
 		/// @param level1 The root namespace.
 		/// @param level2 The child namesapces.
 		///
-		static void SplitNamespace(string namespaceName, out string level1, out string level2) {
+		public static void SplitNamespace(string namespaceName, out string level1, out string level2) {
             level1= "";
             level2= "";
             if(!string.IsNullOrEmpty(namespaceName)) {

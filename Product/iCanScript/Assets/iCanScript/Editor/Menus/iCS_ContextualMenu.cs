@@ -122,16 +122,18 @@ namespace iCanScript.Editor {
             // Add Unity message handlers
             var baseType= CodeGenerationUtility.GetBaseType(iStorage);
             if(iCS_Types.IsA<MonoBehaviour>(baseType)) {
-        		var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
-                int len= P.length(messages);
+                var libraryType= Reflection.LibraryDatabase.GetLibraryType(typeof(MonoBehaviour));
+        		var eventHandlers= P.filter(l=> l is LibraryEventHandler, libraryType.children);
+                int len= P.length(eventHandlers);
         		int idx= GrowMenuBy(ref menu, len);
                 for(int i= 0; i < len; ++i) {
-        			var message= messages[i];
-                    string name= message.DisplayName;
-                    if(iCS_AllowedChildren.CanAddChildNode(name, message.ObjectType, selectedObject, iStorage)) {
-                        menu[idx+i]= new iCS_MenuContext(String.Concat("+ "+AddUnityEventStr, name), message);
+        			var eventHandler= eventHandlers[i] as LibraryEventHandler;
+                    string nodeName= eventHandler.nodeName;
+                    string displayString= eventHandler.displayString;
+                    if(iCS_AllowedChildren.CanAddChildNode(nodeName, iCS_ObjectTypeEnum.InstanceMessage, selectedObject, iStorage)) {
+                        menu[idx+i]= new iCS_MenuContext(String.Concat("+ "+AddUnityEventStr, displayString), eventHandler);
                     } else {
-                        menu[idx+i]= new iCS_MenuContext(String.Concat("#+ "+AddUnityEventStr, name), message);
+                        menu[idx+i]= new iCS_MenuContext(String.Concat("#+ "+AddUnityEventStr, displayString), eventHandler);
                     }
                 }            
             }
