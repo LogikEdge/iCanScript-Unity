@@ -66,7 +66,7 @@ namespace iCanScript.Editor {
 			set { myNumberOfItems= value; }
 		}
 		public LibraryRoot database {
-			get { return Reflection.LibraryDatabase; }
+			get { return LibraryController.LibraryDatabase; }
 		}
 		
         // =================================================================================

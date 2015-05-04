@@ -122,7 +122,7 @@ namespace iCanScript.Editor {
             // Add Unity message handlers
             var baseType= CodeGenerationUtility.GetBaseType(iStorage);
             if(iCS_Types.IsA<MonoBehaviour>(baseType)) {
-                var libraryType= Reflection.LibraryDatabase.GetLibraryType(typeof(MonoBehaviour));
+                var libraryType= LibraryController.LibraryDatabase.GetLibraryType(typeof(MonoBehaviour));
         		var eventHandlers= P.filter(l=> l is LibraryUnityEventHandler, libraryType.children);
                 int len= P.length(eventHandlers);
         		int idx= GrowMenuBy(ref menu, len);
