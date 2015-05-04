@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using P= Prelude;
+using P= iCanScript.Prelude;
+using iCanScript;
 using iCanScript.Editor;
 
 public class iCS_ScrollView {

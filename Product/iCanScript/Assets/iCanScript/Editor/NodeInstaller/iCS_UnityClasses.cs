@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using iCanScript.Editor;
 using iCanScript.Engine;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
 // ======================================================================
 // This file installs predefined Unity3d classes and messages.

@@ -4,9 +4,9 @@ using System;
 using System.Reflection;
 using System.Collections;
 using iCanScript.Engine;
-using P= Prelude;
 
 namespace iCanScript {
+    using P= Prelude;
     
     public static class iCS_Types {
         // ----------------------------------------------------------------------

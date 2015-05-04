@@ -1,10 +1,10 @@
-﻿
+
 // File: iCS_UserCommands_Selection
 //
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
 namespace iCanScript.Editor {
     

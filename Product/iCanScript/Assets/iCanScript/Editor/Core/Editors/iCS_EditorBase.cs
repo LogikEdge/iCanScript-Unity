@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections;
+using iCanScript;
 using iCanScript.Editor;
 
 public class iCS_EditorBase : EditorWindow {

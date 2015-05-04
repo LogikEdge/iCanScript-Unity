@@ -6,7 +6,7 @@ using System;
 using System.Collections;
 using iCanScript.JSON;
 using iCanScript.Engine;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
 namespace iCanScript.Editor {
     using Prefs=PreferencesController;

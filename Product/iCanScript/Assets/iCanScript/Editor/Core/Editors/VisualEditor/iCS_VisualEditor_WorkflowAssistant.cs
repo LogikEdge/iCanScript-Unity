@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
-using P=Prelude;
+using P=iCanScript.Prelude;
 using iCanScript.Engine;
 
 namespace iCanScript.Editor {

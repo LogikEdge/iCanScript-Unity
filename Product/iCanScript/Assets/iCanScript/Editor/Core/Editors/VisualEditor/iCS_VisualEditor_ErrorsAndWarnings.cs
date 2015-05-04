@@ -3,9 +3,9 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Editor;
-using P=Prelude;
+using P=iCanScript.Prelude;
 using EC=iCanScript.Editor.ErrorController;
-using TimedAction= Prelude.TimerService.TimedAction;
+using TimedAction= iCanScript.Prelude.TimerService.TimedAction;
 
 namespace iCanScript.Editor {
 public partial class iCS_VisualEditor {

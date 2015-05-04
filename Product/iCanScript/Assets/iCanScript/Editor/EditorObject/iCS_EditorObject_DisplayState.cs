@@ -8,7 +8,8 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using P=Prelude;
+using P=iCanScript.Prelude;
+using iCanScript;
 using iCanScript.Editor;
 
 public partial class iCS_EditorObject {

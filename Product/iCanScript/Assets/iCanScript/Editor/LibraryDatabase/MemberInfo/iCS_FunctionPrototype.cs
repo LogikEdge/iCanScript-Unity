@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
 namespace iCanScript.Editor {
     

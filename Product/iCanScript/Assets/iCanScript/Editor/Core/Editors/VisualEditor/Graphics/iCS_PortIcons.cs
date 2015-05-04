@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript;
 
 // TODO: Need to cleanup obsoleted data port icon code.
 public static class iCS_PortIcons {

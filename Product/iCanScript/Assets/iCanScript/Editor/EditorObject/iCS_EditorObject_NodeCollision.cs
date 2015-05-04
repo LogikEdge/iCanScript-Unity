@@ -3,7 +3,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using iCanScript;
+using P=iCanScript.Prelude;
 
 namespace iCanScript.Editor {
     using Prefs= PreferencesController;    

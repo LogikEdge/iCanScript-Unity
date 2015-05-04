@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
 namespace iCanScript.Editor {
     

@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Engine;
-using TimedAction= Prelude.TimerService.TimedAction;
+using TimedAction= iCanScript.Prelude.TimerService.TimedAction;
 
 namespace iCanScript.Editor {
     using Prefs= PreferencesController;

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using iCanScript;
 
 //[iCS_Class(Company="iCanScript", Icon= "iCS_ClockIcon.psd")]
 /// \deprecated

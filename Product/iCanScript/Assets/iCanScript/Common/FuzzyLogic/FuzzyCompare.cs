@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
 namespace iCanScript.FuzzyLogic {
     public static class FuzzyString {

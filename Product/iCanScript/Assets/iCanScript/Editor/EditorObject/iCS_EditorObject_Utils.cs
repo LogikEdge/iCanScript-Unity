@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using iCanScript.Editor;
 using iCanScript.Engine;
+using iCanScript;
 
 public partial class iCS_EditorObject {
     // =====================================================================

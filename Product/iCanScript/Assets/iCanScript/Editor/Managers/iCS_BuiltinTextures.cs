@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScript;
 using Prefs= iCanScript.Editor.PreferencesController;
 
 public static class iCS_BuiltinTextures {

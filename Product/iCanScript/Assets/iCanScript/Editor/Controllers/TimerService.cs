@@ -3,8 +3,8 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
-using TimedAction= Prelude.TimerService.TimedAction;
+using P=iCanScript.Prelude;
+using TimedAction= iCanScript.Prelude.TimerService.TimedAction;
 
 namespace iCanScript.Editor {
     

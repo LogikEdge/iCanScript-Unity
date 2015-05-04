@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using P=iCanScript.Prelude;
 using Prefs= iCanScript.Editor.PreferencesController;
 
 namespace iCanScript.Editor {

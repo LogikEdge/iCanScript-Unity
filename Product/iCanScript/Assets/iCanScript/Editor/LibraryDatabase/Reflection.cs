@@ -1,4 +1,4 @@
-﻿#define USE_THREAD
+#define USE_THREAD
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -7,7 +7,7 @@ using System.Threading;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
 namespace iCanScript.Editor {
 

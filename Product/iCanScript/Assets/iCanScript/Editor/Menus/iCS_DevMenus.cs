@@ -5,7 +5,7 @@ using System.Collections;
 using System.IO;
 using iCanScript.Editor;
 using iCanScript.Editor.CodeEngineering;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
 #if COMMUNITY_EDITION
 #else

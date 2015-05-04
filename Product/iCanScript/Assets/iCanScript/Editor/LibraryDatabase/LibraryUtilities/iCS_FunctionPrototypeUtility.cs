@@ -7,7 +7,7 @@
 ///////////////////////////////////////////////////////////
 using System;
 using iCanScript.Editor;
-using P=Prelude;
+using P=iCanScript.Prelude;
 
 
 /// <summary>
