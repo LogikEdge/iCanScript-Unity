@@ -17,7 +17,7 @@ namespace iCanScript.Editor {
     		var visualScript= IStorage.VisualScript;
            // Verify that the runtime portion still exists.
            if(IsKindOfFunction) {
-               var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
+               var memberInfo= LibraryController.LibraryDatabase.GetLibraryType(RuntimeType);
                if(memberInfo == null && !IStorage.IsLocalType(this)) {
                    var message= "Unable to find the runtime code for "+FullName;
                    ErrorController.AddError(serviceKey, message, visualScript, InstanceId);

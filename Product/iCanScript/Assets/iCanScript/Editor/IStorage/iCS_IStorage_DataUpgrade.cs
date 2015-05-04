@@ -1,9 +1,10 @@
-//#define TEST_UPGRADE
+#define TEST_UPGRADE
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Engine;
+using iCanScript.Nodes;
 
 namespace iCanScript.Editor {
     
@@ -46,6 +47,9 @@ namespace iCanScript.Editor {
     		if(storageVersion.IsOlderThen(2,0,9)) {
                 isUpgraded |= V2_0_9_EditorUpgrade();
             }
+    		if(storageVersion.IsOlderThen(2,0,11)) {
+                isUpgraded |= V2_0_11_EditorUpgrade();
+            }
 
             // -- Warn the user that an upgrade toke place --
             if(isUpgraded) {
@@ -53,13 +57,13 @@ namespace iCanScript.Editor {
     			ShowUpgradeDialog(softwareVersion);
             }
     		// -- Update storage version identifiers --
-    #if TEST_UPGRADE
+#if TEST_UPGRADE
             Debug.LogWarning("ENABLE SAVED VERSION ONCE CONVERSION IS COMPLETED");
-    #else
+#else
     		EngineStorage.MajorVersion = iCS_Config.MajorVersion;
     		EngineStorage.MinorVersion = iCS_Config.MinorVersion;
     		EngineStorage.BugFixVersion= iCS_Config.BugFixVersion;
-    #endif
+#endif
     	}
 
         // ----------------------------------------------------------------------
@@ -109,8 +113,64 @@ namespace iCanScript.Editor {
             return isUpgraded;
         }
         // ----------------------------------------------------------------------
-        /// Performs the editor data upgrade for v2.0.10.
-        bool V2_0_10_EditorUpgrade() {
+        /// Performs the editor data upgrade for v2.0.11.
+        bool V2_0_11_EditorUpgrade() {
+            bool isUpgraded= false;
+            // -- Convert to new port specification --
+            ForEach(
+                p=> {
+                    var engineObject= p.EngineObject;
+                    var qualifiedTypeName= p.QualifiedTypeName;
+                    if(qualifiedTypeName == "iCS_Package") {
+                        engineObject.QualifiedType= typeof(iCS_Package).AssemblyQualifiedName;
+                        isUpgraded= true;
+                    }
+                    else if(qualifiedTypeName == "iCS_State") {
+                        engineObject.QualifiedType= typeof(iCS_State).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_StateChart") {
+                        engineObject.QualifiedType= typeof(iCS_StateChart).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_Math") {
+                        engineObject.QualifiedType= typeof(iCS_Math).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_FromTo") {
+                        engineObject.QualifiedType= typeof(iCS_FromTo).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_VisualScriptImp") {
+                        engineObject.QualifiedType= typeof(iCS_VisualScriptImp).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_ForceIntegrator") {
+                        engineObject.QualifiedType= typeof(iCS_ForceIntegrator).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_ImpulseForceGenerator") {
+                        engineObject.QualifiedType= typeof(iCS_ImpulseForceGenerator).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_TimeUtility") {
+                        engineObject.QualifiedType= typeof(iCS_TimeUtility).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_DesiredVelocityForceGenerator") {
+                        engineObject.QualifiedType= typeof(iCS_DesiredVelocityForceGenerator).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName.StartsWith("iCS")) {
+                        Debug.LogWarning("Need to convert=> "+qualifiedTypeName);
+                    }
+                }
+            );
+            return isUpgraded;
+        }
+        // ----------------------------------------------------------------------
+        /// Performs the editor data upgrade for v2.0.12.
+        bool V2_0_12_EditorUpgrade() {
             bool isUpgraded= false;
             // -- Convert to new port specification --
             ForEach(

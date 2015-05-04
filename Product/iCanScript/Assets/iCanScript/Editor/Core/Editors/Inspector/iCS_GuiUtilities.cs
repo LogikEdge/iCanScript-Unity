@@ -132,7 +132,6 @@ public static class iCS_GuiUtilities {
         // Support Type type.
         if(valueElementType == typeof(Type) || currentValue is Type) {
             string typeName= currentValue != null ? iCS_Types.ToTypeString(currentValue as Type) : "";
-//			string origTypeName= typeName;
             if(ModalEdit(niceName, name, ref typeName, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
                 Type newType= iCS_Types.GetTypeFromTypeString(typeName);
                 if(newType != null) {
@@ -140,9 +139,7 @@ public static class iCS_GuiUtilities {
                     return newType;
                 }
                 else {
-//                    Value(foldoutDB, compositeParent+"."+name, origTypeName);
                     Debug.LogWarning("Type: "+typeName+" was not found.");
-//					EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript").ShowNotification(new GUIContent("Type: '"+typeName+"' cannot be found.  Are you missing a namespace?"));
                 }
             } 
             return currentValue;
