@@ -326,8 +326,8 @@ namespace iCanScript.Editor {
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    /// Defines the nested namespaces in the library (2nd level).
-    public class LibraryEventHandler : LibraryObject {
+    /// Defines a Unity event handler library object.
+    public class LibraryUnityEventHandler : LibraryObject {
         // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------
@@ -351,8 +351,8 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public LibraryEventHandler(string name, Type declaringType,
-								   Type[] parameterTypes, string[] parameterNames)
+        public LibraryUnityEventHandler(string name, Type declaringType,
+								        Type[] parameterTypes, string[] parameterNames)
 		: base() {
 			myName= name;
 			this.declaringType= declaringType;

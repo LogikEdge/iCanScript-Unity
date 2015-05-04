@@ -123,11 +123,11 @@ namespace iCanScript.Editor {
             var baseType= CodeGenerationUtility.GetBaseType(iStorage);
             if(iCS_Types.IsA<MonoBehaviour>(baseType)) {
                 var libraryType= Reflection.LibraryDatabase.GetLibraryType(typeof(MonoBehaviour));
-        		var eventHandlers= P.filter(l=> l is LibraryEventHandler, libraryType.children);
+        		var eventHandlers= P.filter(l=> l is LibraryUnityEventHandler, libraryType.children);
                 int len= P.length(eventHandlers);
         		int idx= GrowMenuBy(ref menu, len);
                 for(int i= 0; i < len; ++i) {
-        			var eventHandler= eventHandlers[i] as LibraryEventHandler;
+        			var eventHandler= eventHandlers[i] as LibraryUnityEventHandler;
                     string nodeName= eventHandler.nodeName;
                     string displayString= eventHandler.displayString;
                     if(iCS_AllowedChildren.CanAddChildNode(nodeName, iCS_ObjectTypeEnum.InstanceMessage, selectedObject, iStorage)) {
@@ -533,6 +533,11 @@ namespace iCanScript.Editor {
                 case UnwrapPackageStr:               iCS_UserCommands.DeleteKeepChildren(targetObject); break;
                 case FunctionCreationStr:            iCS_UserCommands.CreateFunction(targetObject, globalPos); break;
                 default: {
+                    var libraryObject= context.myLibraryObject;
+                    if(libraryObject != null) {
+                        iCS_UserCommands.CreateUnityEventHandler(targetObject, globalPos, libraryObject as LibraryUnityEventHandler);
+                        break;
+                    }
     				iCS_FunctionPrototype desc= context.Descriptor;
     				if(desc == null) {
     					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");

@@ -247,7 +247,7 @@ namespace iCanScript.Editor {
 				Debug.LogWarning("iCanScript: Unable to add event handler: "+eventName+". The parent type is unknown: "+declaringType.Name);
 				return;
 			}
-			libraryType.AddChild(new LibraryEventHandler(eventName, declaringType, parameterTypes, parameterNames));
+			libraryType.AddChild(new LibraryUnityEventHandler(eventName, declaringType, parameterTypes, parameterNames));
 		}
 
 		// ======================================================================

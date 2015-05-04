@@ -109,6 +109,52 @@ namespace iCanScript.Editor {
     		SystemEvents.AnnounceVisualScriptElementAdded(state);
             return state;        
         }
+
+    	// ----------------------------------------------------------------------
+    	/// Creates a Unity event handler with Undo capabilities.
+        ///
+        /// @param parent The parent visual script object.
+        /// @param globalPos The layout position for the event handler node.
+        /// @param libraryEventHandler The library event handler object.
+        /// @return The create Unity event handler node. _null_ on error.
+        ///
+        public static iCS_EditorObject CreateUnityEventHandler(iCS_EditorObject parent, Vector2 globalPos, LibraryUnityEventHandler libraryEventHandler) {
+#if DEBUG
+            Debug.Log("iCanScript: Create Unity EVent Handler => "+libraryEventHandler.displayString);
+#endif
+            if(parent == null) return null;
+            if(!IsCreationAllowed()) return null;
+            var iStorage= parent.IStorage;
+            var nodeName= libraryEventHandler.nodeName;
+            if(!iCS_AllowedChildren.CanAddChildNode(nodeName, iCS_ObjectTypeEnum.InstanceMessage, parent, iStorage)) {
+                return null;
+            }
+            OpenTransaction(iStorage);
+            iCS_EditorObject msgHandler= null;
+            try {
+                iStorage.AnimateGraph(null,
+                    _=> {
+                        msgHandler= iStorage.CreateUnityEventHandler(parent.InstanceId, libraryEventHandler);
+                        msgHandler.SetInitialPosition(globalPos);
+                        msgHandler.ForEachChildPort(p=> {p.AnimationStartRect= BuildRect(globalPos, Vector2.zero);});
+                        iStorage.ForcedRelayoutOfTree();
+                        iStorage.ReduceCollisionOffset();
+                    }
+                );            
+            }
+            catch(System.Exception) {
+                CancelTransaction(iStorage);
+                return null;
+            }
+            if(msgHandler == null) {
+                CancelTransaction(iStorage);
+                return null;
+            }
+            CloseTransaction(iStorage, "Create "+nodeName);
+    		SystemEvents.AnnounceVisualScriptElementAdded(msgHandler);
+            return msgHandler;
+        }
+
     	// ----------------------------------------------------------------------
     	// OK
         public static iCS_EditorObject CreateMessageHandler(iCS_EditorObject parent, Vector2 globalPos, iCS_MessageInfo desc) {

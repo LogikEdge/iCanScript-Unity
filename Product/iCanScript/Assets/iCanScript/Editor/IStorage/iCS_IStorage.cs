@@ -811,7 +811,7 @@ namespace iCanScript.Editor {
     	/// @param libraryEventHandler The library object of the event handler to create.
     	/// @return The newly created event handler node.
     	///
-        public iCS_EditorObject CreateUnityEventHandler(int parentId, LibraryEventHandler libraryEventHandler) {
+        public iCS_EditorObject CreateUnityEventHandler(int parentId, LibraryUnityEventHandler libraryEventHandler) {
             // -- Grab next available ID --
             int id= GetNextAvailableId();
             // -- Create event handler node --

@@ -295,8 +295,8 @@ namespace iCanScript.Editor {
 				}
 				return true;
 			}
-			if(libraryObject is LibraryEventHandler) {
-				var libraryEventHandler= libraryObject as LibraryEventHandler;
+			if(libraryObject is LibraryUnityEventHandler) {
+				var libraryEventHandler= libraryObject as LibraryUnityEventHandler;
                 iStorage.CreateUnityEventHandler(-1, libraryEventHandler);
                 return true;
 			}
