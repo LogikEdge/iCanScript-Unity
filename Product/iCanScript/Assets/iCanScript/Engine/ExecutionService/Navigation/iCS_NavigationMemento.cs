@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using iCanScript.Engine;
 
 [Serializable]
 public class iCS_NavigationMemento {

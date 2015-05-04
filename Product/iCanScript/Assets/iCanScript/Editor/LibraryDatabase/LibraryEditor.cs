@@ -2,6 +2,7 @@
 using UnityEditor;
 using System;
 using System.Collections;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor {
     public class LibraryEditor : iCS_EditorBase {
