@@ -19,30 +19,11 @@ namespace iCanScript.Editor {
         // ======================================================================
         // Constants
         // ----------------------------------------------------------------------
-        const string kUnityEnginePackage= "UnityEngine";
         const string kResourcesPath     = iCS_Config.ImagePath;
-        const string kJoystickIcon      = kResourcesPath+"/iCS_JoystickIcon.psd";
-        const string kUnityIcon         = kResourcesPath+"/iCS_UnityLogo_32x32.png";
-        const string kOutMailIcon       = kResourcesPath+"/iCS_OutMail_32x32.png";
         const string kInMailIcon        = kResourcesPath+"/iCS_InMail_32x32.png";
     
         // ======================================================================
         // The following are helper functions to register Unity3D message handlers
-        // ----------------------------------------------------------------------
-        // Use this function to register a Unity message on a class.
-        // Messages are invoked using dynamic (runtime) lookup and are not
-        // present in .NET assembly.  For that reason, messages are not
-        // automatically installed when decoding the Unity class. 
-        //
-        // This function can be called by the iCanScript user to add to the
-        // existing Unity library.
-        // 
-        public static void InstallUnityMessage(Type classType, string messageName, iCS_StorageClass storageClass,
-                                               iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                               string iconPath= null, string description= null) {
-            if(iconPath == null) iconPath= kUnityIcon;
-            iCS_LibraryDatabase.AddMessage(classType, messageName, storageClass, parameters, functionReturn, description, iconPath);
-        }
         // ----------------------------------------------------------------------
         // Use this function to register a Unity message on the
         // MonoBehaviour class.
@@ -52,13 +33,10 @@ namespace iCanScript.Editor {
         // 
         public static void InstallMonoBehaviourMessage(string messageName, iCS_Parameter[] parameters, 
                                                string iconPath= null, string description= null) {
-//            var voidReturn= new iCS_FunctionReturn("", typeof(void));                                       
-//            InstallUnityMessage(typeof(MonoBehaviour), messageName, iCS_StorageClass.Instance, parameters, voidReturn, iconPath, description);
-		
     		var declaringType= typeof(MonoBehaviour);
     		var parameterTypes= P.map(p=> p.type, parameters);
     		var parametersNames= P.map(p=> p.name, parameters);
-    		Reflection.AddEventHandler(messageName, declaringType, parameterTypes, parametersNames);
+    		LibraryController.AddEventHandler(messageName, declaringType, parameterTypes, parametersNames);
         }
     
         

@@ -54,7 +54,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
 	public void libraryHelp(iCS_MemberInfo memInfo ) {
 		EditorWindow edWin= EditorWindow.mouseOverWindow;
-		if(edWin!= null && iCS_Types.IsA<iCS_LibraryEditor>(edWin.GetType())) { 
+		if(edWin!= null && iCS_Types.IsA<LibraryEditor>(edWin.GetType())) { 
 			if(memInfo == null) {
 				helpWindowChange();
 			} 
