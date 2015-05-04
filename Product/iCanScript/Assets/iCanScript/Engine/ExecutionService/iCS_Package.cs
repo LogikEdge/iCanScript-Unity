@@ -1,1 +1,3 @@
-public class iCS_Package {}
+namespace iCanScript.Engine {
+    public class iCS_Package {}    
+}
