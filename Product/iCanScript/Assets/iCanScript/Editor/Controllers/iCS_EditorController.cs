@@ -80,7 +80,7 @@ namespace iCanScript.Editor {
             return FindWindow<iCS_TreeViewEditor>();
         }
         public static EditorWindow FindLibraryEditorWindow() {
-            return FindWindow<iCS_LibraryEditor>();
+            return FindWindow<LibraryEditor>();
         }    
         // ======================================================================
         public static iCS_VisualEditor FindVisualEditor() {
@@ -89,8 +89,8 @@ namespace iCanScript.Editor {
         public static iCS_TreeViewEditor FindTreeViewEditor() {
             return FindWindow(typeof(iCS_TreeViewEditor)) as iCS_TreeViewEditor;
         }
-        public static iCS_LibraryEditor FindLibraryEditor() {
-            return FindWindow(typeof(iCS_LibraryEditor)) as iCS_LibraryEditor;
+        public static LibraryEditor FindLibraryEditor() {
+            return FindWindow(typeof(LibraryEditor)) as LibraryEditor;
         }    
         public static PreferencesEditor FindPreferencesEditor() {
             return FindWindow(typeof(PreferencesEditor)) as PreferencesEditor;
