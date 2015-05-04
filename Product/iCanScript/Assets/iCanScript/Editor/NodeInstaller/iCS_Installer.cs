@@ -29,25 +29,19 @@ namespace iCanScript.Editor {
         // ------------------------------------------------------------------------
         // Forces invokation of the constructor if not already done.
         public static void Install() {
-            // The installer will get invoked once per recompile of the Unity scripts.
-            if(iCS_Reflection.NeedToRunInstaller) {
-                // Install the default Unity classes.
-                iCS_UnityClasses.PopulateDataBase();
+            // Install the default Unity classes.
+            iCS_UnityClasses.PopulateDataBase();
 
-                // This is where the custom installer gets invoked ...
-                // We use a dynamic call to avoid compile error when no custom
-                // installer exists.
-                var customInstaller= Type.GetType("iCS_CustomInstaller");
-                if(customInstaller != null) {
-                    MethodInfo methodInfo= customInstaller.GetMethod("PopulateDataBase",BindingFlags.Public | BindingFlags.Static);
-                    if(methodInfo != null) {
-                        methodInfo.Invoke(null, null);
-                    }
-
+            // This is where the custom installer gets invoked ...
+            // We use a dynamic call to avoid compile error when no custom
+            // installer exists.
+            var customInstaller= Type.GetType("iCS_CustomInstaller");
+            if(customInstaller != null) {
+                MethodInfo methodInfo= customInstaller.GetMethod("PopulateDataBase",BindingFlags.Public | BindingFlags.Static);
+                if(methodInfo != null) {
+                    methodInfo.Invoke(null, null);
                 }
 
-                // Remember that the installers where already ran.
-                iCS_Reflection.NeedToRunInstaller= false;                    
             }
         }
     }

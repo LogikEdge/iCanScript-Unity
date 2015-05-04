@@ -1,4 +1,4 @@
-#define USE_THREAD
+//#define USE_THREAD
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -85,6 +85,7 @@ namespace iCanScript.Editor {
         static void ExtractFromAppDomain() {
             Debug.Log("Start building library");
             
+			// -- Extract each assembly from the application code. --
             var assemblies= AppDomain.CurrentDomain.GetAssemblies();
             foreach(var assembly in assemblies) {
                 // -- Don't parse assemblies that should be ignored --
@@ -99,11 +100,28 @@ namespace iCanScript.Editor {
                 if(ignoreAssembly) continue;
                 ExtractAssembly(assembly);
             }
+
+			// -- Sort the database. --
             myDatabase.Sort();
 
+			// -- Install Unity Event handlers. --
+			InstallUnityEventHandlers();
+			
             Debug.Log("# types: "+myNbOfTypes+" # constructors: "+myNbOfConstructors+" # fields: "+myNbOfFields+" # functions: "+myNbOfFunctions);
         }
 
+        // ----------------------------------------------------------------------
+		/// Installs the Unity event handlers.
+		static void InstallUnityEventHandlers() {
+			var installMethod= iCS_Types.FindFunction("iCS_Installer", "Install", "iCanScript.Editor");			
+            if(installMethod != null) {
+                installMethod.Invoke(null, null);
+            }
+            else {
+                Debug.LogWarning("iCanScript: Unable to install event handlers");
+            }
+		}
+		
         // ----------------------------------------------------------------------
         /// Extracts all types from an assembly.
         ///
@@ -113,6 +131,8 @@ namespace iCanScript.Editor {
             foreach(var type in assembly.GetTypes()) {
                 // -- Don't parse private types --
                 if(!type.IsPublic) continue;
+                // -- Don't parse .NET attribute. --
+                if(type.BaseType == typeof(Attribute)) continue;
                 // -- Don't parse namespaces that should be ignored. --
                 var namespaceName= type.Namespace;
                 if(namespaceName == null) {
@@ -227,7 +247,7 @@ namespace iCanScript.Editor {
 				Debug.LogWarning("iCanScript: Unable to add event handler: "+eventName+". The parent type is unknown: "+declaringType.Name);
 				return;
 			}
-			libraryType.AddChild(new LibraryEventHandler(eventName, declaringType, parameterTypes, parameterNames));
+			libraryType.AddChild(new LibraryUnityEventHandler(eventName, declaringType, parameterTypes, parameterNames));
 		}
 
 		// ======================================================================
@@ -239,7 +259,7 @@ namespace iCanScript.Editor {
 		/// @param level1 The root namespace.
 		/// @param level2 The child namesapces.
 		///
-		static void SplitNamespace(string namespaceName, out string level1, out string level2) {
+		public static void SplitNamespace(string namespaceName, out string level1, out string level2) {
             level1= "";
             level2= "";
             if(!string.IsNullOrEmpty(namespaceName)) {

@@ -45,7 +45,6 @@ namespace iCanScript.Editor {
         // =================================================================================
         // Activation/Deactivation.
         // ---------------------------------------------------------------------------------
-    	[MenuItem("iCanScript/Editors/Special Editor",false,910)]
         static void Init() {
             var editor= EditorWindow.CreateInstance<LibraryEditor>();
             editor.ShowUtility();
@@ -232,13 +231,15 @@ namespace iCanScript.Editor {
                 Debug.LogWarning("iCanScript: Cannot create iStorage. Contact support.");
             }
 			// -- Create node for each known library type. --
-            CreateInstance(libraryObject, iStorage);
-			// -- Commit changes to drag & drop storage. --
-            iStorage.SaveStorage();
-            // -- Complete the drag information. --
-            DragAndDrop.PrepareStartDrag();
-            DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
-            DragAndDrop.StartDrag(libraryObject.nodeName);
+            if(CreateInstance(libraryObject, iStorage)) {
+    			// -- Commit changes to drag & drop storage. --
+                iStorage.SaveStorage();
+                // -- Complete the drag information. --
+                DragAndDrop.PrepareStartDrag();
+                DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
+                DragAndDrop.StartDrag(libraryObject.nodeName);                
+            }
+            // -- Release temporary game object in 60 seconds. --
             iCS_AutoReleasePool.AutoRelease(go, 60f);
         }
         // ---------------------------------------------------------------------------------
@@ -246,14 +247,15 @@ namespace iCanScript.Editor {
 		///
 		/// @param libraryObject The library object from which to create a visual node.
 		/// @param iStorage The storage in which to put the created node.
+		/// @return _true_ if instance was created. _false_ otherwise.
 		/// 
-        void CreateInstance(LibraryObject libraryObject, iCS_IStorage iStorage) {
+        bool CreateInstance(LibraryObject libraryObject, iCS_IStorage iStorage) {
 			if(libraryObject is LibraryType) {
 				var libraryType= libraryObject as LibraryType;
 	            iStorage.CreatePropertyWizardNode(-1, libraryType.type);
-				return;
+				return true;
 			}
-			else if(libraryObject is LibraryGetField) {
+			if(libraryObject is LibraryGetField) {
 				var libraryField= libraryObject as LibraryGetField;
 				if(libraryField.isStatic) {
 					iStorage.CreateStaticGetField(-1, libraryField);
@@ -261,8 +263,9 @@ namespace iCanScript.Editor {
 				else {
 					iStorage.CreateGetField(-1, libraryField);								
 				}
+				return true;
 			}
-			else if(libraryObject is LibrarySetField) {
+			if(libraryObject is LibrarySetField) {
 				var libraryField= libraryObject as LibrarySetField;
 				if(libraryField.isStatic) {
 					iStorage.CreateStaticSetField(-1, libraryField);
@@ -270,17 +273,19 @@ namespace iCanScript.Editor {
 				else {
 					iStorage.CreateSetField(-1, libraryField);								
 				}
+				return true;
 			}
-			else if(libraryObject is LibraryConstructor) {
+			if(libraryObject is LibraryConstructor) {
 				var libraryConstructor= libraryObject as LibraryConstructor;
 				if(libraryConstructor.isStatic) {
 					iStorage.CreateStaticConstructor(-1, libraryConstructor);
 				}
 				else {
 					iStorage.CreateConstructor(-1, libraryConstructor);					
-				}				
+				}
+				return true;	
 			}
-			else if(libraryObject is LibraryFunction) {
+			if(libraryObject is LibraryFunction) {
 				var libraryFunction= libraryObject as LibraryFunction;
 				if(libraryFunction.isStatic) {
 					iStorage.CreateStaticFunction(-1, libraryFunction);
@@ -288,35 +293,17 @@ namespace iCanScript.Editor {
 				else {
 					iStorage.CreateFunction(-1, libraryFunction);					
 				}
+				return true;
+			}
+			if(libraryObject is LibraryUnityEventHandler) {
+				var libraryEventHandler= libraryObject as LibraryUnityEventHandler;
+                iStorage.CreateUnityEventHandler(-1, libraryEventHandler);
+                return true;
 			}
 			else {
 				Debug.LogWarning("iCanScript: Unknown library type. Contact support.");
 			}
-
-//            if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {
-//                CreateMethod(node.MemberInfo, iStorage);        
-//                return;
-//            }
-//            if(node.Type == iCS_LibraryController.NodeTypeEnum.Property) {
-//                CreateMethod(node.MemberInfo, iStorage);        
-//                return;
-//            }
-//            if(node.Type == iCS_LibraryController.NodeTypeEnum.Constructor) {
-//                CreateMethod(node.MemberInfo, iStorage);        
-//                return;
-//            }
-//            if(node.Type == iCS_LibraryController.NodeTypeEnum.Method) {
-//                CreateMethod(node.MemberInfo, iStorage);        
-//                return;
-//            }
-//    		if(node.Type == iCS_LibraryController.NodeTypeEnum.Message) {
-//                var module= CreateMessage(node.MemberInfo, iStorage);        
-//    			if(node.MemberInfo.IconPath != null) {
-//    				module.IconPath= node.MemberInfo.IconPath;				
-//    			}
-//    			return;
-//    		}
-//		
+			return false;
         }
 //	
 //        // ======================================================================

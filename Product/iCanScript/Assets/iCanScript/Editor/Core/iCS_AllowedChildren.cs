@@ -4,8 +4,8 @@ using iCanScript.Engine;
 
 namespace iCanScript.Editor {
 public static class iCS_AllowedChildren {
-    public static readonly string[]    StateChildNames= null;
-    public static readonly string[]     StateChildTooltips= null;
+    public static readonly string[] StateChildNames= null;
+    public static readonly string[] StateChildTooltips= null;
 
     static iCS_AllowedChildren() {
         StateChildNames= new string[]{
@@ -24,9 +24,6 @@ public static class iCS_AllowedChildren {
     public static bool CanAddChildNode(string childName, iCS_EngineObject child, iCS_EditorObject parent, iCS_IStorage iStorage) {
         if(parent == null || child == null) return false;
         if(parent.IsBehaviour) {
-            if(child.IsInstanceNode) {
-                return false;
-            }
             if(child.IsPackage) {
                 if(IsChildNodePresent(childName, parent, iStorage)) {
                     iCS_EditorController.ShowNotificationOnVisualEditor("Node with name=> "+childName+" already exist.\nPlease rename existing "+childName+" and retry.");
@@ -41,31 +38,17 @@ public static class iCS_AllowedChildren {
     public static bool CanAddChildNode(string childName, iCS_ObjectTypeEnum childType, iCS_EditorObject parent, iCS_IStorage iStorage) {
         if(parent == null) return false;
         // Only allow valid child for object instances.
-        if(parent.IsInstanceNode || parent.IsBehaviour) {
+        if(parent.IsBehaviour) {
             // Don't allow more then one copy of a node in an instance node
             if(IsChildNodePresent(childName, parent, iStorage)) {
                 return false;
             }
-			var typeInfo= iCS_LibraryDatabase.GetTypeInfo(parent.IsBehaviour ? typeof(MonoBehaviour) : parent.RuntimeType);
-			if(typeInfo == null) {
-				Debug.LogWarning("iCanScript: Unable to find type information for: "+parent.DisplayName);
-				return false;
-			}
-            if(parent.IsBehaviour && childType == iCS_ObjectTypeEnum.Package) {
+            if(childType == iCS_ObjectTypeEnum.Package || childType == iCS_ObjectTypeEnum.InstanceMessage) {
                 return true;
             }
-            if(parent.IsBehaviour && childType == iCS_ObjectTypeEnum.Constructor) {
+            if(childType == iCS_ObjectTypeEnum.Constructor) {
                 return true;
             }
-			foreach(var m in typeInfo.Members) {
-				if(m.DisplayName == childName) {
-                    // Special case for Behaviour.  Only messages are allowed.
-                    if(parent.IsBehaviour) {
-                        return m.IsMessage || m.IsField || m.IsProperty;
-                    }
-					return true;
-				}
-			}
 			return false;                        
         }
         // Messages are only allow on their object instance.
