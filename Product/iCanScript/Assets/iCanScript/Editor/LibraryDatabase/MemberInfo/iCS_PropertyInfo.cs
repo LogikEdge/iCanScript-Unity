@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using System.Collections;
+using iCanScript.Engine;
 using P=iCanScript.Prelude;
 
 namespace iCanScript.Editor {

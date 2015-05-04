@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using iCanScript;
 using iCanScript.Editor;
+using iCanScript.Engine;
 using P=iCanScript.Prelude;
 
 public class iCS_LibraryDatabase {

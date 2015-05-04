@@ -4,7 +4,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript;
-using iCanScript.Editor;
+
+namespace iCanScript.Editor {
+    
 
 /*
 	TODO : Should filter on name, input port type, and output port type.
@@ -262,4 +264,5 @@ public class iCS_LibraryEditor2 {
     iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {
         return iStorage.CreateMessageHandler(-1, desc as iCS_MessageInfo);            
     }    
+}
 }

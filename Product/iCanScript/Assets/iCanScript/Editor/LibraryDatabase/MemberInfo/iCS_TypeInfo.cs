@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor {
     
