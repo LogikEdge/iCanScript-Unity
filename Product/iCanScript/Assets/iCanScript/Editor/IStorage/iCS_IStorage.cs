@@ -804,6 +804,40 @@ namespace iCanScript.Editor {
             CreatePort(fieldName, id, fieldType, portType, portIndex);
             return instance;
         }
+        // ----------------------------------------------------------------------
+    	/// Creates a node that represents a Unity eventhandler.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryEventHandler The library object of the event handler to create.
+    	/// @return The newly created event handler node.
+    	///
+        public iCS_EditorObject CreateUnityEventHandler(int parentId, LibraryEventHandler libraryEventHandler) {
+            // -- Grab next available ID --
+            int id= GetNextAvailableId();
+            // -- Create event handler node --
+            var nodeName     = libraryField.nodeName;
+    		var declaringType= libraryField.declaringType;
+    		var objectType   = iCS_ObjectTypeEnum.EventHandler;
+            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
+            // -- Create target port. --
+    		iCS_EditorObject port= null;
+            port= CreateTargetPort(id);
+            port.InitialValue= OwnerTag.instance;
+            // -- Create parameter ports --
+			var parameterTypes= libraryEventHandler.parameterTypes;
+			var parameterNames= libraryEventHandler.parameterNames;
+			var nbOfParams= parameterTypes.Length;
+            for(int parameterIdx= 0; parameterIdx < nbOfParams; ++parameterIdx) {
+				var paramType= parameterTypes[parameterIdx];
+				var paramName= parameterNames[parameterIdx];
+                if(paramType != typeof(void)) {
+                    iCS_ObjectTypeEnum portType= iCS_ObjectTypeEnum.InFixDataPort;
+                    port= CreatePort(paramName, id, paramType, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
+                    port.InitialPortValue= iCS_Types.DefaultValue(paramType);
+                }
+            }
+            return instance;
+        }    
 
         // ----------------------------------------------------------------------
         public iCS_EditorObject CreateStaticFunction(int parentId, iCS_FunctionPrototype desc) {

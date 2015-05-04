@@ -101,16 +101,18 @@ namespace iCanScript.Editor {
         }
         // ----------------------------------------------------------------------
         public void SaveStorage() {
-            // Keep a copy of the selected object global position.
-            Storage.SelectedObjectPosition= SelectedObject.GlobalPosition;
-            // Tell Unity that our storage has changed.
+            // -- Keep a copy of the selected object global position. --
+			if(SelectedObject != null) {
+	            Storage.SelectedObjectPosition= SelectedObject.GlobalPosition;				
+			}
+            // -- Tell Unity that our storage has changed. --
             iCS_StorageImp.CopyFromTo(Storage, EngineStorage);
-            // Commit Undo transaction and forces redraw of inspector window.
+            // -- Commit Undo transaction and forces redraw of inspector window. --
             EditorUtility.SetDirty(iCSMonoBehaviour);
             ++ModificationId;
             iCS_EditorController.RepaintAllEditors();
             SystemEvents.AnnouceVisualScriptSaved(this);
-            // Perform sanity check.
+            // -- Perform sanity check. --
             SanityCheck();
         }
         // ----------------------------------------------------------------------

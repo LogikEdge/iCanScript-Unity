@@ -85,6 +85,7 @@ namespace iCanScript.Editor {
         static void ExtractFromAppDomain() {
             Debug.Log("Start building library");
             
+			// -- Extract each assembly from the application code. --
             var assemblies= AppDomain.CurrentDomain.GetAssemblies();
             foreach(var assembly in assemblies) {
                 // -- Don't parse assemblies that should be ignored --
@@ -99,11 +100,25 @@ namespace iCanScript.Editor {
                 if(ignoreAssembly) continue;
                 ExtractAssembly(assembly);
             }
+
+			// -- Sort the database. --
             myDatabase.Sort();
 
+			// -- Install Unity Event handlers. --
+			InstallUnityEventHandlers();
+			
             Debug.Log("# types: "+myNbOfTypes+" # constructors: "+myNbOfConstructors+" # fields: "+myNbOfFields+" # functions: "+myNbOfFunctions);
         }
 
+        // ----------------------------------------------------------------------
+		/// Installs the Unity event handlers.
+		static void InstallUnityEventHandlers() {
+			var installMethod= iCS_Types.FindFunction("iCS_Installer", "Install", "iCanScript.Editor");			
+            if(installMethod != null) {
+                installMethod.Invoke(null, null);
+            }
+		}
+		
         // ----------------------------------------------------------------------
         /// Extracts all types from an assembly.
         ///
@@ -217,6 +232,7 @@ namespace iCanScript.Editor {
 		public static void AddEventHandler(string eventName, Type declaringType,
 										   Type[] parameterTypes, string[] parameterNames) {
             // -- Build namespace descriptors -- 
+											   Debug.Log("Adding event");
             string level1= "";
             string level2= "";
 			SplitNamespace(declaringType.Namespace, out level1, out level2);
