@@ -36,7 +36,7 @@ public static class iCS_Types {
     // ----------------------------------------------------------------------
     // Returns the coded name for the given type.
     public static string GetName(Type type) {
-        string result= RemoveProductPrefix(type.Name);
+        string result= type.Name;
         int arg= result.IndexOf('`');
         if(arg < 0) return result;
         result= result.Substring(0, arg);
@@ -50,13 +50,6 @@ public static class iCS_Types {
             result+= ">";
         }
         return result;
-    }
-    // ----------------------------------------------------------------------
-    public static string RemoveProductPrefix(string name) {
-        if(name.StartsWith(iCS_Config.ProductPrefix)) {
-            return name.Substring(iCS_Config.ProductPrefix.Length);
-        }
-        return name;
     }
     // ----------------------------------------------------------------------
     // Returns true if the given type has a default constructor.
