@@ -1,12 +1,7 @@
-﻿// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// iCS_PreferencesController.cs
-//
-// Revised: 2014-01-29
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScript.Editor;
 
 public static class iCS_SoftwareUpdateView {
     // ---------------------------------------------------------------------------------
