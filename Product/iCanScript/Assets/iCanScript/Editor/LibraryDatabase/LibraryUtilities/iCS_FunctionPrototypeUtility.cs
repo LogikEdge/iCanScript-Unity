@@ -6,6 +6,7 @@
 //  Original author: Michel Launier
 ///////////////////////////////////////////////////////////
 using System;
+using iCanScript.Editor;
 using P=Prelude;
 
 

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using iCanScript.Editor;
 
 public class iCS_MenuContext {
     public string               Command;
