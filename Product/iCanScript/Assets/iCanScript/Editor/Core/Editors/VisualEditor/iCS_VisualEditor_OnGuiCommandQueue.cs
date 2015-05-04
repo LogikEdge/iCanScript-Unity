@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Utilities;
+using iCanScript;
 
 namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {

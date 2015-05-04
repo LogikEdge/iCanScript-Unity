@@ -10,6 +10,7 @@ using System;
 using System.Collections;
 using P=iCanScript.Prelude;
 using iCanScript;
+using iCanScript.Engine;
 using iCanScript.Editor;
 
 public partial class iCS_EditorObject {

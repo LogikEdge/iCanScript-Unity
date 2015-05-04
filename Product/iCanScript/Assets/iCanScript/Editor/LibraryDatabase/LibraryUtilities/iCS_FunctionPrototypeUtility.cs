@@ -8,6 +8,7 @@
 using System;
 using iCanScript.Editor;
 using P=iCanScript.Prelude;
+using iCanScript.Engine;
 
 
 /// <summary>

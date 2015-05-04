@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using iCanScript.JSON;
+using iCanScript.Engine;
 
 
 namespace iCanScript.Editor {

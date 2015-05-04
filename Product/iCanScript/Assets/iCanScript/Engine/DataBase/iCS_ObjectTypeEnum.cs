@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using iCanScript.Engine;
 
 [System.Serializable]
 public enum iCS_ObjectTypeEnum {
