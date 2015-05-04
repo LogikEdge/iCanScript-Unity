@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using P=Prelude;
-using iCanScript.Editor;
+using iCanScript.Engine;
 
 namespace iCanScript.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {

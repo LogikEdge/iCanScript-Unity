@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using P=Prelude;
 using TimedAction= Prelude.TimerService.TimedAction;
 using iCanScript.Editor;
+using iCanScript.Engine;
 
 public static class iCS_VisualScriptDataController {
     // =================================================================================

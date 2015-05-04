@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using System.IO;
 using System.Collections;
+using iCanScript.Engine;
 using P=Prelude;
 
 public static class iCS_MenuUtility {

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
+using iCanScript.Engine;
 using P=Prelude;
 
 namespace iCanScript.Editor {

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using iCanScript.Editor;
+using iCanScript.Engine;
 
 public static partial class iCS_UserCommands {
     // ======================================================================

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using iCanScript.Engine;
 
 /// This class is used to dynamically find and invoke
 /// functionality that is not directly reachable from

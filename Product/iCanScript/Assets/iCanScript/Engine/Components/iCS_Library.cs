@@ -1,5 +1,7 @@
 using UnityEngine;
 
-[AddComponentMenu("")]
-[System.Serializable]
-public sealed class iCS_Library : iCS_LibraryImp {}
+namespace iCanScript.Engine {
+    [AddComponentMenu("")]
+    [System.Serializable]
+    public sealed class iCS_Library : iCS_LibraryImp {}    
+}
