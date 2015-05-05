@@ -134,7 +134,7 @@ namespace iCanScript.Editor {
             try {
                 iStorage.AnimateGraph(null,
                     _=> {
-                        msgHandler= iStorage.CreateEventHandler(parent.InstanceId, libraryEventHandler);
+                        msgHandler= iStorage.CreateNode(parent.InstanceId, libraryEventHandler);
                         msgHandler.SetInitialPosition(globalPos);
                         msgHandler.ForEachChildPort(p=> {p.AnimationStartRect= BuildRect(globalPos, Vector2.zero);});
                         iStorage.ForcedRelayoutOfTree();
@@ -194,7 +194,7 @@ namespace iCanScript.Editor {
             return msgHandler;
         }
         // ----------------------------------------------------------------------
-        public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos) {
+        public static iCS_EditorObject CreateFunctionDefinition(iCS_EditorObject parent, Vector2 globalPos) {
             return CreatePackage(parent, globalPos, "My Function");    
         }
     	// ----------------------------------------------------------------------
@@ -268,20 +268,19 @@ namespace iCanScript.Editor {
         }
     	// ----------------------------------------------------------------------
         // OK
-        public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos, iCS_FunctionPrototype desc) {
+        public static iCS_EditorObject CreateFunctionCallNode(iCS_EditorObject parent, Vector2 globalPos, LibraryObject libraryObject) {
     #if DEBUG
-            Debug.Log("iCanScript: Create Function => "+desc.DisplayName);
+            Debug.Log("iCanScript: Create Function => "+libraryObject.displayString);
     #endif
-            if(parent == null || desc == null) return null;
+            if(parent == null || libraryObject == null) return null;
             if(!IsCreationAllowed()) return null;
     		var iStorage= parent.IStorage;
-    		var name= desc.DisplayName;
             OpenTransaction(iStorage);
             iCS_EditorObject function= null;
             try {
                 iStorage.AnimateGraph(null,
                     _=> {
-                        function= iStorage.CreateFunction(parent.InstanceId, desc);
+                        function= iStorage.CreateNode(parent.InstanceId, libraryObject);
                         function.SetInitialPosition(globalPos);
                         iStorage.ForcedRelayoutOfTree();
                         iStorage.ReduceCollisionOffset();
@@ -296,6 +295,7 @@ namespace iCanScript.Editor {
                 CancelTransaction(iStorage);
                 return null;            
             }
+    		var name= libraryObject.nodeName;
             CloseTransaction(iStorage, "Create "+name);
     		SystemEvents.AnnounceVisualScriptElementAdded(function);
             return function;        

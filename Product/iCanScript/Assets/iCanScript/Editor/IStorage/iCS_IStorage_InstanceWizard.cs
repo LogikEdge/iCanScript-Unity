@@ -208,20 +208,13 @@ namespace iCanScript.Editor {
         public iCS_EditorObject PropertiesWizardCreate(iCS_EditorObject module, LibraryObject libraryObject) {
             if(PropertiesWizardFindFunction(module, libraryObject) != null) return null;
             Rect moduleRect= module.GlobalRect;
-            iCS_EditorObject func= CreateFunction(module.InstanceId, desc);
+            iCS_EditorObject func= CreateNode(module.InstanceId, libraryObject);
             func.SetInitialPosition(new Vector2(0.5f*(moduleRect.x+moduleRect.xMax), moduleRect.yMax));
             ForEachChildDataPort(func,
                 port=> {
                     string modulePortName= port.DisplayName;
                     if(!port.IsTargetOrSelfPort) {
-                        if(desc.IsField) {
-                            var fieldInfo= desc as iCS_FieldInfo;
-                            modulePortName= (fieldInfo.IsGet ? "get_" : "set_")+fieldInfo.FieldName;
-                        } else if(desc.IsProperty) {
-                            modulePortName= (desc as iCS_PropertyInfo).MethodName;
-                        } else {
-                            modulePortName+= "."+desc.DisplayName;                    
-                        }
+						modulePortName= libraryObject.nodeName;
                     }
                     if(port.IsInputPort) {
                         // Special case for "instance".
