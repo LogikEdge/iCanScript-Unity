@@ -67,10 +67,6 @@ namespace iCanScript.Editor {
             return Functions;
         }
         // ----------------------------------------------------------------------
-        public static List<iCS_FunctionPrototype> AllFunctionsUnsorted() {
-            return Functions;
-        }
-        // ----------------------------------------------------------------------
         public static List<iCS_FunctionPrototype> BuildNormalMenu() {
             var menu= new List<iCS_FunctionPrototype>();
             foreach(var desc in Functions) {
