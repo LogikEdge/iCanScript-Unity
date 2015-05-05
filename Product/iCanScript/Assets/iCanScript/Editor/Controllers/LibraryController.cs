@@ -48,7 +48,7 @@ namespace iCanScript.Editor {
         static string[] namespacesToIgnore= new string[]{
             "iCanScript",
             "UnityEditorInternal", "UnityEngineInternal",
-            "Microsoft", "Mono"
+            "Microsoft", "Mono", "JetBrains"
         };
         static string[] namespacesToInclude= new string[]{
             "iCanScript.Nodes"
