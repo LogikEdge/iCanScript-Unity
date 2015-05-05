@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 using iCanScript.Engine;
 
 namespace iCanScript {
@@ -259,7 +260,24 @@ namespace iCanScript {
             }
             return null;
         }
-    
+        // ----------------------------------------------------------------------
+        /// Returns all types that is or derives from the given type.
+        ///
+        /// @param type The base type to start the search.
+        /// @return The list of type that derive from the given type.
+        ///
+        public static Type[] GetAllTypesThatDeriveFrom(Type type) {
+            var derivedTypes= new List<Type>();
+            foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+                foreach(var t in assembly.GetTypes()) {
+                    if(iCS_Types.IsA(type, t)) {
+                        derivedTypes.Add(t);
+                    }
+                }
+            }
+            return derivedTypes.ToArray();
+        }
+        
         // ======================================================================
         // ----------------------------------------------------------------------
         public static bool IsGeneratedByiCanScript(string namespaceName, string typeName) {
