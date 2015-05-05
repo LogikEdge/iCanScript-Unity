@@ -11,7 +11,7 @@ namespace iCanScript.Editor {
     //
     // Please augment the Unity library using your own source file as
     // this source file may be changed in future releases.
-    public static class iCS_UnityClasses {
+    public static class MonoBehaviourEventHandlers {
         // ======================================================================
         // The following are helper functions to register Unity3D message handlers
         // ----------------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace iCanScript.Editor {
         // This function can be called by the iCanScript user to add to the
         // existing Unity library.
         // 
-        public static void InstallMonoBehaviourMessage(string messageName, Type[] parameterTypes, string[] parameterNames) {
+        static void InstallMonoBehaviourMessage(string messageName, Type[] parameterTypes, string[] parameterNames) {
     		var declaringType= typeof(MonoBehaviour);
     		LibraryController.AddEventHandler(messageName, declaringType, parameterTypes, parameterNames);
         }
@@ -30,7 +30,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // The following is the list of preinstalled Unity classes.
         // ----------------------------------------------------------------------
-        public static void PopulateDataBase() {                        
+        public static void Install() {                        
             // Install MonoBehaviour messages with no parameters.
             var noParameterTypes= new Type[0];
             var noParameterNames= new string[0];

@@ -83,8 +83,6 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
         /// Extracts all public members (except for iCanScript).
         static void ExtractFromAppDomain() {
-            Debug.Log("Start building library");
-            
 			// -- Extract each assembly from the application code. --
             var assemblies= AppDomain.CurrentDomain.GetAssemblies();
             foreach(var assembly in assemblies) {
@@ -106,20 +104,12 @@ namespace iCanScript.Editor {
 
 			// -- Install Unity Event handlers. --
 			InstallUnityEventHandlers();
-			
-            Debug.Log("# types: "+myNbOfTypes+" # constructors: "+myNbOfConstructors+" # fields: "+myNbOfFields+" # functions: "+myNbOfFunctions);
         }
 
         // ----------------------------------------------------------------------
 		/// Installs the Unity event handlers.
 		static void InstallUnityEventHandlers() {
-			var installMethod= iCS_Types.FindFunction("iCS_Installer", "Install", "iCanScript.Editor");			
-            if(installMethod != null) {
-                installMethod.Invoke(null, null);
-            }
-            else {
-                Debug.LogWarning("iCanScript: Unable to install event handlers");
-            }
+            MonoBehaviourEventHandlers.Install();
 		}
 		
         // ----------------------------------------------------------------------
