@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using P= iCanScript.Prelude;
 
 namespace iCanScript.Editor {
     
@@ -11,17 +12,17 @@ namespace iCanScript.Editor {
         // Types
         // ---------------------------------------------------------------------------------
         class ControlPair {
-            public iCS_FunctionPrototype    Component= null;
-            public bool                     IsActive= false;
-            public ControlPair(iCS_FunctionPrototype component, bool isActive= false) {
-                Component= component;
+            public LibraryObject    Component= null;
+            public bool             IsActive= false;
+            public ControlPair(LibraryObject libraryObject, bool isActive= false) {
+                Component= libraryObject;
                 IsActive= isActive;
             }
         };
         class VariablePair {
             public ControlPair InputControlPair= null;
             public ControlPair OutputControlPair= null;
-            public VariablePair(iCS_FunctionPrototype inputComponent, bool inputActive, iCS_FunctionPrototype outputComponent, bool outputActive) {
+            public VariablePair(LibraryObject inputComponent, bool inputActive, LibraryObject outputComponent, bool outputActive) {
                 InputControlPair = new ControlPair(inputComponent, inputActive);
                 OutputControlPair= new ControlPair(outputComponent, outputActive);
             }
@@ -35,11 +36,7 @@ namespace iCanScript.Editor {
     		}
     		public string RawName {
     			get {
-    				var variableInfo= GetAControlPair.Component;
-    	            if(variableInfo.IsField) {
-    	                return variableInfo.ToFieldInfo.FieldName;
-    				}
-    	            return variableInfo.ToPropertyInfo.PropertyName;
+                    return GetVariableName(GetAControlPair.Component);
     			}
     		}
     		public string DisplayName {
@@ -47,8 +44,7 @@ namespace iCanScript.Editor {
     		}
     		public Type VariableType {
     			get {
-    				var variableInfo= GetAControlPair.Component;
-    		        return variableInfo.IsField ? variableInfo.ToFieldInfo.type : variableInfo.ToPropertyInfo.type;				
+    				return GetVariableType(GetAControlPair.Component);
     			}
     		}
     		public string DisplayTypeName {
@@ -105,24 +101,29 @@ namespace iCanScript.Editor {
     		myCheckBoxSize     = GUI.skin.toggle.CalcSize(new GUIContent(""));                
 
     		// Extract fields & properties from class descriptor.
+            var libraryDatabase= LibraryController.LibraryDatabase;
+            var libraryType= libraryDatabase.GetLibraryType(classType);
+            var libraryFields    = libraryType.GetMembers<LibraryField>();
+            var libraryProperties= libraryType.GetMembers<LibraryProperty>();
+            var libraryFieldsAndProperties= P.append<LibraryObject>(libraryFields, libraryProperties);
             List<VariablePair> variables= new List<VariablePair>();
-            foreach(var component in iCS_LibraryDatabase.GetPropertiesAndFields(myClassType)) {
-                bool isActive= (myTarget != null && myStorage != null) ? myStorage.InstanceWizardFindFunction(myTarget, component) != null : false;
-                string name= GetVariableName(component);
+            foreach(var libraryObject in libraryFieldsAndProperties) {
+                bool isActive= (myTarget != null && myStorage != null) ? myStorage.PropertiesWizardFindFunction(myTarget, libraryObject) != null : false;
+                string name= GetVariableName(libraryObject);
                 var variablePair= GetVariablePair(name, variables);
-                if(component.IsSetField || component.IsSetProperty) {
+                if(libraryObject is LibrarySetField || libraryObject is LibrarySetProperty) {
                     if(variablePair != null) {
-                        variablePair.InputControlPair.Component= component;
+                        variablePair.InputControlPair.Component= libraryObject;
                         variablePair.InputControlPair.IsActive= isActive;
                     } else {
-                        variables.Add(new VariablePair(component, isActive, null, false));                        
+                        variables.Add(new VariablePair(libraryObject, isActive, null, false));                        
                     }
                 } else {
                     if(variablePair != null) {
-                        variablePair.OutputControlPair.Component= component;
+                        variablePair.OutputControlPair.Component= libraryObject;
                         variablePair.OutputControlPair.IsActive= isActive;
                     } else {
-                        variables.Add(new VariablePair(null, false, component, isActive));                                            
+                        variables.Add(new VariablePair(null, false, libraryObject, isActive));                                            
                     }
                 }
             }
@@ -145,26 +146,43 @@ namespace iCanScript.Editor {
         // =================================================================================
         // Helpers
         // ---------------------------------------------------------------------------------
-        string GetVariableName(iCS_MemberInfo variableInfo) {
-            var name= variableInfo.IsField ? variableInfo.ToFieldInfo.FieldName : variableInfo.ToPropertyInfo.PropertyName;
-    		return NameUtility.ToDisplayName(name);
+        static string GetVariableName(LibraryObject libraryObject) {
+            var rawName= libraryObject.rawName;
+            if(rawName.StartsWith("set_") || rawName.StartsWith("get_")) {
+                rawName= rawName.Substring(4);
+            }
+    		return NameUtility.ToDisplayName(rawName);
         }
-    	string GetVariableName(VariablePair pair) {
+    	static string GetVariableName(VariablePair pair) {
     		return pair.DisplayName;
     	}
-    	string GetTypeName(iCS_MemberInfo variableInfo) {
-    		return null;
+    	static string GetTypeName(LibraryObject libraryObject) {
+            var type= GetVariableType(libraryObject);
+            if(type == null) return null;
+            return NameUtility.ToDisplayName(iCS_Types.TypeName(type));
     	}
-    	string GetTypeName(VariablePair pair) {
+    	static string GetTypeName(VariablePair pair) {
     		return GetTypeName(GetAComponent(pair));
     	}
-        Type GetVariableType(iCS_MemberInfo variableInfo) {
-            return variableInfo.IsField ? variableInfo.ToFieldInfo.type : variableInfo.ToPropertyInfo.type;
+        static Type GetVariableType(LibraryObject libraryObject) {
+            var libraryField= libraryObject as LibraryField;
+            if(libraryField != null) {
+                return libraryField.fieldType;
+            }
+            var libraryGetProperty= libraryObject as LibraryGetProperty;
+            if(libraryGetProperty != null) {
+                return libraryGetProperty.returnType;
+            }
+            var librarySetProperty= libraryObject as LibrarySetProperty;
+            if(librarySetProperty != null) {
+                return librarySetProperty.parameters[0].ParameterType;
+            }
+            return null;
         }
-    	Type GetVariableType(VariablePair pair) {
+    	static Type GetVariableType(VariablePair pair) {
     		return GetVariableType(GetAComponent(pair));
     	}
-        iCS_MemberInfo GetAComponent(VariablePair pair) {
+        static LibraryObject GetAComponent(VariablePair pair) {
             return pair.InputControlPair.Component ?? pair.OutputControlPair.Component; 
         }
         VariablePair GetVariablePair(string name, List<VariablePair> lst) {
@@ -217,9 +235,9 @@ namespace iCanScript.Editor {
                     inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
                     if(prevActive != inputControlPair.IsActive && myTarget != null && myStorage != null) {
                         if(inputControlPair.IsActive) {
-                            iCS_UserCommands.CreateInstanceWizardElement(myTarget, inputControlPair.Component);
+                            iCS_UserCommands.CreatePropertiesWizardElement(myTarget, inputControlPair.Component);
                         } else {
-                            iCS_UserCommands.DeleteInstanceWizardElement(myTarget, inputControlPair.Component);
+                            iCS_UserCommands.DeletePropertiesWizardElement(myTarget, inputControlPair.Component);
                         }                
                     }                					
     			}
@@ -230,9 +248,9 @@ namespace iCanScript.Editor {
                     outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
                     if(prevActive != outputControlPair.IsActive && myTarget != null && myStorage != null) {
                         if(outputControlPair.IsActive) {
-                            iCS_UserCommands.CreateInstanceWizardElement(myTarget, outputControlPair.Component);
+                            iCS_UserCommands.CreatePropertiesWizardElement(myTarget, outputControlPair.Component);
                         } else {
-                            iCS_UserCommands.DeleteInstanceWizardElement(myTarget, outputControlPair.Component);
+                            iCS_UserCommands.DeletePropertiesWizardElement(myTarget, outputControlPair.Component);
                         }                
     				}
                 }                

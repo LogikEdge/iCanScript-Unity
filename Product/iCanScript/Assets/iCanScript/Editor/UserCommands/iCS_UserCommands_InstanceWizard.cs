@@ -1,5 +1,5 @@
 //
-// File: iCS_UserCommands_InstanceWizard
+// File: iCS_UserCommands_PropertiesWizard
 //
 //#define DEBUG
 using UnityEngine;
@@ -13,10 +13,10 @@ namespace iCanScript.Editor {
     public static partial class iCS_UserCommands {
     	// ----------------------------------------------------------------------
         // OK
-        public static iCS_EditorObject CreateInstanceWizardElement(iCS_EditorObject parent, iCS_FunctionPrototype desc) {
-    #if DEBUG
-            Debug.Log("iCanScript: Create Instance Element => "+desc.DisplayName);
-    #endif
+        public static iCS_EditorObject CreatePropertiesWizardElement(iCS_EditorObject parent, LibraryObject libraryObject) {
+#if DEBUG
+            Debug.Log("iCanScript: Create Instance Element => "+libraryObject.displayString);
+#endif
             if(parent == null) return null;
             var iStorage= parent.IStorage;
 
@@ -26,7 +26,7 @@ namespace iCanScript.Editor {
                 SendStartRelayoutOfTree(iStorage);
                 iStorage.AnimateGraph(null,
                     _=> {
-                        instance= iStorage.InstanceWizardCreate(parent, desc);
+                        instance= iStorage.PropertiesWizardCreate(parent, libraryObject);
                         instance.SetInitialPosition(parent.GlobalPosition);
                         instance.Iconize();
                         iStorage.ForcedRelayoutOfTree();
@@ -45,7 +45,7 @@ namespace iCanScript.Editor {
             return instance;
         }
     	// ----------------------------------------------------------------------
-        public static void DeleteInstanceWizardElement(iCS_EditorObject parent, iCS_FunctionPrototype desc) {
+        public static void DeletePropertiesWizardElement(iCS_EditorObject parent, LibraryObject libraryObject) {
     #if DEBUG
             Debug.Log("iCanScript: Delete Instance Element => "+desc.DisplayName);
     #endif
@@ -56,7 +56,7 @@ namespace iCanScript.Editor {
                 SendStartRelayoutOfTree(iStorage);
                 iStorage.AnimateGraph(null,
                     _=> {
-                        iStorage.InstanceWizardDestroy(parent, desc);
+                        iStorage.PropertiesWizardDestroy(parent, desc);
                         iStorage.ForcedRelayoutOfTree();
                     }
                 );                
@@ -87,7 +87,7 @@ namespace iCanScript.Editor {
                     _=> {
                         var instance= iStorage.CreateObjectInstance(parent.InstanceId, instanceType.Name, instanceType);
                         instance.SetInitialPosition(globalPos);
-                        element= iStorage.InstanceWizardCreate(instance, desc);
+                        element= iStorage.PropertiesWizardCreate(instance, desc);
                         element.SetInitialPosition(globalPos);
                         element.Iconize();
                         iStorage.ForcedRelayoutOfTree();
@@ -125,7 +125,7 @@ namespace iCanScript.Editor {
                         var instance= iStorage.CreateObjectInstance(parent.InstanceId, instanceType.Name, instanceType);
                         instance.SetInitialPosition(globalPos);
                         // Internal element
-                        element= iStorage.InstanceWizardCreate(instance, desc);
+                        element= iStorage.PropertiesWizardCreate(instance, desc);
                         element.SetInitialPosition(globalPos);
                         element.Iconize();
                         // Object Builder
@@ -134,7 +134,7 @@ namespace iCanScript.Editor {
         				if(myConstructors.Length != 0) {
         					iCS_EditorObject builder= null;
         					if(myConstructors.Length == 1) {
-        						builder= iStorage.InstanceWizardCreateConstructor(instance, myConstructors[0]);								
+        						builder= iStorage.PropertiesWizardCreateConstructor(instance, myConstructors[0]);								
         						builder.SetInitialPosition(new Vector2(globalPos.x-75f, globalPos.y));
         					}
         					else {

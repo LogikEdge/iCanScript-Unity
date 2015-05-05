@@ -527,7 +527,7 @@ namespace iCanScript.Editor {
             // Create new EditorObject
             var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
             if(instance.IsInstanceNode) {
-                InstanceWizardCompleteCreation(instance);
+                PropertiesWizardCompleteCreation(instance);
                 instance.DisplayName= NameUtility.ToTypeName(iCS_Types.TypeName(runtimeType))+" Properties";
                 CreateSelfPort(id);
             }
@@ -811,7 +811,7 @@ namespace iCanScript.Editor {
     	/// @param libraryEventHandler The library object of the event handler to create.
     	/// @return The newly created event handler node.
     	///
-        public iCS_EditorObject CreateUnityEventHandler(int parentId, LibraryUnityEventHandler libraryEventHandler) {
+        public iCS_EditorObject CreateEventHandler(int parentId, LibraryEventHandler libraryEventHandler) {
             // -- Grab next available ID --
             int id= GetNextAvailableId();
             // -- Create event handler node --

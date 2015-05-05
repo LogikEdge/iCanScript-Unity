@@ -31,7 +31,7 @@ namespace iCanScript.Editor {
                         _=> {
                             iStorage.SelectedObject= obj.ParentNode;
     						SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
-                            iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);
+                            iStorage.PropertiesWizardDestroyAllObjectsAssociatedWithPort(obj);
                             iStorage.ForcedRelayoutOfTree();
                         }
             		);                
@@ -92,7 +92,7 @@ namespace iCanScript.Editor {
     						SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
 
                             if(obj.IsInstanceNodePort) {
-                        		iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);                        
+                        		iStorage.PropertiesWizardDestroyAllObjectsAssociatedWithPort(obj);                        
                             }
                             else {
                         		iStorage.DestroyInstance(obj.InstanceId);                        

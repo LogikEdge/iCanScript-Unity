@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using P= iCanScript.Prelude;
 
 namespace iCanScript.Editor {
 
@@ -48,6 +49,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
+        public string rawName       { get { return GetRawName(); }}
 		public string nodeName 		{ get { return GetNodeName(); }}
         public string displayString {
             get {
@@ -327,7 +329,7 @@ namespace iCanScript.Editor {
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines a Unity event handler library object.
-    public class LibraryUnityEventHandler : LibraryObject {
+    public class LibraryEventHandler : LibraryObject {
         // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------
@@ -351,8 +353,8 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public LibraryUnityEventHandler(string name, Type declaringType,
-								        Type[] parameterTypes, string[] parameterNames)
+        public LibraryEventHandler(string name, Type declaringType,
+								   Type[] parameterTypes, string[] parameterNames)
 		: base() {
 			myName= name;
 			this.declaringType= declaringType;
@@ -430,6 +432,17 @@ namespace iCanScript.Editor {
                 }
             );
         }
+
+        // ----------------------------------------------------------------------
+        /// Returns the members of type T installed on this type.
+        ///
+        /// @return The array of member <T> installed on this type.
+        ///
+        public T[] GetMembers<T>() where T : LibraryObject {
+            var events= P.filter(p=> p is T, children);
+            return P.map(p=> p as T, events).ToArray();
+        }
+
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -797,8 +810,17 @@ namespace iCanScript.Editor {
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	/// Defines the class that represents a function in the library.
-    public class LibraryGetProperty : LibraryMethodInfo {
+	/// Defines the base class that represents a property in the library.
+    public class LibraryProperty : LibraryMethodInfo {
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibraryProperty(MethodInfo methodInfo) : base(methodInfo) {}
+    }
+    
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the class that represents a property get in the library.
+    public class LibraryGetProperty : LibraryProperty {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
@@ -831,8 +853,8 @@ namespace iCanScript.Editor {
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	/// Defines the class that represents a function in the library.
-    public class LibrarySetProperty : LibraryMethodInfo {
+	/// Defines the class that represents a property set in the library.
+    public class LibrarySetProperty : LibraryProperty {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------

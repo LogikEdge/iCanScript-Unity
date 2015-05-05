@@ -942,7 +942,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(iCS_Types.IsStaticClass(instanceType)) return;
         if(DragOriginalPort != DragFixPort) return;
         var instance= IStorage.CreatePackage(newParent.InstanceId, globalPosition, "", iCS_ObjectTypeEnum.Package, instanceType);
-        var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
+        var thisPort= IStorage.PropertiesWizardGetInputThisPort(instance);
         SetNewDataConnection(thisPort, sourcePort);
 #endif
     }

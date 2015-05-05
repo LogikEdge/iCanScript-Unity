@@ -123,11 +123,11 @@ namespace iCanScript.Editor {
             var baseType= CodeGenerationUtility.GetBaseType(iStorage);
             if(iCS_Types.IsA<MonoBehaviour>(baseType)) {
                 var libraryType= LibraryController.LibraryDatabase.GetLibraryType(typeof(MonoBehaviour));
-        		var eventHandlers= P.filter(l=> l is LibraryUnityEventHandler, libraryType.children);
+        		var eventHandlers= libraryType.GetMembers<LibraryEventHandler>();
                 int len= P.length(eventHandlers);
         		int idx= GrowMenuBy(ref menu, len);
                 for(int i= 0; i < len; ++i) {
-        			var eventHandler= eventHandlers[i] as LibraryUnityEventHandler;
+        			var eventHandler= eventHandlers[i];
                     string nodeName= eventHandler.nodeName;
                     string displayString= eventHandler.displayString;
                     if(iCS_AllowedChildren.CanAddChildNode(nodeName, iCS_ObjectTypeEnum.InstanceMessage, selectedObject, iStorage)) {
@@ -535,7 +535,7 @@ namespace iCanScript.Editor {
                 default: {
                     var libraryObject= context.myLibraryObject;
                     if(libraryObject != null) {
-                        iCS_UserCommands.CreateUnityEventHandler(targetObject, globalPos, libraryObject as LibraryUnityEventHandler);
+                        iCS_UserCommands.CreateEventHandler(targetObject, globalPos, libraryObject as LibraryEventHandler);
                         break;
                     }
     				iCS_FunctionPrototype desc= context.Descriptor;
@@ -572,7 +572,7 @@ namespace iCanScript.Editor {
             iCS_UserCommands.OpenTransaction(iStorage);
     		var instance= iCS_UserCommands.CreateObjectInstance(parent, pos, sourcePort.RuntimeType);   
     		if(sourcePort != null) {
-    	        var thisPort= iStorage.InstanceWizardGetInputThisPort(instance);
+    	        var thisPort= iStorage.PropertiesWizardGetInputThisPort(instance);
     	        iStorage.SetNewDataConnection(thisPort, sourcePort);					
     		}
             iCS_UserCommands.CloseTransaction(iStorage, "Create Object Instance");
@@ -590,7 +590,7 @@ namespace iCanScript.Editor {
             iStorage.AnimateGraph(null,
                 _=> {
             		if(newNodeParent.IsInstanceNode) {
-            			method= iCS_UserCommands.CreateInstanceWizardElement(newNodeParent, desc);
+            			method= iCS_UserCommands.CreatePropertiesWizardElement(newNodeParent, desc);
             		}
             		else {
             			bool createMethod= true;
