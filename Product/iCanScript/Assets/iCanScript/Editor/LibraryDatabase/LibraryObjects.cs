@@ -450,8 +450,8 @@ namespace iCanScript.Editor {
         public bool         isProperty    { get { return isGetProperty || isSetProperty; }}
         public bool         isConstructor { get { return memberType == MemberTypes.Constructor; }}
         public bool         isMethod      { get { return memberType == MemberTypes.Method; }}
-        public bool         isGetProperty { get { return isMethod && memberInfo.Name.StartsWith("get_"); }}
-        public bool         isSetProperty { get { return isMethod && memberInfo.Name.StartsWith("set_"); }}
+        public bool         isGetProperty { get { return this is LibraryGetProperty; }}
+        public bool         isSetProperty { get { return this is LibrarySetProperty; }}
         public bool         isInherited   {
             get {
 				var libraryType= parent as LibraryType;
@@ -806,8 +806,18 @@ namespace iCanScript.Editor {
 
         // ======================================================================
         // INTERFACES
-        // ----------------------------------------------------------------------
-        internal override string GetDisplayString() { return GetNodeName(); }
+        // ----------------------------------------------------------------------		
+		internal override string GetDisplayString() {
+			var result= new StringBuilder(64);
+			result.Append(mainValueBegin);
+			result.Append(GetNodeName());
+			result.Append(mainValueEnd);
+			result.Append(" --> ");
+			result.Append(secondPartBegin);
+			result.Append(NameUtility.ToDisplayName(returnType));
+			result.Append(secondPartEnd);
+			return result.ToString();
+		}
         // ----------------------------------------------------------------------
 		internal override string GetNodeName() {
             return NameUtility.ToDisplayName(memberInfo.Name);
@@ -830,8 +840,18 @@ namespace iCanScript.Editor {
 
         // ======================================================================
         // INTERFACES
-        // ----------------------------------------------------------------------
-        internal override string GetDisplayString() { return GetNodeName(); }
+        // ----------------------------------------------------------------------		
+		internal override string GetDisplayString() {
+			var result= new StringBuilder(64);
+			result.Append(mainValueBegin);
+			result.Append(GetNodeName());
+			result.Append(mainValueEnd);
+			result.Append(" <-- ");
+			result.Append(firstPartBegin);
+			result.Append(NameUtility.ToDisplayName(parameters[0].ParameterType));
+			result.Append(firstPartEnd);
+			return result.ToString();
+		}
         // ----------------------------------------------------------------------
 		internal override string GetNodeName() {
             return NameUtility.ToDisplayName(memberInfo.Name);

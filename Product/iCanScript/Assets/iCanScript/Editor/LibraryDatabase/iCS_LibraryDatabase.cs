@@ -550,7 +550,6 @@ namespace iCanScript.Editor {
     			var function= record.ToFunctionPrototypeInfo;
     			var insertIdx= Functions.BinarySearch(function, myFunctionComparer);
     			if(insertIdx >= 0 && Functions.Count > 0) {
-    //				Debug.Log("Function Found at=> "+insertIdx);
     			}
     			else {
     				Functions.Insert(~insertIdx, function);

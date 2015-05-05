@@ -222,7 +222,19 @@ namespace iCanScript.Editor {
         static void ExtractFunctions(LibraryType parentType, Type type) {
             foreach(var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {
                 ++myNbOfFunctions;
-                parentType.AddChild(new LibraryFunction(method));
+				var methodName= method.Name;
+				var parameters= method.GetParameters();
+				LibraryObject libraryObject= null;
+				if(methodName.StartsWith("get_") && parameters.Length == 0) {
+					libraryObject= new LibraryGetProperty(method);					
+				}
+				else if(methodName.StartsWith("set_") && parameters.Length == 1) {
+					libraryObject= new LibrarySetProperty(method);
+				}
+				else {
+	                libraryObject= new LibraryFunction(method);	
+				}
+                parentType.AddChild(libraryObject);					
             }
         }
 
