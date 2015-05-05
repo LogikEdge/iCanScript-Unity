@@ -606,7 +606,7 @@ namespace iCanScript.Editor {
     	/// @param libraryObject The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateStaticFunction(int parentId, LibraryFunction libraryFunction) {
+        public iCS_EditorObject CreateStaticFunction(int parentId, LibraryMethodInfo libraryFunction) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -633,7 +633,7 @@ namespace iCanScript.Editor {
     	/// @param libraryObject The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateFunction(int parentId, LibraryFunction libraryFunction) {
+        public iCS_EditorObject CreateFunction(int parentId, LibraryMethodInfo libraryFunction) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --

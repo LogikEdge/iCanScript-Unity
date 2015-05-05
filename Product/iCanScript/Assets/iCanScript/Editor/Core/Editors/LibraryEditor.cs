@@ -300,6 +300,26 @@ namespace iCanScript.Editor {
                 iStorage.CreateUnityEventHandler(-1, libraryEventHandler);
                 return true;
 			}
+			if(libraryObject is LibraryGetProperty) {
+				var libraryProperty= libraryObject as LibraryGetProperty;
+				if(libraryProperty.isStatic) {
+					iStorage.CreateStaticFunction(-1, libraryProperty);
+				}
+				else {
+					iStorage.CreateFunction(-1, libraryProperty);								
+				}
+				return true;
+			}
+			if(libraryObject is LibrarySetProperty) {
+				var libraryProperty= libraryObject as LibrarySetProperty;
+				if(libraryProperty.isStatic) {
+					iStorage.CreateStaticFunction(-1, libraryProperty);
+				}
+				else {
+					iStorage.CreateFunction(-1, libraryProperty);								
+				}
+				return true;
+			}
 			else {
 				Debug.LogWarning("iCanScript: Unknown library type. Contact support.");
 			}
