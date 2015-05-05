@@ -87,7 +87,7 @@ namespace iCanScript.Editor {
                 case iCS_ObjectTypeEnum.StateChart:        StateChartMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.State:             StateMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.InstanceMessage:   MessageHandlerMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.ClassMessage:      PackageMenu(selectedObject, storage); break;
+                case iCS_ObjectTypeEnum.StaticMessage:     PackageMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.TransitionPackage: PackageMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.Constructor:       FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.InstanceFunction:  FunctionMenu(selectedObject, storage); break;
@@ -96,7 +96,7 @@ namespace iCanScript.Editor {
                 case iCS_ObjectTypeEnum.InstanceField:     FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.StaticField:       FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.ClassProperty:     FunctionMenu(selectedObject, storage); break;
+                case iCS_ObjectTypeEnum.StaticProperty:    FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
                 case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
                 case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;

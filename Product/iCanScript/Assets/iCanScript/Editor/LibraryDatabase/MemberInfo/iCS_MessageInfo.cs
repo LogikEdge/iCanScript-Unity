@@ -19,7 +19,7 @@ namespace iCanScript.Editor {
                                iCS_Parameter[] _parameters,
                                iCS_FunctionReturn _functionReturn,
                                iCS_StorageClass _storageClass)
-        : base(_storageClass == iCS_StorageClass.Instance ? iCS_ObjectTypeEnum.InstanceMessage : iCS_ObjectTypeEnum.ClassMessage, _declaringTypeInfo,
+        : base(_storageClass == iCS_StorageClass.Instance ? iCS_ObjectTypeEnum.InstanceMessage : iCS_ObjectTypeEnum.StaticMessage, _declaringTypeInfo,
                _displayName, _description, _iconPath,
                _parameters, _functionReturn, _storageClass)
         {
