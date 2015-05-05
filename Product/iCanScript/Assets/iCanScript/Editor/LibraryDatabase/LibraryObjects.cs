@@ -706,6 +706,10 @@ namespace iCanScript.Editor {
 			displayString.Append(ToDisplayInputParameters);
 			displayString.Append(")");
 			displayString.Append(firstPartEnd);
+			displayString.Append(" --> ");
+			displayString.Append(secondPartBegin);
+			displayString.Append(NameUtility.ToDisplayName(declaringType));
+			displayString.Append(secondPartEnd);
 			return displayString.ToString();
 		}
         // ----------------------------------------------------------------------
