@@ -1,4 +1,4 @@
-//#define USE_THREAD
+#define USE_THREAD
 using UnityEngine;
 using UnityEditor;
 using System;
