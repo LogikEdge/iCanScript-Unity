@@ -646,24 +646,9 @@ namespace iCanScript.Editor {
     	/// @param libraryObject The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        iCS_EditorObject CreateStaticFunctionCallNode(int parentId, LibraryMethodInfo libraryFunction) {
-            // -- Grab a unique ID for this node. --
-            int id= GetNextAvailableId();
-            // -- Create node --
-            var nodeName     = libraryFunction.nodeName;
-    		var declaringType= libraryFunction.declaringType;
-    		var objectType   = iCS_ObjectTypeEnum.StaticFunction;
-            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
-    		instance.MethodName= libraryFunction.methodInfo.Name;
-            // -- Create parameter ports. --
-    		var parameters= libraryFunction.parameters;
-    		CreateParameterPorts(instance, parameters);
-    		// -- Create return port. --
-    		var returnType= libraryFunction.returnType;
-    		if(returnType != null && returnType != typeof(void)) {
-    			var returnName= Char.ToLower(nodeName[0])+nodeName.Substring(1);
-                CreatePort(returnName, id, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
-    		}
+        iCS_EditorObject CreateStaticFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo) {
+			// -- Create base function node. --
+			var instance= CreateBaseFunctionCallNode(parentId, libraryMethodInfo, iCS_ObjectTypeEnum.StaticFunction); 
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -674,18 +659,30 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo) {
+			// -- Create base function node. --
+			var instance= CreateBaseFunctionCallNode(parentId, libraryMethodInfo, iCS_ObjectTypeEnum.InstanceFunction); 
+    		// -- Create target & self ports. --
+			var id= instance.InstanceId;
+            CreateTargetPort(id);
+            CreateSelfPort(id);
+            return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates a common part of function node.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryObject The library object of the function to create.
+    	/// @return The newly created property wizard node.
+    	///
+        iCS_EditorObject CreateBaseFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo, iCS_ObjectTypeEnum nodeType) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
             var nodeName     = libraryMethodInfo.nodeName;
     		var libraryParent= libraryMethodInfo.parent as LibraryType;
     		var declaringType= libraryParent.type;
-    		var objectType   = iCS_ObjectTypeEnum.InstanceFunction;
-            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
+            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, nodeType, this);
     		instance.MethodName= libraryMethodInfo.methodInfo.Name;
-    		// -- Create target & self ports. --
-            CreateTargetPort(id);
-            CreateSelfPort(id);
             // -- Create parameter ports. --
     		var parameters= libraryMethodInfo.parameters;
     		CreateParameterPorts(instance, parameters);
