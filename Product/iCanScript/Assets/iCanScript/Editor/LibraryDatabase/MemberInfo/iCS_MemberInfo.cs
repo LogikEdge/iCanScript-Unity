@@ -131,7 +131,7 @@ namespace iCanScript.Editor {
             get {
                 if(myHelpSummary == null) {
     				// Update the cached helpSummary
-                    HelpSummaryCache= HelpController.getHelp(this);
+//                    HelpSummaryCache= HelpController.getHelp(this);
                 }
                 return myHelpSummary;        
             }

@@ -196,7 +196,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             outPort= overlappingPort.IsOutputPort ? overlappingPort : fixPort;
         }
         if(inPort != outPort) {
-            iCS_TypeCastInfo conversion= null;
+            LibraryFunction conversion= null;
             if(VerifyConnectionTypes(inPort, outPort, out conversion)) {
                 IStorage.SetAndAutoLayoutNewDataConnection(inPort, outPort, conversion);
             }
@@ -207,7 +207,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return true;
     }
 	// ----------------------------------------------------------------------
-    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out iCS_TypeCastInfo typeCast) {
+    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out LibraryFunction typeCast) {
         typeCast= null;
 		Type inType= inPort.RuntimeType;
 		Type outType= outPort.RuntimeType;
@@ -221,7 +221,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
             return false;
 		}
-        typeCast= iCS_LibraryDatabase.FindTypeCast(outType, inType);
+        typeCast= FindTypeCast(outType, inType);
         if(typeCast == null) {
 			ShowNotification(new GUIContent("No automatic type conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
             return false;
@@ -229,8 +229,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return true;
     }
 	// ----------------------------------------------------------------------
+	// TODO: Automatically create type cast for frequent conversions.
+	LibraryFunction FindTypeCast(Type outType, Type inType) {
+		return null;
+	}
+	// ----------------------------------------------------------------------
 	void CreateMuxPort(iCS_EditorObject fixPort, iCS_EditorObject parentMuxPort) {
-        iCS_TypeCastInfo conversion= null;
+        LibraryFunction conversion= null;
         if(!VerifyConnectionTypes(parentMuxPort, fixPort, out conversion)) return;
         var childPortType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InChildMuxPort : iCS_ObjectTypeEnum.OutChildMuxPort;
 		var source= parentMuxPort.ProducerPort;
@@ -507,20 +512,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(validParent == null) {
 			var node= IStorage.GetNodeAt(point);
 			if(node == null && IStorage.IsEmptyBehaviour) {
-				int option= EditorUtility.DisplayDialogComplex("Message Handler required !", "Unity behaviour requires that nodes be added to a predefined message.  Use the buttons below to create the desired message type for your node.","Create Update", "More events...","Create OnGUI");
-				switch(option) {
-					case 0:
-						validParent= AutoCreateBehaviourMessage(iCS_Strings.Update, point);
-						break;
-					case 1:
-						ShowNotification(new GUIContent("Please use right mouse click on canvas to create behaviour event type before adding new object."));
-						SelectedObject= IStorage.EditorObjects[0];
-						myContextualMenu.Update(iCS_ContextualMenu.MenuType.SelectedObject, SelectedObject, IStorage, point);
-						return;
-					case 2:
-						validParent= AutoCreateBehaviourMessage(iCS_Strings.OnGUI, point);
-						break;
-				}
+				EditorUtility.DisplayDialog("Function or Event Handler required !", "You must create a function or event handler to paste into.", "Cancel");
+				return;
 			} else {
 	            EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");				
 				return;
@@ -528,11 +521,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         iCS_UserCommands.PasteIntoGraph(sourceMonoBehaviour, sourceRoot, IStorage, validParent, point);
     }
-	// ----------------------------------------------------------------------
-    iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {
-        var updateDesc= P.filter(d => d.DisplayName == iCS_Strings.Update, iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour)));
-        if(updateDesc == null || updateDesc.Length == 0) return null;
-        return iCS_UserCommands.CreateMessageHandler(IStorage[0], globalPos, updateDesc[0]);
-    }
+//	// ----------------------------------------------------------------------
+//    iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {
+//        var updateDesc= P.filter(d => d.DisplayName == iCS_Strings.Update, iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour)));
+//        if(updateDesc == null || updateDesc.Length == 0) return null;
+//        return iCS_UserCommands.CreateMessageHandler(IStorage[0], globalPos, updateDesc[0]);
+//    }
 }
 }

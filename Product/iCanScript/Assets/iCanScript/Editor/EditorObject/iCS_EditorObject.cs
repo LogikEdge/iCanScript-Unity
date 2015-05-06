@@ -197,23 +197,19 @@ namespace iCanScript.Editor {
     					}
     					else {
                             c_CodeName= EngineObject.RawName;
+							// -- Try to use the original name if the user erased the port name. --
     						if(string.IsNullOrEmpty(c_CodeName)) {
     							var parent= ParentNode;
     							if(parent != null) {
-    		                        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-    								if(desc != null) {
-    		                            var funcInfo= desc.ToFunctionPrototypeInfo;
-    								    if(funcInfo != null) {
-    										var parameters= funcInfo.Parameters;
-    										if(parameters != null && PortIndex < parameters.Length) {
-    											c_CodeName= NameUtility.ToFunctionParameterName(parameters[PortIndex].name);
-    										}
-    										else if(IsReturnPort) {
-    											if(funcInfo.FunctionReturn != null) {
-    												c_CodeName= NameUtility.ToLocalVariableName(funcInfo.FunctionReturn.name);
-    											}
-    										}
-    									}
+    		                        var libraryMethodBase= GetLibraryObject() as LibraryMethodBase;
+    								if(libraryMethodBase != null) {
+										var parameters= libraryMethodBase.parameters;
+										if(parameters != null && PortIndex < parameters.Length) {
+											c_CodeName= NameUtility.ToFunctionParameterName(parameters[PortIndex].Name);
+										}
+										else if(IsReturnPort) {
+											c_CodeName= NameUtility.ToLocalVariableName(parent.CodeName);
+										}
     								}
     							}								
     						}                       
@@ -472,28 +468,6 @@ namespace iCanScript.Editor {
     	    get {
                 return this.InstanceId == Storage.DisplayRoot;
     	    }
-    	}
-        public bool IsObsolete {
-        	get {
-        		if(c_ObsoleteMessage == null) {
-    				var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-    				if(desc != null) {
-    					var methodInfo= desc.ToMethodInfo;
-    					if(methodInfo != null) {
-    						c_ObsoleteMessage= iCS_LibraryDatabase.GetObsoleteMessage(methodInfo.Method);						
-    					}
-    				}
-    				if(string.IsNullOrEmpty(c_ObsoleteMessage)) {
-    					c_ObsoleteMessage= "";
-    				}
-        		}
-    			return !string.IsNullOrEmpty(c_ObsoleteMessage);
-        	}
-        }
-    	public string ObsoleteMessage {
-    		get {
-    			return IsObsolete ? c_ObsoleteMessage : null;
-    		}
     	}
 	
         // ======================================================================
