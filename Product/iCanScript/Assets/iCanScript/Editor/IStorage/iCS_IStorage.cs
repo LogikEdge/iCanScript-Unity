@@ -673,26 +673,29 @@ namespace iCanScript.Editor {
     	/// @param libraryObject The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        iCS_EditorObject CreateFunctionCallNode(int parentId, LibraryMethodInfo libraryFunction) {
+        iCS_EditorObject CreateFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
-            var nodeName     = libraryFunction.nodeName;
-    		var libraryParent= libraryFunction.parent as LibraryType;
+            var nodeName     = libraryMethodInfo.nodeName;
+    		var libraryParent= libraryMethodInfo.parent as LibraryType;
     		var declaringType= libraryParent.type;
     		var objectType   = iCS_ObjectTypeEnum.InstanceFunction;
             var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
-    		instance.MethodName= libraryFunction.methodInfo.Name;
+    		instance.MethodName= libraryMethodInfo.methodInfo.Name;
     		// -- Create target & self ports. --
             CreateTargetPort(id);
             CreateSelfPort(id);
             // -- Create parameter ports. --
-    		var parameters= libraryFunction.parameters;
+    		var parameters= libraryMethodInfo.parameters;
     		CreateParameterPorts(instance, parameters);
     		// -- Create return port. --
-    		var returnType= libraryFunction.returnType;
+    		var returnType= libraryMethodInfo.returnType;
     		if(returnType != null && returnType != typeof(void)) {
-    			var returnName= Char.ToLower(nodeName[0])+nodeName.Substring(1);
+				string returnName= libraryMethodInfo.memberName;
+				if(returnName.StartsWith("get_")) {
+					returnName= returnName.Substring(4);
+				}
                 CreatePort(returnName, id, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
     		}
             return instance;
