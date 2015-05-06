@@ -191,13 +191,6 @@ namespace iCanScript.Editor {
     			PerformEngineDataUpgrade();
                 GenerateEditorData();
                 PerformEditorDataUpgrade();
-                // Assure that we have the default nodes if visual script is empty.
-                if(EngineObjects.Count == 0) {
-                    if(monoBehaviour is iCS_VisualScriptImp) {
-                        CreateDefaultObjectsForVisualScript();
-                        SaveStorage();
-                    }
-                }
                 // Reset display root if no navigation history present
                 if(!NavigationHistory.HasBackwardHistory && EditorObjects.Count > 0) {
                     DisplayRoot= EditorObjects[0];
